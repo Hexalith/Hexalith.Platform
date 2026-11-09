@@ -39,6 +39,9 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
     /// <inheritdoc />
     public bool RoutingCatalogObservationsRequired => true;
 
+    /// <summary>Gets the routing-catalog receiver cohort, by resource identity, that the owning composition handed to this preparation.</summary>
+    internal IReadOnlyDictionary<string, string> ExpectedCatalogHosts => _expectedCatalogHosts;
+
     /// <inheritdoc />
     public CompositionNativeTestScope? NativeTestScope { get; private set; }
 

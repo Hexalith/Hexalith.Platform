@@ -1,0 +1,31 @@
+name: Story 2.8 v2 integration cancellation proof
+
+# Proof branch only; never merged. One push runs one patched v2 caller whose integration step is cancelled once.
+on:
+  push:
+    branches: ['proof/story-2-8-v2-cancellation-*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: story-2-8-v2-cancellation-proof-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@a51f9876d7b204c63b92c370e067d2de1c3b2918
+    with:
+      solution: Hexalith.Parties.Standalone.slnx
+      module-manifest: module/hexalith.module-manifest.v2.json
+      integration-test-profiles: platform-package
+      package-prepare-script: scripts/prepare-ci-package-dependencies.sh
+      test-platform: microsoft-testing-platform
+      run-consumer-validation: false
+      run-coverage-gate: false
+      unit-test-projects: |
+        tests/Hexalith.Parties.Aspire.Tests
+      build-timeout-minutes: 60
+    secrets:
+      registry-pull-username: ${{ secrets.HEXALITH_CI_REGISTRY_USERNAME }}
+      registry-pull-password: ${{ secrets.HEXALITH_CI_REGISTRY_PASSWORD }}

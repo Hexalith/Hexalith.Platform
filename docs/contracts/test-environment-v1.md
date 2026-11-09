@@ -349,6 +349,18 @@ holds as `withdrawn` (`ci-job-completed` or `ci-job-cancelled`) before resources
 for a hold beyond its job or retains failure resources. First terminal outcomes and original expiry
 remain immutable; finished CI owners refuse new attachments.
 
+The former blanket refusal of every CI owner, `HXR035` reason `owner-ci-holds-unsupported`, is retired:
+runners never emit it, and a consumer must not treat it as a current reason. `HXR035` remains the
+owner-state refusal, with exactly these current reasons: `owner-starting`, `owner-passed`,
+`owner-failed`, `owner-cancelled`, `owner-withdrawn`, `owner-finished`, `owner-cleaning` and
+`owner-cleaned`.
+
+The CI finalizer passes its actual workflow job status to the exact `down` as
+`HEXALITH_CI_JOB_STATUS` (`success`, `failure`, `cancelled` or empty). Only `cancelled`, a missing
+terminal outcome, or a `cancelled`/`withdrawn` terminal ends active holds as `ci-job-cancelled`. Every
+other terminal, including a failed job whose owner recorded a failed outcome, ends them as
+`ci-job-completed`. The owner is recorded as cancelled only for an actual cancellation.
+
 ## CI ownership recovery and finalization
 
 `hexalith-module test --manifest <v2> --mode package --profile <declared-suite>
@@ -360,8 +372,23 @@ immutable descriptor/result schemas, and confers no candidate acceptance.
 
 The workflow first requires successful isolated tests, then uses the exact local
 pinned tool, generated Release/package imports and real services for blocking
-integration. The helper finalizes in `finally`; an independent `always()` step
-retries `down --run-id` using the receipt after cancellation or partial startup.
+integration. The integration step runs the helper as the step process, so the runner's
+cancellation reaches it. The helper delivers it only to the tool's own processes: the
+gated muxer and the tool it runs. Composed processes are never signalled by the helper,
+so the tool records withdrawal before it stops them. The runner's own process-tree kill
+after its cancellation grace is outside the helper's control and can precede that
+record. Even then, the exact `down` below withdraws active attachments before it stops
+what remains. After normal completion or its own timeout, the helper runs exact
+`down --run-id`. The timeout is derived from the step and the job's remaining time, so
+the timeout path and the finalizer both fit. After a cancellation the helper leaves
+the exact down to an independent `always()` step, which also retries it after failure
+or partial startup. That step first stops the surviving tool processes, then re-reads
+the receipt:
+
+- Without a receipt, it stops every other recorded-session process before deciding
+  `not-allocated`.
+- With a receipt, it leaves owned composed processes, which carry the owner's run tag,
+  to the exact `down`.
 Before invoking down, it verifies repository/run/attempt/job and durable owner
 bindings. Cleanup completion requires zero owned resources and verified discovery.
 Unknown discovery or leftovers fail with retryable metadata. Only classified,

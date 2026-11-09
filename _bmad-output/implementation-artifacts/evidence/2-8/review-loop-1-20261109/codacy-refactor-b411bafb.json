@@ -1,0 +1,149 @@
+{
+ "schema": "hexalith.story-2-8.review-loop-1-codacy-refactor.v1",
+ "recordedAtUtc": "2026-11-09T01:05:00Z",
+ "scope": "Resource-free local compilation and controlled process/filesystem fixtures only. No real AppHost, DCP, Dapr, Docker, service or listener was started. Diagnostic only; no hosted or candidate credit.",
+ "trigger": {
+  "check": "Codacy Static Code Analysis on Builds PR 177 at a51f9876",
+  "result": "fail: 6 new issues (0 max.)",
+  "issues": [
+   "run_module_integration.py execute_integration: 66 lines (limit 50), cyclomatic complexity 19 (limit 15), MC0001 too complex (18)",
+   "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync: 76 lines (limit 50)",
+   "CiRunLifecycleTests.BuildsRoot: redundant explicit nullable DirectoryInfo creation",
+   "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync: 109 lines (limit 50)"
+  ]
+ },
+ "commits": [
+  {
+   "commit": "4caa1e023da0cf9f416a5a536d4ddca1216db28a",
+   "tree": "9bdb242d5128d9fab5dce1f4d51744a4b88ff3a9",
+   "parent": "a51f9876d7b204c63b92c370e067d2de1c3b2918",
+   "subject": "refactor(ci): split the v2 helper session and long lifecycle tests",
+   "codacy": "fail: 1 new issue, D107 missing docstring in ToolSession.__init__"
+  },
+  {
+   "commit": "b411bafbcce5229e28a92ca54813e4c168bae312",
+   "tree": "45c722961b3954c9430bc3c3cbb0f70837cdf5d2",
+   "parent": "4caa1e023da0cf9f416a5a536d4ddca1216db28a",
+   "subject": "docs(ci): document the v2 helper tool-session methods",
+   "codacy": "success: Your pull request is up to standards!"
+  }
+ ],
+ "branch": "fix/ci-v2-cancellation-and-cleanup-27145e52 (fast-forward pushes a51f9876..4caa1e02..b411bafb; draft PR 177, unmerged)",
+ "change": {
+  "helper": "execute_integration now delegates to a ToolSession class (handle/forward/terminate, gated launch with the durable process record, wait with cancellation escalation or helper timeout, stop after timeout, execution evidence). finalize delegates the process-record check to recorded_tool_stopped/unverified_allocation and the exact down to exact_down. Signal timing, return codes, record names, schemas and field order are unchanged.",
+  "tests": "PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync moves setup, the private FailAndTearDownAsync call and the refusal assertions into helpers. ConcurrentDownCancelsStartingOwnerAsync moves options, the first down (held outcome.lock under await using for contended rows), the starting-owner cancellation assertions and the declared-result checks into helpers. Every assertion and row is kept. BuildsRoot walks string paths.",
+  "unchangedFrom4caa1e02": "b411bafb adds docstrings only; src/ and test/ are byte-identical to 4caa1e02."
+ },
+ "verification": {
+  "complexity": "lizard 1.17.10 (-C 15 -L 50) reports no function over either limit in run_module_integration.py; mccabe 0.7.0 reports none at 13 or more. No refactored C# method exceeds 50 NLOC.",
+  "python": {
+   "command": "python3 -B -m pytest Github/run-module-integration/tests Github/prepare-module-build/tests Github/governed-provenance/tests Github/publish-containers/tests/test_governed_release_workflow.py",
+   "atCommit": "b411bafb",
+   "result": "221 passed, 607 subtests passed (helper suite alone: 54 passed, 82 subtests)"
+  },
+  "build": "dotnet build test/Hexalith.Builds.Module.Tests -nodeReuse:false: 0 warnings, 0 errors (DLL rebuilt 2026-11-09T00:36:13Z)",
+  "focusedXunit": {
+   "command": "dotnet exec Hexalith.Builds.Module.Tests.dll -class CiRunLifecycleTests -class AttachAdmissionTests -class CompositionEngineTests -class ModuleRunnerReviewRegressionTests -class LocalRunLifecycleTests -class LocalRunSourceReviewTests -class LocalRunLifecycleReviewTests",
+   "atCommit": "4caa1e02 (C# identical at b411bafb)",
+   "summary": {
+    "total": "350",
+    "passed": "350",
+    "failed": "0",
+    "skipped": "0",
+    "not-run": "0",
+    "time": "181.664"
+   },
+   "perClass": {
+    "AttachAdmissionTests": 133,
+    "ModuleRunnerReviewRegressionTests": 51,
+    "LocalRunSourceReviewTests": 24,
+    "LocalRunLifecycleReviewTests": 10,
+    "CompositionEngineTests": 46,
+    "LocalRunLifecycleTests": 59,
+    "CiRunLifecycleTests": 27
+   },
+   "selectedCases": {
+    "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False, contended: False)": "Pass",
+    "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True, contended: False)": "Pass",
+    "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: True)": "Pass",
+    "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: True)": "Pass",
+    "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False)": "Pass",
+    "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True)": "Pass"
+   }
+  },
+  "determinism": "ConcurrentDownCancelsStartingOwnerAsync (4 rows) and PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync (2 rows) passed 6/6 in each of 5 consecutive repeated runs.",
+  "workflowContract": {
+   "legacy": "Domain workflow legacy test-platform checks passed: 411 assertions.",
+   "v2": "Domain workflow v2 test-platform checks passed: 285 assertions."
+  },
+  "partiesCompatibility": "Parties 2849c5b4 sources with references/Hexalith.Builds pointing at the clean Builds worktree at b411bafb: tests/ci-lifecycle 85 tests OK; scripts test_*_integration.py 43 tests OK. Parties 2849c5b4 with its pinned Builds 3c809618 helper: tests/ci-lifecycle 85 tests OK."
+ },
+ "candidateAcceptance": false,
+ "rowsRechecked": {
+  "rule": "Every xUnit case that row-index-loop-1.json maps for a row is looked up in the 4caa1e02 focused run (C# identical at b411bafb). Helper-side cases are the 54 helper tests that passed at b411bafb; the BS-1 hosted proof was repeated at b411bafb as run 42542502127.",
+  "rows": [
+   {
+    "row": "Isolated failure",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 0,
+     "passed": 0,
+     "notPassed": []
+    }
+   },
+   {
+    "row": "Integration success/failure",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 12,
+     "passed": 12,
+     "notPassed": []
+    }
+   },
+   {
+    "row": "Cancellation during startup/execution",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 11,
+     "passed": 11,
+     "notPassed": []
+    }
+   },
+   {
+    "row": "Same-job/cross-job attachment",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 4,
+     "passed": 4,
+     "notPassed": []
+    }
+   },
+   {
+    "row": "Cleanup failure or unknown discovery",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 3,
+     "passed": 3,
+     "notPassed": []
+    }
+   },
+   {
+    "row": "Missing tool/suite/package preparation",
+    "loop1Status": "covered",
+    "xunitCasesAt4caa1e02": {
+     "mapped": 0,
+     "passed": 0,
+     "notPassed": []
+    }
+   }
+  ],
+  "helperCases": "Every helper test that row-index-loop-1.json maps (integration success/failure 4, cancellation 6, cleanup failure/unknown discovery 5, missing preparation 2) is among the 54 helper tests that passed at b411bafb."
+ },
+ "hostedProofRepeated": {
+  "run": 42542502127,
+  "record": "hosted-v2-cancellation-42542502127.json",
+  "builds": "b411bafbcce5229e28a92ca54813e4c168bae312",
+  "caller": "6cf9d795d110b27b2b48b8fab2c986590fdcc2f5"
+ },
+ "prChecksAtB411bafb": "All 11 PR 177 checks passed at b411bafb (2026-11-09T01:08Z): .NET tests, Build and package contracts, Build and test, Codacy Static Code Analysis, CodeQL, CodeQL / analyze, Dependency review, Package catalog contracts, Python contract tests, SonarCloud Code Analysis, commitlint."
+}

@@ -1,0 +1,265 @@
+{
+ "schema": "hexalith.story-2-8.declared-diagnostic-retention.v1",
+ "run": 42521615234,
+ "source": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+ "owners": {
+  "passing": {
+   "ownerRunId": "751568413cb16f63ac0597a262779da8",
+   "journalRunId": "751568413cb16f63ac0597a262779da8",
+   "bindingMatches": true,
+   "mode": "package",
+   "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-fd70ccc9a3897c36d05d5669d6ad25385c3dab3cae839b02ee4981a26d68fad0.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 289
+    },
+    {
+     "id": "native-report",
+     "reference": "native-6e1b39e8f6e68de675b90d12586f6f495b65def1b97fa06b7cb8bd721619a96f.trx",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 2316
+    },
+    {
+     "id": "functional-observations",
+     "reference": "functional-observations-07b09fc94f8f96eac34e699ab625fc94e44549e0e12d705fa0a8f92bf9f007e9.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 5257
+    }
+   ]
+  },
+  "failing": {
+   "ownerRunId": "90dec7a30b54ec97b2ac7d83669fc3e7",
+   "journalRunId": "90dec7a30b54ec97b2ac7d83669fc3e7",
+   "bindingMatches": true,
+   "mode": "package",
+   "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-4b48e5d13d2da29f5e6f152a5f1d322faff781b405dcfe1e7884e53b70044bb2.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 300
+    },
+    {
+     "id": "native-report",
+     "reference": "native-7e73f1a4f36734c48c0a9c988ed6ec9783afc030859470866943069b9a093a6f.trx",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 2313
+    },
+    {
+     "id": "functional-observations",
+     "reference": "functional-observations-7692c197935e35a7e1a1e2606c1192dfa967c1437689a3514fb4f7fb08c68c5c.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 5257
+    }
+   ]
+  },
+  "retry": {
+   "ownerRunId": "a9a46334b0108328401c72aa9d288649",
+   "journalRunId": "a9a46334b0108328401c72aa9d288649",
+   "bindingMatches": true,
+   "mode": "package",
+   "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-c2c51a269937db4bd55365e0dc67d87ebc2a8ff76819869530dabc7b763e82d5.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 318
+    },
+    {
+     "id": "functional-observations",
+     "reference": "functional-observations-27d9e3d3d817829ab431cc45562f9092b72a1d5072e47b79b479c594e0a4e89b.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 5257
+    }
+   ]
+  },
+  "peer": {
+   "ownerRunId": "7f0e2f0b27829acf2ee02a769b282675",
+   "journalRunId": "7f0e2f0b27829acf2ee02a769b282675",
+   "bindingMatches": true,
+   "mode": "package",
+   "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-47a53fee6cc72325fc3daf9337eadc0c5e03a818f5a33975bc0c7b0d4d4f6d66.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 275
+    },
+    {
+     "id": "native-report",
+     "reference": "native-58235e3594dfd534e8a552e202c4c0afa09d32ba47e5f7ad7be59ad03da3548e.trx",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 2316
+    },
+    {
+     "id": "functional-observations",
+     "reference": "functional-observations-2c1abb0f809b46e4f387309931e7704970475034f6329e705755e5db78610dbb.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 5257
+    }
+   ]
+  },
+  "partial": {
+   "ownerRunId": "46e4ee01811498e1674f3920293f38dd",
+   "journalRunId": "46e4ee01811498e1674f3920293f38dd",
+   "bindingMatches": true,
+   "mode": "package",
+   "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-bddbf321f626f5c4f4162299764827db01a2038a2c1e97cbd4ffd36a010e5168.json",
+     "classification": "internal",
+     "redacted": true,
+     "digestMatches": true,
+     "bytes": 262
+    }
+   ]
+  }
+ },
+ "baselineHelperFinalize": {
+  "job": "baseline / build-and-test",
+  "path": "domain-ci-v2 run_module_integration.py finalize",
+  "diagnostics": [
+   {
+    "id": "lifecycle",
+    "digestMatches": true,
+    "bytes": 275
+   },
+   {
+    "id": "native-report",
+    "digestMatches": true,
+    "bytes": 39564
+   },
+   {
+    "id": "functional-observations",
+    "digestMatches": true,
+    "bytes": 5256
+   }
+  ],
+  "cleanup": {
+   "claimIds": [],
+   "containerIds": [],
+   "discoveryFailures": [],
+   "isEmpty": true,
+   "processIds": [],
+   "resourceIds": [],
+   "unverified": false,
+   "workspaceIds": []
+  }
+ },
+ "allDigestsMatch": true,
+ "allBindingsMatch": true,
+ "scope": "Success (passing, peer), declared failure (failing), cleanup-retry cancellation (retry) and partial startup (partial) owners each retained their published redacted content-addressed diagnostics after exact cleanup; the baseline job retained them through the workflow finalizer. The three cancellation owners (including the failed first startup attempt) also retained theirs after exact cleanup.",
+ "cancellationOwners": {
+  "42524190110": {
+   "ownerRunId": "cf9573173954420e0edd847bb898c5b2",
+   "terminal": {
+    "cause": "run-cancelled",
+    "diagnosticIds": [
+     "lifecycle"
+    ],
+    "outcome": "cancelled",
+    "recordedAt": "2026-11-08T21:32:37.4502022Z"
+   },
+   "cleanupDisposition": "complete",
+   "ownedResources": 19,
+   "leftovers": [],
+   "retention": "not-retained",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-0f8bb1e6b5f87f35d8f42fe73126401e8930bc2442c63cff8e7cc02697124dff.json",
+     "digestMatches": true,
+     "bytes": 276
+    }
+   ]
+  },
+  "42526256372": {
+   "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+   "terminal": {
+    "cause": "run-cancelled",
+    "diagnosticIds": [
+     "lifecycle"
+    ],
+    "outcome": "cancelled",
+    "recordedAt": "2026-11-08T22:00:22.7506047Z"
+   },
+   "cleanupDisposition": "complete",
+   "ownedResources": 22,
+   "leftovers": [],
+   "retention": "not-retained",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-fd40ddea4b060eb623d96aa4a2acbeaf3ecdfe76a9902a8c491d62acbff969bb.json",
+     "digestMatches": true,
+     "bytes": 262
+    }
+   ]
+  },
+  "42528046681": {
+   "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+   "terminal": {
+    "cause": "run-cancelled",
+    "diagnosticIds": [
+     "lifecycle"
+    ],
+    "outcome": "cancelled",
+    "recordedAt": "2026-11-08T22:26:34.7194848Z"
+   },
+   "cleanupDisposition": "complete",
+   "ownedResources": 22,
+   "leftovers": [],
+   "retention": "not-retained",
+   "diagnostics": [
+    {
+     "id": "lifecycle",
+     "reference": "lifecycle-5a8f2a748e0e0f1789a98d65db4c1b5d2195f98d90959ad608e93e6dc949da2e.json",
+     "digestMatches": true,
+     "bytes": 290
+    },
+    {
+     "id": "native-report",
+     "reference": "native-f52e79bc53b08de10cdbf0965c42effb5f66a0de1677163edd3d3400c7b73647.trx",
+     "digestMatches": true,
+     "bytes": 2313
+    },
+    {
+     "id": "functional-observations",
+     "reference": "functional-observations-3d0cd9683b5b27962a6cdb40218a05c54674f8980f2320342169f73f51588112.json",
+     "digestMatches": true,
+     "bytes": 5256
+    }
+   ]
+  }
+ }
+}

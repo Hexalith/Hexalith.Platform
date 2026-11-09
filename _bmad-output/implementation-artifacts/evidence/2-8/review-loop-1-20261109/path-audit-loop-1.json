@@ -1,0 +1,421 @@
+{
+ "schema": "hexalith.story-2-8.path-audit.loop-1.v1",
+ "rule": "Every path changed by the loop-1 fixes since the owner-chosen bases is listed once. Active source, configuration, tests and documentation in this list were authored and read in full for this loop; Step 04 reviews this fix delta. Unrelated incoming paths are named and excluded, never silently omitted.",
+ "builds": {
+  "repository": "Hexalith/Hexalith.Builds",
+  "base": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "head": "b411bafbcce5229e28a92ca54813e4c168bae312",
+  "paths": [
+   {
+    "path": ".github/workflows/domain-ci-v2.md",
+    "status": "M",
+    "oldBlob": "aaacffc450b9eec5ec635a597d7a01bc5243ff0e",
+    "newBlob": "eadd9912b79a10066c7c21bf4696afb508ddb51d",
+    "class": "active-documentation"
+   },
+   {
+    "path": ".github/workflows/domain-ci-v2.yml",
+    "status": "M",
+    "oldBlob": "a547d9148673118d758850c3c113d74959ee63a0",
+    "newBlob": "5e56364effdcd678d4f2cfd22a0411b8f29e9f34",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "Github/run-module-integration/run_module_integration.py",
+    "status": "M",
+    "oldBlob": "21ce9cbdadaecfe0ce35386a6721dadeb2b7f461",
+    "newBlob": "92f676e2daf24bc053fc535edf839cb1aa05fb16",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "Github/run-module-integration/tests/test_run_module_integration.py",
+    "status": "M",
+    "oldBlob": "7d7790c71102ffa52853f60f85671811e81fa644",
+    "newBlob": "e0d481a8ad0572fe742c2051852cccb3d2963121",
+    "class": "active-test"
+   },
+   {
+    "path": "Props/dapr-toolchain-sha256.json",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "55fd9dabc405926d7619da91ae08ed19a00d6041",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "README.md",
+    "status": "M",
+    "oldBlob": "bd5e78c72573156d1c966e2d4d708429d106a756",
+    "newBlob": "cb829625a7439429f126d792ffd0d7a45a57f2e6",
+    "class": "active-documentation"
+   },
+   {
+    "path": "Tools/test-domain-workflow-test-platforms.ps1",
+    "status": "M",
+    "oldBlob": "2dc69e5c8316a2492c49b65e87d83b4cfb63147c",
+    "newBlob": "adbab15b892f7d3b8eccae6f3766eebfb7c062c8",
+    "class": "active-test"
+   },
+   {
+    "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+    "status": "M",
+    "oldBlob": "e7737a00a75b95bc8515291fd5cbc68d77fde01d",
+    "newBlob": "7af95cd8b1bf7e341df03532c2d9c8d39c1d9fc1",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs",
+    "status": "M",
+    "oldBlob": "d4131fdf7cbdbdfe4c67ef77914e5e56086164ab",
+    "newBlob": "249f36f2f42271821839cc999e414f8157dc8584",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs",
+    "status": "M",
+    "oldBlob": "6381a001b4688ed9f710d0312c90c4c8467232ea",
+    "newBlob": "3ec89533a5b14b137afc16b6c2d190ee8f82c1e2",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs",
+    "status": "M",
+    "oldBlob": "ac9a94f6f9ac389958ae5e7453be60173a8109f0",
+    "newBlob": "1679780bbe63ac029a35bd21bbdd6ee5ed0126a8",
+    "class": "active-test"
+   },
+   {
+    "path": "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs",
+    "status": "M",
+    "oldBlob": "fd85fe258138570462bf319bda5b99e530a283b2",
+    "newBlob": "2a98783abcd71da5e746c7d7df7bb90497b73851",
+    "class": "active-test"
+   },
+   {
+    "path": "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs",
+    "status": "M",
+    "oldBlob": "1897e23808fc00691ddc85d2bca3d9fac61ce9c0",
+    "newBlob": "5b8f906ad89e659def7dc6eacce31b265606fbb3",
+    "class": "active-test"
+   }
+  ]
+ },
+ "parties": {
+  "repository": "Hexalith/Hexalith.Parties",
+  "base": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "head": "2849c5b419c3dc445d6041c12968df29c97e0cc0",
+  "paths": [
+   {
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "status": "M",
+    "oldBlob": "da8c5419bdd5d6e51af506e10ddf251114683c57",
+    "newBlob": "38a62e0e78268a802066ad04485d3f122ccc964a",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": ".github/workflows/ci.yml",
+    "status": "M",
+    "oldBlob": "98a54e0f15c8ba9472f6dff151f38d8992e2f78f",
+    "newBlob": "c5df2b1fd850787b20d83163fda829d4ef2fb3cb",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": ".github/workflows/current-owner-startup-diagnostics.yml",
+    "status": "M",
+    "oldBlob": "ef88d5051bcb2d3f48636af21cc798286e2a8875",
+    "newBlob": "0cc4665c7a9eed72d9b422720ab4151fe6a5d848",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/observe-current-owner-startup.py",
+    "status": "M",
+    "oldBlob": "3fe5237b1ef16fe81dac7ec57fe02cd3ae6905e5",
+    "newBlob": "635dc13120e6eb6982e2a2afe587a8c978bf4d07",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/qualify-disposable-ci.py",
+    "status": "M",
+    "oldBlob": "462ef3748da0d4062768908cbd0e8118f2152ab9",
+    "newBlob": "84e19d014ad8bba1b2947d186f58dde2febe5728",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/test_public_package_integration.py",
+    "status": "M",
+    "oldBlob": "023c372871b3f52d316821dbaaefcc4d1b1ae8f6",
+    "newBlob": "662d93c86ea2a833caad53da954df3b7e6e34dcd",
+    "class": "active-test"
+   },
+   {
+    "path": "scripts/verify-current-owner-integration.py",
+    "status": "M",
+    "oldBlob": "e45d019afd5597748b86dba692c0e0cb15f3c9c2",
+    "newBlob": "7627db35836896d40e5081b789163673b0628256",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "scripts/verify-public-package-integration.py",
+    "status": "M",
+    "oldBlob": "e114c9145ee8b84897a9ee7aec452e80d56ed654",
+    "newBlob": "3780934c39aaae54c91be069a4fa374add2b8856",
+    "class": "active-source-or-configuration"
+   },
+   {
+    "path": "tests/ci-lifecycle/test_review_fixes.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "fc538ee11f50edf7824f93f29fff255cf57e9a6f",
+    "class": "active-test"
+   },
+   {
+    "path": "tests/ci-lifecycle/test_startup_observer.py",
+    "status": "M",
+    "oldBlob": "7c62d54bb579e95566aeb0e434d9b98a284a8a1b",
+    "newBlob": "3b1b43af73d0d33fe70e5ecec3c36b55a6ea9f35",
+    "class": "active-test"
+   }
+  ],
+  "proofBranchPaths": [
+   {
+    "path": ".github/workflows/story-2-8-v2-cancellation-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "72cd311877d1c976fd7562bcc183b6df42f6cfb7",
+    "proofCommit": "c864d9d5ee08e1ea2b8a23e6180d0ed67c40683c",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/story-2-8-v2-cancellation-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "9befb2e0cf7acf4d62f2cad07af02845d7e5052c",
+    "proofCommit": "6cf9d795d110b27b2b48b8fab2c986590fdcc2f5",
+    "class": "proof-branch-only-never-merged"
+   }
+  ]
+ },
+ "platform": {
+  "repository": "Hexalith/Hexalith.Platform",
+  "head": "7fbe852f90e54c780f44943c843a66f08478995b",
+  "workingTreePaths": [
+   {
+    "path": "_bmad-output/implementation-artifacts/deferred-work.md",
+    "workingTree": "M",
+    "blob": "d21ec392a22b5b4e1571330a784b2a2077945b68",
+    "class": "story-2-8-step-04-review-deferrals-written-by-the-review-not-this-loop"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/README.md",
+    "workingTree": "M",
+    "blob": "cce71a5fa76a0e401526dc4c17494f7d7f533435",
+    "class": "story-2-8-planning-or-living-evidence-index"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md",
+    "workingTree": "M",
+    "blob": "5d732ce43a953f6d6bcff6453fbedc91a7417c01",
+    "class": "story-2-8-planning-or-living-evidence-index"
+   },
+   {
+    "path": "docs/contracts/test-environment-v1.md",
+    "workingTree": "M",
+    "blob": "e5dd02626985788d3e2712599892a2152b7ff34f",
+    "class": "active-documentation"
+   },
+   {
+    "path": "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json",
+    "workingTree": "M",
+    "blob": "b068e87bdff5dd2d6c8ca0de589aea4f1b0d19a8",
+    "class": "unrelated-incoming-story-5-4-work-not-part-of-this-change-set"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+    "workingTree": "M",
+    "blob": "9582c9bf57ea583a407ffa0cb7fed2a4e153ea6f",
+    "class": "active-test"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/campaign-input-change-1.json",
+    "workingTree": "??",
+    "blob": "9d9e212346845c9435367f3ccac52d3a140e6432",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/campaign-inventory.json",
+    "workingTree": "??",
+    "blob": "c673854aabf1925ae9b459da4df28d008c00816d",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/campaign-tooling.json",
+    "workingTree": "??",
+    "blob": "a61a8730caac8a88112a73d343062e8cce8203ac",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/cancel-request-42524190110.json",
+    "workingTree": "??",
+    "blob": "4f985da3960d6ef99b4a6a92c3c1b1d121b6fbb1",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/cancel-request-42526256372.json",
+    "workingTree": "??",
+    "blob": "885104f513d38102f1718edaa175a4a1139a4bbb",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/cancel-request-42528046681.json",
+    "workingTree": "??",
+    "blob": "d50a2fb59f7ebb1f6b63fbc12f70b2ac0f0befc1",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/diagnostic-retention.json",
+    "workingTree": "??",
+    "blob": "9cd11c92eb853156db975706c7825bbffb609012",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/dispatch-cancel-execution-926c1c3f.json",
+    "workingTree": "??",
+    "blob": "c9d21a1b619a01ad01a209d05cfe2b0fc4573eae",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/dispatch-cancel-startup-926c1c3f.json",
+    "workingTree": "??",
+    "blob": "714a8fb0ac538b526824a069efef096e7fb48da6",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/dispatch-cancel-startup.json",
+    "workingTree": "??",
+    "blob": "ceba764cd2f0f58c224e333f0690f6c05ab08ee9",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/dispatch-matrix.json",
+    "workingTree": "??",
+    "blob": "62af60db09e6dce47384feae21e6d1cb03c83795",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/evidence-sha256.json",
+    "workingTree": "??",
+    "blob": "e76c20d94ff96db5673ddc4f3c6ad12e8aef7add",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-execution-42528046681.json",
+    "workingTree": "??",
+    "blob": "9c92a2ceb0c4d338b26cea56e53674034afd413a",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-startup-42524190110.json",
+    "workingTree": "??",
+    "blob": "dc39cc7671003f1f912db72f773d9e5aa738c844",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-startup-42526256372.json",
+    "workingTree": "??",
+    "blob": "72212f84b01f2fdf5d38b18d5acc36b2ef7dca21",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-matrix-42521615234.json",
+    "workingTree": "??",
+    "blob": "1337e985379a6c18dc1d947b9f76613f2c8acd78",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/local-focused-results.json",
+    "workingTree": "??",
+    "blob": "f5d701056f9c87b6a6be49c7080814ef4756e7e7",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/path-audit.json",
+    "workingTree": "??",
+    "blob": "47b5dcb439c2003e3f2bc7f78899d42d0019cf70",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/row-index.json",
+    "workingTree": "??",
+    "blob": "50fc3f441b0fc767578451ac786aa17e5cdff956",
+    "class": "story-2-8-evidence-round-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/codacy-refactor-b411bafb.json",
+    "workingTree": "??",
+    "blob": "79674363fe584ec20b585270c53c359cac300789",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/dapr-upstream-sha256/dapr_linux_amd64.tar.gz.sha256",
+    "workingTree": "??",
+    "blob": "28d2cdf6c5e6ea8a621a867362214464fec4c58b",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/dapr-upstream-sha256/daprd_linux_amd64.tar.gz.sha256",
+    "workingTree": "??",
+    "blob": "1ae48ccb625c04cf6d753c355f71d6ecd4eba566",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/dapr-upstream-sha256/placement_linux_amd64.tar.gz.sha256",
+    "workingTree": "??",
+    "blob": "73d2815481f6605f3d318099aedd52c8f74e75fc",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/dapr-upstream-sha256/scheduler_linux_amd64.tar.gz.sha256",
+    "workingTree": "??",
+    "blob": "7abd4839a1cfb4b533cce523e861683c938a32fd",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/hosted-v2-cancellation-42539638836.json",
+    "workingTree": "??",
+    "blob": "99a83fdc307c08520d53b5b00537a7bb040b667f",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/hosted-v2-cancellation-42542502127.json",
+    "workingTree": "??",
+    "blob": "4dc2940d7b94a4f649278a0e24f69216e2459aee",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/local-results.json",
+    "workingTree": "??",
+    "blob": "666bfb2bf55bcee28458271cf7e2dd380a70fc7b",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/proof-workflow-6cf9d795.yml",
+    "workingTree": "??",
+    "blob": "9befb2e0cf7acf4d62f2cad07af02845d7e5052c",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/proof-workflow-c864d9d5.yml",
+    "workingTree": "??",
+    "blob": "72cd311877d1c976fd7562bcc183b6df42f6cfb7",
+    "class": "story-2-8-evidence-loop-1"
+   },
+   {
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/row-index-loop-1.json",
+    "workingTree": "??",
+    "blob": "bb9d74e90e2620bae73698530759fb712698f344",
+    "class": "story-2-8-evidence-loop-1"
+   }
+  ]
+ },
+ "reusedReceipt": "focused-hosted-proof-20261108/path-audit.json stays the record for every path before these bases.",
+ "candidateAcceptance": false
+}

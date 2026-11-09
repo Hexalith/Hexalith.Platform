@@ -1,0 +1,49 @@
+{
+ "schema": "hexalith.story-2-8.cancellation-request-receipt.v1",
+ "freshReadyAudit": {
+  "auditedAtUtc": "2026-11-08T21:32:21.981790+00:00",
+  "source": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+  "runId": 42524190110,
+  "attempt": 1,
+  "jobId": 128867933643,
+  "artifactId": 13635515449,
+  "archiveSha256": "2da30c413b0991d42917149ef35bc7e93dbfcef7964be1ba668e2a32b9f79dc1",
+  "phase": "startup",
+  "ownerRunId": "cf9573173954420e0edd847bb898c5b2",
+  "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+  "readinessAgeSeconds": 2.867993,
+  "scope": "Fresh immutable readiness plus active controller wait; actual signal-time phase/PID/hold and cleanup still require the final runner observations.",
+  "cancelRequested": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+ },
+ "request": {
+  "requestedAtUtc": "2026-11-08T21:32:21.982666+00:00",
+  "run": 42524190110,
+  "attempt": 1,
+  "source": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+  "branch": "story-2-8/focused-lifecycle-566b9bfc",
+  "phase": "startup",
+  "jobId": 128867933643,
+  "ownerRunId": "cf9573173954420e0edd847bb898c5b2",
+  "artifactId": 13635515449,
+  "actualReadyAgeSecondsImmediatelyBeforeRequest": 2.8688689999999997,
+  "actualFinalWholeToolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42524190110/cancel"
+ },
+ "responseStatusLine": "HTTP/2.0 202 Accepted",
+ "responseMetadata": {
+  "receivedAtUtc": "2026-11-08T21:32:22.480528+00:00",
+  "exitCode": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+ },
+ "observerScript": {
+  "path": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/await-fresh-ready-and-request-one-cancellation-v2.py",
+  "sha256": "f08b86b327f1cb077882815c01f71e13a6376f718a80b6fac4bcb8a980e37744"
+ },
+ "privateObservationRoot": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/actual-42524190110-startup",
+ "cancellationRequestsForThisRun": 1
+}

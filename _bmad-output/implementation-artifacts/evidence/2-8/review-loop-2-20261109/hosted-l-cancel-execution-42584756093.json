@@ -1,0 +1,138 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "attempt": "failed-before-cancellation (attempt 2, the one permitted setup retry)",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "7f7aa172b3e79aefc4379a58ac0dddbb559ce6a7",
+   "branch": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f-attempt-2",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "buildsGitlink": "3c8096180ecf2aa539ac454815efbfceb8a92822"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+   "overlaid": {
+    "Github/run-module-integration/run_module_integration.py": "047670c2c826a67c164dc6d779de563f75f4e0512a8ecd5526590557629c9a13",
+    "Props/dapr-toolchain-sha256.json": "1daa76804f7539ac9df0b311de71163b645dbccefd0b86f9ef29baf7c7882474"
+   }
+  }
+ },
+ "run": {
+  "id": 42584756093,
+  "run_attempt": 1,
+  "event": "workflow_dispatch",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T08:16:34Z",
+  "updated_at": "2026-11-09T08:31:50Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42584756093",
+  "path": ".github/workflows/ci-lifecycle-qualification.yml"
+ },
+ "jobs": [
+  {
+   "id": 129051802221,
+   "name": "baseline / build-and-test",
+   "conclusion": "success",
+   "failedSteps": []
+  },
+  {
+   "id": 129057009157,
+   "name": "qualification",
+   "conclusion": "failure",
+   "failedSteps": [
+    "Observe actual execution cancellation readiness and active hold",
+    "Independently finalize every exact same-job owner"
+   ]
+  }
+ ],
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "No ready artifact was published: start-cancellation failed before any owner existed, so the watcher never sent a request."
+ },
+ "cause": "The baseline job (Builds 3c80 v2) passed, including package integration. In qualification, the Dapr digests were read from the overlaid bde7fd4f data and verified, but the pinned tool 4.44.13 then failed its `test` invocation within 1.7 s with HXT007 \"The owned execution failed; inspect retained diagnostics.\" It reported no owner run (ownerRunId null), which is the tool's generic exception path before an owner is issued. The finalizer then refused with allocationStatus unverified (ValueError for label cancel). The likely cause is the proof overlay itself, which left the pinned Builds submodule working tree modified. This is unproven: the tool's retained diagnostics were not uploaded because no receipt existed.",
+ "defectClass": "setup defect of the proof design (second); no further retry under the one-retry rule",
+ "controllerObservations": [
+  {
+   "exitCode": 4,
+   "kind": "public-execution-result",
+   "observedAtUtc": "2026-11-09T08:31:24.066425+00:00",
+   "ownerRunId": null,
+   "result": {
+    "diagnostics": [
+     {
+      "category": "ProductOrTest",
+      "field": "profile",
+      "hint": null,
+      "location": null,
+      "message": "The owned execution failed; inspect retained diagnostics.",
+      "phase": "Test",
+      "row": null,
+      "ruleId": "HXT007",
+      "source": null
+     }
+    ],
+    "outcome": {
+     "category": "ProductOrTest",
+     "exitCode": "ProductOrTest",
+     "phase": "Test",
+     "ruleId": "HXT007"
+    },
+    "status": "failed"
+   }
+  },
+  {
+   "allocationStatus": "unverified",
+   "candidateAcceptance": false,
+   "failures": [
+    {
+     "failureType": "ValueError",
+     "label": "cancel"
+    }
+   ],
+   "issuedOwners": 0,
+   "issuedOwnersCleanupVerified": false,
+   "kind": "finalizer-result",
+   "observedAtUtc": "2026-11-09T08:31:24.434554+00:00"
+  }
+ ],
+ "observer": {
+  "traceStarted": {
+   "base": "/sys/kernel/tracing",
+   "clock": "mono",
+   "code": 0,
+   "kind": "trace-started",
+   "monoNs": 114560406720,
+   "wallNs": 1794213082472557251
+  },
+  "processesRecorded": 0,
+  "note": "Kernel signal tracing via tracefs worked on the hosted runner; no composed process existed."
+ },
+ "artifacts": {
+  "story-2-8-proof-observer": {
+   "id": 13659237890,
+   "bytes": 997,
+   "digest": "sha256:4e6691c7a4ddf941247833fffb768088fad8a57b17148f16dff4dc10d3926ba7"
+  },
+  "module-integration-diagnostics": {
+   "id": 13659158175,
+   "bytes": 12801,
+   "digest": "sha256:143266a91c836a430d4ad26b0d3b3a6741a54bbd6dad95a7d4f211d1a7a8a445"
+  },
+  "blocking-test-results": {
+   "id": 13658873274,
+   "bytes": 941745,
+   "digest": "sha256:04a370458a1e7943519d69a611c50efa72fdf16250d70def7df40c1861af2063"
+  },
+  "ci-lifecycle-observations": {
+   "id": 13658544066,
+   "bytes": 1683,
+   "digest": "sha256:d5d5fdf5bfe28f96e7c335c72f2242b6821e449a6b0c003cb6e05a6d65e64b12"
+  }
+ },
+ "orderingVerdict": {
+  "passed": null,
+  "reason": "not reached"
+ },
+ "candidateAcceptance": false
+}

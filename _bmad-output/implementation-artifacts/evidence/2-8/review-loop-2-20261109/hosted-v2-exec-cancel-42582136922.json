@@ -1,0 +1,52 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "attempt": "failed-before-cancellation",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+   "branch": "proof/story-2-8-v2-exec-cancel-bde7fd4f",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4"
+  }
+ },
+ "run": {
+  "id": 42582136922,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T07:53:18Z",
+  "updated_at": "2026-11-09T07:58:40Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42582136922",
+  "path": ".github/workflows/story-2-8-v2-exec-cancel-proof.yml"
+ },
+ "jobs": [
+  {
+   "id": 129043162181,
+   "name": "ci / build-and-test",
+   "conclusion": "failure",
+   "failedSteps": [
+    "Prepare integration binaries"
+   ]
+  }
+ ],
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "The watcher refused to cancel: the run failed before the integration step."
+ },
+ "cause": "GitHub release download of a Dapr archive returned HTTP 504 four times (curl --retry 3) in Prepare integration binaries.",
+ "defectClass": "external-outage (attempt 1)",
+ "logExcerpts": [
+  "##[error]Process completed with exit code 22.",
+  "curl: (22) The requested URL returned error: 504"
+ ],
+ "orderingVerdict": {
+  "passed": null,
+  "reason": "not reached"
+ },
+ "candidateAcceptance": false
+}

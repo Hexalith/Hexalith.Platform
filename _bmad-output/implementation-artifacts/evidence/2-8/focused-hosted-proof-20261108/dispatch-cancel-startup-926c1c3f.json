@@ -1,0 +1,24 @@
+{
+  "schema": "hexalith.story-2-8.dispatch-receipt.v1",
+  "scenario": "cancel-startup",
+  "requestedAtUtc": "2026-11-08T21:38:58.945847+00:00",
+  "responseReceivedAtUtc": "2026-11-08T21:39:00.846105+00:00",
+  "httpStatusLine": "HTTP/2.0 204 No Content",
+  "endpoint": "POST repos/Hexalith/Hexalith.Parties/actions/workflows/406038512/dispatches",
+  "ref": "fix/lifecycle-cancel-signal-566b9bfc",
+  "inputs": {
+    "scenario": "cancel-startup"
+  },
+  "run": {
+    "id": 42526256372,
+    "run_attempt": 1,
+    "head_sha": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+    "head_branch": "fix/lifecycle-cancel-signal-566b9bfc",
+    "event": "workflow_dispatch",
+    "path": ".github/workflows/ci-lifecycle-qualification.yml",
+    "created_at": "2026-11-08T21:39:02Z",
+    "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372"
+  },
+  "repository": "Hexalith/Hexalith.Parties",
+  "candidateAcceptance": false
+}

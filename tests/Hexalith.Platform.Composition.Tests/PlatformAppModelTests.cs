@@ -115,19 +115,28 @@ public sealed partial class PlatformAppModelTests : IDisposable
         options.Mapping.Entries.ShouldAllBe(e => e.Path == null);
     }
 
+    /// <summary>The composed package run binds the catalog participants before any resource and hands them to exactly one native preparation.</summary>
     [Fact]
-    public void PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
+    public async Task PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
     {
-        PlatformCompositionOptions options = PackageGraphOptions();
-        IReadOnlyList<Hexalith.Builds.Tooling.Manifest.PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
-        IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
-        PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations);
-        IReadOnlyList<PlatformServerBinding> participants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
-        participants.Select(server => server.ResourceId).ShouldContain("eventstore");
-        participants.Select(server => server.ResourceId).ShouldContain("tenants");
-        participants.Select(server => server.ResourceId).ShouldContain("memories");
-        // Binding stays metadata-only: restore/build and image availability remain independent prerequisites.
-        Builder().Resources.ShouldBeEmpty();
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
+        var builder = PlatformPartiesPackageFixture.Builder();
+        fixture.Compose(builder, options =>
+        {
+            options.Mapping.Mode.ShouldBe(WorkspaceMode.Package);
+            // Binding stays metadata-only: no container, sidecar or project exists before composition.
+            builder.Resources.ShouldBeEmpty();
+            return options with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)) };
+        });
+        using ServiceProvider provider = builder.Services.BuildServiceProvider();
+        // Observe what the composition actually produced, rather than recomputing the binding here.
+        PlatformNativeTestPreparation preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().ShouldHaveSingleItem();
+        preparation.RoutingCatalogObservationsRequired.ShouldBeTrue();
+        preparation.ExpectedCatalogHosts.Keys.ShouldBe(["eventstore", "memories", "tenants"], ignoreOrder: true);
+        foreach (string participant in preparation.ExpectedCatalogHosts.Keys)
+        {
+            builder.Resources.Select(resource => resource.Name).ShouldContain(participant);
+        }
     }
 
 

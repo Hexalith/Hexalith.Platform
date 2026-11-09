@@ -1,0 +1,651 @@
+{
+ "run": {
+  "id": 42526256372,
+  "run_attempt": 1,
+  "head_sha": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "head_branch": "fix/lifecycle-cancel-signal-566b9bfc",
+  "event": "workflow_dispatch",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-08T21:39:02Z",
+  "updated_at": "2026-11-08T22:00:30Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372"
+ },
+ "scenario": "cancel-startup",
+ "jobs": [
+  {
+   "name": "baseline / build-and-test",
+   "id": 128870439789,
+   "conclusion": "success",
+   "startedAt": "2026-11-08T21:39:07Z",
+   "completedAt": "2026-11-08T21:57:10Z",
+   "durationSeconds": 1083.0,
+   "runnerOs": [
+    "ubuntu-latest"
+   ],
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "seconds": 3.0
+    },
+    {
+     "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 3.0
+    },
+    {
+     "name": "Validate governed CI contract",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Checkout approved Builds actions",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Evaluate governed workflow provenance",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Initialize root-declared submodules (governed)",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Initialize root-declared submodules",
+     "conclusion": "success",
+     "seconds": 34.0
+    },
+    {
+     "name": "Initialize .NET",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Checkout workflow-owned Builds preparation",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Prepare module build",
+     "conclusion": "success",
+     "seconds": 9.0
+    },
+    {
+     "name": "Cache NuGet packages",
+     "conclusion": "success",
+     "seconds": 7.0
+    },
+    {
+     "name": "Validate test platform input",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Prepare package dependencies",
+     "conclusion": "success",
+     "seconds": 168.0
+    },
+    {
+     "name": "Restore",
+     "conclusion": "success",
+     "seconds": 18.0
+    },
+    {
+     "name": "Build",
+     "conclusion": "success",
+     "seconds": 81.0
+    },
+    {
+     "name": "Validate package consumer references",
+     "conclusion": "success",
+     "seconds": 27.0
+    },
+    {
+     "name": "Unit tests (Tier 1, VSTest)",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+     "conclusion": "success",
+     "seconds": 487.0
+    },
+    {
+     "name": "Require isolated success before integration",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Install integration toolchain without starting services",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Prepare integration binaries",
+     "conclusion": "success",
+     "seconds": 9.0
+    },
+    {
+     "name": "Authenticate pull-only integration registry",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Runner-owned package integration",
+     "conclusion": "success",
+     "seconds": 223.0
+    },
+    {
+     "name": "Finalize exact CI owner",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Remove integration registry credentials",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Upload classified integration diagnostics",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Validate coverage gates",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Fail on blocking test failures",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Upload test and coverage evidence",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Post Cache NuGet packages",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Checkout workflow-owned Builds preparation",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Initialize .NET",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "seconds": 1.0
+    }
+   ]
+  },
+  {
+   "name": "qualification",
+   "id": 128874984245,
+   "conclusion": "cancelled",
+   "startedAt": "2026-11-08T21:57:13Z",
+   "completedAt": "2026-11-08T22:00:29Z",
+   "durationSeconds": 196.0,
+   "runnerOs": [
+    "ubuntu-24.04"
+   ],
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 3.0
+    },
+    {
+     "name": "Initialize only direct owner dependencies",
+     "conclusion": "success",
+     "seconds": 29.0
+    },
+    {
+     "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Prepare the actual pinned package tool and catalog",
+     "conclusion": "success",
+     "seconds": 11.0
+    },
+    {
+     "name": "Build the explicit declared lifecycle suite",
+     "conclusion": "success",
+     "seconds": 11.0
+    },
+    {
+     "name": "Read verified catalog toolchain versions",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Restore verified Aspire runtime packages in this job",
+     "conclusion": "success",
+     "seconds": 6.0
+    },
+    {
+     "name": "Install toolchain without provisioning services",
+     "conclusion": "success",
+     "seconds": 9.0
+    },
+    {
+     "name": "Configure only the dedicated pull reader",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Exercise real passing failing partial-startup and exact retry scenarios",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Observe actual startup cancellation readiness",
+     "conclusion": "success",
+     "seconds": 113.0
+    },
+    {
+     "name": "Observe actual execution cancellation readiness and active hold",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Publish the actual ready owner before operator cancellation",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Await parent cancellation of this exact ready run",
+     "conclusion": "cancelled",
+     "seconds": 4.0
+    },
+    {
+     "name": "Independently finalize every exact same-job owner",
+     "conclusion": "success",
+     "seconds": 4.0
+    },
+    {
+     "name": "Remove the private reader file",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Retain classified lifecycle observations",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "seconds": 0.0
+    }
+   ]
+  }
+ ],
+ "archives": {
+  "module-integration-diagnostics": {
+   "id": 13636171252,
+   "sha256": "80ef85e270430e15b8adb08b269a868e26d85cc094b2dea259d367eb5e791e5f",
+   "bytes": 12790,
+   "members": 8
+  },
+  "lifecycle-cancellation-ready": {
+   "id": 13636092927,
+   "sha256": "c1c7a3bc0d8e8850cd694a7df13be72c2caad4d58d592942f5ca586649ac84cd",
+   "bytes": 1653,
+   "members": 2
+  },
+  "ci-lifecycle-observations": {
+   "id": 13636048071,
+   "sha256": "342a60fa99bc3d853aeccc4ad117d9c4b5403560062b512618281e4b0368d8e4",
+   "bytes": 5524,
+   "members": 6
+  },
+  "blocking-test-results": {
+   "id": 13635388930,
+   "sha256": "791414c0ec3214621a3689977590217cf7f28477593606b5a160c1e605272d67",
+   "bytes": 943984,
+   "members": 16
+  }
+ },
+ "archiveMembers": {
+  "module-integration-diagnostics": {
+   "cleanup.json": "aa2e795e85851bbaa474d8f2c4f3277f5e8f121e76d8dcae49a92f738307e650",
+   "functional-observations-6e1fbc8521d215687809842d9f94c6c8216116bf01c388e40ce26d21117d2aff.json": "6e1fbc8521d215687809842d9f94c6c8216116bf01c388e40ce26d21117d2aff",
+   "execution.json": "9303c62cc3c81a4b6b7265ec6963ca3ce81b61a2c1d52b7936965e73d0383179",
+   "invocation.json": "eadde3a29c5356f964a1dda0e880ba08b48cf669e0da9288c563d29ddfc5832c",
+   "lifecycle-4dc7a21ca435a71412e4e615a353535217d14704e836a89e1f1e0597eceeda2c.json": "4dc7a21ca435a71412e4e615a353535217d14704e836a89e1f1e0597eceeda2c",
+   "loaded-assemblies-d6b5aab6109f9cacf421ee9e5aa9e239.json": "1231f159a4602f16649590fe08eb9515a2774d731f2138a12c264a932447f4a7",
+   "native-4ef7f9471c27a121edcdc833b51d5f3b1fffa2ffd9c479ef63cc09c4fee36737.trx": "4ef7f9471c27a121edcdc833b51d5f3b1fffa2ffd9c479ef63cc09c4fee36737",
+   "test-result.json": "6245260d047baba435505a9be0d40771a909846dd6bff9c594abe455f6082ecc"
+  },
+  "lifecycle-cancellation-ready": {
+   "inputs.json": "084573fd10650e485c7e5a588c41db10fd17b011a516cae1e2da7262e952813f",
+   "observations.json": "201b9a40717f6cc6c3ab1372abf7c76866285952470e5b9520e749c078d1541c"
+  },
+  "ci-lifecycle-observations": {
+   "cancel/lifecycle-fd40ddea4b060eb623d96aa4a2acbeaf3ecdfe76a9902a8c491d62acbff969bb.json": "fd40ddea4b060eb623d96aa4a2acbeaf3ecdfe76a9902a8c491d62acbff969bb",
+   "cancel-independent-finalizer.json": "0c657b238a05b31f6741f74d66df8b4c234b87d3bc81aff27d42ac4d266ad5ae",
+   "cancel/test-result.json": "559c1b11fab61767bb5b720d41c9971de2adad50d6b629d07a7b9f9ae9434693",
+   "cancel-post-cancellation-exact-retry.json": "0c657b238a05b31f6741f74d66df8b4c234b87d3bc81aff27d42ac4d266ad5ae",
+   "inputs.json": "084573fd10650e485c7e5a588c41db10fd17b011a516cae1e2da7262e952813f",
+   "observations.json": "3f1397aa6b7313977ce9e79f12d5d3e6ed27ec626b5b5a8201cb75c85642c306"
+  },
+  "blocking-test-results": {
+   "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx": "d8c819f1133de2502e7a3be121aa56ba52a89522c22d8f9667a316a7b4801f7d",
+   "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx": "980c260e029e76f9be4436efc2cf235ef328d027f79bc002f38388a488dd64cf",
+   "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx": "824ca14c54e2124e1e501e9d0156dd0bed94c49cbdc64a446d455d5f6cad036a",
+   "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx": "f808d895e7f18db2a85c9e07bcaa8a10d9c6e279e715e4f1552ec16a9635e19a",
+   "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx": "e809a957445344d9c994b3ed232647df059e80d4751174aba2e6aa06973f5910",
+   "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx": "789e7f0a5ec747c0630a9a834680b1b05c2bd0ec2c4c3655d02e78fe45547fa9",
+   "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx": "e80d6b5201edf12cbefec4c91e8c59f7adb237fa440610e03e08e2fbf916e52a",
+   "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx": "a3bafa5248e99c72c8fa70590fe36ee9c97defec09f7e0ed60f1e2ff93d09c4a",
+   "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx": "141a5d0de5b033be045305c66933b7b674d92c1f63f299cddc157eaecbb6ad0b",
+   "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx": "fdbe43fbd489d2e64fc4f0cece810eb9e66c27f9a731bfe6e5d6f1df65599b8e",
+   "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx": "e853db6dcfb60d238513556381dcd8c0381fd166647030d85a9f7a8bcee71fd4",
+   "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx": "0f7c532087a2c6caaf378a6cac7a8b19182daccf020dcba2bc194298dc47ae5b",
+   "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx": "10f759a337f6187dd161ab311942c5b330dc0672248b4a64b35f6d2fedbee99b",
+   "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx": "1563f6c71395902a8d28fcf6f790751c6c00ed382a28fbcffff467db9bcf24f5",
+   "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx": "23e821d7d1c95e339956ce862ac6153ba25bf811f092d0c632fddfbb38636bd3",
+   "module-integration/native-4ef7f9471c27a121edcdc833b51d5f3b1fffa2ffd9c479ef63cc09c4fee36737.trx": "4ef7f9471c27a121edcdc833b51d5f3b1fffa2ffd9c479ef63cc09c4fee36737"
+  }
+ },
+ "candidateAcceptance": false,
+ "classification": "baseline-only focused Story 2.8 lifecycle observation",
+ "baselineIntegration": {
+  "cleanupOutcome": {
+   "category": "None",
+   "exitCode": "Success",
+   "phase": "None",
+   "ruleId": null
+  },
+  "remainingResources": {
+   "claimIds": [],
+   "containerIds": [],
+   "discoveryFailures": [],
+   "isEmpty": true,
+   "processIds": [],
+   "resourceIds": [],
+   "unverified": false,
+   "workspaceIds": []
+  },
+  "declaredDiagnostics": [
+   "lifecycle",
+   "native-report",
+   "functional-observations"
+  ]
+ },
+ "controller": {
+  "schema": "hexalith.ci-lifecycle-qualification.v1",
+  "classification": "baseline-only",
+  "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+  "executionContext": {
+   "disposable": true,
+   "jobId": "qualification",
+   "kind": "ci",
+   "operatingSystem": "Linux",
+   "repository": "Hexalith/Hexalith.Parties",
+   "runnerKind": "github-hosted",
+   "workflowAttempt": 1,
+   "workflowRunId": "42526256372"
+  },
+  "inputs": {
+   "candidateAcceptance": false,
+   "executionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42526256372"
+   },
+   "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+   "platformIdentity": {
+    "CatalogCommit": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "CheckoutCommit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "Commit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "CompositionCommit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "IsPlatformRepository": false,
+    "PlatformPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform",
+    "RecordPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/hexalith-platform.json",
+    "ReleaseTag": "v1.7.1",
+    "ToolVersionRange": "[4.44.13, 5.0.0-0)"
+   },
+   "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+   "toolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550"
+  },
+  "checkpointReached": null,
+  "firstFailure": null,
+  "owners": [
+   {
+    "label": "cancel",
+    "runId": "af9aae8919c435c0a80e273ebba510ba",
+    "cancellationPhase": "startup",
+    "cancellationReadyAtUtc": "2026-11-08T22:00:17.725506+00:00",
+    "launchGateStatus": "released"
+   }
+  ],
+  "observationKinds": {
+   "fixture-control": 1,
+   "startup-cancellation-ready": 1,
+   "actual-cancellation-ready": 1,
+   "actual-cancellation-state-snapshot": 1,
+   "external-cancellation-signal": 1,
+   "owned-host-resumed": 1,
+   "owned-process-signal": 1,
+   "terminal-before-independent-finalization": 1,
+   "independent-finalizer": 1,
+   "post-cancellation-exact-retry": 1,
+   "actual-cancellation-terminal": 1,
+   "finalizer-result": 1
+  },
+  "checkpoints": [],
+  "attachments": [],
+  "withdrawals": [],
+  "withdrawnBeforeStop": [],
+  "cleanupFirstOutcomes": [],
+  "exactDowns": [
+   {
+    "tag": "independent-finalizer",
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+    "exitCode": 0,
+    "outcome": {
+     "category": "None",
+     "exitCode": "Success",
+     "phase": "None",
+     "ruleId": null
+    },
+    "remainingResources": {
+     "claimIds": [],
+     "containerIds": [],
+     "discoveryFailures": [],
+     "isEmpty": true,
+     "processIds": [],
+     "resourceIds": [],
+     "unverified": false,
+     "workspaceIds": []
+    },
+    "observedAtUtc": "2026-11-08T22:00:25.528560+00:00"
+   },
+   {
+    "tag": "post-cancellation-exact-retry",
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+    "exitCode": 0,
+    "outcome": {
+     "category": "None",
+     "exitCode": "Success",
+     "phase": "None",
+     "ruleId": null
+    },
+    "remainingResources": {
+     "claimIds": [],
+     "containerIds": [],
+     "discoveryFailures": [],
+     "isEmpty": true,
+     "processIds": [],
+     "resourceIds": [],
+     "unverified": false,
+     "workspaceIds": []
+    },
+    "observedAtUtc": "2026-11-08T22:00:26.308271+00:00"
+   }
+  ],
+  "cancellation": [
+   {
+    "actualOwnedContainers": [
+     "d72a697fbde4"
+    ],
+    "appHostProcessId": 4933,
+    "kind": "startup-cancellation-ready",
+    "observedAtUtc": "2026-11-08T22:00:17.723496+00:00",
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+    "startupDeadlineUtc": "2026-11-08T22:08:25.4700071+00:00"
+   },
+   {
+    "admission": null,
+    "kind": "actual-cancellation-ready",
+    "observedAtUtc": "2026-11-08T22:00:17.726367+00:00",
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+    "phase": "startup",
+    "readyAtUtc": "2026-11-08T22:00:17.725506+00:00"
+   },
+   {
+    "kind": "actual-cancellation-state-snapshot",
+    "observedAtUtc": "2026-11-08T22:00:22.669993+00:00",
+    "snapshot": {
+     "attemptId": "39c6401c39c22c326efc90b6a1ac6267",
+     "environmentId": "5f413bc1e71e70a6e5e10e6c8c8dc0ac",
+     "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42526256372"
+     },
+     "firstOutcome": null,
+     "nativeExecution": null,
+     "observedAtUtc": "2026-11-08T22:00:22.668781+00:00",
+     "readStartedAtUtc": "2026-11-08T22:00:22.666583+00:00",
+     "runId": "af9aae8919c435c0a80e273ebba510ba",
+     "stateTestTerminal": null,
+     "stateUpdatedAtUtc": "2026-11-08T21:59:37.6047129+00:00",
+     "status": "Starting"
+    }
+   },
+   {
+    "kind": "external-cancellation-signal",
+    "observedAtUtc": "2026-11-08T22:00:22.673128+00:00",
+    "signals": [
+     {
+      "observedAtUtc": "2026-11-08T22:00:22.634813+00:00",
+      "signal": 2
+     }
+    ],
+    "terminalBeforeSignalForward": null
+   },
+   {
+    "firstOutcome": {
+     "ownerId": "af9aae8919c435c0a80e273ebba510ba",
+     "runId": "af9aae8919c435c0a80e273ebba510ba",
+     "sourceMappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+     "terminalAtUtc": "2026-11-08T22:00:22.7506047+00:00",
+     "terminalCause": "run-cancelled",
+     "terminalOutcome": {
+      "category": "Cancelled",
+      "exitCode": "Cancelled",
+      "phase": "Cleanup",
+      "ruleId": "HXC130"
+     },
+     "terminalStatus": "cancelled"
+    },
+    "kind": "terminal-before-independent-finalization",
+    "observedAtUtc": "2026-11-08T22:00:23.746936+00:00",
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba"
+   },
+   {
+    "candidateAcceptance": false,
+    "classification": "cancelled",
+    "firstOutcome": {
+     "ownerId": "af9aae8919c435c0a80e273ebba510ba",
+     "runId": "af9aae8919c435c0a80e273ebba510ba",
+     "sourceMappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+     "terminalAtUtc": "2026-11-08T22:00:22.7506047+00:00",
+     "terminalCause": "run-cancelled",
+     "terminalOutcome": {
+      "category": "Cancelled",
+      "exitCode": "Cancelled",
+      "phase": "Cleanup",
+      "ruleId": "HXC130"
+     },
+     "terminalStatus": "cancelled"
+    },
+    "kind": "actual-cancellation-terminal",
+    "observedAtUtc": "2026-11-08T22:00:26.325684+00:00",
+    "originalAdmission": null,
+    "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+    "parentApiReceiptRequired": true,
+    "phase": "startup",
+    "withdrawal": null
+   }
+  ],
+  "partial": [],
+  "images": [],
+  "finalizer": [
+   {
+    "allocationStatus": "allocated",
+    "candidateAcceptance": false,
+    "failures": [],
+    "issuedOwners": 1,
+    "issuedOwnersCleanupVerified": true,
+    "kind": "finalizer-result",
+    "observedAtUtc": "2026-11-08T22:00:26.326865+00:00"
+   }
+  ],
+  "failures": [],
+  "finalExactInventoryPerOwner": {
+   "af9aae8919c435c0a80e273ebba510ba": {
+    "tag": "post-cancellation-exact-retry",
+    "outcome": "Success",
+    "allInventoriesEmpty": true
+   }
+  }
+ }
+}

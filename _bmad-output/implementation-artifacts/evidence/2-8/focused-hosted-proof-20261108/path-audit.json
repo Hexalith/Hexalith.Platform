@@ -1,0 +1,614 @@
+{
+ "schema": "hexalith.story-2-8.incremental-path-audit.v1",
+ "recordedAtUtc": "2026-11-08T20:51:56Z",
+ "method": "Active spec incremental audit: enumerate every changed path once since each original baseline; reuse the authenticated parent350 review receipt for unchanged bytes at the reviewed blob identity; map newer incoming work to its owner and review its interaction with Story 2.8 contracts; verify immutable evidence through manifests and Git history. This file is not itself an audit subject.",
+ "priorReviewReceipt": {
+  "path": "/home/administrator/.cache/hexalith/story-2-8/parent-story28-resume-20261108T094224Z/parent350-complete-active-path-acknowledgement-union-not-final-audit.json",
+  "sha256": "54a9fbb3c76ae499c614b4ffc472f44d54bb8bb1fd3e1b2329196c8d580e5e70",
+  "utc": "2026-11-08T14:26:01.542710+00:00",
+  "completedActivePaths": 350
+ },
+ "platform": {
+  "baseline": "03a099bba258c37a8f16c8b2e842ae842b1ad6d6",
+  "head": "7fbe852f90e54c780f44943c843a66f08478995b",
+  "workingTreeDelta": "spec-2-8 (remote-operation authorization paragraph, pre-existing) and this focused-hosted-proof-20261108 directory",
+  "changedPathCount": 5604,
+  "summaryByClass": {
+   "active-source-or-configuration": {
+    "paths": 247,
+    "changed-since-prior-review": 14,
+    "reused-prior-receipt": 230,
+    "not-in-prior-review": 3
+   },
+   "other-planning-artifact": {
+    "paths": 18,
+    "n/a": 18
+   },
+   "story-2-8-historical-evidence": {
+    "paths": 4410,
+    "n/a": 4410
+   },
+   "other-story-evidence": {
+    "paths": 518,
+    "n/a": 518
+   },
+   "story-2-8-planning-artifact": {
+    "paths": 6,
+    "n/a": 6
+   },
+   "active-documentation": {
+    "paths": 282,
+    "reused-prior-receipt": 6,
+    "changed-since-prior-review": 2,
+    "not-in-prior-review": 274
+   },
+   "active-test": {
+    "paths": 106,
+    "reused-prior-receipt": 96,
+    "not-in-prior-review": 8,
+    "changed-since-prior-review": 2
+   },
+   "dependency-gitlink": {
+    "paths": 17,
+    "not-in-prior-review": 17
+   }
+  },
+  "activePathsNeedingReviewAfterPrior": [
+   {
+    "path": ".config/dotnet-tools.json",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "239a4eacd0f05a6da754655a7b198f2448dc3f80",
+    "priorReviewedOid": "a142dce81cdb6cc715033052b1719cd1c21dfdb8",
+    "incomingCommits": [
+     "ab38224e fix(composition): admit the authenticated Builds 4.45.0 validation pair",
+     "77a04b18 build(ci): retain the original public tuple source",
+     "6b622bd1 build(deps): pin Builds 4.45.0 and apply the story 3.2 review fixes",
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "Hexalith.Platform.slnx",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "071548221d155d8785b6cafde50d4de2548a59cf",
+    "priorReviewedOid": "abc2f7d77e0456ad36ea25badcc5f41840b20dc5",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "README.md",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "1e4c0038542e5159a19cb632e84f11383e22d114",
+    "priorReviewedOid": "cd85a0f35cd8bbade0c0eab2a918d2b612b36aff",
+    "incomingCommits": [
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "eng/builds-tuple.json",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "77c01f04422477169d7861220adef0c42a84172a",
+    "priorReviewedOid": "385c1ab2833d4d6dcfde9220d3e06d94a088692a",
+    "incomingCommits": [
+     "ab38224e fix(composition): admit the authenticated Builds 4.45.0 validation pair",
+     "77a04b18 build(ci): retain the original public tuple source",
+     "6b622bd1 build(deps): pin Builds 4.45.0 and apply the story 3.2 review fixes",
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "eng/legacy-tuple-source.json",
+    "class": "active-source-or-configuration",
+    "status": "A",
+    "newOid": "a7bfdbd6ed902968b0d68aa97d38358c857b3952",
+    "priorReviewedOid": "7b6b8ec9834e76f295fbe70efefbd1d905387557",
+    "incomingCommits": [
+     "166f0758 build(ci): bind current tuple to matching extension source",
+     "d4c4b469 build(ci): retain legacy controls for the extension source",
+     "4e354ef1 build(ci): bind current tuple to matching extension source",
+     "d471e495 build(ci): retain legacy controls for the extension source",
+     "ab38224e fix(composition): admit the authenticated Builds 4.45.0 validation pair",
+     "77a04b18 build(ci): retain the original public tuple source",
+     "6b622bd1 build(deps): pin Builds 4.45.0 and apply the story 3.2 review fixes",
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "hexalith-platform.json",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "3843ff99bd0f6eb1f498e54ab6e0c74ff9ce685c",
+    "priorReviewedOid": "395691f393e8313a2df2f535fe7d1af65aa39432",
+    "incomingCommits": [
+     "ab38224e fix(composition): admit the authenticated Builds 4.45.0 validation pair",
+     "77a04b18 build(ci): retain the original public tuple source",
+     "6b622bd1 build(deps): pin Builds 4.45.0 and apply the story 3.2 review fixes",
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "c193c796780e019b5fdec681c413f5fa1ed6b87b",
+    "priorReviewedOid": "074a2c4089cc70ab56028687fd26a18a141213cf",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "df32853268f2c101b52881fffd1119e109b013b3",
+    "priorReviewedOid": "fa305409e0054167a06cc422472534394d216ab0",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBinding.cs",
+    "class": "active-source-or-configuration",
+    "status": "A",
+    "newOid": "27dbcbf67fb258f53b0e9c1976f3ae3867d0943c",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs",
+    "class": "active-source-or-configuration",
+    "status": "A",
+    "newOid": "3fb35566e71fa8517d7c44ce154d153fb9c15a6d",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "fd9194ea build: merge current main into the platform extension fixes",
+     "a2a1adf9 fix(eventstore): carry module ownership into extension diagnostics",
+     "f577f6f9 build(ci): retain the original public tuple source",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformEventStoreHostBinding.cs",
+    "class": "active-source-or-configuration",
+    "status": "A",
+    "newOid": "cf7e6531ddad281fe41cc980a7710963ed4ade7b",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformLocalProfile.cs",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "4332ec4c0042913bb21702a886de9f02752620c3",
+    "priorReviewedOid": "a06fdc847db6894c4dbac30279c5ac4d193ed17b",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+    "class": "active-source-or-configuration",
+    "status": "A",
+    "newOid": "4af4e31b8e7d8b945a74c8fa3583607ac367f82b",
+    "priorReviewedOid": "970d96c1ce68b383b1ee77dd097e27bc8e520ed9",
+    "incomingCommits": [
+     "77a04b18 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformServerBinding.cs",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "33391e9f50e6c7ebc894e6c133af4aa2fb5a1c0a",
+    "priorReviewedOid": "f9db8fffb5063dd1a3d6362ed3e120cc9d6980f9",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.Composition/PlatformServerBindings.cs",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "c6bd321ccdf48932fc50c6b577ca66060ca153e7",
+    "priorReviewedOid": "6de9e56d22a76ae16c07b9856659c38487d2c83b",
+    "incomingCommits": [
+     "f577f6f9 build(ci): retain the original public tuple source",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "b0b88f4f944f4798878b1ac4eedd84bd3eaec0cc",
+    "priorReviewedOid": "5d92a216caebcca64d0a1fcb07fca067f183ea5f",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "src/Hexalith.Platform.EventStoreHost/Program.cs",
+    "class": "active-source-or-configuration",
+    "status": "M",
+    "newOid": "25215f72de349b4082594f96605f809086598814",
+    "priorReviewedOid": "7790a716b8df3273befc09fc437b90ce34e5ce71",
+    "incomingCommits": [
+     "4ce16b85 fix(eventstore): register declared extensions before the catalog bootstrap",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "docs/current-tuple-preparation.md",
+    "class": "active-documentation",
+    "status": "M",
+    "newOid": "93b43e535f6986d90766cfa75710155037a26718",
+    "priorReviewedOid": "aa3e3a05aa0cc719c54f5c15be69555c9afc2165",
+    "incomingCommits": [
+     "f577f6f9 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "docs/domain-module-enrollment.md",
+    "class": "active-documentation",
+    "status": "M",
+    "newOid": "15771fb89051ba0261a4425026c12dd31b11606c",
+    "priorReviewedOid": "4077d3c9d21aa2ef52643717bfcf91488bd70927",
+    "incomingCommits": [
+     "f577f6f9 build(ci): retain the original public tuple source",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/DomainEnrollmentKitTests.cs",
+    "class": "active-test",
+    "status": "M",
+    "newOid": "58109068c74748d3fc7879d0c8384011ba7f9ff8",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "14c1ba13 test(composition): align pinned tool adoption checks with released requirements"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/EnvironmentScope.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "ffb180915a6e936fdbc0dc98593e5d8ebf07d102",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "7cd09a8207b5b03566399e2c763c4ba472abf029",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "fd9194ea build: merge current main into the platform extension fixes",
+     "a2a1adf9 fix(eventstore): carry module ownership into extension diagnostics",
+     "4ce16b85 fix(eventstore): register declared extensions before the catalog bootstrap",
+     "f577f6f9 build(ci): retain the original public tuple source",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/Fixtures/public-parties310-image-contracts.dll",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "774e7408d1a8a6c8e87d296a01ef4eface5421fc",
+    "priorReviewedOid": null,
+    "incomingCommits": [],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/GatewayExtensionRegistrationTests.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "36a58538df3f7c425896f0c573de10408916ba6e",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "4ce16b85 fix(eventstore): register declared extensions before the catalog bootstrap"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "class": "active-test",
+    "status": "M",
+    "newOid": "82ac0d9adf0328c6a6daef9cf1928b6e44ba6233",
+    "priorReviewedOid": "5ff7446aa3d2a96a3589de8ffaa6234e986517ea",
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "fe946a2586471a9982b0f97d4bad86462a072997",
+    "priorReviewedOid": "cff5a1860d975aae424b6e26f4b502eaf15e16db",
+    "incomingCommits": [
+     "77a04b18 build(ci): retain the original public tuple source"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "09ca4a82b06dafd8ef13d18f89ecb95ae0d108e1",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/fixtures/Hexalith.Platform.TestExtension/PlatformTestExtensionAdapters.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "9960ab8691253b472aaf9033b718a4852f45a9f0",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "4ce16b85 fix(eventstore): register declared extensions before the catalog bootstrap",
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   },
+   {
+    "path": "tests/fixtures/Hexalith.Platform.TestExtension/PlatformTestProbeCommand.cs",
+    "class": "active-test",
+    "status": "A",
+    "newOid": "2684a701252038b68440e2cf58a84c5b25bca28d",
+    "priorReviewedOid": null,
+    "incomingCommits": [
+     "88ffb309 feat(composition): compose the eventstore host with enrolled extension packages"
+    ],
+    "owner": "Story 3.2 EventStore extension host composition and its Builds 4.45.0 tuple pin (incoming; mapped, not reimplemented)"
+   }
+  ],
+  "activePathsNeedingReviewDisposition": "All are incoming Story 3.2/Builds 4.45.0 work committed after the prior review. Story 2.8 sources PlatformNativeTestPreparation, PlatformRoutingCatalog(Bootstrap/Metadata), PlatformTenantBootstrapAccess and their tests are byte-identical to the reviewed blobs. The PlatformAppModel/PlatformServerBindings/csproj deltas add an extension-host path taken only when a module declares runtime.eventStoreExtensions; native-setup and package-refusal guards are unchanged. PlatformPartiesValidationContext only admits the published 4.45.0 AppHost/Tooling pair. Hosted tuple CI on this exact head exercises these classes (see hosted-index).",
+  "docsImplementationNotInPriorReview": {
+   "paths": 274,
+   "byDirectory": {
+    "docs/implementation/ext-host-1-continuation-2026-11-02": 9,
+    "docs/implementation/ext-host-1-gap-evidence-2026-11-02": 4,
+    "docs/implementation/ext-protection-1-loop10": 146,
+    "docs/implementation/ext-secrets-1-operational-security-2026-11-02": 43,
+    "docs/implementation/story-1-17-main-mapping-approval-2026-11-02.md": 1,
+    "docs/implementation/story-1-17-reference-mapping-approval-2026-11-02.md": 1,
+    "docs/implementation/story-5-4-coupled-delivery-2026-10-25": 1,
+    "docs/implementation/story-5-4-owner-validation-2026-11-02": 68,
+    "docs/implementation/story-5-4-owner-validation-integration-2026-11-02.json": 1
+   },
+   "disposition": "Other stories (EXT-PROTECTION-1, 5.4, EXT-SECRETS-1, EXT-HOST-1, 1.17) incoming documentation; not Story 2.8 scope."
+  },
+  "dependencyGitlinks": [
+   {
+    "path": "references/Hexalith.AI.Tools",
+    "baselineOid": "9b78aa008cfc62cd88ad0ea4b39b1f07311956ce",
+    "currentOid": "1745b6663ad32bb1288167135ed0f979366c53a0",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Agents",
+    "baselineOid": "9fb9dd2afe76908994d807a15eda25725fc40b9b",
+    "currentOid": "7957108c30d38b8e82eb072cf3437b6a67627cd7",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Builds",
+    "baselineOid": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+    "currentOid": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+    "storyRelevance": "consumed 2.8 producer/caller pin"
+   },
+   {
+    "path": "references/Hexalith.ChatBot",
+    "baselineOid": "a9b9aece1dd93d47eafa3929beb0a318933ed9d2",
+    "currentOid": "b13c58006d292836a9c8b242de476765676e5fb2",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Commons",
+    "baselineOid": "0604bcf5304fc09a569f7abbd8e5d1b9049c02b7",
+    "currentOid": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Conversations",
+    "baselineOid": "bc8ea08fdb06719a29931e1d3fd53d2338ee6bbf",
+    "currentOid": "b2c3cf6684a779a077e179008f7d559b88bd7e4a",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.EventStore",
+    "baselineOid": "ad383a96394307154b0026643245fdbb9a24dd4e",
+    "currentOid": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841",
+    "storyRelevance": "consumed 2.8 producer/caller pin"
+   },
+   {
+    "path": "references/Hexalith.Folders",
+    "baselineOid": "fdcf5542e6ec0aabcbc2d7386907e276a4ec1b86",
+    "currentOid": "e88c940000446e13d17d86a7288649d8653a7138",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.FrontComposer",
+    "baselineOid": "34d0afde14c43b6079208c47f95297d0cf99b51d",
+    "currentOid": "e972d0f06a8eec3446db0b2270fdb14eef4c1186",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.McpCli",
+    "baselineOid": "a267e4709f4cbea34511c470bb1823c79a732327",
+    "currentOid": "fa7c51601041ee6cf0d2f9d4613fb405758f2f7c",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Memories",
+    "baselineOid": "5aaa39831abe9e9b4603cd6b0f1f484b2d2c48c9",
+    "currentOid": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Parties",
+    "baselineOid": "05aeee0d647a34eab112b6f8282a0810d35b7bf6",
+    "currentOid": "6f8cd78d0a4c41764c0ed843b0f889ba3d5c070d",
+    "storyRelevance": "consumed 2.8 producer/caller pin"
+   },
+   {
+    "path": "references/Hexalith.PolymorphicSerializations",
+    "baselineOid": "92ede24cc11129379efe52cfe7fd2c820c567f7f",
+    "currentOid": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Projects",
+    "baselineOid": "8fa68d0c8b8a3d53b4d70e5456dc11084811a9f8",
+    "currentOid": "9ae0571529cb4a9f3ad9750c8b834e6284d4f76b",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Tenants",
+    "baselineOid": "c12761223eafbe863d0a20c946685873173a9da4",
+    "currentOid": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Timesheets",
+    "baselineOid": "7983a715b0d15935d9c32304c35203c796d9e6a4",
+    "currentOid": "f5bee2c91bec6e1e78d81b604cea6af0cee764fe",
+    "storyRelevance": "unrelated incoming pin"
+   },
+   {
+    "path": "references/Hexalith.Works",
+    "baselineOid": "038f49080a86d312b30d12567f521c3954593569",
+    "currentOid": "4bd0df1461c89fdf00f1ccf3c47a3bf9bc939a23",
+    "storyRelevance": "unrelated incoming pin"
+   }
+  ],
+  "story28PlanningArtifacts": [
+   "_bmad-output/implementation-artifacts/handoff-2-8-stop-save-20261108.md",
+   "_bmad-output/implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md",
+   "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md",
+   "_bmad-output/implementation-artifacts/story-2-8-session-handoff-20261106-0749.md",
+   "_bmad-output/implementation-artifacts/story-2-8-session-handoff-20261108.md",
+   "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-08.md"
+  ],
+  "otherPlanningArtifacts": [
+   "_bmad-output/implementation-artifacts/4-1-upgrade-the-cluster-off-kubernetes-1-34-after-verified-backu.md",
+   "_bmad-output/implementation-artifacts/4-27-retire-kubesphere-without-changing-workload-data.md",
+   "_bmad-output/implementation-artifacts/deferred-work.md",
+   "_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md",
+   "_bmad-output/implementation-artifacts/spec-3-2-extension-module-diagnostics.md",
+   "_bmad-output/implementation-artifacts/spec-3-2-extension-registration-owner.md",
+   "_bmad-output/implementation-artifacts/spec-4-14-build-staging-namespaces-storage-and-pod-and-network-isolation-2.md",
+   "_bmad-output/implementation-artifacts/spec-4-14-harden-offline-foundation-gates.md",
+   "_bmad-output/implementation-artifacts/spec-4-27-record-drain-publisher-absence.md",
+   "_bmad-output/implementation-artifacts/spec-4-27-retire-kubesphere-without-changing-workload-data.md",
+   "_bmad-output/implementation-artifacts/spec-bind-run-scoped-catalog-consumer.md",
+   "_bmad-output/implementation-artifacts/spec-ext-protection-1-production-engine.md",
+   "_bmad-output/implementation-artifacts/spec-reconcile-retained-routing-catalog-work.md",
+   "_bmad-output/implementation-artifacts/sprint-status.yaml",
+   "_bmad-output/implementation-artifacts/story-3-3-session-handoff.md",
+   "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+   "_bmad-output/planning-artifacts/epics.md",
+   "_bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md"
+  ],
+  "story28HistoricalEvidence": {
+   "paths": 4410,
+   "gitHistory": "Since the baseline, no Story 2.8 evidence file was modified or deleted except the living README.md (10 modifications).",
+   "manifestVerification": {
+    "manifests": 35,
+    "bindings": 931,
+    "matched": 926,
+    "mismatched": 5,
+    "mismatchedPaths": [
+     "README.md"
+    ],
+    "mismatchDisposition": "Only the living evidence README.md, which is active documentation appended after those checkpoints."
+   },
+   "courseCorrectionArchive": {
+    "sha256": "1714ec845c2c24e66a4fc9fbe2f71c971d20305af9f1743f273942a57971e909",
+    "bytes": 703727,
+    "matchesManifest": true,
+    "specPrefix10345Sha256": "89fe71635d283b3d77c24ffb28c802a8a2a399d94551d1f3e9cca5b56cd86813",
+    "prefixPreserved": true
+   }
+  },
+  "otherStoryEvidence": 518
+ },
+ "builds": {
+  "baseline": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364",
+  "priorCompleteReconciliation": {
+   "target": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+   "receipt": "release-phase/remote-resumption-20261103/parent-final-builds-original-a22-to-qualified3c-exact-complete-diff-reconciliation-20261108.json"
+  },
+  "currentPlatformPin": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "deltaAfterReconciliation": [
+   "README.md",
+   "schemas/hexalith.module-manifest.v2.json",
+   "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionSourceAudit.cs",
+   "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformAdoptionValidator.cs",
+   "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformEventStoreExtensionAuthority.cs",
+   "src/libraries/Hexalith.Builds.Tooling/Manifest/PlatformManifestValidator.cs",
+   "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationOptions.cs",
+   "test/Hexalith.Builds.Module.Tests/PlatformAdoptionValidationTests.cs",
+   "test/Hexalith.Builds.Module.Tests/PlatformManifestCommandTests.cs",
+   "test/Hexalith.Builds.Module.Tests/PlatformManifestValidationTests.cs"
+  ],
+  "deltaOwner": "Story 3.2 (#176 validate declared EventStore extension packages); no CI owner, attachment, withdrawal, cleanup, helper or v2 workflow path changed."
+ },
+ "unresolved": [],
+ "postAuditChanges": {
+  "recordedAtUtc": "2026-11-08T22:29:45Z",
+  "platformWorkingTree": {
+   "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md": "Story 2.8: four effective tasks ticked and an execution record added; preserved 10,345-byte prefix SHA-256 89fe7163... unchanged",
+   "_bmad-output/implementation-artifacts/evidence/2-8/README.md": "Story 2.8: one section inserted after the title; 0 lines removed",
+   "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/": "Story 2.8 campaign records (this directory; not itself an audit subject)",
+   "docs/implementation/story-5-4-coupled-delivery-2026-10-25/owner-decisions.json": "Incoming uncommitted change from another session (Story 5.4); not touched or reviewed by Story 2.8"
+  },
+  "otherRepositories": {
+   "Hexalith/Hexalith.Parties 926c1c3fe08b628ea79fc60dae3eadc87d7aff51": {
+    "parent": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+    "paths": [
+     ".github/workflows/ci-lifecycle-qualification.yml",
+     "tests/ci-lifecycle/test_workflow_boundaries.py"
+    ],
+    "review": "Authored and fully read in this continuation (3-line workflow delta, 45-line test addition); red-then-green regression, 75 tests/ci-lifecycle cases, actionlint, and two hosted baselines on this exact source (15 isolated projects, native 28) passed. Needs the normal Step 04 review and PR."
+   }
+  }
+ }
+}

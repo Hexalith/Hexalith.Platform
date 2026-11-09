@@ -1,0 +1,279 @@
+{
+ "schema": "hexalith.story-2-8.six-row-index.v1",
+ "rows": [
+  {
+   "row": "Isolated failure",
+   "expected": "No integration provisioning; blocking failure",
+   "local": {
+    "workflowContract": "Domain workflow v2 test-platform checks passed: 254 assertions.",
+    "assertions": [
+     "Isolated provisioning gate passed/failed scenarios execute the actual gate body",
+     "Package integration gate requires steps.isolated-gate.outcome == 'success'",
+     "Registry waits for isolated success"
+    ]
+   },
+   "hosted": [
+    {
+     "note": "No hosted isolated-failure run was dispatched; the row is covered by the executed v2 workflow-body tests above."
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  },
+  {
+   "row": "Integration success/failure",
+   "expected": "Preserve outcome; withdraw active holds, then exact cleanup",
+   "local": {
+    "xunit": {
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"passed\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"partial-startup\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed-then-job-cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")": "Pass"
+    },
+    "python": {
+     "test_passing_execution_requires_verified_cleanup": "Pass",
+     "test_execution_failure_preserved_and_finalized_after_partial_startup": "Pass",
+     "test_published_redacted_diagnostics_survive_cleanup_byte_for_byte_and_retry": "Pass",
+     "test_collection_refusal_preserves_native_failure_and_still_finishes_exact_cleanup": "Pass"
+    }
+   },
+   "hosted": [
+    {
+     "scenario": "matrix",
+     "required": true,
+     "run": 42521615234,
+     "conclusion": "success",
+     "status": "passed",
+     "detail": {
+      "owners": {
+       "passing": "751568413cb16f63ac0597a262779da8",
+       "failing": "90dec7a30b54ec97b2ac7d83669fc3e7"
+      },
+      "finalInventories": {
+       "751568413cb16f63ac0597a262779da8": "independent-finalizer",
+       "90dec7a30b54ec97b2ac7d83669fc3e7": "independent-finalizer",
+       "a9a46334b0108328401c72aa9d288649": "independent-finalizer",
+       "7f0e2f0b27829acf2ee02a769b282675": "independent-finalizer",
+       "46e4ee01811498e1674f3920293f38dd": "independent-finalizer"
+      }
+     }
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  },
+  {
+   "row": "Cancellation during startup/execution",
+   "expected": "Recover durable owner identity; withdraw, cleanup, retain diagnostics",
+   "local": {
+    "xunit": {
+     "ModuleRunnerReviewRegressionTests.CancellationDuringCleanupPreservesCommittedOutcomeAsync(fails: False)": "Pass",
+     "ModuleRunnerReviewRegressionTests.CancellationDuringCleanupPreservesCommittedOutcomeAsync(fails: True)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True)": "Pass"
+    },
+    "python": {
+     "test_actual_job_cancellation_reaches_exact_down_without_rewriting_first_result": "Pass",
+     "test_cancellation_during_execution_runs_finalizer_and_preserves_cancel": "Pass",
+     "test_real_helper_process_forwards_cancellation_and_finalizes_exact_receipt": "Pass",
+     "test_constructor_time_cancellation_is_forwarded_after_child_assignment": "Pass"
+    }
+   },
+   "hosted": [
+    {
+     "scenario": "matrix",
+     "required": true,
+     "run": 42521615234,
+     "conclusion": "success",
+     "status": "passed",
+     "detail": {
+      "owner": "46e4ee01811498e1674f3920293f38dd",
+      "checkpoints": [
+       "partial-cleaned",
+       "partial-retried"
+      ],
+      "finalInventories": {
+       "751568413cb16f63ac0597a262779da8": "independent-finalizer",
+       "90dec7a30b54ec97b2ac7d83669fc3e7": "independent-finalizer",
+       "a9a46334b0108328401c72aa9d288649": "independent-finalizer",
+       "7f0e2f0b27829acf2ee02a769b282675": "independent-finalizer",
+       "46e4ee01811498e1674f3920293f38dd": "independent-finalizer"
+      }
+     }
+    },
+    {
+     "scenario": "cancel-startup",
+     "required": true,
+     "run": 42526256372,
+     "conclusion": "cancelled",
+     "status": "passed",
+     "detail": {
+      "owner": "af9aae8919c435c0a80e273ebba510ba",
+      "firstOutcome": "cancelled",
+      "finalInventories": {
+       "af9aae8919c435c0a80e273ebba510ba": "post-cancellation-exact-retry"
+      }
+     }
+    },
+    {
+     "scenario": "cancel-execution",
+     "required": true,
+     "run": 42528046681,
+     "conclusion": "cancelled",
+     "status": "passed",
+     "detail": {
+      "owner": "7cb5d51367085bb18b0d042e4fa62d40",
+      "firstOutcome": "cancelled",
+      "finalInventories": {
+       "7cb5d51367085bb18b0d042e4fa62d40": "post-cancellation-exact-retry"
+      },
+      "withdrawal": {
+       "endReason": "ci-job-cancelled",
+       "endedAtUtc": "2026-11-08T22:26:35.9517617+00:00",
+       "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00"
+      }
+     }
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  },
+  {
+   "row": "Same-job/cross-job attachment",
+   "expected": "Admit compatible active owner / refuse before acceptance",
+   "local": {
+    "xunit": {
+     "AttachAdmissionTests.SameJobCiAttachmentIsAcceptedAsync": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"attempt\\\")": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"run\\\")": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"repository\\\")": "Pass",
+     "AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"cleaned\\\", reason: \\\"owner-cleaned\\\")": "Pass",
+     "AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"passed\\\", reason: \\\"owner-passed\\\")": "Pass",
+     "AttachAdmissionTests.RetryIsRefusedWhenOwnerFinishedOrJobDiffersAsync(scenario: \\\"cross-job\\\", reason: \\\"cross-job\\\")": "Pass",
+     "AttachAdmissionTests.CiFailureRetainedOwnerIsRefusedAsync": "Pass"
+    }
+   },
+   "hosted": [
+    {
+     "scenario": "matrix",
+     "required": true,
+     "run": 42521615234,
+     "conclusion": "success",
+     "status": "passed",
+     "detail": {
+      "crossJobRefusals": [
+       "passing-cross-job",
+       "failing-cross-job"
+      ],
+      "sameJobAdmissions": [
+       "passing-same-job",
+       "failing-same-job"
+      ]
+     }
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  },
+  {
+   "row": "Cleanup failure or unknown discovery",
+   "expected": "Non-success with explicit leftovers; retry permitted",
+   "local": {
+    "xunit": {
+     "CompositionEngineTests.IncompleteCleanupKeepsOwnerAndPeerClaimsAsync": "Pass",
+     "CompositionEngineTests.DownIsKeyedByRunIdAndIdempotentAsync": "Pass",
+     "CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False)": "Pass",
+     "CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: True)": "Pass"
+    },
+    "python": {
+     "test_unknown_discovery_or_any_owned_leftover_refuses_completion": "Pass",
+     "test_cleanup_uses_exact_id_is_retryable_and_retains_only_safe_results": "Pass"
+    }
+   },
+   "hosted": [
+    {
+     "scenario": "matrix",
+     "required": false,
+     "run": 42521615234,
+     "conclusion": "success",
+     "status": "passed",
+     "detail": {
+      "nonSuccessRefusals": [
+       [
+        "withdrawal-lock-refusal",
+        "HXR037"
+       ],
+       [
+        "provisioning-lock-refusal",
+        "HXR023"
+       ]
+      ],
+      "retry": "exact-owner-cleanup-retry Success"
+     }
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  },
+  {
+   "row": "Missing tool/suite/package preparation",
+   "expected": "Fail before acceptance; no legacy advisory fallback",
+   "local": {
+    "xunit": {
+     "CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"directory\\\")": "Pass",
+     "CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: \\\"workspace\\\")": "Pass",
+     "CompositionEngineTests.InvalidManifestFailsBeforePrerequisitesAsync": "Pass"
+    },
+    "python": {
+     "test_missing_or_wrong_mode_suite_refuses_before_process": "Pass",
+     "test_missing_package_preparation_refuses_before_process": "Pass",
+     "test_no_receipt_means_no_allocation_and_does_not_invoke_tool": "Pass",
+     "test_digit_shorthand_keeps_owner_attempt_and_version_identities_ascii_only": "Pass"
+    },
+    "prepareModuleBuild": "test_failed_tool_or_unqualified_pin_never_exports (Github/prepare-module-build/tests)",
+    "workflowContract": "v2 assertions: retired direct-integration and advisory AppHost inputs refused; no continue-on-error integration"
+   },
+   "hosted": [
+    {
+     "observation": "Incidental real prerequisite refusals (not dispatched by this campaign): Parties main CI 42516570737 and EventStore main CI 42519687843 refused HXW011 (untagged Platform gitlink) at Prepare module build; integration never provisioned and the always-finalizer retained cleanup.json status not-allocated.",
+     "status": "observed"
+    }
+   ],
+   "status": "covered",
+   "localAllPassed": true
+  }
+ ],
+ "selectedRuns": {
+  "matrix": 42521615234,
+  "cancel-startup": 42526256372,
+  "cancel-execution": 42528046681
+ },
+ "nonQualifyingRuns": [
+  {
+   "run": 42524190110,
+   "scenario": "cancel-startup",
+   "source": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+   "disposition": "failed controller verdict: runner signal never reached the controller; exact cleanup observed; retained, not relabelled",
+   "audit": "hosted-cancel-startup-42524190110.json"
+  },
+  {
+   "runs": [
+    42400061797,
+    42408333976,
+    42418257508
+   ],
+   "scenario": "matrix",
+   "disposition": "historical failed broad matrices; unchanged"
+  }
+ ],
+ "rule": "A row is covered only by actually executed passing tests and, where the row needs real services, a passing hosted observation of this campaign. Missing, filtered, skipped or failed cases leave it open.",
+ "candidateAcceptance": false
+}

@@ -1,0 +1,121 @@
+{
+ "schema": "hexalith.story-2-8.six-row-index.loop-2.v1",
+ "supersedes": "Nothing; the loop-1 and 2026-11-08 indexes stay the records for their sources.",
+ "rule": "Rows touched by the loop-2 fixes are re-mapped to executed passing tests at Builds bde7fd4f (Python) / 95b65d45 (C#, identical), Parties 4c0167b8 and the loop-2 hosted proofs. Missing, filtered or skipped cases would leave a row open.",
+ "rows": [
+  {
+   "row": "Cancellation during startup/execution",
+   "touchedBy": [
+    "BS-4",
+    "PB-3",
+    "PB-8"
+   ],
+   "local": {
+    "python": [
+     "test_runner_cancellation_reaches_only_the_tool_so_withdrawal_precedes_every_composed_stop",
+     "test_cancellation_escalates_on_a_tool_that_ignores_interrupt_and_terminate",
+     "test_a_reused_or_other_boot_session_is_never_signalled",
+     "test_runner_signal_to_the_step_shell_reaches_the_tool_session_and_the_finalizer_cleans_exactly"
+    ],
+    "parties": [
+     "ToolOnlySignalTests.test_interrupt_reaches_only_the_tool_and_no_signal_precedes_withdrawal",
+     "test_observer_receives_the_runner_signal_sent_only_to_its_step_process"
+    ]
+   },
+   "hosted": "pending: the two loop-2 BS-4 hosted proofs",
+   "status": "covered locally; hosted proof pending"
+  },
+  {
+   "row": "Same-job/cross-job attachment",
+   "touchedBy": [
+    "BS-4",
+    "PB-6",
+    "PB-10",
+    "PB-11"
+   ],
+   "local": {
+    "xunit": [
+     "CiRunLifecycleTests.FailedOwnerStatusWithinStopAllowanceRefusesLaterAttachmentAsync"
+    ],
+    "python": [
+     "test_finalizer_leaves_an_owned_surviving_apphost_to_the_exact_down"
+    ],
+    "parties": [
+     "test_each_injected_lock_counts_only_as_its_own_runtime_refusal",
+     "test_mixed_layouts_foreign_records_and_non_integer_exit_codes_refuse"
+    ]
+   },
+   "status": "covered locally"
+  },
+  {
+   "row": "Integration success/failure",
+   "touchedBy": [
+    "BS-5",
+    "PB-1",
+    "PB-6"
+   ],
+   "local": {
+    "python": [
+     "test_timeout_derives_from_the_step_and_the_job_remaining_time",
+     "test_the_v2_step_passes_its_derived_budget_into_the_invocation",
+     "test_timeout_is_not_a_cancellation_and_is_finalized_by_the_helper"
+    ],
+    "xunit": [
+     "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False)",
+     "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True)"
+    ],
+    "parties": [
+     "test_new_helper_timeout_is_the_only_accepted_invocation_addition",
+     "test_new_helper_invocation_timeout_and_per_attempt_records_are_bound_to_this_job"
+    ]
+   },
+   "status": "covered locally"
+  },
+  {
+   "row": "Cleanup failure or unknown discovery",
+   "touchedBy": [
+    "PB-2",
+    "PB-12",
+    "PB-13",
+    "PB-14"
+   ],
+   "local": {
+    "python": [
+     "test_a_failed_cleanup_record_never_prevents_the_exact_down",
+     "test_stderr_is_redacted_before_the_excerpt_and_across_joined_keywords",
+     "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain",
+     "test_a_timed_out_down_leaves_no_orphan_in_its_session",
+     "test_a_live_orphan_cannot_hold_the_provisioning_lock_against_exact_cleanup"
+    ]
+   },
+   "status": "covered locally"
+  },
+  {
+   "row": "Missing tool/suite/package preparation",
+   "touchedBy": [
+    "BS-5",
+    "BS-2b",
+    "PB-4",
+    "PB-7"
+   ],
+   "local": {
+    "python": [
+     "test_an_exhausted_job_budget_refuses_before_any_allocation"
+    ],
+    "workflowContract": "v2 302 assertions incl. budget-from-helper-constants and real-catalog pinned digest scenarios",
+    "parties": [
+     "StartupDiagnosticsWorkflowTests.test_toolchain_versions_and_digests_refuse_before_any_download",
+     "DaprInstallExecutionTests (L and S install bodies under bash with stubbed curl/tar/dotnet)"
+    ]
+   },
+   "status": "covered locally"
+  },
+  {
+   "row": "Isolated failure",
+   "touchedBy": [],
+   "disposition": "not touched by loop 2; row-index-loop-1.json stays its record",
+   "status": "unchanged"
+  }
+ ],
+ "candidateAcceptance": false
+}

@@ -1,0 +1,162 @@
+{
+ "schema": "hexalith.story-2-8.six-row-index.loop-1.v1",
+ "supersedes": "Nothing; focused-hosted-proof-20261108/row-index.json stays the record for its sources.",
+ "rule": "Rows touched by the loop-1 fixes are re-mapped to executed passing tests at Builds a51f9876, Parties 2849c5b4 and the BS-1 hosted proof. Missing, filtered or skipped cases would leave a row open.",
+ "rows": [
+  {
+   "row": "Isolated failure",
+   "touchedBy": [
+    "PA-4",
+    "PA-5"
+   ],
+   "local": {
+    "workflowContract": "Domain workflow v2 test-platform checks passed: 285 assertions.",
+    "controls": [
+     "Early input validation refuses empty/retired inputs before checkout",
+     "Isolated provisioning gate passed/failed scenarios",
+     "Coverage precedes toolchain installation, registry login and integration"
+    ]
+   },
+   "status": "covered"
+  },
+  {
+   "row": "Integration success/failure",
+   "touchedBy": [
+    "PA-1",
+    "PA-3",
+    "PA-9",
+    "PA-10",
+    "PA-12"
+   ],
+   "local": {
+    "xunit": {
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"passed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"failed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-failed\\\")": "Pass",
+     "CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: \\\"partial-startup-cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"passed\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"partial-startup\\\")": "Pass",
+     "CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: \\\"failed-then-job-cancelled\\\")": "Pass",
+     "CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False)": "Pass",
+     "CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: True)": "Pass"
+    },
+    "python": {
+     "test_zero_exit_counts_only_with_a_receipt_and_a_success_outcome": "Pass",
+     "test_execution_failure_preserved_and_finalized_after_partial_startup": "Pass",
+     "test_passing_execution_requires_verified_cleanup": "Pass",
+     "test_cleanup_verification_requires_exit_owner_and_success": "Pass"
+    }
+   },
+   "status": "covered"
+  },
+  {
+   "row": "Cancellation during startup/execution",
+   "touchedBy": [
+    "BS-1",
+    "PA-1",
+    "PA-18"
+   ],
+   "local": {
+    "python": {
+     "test_runner_signal_to_the_step_shell_reaches_the_tool_session_and_the_finalizer_cleans_exactly": "Pass",
+     "test_signal_before_the_receipt_never_reports_not_allocated_while_a_tool_survives": "Pass",
+     "test_constructor_time_cancellation_never_releases_the_tool": "Pass",
+     "test_cancellation_during_execution_defers_exact_cleanup_to_the_job_finalizer": "Pass",
+     "test_timeout_is_not_a_cancellation_and_is_finalized_by_the_helper": "Pass",
+     "test_finalize_cli_bridges_cancelled_job_status_and_refuses_invocation_options": "Pass"
+    },
+    "xunit": {
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False, contended: False)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True, contended: False)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: True)": "Pass",
+     "LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: True)": "Pass",
+     "CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: \\\"cancelled\\\", cancelled: True)": "Pass",
+     "CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: \\\"failure\\\", cancelled: False)": "Pass",
+     "CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: \\\"success\\\", cancelled: False)": "Pass",
+     "CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: \\\"\\\", cancelled: False)": "Pass",
+     "CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: null, cancelled: False)": "Pass",
+     "CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: True)": "Pass",
+     "CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: False)": "Pass"
+    },
+    "parties": "test_review_fixes.SignalOrderingTests and the 926c1c3f step-shell regression (85-case suite) pass"
+   },
+   "hosted": {
+    "run": 42539638836,
+    "status": "passed",
+    "summary": "The runner signalled only the step process; the exec-run helper recorded SIGINT and delivered it to the tool session, the tool recorded cancelled/HXC130 within about 2.5 s of the request, the helper returned 130 without an exact down, and the always() finalizer recovered the receipt, performed the exact down with job status cancelled and verified empty inventories."
+   },
+   "status": "covered"
+  },
+  {
+   "row": "Same-job/cross-job attachment",
+   "touchedBy": [],
+   "disposition": "Unchanged by loop 1; the AttachAdmissionTests class (133 cases) passed again in the focused run.",
+   "local": {
+    "xunit": {
+     "AttachAdmissionTests.SameJobCiAttachmentIsAcceptedAsync": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"attempt\\\")": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"run\\\")": "Pass",
+     "AttachAdmissionTests.DifferingCiIdentityIsCrossJobAsync(element: \\\"repository\\\")": "Pass"
+    }
+   },
+   "status": "covered"
+  },
+  {
+   "row": "Cleanup failure or unknown discovery",
+   "touchedBy": [
+    "BS-1",
+    "PA-2",
+    "PA-3",
+    "PA-7",
+    "PA-13",
+    "PA-19"
+   ],
+   "local": {
+    "xunit": {
+     "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False)": "Pass",
+     "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True)": "Pass",
+     "CompositionEngineTests.IncompleteCleanupKeepsOwnerAndPeerClaimsAsync": "Pass"
+    },
+    "python": {
+     "test_unterminated_session_refuses_every_allocation_decision": "Pass",
+     "test_a_live_orphan_cannot_hold_the_provisioning_lock_against_exact_cleanup": "Pass",
+     "test_down_timeout_malformed_or_non_json_output_is_unverified_and_still_retains": "Pass",
+     "test_unknown_discovery_or_any_owned_leftover_refuses_completion": "Pass",
+     "test_malformed_published_result_is_a_classified_retention_refusal": "Pass"
+    },
+    "parties": "test_review_fixes.LockRefusalTests and WithdrawalTests pass"
+   },
+   "status": "covered"
+  },
+  {
+   "row": "Missing tool/suite/package preparation",
+   "touchedBy": [
+    "BS-2",
+    "PA-4",
+    "PA-23"
+   ],
+   "local": {
+    "workflowContract": "Domain workflow v2 test-platform checks passed: 285 assertions.",
+    "controls": [
+     "Pinned Dapr digests: missing version, missing digest, malformed digest and missing catalog property refuse",
+     "CLI/runtime digest mismatch and missing runtime digest refuse before extraction"
+    ],
+    "python": {
+     "test_missing_or_wrong_mode_suite_refuses_before_process": "Pass",
+     "test_missing_package_preparation_refuses_before_process": "Pass"
+    },
+    "parties": "test_review_fixes.WorkflowControlTests: catalog/digest refusals before any download and verify-before-extract ordering"
+   },
+   "hosted": {
+    "run": 42539638836,
+    "status": "observed",
+    "summary": "Prepare integration binaries verified all four pinned Dapr archives before extraction on a real hosted runner."
+   },
+   "status": "covered"
+  }
+ ],
+ "candidateAcceptance": false
+}

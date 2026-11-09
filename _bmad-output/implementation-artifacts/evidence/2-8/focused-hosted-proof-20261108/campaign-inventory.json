@@ -1,0 +1,106 @@
+{
+  "schema": "hexalith.story-2-8.focused-campaign-inventory.v1",
+  "recordedAtUtc": "2026-11-08T20:42:59Z",
+  "purpose": "Fixed finite inputs for the Story 2.8 focused hosted lifecycle proof, recorded before any dispatch of this campaign. Selected once; a later change requires a recorded reason and rerun of affected checks.",
+  "authority": "Active Story 2.8 spec, 'Fixed campaign inputs and one-time reconciliation' and 'Remote-operation authorization — 2026-11-08 resumption' (hosted proof, no merges).",
+  "policy": {
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+    "document": "docs/contracts/candidate-and-attachment-policy-v1.md",
+    "sha256": "22ef0a64cfbb970dee680c11e3016f3bb99fd4e96a84d8a9f62556ae9c21cc71"
+  },
+  "decisionClassification": "baseline-only",
+  "candidateAcceptance": false,
+  "acceptanceScope": "Focused Story 2.8 lifecycle proof only. It cannot pass the full Story 2.10 matrix, qualify a tool for Platform acceptance, or supply candidate evidence for any merge/release decision.",
+  "caller": {
+    "repository": "Hexalith/Hexalith.Parties",
+    "sourceRevision": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+    "tree": "9771ed23baca776cbe8c2d1d8ef2a5f75fec4d86",
+    "selectionReason": "Latest Parties main with fresh passing main CI 42479678863 (isolated 15 projects, native 28, empty owned inventories). It already adopts the published Builds 4.44.13 stdin-drain fix for the third matrix's first failure. Current Parties main 42b76cd6 (external /pushall at 2026-11-08T19:34:56Z) moves its Platform gitlink to the untagged e39a9a25 and its own main CI 42516570737 fails at prerequisite preparation (HXW011), so it is not selected. Its workflow/controller bytes are identical to 566b9bfc.",
+    "dispatchRef": "refs/heads/story-2-8/focused-lifecycle-566b9bfc (new branch pointing exactly at sourceRevision; triggers no push workflow)",
+    "workflow": {
+      "id": 406038512,
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "sha256": "03de067657fff291ec5bd04fcafe455e0746db5fd255c331aa7c75f06594f792"
+    },
+    "controller": {
+      "path": "scripts/qualify-disposable-ci.py",
+      "sha256": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4"
+    },
+    "toolManifest": {
+      "path": ".config/dotnet-tools.json",
+      "sha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550"
+    },
+    "moduleManifest": {
+      "path": "module/hexalith.module-manifest.v2.json",
+      "sha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348"
+    },
+    "globalJsonSha256": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+    "rootGitlinks": {
+      "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+      "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+      "references/Hexalith.EventStore": "6ef8dcd4fc75e9bf20e403f2baf326e882a05d69",
+      "references/Hexalith.FrontComposer": "58e997a4b0fed7103948a984d1cb6f4724888a3f",
+      "references/Hexalith.McpCli": "ae4a317f208829681dc8eec36a308bc36f3f9715",
+      "references/Hexalith.Memories": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+      "references/Hexalith.Tenants": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+      "references/Hexalith.Commons": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "references/Hexalith.PolymorphicSerializations": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "references/Hexalith.AI.Tools": "1745b6663ad32bb1288167135ed0f979366c53a0"
+    }
+  },
+  "executor": {
+    "repository": "Hexalith/Hexalith.Builds",
+    "sourceRevision": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "tag": "v4.44.13",
+    "tree": "7416e80349ddfe3393b1a26701085d4d28219b87",
+    "files": {
+      ".github/workflows/domain-ci-v2.yml": {"blob": "a547d9148673118d758850c3c113d74959ee63a0", "sha256": "3374b28aac7ae9468e24a7f437170972c204bf31fd6e5da5f817492b84f9b8f5"},
+      "Github/run-module-integration/run_module_integration.py": {"blob": "21ce9cbdadaecfe0ce35386a6721dadeb2b7f461", "sha256": "7caae136b2f03aeb8d33e712d6d559516a2775012f9928a342c34c791743e234"},
+      "Github/prepare-module-build/prepare_module_build.py": {"blob": "a0a21abadd444cdd73504071b456f33945c55152", "sha256": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550"},
+      "Github/prepare-module-build/action.yml": {"blob": "3bd6023b6d043780f5ccd2707604cdc720a7b4fd", "sha256": "285b897bb67a163fde16a3ca6cdbf6eb68254955ca4fc9b3bcde038eb9b4f7fa"}
+    },
+    "runnerSourceEquivalence": "Builds 4.45.0 (27145e52, current Platform pin) changes ten paths relative to 3c809618: README, the v2 manifest schema, four Manifest validators, Runtime/CompositionDeclarationOptions.cs (catalog package-version lookup for declared EventStore extensions) and three test files. run_module_integration.py, prepare_module_build.py, domain-ci-v2.yml and the CI owner/attachment/withdrawal/cleanup Runtime sources are byte-identical. This campaign selects 4.44.13 because it is the caller's own pin; it makes no claim about 4.45.0 runtime behavior."
+  },
+  "executingTool": {
+    "package": "hexalith.builds.module.cli",
+    "version": "4.44.13",
+    "nupkgSha256": "036d32fb2c7ea961d4ec055ad59a70f2cdd6377ab034d67f2b82e01e16b62bec",
+    "g4HostAppHostSha256": "5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252",
+    "g4HostToolingSha256": "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d",
+    "originalReceipt": "Builds CI 42436815567, normal publisher 42438005017 (stop/save handoff 2026-11-08); local package cache hashes re-verified at recording time"
+  },
+  "catalog": {
+    "path": "references/Hexalith.Builds/Props/Directory.Packages.props",
+    "blob": "b45555806e78ea6ce66ad6a8f0fcc5f7c70b691d",
+    "sha256": "c66fb47d42633dd51bdfa6f31216ee22412e0137a664bf472edf72ac103ad5d1",
+    "catalogImageDigests": {"docker.io/library/redis:7.4-alpine": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"},
+    "runtimeImages": "Actual owned container image references and content identities are observed by the controller ('actual-images') and bound into the retained observations; they are not guessed here."
+  },
+  "suites": {
+    "baseline": {"profile": "platform-package", "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj", "isolatedProjects": 15},
+    "qualification": {"profile": "lifecycle-package", "entry": "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj", "executionTimeoutSeconds": 300, "stopTimeoutSeconds": 90}
+  },
+  "requiredCases": {
+    "matrix": ["passing (same-job admission, cross-job HXR033 refusal, immutable-expiry retry, ci-job-completed withdrawal, exact idempotent down, completed-owner refusal)", "failing (same, with declared ProductOrTest first outcome)", "retry-with-peer (Story 2.10-owned metadata-lock retry/peer preservation; executed by the unchanged controller, not claimed as a 2.10 pass)", "partial-startup (SIGKILL in Starting, exact recovery, cancelled first outcome, idempotent retry)"],
+    "cancel-startup": "Real GitHub cancellation of a paused Starting owner after the audited ready artifact; exact final inventories empty",
+    "cancel-execution": "Real GitHub cancellation during native execution with an active 240 s same-job hold; ci-job-cancelled withdrawal before cleanup; exact final inventories empty"
+  },
+  "ordering": "matrix, then cancel-startup, then cancel-execution; each dispatched once; a cancellation run is cancelled at most once and only after its fresh ready artifact passes the audit procedure.",
+  "budgets": {
+    "baselineBuildTimeoutMinutes": 60,
+    "qualificationJobTimeoutMinutes": 45,
+    "attachmentHoldSeconds": 240,
+    "cancellationWaitBarrierSeconds": 120,
+    "readyFreshnessMaximumSeconds": 20,
+    "startupReadinessPollSeconds": 600,
+    "executionReadinessPollSeconds": 900,
+    "productionStartupStoppingBudgetsChanged": false
+  },
+  "readinessAudit": {
+    "procedure": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-lifecycle-ready-audit-procedure.py",
+    "sha256": "bf2e51f720d522390e22a94e7814faf043ea27ef30be43c3f1b8abf4b7b38759"
+  },
+  "priorFailedMatrices": [42400061797, 42408333976, 42418257508],
+  "priorCancellationRequests": 0,
+  "measurements": "setup/build/test/startup/cleanup durations are recorded per run from the actual job/step timestamps after completion."
+}

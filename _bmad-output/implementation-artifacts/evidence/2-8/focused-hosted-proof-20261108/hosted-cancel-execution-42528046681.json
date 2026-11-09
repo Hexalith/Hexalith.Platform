@@ -1,0 +1,806 @@
+{
+ "run": {
+  "id": 42528046681,
+  "run_attempt": 1,
+  "head_sha": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "head_branch": "fix/lifecycle-cancel-signal-566b9bfc",
+  "event": "workflow_dispatch",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-08T22:00:54Z",
+  "updated_at": "2026-11-08T22:26:45Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42528046681"
+ },
+ "scenario": "cancel-execution",
+ "jobs": [
+  {
+   "name": "baseline / build-and-test",
+   "id": 128875923921,
+   "conclusion": "success",
+   "startedAt": "2026-11-08T22:00:59Z",
+   "completedAt": "2026-11-08T22:20:48Z",
+   "durationSeconds": 1189.0,
+   "runnerOs": [
+    "ubuntu-latest"
+   ],
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "seconds": 4.0
+    },
+    {
+     "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 3.0
+    },
+    {
+     "name": "Validate governed CI contract",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Checkout approved Builds actions",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Evaluate governed workflow provenance",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Initialize root-declared submodules (governed)",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Initialize root-declared submodules",
+     "conclusion": "success",
+     "seconds": 34.0
+    },
+    {
+     "name": "Initialize .NET",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Checkout workflow-owned Builds preparation",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Prepare module build",
+     "conclusion": "success",
+     "seconds": 10.0
+    },
+    {
+     "name": "Cache NuGet packages",
+     "conclusion": "success",
+     "seconds": 10.0
+    },
+    {
+     "name": "Validate test platform input",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Prepare package dependencies",
+     "conclusion": "success",
+     "seconds": 143.0
+    },
+    {
+     "name": "Restore",
+     "conclusion": "success",
+     "seconds": 21.0
+    },
+    {
+     "name": "Build",
+     "conclusion": "success",
+     "seconds": 94.0
+    },
+    {
+     "name": "Validate package consumer references",
+     "conclusion": "success",
+     "seconds": 31.0
+    },
+    {
+     "name": "Unit tests (Tier 1, VSTest)",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+     "conclusion": "success",
+     "seconds": 568.0
+    },
+    {
+     "name": "Require isolated success before integration",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Install integration toolchain without starting services",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Prepare integration binaries",
+     "conclusion": "success",
+     "seconds": 10.0
+    },
+    {
+     "name": "Authenticate pull-only integration registry",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Runner-owned package integration",
+     "conclusion": "success",
+     "seconds": 246.0
+    },
+    {
+     "name": "Finalize exact CI owner",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Remove integration registry credentials",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Upload classified integration diagnostics",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Validate coverage gates",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Fail on blocking test failures",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Upload test and coverage evidence",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Post Cache NuGet packages",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Checkout workflow-owned Builds preparation",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Initialize .NET",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "name": "qualification",
+   "id": 128881190572,
+   "conclusion": "cancelled",
+   "startedAt": "2026-11-08T22:20:51Z",
+   "completedAt": "2026-11-08T22:26:44Z",
+   "durationSeconds": 353.0,
+   "runnerOs": [
+    "ubuntu-24.04"
+   ],
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 4.0
+    },
+    {
+     "name": "Initialize only direct owner dependencies",
+     "conclusion": "success",
+     "seconds": 37.0
+    },
+    {
+     "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Prepare the actual pinned package tool and catalog",
+     "conclusion": "success",
+     "seconds": 16.0
+    },
+    {
+     "name": "Build the explicit declared lifecycle suite",
+     "conclusion": "success",
+     "seconds": 16.0
+    },
+    {
+     "name": "Read verified catalog toolchain versions",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Restore verified Aspire runtime packages in this job",
+     "conclusion": "success",
+     "seconds": 7.0
+    },
+    {
+     "name": "Install toolchain without provisioning services",
+     "conclusion": "success",
+     "seconds": 9.0
+    },
+    {
+     "name": "Configure only the dedicated pull reader",
+     "conclusion": "success",
+     "seconds": 0.0
+    },
+    {
+     "name": "Exercise real passing failing partial-startup and exact retry scenarios",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Observe actual startup cancellation readiness",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Observe actual execution cancellation readiness and active hold",
+     "conclusion": "success",
+     "seconds": 245.0
+    },
+    {
+     "name": "Publish the actual ready owner before operator cancellation",
+     "conclusion": "success",
+     "seconds": 2.0
+    },
+    {
+     "name": "Await parent cancellation of this exact ready run",
+     "conclusion": "cancelled",
+     "seconds": 4.0
+    },
+    {
+     "name": "Independently finalize every exact same-job owner",
+     "conclusion": "success",
+     "seconds": 6.0
+    },
+    {
+     "name": "Remove the private reader file",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Retain classified lifecycle observations",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+     "conclusion": "skipped",
+     "seconds": 0.0
+    },
+    {
+     "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+     "conclusion": "success",
+     "seconds": 1.0
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "seconds": 0.0
+    }
+   ]
+  }
+ ],
+ "archives": {
+  "blocking-test-results": {
+   "id": 13637340056,
+   "sha256": "cafb2ae6171818567541f4020779f203587dc99bfe0a4d32201f5a8060ae999e",
+   "bytes": 945345,
+   "members": 16
+  },
+  "lifecycle-cancellation-ready": {
+   "id": 13637062213,
+   "sha256": "e0e1191cde38ef2441efce1d24c379de5f43c8dae8a88d40676ebb3ca637e7a7",
+   "bytes": 7187,
+   "members": 5
+  },
+  "ci-lifecycle-observations": {
+   "id": 13636259369,
+   "sha256": "9e28235cba7e3c4d6eb9139953dd9d8ab5639c03409329bc702685ae05c2e4ae",
+   "bytes": 16879,
+   "members": 13
+  },
+  "module-integration-diagnostics": {
+   "id": 13636129063,
+   "sha256": "282447e4010c9ad99e20203074b5db74bee54fc20e9c75bbbc3bfe25fd5caa4f",
+   "bytes": 12807,
+   "members": 8
+  }
+ },
+ "archiveMembers": {
+  "blocking-test-results": {
+   "Hexalith.Parties.AdminPortal.Tests/Hexalith.Parties.AdminPortal.Tests.trx": "da6de50aaaf3d8a90ed703bc14ace2c2d9fa255dc99dc744efa538dd92c686fa",
+   "Hexalith.Parties.Aspire.Tests/Hexalith.Parties.Aspire.Tests.trx": "36c906dbd466bfdbcdc64394861c7fc5c3ec32d7942a8584b180cf82ae6e5dcb",
+   "Hexalith.Parties.Authentication.Tests/Hexalith.Parties.Authentication.Tests.trx": "3db36eaa3f63fa4c131750320d0aea9ecc63257e848f45fc1f67a938ec8552c0",
+   "Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.trx": "fdb3e913acfe247a002a40c71bc5b7a6c3d29af1262b37a1871c29b0ef8fe7d2",
+   "Hexalith.Parties.Client.Tests/Hexalith.Parties.Client.Tests.trx": "1c56c8de205ff16b44eb6b71c677fabdcfaa5235897955856888d641bec16b9e",
+   "Hexalith.Parties.ConsumerPortal.Tests/Hexalith.Parties.ConsumerPortal.Tests.trx": "ee09e7490ef2a503ca2c0b2bd931d4c207f38c82484a7e11792c6895e9b56d87",
+   "Hexalith.Parties.Contracts.Tests/Hexalith.Parties.Contracts.Tests.trx": "41f2897f2cb69676d2e43e54ea0c4386b9e1d69510a43d9d99b8fd1a22b0984d",
+   "Hexalith.Parties.Mcp.Tests/Hexalith.Parties.Mcp.Tests.trx": "058100edb48d416856734ac943eeed34da029df7867cd9b110fd817dceb4843d",
+   "Hexalith.Parties.Picker.Tests/Hexalith.Parties.Picker.Tests.trx": "77c8f4022adce6a644809353a0edc623f4c12f6323eff2c5cfba99aa967efd05",
+   "Hexalith.Parties.Projections.Tests/Hexalith.Parties.Projections.Tests.trx": "66c531b649a3a43e49d91ed056e20f7bba04be4f9a22ed8cda2e388e5aa58458",
+   "Hexalith.Parties.Sample.Tests/Hexalith.Parties.Sample.Tests.trx": "45a92c8f4dfcf5a2a247afc0b35843af5fb0875ec380fd13b278da96bafbcbcb",
+   "Hexalith.Parties.Security.Tests/Hexalith.Parties.Security.Tests.trx": "86b107e2a216ef6942873b2c422ac0ab0da8950ccd84df4875191e681c8033b6",
+   "Hexalith.Parties.Server.Tests/Hexalith.Parties.Server.Tests.trx": "a87d38c858859b6322395328a49f0af04c99adbbce7392e49a0ff128274b8c14",
+   "Hexalith.Parties.Tests/Hexalith.Parties.Tests.trx": "152250c22fbf53af3dd3493a2d611141054f347a52b8e018631d905afa09daac",
+   "Hexalith.Parties.UI.Tests/Hexalith.Parties.UI.Tests.trx": "c048ee908710f1799241be1f3356e738c1dfe965b4196f8ae31965f2ac046f71",
+   "module-integration/native-b9b0eaa179ed20a9d876cbf167b2bc83b2930f40e6d86d668a788042995b028e.trx": "b9b0eaa179ed20a9d876cbf167b2bc83b2930f40e6d86d668a788042995b028e"
+  },
+  "lifecycle-cancellation-ready": {
+   "cancel-cancellation-active-hold.json": "b9b0f597b2478588e2b5d8489d1059128b4179d93c511a4929468225a002afa4",
+   "inputs.json": "05690b0fd4efd6e6b682d20f6277aed4370a14519fa4677ceb1191ac1e784d7b",
+   "cancel-execution-ready.json": "73488c2edc6c317ba774c9aaee7692a53879a5cb34cd686e9bec2aaa41e295a0",
+   "loaded-assemblies-7cb5d51367085bb18b0d042e4fa62d40.json": "b0d5bb444a754323c6274e03c4b8c3e70593dfc3c3a2b2e199ed8220aadc6bd1",
+   "observations.json": "f77de710a20529345f6614a521449edb92f6c30d4b9d8bae3dae97fe11434195"
+  },
+  "ci-lifecycle-observations": {
+   "cancel/attachment-withdrawals.json": "10af66534cfb9adb7533d8270650a892d2203b6fbdbd9eee03370999eb47267a",
+   "cancel/attachments.json": "dfc6ca702aac59c9fe28746961944d5d23775c0c7b2ebbb274e6537905ffb881",
+   "cancel/functional-observations-3d0cd9683b5b27962a6cdb40218a05c54674f8980f2320342169f73f51588112.json": "3d0cd9683b5b27962a6cdb40218a05c54674f8980f2320342169f73f51588112",
+   "cancel/lifecycle-5a8f2a748e0e0f1789a98d65db4c1b5d2195f98d90959ad608e93e6dc949da2e.json": "5a8f2a748e0e0f1789a98d65db4c1b5d2195f98d90959ad608e93e6dc949da2e",
+   "cancel/native-f52e79bc53b08de10cdbf0965c42effb5f66a0de1677163edd3d3400c7b73647.trx": "f52e79bc53b08de10cdbf0965c42effb5f66a0de1677163edd3d3400c7b73647",
+   "cancel/test-result.json": "83b99772ed473ccf0e4cf2699d7c5746e26ae030138610a0be7071b9dd5a3471",
+   "cancel-cancellation-active-hold.json": "b9b0f597b2478588e2b5d8489d1059128b4179d93c511a4929468225a002afa4",
+   "cancel-execution-ready.json": "73488c2edc6c317ba774c9aaee7692a53879a5cb34cd686e9bec2aaa41e295a0",
+   "cancel-independent-finalizer.json": "01d5a07f486a1e4d7b0d418675fa5710ef9ac880ea443630adaccd304f4b9a98",
+   "cancel-post-cancellation-exact-retry.json": "01d5a07f486a1e4d7b0d418675fa5710ef9ac880ea443630adaccd304f4b9a98",
+   "inputs.json": "05690b0fd4efd6e6b682d20f6277aed4370a14519fa4677ceb1191ac1e784d7b",
+   "loaded-assemblies-7cb5d51367085bb18b0d042e4fa62d40.json": "b0d5bb444a754323c6274e03c4b8c3e70593dfc3c3a2b2e199ed8220aadc6bd1",
+   "observations.json": "88046ad1b95ba9942ed59848f671d3b72e7be7180cf2f72e26a5dcb1389f8bab"
+  },
+  "module-integration-diagnostics": {
+   "cleanup.json": "566edd8bd4a82a33ee0297c80f35473b3671d5d29714689196a743ccfca990f5",
+   "execution.json": "2a94827d8b9984990e0ddf04d46744a764d0a73edf003e478d986a6084601a49",
+   "functional-observations-55ace0d8eb8b34dc4f395fd454dfdcdee0cb9a6dc71ac86813bd5f1458d473cb.json": "55ace0d8eb8b34dc4f395fd454dfdcdee0cb9a6dc71ac86813bd5f1458d473cb",
+   "invocation.json": "07f3e075a5294a2ac42ba926e80ec609c5ca42d4820c8cc16be8f3cc2dd9e0de",
+   "lifecycle-c1e2f282548e7ca81f9b2d7fd53af7f04ac48cb03fc5a5f550c8194f8d9d0bc7.json": "c1e2f282548e7ca81f9b2d7fd53af7f04ac48cb03fc5a5f550c8194f8d9d0bc7",
+   "loaded-assemblies-eaf7dca225082fd780d8fbae4eb76dba.json": "9a6fc1e423827ecdc69779649e756eaf2678edf39ab358fe0e4f0ca120211fd6",
+   "native-b9b0eaa179ed20a9d876cbf167b2bc83b2930f40e6d86d668a788042995b028e.trx": "b9b0eaa179ed20a9d876cbf167b2bc83b2930f40e6d86d668a788042995b028e",
+   "test-result.json": "ae2785f53e106808a8ac7b2cb8723fef86cb03bdc7206e7b2e416d8b41740dfe"
+  }
+ },
+ "candidateAcceptance": false,
+ "classification": "baseline-only focused Story 2.8 lifecycle observation",
+ "baselineIntegration": {
+  "cleanupOutcome": {
+   "category": "None",
+   "exitCode": "Success",
+   "phase": "None",
+   "ruleId": null
+  },
+  "remainingResources": {
+   "claimIds": [],
+   "containerIds": [],
+   "discoveryFailures": [],
+   "isEmpty": true,
+   "processIds": [],
+   "resourceIds": [],
+   "unverified": false,
+   "workspaceIds": []
+  },
+  "declaredDiagnostics": [
+   "lifecycle",
+   "native-report",
+   "functional-observations"
+  ]
+ },
+ "controller": {
+  "schema": "hexalith.ci-lifecycle-qualification.v1",
+  "classification": "baseline-only",
+  "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+  "executionContext": {
+   "disposable": true,
+   "jobId": "qualification",
+   "kind": "ci",
+   "operatingSystem": "Linux",
+   "repository": "Hexalith/Hexalith.Parties",
+   "runnerKind": "github-hosted",
+   "workflowAttempt": 1,
+   "workflowRunId": "42528046681"
+  },
+  "inputs": {
+   "candidateAcceptance": false,
+   "executionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42528046681"
+   },
+   "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+   "platformIdentity": {
+    "CatalogCommit": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "CheckoutCommit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "Commit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "CompositionCommit": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+    "IsPlatformRepository": false,
+    "PlatformPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform",
+    "RecordPath": "/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Platform/hexalith-platform.json",
+    "ReleaseTag": "v1.7.1",
+    "ToolVersionRange": "[4.44.13, 5.0.0-0)"
+   },
+   "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+   "toolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550"
+  },
+  "checkpointReached": null,
+  "firstFailure": null,
+  "owners": [
+   {
+    "label": "cancel",
+    "runId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "cancellationPhase": "execution",
+    "cancellationReadyAtUtc": "2026-11-08T22:26:27.499850+00:00",
+    "launchGateStatus": "released"
+   }
+  ],
+  "observationKinds": {
+   "fixture-control": 1,
+   "actual-images": 1,
+   "cancellation-active-hold": 1,
+   "actual-cancellation-ready": 1,
+   "actual-cancellation-state-snapshot": 1,
+   "external-cancellation-signal": 1,
+   "owned-process-signal": 1,
+   "terminal-before-independent-finalization": 1,
+   "independent-finalizer": 1,
+   "actual-withdrawal": 2,
+   "post-cancellation-exact-retry": 1,
+   "actual-cancellation-terminal": 1,
+   "finalizer-result": 1
+  },
+  "checkpoints": [],
+  "attachments": [
+   {
+    "tag": "cancellation-active-hold",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "exitCode": 0,
+    "accepted": true,
+    "ruleIds": []
+   }
+  ],
+  "withdrawals": [
+   {
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+    "outcome": "withdrawn",
+    "endReason": "ci-job-cancelled",
+    "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+    "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+    "endedAtUtc": "2026-11-08T22:26:35.9517617+00:00",
+    "effectiveHoldSeconds": 240
+   },
+   {
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+    "outcome": "withdrawn",
+    "endReason": "ci-job-cancelled",
+    "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+    "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+    "endedAtUtc": "2026-11-08T22:26:35.9517617+00:00",
+    "effectiveHoldSeconds": 240
+   }
+  ],
+  "withdrawnBeforeStop": [],
+  "cleanupFirstOutcomes": [],
+  "exactDowns": [
+   {
+    "tag": "independent-finalizer",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "exitCode": 0,
+    "outcome": {
+     "category": "None",
+     "exitCode": "Success",
+     "phase": "None",
+     "ruleId": null
+    },
+    "remainingResources": {
+     "claimIds": [],
+     "containerIds": [],
+     "discoveryFailures": [],
+     "isEmpty": true,
+     "processIds": [],
+     "resourceIds": [],
+     "unverified": false,
+     "workspaceIds": []
+    },
+    "observedAtUtc": "2026-11-08T22:26:38.982071+00:00"
+   },
+   {
+    "tag": "post-cancellation-exact-retry",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "exitCode": 0,
+    "outcome": {
+     "category": "None",
+     "exitCode": "Success",
+     "phase": "None",
+     "ruleId": null
+    },
+    "remainingResources": {
+     "claimIds": [],
+     "containerIds": [],
+     "discoveryFailures": [],
+     "isEmpty": true,
+     "processIds": [],
+     "resourceIds": [],
+     "unverified": false,
+     "workspaceIds": []
+    },
+    "observedAtUtc": "2026-11-08T22:26:39.902107+00:00"
+   }
+  ],
+  "cancellation": [
+   {
+    "admission": {
+     "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+     "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+     "effectiveHoldSeconds": 240,
+     "endReason": null,
+     "endedAtUtc": null,
+     "environmentId": "48051c08d8db48e3cba219bf63c919b6",
+     "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+     "originalAttachmentRequestId": "4f8c3b5b3951327b4a21cd5209193b07",
+     "outcome": null,
+     "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "requestedHoldSeconds": 240
+    },
+    "kind": "actual-cancellation-ready",
+    "observedAtUtc": "2026-11-08T22:26:27.502110+00:00",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "phase": "execution",
+    "readyAtUtc": "2026-11-08T22:26:27.499850+00:00"
+   },
+   {
+    "kind": "actual-cancellation-state-snapshot",
+    "observedAtUtc": "2026-11-08T22:26:33.665675+00:00",
+    "snapshot": {
+     "admission": {
+      "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+      "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+      "effectiveHoldSeconds": 240,
+      "endReason": null,
+      "endedAtUtc": null,
+      "environmentId": "48051c08d8db48e3cba219bf63c919b6",
+      "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+      "originalAttachmentRequestId": "4f8c3b5b3951327b4a21cd5209193b07",
+      "outcome": null,
+      "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+      "requestedHoldSeconds": 240
+     },
+     "attemptId": "54acae866651e86071825b76e0f9f781",
+     "environmentId": "48051c08d8db48e3cba219bf63c919b6",
+     "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42528046681"
+     },
+     "firstOutcome": null,
+     "nativeExecution": {
+      "birth": "46483",
+      "processId": 11313
+     },
+     "observedAtUtc": "2026-11-08T22:26:33.664317+00:00",
+     "readStartedAtUtc": "2026-11-08T22:26:33.661326+00:00",
+     "runId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "stateTestTerminal": null,
+     "stateUpdatedAtUtc": "2026-11-08T22:26:03.3256792+00:00",
+     "status": "Ready"
+    }
+   },
+   {
+    "kind": "external-cancellation-signal",
+    "observedAtUtc": "2026-11-08T22:26:33.669706+00:00",
+    "signals": [
+     {
+      "observedAtUtc": "2026-11-08T22:26:33.619999+00:00",
+      "signal": 2
+     }
+    ],
+    "terminalBeforeSignalForward": null
+   },
+   {
+    "firstOutcome": {
+     "ownerId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "runId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "sourceMappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+     "terminalAtUtc": "2026-11-08T22:26:34.7194848+00:00",
+     "terminalCause": "run-cancelled",
+     "terminalOutcome": {
+      "category": "Cancelled",
+      "exitCode": "Cancelled",
+      "phase": "Cleanup",
+      "ruleId": "HXC130"
+     },
+     "terminalStatus": "cancelled"
+    },
+    "kind": "terminal-before-independent-finalization",
+    "observedAtUtc": "2026-11-08T22:26:35.567772+00:00",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40"
+   },
+   {
+    "candidateAcceptance": false,
+    "classification": "cancelled",
+    "firstOutcome": {
+     "ownerId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "runId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "sourceMappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+     "terminalAtUtc": "2026-11-08T22:26:34.7194848+00:00",
+     "terminalCause": "run-cancelled",
+     "terminalOutcome": {
+      "category": "Cancelled",
+      "exitCode": "Cancelled",
+      "phase": "Cleanup",
+      "ruleId": "HXC130"
+     },
+     "terminalStatus": "cancelled"
+    },
+    "kind": "actual-cancellation-terminal",
+    "observedAtUtc": "2026-11-08T22:26:39.929491+00:00",
+    "originalAdmission": {
+     "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+     "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+     "effectiveHoldSeconds": 240,
+     "endReason": null,
+     "endedAtUtc": null,
+     "environmentId": "48051c08d8db48e3cba219bf63c919b6",
+     "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+     "originalAttachmentRequestId": "4f8c3b5b3951327b4a21cd5209193b07",
+     "outcome": null,
+     "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "requestedHoldSeconds": 240
+    },
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+    "parentApiReceiptRequired": true,
+    "phase": "execution",
+    "withdrawal": {
+     "acceptedAtUtc": "2026-11-08T22:26:27.199161+00:00",
+     "attachedRunId": "f3b32c1662d865a6dbcf376e2a003806",
+     "effectiveHoldSeconds": 240,
+     "endReason": "ci-job-cancelled",
+     "endedAtUtc": "2026-11-08T22:26:35.9517617+00:00",
+     "environmentId": "48051c08d8db48e3cba219bf63c919b6",
+     "expiresAtUtc": "2026-11-08T22:30:27.199161+00:00",
+     "originalAttachmentRequestId": "4f8c3b5b3951327b4a21cd5209193b07",
+     "outcome": "withdrawn",
+     "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40",
+     "requestedHoldSeconds": 240
+    }
+   }
+  ],
+  "partial": [],
+  "images": [
+   {
+    "images": [
+     {
+      "containerId": "167be4b9d86486be603737e051dd72a9d5e9771193a11c043f0705a6507a3481",
+      "imageContentId": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+      "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+     },
+     {
+      "containerId": "020ff951399e7e4b6bcc3f6c439701cef29b6f2ca3c8d712bf5d73089a6aff19",
+      "imageContentId": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+      "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+     },
+     {
+      "containerId": "fe142a8656ee2ca43b22f1eca16eec076e25634d44e0e5d47d04aae5988c8959",
+      "imageContentId": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+      "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+     },
+     {
+      "containerId": "697d4211e30e95bbe455c8e7ec1cadc076dcd7e87d195bd6630026e37ddb74f0",
+      "imageContentId": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+      "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+     },
+     {
+      "containerId": "1047797438e1fe8bc98a098dabd8720d9500444c5cf056d05445fcf7f8f305a0",
+      "imageContentId": "sha256:1e75c46441255d45474ef08f3c8ea65599419bbed937f323735f60441ef3fbe7",
+      "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+     },
+     {
+      "containerId": "1289e7ec2f5b0dc03506cce4a069ac1bac8c5452fcdc5edae738a47ccfe94fc6",
+      "imageContentId": "sha256:1f0fe4b3816cbc0469d693248af01c48191d93eb5f5f4c34999c5c8ec3ceb20c",
+      "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+     },
+     {
+      "containerId": "4a96779bed4507f7402bf4b70abc4274fd977c2ca89dbb0a6192d4e8eee71471",
+      "imageContentId": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+      "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+     },
+     {
+      "containerId": "2fae68a61961bf105cb1cc92d39c3d773784f1ce9b52d5d87faeabe63a0da20d",
+      "imageContentId": "sha256:9eafe528d67a445c16ad8981d357ecd9e6f5aa4022992dd94b1de1b08d662559",
+      "imageReference": "redis/redis-stack:latest"
+     },
+     {
+      "containerId": "9cd5ce82316700639425edeef815d3e8861cf2c371204ca708254e740ea91529",
+      "imageContentId": "sha256:5208d4f483b84ac8ec5a83937ecd4678e24b4589634e54ccc5212b7c8fc1762d",
+      "imageReference": "falkordb/falkordb:latest"
+     },
+     {
+      "containerId": "c12b8f5df03ae4b285cb4232e920d0f959993be8edb37daf9353adfd273d085e",
+      "imageContentId": "sha256:55164853746b106b9c21b3f3ade4f738fa31b294808ef30e4a92e20f9313e0c8",
+      "imageReference": "daprio/dapr:1.18.7"
+     },
+     {
+      "containerId": "d2f4609e0c0245a4c86093a67ddfce94deb50103abda1a795cd16d74ac335e08",
+      "imageContentId": "sha256:55164853746b106b9c21b3f3ade4f738fa31b294808ef30e4a92e20f9313e0c8",
+      "imageReference": "daprio/dapr:1.18.7"
+     },
+     {
+      "containerId": "55cccd5d6f7366994ff9a144a27453fee5d332d6bfa8407c28d927bf8c595115",
+      "imageContentId": "sha256:b70cbd7f4063133fecdbf5bcacc258c0eb1dfc605a3e82c9d339cfe44a6b7e2a",
+      "imageReference": "daprio/sentry:1.18.7"
+     },
+     {
+      "containerId": "24955a3b48f69fb9bf330d52b966f4844ba4f89429ac8d476bfc80459e5dd4c1",
+      "imageContentId": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+      "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+     }
+    ],
+    "kind": "actual-images",
+    "observedAtUtc": "2026-11-08T22:26:26.817267+00:00",
+    "ownerRunId": "7cb5d51367085bb18b0d042e4fa62d40"
+   }
+  ],
+  "finalizer": [
+   {
+    "allocationStatus": "allocated",
+    "candidateAcceptance": false,
+    "failures": [],
+    "issuedOwners": 1,
+    "issuedOwnersCleanupVerified": true,
+    "kind": "finalizer-result",
+    "observedAtUtc": "2026-11-08T22:26:39.931421+00:00"
+   }
+  ],
+  "failures": [],
+  "finalExactInventoryPerOwner": {
+   "7cb5d51367085bb18b0d042e4fa62d40": {
+    "tag": "post-cancellation-exact-retry",
+    "outcome": "Success",
+    "allInventoriesEmpty": true
+   }
+  }
+ }
+}

@@ -1,0 +1,100 @@
+{
+ "schema": "hexalith.story-2-8.review-loop-2-local-results.v1",
+ "recordedAtUtc": "2026-11-09T02:05:00Z",
+ "scope": "Resource-free local compilation and controlled process/filesystem fixtures only (fake dotnet/muxer/tool/AppHost processes, stub Docker). No real AppHost, DCP, Dapr, Docker, service or listener was started. Diagnostic only; no hosted or candidate credit.",
+ "sources": {
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "branch": "fix/ci-v2-cancellation-and-cleanup-27145e52",
+   "pullRequest": "https://github.com/Hexalith/Hexalith.Builds/pull/177 (draft, unmerged)",
+   "commits": [
+    {
+     "commit": "95b65d45df9cfeca13b392331cc0ad9b94644b6f",
+     "parent": "b411bafbcce5229e28a92ca54813e4c168bae312",
+     "subject": "fix(ci): signal only the tool and fit the v2 timeout inside the job"
+    },
+    {
+     "commit": "54970a7a43657ad598306d539c3abf19c4b1d911",
+     "subject": "style(ci): keep helper docstrings to one-line summaries"
+    },
+    {
+     "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+     "subject": "style(ci): mark the exact-down result records on their own lines",
+     "codacy": "success: Your pull request is up to standards!"
+    }
+   ],
+   "note": "54970a7a and bde7fd4f change only helper docstrings/comments and suppression placement; src/ and test/ C# are identical to 95b65d45."
+  },
+  "parties": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "branch": "fix/lifecycle-cancel-signal-566b9bfc",
+   "commit": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "parent": "2849c5b419c3dc445d6041c12968df29c97e0cc0"
+  },
+  "platform": {
+   "workingTree": "canonical checkout, uncommitted: PB-9 PlatformAppModelTests + PlatformNativeTestPreparation.ExpectedCatalogHosts accessor; PB-15/BS-4 contract text in docs/contracts/test-environment-v1.md"
+  }
+ },
+ "builds": {
+  "helperAndProvenancePython": {
+   "command": "python3 -B -m pytest Github/run-module-integration/tests Github/prepare-module-build/tests Github/governed-provenance/tests Github/publish-containers/tests/test_governed_release_workflow.py",
+   "atCommit": "bde7fd4f",
+   "result": "232 passed, 626 subtests passed; helper suite 65 tests (54 before plus 11 new)",
+   "newHelperCases": {
+    "test_runner_cancellation_reaches_only_the_tool_so_withdrawal_precedes_every_composed_stop": "Pass",
+    "test_finalizer_leaves_an_owned_surviving_apphost_to_the_exact_down": "Pass",
+    "test_cancellation_escalates_on_a_tool_that_ignores_interrupt_and_terminate": "Pass",
+    "test_a_reused_or_other_boot_session_is_never_signalled": "Pass",
+    "test_a_failed_cleanup_record_never_prevents_the_exact_down": "Pass",
+    "test_stderr_is_redacted_before_the_excerpt_and_across_joined_keywords": "Pass",
+    "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain": "Pass",
+    "test_a_timed_out_down_leaves_no_orphan_in_its_session": "Pass",
+    "test_timeout_derives_from_the_step_and_the_job_remaining_time": "Pass",
+    "test_an_exhausted_job_budget_refuses_before_any_allocation": "Pass",
+    "test_the_v2_step_passes_its_derived_budget_into_the_invocation": "Pass"
+   }
+  },
+  "workflowContract": {
+   "atCommit": "bde7fd4f",
+   "legacy": "Domain workflow legacy test-platform checks passed: 411 assertions.",
+   "v2": "Domain workflow v2 test-platform checks passed: 302 assertions (budget derived from the helper constants; digest fixture from Props/Directory.Packages.props)."
+  },
+  "focusedXunit": {
+   "command": "dotnet exec Hexalith.Builds.Module.Tests.dll -class CiRunLifecycleTests -class AttachAdmissionTests -class CompositionEngineTests -class ModuleRunnerReviewRegressionTests -class LocalRunLifecycleTests -class LocalRunSourceReviewTests -class LocalRunLifecycleReviewTests",
+   "atCommit": "95b65d45 (C# identical at bde7fd4f)",
+   "summary": {
+    "total": "351",
+    "passed": "351",
+    "failed": "0",
+    "skipped": "0",
+    "not-run": "0",
+    "time": "189.153"
+   },
+   "perClass": {
+    "AttachAdmissionTests": 133,
+    "ModuleRunnerReviewRegressionTests": 51,
+    "LocalRunSourceReviewTests": 24,
+    "LocalRunLifecycleReviewTests": 10,
+    "CompositionEngineTests": 46,
+    "LocalRunLifecycleTests": 59,
+    "CiRunLifecycleTests": 28
+   },
+   "pb6Cases": {
+    "CiRunLifecycleTests.FailedOwnerStatusWithinStopAllowanceRefusesLaterAttachmentAsync": "Pass",
+    "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False)": "Pass",
+    "CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True)": "Pass"
+   }
+  },
+  "complexity": "lizard 1.17.10 (-C 15 -L 50): no helper function over either limit.",
+  "redControls": "Against the b411bafb helper/workflow, the new tool-only (AppHost signalled before the withdrawal mark), owned-survivor, reused-session, failed-cleanup-record, stderr, non-UTF-8/missing-tool, down-timeout-orphan and derived-budget tests fail; the escalation test (PB-3) covers behavior that already existed and passes on both."
+ },
+ "parties": {
+  "pinnedHelper": "parties-wt2 at 4c0167b8 with pinned Builds 3c80 helper: tests/ci-lifecycle 95/95 OK; scripts test_*_integration.py 46/46 OK (reported by the Parties worker).",
+  "patchedHelper": "Parties 4c0167b8 sources with references/Hexalith.Builds pointing at the clean Builds worktree at bde7fd4f: tests/ci-lifecycle 95/95 OK; scripts test_*_integration.py 46/46 OK."
+ },
+ "platform": {
+  "compositionTestBuild": "dotnet build tests/Hexalith.Platform.Composition.Tests -c Debug -nodeReuse:false: 0 errors (includes the PB-9 test).",
+  "pb9Execution": "NOT RUN locally: a package composition reserves loopback ports, which the local no-listener rule forbids, and the hash-pinned eng/tuple-ci-suites.json does not select it; it remains a gate for Platform L/M delivery."
+ },
+ "candidateAcceptance": false
+}

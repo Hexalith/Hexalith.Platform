@@ -1,0 +1,49 @@
+{
+ "schema": "hexalith.story-2-8.cancellation-request-receipt.v1",
+ "freshReadyAudit": {
+  "auditedAtUtc": "2026-11-08T22:00:20.192591+00:00",
+  "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "runId": 42526256372,
+  "attempt": 1,
+  "jobId": 128874984245,
+  "artifactId": 13636092927,
+  "archiveSha256": "c1c7a3bc0d8e8850cd694a7df13be72c2caad4d58d592942f5ca586649ac84cd",
+  "phase": "startup",
+  "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+  "mappingHash": "880c951888f41ccd6a87e1fa5d81628ae30c1c6a4b3aeb375e61b369040af2fb",
+  "readinessAgeSeconds": 2.467085,
+  "scope": "Fresh immutable readiness plus active controller wait; actual signal-time phase/PID/hold and cleanup still require the final runner observations.",
+  "cancelRequested": false,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false
+ },
+ "request": {
+  "requestedAtUtc": "2026-11-08T22:00:20.193700+00:00",
+  "run": 42526256372,
+  "attempt": 1,
+  "source": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+  "branch": "fix/lifecycle-cancel-signal-566b9bfc",
+  "phase": "startup",
+  "jobId": 128874984245,
+  "ownerRunId": "af9aae8919c435c0a80e273ebba510ba",
+  "artifactId": 13636092927,
+  "actualReadyAgeSecondsImmediatelyBeforeRequest": 2.468194,
+  "actualFinalWholeToolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42526256372/cancel"
+ },
+ "responseStatusLine": "HTTP/2.0 202 Accepted",
+ "responseMetadata": {
+  "receivedAtUtc": "2026-11-08T22:00:20.628395+00:00",
+  "exitCode": 0,
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false
+ },
+ "observerScript": {
+  "path": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/await-fresh-ready-and-request-one-cancellation-v2.py",
+  "sha256": "f08b86b327f1cb077882815c01f71e13a6376f718a80b6fac4bcb8a980e37744"
+ },
+ "privateObservationRoot": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/actual-42526256372-startup",
+ "cancellationRequestsForThisRun": 1
+}

@@ -1,0 +1,49 @@
+{
+ "schema": "hexalith.story-2-8.campaign-tooling.v1",
+ "privateRoot": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108",
+ "parentSideOnly": "These scripts run on the operator workstation through the authenticated gh CLI. They dispatch a fixed scenario once, perform GET-only observation, request at most one cancellation after the unchanged ready-audit procedure passes, and audit completed runs. They are not product code and supply no acceptance by themselves.",
+ "scripts": {
+  "await-fresh-ready-and-request-one-cancellation-v2.py": "f08b86b327f1cb077882815c01f71e13a6376f718a80b6fac4bcb8a980e37744",
+  "dispatch_once.py": "136d275953352a10b08c2f90fa42fe997c8f568a5d38a62e0309f3ff061f82dc",
+  "dispatch_once_v2.py": "05aa3f7b875f1f7b148e835c1f8425ee1004b498da55f668a988740aa2a2089a",
+  "audit_lifecycle_run.py": "3d0121c89132478d56a7cc853f767e0b65f7a2669cce9dfa71b7efedeb12c126",
+  "build_row_index.py": "beceb527ffdf011534aa65baa9ea6da85671931139702cf9a6af599b135bfcab"
+ },
+ "readyAuditProcedure": {
+  "path": "release-phase/remote-resumption-20261103/parent-lifecycle-ready-audit-procedure.py",
+  "sha256": "bf2e51f720d522390e22a94e7814faf043ea27ef30be43c3f1b8abf4b7b38759"
+ },
+ "observerDerivedFrom": {
+  "path": "/home/administrator/.cache/hexalith/story-2-8/parent-final-native-and-manual-20261107/await-fresh-ready-and-request-one-cancellation.py",
+  "sha256": "56e1a0ea504118a4fe3fad594633ecd1de1e320b6f24651ce5cdc320d8330afa",
+  "changes": "explicit --branch instead of assumed main; 1 s polling once the ready-publication step starts; one bounded GET re-read on a transient API failure. The 20 s freshness bound, the audit procedure, identity checks and the single never-retried POST are unchanged."
+ },
+ "privateRunRoots": {
+  "42521615234": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/audit-42521615234",
+  "42524190110": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/audit-42524190110",
+  "42526256372": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/audit-42526256372",
+  "42528046681": "/home/administrator/.cache/hexalith/story-2-8/focused-hosted-proof-20261108/audit-42528046681"
+ },
+ "actions": {
+  "dispatches": [
+   42521615234,
+   42524190110,
+   42526256372,
+   42528046681
+  ],
+  "cancellationRequests": {
+   "42524190110": 1,
+   "42526256372": 1,
+   "42528046681": 1
+  },
+  "branchPushes": [
+   "Hexalith.Parties refs/heads/story-2-8/focused-lifecycle-566b9bfc -> 566b9bfc",
+   "Hexalith.Parties refs/heads/fix/lifecycle-cancel-signal-566b9bfc -> 926c1c3f"
+  ],
+  "merges": 0,
+  "mainPushes": 0,
+  "pullRequests": 0,
+  "publications": 0,
+  "tags": 0
+ }
+}

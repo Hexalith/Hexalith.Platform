@@ -1,0 +1,61 @@
+{
+ "schema": "hexalith.story-2-8.bs4-ordering-proof.v1",
+ "attempt": "failed-before-cancellation",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 hosted proof attempt; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "a03936662457eff5e7f0556d1c9ad03e9c643faa",
+   "branch": "proof/story-2-8-lifecycle-cancel-execution-bde7fd4f",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2"
+  },
+  "builds": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4"
+  }
+ },
+ "run": {
+  "id": 42583201444,
+  "run_attempt": 1,
+  "event": "workflow_dispatch",
+  "conclusion": "failure",
+  "created_at": "2026-11-09T08:03:13Z",
+  "updated_at": "2026-11-09T08:04:21Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42583201444",
+  "path": ".github/workflows/ci-lifecycle-qualification.yml"
+ },
+ "jobs": [
+  {
+   "id": 129046661498,
+   "name": "baseline / build-and-test",
+   "conclusion": "failure",
+   "failedSteps": [
+    "Prepare module build",
+    "Fail on blocking test failures"
+   ]
+  },
+  {
+   "id": 129047070266,
+   "name": "qualification",
+   "conclusion": "skipped",
+   "failedSteps": []
+  }
+ ],
+ "cancellation": {
+  "requestsForThisRun": 0,
+  "reason": "The watcher refused to cancel: the run failed before the integration step."
+ },
+ "cause": "Prepare module build refused HXW009: the proof gitlink staged Builds bde7fd4f while Platform 0f4e27f1 pins Builds 3c80 (tuple consistency), so the baseline failed and qualification was skipped.",
+ "defectClass": "setup defect of the proof design (attempt 1); the retry keeps the pinned gitlink and overlays the bde7fd4f helper and digest data",
+ "logExcerpts": [
+  "prepare-module-build: dotnet exited 2: {\"status\":\"failed\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXW009\"},\"diagnostics\":[{\"ruleId\":\"HXW009\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"Builds catalog \\u0027/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds\\u0027 is staged bde7fd4f875ae147c0631b97c349ef9b73561ed4, checked out bde7fd4f875ae147c0631b97c349ef9b73561ed4; Platform 0f4e27f1f78310bd731c10c19dc51bb1e0345d44 pins 3c8096180ecf2aa539ac454815efbfceb8a92822.\",\"field\":\"/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds\",\"hint\":null",
+  "##[error]Process completed with exit code 1.",
+  "##[error]Tier 1 Microsoft.Testing.Platform did not report a failure count.",
+  "prepare-module-build: dotnet exited 2: {\"status\":\"failed\",\"outcome\":{\"exitCode\":\"PrerequisiteUnavailable\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"ruleId\":\"HXW009\"},\"diagnostics\":[{\"ruleId\":\"HXW009\",\"phase\":\"Prerequisite\",\"category\":\"PrerequisiteUnavailable\",\"message\":\"Builds catalog \\u0027/home/runner/work/Hexalith.Parties/Hexalith.Parties/references/Hexalith.Builds\\u0027 is s"
+ ],
+ "orderingVerdict": {
+  "passed": null,
+  "reason": "not reached"
+ },
+ "candidateAcceptance": false
+}

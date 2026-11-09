@@ -1,0 +1,37 @@
+{
+  "schema": "hexalith.story-2-8.focused-campaign-input-change.v1",
+  "recordedAtUtc": "2026-11-08T21:38:48Z",
+  "amends": "campaign-inventory.json (unchanged; this record is additive)",
+  "trigger": {
+    "run": 42524190110,
+    "scenario": "cancel-startup",
+    "firstOutcome": "Run cancelled by exactly one audited request (ready age 2.87 s, HTTP 202). The always-finalizer recovered the exact owner cf9573173954420e0edd847bb898c5b2 from its durable receipt, recorded terminal cancelled/run-cancelled and cleaned 19 owned resources with every remaining inventory empty and unverified=false. The controller verdict FAILED: the wait step recorded no external-cancellation-signal or signal-time snapshot, so cancellation_phase refused (ValueError) and the finalizer step exited 1.",
+    "diagnosis": "The hosted runner cancels a step by signalling only the step's own process (the `bash -e` wrapper). Non-interactive bash defers SIGINT while its foreground child runs and never forwards it, so the controller only met the final process-tree kill. Reproduced locally by a process-level regression that signals only the step shell; it fails on the original step body and passes with `exec`.",
+    "status": "Run 42524190110 stays failed and retained; it is not relabelled as a cancellation pass."
+  },
+  "changedInput": {
+    "field": "caller.sourceRevision (cancellation scenarios only)",
+    "from": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+    "to": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+    "tree": "b8c621d0245fc5a664a450b84ba8d17769e4d442",
+    "parent": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+    "branch": "refs/heads/fix/lifecycle-cancel-signal-566b9bfc",
+    "paths": [".github/workflows/ci-lifecycle-qualification.yml", "tests/ci-lifecycle/test_workflow_boundaries.py"],
+    "workflowSha256": "133f13ff23768fb57c6b2537de115c9c5447b16d4c3e7f3b93cc15a73f35e226",
+    "workflowChange": "The 'Await parent cancellation of this exact ready run' step runs `exec python3 -B scripts/qualify-disposable-ci.py wait-cancellation` (plus one comment line). No other step, budget, assertion, secret or permission changed.",
+    "unchanged": {
+      "controllerSha256": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+      "toolManifestSha256": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+      "moduleManifest": "module/hexalith.module-manifest.v2.json unchanged",
+      "rootGitlinks": "unchanged from campaign-inventory.json",
+      "budgets": "unchanged"
+    },
+    "commitMessageValidation": "Parties locked @commitlint/cli 21.2.4 with commitlint.config.mjs: 0 problems before and after the commit (local Node 26.4.0; repository engine pin is 24.22.1)."
+  },
+  "rerunScope": {
+    "rerun": ["cancel-startup", "cancel-execution"],
+    "notRerun": "matrix run 42521615234 on 566b9bfc: the changed step is skipped for scenario=matrix (`if: inputs.scenario != 'matrix'`) and the controller, tool, manifest and executor are byte-identical.",
+    "localChecks": "tests/ci-lifecycle: 75 unittest cases passed on 926c1c3f with Builds 3c809618 beside it; the new regression failed (red) on the original step body first. actionlint passed."
+  },
+  "candidateAcceptance": false
+}

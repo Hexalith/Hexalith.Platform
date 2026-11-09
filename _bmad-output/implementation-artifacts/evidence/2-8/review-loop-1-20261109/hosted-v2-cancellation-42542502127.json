@@ -1,0 +1,168 @@
+{
+ "schema": "hexalith.story-2-8.v2-cancellation-proof.v1",
+ "label": "Focused, baseline-only BS-1 hosted proof at the current Builds PR head; it supplements run 42539638836 at a51f9876, does not replace the recorded Parties lifecycle runs and supplies no candidate or tool acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "6cf9d795d110b27b2b48b8fab2c986590fdcc2f5",
+   "branch": "proof/story-2-8-v2-cancellation-b411bafb",
+   "parentFix": "2849c5b419c3dc445d6041c12968df29c97e0cc0",
+   "workflow": ".github/workflows/story-2-8-v2-cancellation-proof.yml"
+  },
+  "reusableWorkflow": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "b411bafbcce5229e28a92ca54813e4c168bae312",
+   "path": ".github/workflows/domain-ci-v2.yml",
+   "workflowShaNamedInJobLog": true
+  }
+ },
+ "run": {
+  "id": 42542502127,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-09T00:52:10Z",
+  "updated_at": "2026-11-09T01:01:21Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42542502127"
+ },
+ "job": {
+  "id": 128920340348,
+  "name": "ci / build-and-test",
+  "conclusion": "cancelled"
+ },
+ "steps": {
+  "Validate declared integration inputs": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T00:52:18Z",
+   "completed_at": "2026-11-09T00:52:18Z"
+  },
+  "Require isolated success before integration": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T01:00:10Z",
+   "completed_at": "2026-11-09T01:00:10Z"
+  },
+  "Prepare integration binaries": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T01:00:10Z",
+   "completed_at": "2026-11-09T01:00:19Z"
+  },
+  "Runner-owned package integration": {
+   "conclusion": "cancelled",
+   "started_at": "2026-11-09T01:00:21Z",
+   "completed_at": "2026-11-09T01:01:11Z"
+  },
+  "Finalize exact CI owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T01:01:11Z",
+   "completed_at": "2026-11-09T01:01:14Z"
+  },
+  "Upload classified integration diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T01:01:14Z",
+   "completed_at": "2026-11-09T01:01:16Z"
+  }
+ },
+ "cancellation": {
+  "checkedAtUtc": "2026-11-09T01:01:08.336633+00:00",
+  "run": 42542502127,
+  "attempt": 1,
+  "source": "6cf9d795d110b27b2b48b8fab2c986590fdcc2f5",
+  "branch": "proof/story-2-8-v2-cancellation-b411bafb",
+  "workflowPath": ".github/workflows/story-2-8-v2-cancellation-proof.yml",
+  "jobId": 128920340348,
+  "jobName": "ci / build-and-test",
+  "step": "Runner-owned package integration",
+  "stepStartedAtUtc": "2026-11-09T01:00:21Z",
+  "stepAgeSeconds": 47.336622,
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42542502127/cancel",
+  "responseStatusLine": "HTTP/2.0 202 Accepted",
+  "requestsForThisRun": 1
+ },
+ "observed": {
+  "helperExecution": {
+   "processExitCode": 130,
+   "launched": true,
+   "cancelled": true,
+   "timedOut": false,
+   "signals": [
+    2
+   ],
+   "outputParsed": true,
+   "toolOutcome": {
+    "category": "Cancelled",
+    "exitCode": "Cancelled",
+    "phase": "Cleanup",
+    "ruleId": "HXC130"
+   },
+   "stderrBytes": 0
+  },
+  "cleanupRecords": [
+   "cleanup-1.json"
+  ],
+  "helperPerformedNoDown": true,
+  "finalizerCleanup": {
+   "status": "completed",
+   "jobStatus": "cancelled",
+   "processExitCode": 0,
+   "outputParsed": true,
+   "verified": true,
+   "outcome": {
+    "category": "None",
+    "exitCode": "Success",
+    "phase": "None",
+    "ruleId": null
+   },
+   "remainingResources": {
+    "claimIds": [],
+    "containerIds": [],
+    "discoveryFailures": [],
+    "isEmpty": true,
+    "processIds": [],
+    "resourceIds": [],
+    "unverified": false,
+    "workspaceIds": []
+   },
+   "sameRunId": true
+  },
+  "terminal": {
+   "cause": "run-cancelled",
+   "diagnosticIds": [
+    "lifecycle"
+   ],
+   "outcome": "cancelled",
+   "recordedAt": "2026-11-09T01:01:10.8238632Z"
+  },
+  "cleanup": {
+   "attemptId": "602fabeeff555ba11ed9bbc5a28cf658",
+   "diagnosticIds": [
+    "lifecycle"
+   ],
+   "disposition": "complete",
+   "failures": [],
+   "leftoverResourceIds": [],
+   "observedAt": "2026-11-09T01:01:14.6175290Z",
+   "ownedResourceIds": [],
+   "state": "populated"
+  },
+  "declaredDiagnosticsRetained": {
+   "lifecycle": true
+  },
+  "daprArchivesVerifiedBeforeExtraction": true
+ },
+ "artifacts": {
+  "module-integration-diagnostics": {
+   "id": 13641843203,
+   "bytes": 3652,
+   "digest": "sha256:1204a476605707a83ec9de8616fa4723e059657bdce0cd8f2af2bd4c4d8c08a6"
+  },
+  "blocking-test-results": {
+   "id": 13641219790,
+   "bytes": 1882,
+   "digest": "sha256:889b926dd05ec1572da5a84c062e562227b301076f6f7c0a342c89b426a0d83b"
+  }
+ },
+ "privateRoot": "v2-proof-6cf9d795d110",
+ "jobLogSha256": "88d625c3ff6708ac59d6adb0971d084068daa603b597e65d824ccda03e59781a",
+ "candidateAcceptance": false
+}

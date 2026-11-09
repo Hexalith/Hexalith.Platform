@@ -1846,3 +1846,54 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W6 — Verify snapshot-selected extension package versions through an actual restore/build (medium; VG3).
   evidence: PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference sets no RunPlan and checks generated XML only. Ignoring Workspace would leave it green. Retains the earlier package qualification follow-up: choose a snapshot pin different from the live catalog, restore/build a supported host, and assert the resolved package version.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: VG2-1 — Execute the legacy domain-ci.yml allowed-not-runnable-tests allowlist in test-domain-workflow-test-platforms.ps1 (medium).
+  evidence: The shim never emits NotRunnable TRX results. Deleting the allowlist predicate and env mappings in all four steps still passed 411 assertions. Origin cce084c4 (Works allowlist), not Story 2.8.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: ECH1-E5 — Map VerifyModelCommonProps InvalidDataException to its own diagnostic instead of generic HXR020 (low).
+  evidence: SourceMappingMaterializer.cs:110-116 throws InvalidDataException, but CompositionEngine.cs:231 catches only InvalidOperationException, so the import-refusal message is lost. Origin e9b74ab2.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: ECH1-E10 — Archive the routing bundle once rather than three times inside the native stop budget (medium).
+  evidence: NativeTestExecutor.cs:260-283 runs ArchiveRoutingAsync three times, each fsynced under min(StopTimeoutSeconds,30) (:536-541). Exhausting that budget adds HXT008. Origin 4d892075.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: VG1-1 — Add an engine-level --with-owner test covering closure selection, the plan binding and the AppHost required marker (medium).
+  evidence: Deleting QualificationOwners forwarding at CompositionEngine.cs:101, or the marker at :369/:2213, breaks no test, because the tests call the closure, binder and loader directly. Origin 0b18cbde.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH1-R22 — Remove the leftover debug WriteLine in CompositionEngineTests and assert HXR033/qualification-owner-expansion in the expanded-owner tests (low).
+  evidence: The WriteLine is at CompositionEngineTests.cs:725. AttachAdmissionTests.cs:37,59 assert only the message. Origins 26b9c1d1 and 0b18cbde.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH1-R21 — Align the new runtime declaration conventions (const vs static, final newlines) (low).
+  evidence: CompositionEnvironment.QualificationOwnersRequired and CompositionCiOwnerReceipt.SupportedSchema are static properties, unlike their const siblings. CompositionProcessStartFailure*.cs lack final newlines. Origin c354a044.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P8 — Record the real artifact identity in selected-closure.json (image digest for released images; rename or replace the .csproj hash) (low).
+  evidence: PlatformRoutingCatalogBootstrap.cs:125-126 hashes the .csproj and writes null for images, although ImageDigest is already bound. No consumer checks the field. Origin 74abb092.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P9 — Report the probed digest reference rather than the tag when a digest-pinned image probe fails (low).
+  evidence: PlatformAppModel.cs:154-166 prints server.Image while probing the @sha256 reference. Origin 4c7641b2.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P10 — Distinguish package-reader build failures from "Mapped routing catalog owner build failed" (low).
+  evidence: Package mode reaches the same throw (PlatformRoutingCatalog.cs:49-54,73-78). Origin 01948735.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P11 — Test the current-owner parties --no-build/--no-restore/--artifacts-path arguments (low).
+  evidence: PlatformAppModel.cs:293,296-297 have no test. The other new branches are covered. Origin a04df42f.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P13 — Move the PackageModeRefusesChangedOwnerProvenance temp-tree setup inside try and drop the vacuous pre-Compose assertion (low).
+  evidence: PlatformAppModelTests.cs:54-62 create the tree before try. The assertion at :73 runs before Compose. Origins 74abb092 and 87896d57.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P15 — Use Assert.Skip instead of return for the Windows parent-link case (low).
+  evidence: PlatformNativeTestPreparationTests.cs:210 reports a pass on Windows. Latent: there is no Windows CI. Origin 74abb092.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: BH3-P16 — Fix missing-space comment typos in the native preparation code ("old100ms", "A429", "default600") (low).
+  evidence: Cosmetic only. Not Story 2.8 code.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: VG3-1/VG3-2/BH3-P6 — Add negative tests for the retained selected-closure refusal and for file-level link, empty and oversized native inputs (medium).
+  evidence: Deleting the closure check at PlatformNativeTestPreparation.cs:96-101, or the file-link checks at :440/:462, keeps every suite green. Only the parent-link and outside-root cases are tested. Origin 74abb092.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: VG3-3 — Assert ContainerImageAnnotation.SHA256 equals ImageDigest for digest-bound module containers (medium).
+  evidence: Deleting PlatformAppModel.cs:325 keeps every test green, because the probes still use the digest reference. Origin 4c7641b2.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: VG3-5 — Cover the canonical-scope gateway call sites (namespace tenant, readback-bound headers) with a loopback gateway stub (medium).
+  evidence: Every PrepareAsync test stops before the first application-model call. Reverting SubmitAsync's tenant to DefaultTenantId breaks no test. The fix needs a DistributedApplicationModel endpoint stub.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: ECH2-X20/ECH3-Y17 — Verify that the registry secrets mapped to v2 and the Parties lifecycle reader are pull-only (maybe-false; high if true, unverified).
+  evidence: The workflows check only that the credentials are non-empty and that docker login succeeds. To settle it, inspect the registry.hexalith.com robot-account permissions for the mapped reader secrets, or add a read-only scope assertion.
