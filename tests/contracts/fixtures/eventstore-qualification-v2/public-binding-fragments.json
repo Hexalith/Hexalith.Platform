@@ -1,0 +1,483 @@
+{
+  "fixtureKind": "unpublished-qualification-binding-fragments",
+  "synthetic": true,
+  "executionCredit": "none",
+  "proposedVersions": {
+    "descriptor": "hexalith.test-environment.v2",
+    "result": "hexalith.test-result.v2",
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1"
+  },
+  "context": {
+    "run": {
+      "runId": "synthetic-owner-run",
+      "ownerRunId": "synthetic-owner-run",
+      "attemptId": "synthetic-attempt",
+      "environmentId": "synthetic-environment"
+    },
+    "isolation": {
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation"
+    },
+    "composition": {
+      "id": "synthetic-composition",
+      "contentIdentity": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    },
+    "catalog": {
+      "commit": "1111111111111111111111111111111111111111",
+      "instanceId": "synthetic-catalog"
+    },
+    "platformSourceRevision": "2222222222222222222222222222222222222222",
+    "tool": {
+      "name": "synthetic-tool",
+      "version": "0.0.0-synthetic",
+      "contentIdentity": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "moduleArtifacts": {
+      "state": "not-yet-populated"
+    },
+    "suite": {
+      "suiteId": "synthetic-review-suite",
+      "suiteContentIdentity": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "configurationContentIdentity": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    "executionDeadline": "2000-01-01T00:10:00Z",
+    "resources": [
+      {
+        "resourceId": "synthetic-host-a",
+        "moduleId": "synthetic-eventstore",
+        "endpoints": [
+          {
+            "name": "dapr-http",
+            "protocol": "http",
+            "uri": "http://127.0.0.1:43101"
+          },
+          {
+            "name": "dapr-grpc",
+            "protocol": "grpc",
+            "uri": "http://127.0.0.1:43102"
+          }
+        ]
+      },
+      {
+        "resourceId": "synthetic-host-b",
+        "moduleId": "synthetic-eventstore",
+        "endpoints": [
+          {
+            "name": "dapr-http",
+            "protocol": "http",
+            "uri": "http://127.0.0.1:43201"
+          },
+          {
+            "name": "dapr-grpc",
+            "protocol": "grpc",
+            "uri": "http://127.0.0.1:43202"
+          }
+        ]
+      },
+      {
+        "resourceId": "synthetic-controls",
+        "moduleId": "synthetic-platform",
+        "endpoints": [
+          {
+            "name": "control-http",
+            "protocol": "http",
+            "uri": "http://127.0.0.1:43301"
+          }
+        ]
+      }
+    ]
+  },
+  "descriptorQualification": {
+    "scope": {
+      "runId": "synthetic-owner-run",
+      "ownerRunId": "synthetic-owner-run",
+      "attemptId": "synthetic-attempt",
+      "environmentId": "synthetic-environment",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "suiteId": "synthetic-review-suite",
+      "suiteContentIdentity": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "configurationContentIdentity": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    "profile": {
+      "purpose": "candidate",
+      "definition": {
+        "id": "synthetic-review-profile",
+        "contentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "supportReference": {
+        "state": "not-yet-populated"
+      },
+      "platformSourceRevision": "2222222222222222222222222222222222222222",
+      "catalog": {
+        "commit": "1111111111111111111111111111111111111111",
+        "instanceId": "synthetic-catalog"
+      },
+      "composition": {
+        "id": "synthetic-composition",
+        "contentIdentity": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      },
+      "tool": {
+        "name": "synthetic-tool",
+        "version": "0.0.0-synthetic",
+        "contentIdentity": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "expected": {
+        "moduleArtifacts": {
+          "state": "not-yet-populated"
+        },
+        "sdk": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "runtime": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "embeddedComponent": {
+          "sourceRevision": "3333333333333333333333333333333333333333",
+          "contentIdentity": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "component": {
+          "type": "state.synthetic-review",
+          "apiVersion": "v0",
+          "configurationContentIdentity": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        "backend": {
+          "image": "example.invalid/synthetic-backend@sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "configurationContentIdentity": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "securityConfigurationContentIdentity": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "placementConfigurationContentIdentity": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+        "actorContractVersion": "synthetic-only",
+        "capabilityVersion": "synthetic-only",
+        "requiredCapabilities": [
+          "original-read-revision-including-metadata-only-writes",
+          "atomic-initial-revision",
+          "create-once-event",
+          "high-water-and-contiguous-ranges",
+          "whole-batch-coupled-state-rollback",
+          "authorized-resumable-erasure-without-recreation"
+        ],
+        "verifierInputs": {
+          "state": "not-yet-populated"
+        }
+      }
+    },
+    "hosts": [
+      {
+        "hostId": "synthetic-host-a",
+        "resourceId": "synthetic-host-a",
+        "logicalActorAppId": "synthetic-actor-app",
+        "actorType": "SyntheticReviewActor",
+        "roles": [
+          "writer-a",
+          "reader"
+        ],
+        "httpEndpointRef": {
+          "resourceId": "synthetic-host-a",
+          "endpointName": "dapr-http"
+        },
+        "grpcEndpointRef": {
+          "resourceId": "synthetic-host-a",
+          "endpointName": "dapr-grpc"
+        }
+      },
+      {
+        "hostId": "synthetic-host-b",
+        "resourceId": "synthetic-host-b",
+        "logicalActorAppId": "synthetic-actor-app",
+        "actorType": "SyntheticReviewActor",
+        "roles": [
+          "writer-b"
+        ],
+        "httpEndpointRef": {
+          "resourceId": "synthetic-host-b",
+          "endpointName": "dapr-http"
+        },
+        "grpcEndpointRef": {
+          "resourceId": "synthetic-host-b",
+          "endpointName": "dapr-grpc"
+        }
+      }
+    ],
+    "operations": {
+      "lawfulOperationId": "synthetic-lawful-operation",
+      "logicalReadRouteId": "synthetic-owning-actor-read",
+      "ownerReceipt": {
+        "state": "not-yet-populated"
+      },
+      "partition": {
+        "syntheticTenantId": "synthetic-tenant",
+        "domain": "synthetic-domain",
+        "aggregateId": "synthetic-aggregate"
+      },
+      "barrierIds": [
+        "synthetic-after-original-read"
+      ],
+      "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    "controls": [
+      {
+        "controlId": "synthetic-after-read-control",
+        "operationId": "synthetic-arm-observe-release",
+        "version": "draft-only",
+        "endpointRef": {
+          "resourceId": "synthetic-controls",
+          "endpointName": "control-http"
+        },
+        "scope": {
+          "runId": "synthetic-owner-run",
+          "ownerRunId": "synthetic-owner-run",
+          "attemptId": "synthetic-attempt",
+          "environmentId": "synthetic-environment",
+          "syntheticTenantId": "synthetic-tenant",
+          "dataIsolationId": "synthetic-isolation",
+          "profileContentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "suiteId": "synthetic-review-suite",
+          "suiteContentIdentity": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "configurationContentIdentity": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "hostIds": [
+          "synthetic-host-a"
+        ],
+        "partition": {
+          "syntheticTenantId": "synthetic-tenant",
+          "domain": "synthetic-domain",
+          "aggregateId": "synthetic-aggregate"
+        },
+        "phase": "after-original-read",
+        "expiresAt": "2000-01-01T00:01:00Z",
+        "maximumUses": 1,
+        "reset": {
+          "required": true,
+          "operationId": "synthetic-idempotent-reset",
+          "deadline": "2000-01-01T00:01:10Z"
+        },
+        "cleanupObligation": "reset-and-expire-access"
+      }
+    ],
+    "observations": {
+      "observedAt": "2000-01-01T00:00:00Z",
+      "loadedIdentities": {
+        "state": "not-yet-populated"
+      },
+      "capabilityNegotiation": {
+        "state": "not-yet-populated"
+      },
+      "verifierReadiness": {
+        "state": "not-yet-populated"
+      },
+      "hostInstances": {
+        "state": "not-yet-populated"
+      },
+      "placement": {
+        "state": "not-yet-populated"
+      },
+      "barriers": {
+        "state": "not-yet-populated"
+      },
+      "controlEvents": []
+    }
+  },
+  "resultQualification": {
+    "scope": {
+      "runId": "synthetic-owner-run",
+      "ownerRunId": "synthetic-owner-run",
+      "attemptId": "synthetic-attempt",
+      "environmentId": "synthetic-environment",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "suiteId": "synthetic-review-suite",
+      "suiteContentIdentity": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "configurationContentIdentity": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    "profile": {
+      "purpose": "candidate",
+      "definition": {
+        "id": "synthetic-review-profile",
+        "contentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "supportReference": {
+        "state": "not-yet-populated"
+      },
+      "platformSourceRevision": "2222222222222222222222222222222222222222",
+      "catalog": {
+        "commit": "1111111111111111111111111111111111111111",
+        "instanceId": "synthetic-catalog"
+      },
+      "composition": {
+        "id": "synthetic-composition",
+        "contentIdentity": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      },
+      "tool": {
+        "name": "synthetic-tool",
+        "version": "0.0.0-synthetic",
+        "contentIdentity": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "expected": {
+        "moduleArtifacts": {
+          "state": "not-yet-populated"
+        },
+        "sdk": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "runtime": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "embeddedComponent": {
+          "sourceRevision": "3333333333333333333333333333333333333333",
+          "contentIdentity": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "component": {
+          "type": "state.synthetic-review",
+          "apiVersion": "v0",
+          "configurationContentIdentity": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        "backend": {
+          "image": "example.invalid/synthetic-backend@sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "configurationContentIdentity": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "securityConfigurationContentIdentity": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "placementConfigurationContentIdentity": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+        "actorContractVersion": "synthetic-only",
+        "capabilityVersion": "synthetic-only",
+        "requiredCapabilities": [
+          "original-read-revision-including-metadata-only-writes",
+          "atomic-initial-revision",
+          "create-once-event",
+          "high-water-and-contiguous-ranges",
+          "whole-batch-coupled-state-rollback",
+          "authorized-resumable-erasure-without-recreation"
+        ],
+        "verifierInputs": {
+          "state": "not-yet-populated"
+        }
+      }
+    },
+    "hosts": [
+      {
+        "hostId": "synthetic-host-a",
+        "resourceId": "synthetic-host-a",
+        "logicalActorAppId": "synthetic-actor-app",
+        "actorType": "SyntheticReviewActor",
+        "roles": [
+          "writer-a",
+          "reader"
+        ],
+        "httpEndpointRef": {
+          "resourceId": "synthetic-host-a",
+          "endpointName": "dapr-http"
+        },
+        "grpcEndpointRef": {
+          "resourceId": "synthetic-host-a",
+          "endpointName": "dapr-grpc"
+        }
+      },
+      {
+        "hostId": "synthetic-host-b",
+        "resourceId": "synthetic-host-b",
+        "logicalActorAppId": "synthetic-actor-app",
+        "actorType": "SyntheticReviewActor",
+        "roles": [
+          "writer-b"
+        ],
+        "httpEndpointRef": {
+          "resourceId": "synthetic-host-b",
+          "endpointName": "dapr-http"
+        },
+        "grpcEndpointRef": {
+          "resourceId": "synthetic-host-b",
+          "endpointName": "dapr-grpc"
+        }
+      }
+    ],
+    "operations": {
+      "lawfulOperationId": "synthetic-lawful-operation",
+      "logicalReadRouteId": "synthetic-owning-actor-read",
+      "ownerReceipt": {
+        "state": "not-yet-populated"
+      },
+      "partition": {
+        "syntheticTenantId": "synthetic-tenant",
+        "domain": "synthetic-domain",
+        "aggregateId": "synthetic-aggregate"
+      },
+      "barrierIds": [
+        "synthetic-after-original-read"
+      ],
+      "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    "controls": [
+      {
+        "controlId": "synthetic-after-read-control",
+        "operationId": "synthetic-arm-observe-release",
+        "version": "draft-only",
+        "endpointRef": {
+          "resourceId": "synthetic-controls",
+          "endpointName": "control-http"
+        },
+        "scope": {
+          "runId": "synthetic-owner-run",
+          "ownerRunId": "synthetic-owner-run",
+          "attemptId": "synthetic-attempt",
+          "environmentId": "synthetic-environment",
+          "syntheticTenantId": "synthetic-tenant",
+          "dataIsolationId": "synthetic-isolation",
+          "profileContentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "suiteId": "synthetic-review-suite",
+          "suiteContentIdentity": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "configurationContentIdentity": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "requiredTestSetContentIdentity": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "hostIds": [
+          "synthetic-host-a"
+        ],
+        "partition": {
+          "syntheticTenantId": "synthetic-tenant",
+          "domain": "synthetic-domain",
+          "aggregateId": "synthetic-aggregate"
+        },
+        "phase": "after-original-read",
+        "expiresAt": "2000-01-01T00:01:00Z",
+        "maximumUses": 1,
+        "reset": {
+          "required": true,
+          "operationId": "synthetic-idempotent-reset",
+          "deadline": "2000-01-01T00:01:10Z"
+        },
+        "cleanupObligation": "reset-and-expire-access"
+      }
+    ],
+    "observations": {
+      "observedAt": "2000-01-01T00:00:10Z",
+      "loadedIdentities": {
+        "state": "not-yet-populated"
+      },
+      "capabilityNegotiation": {
+        "state": "not-yet-populated"
+      },
+      "verifierReadiness": {
+        "state": "not-yet-populated"
+      },
+      "hostInstances": {
+        "state": "not-yet-populated"
+      },
+      "placement": {
+        "state": "not-yet-populated"
+      },
+      "barriers": {
+        "state": "not-yet-populated"
+      },
+      "controlEvents": []
+    }
+  }
+}
