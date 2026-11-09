@@ -1,0 +1,216 @@
+{
+ "schema": "hexalith.story-2-8.bs4-v2-late-startup-proof.v1",
+ "attempt": "rebound v2 late-startup run (second owner amendment): cancellation sent; observer records lost from the upload",
+ "label": "Focused, baseline-only Story 2.8 loop-2 BS-4 rebound v2 late-startup hosted proof; no candidate, tool or Story 2.10 acceptance.",
+ "sources": {
+  "caller": {
+   "repository": "Hexalith/Hexalith.Parties",
+   "commit": "69b02d738fffb8d992fdd7e86be8b41069438472",
+   "branch": "proof/story-2-8-v2-late-startup-bde7fd4f",
+   "base": "4c0167b85f4f4b9a0683c06658ffaee319dca0f2",
+   "tool": "hexalith.builds.module.cli 4.44.13 (.config/dotnet-tools.json unchanged)",
+   "buildsGitlink": "3c8096180ecf2aa539ac454815efbfceb8a92822 (unchanged)",
+   "platformGitlink": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44 (unchanged)",
+   "unchangedInputs": "module manifest, suites, test projects, tool manifest and gitlinks are byte-identical to 4c0167b8 (proof diff touches only the proof workflow, the prepare script and the observer)"
+  },
+  "reusableWorkflow": {
+   "repository": "Hexalith/Hexalith.Builds",
+   "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+   "path": ".github/workflows/domain-ci-v2.yml",
+   "namedInJobLog": true
+  }
+ },
+ "run": {
+  "id": 42596887673,
+  "run_attempt": 1,
+  "event": "push",
+  "conclusion": "cancelled",
+  "created_at": "2026-11-09T09:54:02Z",
+  "updated_at": "2026-11-09T10:02:13Z",
+  "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/42596887673",
+  "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml"
+ },
+ "job": {
+  "id": 129091608561,
+  "name": "ci / build-and-test",
+  "conclusion": "cancelled"
+ },
+ "steps": {
+  "Prepare package dependencies": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T09:55:10Z",
+   "completed_at": "2026-11-09T09:57:46Z"
+  },
+  "Prepare integration binaries": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T09:59:38Z",
+   "completed_at": "2026-11-09T09:59:47Z"
+  },
+  "Runner-owned package integration": {
+   "conclusion": "cancelled",
+   "started_at": "2026-11-09T09:59:49Z",
+   "completed_at": "2026-11-09T10:02:04Z"
+  },
+  "Finalize exact CI owner": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:02:04Z",
+   "completed_at": "2026-11-09T10:02:05Z"
+  },
+  "Remove integration registry credentials": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:02:05Z",
+   "completed_at": "2026-11-09T10:02:05Z"
+  },
+  "Upload classified integration diagnostics": {
+   "conclusion": "success",
+   "started_at": "2026-11-09T10:02:05Z",
+   "completed_at": "2026-11-09T10:02:07Z"
+  }
+ },
+ "readyCheck": {
+  "targetStepAgeSeconds": 130,
+  "observedStepAgeSeconds": 131.509513,
+  "method": "cancel_v2_late_startup_once.py: GET-only polling of the exact run, job and step; one POST once the \"Runner-owned package integration\" step is in progress and its age reaches the target; never retried.",
+  "rationale": "CI 42479678863 reached readiness 163 s after its integration step started. Run 42587199919 shows the composition order as a share of the time to Ready: AppHost 39 %, DCP 58 %, first owned container 62 %, last 90 %. Scaled, that gives an AppHost at about 64 s, DCP at about 96 s, the first container at about 102 s and readiness at about 163 s; 130 s lies between the first owned container and readiness."
+ },
+ "cancellation": {
+  "checkedAtUtc": "2026-11-09T10:02:00.509522+00:00",
+  "run": 42596887673,
+  "attempt": 1,
+  "source": "69b02d738fffb8d992fdd7e86be8b41069438472",
+  "branch": "proof/story-2-8-v2-late-startup-bde7fd4f",
+  "workflowPath": ".github/workflows/story-2-8-v2-late-startup-proof.yml",
+  "jobId": 129091608561,
+  "jobName": "ci / build-and-test",
+  "step": "Runner-owned package integration",
+  "stepStartedAtUtc": "2026-11-09T09:59:49Z",
+  "stepAgeSeconds": 131.509513,
+  "method": "POST",
+  "endpoint": "repos/Hexalith/Hexalith.Parties/actions/runs/42596887673/cancel",
+  "responseStatusLine": "HTTP/2.0 202 Accepted",
+  "requestsForThisRun": 1
+ },
+ "durableEvidence": {
+  "helperExecution": {
+   "processExitCode": 130,
+   "launched": true,
+   "cancelled": true,
+   "timedOut": false,
+   "signals": [
+    2
+   ],
+   "outputParsed": true,
+   "toolOutcome": {
+    "category": "Cancelled",
+    "exitCode": "Cancelled",
+    "phase": "Cleanup",
+    "ruleId": "HXC130"
+   }
+  },
+  "invocation": {
+   "classification": "baseline-only",
+   "executionContext": {
+    "disposable": true,
+    "jobId": "build-and-test",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42596887673"
+   },
+   "profiles": [
+    "platform-package"
+   ],
+   "timeoutSeconds": 2000
+  },
+  "firstOutcome": {
+   "cause": "run-cancelled",
+   "diagnosticIds": [
+    "lifecycle"
+   ],
+   "outcome": "cancelled",
+   "recordedAt": "2026-11-09T10:02:02.9161869Z"
+  },
+  "ownerReadinessAtCancellation": {
+   "state": "not-yet-populated"
+  },
+  "cleanup": {
+   "attemptId": "b3ebe894b696d9ed6fc047a7978e45f8",
+   "diagnosticIds": [
+    "lifecycle"
+   ],
+   "disposition": "complete",
+   "failures": [],
+   "leftoverResourceIds": [],
+   "observedAt": "2026-11-09T10:02:05.7787757Z",
+   "ownedResourceIds": [
+    "resource:redis",
+    "resource:eventstore",
+    "resource:dapr-placement-mtls",
+    "resource:dapr-scheduler-mtls",
+    "resource:dapr-sentry",
+    "resource:eventstore-dapr-cli",
+    "resource:memories",
+    "resource:memories-access-telemetry",
+    "resource:memories-access-telemetry-clock",
+    "resource:memories-access-telemetry-clock-dapr-cli",
+    "resource:memories-access-telemetry-dapr-cli",
+    "resource:memories-dapr-cli",
+    "resource:memories-domain-service",
+    "resource:memories-domain-service-dapr-cli",
+    "resource:memories-graph",
+    "resource:memories-vectors",
+    "resource:parties",
+    "resource:parties-dapr-cli",
+    "resource:tenants",
+    "resource:tenants-api",
+    "resource:tenants-api-dapr-cli",
+    "resource:tenants-dapr-cli"
+   ],
+   "state": "populated"
+  },
+  "cleanupRecords": {
+   "cleanup-1.json": {
+    "status": "completed",
+    "jobStatus": "cancelled",
+    "processExitCode": 0,
+    "verified": true,
+    "remainingResources": {
+     "claimIds": [],
+     "containerIds": [],
+     "discoveryFailures": [],
+     "isEmpty": true,
+     "processIds": [],
+     "resourceIds": [],
+     "unverified": false,
+     "workspaceIds": []
+    }
+   }
+  },
+  "helperPerformedNoDown": true
+ },
+ "checks": {
+  "helperSignalledOnlyTheMuxerAndTheTool": "not evidenced: the kernel-signal records were not retained",
+  "noComposedProcessSignalledFromOutsideTheRuntimeBeforeTheToolsOwnStop": "not evidenced: the kernel-signal records were not retained",
+  "finalizerExactDownVerifiedEmpty": true,
+  "ownedComposedResourceLiveAtSignal": "indirect only: the owner was still Starting (readiness not yet populated), and the cancelled owner's exact cleanup removed 22 owned resources. Per-process liveness at signal time was in the lost records.",
+  "finalizerOwnedSurvivors": "not evidenced: the per-process records were lost. The finalizer's single exact down (job status cancelled) verified empty inventories."
+ },
+ "achieved": false,
+ "notAchievedReason": "Instrumentation retention defect. To keep every checkout untouched while an owner exists, the observer wrote only under $RUNNER_TEMP and copied its three records into the ignored evidence directory once it saw the finalizer's cleanup record. The diagnostics upload began about 0.1 s after that record (finalizer down observed 10:02:05.78Z; upload step 10:02:05.89Z), before the copy, so the kernel-signal, Docker-event and process records were not uploaded, and $RUNNER_TEMP is discarded with the runner. No owner was refused, and the cancellation itself behaved as designed. The further run the amendment allows covers only \"no owned composed resource live at signal time\", so it was not spent; a rerun needs the parent's decision.",
+ "artifacts": {
+  "blocking-test-results": {
+   "id": 13664950046,
+   "bytes": 1885,
+   "digest": "sha256:1a79d118aebd2198ed50dd73dc96bc907e549494b8fdf062a60efb0382f9015c"
+  },
+  "module-integration-diagnostics": {
+   "id": 13664536976,
+   "bytes": 3809,
+   "digest": "sha256:7cec018cde38178ab837f1ab1ce3f27e0075e64c79bc8f4503996541f1acbcaa"
+  }
+ },
+ "jobLogSha256": "ee43a9ab2c50851d5343fafd983d9b50665931ec7c9faa9a952966e1fdb72340",
+ "candidateAcceptance": false
+}
