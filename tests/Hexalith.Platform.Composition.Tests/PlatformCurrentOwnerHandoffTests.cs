@@ -124,7 +124,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         foreach (string consumer in consumers)
         {
             original["ProjectVersions"]!.AsObject().ContainsKey(consumer).ShouldBeFalse();
-            versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe("4.1.0");
+            versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe(PlatformPartiesPackageFixture.SelectedSdkVersion);
             versions[consumer]!["Hexalith.Tenants.Contracts"]!.GetValue<string>().ShouldBe("7.0.5");
             versions[consumer]!["Hexalith.Memories.Contracts"]!.GetValue<string>().ShouldBe("3.0.25");
             JsonNode.DeepEquals(versions[consumer], original["Versions"]).ShouldBeTrue(

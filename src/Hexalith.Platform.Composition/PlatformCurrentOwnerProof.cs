@@ -29,6 +29,7 @@ internal sealed class PlatformCurrentOwnerProof
         source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
         _source = source;
         Directory = directory;
+        Cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) ?? throw Refusal();
         Bodies = bodies;
         PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
         _files = files;
@@ -37,7 +38,7 @@ internal sealed class PlatformCurrentOwnerProof
         {
             profile = Profile, revision = source.Revision, options.Mapping.ContentHash,
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
-            platform = options.Mapping.PlatformIdentity, configuration = "Release", bodies, files,
+            platform = options.Mapping.PlatformIdentity, configuration = "Release", cohort = Cohort, sdkVersion = SdkVersion, bodies, files,
         });
         _seal = Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt)));
     }
@@ -45,6 +46,8 @@ internal sealed class PlatformCurrentOwnerProof
     /// <summary>Optional isolated test observation after real measurement; cannot replace artifacts or grant authority.</summary>
     internal static AsyncLocal<Action?> PreparedObserver { get; } = new();
 
+    internal string Cohort { get; }
+    internal string SdkVersion => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(Cohort);
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
     internal string MappingWorkspace => Path.Combine(Directory, "owner-mapping");
@@ -57,13 +60,16 @@ internal sealed class PlatformCurrentOwnerProof
 
     internal static PlatformCurrentOwnerProof Create(PlatformCompositionOptions options, string key, bool developmentRun)
     {
+        string? cohort = null;
         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
             || options.Mapping.Entries.Any(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform") && (entry.Origin != "package" || entry.Path is not null))
             || options.Projects != PlatformServerBindings.ReferenceProjects || options.TimesheetsEnabled || options.UsePrebuiltProjects
-            || PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) != PublishedCatalogArtifactCohort.CurrentOwnerName)
+            || !PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options))
+            || !PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "current owner"), true, cohort!))
             throw Refusal();
         _ = PlatformPartiesRunProof.CreateCurrent(options, key);
         if (Hash(options.DeclarationPaths.Single()) != DeclarationHash) throw Refusal();
+        string sdkVersion = PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(cohort!);
         string active = ActiveRoot(options);
         string revision = Git(active, "rev-parse", "HEAD");
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, options.RunPlan!.StartupDeadlineUtc);
@@ -108,6 +114,11 @@ internal sealed class PlatformCurrentOwnerProof
             Run(["pack", ownProject, "--no-build", "--output", feed, .. arguments], name + "-pack.log");
         }
         string output = Path.Combine(artifacts, "bin", "Hexalith.Parties", "release");
+        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService" })
+        {
+            string path = Path.Combine(output, name + ".dll");
+            PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, Hash(path), cohort!);
+        }
         Dictionary<string, string> bodies = new(StringComparer.Ordinal);
         Dictionary<string, string> files = new(inputs, StringComparer.Ordinal);
         foreach (string path in System.IO.Directory.GetFiles(output, "*")) files[path] = Hash(path);
@@ -143,7 +154,7 @@ internal sealed class PlatformCurrentOwnerProof
                 string actualVersion = library.Name.Split('/')[1];
                 if (library.Value.GetProperty("type").GetString() == "package"
                     && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
-                        || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != "4.1.0"
+                        || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != sdkVersion
                         || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != "7.0.5"
                         || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != "3.0.25"
                         || name == "Hexalith.McpCli.Abstractions" && actualVersion != "2.0.1")) throw Refusal();
@@ -213,14 +224,15 @@ internal sealed class PlatformCurrentOwnerProof
             if (matches.Length != 1 || matches[0].GetProperty("sha256").GetString() != Bodies[name]
                 || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name]) throw Refusal();
         }
-        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray());
+        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray(), Cohort);
     }
 
     internal bool Matches(PlatformCompositionOptions options)
     {
         try
         {
-            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects) return false;
+            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects
+                || PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) != Cohort) return false;
             _source.RequireUnchanged(ActiveRoot(options), SourceRevision);
             return _files.All(pair => Hash(pair.Key) == pair.Value)
                 && Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt))) == _seal;

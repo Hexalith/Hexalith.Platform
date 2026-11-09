@@ -257,6 +257,35 @@
       ],
       "requiredCount": 2,
       "purpose": "measured-public-parties-signed-catalog-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests"
+      ],
+      "requiredCount": 3,
+      "purpose": "published-sdk-extension-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-method",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync"
+      ],
+      "requiredCount": 3,
+      "purpose": "published-sdk-extension-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk420ArtifactCohortTests"
+      ],
+      "requiredCount": 38,
+      "purpose": "measured-sdk420-public-and-private-artifact-boundaries"
     }
   ],
   "historicalPublicControls": {

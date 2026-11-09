@@ -22,7 +22,7 @@ public sealed class PlatformEventStorePackageCatalogReaderTests
         PlatformRoutingCatalog catalog = PlatformRoutingCatalog.Generate(fixture.Options, servers, Path.Combine(fixture.Plan.Workspace, "platform-components"));
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
         request.RootElement.GetProperty("gatewayAppId").GetString().ShouldBe(gatewayAppId);
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestName);
+        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PlatformPartiesPackageFixture.EventStoreTestCohort);
         request.RootElement.GetProperty("owners").GetArrayLength().ShouldBe(1);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
         foreach (string key in new[] { "routes", "operations", "declarations" }) document.RootElement.GetProperty(key).GetArrayLength().ShouldBe(23);
@@ -32,7 +32,7 @@ public sealed class PlatformEventStorePackageCatalogReaderTests
         foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService",
             "Hexalith.EventStore.ServiceDefaults", "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server" })
         {
-            string original = PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PublishedCatalogArtifactCohort.EventStorePackageTestName);
+            string original = PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PlatformPartiesPackageFixture.EventStoreTestCohort);
             string output = Path.Combine(fixture.Reader, "output", name + ".dll");
             File.ReadAllBytes(output).ShouldBe(File.ReadAllBytes(original));
             var actual = receipt.RootElement.GetProperty("loadedArtifacts").EnumerateArray().Single(item => item.GetProperty("path").GetString() == output);

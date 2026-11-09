@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate the four real projects' finite SDK gates without restoring or building."""
+"""Evaluate the real host, reader and extension projects' finite SDK gates without restoring or building."""
 
 import argparse
 import json
@@ -15,15 +15,19 @@ V2 = "HEXALITH_PLATFORM_V2_CATALOG"
 SOURCE = "HEXALITH_PLATFORM_SOURCE_CATALOG"
 TECHNICAL = "HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK"
 SCOPED = "HEXALITH_SCOPED_CONSUMER_BINDING"
-FLAGS = {CATALOG, V2, SOURCE, TECHNICAL, SCOPED}
+EXTENSION = "HEXALITH_PLATFORM_EXTENSION_SDK"
+CANONICAL = "HEXALITH_PLATFORM_CANONICAL_SCOPES"
+FLAGS = {CATALOG, V2, SOURCE, TECHNICAL, SCOPED, EXTENSION, CANONICAL}
 LEGACY = ["3.130.0", "3.130.1", "3.130.2"]
 ALIASES = [alias for version in LEGACY for alias in
            [version + ".0", version + "+metadata", version + ".0+build.1"]]
-VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", *ALIASES,
+VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0", *ALIASES,
             "3.128.4", "3.131.0", "3.132.0", "4.0.0", "4.0.1", "4.0.5",
             "4.0.2-preview.1", "4.0.2+metadata", "4.0.2.0", "4.0.2.1",
             "4.0.3-preview.1", "4.0.3+metadata", "4.0.3.0", "4.0.3.1",
-            "4.1.1", "4.2.0", "4.1.0-preview.1", "4.1.0+metadata", "4.1.0.0", "4.1.0.1",
+            "4.1.1", "4.1.0-preview.1", "4.1.0+metadata", "4.1.0.0", "4.1.0.1",
+            "4.2.0-preview.1", "4.2.0+metadata", "4.2.0.0", "4.2.0.1", "4.2.1", "4.3.0",
+            "04.2.0", "4.02.0", "4.2.00", "v4.2.0",
             "4.0.4-preview.1", "4.0.4+metadata", "4.0.4.0", "4.0.4.1",
             "3.132.1-preview.1", "3.132.1+metadata", "3.132.1.0", "3.132.1.1",
             "3.133.0-preview.1", "3.133.0+metadata", "3.133.0.0",
@@ -33,24 +37,32 @@ PROJECTS = {
     "composition": "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
     "tests": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
     "tool": "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj",
+    "extension": "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj",
 }
 
 
 def expected_flags(project, version, source):
     if source:
         # The tool's source binding deliberately retains its prior unqualified path.
-        return {"host": {SOURCE, TECHNICAL, CATALOG},
-                "composition": {SOURCE, CATALOG, V2},
-                "tests": {SOURCE, CATALOG, V2}, "tool": set()}[project]
+        return {"host": {SOURCE, TECHNICAL, CATALOG, EXTENSION},
+                "composition": {SOURCE, CATALOG, V2, EXTENSION, CANONICAL},
+                "tests": {SOURCE, CATALOG, V2, EXTENSION, CANONICAL},
+                "tool": set(), "extension": {EXTENSION}}[project]
     if project == "tool":
-        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0"] else set()
+        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"] else set()
+    if project == "extension":
+        return {EXTENSION} if version == "4.2.0" else set()
     flags = set()
-    if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0"]:
+    if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
         flags.add(CATALOG)
-    if project != "host" and version in [*LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0"]:
+    if project != "host" and version in [*LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
         flags.add(V2)
-    if project == "host" and version in ["3.132.1", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0"]:
+    if project == "host" and version in ["3.132.1", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
         flags.add(TECHNICAL)
+    if project != "host" and version in ["4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
+        flags.add(CANONICAL)
+    if version == "4.2.0":
+        flags.add(EXTENSION)
     return flags
 
 

@@ -4,8 +4,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
   </PropertyGroup>
-  <!-- The extension API ships in the source-selected EventStore SDK; no released package carries it yet. -->
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+  <!-- The extension API is available from the source-selected SDK and exact public 4.2.0 package. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '4.2.0'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">

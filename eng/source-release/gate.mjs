@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 export const repository = 'Hexalith/Hexalith.Platform';
 export const workflows = [
   { file: 'tuple-ci.yml', name: 'Platform tuple CI preflight', jobs: ['resolve-sources', 'tuple', 'Same changed source against the legacy public tuple', 'tuple-verdict'] },
-  { file: 'catalog-builder.yml', name: 'Catalog builder consumer binding', jobs: ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0'].map(sdk => `consumer-binding (${sdk})`) },
+  { file: 'catalog-builder.yml', name: 'Catalog builder consumer binding', jobs: ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0', '4.2.0'].map(sdk => `consumer-binding (${sdk})`) },
 ];
 export class GateError extends Error {}
 const requireValue = (condition, code) => { if (!condition) throw new GateError(code); };

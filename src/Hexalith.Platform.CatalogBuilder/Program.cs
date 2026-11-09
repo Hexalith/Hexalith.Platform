@@ -27,14 +27,14 @@ if (qualified)
     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
     string[] expected = qualificationName switch
     {
-        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
-        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.CurrentOwnerName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name or PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
         _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
     };
     if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
         .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
-    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName ? PublishedCatalogArtifactCohort.VerifyCurrentReferences() : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName
+    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(qualificationName) ? PublishedCatalogArtifactCohort.VerifyCurrentReferences(qualificationName!) : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name
         ? PublishedCatalogArtifactCohort.VerifyFullParties(qualificationName) : PublishedCatalogArtifactCohort.VerifySdk(qualificationName!));
 }
 List<RouteContractDeclaration> declarations = [];
@@ -53,7 +53,7 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     {
         foreach (Assembly artifact in new[] { assembly, adapterAssembly })
         {
-            if (qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
+            if (PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(qualificationName) && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
             {
                 var measured = input.GetProperty("currentOwnerArtifacts");
                 if (measured.EnumerateObject().Count() != 2

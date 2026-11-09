@@ -1,6 +1,52 @@
 # Current tuple preparation
 
-## Current signed Builds4.45.0 and public Parties3.1.0 tuple
+## Current signed Builds4.47.0 and SDK4.2.0 tuple
+
+The producer is genuine [Builds v4.47.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0)
+at `5ec1779040606be89306129a7d2b245258c9acd2`, from normal
+[release42664680297](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42664680297)
+after exact-source [CI42661065183](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42661065183).
+The exact module-tool pin and supported range floor are `4.47.0`, retaining
+upper bound `5.0.0-0` and disabled roll-forward. The signed archive SHA-256 is
+`1eea9b282d1d247e1f6e9e2213c5969f7895df44105e6900c873b586c5c4f905`.
+The complete paired validation authority is AppHost
+`6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe` and Tooling
+`35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01`.
+Crossed historical/new pairs remain refused. Catalog Git blob
+`a9472e6159b0b7627b4de543651f9aa1912398ab` has raw SHA-256
+`957818ed7df1b29b2299644afb06987393f617c5b87ff8551b9b95b52a23034d`.
+The [official inventory](https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.47.0/g4-tool-package-inventory.json)
+SHA-256 is `806a0fdf6fc08ea0b8a398756b04af43eb196a81d22ebbbff142dcbca9abcc0b`.
+
+The closed reader authority adds only exact SDK4.2.0, source
+`aa16227bd07f0564a3026d619a5abd973e02656f`, with Tenants7.0.5, Memories3.0.25,
+public Parties3.1.0 and McpCli2.0.1. All twelve genuine public NuGet bodies
+are authenticated before reflection; SDK4.1 dictionaries remain unchanged.
+The ordinary public reader and gateway may use SDK4.2 while the separately
+measured Parties3.1 image retains digest
+`48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb`
+and its original SDK4.1 image-body provenance. No new image body is inferred.
+
+Private current-owner preparation records the clean Parties compatibility
+source `ebe1739d70a4e76447938b0bb8c53db508bf6019`. That source retains its own
+SDK4.1 default and dependency pins. The Platform-owned sealed mapping selects
+SDK4.2 for its measured Release build, private packages, complete asset graph,
+reader receipts and independently mapped runtime files. Its SDK4.2 purpose
+accepts only catalog Parties3.1.0; historical SDK4.1 purposes remain separate.
+The private EventStore/Tenants test purpose has its own six-body SDK4.2 cohort.
+Neither private purpose grants a general public SDK/Tenants pair.
+
+The current profile retains all 412 original cases and adds six extension
+controls and 38 exact artifact controls, for 456 total. The original 349-case
+legacy profile and authenticated historical provenance remain unchanged.
+Source release requires genuine same-code current/legacy qualification, all
+four tuple orchestration/execution jobs and all six SDK matrix jobs. Native,
+public-query, cleanup and candidate acceptance retain their separate required
+evidence; package measurement and source publication grant no such credit.
+The catalog selects Dapr .NET1.19.0 and runtime/CLI1.19.1. The retained Works
+proof remains qualified only for Dapr1.18.7 and receives no newer-runtime label.
+
+## Previous signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal

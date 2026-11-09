@@ -16,6 +16,7 @@ LEGACY_PROVENANCE_HASH = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4
 TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
 TENANTS_705_SOURCE = "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35"
 MEMORIES_CURRENT_SOURCE = "246157a7ff8e2dcd8d356c833a77a02514490d2f"
+EVENTSTORE_420_SOURCE = "aa16227bd07f0564a3026d619a5abd973e02656f"
 ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
            "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties"}
 
@@ -85,9 +86,12 @@ def verify(root: Path, current: str, legacy: str) -> dict:
     next_expected["tenants"]["commit"] = TENANTS_705_SOURCE
     next_expected["memories"]["version"] = "3.0.25"
     next_expected["memories"]["commit"] = MEMORIES_CURRENT_SOURCE
+    sdk420_expected = decode(json.dumps(next_expected))
+    sdk420_expected["eventstore"]["version"] = "4.2.0"
+    sdk420_expected["eventstore"]["commit"] = EVENTSTORE_420_SOURCE
     selected = decode(git(root, "show", current + ":" + PROVENANCE))
-    if selected != original and selected != expected and selected != next_expected:
-        raise ValueError("Current provenance changed more than the authenticated Tenants and Memories versions and sources.")
+    if selected not in (original, expected, next_expected, sdk420_expected):
+        raise ValueError("Current provenance changed more than the authenticated EventStore, Tenants and Memories versions and sources.")
     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
         raise ValueError("Legacy source changed its exact published tool identity.")

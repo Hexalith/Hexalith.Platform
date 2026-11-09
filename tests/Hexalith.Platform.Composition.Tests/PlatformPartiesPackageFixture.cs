@@ -69,17 +69,25 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal string Reader => Path.Combine(Workspace, "platform-components", "catalog-reader");
 
     /// <summary>Requires the real full public bodies before resolving an explicitly prepared coherent workspace; there is no legacy or synthetic fallback.</summary>
+    internal static string SelectedSdkVersion => PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name) ? "4.2.0"
+        : PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.PublishedPartiesName) ? "4.1.0"
+        : throw new InvalidDataException("The package fixture requires one complete authenticated SDK cohort.");
+
+    internal static string PublishedCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name : PublishedCatalogArtifactCohort.PublishedPartiesName;
+    internal static string CurrentCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name : PublishedCatalogArtifactCohort.CurrentOwnerName;
+    internal static string EventStoreTestCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name : PublishedCatalogArtifactCohort.EventStorePackageTestName;
+
     internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package")
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
         bool published = !current && PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
-        string cohort = current ? PublishedCatalogArtifactCohort.CurrentOwnerName
-            : published ? PublishedCatalogArtifactCohort.PublishedPartiesName : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
+        string cohort = current ? CurrentCohort
+            : published ? PublishedCohort : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
         PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             .ShouldBeTrue(current || published
-                ? "Current Parties preparation requires the genuine published M25/SDK4.1 tuple and loaded public Contracts body."
+                ? "Current Parties preparation requires its exact genuine public M25/SDK tuple and loaded public Contracts body."
                 : "Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
-        PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBeTrue();
+        PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
         PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort).ShouldBeTrue();
         if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort).ShouldBeTrue();
         string root = PlatformTestRepository.Root;
@@ -124,7 +132,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.1.0"), ("tenants", current || published ? "7.0.5" : "7.0.2"), ("memories", current || published ? "3.0.25" : "3.0.23"), ("parties", published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", SelectedSdkVersion), ("tenants", current || published ? "7.0.5" : "7.0.2"), ("memories", current || published ? "3.0.25" : "3.0.23"), ("parties", published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
