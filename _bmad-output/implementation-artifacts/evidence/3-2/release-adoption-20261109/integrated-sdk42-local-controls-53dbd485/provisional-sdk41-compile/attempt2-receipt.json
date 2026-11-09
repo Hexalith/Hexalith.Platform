@@ -1,0 +1,23 @@
+{
+  "recordedUtc": "2026-11-09T19:16:15.962369+00:00",
+  "scope": "Provisional dirty isolated historical metadata-only SDK4.1 compile of 53db code after correcting missing published-tool path and EventStore source resource; no committed replay, source-equivalence or qualification credit.",
+  "codeSource": "53dbd485baa9842886b1d615b7f56fa441cf4738",
+  "buildsSource": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "eventStoreSource": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841",
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "-nodeReuse:false",
+    "--disable-build-servers",
+    "--artifacts-path",
+    "/tmp/story32-provisional-sdk41-compile-jke5241d/repository/artifacts/provisional-sdk41-attempt2",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsPublishedToolRoot=/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.45.0/tools/net10.0/any"
+  ],
+  "exitCode": 0,
+  "qualificationCredit": false
+}
