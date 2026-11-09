@@ -288,6 +288,24 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         return result.Output.Trim();
     }
 
+    /// <summary>Retains existing process diagnostics outside the source tree before normal fixture cleanup.</summary>
+    internal void RetainReaderDiagnostics()
+    {
+        string source = Path.Combine(Reader, "generation.log");
+        if (!File.Exists(source)) return;
+        try
+        {
+            string target = Path.Combine(Path.GetTempPath(), "hexalith-sdk42-reader-diagnostics", Path.GetFileName(Workspace));
+            CompositionWorkspace.CreatePrivateDirectory(target);
+            File.Copy(source, Path.Combine(target, "generation.log"), overwrite: false);
+            Console.Error.WriteLine("Retained existing reader diagnostics: " + target);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            Console.Error.WriteLine("Reader diagnostic retention failed; the original test failure is preserved.");
+        }
+    }
+
     /// <inheritdoc />
     public void Dispose() => Directory.Delete(Workspace, true);
 }

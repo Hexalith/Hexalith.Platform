@@ -41,7 +41,16 @@ public sealed class PlatformSdk42PackageEntryTests
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
         servers.Count(server => server.Image is not null && server.ImageDigest is not null).ShouldBe(6);
-        PlatformRoutingCatalog catalog = PlatformRoutingCatalog.Generate(options, servers, Path.Combine(fixture.Workspace, "platform-components"));
+        PlatformRoutingCatalog catalog;
+        try
+        {
+            catalog = PlatformRoutingCatalog.Generate(options, servers, Path.Combine(fixture.Workspace, "platform-components"));
+        }
+        catch
+        {
+            fixture.RetainReaderDiagnostics();
+            throw;
+        }
         using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
         proof.VerifyReader(receipt.RootElement);
         proof.Matches(options).ShouldBeTrue();

@@ -29,22 +29,30 @@ public sealed class PlatformSdk42CurrentOwnerMemoriesTransportTests
         File.WriteAllText(Path.Combine(runtime, "daprd"), "model-only runtime marker; never executed");
         PlatformCompositionOptions? admitted = null;
         HashSet<string> images = new(StringComparer.Ordinal);
-        fixture.Compose(builder, options =>
+        try
         {
-            options.CurrentOwnerProof!.Matches(options).ShouldBeTrue();
-            admitted = options;
-            return options with
+            fixture.Compose(builder, options =>
             {
-                ImageProbeRunner = (start, _, _) =>
+                options.CurrentOwnerProof!.Matches(options).ShouldBeTrue();
+                admitted = options;
+                return options with
                 {
-                    start.FileName.ShouldBe("docker");
-                    start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
-                    PlatformPartiesPackageFixture.CurrentImages.ShouldContain(start.ArgumentList[2]);
-                    images.Add(start.ArgumentList[2]);
-                    return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-                },
-            };
-        });
+                    ImageProbeRunner = (start, _, _) =>
+                    {
+                        start.FileName.ShouldBe("docker");
+                        start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
+                        PlatformPartiesPackageFixture.CurrentImages.ShouldContain(start.ArgumentList[2]);
+                        images.Add(start.ArgumentList[2]);
+                        return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
+                    },
+                };
+            });
+        }
+        catch
+        {
+            fixture.RetainReaderDiagnostics();
+            throw;
+        }
         images.Order(StringComparer.Ordinal).ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
         admitted.ShouldNotBeNull().CurrentOwnerProof!.Matches(admitted).ShouldBeTrue();
         await using DistributedApplication app = builder.Build();
