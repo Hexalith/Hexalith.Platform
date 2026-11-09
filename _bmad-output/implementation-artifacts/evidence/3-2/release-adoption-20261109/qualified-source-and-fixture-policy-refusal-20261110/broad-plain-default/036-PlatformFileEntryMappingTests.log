@@ -1,0 +1,37 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (4 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: null) [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-file-mapping-8913de90a7cc4e3a8575b2d7e6dd7e10/workspace/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj"
+          but was actually
+      "../../../../../../../platform-file-mapping-8913de90a7cc4e3a8575b2d7e6dd7e10/workspace/references/Hex..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs(60,0): at Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(String activeModule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: "eventstore") [FAIL]
+      Shouldly.ShouldAssertException : refusal.Message
+          should contain (case insensitive comparison)
+      "/tmp/platform-file-mapping-67f3dc98e05447a8957c7afb594a95d8/workspace/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj"
+          but was actually
+      "../../../../../../../platform-file-mapping-67f3dc98e05447a8957c7afb594a95d8/workspace/references/Hex..."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformFileEntryMappingTests.cs(60,0): at Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(String activeModule)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 5, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 1.039s

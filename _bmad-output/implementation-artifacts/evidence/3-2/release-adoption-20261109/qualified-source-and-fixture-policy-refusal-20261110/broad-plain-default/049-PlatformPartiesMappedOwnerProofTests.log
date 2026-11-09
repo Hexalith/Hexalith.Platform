@@ -1,0 +1,38 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (3 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests.ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync [FAIL]
+      Shouldly.ShouldAssertException : PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD:references/Hexalith.Parties")
+          should be
+      "bb2783120c0eed620e3d4f52a2ebaf6aa510126f"
+          but was
+      "ebe1739d70a4e76447938b0bb8c53db508bf6019"
+          difference
+      Difference     |  |         |    |    |         |    |    |    |    |    |         |         |    |    |    |    |    |        
+                     | \|/       \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/       \|/       \|/  \|/  \|/  \|/  \|/  \|/       
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  
+      Expected Value | b    b    2    7    8    3    1    2    0    c    0    e    e    d    6    2    0    e    3    d    4    ...  
+      Actual Value   | e    b    e    1    7    3    9    d    7    0    a    4    e    7    6    4    4    7    9    3    8    ...  
+      Expected Code  | 98   98   50   55   56   51   49   50   48   99   48   101  101  100  54   50   48   101  51   100  52   ...  
+      Actual Code    | 101  98   101  49   55   51   57   100  55   48   97   52   101  55   54   52   52   55   57   51   56   ...  
+      
+      Difference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+                     |      \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | ...  19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   
+      Expected Value | ...  d    4    f    5    2    a    2    e    b    a    f    6    a    a    5    1    0    1    2    6    f    
+      Actual Value   | ...  3    8    b    0    b    b    8    c    5    3    d    b    5    0    8    b    f    6    0    1    9    
+      Expected Code  | ...  100  52   102  53   50   97   50   101  98   97   102  54   97   97   53   49   48   49   50   54   102  
+      Actual Code    | ...  51   56   98   48   98   98   56   99   53   51   100  98   53   48   56   98   102  54   48   49   57   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs(17,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests.ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 3, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.434s

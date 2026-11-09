@@ -1,0 +1,89 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (12 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet [FAIL]
+      System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.
+      Stack Trace:
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(233,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort)
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(217,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.<>c__DisplayClass36_0.<VerifySdk>b__1(String name)
+           at System.Linq.Enumerable.IteratorSelectIterator`2.ToArrayNoPresizing()
+           at System.Linq.Enumerable.IteratorSelectIterator`2.ToArray()
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(216,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifySdk(String cohort)
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(34,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners [FAIL]
+      System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.
+      Stack Trace:
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(233,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort)
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(25,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies [FAIL]
+      System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.
+      Stack Trace:
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(233,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort)
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(51,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+      Output:
+        historical Hexalith.EventStore.Contracts sha256=5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53
+        historical Hexalith.EventStore.ServiceDefaults sha256=860b843eb81e5e1b1e6176b8865e79a116b62182c28cf5a39230f00bfac2115d
+        historical Hexalith.EventStore.Client sha256=0bca680b2fc475720a113e05a73d328f01f7a7a37e98fb2babc94a35532e0e9c
+        historical Hexalith.EventStore.DomainService sha256=f35786f3df58263d34e60ddfa83844cb43b2e7ac345420cb901f9ef49b7e3eb8
+        historical Hexalith.Tenants.Contracts sha256=5676f656752395e149296ffbe9bc9d5e5e699e4bd6d4265df7de0f3442f05a40
+        historical Hexalith.Tenants.Server sha256=4c03251c6378d131287a02b5b3871387874afcfff6f059f8bd52f9b640e15c93
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.MatchesSdk() || PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.CurrentName)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(150,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: "Hexalith.Tenants.Contracts", cohort: "eventstore-4.1.0-tenants-7.0.2", expected: True) [FAIL]
+      Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(176,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(String name, String cohort, Boolean expected)
+           at InvokeStub_PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: "Hexalith.Tenants.Contracts", cohort: "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor"···, expected: True) [FAIL]
+      Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(176,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(String name, String cohort, Boolean expected)
+           at InvokeStub_PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: "Hexalith.EventStore.Contracts", cohort: "eventstore-4.1.0-tenants-7.0.2", expected: True) [FAIL]
+      Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(176,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(String name, String cohort, Boolean expected)
+           at InvokeStub_PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: "eventstore-4.1.0-tenants-7.0.2", expected: True) [FAIL]
+      Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.MatchesSdk(cohort)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs(162,0): at Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(String cohort, Boolean expected)
+           at InvokeStub_PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 47, Errors: 0, Failed: 8, Skipped: 0, Not Run: 0, Time: 0.332s
