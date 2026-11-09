@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <!-- Keep the publication contract at its sole declared SDK dependency. -->
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
   </PropertyGroup>
