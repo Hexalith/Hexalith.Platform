@@ -1,0 +1,288 @@
+{
+  "checks": [
+    {
+      "canonicalOwnerChecks": true,
+      "command": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.StdinChildAcknowledgementTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.StdinChildProgressTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.Workspace.StopSignalTests"
+      ],
+      "cwd": "references/Hexalith.Builds",
+      "durationSeconds": 5.524,
+      "exitCode": 0,
+      "failed": 0,
+      "hostedQualification": false,
+      "passed": 21,
+      "ran": 21,
+      "retainedOutput": "builds-stdin-controls.txt",
+      "skipped": 0,
+      "startedAtUtc": "2026-11-09T21:34:35.062543+00:00",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll"
+      ],
+      "completedCount": null,
+      "cwd": "references/Hexalith.Builds",
+      "durationSeconds": 600.113,
+      "exitCode": 58,
+      "passedCount": null,
+      "qualifying": false,
+      "rawOutputSha256": "2869a1ab3ae0b198686a3af0a986e94e7c2f25d72157b421a3e17fcb0dc2cf5a",
+      "retainedOutput": "builds-module-owner.redacted.json",
+      "runnerReportedTotal": 0,
+      "startedAtUtc": "2026-11-09T21:34:58.141922+00:00",
+      "status": "incomplete-and-failed"
+    },
+    {
+      "buildsGitlink": "5ec1779040606be89306129a7d2b245258c9acd2",
+      "canonicalOwnerChecks": true,
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ci-lifecycle",
+        "-v"
+      ],
+      "cwd": "references/Hexalith.Parties",
+      "durationSeconds": 6.321,
+      "errors": 27,
+      "exitCode": 1,
+      "failures": 1,
+      "ran": 75,
+      "rawOutputSha256": "f740c0e024723ae9a3a8e1480d31bbbe526e525c24c1df320e68f80d99420cf5",
+      "retainedOutput": "parties-canonical.redacted.json",
+      "source": "71dd8a4377dcab3d5a30a416be96263e5aa3a2f0",
+      "startedAtUtc": "2026-11-09T21:45:33.813588+00:00",
+      "status": "failed"
+    },
+    {
+      "canonicalOwnerChecks": false,
+      "classification": "fixture-assisted-resource-free-controls",
+      "command": [
+        "python3",
+        "-B",
+        "_bmad-output/implementation-artifacts/evidence/2-10/resource-free-20261109/run_parties_controls.py",
+        "--helper-source",
+        "5ec1779040606be89306129a7d2b245258c9acd2"
+      ],
+      "cwd": ".",
+      "durationSeconds": 6.758,
+      "exitCode": 0,
+      "failed": 0,
+      "hostedQualification": false,
+      "partiesPinnedHelperSource": "5ec1779040606be89306129a7d2b245258c9acd2",
+      "passed": 106,
+      "ran": 106,
+      "retainedOutput": "parties-controls.txt",
+      "skipped": 0,
+      "startedAtUtc": "2026-11-09T21:45:52.091890+00:00",
+      "status": "passed"
+    }
+  ],
+  "classification": "resource-free-diagnostic-only",
+  "limits": {
+    "acceptedPinsChanged": false,
+    "candidateAcceptance": false,
+    "canonicalOwnerChecksAllPassed": false,
+    "freshRequiredCiRowsUnexecuted": 8,
+    "freshRequiredLocalRowsUnexecuted": 8,
+    "nestedSubmodulesInitialized": false,
+    "productionBudgetsChanged": false,
+    "remoteOperationsByThisImplementation": false,
+    "servicesStartedByThisImplementation": false,
+    "startupCleanupAuditMeasurements": "not-executed; no savings claimed",
+    "toolAccepted": false,
+    "verifiedSetupCacheReuseImplemented": false,
+    "workflowDispatchesByThisImplementation": 0
+  },
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "preparedFileSha256": {
+    "references/Hexalith.Builds/DEVELOPMENT.md": "778928f50e988278835f579f6abdd13174b3fe7318b3c7bd4204a2275be2d32f",
+    "references/Hexalith.Builds/Directory.Build.props": "87831265b6dc7e43269e0638f6fc875230861e6283d383ec803472f4e749f59d",
+    "references/Hexalith.Builds/Props/Directory.Packages.props": "8a48af3fe775cb3effaad3ef0e30395e3c1971b84dec34d936274f764245fb9c",
+    "references/Hexalith.Builds/global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/StopSignal.cs": "4c0df3505ae5f8426f80c839d35bff6d83fd6e4fc66582e20001d6b464dee102",
+    "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/StopSignalInput.cs": "9eec917819e28c2632ccb2df149e1d4359e1abfadae59e899c65baf8dacc0997",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj": "20f993a5a6097b7cf5cb2b83e82a4ff69d2ab6060ef0358c9df7928e987eab5f",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/StdinChildAcknowledgement.cs": "7f5550ddda228cfef39c917f4cc208d22bdf39fbca9f76244bd0b4b159b0ba38",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/StdinChildAcknowledgementTests.cs": "9a611603cb9451dc79ff5086c5fba4730edf033a37aa97d7b519673bcabf895e",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/StdinChildProgress.cs": "4caf651c32fb2968ad8d9f16eb4c39d0764465303fdf9e4ab0cae0c20da85abd",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/StdinChildProgressTests.cs": "92c3e4cdfd3d175e8ba1bf33221d24e2df11d111892cc688556c523694b84dc8",
+    "references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Workspace/StopSignalTests.cs": "323b8dffa5ab539470793cab5ff52bbe0deba0aa8c47b8a4bffd63a7e1284501",
+    "references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml": "a20bd6ad03fd9fc6f9c5666717f5b94252f3fd8d9c72fb6530f093786c3e302a",
+    "references/Hexalith.Parties/scripts/qualify-disposable-ci.py": "a88d24922608c03dd55aa33471705d9c712583a294b1030927f4f939164391ef"
+  },
+  "recordedAtUtc": "2026-11-09T21:49:39.064502+00:00",
+  "retainedArtifactSha256": {
+    "README.md": "79932d2e7367c4b590b81409bef615cb468bc51d0e13c974370121b76b0b269e",
+    "builds-module-owner.redacted.json": "a9ad56c14ace8d7691df0d05f7c9b37b7a74972cd61fe3577bb83f1ddd3e18f7",
+    "builds-stdin-baseline.txt": "281562206dbb3377a7e8b810b94e12bb501afab875faf49a37fe6c0d6f7ac96e",
+    "builds-stdin-controls.txt": "656248c6569143f654843d2fe134cc3911cd7a87f13a38f44fc6b155e216f343",
+    "parties-canonical.redacted.json": "dc8f77bc953dfe56864e20afadcdee806f0a600f850651ed521d0de91e0b1519",
+    "parties-controls.txt": "110ad8f5ee3076291cb8977ef2be9e5276ecd5107de90026cc1e9a758a9f5053"
+  },
+  "schema": "hexalith.story-2-10.resumed-resource-free-verification.v1",
+  "setupAndBuildAttempts": [
+    {
+      "checkpoint": "cached-apphost-reference-graph",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--no-restore",
+        "--configuration",
+        "Debug",
+        "-m:1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false"
+      ],
+      "durationSeconds": 65.88,
+      "exitCode": 1,
+      "failureCode": "CS0234",
+      "rawOutputSha256": "1ca3a10e1d0524e89eee46759ea72d31f8ea0bd30ad89e4e22a116b78725536a"
+    },
+    {
+      "checkpoint": "cached-apphost-reference-graph",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--no-restore",
+        "--configuration",
+        "Release",
+        "-m:1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false",
+        "-p:MinVerVersionOverride=1.0.0"
+      ],
+      "durationSeconds": 75.58,
+      "exitCode": 1,
+      "failureCode": "CS0234",
+      "rawOutputSha256": "1e5bc152c194a7c8e1a089cb8a74067120ba9887b4bb862a9b360c5bab08f0fc"
+    },
+    {
+      "command": [
+        "dotnet",
+        "restore",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--source",
+        "/home/administrator/.nuget/packages",
+        "--disable-parallel",
+        "-p:NuGetAudit=false"
+      ],
+      "dependencyPinsChanged": false,
+      "exitCode": 0,
+      "networkSourcesUsed": false,
+      "rawOutputSha256": "eed5f190d4b50f55e7c459d7d46085f27e8dee1524ff46a5c406b6070c661ec4",
+      "sourceKind": "existing-local-package-cache-only"
+    },
+    {
+      "checkpoint": "repaired-baseline-debug-build",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--no-restore",
+        "--configuration",
+        "Debug",
+        "-m:1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false"
+      ],
+      "durationSeconds": 69.88,
+      "errors": 0,
+      "exitCode": 0,
+      "rawOutputSha256": "7eef07ce96c3cd362aa3828f170df687dcbc2e88e5fed5eb2c41dc673bdd4ef6",
+      "warnings": 0
+    },
+    {
+      "checkpoint": "initial-new-test-style-check",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--no-restore",
+        "--configuration",
+        "Debug",
+        "-m:1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false"
+      ],
+      "correctedBeforeFinalBuild": true,
+      "durationSeconds": 77.33,
+      "exitCode": 1,
+      "failureCodes": [
+        "RCS1261",
+        "SA1116",
+        "SA1117"
+      ],
+      "rawOutputRetained": false
+    },
+    {
+      "checkpoint": "final-debug-build",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "--no-restore",
+        "--configuration",
+        "Debug",
+        "-m:1",
+        "-p:GeneratePackageOnBuild=false",
+        "-p:NuGetAudit=false"
+      ],
+      "durationSeconds": 69.1,
+      "errors": 0,
+      "exitCode": 0,
+      "rawOutputSha256": "03d965a86cdcd0622e2be84ad36c44d84d3cec80b2f2b1776f99f1de01b4d742",
+      "warnings": 0
+    }
+  ],
+  "sourceState": {
+    "buildAndFocusedRunInputs": "that commit plus the three individually fingerprinted C# edits",
+    "changedCSharpFilesMatchObservedBuildsHead": {
+      "test/Hexalith.Builds.Module.Tests/Workspace/StdinChildAcknowledgement.cs": true,
+      "test/Hexalith.Builds.Module.Tests/Workspace/StdinChildAcknowledgementTests.cs": true,
+      "test/Hexalith.Builds.Module.Tests/Workspace/StopSignalTests.cs": true
+    },
+    "externalCSharpCommitObservedDuringOwnerRun": "69ab8b900b9d67d4fc22dc5387260e244851c107",
+    "externalCommitsPerformedByThisImplementation": false,
+    "finalCompatibleQualificationInputSetSelected": false,
+    "implementationStartedAtBuildsCommit": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+    "observedBuildsHeadAfterChecks": "8a1c8ca29feed4e01daf5004a400351a89642f74",
+    "observedPartiesHeadAfterChecks": "71dd8a4377dcab3d5a30a416be96263e5aa3a2f0",
+    "observedPlatformHeadAfterChecks": "ae9a7f8a2737e58482fc97a2b7d5c04004db4969",
+    "partiesCanonicalAndFixtureHelperPin": "5ec1779040606be89306129a7d2b245258c9acd2",
+    "suiteArtifactsUnchangedSinceFocusedRun": {
+      "Hexalith.Builds.Module.Tests.dll": true,
+      "Hexalith.Builds.Module.Tests.pdb": true
+    }
+  },
+  "storyStatus": "in-progress",
+  "toolchain": {
+    "compiledTestInputSha256": {
+      "Hexalith.Builds.Module.AppHost.dll": "5510fc23124f85d75f119bf7b79598a301b86c76c2fffec03a97834dfa679325",
+      "Hexalith.Builds.Module.Tests.deps.json": "d7d8d211676d990655f098b5ec382e27d4c8c5ed99aad6a5d7362154d0132b73",
+      "Hexalith.Builds.Module.Tests.dll": "cbb1ab8f5efbf7cd49ae3533e99f18033a103c3b6c40cd82c0d228808458f287",
+      "Hexalith.Builds.Module.Tests.pdb": "859aa32db0f955ad96797c7976c86cae33cb7b71251fc56106e13fc143de6aa9",
+      "Hexalith.Builds.Module.Tests.runtimeconfig.json": "4761a312947a31a30aec259d9ee6f10407d89806d812cd102f3b3aec250dc8b4",
+      "Hexalith.Builds.Tooling.dll": "c3d8e23633b214a2b557634bae4c9835adf13998d41a95b50392d99bc268ef68"
+    },
+    "configuration": "Debug",
+    "frameworkRuntime": "10.0.14",
+    "platformModelLoadedIdentity": "not-observed; no model-loading proof claimed",
+    "sdk": "10.0.403",
+    "xunitRunner": "4.0.2"
+  }
+}

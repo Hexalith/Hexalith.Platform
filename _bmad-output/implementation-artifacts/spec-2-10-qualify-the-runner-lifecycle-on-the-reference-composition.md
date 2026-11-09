@@ -23,6 +23,15 @@ Story 2.8 delivers CI execution/finalization and focused proof of its original s
 
 ## Execution constraints for this build
 
+On 2026-11-10 the user answered "yes" to the explicit request to initialize
+Parties' nested Builds dependency and run the required local and hosted
+qualification. This authorizes that nested initialization, local services,
+remote qualification operations and the preparation needed for those runs,
+overriding the restrictions recorded below for this story. Preserve unrelated
+workspace changes and sequential execution. Do not infer a lifecycle pass,
+tool acceptance or pin approval from this authorization; applicable gates must
+still pass against one exact compatible input set.
+
 The resumed bmad-build invocation on 2026-11-09 uses the current Step 03 rules:
 no pushes, no remote operations, and sequential execution only. Continue the
 remaining resource-free implementation and owning checks within those limits.
@@ -124,3 +133,47 @@ retains those results and the exact pushed Parties source. Earlier evidence
 keeps its original input hashes. Full hosted qualification, the final compatible
 Platform source pair, actual Builds stdin-regression verification and accepted-tool
 enrollment remain open. Publishing prepared source does not complete this story.
+
+## Resumed implementation and owning checks — 2026-11-09
+
+The [resumed resource-free record](evidence/2-10/resource-free-resumed-20261109/README.md)
+now covers the actual Builds stdin process-acknowledgement regression. Its private
+controller emits fixed `HXLQ109` timeout and `HXLQ110` invalid/unreadable-record
+codes, the fixed stdin checkpoint and bounded redacted observations. Private
+paths, tokens, payloads and native exception messages/inner exceptions are excluded.
+The original ten-second acknowledgement bound is unchanged. The developer guide
+records this diagnostic-only scope.
+
+The final owning Debug build passed without warnings/errors after repairing stale
+assets solely from the existing local package cache. All 21 canonical focused
+stdin controls passed with zero skips, including the actual pipe-disposal and
+framed-output handshake and new exclusive-lock/redaction cases. The full owning
+Module.Tests attempt remains unsuccessful: it was cancelled at a 600-second
+diagnostic cap, exit 58, after the pinned-model assertion observed seven server
+resources instead of six. A separate reflection-control failure was reported
+after cancellation. Two skipped controls and cancelled assembly cleanup remain
+recorded; the cancelled runner's zero total supplies no completed/pass count.
+
+Canonical Parties discovery on its newly observed source ran 75 tests with 27
+errors and one linked-owner-directory failure. Its missing nested Builds pin is
+available locally, but the owner's explicit prohibition of nested initialization
+without a user request still applies. No nested dependency was initialized.
+The separate fixture-assisted controller check passed 106/106 using that source's
+actual Builds pin `5ec1779040606be89306129a7d2b245258c9acd2`; it supplies no canonical
+or hosted credit and does not hide the failed discovery.
+
+An unrelated workspace operation committed this implementation's C# edits and
+developer-guide paragraph while verification was in progress. The manifest retains
+the original build base, exact edited-file and binary hashes, and separately
+observed full revisions. The C# source matches the observed external commits and
+the suite DLL/PDB remain unchanged since the focused pass. These moving sources
+have not been selected as a final compatible qualification input set.
+
+The bounded-diagnostics implementation and focused regression coverage are now
+present; the task remains open because the required owning checks are not all
+successful. All eight fresh local and eight fresh CI scenario rows, the full
+manual campaign, patched-helper lifecycle rerun and accepted-tool enrollment/pins
+remain open. Verified setup reuse remains deferred. No services, remote operation,
+workflow dispatch, commit, acceptance, pin or production-budget change was
+performed by this implementation. Status remains `in-progress`; Step 03 cannot
+advance on these results.

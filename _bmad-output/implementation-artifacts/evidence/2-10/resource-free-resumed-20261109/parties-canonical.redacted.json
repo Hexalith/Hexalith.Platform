@@ -1,0 +1,77 @@
+{
+  "classification": "canonical-owner-check",
+  "errorTestIds": [
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR037')",
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR999')",
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code=None)",
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR023')",
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR999')",
+    "test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code=None)",
+    "test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot=None)",
+    "test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={})",
+    "test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'failureType': 'OSError'})",
+    "test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'status': 'Ready'})",
+    "test_down_failure_is_preserved_when_retention_also_fails (test_cleanup_matrix.CleanupMatrixTests.test_down_failure_is_preserved_when_retention_also_fails)",
+    "test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure (test_cleanup_matrix.CleanupMatrixTests.test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure)",
+    "test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash (test_cleanup_matrix.CleanupMatrixTests.test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash)",
+    "test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome (test_cleanup_matrix.CleanupMatrixTests.test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome)",
+    "test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=False)",
+    "test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=True)",
+    "test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup (test_launch_recovery.LaunchRecoveryTests.test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup)",
+    "test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner (test_qualification_controller.ControllerSafetyTests.test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner)",
+    "test_local_process_cannot_become_a_hosted_positive_owner (test_qualification_controller.ControllerSafetyTests.test_local_process_cannot_become_a_hosted_positive_owner)",
+    "test_missing_or_unknown_cleanup_never_verifies_zero_resources (test_qualification_controller.ControllerSafetyTests.test_missing_or_unknown_cleanup_never_verifies_zero_resources)",
+    "test_receipt_cannot_escape_its_recorded_owner_role (test_qualification_controller.ControllerSafetyTests.test_receipt_cannot_escape_its_recorded_owner_role)",
+    "test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner (test_qualification_controller.ControllerSafetyTests.test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner)",
+    "test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ProcessLookupError')",
+    "test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='KeyError')",
+    "test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ValueError')",
+    "test_review_fixes (unittest.loader._FailedTest.test_review_fixes)",
+    "test_startup_observer (unittest.loader._FailedTest.test_startup_observer)"
+  ],
+  "failureObservation": {
+    "checkpoint": "linked-owner-directory-refusal",
+    "exceptionObserved": false,
+    "expectedExceptionType": "OSError"
+  },
+  "failureTestIds": [
+    "test_a_linked_owner_directory_cannot_supply_even_an_early_outcome (test_cleanup_matrix.CleanupMatrixTests.test_a_linked_owner_directory_cannot_supply_even_an_early_outcome)"
+  ],
+  "fixtureAssistedResultSubstitutesForCanonical": false,
+  "nestedBuildsDependency": {
+    "blockingInstruction": "references/Hexalith.Parties/AGENTS.md",
+    "exactPinAvailableInLocalGitObjects": true,
+    "explicitUserNestedAuthorization": false,
+    "initialized": false,
+    "requiredCommit": "5ec1779040606be89306129a7d2b245258c9acd2",
+    "rule": "Never initialize or update a submodule's nested submodules unless the user explicitly requests that nested work."
+  },
+  "rawExceptionMessagesRetained": false,
+  "rawOutputRetainedInRepository": false,
+  "redacted": true,
+  "result": {
+    "buildsGitlink": "5ec1779040606be89306129a7d2b245258c9acd2",
+    "canonicalOwnerChecks": true,
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ci-lifecycle",
+      "-v"
+    ],
+    "cwd": "references/Hexalith.Parties",
+    "durationSeconds": 6.321,
+    "errors": 27,
+    "exitCode": 1,
+    "failures": 1,
+    "ran": 75,
+    "rawOutputSha256": "f740c0e024723ae9a3a8e1480d31bbbe526e525c24c1df320e68f80d99420cf5",
+    "retainedOutput": "parties-canonical.redacted.json",
+    "source": "71dd8a4377dcab3d5a30a416be96263e5aa3a2f0",
+    "startedAtUtc": "2026-11-09T21:45:33.813588+00:00",
+    "status": "failed"
+  }
+}

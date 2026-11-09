@@ -99,3 +99,14 @@ original inputs and are not credited to the rebased source. The owner-branch
 reconciliation in item 1 is complete for this pushed source; all 16 fresh live
 scenario rows, final compatible Platform source inputs and accepted-tool gates
 remain open. No hosted qualification workflow was dispatched.
+
+## Resumed resource-free work
+
+The [separate resumed record](resource-free-resumed-20261109/README.md) adds fixed
+redacted codes and regression coverage to the actual Builds stdin acknowledgement
+controller. Its 21 canonical focused controls passed without skips. The broader
+owning check remains unsuccessful after its bounded incomplete attempt; canonical
+Parties discovery retains 27 dependency errors and one failure. A separate 106-test
+fixture-assisted pass uses Parties' newly observed exact helper pin. The record
+preserves concurrent external source changes and does not reassign earlier
+results. All 16 fresh lifecycle rows and the final acceptance gates remain open.

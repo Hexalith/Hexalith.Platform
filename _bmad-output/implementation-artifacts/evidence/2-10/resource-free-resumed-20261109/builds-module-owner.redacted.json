@@ -1,0 +1,62 @@
+{
+  "assemblyCleanup": {
+    "failureType": "OperationCanceledException",
+    "status": "incomplete"
+  },
+  "classification": "resource-free-owner-check",
+  "diagnosticCap": {
+    "action": "SIGINT",
+    "birthTicks": "13146056",
+    "capSeconds": 600,
+    "elapsedSeconds": 600.0,
+    "exactPid": 1335445,
+    "reason": "resource-free owner check diagnostic cap; incomplete required execution cannot pass"
+  },
+  "failures": [
+    {
+      "actualCount": 7,
+      "checkpoint": "platform-server-resource-count",
+      "expectedCount": 6,
+      "observedBeforeCancellation": true,
+      "testId": "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync"
+    },
+    {
+      "causationByCancellation": "not-established",
+      "checkpoint": "discovery-reflection-control",
+      "failureType": "TargetException",
+      "observedAfterCancellation": true,
+      "testId": "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleReviewTests.NonHexDockerOutputRemainsDiscoveryFailureAsync"
+    }
+  ],
+  "rawExceptionMessagesRetained": false,
+  "rawOutputRetainedInRepository": false,
+  "redacted": true,
+  "requiredMissingCoveragePasses": false,
+  "result": {
+    "command": [
+      "dotnet",
+      "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll"
+    ],
+    "completedCount": null,
+    "cwd": "references/Hexalith.Builds",
+    "durationSeconds": 600.113,
+    "exitCode": 58,
+    "passedCount": null,
+    "qualifying": false,
+    "rawOutputSha256": "2869a1ab3ae0b198686a3af0a986e94e7c2f25d72157b421a3e17fcb0dc2cf5a",
+    "retainedOutput": "builds-module-owner.redacted.json",
+    "runnerReportedTotal": 0,
+    "startedAtUtc": "2026-11-09T21:34:58.141922+00:00",
+    "status": "incomplete-and-failed"
+  },
+  "skips": [
+    {
+      "reason": "qualification-only-catalog-interception-unavailable",
+      "testId": "Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync"
+    },
+    {
+      "reason": "native-inspection-operating-system-gate",
+      "testId": "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync"
+    }
+  ]
+}
