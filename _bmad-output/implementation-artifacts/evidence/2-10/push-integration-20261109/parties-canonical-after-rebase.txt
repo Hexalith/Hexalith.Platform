@@ -1,0 +1,812 @@
+test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) ... 
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR037') ... ERROR
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR999') ... ERROR
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code=None) ... ERROR
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR023') ... ERROR
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR999') ... ERROR
+  test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code=None) ... ERROR
+test_focused_selection_executes_required_cases_and_never_claims_full_matrix (test_campaign_selection.CampaignSelectionTests.test_focused_selection_executes_required_cases_and_never_claims_full_matrix) ... ok
+test_full_matrix_keeps_lock_retry_peer_and_partial_startup (test_campaign_selection.CampaignSelectionTests.test_full_matrix_keeps_lock_retry_peer_and_partial_startup) ... ok
+test_metadata_is_fixed_bounded_and_never_publishes_exception_payload (test_campaign_selection.CampaignSelectionTests.test_metadata_is_fixed_bounded_and_never_publishes_exception_payload) ... ok
+test_missing_case_or_finalizer_failure_never_passes (test_campaign_selection.CampaignSelectionTests.test_missing_case_or_finalizer_failure_never_passes) ... ok
+test_missing_launch_acknowledgement_has_specific_fixed_code (test_campaign_selection.CampaignSelectionTests.test_missing_launch_acknowledgement_has_specific_fixed_code) ... ok
+test_missing_partial_linked_and_nonexecutable_runtime_cache_refuse (test_campaign_selection.CampaignSelectionTests.test_missing_partial_linked_and_nonexecutable_runtime_cache_refuse) ... ok
+test_unknown_selection_is_refused_before_any_scenario (test_campaign_selection.CampaignSelectionTests.test_unknown_selection_is_refused_before_any_scenario) ... ok
+test_execution_requires_same_running_process_and_original_active_finite_admission (test_cancellation_phase.CancellationPhaseTests.test_execution_requires_same_running_process_and_original_active_finite_admission) ... ok
+test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) ... 
+  test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot=None) ... ERROR
+  test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={}) ... ERROR
+  test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'failureType': 'OSError'}) ... ERROR
+  test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'status': 'Ready'}) ... ERROR
+test_missing_snapshot_bad_job_or_time_cannot_supply_phase_credit (test_cancellation_phase.CancellationPhaseTests.test_missing_snapshot_bad_job_or_time_cannot_supply_phase_credit) ... ok
+test_signal_snapshot_reads_current_state_without_archived_starting_fallback (test_cancellation_phase.CancellationPhaseTests.test_signal_snapshot_reads_current_state_without_archived_starting_fallback) ... ok
+test_startup_requires_actual_starting_without_execution_or_first_terminal (test_cancellation_phase.CancellationPhaseTests.test_startup_requires_actual_starting_without_execution_or_first_terminal) ... ok
+test_a_linked_owner_directory_cannot_supply_even_an_early_outcome (test_cleanup_matrix.CleanupMatrixTests.test_a_linked_owner_directory_cannot_supply_even_an_early_outcome) ... FAIL
+test_begin_sets_the_owned_wait_control_before_any_other_owner_can_be_launched (test_cleanup_matrix.CleanupMatrixTests.test_begin_sets_the_owned_wait_control_before_any_other_owner_can_be_launched) ... ok
+test_changed_early_terminal_is_refused_before_exact_retry_can_stop_resources (test_cleanup_matrix.CleanupMatrixTests.test_changed_early_terminal_is_refused_before_exact_retry_can_stop_resources) ... ok
+test_cleanup_does_not_accept_a_changed_owner_time_or_present_mapping (test_cleanup_matrix.CleanupMatrixTests.test_cleanup_does_not_accept_a_changed_owner_time_or_present_mapping) ... ok
+test_down_failure_is_preserved_when_retention_also_fails (test_cleanup_matrix.CleanupMatrixTests.test_down_failure_is_preserved_when_retention_also_fails) ... ERROR
+test_failed_failure_recording_preserves_the_scenario_error_and_still_finalizes (test_cleanup_matrix.CleanupMatrixTests.test_failed_failure_recording_preserves_the_scenario_error_and_still_finalizes) ... ok
+test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure (test_cleanup_matrix.CleanupMatrixTests.test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure) ... ERROR
+test_finalizer_exception_cannot_replace_the_original_scenario_exception (test_cleanup_matrix.CleanupMatrixTests.test_finalizer_exception_cannot_replace_the_original_scenario_exception) ... ok
+test_linked_outcome_or_mapping_cannot_supply_the_required_snapshot (test_cleanup_matrix.CleanupMatrixTests.test_linked_outcome_or_mapping_cannot_supply_the_required_snapshot) ... ok
+test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash (test_cleanup_matrix.CleanupMatrixTests.test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash) ... ERROR
+test_matrix_preserves_first_failure_while_all_five_owner_finalizers_are_attempted (test_cleanup_matrix.CleanupMatrixTests.test_matrix_preserves_first_failure_while_all_five_owner_finalizers_are_attempted) ... ok
+test_matrix_with_no_scenario_failure_still_refuses_incomplete_finalization (test_cleanup_matrix.CleanupMatrixTests.test_matrix_with_no_scenario_failure_still_refuses_incomplete_finalization) ... ok
+test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome (test_cleanup_matrix.CleanupMatrixTests.test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome) ... ERROR
+test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) ... 
+  test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=False) ... ERROR
+  test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=True) ... ERROR
+test_actual_cleanup_command_never_constructs_a_hosted_qualification_owner (test_cleanup_matrix.ReaderDirectoryTests.test_actual_cleanup_command_never_constructs_a_hosted_qualification_owner) ... ok
+test_foreign_root_prefix_and_linked_root_or_config_are_refused (test_cleanup_matrix.ReaderDirectoryTests.test_foreign_root_prefix_and_linked_root_or_config_are_refused) ... ok
+test_nested_docker_metadata_is_removed_with_the_owned_reader_tree (test_cleanup_matrix.ReaderDirectoryTests.test_nested_docker_metadata_is_removed_with_the_owned_reader_tree) ... ok
+test_nested_links_are_unlinked_without_traversing_the_foreign_target (test_cleanup_matrix.ReaderDirectoryTests.test_nested_links_are_unlinked_without_traversing_the_foreign_target) ... ok
+test_reader_unlink_precedes_a_reported_tree_removal_failure (test_cleanup_matrix.ReaderDirectoryTests.test_reader_unlink_precedes_a_reported_tree_removal_failure) ... ok
+test_failed_intent_save_never_starts_a_process (test_launch_recovery.LaunchRecoveryTests.test_failed_intent_save_never_starts_a_process) ... ok
+test_immediate_process_group_bookkeeping_failure_keeps_gate_closed (test_launch_recovery.LaunchRecoveryTests.test_immediate_process_group_bookkeeping_failure_keeps_gate_closed) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-09T14:55:45.178115+00:00", "label": "passing", "actualProcessId": 62310, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.178427+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup (test_launch_recovery.LaunchRecoveryTests.test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup) ... ERROR
+test_parent_termination_inside_constructor_cannot_release_actual_child (test_launch_recovery.LaunchRecoveryTests.test_parent_termination_inside_constructor_cannot_release_actual_child) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-09T14:55:45.283871+00:00", "label": "passing", "actualProcessId": 62331, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.284249+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "actual-parent-SIGTERM-during-constructor", "actualChildPid": 62331, "actualParentPid": 62319, "payloadExecuted": false, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.284249+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+{"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-09T14:55:45.285599+00:00", "label": "passing", "actualProcessId": 62331, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.285854+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_post_constructor_exception_recovers_actual_gated_child_from_durable_intent (test_launch_recovery.LaunchRecoveryTests.test_post_constructor_exception_recovers_actual_gated_child_from_durable_intent) ... {"kind": "owned-process-signal", "observedAtUtc": "2026-11-09T14:55:45.344524+00:00", "ownerRunId": null, "pid": 62360, "signal": 2, "toolProcessIds": [62360]}
+{"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-09T14:55:45.445514+00:00", "label": "passing", "actualProcessId": 62360, "gateStatus": "waiting"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.445984+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "post-constructor-exception", "actualChildPid": 62360, "payloadExecuted": false, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.445984+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+ok
+test_process_bookkeeping_save_failure_cannot_release_child (test_launch_recovery.LaunchRecoveryTests.test_process_bookkeeping_save_failure_cannot_release_child) ... {"kind": "not-allocated-before-launch-gate", "observedAtUtc": "2026-11-09T14:55:45.507544+00:00", "label": "passing", "actualProcessId": 62421, "gateStatus": "closed"}
+{"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.507818+00:00", "failures": [], "issuedOwners": 0, "allocationStatus": "not-allocated", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_released_process_without_any_receipt_remains_explicitly_unverified (test_launch_recovery.LaunchRecoveryTests.test_released_process_without_any_receipt_remains_explicitly_unverified) ... {"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.593997+00:00", "failures": [{"label": "passing", "failureCode": "HXLQ102", "failureType": "ValueError", "redacted": true}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+{"classification": "local-process-control", "boundary": "released-without-receipt", "actualChildPid": 62429, "payloadExecuted": true, "nativeOwnerIssued": false, "finalizer": {"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.593997+00:00", "failures": [{"label": "passing", "failureCode": "HXLQ102", "failureType": "ValueError", "redacted": true}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}}
+ok
+test_unknown_launch_never_becomes_not_allocated_or_prevents_peer_cleanup (test_launch_recovery.LaunchRecoveryTests.test_unknown_launch_never_becomes_not_allocated_or_prevents_peer_cleanup) ... {"kind": "finalizer-result", "observedAtUtc": "2026-11-09T14:55:45.595384+00:00", "failures": [{"label": "peer", "failureCode": "HXLQ102", "failureType": "ValueError", "redacted": true}, {"label": "passing", "failureCode": "HXLQ102", "failureType": "ValueError", "redacted": true}], "issuedOwners": 0, "allocationStatus": "unverified", "issuedOwnersCleanupVerified": false, "candidateAcceptance": false}
+ok
+test_lifecycle_install_step_extracts_only_verified_archives (test_loop2_fixes.DaprInstallExecutionTests.test_lifecycle_install_step_extracts_only_verified_archives) ... ok
+test_startup_diagnostics_install_step_extracts_only_verified_archives (test_loop2_fixes.DaprInstallExecutionTests.test_startup_diagnostics_install_step_extracts_only_verified_archives) ... ok
+test_lifecycle_reader_step_writes_only_the_exact_private_config (test_loop2_fixes.PullReaderConfigurationExecutionTests.test_lifecycle_reader_step_writes_only_the_exact_private_config) ... ok
+test_startup_diagnostics_reader_step_writes_only_the_exact_private_config (test_loop2_fixes.PullReaderConfigurationExecutionTests.test_startup_diagnostics_reader_step_writes_only_the_exact_private_config) ... ok
+test_observer_receives_the_runner_signal_sent_only_to_its_step_process (test_loop2_fixes.StartupDiagnosticsWorkflowTests.test_observer_receives_the_runner_signal_sent_only_to_its_step_process) ... ok
+test_reader_removal_accepts_the_startup_reader_name (test_loop2_fixes.StartupDiagnosticsWorkflowTests.test_reader_removal_accepts_the_startup_reader_name) ... ok
+test_registry_reader_reaches_only_the_observer_and_is_never_exported (test_loop2_fixes.StartupDiagnosticsWorkflowTests.test_registry_reader_reaches_only_the_observer_and_is_never_exported) ... ok
+test_toolchain_versions_and_digests_refuse_before_any_download (test_loop2_fixes.StartupDiagnosticsWorkflowTests.test_toolchain_versions_and_digests_refuse_before_any_download) ... ok
+test_control_a_whole_group_interrupt_reaches_the_apphost_before_withdrawal (test_loop2_fixes.ToolOnlySignalTests.test_control_a_whole_group_interrupt_reaches_the_apphost_before_withdrawal) ... ok
+test_interrupt_reaches_only_the_tool_and_no_signal_precedes_withdrawal (test_loop2_fixes.ToolOnlySignalTests.test_interrupt_reaches_only_the_tool_and_no_signal_precedes_withdrawal) ... ok
+test_partial_startup_kills_only_the_tool_and_resumes_the_apphost_before_the_exact_down (test_loop2_fixes.ToolOnlySignalTests.test_partial_startup_kills_only_the_tool_and_resumes_the_apphost_before_the_exact_down) ... ok
+test_reused_or_exited_leader_has_no_tool_processes (test_loop2_fixes.ToolOnlySignalTests.test_reused_or_exited_leader_has_no_tool_processes) ... ok
+test_atomic_recovery_tolerates_an_interrupted_prior_temporary_write (test_qualification_controller.ControllerSafetyTests.test_atomic_recovery_tolerates_an_interrupted_prior_temporary_write) ... ok
+test_cancellation_preserves_prior_product_failure_without_claiming_api_order (test_qualification_controller.ControllerSafetyTests.test_cancellation_preserves_prior_product_failure_without_claiming_api_order) ... ok
+test_cancellation_result_requires_real_phase_signal_and_actual_status_outcome_time (test_qualification_controller.ControllerSafetyTests.test_cancellation_result_requires_real_phase_signal_and_actual_status_outcome_time) ... ok
+test_empty_finalization_is_not_claimed_as_runtime_cleanup_verification (test_qualification_controller.ControllerSafetyTests.test_empty_finalization_is_not_claimed_as_runtime_cleanup_verification) ... ok
+test_finite_admission_and_retry_cannot_replace_the_original_expiry (test_qualification_controller.ControllerSafetyTests.test_finite_admission_and_retry_cannot_replace_the_original_expiry) ... ok
+test_first_outcome_requires_real_nonempty_time_status_and_mapping_fields (test_qualification_controller.ControllerSafetyTests.test_first_outcome_requires_real_nonempty_time_status_and_mapping_fields) ... ok
+test_independent_cancellation_finalizer_requires_hold_and_preserves_retry_records (test_qualification_controller.ControllerSafetyTests.test_independent_cancellation_finalizer_requires_hold_and_preserves_retry_records) ... ok
+test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner (test_qualification_controller.ControllerSafetyTests.test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner) ... ERROR
+test_linked_and_hardlinked_metadata_are_refused (test_qualification_controller.ControllerSafetyTests.test_linked_and_hardlinked_metadata_are_refused) ... ok
+test_local_process_cannot_become_a_hosted_positive_owner (test_qualification_controller.ControllerSafetyTests.test_local_process_cannot_become_a_hosted_positive_owner) ... ERROR
+test_missing_or_unknown_cleanup_never_verifies_zero_resources (test_qualification_controller.ControllerSafetyTests.test_missing_or_unknown_cleanup_never_verifies_zero_resources) ... ERROR
+test_receipt_cannot_escape_its_recorded_owner_role (test_qualification_controller.ControllerSafetyTests.test_receipt_cannot_escape_its_recorded_owner_role) ... ERROR
+test_released_terminal_status_and_outcome_are_checked_independently (test_qualification_controller.ControllerSafetyTests.test_released_terminal_status_and_outcome_are_checked_independently) ... ok
+test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner (test_qualification_controller.ControllerSafetyTests.test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner) ... ERROR
+test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) ... 
+  test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ProcessLookupError') ... ERROR
+  test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='KeyError') ... ERROR
+  test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ValueError') ... ERROR
+test_reused_controller_process_is_never_signalled (test_qualification_controller.ControllerSafetyTests.test_reused_controller_process_is_never_signalled) ... ok
+test_review_fixes (unittest.loader._FailedTest.test_review_fixes) ... ERROR
+test_startup_observer (unittest.loader._FailedTest.test_startup_observer) ... ERROR
+test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate (test_workflow_boundaries.WorkflowBoundaryTests.test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate) ... ok
+test_cancellation_wait_receives_the_runner_signal_sent_only_to_its_step_process (test_workflow_boundaries.WorkflowBoundaryTests.test_cancellation_wait_receives_the_runner_signal_sent_only_to_its_step_process) ... ok
+test_focused_selection_keeps_full_matrix_and_cancellation_protocol_distinct (test_workflow_boundaries.WorkflowBoundaryTests.test_focused_selection_keeps_full_matrix_and_cancellation_protocol_distinct) ... ok
+test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build (test_workflow_boundaries.WorkflowBoundaryTests.test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build) ... ok
+test_reader_permissions_and_independent_finalizer_remain_explicit (test_workflow_boundaries.WorkflowBoundaryTests.test_reader_permissions_and_independent_finalizer_remain_explicit) ... ok
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR037')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code='HXR999')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='withdrawal-lock-refusal', code=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR023')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code='HXR999')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_each_real_lock_stage_requires_its_exact_refusal_code (test_campaign_selection.CampaignSelectionTests.test_each_real_lock_stage_requires_its_exact_refusal_code) (stage='provisioning-lock-refusal', code=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'cleanup_verified'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 114, in test_each_real_lock_stage_requires_its_exact_refusal_code
+    with patch.object(Q.HELPER, 'cleanup_verified', return_value=False):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 121, in test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup
+    with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain, \
+                                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 121, in test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup
+    with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain, \
+                                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'failureType': 'OSError'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 121, in test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup
+    with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain, \
+                                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup (test_cancellation_phase.CancellationPhaseTests.test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup) (snapshot={'status': 'Ready'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 121, in test_missing_invalid_or_mismatched_snapshot_cannot_suppress_any_receipt_cleanup
+    with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain, \
+                                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_down_failure_is_preserved_when_retention_also_fails (test_cleanup_matrix.CleanupMatrixTests.test_down_failure_is_preserved_when_retention_also_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 245, in test_down_failure_is_preserved_when_retention_also_fails
+    with patch.object(Q.HELPER, 'retain_artifacts', side_effect=OSError('private retention payload')) as retained:
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure (test_cleanup_matrix.CleanupMatrixTests.test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 262, in test_failed_observation_cannot_prevent_down_retention_or_replace_the_first_failure
+    with patch.object(Q.HELPER, 'retain_artifacts') as retained, patch.object(Q.sys, 'stderr', output):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash (test_cleanup_matrix.CleanupMatrixTests.test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 103, in test_mapping_requires_the_entire_original_prepared_document_not_just_a_declared_hash
+    value.cleanup_outcome({'label': 'retry'}, 'withdrawal-recorded', required=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 745, in cleanup_outcome
+    require(not required or first is not None, 'Cleanup has no actual durable first outcome')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 116, in require
+    raise ValueError(message)
+ValueError: Cleanup has no actual durable first outcome
+
+======================================================================
+ERROR: test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome (test_cleanup_matrix.CleanupMatrixTests.test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 70, in test_refused_bookkeeping_can_be_pending_but_durable_boundary_requires_a_real_outcome
+    observed = value.cleanup_outcome(item, 'withdrawal-recorded', required=True)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 745, in cleanup_outcome
+    require(not required or first is not None, 'Cleanup has no actual durable first outcome')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 116, in require
+    raise ValueError(message)
+ValueError: Cleanup has no actual durable first outcome
+
+======================================================================
+ERROR: test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 155, in test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries
+    with patch.object(Q.HELPER, 'retain_artifacts') as retained:
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries (test_cleanup_matrix.CleanupMatrixTests.test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries) (early_present=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 155, in test_retry_starts_both_owners_before_waiting_and_checks_both_lock_boundaries
+    with patch.object(Q.HELPER, 'retain_artifacts') as retained:
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup (test_launch_recovery.LaunchRecoveryTests.test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_launch_recovery.py", line 251, in test_launch_record_validation_failure_cannot_block_exact_receipt_cleanup
+    patch.object(owner, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts'):
+                                         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner (test_qualification_controller.ControllerSafetyTests.test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 190, in test_invalid_first_outcome_cannot_prevent_exact_cleanup_of_any_owner
+    with patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts'):
+                                                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_local_process_cannot_become_a_hosted_positive_owner (test_qualification_controller.ControllerSafetyTests.test_local_process_cannot_become_a_hosted_positive_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 23, in test_local_process_cannot_become_a_hosted_positive_owner
+    Q.Qualification()
+    ~~~~~~~~~~~~~~~^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 370, in __init__
+    self.context = HELPER.ci_context()
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_missing_or_unknown_cleanup_never_verifies_zero_resources (test_qualification_controller.ControllerSafetyTests.test_missing_or_unknown_cleanup_never_verifies_zero_resources)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 57, in test_missing_or_unknown_cleanup_never_verifies_zero_resources
+    self.assertTrue(Q.HELPER.cleanup_verified(completed, result, owner))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_receipt_cannot_escape_its_recorded_owner_role (test_qualification_controller.ControllerSafetyTests.test_receipt_cannot_escape_its_recorded_owner_role)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'receipt_owner'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 278, in test_receipt_cannot_escape_its_recorded_owner_role
+    with patch.object(Q.HELPER, 'receipt_owner') as read:
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner (test_qualification_controller.ControllerSafetyTests.test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 241, in test_resume_and_down_failures_still_retain_artifacts_for_each_valid_unit_owner
+    patch.object(Q.HELPER, 'retain_artifacts') as retain:
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ProcessLookupError')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 213, in test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty
+    patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain:
+                                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='KeyError')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 213, in test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty
+    patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain:
+                                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty (test_qualification_controller.ControllerSafetyTests.test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty) (failure='ValueError')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/mock.py", line 1470, in get_original
+    original = target.__dict__[name]
+               ~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'retain_artifacts'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 213, in test_resume_failure_still_cleans_every_valid_unit_owner_and_retains_uncertainty
+    patch.object(controller, 'down') as down, patch.object(Q.HELPER, 'retain_artifacts') as retain:
+                                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1472, in get_original
+    original = getattr(target, name, DEFAULT)
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 37, in __getattr__
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+======================================================================
+ERROR: test_review_fixes (unittest.loader._FailedTest.test_review_fixes)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_review_fixes
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_review_fixes.py", line 23, in <module>
+    OBSERVER_SPEC.loader.exec_module(O)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/observe-current-owner-startup.py", line 23, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_startup_observer (unittest.loader._FailedTest.test_startup_observer)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_startup_observer
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_startup_observer.py", line 20, in <module>
+    SPEC.loader.exec_module(O)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/observe-current-owner-startup.py", line 23, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+FAIL: test_a_linked_owner_directory_cannot_supply_even_an_early_outcome (test_cleanup_matrix.CleanupMatrixTests.test_a_linked_owner_directory_cannot_supply_even_an_early_outcome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 127, in test_a_linked_owner_directory_cannot_supply_even_an_early_outcome
+    with self.assertRaises(OSError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: OSError not raised
+
+----------------------------------------------------------------------
+Ran 75 tests in 5.600s
+
+FAILED (failures=1, errors=27)

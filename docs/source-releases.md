@@ -2,8 +2,8 @@
 
 `source-release.yml` responds to completed main-push runs of **Platform tuple CI
 preflight** and **Catalog builder consumer binding**. Its read-only job requires
-both latest exact-source runs, latest attempts and all existing two tuple/five SDK
-jobs to pass. Missing or pending counterparts defer. Failures, cancellations,
+both latest exact-source runs, latest attempts and all four tuple
+orchestration/execution jobs and five SDK jobs to pass. Missing or pending counterparts defer. Failures, cancellations,
 unknown jobs, foreign/PR inputs, stale callbacks and changed main refuse.
 
 The read-only verifier runs the reviewed default-branch workflow SHA, so an old
