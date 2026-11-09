@@ -43,11 +43,11 @@ repeated identities must agree and supply no independent authority.
 | Group | Draft content and required checks |
 | --- | --- |
 | `scope` | Exact run/owner/attempt/environment, synthetic tenant/data isolation, profile content identity and suite/configuration/required-test-set identities. Compare every repeated value with its existing owner binding. |
-| `profile` | `purpose` (`candidate` or `canonical`), definition identity, supported-release reference, Platform/catalog/composition and executing-tool identities; expected module artifacts, SDK/runtime/embedded component, component type **and API version**, backend image/configuration, security/placement configuration, actor-contract/capability version and required capabilities. Expected inputs do not establish actual loaded values. |
+| `profile` | `purpose` (`candidate` or `canonical`), definition identity, supported-release reference, Platform/catalog/composition and executing-tool identities; expected module artifacts, SDK/Dapr CLI/runtime/embedded component, component type **and API version**, backend image/configuration, security/placement configuration, actor-contract/capability version, required capabilities and EventStore 3.17 writer/alias inventory identity. Expected inputs do not establish actual loaded values. |
 | `hosts` | Unique `hostId`, owned `resourceId`, shared logical actor app/type, writer/reader roles and exact HTTP/gRPC endpoint references. Writer A and B require independent processes, sidecars and caches observed at runtime. A reader may reuse a restarted writer host. Plan host IDs and different URLs alone prove no independence. |
 | `operations` | EventStore-supplied lawful operation and owning-actor logical read route IDs, run-owned tenant/domain/aggregate partition, semantic barrier IDs and required-test-set identity. No SQL, provider addressing, private actor key or arbitrary command field. |
 | `controls` | Allowlisted operation ID/version and owned endpoint reference; exact scope, permitted host/partition/phase, finite deadline, positive maximum uses and reset/cleanup obligation. No shell, caller-selected executable/target, hosted target, backend principal or standing fault service. |
-| `observations` | Actual loaded SDK/runtime/embedded component/backend, negotiated capabilities/verifier readiness, host process/sidecar/cache identities, placement transitions, semantic barriers, and control request/apply/release/reset events with UTC times, affected resources, stable reasons and classified diagnostic references. |
+| `observations` | Actual executing CLI and loaded SDK/runtime/embedded component/backend, negotiated capabilities/verifier readiness, host process/sidecar/cache identities, placement transitions, semantic barriers, and control request/apply/release/reset events with UTC times, affected resources, stable reasons and classified diagnostic references. |
 
 Keep the v1 strict UTF-8/duplicate-key rules, closed objects, content identities,
 UTC formats, finite integer/duration rules and public document size/depth limits
@@ -64,6 +64,50 @@ before allocation. Later unavailable runtime observations block their required
 lanes and grant no qualification credit. Configured pins, labels, startup
 success and transport failure never establish storage enforcement.
 
+### Content identities and host generations
+
+Reuse existing producer-defined byte identities for composition, catalog,
+artifacts and suites; do not hash their reserialized descriptor representations.
+For each new profile/configuration/test-set artifact, the owner must identify
+the exact immutable UTF-8 bytes being hashed. Consumers hash those bytes without
+normalizing whitespace or reordering keys. The profile definition contains
+content references, not its own digest, advancing observations or credentials.
+Public configuration identities cover value-free configuration and qualified
+secret reference/generation metadata; they never hash or expose secret values.
+The required-test-set artifact must contain every required test identity, with
+no omissions or duplicates; its recorded order and bytes are fixed by its owner.
+The illustrative hashes here do not identify real artifacts or select those
+future producers/serializations.
+
+Loaded observations must identify `hostId` and `generationId`, matching the
+observed process, sidecar and cache generation, along with the actual loaded
+module/SDK/runtime/component identities. Record the executing CLI binary/image
+identity separately as appropriate to the runner process. Restart creates a new
+generation and requires new observations; evidence from the previous generation
+cannot satisfy the new one. Do not collapse both writers into one aggregate
+loaded tuple or infer generations from their endpoint URLs.
+
+### Barriers, readback and path coverage
+
+A reached after-read barrier identifies the exact host generation, partition,
+originally read revision and batch content identity before release. Release
+references that reached observation and exact batch; a later revision cannot be
+attached to stale values. A timestamp or sleep supplies no semantic barrier.
+
+Fresh readback references the exact adversary/batch and partition, owning-actor
+route, reader generation, observed cache-clear or restart, and EventStore-owned
+expected/actual logical-state oracle records. Clearing a cache records a fresh
+cache generation; restart records the old and new host generations. All reads
+must follow that observation. The existing EventStore report supplies exact
+event and coupled-state assertions; these references create no additional
+evidence ledger and retain no erased bodies. Missing readback stays unavailable.
+
+Before execution, bind the complete owner-issued 3.17 writer/alias inventory by
+content. Reconcile every inventory path with a declared vector and observed
+coverage, or demonstrated exclusion beside a lawful generic-state control.
+Record the inventory/path IDs and exact diagnostic/native-test references; an
+omitted path, unknown inventory or merely absent caller cannot pass coverage.
+
 ## Descriptor/result agreement
 
 The result snapshots the descriptor's exact qualification scope and declared
@@ -78,6 +122,32 @@ inconsistent scope and unsupported control phases. An `applied` event requires
 an observed application of that exact control; startup failure is not applied.
 Reset failure remains visible and does not transform an assertion result.
 Unverified discovery or leftovers never equal complete cleanup.
+
+### Control request and reset semantics
+
+Each control request has an immutable request ID, exact scope and increasing
+event sequence. Record transitions within the existing runner's control/lifecycle
+records: `requested -> applied -> released -> reset`, or explicit refusal,
+failure, unknown application or reset failure. Every event refers to the same
+request/control, affected host generation and partition, with ordered UTC times.
+Reject contradictory/out-of-order events; never turn an unknown application into
+an applied event without observing it. Reset failure is followed only by bounded
+reset retry/observation, not a rewrite of the prior event.
+
+Reserve one use in the owner's durable record before an admitted new request
+can mutate resources. Retries with the same request ID and identical bindings
+reuse that reservation and cannot apply the fault again; conflicting replay
+refuses. An unknown application retains its reservation and cannot reset the
+counter. A new request needs another available use and fresh admission within
+the original phase/expiry. No new outcome ledger or external service is needed.
+
+Module/control credentials expire or withdraw independently of reset. Platform's
+exact-owner cleanup path must retain bounded internal authority to undo its own
+faults after module access ends, including after the control's admission expiry.
+It cannot re-enable module access or apply another fault. The sample's access
+expiry at `00:00:30`, admission expiry at `00:01:00` and owner reset deadline at
+`00:01:10` illustrate these separate bounds within the run deadline, not erasure
+authority or permission to delete failure-retained data.
 
 ## Private credential boundary
 
@@ -107,6 +177,10 @@ value-free receiver references are not permission to distribute keys.
   qualification fragments. Their immutable portions match; only the observation
   timestamp advances. Required producers remain unavailable. No full descriptor,
   terminal result, runtime outcome, real identity or supported tuple is supplied.
+  `observationShapeExamples` separately illustrates host generations, a reached
+  barrier, restart/readback references, path coverage and falsification comparison.
+  These are vocabulary sketches, not observations in either fragment; referenced
+  owner/report/authorization producers remain unavailable.
 - [Private metadata](../../tests/contracts/fixtures/eventstore-qualification-v2/private-credential-metadata.json)
   is a separate shape sketch tied to one control endpoint. It deliberately omits
   the credential value and an accepted credential kind. It is not a valid or
@@ -132,6 +206,18 @@ Offline checks can establish syntax and reference consistency only.
 
 These are design-review vectors, not executed product refusals. Existing v1
 mirror checks and this tranche's offline example checks grant no v2 support.
+
+For each separately authorized falsification, retain its removed rule, exact
+profile/adversary, authority reference, intact comparison run, changed run,
+lawful-control test and expected failed prevention assertion. Native test IDs
+and original terminal/TRX references bind each comparison. Both lawful controls
+must pass; the altered run's intended prevention assertion must actually fail
+for the missing rule. An unexpected failure, missing authority/readback or
+unavailable report cannot establish falsification. A classified comparison
+observation may record that this experiment demonstrated its intended effect;
+the altered run's ordinary terminal outcome, failed TRX rows and counts remain
+failed. It supplies no intact conformance pass or candidate acceptance. This
+separate comparison preserves the usual refusal of failed required suite rows.
 
 ## Remaining delivery and acceptance
 

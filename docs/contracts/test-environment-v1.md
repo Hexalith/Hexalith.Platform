@@ -560,3 +560,7 @@ Platform then qualifies the exact executing tool/profile independently. Missing
 supported Dapr revision/create-once/whole-batch/authorized-erasure capability
 continues to block semantic execution. This planning acceptance changes no tool
 qualification field, pin, readiness verdict or production gate.
+
+The [unpublished v2 design](test-environment-v2.md#synthetic-review-fixtures) now
+provides synthetic review fragments for this accepted planning work. It publishes
+no schema and supplies no reader support, adoption or qualification.

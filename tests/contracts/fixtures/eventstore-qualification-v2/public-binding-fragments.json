@@ -164,6 +164,13 @@
         ],
         "verifierInputs": {
           "state": "not-yet-populated"
+        },
+        "daprCli": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "writerAliasInventory": {
+          "state": "not-yet-populated"
         }
       }
     },
@@ -360,6 +367,13 @@
         ],
         "verifierInputs": {
           "state": "not-yet-populated"
+        },
+        "daprCli": {
+          "version": "0.0.0-synthetic",
+          "contentIdentity": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "writerAliasInventory": {
+          "state": "not-yet-populated"
         }
       }
     },
@@ -478,6 +492,93 @@
         "state": "not-yet-populated"
       },
       "controlEvents": []
+    }
+  },
+  "observationShapeExamples": {
+    "hostGeneration": {
+      "hostId": "synthetic-host-a",
+      "resourceId": "synthetic-host-a",
+      "generationId": "synthetic-generation-a1",
+      "processIdentity": "synthetic-process-a1",
+      "sidecarIdentity": "synthetic-sidecar-a1",
+      "cacheGenerationId": "synthetic-cache-a1",
+      "loadedIdentities": {
+        "state": "not-yet-populated"
+      }
+    },
+    "barrierReached": {
+      "barrierId": "synthetic-after-original-read",
+      "observationId": "synthetic-barrier-reached",
+      "hostId": "synthetic-host-a",
+      "generationId": "synthetic-generation-a1",
+      "partition": {
+        "syntheticTenantId": "synthetic-tenant",
+        "domain": "synthetic-domain",
+        "aggregateId": "synthetic-aggregate"
+      },
+      "originallyReadRevision": "synthetic-revision-7",
+      "batchContentIdentity": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "observedAt": "2000-01-01T00:00:01Z"
+    },
+    "freshReadback": {
+      "adversaryId": "synthetic-adversary",
+      "batchContentIdentity": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "partition": {
+        "syntheticTenantId": "synthetic-tenant",
+        "domain": "synthetic-domain",
+        "aggregateId": "synthetic-aggregate"
+      },
+      "logicalReadRouteId": "synthetic-owning-actor-read",
+      "readerHostId": "synthetic-host-a",
+      "readerGenerationId": "synthetic-generation-a2",
+      "freshness": {
+        "method": "restart",
+        "previousGenerationId": "synthetic-generation-a1",
+        "generationId": "synthetic-generation-a2",
+        "observedAt": "2000-01-01T00:00:05Z"
+      },
+      "readObservedAt": {
+        "state": "not-yet-populated"
+      },
+      "expectedLogicalOracleRef": {
+        "state": "not-yet-populated"
+      },
+      "actualLogicalReadbackRef": {
+        "state": "not-yet-populated"
+      }
+    },
+    "pathCoverage": {
+      "inventoryContentIdentity": {
+        "state": "not-yet-populated"
+      },
+      "pathId": "synthetic-http-path",
+      "disposition": "not-executed",
+      "nativeTestRef": {
+        "state": "not-yet-populated"
+      },
+      "lawfulControlRef": {
+        "state": "not-yet-populated"
+      }
+    },
+    "falsificationComparison": {
+      "falsificationId": "synthetic-revision-falsification",
+      "removedRule": "original-read-revision",
+      "profileContentIdentity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "adversaryId": "synthetic-adversary",
+      "authorizationRef": {
+        "state": "not-yet-populated"
+      },
+      "intactRunRef": {
+        "state": "not-yet-populated"
+      },
+      "alteredRunRef": {
+        "state": "not-yet-populated"
+      },
+      "lawfulControlTestId": "synthetic-lawful-control",
+      "expectedFailedTestId": "synthetic-prevention-assertion",
+      "comparisonObservation": {
+        "state": "not-yet-populated"
+      }
     }
   }
 }
