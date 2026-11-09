@@ -1,0 +1,64 @@
+{
+  "recordedUtc": "2026-11-09T19:29:17.982157+00:00",
+  "source": "53dbd485baa9842886b1d615b7f56fa441cf4738",
+  "readOnlyParentReview": true,
+  "package": {
+    "receipt": "/tmp/story32-integrated-sdk42-inrepo-controls-mr3lhf9m/receipt.json",
+    "executions": 562,
+    "uniqueCases": 559,
+    "pass": 562,
+    "fail": 0,
+    "skip": 0,
+    "notRun": 0,
+    "duplicateCases": 3,
+    "rawFilesHashChecked": 106,
+    "sourceInputs": 23333,
+    "sourceClean": true,
+    "sourceBeforeAfterEqual": true,
+    "outputBeforeAfterEqual": true
+  },
+  "sourceRegression": {
+    "receipt": "/tmp/story32-integrated-source-controls-2kdj55we/receipt.json",
+    "extensionCases": 36,
+    "companionCases": 12,
+    "allPassed": true,
+    "rawFilesHashChecked": 6,
+    "sourceBeforeAfterEqual": true,
+    "outputBeforeAfterEqual": true
+  },
+  "story28Observation": {
+    "receipt": "/tmp/story32-integrated-story28-observation-27j3gg8w/receipt.json",
+    "actualUnchangedCase": "PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "notRun": 0,
+    "rawFilesHashChecked": 3,
+    "sourceBeforeAfterEqual": true,
+    "outputBeforeAfterEqual": true,
+    "attribution": "New local result after merging upstream default-SDK fixture selection; original M23 Contracts failure and interim8a9 SDK-body refusal remain historical and unchanged."
+  },
+  "firstMergedPackageAttempt": {
+    "receipt": "/tmp/story32-integrated-sdk42-controls-yml32c_v/receipt.json",
+    "pass": 560,
+    "fail": 2,
+    "skip": 0,
+    "notRun": 0,
+    "rootCause": "DomainEnrollmentKitTests.Root could not locate checkout from external test-assembly outputs. Fixed harness output location; no test/assertion change.",
+    "sourceBeforeAfterEqual": true,
+    "outputBeforeAfterEqual": true
+  },
+  "historicalIntegrity": {
+    "packagePreparationFilesUnchanged": 23,
+    "broadVerificationFilesUnchanged": 19,
+    "frozenBlockIdenticalToResumption": true,
+    "baselinePreserved": true,
+    "resumptionStillAncestor": true
+  },
+  "coreDeltaReview": "Canonical upstream Program/AppModel/current-owner/proof/package admission files remain identical to081; exact alias constants plus non-admitting eight-SDK-body registry. Historical/CI/actual catalog and package dependency checks preserved.",
+  "qualificationCredit": false,
+  "hostedQualification": false,
+  "signedFixtureCredit": false,
+  "nativeParentAcceptance": false,
+  "storyCompletion": false
+}

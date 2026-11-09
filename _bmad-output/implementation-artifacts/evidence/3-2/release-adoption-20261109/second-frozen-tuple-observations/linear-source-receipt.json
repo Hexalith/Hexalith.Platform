@@ -1,0 +1,44 @@
+{
+  "recordedUtc": "2026-11-09T19:52:01.602753+00:00",
+  "preparationSource": "63f14da38092d242e22b48eeae8601407ff40c81",
+  "branch": "docs/story-3-2-broad-verification-20261109",
+  "partiesSources": {
+    "L": "bb2783120c0eed620e3d4f52a2ebaf6aa510126f",
+    "N": "ebe1739d70a4e76447938b0bb8c53db508bf6019",
+    "M": "ebe1739d70a4e76447938b0bb8c53db508bf6019"
+  },
+  "assemblerSha256": "004cf5630bfa1111b0ecd75ce9e53e6f6b50b35df4c7ad523da546e9caa8b19a",
+  "requiredCurrentExecutions": 562,
+  "requiredUniqueCurrentCases": 559,
+  "historicalRequiredCounts": {
+    "L": 349,
+    "N": 412
+  },
+  "requiredHostedJobs": {
+    "tuple": 5,
+    "catalog": 6
+  },
+  "phases": [
+    {
+      "label": "L",
+      "source": "91abcb2379f913d40174797a9af431821041c71d"
+    },
+    {
+      "label": "N",
+      "source": "a409d45f57d3f3e3876c2aa669aa307833aea094"
+    },
+    {
+      "label": "M",
+      "source": "862fd14f17bf48432c76993afd668b5a067e887d"
+    }
+  ],
+  "qualificationCredit": false,
+  "LRef": "docs/story-3-2-replay-l-schema-fix-20261109",
+  "NRef": "docs/story-3-2-replay-n-schema-fix-20261109",
+  "nonMetadataTreeSha256": "70e8b753233bd71f423f5fa185f130bad185b39152a3ff86af92b20d075bc940",
+  "nonMetadataTreesEqual": true,
+  "L": "91abcb2379f913d40174797a9af431821041c71d",
+  "N": "a409d45f57d3f3e3876c2aa669aa307833aea094",
+  "M": "862fd14f17bf48432c76993afd668b5a067e887d",
+  "status": "materialized-real-linear-sources-awaiting-actual-checkout-verification"
+}

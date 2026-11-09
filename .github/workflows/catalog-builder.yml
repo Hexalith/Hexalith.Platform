@@ -66,6 +66,14 @@ jobs:
           python3 tests/catalog-builder/verify_public_owner_cohorts.py
           --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
           --evidence "$RUNNER_TEMP/catalog-public-owner-evidence"
+      - name: Verify the SDK4.2 no-extension private and full public owner readers
+        if: matrix.sdk == '4.2.0'
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
+        run: >-
+          python3 tests/catalog-builder/verify_sdk42_owner_cohorts.py
+          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
+          --evidence "$RUNNER_TEMP/catalog-sdk42-owner-evidence"
       - name: Verify the distinct SDK4.2 public Parties reader without image relabeling
         if: matrix.sdk == '4.2.0'
         env:
@@ -83,5 +91,6 @@ jobs:
             ${{ runner.temp }}/catalog-builder-evidence
             ${{ runner.temp }}/catalog-sdk-gates.json
             ${{ runner.temp }}/catalog-public-owner-evidence
+            ${{ runner.temp }}/catalog-sdk42-owner-evidence
             ${{ runner.temp }}/catalog-sdk420-public-parties-evidence
           if-no-files-found: error

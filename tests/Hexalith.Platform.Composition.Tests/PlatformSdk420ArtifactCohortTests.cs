@@ -1,3 +1,4 @@
+#if HEXALITH_PLATFORM_EXTENSION_SDK && !HEXALITH_PLATFORM_SOURCE_CATALOG
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Reflection;
@@ -160,3 +161,5 @@ public sealed class PlatformSdk420ArtifactCohortTests
         return path;
     }
 }
+
+#endif

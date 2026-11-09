@@ -1,0 +1,525 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-3.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-4/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-4/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-7.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-10.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-11.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-13/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-13/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:RestoreUseStaticGraphEvaluation=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-14.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:RestoreUseStaticGraphEvaluation=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:RestoreUseStaticGraphEvaluation=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:RestoreUseStaticGraphEvaluation=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:RestoreUseStaticGraphEvaluation=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-19.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-21/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-21/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HEXALITH_SOURCE_MAPPING_HASH=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HEXALITH_SOURCE_MAPPING_PATH=/tmp/platform-source-sdk-metadata-p1ot_in_/not-an-authenticated-mapping.json",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-24/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-24/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-25/RestoreParent.csproj",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-25/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-26/RestoreControl.slnx",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-26/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-27/RestoreControl.slnx",
+      "--artifacts-path",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/restore-control-27/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithSourceMappingHash=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/Selection.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithSourceMappingMode=source",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/platform-source-sdk-metadata-p1ot_in_/ChildSelection-30.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/platform-source-sdk-metadata-p1ot_in_/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:HexalithEventStoreVersion=",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation",
+      "-getItem:ProjectReference",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,11 @@
+Build and test	Require every validation job to pass	﻿2026-11-09T17:05:05.2855914Z ##[group]Run [[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" && "$PYTHON_RESULT" == "success" && "$QUALITY_RESULT" == "success" ]]
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.2857080Z [36;1m[[ "$CATALOG_RESULT" == "success" && "$CONTRACTS_RESULT" == "success" && "$DOTNET_RESULT" == "success" && "$PYTHON_RESULT" == "success" && "$QUALITY_RESULT" == "success" ]][0m
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3388126Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3389175Z env:
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3389698Z   CATALOG_RESULT: cancelled
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3390244Z   CONTRACTS_RESULT: cancelled
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3390816Z   DOTNET_RESULT: cancelled
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3391520Z   PYTHON_RESULT: cancelled
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3392085Z   QUALITY_RESULT: success
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3392574Z ##[endgroup]
+Build and test	Require every validation job to pass	2026-11-09T17:05:05.3603941Z ##[error]Process completed with exit code 1.

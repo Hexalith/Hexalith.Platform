@@ -1,0 +1,24 @@
+{
+  "generation": 1,
+  "instanceId": "public-owner-component",
+  "gatewayAppId": "eventstore",
+  "outputDirectory": "/tmp/story32-sdk42-owner-reader-qualified/changed-Hexalith.Tenants.Contracts-output",
+  "qualificationCohort": "parties-3.1.0-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1",
+  "owners": [
+    {
+      "assembly": "Hexalith.Tenants.Contracts",
+      "adapterAssembly": "Hexalith.Tenants.Server",
+      "appId": "tenants"
+    },
+    {
+      "assembly": "Hexalith.Memories.EventStore",
+      "adapterAssembly": "Hexalith.Memories.EventStoreExtensions",
+      "appId": "memories-domain-service"
+    },
+    {
+      "assembly": "Hexalith.Parties.Contracts",
+      "adapterAssembly": "Hexalith.Parties.EventStoreExtensions",
+      "appId": "parties"
+    }
+  ]
+}

@@ -297,6 +297,28 @@ Grouped routes: two patch entries (BH10 and VG1), one new medium-unverified defe
 - [x] [Review][Patch] R3-P2: Add missing-host and missing-gateway refusals, including stable conditions, declaring module and resource atomicity.
 
 
+### Resumed build review — 2026-11-09, broad-verification continuation
+
+Three independent reviewers examined the Platform story implementation and the EventStore/Builds owner diffs. The complete Platform baseline diff is retained separately from the focused implementation review artifact; unrelated Story 2.8 changes were excluded from feature review. Each source finding is classified before grouping. Prior routes are preserved under the resumed-review rule.
+
+| Source | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH1 | low | carried: content-root and later-bound gateway settings are the previously rejected iteration-0 BH4/ECH2 and iteration-1 ECH15 boundary. Values require Platform-owned configuration/profile input. Preserve rejection; guidance already states the bounded comparison. |
+| BH2 | low | `ConfigureEnvironment` sets `DOTNET_ENVIRONMENT` before applying the binding dictionary, so an explicitly supplied scoped value could replace it. The declaration alone supplies no value and unbound inputs are refused. No existing extension uses process-control keys; adding a reserved-runtime-key policy adds new guard state for deliberate operator configuration. Reject as uncommon and nontrivial. |
+| BH3 | low | carried: `UsePrebuiltProjects` with newly generated bindings is iteration-0 BH8/VG-O4 and iteration-1 BH9. Preserve rejection: Development/source opt-in and missing extensions fail loudly at host startup. |
+| BH4 | low | carried: the unescaped semicolon in an MSBuild property path is iteration-0 ECH8. Preserve rejection; this follows the existing Platform-controlled workspace/property path convention. |
+| BH5 | low | carried: inherited/imported direct references are iteration-0 BH14/ECH12 and iteration-1 BH6. Preserve the bounded source-audit rejection. |
+| BH6 | low | carried: direct assembly/HintPath reference forms are the same iteration-0 BH14/ECH12 bounded audit finding. Preserve rejection. |
+| BH7 | maybe-false | carried: raw conditional/import/property catalog lookup is W1/BH4. Preserve its medium-unverified package-restore qualification; do not append a duplicate deferral. |
+| BH8 | low | carried: lazy adapter inventory/reflection failures escaping the named wrapper are iteration-1 ECH7 and iteration-2 BH10. The host still fails before serving. Preserve rejection. |
+| BH9 | low | carried: scalar-only Packages configuration is iteration-2 ECH2. Platform emits indexed scalar identities; malformed hand-written sections are outside that normal path. Preserve rejection. |
+| BH10 | low | Structured JSON can introduce an invalid environment name such as `Bad=Name`, which is not checked by the existing flattener. This requires malformed Platform-owned configuration/profile data; current declaration keys and values do not exercise it. Adding platform environment-name validation is a new guard for an uncommon operator error. Reject. |
+| BH11 | low | carried: generated-reference compilation and host readiness are distinct tests, already iteration-1 BH14/AA6. Preserve rejection and the existing whole-environment proof in Story 3.6. |
+| ECH1 | false | carried: package startup is an explicit deferred qualification prerequisite, as recorded by iteration-0 ECH16 and the earlier resumed ECH1. No package-startup qualification or story-completion claim is made. Preserve that existing route. |
+| VG1 | medium | carried: automatic tuple verification excludes source-only extension tests, exactly W4/BH7/VG2. Preserve the existing released-cohort/CI follow-up; no duplicate deferral or unapproved source-CI exception. |
+
+Grouped outcome: eleven carried routes and two new low rejections; no new patch, intent gap, specification loopback or deferred ledger entry. Review completion does not satisfy the still-running broad-verification gate.
+
 ## Design Notes
 
 A new field, not `runtime.extensions[]`: every current manifest uses that field for owner server packages that carry secrets (Parties, Memories, Tenants, Conversations), so applying AD-13 to it would reject all of them. Declared majors are checked at composition time, so the failure comes before startup. Host startup verifies the actual assembly attribute, so a declaration cannot drift from the binary.
@@ -324,3 +346,136 @@ All frozen matrix rows have passing focused coverage at their approved scope. Th
 Status remains **in-progress**, matching sprint tracking. No SDK publication, dependency-pin change, module-manifest adoption, commit or remote mutation was performed. The build workflow stops at the unresolved broad-verification result rather than marking the story done.
 
 Receipt: [local verification](evidence/3-2/local-verification-20261109/verification.json). Exact scratch build/test commands: `/tmp/story-3-2-review-fix-commands.txt`. Final result XML files: `/tmp/story-3-2-review-fix-tests.xml`, `/tmp/story-3-2-final-gateways.xml`, `/tmp/story-3-2-final-pin.xml`.
+
+
+### Completed broad comparison — 2026-11-09
+
+The previous missing-summary limitation is resolved. Both complete class inventories finished with result XML and no class timeouts: current Platform `59fb32933d76a7e71d9479e1903087a73ea66f2b` has **955 cases: 782 passed, 161 failed, 12 skipped, 0 not run**; the preserved baseline `f7c68398cdcb494d535e789e3d9577af9e8d5d36` has **919 cases: 744 passed, 163 failed, 12 skipped, 0 not run**. Each revision used all 17 direct gitlinks recorded at that revision, with no nested initialization, pin change or remote Git operation. Both Debug builds have zero warnings and errors.
+
+The comparison retains all cases, including four truncated-display-name groups with equal all-pass multiplicities and unchanged test source. It finds **160 common failures, 36 added passing tests, no removed tests, three resolved tool-pin failures and one regression**. The regression is `PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded`, strengthened in Story 2.8 commit `6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2` to use the real package fixture; it now reaches the existing genuine-published-Memories-Contracts admission prerequisite. It is attributed explicitly rather than described as an identical failure set. The existing package/cohort fixture qualification route remains; no guard or assertion was weakened.
+
+Fresh focused Platform proof is **45/45**: 33 extension cases, 7 gateway registration/seed cases and 5 enrollment/tool-pin cases. The initially missing locally pinned tool was restored and the rerun retained alongside the initial result. The unchanged EventStore/Builds owner commits retain their previously passing 50/617 focused cases, whose logs and hashes were checked. Generated package-reference proof remains distinct from released package startup qualification.
+
+All three independent reviews finished; the table above records eleven carried routes and two new low rejections, with no new patch or duplicate deferral. This continuation changes verification evidence and review records only. **Status remains in-progress**, matching sprint tracking: the broad gate is red and selected-package extension enablement/startup/CI qualification remains pending. The workflow cannot truthfully mark the story done. The frozen intent and original baseline remain unchanged; publication, SDK adoption and main-checkout changes are outside this continuation.
+
+Durable receipt: [broad verification](evidence/3-2/broad-verification-20261109/verification.json), [comparison](evidence/3-2/broad-verification-20261109/comparison.json), and [regression attribution](evidence/3-2/broad-verification-20261109/regression-attribution.json). Raw class XML/logs and exact replay commands remain in `/tmp/story-3-2-broad-20261109-_z_wy84q`. Changes are prepared on scratch branch `docs/story-3-2-broad-verification-20261109`; concurrent Story 2.8 work in the main checkout was preserved.
+
+
+### Authorized package preparation continuation — 2026-11-09
+
+User intent: continue from `27a1638e0e7d66b672708507d95a44fe31050718` on the existing scratch branch `docs/story-3-2-broad-verification-20261109`, worktree `/tmp/story-3-2-broad-20261109-_z_wy84q/current`. Keep the original baseline and frozen block unchanged. Work only in that scratch worktree. Main checkout and concurrent Story 2.8 work are outside the change. Read the retained broad-verification receipt before work.
+
+The user authorizes concrete local preparation, tests, read-only published-release inspection and disposable local package experiments. Publication, release dispatch, remote mutation and changing dependency pins/gitlinks still require explicit scope approval. No module manifest adoption. Local candidate NuGet archives are disposable test artifacts, never a published release or qualified package cohort. Do not weaken signed-body, provenance, source, image, declaration or host admission checks to obtain a pass. Do not mark this story done.
+
+Current verified release discovery: official NuGet flat-container indexes list EventStore DomainService/Server through 4.1.0; `dotnet-inspect type '*EventStoreExtension*' --package Hexalith.EventStore.DomainService@4.1.0 --json` finds no type. GitHub latest EventStore release is v4.1.0 (2026-11-04). Builds.Module.Cli releases include 4.45.0 and 4.45.1; selected 4.45.0 source is `27145e52ffab5623198ba5efdab5cdb71aa42d28`. Verify actual archive contents/APIs and retain URLs, hashes and results rather than assuming a source release contains them.
+
+Preparation tasks (additional to the original implementation):
+- [x] Under `evidence/3-2/package-preparation-20261109/`, record official published release/API inspection and the exact EventStore source/release prerequisite. Avoid retaining large binaries in Git.
+- [x] In `PlatformEventStoreExtensionBindings.cs` and focused tests, prepare valid central package references including an extension absent from the live catalog; prove selected snapshot versions through a real disposable restore/build, including a host-specific package view if supported. Preserve validated snapshot authority; do not invent version authority. Where an owner SDK correction needs a new release, prepare a reviewable owner patch rather than moving a gitlink.
+- [x] Prepare a concrete forward adoption patch and release/adoption document in that evidence folder for package SDK feature constants (Composition, EventStoreHost, tests, fixture), finite host admission and automatic CI suite selection/counts. Keep it unapplied if it needs an unreleased SDK, new pins or expanded cohort authority. Never add a generic host-path bypass. Explain exact release/tuple/publication identity work still required.
+- [x] Provide a reproducible local candidate package probe in that evidence folder: locally pack the accepted EventStore extension API source and Platform fixture at an unmistakable nonpublic test version, restore/build the actual Platform host through generated PackageReferences, assert resolved versions/deps package type, start that host, and record HTTP extension readiness id/major. The host must load the packaged fixture rather than a copied source output. Preserve process cleanup and bounded timeouts. Label this candidate evidence, not released package qualification. If a narrower supported probe is required, record its precise limit and failed prerequisite.
+- [x] Run relevant focused source and unchanged-pin package tests, preserve named failures and compare them to the retained baseline receipt. The Story 2.8 `PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded` genuine Memories Contracts fixture failure remains separately attributed. Retain all admission checks. Record exact commands, counts, results and source identity.
+
+Acceptance for this preparation: Given unchanged selected dependency pins and the retained baseline, when local preparation completes, then the release gap, reviewable adoption diff, generated-reference tests and real candidate package restore/startup evidence are independently inspectable. Released-package/automatic-CI qualification remains pending until approval and successful owner release/adoption; no successful preparation substitutes for the remaining original Story 3.2 acceptance requirements.
+
+
+Preparation result: [release/adoption proposal](evidence/3-2/package-preparation-20261109/release-and-adoption.md), [verification](evidence/3-2/package-preparation-20261109/verification.json), [published API inspection](evidence/3-2/package-preparation-20261109/published-inspection.json), and [retained comparison](evidence/3-2/package-preparation-20261109/retained-comparison.json). The generated reference correction and two real snapshot restore/build rows are applied locally; owner SDK, feature enablement, finite admission and seven-case automatic CI changes remain unapplied proposals. Parent final source verification is 47/47, owner snapshot verification 6/6, and unchanged-pin package verification 77/82. All five package-class failures already fail in the retained baseline; Story 2.8's modified-tree guard observation remains distinct from its retained genuine Memories Contracts prerequisite. The real candidate-package host reports `platform-test@1` Healthy over HTTP, with overall readiness 503 without Dapr. No released-package or CI qualification is claimed. The failed EventStore exact-source CI remains a release prerequisite. Frozen intent, original baseline and all dependency pins remain unchanged; concurrent main-checkout changes were preserved. **Status remains in-progress**, pending explicit release/adoption scope approval and successful remaining original acceptance requirements. Workflow remains at the unresolved implementation/acceptance boundary; no completion transition is taken.
+
+
+## Approved release and adoption scope amendment — 2026-11-09
+
+The maintainer explicitly approves expanding the frozen scope to **land, push and release the EventStore extension SDK and proposed Builds consumer-view correction, then qualify and adopt their measured dependency pins through the existing tuple process**. This approval supersedes the original no-publication/no-release/no-push/no-pin-change and scratch-only landing restrictions, and the workflow's no-remote-operations restriction, only for this Story 3.2 release/adoption work. Original frozen wording and all historical evidence remain intact as history. No additional approval is required for these authorized operations. **No production deployment or module-manifest adoption is authorized.** Preserve every source, signature, provenance, declaration, image and host admission check; no administrative qualification bypasses.
+
+Resume the existing worktree `/tmp/story-3-2-broad-20261109-_z_wy84q/current`, branch `docs/story-3-2-broad-verification-20261109`, starting at `27a1638e0e7d66b672708507d95a44fe31050718`, including its prepared uncommitted changes. This worktree is the operative `{project-root}` for implementation and context files. Main checkout `/home/administrator/projects/hexalith/platform` has separate concurrent Story 2.8 and other work; do not change it, its checked-out branches, local files or dependency checkouts. Use additional isolated owner worktrees from rechecked upstream when needed, preserving unrelated changes and current upstream history. The preserved original story baseline remains `f7c68398cdcb494d535e789e3d9577af9e8d5d36`; never replace it with this resumption head.
+
+Read these receipts first and retain them unchanged: `evidence/3-2/broad-verification-20261109/verification.json`, `evidence/3-2/package-preparation-20261109/verification.json`, and `evidence/3-2/package-preparation-20261109/release-and-adoption.md` (paths relative to this spec). The backup and per-file prepared hashes are recorded in [scope receipt](evidence/3-2/release-adoption-20261109/scope-amendment.json). Append fresh measurements and commands under `evidence/3-2/release-adoption-20261109/`; never overwrite historical receipts to imply later success.
+
+Additional implementation tasks, ordered by dependency:
+
+- [x] Recheck actual current upstream revisions and official published releases for EventStore, Builds and Platform. Read owner AGENTS.md and normal CI/release workflows. Record exact full revisions and GitHub run/release URLs. Current cached sources and historical observations are not sufficient.
+- [x] Diagnose and resolve failed EventStore release-source qualification (historically `cab8363c2b6e2c0588efc8ca9c2e09fab0006841`, CI run `42519687843`, HXW011 untagged Platform identity / HXW009 mismatched Builds sources). Preserve exact-source and dependency admission; make any necessary reviewed prerequisite alignment through normal owner/tuple controls. Do not dispatch its release before owner preflight succeeds for the exact approved release source.
+- [x] Review, verify, land, push and release the required EventStore extension SDK and Builds consumer-view correction through their normal release gates. Existing approved owner proposal is `evidence/3-2/package-preparation-20261109/builds-consumer-snapshot.patch`; adapt to current upstream rather than overwriting it. Retain the two-argument ABI; named consumer selection must fail closed for missing snapshot/view or tampering, and must read Builds-materialized consumer views. Preserve registration ownership and module diagnostics. Record actual release source, producer/publisher records, signed archive measurements and versions.
+- [ ] Complete the intended Platform adoption (proposal `evidence/3-2/package-preparation-20261109/platform-forward-adoption.patch`) with real measured versions and artifact identities. Update catalog, tool, source gitlinks and complete tuple metadata together through the existing exact-source tuple and refreshed same-source legacy L/M process, preserving concurrent upstream work. No placeholder values or generic host-path admission bypasses. Finite host admission must bind the exact approved declaration/extension, Platform host, seed, signed SDK bodies, publication and image identity; add required finite registry/cohort selection and negative controls.
+- [ ] Complete automatic package-mode CI selection with strict expected counts and all required tests actually running (the proposed initial group is seven cases; update counts if tests change). Prove signed published-package restore/build and actual Platform host startup reporting declared extension id/major in the `eventstore-extensions` readiness result. Assert package assets/deps identities and that the host loads the packaged extension, not copied source output. Retain bounded subprocess cleanup. Candidate-only/local unsigned package proof cannot substitute for published qualification. Distinguish extension health from overall distributed readiness.
+- [ ] Run relevant source/package and owner tests, compare against retained full inventories and record exact revisions, commands, results and unresolved failures. Keep the Story 2.8 package-fixture failure separately attributed, including its genuine Memories Contracts prerequisite versus modified-input guard observation. Preserve all source/signature/provenance/declaration/image/host checks.
+
+Amended acceptance: Given reviewed exact-source owner releases, when their measured catalog/tool/SDK pins are qualified and adopted through the existing tuple process, then source and signed published-package composition each assemble exactly one EventStore gateway, the actual host reports the declared extension in readiness, automatic package-mode CI executes its required inventory, and no-extension gateway/cohort behavior retains its existing admission guarantees. Do not mark this story done until every remaining original and amended acceptance requirement is satisfied. If an external gate cannot be resolved within the authorized work, retain in-progress status and exact evidence; do not substitute a partial local probe for release qualification.
+
+
+### Release/adoption progress — 2026-11-09, before Platform pin adoption
+
+EventStore 4.2.0 was published through the normal exact-source gates from
+`aa16227bd07f0564a3026d619a5abd973e02656f` (publisher 42623038544). Eight official
+NuGet archives passed signature/source/body verification. Its unchanged released
+v2 declaration hashes to 21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495.
+Builds' reviewed named-consumer API landed normally in PR #179 at 2cc24dbb9d65654b696b54d49c16afe1f3f67b4d;
+the canonical SDK4.2 catalog/host-view update remains in PR #180, with its normal
+CI gates pending on 5a49eea. The first five direct-catalog unit failures were
+attributed to synthetic fixture 4.1 provenance/version mutations and corrected;
+all 19 direct-catalog/consumer-view controls pass locally. The owner release is
+still required before Platform adoption.
+
+The SDK4.2 default is being qualified separately from extension admission.
+Two generated-reader runs passed 14 positive/refusal cases each, first on the
+old catalog's MCP2.3.1 and then on upstream's preserved MCP2.4.0. They verify
+actual signed archive/source/body identities and retain 23 routes/12 policies
+for the private EventStore reader and 70/46 for public Parties. The 92 finite
+component controls pass with no skips; 256 full-project capability evaluations
+pass; all seven existing owner OCI indexes were remeasured. Five actual
+signed-tool/seed/source-owner/ordinary-reader/model cases still fail closed on
+the unchanged Builds4.45/SDK4.1 tuple and must pass after its real replacement.
+The automatic draft requires 97 default-cohort cases plus the original nine
+extension component cases, while preserving all 412 and 349 historical cases in
+separate authenticated same-code tuple histories. Those histories and the
+complete new tuple still require the existing L/M refresh; no new default or
+Platform source release has been adopted from local component evidence.
+
+The fixture publisher now has a reviewable exact-source path and an explicitly
+Platform-owned pure-extension declaration/producer body inside its package.
+It grants no present owner/host admission. All 14 Node and 7 Python publisher
+controls run automatically in the draft tuple workflow and before publication.
+GitHub production/main publisher controls were configured with explicit user
+authorization. Creating the exact NuGet account-side Trusted Publisher still
+requires an authenticated NuGet account session unavailable through the current
+tools. Signed publication, its measured finite host cohort, actual packaged
+host startup, the real named-consumer rollout and remaining original acceptance
+remain incomplete. The original broad inventory and Story 2.8 genuine Memories
+Contracts prerequisite versus modified-input guard observation remain separately
+attributed; none of their retained evidence was rewritten.
+
+Append-only evidence and exact controls/refusals:
+[evidence](evidence/3-2/release-adoption-20261109/sdk42-no-extension-preparation/receipt.json)
+and [revised stage plan](evidence/3-2/release-adoption-20261109/revised-stage-one-and-fixture-plan.json).
+Status remains **in-progress**.
+
+
+Source Debug recheck before adoption: 36 extension cases and 12 enrollment/seed/registration
+companions pass, preserving all 47 earlier cases and adding the no-extension seed
+control. The actual SDK4.2/Tenants7.0.5 consumer-binding executable also passes
+all 15 cases against the refreshed owning catalog. The new historical replay
+controls pass 8 closed-metadata, 12 legacy-transformation and 7 SDK/profile/pin
+cases; parent independently inspected and ran these controls. These remain
+preparation evidence, as recorded in
+[pre-tuple verification](evidence/3-2/release-adoption-20261109/verification-before-published-tuple.json).
+Concurrent Builds main adopted the SDK4.2 defaults independently (7564c96/a8a8716);
+PR #180 is narrowed to the actual host consumer marker/view correction and its
+refreshed audit. Its previous green head could not merge because that upstream
+adoption conflicted; the normal merge returned HTTP 405 and the isolated rebase
+preserves the adopted upstream result. A fresh normal CI/release is required
+for the combined source. No Platform pin has changed.
+
+
+### Measured first-stage candidate after upstream SDK4.2 integration — 2026-11-09
+
+Both approved owner releases are now published through their normal gates: EventStore4.2.0 from `aa16227bd07f0564a3026d619a5abd973e02656f`, and Builds4.47.0 from `5ec1779040606be89306129a7d2b245258c9acd2`. Official signed archives, exact producer/publisher records, catalog, Tooling, seed and body identities were measured independently. The actual named EventStoreHost snapshot lookup and atomic4.47/4.2 tuple are integrated locally, preserving upstream081178aa and every canonical finite admission rule.
+
+At clean merged source `53dbd485baa9842886b1d615b7f56fa441cf4738`, the complete current package inventory passes562 executions across559 unique cases: the preserved upstream456 profile,97 additional finite default-cohort controls, and9 required extension component cases. Exactly three methods execute in two profiles and are named in the receipt. No cases fail or skip; source and measured output snapshots remain identical. The first external-output attempt's560 passes and two DomainEnrollment repository-root lookup failures remain retained; the full rerun uses ignored in-repository outputs, matching normal CI, without changing assertions. Source36 extension plus12 companion cases and all9 real MSBuild metadata controls pass. The unchanged actual Story2.8 fixture now passes1/1 under the merged actual-default SDK selection; its original M23 Contracts failure and earlier8a9 SDK guard refusal remain separate historical evidence.
+
+The normally published upstream Platformv1.9.0 binds081178aa and does not include this fixture/native publisher work. Our exact source still requires refreshed real same-code349/412 replay sources, all five tuple and six catalog jobs, normal landing and its own qualified source release. The reviewed metadata-only replay assembler is prepared but has not run. The fixture publisher automatically requires14 Node and30 Python controls, immutable declaration/producer/native entry bodies, the exact qualified source release and normal NuGet OIDC identity. Signed fixture publication, a subsequent owning Builds-materialized actual fixture pin, the finite expanded producer/reader/host cohort and signed packaged-host startup remain incomplete. This local proof grants no hosted qualification, fixture admission or signed-fixture credit.
+
+Append-only [merged local controls](evidence/3-2/release-adoption-20261109/integrated-sdk42-local-controls-53dbd485/verification.json) retain raw commands, XML, source/output guards, builds, failures and history checks. The original baseline, frozen block,23 preparation files and19 broad evidence files remain byte-preserved. Status remains **in-progress**.
+
+
+First frozen tuple observation: the real N source `baafebd8` passes all412 local historical cases with unchanged source/output guards. The L source `87bf914e` executes all349 but retains57 exact Parties-source/declaration refusals (292 pass): the original349 cohort requires sourceBB278312/40cee declaration, whereas N/current requireEBE/d9c. The next finite replay preparation records that exact typed dependency transformation and adds negative histories plus post-initialization owner/body checks; no349 assertions or production admission rules change. All20 legacy/checkout,9 pre-extension and19 tuple-binding controls pass locally.
+
+Normal hosted run42684861205 refused all three lanes before xUnit because a synthetic tuple-binding control still supplied an empty catalog to the new required4.1 catalog check. The isolated fixture now supplies its single4.1.0 row; the real catalog guard is unchanged. All six catalog rows in42684861123 passed. GitHub also refused the new fixture workflow's two job-level runner contexts in42684848458; proof paths now bind through first runtime GITHUB_ENV steps with identical RUNNER_TEMP values. Actual actionlint1.7.12 passes all four changed workflows, and all29 automatic source-release controls pass. Original frozen refs, raw failures and parent verification remain retained in [first frozen tuple evidence](evidence/3-2/release-adoption-20261109/first-frozen-tuple-refusals-and-repair/receipt.json). A fresh real same-code freeze and normal hosted qualification are still required; no old frozen source is adopted and status remains **in-progress**.

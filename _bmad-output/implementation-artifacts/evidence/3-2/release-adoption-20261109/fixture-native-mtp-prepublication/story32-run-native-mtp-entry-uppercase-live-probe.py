@@ -1,0 +1,35 @@
+from pathlib import Path
+import datetime,hashlib,json,os,shutil,signal,subprocess,tempfile,zipfile
+p=Path('/tmp/story-3-2-broad-20261109-_z_wy84q/current');historical=json.loads((p/'_bmad-output/implementation-artifacts/evidence/3-2/package-preparation-20261109/candidate-attempt-4.json').read_bytes());old=Path(historical['work']);out=Path(tempfile.mkdtemp(prefix='story32-fixture-native-mtp-live-'));Path('/tmp/story32-fixture-native-live-current.txt').write_text(str(out)+'\n');platform=out/'platform';shutil.copytree(old/'platform',platform,ignore=shutil.ignore_patterns('bin','obj','node_modules','.git','artifacts'))
+csproj=platform/'candidate-driver/Candidate.csproj';csproj.write_text(csproj.read_text().replace(str(old/'platform'),str(platform)))
+program=platform/'candidate-driver/Program.cs';s=program.read_text();s=s.replace('TimeSpan.FromSeconds(30)', 'TimeSpan.FromSeconds(90)').replace('Kestrel loopback dynamic port', 'Kestrel loopback endpoint observed separately');needle='var loaded = factory.Services.GetRequiredService<EventStoreExtensionCatalog>().Extensions.Single();';assert s.count(needle)==1
+insert='''System.IO.File.WriteAllText(args[1], body);
+var child = new System.Diagnostics.ProcessStartInfo("dotnet") { WorkingDirectory = "/tmp/story32-fixture-entry-preparation/repository", RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false };
+foreach (string argument in new[] { "test", "--project", args[0], "--configuration", "Release", "--no-build", "--no-restore", "--results-directory", args[3], "--report-xunit-trx", "--report-xunit-trx-filename", "module-tests.trx", "--artifacts-path", "/tmp/story32-fixture-entry-preparation/native-artifacts", "-p:DirectoryBuildPropsPath=/tmp/story-3-2-broad-20261109-_z_wy84q/current/Directory.Build.props", "-p:DirectoryBuildTargetsPath=/tmp/story-3-2-broad-20261109-_z_wy84q/current/Directory.Build.targets", "-p:DirectoryPackagesPropsPath=/tmp/story-3-2-broad-20261109-_z_wy84q/current/Directory.Packages.props", "-p:UseHexalithProjectReferences=false" }) child.ArgumentList.Add(argument);
+child.Environment["HEXALITH_G4_EVENTSTORE_URL"] = client.BaseAddress!.AbsoluteUri;
+using var native = System.Diagnostics.Process.Start(child)!;
+string nativeOutput = await native.StandardOutput.ReadToEndAsync();
+string nativeError = await native.StandardError.ReadToEndAsync();
+await native.WaitForExitAsync(cancellation.Token);
+System.IO.File.WriteAllText(args[2], System.Text.Json.JsonSerializer.Serialize(new { native.ExitCode, Output = nativeOutput, Error = nativeError, Endpoint = client.BaseAddress!.AbsoluteUri }));
+if (native.ExitCode != 0) throw new InvalidOperationException("Native entry did not accept the actual host response: " + nativeOutput + nativeError);
+'''
+s=s.replace(needle,insert+needle);program.write_text(s)
+entry=Path('/tmp/story32-fixture-entry-preparation/repository/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj');fixture=Path('/tmp/story32-fixture-entry-preparation/repository/tests/fixtures/Hexalith.Platform.TestExtension');report=out/'native-tests/module-tests.trx';report.parent.mkdir();env=os.environ.copy();env['NUGET_PACKAGES']='/tmp/story32-sdk42-upstream-catalog-package-cache';env.update({'HEXALITH_G4_TEST_OWNER':'platformtestextension','HEXALITH_G4_TEST_NAME':'eventstore-extension-package','HEXALITH_G4_TEST_MODE':'package','HEXALITH_G4_TEST_MANIFEST_HASH':hashlib.sha256((fixture/'hexalith.module-manifest.v2.json').read_bytes()).hexdigest().upper(),'HEXALITH_G4_TEST_ENTRY_HASH':hashlib.sha256(entry.read_bytes()).hexdigest().upper(),'HEXALITH_G4_RUN_ID':'e'*32,'HEXALITH_G4_EXECUTION_DEADLINE_UTC':(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(seconds=300)).isoformat(),'HEXALITH_G4_TEST_REPORT_PATH':str(report)})
+commands=[]
+def run(name,args,timeout,working=None):
+ with (out/(name+'.log')).open('w') as log:
+  process=subprocess.Popen(args,cwd=working or platform,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+  try:code=process.wait(timeout=timeout)
+  except subprocess.TimeoutExpired:
+   os.killpg(process.pid,signal.SIGKILL);process.wait();raise
+ commands.append({'name':name,'arguments':args,'exitCode':code});assert code==0,(name,code)
+run('build',['dotnet','build',str(csproj),'-c','Release','--artifacts-path',str(out/'artifacts'),'-m:1','-nodeReuse:false','--disable-build-servers','--nologo','-p:UseHexalithProjectReferences=false','-p:RestoreAdditionalProjectSources='+str(old/'feed'),'-p:PlatformEventStoreExtensionBindings='+str(old/'bindings/bindings.props')],300)
+env['HEXALITH_G4_EXECUTION_DEADLINE_UTC']=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(seconds=120)).isoformat()
+run('http',['dotnet',str(out/'artifacts/bin/Candidate/release/Candidate.dll'),str(entry),str(out/'actual-ready.json'),str(out/'native-entry-result.json'),str(report.parent)],120,out/'artifacts/bin/Candidate/release')
+ready=json.loads((out/'actual-ready.json').read_bytes());native=json.loads((out/'native-entry-result.json').read_bytes());host=out/'artifacts/bin/Hexalith.Platform.EventStoreHost/release';dll=host/'Hexalith.Platform.TestExtension.dll';identity='Hexalith.Platform.TestExtension/'+historical['packageVersion'];deps=json.loads((host/'Hexalith.Platform.EventStoreHost.deps.json').read_bytes());assert deps['libraries'][identity]['type']=='package'
+archive=old/'feed'/('Hexalith.Platform.TestExtension.'+historical['packageVersion']+'.nupkg')
+with zipfile.ZipFile(archive) as z:body=z.read('lib/net10.0/Hexalith.Platform.TestExtension.dll')
+assert hashlib.sha256(body).hexdigest()==hashlib.sha256(dll.read_bytes()).hexdigest()
+receipt={'recordedUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'Actual unchanged Platform host Program over loopback Kestrel, restored from the retained unsigned/nonpublic candidate SDK/fixture archives. Test-entry interoperability only; no signed package, normal native parent, cohort or production admission credit.','sourceHistoricalReceipt':'candidate-attempt-4.json','sourceHistoricalReceiptSha256':hashlib.sha256((p/'_bmad-output/implementation-artifacts/evidence/3-2/package-preparation-20261109/candidate-attempt-4.json').read_bytes()).hexdigest(),'work':str(out),'commands':commands,'nativeEntry':native,'extensionReadiness':ready['results']['eventstore-extensions'],'overallReadiness':ready['status'],'fixtureDepsIdentity':identity,'fixtureDepsType':'package','fixtureLoadedOutputSha256':hashlib.sha256(dll.read_bytes()).hexdigest(),'fixtureArchiveBodySha256':hashlib.sha256(body).hexdigest(),'nativeReportSha256':hashlib.sha256(report.read_bytes()).hexdigest(),'qualificationCredit':False,'signedFixtureCredit':False,'nativeAcceptance':False,'distributedReadiness':False}
+(out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');Path('/tmp/story32-fixture-native-mtp-live-locator.txt').write_text(str(out)+'\n');print(json.dumps(receipt,indent=2),flush=True)

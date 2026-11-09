@@ -1,0 +1,120 @@
+--- a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
++++ b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+@@ -35,6 +35,7 @@
+   </ItemGroup>
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+     <PackageReference Include="Hexalith.EventStore.Aspire" />
++    <PackageReference Include="Hexalith.EventStore.DomainService" />
+     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
+     <PackageReference Include="Hexalith.Tenants.Contracts" />
+     <PackageReference Include="Hexalith.Tenants.Server" Condition="'$(HexalithEventStoreVersion)' == '4.1.0' and '$(HexalithTenantsVersion)' == '7.0.5'" />
+@@ -57,4 +58,8 @@
+   <ItemGroup><ProjectReference Include="../Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /><ProjectReference Include="../Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj" /></ItemGroup>
+   <ItemGroup><EmbeddedResource Include="../../eng/ext-secrets-1/public-joint-plan.json" LogicalName="ExtSecretsFullJointPlan" /></ItemGroup>
+   <ItemGroup><Compile Include="../Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs" Link="PublishedCatalogArtifactCohort.cs" /></ItemGroup>
++  <!-- Replace this exact release placeholder only after archive/API and tuple qualification. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '__MEASURED_EXTENSION_SDK_RELEASE__'">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK;HEXALITH_PLATFORM_CANONICAL_SCOPES;HEXALITH_PLATFORM_CATALOG_SDK;HEXALITH_PLATFORM_V2_CATALOG</DefineConstants>
++  </PropertyGroup>
+ </Project>
+--- a/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj
++++ b/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj
+@@ -21,4 +21,8 @@
+   </PropertyGroup>
+   <!-- Qualify exact SDK cohorts; future packages remain unqualified. -->
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '3.129.0' or '$(HexalithEventStoreVersion)' == '3.130.0' or '$(HexalithEventStoreVersion)' == '3.130.1' or '$(HexalithEventStoreVersion)' == '3.130.2' or '$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.132.2' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0'"><DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_CATALOG_SDK</DefineConstants></PropertyGroup>
++  <!-- Replace this exact release placeholder only after archive/API and tuple qualification. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '__MEASURED_EXTENSION_SDK_RELEASE__'">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK;HEXALITH_PLATFORM_CATALOG_SDK;HEXALITH_PLATFORM_TECHNICAL_CATALOG_SDK</DefineConstants>
++  </PropertyGroup>
+ </Project>
+--- a/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++++ b/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
+@@ -95,4 +95,8 @@
+     <PackageDownload Include="Hexalith.Parties.Contracts" Version="[3.0.0];[3.1.0]" />
+     <PackageDownload Include="Hexalith.Parties.EventStoreExtensions" Version="[3.0.0];[3.1.0]" />
+   </ItemGroup>
++  <!-- Replace this exact release placeholder only after archive/API and tuple qualification. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '__MEASURED_EXTENSION_SDK_RELEASE__'">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK;HEXALITH_PLATFORM_CANONICAL_SCOPES;HEXALITH_PLATFORM_CATALOG_SDK;HEXALITH_PLATFORM_V2_CATALOG</DefineConstants>
++  </PropertyGroup>
+ </Project>
+--- a/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
+@@ -14,4 +14,8 @@
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+     <PackageReference Include="Hexalith.EventStore.DomainService" />
+   </ItemGroup>
++  <!-- Replace this exact release placeholder only after archive/API and tuple qualification. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '__MEASURED_EXTENSION_SDK_RELEASE__'">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
++  </PropertyGroup>
+ </Project>
+--- a/src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs
++++ b/src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs
+@@ -188,7 +188,7 @@
+         {
+             PlatformRoot = options.PlatformRoot,
+             Workspace = options.RunPlan?.Workspace,
+-        }.CatalogPackageVersion(package, module.Source);
++        }.CatalogPackageVersion(package, module.Source, "Hexalith.Platform.EventStoreHost");
+         return string.IsNullOrWhiteSpace(version)
+             ? throw Failure(module, id, field + ".packageId", "eventstore-extension-unpinned", $"package '{package}' has no Builds catalog pin")
+             : (package, version);
+--- a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
++++ b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+@@ -45,9 +45,31 @@
+             (PublishedCatalogArtifactCohort.EventStorePackageTestName, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
+             (PublishedCatalogArtifactCohort.EventStorePackageTestName, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
+             (_, "gateway", null) when server.ProjectPath == options.EventStoreSeedProject => server,
++            ("__MEASURED_EXTENSION_COHORT__", "gateway", null) when MatchesReleasedExtensionHost(options, server) => server,
+             _ => throw new InvalidDataException(_refusal),
+         }).ToArray();
+     }
++
++#if HEXALITH_PLATFORM_EXTENSION_SDK
++    // Finite release data below is intentionally unresolved and keeps this proposal fail-closed.
++    // The cohort must also be enrolled in SelectTestCohort/HasQualifiedSdkBytes with measured signed owner bodies.
++    private static bool MatchesReleasedExtensionHost(PlatformCompositionOptions options, PlatformServerBinding server)
++    {
++        if (server.EventStoreHost is not { Extensions.Count: 1 } host
++            || server.ProjectPath != PlatformEventStoreExtensionBindings.HostProjectPath(options)
++            || host.ServerProject != options.EventStoreSeedProject
++            || PlatformServerBindings.Version(options, "eventstore", "extension qualification") != "__MEASURED_EXTENSION_SDK_RELEASE__") return false;
++        PlatformEventStoreExtensionBinding extension = host.Extensions[0];
++        return extension.Module == "__APPROVED_EXTENSION_OWNER__" && extension.PackageId == "__APPROVED_EXTENSION_PACKAGE__"
++            && extension.Reference == extension.PackageId && extension.ExtensionId == "__APPROVED_EXTENSION_ID__"
++            && extension.ApiMajor == Hexalith.EventStore.DomainService.EventStoreExtensionApi.CurrentMajor
++            && extension.PackageVersion == "__MEASURED_EXTENSION_PACKAGE_RELEASE__"
++            && PublishedCatalogArtifactCohort.Matches(extension.PackageId, "__MEASURED_EXTENSION_COHORT__");
++    }
++
++#else
++    private static bool MatchesReleasedExtensionHost(PlatformCompositionOptions options, PlatformServerBinding server) => false;
++#endif
+ 
+     /// <summary>The loaded SDK must be the finite signed public producer, including its technical receiver API.</summary>
+     internal static bool HasQualifiedSdkBytes(string? cohort = null) => cohort is null
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -257,6 +257,20 @@
+       ],
+       "requiredCount": 2,
+       "purpose": "measured-public-parties-signed-catalog-boundary"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-method",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync",
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
++        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync"
++      ],
++      "requiredCount": 7,
++      "purpose": "measured-released-extension-sdk-boundary"
+     }
+   ],
+   "historicalPublicControls": {

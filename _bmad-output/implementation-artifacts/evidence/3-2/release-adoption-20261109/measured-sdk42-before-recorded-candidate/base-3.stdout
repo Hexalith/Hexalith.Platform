@@ -1,0 +1,23 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Builds catalog '/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.Builds' is staged 27145e52ffab5623198ba5efdab5cdb71aa42d28, checked out 5ec1779040606be89306129a7d2b245258c9acd2; Platform d360698a9cb5a6ffda28289478eaacd168dbecc7 pins 27145e52ffab5623198ba5efdab5cdb71aa42d28.
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(229,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        /_/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(95,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PublishedPartiesMemoriesTransportTests.cs(21,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformSdk42CurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync [FAIL]
+      Hexalith.Builds.Tooling.Workspace.WorkspaceMappingException : Builds catalog '/tmp/story-3-2-broad-20261109-_z_wy84q/current/references/Hexalith.Builds' is staged 27145e52ffab5623198ba5efdab5cdb71aa42d28, checked out 5ec1779040606be89306129a7d2b245258c9acd2; Platform d360698a9cb5a6ffda28289478eaacd168dbecc7 pins 27145e52ffab5623198ba5efdab5cdb71aa42d28.
+      Stack Trace:
+        /_/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(229,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CompositionProcessResult probe, CancellationToken cancellationToken)
+        /_/src/libraries/Hexalith.Builds.Tooling/Workspace/WorkspaceRootResolver.cs(27,0): at Hexalith.Builds.Tooling.Workspace.WorkspaceRootResolver.ResolveAsync(String manifestPath, WorkspaceMode mode, CancellationToken cancellationToken)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(95,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42CurrentOwnerMemoriesTransportTests.cs(20,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42CurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '030c007d0d10dfef81722714cbf32df4b86bbee488b147ab87a027f688e32757')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 2, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 0.671s

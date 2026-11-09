@@ -1,0 +1,30 @@
+[
+  {
+    "attempt": 1,
+    "passed": false,
+    "failure": "Exit 1: ['dotnet', 'pack', '/tmp/story32-candidate-package-_0qudsyz/platform/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj', '-c', 'Release', '--artifacts-path', '/tmp/story32-candidate-package-_0qudsyz/fixture-artifacts', '-o', '/tmp/story32-candidate-package-_0qudsyz/feed', '-p:UseHexalithProjectReferences=false', '-p:RestoreAdditionalProjectSources=/tmp/story32-candidate-package-_0qudsyz/feed', '-nodeReuse:false', '--disable-build-servers', '--nologo', '-p:IsPackable=true', '-p:PackageVersion=0.0.0-story32.local.20261109', '-p:Version=0.0.0-story32.local.20261109', '-p:Description=Disposable local Story 3.2 extension probe', '-p:Authors=Local candidate probe']; see /tmp/story32-candidate-package-_0qudsyz/pack-fixture.log",
+    "receipt": "candidate-attempt-1.json",
+    "work": "/tmp/story32-candidate-package-_0qudsyz"
+  },
+  {
+    "attempt": 2,
+    "passed": false,
+    "failure": "Exit -6: ['dotnet', '/tmp/story32-candidate-package-o0at4w9y/host-artifacts/bin/Candidate/release/Candidate.dll']; see /tmp/story32-candidate-package-o0at4w9y/http-host.log",
+    "receipt": "candidate-attempt-2.json",
+    "work": "/tmp/story32-candidate-package-o0at4w9y"
+  },
+  {
+    "attempt": 3,
+    "passed": false,
+    "failure": "",
+    "receipt": "candidate-attempt-3.json",
+    "work": "/tmp/story32-candidate-package-k36badgr"
+  },
+  {
+    "attempt": 4,
+    "passed": true,
+    "failure": null,
+    "receipt": "candidate-attempt-4.json",
+    "work": "/tmp/story32-candidate-package-kcm8w2qx"
+  }
+]

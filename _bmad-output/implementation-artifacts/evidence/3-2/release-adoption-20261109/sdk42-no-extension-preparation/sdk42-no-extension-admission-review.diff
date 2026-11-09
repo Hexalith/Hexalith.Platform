@@ -1,0 +1,357 @@
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj b/src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj
+index 6470d50b..237551fe 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj
++++ b/src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj
+@@ -1,6 +1,6 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><IsPackable>false</IsPackable><JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault></PropertyGroup>
+-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and ('$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0' or $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^3\.130\.[012](?:\.0)?(?:\+[0-9A-Za-z.-]+)?$')))">
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and ('$(HexalithEventStoreVersion)' == '3.132.1' or '$(HexalithEventStoreVersion)' == '3.133.0' or '$(HexalithEventStoreVersion)' == '4.0.0' or '$(HexalithEventStoreVersion)' == '4.0.2' or '$(HexalithEventStoreVersion)' == '4.0.3' or '$(HexalithEventStoreVersion)' == '4.0.4' or '$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0' or $([System.Text.RegularExpressions.Regex]::IsMatch('$(HexalithEventStoreVersion)', '^3\.130\.[012](?:\.0)?(?:\+[0-9A-Za-z.-]+)?$')))">
+     <DefineConstants>$(DefineConstants);HEXALITH_SCOPED_CONSUMER_BINDING</DefineConstants>
+   </PropertyGroup>
+   <Import Project="$(PlatformCatalogBindings)" Condition="'$(PlatformCatalogBindings)' != ''" />
+diff --git a/src/Hexalith.Platform.CatalogBuilder/Program.cs b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+index 023e9a70..eb852626 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/Program.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/Program.cs
+@@ -27,14 +27,14 @@ if (qualified)
+     var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
+     string[] expected = qualificationName switch
+     {
+-        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+-        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.CurrentOwnerName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
++        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName or PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
+         _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
+     };
+     if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
+         .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
+         throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
+-    qualifiedArtifacts.AddRange(qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName ? PublishedCatalogArtifactCohort.VerifyCurrentReferences() : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName
++    qualifiedArtifacts.AddRange(qualificationName is PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName ? PublishedCatalogArtifactCohort.VerifyCurrentReferences(qualificationName) : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName
+         ? PublishedCatalogArtifactCohort.VerifyFullParties(qualificationName) : PublishedCatalogArtifactCohort.VerifySdk(qualificationName!));
+ }
+ List<RouteContractDeclaration> declarations = [];
+@@ -53,7 +53,7 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
+     {
+         foreach (Assembly artifact in new[] { assembly, adapterAssembly })
+         {
+-            if (qualificationName == PublishedCatalogArtifactCohort.CurrentOwnerName && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
++            if ((qualificationName is PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName) && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
+             {
+                 var measured = input.GetProperty("currentOwnerArtifacts");
+                 if (measured.EnumerateObject().Count() != 2
+diff --git a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+index fe231342..84d8edbd 100644
+--- a/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
++++ b/src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs
+@@ -25,6 +25,27 @@ internal static class PublishedCatalogArtifactCohort
+     internal const string EventStorePackageTestName = "private-eventstore-package-test-4.1.0-tenants-7.0.5";
+     /// <summary>The complete authenticated public Parties3.1 reader; independent from every private purpose.</summary>
+     internal const string PublishedPartiesName = "parties-3.1.0-eventstore-4.1.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
++    /// <summary>The signed extension SDK bodies only; confers no owner or composed-host cohort admission.</summary>
++    internal const string ExtensionSdkName = "extension-sdk-eventstore-4.2.0";
++    private static readonly FrozenDictionary<string, string> _extensionSdkHashes = new Dictionary<string, string>(StringComparer.Ordinal)
++    {
++        ["Hexalith.EventStore.Admin.Abstractions"] = "9b1edf00cc5e31ace475c851587876a4dc0321fab9d1e2af0aa771b114cfb584",
++        ["Hexalith.EventStore.Contracts"] = "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
++        ["Hexalith.EventStore.ServiceDefaults"] = "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
++        ["Hexalith.EventStore.Client"] = "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
++        ["Hexalith.EventStore.DomainService"] = "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646",
++        ["Hexalith.EventStore.Server"] = "95038655c275192a4971ea8f74a1a3748be15793736ed5914813614b84cf6cf1",
++        ["Hexalith.EventStore.Gateway"] = "a7038a4e7858aca19c78cf2489fbffd5bd78925b956a96f2473d854127ed0b46",
++        ["Hexalith.EventStore.Aspire"] = "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a",
++    }.ToFrozenDictionary(StringComparer.Ordinal);
++
++    /// <summary>The separate signed SDK4.2 private EventStore test reader; no extension host authority.</summary>
++    internal const string Sdk42EventStorePackageTestName = "private-eventstore-package-test-4.2.0-tenants-7.0.5";
++    /// <summary>The SDK4.2 source-owner reference reader, bound to the existing private owner proof.</summary>
++    internal const string Sdk42CurrentOwnerName = "current-parties-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
++    /// <summary>The complete published Parties3.1 reader with the independently released SDK4.2.</summary>
++    internal const string Sdk42PublishedPartiesName = "parties-3.1.0-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
++
+     private static readonly FrozenDictionary<string, string> _hashes = new Dictionary<string, string>(StringComparer.Ordinal)
+     {
+         ["Hexalith.EventStore.Contracts"] = "5680933ce8003475a3c323ddd48f299be0eeac52810424814ca6e39bab763d53",
+@@ -101,9 +122,25 @@ internal static class PublishedCatalogArtifactCohort
+             ["Hexalith.Parties.EventStoreExtensions"] = "a48612597603ce5b8d743e28e91236a51e561369c6bcd2d9fcca092dd78f1c06",
+         }).ToFrozenDictionary(StringComparer.Ordinal);
+ 
++    // The owner bodies and producer bindings retain their independent published authority.
++    // Only the four reader SDK bodies change; this does not admit any extension or host.
++    private static readonly FrozenDictionary<string, string> _sdk42EventStorePackageTestHashes = WithSdk42(_eventStorePackageTestHashes);
++    private static readonly FrozenDictionary<string, string> _sdk42CurrentOwnerHashes = WithSdk42(_currentOwnerHashes);
++    private static readonly FrozenDictionary<string, string> _sdk42PublishedPartiesHashes = WithSdk42(_publishedPartiesHashes);
++
++    private static FrozenDictionary<string, string> WithSdk42(IReadOnlyDictionary<string, string> previous)
++        => previous.Where(pair => !pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal))
++            .Concat(_extensionSdkHashes.Where(pair => _currentHashes.ContainsKey(pair.Key)))
++            .ToFrozenDictionary(StringComparer.Ordinal);
++
+     /// <summary>Selects only the complete measured public Parties3.1 versions, without granting a general SDK/Tenants pair.</summary>
+     internal static string? ForPublishedPartiesVersions(string sdk, string tenants, string memories, string parties)
+-        => (sdk, tenants, memories, parties) == ("4.1.0", "7.0.5", "3.0.25", "3.1.0") ? PublishedPartiesName : null;
++        => (sdk, tenants, memories, parties) switch
++        {
++            ("4.1.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesName,
++            ("4.2.0", "7.0.5", "3.0.25", "3.1.0") => Sdk42PublishedPartiesName,
++            _ => null,
++        };
+ 
+     /// <summary>Selects only complete measured version pairs; unknown, mixed and near-match pairs carry no authority.</summary>
+     internal static string? ForVersions(string sdk, string tenants, bool fullParties = false) => (sdk, tenants, fullParties) switch
+@@ -148,11 +185,14 @@ internal static class PublishedCatalogArtifactCohort
+         .Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray();
+ 
+     /// <summary>Checks every measured public dependency before any full-owner attribute or factory is consumed.</summary>
+-    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName
++    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName or Sdk42PublishedPartiesName
+         ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
+         : throw new InvalidDataException("The requested full public artifact cohort is unavailable.");
+ 
+-    internal static IReadOnlyList<string> VerifyCurrentReferences() => _currentOwnerHashes.Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), CurrentOwnerName)).ToArray();
++    internal static IReadOnlyList<string> VerifyCurrentReferences(string cohort = CurrentOwnerName)
++        => cohort is CurrentOwnerName or Sdk42CurrentOwnerName
++            ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
++            : throw new InvalidDataException("The requested private current owner cohort is unavailable.");
+ 
+     /// <summary>Verifies a loaded owner or SDK artifact before reading its attributes or invoking its factory.</summary>
+     internal static string Verify(Assembly assembly, string cohort = Name)
+@@ -165,17 +205,17 @@ internal static class PublishedCatalogArtifactCohort
+         return assembly.Location;
+     }
+ 
+-    internal static void VerifyCurrentSdkFile(string path, string digest)
++    internal static void VerifyCurrentSdkFile(string path, string digest, string cohort = CurrentOwnerName)
+     {
+         string name = AssemblyName.GetAssemblyName(path).Name!;
+-        if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !_currentOwnerHashes.TryGetValue(name, out string? expected)
++        if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !Hashes(cohort).TryGetValue(name, out string? expected)
+             || digest != expected || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))) != expected)
+             throw new InvalidDataException("The current owner must load the exact public SDK bodies.");
+     }
+ 
+-    internal static void VerifyCurrentReferenceReceipt(IReadOnlyList<(string Path, string Hash)> artifacts)
++    internal static void VerifyCurrentReferenceReceipt(IReadOnlyList<(string Path, string Hash)> artifacts, string cohort = CurrentOwnerName)
+     {
+-        foreach (var expected in _currentOwnerHashes)
++        foreach (var expected in Hashes(cohort))
+         {
+             var matches = artifacts.Where(item => AssemblyName.GetAssemblyName(item.Path).Name == expected.Key).ToArray();
+             if (matches.Length != 1 || matches[0].Hash != expected.Value
+@@ -195,6 +235,10 @@ internal static class PublishedCatalogArtifactCohort
+         CurrentOwnerName => _currentOwnerHashes,
+         PublishedPartiesName => _publishedPartiesHashes,
+         EventStorePackageTestName => _eventStorePackageTestHashes,
++        ExtensionSdkName => _extensionSdkHashes,
++        Sdk42EventStorePackageTestName => _sdk42EventStorePackageTestHashes,
++        Sdk42CurrentOwnerName => _sdk42CurrentOwnerHashes,
++        Sdk42PublishedPartiesName => _sdk42PublishedPartiesHashes,
+         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
+     };
+ }
+diff --git a/src/Hexalith.Platform.Composition/PlatformAppModel.cs b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+index df328532..0e23aff0 100644
+--- a/src/Hexalith.Platform.Composition/PlatformAppModel.cs
++++ b/src/Hexalith.Platform.Composition/PlatformAppModel.cs
+@@ -448,7 +448,7 @@ public static class PlatformAppModel
+             }
+             builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered, currentOwnerPackage: options.CurrentOwnerProof?.Matches(options) == true
+                 || options.PartiesRunProof?.Matches(options) == true
+-                    && PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true) == Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName));
++                    && PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true) is Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName or Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName));
+             if (options.RetentionProfile is not null)
+             {
+                 PlatformServerBinding owner = servers.First(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
+diff --git a/src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs b/src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs
+index 95f5cb62..aeec056e 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs
+@@ -30,7 +30,7 @@ internal static class PlatformCurrentOwnerObservation
+             string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
+             if (maps.Length == 0) throw new InvalidDataException("The actual current owner SDK mapping is unavailable.");
+             string digest = PlatformMappedArtifact.Hash(pid, path, maps[0]);
+-            Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest);
++            Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest, proof.Cohort);
+             sdk[name] = digest;
+         }
+         var observed = JsonSerializer.Deserialize<RouteCatalogHostObservation>(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "parties.observation.json"), token).ConfigureAwait(false))
+@@ -47,7 +47,7 @@ internal static class PlatformCurrentOwnerObservation
+             profile = PlatformCurrentOwnerProof.Profile, plan.RunId, plan.AttemptId, plan.EnvironmentId,
+             revision = proof.SourceRevision,
+             mappingHash = options.Mapping.ContentHash, configuration = "Release", qualificationCredit = false,
+-            platform = options.Mapping.PlatformIdentity, sdkVersion = "4.1.0", tenantsVersion = "7.0.5",
++            platform = options.Mapping.PlatformIdentity, sdkVersion = PlatformServerBindings.Version(options, "eventstore", "current owner observation"), tenantsVersion = "7.0.5",
+             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
+             packageArchives = proof.PackageArchives,
+             runtimeBodies = runtime, catalogBodies = proof.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
+diff --git a/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs b/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs
+index c02076f3..4932e64f 100644
+--- a/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs
++++ b/src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs
+@@ -16,6 +16,7 @@ internal sealed class PlatformCurrentOwnerProof
+     internal const string DeclarationHash = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348";
+     internal const string TestEntry = "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj";
+     private readonly PlatformPartiesRunProof _parent;
++    private readonly string _cohort;
+     private readonly IReadOnlyDictionary<string, string> _files;
+     private readonly string _receipt;
+     private readonly string _seal;
+@@ -26,6 +27,7 @@ internal sealed class PlatformCurrentOwnerProof
+         IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
+     {
+         _parent = PlatformPartiesRunProof.CreateCurrent(options, key);
++        _cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) ?? throw Refusal();
+         source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
+         _source = source;
+         Directory = directory;
+@@ -35,7 +37,7 @@ internal sealed class PlatformCurrentOwnerProof
+         _key = Convert.FromBase64String(key);
+         _receipt = JsonSerializer.Serialize(new
+         {
+-            profile = Profile, revision = source.Revision, options.Mapping.ContentHash,
++            profile = Profile, cohort = _cohort, revision = source.Revision, options.Mapping.ContentHash,
+             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
+             platform = options.Mapping.PlatformIdentity, configuration = "Release", bodies, files,
+         });
+@@ -52,6 +54,7 @@ internal sealed class PlatformCurrentOwnerProof
+     internal string ReaderConfig => Path.Combine(Directory, "reader.nuget.config");
+     /// <summary>Gets the immutable pre-build source identity retained by the proof and readiness observation.</summary>
+     internal string SourceRevision => _source.Revision;
++    internal string Cohort => _cohort;
+     internal IReadOnlyDictionary<string, string> Bodies { get; }
+     internal IReadOnlyDictionary<string, string> PackageArchives { get; }
+ 
+@@ -60,7 +63,7 @@ internal sealed class PlatformCurrentOwnerProof
+         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+             || options.Mapping.Entries.Any(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform") && (entry.Origin != "package" || entry.Path is not null))
+             || options.Projects != PlatformServerBindings.ReferenceProjects || options.TimesheetsEnabled || options.UsePrebuiltProjects
+-            || PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) != PublishedCatalogArtifactCohort.CurrentOwnerName)
++            || PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) is not (PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName))
+             throw Refusal();
+         _ = PlatformPartiesRunProof.CreateCurrent(options, key);
+         if (Hash(options.DeclarationPaths.Single()) != DeclarationHash) throw Refusal();
+@@ -143,7 +146,7 @@ internal sealed class PlatformCurrentOwnerProof
+                 string actualVersion = library.Name.Split('/')[1];
+                 if (library.Value.GetProperty("type").GetString() == "package"
+                     && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
+-                        || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != "4.1.0"
++                        || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != PlatformServerBindings.Version(options, "eventstore", "current owner SDK")
+                         || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != "7.0.5"
+                         || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != "3.0.25"
+                         || name == "Hexalith.McpCli.Abstractions" && actualVersion != "2.0.1")) throw Refusal();
+@@ -213,14 +216,15 @@ internal sealed class PlatformCurrentOwnerProof
+             if (matches.Length != 1 || matches[0].GetProperty("sha256").GetString() != Bodies[name]
+                 || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name]) throw Refusal();
+         }
+-        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray());
++        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray(), _cohort);
+     }
+ 
+     internal bool Matches(PlatformCompositionOptions options)
+     {
+         try
+         {
+-            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects) return false;
++            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects
++                || _cohort != PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)) return false;
+             _source.RequireUnchanged(ActiveRoot(options), SourceRevision);
+             return _files.All(pair => Hash(pair.Key) == pair.Value)
+                 && Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt))) == _seal;
+diff --git a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+index 2e47e5e9..3b163fd1 100644
+--- a/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
++++ b/src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs
+@@ -31,9 +31,9 @@ internal static class PlatformPackageCatalogQualification
+             || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
+             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
+             || (cohort = SelectTestCohort(options)) is null
+-            || cohort == PublishedCatalogArtifactCohort.EventStorePackageTestName && servers.Any(server => server.ImageDigest is not null)
++            || (cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName) && servers.Any(server => server.ImageDigest is not null)
+             || !HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
+-            || cohort == PublishedCatalogArtifactCohort.EventStorePackageTestName && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
++            || (cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName) && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
+             throw new InvalidDataException(_refusal);
+ 
+         return servers.Select(server => (cohort, server.ServerId, server.Image) switch
+@@ -42,8 +42,8 @@ internal static class PlatformPackageCatalogQualification
+             (PublishedCatalogArtifactCohort.Name, "api", "registry.hexalith.com/tenants-api:7.0.0") => server with { ImageDigest = "2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6" },
+             (PublishedCatalogArtifactCohort.CurrentName, "domain", "registry.hexalith.com/tenants:7.0.2") => server with { ImageDigest = "adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed" },
+             (PublishedCatalogArtifactCohort.CurrentName, "api", "registry.hexalith.com/tenants-api:7.0.2") => server with { ImageDigest = "2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4" },
+-            (PublishedCatalogArtifactCohort.EventStorePackageTestName, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
+-            (PublishedCatalogArtifactCohort.EventStorePackageTestName, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
++            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
++            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
+             (_, "gateway", null) when server.ProjectPath == options.EventStoreSeedProject => server,
+             _ => throw new InvalidDataException(_refusal),
+         }).ToArray();
+@@ -84,16 +84,24 @@ internal static class PlatformPackageCatalogQualification
+             && string.Equals(plan.PlatformDeclarationHash, "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495", StringComparison.OrdinalIgnoreCase)
+             && MatchesTestSource(options, selected)
+             && CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
+-            && PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") == "4.1.0"
+             && PlatformServerBindings.Version(options, "tenants", "private EventStore package test") == "7.0.5"
+-            ? PublishedCatalogArtifactCohort.EventStorePackageTestName : null;
++            ? PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") switch
++            {
++                "4.1.0" => PublishedCatalogArtifactCohort.EventStorePackageTestName,
++                "4.2.0" => PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName,
++                _ => null,
++            } : null;
+     }
+ 
+     internal static string? SelectCurrentOwnerCohort(PlatformCompositionOptions options)
+-        => PlatformServerBindings.Version(options, "eventstore", "current qualification") == "4.1.0"
+-            && PlatformServerBindings.Version(options, "tenants", "current qualification") == "7.0.5"
++        => PlatformServerBindings.Version(options, "tenants", "current qualification") == "7.0.5"
+             && PlatformServerBindings.Version(options, "memories", "current qualification") == "3.0.25"
+-            ? PublishedCatalogArtifactCohort.CurrentOwnerName : null;
++            ? PlatformServerBindings.Version(options, "eventstore", "current qualification") switch
++            {
++                "4.1.0" => PublishedCatalogArtifactCohort.CurrentOwnerName,
++                "4.2.0" => PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName,
++                _ => null,
++            } : null;
+ 
+     private static bool MatchesTestSource(PlatformCompositionOptions options, ModuleTestSelection selected)
+     {
+diff --git a/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+index 475133d0..0b54cdbe 100644
+--- a/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
++++ b/src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs
+@@ -100,14 +100,14 @@ internal static class PlatformPartiesPackageCatalogQualification
+             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
+             || !Snapshot(options, declarations, "parties", current ? PlatformCurrentOwnerProof.DeclarationHash : ownerHash!.ToLowerInvariant())
+             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
+-            || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
++            || (cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName) && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
+             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
+             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
+             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+             || !current && !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
+             || !CompositionMatches(options, declarations)) throw Refusal();
+         IReadOnlyDictionary<string, (string Image, string Digest)> images = current ? _currentOwnerImages
+-            : cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? _publishedPartiesImages
++            : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName ? _publishedPartiesImages
+             : cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
+         return servers.Select(server =>
+         {
+@@ -123,15 +123,15 @@ internal static class PlatformPartiesPackageCatalogQualification
+     /// <summary>Retains exact historical and public versions and only the two measured private source-owner catalog versions.</summary>
+     internal static bool MatchesPartiesVersion(string version, bool current, string cohort) => (current, cohort, version) switch
+     {
+-        (true, PublishedCatalogArtifactCohort.CurrentOwnerName, "3.0.0" or "3.1.0") => true,
+-        (false, PublishedCatalogArtifactCohort.PublishedPartiesName, "3.1.0") => true,
++        (true, PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName, "3.0.0" or "3.1.0") => true,
++        (false, PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName, "3.1.0") => true,
+         (false, PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName, "3.0.0") => true,
+         _ => false,
+     };
+ 
+     private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort)
+         => PlatformServerBindings.Version(options, "memories", "full-Parties qualification")
+-                == (current || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? "3.0.25" : "3.0.23")
++                == (current || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName ? "3.0.25" : "3.0.23")
+             && MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "full-Parties qualification"), current, cohort);
+ 
+     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

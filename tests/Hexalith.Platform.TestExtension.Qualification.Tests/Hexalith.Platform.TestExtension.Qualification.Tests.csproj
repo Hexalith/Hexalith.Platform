@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <Using Include="Xunit" />
+    <AssemblyMetadata Include="PlatformFixtureRepositoryRoot" Value="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)/../..'))" />
+  </ItemGroup>
+</Project>

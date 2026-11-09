@@ -1,0 +1,155 @@
+name: Publish Platform test extension
+
+# The fixture has its own narrow NuGet publication path. Normal tuple, catalog
+# and source-release gates for the exact current main remain prerequisites.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Existing stable Platform source release at the exact current main
+        required: true
+        type: string
+
+concurrency:
+  group: platform-test-extension-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      archive_sha256: ${{ steps.pack.outputs.archive_sha256 }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      FIXTURE_VERSION: ${{ inputs.version }}
+    steps:
+      - name: Bind job-local proof output
+        shell: bash
+        run: printf 'FIXTURE_PROOF_OUTPUT=%s/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: Verify publisher refusal and archive controls
+        run: |
+          node --test eng/test-extension-release/gate.test.mjs
+          python3 -B eng/test-extension-release/run-controls.py
+      - name: Require exact current source release and normal qualifications
+        run: node eng/test-extension-release/gate.mjs
+      - name: Initialize direct dependencies
+        run: git -c submodule.recurse=false submodule update --init
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+        with:
+          global-json-file: global.json
+      - name: Require the measured package SDK feature
+        shell: bash
+        run: |
+          set -euo pipefail
+          constants="$(dotnet msbuild tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj -p:Configuration=Release -p:UseHexalithProjectReferences=false -getProperty:DefineConstants -nologo)"
+          if [[ ";$constants;" != *';HEXALITH_PLATFORM_EXTENSION_SDK;'* ]]; then
+            echo 'fixture-publication: the measured package SDK extension feature is unavailable.' >&2
+            exit 1
+          fi
+      - name: Compile the source-bound native fixture test
+        run: dotnet build tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -warnaserror -nodeReuse:false --disable-build-servers
+      - name: Pack only the Platform-owned fixture from package dependencies
+        id: pack
+        env:
+          PACKAGE_DIRECTORY: ${{ runner.temp }}/fixture-package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$PACKAGE_DIRECTORY"
+          dotnet pack tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj -c Release -p:UseHexalithProjectReferences=false -p:IsPackable=true -p:GeneratePackageOnBuild=false -p:PackageVersion="$FIXTURE_VERSION" -p:SourceRevisionId="$GITHUB_SHA" -p:RepositoryCommit="$GITHUB_SHA" -p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Platform -p:RepositoryType=git -o "$PACKAGE_DIRECTORY" -warnaserror -nodeReuse:false --disable-build-servers
+          python3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" tests/fixtures/Hexalith.Platform.TestExtension/bin/Release/net10.0/Hexalith.Platform.TestExtension.dll --assets tests/fixtures/Hexalith.Platform.TestExtension/obj/project.assets.json
+          cp "$FIXTURE_PROOF_OUTPUT" "$PACKAGE_DIRECTORY/fixture-proof.json"
+          printf 'archive_sha256=%s\n' "$(sha256sum "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: platform-test-extension-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/fixture-package/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: qualify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      FIXTURE_VERSION: ${{ inputs.version }}
+      FIXTURE_ARCHIVE_SHA256: ${{ needs.qualify.outputs.archive_sha256 }}
+    steps:
+      - name: Bind downloaded qualification proof
+        shell: bash
+        run: printf 'FIXTURE_EXPECTED_PROOF=%s/fixture-package/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+        with:
+          global-json-file: global.json
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: platform-test-extension-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/fixture-package
+      - name: Recheck the exact qualified source before OIDC
+        run: node eng/test-extension-release/gate.mjs
+      - name: Require configured owner Trusted Publishing
+        env:
+          PUBLISH_ENABLED: ${{ vars.HEXALITH_TEST_EXTENSION_PUBLISH_ENABLED }}
+          NUGET_USER: ${{ vars.NUGET_TRUSTED_PUBLISHING_USER }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$PUBLISH_ENABLED" != 'true' || -z "${NUGET_USER//[[:space:]]/}" ]]; then
+            echo 'fixture-publication: Platform owner Trusted Publishing is not configured and enabled.' >&2
+            exit 1
+          fi
+      - name: Exchange this repository's OIDC for a temporary NuGet key
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841
+        with:
+          user: ${{ vars.NUGET_TRUSTED_PUBLISHING_USER }}
+      - name: Publish the exact qualified fixture archive
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+          PACKAGE_DIRECTORY: ${{ runner.temp }}/fixture-package
+        shell: bash
+        run: |
+          set -euo pipefail
+          node eng/test-extension-release/gate.mjs
+          [[ "$FIXTURE_ARCHIVE_SHA256" =~ ^[a-f0-9]{64}$ ]]
+          test "$(sha256sum "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" | cut -d ' ' -f 1)" = "$FIXTURE_ARCHIVE_SHA256"
+          python3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" --receipt "$PACKAGE_DIRECTORY/package-identity.json"
+          dotnet nuget push "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY"
+      - name: Verify the signed public archive
+        env:
+          PACKAGE_DIRECTORY: ${{ runner.temp }}/fixture-package
+        run: python3 eng/test-extension-release/verify-published.py "$PACKAGE_DIRECTORY" "$FIXTURE_VERSION" "$GITHUB_SHA"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: platform-test-extension-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/fixture-package/
+          if-no-files-found: error
+          retention-days: 90

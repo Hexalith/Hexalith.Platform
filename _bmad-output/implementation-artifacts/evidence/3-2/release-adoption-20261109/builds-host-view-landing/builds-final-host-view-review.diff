@@ -1,0 +1,162 @@
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index 80ac218..a9472e6 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -13,6 +13,8 @@
+     <HexalithCommonsVersion Condition="'$(HexalithCommonsVersion)' == ''">2.30.10</HexalithCommonsVersion>
+     <HexalithConversationsVersion Condition="'$(HexalithConversationsVersion)' == ''">1.5.0</HexalithConversationsVersion>
+     <HexalithPolymorphicSerializationsVersion Condition="'$(HexalithPolymorphicSerializationsVersion)' == ''">1.19.8</HexalithPolymorphicSerializationsVersion>
++    <!-- Record the composed-host consumer while keeping one canonical SDK version authority. -->
++    <HexalithPlatformEventStoreHostCatalogView Condition="'$(MSBuildProjectName)' == 'Hexalith.Platform.EventStoreHost'">true</HexalithPlatformEventStoreHostCatalogView>
+     <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">4.2.0</HexalithEventStoreVersion>
+     <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">4.7.6</HexalithFrontComposerVersion>
+     <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">1.3.3</HexalithFoldersVersion>
+diff --git a/Tools/package-version-audit.json b/Tools/package-version-audit.json
+index 3212e2c..9cab47f 100644
+--- a/Tools/package-version-audit.json
++++ b/Tools/package-version-audit.json
+@@ -1,12 +1,12 @@
+ {
+   "schemaVersion": 2,
+-  "generatedFromRevision": "7564c965337f46a1c3b6244476b13b0fa85dd653",
++  "generatedFromRevision": "e6a59fa223ea22b61ad16399458f17b7da652af2",
+   "catalogPath": "Props/Directory.Packages.props",
+-  "catalogSha256": "8554bbbf69ce50b7298191706499f583bc4b2047b344729406c78214a6a019f2",
+-  "catalogRawSha256": "08b9f80209197f5d3ab940d30f9aeb3dd372767e546a3d0ab4859e59f54cef58",
++  "catalogSha256": "e8ea866f6e361bbf7ec494787b753807cd74a5f7a6a953c137baa7b0720bf562",
++  "catalogRawSha256": "957818ed7df1b29b2299644afb06987393f617c5b87ff8551b9b95b52a23034d",
+   "snapshot": {
+     "mode": "incremental",
+-    "auditedAtUtc": "2026-11-09T14:34:20.1362609+00:00",
++    "auditedAtUtc": "2026-11-09T15:07:21.6274512+00:00",
+     "refreshedFamilies": [
+       "hexalith-eventstore"
+     ],
+@@ -181,7 +181,7 @@
+     "fixture": null,
+     "fixtureSha256": null,
+     "fixtureMode": null,
+-    "repositoryRevision": "7564c965337f46a1c3b6244476b13b0fa85dd653",
++    "repositoryRevision": "e6a59fa223ea22b61ad16399458f17b7da652af2",
+     "sha256": "3b7534fe71f682f9c6d78b00bab3bbea98ffde7e9f8985c70c925bb917ec5107",
+     "entries": [
+       {
+@@ -8193,8 +8193,8 @@
+         "test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj"
+       ],
+       "origin": {
+-        "auditedAtUtc": "2026-11-09T14:34:20.1362609+00:00",
+-        "generatedFromRevision": "7564c965337f46a1c3b6244476b13b0fa85dd653",
++        "auditedAtUtc": "2026-11-09T15:07:21.6274512+00:00",
++        "generatedFromRevision": "e6a59fa223ea22b61ad16399458f17b7da652af2",
+         "familySelectionSha256": "7c93cf915ffd0b045204b3b28ce4e0a5759d4bdb953298fa4af48201bf05337d",
+         "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
+         "packageMetadataSha256": "6970e8a29bb70750c766a01750d9c9af26107d3a72876cacf700678cf8059db5",
+diff --git a/test/Hexalith.Builds.Module.Tests/Workspace/CompositionCatalogPackageViewTests.cs b/test/Hexalith.Builds.Module.Tests/Workspace/CompositionCatalogPackageViewTests.cs
+index d476663..ed63dcd 100644
+--- a/test/Hexalith.Builds.Module.Tests/Workspace/CompositionCatalogPackageViewTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/Workspace/CompositionCatalogPackageViewTests.cs
+@@ -102,6 +102,44 @@ public sealed class CompositionCatalogPackageViewTests
+         options.CatalogPackageVersion(package, "probe", "Hexalith.Folders.Aspire").ShouldBe("13.0.0");
+     }
+ 
++    /// <summary>Materializes the actual composed-host view from the owning catalog without enrolling an unpublished fixture.</summary>
++    /// <returns>The exact host-view and missing-fixture assertions.</returns>
++    [Fact]
++    public async Task OwningCatalogMaterializesTheEventStoreHostViewWithoutAPrematureFixturePinAsync()
++    {
++        string catalog = await File.ReadAllTextAsync(Path.Combine(CompositionTestFiles.RepositoryRoot(), "Props", "Directory.Packages.props"), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        using WorkspaceGitFixture fixture = await WorkspaceGitFixture.CreateWithCatalogAsync(catalog).ConfigureAwait(true);
++        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(fixture.Manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        string workspace = Path.Combine(fixture.Directory, "actual-host-consumer");
++        await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        CatalogVersionSnapshot snapshot = CatalogVersionMaterializer.ReadVerifiedSnapshot(mapping, mapping.ContentHash, Path.Combine(workspace, "source-mapping", "catalog-versions.json"));
++        snapshot.ProjectVersions.ContainsKey("Hexalith.Platform.EventStoreHost").ShouldBeTrue();
++        CompositionDeclarationOptions options = new(mapping, []) { Workspace = workspace };
++        options.CatalogPackageVersion("Hexalith.EventStore.DomainService", "probe", "Hexalith.Platform.EventStoreHost").ShouldBe("4.2.0");
++        options.CatalogPackageVersion("Hexalith.EventStore.Server", "probe", "Hexalith.Platform.EventStoreHost").ShouldBe("4.2.0");
++        options.CatalogPackageVersion("Hexalith.Platform.TestExtension", "probe", "Hexalith.Platform.EventStoreHost").ShouldBeNull();
++    }
++
++    /// <summary>Preserves an explicitly selected historical SDK while recording the actual composed-host view.</summary>
++    /// <param name="selected">The explicit historical SDK selection.</param>
++    /// <returns>The materialized host-view version assertion.</returns>
++    [Theory]
++    [InlineData("4.0.4")]
++    [InlineData("4.1.0")]
++    public async Task OwningHostViewPreservesExplicitHistoricalSdkSelectionAsync(string selected)
++    {
++        string catalog = await File.ReadAllTextAsync(Path.Combine(CompositionTestFiles.RepositoryRoot(), "Props", "Directory.Packages.props"), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        System.Xml.Linq.XDocument document = System.Xml.Linq.XDocument.Parse(catalog);
++        document.Root!.AddFirst(new System.Xml.Linq.XElement("PropertyGroup", new System.Xml.Linq.XElement("HexalithEventStoreVersion", selected)));
++        using WorkspaceGitFixture fixture = await WorkspaceGitFixture.CreateWithCatalogAsync(document.ToString()).ConfigureAwait(true);
++        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(fixture.Manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        string workspace = Path.Combine(fixture.Directory, "historical-host-consumer");
++        await SourceMappingMaterializer.WriteAsync(mapping, workspace, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        CompositionDeclarationOptions options = new(mapping, []) { Workspace = workspace };
++        options.CatalogPackageVersion("Hexalith.EventStore.Server", "probe", "Hexalith.Platform.EventStoreHost").ShouldBe(selected);
++        options.CatalogPackageVersion("Hexalith.EventStore.Server", "probe").ShouldBe(selected);
++    }
++
+     private static CompositionDeclarationOptions Options(string root)
+     {
+         SourceMapping mapping = new(WorkspaceMode.Package, root, "Hexalith.Platform", [], false);
+diff --git a/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceGitFixture.cs b/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceGitFixture.cs
+index 0e562bd..69967d6 100644
+--- a/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceGitFixture.cs
++++ b/test/Hexalith.Builds.Module.Tests/Workspace/WorkspaceGitFixture.cs
+@@ -13,6 +13,7 @@ using Xunit;
+ internal sealed class WorkspaceGitFixture : IDisposable
+ {
+     private static readonly Lock _protocolLock = new();
++    private static readonly AsyncLocal<string?> _catalogOverride = new();
+     private static int _protocolLeases;
+     private static string? _originalAllowedProtocols;
+ 
+@@ -38,6 +39,23 @@ internal sealed class WorkspaceGitFixture : IDisposable
+     /// <summary>Gets the absolute manifest path in the checkout.</summary>
+     public string Manifest => Path.Combine(Checkout, "module.json");
+ 
++    /// <summary>Creates a fixture with an exact custom catalog without changing the normal fixture options.</summary>
++    /// <param name="catalog">The catalog body committed by the owning fixture.</param>
++    /// <returns>The isolated fixture.</returns>
++    public static async Task<WorkspaceGitFixture> CreateWithCatalogAsync(string catalog)
++    {
++        string? previous = _catalogOverride.Value;
++        try
++        {
++            _catalogOverride.Value = catalog;
++            return await CreateAsync().ConfigureAwait(true);
++        }
++        finally
++        {
++            _catalogOverride.Value = previous;
++        }
++    }
++
+     /// <summary>Creates a local superproject with a required direct submodule.</summary>
+     /// <param name="withNested">Whether the direct submodule declares a nested submodule.</param>
+     /// <param name="withSecond">Whether the root declares a second direct submodule.</param>
+@@ -88,9 +106,7 @@ internal sealed class WorkspaceGitFixture : IDisposable
+ 
+             string builds = await fixture.CreateRepositoryAsync("builds", "builds.txt").ConfigureAwait(true);
+             _ = System.IO.Directory.CreateDirectory(Path.Combine(builds, "Props"));
+-            string catalog = conditionalCatalog
+-                ? "<Project><PropertyGroup><DaprVersion>13.6.0-preview.1</DaprVersion><DaprVersion Condition=\"'$(msbuildprojectname)' == 'Hexalith.Folders.Aspire'\">13.0.0</DaprVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.Dep\" Version=\"1.0.0\" /><PackageVersion Include=\"CommunityToolkit.Aspire.Hosting.Dapr\" Version=\"$(DaprVersion)\" /></ItemGroup></Project>".Replace("Hexalith.Dep", conditionalPackageId, StringComparison.Ordinal)
+-                : "<Project><ItemGroup><PackageVersion Include=\"Hexalith.Dep\" Version=\"1.0.0\" /></ItemGroup></Project>";
++            string catalog = ReadCatalogFixture(conditionalCatalog, conditionalPackageId);
+             if (compoundCatalogCondition)
+             {
+                 catalog = "<Project><PropertyGroup><DaprVersion>13.6.0-preview.1</DaprVersion><DaprVersion Condition=\"'$(MSBuildProjectName)' == 'Hexalith.Folders.Aspire' Or '$(Configuration)' == '__never__'\">13.0.0</DaprVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.Dep\" Version=\"1.0.0\" /><PackageVersion Include=\"CommunityToolkit.Aspire.Hosting.Dapr\" Version=\"$(DaprVersion)\" /></ItemGroup></Project>";
+@@ -217,6 +233,11 @@ internal sealed class WorkspaceGitFixture : IDisposable
+         }
+     }
+ 
++    private static string ReadCatalogFixture(bool conditionalCatalog, string conditionalPackageId)
++        => _catalogOverride.Value ?? (conditionalCatalog
++                ? "<Project><PropertyGroup><DaprVersion>13.6.0-preview.1</DaprVersion><DaprVersion Condition=\"'$(msbuildprojectname)' == 'Hexalith.Folders.Aspire'\">13.0.0</DaprVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.Dep\" Version=\"1.0.0\" /><PackageVersion Include=\"CommunityToolkit.Aspire.Hosting.Dapr\" Version=\"$(DaprVersion)\" /></ItemGroup></Project>".Replace("Hexalith.Dep", conditionalPackageId, StringComparison.Ordinal)
++                : "<Project><ItemGroup><PackageVersion Include=\"Hexalith.Dep\" Version=\"1.0.0\" /></ItemGroup></Project>");
++
+     private async Task<string> CreateRepositoryAsync(string name, string fileName)
+     {
+         string path = Path.Combine(Directory, name);

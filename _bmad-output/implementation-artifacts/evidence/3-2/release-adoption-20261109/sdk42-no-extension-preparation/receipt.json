@@ -1,0 +1,618 @@
+{
+  "recordedUtc": "2026-11-09T14:45:03.413177+00:00",
+  "scope": "Local component and exact-source preparation, not released tuple qualification or published extension host admission.",
+  "componentControls": {
+    "total": 92,
+    "passed": 92,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "actualEntryAndModelControls": {
+    "required": 5,
+    "status": "awaiting the actual released Builds catalog/tool tuple; still-pinned4.45 controls are retained as failures"
+  },
+  "readerProbes": {
+    "mcp231": 14,
+    "mcp240": 14,
+    "signedPublicArchives": true,
+    "unchangedOriginalArtifacts": true
+  },
+  "ownerIndexesRemeasured": 7,
+  "finiteCapabilityEvaluations": 256,
+  "fixturePublicationControls": {
+    "node": 14,
+    "python": 7
+  },
+  "buildsDirectAndViewControls": 19,
+  "independentParentReview": "Parent inspected the finite production diff, unchanged historical maps and 92-case XML; no production defect remained after removing the synthetic release-row override from the mandatory real reader fixture. Parent independently inspected declaration/producer path and reran7 Python controls.",
+  "selectedPlatformPinsUnchanged": true,
+  "candidateAcceptance": false,
+  "fixtureAdmission": false,
+  "publicationCredit": false,
+  "files": [
+    {
+      "path": "sdk42-clean-base-cohort-build.log",
+      "sha256": "c1d5a42c1b1bd5714a4d2b418dc2988dc2b7a44da5133aa53a021e45c88d46a9"
+    },
+    {
+      "path": "sdk42-clean-base-cohort-tests.log",
+      "sha256": "23e6949229043839f670625fcccf8a56ef31adb807a5102b3a38733125d9b11f"
+    },
+    {
+      "path": "sdk42-clean-base-cohort-tests.xml",
+      "sha256": "b98efb08c1c1895b8e1496ad759db64290250d7228b67d5ba9850e65448d382b"
+    },
+    {
+      "path": "sdk42-scoped-base-cohort-tests.log",
+      "sha256": "2c8844b75bc59df856402b1585904e9a07ba0efe7dfea93b4563f19dba00e1bc"
+    },
+    {
+      "path": "sdk42-scoped-base-cohort-tests.xml",
+      "sha256": "bde09001c77106a8f84a4cc454a6eb57dc68602b6ddf886b18a4fa4ed2f5669d"
+    },
+    {
+      "path": "sdk42-base-cohort-tests.log",
+      "sha256": "3022bdbad8022208cab716971c86ad19090fff00e85d35ae1c9413e26a9ba31b"
+    },
+    {
+      "path": "sdk42-base-cohort-tests.xml",
+      "sha256": "90eb953b5a1b1199599b380caf20f94e78fe77798613f88a5a03f0fb28675ad3"
+    },
+    {
+      "path": "sdk42-exact-pinned-prerequisite-tests.log",
+      "sha256": "b86f9cbc20a18b66ee4a1506c0676532faa1d683589120d530c44d0d13ef3ee1"
+    },
+    {
+      "path": "sdk42-exact-pinned-prerequisite-tests.xml",
+      "sha256": "35a96cb4d84e35c61ff64c2294f51732e6ebdf09f2839cccb1a757c0a31982f1"
+    },
+    {
+      "path": "sdk42-finite-gates.json",
+      "sha256": "cf3559a8f2eee65e08ab092b4d8d1204e866038df7cebcba2514f837baf0d64d"
+    },
+    {
+      "path": "sdk42-finite-gates.log",
+      "sha256": "238631ce0774d9b1b3ca15a797311734b35f923d6428186a63a92499feb1e50d"
+    },
+    {
+      "path": "sdk42-no-extension-admission-review.diff",
+      "sha256": "ac57087caee2ba0fcfdbab0341e8420dd66156e0559d1372248327db20964a08"
+    },
+    {
+      "path": "fixture-published-declaration-review.diff",
+      "sha256": "66818d38dfaf2808e504641d837854c62e39311dcff8f2848caa133b99c8ae6b"
+    },
+    {
+      "path": "fixture-declaration-control-tests.log",
+      "sha256": "e75ddf5e6c7ab76f8f09b7a237f71079c7bfe2b7ae519393a2261eccc46b90f5"
+    },
+    {
+      "path": "sdk42-source-release-controls.log",
+      "sha256": "6e3f4ccff1286bf5416599082692e37617b3cd3a2f29ce699a49762e7a9ef1d6"
+    },
+    {
+      "path": "sdk42-fixture-release-controls.log",
+      "sha256": "1c2b6e1a1d043dd97a5841cd524a1ff4c17eb658baa52e3f8834fe996df38fc7"
+    },
+    {
+      "path": "pre-extension-source-tests.log",
+      "sha256": "591fa954327725561c214f2bc987342cb8747a513dd459d7f92c23ff9ec14257"
+    },
+    {
+      "path": "sdk42-updated-legacy-source-tests.log",
+      "sha256": "fc474ee9ec20cf34845d3220b7cceb3320bcc28f308c4ebd798a24f95e41f7e1"
+    },
+    {
+      "path": "builds-rebased-unit-job.log",
+      "sha256": "481f502501ecbe58809d82aed15ff8a158d2e55bc193877ae335031d921fdc64"
+    },
+    {
+      "path": "builds-rebased-direct-build.log",
+      "sha256": "828ed8c288c5be175cd36f69fe5db7c41d4b45f54d9105c854debb60f17efe75"
+    },
+    {
+      "path": "builds-direct-and-view-tests.log",
+      "sha256": "b7a4ba3b546906135db0eb6ab611e431b1a3ec254aca461389409708b686c21f"
+    },
+    {
+      "path": "builds-direct-and-view-tests.xml",
+      "sha256": "0be9cfd03dfdc39b973c6d6ff50a28df615016d058d358f84dd8966b747d2c8f"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Memories.Contracts-request.json",
+      "sha256": "589950df580ad98035babfa51610356d375280de939fa42efcd357c94efecb36"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Memories.Contracts.log",
+      "sha256": "ae53f7d81ff4cadc25da2b37064c7839afab41db7527e3e3eede0b32c6375460"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Tenants.Contracts-request.json",
+      "sha256": "8f9d0e213ad1946e0991203e71c8131d91db6193666319a92e70ff76f326ffc8"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Memories.Contracts-signature.log",
+      "sha256": "53f1e42d36437274ea9f88045933492b678790b451445758d2514fbc25fdc3f7"
+    },
+    {
+      "path": "reader-mcp231/previous-base-with-current-bodies-request.json",
+      "sha256": "b1e096d0a14ca9f53a280b909ce193988b5c9412c73689b14c06879f9efddc98"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.EventStore.ServiceDefaults-signature.log",
+      "sha256": "7485835ecae7583101130ab75de2012b995d960768f9f7afab996e1673d696c0"
+    },
+    {
+      "path": "reader-mcp231/project.assets.json",
+      "sha256": "202cfe1f22921ac279a559b5000ceda953c6a5a37398c7742e8926be9fa76eb8"
+    },
+    {
+      "path": "reader-mcp231/previous-full-with-current-bodies.log",
+      "sha256": "ae53f7d81ff4cadc25da2b37064c7839afab41db7527e3e3eede0b32c6375460"
+    },
+    {
+      "path": "reader-mcp231/unknown-request.json",
+      "sha256": "4811ebbb404b11e6c0c80f1e0bd8a97151a92b53aee292048891a93a5b11be34"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.EventStore.Contracts-signature.log",
+      "sha256": "5b67bed7e22657eaeea2f5df353401cf965b38300039d25a888ed1c7e88c8ecc"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Parties.EventStoreExtensions-signature.log",
+      "sha256": "e23832e7eaf7c544ca1ff2f5dcef9e3be85c151943535cded903eb762244f197"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.EventStore.Server-signature.log",
+      "sha256": "e7d773aa2e8885b184d7fa465ea00ed62aba46fb7eb72a92da1d9f0978b2ec31"
+    },
+    {
+      "path": "reader-mcp231/previous-full-with-current-bodies-request.json",
+      "sha256": "5a779369592a08eb42da44c05d7e1627d665f42c3f3793b002bc2e0d5df0194a"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.EventStore.DomainService-signature.log",
+      "sha256": "c5e6b9b07125054a92c4e1409feeda1f7bf00cae7a949fbf3794a21d8600fdad"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Parties.Contracts-request.json",
+      "sha256": "bd9debe3c032c7c6a7b7d40703de7c68d62cd56594229348647ae6682f869978"
+    },
+    {
+      "path": "reader-mcp231/base-with-expanded-owners-request.json",
+      "sha256": "4566e174dc252c3143bf847ce901895151d371758c79359529b162f975d61c0f"
+    },
+    {
+      "path": "reader-mcp231/current-full.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Commons.UniqueIds-signature.log",
+      "sha256": "693a7550d3b1c57b69b5a09914e26287212a5dfd87793f1cd800c7cf62a20355"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.EventStore.Contracts.log",
+      "sha256": "ae53f7d81ff4cadc25da2b37064c7839afab41db7527e3e3eede0b32c6375460"
+    },
+    {
+      "path": "reader-mcp231/missing-owner-request.json",
+      "sha256": "01cd48995da23b150a9c87d4e1606cabd8900592ca7dd594d039c470cd76d00f"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Parties.Contracts.log",
+      "sha256": "ae53f7d81ff4cadc25da2b37064c7839afab41db7527e3e3eede0b32c6375460"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.Tenants.Contracts.log",
+      "sha256": "ae53f7d81ff4cadc25da2b37064c7839afab41db7527e3e3eede0b32c6375460"
+    },
+    {
+      "path": "reader-mcp231/changed-Hexalith.EventStore.Contracts-request.json",
+      "sha256": "1f53b465e99c802e7b6f918279aca290ce50858eeebb82e3b6c60028ae777b07"
+    },
+    {
+      "path": "reader-mcp231/current-full-request.json",
+      "sha256": "fc70b002982cac451a2618d484926f4bdf4c2b6a8dffc37c65c481e1c7f48f2b"
+    },
+    {
+      "path": "reader-mcp231/previous-base-with-current-bodies.log",
+      "sha256": "f735c5d385f7632bd250a0f0f299fffe933e186c7aecceda8c97862f0a5eba8b"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.McpCli.Abstractions-signature.log",
+      "sha256": "229d8f16f6c9c04ec430d955a73d4cf7db199b959f323e1bc5fe0481332b736b"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.EventStore.Client-signature.log",
+      "sha256": "4549255c3feead11053e1c38b59db7487816ff5a9d6114ddc2963a45f12c4163"
+    },
+    {
+      "path": "reader-mcp231/base-with-expanded-owners.log",
+      "sha256": "14f8297ccc3dc3f2164d703dd09e12b32e990a6ab7422476900e986e9285572a"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Tenants.Server-signature.log",
+      "sha256": "9c2123cbaa4af24c145c00e1632679e01ef33d2d0a3a41cea9c99a1a560cddee"
+    },
+    {
+      "path": "reader-mcp231/current-base-request.json",
+      "sha256": "ac24f383056d8b7129ff3e36f5c3cbae6fd1012ca1ceb06d7746a621b7beb30c"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Parties.Contracts-signature.log",
+      "sha256": "7d46c4fa4b247a27f9acef782857d802b17a4f16d7a3a4ffb99f8df027671780"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Memories.EventStoreExtensions-signature.log",
+      "sha256": "ccb1edb990f57a12d0091ef16852db3d6f00350ec6345b6d06a5d1e6e682ebc4"
+    },
+    {
+      "path": "reader-mcp231/source.log",
+      "sha256": "0b451c20b157278a6d9f5923f5a8b653ee8de4e1c3ec9eddd29ca2c938d8643b"
+    },
+    {
+      "path": "reader-mcp231/build.log",
+      "sha256": "58925f235777c904e97fc9ba5e61c230f25b85ef7fb77dd1f1c7cc1c3bef625c"
+    },
+    {
+      "path": "reader-mcp231/result.json",
+      "sha256": "b0eb140efaf544dd9f59887fb25ef6f87f69498eb51a5b689f8482ab3374837f"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Tenants.Contracts-signature.log",
+      "sha256": "73b30f230e93aad69127e17afce08dc10d057038d99d984009fccaba5ae0325d"
+    },
+    {
+      "path": "reader-mcp231/Hexalith.Memories.EventStore-signature.log",
+      "sha256": "1555d67f95a0aba6df347a47baad46bc008a10888c2916c4645724452bd8b33e"
+    },
+    {
+      "path": "reader-mcp231/missing-owner.log",
+      "sha256": "14f8297ccc3dc3f2164d703dd09e12b32e990a6ab7422476900e986e9285572a"
+    },
+    {
+      "path": "reader-mcp231/current-base.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reader-mcp231/verifier-source.py",
+      "sha256": "7983ea3eb5a6d9ec98b5a3d83f23e148fe039d635a6e72d6ca4fda79e49d8c73"
+    },
+    {
+      "path": "reader-mcp231/source-request.json",
+      "sha256": "5d72a4e2fb5b1c86c46ecd627ddeea0854caa4296a2d9247331b80ba384f2448"
+    },
+    {
+      "path": "reader-mcp231/unknown.log",
+      "sha256": "0b451c20b157278a6d9f5923f5a8b653ee8de4e1c3ec9eddd29ca2c938d8643b"
+    },
+    {
+      "path": "reader-mcp231/consumer-helper-source.py",
+      "sha256": "5eae2340e1a38be1925710f46a8137fc88bd8b4f741f3e88b65735f9ec54216e"
+    },
+    {
+      "path": "reader-mcp231/duplicate-owner-request.json",
+      "sha256": "b063a21a6c08550ba32d1a0656feb10a957a84c2f6cdc515850acc3e4232e153"
+    },
+    {
+      "path": "reader-mcp231/duplicate-owner.log",
+      "sha256": "14f8297ccc3dc3f2164d703dd09e12b32e990a6ab7422476900e986e9285572a"
+    },
+    {
+      "path": "reader-mcp231/foreign-owner-request.json",
+      "sha256": "ae4467673b3a9d1d643350bc9a78ea8ada0a336d4edf743cb326c051c3d6f9ec"
+    },
+    {
+      "path": "reader-mcp231/foreign-owner.log",
+      "sha256": "14f8297ccc3dc3f2164d703dd09e12b32e990a6ab7422476900e986e9285572a"
+    },
+    {
+      "path": "reader-mcp231/current-full-output/catalog.json",
+      "sha256": "185e03020cf32f0b5bbff00fc46977296aaa713f6decd160a49521c32bb0a661"
+    },
+    {
+      "path": "reader-mcp231/current-full-output/receipt.json",
+      "sha256": "e9f51bd2cbad20a13bdee52d08839a65476ccbb7a5be8b075195e4479abcc69f"
+    },
+    {
+      "path": "reader-mcp231/current-base-output/catalog.json",
+      "sha256": "1756c78fa0cdca5eaf1a712265a54ca9cd7a489afb49d8f0edfb6f84b74588cb"
+    },
+    {
+      "path": "reader-mcp231/current-base-output/receipt.json",
+      "sha256": "ee687827182c7a04e93d44bbb57fcc05962239fcd1bd0098ca3acde2568361f4"
+    },
+    {
+      "path": "reader-mcp231/executed/reader/identity.json",
+      "sha256": "25ab1dc36877c6e0f44eaeb91556aee26c6c88da8d35d60950dd884dd94a8f7b"
+    },
+    {
+      "path": "reader-mcp231/executed/reader/Hexalith.Platform.CatalogBuilder.runtimeconfig.json",
+      "sha256": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a"
+    },
+    {
+      "path": "reader-mcp231/executed/reader/Hexalith.Platform.CatalogBuilder.deps.json",
+      "sha256": "6c3cb4094411d4a710d37bec3d686a00c9fdca477ad526cb486b6d1f942f29f9"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Memories.Contracts-request.json",
+      "sha256": "13e71e03be7f23383f8836872abee28394156333f31d65b6e1021e1ddb24f0f4"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Memories.Contracts.log",
+      "sha256": "3c1989706f51130453067089b70ad5de62d225fd0d383476213e929a3a17fd2f"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Tenants.Contracts-request.json",
+      "sha256": "5b619fd483961a946b7a5fa4f68f94feb997b6aafb31f2fbdbda094fea24833e"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Memories.Contracts-signature.log",
+      "sha256": "53f1e42d36437274ea9f88045933492b678790b451445758d2514fbc25fdc3f7"
+    },
+    {
+      "path": "reader-mcp240/previous-base-with-current-bodies-request.json",
+      "sha256": "d0506e46f827ca61a24e42a80a95800b041257d5eb34754d7707f85833fda0cd"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.EventStore.ServiceDefaults-signature.log",
+      "sha256": "7485835ecae7583101130ab75de2012b995d960768f9f7afab996e1673d696c0"
+    },
+    {
+      "path": "reader-mcp240/project.assets.json",
+      "sha256": "be5555e2c9027da2fd88ec50acbf66d97e97c9cbbe27ae2a42979ddd0df84694"
+    },
+    {
+      "path": "reader-mcp240/previous-full-with-current-bodies.log",
+      "sha256": "3c1989706f51130453067089b70ad5de62d225fd0d383476213e929a3a17fd2f"
+    },
+    {
+      "path": "reader-mcp240/unknown-request.json",
+      "sha256": "27ed14d0356552ed24872191a9258311a93a7f179204ebfa81ad8cecbc628451"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.EventStore.Contracts-signature.log",
+      "sha256": "5b67bed7e22657eaeea2f5df353401cf965b38300039d25a888ed1c7e88c8ecc"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Parties.EventStoreExtensions-signature.log",
+      "sha256": "e23832e7eaf7c544ca1ff2f5dcef9e3be85c151943535cded903eb762244f197"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.EventStore.Server-signature.log",
+      "sha256": "e7d773aa2e8885b184d7fa465ea00ed62aba46fb7eb72a92da1d9f0978b2ec31"
+    },
+    {
+      "path": "reader-mcp240/previous-full-with-current-bodies-request.json",
+      "sha256": "2e965f5ecdd13c19fb58a0d0b1193bdd1f2b8730b8a750ea3ae7316c7522d4b4"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.EventStore.DomainService-signature.log",
+      "sha256": "c5e6b9b07125054a92c4e1409feeda1f7bf00cae7a949fbf3794a21d8600fdad"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Parties.Contracts-request.json",
+      "sha256": "68536b1a42aa695e732ea71ce08a9127a764488be2c6f7af381ef3bc0a815c58"
+    },
+    {
+      "path": "reader-mcp240/published-parties-declaration.json",
+      "sha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348"
+    },
+    {
+      "path": "reader-mcp240/base-with-expanded-owners-request.json",
+      "sha256": "4e00cb865e2e376510483662839fe86bd8df7e2f086c8f296fc2b9abe37f9e87"
+    },
+    {
+      "path": "reader-mcp240/current-full.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Commons.UniqueIds-signature.log",
+      "sha256": "693a7550d3b1c57b69b5a09914e26287212a5dfd87793f1cd800c7cf62a20355"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.EventStore.Contracts.log",
+      "sha256": "3c1989706f51130453067089b70ad5de62d225fd0d383476213e929a3a17fd2f"
+    },
+    {
+      "path": "reader-mcp240/missing-owner-request.json",
+      "sha256": "f41034f90f50827c83334e13148d8569cd79bd367df4a08890fde8adff1b9709"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Parties.Contracts.log",
+      "sha256": "3c1989706f51130453067089b70ad5de62d225fd0d383476213e929a3a17fd2f"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.Tenants.Contracts.log",
+      "sha256": "3c1989706f51130453067089b70ad5de62d225fd0d383476213e929a3a17fd2f"
+    },
+    {
+      "path": "reader-mcp240/changed-Hexalith.EventStore.Contracts-request.json",
+      "sha256": "25efcabccad5831887b65dfe8ac03005b18d32dfcee127e179ec0209f9f3edfd"
+    },
+    {
+      "path": "reader-mcp240/current-full-request.json",
+      "sha256": "e301f0efa8015ea20800864d2c3254e576633c7c6cfa1a395021105005161c4c"
+    },
+    {
+      "path": "reader-mcp240/previous-base-with-current-bodies.log",
+      "sha256": "be0d853b6940df5897ddfd1d27ffdb5f69ecaa18f99b25dfd83f3e9781cd0ccb"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.McpCli.Abstractions-signature.log",
+      "sha256": "229d8f16f6c9c04ec430d955a73d4cf7db199b959f323e1bc5fe0481332b736b"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.EventStore.Client-signature.log",
+      "sha256": "4549255c3feead11053e1c38b59db7487816ff5a9d6114ddc2963a45f12c4163"
+    },
+    {
+      "path": "reader-mcp240/base-with-expanded-owners.log",
+      "sha256": "fa9a343bf9b9b2db0af9f9999a27c8c5f7f09c93472171e1a093da5a96a2d4df"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Tenants.Server-signature.log",
+      "sha256": "9c2123cbaa4af24c145c00e1632679e01ef33d2d0a3a41cea9c99a1a560cddee"
+    },
+    {
+      "path": "reader-mcp240/current-base-request.json",
+      "sha256": "f2c68522da6e7d422103a4c21e8544703c6fa86a48c29aa476245339d96e79e7"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Parties.Contracts-signature.log",
+      "sha256": "7d46c4fa4b247a27f9acef782857d802b17a4f16d7a3a4ffb99f8df027671780"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Memories.EventStoreExtensions-signature.log",
+      "sha256": "ccb1edb990f57a12d0091ef16852db3d6f00350ec6345b6d06a5d1e6e682ebc4"
+    },
+    {
+      "path": "reader-mcp240/source.log",
+      "sha256": "25b4e7c46e1e7ac771acf9e634c4fa546331b14a643d2c557411761dfb7c7330"
+    },
+    {
+      "path": "reader-mcp240/build.log",
+      "sha256": "997e8773a1e4ae8f741359dca9adefd415e20769a3cbf1b6e8e9a6ce86f4c3be"
+    },
+    {
+      "path": "reader-mcp240/result.json",
+      "sha256": "7ea0a2f23672e17b4ca7c673171a6cc6fce7eaf516ee0ac9af7ffa6b98d48a7e"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Tenants.Contracts-signature.log",
+      "sha256": "73b30f230e93aad69127e17afce08dc10d057038d99d984009fccaba5ae0325d"
+    },
+    {
+      "path": "reader-mcp240/Hexalith.Memories.EventStore-signature.log",
+      "sha256": "1555d67f95a0aba6df347a47baad46bc008a10888c2916c4645724452bd8b33e"
+    },
+    {
+      "path": "reader-mcp240/missing-owner.log",
+      "sha256": "fa9a343bf9b9b2db0af9f9999a27c8c5f7f09c93472171e1a093da5a96a2d4df"
+    },
+    {
+      "path": "reader-mcp240/current-base.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reader-mcp240/verifier-source.py",
+      "sha256": "68d39f2347f9d33f57bfe23ededbbd3377edaf6d9e818d0df535500697c6099d"
+    },
+    {
+      "path": "reader-mcp240/source-request.json",
+      "sha256": "dadb94ee8fd5f89c5b351ad9abfc00f63646c8de81f7080add34b5dcc129d5e0"
+    },
+    {
+      "path": "reader-mcp240/unknown.log",
+      "sha256": "25b4e7c46e1e7ac771acf9e634c4fa546331b14a643d2c557411761dfb7c7330"
+    },
+    {
+      "path": "reader-mcp240/consumer-helper-source.py",
+      "sha256": "5eae2340e1a38be1925710f46a8137fc88bd8b4f741f3e88b65735f9ec54216e"
+    },
+    {
+      "path": "reader-mcp240/duplicate-owner-request.json",
+      "sha256": "b53653f4fa5d567a7405c3782fb6649aeb336c82075338d0a1e9b45cdf236c1c"
+    },
+    {
+      "path": "reader-mcp240/duplicate-owner.log",
+      "sha256": "fa9a343bf9b9b2db0af9f9999a27c8c5f7f09c93472171e1a093da5a96a2d4df"
+    },
+    {
+      "path": "reader-mcp240/foreign-owner-request.json",
+      "sha256": "c8dcdab9b6152c8bbdcb2b0e7424a2d1acc756ee59d5b25109f36a4eeadcde19"
+    },
+    {
+      "path": "reader-mcp240/foreign-owner.log",
+      "sha256": "fa9a343bf9b9b2db0af9f9999a27c8c5f7f09c93472171e1a093da5a96a2d4df"
+    },
+    {
+      "path": "reader-mcp240/current-full-output/catalog.json",
+      "sha256": "185e03020cf32f0b5bbff00fc46977296aaa713f6decd160a49521c32bb0a661"
+    },
+    {
+      "path": "reader-mcp240/current-full-output/receipt.json",
+      "sha256": "f1f1bb9c585b1c69e64314b4aeb5b34156f89b832a00984f50484c62f55f3b91"
+    },
+    {
+      "path": "reader-mcp240/current-base-output/catalog.json",
+      "sha256": "1756c78fa0cdca5eaf1a712265a54ca9cd7a489afb49d8f0edfb6f84b74588cb"
+    },
+    {
+      "path": "reader-mcp240/current-base-output/receipt.json",
+      "sha256": "b2ab6fa744269f0017331cf4fbc892f173ca95865b653f6f4e8e0813084bde73"
+    },
+    {
+      "path": "reader-mcp240/executed/reader/identity.json",
+      "sha256": "a9bfbc641580eade2a2d573e7d1739efd5c2779d0b90b17a86c7ce8300a86801"
+    },
+    {
+      "path": "reader-mcp240/executed/reader/Hexalith.Platform.CatalogBuilder.runtimeconfig.json",
+      "sha256": "998ec4dbc899809f4b68efd5f17d076d8b3694a4e4a6a68724c5ea07403e026a"
+    },
+    {
+      "path": "reader-mcp240/executed/reader/Hexalith.Platform.CatalogBuilder.deps.json",
+      "sha256": "6c3cb4094411d4a710d37bec3d686a00c9fdca477ad526cb486b6d1f942f29f9"
+    },
+    {
+      "path": "owner-images/parties.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/memories.index.json",
+      "sha256": "a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+    },
+    {
+      "path": "owner-images/memories-access-telemetry.index.json",
+      "sha256": "d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+    },
+    {
+      "path": "owner-images/memories-access-telemetry-clock.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/tenants.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/memories.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/tenants-api.index.json",
+      "sha256": "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+    },
+    {
+      "path": "owner-images/memories-access-telemetry.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/memories-domain-service.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "owner-images/memories-access-telemetry-clock.index.json",
+      "sha256": "e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+    },
+    {
+      "path": "owner-images/tenants.index.json",
+      "sha256": "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+    },
+    {
+      "path": "owner-images/memories-domain-service.index.json",
+      "sha256": "90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+    },
+    {
+      "path": "owner-images/receipt.json",
+      "sha256": "0b53636706272c5c6e828510bd32d58471914edbe1e2d2f6f84e88eb813bd942"
+    },
+    {
+      "path": "owner-images/parties.index.json",
+      "sha256": "48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+    },
+    {
+      "path": "owner-images/tenants-api.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

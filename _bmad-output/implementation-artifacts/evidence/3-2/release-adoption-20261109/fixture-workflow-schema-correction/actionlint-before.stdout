@@ -1,0 +1,8 @@
+.github/workflows/test-extension-release.yml:30:33: context "runner" is not allowed here. available contexts are "github", "inputs", "matrix", "needs", "secrets", "strategy", "vars". see https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability for more details [expression]
+   |
+30 |       FIXTURE_PROOF_OUTPUT: ${{ runner.temp }}/fixture-proof.json
+   |                                 ^~~~~~~~~~~
+.github/workflows/test-extension-release.yml:93:35: context "runner" is not allowed here. available contexts are "github", "inputs", "matrix", "needs", "secrets", "strategy", "vars". see https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability for more details [expression]
+   |
+93 |       FIXTURE_EXPECTED_PROOF: ${{ runner.temp }}/fixture-package/fixture-proof.json
+   |                                   ^~~~~~~~~~~

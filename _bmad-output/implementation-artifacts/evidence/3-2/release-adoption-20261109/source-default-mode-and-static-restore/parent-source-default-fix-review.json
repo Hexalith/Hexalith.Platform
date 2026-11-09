@@ -1,0 +1,45 @@
+{
+  "kind": "independent-final-default-source-repair-review",
+  "patchSha256": "00bec09d7312c5d56bdf9aa8d3bac67f1c67ebe01e6b780ccef44f5fee09d584",
+  "files": {
+    "Directory.Build.props": "b9d2cbfe2b59d2cce7483a1bc9c16391fe76d53da6305e4a8f04d8baa8f2900b",
+    "Directory.Build.targets": "3b5f138ed080e38afc0b901193accb52387aac90f06733644af029932c9efcd0",
+    "Directory.Solution.props": "9b2bd2ef799cca22537983f123a625e6f7221b3be3a49e42566f652b0fa20aa3",
+    "eng/SourceRestore.props": "2e433f7e5d30eb94beb7030f22fe0ddee7798ece8177eaec045084040851d100",
+    "eng/test_source_sdk_propagation.py": "74ce8015e5ec9d02b1a47be536a590db89e7c1f37f76564801fd158d2e188ac7"
+  },
+  "reviewFindings": [],
+  "independentControls": {
+    "count": 25,
+    "commands": 31,
+    "fail": 0,
+    "skip": 0,
+    "path": "/tmp/story32-parent-default-source-mode-controls"
+  },
+  "coldProjectAndSolution": {
+    "receipt": "/tmp/story32-default-source-mode-final-builds/receipt.json",
+    "sha256": "70eb2eace521e280281a0a8c0f32cdfddf4ff0c4bf446180a67c7e160d934e16",
+    "initiallyEmptySeparateCachesAndAbsentOutputs": true,
+    "toolPathOnlyProperty": true,
+    "zeroWarningsAndErrors": true,
+    "allSourceInputsUnchanged": 23849,
+    "actualSdkAssemblyVersion": "4.2.0.0",
+    "actualSdkSource": "aa16227bd07f0564a3026d619a5abd973e02656f",
+    "allEventStoreDepsAre42Projects": true
+  },
+  "sourceFocused": {
+    "receipt": "/tmp/story32-default-source-mode-final-source48/receipt.json",
+    "sha256": "472b7930a456bbbbcac31c75b9c45c53d946de4798d7fad784fa4844beb3c280",
+    "pass": 48,
+    "fail": 0,
+    "skip": 0,
+    "notRun": 0,
+    "sourceInputsUnchanged": 23849,
+    "outputsUnchanged": true
+  },
+  "rawReceiptFilesVerified": 12,
+  "candidateAcceptance": false,
+  "signedFixtureCredit": false,
+  "hostAdmissionCredit": false,
+  "next": "Apply reviewed repair, preserve all prior attempts, refresh actual committed replay sources and normal hosted qualification. Story remains in-progress."
+}

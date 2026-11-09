@@ -1,0 +1,145 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync [FAIL]
+      Shouldly.ShouldAssertException : PlatformServerBindings.Version(options, pair.Item1, manifest)
+          should be
+      "4.2.0"
+          but was
+      "4.1.0"
+          difference
+      Difference     |            |             
+                     |           \|/            
+      Index          | 0    1    2    3    4    
+      Expected Value | 4    .    2    .    0    
+      Actual Value   | 4    .    1    .    0    
+      Expected Code  | 52   46   50   46   48   
+      Actual Code    | 52   46   49   46   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(128,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PublishedPartiesMemoriesTransportTests.cs(21,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync [FAIL]
+      Shouldly.ShouldAssertException : PlatformServerBindings.Version(options, pair.Item1, manifest)
+          should be
+      "4.2.0"
+          but was
+      "4.1.0"
+          difference
+      Difference     |            |             
+                     |           \|/            
+      Index          | 0    1    2    3    4    
+      Expected Value | 4    .    2    .    0    
+      Actual Value   | 4    .    1    .    0    
+      Expected Code  | 52   46   50   46   48   
+      Actual Code    | 52   46   49   46   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(128,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs(29,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42CurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync [FAIL]
+      Shouldly.ShouldAssertException : PlatformServerBindings.Version(options, pair.Item1, manifest)
+          should be
+      "4.2.0"
+          but was
+      "4.1.0"
+          difference
+      Difference     |            |             
+                     |           \|/            
+      Index          | 0    1    2    3    4    
+      Expected Value | 4    .    2    .    0    
+      Actual Value   | 4    .    1    .    0    
+      Expected Code  | 52   46   50   46   48   
+      Actual Code    | 52   46   49   46   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(128,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42CurrentOwnerMemoriesTransportTests.cs(20,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42CurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.PublishedPartiesValidationAndOrdinaryReaderRetainTheSdk42DefaultAsync [FAIL]
+      Shouldly.ShouldAssertException : PlatformServerBindings.Version(options, pair.Item1, manifest)
+          should be
+      "4.2.0"
+          but was
+      "4.1.0"
+          difference
+      Difference     |            |             
+                     |           \|/            
+      Index          | 0    1    2    3    4    
+      Expected Value | 4    .    2    .    0    
+      Actual Value   | 4    .    1    .    0    
+      Expected Code  | 52   46   50   46   48   
+      Actual Code    | 52   46   49   46   48   
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(128,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs(53,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.PublishedPartiesValidationAndOrdinaryReaderRetainTheSdk42DefaultAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.PrivateEventStoreReaderUsesTheActualPinnedSdk42CatalogAndSeedAsync [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, options => { captured = options; return options with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("Expected private reader fixture boundary."); } }; })`
+          should throw
+      System.InvalidOperationException
+          but threw
+      System.IO.InvalidDataException
+      ---- System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs(64,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderFixture.MaterializeAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs(17,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests.PrivateEventStoreReaderUsesTheActualPinnedSdk42CatalogAndSeedAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs(37,0): at Hexalith.Platform.Composition.PlatformPackageCatalogQualification.Bind(PlatformCompositionOptions options, IReadOnlyList`1 declarations, IReadOnlyList`1 servers, Boolean developmentRun)
+           at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(112,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs(64,0): at Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderFixture.<>c__DisplayClass3_0.<MaterializeAsync>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'aad7d9192388eafb26d12b1de6c6e39d1d1f4c19843abc62d2450ccfdbee8133')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 5, Errors: 0, Failed: 5, Skipped: 0, Not Run: 0, Time: 2.615s

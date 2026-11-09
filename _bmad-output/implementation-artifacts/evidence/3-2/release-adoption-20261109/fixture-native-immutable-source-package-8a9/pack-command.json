@@ -1,0 +1,28 @@
+{
+  "source": "8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+  "version": "0.0.0-story32.native-prepublication",
+  "command": [
+    "dotnet",
+    "pack",
+    "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj",
+    "-c",
+    "Release",
+    "--artifacts-path",
+    "/tmp/story32-fixture-sourcebound-8a9/artifacts",
+    "-o",
+    "/tmp/story32-fixture-sourcebound-8a9/feed",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:IsPackable=true",
+    "-p:GeneratePackageOnBuild=false",
+    "-p:PackageVersion=0.0.0-story32.native-prepublication",
+    "-p:SourceRevisionId=8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+    "-p:RepositoryCommit=8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+    "-p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Platform",
+    "-p:RepositoryType=git",
+    "-warnaserror",
+    "-nodeReuse:false",
+    "--disable-build-servers"
+  ],
+  "exitCode": 0,
+  "scope": "Unsigned pre-publication archive/immutable source/SDK asset verification only. No normal release or signed fixture qualification credit."
+}

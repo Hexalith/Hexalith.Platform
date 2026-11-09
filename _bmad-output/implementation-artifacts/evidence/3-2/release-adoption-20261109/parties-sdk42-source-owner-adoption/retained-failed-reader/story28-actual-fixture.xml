@@ -1,0 +1,17 @@
+<assemblies schema-version="3" id="f3c916ea-f334-4348-bcba-6776336beb9a" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-11-09T18:04:50.8119117+00:00" finish-rtf="2026-11-09T18:04:50.9552355+00:00" timestamp="11/09/2026 19:04:50"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]" id="1d46f662-6305-423f-bb37-44c18bc85414" name="/tmp/story32-builds447-sdk42-artifacts/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-09" run-time="18:04:50" start-rtf="2026-11-09T18:04:50.8119117+00:00" test-framework="xUnit.net v3 4.0.3+384aa7f0b4" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="1" finish-rtf="2026-11-09T18:04:50.9552355+00:00" not-run="0" passed="0" skipped="0" time="0.144" time-rtf="00:00:00.1440000" total="1"><collection name="Platform file entry" id="7b692292-265d-4fbb-9276-e72e687f163c" failed="1" not-run="0" passed="0" skipped="0" time="0.070" time-rtf="00:00:00.0700000" total="1"><test id="55708e1b-eb91-400d-a173-85e4e2a0f31a" name="Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded" result="Fail" time="0.07" time-rtf="00:00:00.0700000" start-rtf="2026-11-09T18:04:50.8662495+00:00" finish-rtf="2026-11-09T18:04:50.9471525+00:00" type="Hexalith.Platform.Composition.Tests.PlatformAppModelTests" method="PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded" source-file="/tmp/story-3-2-broad-20261109-_z_wy84q/current/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs" source-line="119"><failure exception-type="Shouldly.ShouldAssertException"><message>Shouldly.ShouldAssertException : PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
+    should be
+True
+    but was
+False</message><stack-trace>   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42) in /tmp/story-3-2-broad-20261109-_z_wy84q/current/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 82
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+   at System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1.ConfiguredTaskAwaiter.GetResult()
+   at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded() in /tmp/story-3-2-broad-20261109-_z_wy84q/current/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:line 122
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)</stack-trace></failure></test></collection></assembly></assemblies>

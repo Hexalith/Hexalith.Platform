@@ -1,0 +1,43 @@
+{
+  "purpose": "SDK4.2 no-extension default cohort admission: exact private EventStore, private source-owner and ordinary public Parties paths.",
+  "remainingQualification": "Published extension fixture/host authority and native integration remain separately required.",
+  "groups": [
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests"
+      ],
+      "requiredCount": 41,
+      "purpose": "sdk42-private-eventstore-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesCohortTests"
+      ],
+      "requiredCount": 51,
+      "purpose": "sdk42-public-parties-boundary"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests"
+      ],
+      "requiredCount": 3,
+      "purpose": "sdk42-actual-signed-tool-seed-owner-and-reader"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42CurrentOwnerMemoriesTransportTests",
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesMemoriesTransportTests"
+      ],
+      "requiredCount": 2,
+      "purpose": "sdk42-authenticated-source-and-public-owner-model-transport"
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "recordedUtc": "2026-11-09T12:55:58.145113+00:00",
+  "repositories": {
+    "EventStore": {
+      "main": {
+        "sha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore/commit/aa16227bd07f0564a3026d619a5abd973e02656f",
+        "message": "fix(security): drop usable credentials from qualification fixtures\n\nCo-authored-by: Cursor <cursoragent@cursor.com>"
+      },
+      "latestRelease": {
+        "tag": "v4.1.0",
+        "source": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+        "url": "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v4.1.0",
+        "publishedAt": "2026-11-04T11:31:56Z"
+      },
+      "runs": [
+        {
+          "id": 42619137347,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619137347",
+          "workflow": ".github/workflows/ci.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 42619136965,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136965",
+          "workflow": ".github/workflows/commitlint.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42619136744,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136744",
+          "workflow": ".github/workflows/codeql.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42619136511,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136511",
+          "workflow": ".github/workflows/integration.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 42619136203,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136203",
+          "workflow": ".github/workflows/payload-protection-azure.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42619136438,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136438",
+          "workflow": ".github/workflows/payload-protection.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42619136363,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136363",
+          "workflow": ".github/workflows/advisory-tests.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42619136185,
+          "url": "https://github.com/Hexalith/Hexalith.EventStore/actions/runs/42619136185",
+          "workflow": ".github/workflows/payload-protection-lifecycle.yml",
+          "event": "push",
+          "headSha": "aa16227bd07f0564a3026d619a5abd973e02656f",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "Builds": {
+      "main": {
+        "sha": "f2f0a08d8c38d34b390dc937659d2067c8a09cce",
+        "url": "https://github.com/Hexalith/Hexalith.Builds/commit/f2f0a08d8c38d34b390dc937659d2067c8a09cce",
+        "message": "ci: probe hosted workflow self references"
+      },
+      "latestRelease": {
+        "tag": "v4.45.1",
+        "source": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+        "url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.1",
+        "publishedAt": "2026-11-09T09:09:57Z"
+      },
+      "runs": [
+        {
+          "id": 42615634829,
+          "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42615634829",
+          "workflow": ".github/workflows/ci-runtime-probe.yml",
+          "event": "workflow_dispatch",
+          "headSha": "f2f0a08d8c38d34b390dc937659d2067c8a09cce",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42615607509,
+          "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42615607509",
+          "workflow": ".github/workflows/builds-ci.yml",
+          "event": "push",
+          "headSha": "f2f0a08d8c38d34b390dc937659d2067c8a09cce",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42615607535,
+          "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/42615607535",
+          "workflow": ".github/workflows/commitlint-caller.yml",
+          "event": "push",
+          "headSha": "f2f0a08d8c38d34b390dc937659d2067c8a09cce",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "Platform": {
+      "main": {
+        "sha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+        "url": "https://github.com/Hexalith/Hexalith.Platform/commit/337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+        "message": "docs(es416): complete offline qualification contract preparation"
+      },
+      "latestRelease": {
+        "tag": "v1.8.1",
+        "source": "7fbe852f90e54c780f44943c843a66f08478995b",
+        "url": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.8.1",
+        "publishedAt": "2026-11-08T20:55:42Z"
+      },
+      "runs": [
+        {
+          "id": 42616242405,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42616242405",
+          "workflow": ".github/workflows/source-release.yml",
+          "event": "workflow_run",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 42615441221,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42615441221",
+          "workflow": ".github/workflows/source-release.yml",
+          "event": "workflow_run",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 42615243635,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42615243635",
+          "workflow": ".github/workflows/source-release.yml",
+          "event": "workflow_run",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 42614106632,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42614106632",
+          "workflow": ".github/workflows/source-release.yml",
+          "event": "workflow_run",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42612969871,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42612969871",
+          "workflow": ".github/workflows/catalog-builder.yml",
+          "event": "push",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 42612969885,
+          "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/42612969885",
+          "workflow": ".github/workflows/tuple-ci.yml",
+          "event": "push",
+          "headSha": "337f5b9a3d2d9b47b0e2b9c051f00d3de8c57361",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "recordedUtc": "2026-11-09T18:21:31.051538+00:00",
+  "scope": "Failed Debug/source harness attempts only; separate from measured package/default cohort, current owner guard and Story2.8 observations.",
+  "source": "8a9cbb8d1bf25f6b2ff4c68f81e455551944119a",
+  "sourceUnchanged": true,
+  "outputsUnchanged": true,
+  "counts": [
+    {
+      "name": "extensions",
+      "counts": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "3075524a-9406-4312-bfaa-8ac5a8bbc890",
+        "name": "/tmp/story-3-2-broad-20261109-_z_wy84q/current/artifacts/story32-builds447-source/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-09",
+        "run-time": "18:19:19",
+        "start-rtf": "2026-11-09T18:19:19.9958659+00:00",
+        "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "30",
+        "finish-rtf": "2026-11-09T18:19:20.9194263+00:00",
+        "not-run": "0",
+        "passed": "6",
+        "skipped": "0",
+        "time": "0.924",
+        "time-rtf": "00:00:00.9240000",
+        "total": "36"
+      }
+    },
+    {
+      "name": "companions",
+      "counts": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "36966185-efea-4d3f-aaeb-5724632567ad",
+        "name": "/tmp/story-3-2-broad-20261109-_z_wy84q/current/artifacts/story32-builds447-source/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+        "run-date": "2026-11-09",
+        "run-time": "18:19:21",
+        "start-rtf": "2026-11-09T18:19:21.1067203+00:00",
+        "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-09T18:19:24.8936821+00:00",
+        "not-run": "0",
+        "passed": "12",
+        "skipped": "0",
+        "time": "3.787",
+        "time-rtf": "00:00:03.7870000",
+        "total": "12"
+      }
+    }
+  ],
+  "rawFullReceiptRetained": {
+    "path": "/tmp/story32-builds447-coherent-source-controls-a94hsf1g/receipt.json",
+    "sha256": "d8cfba7307561d16138c793941642d285668b498abba1fc0823bd4fbc9bdbf4a",
+    "bytes": 8895016
+  },
+  "attribution": "Legitimate output root resolves all12 companions. Source SDK version forwarding still produces4.1 DomainService against4.2 deps/seed, despite fetching exact released tags.",
+  "qualificationCredit": false
+}

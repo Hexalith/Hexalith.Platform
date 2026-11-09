@@ -1,0 +1,41 @@
+{
+  "recordedUtc": "2026-11-09T16:44:22.547701+00:00",
+  "ownerRepository": "https://github.com/Hexalith/Hexalith.Builds",
+  "ownerRevision": "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+  "reviewedPaths": [
+    "Github/create-release/README.md",
+    "Github/create-release/action.yml",
+    "Github/create-release/git-with-retry.sh",
+    "Github/create-release/tests/test_git_retry.py"
+  ],
+  "execution": {
+    "sourceExtraction": [
+      "git",
+      "archive",
+      "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+      "Github/create-release"
+    ],
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "Github/create-release/tests",
+      "-v"
+    ],
+    "workingTree": "disposable extraction of exact Git revision",
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0
+  },
+  "findings": [],
+  "reviewConclusion": "The original Git executable is bound by an absolute path in the private proxy directory. Child-process environment sanitization remains unchanged, as do notes-only bounded retries and failure propagation.",
+  "limits": [
+    "No underlying diagnostic is inferred from the earlier missing hosted command streams.",
+    "Actual source/package old-versus-new reproduction and exact-source hosted CI remain required.",
+    "No release, tuple, extension-host admission or Story 3.2 acceptance credit is granted by this review."
+  ]
+}

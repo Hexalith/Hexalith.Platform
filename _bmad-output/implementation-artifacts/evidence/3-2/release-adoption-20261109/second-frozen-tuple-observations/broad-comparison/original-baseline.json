@@ -1,0 +1,2555 @@
+{
+  "historicalSource": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+  "currentSource": "862fd14f17bf48432c76993afd668b5a067e887d",
+  "historicalFile": "/tmp/story-3-2-broad-20261109-_z_wy84q/current/_bmad-output/implementation-artifacts/evidence/3-2/broad-verification-20261109/baseline-results.json",
+  "historicalFileSha256": "8f3b9c2e323bc9977d3657d39b1746be53a75989408f314b48dc6843f473694d",
+  "historicalCounts": {
+    "Pass": 744,
+    "Skip": 12,
+    "Fail": 163
+  },
+  "currentCounts": {
+    "Pass": 786,
+    "Skip": 12,
+    "Fail": 160
+  },
+  "identity": "exact class + method + xUnit display name; ambiguous truncated theory display groups receive separate multiplicity/results triage",
+  "commonDisplayIdentities": 911,
+  "commonFailures": [
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/COMMANDS\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/commands\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(defaultRuntime: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(defaultRuntime: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: False, failedStartup: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: False, failedStartup: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: True, failedStartup: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: True, failedStartup: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"entry-body\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"mixed-plan\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"source-binding\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"stale-run\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"wrong-key-encoding\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests",
+      "CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+      "CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+      "CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests",
+      "PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests.PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests",
+      "CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests",
+      "CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies",
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests",
+      "AuthenticatedCurrentReaderRetainsTheSixExactBodiesAndCatalogAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests.AuthenticatedCurrentReaderRetainsTheSixExactBodiesAndCatalogAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"changed-declaration\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"digest\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"extra-server\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"foreign-image\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"missing-server\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"old-image\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ChangedResolvedTopologyRefusesBeforeEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"seed\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"active-module\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"binding\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"catalog-snapshot\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"catalog\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"declaration\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"development\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"duplicate-tests\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"empty-tests\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry-bytes\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry-hash\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"execution-budget\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"executor\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"extra-owner\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"key\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"manifest\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"mapping-module\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"metadata-version\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"missing-binding\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"missing-proof\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"mixed-tests\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"near-version\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"owners\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"profile\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"runtime\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"sdk\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"snapshot\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"source-mode\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"stop-budget\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"test-mode\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"test-module\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "OrdinaryAndSerializedOptionsCannotSelectThePrivatePurpose",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.OrdinaryAndSerializedOptionsCannotSelectThePrivatePurpose"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes",
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests",
+      "DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: \\\"eventstore\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests",
+      "DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: null)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublicRoutesMatchOnlyTheDeclaredPublicServers",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublicRoutesMatchOnlyTheDeclaredPublicServers"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Agents\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Timesheets\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Works\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishRejectsDirtyApprovedRevisionSources",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedReferenceOptionsReadsApprovedEnvironmentRoots",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsReadsApprovedEnvironmentRoots"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "HostedReferenceOptionsRejectsChangedMappingBytes",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsRejectsChangedMappingBytes"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain",
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests",
+      "QualifiedTenantsModelForwardsDistinctReceiverTokensAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.QualifiedTenantsModelForwardsDistinctReceiverTokensAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests",
+      "PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests",
+      "PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests",
+      "ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests.ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"attempt\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"catalog-bytes\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"declaration-path\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"environment\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"expanded-owner\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"mapping\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"production\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"run\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"selected-test\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"serialized\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"source\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"arm64\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"changed-declaration\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"extra-server\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"foreign-image\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"missing-owner\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"missing-server\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"non-linux\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"preset-digest\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"lifecycle-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"platform-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-body\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-owner\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"legacy-cohort\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"missing-owner\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"unknown-cohort\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "FullReaderRejectsChangedOwnerVersionOrAssetsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"assets\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "FullReaderRejectsChangedOwnerVersionOrAssetsAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"version\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "OrdinaryConsumerRetainsActivePartiesSourceGuardAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.OrdinaryConsumerRetainsActivePartiesSourceGuardAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ChangedCanonicalClaimFileCannotReplayAnAdmittedProofAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ChangedCanonicalClaimFileCannotReplayAnAdmittedProofAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "OrdinaryEntryPreservesItsClaimDirectoryAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryPreservesItsClaimDirectoryAsync(profile: \\\"lifecycle-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "OrdinaryEntryPreservesItsClaimDirectoryAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryPreservesItsClaimDirectoryAsync(profile: \\\"platform-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"different\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"empty\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"removed\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync(profile: \\\"lifecycle-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync(profile: \\\"platform-package\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "PublishedValidationWithoutClaimProjectionReachesBoundaryAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationWithoutClaimProjectionReachesBoundaryAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"alternate-claim\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"attempt\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"canonical-null\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"canonical-relative\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"deadline\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"environment\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"mapping\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"model\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"retention\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"run\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"selected-test\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"selected-tests\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"workspace\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests",
+      "CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests.CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests",
+      "PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests",
+      "ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances",
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "SdkPredicateReturnsFalseForTypedAuthorityRefusals",
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests",
+      "CandidateValidatesAtomicallyWithTheDomainMinimum",
+      "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateValidatesAtomicallyWithTheDomainMinimum"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "FileEntryHonorsExplicitOptInAndSelectedMapping",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: False, count: 6)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "FileEntryHonorsExplicitOptInAndSelectedMapping",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: True, count: 7)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync",
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync"
+    ]
+  ],
+  "regressions": [
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded"
+    ]
+  ],
+  "resolvedFailures": [
+    [
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+      "AcceptedToolPinEqualsSupportedRangeFloorAsync",
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+      "ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites",
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"human\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests",
+      "ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites",
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.ReleasedPinnedToolValidatesDisposableWorkspaceWithoutWrites(format: \\\"json\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests",
+      "GenuineHistoricalBodiesCannotBeMixedIntoPublicParties",
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests.GenuineHistoricalBodiesCannotBeMixedIntoPublicParties(name: \\\"Hexalith.McpCli.Abstractions\\\", version: \\\"2.0.0\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7)"
+    ]
+  ],
+  "newlySkipped": [],
+  "retainedSkipped": [
+    [
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests",
+      "DomainTenantsStartsThroughTheRealBuildsEngineAsync",
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.DomainTenantsStartsThroughTheRealBuildsEngineAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests",
+      "TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync",
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalEventStoreStartsThroughTheRealBuildsEngineAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests",
+      "TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync",
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMcpCliStartsThroughTheRealBuildsEngineAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests",
+      "TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync",
+      "Hexalith.Platform.Composition.Tests.BuildsSourceStartupTests.TechnicalMemoriesStartsThroughTheRealBuildsEngineAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveLocalDaprEnforcesInvocationAndDeclarativeDeadLetterDeliveryAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.LiveTimesheetsDaprAllowsEstablishedCallerAndDeniesUnlistedCallerAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.OccupiedSentryPortReportsBindingFailureAndPreservesForeignListenerAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "ReferenceServersReachDeclaredReadinessInTheFileEntryAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReferenceServersReachDeclaredReadinessInTheFileEntryAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests",
+      "TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformConcurrentRunTests.TwoBuildsReferenceRunsPersistIndependentlyAndSurvivePeerCleanupAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests",
+      "LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformLocalRunLifecycleTests.LocalOutcomesRetainFailuresCleanSuccessAndPreserveIndependentPeerAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogIntegrationTests",
+      "ActualSidecarsRequireEveryHostToAgreeOnTheRunOwnedCatalog",
+      "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogIntegrationTests.ActualSidecarsRequireEveryHostToAgreeOnTheRunOwnedCatalog"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.PlatformTestEnvironmentProvisioningTests",
+      "DeclaredSuitesPersistIdenticalKeysWithoutObservingPeerDataAsync",
+      "Hexalith.Platform.Composition.Tests.PlatformTestEnvironmentProvisioningTests.DeclaredSuitesPersistIdenticalKeysWithoutObservingPeerDataAsync"
+    ]
+  ],
+  "addedTests": [
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "CompositionWithoutExtensionsKeepsTheServerGateway",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.CompositionWithoutExtensionsKeepsTheServerGateway"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DuplicateExtensionNamesBothModulesAndTheDuplicate",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"extensionId\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DuplicateExtensionNamesBothModulesAndTheDuplicate",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: \\\"packageId\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer:Override\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer:Issuer\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"Authentication:JwtBearer\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"EventStore:Extensions:Packages:Forged:PackageId\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: \\\"authentication:jwtBearer:issuer\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "MissingComposedHostIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "MissingGatewayIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dapr-role\\\", condition: \\\"eventstore-extension-dapr-role\\\", named: \\\"Dapr role 'events'\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"dynamic-secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded(mutation: \\\"secret\\\", condition: \\\"eventstore-extension-secret\\\", named: \\\"'PlatformTestExtension:Marker'\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"missing\\\", condition: \\\"eventstore-extension-unavailable\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"symlink\\\", condition: \\\"eventstore-extension-unavailable\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: \\\"unmapped\\\", condition: \\\"eventstore-extension-unmapped\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "StructuredExtensionInputFlattensOrIsRefused",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"Authentication\\\", value: \\\"{\\\\\\\"JwtBearer\\\\\\\":{\\\\\\\"Issuer\\\\\\\":\\\\\\\"forged\\\\\\\"}}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "StructuredExtensionInputFlattensOrIsRefused",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"[\\\\\\\"alpha\\\\\\\",\\\\\\\"beta\\\\\\\"]\\\", expected: \\\"PlatformTestExtension__Marker__0=alpha;PlatformTes\\\"\u00b7\u00b7\u00b7, condition: null)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "StructuredExtensionInputFlattensOrIsRefused",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\", expected: null, condition: \\\"eventstore-extension-input-invalid\\\")"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "StructuredExtensionInputFlattensOrIsRefused",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Name\\\\\\\":\\\\\\\"first\\\\\\\",\\\\\\\"Nested\\\\\\\":{\\\\\\\"Level\\\\\\\":2}}\\\", expected: \\\"PlatformTestExtension__Marker__Name=first;Platform\\\"\u00b7\u00b7\u00b7, condition: null)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnsupportedMajorFailsBeforeAnyResourceIsAdded",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+      "BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync",
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: False, mixed: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+      "BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync",
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: False)"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+      "BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync",
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests.BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync(declared: True, mixed: True)"
+    ]
+  ],
+  "removedTests": [],
+  "addedFailures": [],
+  "addedSkipped": [],
+  "duplicateDisplayGroups": [
+    {
+      "identity": [
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests",
+        "EveryMissingDeclaredSettingRefusesBeforeComposition",
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests.EveryMissingDeclaredSettingRefusesBeforeComposition(key: \\\"conversations/domain/Authentication:JwtBearer:Allo\\\"\u00b7\u00b7\u00b7)"
+      ],
+      "historicalCount": 2,
+      "currentCount": 2,
+      "historicalResults": {
+        "Pass": 2
+      },
+      "currentResults": {
+        "Pass": 2
+      },
+      "allPassSameMultiplicity": true
+    },
+    {
+      "identity": [
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests",
+        "EveryMissingDeclaredSettingRefusesBeforeComposition",
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests.EveryMissingDeclaredSettingRefusesBeforeComposition(key: \\\"conversations/domain/Authentication:WorkloadJwtBea\\\"\u00b7\u00b7\u00b7)"
+      ],
+      "historicalCount": 6,
+      "currentCount": 6,
+      "historicalResults": {
+        "Pass": 6
+      },
+      "currentResults": {
+        "Pass": 6
+      },
+      "allPassSameMultiplicity": true
+    },
+    {
+      "identity": [
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests",
+        "EveryMissingDeclaredSettingRefusesBeforeComposition",
+        "Hexalith.Platform.Composition.Tests.ConversationsEnrollmentTests.EveryMissingDeclaredSettingRefusesBeforeComposition(key: \\\"conversations/domain/EventStore:Authentication:Cli\\\"\u00b7\u00b7\u00b7)"
+      ],
+      "historicalCount": 2,
+      "currentCount": 2,
+      "historicalResults": {
+        "Pass": 2
+      },
+      "currentResults": {
+        "Pass": 2
+      },
+      "allPassSameMultiplicity": true
+    },
+    {
+      "identity": [
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+        "InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidComponentTemplatesRefuseWithScopedDiagnosticsBeforeResources(template: \\\"secretstore.yaml\\\", active: \\\"memories\\\", content: \\\"apiVersion: dapr.io/v1alpha1\\\\nkind: Component\\\\nmetad\\\"\u00b7\u00b7\u00b7, reason: \\\"spec.metadata must contain a secretsFile entry\\\")"
+      ],
+      "historicalCount": 2,
+      "currentCount": 2,
+      "historicalResults": {
+        "Pass": 2
+      },
+      "currentResults": {
+        "Pass": 2
+      },
+      "allPassSameMultiplicity": true
+    }
+  ],
+  "qualificationCredit": false,
+  "addedMethods": [
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "CompositionWithoutExtensionsKeepsTheServerGateway"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "DuplicateExtensionNamesBothModulesAndTheDuplicate"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "ExtensionInputCannotRebindAGatewayKey"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "MissingComposedHostIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "MissingGatewayIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "StructuredExtensionInputFlattensOrIsRefused"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "UnsupportedMajorFailsBeforeAnyResourceIsAdded"
+    ],
+    [
+      "Hexalith.Platform.Composition.Tests.GatewayExtensionRegistrationTests",
+      "BootstrapReusesDeclaredPackagesAndKeepsLegacyPackagesAsync"
+    ]
+  ],
+  "removedMethods": [],
+  "failureDetails": [
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/commands\\\")",
+      "result": "Fail",
+      "time": "0.009",
+      "failure": "Shouldly.ShouldAssertException : validated.IsValid\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.\nUse an existing module-owned entry of the executor's file type, without symlinks or dependency paths."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(path: \\\"/api/v1/COMMANDS\\\")",
+      "result": "Fail",
+      "time": "0.008",
+      "failure": "Shouldly.ShouldAssertException : validated.IsValid\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.\nUse an existing module-owned entry of the executor's file type, without symlinks or dependency paths."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync",
+      "result": "Fail",
+      "time": "0.01",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: False, failedStartup: False)",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: False, failedStartup: True)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: True, failedStartup: False)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(configuredParent: True, failedStartup: True)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "Shouldly.ShouldAssertException : failure.Message\n    should contain (case insensitive comparison)\n\\\"moduleId\\\"\n    but was actually\n\\\"../../../../../src/Hexalith.Platform.Composition/Declarations/eventstore.json: modules[0].tests[0].e...\\\""
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(defaultRuntime: False)",
+      "result": "Fail",
+      "time": "0.006",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests",
+      "method": "WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(defaultRuntime: True)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.InvalidOperationException : Works Development requires Platform:Works:DevelopmentCatalogProfile. Restore the private profile for retained state or choose an owner-provisioned isolated profile. The default external dapr-init Redis may contain business receipts; startup cannot replace its digest keys."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync",
+      "result": "Fail",
+      "time": "0.018",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"wrong-key-encoding\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"mixed-plan\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"stale-run\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"entry-body\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync(fault: \\\"source-binding\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests",
+      "method": "PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests",
+      "method": "CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests.CurrentOwnerMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "result": "Fail",
+      "time": "0.021",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+      "method": "CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+      "result": "Fail",
+      "time": "0.02",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests",
+      "method": "CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests",
+      "method": "PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests.PreparationRequiresActualOwnerMappingsBeforeAnyReadinessPublicationAsync",
+      "result": "Fail",
+      "time": "0.021",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests",
+      "method": "CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceReceiptRefusesAbsentDuplicateAndTamperedPublicBodies",
+      "result": "Fail",
+      "time": "0.016",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests",
+      "method": "CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests.CurrentReferenceCohortAuthenticatesEveryPublicBodyWithoutGrantingPublicPartiesAuthority",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests",
+      "method": "AuthenticatedCurrentReaderRetainsTheSixExactBodiesAndCatalogAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests.AuthenticatedCurrentReaderRetainsTheSixExactBodiesAndCatalogAsync",
+      "result": "Fail",
+      "time": "0.859",
+      "failure": "Shouldly.ShouldAssertException : `PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, options => { captured = options; return options with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException(\\\"Expected private reader fixture boundary.\\\"); } }; })`\n    should throw\nSystem.InvalidOperationException\n    but threw\nSystem.IO.InvalidDataException\n---- System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "OrdinaryAndSerializedOptionsCannotSelectThePrivatePurpose",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.OrdinaryAndSerializedOptionsCannotSelectThePrivatePurpose",
+      "result": "Fail",
+      "time": "0.083",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities",
+      "result": "Fail",
+      "time": "0.033",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes",
+      "result": "Fail",
+      "time": "0.262",
+      "failure": "Shouldly.ShouldAssertException : `PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with { ImageProbeRunner = (start, timeout, _) => { timeout.ShouldBe(TimeSpan.FromSeconds(20)); start.FileName.ShouldBe(\\\"docker\\\"); start.ArgumentList.Take(2).ShouldBe([\\\"manifest\\\", \\\"inspect\\\"]); probes.Add(start.ArgumentList[2]); if (probes.Count == 1) return Task.FromResult(new CompositionProcessResult(true, 0, \\\"{}\\\", false)); throw new InvalidOperationException(\\\"Expected private EventStore second image boundary.\\\"); }, })`\n    should throw\nSystem.InvalidOperationException\n    but threw\nSystem.IO.InvalidDataException\n---- System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"key\\\")",
+      "result": "Fail",
+      "time": "0.008",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"snapshot\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"metadata-version\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"near-version\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"sdk\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"catalog\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"development\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"extra-owner\\\")",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"owners\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"source-mode\\\")",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"mapping-module\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"active-module\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"mixed-tests\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"duplicate-tests\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"catalog-snapshot\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"empty-tests\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"test-mode\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"test-module\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"execution-budget\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"stop-budget\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"manifest\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry-bytes\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry-hash\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"entry\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"executor\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"profile\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"missing-proof\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"missing-binding\\\")",
+      "result": "Fail",
+      "time": "0.004",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"binding\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"runtime\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "InvalidRequestsRefuseBeforeComposeRunEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.InvalidRequestsRefuseBeforeComposeRunEffects(fault: \\\"declaration\\\")",
+      "result": "Fail",
+      "time": "0.005",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"missing-server\\\")",
+      "result": "Fail",
+      "time": "0.068",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"extra-server\\\")",
+      "result": "Fail",
+      "time": "0.061",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"old-image\\\")",
+      "result": "Fail",
+      "time": "0.07",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"foreign-image\\\")",
+      "result": "Fail",
+      "time": "0.075",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"digest\\\")",
+      "result": "Fail",
+      "time": "0.075",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"seed\\\")",
+      "result": "Fail",
+      "time": "0.079",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests",
+      "method": "ChangedResolvedTopologyRefusesBeforeEffects",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests.ChangedResolvedTopologyRefusesBeforeEffects(fault: \\\"changed-declaration\\\")",
+      "result": "Fail",
+      "time": "0.08",
+      "failure": "System.IO.InvalidDataException : Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests",
+      "method": "DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: null)",
+      "result": "Fail",
+      "time": "0.35",
+      "failure": "Shouldly.ShouldAssertException : refusal.Message\n    should contain (case insensitive comparison)\n\\\"/tmp/platform-file-mapping-a136c6c879964472adefac8a3939e9d4/workspace/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj\\\"\n    but was actually\n\\\"../../../../../../../platform-file-mapping-a136c6c879964472adefac8a3939e9d4/workspace/references/Hex...\\\""
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests",
+      "method": "DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests.DefaultAnchorUsesUmbrellaOwnerMappingBeforeResourcesAsync(activeModule: \\\"eventstore\\\")",
+      "result": "Fail",
+      "time": "0.228",
+      "failure": "Shouldly.ShouldAssertException : refusal.Message\n    should contain (case insensitive comparison)\n\\\"/tmp/platform-file-mapping-d79870990de547fb9e03875e5fcf549b/workspace/references/Hexalith.EventStore/src/Hexalith.EventStore/Hexalith.EventStore.csproj\\\"\n    but was actually\n\\\"../../../../../../../platform-file-mapping-d79870990de547fb9e03875e5fcf549b/workspace/references/Hex...\\\""
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedReferenceOptionsReadsApprovedEnvironmentRoots",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsReadsApprovedEnvironmentRoots",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for the approved direct-revision graph."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublicRoutesMatchOnlyTheDeclaredPublicServers",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublicRoutesMatchOnlyTheDeclaredPublicServers",
+      "result": "Fail",
+      "time": "0",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedReferenceOptionsRejectsChangedMappingBytes",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsRejectsChangedMappingBytes",
+      "result": "Fail",
+      "time": "0.014",
+      "failure": "Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformHostedPublishing.ReferenceOptions(fixtureDirectory, SourceRoots))\n                .Message\n    should contain (case insensitive comparison)\n\\\"mapping is missing or differs\\\"\n    but was actually\n\\\"HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.\\\""
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources",
+      "result": "Fail",
+      "time": "0.008",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness",
+      "result": "Fail",
+      "time": "0",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: False)",
+      "result": "Fail",
+      "time": "0.007",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: True)",
+      "result": "Fail",
+      "time": "0",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Timesheets\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Works\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: \\\"Agents\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedPublishRejectsDirtyApprovedRevisionSources",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources",
+      "result": "Fail",
+      "time": "0",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests",
+      "method": "HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput",
+      "result": "Fail",
+      "time": "0",
+      "failure": "System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests",
+      "method": "QualifiedTenantsModelForwardsDistinctReceiverTokensAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.QualifiedTenantsModelForwardsDistinctReceiverTokensAsync",
+      "result": "Fail",
+      "time": "0.02",
+      "failure": "Shouldly.ShouldAssertException : PlatformPackageCatalogQualification.HasQualifiedSdkBytes()\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    This positive case requires the genuine public SDK 4.1.0 cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests",
+      "method": "PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: False)",
+      "result": "Fail",
+      "time": "0.038",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests",
+      "method": "PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: True)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests",
+      "method": "ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests.ActualPlatformOwnedResolutionBindsTheReviewedLifecycleSourceAsync",
+      "result": "Fail",
+      "time": "0.016",
+      "failure": "Shouldly.ShouldAssertException : PlatformPartiesProofFixture.Git(root, \\\"rev-parse\\\", \\\"HEAD:references/Hexalith.Parties\\\")\n    should be\n\\\"bb2783120c0eed620e3d4f52a2ebaf6aa510126f\\\"\n    but was\n\\\"ebe1739d70a4e76447938b0bb8c53db508bf6019\\\"\n    difference\nDifference     |  |         |    |    |         |    |    |    |    |    |         |         |    |    |    |    |    |        \n               | \\\\|/       \\\\|/  \\\\|/  \\\\|/       \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/       \\\\|/       \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/       \nIndex          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   ...  \nExpected Value | b    b    2    7    8    3    1    2    0    c    0    e    e    d    6    2    0    e    3    d    4    ...  \nActual Value   | e    b    e    1    7    3    9    d    7    0    a    4    e    7    6    4    4    7    9    3    8    ...  \nExpected Code  | 98   98   50   55   56   51   49   50   48   99   48   101  101  100  54   50   48   101  51   100  52   ...  \nActual Code    | 101  98   101  49   55   51   57   100  55   48   97   52   101  55   54   52   52   55   57   51   56   ...  \n\nDifference     |       |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   \n               |      \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \\\\|/  \nIndex          | ...  19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   \nExpected Value | ...  d    4    f    5    2    a    2    e    b    a    f    6    a    a    5    1    0    1    2    6    f    \nActual Value   | ...  3    8    b    0    b    b    8    c    5    3    d    b    5    0    8    b    f    6    0    1    9    \nExpected Code  | ...  100  52   102  53   50   97   50   101  98   97   102  54   97   97   53   49   48   49   50   54   102  \nActual Code    | ...  51   56   98   48   98   98   56   99   53   51   100  98   53   48   56   98   102  54   48   49   57   "
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"run\\\")",
+      "result": "Fail",
+      "time": "0.032",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"attempt\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"environment\\\")",
+      "result": "Fail",
+      "time": "0.006",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"mapping\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"source\\\")",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"declaration-path\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"selected-test\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"expanded-owner\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"serialized\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"production\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedFullEntryRefusesBeforeEffectsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: \\\"catalog-bytes\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"missing-server\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"extra-server\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"foreign-image\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"preset-digest\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"missing-owner\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"changed-declaration\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"non-linux\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "ChangedQualifiedTopologyOrRuntimeRefusesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: \\\"arm64\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"platform-package\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests",
+      "method": "QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: \\\"lifecycle-package\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "FullReaderRejectsChangedOwnerVersionOrAssetsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"version\\\")",
+      "result": "Fail",
+      "time": "0.032",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "FullReaderRejectsChangedOwnerVersionOrAssetsAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \\\"assets\\\")",
+      "result": "Fail",
+      "time": "0.006",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: False)",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: True)",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"missing-owner\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-owner\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"legacy-cohort\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"unknown-cohort\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "ChangedFullReaderAuthorityRefusesBeforeOutputAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \\\"foreign-body\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests",
+      "method": "OrdinaryConsumerRetainsActivePartiesSourceGuardAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.OrdinaryConsumerRetainsActivePartiesSourceGuardAsync",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ChangedCanonicalClaimFileCannotReplayAnAdmittedProofAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ChangedCanonicalClaimFileCannotReplayAnAdmittedProofAsync",
+      "result": "Fail",
+      "time": "0.034",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"removed\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"different\\\")",
+      "result": "Fail",
+      "time": "0.006",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryRefusesClaimSuppressionOrReplacementAsync(fault: \\\"empty\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "OrdinaryEntryPreservesItsClaimDirectoryAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryPreservesItsClaimDirectoryAsync(profile: \\\"platform-package\\\")",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "OrdinaryEntryPreservesItsClaimDirectoryAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.OrdinaryEntryPreservesItsClaimDirectoryAsync(profile: \\\"lifecycle-package\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"run\\\")",
+      "result": "Fail",
+      "time": "0.003",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"attempt\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"environment\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"workspace\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"mapping\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"selected-test\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"selected-tests\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"model\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"deadline\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"retention\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"alternate-claim\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"canonical-null\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "ValidationProjectionRefusesEveryOtherChangedFieldAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.ValidationProjectionRefusesEveryOtherChangedFieldAsync(fault: \\\"canonical-relative\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "PublishedValidationWithoutClaimProjectionReachesBoundaryAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationWithoutClaimProjectionReachesBoundaryAsync",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync(profile: \\\"platform-package\\\")",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests",
+      "method": "PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests.PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync(profile: \\\"lifecycle-package\\\")",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\\\"Hexalith.Memories.Contracts\\\", cohort)\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests",
+      "method": "CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests.CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync",
+      "result": "Fail",
+      "time": "9.439",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests",
+      "method": "PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests.PublishedPartiesMemoriesContainerUsesItsActualSidecarOriginAsync",
+      "result": "Fail",
+      "time": "0.021",
+      "failure": "System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests",
+      "method": "ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances",
+      "result": "Fail",
+      "time": "65.893",
+      "failure": "System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n\nCould not load file or assembly 'Hexalith.Tenants.Contracts, Version=7.0.5.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.\n"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "SdkPredicateReturnsFalseForTypedAuthorityRefusals",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.SdkPredicateReturnsFalseForTypedAuthorityRefusals(cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+      "result": "Fail",
+      "time": "0.018",
+      "failure": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.MatchesSdk(cohort)\n    should be\nTrue\n    but was\nFalse"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.HistoricalCohortsStillAcceptOriginalSignedPublicBodies",
+      "result": "Fail",
+      "time": "0.063",
+      "failure": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)\n    should be\nTrue\n    but was\nFalse"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.Tenants.Contracts\\\", cohort: \\\"parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor\\\"\u00b7\u00b7\u00b7, expected: True)",
+      "result": "Fail",
+      "time": "0",
+      "failure": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)\n    should be\nTrue\n    but was\nFalse"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "OwnerPredicatePreservesExactBodyAndCohortBoundaries",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OwnerPredicatePreservesExactBodyAndCohortBoundaries(name: \\\"Hexalith.EventStore.Contracts\\\", cohort: \\\"eventstore-4.1.0-tenants-7.0.2\\\", expected: True)",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "Shouldly.ShouldAssertException : => PublishedCatalogArtifactCohort.Matches(name, cohort)\n    should be\nTrue\n    but was\nFalse"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentBaseCohortAcceptsOnlyItsPublicOwnerSet",
+      "result": "Fail",
+      "time": "0.001",
+      "failure": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.CurrentFullCohortAcceptsGenuineSignedPublicSdkAndOwners",
+      "result": "Fail",
+      "time": "0.002",
+      "failure": "System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests",
+      "method": "OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort",
+      "name": "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests.OldFirstSdkPredicateReachesTheAuthenticatedCurrentCohort",
+      "result": "Fail",
+      "time": "0.006",
+      "failure": "Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.MatchesSdk() || PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.CurrentName)\n    should be\nTrue\n    but was\nFalse"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests",
+      "method": "CandidateValidatesAtomicallyWithTheDomainMinimum",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateValidatesAtomicallyWithTheDomainMinimum",
+      "result": "Fail",
+      "time": "0.167",
+      "failure": "Shouldly.ShouldAssertException : result.IsValid\n    should be\nTrue\n    but was\nFalse\n\nAdditional Info:\n    modules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.\nmodules[0].tests[1].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.\nmodules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "FileEntryHonorsExplicitOptInAndSelectedMapping",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: False, count: 6)",
+      "result": "Fail",
+      "time": "21.544",
+      "failure": "Shouldly.ShouldAssertException : builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any())\n    should be\n6\n    but was\n7"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "FileEntryHonorsExplicitOptInAndSelectedMapping",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: True, count: 7)",
+      "result": "Fail",
+      "time": "0.034",
+      "failure": "System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync",
+      "result": "Fail",
+      "time": "0.029",
+      "failure": "System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate",
+      "result": "Fail",
+      "time": "0.028",
+      "failure": "Shouldly.ShouldAssertException : servers.Count\n    should be\n7\n    but was\n8"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync",
+      "result": "Fail",
+      "time": "0.025",
+      "failure": "System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync",
+      "result": "Fail",
+      "time": "0.031",
+      "failure": "System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6."
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection",
+      "result": "Fail",
+      "time": "0.032",
+      "failure": "Shouldly.ShouldAssertException : servers.Count\n    should be\n7\n    but was\n8"
+    },
+    {
+      "class": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests",
+      "method": "AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged",
+      "name": "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged",
+      "result": "Fail",
+      "time": "20.846",
+      "failure": "Shouldly.ShouldAssertException : builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any())\n    should be\n6\n    but was\n7"
+    }
+  ]
+}

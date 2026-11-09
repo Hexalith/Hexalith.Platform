@@ -1,0 +1,420 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(458,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(458,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass22_0.<UnboundExtensionInputIsRefusedBeforeAnyResourceIsAdded>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.Server, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs(12,0): at Hexalith.Platform.Composition.Tests.GatewaySeedProtectionInstallation..ctor()
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(603,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(126,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: False) [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(249,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(Boolean liveItemExists)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(liveItemExists: True) [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(249,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(Boolean liveItemExists)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(48,0): at Hexalith.Platform.Composition.PlatformAppModel.Prepare(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(158,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: "extensionId") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformEventStoreExtensionBindings.Resolve(SourceOptions(owner), [first, second])`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(346,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(String field)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(346,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass17_0.<DuplicateExtensionNamesBothModulesAndTheDuplicate>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(76,0): at Shouldly.Should.ThrowInternal[TException](Func`1 actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(field: "packageId") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformEventStoreExtensionBindings.Resolve(SourceOptions(owner), [first, second])`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(346,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(String field)
+           at InvokeStub_EventStoreExtensionCompositionTests.DuplicateExtensionNamesBothModulesAndTheDuplicate(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(346,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass17_0.<DuplicateExtensionNamesBothModulesAndTheDuplicate>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(76,0): at Shouldly.Should.ThrowInternal[TException](Func`1 actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(409,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(313,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingGatewayIsRefusedBeforeAnyResourceIsAdded()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(313,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass15_0.<MissingGatewayIsRefusedBeforeAnyResourceIsAdded>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.Server, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs(12,0): at Hexalith.Platform.Composition.Tests.GatewaySeedProtectionInstallation..ctor()
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(582,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(48,0): at Hexalith.Platform.Composition.PlatformAppModel.Prepare(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(179,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(57,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(301,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MissingComposedHostIsRefusedBeforeAnyResourceIsAdded()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(301,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass14_0.<MissingComposedHostIsRefusedBeforeAnyResourceIsAdded>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, SourceOptions(owner))`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(324,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnsupportedMajorFailsBeforeAnyResourceIsAdded()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(324,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass16_0.<UnsupportedMajorFailsBeforeAnyResourceIsAdded>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.Server, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs(12,0): at Hexalith.Platform.Composition.Tests.GatewaySeedProtectionInstallation..ctor()
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(625,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: "PlatformTestExtension:Marker", value: "{\"Name\":\"first\",\"Nested\":{\"Level\":2}}", expected: "PlatformTestExtension__Marker__Name=first;Platform"···, condition: null) [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(500,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(String key, String value, String expected, String condition)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: "PlatformTestExtension:Marker", value: "[\"alpha\",\"beta\"]", expected: "PlatformTestExtension__Marker__0=alpha;PlatformTes"···, condition: null) [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(500,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(String key, String value, String expected, String condition)
+           at InvokeStub_EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: "PlatformTestExtension:Marker", value: "{\"Name\":", expected: null, condition: "eventstore-extension-input-invalid") [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(500,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(String key, String value, String expected, String condition)
+           at InvokeStub_EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: "Authentication", value: "{\"JwtBearer\":{\"Issuer\":\"forged\"}}", expected: null, condition: "eventstore-extension-configuration-conflict") [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(500,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(String key, String value, String expected, String condition)
+           at InvokeStub_EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Prepare(PackageOptions(fixture, owner, pinned: false))`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(289,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(48,0): at Hexalith.Platform.Composition.PlatformAppModel.Prepare(PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(289,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass13_0.<UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(76,0): at Shouldly.Should.ThrowInternal[TException](Func`1 actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone [FAIL]
+      System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(469,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputBindsFromTheLocalProfileWhenConfigurationSuppliesNone()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: "unmapped", condition: "eventstore-extension-unmapped") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(String fault, String condition)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass25_1.<SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: "missing", condition: "eventstore-extension-unavailable") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(String fault, String condition)
+           at InvokeStub_EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass25_1.<SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(fault: "symlink", condition: "eventstore-extension-unavailable") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(String fault, String condition)
+           at InvokeStub_EventStoreExtensionCompositionTests.SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(548,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass25_1.<SourceMappingRefusesAnUnmappedMissingOrEscapingExtensionProject>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: "Authentication:JwtBearer:Issuer") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(String key)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass21_0.<ExtensionInputCannotRebindAGatewayKey>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: "authentication:jwtBearer:issuer") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(String key)
+           at InvokeStub_EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass21_0.<ExtensionInputCannotRebindAGatewayKey>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: "Authentication:JwtBearer") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(String key)
+           at InvokeStub_EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass21_0.<ExtensionInputCannotRebindAGatewayKey>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: "Authentication:JwtBearer:Issuer:Override") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(String key)
+           at InvokeStub_EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass21_0.<ExtensionInputCannotRebindAGatewayKey>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+    Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(key: "EventStore:Extensions:Packages:Forged:PackageId") [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.Compose(builder, options)`
+          should throw
+      System.IO.InvalidDataException
+          but threw
+      System.IO.FileNotFoundException
+      ---- System.IO.FileNotFoundException : Could not load file or assembly 'Hexalith.EventStore.DomainService, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(String key)
+           at InvokeStub_EventStoreExtensionCompositionTests.ExtensionInputCannotRebindAGatewayKey(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+        ----- Inner Stack Trace -----
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(26,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.get_SupportedMajors()
+        src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs(63,0): at Hexalith.Platform.Composition.PlatformEventStoreExtensionBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations)
+        src/Hexalith.Platform.Composition/PlatformServerBindings.cs(52,0): at Hexalith.Platform.Composition.PlatformServerBindings.Resolve(PlatformCompositionOptions options, IReadOnlyList`1 declarations, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(143,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs(445,0): at Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.<>c__DisplayClass21_0.<ExtensionInputCannotRebindAGatewayKey>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = 'a0e00e6b12d6d8afb3dddfb2e1bec58f1eaa2098d8b1344f98803f4333a5c122')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 36, Errors: 0, Failed: 30, Skipped: 0, Not Run: 0, Time: 0.999s

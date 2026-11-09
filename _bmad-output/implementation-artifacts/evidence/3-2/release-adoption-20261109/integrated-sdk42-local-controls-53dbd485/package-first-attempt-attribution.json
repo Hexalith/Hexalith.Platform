@@ -1,0 +1,26 @@
+{
+  "source": "53dbd485baa9842886b1d615b7f56fa441cf4738",
+  "status": "failed",
+  "actualPass": 560,
+  "actualFail": 2,
+  "executions": 562,
+  "uniqueCases": 559,
+  "sourceUnchanged": true,
+  "outputsUnchanged": true,
+  "failures": [
+    {
+      "file": "upstream-2.xml",
+      "method": "AcceptedToolPinEqualsSupportedRangeFloorAsync",
+      "result": "Fail",
+      "message": "System.NullReferenceException : Object reference not set to an instance of an object."
+    },
+    {
+      "file": "upstream-2.xml",
+      "method": "InventoryAndHumanChecklistKeepUnobservedEvidencePending",
+      "result": "Fail",
+      "message": "System.NullReferenceException : Object reference not set to an instance of an object."
+    }
+  ],
+  "attribution": "Both Root() helpers start at the external assembly directory, which has no checkout ancestor. Production admission assertions remain unchanged. The next full inventory uses an ignored in-repository artifacts output, as normal CI does.",
+  "qualificationCredit": false
+}

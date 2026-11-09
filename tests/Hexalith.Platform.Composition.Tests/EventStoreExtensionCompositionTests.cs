@@ -188,9 +188,97 @@ public sealed class EventStoreExtensionCompositionTests
         XDocument document = XDocument.Load(props);
         document.Descendants("ProjectReference").ShouldBeEmpty();
         document.Descendants("PackageReference").ShouldHaveSingleItem().Attribute("Include")!.Value.ShouldBe(Package);
-        XElement version = document.Descendants("PackageVersion").ShouldHaveSingleItem();
-        version.Attribute("Update")!.Value.ShouldBe(Package);
+        document.Descendants("PackageVersion").Single(item => item.Attribute("Remove") is not null).Attribute("Remove")!.Value.ShouldBe(Package);
+        XElement version = document.Descendants("PackageVersion").Single(item => item.Attribute("Include") is not null);
+        version.Attribute("Include")!.Value.ShouldBe(Package);
         version.Attribute("Version")!.Value.ShouldBe("9.8.7");
+    }
+
+    [Fact]
+    public void PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed()
+    {
+        using PlatformPackageFixture fixture = new(Root);
+        using PlatformOwnerFixture owner = Owner(extensions: null);
+        PlatformCompositionOptions options = PackageOptions(fixture, owner, pinned: false);
+        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
+        PlatformServerBinding gateway = servers.Where(server => server.ResourceId == "eventstore").ShouldHaveSingleItem();
+        gateway.ProjectPath.ShouldBe(options.EventStoreSeedProject);
+        gateway.EventStoreHost.ShouldBeNull();
+        gateway.Environment.Keys.ShouldNotContain(key => key.StartsWith("EventStore__Extensions", StringComparison.Ordinal));
+    }
+
+#if !HEXALITH_PLATFORM_SOURCE_CATALOG
+    [Fact]
+    public void MeasuredReleasedExtensionSdkBodiesConferNoOwnerOrHostAdmission()
+    {
+        const string cohort = Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ExtensionSdkName;
+        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifySdk(cohort).Count.ShouldBe(8);
+        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5").ShouldBeNull();
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(typeof(PlatformTestExtensionAdapters).Assembly, cohort));
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(
+            typeof(EventStoreExtensionApi).Assembly, Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentName));
+    }
+#endif
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync(bool liveItemExists)
+    {
+        const string selectedVersion = "0.0.0-story32.snapshot";
+        using PlatformPackageFixture fixture = new(Root);
+        using PlatformOwnerFixture owner = Owner(Extension());
+        PlatformCompositionOptions options = PackageOptions(fixture, owner, pinned: true);
+        string work = Path.Combine(owner.Root, "snapshot-package-probe");
+        string sourceMapping = Path.Combine(work, "source-mapping");
+        Directory.CreateDirectory(sourceMapping);
+        Dictionary<string, string> versions = new() { [Package] = selectedVersion };
+        Dictionary<string, string> defaultVersions = new() { [Package] = "0.0.0-story32.default" };
+        Dictionary<string, string> pinnedFiles = new() { ["Props/Directory.Packages.props"] = new string('a', 64) };
+        Dictionary<string, IReadOnlyDictionary<string, string>> projectVersions = new() { ["Hexalith.Platform.EventStoreHost"] = versions };
+        string catalogCommit = new('b', 40);
+        string catalogHash = new('a', 64);
+        CatalogVersionSnapshot snapshot = new(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, defaultVersions, projectVersions,
+            CatalogVersionSnapshot.ComputeHash(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, defaultVersions, projectVersions));
+        string snapshotPath = Path.Combine(sourceMapping, "catalog-versions.json");
+        File.WriteAllText(snapshotPath, JsonSerializer.Serialize(snapshot));
+        // Resolve consumes only Workspace from the plan; the synthetic fixture confers no release or runtime authority.
+        CompositionRunPlan plan = JsonSerializer.Deserialize<CompositionRunPlan>(JsonSerializer.Serialize(new { Workspace = work }))!;
+        options = options with { RunPlan = plan };
+        PlatformEventStoreExtensionBinding extension = PlatformEventStoreExtensionBindings.Resolve(options, Declarations(owner)).ShouldHaveSingleItem();
+        extension.PackageVersion.ShouldBe(selectedVersion);
+        string props = PlatformEventStoreExtensionBindings.Write(new PlatformEventStoreHostBinding(HostProject, [extension]), Path.Combine(work, "bindings"));
+        string producer = Path.Combine(work, "producer");
+        string consumer = Path.Combine(work, "consumer");
+        string feed = Path.Combine(work, "feed");
+        Directory.CreateDirectory(producer);
+        Directory.CreateDirectory(consumer);
+        File.WriteAllText(Path.Combine(work, "Directory.Build.props"), "<Project><PropertyGroup><TargetFramework>net10.0</TargetFramework><TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup></Project>");
+        File.WriteAllText(Path.Combine(work, "Directory.Packages.props"), "<Project><PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally></PropertyGroup></Project>");
+        string packageProject = Path.Combine(producer, Package + ".csproj");
+        File.WriteAllText(packageProject, $"<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><PackageId>{Package}</PackageId><Version>{selectedVersion}</Version></PropertyGroup></Project>");
+        File.WriteAllText(Path.Combine(producer, "SelectedPackage.cs"), "namespace SnapshotProbe; public static class SelectedPackage { public const string Version = \"0.0.0-story32.snapshot\"; }");
+        string centralItem = liveItemExists ? $"<PackageVersion Include=\"{Package}\" Version=\"9.8.7\" />" : "";
+        File.WriteAllText(Path.Combine(consumer, "Directory.Packages.props"), $"<Project><PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally></PropertyGroup><ItemGroup>{centralItem}</ItemGroup></Project>");
+        string project = Path.Combine(consumer, "Consumer.csproj");
+        File.WriteAllText(project, new XDocument(new XElement("Project", new XAttribute("Sdk", "Microsoft.NET.Sdk"),
+            new XElement("Import", new XAttribute("Project", props)))).ToString());
+        File.WriteAllText(Path.Combine(consumer, "Consumer.cs"), "public static class Consumer { public const string Selected = SnapshotProbe.SelectedPackage.Version; }");
+        CompositionProcessResult pack = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+            ["pack", packageProject, "-c", "Release", "-o", feed, "-nodeReuse:false", "--disable-build-servers", "--nologo"], work, null), TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken);
+        pack.ExitCode.ShouldBe(0, pack.Output + pack.ErrorOutput);
+        CompositionProcessResult build = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+            ["build", project, "-c", "Release", "--source", feed, "-p:RestorePackagesPath=" + Path.Combine(work, "packages"), "-nodeReuse:false", "--disable-build-servers", "--nologo"], work, null), TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken);
+        build.ExitCode.ShouldBe(0, build.Output + build.ErrorOutput);
+        using JsonDocument assets = JsonDocument.Parse(File.ReadAllText(Path.Combine(consumer, "obj", "project.assets.json")));
+        JsonElement library = assets.RootElement.GetProperty("libraries").GetProperty(Package + "/" + selectedVersion);
+        library.GetProperty("type").GetString().ShouldBe("package");
+        assets.RootElement.GetProperty("libraries").EnumerateObject().ShouldNotContain(item => item.Name == Package + "/9.8.7");
+        // A hash-tampered selection must still fail at the same authority boundary before restore.
+        File.WriteAllText(snapshotPath, JsonSerializer.Serialize(snapshot with { Versions = new Dictionary<string, string> { [Package] = "9.8.7" } }));
+        Should.Throw<InvalidDataException>(() => PlatformEventStoreExtensionBindings.Resolve(options, Declarations(owner)))
+            .Message.ShouldContain("catalog snapshot differs from the selected mapping");
     }
 
     [Fact]
@@ -642,7 +730,7 @@ public sealed class EventStoreExtensionCompositionTests
         string fixture = Path.Combine(Root, "tests", "fixtures", Package);
         string target = Path.Combine(owner.Root, "src", Package);
         Directory.CreateDirectory(target);
-        foreach (string file in Directory.GetFiles(fixture).Where(file => Path.GetExtension(file) is ".cs" or ".csproj"))
+        foreach (string file in Directory.GetFiles(fixture).Where(file => Path.GetExtension(file) is ".cs" or ".csproj" or ".json"))
             File.Copy(file, Path.Combine(target, Path.GetFileName(file)));
         // The synthetic owner builds with the Platform workspace's own build and package authority.
         File.WriteAllText(Path.Combine(owner.Root, "Directory.Build.props"), new XDocument(new XElement("Project",
@@ -695,7 +783,7 @@ public sealed class EventStoreExtensionCompositionTests
         Directory.CreateDirectory(host);
         File.Copy(HostProject, Path.Combine(host, "Hexalith.Platform.EventStoreHost.csproj"), true);
         PlatformCompositionOptions options = fixture.Options;
-        return options with
+        PlatformCompositionOptions selected = options with
         {
             Mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Extensionprobe", "package", null)] },
             DeclarationPaths = [owner.Manifest], ActiveModule = Module,
@@ -706,6 +794,25 @@ public sealed class EventStoreExtensionCompositionTests
                 [Module + "/platform-test/PlatformTestExtension:Marker"] = "bound-marker",
             },
         };
+        // Record a consumer view now so the future owner overload can use the same fixture without live-catalog fallback.
+        Dictionary<string, string> versions = new()
+        {
+            ["Hexalith.EventStore.Aspire"] = fixture.Versions["eventstore"],
+            ["Hexalith.Tenants.Server"] = fixture.Versions["tenants"],
+            ["Hexalith.Memories.Aspire"] = fixture.Versions["memories"],
+            ["Hexalith.Extensionprobe.Aspire"] = "1.2.3",
+        };
+        if (pinned) versions[Package] = "9.8.7";
+        Dictionary<string, string> pinnedFiles = new() { ["Props/Directory.Packages.props"] = new string('a', 64) };
+        Dictionary<string, IReadOnlyDictionary<string, string>> views = new() { ["Hexalith.Platform.EventStoreHost"] = versions };
+        string commit = new('b', 40);
+        string hash = new('a', 64);
+        CatalogVersionSnapshot snapshot = new(selected.Mapping.ContentHash, commit, hash, pinnedFiles, versions, views,
+            CatalogVersionSnapshot.ComputeHash(selected.Mapping.ContentHash, commit, hash, pinnedFiles, versions, views));
+        string workspace = Path.Combine(fixture.Root, "synthetic-run");
+        Directory.CreateDirectory(Path.Combine(workspace, "source-mapping"));
+        File.WriteAllText(Path.Combine(workspace, "source-mapping", "catalog-versions.json"), JsonSerializer.Serialize(snapshot));
+        return selected with { RunPlan = JsonSerializer.Deserialize<CompositionRunPlan>(JsonSerializer.Serialize(new { Workspace = workspace }))! };
     }
 
     private static async Task<string[]> ArgumentsAsync(ProjectResource project)

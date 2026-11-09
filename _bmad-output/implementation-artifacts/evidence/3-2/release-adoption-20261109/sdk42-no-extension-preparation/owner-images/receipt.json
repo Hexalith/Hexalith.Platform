@@ -1,0 +1,118 @@
+{
+  "scope": "Fresh raw owner OCI index measurements; existing exact owner images retained, no services started or new owner runtime-body equality claimed.",
+  "qualificationCredit": false,
+  "images": [
+    {
+      "image": "tenants",
+      "version": "7.0.5",
+      "indexReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+      "indexSha256": "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+      "amd64Manifest": "sha256:2cc70299dc7c5d8c8ee7ec641abf3a0ad5334b269fa34e547dbd4dfa3a73d0a0",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "tenants-api",
+      "version": "7.0.5",
+      "indexReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+      "indexSha256": "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+      "amd64Manifest": "sha256:bbae6a8d7d044c0ba55bae1fbb88388925eae2118048caaa8243f8c53b557d4b",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "memories",
+      "version": "3.0.25",
+      "indexReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+      "indexSha256": "a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+      "amd64Manifest": "sha256:41a099ac9a60d97e6976b6e3620b8c5ec18a19b0c4f827e6afa997869d4cb06a",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "memories-domain-service",
+      "version": "3.0.25",
+      "indexReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+      "indexSha256": "90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+      "amd64Manifest": "sha256:ccce280858041a4742600b31be0c792ee696145f4faa2013fb79189cca9b26ef",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "memories-access-telemetry-clock",
+      "version": "3.0.25",
+      "indexReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+      "indexSha256": "e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+      "amd64Manifest": "sha256:b57aff58b209715e12a67c453c3a57e0f819d12af6ad630a31610a6733ee59c9",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "memories-access-telemetry",
+      "version": "3.0.25",
+      "indexReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+      "indexSha256": "d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+      "amd64Manifest": "sha256:70d561e816de4a6bce56d4a61670f65435ebfc0d2d3342ac940653be6a3cd4ec",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+      ],
+      "exitCode": 0
+    },
+    {
+      "image": "parties",
+      "version": "3.1.0",
+      "indexReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+      "indexSha256": "48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+      "amd64Manifest": "sha256:6457bde4e1c99119fe9cc6bc58654a0c618e42c59bfc37ed67d4b7410cecb263",
+      "command": [
+        "docker",
+        "buildx",
+        "imagetools",
+        "inspect",
+        "--raw",
+        "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

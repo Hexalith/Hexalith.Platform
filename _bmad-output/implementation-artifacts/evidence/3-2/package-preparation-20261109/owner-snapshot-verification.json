@@ -1,0 +1,83 @@
+{
+  "candidateOnly": true,
+  "qualificationCredit": false,
+  "ownerPatchAppliedToSelectedDependency": false,
+  "ownerRevision": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "apply",
+        "/tmp/story-3-2-broad-20261109-_z_wy84q/current/_bmad-output/implementation-artifacts/evidence/3-2/package-preparation-20261109/builds-consumer-snapshot.patch"
+      ],
+      "cwd": "/tmp/story32-owner-snapshot-038510mp/builds",
+      "log": "/tmp/story32-owner-snapshot-038510mp/apply.log",
+      "timeoutSeconds": 30,
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story32-owner-snapshot-038510mp/builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj",
+        "-c",
+        "Debug",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story32-owner-snapshot-038510mp/builds",
+      "log": "/tmp/story32-owner-snapshot-038510mp/build-owner.log",
+      "timeoutSeconds": 600,
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/tmp/story32-owner-snapshot-038510mp/tests/OwnerSnapshot.Tests.csproj",
+        "-c",
+        "Debug",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo"
+      ],
+      "cwd": "/tmp/story32-owner-snapshot-038510mp/tests",
+      "log": "/tmp/story32-owner-snapshot-038510mp/build-tests.log",
+      "timeoutSeconds": 600,
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "/tmp/story32-owner-snapshot-038510mp/tests/bin/Debug/net10.0/OwnerSnapshot.Tests.dll",
+        "-xml",
+        "/tmp/story32-owner-snapshot-038510mp/tests.xml"
+      ],
+      "cwd": "/tmp/story32-owner-snapshot-038510mp/tests",
+      "log": "/tmp/story32-owner-snapshot-038510mp/tests.log",
+      "timeoutSeconds": 180,
+      "exitCode": 0
+    }
+  ],
+  "work": "/tmp/story32-owner-snapshot-038510mp",
+  "tests": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "not-run": 0
+  },
+  "passed": true,
+  "initialReceiptReadError": "[Errno 2] No such file or directory: '/tmp/story32-owner-snapshot-038510mp/tests/host-view-result.json'",
+  "hostViewRestore": {
+    "DefaultVersion": "9.8.7",
+    "HostVersion": "0.0.0-story32.local.20261109.e3ac98c14dd3",
+    "ResolvedVersion": "0.0.0-story32.local.20261109.e3ac98c14dd3",
+    "Type": "package",
+    "Consumer": "Hexalith.Platform.EventStoreHost",
+    "RealPackageRestoreAndCompilation": true,
+    "QualificationCredit": false
+  },
+  "receiptReadCorrected": true
+}

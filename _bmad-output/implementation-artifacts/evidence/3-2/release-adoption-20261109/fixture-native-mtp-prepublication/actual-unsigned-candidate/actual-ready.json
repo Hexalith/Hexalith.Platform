@@ -1,0 +1,67 @@
+{
+  "status": "Unhealthy",
+  "results": {
+    "dapr-sidecar": {
+      "status": "Unhealthy",
+      "description": "Dapr sidecar is not responsive.",
+      "duration": "00:00:00.0141534",
+      "data": {}
+    },
+    "dapr-actor-placement": {
+      "status": "Unhealthy",
+      "description": "DAPR actor placement health check failed: TaskCanceledException",
+      "duration": "00:00:03.0028739",
+      "data": {}
+    },
+    "dapr-statestore": {
+      "status": "Unhealthy",
+      "description": "Dapr state store \u0027statestore\u0027 is not accessible: DaprException",
+      "duration": "00:00:00.0096541",
+      "data": {}
+    },
+    "dapr-pubsub": {
+      "status": "Degraded",
+      "description": "Dapr pub/sub health check failed: DaprException",
+      "duration": "00:00:00.0095605",
+      "data": {}
+    },
+    "dapr-configstore": {
+      "status": "Degraded",
+      "description": "Dapr config store health check failed: DaprException",
+      "duration": "00:00:00.0095735",
+      "data": {}
+    },
+    "dapr-app-channel-token": {
+      "status": "Healthy",
+      "description": null,
+      "duration": "00:00:00.0041853",
+      "data": {}
+    },
+    "eventstore-extensions": {
+      "status": "Healthy",
+      "description": "Loaded EventStore extensions: platform-test@1 (Hexalith.Platform.TestExtension).",
+      "duration": "00:00:00.0048340",
+      "data": {
+        "platform-test": 1
+      }
+    },
+    "route-catalog": {
+      "status": "Unhealthy",
+      "description": "No activated catalog agrees with this host\u0027s profile, inventory, authentication and topology.",
+      "duration": "00:00:00.0047631",
+      "data": {}
+    },
+    "projection-delivery-writer-protocol": {
+      "status": "Unhealthy",
+      "description": "Projection delivery writer protocol could not be verified.",
+      "duration": "00:00:00.0096996",
+      "data": {}
+    },
+    "projection-delivery-unresolved-conflict": {
+      "status": "Unhealthy",
+      "description": "Projection delivery conflict evidence could not be verified.",
+      "duration": "00:00:00.0114330",
+      "data": {}
+    }
+  }
+}

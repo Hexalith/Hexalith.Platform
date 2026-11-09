@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test-extension-release/verify-package.py", line 126, in <module>
+    main()
+    ~~~~^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test-extension-release/verify-package.py", line 86, in main
+    identity = inspect(args.archive, args.version, args.source)
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test-extension-release/verify-package.py", line 45, in inspect
+    raise ValueError("Unexpected fixture package dependency closure")
+ValueError: Unexpected fixture package dependency closure

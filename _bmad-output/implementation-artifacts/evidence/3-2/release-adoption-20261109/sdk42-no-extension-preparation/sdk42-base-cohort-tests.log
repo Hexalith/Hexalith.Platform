@@ -1,0 +1,40 @@
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests.ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities [FAIL]
+      System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.
+      Stack Trace:
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(204,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42EventStorePackageTestCohortTests.cs(22,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests.ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesCohortTests.GenuineHistoricalBodiesCannotBeMixedIntoPublicParties(name: "Hexalith.McpCli.Abstractions", version: "2.0.0", cohort: "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memor"···) [FAIL]
+      System.IO.InvalidDataException : The qualified package catalog reader requires the exact signed public artifact bytes.
+      Stack Trace:
+        src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs(204,0): at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PublishedPartiesCohortTests.cs(86,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesCohortTests.GenuineHistoricalBodiesCannotBeMixedIntoPublicParties(String name, String version, String cohort)
+           at InvokeStub_PlatformSdk42PublishedPartiesCohortTests.GenuineHistoricalBodiesCannotBeMixedIntoPublicParties(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests.ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes [FAIL]
+      Shouldly.ShouldAssertException : `PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with { ImageProbeRunner = (start, timeout, _) => { timeout.ShouldBe(TimeSpan.FromSeconds(20)); start.FileName.ShouldBe("docker"); start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]); probes.Add(start.ArgumentList[2]); if (probes.Count == 1) return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)); throw new InvalidOperationException("Expected private EventStore second image boundary."); }, })`
+          should throw
+      System.InvalidOperationException
+          but threw
+      System.IO.InvalidDataException
+      ---- System.IO.InvalidDataException : Hexalith.EventStore: release snapshot '/tmp/platform-qualified-cohort-447e259ae5b241a2b210901f729de360/src/Hexalith.Platform.Composition/Declarations/eventstore.json': provenance version '4.2.0' at commit 'aa16227bd07f0564a3026d619a5abd973e02656f' does not match Builds catalog version '4.2.0', release commit 'unavailable', or its released v2 declaration (absent until the owner releases one).
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42EventStorePackageTestCohortTests.cs(76,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests.ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+        ----- Inner Stack Trace -----
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(129,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.LoadDeclarations(CompositionDeclarationOptions options)
+        /_/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionDeclarationClosure.cs(27,0): at Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.Load(CompositionDeclarationOptions options)
+        src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs(14,0): at Hexalith.Platform.Composition.PlatformDeclarationSet.Load(PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(141,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(112,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        tests/Hexalith.Platform.Composition.Tests/PlatformSdk42EventStorePackageTestCohortTests.cs(76,0): at Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests.<>c__DisplayClass1_0.<ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes>b__0()
+        /_/src/Shouldly/ShouldStaticClasses/ShouldThrow.cs(23,0): at Shouldly.Should.ThrowInternal[TException](Action actual, String customMessage, String shouldlyMethod)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '52ebd66185e6d563081fe38868d24826c07c660edcc4aa9c93b65d32ba2089bd')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 92, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 3.892s

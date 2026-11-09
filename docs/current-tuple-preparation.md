@@ -36,15 +36,79 @@ accepts only catalog Parties3.1.0; historical SDK4.1 purposes remain separate.
 The private EventStore/Tenants test purpose has its own six-body SDK4.2 cohort.
 Neither private purpose grants a general public SDK/Tenants pair.
 
-The current profile retains all 412 original cases and adds six extension
-controls and 38 exact artifact controls, for 456 total. The original 349-case
-legacy profile and authenticated historical provenance remain unchanged.
-Source release requires genuine same-code current/legacy qualification, all
-four tuple orchestration/execution jobs and all six SDK matrix jobs. Native,
-public-query, cleanup and candidate acceptance retain their separate required
-evidence; package measurement and source publication grant no such credit.
+The upstream current SDK4.2 profile retains its complete 456-case inventory,
+including six extension controls and 38 artifact controls. Two further required
+profiles execute 97 finite default-cohort cases and nine extension component
+cases. The current lane therefore requires **562 executions covering 559 unique
+cases**; three extension regressions deliberately run in two profiles. Each
+profile has an exact required count, and missing, extra or skipped cases refuse.
+The original 412-case SDK4.1 and 349-case legacy profiles remain separate,
+genuine same-code replays. Final code, tests, helpers and documentation must be
+identical across the real linear L/N/M commits, apart from their bounded typed
+metadata and dependency-source differences. Qualification must run against the
+actual checked-out replay commits. Earlier source-equivalent receipts cannot
+qualify newly integrated changes.
+
+The 349-case legacy replay binds Parties source
+`bb2783120c0eed620e3d4f52a2ebaf6aa510126f` and declaration SHA-256
+`40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b`.
+The 412-case pre-extension and current SDK4.2 sources bind Parties
+`ebe1739d70a4e76447938b0bb8c53db508bf6019` and declaration
+`d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
+The exact historical-to-current gitlink transformation is checked before
+initialization; every lane rechecks the actual owner HEAD and manifest bytes
+after initialization. Arbitrary, missing, reversed and older-provenance source
+substitutions refuse. This preserves the original historical assertions and
+adds no runtime or service enrollment authority.
+
+Source release requires all **five tuple jobs** (source resolution, the current
+lane, both historical lanes and aggregate verdict) and all **six SDK catalog
+jobs** at the exact final source. The SDK4.2 catalog row also verifies the signed
+public Parties reader with changed-body and owner-closure refusals. Public-query,
+native, cleanup and candidate acceptance retain their separate required evidence;
+package measurement and source publication grant no such credit.
+
 The catalog selects Dapr .NET1.19.0 and runtime/CLI1.19.1. The retained Works
 proof remains qualified only for Dapr1.18.7 and receives no newer-runtime label.
+
+### Story 3.2 release and source preparation
+
+The released catalog records the actual `Hexalith.Platform.EventStoreHost`
+consumer view. Extension package binding uses its released three-argument lookup;
+default and live views cannot replace a missing or invalid named snapshot.
+EventStore4.2.0's unchanged declaration body is SHA-256
+`21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495`.
+[Publication measurements](../_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/builds-4.47.0-binding-attempt1/measurement.json)
+bind fresh official archive signatures, every qualified carrier member, normal
+publisher payload comparison and the loaded seed body.
+
+Before integration with the upstream 456-case profile, all 97 finite cases and
+nine extension cases passed with clean, unchanged source/output snapshots at
+`8a9cbb8d1bf25f6b2ff4c68f81e455551944119a`, including three real released-tool
+reader/owner entries and both owner models. The
+[retained local receipt](../_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/measured-sdk42-default-controls-8a9cbb8d/receipt.json)
+confers no hosted or signed-fixture acceptance. The fully integrated source still
+requires fresh qualification of every current and historical profile.
+
+Plain Debug source builds propagate source mode and the SDK selected by the owning
+Builds catalog through direct and SDK-promoted project references. Explicit global
+and per-edge mode and SDK choices remain intact, as does authenticated mapping
+authority. Standard static graph restore preserves the per-edge context for both
+project and solution entry points; the default applies only to unmapped source
+builds when no restore engine was selected. Twenty-five real MSBuild metadata and
+restore controls run in every tuple lane. Package selection and explicit restore
+engine choices remain intact, and no AssemblyVersion override is used. Cold plain
+Debug project and solution build observations, source regressions and earlier
+failed attempts remain separately recorded.
+
+The Platform-owned extension fixture and its supported MTP test entry are
+prepublication inputs only. Platform maintains no fixture adoption pin. The actual
+signed publication must be measured and then pinned by a normally released Builds
+host-consumer view. Signed publication, finite producer/host/reader admission and
+actual published-package startup each require their own normal gates.
+This tuple preparation grants no fixture host admission, native parent execution,
+production deployment, module-manifest adoption or Story 3.2 completion.
+The previous producer sections retain their historical facts.
 
 ## Previous signed Builds4.45.0 and public Parties3.1.0 tuple
 

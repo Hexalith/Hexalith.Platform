@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <!-- Keep the publication contract at its sole declared SDK dependency. -->
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
   </PropertyGroup>
-  <!-- The extension API is available from the source-selected SDK and exact public 4.2.0 package. -->
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true' or '$(HexalithEventStoreVersion)' == '4.2.0'">
+  <!-- The extension API ships in the source-selected EventStore SDK; the measured signed 4.2.0 package also carries it. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
@@ -14,4 +16,15 @@
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
     <PackageReference Include="Hexalith.EventStore.DomainService" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="hexalith.module-manifest.v2.json" Pack="true" PackagePath="build/hexalith.module-manifest.v2.json" />
+    <None Include="fixture-producer.json" Pack="true" PackagePath="build/fixture-producer.json" />
+    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" Pack="true" PackagePath="build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" />
+    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs" Pack="true" PackagePath="build/qualification/ReadinessTests.cs" />
+    <None Include="../../../eng/test-extension-release/qualify-host.py" Pack="true" PackagePath="build/qualification/qualify-host.py" />
+  </ItemGroup>
+  <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
+  </PropertyGroup>
 </Project>

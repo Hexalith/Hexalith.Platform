@@ -2,10 +2,15 @@
 
 `source-release.yml` responds to completed main-push runs of **Platform tuple CI
 preflight** and **Catalog builder consumer binding**. Its read-only job requires
-both latest exact-source runs, latest attempts and all four tuple
-orchestration/execution jobs and six SDK jobs to pass. Missing or pending
-counterparts defer. Failures, cancellations, unknown jobs, foreign/PR inputs,
-stale callbacks and changed main refuse.
+both latest exact-source runs, latest attempts and all five tuple
+orchestration/execution jobs and six SDK jobs to pass. Source resolution fans out
+to the current SDK4.2 lane and genuine same-code 412/349-case historical lanes;
+the aggregate verdict requires all three. The current lane executes the complete
+456-case upstream profile, 97 finite default-cohort cases and nine extension
+component cases: 562 executions, 559 unique identities and three explicitly
+repeated regressions. Every profile retains exact execution counts with zero
+skips. Missing or pending counterparts defer. Failures, cancellations, unknown
+jobs, foreign/PR inputs, stale callbacks and changed main refuse.
 
 The SDK4.2.0 row binds the genuine Sample source and public Tenants7.0.5;
 the SDK4.1.0 row retains its existing public Parties owner regression. A separate
@@ -15,8 +20,9 @@ changed-body refusals. It retains the original public Parties3.1 image digest
 and that image's SDK4.1 provenance. The private current-owner purpose separately
 binds exact SDK4.1 or SDK4.2 reference bodies to its measured Release source,
 reader receipt and mapped process files. Neither reader qualification nor model
-controls grant native runtime acceptance. The current tuple additionally requires
-six SDK4.2 extension controls and 38 artifact boundary controls. The historical
+controls grant native runtime acceptance. The upstream 456-case profile retains
+its six SDK4.2 extension controls and 38 artifact boundary controls; the additional
+97/9 profiles do not replace them. The historical
 Works proof remains qualified only for Dapr1.18.7.
 
 The read-only verifier runs the reviewed default-branch workflow SHA, so an old

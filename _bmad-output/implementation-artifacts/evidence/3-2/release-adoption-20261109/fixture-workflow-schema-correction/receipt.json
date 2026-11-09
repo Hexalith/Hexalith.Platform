@@ -1,0 +1,84 @@
+{
+  "recordedUtc": "2026-11-09T19:40:46.335457+00:00",
+  "failedSource": "a88ae34328af405237a5ac51a3bbbaf5f58a493d",
+  "failedPushRun": 42684848458,
+  "actualGithubRefusal": "(Line: 30, Col: 29): Unrecognized named-value: 'runner'. Located at position 1 within expression: runner.temp, (Line: 93, Col: 31): Unrecognized named-value: 'runner'. Located at position 1 within expression: runner.temp",
+  "correction": "Bind unchanged RUNNER_TEMP proof paths in the first runtime step of each job via GITHUB_ENV. Job-level paths are removed. All publisher/source/tuple/production checks and archive paths remain.",
+  "actionlint": {
+    "version": "1.7.12",
+    "beforeExit": 1,
+    "fixtureAfterExit": 0,
+    "allFourWorkflowsAfterExit": 0,
+    "allCommand": "actionlint -shellcheck= -pyflakes= .github/workflows/tuple-ci.yml .github/workflows/catalog-builder.yml .github/workflows/source-release.yml .github/workflows/test-extension-release.yml"
+  },
+  "automaticControls": {
+    "discovery": "npm run test:source-release",
+    "expected": 28,
+    "executed": 28,
+    "passed": 28,
+    "skipped": 0,
+    "added": 3,
+    "purposes": [
+      "actual first-step Bash proof-path environment writes",
+      "observed unsupported job-level runner-context refusal",
+      "runtime binding order refusal"
+    ]
+  },
+  "oldFrozenSources": {
+    "L": "87bf914eb2e990023d46dff1d14fdbf62f42320e",
+    "N": "baafebd8fb9926eedfd85a4f13e8b1e754eae96c",
+    "M": "a88ae34328af405237a5ac51a3bbbaf5f58a493d",
+    "retainedRefs": true,
+    "qualificationCredit": false
+  },
+  "candidateAcceptance": false,
+  "hostedQualification": false,
+  "signedFixtureCredit": false,
+  "runtimeAdmissionChanged": false,
+  "files": {
+    "observed-github-run.json": {
+      "sha256": "8a1b12deb11eb53e7098b512daffc79034819a8f688267f6bed6ea74d3b722b4",
+      "bytes": 13413
+    },
+    "observed-github-annotation.html": {
+      "sha256": "d5ca48b570434fc9399f251003e9d83117d0f2fe92b4f6d9fc56042ff2a511a4",
+      "bytes": 145572
+    },
+    "actionlint-before.stdout": {
+      "sha256": "aa4f21f6a2dc8d8c3d28d212f7e556e5ad207b217c1bd5c10f8cafba746c3d12",
+      "bytes": 876
+    },
+    "actionlint-before.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "actionlint-fixture-after.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "actionlint-fixture-after.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "actionlint-all-after.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "actionlint-all-after.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-release-controls28.log": {
+      "sha256": "f059c883ccab08a7ebfd978d945bafae2fb13cce2fa9c072ddac8e4545a63463",
+      "bytes": 3101
+    },
+    "focused-controls3.log": {
+      "sha256": "c282dd4b083e0d30eaff57a67b67a2aa38eb1c0c966fe04dc5e7db8dcd8b8f37",
+      "bytes": 370
+    },
+    "workflow-only.diff": {
+      "sha256": "a7426fd16b14eba2f9d646c9ae16028be7554c0a2669f76b9b03b17b19bb70d5",
+      "bytes": 1308
+    }
+  }
+}

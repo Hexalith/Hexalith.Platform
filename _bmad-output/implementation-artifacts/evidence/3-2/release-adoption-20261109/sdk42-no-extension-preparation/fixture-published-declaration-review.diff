@@ -1,0 +1,314 @@
+diff --git a/.github/workflows/test-extension-release.yml b/.github/workflows/test-extension-release.yml
+index 6fd07822..a2605646 100644
+--- a/.github/workflows/test-extension-release.yml
++++ b/.github/workflows/test-extension-release.yml
+@@ -37,6 +37,10 @@ jobs:
+       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+         with:
+           node-version: '24'
++      - name: Verify publisher refusal and archive controls
++        run: |
++          node --test eng/test-extension-release/gate.test.mjs
++          python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
+       - name: Require exact current source release and normal qualifications
+         run: node eng/test-extension-release/gate.mjs
+       - name: Initialize direct dependencies
+diff --git a/eng/test-extension-release/README.md b/eng/test-extension-release/README.md
+index 6195c3eb..4f703d60 100644
+--- a/eng/test-extension-release/README.md
++++ b/eng/test-extension-release/README.md
+@@ -53,3 +53,16 @@ python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
+ 
+ These checks test release refusals and archive identity validation; they do not
+ claim a hosted publication or signed-package startup qualification.
++
++The fixture archive also contains the exact Platform-owned v2 declaration for
++`platformtestextension` and its producer descriptor. This pure extension module
++has no servers and depends only on EventStore/Tenants. The verifier reads the
++approved declaration and producer directly from the immutable release Git
++object, compares every archived byte, and records their hashes. It refuses a
++foreign producer, missing or changed declaration, a different extension/API,
++source project dependencies, another SDK version, or a different SDK release
++source. These packaged inputs prepare a concrete declaration authority for
++subsequent finite host admission; they grant no current composition authority.
++
++The publication controls now run automatically in tuple CI and again before
++fixture publication: 14 Node gate cases and 7 Python archive/producer cases.
+diff --git a/eng/test-extension-release/test_package.py b/eng/test-extension-release/test_package.py
+index 37f23b93..7e949fbd 100644
+--- a/eng/test-extension-release/test_package.py
++++ b/eng/test-extension-release/test_package.py
+@@ -11,7 +11,13 @@ spec.loader.exec_module(package)
+ 
+ 
+ class PackageIdentityTests(unittest.TestCase):
+-    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None):
++    approved = {package.DECLARATION: (package.ROOT / package.FIXTURE / "hexalith.module-manifest.v2.json").read_bytes(),
++                package.PRODUCER: (package.ROOT / package.FIXTURE / "fixture-producer.json").read_bytes()}
++
++    def inspect(self, path, version, source):
++        return package.inspect(path, version, source, approved=self.approved)
++
++    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None, declaration=None, producer=None, omit=None):
+         path = Path(root) / "fixture.nupkg"
+         source = source or "a" * 40
+         with zipfile.ZipFile(path, "w") as archive:
+@@ -19,28 +25,50 @@ class PackageIdentityTests(unittest.TestCase):
+                 f'<repository type="git" url="{package.REPOSITORY}" commit="{source}" />'
+                 f'<dependencies><dependency id="{dependency}" version="[4.2.0, )" /></dependencies></metadata></package>')
+             archive.writestr(package.LIBRARY, body or b"EventStoreExtensionAttribute platform-test")
++            if omit != package.DECLARATION:
++                archive.writestr(package.DECLARATION, declaration or self.approved[package.DECLARATION])
++            if omit != package.PRODUCER:
++                archive.writestr(package.PRODUCER, producer or self.approved[package.PRODUCER])
+         return path
+ 
+     def test_accepts_only_the_declared_source_and_fixture(self):
+         with tempfile.TemporaryDirectory() as root:
+-            result = package.inspect(self.archive(root), "1.9.0", "a" * 40)
++            result = self.inspect(self.archive(root), "1.9.0", "a" * 40)
+             self.assertEqual(result["packageId"], package.PACKAGE)
+             self.assertIn(package.LIBRARY, result["bodies"])
+ 
++    def test_refuses_missing_declaration_or_producer(self):
++        for missing in [package.DECLARATION, package.PRODUCER]:
++            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
++                self.inspect(self.archive(root, omit=missing), "1.9.0", "a" * 40)
++
++    def test_refuses_altered_declaration_or_foreign_producer(self):
++        for member in ["declaration", "producer"]:
++            with self.subTest(member=member), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
++                self.inspect(self.archive(root, **{member: b'{}'}), "1.9.0", "a" * 40)
++
++    def test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent(self):
++        approved = dict(self.approved)
++        approved[package.PRODUCER] = approved[package.PRODUCER].replace(b'Hexalith/Hexalith.Platform', b'Foreign/Other')
++        with tempfile.TemporaryDirectory() as root:
++            path = self.archive(root, producer=approved[package.PRODUCER])
++            with self.assertRaisesRegex(ValueError, "unsupported"):
++                package.inspect(path, "1.9.0", "a" * 40, approved=approved)
++
+     def test_refuses_different_source(self):
+         with tempfile.TemporaryDirectory() as root:
+             with self.assertRaises(ValueError):
+-                package.inspect(self.archive(root, source="b" * 40), "1.9.0", "a" * 40)
++                self.inspect(self.archive(root, source="b" * 40), "1.9.0", "a" * 40)
+ 
+     def test_refuses_foreign_dependency(self):
+         with tempfile.TemporaryDirectory() as root:
+             with self.assertRaises(ValueError):
+-                package.inspect(self.archive(root, dependency="Foreign.SDK"), "1.9.0", "a" * 40)
++                self.inspect(self.archive(root, dependency="Foreign.SDK"), "1.9.0", "a" * 40)
+ 
+     def test_refuses_fixture_built_without_extension_api(self):
+         with tempfile.TemporaryDirectory() as root:
+             with self.assertRaises(ValueError):
+-                package.inspect(self.archive(root, body=b"fixture without identity"), "1.9.0", "a" * 40)
++                self.inspect(self.archive(root, body=b"fixture without identity"), "1.9.0", "a" * 40)
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/eng/test-extension-release/verify-package.py b/eng/test-extension-release/verify-package.py
+index c3cab1fe..2ec54479 100644
+--- a/eng/test-extension-release/verify-package.py
++++ b/eng/test-extension-release/verify-package.py
+@@ -6,13 +6,27 @@ from pathlib import Path
+ import subprocess
+ import xml.etree.ElementTree as ET
+ import zipfile
++import re
+ 
+ PACKAGE = "Hexalith.Platform.TestExtension"
+ LIBRARY = "lib/net10.0/" + PACKAGE + ".dll"
+ REPOSITORY = "https://github.com/Hexalith/Hexalith.Platform"
+ 
+ 
+-def inspect(path, version, source):
++DECLARATION = "build/hexalith.module-manifest.v2.json"
++PRODUCER = "build/fixture-producer.json"
++ROOT = Path(__file__).resolve().parents[2]
++FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
++
++
++def approved_documents(source):
++    if re.fullmatch(r"[a-f0-9]{40}", source) is None:
++        raise ValueError("Require an exact immutable fixture source revision")
++    return {member: subprocess.check_output(["git", "show", source + ":" + FIXTURE + name], cwd=ROOT, timeout=30)
++            for member, name in [(DECLARATION, "hexalith.module-manifest.v2.json"), (PRODUCER, "fixture-producer.json")]}
++
++
++def inspect(path, version, source, *, approved=None):
+     with zipfile.ZipFile(path) as archive:
+         names = archive.namelist()
+         if len(names) != len(set(names)) or any(name.startswith("/") or ".." in Path(name).parts for name in names):
+@@ -29,6 +43,25 @@ def inspect(path, version, source):
+         dependencies = [node.attrib for node in metadata.iter() if node.tag.endswith("dependency")]
+         if len(dependencies) != 1 or dependencies[0].get("id") != "Hexalith.EventStore.DomainService":
+             raise ValueError("Unexpected fixture package dependency closure")
++        expected_documents = approved_documents(source) if approved is None else approved
++        if set(expected_documents) != {DECLARATION, PRODUCER}:
++            raise ValueError("Require the exact fixture declaration and producer authority")
++        for member, expected in expected_documents.items():
++            if member not in names or archive.read(member) != expected:
++                raise ValueError("Packaged fixture declaration or producer differs from immutable source")
++        producer = json.loads(archive.read(PRODUCER))
++        declaration = json.loads(archive.read(DECLARATION))
++        module = declaration["modules"][0]
++        if producer != {"schema": "hexalith.platform.test-extension-producer.v1",
++                       "publisherRepository": "Hexalith/Hexalith.Platform", "packageId": PACKAGE,
++                       "moduleId": "platformtestextension", "declaration": DECLARATION,
++                       "extensionId": "platform-test", "extensionApiMajor": 1,
++                       "purpose": "signed-extension-host-qualification-only", "serviceEnrollment": False} \
++                or declaration["schema"] != "hexalith.module-manifest.v2" or len(declaration["modules"]) != 1 \
++                or module["identity"] != {"moduleId": "platformtestextension", "servers": [], "dependencies": ["eventstore", "tenants"]} \
++                or module["runtime"]["eventStoreExtensions"] != [{"packageId": PACKAGE, "extensionId": "platform-test", "extensionApiMajor": 1,
++                    "configurationInputs": [{"key": "PlatformTestExtension:Marker", "source": "configuration", "reference": "platform-test-marker"}]}]:
++            raise ValueError("The Platform fixture producer/declaration identity is unsupported")
+         body = archive.read(LIBRARY)
+         if b"EventStoreExtensionAttribute" not in body or b"platform-test" not in body:
+             raise ValueError("The fixture package was built without its extension identity")
+@@ -36,7 +69,9 @@ def inspect(path, version, source):
+                   if not name.endswith("/") and name != ".signature.p7s"}
+     return {"packageId": PACKAGE, "version": version, "source": source, "repository": REPOSITORY,
+             "archiveSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+-            "librarySha256": hashlib.sha256(body).hexdigest(), "bodies": bodies, "dependencies": dependencies}
++            "librarySha256": hashlib.sha256(body).hexdigest(), "bodies": bodies, "dependencies": dependencies,
++            "declaration": {"path": DECLARATION, "sha256": bodies[DECLARATION], "moduleId": "platformtestextension"},
++            "producer": {"path": PRODUCER, "sha256": bodies[PRODUCER], "publisherRepository": "Hexalith/Hexalith.Platform"}}
+ 
+ 
+ def main():
+@@ -63,6 +98,8 @@ def main():
+         for name, library in assets["libraries"].items():
+             if not name.startswith("Hexalith.EventStore."):
+                 continue
++            if name.split("/", 1)[1] != "4.2.0":
++                raise ValueError("The fixture requires the exact measured SDK4.2 package closure")
+             archives = [Path(folder) / library["path"] / (library["path"].replace("/", ".") + ".nupkg")
+                         for folder in assets["packageFolders"]]
+             found = [path for path in archives if path.is_file()]
+@@ -70,6 +107,12 @@ def main():
+                 raise ValueError("The actual restored SDK archive is unavailable: " + name)
+             verification = subprocess.run(["dotnet", "nuget", "verify", str(found[0]), "--all"],
+                                           capture_output=True, text=True, timeout=60, check=True)
++            with zipfile.ZipFile(found[0]) as sdk:
++                specification = ET.fromstring(sdk.read(next(member for member in sdk.namelist() if member.endswith(".nuspec"))))
++                repository = specification.find(".//{*}repository")
++                if repository is None or repository.attrib.get("commit") != "aa16227bd07f0564a3026d619a5abd973e02656f" \
++                        or repository.attrib.get("url", "").rstrip("/").removesuffix(".git") != "https://github.com/Hexalith/Hexalith.EventStore":
++                    raise ValueError("The actual fixture SDK source differs from the measured release")
+             signed[name] = {"sha256": hashlib.sha256(found[0].read_bytes()).hexdigest(),
+                             "signatureVerification": verification.stdout}
+         if not any(name.startswith("Hexalith.EventStore.DomainService/") for name in signed):
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj b/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
+index 09ca4a82..437cd7d1 100644
+--- a/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj
+@@ -4,7 +4,7 @@
+     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+     <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
+   </PropertyGroup>
+-  <!-- The extension API ships in the source-selected EventStore SDK; no released package carries it yet. -->
++  <!-- The extension API ships in the source-selected EventStore SDK; the measured signed 4.2.0 package also carries it. -->
+   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
+     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
+   </PropertyGroup>
+@@ -14,4 +14,12 @@
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
+     <PackageReference Include="Hexalith.EventStore.DomainService" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="hexalith.module-manifest.v2.json" Pack="true" PackagePath="build/hexalith.module-manifest.v2.json" />
++    <None Include="fixture-producer.json" Pack="true" PackagePath="build/fixture-producer.json" />
++  </ItemGroup>
++  <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
++  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
++    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
++  </PropertyGroup>
+ </Project>
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json b/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json
+new file mode 100644
+index 00000000..2a75b3d2
+--- /dev/null
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json
+@@ -0,0 +1,63 @@
++{
++  "schema": "hexalith.module-manifest.v2",
++  "modules": [
++    {
++      "identity": {
++        "moduleId": "platformtestextension",
++        "servers": [],
++        "dependencies": [
++          "eventstore",
++          "tenants"
++        ]
++      },
++      "runtime": {
++        "dapr": [],
++        "extensions": [],
++        "resources": [],
++        "eventStoreExtensions": [
++          {
++            "packageId": "Hexalith.Platform.TestExtension",
++            "extensionId": "platform-test",
++            "extensionApiMajor": 1,
++            "configurationInputs": [
++              {
++                "key": "PlatformTestExtension:Marker",
++                "source": "configuration",
++                "reference": "platform-test-marker"
++              }
++            ]
++          }
++        ]
++      },
++      "surfaces": {
++        "interfaces": []
++      },
++      "integration": {
++        "topics": [],
++        "secrets": [],
++        "dynamicSecretNamespaces": [],
++        "identityNeeds": [],
++        "egress": [],
++        "providers": [],
++        "workers": []
++      },
++      "lifecycle": {
++        "readiness": [],
++        "tasks": [],
++        "recoveryHooks": [],
++        "fenceHooks": [],
++        "replay": {
++          "reopenBeforeReplay": false
++        },
++        "startup": {},
++        "criticalFlows": [],
++        "smokeSurfaces": [],
++        "classification": {
++          "changeClass": "additive",
++          "reason": "Platform-owned signed extension qualification fixture; no service or production enrollment."
++        },
++        "recoveryInventory": []
++      }
++    }
++  ]
++}
+diff --git a/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json b/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json
+new file mode 100644
+index 00000000..4ac5ae1a
+--- /dev/null
++++ b/tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json
+@@ -0,0 +1,11 @@
++{
++  "schema": "hexalith.platform.test-extension-producer.v1",
++  "publisherRepository": "Hexalith/Hexalith.Platform",
++  "packageId": "Hexalith.Platform.TestExtension",
++  "moduleId": "platformtestextension",
++  "declaration": "build/hexalith.module-manifest.v2.json",
++  "extensionId": "platform-test",
++  "extensionApiMajor": 1,
++  "purpose": "signed-extension-host-qualification-only",
++  "serviceEnrollment": false
++}

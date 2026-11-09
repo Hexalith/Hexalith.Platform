@@ -1,0 +1,78 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Hexalith.EventStore.Sample.Contracts/1.0.0": {
+        "dependencies": {
+          "Hexalith.EventStore.Contracts": "4.2.0"
+        },
+        "runtime": {
+          "Hexalith.EventStore.Sample.Contracts.dll": {}
+        }
+      },
+      "ByteAether.Ulid/1.4.2": {
+        "runtime": {
+          "lib/net10.0/ByteAether.Ulid.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Hexalith.Commons.UniqueIds/2.30.10": {
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2"
+        },
+        "runtime": {
+          "lib/net10.0/Hexalith.Commons.UniqueIds.dll": {
+            "assemblyVersion": "2.30.10.0",
+            "fileVersion": "2.30.10.0"
+          }
+        }
+      },
+      "Hexalith.EventStore.Contracts/4.2.0": {
+        "dependencies": {
+          "ByteAether.Ulid": "1.4.2",
+          "Hexalith.Commons.UniqueIds": "2.30.10"
+        },
+        "runtime": {
+          "lib/net10.0/Hexalith.EventStore.Contracts.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Hexalith.EventStore.Sample.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ByteAether.Ulid/1.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LCOjm7QFSdM2X779Db2K+i3pPei4f8PJEcY1wGehkdgYNmpQaP5uF7U8aZMMBWeYe+zV2Ues9j/nFpW4Pw10wQ==",
+      "path": "byteaether.ulid/1.4.2",
+      "hashPath": "byteaether.ulid.1.4.2.nupkg.sha512"
+    },
+    "Hexalith.Commons.UniqueIds/2.30.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2KX2BJzYGnmXYCWvwu0Z7yb5417Bvk4w0R97BSLstkEIQ0e0qIjbOPxR5WKSP1QH/nPtHaauZ2AmZv6L87P9/w==",
+      "path": "hexalith.commons.uniqueids/2.30.10",
+      "hashPath": "hexalith.commons.uniqueids.2.30.10.nupkg.sha512"
+    },
+    "Hexalith.EventStore.Contracts/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-byejPd+fssR5SJndvJiTVEg2nm5FzSFyyg2daM325G7/g+MMyggxkvsEqkEzmfuuOT7VqEMCBBoODWuLYeZwdw==",
+      "path": "hexalith.eventstore.contracts/4.2.0",
+      "hashPath": "hexalith.eventstore.contracts.4.2.0.nupkg.sha512"
+    }
+  }
+}

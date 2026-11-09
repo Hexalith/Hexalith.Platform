@@ -1,0 +1,250 @@
+{
+  "story": "3.2",
+  "date": "2026-11-09T10:59:01.705569+00:00",
+  "status": "in-progress",
+  "sourceChangedThisRun": false,
+  "worktree": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+  "branch": "docs/story-3-2-broad-verification-20261109",
+  "preservedStoryBaseline": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+  "verifiedRevision": "59fb32933d76a7e71d9479e1903087a73ea66f2b",
+  "directDependencies": {
+    "references/Hexalith.AI.Tools": {
+      "revision": "1745b6663ad32bb1288167135ed0f979366c53a0",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Agents": {
+      "revision": "7957108c30d38b8e82eb072cf3437b6a67627cd7",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Builds": {
+      "revision": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+      "sourceStatus": "## main...origin/main [behind 12]"
+    },
+    "references/Hexalith.ChatBot": {
+      "revision": "b13c58006d292836a9c8b242de476765676e5fb2",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Commons": {
+      "revision": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Conversations": {
+      "revision": "b2c3cf6684a779a077e179008f7d559b88bd7e4a",
+      "sourceStatus": "## main...origin/main [behind 1]"
+    },
+    "references/Hexalith.EventStore": {
+      "revision": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841",
+      "sourceStatus": "## main...origin/main [behind 1]"
+    },
+    "references/Hexalith.Folders": {
+      "revision": "e88c940000446e13d17d86a7288649d8653a7138",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.FrontComposer": {
+      "revision": "e972d0f06a8eec3446db0b2270fdb14eef4c1186",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.McpCli": {
+      "revision": "fa7c51601041ee6cf0d2f9d4613fb405758f2f7c",
+      "sourceStatus": "## main...origin/main [behind 8]"
+    },
+    "references/Hexalith.Memories": {
+      "revision": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Parties": {
+      "revision": "6f8cd78d0a4c41764c0ed843b0f889ba3d5c070d",
+      "sourceStatus": "## main...origin/main [behind 5]"
+    },
+    "references/Hexalith.PolymorphicSerializations": {
+      "revision": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Projects": {
+      "revision": "9ae0571529cb4a9f3ad9750c8b834e6284d4f76b",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Tenants": {
+      "revision": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Timesheets": {
+      "revision": "f5bee2c91bec6e1e78d81b604cea6af0cee764fe",
+      "sourceStatus": "## main...origin/main"
+    },
+    "references/Hexalith.Works": {
+      "revision": "4bd0df1461c89fdf00f1ccf3c47a3bf9bc939a23",
+      "sourceStatus": "## main...origin/main"
+    }
+  },
+  "builds": {
+    "current": {
+      "warnings": 0,
+      "errors": 0,
+      "log": "current-build.log"
+    },
+    "baseline": {
+      "warnings": 0,
+      "errors": 0,
+      "log": "baseline-build.log"
+    }
+  },
+  "freshFocusedPlatform": {
+    "passed": 45,
+    "failed": 0,
+    "skipped": 0,
+    "classes": {
+      "EventStoreExtensionCompositionTests": {
+        "Pass": 33
+      },
+      "GatewayExtensionRegistrationTests": {
+        "Pass": 3
+      },
+      "GatewaySeedSubscriptionTests": {
+        "Pass": 4
+      },
+      "DomainEnrollmentKitTests": {
+        "Pass": 5
+      }
+    }
+  },
+  "retainedUnchangedOwnerEvidence": [
+    {
+      "name": "eventstore-registration-and-diagnostics",
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultLog": "eventstore-registration-and-diagnostics.log",
+      "sha256": "049b0f0f620e2c336188c0743107da2ec330db347a14c907f805f406c2f57f66",
+      "freshThisRun": false
+    },
+    {
+      "name": "builds-manifest-and-adoption",
+      "passed": 617,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultLog": "builds-manifest-and-adoption.log",
+      "sha256": "b0163fce5e4e066d97589ad8a2319e5b58d915d263b68f97a76b31853cb23167",
+      "freshThisRun": false
+    }
+  ],
+  "retainedOwnerReceipt": {
+    "path": "../local-verification-20261109/verification.json",
+    "sha256": "6cf66fc639889b40f2b180f7247cfa49b63c930b6afb5260826cac7a4e51178e",
+    "sameEventStoreAndBuildsCommits": true
+  },
+  "broad": {
+    "current": {
+      "side": "current",
+      "revision": "59fb32933d76a7e71d9479e1903087a73ea66f2b",
+      "classesDiscovered": 67,
+      "classesFinished": 67,
+      "classTimeouts": [],
+      "counts": {
+        "total": 955,
+        "passed": 782,
+        "failed": 161,
+        "skipped": 12,
+        "not-run": 0
+      },
+      "fullInventoryExecuted": true,
+      "resumedHarness": true,
+      "prerequisiteRerun": "DomainEnrollmentKitTests after dotnet tool restore; the original attempt and restored-tool attempt are retained."
+    },
+    "baseline": {
+      "side": "baseline",
+      "revision": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+      "classesDiscovered": 65,
+      "classesFinished": 65,
+      "classTimeouts": [],
+      "counts": {
+        "total": 919,
+        "passed": 744,
+        "failed": 163,
+        "skipped": 12,
+        "not-run": 0
+      },
+      "fullInventoryExecuted": true,
+      "resumedHarness": true,
+      "prerequisiteRerun": "DomainEnrollmentKitTests after dotnet tool restore; the original attempt and restored-tool attempt are retained."
+    },
+    "commonTestCases": 919,
+    "addedTestCases": 36,
+    "removedTestCases": 0,
+    "commonFailures": 160,
+    "regressions": 1,
+    "resolvedFailures": 3,
+    "addedFailures": 0,
+    "comparison": "comparison.json",
+    "regressionAttribution": "regression-attribution.json",
+    "allSelectedClassesFinished": true,
+    "allTestsPassed": false,
+    "classIsolation": "One process per class; both complete test inventories were selected. The 12 explicit skips in each lane remain skips.",
+    "toolPrerequisite": "Initial current missing-tool failures are superseded by a retained 5/5 rerun after restoring the unchanged pin. Baseline rerun retains three source/pin failures.",
+    "attachedProcessExitCodes": "The two active AppModel processes outlived the implementation handoff. Their final XML and log summaries are retained; individual exit codes were not observed.",
+    "duplicateDisplayNames": {
+      "groups": 4,
+      "cases": 12,
+      "sameAllPassMultiplicityOnBothRevisions": true,
+      "unchangedSourceHashes": {
+        "tests/Hexalith.Platform.Composition.Tests/ConversationsEnrollmentTests.cs": "f77ebe99680ec0642f5fae3dce06d3a5db7cc3f5df64bf2027b5a4152d4305dc",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformDaprBindingsTests.cs": "9058b89043af7bec30a09d33355c4e04e8f004e1b2ba27e2c966f2292f1ded94"
+      },
+      "note": "Runner display truncation merges distinct input strings. All occurrences are retained and counted; ambiguous non-pass groups are refused by the comparison script."
+    }
+  },
+  "matrix": {
+    "sourceHappy": "SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync; SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync; SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync",
+    "packageHappy": "PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference; UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded (generated binding proof only)",
+    "unsupportedMajor": "UnsupportedMajorFailsBeforeAnyResourceIsAdded",
+    "duplicate": "DuplicateExtensionNamesBothModulesAndTheDuplicate; DuplicateAcrossDeclarationFilesIsRefusedBeforeAnyResourceIsAdded",
+    "declarationDrift": "DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+    "secretDapr": "SecretOrDaprRoleInputIsRefusedBeforeAnyResourceIsAdded",
+    "providerDaprClient": "Retained passing Builds PlatformAdoptionValidationTests.EventStoreExtensionDirectReferencesAreBoundedAsync cases",
+    "ad9Admitted": "AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret; retained Builds named-exception and SDK cases",
+    "imageEventstore": "Retained passing Builds PlatformAdoptionValidationTests eventstore-image cases",
+    "readiness": "PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync"
+  },
+  "review": {
+    "independentLayers": 3,
+    "sourceFindings": 13,
+    "carriedRoutes": 11,
+    "newLowRejections": 2,
+    "newPatches": 0,
+    "newDeferrals": 0
+  },
+  "frozenBlockSha256": "4a472331c89e561becf7be150c20b835cf571e2970b282093e30a692b9fa8c49",
+  "remaining": [
+    "The broad gate has 161 failures and 12 explicit skips; no full-suite pass is claimed.",
+    "Selected package-SDK extension enablement, released package startup and automatic CI qualification remain pending under the approved release/adoption boundary.",
+    "Existing snapshot restore, owner-secret and artifact-identity follow-ups retain their recorded routes."
+  ],
+  "rawEvidenceDirectory": "/tmp/story-3-2-broad-20261109-_z_wy84q",
+  "reviewArtifacts": {
+    "/tmp/story-3-2-acceptance-current-l5_mh1z8.diff": "60badc0b0b4101f4f26d612b47f574228aa2955b8056fa13b55516fce4d9d227",
+    "/tmp/story-3-2-acceptance-current-l5_mh1z8-review.diff": "f0f44e9a2ed33e2ae48f0d265dd312bbf2a8b3f1006817d37017d4c9e2a2cc83",
+    "/tmp/story-3-2-review-owner-supplement.diff": "6d7bb61f6f736ee3f5bfd852d1d439c7a321492f7375ade170925b6aa2674105"
+  },
+  "savedArtifacts": {
+    "current-classes.json": "168c8a659cc57111af4df0a689b07beeb4e92113bf7f2dd49b61e18f90e67084",
+    "baseline-build.log": "cda7b8acfa559c7303c0d92ee9b645d6285bc2d136931688c88adab104bc46ba",
+    "current-results.json": "8fffa0773fe97b6195f674d277b042c62330f3b4bea68ab3166072ec10605330",
+    "current-tool-rerun.json": "720b73583d8f28f227d80e9f3ba5bf5a9ed7c2ef860885dfeeb73a293f862693",
+    "reproduce-tests.py": "c74dccecbff85ae0b00219c52d71b68bce6fe6ddd4669dace13b5d1a4e5f698b",
+    "current-commands.json": "8be5dc914c207f662d445c98b1a01ada4568e6dc6286b350d65c47b8c4fcd540",
+    "class-deadline-policy.json": "dc17f38be3a305845063f047bb96451ec6366c601a6cf9443d444c14bcb4a3fa",
+    "baseline-tool-rerun.json": "56d895440b61d5dbc8c0755efe94ae3474aff1b0815f3d0cec95a8095ca89a11",
+    "comparison.json": "98737f58ca0293cd311a38edb544cceae3102e20c1c10b05401b34f72c50405e",
+    "baseline-commands.json": "679f5886d222b8fc13ed572f80bd1fb0b5ec1c0121f6cd8f3af728f32c197c06",
+    "inputs.json": "f2f7a9a94cab21f176e69f56850020f15123d3b56b24f937126b2c5090cbedb6",
+    "regression-attribution.json": "e9c8c805454915aeb5c932d7b97e908e61d36dc01639dd8dc200bd91c51c0d54",
+    "current-build.log": "c0433d3e01b274ced69a629ca3792aae763672c711b1839207cfac4eed174363",
+    "compare-results.py": "5d92d29e595e368f0251316fded89559601ea2e55a6b9e53e30829d8b8fbcb9d",
+    "builds-manifest-and-adoption.log": "b0163fce5e4e066d97589ad8a2319e5b58d915d263b68f97a76b31853cb23167",
+    "baseline-classes.json": "ba84d9baaa9dd76defce212968284e991765aa9a8ec035420df58d5db8b51857",
+    "baseline-results.json": "8f3b9c2e323bc9977d3657d39b1746be53a75989408f314b48dc6843f473694d",
+    "eventstore-registration-and-diagnostics.log": "049b0f0f620e2c336188c0743107da2ec330db347a14c907f805f406c2f57f66"
+  }
+}

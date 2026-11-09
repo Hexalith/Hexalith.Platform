@@ -1,0 +1,69 @@
+{
+  "recordedUtc": "2026-11-09T17:47:32.772834+00:00",
+  "platformBase": "d360698a9cb5a6ffda28289478eaacd168dbecc7",
+  "privateRoot": "/tmp/story32-fixture-entry-preparation/repository",
+  "patch": "/tmp/story32-fixture-native-mtp-profile.patch",
+  "patchSha256": "e09f9ed947b6015ae91163244feb0be27eb3faad171ba894fde14c527c91baa3",
+  "sourceBodies": {
+    ".github/workflows/tuple-ci.yml": "e989838b0fc422ab676ae34f284642ad1c7a3ca055687d2c894011b567848419",
+    ".github/workflows/test-extension-release.yml": "113f030156577d99fb2deda3e5ebba5e0216325177af593cc8a2d40902c94009",
+    "eng/test-extension-release/README.md": "23eebf27269be598a3de12d53325467676e7b63effdbb39925a9cef231f9dc95",
+    "eng/test-extension-release/verify-package.py": "1e2f35ecf7a629ae72478a950884a93ae82ec6d809262dbcc2922900b754084d",
+    "eng/test-extension-release/test_package.py": "3918e8495b1fb62bea081c76119d687123147dc6dbfb47ad6dbd065d2effa9dd",
+    "eng/test-extension-release/qualify-host.py": "3d3238e30113eb18b397924d657e42a735c1be3238d6a94e5e3e6ce5e6ef879d",
+    "eng/test-extension-release/test_host_entry.py": "4f9a6c8b1a27d94c3bfc0a5e4f337092ccebdc6bffc22135a767d6c6a5337822",
+    "eng/test-extension-release/run-controls.py": "f43b4e774eaf05cfd64e0c02f43cef2bc251f1283453c328df62b78fe74684bf",
+    "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj": "5fab3970aeb06d234cdf497be00abfc1a5a5490f009bacb3db2ccb15c10986bd",
+    "tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+    "tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json": "9bbd1b3883c84ff8f39ed50378f7aa58e5e33bc5015775f2f060c39974e0eeb2",
+    "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76",
+    "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
+  },
+  "manifestValidation": {
+    "path": "/tmp/story32-fixture-native-mtp-manifest-validation.json",
+    "exitCode": 0,
+    "actualNativeExecutor": "mtp"
+  },
+  "build": {
+    "failedFirstAttempt": "/tmp/story32-fixture-native-mtp-build.log",
+    "successfulAttempt": "/tmp/story32-fixture-native-mtp-build-attempt2.log",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "automaticControls": {
+    "command": "python3 -B eng/test-extension-release/run-controls.py",
+    "log": "/tmp/story32-fixture-native-mtp-inventory-controls.log",
+    "expected": 23,
+    "readiness": 14,
+    "archive": 9,
+    "passed": 23
+  },
+  "actualHostInterop": {
+    "work": "/tmp/story32-fixture-native-mtp-live-tys8ugsk",
+    "receipt": "/tmp/story32-fixture-native-mtp-live-tys8ugsk/receipt.json",
+    "actualNativeReport": "/tmp/story32-fixture-native-mtp-live-tys8ugsk/native-tests/module-tests.trx",
+    "actualSdkReportLoader": {
+      "Report": {
+        "FileName": "module-tests.trx",
+        "Sha256": "42776CA2C5FD90941AB8303EF1B66543A53E25786715EE2874CD08106D76E48C",
+        "Total": 1,
+        "Passed": 1,
+        "Failed": 0,
+        "Skipped": 0
+      },
+      "Diagnostic": null,
+      "IsValid": true
+    },
+    "endpoint": "http://localhost:5000/",
+    "transport": "Kestrel loopback; no dynamic-port claim",
+    "candidate": "retained unsigned/nonpublic candidate-attempt-4",
+    "scope": "One actual MTP case against actual unchanged Platform host Program, not normal approved native parent/plan execution"
+  },
+  "trackedAmendmentApplied": false,
+  "qualificationCredit": false,
+  "signedFixtureCredit": false,
+  "nativeParentAcceptance": false,
+  "hostAdmission": false,
+  "distributedReadiness": false
+}

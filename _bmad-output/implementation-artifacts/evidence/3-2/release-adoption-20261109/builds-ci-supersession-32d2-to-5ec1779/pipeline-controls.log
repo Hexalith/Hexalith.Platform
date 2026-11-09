@@ -1,0 +1,141 @@
+......  Determining projects to restore...
+  Restored /tmp/ci-real-sdk-fk0dt3iw/test dir/Ordinary/Ordinary.csproj (in 78 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/A.Tests.csproj (in 124 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/test dir/Z.Tests/Z.Tests.csproj (in 132 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj (in 133 ms).
+  Ordinary -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Ordinary/bin/Release/net10.0/Ordinary.dll
+  Z.Tests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Z.Tests/bin/Release/net10.0/Z.Tests.dll
+  Fixture.IntegrationTests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Fixture.IntegrationTests/bin/Release/net10.0/Fixture.IntegrationTests.dll
+  A.Tests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.97
+  Determining projects to restore...
+  Restored /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Ordinary/Ordinary.csproj (in 157 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/A.Tests.csproj (in 257 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj (in 263 ms).
+  Restored /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Z.Tests/Z.Tests.csproj (in 243 ms).
+  Ordinary -> /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Ordinary/bin/Release/net10.0/Ordinary.dll
+  Fixture.IntegrationTests -> /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Fixture.IntegrationTests/bin/Release/net10.0/Fixture.IntegrationTests.dll
+  Z.Tests -> /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/Z.Tests/bin/Release/net10.0/Z.Tests.dll
+  A.Tests -> /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.18
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Ordinary -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Ordinary/bin/Release/net10.0/Ordinary.dll
+  Fixture.IntegrationTests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Fixture.IntegrationTests/bin/Release/net10.0/Fixture.IntegrationTests.dll
+  Z.Tests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/Z.Tests/bin/Release/net10.0/Z.Tests.dll
+  A.Tests -> /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.49
+.{"unit": ["test dir/A.Tests/A.Tests.csproj", "test dir/Z.Tests/Z.Tests.csproj"], "integration": ["test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj"], "excluded": []}
+Unit tests: test dir/A.Tests/A.Tests.csproj
+Running tests from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+failed ProbeTests.FailingTestCompletes (2ms)
+  from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+  intentional product failure
+    at ProbeTests.FailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/ProbeTests.cs:8
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+failed ProbeTests.AnotherFailingTestCompletes (0ms)
+  from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+  intentional product failure
+    at ProbeTests.AnotherFailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/ProbeTests.cs:19
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+/tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64) failed with 2 error(s) (662ms)
+Exit code: 2
+
+Test run summary: Failed!
+  total: 3
+  failed: 2
+  succeeded: 1
+  skipped: 0
+  duration: 815ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)
+{"unit": ["test dir/A.Tests/A.Tests.csproj", "test dir/Z.Tests/Z.Tests.csproj"], "integration": ["test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj"], "excluded": []}
+Unit tests: test dir/A.Tests/A.Tests.csproj
+Test run for /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.48]     ProbeTests.FailingTestCompletes [FAIL]
+[xUnit.net 00:00:00.48]     ProbeTests.AnotherFailingTestCompletes [FAIL]
+  Failed ProbeTests.FailingTestCompletes [2 ms]
+  Error Message:
+   intentional product failure
+  Stack Trace:
+     at ProbeTests.FailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/ProbeTests.cs:line 8
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed ProbeTests.AnotherFailingTestCompletes [1 ms]
+  Error Message:
+   intentional product failure
+  Stack Trace:
+     at ProbeTests.AnotherFailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/ProbeTests.cs:line 19
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:     2, Passed:     1, Skipped:     0, Total:     3, Duration: 50 ms - A.Tests.dll (net10.0)
+.{"unit": [], "integration": ["test dir/A.Tests/A.Tests.csproj", "test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj", "test dir/Z.Tests/Z.Tests.csproj"], "excluded": []}
+Integration tests: test dir/A.Tests/A.Tests.csproj
+Running tests from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+failed ProbeTests.FailingTestCompletes (1ms)
+  from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+  intentional product failure
+    at ProbeTests.FailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/ProbeTests.cs:8
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+failed ProbeTests.AnotherFailingTestCompletes (0ms)
+  from /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64)
+  intentional product failure
+    at ProbeTests.AnotherFailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/ProbeTests.cs:19
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+/tmp/ci-real-sdk-fk0dt3iw/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (net10.0|x64) failed with 2 error(s) (492ms)
+Exit code: 2
+
+Test run summary: Failed!
+  total: 3
+  failed: 2
+  succeeded: 1
+  skipped: 0
+  duration: 619ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)
+{"unit": [], "integration": ["test dir/A.Tests/A.Tests.csproj", "test dir/Fixture.IntegrationTests/Fixture.IntegrationTests.csproj", "test dir/Z.Tests/Z.Tests.csproj"], "excluded": []}
+Integration tests: test dir/A.Tests/A.Tests.csproj
+Test run for /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/bin/Release/net10.0/A.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.47]     ProbeTests.FailingTestCompletes [FAIL]
+[xUnit.net 00:00:00.47]     ProbeTests.AnotherFailingTestCompletes [FAIL]
+  Failed ProbeTests.FailingTestCompletes [2 ms]
+  Error Message:
+   intentional product failure
+  Stack Trace:
+     at ProbeTests.FailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/ProbeTests.cs:line 8
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed ProbeTests.AnotherFailingTestCompletes [1 ms]
+  Error Message:
+   intentional product failure
+  Stack Trace:
+     at ProbeTests.AnotherFailingTestCompletes() in /tmp/ci-real-sdk-fk0dt3iw/vstest/test dir/A.Tests/ProbeTests.cs:line 19
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:     2, Passed:     1, Skipped:     0, Total:     3, Duration: 46 ms - A.Tests.dll (net10.0)
+.........................
+----------------------------------------------------------------------
+Ran 33 tests in 33.138s
+
+OK

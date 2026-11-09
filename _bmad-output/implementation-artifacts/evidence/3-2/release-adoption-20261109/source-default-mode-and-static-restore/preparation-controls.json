@@ -1,0 +1,57 @@
+{
+  "scope": "Pre-freeze local controls only; no hosted/candidate acceptance.",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "eng/test_legacy_tuple_source.py",
+        "eng/test_pre_extension_tuple_source.py",
+        "eng/test_builds_tuple.py"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "exitCode": 1,
+      "attribution": "Incorrect local unittest import root; all three fail discovery before running. Retained, then corrected to the actual eng import root."
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "test_legacy_tuple_source.py",
+        "test_pre_extension_tuple_source.py",
+        "test_builds_tuple.py"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng",
+      "exitCode": 0,
+      "actualTests": 48,
+      "failedOrSkipped": 0
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "exitCode": 0,
+      "actualTests": 29,
+      "failedOrSkipped": 0
+    },
+    {
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        "-shellcheck=",
+        "-pyflakes=",
+        ".github/workflows/tuple-ci.yml",
+        ".github/workflows/catalog-builder.yml",
+        ".github/workflows/source-release.yml",
+        ".github/workflows/test-extension-release.yml"
+      ],
+      "cwd": "/tmp/story-3-2-broad-20261109-_z_wy84q/current",
+      "exitCode": 0
+    }
+  ],
+  "qualificationCredit": false
+}

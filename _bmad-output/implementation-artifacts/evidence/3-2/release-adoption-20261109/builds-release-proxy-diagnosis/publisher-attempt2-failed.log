@@ -1,0 +1,597 @@
+Release	Create Release	﻿2026-11-09T16:36:45.0965533Z Prepare all required actions
+Release	Create Release	2026-11-09T16:36:45.0965947Z Getting action download info
+Release	Create Release	2026-11-09T16:36:45.2599938Z Download action repository 'actions/setup-node@v7.1.0' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+Release	Create Release	2026-11-09T16:36:45.3816101Z ##[group]Run ./Github/create-release
+Release	Create Release	2026-11-09T16:36:45.3816353Z with:
+Release	Create Release	2026-11-09T16:36:45.3818520Z   github-token: ***
+Release	Create Release	2026-11-09T16:36:45.3818997Z   nuget-api-key: ***
+Release	Create Release	2026-11-09T16:36:45.3819188Z env:
+Release	Create Release	2026-11-09T16:36:45.3819366Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T16:36:45.3819598Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42650358536
+Release	Create Release	2026-11-09T16:36:45.3819838Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:45.3823953Z ##[start-action display=Setup Node.js;id=create_release.__actions_setup-node]
+Release	Create Release	2026-11-09T16:36:45.3865099Z ##[group]Run actions/setup-node@v7.1.0
+Release	Create Release	2026-11-09T16:36:45.3865348Z with:
+Release	Create Release	2026-11-09T16:36:45.3865520Z   node-version: 24
+Release	Create Release	2026-11-09T16:36:45.3865706Z   check-latest: false
+Release	Create Release	2026-11-09T16:36:45.3867705Z   token: ***
+Release	Create Release	2026-11-09T16:36:45.3867912Z   package-manager-cache: true
+Release	Create Release	2026-11-09T16:36:45.3868172Z env:
+Release	Create Release	2026-11-09T16:36:45.3868353Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T16:36:45.3868594Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42650358536
+Release	Create Release	2026-11-09T16:36:45.3868827Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:45.4871606Z Found in cache @ /opt/hostedtoolcache/node/24.22.2/x64
+Release	Create Release	2026-11-09T16:36:45.5477616Z ##[group]Environment details
+Release	Create Release	2026-11-09T16:36:45.8075294Z node: v24.22.2
+Release	Create Release	2026-11-09T16:36:45.8075647Z npm: 11.19.1
+Release	Create Release	2026-11-09T16:36:45.8076090Z yarn: 1.22.22
+Release	Create Release	2026-11-09T16:36:45.8076725Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:45.8167943Z ##[end-action id=create_release.__actions_setup-node;outcome=success;conclusion=success;duration_ms=434]
+Release	Create Release	2026-11-09T16:36:45.8170176Z ##[start-action display=Install semantic-release dependencies;id=create_release.__run]
+Release	Create Release	2026-11-09T16:36:45.8186777Z ##[group]Run npm ci --ignore-scripts
+Release	Create Release	2026-11-09T16:36:45.8187068Z [36;1mnpm ci --ignore-scripts[0m
+Release	Create Release	2026-11-09T16:36:45.8236055Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T16:36:45.8236362Z env:
+Release	Create Release	2026-11-09T16:36:45.8236543Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T16:36:45.8236778Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42650358536
+Release	Create Release	2026-11-09T16:36:45.8237024Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:48.7258589Z 
+Release	Create Release	2026-11-09T16:36:48.7265263Z added 318 packages, and audited 319 packages in 3s
+Release	Create Release	2026-11-09T16:36:48.7265627Z 
+Release	Create Release	2026-11-09T16:36:48.7265873Z 89 packages are looking for funding
+Release	Create Release	2026-11-09T16:36:48.7266302Z   run `npm fund` for details
+Release	Create Release	2026-11-09T16:36:48.7268305Z 
+Release	Create Release	2026-11-09T16:36:48.7268603Z found 0 vulnerabilities
+Release	Create Release	2026-11-09T16:36:48.7737120Z ##[end-action id=create_release.__run;outcome=success;conclusion=success;duration_ms=2956]
+Release	Create Release	2026-11-09T16:36:48.7739433Z ##[start-action display=Verify dependency provenance and signatures;id=create_release.__run_2]
+Release	Create Release	2026-11-09T16:36:48.7774575Z ##[group]Run npm audit signatures
+Release	Create Release	2026-11-09T16:36:48.7774868Z [36;1mnpm audit signatures[0m
+Release	Create Release	2026-11-09T16:36:48.7820283Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T16:36:48.7820596Z env:
+Release	Create Release	2026-11-09T16:36:48.7820785Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T16:36:48.7821019Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42650358536
+Release	Create Release	2026-11-09T16:36:48.7821454Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:51.7291727Z audited 318 packages in 2s
+Release	Create Release	2026-11-09T16:36:51.7301476Z 
+Release	Create Release	2026-11-09T16:36:51.7308068Z 318 packages have verified registry signatures
+Release	Create Release	2026-11-09T16:36:51.7310159Z 
+Release	Create Release	2026-11-09T16:36:51.7310650Z 58 packages have verified attestations
+Release	Create Release	2026-11-09T16:36:51.7311445Z (use --json --include-attestations to view attestation details)
+Release	Create Release	2026-11-09T16:36:51.7311829Z 
+Release	Create Release	2026-11-09T16:36:51.7556960Z ##[end-action id=create_release.__run_2;outcome=success;conclusion=success;duration_ms=2981]
+Release	Create Release	2026-11-09T16:36:51.7564261Z ##[start-action display=Semantic Release;id=create_release.__run_3]
+Release	Create Release	2026-11-09T16:36:51.7585987Z ##[group]Run release_git_directory="$(mktemp -d)"
+Release	Create Release	2026-11-09T16:36:51.7586328Z [36;1mrelease_git_directory="$(mktemp -d)"[0m
+Release	Create Release	2026-11-09T16:36:51.7586610Z [36;1mtrap 'rm -rf "$release_git_directory"' EXIT[0m
+Release	Create Release	2026-11-09T16:36:51.7587074Z [36;1mexport HEXALITH_RELEASE_GIT[0m
+Release	Create Release	2026-11-09T16:36:51.7587330Z [36;1mHEXALITH_RELEASE_GIT="$(command -v git)"[0m
+Release	Create Release	2026-11-09T16:36:51.7587705Z [36;1minstall -m 755 "$GITHUB_ACTION_PATH/git-with-retry.sh" "$release_git_directory/git"[0m
+Release	Create Release	2026-11-09T16:36:51.7588092Z [36;1mexport PATH="$release_git_directory:$PATH"[0m
+Release	Create Release	2026-11-09T16:36:51.7588397Z [36;1mnpx --no-install --ignore-scripts semantic-release[0m
+Release	Create Release	2026-11-09T16:36:51.7635631Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Release	Create Release	2026-11-09T16:36:51.7635933Z env:
+Release	Create Release	2026-11-09T16:36:51.7636122Z   DOTNET_ROOT: /usr/share/dotnet
+Release	Create Release	2026-11-09T16:36:51.7636358Z   HEXALITH_G4_SOURCE_CI_RUN_ID: 42650358536
+Release	Create Release	2026-11-09T16:36:51.7638538Z   GITHUB_TOKEN: ***
+Release	Create Release	2026-11-09T16:36:51.7639108Z   NUGET_API_KEY: ***
+Release	Create Release	2026-11-09T16:36:51.7639324Z   HEXALITH_NUGET_VERIFY_ATTEMPTS: 180
+Release	Create Release	2026-11-09T16:36:51.7639556Z ##[endgroup]
+Release	Create Release	2026-11-09T16:36:52.3603924Z [4:36:52 PM] [semantic-release] › ℹ  Running semantic-release version 25.0.9
+Release	Create Release	2026-11-09T16:36:52.4988876Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "verifyConditions" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.4990151Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "verifyConditions" from "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:52.4993084Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "analyzeCommits" from "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T16:36:52.4994524Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "analyzeCommits" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.4996238Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "verifyRelease" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5002040Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "generateNotes" from "@semantic-release/release-notes-generator"
+Release	Create Release	2026-11-09T16:36:52.5005114Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "generateNotes" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5006249Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "prepare" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5007681Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "publish" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5009119Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "publish" from "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:52.5010626Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "addChannel" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5012179Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "addChannel" from "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:52.5014457Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "success" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5015726Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "success" from "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:52.5017040Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "fail" from "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:52.5018243Z [4:36:52 PM] [semantic-release] › ✔  Loaded plugin "fail" from "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:53.9864234Z [4:36:53 PM] [semantic-release] › ✔  Run automated release from branch main on repository https://github.com/Hexalith/Hexalith.Builds.git
+Release	Create Release	2026-11-09T16:36:54.3792250Z [4:36:54 PM] [semantic-release] › ✔  Allowed to push to the Git repository
+Release	Create Release	2026-11-09T16:36:54.3795659Z [4:36:54 PM] [semantic-release] › ℹ  Start step "verifyConditions" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:54.3819378Z [4:36:54 PM] [semantic-release] › ✔  Completed step "verifyConditions" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:54.3820337Z [4:36:54 PM] [semantic-release] › ℹ  Start step "verifyConditions" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:54.3844119Z [4:36:54 PM] [semantic-release] [@semantic-release/github] › ℹ  Verify GitHub authentication (https://api.github.com)
+Release	Create Release	2026-11-09T16:36:54.8166142Z [4:36:54 PM] [semantic-release] › ✔  Completed step "verifyConditions" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T16:36:54.8266866Z [4:36:54 PM] [semantic-release] › ℹ  Found git tag v4.46.0 associated with version 4.46.0 on branch main
+Release	Create Release	2026-11-09T16:36:54.8453118Z [4:36:54 PM] [semantic-release] › ℹ  Found 6 commits since last release
+Release	Create Release	2026-11-09T16:36:54.8512451Z [4:36:54 PM] [semantic-release] › ℹ  Start step "analyzeCommits" of plugin "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T16:36:54.8542532Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(ci): isolate manual runs and harden submodule discovery
+Release	Create Release	2026-11-09T16:36:54.8576978Z 
+Release	Create Release	2026-11-09T16:36:54.8577987Z Give manual dispatches their own concurrency group so they never cancel
+Release	Create Release	2026-11-09T16:36:54.8578534Z the push run that release consumes. Read root .gitmodules and gitlink
+Release	Create Release	2026-11-09T16:36:54.8579414Z entries as NUL-separated records, so submodule names containing spaces
+Release	Create Release	2026-11-09T16:36:54.8580504Z parse correctly, and require the exact gitlink path rather than a
+Release	Create Release	2026-11-09T16:36:54.8581383Z directory holding one. Document that preparation detaches listed
+Release	Create Release	2026-11-09T16:36:54.8582070Z submodules at their recorded commits.
+Release	Create Release	2026-11-09T16:36:54.8582383Z 
+Release	Create Release	2026-11-09T16:36:54.8582996Z Cover the composite phase sequence, workflow environment context,
+Release	Create Release	2026-11-09T16:36:54.8583508Z excluded classification, duplicate declared paths, escaping runner
+Release	Create Release	2026-11-09T16:36:54.8584033Z configurations and captured discovery output with behavioral tests.
+Release	Create Release	2026-11-09T16:36:54.8584311Z 
+Release	Create Release	2026-11-09T16:36:54.8584770Z Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Release	Create Release	2026-11-09T16:36:54.8585805Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T16:36:54.8587312Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(catalog): record the Platform EventStore host consumer view (#180)
+Release	Create Release	2026-11-09T16:36:54.8587899Z 
+Release	Create Release	2026-11-09T16:36:54.8588165Z Record the actual Platform EventStore host in the pinned-tree catalog while
+Release	Create Release	2026-11-09T16:36:54.8588669Z retaining one canonical SDK version and explicit historical selection.
+Release	Create Release	2026-11-09T16:36:54.8589293Z Preserve the concurrently adopted SDK4.2 source, seed and declaration inputs.
+Release	Create Release	2026-11-09T16:36:54.8590881Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T16:36:54.8593200Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(release): retry transient GitHub notes pushes
+Release	Create Release	2026-11-09T16:36:54.8594152Z 
+Release	Create Release	2026-11-09T16:36:54.8594654Z Retry only the identical semantic-release notes push on GitHub 5xx.
+Release	Create Release	2026-11-09T16:36:54.8595696Z Bound retries to three attempts and retain permanent failures, original
+Release	Create Release	2026-11-09T16:36:54.8596674Z exit codes, and every existing source and package publication gate.
+Release	Create Release	2026-11-09T16:36:54.8597137Z 
+Release	Create Release	2026-11-09T16:36:54.8597665Z Keep the genuine 4.46.0 tag after GitHub rejected its notes push.
+Release	Create Release	2026-11-09T16:36:54.8598660Z Qualify the successor through normal exact-source CI and release.
+Release	Create Release	2026-11-09T16:36:54.8600189Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T16:36:54.8602346Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(catalog): bind the audit to the actual host consumer
+Release	Create Release	2026-11-09T16:36:54.8604030Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T16:36:54.8605698Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: fix(catalog): preserve canonical SDK authority in qualification controls
+Release	Create Release	2026-11-09T16:36:54.8606469Z 
+Release	Create Release	2026-11-09T16:36:54.8606909Z Record the EventStoreHost consumer without declaring another SDK version.
+Release	Create Release	2026-11-09T16:36:54.8607838Z Refresh synthetic current-catalog evidence bindings while retaining their
+Release	Create Release	2026-11-09T16:36:54.8608682Z intended negative rules, and scope custom test catalogs without expanding
+Release	Create Release	2026-11-09T16:36:54.8609252Z the normal fixture options.
+Release	Create Release	2026-11-09T16:36:54.8610272Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The release type for the commit is patch
+Release	Create Release	2026-11-09T16:36:54.8623112Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analyzing commit: build(catalog): adopt the released extension SDK
+Release	Create Release	2026-11-09T16:36:54.8623562Z 
+Release	Create Release	2026-11-09T16:36:54.8623838Z Pin measured EventStore 4.2.0 and record the composed-host consumer view
+Release	Create Release	2026-11-09T16:36:54.8624370Z without replacing explicit historical selections or pinning the fixture.
+Release	Create Release	2026-11-09T16:36:54.8625093Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  The commit should not trigger a release
+Release	Create Release	2026-11-09T16:36:54.8625910Z [4:36:54 PM] [semantic-release] [@semantic-release/commit-analyzer] › ℹ  Analysis of 6 commits complete: patch release
+Release	Create Release	2026-11-09T16:36:54.8626923Z [4:36:54 PM] [semantic-release] › ✔  Completed step "analyzeCommits" of plugin "@semantic-release/commit-analyzer"
+Release	Create Release	2026-11-09T16:36:54.8627698Z [4:36:54 PM] [semantic-release] › ℹ  Start step "analyzeCommits" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:54.8628480Z [4:36:54 PM] [semantic-release] › ✔  Completed step "analyzeCommits" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:54.8711973Z [4:36:54 PM] [semantic-release] › ℹ  The next release version is 4.46.1
+Release	Create Release	2026-11-09T16:36:54.8713056Z [4:36:54 PM] [semantic-release] › ℹ  Start step "verifyRelease" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:36:54.8714405Z [4:36:54 PM] [semantic-release] [@semantic-release/exec] › ℹ  Call script pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version 4.46.1
+Release	Create Release	2026-11-09T16:39:48.7056119Z Packing Hexalith.Builds.Module.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:39:53.9818147Z Packing Hexalith.Builds.Evidence.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:39:59.7453772Z Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.46.1.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader
+Release	Create Release	2026-11-09T16:39:59.7490889Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:39:59.7493262Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.11 sec).
+Release	Create Release	2026-11-09T16:39:59.7494926Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 2.12 sec).
+Release	Create Release	2026-11-09T16:39:59.7512938Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 19 ms).
+Release	Create Release	2026-11-09T16:39:59.7515135Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 4.31 sec).
+Release	Create Release	2026-11-09T16:39:59.7517090Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 7 ms).
+Release	Create Release	2026-11-09T16:39:59.7518787Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 3 ms).
+Release	Create Release	2026-11-09T16:39:59.7520546Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 4 ms).
+Release	Create Release	2026-11-09T16:39:59.7522127Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 536 ms).
+Release	Create Release	2026-11-09T16:39:59.7523348Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 4.7 sec).
+Release	Create Release	2026-11-09T16:39:59.7524856Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 503 ms).
+Release	Create Release	2026-11-09T16:39:59.7527047Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:39:59.7527975Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 15 ms).
+Release	Create Release	2026-11-09T16:39:59.7529676Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:39:59.7531551Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 6 ms).
+Release	Create Release	2026-11-09T16:39:59.7533359Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 595 ms).
+Release	Create Release	2026-11-09T16:39:59.7534969Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 353 ms).
+Release	Create Release	2026-11-09T16:39:59.7536547Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:39:59.7537710Z   P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+Release	Create Release	2026-11-09T16:39:59.7538985Z   Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+Release	Create Release	2026-11-09T16:39:59.7540170Z   Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+Release	Create Release	2026-11-09T16:39:59.7541405Z   P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+Release	Create Release	2026-11-09T16:39:59.7542378Z   P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+Release	Create Release	2026-11-09T16:39:59.7543289Z   P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+Release	Create Release	2026-11-09T16:39:59.7544118Z   P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+Release	Create Release	2026-11-09T16:39:59.7544920Z   P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+Release	Create Release	2026-11-09T16:39:59.7545837Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:39:59.7546910Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7548008Z   P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+Release	Create Release	2026-11-09T16:39:59.7549082Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7550180Z   Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+Release	Create Release	2026-11-09T16:39:59.7551590Z   Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+Release	Create Release	2026-11-09T16:39:59.7553933Z   Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+Release	Create Release	2026-11-09T16:39:59.7555959Z   Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+Release	Create Release	2026-11-09T16:39:59.7556614Z 
+Release	Create Release	2026-11-09T16:39:59.7556713Z Build succeeded.
+Release	Create Release	2026-11-09T16:39:59.7556911Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:39:59.7557087Z     0 Error(s)
+Release	Create Release	2026-11-09T16:39:59.7557196Z 
+Release	Create Release	2026-11-09T16:39:59.7557321Z Time Elapsed 00:02:39.06
+Release	Create Release	2026-11-09T16:39:59.7559157Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:39:59.7560939Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:39:59.7562728Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7563843Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7564810Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:39:59.7565784Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:39:59.7566762Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:39:59.7567775Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:39:59.7568772Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:39:59.7569813Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7570886Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:39:59.7572046Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:39:59.7573032Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:39:59.7573994Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:40:00.6856971Z Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:40:01.4358167Z Tool 'hexalith.builds.module.cli' (version '4.46.1') was restored. Available commands: hexalith-module
+Release	Create Release	2026-11-09T16:40:01.4359846Z Tool 'hexalith.builds.evidence.cli' (version '4.46.1') was restored. Available commands: hexalith-evidence
+Release	Create Release	2026-11-09T16:40:01.4360585Z 
+Release	Create Release	2026-11-09T16:40:01.4361303Z Restore was successful.
+Release	Create Release	2026-11-09T16:41:37.9917543Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:37.9949536Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:37.9952347Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:37.9954413Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:37.9956529Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:37.9959109Z   Hexalith.Builds.Module.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:37.9960253Z 
+Release	Create Release	2026-11-09T16:41:37.9960544Z Build succeeded.
+Release	Create Release	2026-11-09T16:41:37.9960966Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:41:37.9961534Z     0 Error(s)
+Release	Create Release	2026-11-09T16:41:37.9961846Z 
+Release	Create Release	2026-11-09T16:41:37.9962163Z Time Elapsed 00:01:17.94
+Release	Create Release	2026-11-09T16:41:40.9999653Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:41.0000812Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 215 ms).
+Release	Create Release	2026-11-09T16:41:41.0002172Z   1 of 2 projects are up-to-date for restore.
+Release	Create Release	2026-11-09T16:41:41.0003488Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:41.0005309Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:41.0007306Z   Hexalith.Builds.Evidence.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Debug/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:41.0008290Z 
+Release	Create Release	2026-11-09T16:41:41.0008417Z Build succeeded.
+Release	Create Release	2026-11-09T16:41:41.0008672Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:41:41.0008921Z     0 Error(s)
+Release	Create Release	2026-11-09T16:41:41.0009065Z 
+Release	Create Release	2026-11-09T16:41:41.0009243Z Time Elapsed 00:00:02.75
+Release	Create Release	2026-11-09T16:41:43.2653493Z [31;1mException: [0m/home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/test-g4-tool-package-contracts.ps1:489[0m
+Release	Create Release	2026-11-09T16:41:43.2654599Z [31;1m[0m[36;1mLine |[0m
+Release	Create Release	2026-11-09T16:41:43.2655695Z [31;1m[0m[36;1m[36;1m 489 | [0m         [36;1mthrow "$Description exited $($Result.ExitCode), expected $Exi[0m …[0m
+Release	Create Release	2026-11-09T16:41:43.2657071Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+Release	Create Release	2026-11-09T16:41:43.2658522Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mPositive packaged module test command path exited 3, expected 2.[0m
+Release	Create Release	2026-11-09T16:41:43.3236889Z [4:41:43 PM] [semantic-release] › ✘  Failed step "verifyRelease" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:41:43.3257389Z [4:41:43 PM] [semantic-release] › ℹ  Start step "fail" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:41:43.3275841Z [4:41:43 PM] [semantic-release] › ✔  Completed step "fail" of plugin "@semantic-release/exec"
+Release	Create Release	2026-11-09T16:41:43.3276567Z [4:41:43 PM] [semantic-release] › ℹ  Start step "fail" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T16:41:45.0042661Z [@octokit/request] "POST https://api.github.com/repos/Hexalith/Hexalith.Builds/issues" is deprecated. It is scheduled to be removed on Fri, 10 Mar 2028 00:00:00 GMT. See https://docs.github.com/en/rest/about-the-rest-api/api-versions
+Release	Create Release	2026-11-09T16:41:45.0085952Z [4:41:45 PM] [semantic-release] › ✘  Failed step "fail" of plugin "@semantic-release/github"
+Release	Create Release	2026-11-09T16:41:45.0098308Z [4:41:45 PM] [semantic-release] › ✘  An error occurred while running semantic-release: RequestError [HttpError]: Validation Failed: {"value":"semantic-release","resource":"Label","field":"name","code":"invalid"} - https://docs.github.com/rest/issues/issues#create-an-issue
+Release	Create Release	2026-11-09T16:41:45.0100732Z     at fetchWrapper (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/@octokit/request/dist-bundle/index.js:124:11)
+Release	Create Release	2026-11-09T16:41:45.0102076Z     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+Release	Create Release	2026-11-09T16:41:45.0103429Z     at async requestWithGraphqlErrorHandling (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/@octokit/plugin-retry/dist-bundle/index.js:39:20)
+Release	Create Release	2026-11-09T16:41:45.0104872Z     at async Job.doExecute (/home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/bottleneck/light.js:405:18) {
+Release	Create Release	2026-11-09T16:41:45.0105884Z   status: 422,
+Release	Create Release	2026-11-09T16:41:45.0106160Z   request: {
+Release	Create Release	2026-11-09T16:41:45.0106445Z     method: 'POST',
+Release	Create Release	2026-11-09T16:41:45.0106978Z     url: 'https://api.github.com/repos/Hexalith/Hexalith.Builds/issues',
+Release	Create Release	2026-11-09T16:41:45.0107465Z     headers: {
+Release	Create Release	2026-11-09T16:41:45.0107845Z       accept: 'application/vnd.github.v3+json',
+Release	Create Release	2026-11-09T16:41:45.0108541Z       'user-agent': '@semantic-release/github v12.0.10 octokit-core.js/7.0.8 Node.js/24',
+Release	Create Release	2026-11-09T16:41:45.0109176Z       authorization: 'bearer [REDACTED]',
+Release	Create Release	2026-11-09T16:41:45.0109686Z       'content-type': 'application/json; charset=utf-8'
+Release	Create Release	2026-11-09T16:41:45.0110072Z     },
+Release	Create Release	2026-11-09T16:41:45.0110401Z     body: [Object: null prototype] {
+Release	Create Release	2026-11-09T16:41:45.0110981Z       title: 'The automated release is failing 🚨',
+Release	Create Release	2026-11-09T16:41:45.0112978Z       body: '## :rotating_light: The automated release from the `main` branch failed. :rotating_light:\n' +
+Release	Create Release	2026-11-09T16:41:45.0113616Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0114612Z         'I recommend you give this issue a high priority, so other packages depending on you can benefit from your bug fixes and new features again.\n' +
+Release	Create Release	2026-11-09T16:41:45.0115390Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0116925Z         'You can find below the list of errors reported by **semantic-release**. Each one of them has to be resolved in order to automatically publish your package. I’m sure you can fix this 💪.\n' +
+Release	Create Release	2026-11-09T16:41:45.0117553Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0118266Z         'Errors are usually caused by a misconfiguration or an authentication problem. With each error reported below you will find explanation and guidance to help you to resolve it.\n' +
+Release	Create Release	2026-11-09T16:41:45.0118860Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0119671Z         'Once all the errors are resolved, **semantic-release** will release your package the next time you push a commit to the `main` branch. You can also manually restart the failed CI job that runs **semantic-release**.\n' +
+Release	Create Release	2026-11-09T16:41:45.0120534Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0120907Z         'If you are not sure how to resolve this, here are some links that can help you:\n' +
+Release	Create Release	2026-11-09T16:41:45.0121829Z         '- [Usage documentation](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/README.md)\n' +
+Release	Create Release	2026-11-09T16:41:45.0122630Z         '- [Frequently Asked Questions](https://github.com/semantic-release/semantic-release/blob/master/docs/support/FAQ.md)\n' +
+Release	Create Release	2026-11-09T16:41:45.0123290Z         '- [Support channels](https://github.com/semantic-release/semantic-release#get-help)\n' +
+Release	Create Release	2026-11-09T16:41:45.0123642Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0124605Z         'If those don’t help, or if this issue is reporting something you think isn’t right, you can always ask the humans behind **[semantic-release](https://github.com/semantic-release/semantic-release/issues/new)**.\n' +
+Release	Create Release	2026-11-09T16:41:45.0125282Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0125478Z         '---\n' +
+Release	Create Release	2026-11-09T16:41:45.0125666Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0126197Z         "### ExecaError: Command failed with exit code 1: 'pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version 4.46.1'\n" +
+Release	Create Release	2026-11-09T16:41:45.0126833Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0127342Z         'Exception: /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/test-g4-tool-package-contracts.ps1:489\n' +
+Release	Create Release	2026-11-09T16:41:45.0127866Z         'Line |\n' +
+Release	Create Release	2026-11-09T16:41:45.0128306Z         ' 489 |          throw "$Description exited $($Result.ExitCode), expected $Exi …\n' +
+Release	Create Release	2026-11-09T16:41:45.0128776Z         '     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n' +
+Release	Create Release	2026-11-09T16:41:45.0129288Z         '     | Positive packaged module test command path exited 3, expected 2.\n' +
+Release	Create Release	2026-11-09T16:41:45.0129624Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0129997Z         'Packing Hexalith.Builds.Module.Cli at 4.46.1 in Release configuration.\n' +
+Release	Create Release	2026-11-09T16:41:45.0130650Z         'Packing Hexalith.Builds.Evidence.Cli at 4.46.1 in Release configuration.\n' +
+Release	Create Release	2026-11-09T16:41:45.0132711Z         "Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.46.1.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader\n" +
+Release	Create Release	2026-11-09T16:41:45.0134217Z         '  Determining projects to restore...\n' +
+Release	Create Release	2026-11-09T16:41:45.0135079Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.11 sec).\n' +
+Release	Create Release	2026-11-09T16:41:45.0136229Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 2.12 sec).\n' +
+Release	Create Release	2026-11-09T16:41:45.0137379Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 19 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0138623Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 4.31 sec).\n' +
+Release	Create Release	2026-11-09T16:41:45.0139754Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 7 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0140773Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 3 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0142018Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 4 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0143145Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 536 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0144232Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 4.7 sec).\n' +
+Release	Create Release	2026-11-09T16:41:45.0145283Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 503 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0146383Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 2 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0147422Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 15 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0148519Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 2 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0149625Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 6 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0150831Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 595 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0152148Z         '  Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 353 ms).\n' +
+Release	Create Release	2026-11-09T16:41:45.0153339Z         '  Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.\n' +
+Release	Create Release	2026-11-09T16:41:45.0154679Z         '  P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0156024Z         '  Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0157347Z         '  Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0158539Z         '  P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0159626Z         '  P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0160702Z         '  P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0161862Z         '  P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0162787Z         '  P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0163820Z         '  Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0165001Z         '  Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0166223Z         '  P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0167411Z         '  Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0168634Z         '  Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0169864Z         '  Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0171339Z         '  Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0172649Z         '  Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0173405Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0173646Z         'Build succeeded.\n' +
+Release	Create Release	2026-11-09T16:41:45.0173936Z         '    0 Warning(s)\n' +
+Release	Create Release	2026-11-09T16:41:45.0174179Z         '    0 Error(s)\n' +
+Release	Create Release	2026-11-09T16:41:45.0174424Z         '\n' +
+Release	Create Release	2026-11-09T16:41:45.0174668Z         'Time Elapsed 00:02:39.06\n' +
+Release	Create Release	2026-11-09T16:41:45.0175408Z         '  Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.\n' +
+Release	Create Release	2026-11-09T16:41:45.0176990Z         '  Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0178263Z         '  Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0180087Z         '  Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0181778Z         '  Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/publish/\n' +
+Release	Create Release	2026-11-09T16:41:45.0183013Z         "  Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.nupkg'.\n" +
+Release	Create Release	2026-11-09T16:41:45.0184049Z         "  Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.snupkg'.\n" +
+Release	Create Release	2026-11-09T16:41:45.0185113Z         '  Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.\n' +
+Release	Create Release	2026-11-09T16:41:45.0186185Z         '  Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0187693Z         '  Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0189170Z         '  Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll\n' +
+Release	Create Release	2026-11-09T16:41:45.0190231Z         '  Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/publish/\n' +
+Release	Create Release	2026-11-09T16:41:45.0190910Z         "  Successfully created package '/"... 2870 more characters,
+Release	Create Release	2026-11-09T16:41:45.0191363Z       labels: [Array]
+Release	Create Release	2026-11-09T16:41:45.0191559Z     },
+Release	Create Release	2026-11-09T16:41:45.0191755Z     request: {
+Release	Create Release	2026-11-09T16:41:45.0191961Z       agent: undefined,
+Release	Create Release	2026-11-09T16:41:45.0192246Z       fetch: [Function: fetchWithDispatcher],
+Release	Create Release	2026-11-09T16:41:45.0192543Z       hook: [Function: bound bound register]
+Release	Create Release	2026-11-09T16:41:45.0192778Z     }
+Release	Create Release	2026-11-09T16:41:45.0192940Z   },
+Release	Create Release	2026-11-09T16:41:45.0193106Z   response: {
+Release	Create Release	2026-11-09T16:41:45.0193430Z     url: 'https://api.github.com/repos/Hexalith/Hexalith.Builds/issues',
+Release	Create Release	2026-11-09T16:41:45.0193733Z     status: 422,
+Release	Create Release	2026-11-09T16:41:45.0193909Z     headers: {
+Release	Create Release	2026-11-09T16:41:45.0194139Z       'access-control-allow-origin': '*',
+Release	Create Release	2026-11-09T16:41:45.0195418Z       'access-control-expose-headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning',
+Release	Create Release	2026-11-09T16:41:45.0196470Z       'content-length': '218',
+Release	Create Release	2026-11-09T16:41:45.0196926Z       'content-security-policy': "default-src 'none'",
+Release	Create Release	2026-11-09T16:41:45.0197272Z       'content-type': 'application/json; charset=utf-8',
+Release	Create Release	2026-11-09T16:41:45.0197593Z       date: 'Mon, 09 Nov 2026 16:41:44 GMT',
+Release	Create Release	2026-11-09T16:41:45.0197884Z       deprecation: 'Tue, 10 Mar 2026 00:00:00 GMT',
+Release	Create Release	2026-11-09T16:41:45.0198424Z       link: '<https://docs.github.com/en/rest/about-the-rest-api/api-versions>; rel="deprecation"; type="text/html"',
+Release	Create Release	2026-11-09T16:41:45.0199030Z       'referrer-policy': 'origin-when-cross-origin, strict-origin-when-cross-origin',
+Release	Create Release	2026-11-09T16:41:45.0199394Z       server: 'github.com',
+Release	Create Release	2026-11-09T16:41:45.0199771Z       'strict-transport-security': 'max-age=31536000; includeSubdomains; preload',
+Release	Create Release	2026-11-09T16:41:45.0200551Z       sunset: 'Fri, 10 Mar 2028 00:00:00 GMT',
+Release	Create Release	2026-11-09T16:41:45.0200881Z       vary: 'Accept-Encoding, Accept, X-Requested-With',
+Release	Create Release	2026-11-09T16:41:45.0201697Z       'x-accepted-github-permissions': 'issues=write',
+Release	Create Release	2026-11-09T16:41:45.0202073Z       'x-content-type-options': 'nosniff',
+Release	Create Release	2026-11-09T16:41:45.0202355Z       'x-frame-options': 'deny',
+Release	Create Release	2026-11-09T16:41:45.0202653Z       'x-github-api-version-selected': '2022-11-28',
+Release	Create Release	2026-11-09T16:41:45.0202962Z       'x-github-edge-region': 'westus2',
+Release	Create Release	2026-11-09T16:41:45.0203275Z       'x-github-media-type': 'github.v3; format=json',
+Release	Create Release	2026-11-09T16:41:45.0203740Z       'x-github-request-id': '0401:3D168B:38C66:64927:6AF1F7C8',
+Release	Create Release	2026-11-09T16:41:45.0204067Z       'x-ratelimit-limit': '5000',
+Release	Create Release	2026-11-09T16:41:45.0204334Z       'x-ratelimit-remaining': '4991',
+Release	Create Release	2026-11-09T16:41:45.0204600Z       'x-ratelimit-reset': '1794244275',
+Release	Create Release	2026-11-09T16:41:45.0204863Z       'x-ratelimit-resource': 'core',
+Release	Create Release	2026-11-09T16:41:45.0205140Z       'x-ratelimit-used': '9',
+Release	Create Release	2026-11-09T16:41:45.0205379Z       'x-xss-protection': '0'
+Release	Create Release	2026-11-09T16:41:45.0205587Z     },
+Release	Create Release	2026-11-09T16:41:45.0205758Z     data: {
+Release	Create Release	2026-11-09T16:41:45.0205973Z       message: 'Validation Failed',
+Release	Create Release	2026-11-09T16:41:45.0206213Z       errors: [Array],
+Release	Create Release	2026-11-09T16:41:45.0206607Z       documentation_url: 'https://docs.github.com/rest/issues/issues#create-an-issue',
+Release	Create Release	2026-11-09T16:41:45.0206963Z       status: '422'
+Release	Create Release	2026-11-09T16:41:45.0207141Z     }
+Release	Create Release	2026-11-09T16:41:45.0207300Z   },
+Release	Create Release	2026-11-09T16:41:45.0207528Z   pluginName: '@semantic-release/github',
+Release	Create Release	2026-11-09T16:41:45.0207777Z   [cause]: undefined
+Release	Create Release	2026-11-09T16:41:45.0207962Z }
+Release	Create Release	2026-11-09T16:41:45.0208828Z [4:41:45 PM] [semantic-release] › ✘  EVERIFYRELEASE ExecaError: Command failed with exit code 1: 'pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version 4.46.1'
+Release	Create Release	2026-11-09T16:41:45.0209294Z 
+Release	Create Release	2026-11-09T16:41:45.0209695Z Exception: /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/test-g4-tool-package-contracts.ps1:489
+Release	Create Release	2026-11-09T16:41:45.0210104Z Line |
+Release	Create Release	2026-11-09T16:41:45.0210471Z  489 |          throw "$Description exited $($Result.ExitCode), expected $Exi …
+Release	Create Release	2026-11-09T16:41:45.0210885Z      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release	Create Release	2026-11-09T16:41:45.0211662Z      | Positive packaged module test command path exited 3, expected 2.
+Release	Create Release	2026-11-09T16:41:45.0211899Z 
+Release	Create Release	2026-11-09T16:41:45.0212270Z Packing Hexalith.Builds.Module.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:41:45.0212752Z Packing Hexalith.Builds.Evidence.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:41:45.0214668Z Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.46.1.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader
+Release	Create Release	2026-11-09T16:41:45.0216050Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0216805Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.11 sec).
+Release	Create Release	2026-11-09T16:41:45.0218024Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 2.12 sec).
+Release	Create Release	2026-11-09T16:41:45.0219057Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 19 ms).
+Release	Create Release	2026-11-09T16:41:45.0220153Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 4.31 sec).
+Release	Create Release	2026-11-09T16:41:45.0221352Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 7 ms).
+Release	Create Release	2026-11-09T16:41:45.0222405Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 3 ms).
+Release	Create Release	2026-11-09T16:41:45.0223327Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 4 ms).
+Release	Create Release	2026-11-09T16:41:45.0224282Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 536 ms).
+Release	Create Release	2026-11-09T16:41:45.0225241Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 4.7 sec).
+Release	Create Release	2026-11-09T16:41:45.0226160Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 503 ms).
+Release	Create Release	2026-11-09T16:41:45.0227095Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:41:45.0228012Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 15 ms).
+Release	Create Release	2026-11-09T16:41:45.0228964Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:41:45.0229935Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 6 ms).
+Release	Create Release	2026-11-09T16:41:45.0230851Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 595 ms).
+Release	Create Release	2026-11-09T16:41:45.0232111Z   Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 353 ms).
+Release	Create Release	2026-11-09T16:41:45.0233189Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0234275Z   P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0235494Z   Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+Release	Create Release	2026-11-09T16:41:45.0236658Z   Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+Release	Create Release	2026-11-09T16:41:45.0237722Z   P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0238682Z   P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+Release	Create Release	2026-11-09T16:41:45.0239611Z   P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0240589Z   P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+Release	Create Release	2026-11-09T16:41:45.0241525Z   P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+Release	Create Release	2026-11-09T16:41:45.0242461Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0243522Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0244751Z   P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+Release	Create Release	2026-11-09T16:41:45.0245836Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0246905Z   Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+Release	Create Release	2026-11-09T16:41:45.0248004Z   Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+Release	Create Release	2026-11-09T16:41:45.0249295Z   Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+Release	Create Release	2026-11-09T16:41:45.0250587Z   Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+Release	Create Release	2026-11-09T16:41:45.0251206Z 
+Release	Create Release	2026-11-09T16:41:45.0251348Z Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0251595Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0251840Z     0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0251989Z 
+Release	Create Release	2026-11-09T16:41:45.0252139Z Time Elapsed 00:02:39.06
+Release	Create Release	2026-11-09T16:41:45.0253192Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0254809Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0256579Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0258393Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0260085Z   Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:41:45.0261890Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:41:45.0263228Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:41:45.0264403Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0265448Z   Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0266709Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0267807Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0269120Z   Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:41:45.0270372Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:41:45.0271801Z   Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:41:45.0272880Z Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0273731Z Tool 'hexalith.builds.module.cli' (version '4.46.1') was restored. Available commands: hexalith-module
+Release	Create Release	2026-11-09T16:41:45.0274396Z Tool 'hexalith.builds.evidence.cli' (version '4.46.1') was restored. Available commands: hexalith-evidence
+Release	Create Release	2026-11-09T16:41:45.0274711Z 
+Release	Create Release	2026-11-09T16:41:45.0274820Z Restore was successful.
+Release	Create Release	2026-11-09T16:41:45.0275128Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0276063Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:45.0277221Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:45.0278448Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0279648Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0280886Z   Hexalith.Builds.Module.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0281788Z 
+Release	Create Release	2026-11-09T16:41:45.0281964Z Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0282250Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0295037Z     0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0295203Z 
+Release	Create Release	2026-11-09T16:41:45.0295382Z Time Elapsed 00:01:17.94
+Release	Create Release	2026-11-09T16:41:45.0295771Z   Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0297003Z   Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 215 ms).
+Release	Create Release	2026-11-09T16:41:45.0298245Z   1 of 2 projects are up-to-date for restore.
+Release	Create Release	2026-11-09T16:41:45.0299588Z   Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0301577Z   Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0303580Z   Hexalith.Builds.Evidence.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Debug/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0304561Z 
+Release	Create Release	2026-11-09T16:41:45.0304695Z Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0304971Z     0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0305230Z     0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0305388Z 
+Release	Create Release	2026-11-09T16:41:45.0305552Z Time Elapsed 00:00:02.75
+Release	Create Release	2026-11-09T16:41:45.0305865Z AggregateError: 
+Release	Create Release	2026-11-09T16:41:45.0306992Z     SemanticReleaseError: ExecaError: Command failed with exit code 1: 'pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version 4.46.1'
+Release	Create Release	2026-11-09T16:41:45.0308258Z     Exception: /home/runner/work/Hexalith.Builds/Hexalith.Builds/Tools/test-g4-tool-package-contracts.ps1:489
+Release	Create Release	2026-11-09T16:41:45.0308915Z     Line |
+Release	Create Release	2026-11-09T16:41:45.0309548Z      489 |          throw "$Description exited $($Result.ExitCode), expected $Exi …
+Release	Create Release	2026-11-09T16:41:45.0310221Z          |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release	Create Release	2026-11-09T16:41:45.0310889Z          | Positive packaged module test command path exited 3, expected 2.
+Release	Create Release	2026-11-09T16:41:45.0311738Z     Packing Hexalith.Builds.Module.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:41:45.0312585Z     Packing Hexalith.Builds.Evidence.Cli at 4.46.1 in Release configuration.
+Release	Create Release	2026-11-09T16:41:45.0315535Z     Packaged Platform loader passed offline; contract Hexalith.Builds.Tooling, Version=4.46.1.0, Culture=neutral, PublicKeyToken=null; runtime start reached the run-private Aspire store '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader/workspace/aspire-store/.aspire'; no resources started. Receipt: /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/platform-loader
+Release	Create Release	2026-11-09T16:41:45.0317862Z       Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0319091Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.csproj (in 2.11 sec).
+Release	Create Release	2026-11-09T16:41:45.0320764Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 2.12 sec).
+Release	Create Release	2026-11-09T16:41:45.0322745Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.csproj (in 19 ms).
+Release	Create Release	2026-11-09T16:41:45.0324700Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/Hexalith.Builds.Tooling.IntegrationTests.csproj (in 4.31 sec).
+Release	Create Release	2026-11-09T16:41:45.0326471Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/Hexalith.Builds.Evidence.Tests.csproj (in 7 ms).
+Release	Create Release	2026-11-09T16:41:45.0328049Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 3 ms).
+Release	Create Release	2026-11-09T16:41:45.0329652Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 4 ms).
+Release	Create Release	2026-11-09T16:41:45.0331459Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Inventory/P0Fixture.Inventory.csproj (in 536 ms).
+Release	Create Release	2026-11-09T16:41:45.0333154Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/Hexalith.Builds.Module.AppHost.csproj (in 4.7 sec).
+Release	Create Release	2026-11-09T16:41:45.0334866Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj (in 503 ms).
+Release	Create Release	2026-11-09T16:41:45.0336600Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:41:45.0338211Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Ui/P0Fixture.Ui.csproj (in 15 ms).
+Release	Create Release	2026-11-09T16:41:45.0339834Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.csproj (in 2 ms).
+Release	Create Release	2026-11-09T16:41:45.0341582Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/fixtures/module/executable/P0Fixture.Orders/P0Fixture.Orders.csproj (in 6 ms).
+Release	Create Release	2026-11-09T16:41:45.0343156Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/Hexalith.Builds.Module.UiHost.csproj (in 595 ms).
+Release	Create Release	2026-11-09T16:41:45.0345014Z       Restored /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 353 ms).
+Release	Create Release	2026-11-09T16:41:45.0346776Z       Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0348586Z       P0Fixture.Inventory.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory.Descriptor/P0Fixture.Inventory.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0350825Z       Hexalith.Builds.Module.EventStoreHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+Release	Create Release	2026-11-09T16:41:45.0353031Z       Hexalith.Builds.Module.UiHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.UiHost/bin/Release/net10.0/Hexalith.Builds.Module.UiHost.dll
+Release	Create Release	2026-11-09T16:41:45.0354869Z       P0Fixture.Orders.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders.Descriptor/P0Fixture.Orders.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0356393Z       P0Fixture.Inventory -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Inventory/P0Fixture.Inventory.dll
+Release	Create Release	2026-11-09T16:41:45.0357926Z       P0Fixture.Ui.Descriptor -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui.Descriptor/P0Fixture.Ui.Descriptor.dll
+Release	Create Release	2026-11-09T16:41:45.0359328Z       P0Fixture.Ui -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Ui/P0Fixture.Ui.dll
+Release	Create Release	2026-11-09T16:41:45.0360556Z       P0Fixture.Orders -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.Orders/P0Fixture.Orders.dll
+Release	Create Release	2026-11-09T16:41:45.0362084Z       Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0363976Z       Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0365868Z       P0Fixture.NativeMetadataProbe -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-fixture/bin/P0Fixture.NativeMetadataProbe/P0Fixture.NativeMetadataProbe.dll
+Release	Create Release	2026-11-09T16:41:45.0367561Z       Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0369466Z       Hexalith.Builds.Evidence.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Evidence.Tests/bin/Release/net10.0/Hexalith.Builds.Evidence.Tests.dll
+Release	Create Release	2026-11-09T16:41:45.0371520Z       Hexalith.Builds.Module.AppHost -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Release/net10.0/Hexalith.Builds.Module.AppHost.dll
+Release	Create Release	2026-11-09T16:41:45.0373630Z       Hexalith.Builds.Tooling.IntegrationTests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Tooling.IntegrationTests/bin/Release/net10.0/Hexalith.Builds.Tooling.IntegrationTests.dll
+Release	Create Release	2026-11-09T16:41:45.0375704Z       Hexalith.Builds.Module.Tests -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/bin/Release/net10.0/Hexalith.Builds.Module.Tests.dll
+Release	Create Release	2026-11-09T16:41:45.0376669Z     Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0376973Z         0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0377267Z         0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0377562Z     Time Elapsed 00:02:39.06
+Release	Create Release	2026-11-09T16:41:45.0378336Z       Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0379524Z       Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0380583Z       Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0381842Z       Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0382936Z       Hexalith.Builds.Module.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:41:45.0383899Z       Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:41:45.0384881Z       Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Module.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:41:45.0385879Z       Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0386887Z       Hexalith.Builds.Tooling -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0387934Z       Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0389026Z       Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0390043Z       Hexalith.Builds.Evidence.Cli -> /home/runner/work/Hexalith.Builds/Hexalith.Builds/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Release/net10.0/publish/
+Release	Create Release	2026-11-09T16:41:45.0391004Z       Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.nupkg'.
+Release	Create Release	2026-11-09T16:41:45.0392274Z       Successfully created package '/home/runner/work/Hexalith.Builds/Hexalith.Builds/artifacts/g4-tool-packages/4.46.1/Hexalith.Builds.Evidence.Cli.4.46.1.snupkg'.
+Release	Create Release	2026-11-09T16:41:45.0393287Z     Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0394095Z     Tool 'hexalith.builds.module.cli' (version '4.46.1') was restored. Available commands: hexalith-module
+Release	Create Release	2026-11-09T16:41:45.0394719Z     Tool 'hexalith.builds.evidence.cli' (version '4.46.1') was restored. Available commands: hexalith-evidence
+Release	Create Release	2026-11-09T16:41:45.0395134Z     Restore was successful.
+Release	Create Release	2026-11-09T16:41:45.0395406Z       Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0396613Z       Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/Hexalith.Builds.Module.Cli.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:45.0398418Z       Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 694 ms).
+Release	Create Release	2026-11-09T16:41:45.0399925Z       Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0401010Z       Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0402527Z       Hexalith.Builds.Module.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0403190Z     Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0403399Z         0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0403599Z         0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0403803Z     Time Elapsed 00:01:17.94
+Release	Create Release	2026-11-09T16:41:45.0404062Z       Determining projects to restore...
+Release	Create Release	2026-11-09T16:41:45.0404803Z       Restored /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/Hexalith.Builds.Evidence.Cli.csproj (in 215 ms).
+Release	Create Release	2026-11-09T16:41:45.0405461Z       1 of 2 projects are up-to-date for restore.
+Release	Create Release	2026-11-09T16:41:45.0406285Z       Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+Release	Create Release	2026-11-09T16:41:45.0407362Z       Hexalith.Builds.Tooling -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll
+Release	Create Release	2026-11-09T16:41:45.0408533Z       Hexalith.Builds.Evidence.Cli -> /tmp/hexalith-builds-g4-source-51ba4bd05e7f43d1a781cba09eea8bc7/src/libraries/Hexalith.Builds.Evidence.Cli/bin/Debug/net10.0/Hexalith.Builds.Evidence.Cli.dll
+Release	Create Release	2026-11-09T16:41:45.0409196Z     Build succeeded.
+Release	Create Release	2026-11-09T16:41:45.0409401Z         0 Warning(s)
+Release	Create Release	2026-11-09T16:41:45.0409593Z         0 Error(s)
+Release	Create Release	2026-11-09T16:41:45.0409800Z     Time Elapsed 00:00:02.75
+Release	Create Release	2026-11-09T16:41:45.0410349Z         at verifyRelease (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/@semantic-release/exec/index.js:46:13)
+Release	Create Release	2026-11-09T16:41:45.0411336Z         at async validator (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/lib/plugins/normalize.js:36:24)
+Release	Create Release	2026-11-09T16:41:45.0412659Z         at async file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/lib/plugins/pipeline.js:38:36
+Release	Create Release	2026-11-09T16:41:45.0413468Z         at async file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/lib/plugins/pipeline.js:32:5
+Release	Create Release	2026-11-09T16:41:45.0414504Z         at async pluginsConfigAccumulator.<computed> [as verifyRelease] (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/lib/plugins/index.js:87:11)
+Release	Create Release	2026-11-09T16:41:45.0415415Z         at async run (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/index.js:198:3)
+Release	Create Release	2026-11-09T16:41:45.0416170Z         at async Module.default (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/index.js:278:22)
+Release	Create Release	2026-11-09T16:41:45.0416930Z         at async default (file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/node_modules/semantic-release/cli.js:55:5)
+Release	Create Release	2026-11-09T16:41:45.0417864Z     at [90mfile:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/lib/plugins/pipeline.js:55:13
+Release	Create Release	2026-11-09T16:41:45.0419055Z     at async pluginsConfigAccumulator.<computed> [as verifyRelease] [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/lib/plugins/index.js:87:11[90m)[39m
+Release	Create Release	2026-11-09T16:41:45.0420161Z     at async run [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/index.js:198:3[90m)[39m
+Release	Create Release	2026-11-09T16:41:45.0421292Z     at async Module.default [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/index.js:278:22[90m)[39m
+Release	Create Release	2026-11-09T16:41:45.0422290Z     at async default [90m(file:///home/runner/work/Hexalith.Builds/Hexalith.Builds/[39mnode_modules/[4msemantic-release[24m/cli.js:55:5[90m)[39m
+Release	Create Release	2026-11-09T16:41:45.0431073Z ##[error]Process completed with exit code 1.
+Release	Create Release	2026-11-09T16:41:45.0437261Z ##[end-action id=create_release.__run_3;outcome=failure;conclusion=failure;duration_ms=293287]
