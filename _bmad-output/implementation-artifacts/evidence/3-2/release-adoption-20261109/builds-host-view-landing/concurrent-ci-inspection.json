@@ -1,0 +1,17 @@
+{
+  "recordedUtc": "2026-11-09T16:05:16.233662+00:00",
+  "source": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+  "parent": "829e55a1b685908efbdc2756500b148007aae68f",
+  "changedPaths": [
+    ".github/workflows/builds-ci.yml",
+    "Github/lib/ci_pipeline.py",
+    "Github/lib/tests/test_ci_pipeline.py",
+    "Tools/ci/README.md"
+  ],
+  "hostViewApiAndCatalogUnchanged": true,
+  "controlCommand": "python3 -m unittest discover -s Github/lib/tests -p test_ci_pipeline.py",
+  "controlExitCode": 0,
+  "controlCases": 29,
+  "embeddedFailureOutput": "Expected intentional two-failure dotnet fixture; the enclosing Python test and all29controls succeeded.",
+  "releaseQualified": false
+}

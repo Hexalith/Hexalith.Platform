@@ -1,0 +1,21 @@
+{
+  "recordedUtc": "2026-11-09T16:03:59.713375+00:00",
+  "mergedSourceCi": {
+    "source": "829e55a1b685908efbdc2756500b148007aae68f",
+    "run": 42646725912,
+    "conclusion": "success",
+    "allJobsSuccessful": true
+  },
+  "normalPreflight": {
+    "command": "REPOSITORY=Hexalith/Hexalith.Builds DISPATCH_REF=refs/heads/main DISPATCH_SHA=829e55a1b685908efbdc2756500b148007aae68f bash Tools/verify-g4-release-source.sh",
+    "exitCode": 1,
+    "refusal": "Builds Release source is not the exact current main tip."
+  },
+  "currentMain": "9b9e03f69b77e4a8e64e4185a1df1cb4bc315ba4",
+  "currentMainParent": "829e55a1b685908efbdc2756500b148007aae68f",
+  "preservedConcurrentChange": true,
+  "nextRequiredPushCi": 42650358536,
+  "manualRunNotReleaseCredit": 42650442938,
+  "releaseDispatched": false,
+  "publicationCredit": false
+}

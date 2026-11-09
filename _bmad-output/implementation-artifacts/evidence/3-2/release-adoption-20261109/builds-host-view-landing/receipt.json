@@ -1,0 +1,48 @@
+{
+  "recordedUtc": "2026-11-09T15:55:32.489599+00:00",
+  "pr": "https://github.com/Hexalith/Hexalith.Builds/pull/180",
+  "title": "fix(catalog): record the Platform EventStore host consumer view",
+  "qualifiedHead": "36001049558714d122d8a281ceb0749fb0644bb8",
+  "prCi": 42642753115,
+  "allRequiredPrChecksPassed": true,
+  "normalMerge": "829e55a1b685908efbdc2756500b148007aae68f",
+  "concurrentUpstreamSdkAdoption": [
+    "7564c96",
+    "a8a87160f2708322d5520742b9a0c3f93d23db78"
+  ],
+  "concurrentReleaseRetryFix": "8039932ca0cbd00cff5944d4c456ebfe13e4743b",
+  "preservedUpstreamChanges": true,
+  "localTests": {
+    "directCatalog": 12,
+    "consumerViews": 9,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "audit": {
+    "packages": 316,
+    "families": 156,
+    "refreshedFamilies": 1,
+    "preservedFamilies": 155,
+    "validation": "passed"
+  },
+  "exactMergedSourcePushCi": {
+    "run": 42646725912,
+    "source": "829e55a1b685908efbdc2756500b148007aae68f",
+    "statusAtRecording": "in_progress"
+  },
+  "partialConcurrentRelease": {
+    "run": 42641950035,
+    "source": "a8a87160f2708322d5520742b9a0c3f93d23db78",
+    "failure": "GitHub HTTP500 pushing semantic-release notes",
+    "tag": "v4.46.0",
+    "tagSource": "a8a87160f2708322d5520742b9a0c3f93d23db78",
+    "githubReleaseObserved": false,
+    "officialNugetArchiveStatus": 404,
+    "tagAndArtifactsPreserved": true,
+    "publicationCredit": false
+  },
+  "adoptedBuildsVersion": null,
+  "platformDefaultPinsChanged": false,
+  "storyAcceptance": false
+}
