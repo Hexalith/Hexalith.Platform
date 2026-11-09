@@ -1904,3 +1904,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: ECHP2-5 — After Parties Q's tool-only partial-startup SIGKILL, the resumed AppHost may keep provisioning while the exact down runs (maybe-false; medium if true, unverified).
   evidence: Q now SIGKILLs only the muxer and tool, then resumes the paused AppHost before `down` (qualify-disposable-ci.py partial_startup). To settle it, confirm that Builds `down` stops run-tagged processes before its final discovery, or run the deferred L matrix on a patched Builds release and check the partial-startup inventories.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-explicit-gateway-query-binding.md`
+  summary: Add an optional positive private-reader successor-generation scenario that moves an existing actor-query binding from an owner AppId to the selected gateway.
+  evidence: The reader already delegates predecessor validation to the versioned SDK builder; existing reader predecessor coverage exercises tampering, while generic positive successor coverage is a pre-existing verification improvement, independent of the canonical gateway mapping and its unchanged command policy semantics.
