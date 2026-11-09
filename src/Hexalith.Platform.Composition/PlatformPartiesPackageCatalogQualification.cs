@@ -100,14 +100,14 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
             || !Snapshot(options, declarations, "parties", current ? PlatformCurrentOwnerProof.DeclarationHash : ownerHash!.ToLowerInvariant())
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
-            || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
+            || (cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName) && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             || !current && !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
             || !CompositionMatches(options, declarations)) throw Refusal();
         IReadOnlyDictionary<string, (string Image, string Digest)> images = current ? _currentOwnerImages
-            : cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? _publishedPartiesImages
+            : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName ? _publishedPartiesImages
             : cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
         return servers.Select(server =>
         {
@@ -123,15 +123,15 @@ internal static class PlatformPartiesPackageCatalogQualification
     /// <summary>Retains exact historical and public versions and only the two measured private source-owner catalog versions.</summary>
     internal static bool MatchesPartiesVersion(string version, bool current, string cohort) => (current, cohort, version) switch
     {
-        (true, PublishedCatalogArtifactCohort.CurrentOwnerName, "3.0.0" or "3.1.0") => true,
-        (false, PublishedCatalogArtifactCohort.PublishedPartiesName, "3.1.0") => true,
+        (true, PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.Sdk42CurrentOwnerName, "3.0.0" or "3.1.0") => true,
+        (false, PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName, "3.1.0") => true,
         (false, PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName, "3.0.0") => true,
         _ => false,
     };
 
     private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort)
         => PlatformServerBindings.Version(options, "memories", "full-Parties qualification")
-                == (current || cohort == PublishedCatalogArtifactCohort.PublishedPartiesName ? "3.0.25" : "3.0.23")
+                == (current || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName ? "3.0.25" : "3.0.23")
             && MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "full-Parties qualification"), current, cohort);
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

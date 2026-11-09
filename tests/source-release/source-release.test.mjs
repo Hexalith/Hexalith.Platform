@@ -42,10 +42,10 @@ function fixture(trigger = 0) {
   return { state, inputs: { event, eventName: 'workflow_run', ownerRepository: repository, checkout: source, source, workflowRef: `${repository}/.github/workflows/source-release.yml@refs/heads/main`, workflowSha: source, job: 'verify', api } };
 }
 
-test('either final callback requires both latest successful main lanes and exact two/five jobs', async () => {
+test('either final callback requires both latest successful main lanes and exact three/six jobs', async () => {
   for (const trigger of [0, 1]) {
     const { inputs } = fixture(trigger); const result = await qualify(inputs);
-    assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [2, 5]);
+    assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [3, 6]);
     assert.deepEqual([result.nativeAcceptance, result.candidateAcceptance, result.storyAcceptance], [false, false, false]);
     assert.ok(Buffer.byteLength(JSON.stringify(result)) < 16384);
   }

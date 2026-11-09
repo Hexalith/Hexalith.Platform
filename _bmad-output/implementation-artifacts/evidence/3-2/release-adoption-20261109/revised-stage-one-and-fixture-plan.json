@@ -1,0 +1,42 @@
+{
+  "recordedUtc": "2026-11-09T14:48:27.315378+00:00",
+  "supersedesPlan": "first-stage-tuple-plan.json",
+  "status": "preparation only; no Platform pin or default admission adoption",
+  "stageOne": {
+    "eventStoreRelease": "4.2.0",
+    "eventStoreSource": "aa16227bd07f0564a3026d619a5abd973e02656f",
+    "buildsApiMergedSource": "2cc24dbb9d65654b696b54d49c16afe1f3f67b4d",
+    "catalogPr": "https://github.com/Hexalith/Hexalith.Builds/pull/180",
+    "catalogCandidate": "5a49eea",
+    "consumerMaterialization": "One canonical SDK version and a non-version literal MSBuildProjectName marker; explicit historical selections remain intact.",
+    "actualConsumer": "Hexalith.Platform.EventStoreHost",
+    "defaultAdmission": "Separate finite private EventStore/source-owner/public Parties SDK4.2 paths must pass all five actual signed-tool entry/model cases before a new default tuple is adopted.",
+    "automaticRequiredCases": {
+      "sdk42DefaultBase": 97,
+      "sdk42ExtensionComponents": 9,
+      "sameCodePreExtensionSdk41": 412,
+      "sameCodeLegacyPublic": 349
+    },
+    "catalogConsumerBindingRequiredSdks": [
+      "3.130.0",
+      "3.130.1",
+      "3.130.2",
+      "3.132.1",
+      "4.1.0",
+      "4.2.0"
+    ],
+    "publicationGate": "Exact-source tuple workflow requires all three jobs; catalog workflow requires all six matrix jobs. Neither a historical lane nor a component-only probe substitutes for the new default.",
+    "remaining": "Await actual Builds release; measure signed producer/catalog/tooling/seed/inventory, freeze identical source histories, refresh L/M descriptors and adopt the measured tuple atomically. All five real entry/model cases currently refuse on the unchanged4.45/SDK4.1 tuple.",
+    "fixtureCatalogPin": null,
+    "fixtureHostAdmission": false
+  },
+  "stageTwo": {
+    "producer": "Hexalith/Hexalith.Platform",
+    "module": "platformtestextension",
+    "declaration": "Signed archive will carry the exact tracked v2 declaration and Platform producer descriptor. Module has no servers and depends only on EventStore/Tenants.",
+    "ownerResolution": "Generic mapping would infer Hexalith.Platformtestextension; the future finite fixture path must authenticate its approved Platform producer relationship rather than fabricate that repository identity.",
+    "publicationPrerequisite": "NuGet account-side exact Trusted Publisher remains unavailable in the exposed authenticated tooling; GitHub production environment/main policy/variables were configured with explicit user authorization.",
+    "qualification": "Only after signed NuGet publication may measured archive/declaration/producer/host/seed/SDK/publication/image identities select a finite fixture host cohort and packaged-host startup qualification."
+  },
+  "qualificationCredit": false
+}

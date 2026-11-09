@@ -1,0 +1,21 @@
+{
+  "purpose": "Measured signed EventStore 4.2.0 extension SDK component boundaries; fixture publication and finite host startup remain separate requirements.",
+  "groups": [
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-method",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed",
+        "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MeasuredReleasedExtensionSdkBodiesConferNoOwnerOrHostAdmission"
+      ],
+      "requiredCount": 9,
+      "purpose": "released-extension-sdk-component-boundary"
+    }
+  ]
+}

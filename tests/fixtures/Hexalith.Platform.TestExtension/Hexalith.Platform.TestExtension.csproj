@@ -4,7 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Platform-owned EventStore extension fixture with one adapter at the supported extension-API major.</Description>
   </PropertyGroup>
-  <!-- The extension API ships in the source-selected EventStore SDK; no released package carries it yet. -->
+  <!-- The extension API ships in the source-selected EventStore SDK; the measured signed 4.2.0 package also carries it. -->
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>
@@ -14,4 +14,12 @@
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
     <PackageReference Include="Hexalith.EventStore.DomainService" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="hexalith.module-manifest.v2.json" Pack="true" PackagePath="build/hexalith.module-manifest.v2.json" />
+    <None Include="fixture-producer.json" Pack="true" PackagePath="build/fixture-producer.json" />
+  </ItemGroup>
+  <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
+    <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
+  </PropertyGroup>
 </Project>

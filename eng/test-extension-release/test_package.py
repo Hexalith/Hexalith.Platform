@@ -11,7 +11,13 @@ spec.loader.exec_module(package)
 
 
 class PackageIdentityTests(unittest.TestCase):
-    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None):
+    approved = {package.DECLARATION: (package.ROOT / package.FIXTURE / "hexalith.module-manifest.v2.json").read_bytes(),
+                package.PRODUCER: (package.ROOT / package.FIXTURE / "fixture-producer.json").read_bytes()}
+
+    def inspect(self, path, version, source):
+        return package.inspect(path, version, source, approved=self.approved)
+
+    def archive(self, root, *, source=None, dependency="Hexalith.EventStore.DomainService", body=None, declaration=None, producer=None, omit=None):
         path = Path(root) / "fixture.nupkg"
         source = source or "a" * 40
         with zipfile.ZipFile(path, "w") as archive:
@@ -19,28 +25,50 @@ class PackageIdentityTests(unittest.TestCase):
                 f'<repository type="git" url="{package.REPOSITORY}" commit="{source}" />'
                 f'<dependencies><dependency id="{dependency}" version="[4.2.0, )" /></dependencies></metadata></package>')
             archive.writestr(package.LIBRARY, body or b"EventStoreExtensionAttribute platform-test")
+            if omit != package.DECLARATION:
+                archive.writestr(package.DECLARATION, declaration or self.approved[package.DECLARATION])
+            if omit != package.PRODUCER:
+                archive.writestr(package.PRODUCER, producer or self.approved[package.PRODUCER])
         return path
 
     def test_accepts_only_the_declared_source_and_fixture(self):
         with tempfile.TemporaryDirectory() as root:
-            result = package.inspect(self.archive(root), "1.9.0", "a" * 40)
+            result = self.inspect(self.archive(root), "1.9.0", "a" * 40)
             self.assertEqual(result["packageId"], package.PACKAGE)
             self.assertIn(package.LIBRARY, result["bodies"])
+
+    def test_refuses_missing_declaration_or_producer(self):
+        for missing in [package.DECLARATION, package.PRODUCER]:
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
+                self.inspect(self.archive(root, omit=missing), "1.9.0", "a" * 40)
+
+    def test_refuses_altered_declaration_or_foreign_producer(self):
+        for member in ["declaration", "producer"]:
+            with self.subTest(member=member), tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
+                self.inspect(self.archive(root, **{member: b'{}'}), "1.9.0", "a" * 40)
+
+    def test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent(self):
+        approved = dict(self.approved)
+        approved[package.PRODUCER] = approved[package.PRODUCER].replace(b'Hexalith/Hexalith.Platform', b'Foreign/Other')
+        with tempfile.TemporaryDirectory() as root:
+            path = self.archive(root, producer=approved[package.PRODUCER])
+            with self.assertRaisesRegex(ValueError, "unsupported"):
+                package.inspect(path, "1.9.0", "a" * 40, approved=approved)
 
     def test_refuses_different_source(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaises(ValueError):
-                package.inspect(self.archive(root, source="b" * 40), "1.9.0", "a" * 40)
+                self.inspect(self.archive(root, source="b" * 40), "1.9.0", "a" * 40)
 
     def test_refuses_foreign_dependency(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaises(ValueError):
-                package.inspect(self.archive(root, dependency="Foreign.SDK"), "1.9.0", "a" * 40)
+                self.inspect(self.archive(root, dependency="Foreign.SDK"), "1.9.0", "a" * 40)
 
     def test_refuses_fixture_built_without_extension_api(self):
         with tempfile.TemporaryDirectory() as root:
             with self.assertRaises(ValueError):
-                package.inspect(self.archive(root, body=b"fixture without identity"), "1.9.0", "a" * 40)
+                self.inspect(self.archive(root, body=b"fixture without identity"), "1.9.0", "a" * 40)
 
 
 if __name__ == "__main__":

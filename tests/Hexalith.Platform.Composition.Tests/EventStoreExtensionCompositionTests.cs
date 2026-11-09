@@ -194,6 +194,33 @@ public sealed class EventStoreExtensionCompositionTests
         version.Attribute("Version")!.Value.ShouldBe("9.8.7");
     }
 
+    [Fact]
+    public void PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed()
+    {
+        using PlatformPackageFixture fixture = new(Root);
+        using PlatformOwnerFixture owner = Owner(extensions: null);
+        PlatformCompositionOptions options = PackageOptions(fixture, owner, pinned: false);
+        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
+        PlatformServerBinding gateway = servers.Where(server => server.ResourceId == "eventstore").ShouldHaveSingleItem();
+        gateway.ProjectPath.ShouldBe(options.EventStoreSeedProject);
+        gateway.EventStoreHost.ShouldBeNull();
+        gateway.Environment.Keys.ShouldNotContain(key => key.StartsWith("EventStore__Extensions", StringComparison.Ordinal));
+    }
+
+#if !HEXALITH_PLATFORM_SOURCE_CATALOG
+    [Fact]
+    public void MeasuredReleasedExtensionSdkBodiesConferNoOwnerOrHostAdmission()
+    {
+        const string cohort = Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ExtensionSdkName;
+        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifySdk(cohort).Count.ShouldBe(8);
+        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5").ShouldBeNull();
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(typeof(PlatformTestExtensionAdapters).Assembly, cohort));
+        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(
+            typeof(EventStoreExtensionApi).Assembly, Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentName));
+    }
+#endif
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -702,7 +729,7 @@ public sealed class EventStoreExtensionCompositionTests
         string fixture = Path.Combine(Root, "tests", "fixtures", Package);
         string target = Path.Combine(owner.Root, "src", Package);
         Directory.CreateDirectory(target);
-        foreach (string file in Directory.GetFiles(fixture).Where(file => Path.GetExtension(file) is ".cs" or ".csproj"))
+        foreach (string file in Directory.GetFiles(fixture).Where(file => Path.GetExtension(file) is ".cs" or ".csproj" or ".json"))
             File.Copy(file, Path.Combine(target, Path.GetFileName(file)));
         // The synthetic owner builds with the Platform workspace's own build and package authority.
         File.WriteAllText(Path.Combine(owner.Root, "Directory.Build.props"), new XDocument(new XElement("Project",

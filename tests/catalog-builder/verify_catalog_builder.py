@@ -24,7 +24,8 @@ SAMPLE_SOURCES = {"3.130.0": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
                   "3.130.2": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
                   "3.132.1": "0ace1545c433bf234f54cef3a57ac77d62b4175f",
                   "3.133.0": "6b2ef99ac55a6e548f504a81d30289bb3deff89d",
-                  "4.1.0": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a"}
+                  "4.1.0": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
+                  "4.2.0": "aa16227bd07f0564a3026d619a5abd973e02656f"}
 
 
 def digest(path):
@@ -340,8 +341,8 @@ def main():
     parser.add_argument("--builds-root", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--owners", type=Path, help="Optional copied genuine owner DLL closure manifest.")
-    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0", "4.1.0"], default=SDK)
-    parser.add_argument("--tenants-version", choices=["6.0.0", "7.0.0", "7.0.2"], default=TENANTS)
+    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0", "4.1.0", "4.2.0"], default=SDK)
+    parser.add_argument("--tenants-version", choices=["6.0.0", "7.0.0", "7.0.2", "7.0.5"], default=TENANTS)
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
     state = {"attempt": uuid.uuid4().hex, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),

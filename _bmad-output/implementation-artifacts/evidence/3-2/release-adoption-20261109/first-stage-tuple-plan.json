@@ -1,0 +1,18 @@
+{
+  "recordedUtc": "2026-11-09T13:33:26.714048+00:00",
+  "stageOne": {
+    "eventStoreVersion": "4.2.0",
+    "eventStoreSource": "aa16227bd07f0564a3026d619a5abd973e02656f",
+    "eventStoreDeclarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495",
+    "catalogConsumer": "Hexalith.Platform.EventStoreHost",
+    "materialization": "A literal project-name condition pins the actual host to 4.2.0; Builds CatalogVersionMaterializer evaluates and records its view from the committed pinned tree.",
+    "fixtureCatalogPin": null,
+    "fixtureHostAdmission": false,
+    "owningPatch": "builds-catalog-stage1-review.diff",
+    "packageViewControl": "OwningCatalogMaterializesTheEventStoreHostViewWithoutAPrematureFixturePinAsync",
+    "normalGate": "Reviewed owner changes and successful exact-source push CI precede Builds publication; measured tool/catalog/gitlinks and refreshed same-source L/M tuple precede Platform source publication."
+  },
+  "stageTwo": "After normal fixture publication, measure its signed public archive, then add its finite catalog/cohort/declaration/host/seed/SDK/publication/image binding and actual packaged-host startup in a subsequent refreshed tuple.",
+  "historicalCohorts": "Preserve exact signed bodies and existing no-extension admission. Any old-current-SDK assumptions must be exercised explicitly in their existing historical lane, never relabeled as new SDK authority.",
+  "qualificationCredit": false
+}

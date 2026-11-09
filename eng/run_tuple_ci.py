@@ -73,17 +73,58 @@ def verify_composition_test_outputs_unchanged(record):
         raise ValueError("Composition test outputs or platform context changed during required tests.")
 
 
+def sdk_suite(suite, version):
+    """Select only the measured new SDK suite or the retained exact historical SDK controls."""
+    if suite in ("extensions", "base42"):
+        if version != "4.2.0":
+            raise ValueError("The extension suite requires the measured EventStore 4.2.0 SDK.")
+        return ("eng/tuple-ci-extension-suites.json" if suite == "extensions" else "eng/tuple-ci-sdk42-base-suites.json"), ["-p:HexalithEventStoreVersion=4.2.0"]
+    if suite != "current" or version not in (None, "4.1.0"):
+        raise ValueError("The retained suite accepts only its exact historical SDK or the recorded catalog default.")
+    return "eng/tuple-ci-suites.json", [] if version is None else ["-p:HexalithEventStoreVersion=4.1.0"]
+
+
+def verify_extension_catalog_pin(catalog):
+    """Require the validated owning catalog to carry the one measured SDK pin for the new suite."""
+    pins = ET.parse(catalog).findall("./PropertyGroup/HexalithEventStoreVersion")
+    if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
+        raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
+
+
+def verify_historical_catalog_pin(catalog):
+    """The 412/349 history must retain its actual owning SDK4.1 catalog, even if a build override is supplied."""
+    pins = ET.parse(catalog).findall("./PropertyGroup/HexalithEventStoreVersion")
+    if len(pins) != 1 or (pins[0].text or "").strip() != "4.1.0":
+        raise ValueError("Historical controls require the single real SDK4.1 catalog pin; overrides cannot substitute.")
+
+
+def verify_test_sdk(assembly, version):
+    """Require real package dependencies for the selected isolated test build before invoking any cases."""
+    if version is None:
+        return
+    dependencies = json.loads(Path(assembly).with_suffix(".deps.json").read_bytes())["libraries"]
+    for name in COMPOSITION_TEST_DEPENDENCIES:
+        if not name.startswith("Hexalith.EventStore."):
+            continue
+        identity = name.removesuffix(".dll") + "/" + version
+        if dependencies.get(identity, {}).get("type") != "package":
+            raise ValueError("The actual test binary does not resolve the selected SDK package: " + identity)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path)
     parser.add_argument("--audit-only", action="store_true")
+    parser.add_argument("--suite", choices=["current", "extensions", "base42"], default="current")
+    parser.add_argument("--eventstore-sdk", choices=["4.1.0", "4.2.0"])
     args = parser.parse_args()
+    profile_path, sdk_properties = sdk_suite(args.suite, args.eventstore_sdk)
     evidence = args.evidence.resolve()
     if evidence.exists():
         raise ValueError("Choose a new evidence directory.")
     evidence.mkdir(parents=True)
-    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": []}
+    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": [], "suite": args.suite, "eventStoreSdk": args.eventstore_sdk, "historicalSdkRegression": args.suite == "current" and args.eventstore_sdk == "4.1.0"}
 
     def checkpoint():
         (evidence / "tuple-ci-result.json").write_text(json.dumps(result, indent=2) + "\n")
@@ -132,8 +173,16 @@ def main():
         validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
         builds_root = resolve_builds_root(ROOT)
         catalog = verify_catalog(binding, builds_root)
-        profile = json.loads((ROOT / "eng/tuple-ci-suites.json").read_bytes())
+        if args.suite in ("extensions", "base42"):
+            verify_extension_catalog_pin(catalog)
+        else:
+            verify_historical_catalog_pin(catalog)
+        profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
+        if args.suite == "base42" and required_total != 97:
+            raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
+        if args.suite == "extensions" and required_total != 9:
+            raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:
             if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("CI") != "true":
                 raise ValueError("Release execution belongs to GitHub CI; local use supports --audit-only.")
@@ -160,7 +209,7 @@ def main():
             tool = Path(run("published-artifacts", [sys.executable, str(ROOT / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds"), "--require-recorded"]).strip())
         result["toolRoot"] = str(tool)
         properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
-                      "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool)]
+                      "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool), *sdk_properties]
         projects = [ROOT / x.attrib["Path"] for x in ET.parse(ROOT / "Hexalith.Platform.slnx").iter("Project")]
         seen = {project.resolve() for project in projects}
         for number, project in enumerate(projects):
@@ -202,6 +251,7 @@ def main():
         if composition_project not in projects:
             raise ValueError("Composition test outputs are absent from the owner solution.")
         composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()).resolve()
+        verify_test_sdk(composition_assembly, args.eventstore_sdk)
         result["compositionTestOutputs"] = {
             "beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "before": snapshot_composition_test_outputs(composition_assembly),

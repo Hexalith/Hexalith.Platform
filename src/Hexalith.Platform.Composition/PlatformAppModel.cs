@@ -448,7 +448,7 @@ public static class PlatformAppModel
             }
             builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered, currentOwnerPackage: options.CurrentOwnerProof?.Matches(options) == true
                 || options.PartiesRunProof?.Matches(options) == true
-                    && PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true) == Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName));
+                    && PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true) is Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName or Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName));
             if (options.RetentionProfile is not null)
             {
                 PlatformServerBinding owner = servers.First(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");

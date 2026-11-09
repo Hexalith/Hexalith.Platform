@@ -17,7 +17,7 @@ TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
 TENANTS_705_SOURCE = "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35"
 MEMORIES_CURRENT_SOURCE = "246157a7ff8e2dcd8d356c833a77a02514490d2f"
 ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
-           "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties"}
+           "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties", "references/Hexalith.EventStore", "eng/pre-extension-tuple-source.json"}
 
 
 def decode(raw):
@@ -86,8 +86,19 @@ def verify(root: Path, current: str, legacy: str) -> dict:
     next_expected["memories"]["version"] = "3.0.25"
     next_expected["memories"]["commit"] = MEMORIES_CURRENT_SOURCE
     selected = decode(git(root, "show", current + ":" + PROVENANCE))
-    if selected != original and selected != expected and selected != next_expected:
-        raise ValueError("Current provenance changed more than the authenticated Tenants and Memories versions and sources.")
+    sdk_expected = decode(json.dumps(next_expected))
+    sdk_expected["eventstore"].update(version="4.2.0", commit="aa16227bd07f0564a3026d619a5abd973e02656f")
+    if "eng/pre-extension-tuple-source.json" in changed:
+        from pre_extension_tuple_source import resolve as pre_extension_source
+        for revision in [current, legacy]:
+            recorded = pre_extension_source(root, revision)
+            git(root, "cat-file", "-e", recorded + "^{commit}")
+    if "references/Hexalith.EventStore" in changed or selected == sdk_expected:
+        if git(root, "rev-parse", legacy + ":references/Hexalith.EventStore").decode().strip() != "cab8363c2b6e2c0588efc8ca9c2e09fab0006841" \
+                or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != "aa16227bd07f0564a3026d619a5abd973e02656f" or selected != sdk_expected:
+            raise ValueError("Changed SDK gitlink must retain its exact old source and match the published SDK4.2 provenance.")
+    if selected != original and selected != expected and selected != next_expected and selected != sdk_expected:
+        raise ValueError("Current provenance changed more than the authenticated Tenants, Memories and SDK4.2 versions and sources.")
     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
         raise ValueError("Legacy source changed its exact published tool identity.")

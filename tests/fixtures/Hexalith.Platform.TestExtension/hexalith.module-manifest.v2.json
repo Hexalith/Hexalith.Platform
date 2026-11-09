@@ -1,0 +1,63 @@
+{
+  "schema": "hexalith.module-manifest.v2",
+  "modules": [
+    {
+      "identity": {
+        "moduleId": "platformtestextension",
+        "servers": [],
+        "dependencies": [
+          "eventstore",
+          "tenants"
+        ]
+      },
+      "runtime": {
+        "dapr": [],
+        "extensions": [],
+        "resources": [],
+        "eventStoreExtensions": [
+          {
+            "packageId": "Hexalith.Platform.TestExtension",
+            "extensionId": "platform-test",
+            "extensionApiMajor": 1,
+            "configurationInputs": [
+              {
+                "key": "PlatformTestExtension:Marker",
+                "source": "configuration",
+                "reference": "platform-test-marker"
+              }
+            ]
+          }
+        ]
+      },
+      "surfaces": {
+        "interfaces": []
+      },
+      "integration": {
+        "topics": [],
+        "secrets": [],
+        "dynamicSecretNamespaces": [],
+        "identityNeeds": [],
+        "egress": [],
+        "providers": [],
+        "workers": []
+      },
+      "lifecycle": {
+        "readiness": [],
+        "tasks": [],
+        "recoveryHooks": [],
+        "fenceHooks": [],
+        "replay": {
+          "reopenBeforeReplay": false
+        },
+        "startup": {},
+        "criticalFlows": [],
+        "smokeSurfaces": [],
+        "classification": {
+          "changeClass": "additive",
+          "reason": "Platform-owned signed extension qualification fixture; no service or production enrollment."
+        },
+        "recoveryInventory": []
+      }
+    }
+  ]
+}

@@ -30,7 +30,7 @@ internal static class PlatformCurrentOwnerObservation
             string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
             if (maps.Length == 0) throw new InvalidDataException("The actual current owner SDK mapping is unavailable.");
             string digest = PlatformMappedArtifact.Hash(pid, path, maps[0]);
-            Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest);
+            Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest, proof.Cohort);
             sdk[name] = digest;
         }
         var observed = JsonSerializer.Deserialize<RouteCatalogHostObservation>(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "parties.observation.json"), token).ConfigureAwait(false))
@@ -47,7 +47,7 @@ internal static class PlatformCurrentOwnerObservation
             profile = PlatformCurrentOwnerProof.Profile, plan.RunId, plan.AttemptId, plan.EnvironmentId,
             revision = proof.SourceRevision,
             mappingHash = options.Mapping.ContentHash, configuration = "Release", qualificationCredit = false,
-            platform = options.Mapping.PlatformIdentity, sdkVersion = "4.1.0", tenantsVersion = "7.0.5",
+            platform = options.Mapping.PlatformIdentity, sdkVersion = PlatformServerBindings.Version(options, "eventstore", "current owner observation"), tenantsVersion = "7.0.5",
             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
             packageArchives = proof.PackageArchives,
             runtimeBodies = runtime, catalogBodies = proof.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),

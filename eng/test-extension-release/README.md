@@ -53,3 +53,16 @@ python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
 
 These checks test release refusals and archive identity validation; they do not
 claim a hosted publication or signed-package startup qualification.
+
+The fixture archive also contains the exact Platform-owned v2 declaration for
+`platformtestextension` and its producer descriptor. This pure extension module
+has no servers and depends only on EventStore/Tenants. The verifier reads the
+approved declaration and producer directly from the immutable release Git
+object, compares every archived byte, and records their hashes. It refuses a
+foreign producer, missing or changed declaration, a different extension/API,
+source project dependencies, another SDK version, or a different SDK release
+source. These packaged inputs prepare a concrete declaration authority for
+subsequent finite host admission; they grant no current composition authority.
+
+The publication controls now run automatically in tuple CI and again before
+fixture publication: 14 Node gate cases and 7 Python archive/producer cases.

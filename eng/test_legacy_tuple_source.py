@@ -99,8 +99,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.git("checkout", "-q", self.old)
         self.assertEqual(legacy.verify(self.root, original_provenance_current, self.old)["sourceEquivalence"], "verified")
 
-    def test_only_exact_eighth_provenance_path_is_added_and_old_body_remains_bound(self):
-        self.assertEqual(len(legacy.ALLOWED), 8)
+    def test_exact_metadata_allowance_stays_bounded_and_old_body_remains_bound(self):
+        self.assertEqual(len(legacy.ALLOWED), 10)
         self.git("checkout", "-q", self.old)
         result = legacy.verify(self.root, self.current, self.old)
         self.assertIn(legacy.PROVENANCE, result["allowedMetadataDifferences"])
@@ -155,6 +155,56 @@ class LegacyTupleSourceTests(unittest.TestCase):
                 self.git("checkout", "-q", self.old)
                 with self.assertRaisesRegex(ValueError, "more than the authenticated"):
                     legacy.verify(self.root, crossed, self.old)
+
+    def test_sdk42_source_and_provenance_transform_is_exact(self):
+        self.git("checkout", "-q", self.old)
+        (self.root / "references/Hexalith.EventStore").mkdir(parents=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
+        historical = self.commit()
+        self.git("checkout", "-q", self.current)
+        self.descriptor["sourceRevision"] = historical
+        self.write_descriptor()
+        selected = json.loads(self.current_provenance)
+        selected["tenants"].update(version="7.0.5", commit=legacy.TENANTS_705_SOURCE)
+        selected["eventstore"].update(version="4.2.0", commit="aa16227bd07f0564a3026d619a5abd973e02656f")
+        self.write(legacy.PROVENANCE, json.dumps(selected).encode())
+        (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000,aa16227bd07f0564a3026d619a5abd973e02656f,references/Hexalith.EventStore")
+        current = self.commit()
+        self.git("checkout", "-q", historical)
+        self.assertEqual(legacy.verify(self.root, current, historical)["requiredCount"], 349)
+        self.git("checkout", "-q", current)
+        self.git("update-index", "--cacheinfo", "160000," + "e" * 40 + ",references/Hexalith.EventStore")
+        changed = self.commit()
+        self.git("checkout", "-q", historical)
+        with self.assertRaisesRegex(ValueError, "exact old source"):
+            legacy.verify(self.root, changed, historical)
+
+    def test_new_replay_descriptor_is_finite_metadata_not_a_source_exemption(self):
+        from pre_extension_tuple_source import DESCRIPTOR, BUILDS, EVENTSTORE, PROFILE_HASH
+        document = dict(schema="hexalith.platform.pre-extension-tuple-source.v1", purpose="same-code-sdk41-tuple-regression",
+                        sourceRevision=self.old, buildsSource=BUILDS, eventStoreSource=EVENTSTORE,
+                        toolVersion="4.45.0", profileSha256=PROFILE_HASH, requiredCount=412, qualificationCredit=False)
+        self.git("checkout", "-q", self.old)
+        self.write(DESCRIPTOR, json.dumps(document).encode())
+        historical = self.commit()
+        self.git("checkout", "-q", self.current)
+        self.descriptor["sourceRevision"] = historical
+        self.write_descriptor()
+        document["sourceRevision"] = historical
+        self.write(DESCRIPTOR, json.dumps(document).encode())
+        current = self.commit()
+        self.git("checkout", "-q", historical)
+        self.assertEqual(legacy.verify(self.root, current, historical)["requiredCount"], 349)
+        for field, value in [("requiredCount", 411), ("unknown", "ignored-source"), ("qualificationCredit", True)]:
+            self.git("checkout", "-q", current)
+            changed_document = dict(document)
+            changed_document[field] = value
+            self.write(DESCRIPTOR, json.dumps(changed_document).encode())
+            changed = self.commit()
+            self.git("checkout", "-q", historical)
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                legacy.verify(self.root, changed, historical)
 
     def test_current_checkout_cannot_claim_the_legacy_source(self):
         with self.assertRaises(ValueError): legacy.verify(self.root, self.current, self.old)

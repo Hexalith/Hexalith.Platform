@@ -400,3 +400,66 @@ Additional implementation tasks, ordered by dependency:
 - [ ] Run relevant source/package and owner tests, compare against retained full inventories and record exact revisions, commands, results and unresolved failures. Keep the Story 2.8 package-fixture failure separately attributed, including its genuine Memories Contracts prerequisite versus modified-input guard observation. Preserve all source/signature/provenance/declaration/image/host checks.
 
 Amended acceptance: Given reviewed exact-source owner releases, when their measured catalog/tool/SDK pins are qualified and adopted through the existing tuple process, then source and signed published-package composition each assemble exactly one EventStore gateway, the actual host reports the declared extension in readiness, automatic package-mode CI executes its required inventory, and no-extension gateway/cohort behavior retains its existing admission guarantees. Do not mark this story done until every remaining original and amended acceptance requirement is satisfied. If an external gate cannot be resolved within the authorized work, retain in-progress status and exact evidence; do not substitute a partial local probe for release qualification.
+
+
+### Release/adoption progress — 2026-11-09, before Platform pin adoption
+
+EventStore 4.2.0 was published through the normal exact-source gates from
+`aa16227bd07f0564a3026d619a5abd973e02656f` (publisher 42623038544). Eight official
+NuGet archives passed signature/source/body verification. Its unchanged released
+v2 declaration hashes to 21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495.
+Builds' reviewed named-consumer API landed normally in PR #179 at 2cc24dbb9d65654b696b54d49c16afe1f3f67b4d;
+the canonical SDK4.2 catalog/host-view update remains in PR #180, with its normal
+CI gates pending on 5a49eea. The first five direct-catalog unit failures were
+attributed to synthetic fixture 4.1 provenance/version mutations and corrected;
+all 19 direct-catalog/consumer-view controls pass locally. The owner release is
+still required before Platform adoption.
+
+The SDK4.2 default is being qualified separately from extension admission.
+Two generated-reader runs passed 14 positive/refusal cases each, first on the
+old catalog's MCP2.3.1 and then on upstream's preserved MCP2.4.0. They verify
+actual signed archive/source/body identities and retain 23 routes/12 policies
+for the private EventStore reader and 70/46 for public Parties. The 92 finite
+component controls pass with no skips; 256 full-project capability evaluations
+pass; all seven existing owner OCI indexes were remeasured. Five actual
+signed-tool/seed/source-owner/ordinary-reader/model cases still fail closed on
+the unchanged Builds4.45/SDK4.1 tuple and must pass after its real replacement.
+The automatic draft requires 97 default-cohort cases plus the original nine
+extension component cases, while preserving all 412 and 349 historical cases in
+separate authenticated same-code tuple histories. Those histories and the
+complete new tuple still require the existing L/M refresh; no new default or
+Platform source release has been adopted from local component evidence.
+
+The fixture publisher now has a reviewable exact-source path and an explicitly
+Platform-owned pure-extension declaration/producer body inside its package.
+It grants no present owner/host admission. All 14 Node and 7 Python publisher
+controls run automatically in the draft tuple workflow and before publication.
+GitHub production/main publisher controls were configured with explicit user
+authorization. Creating the exact NuGet account-side Trusted Publisher still
+requires an authenticated NuGet account session unavailable through the current
+tools. Signed publication, its measured finite host cohort, actual packaged
+host startup, the real named-consumer rollout and remaining original acceptance
+remain incomplete. The original broad inventory and Story 2.8 genuine Memories
+Contracts prerequisite versus modified-input guard observation remain separately
+attributed; none of their retained evidence was rewritten.
+
+Append-only evidence and exact controls/refusals:
+[evidence](evidence/3-2/release-adoption-20261109/sdk42-no-extension-preparation/receipt.json)
+and [revised stage plan](evidence/3-2/release-adoption-20261109/revised-stage-one-and-fixture-plan.json).
+Status remains **in-progress**.
+
+
+Source Debug recheck before adoption: 36 extension cases and 12 enrollment/seed/registration
+companions pass, preserving all 47 earlier cases and adding the no-extension seed
+control. The actual SDK4.2/Tenants7.0.5 consumer-binding executable also passes
+all 15 cases against the refreshed owning catalog. The new historical replay
+controls pass 8 closed-metadata, 12 legacy-transformation and 7 SDK/profile/pin
+cases; parent independently inspected and ran these controls. These remain
+preparation evidence, as recorded in
+[pre-tuple verification](evidence/3-2/release-adoption-20261109/verification-before-published-tuple.json).
+Concurrent Builds main adopted the SDK4.2 defaults independently (7564c96/a8a8716);
+PR #180 is narrowed to the actual host consumer marker/view correction and its
+refreshed audit. Its previous green head could not merge because that upstream
+adoption conflicted; the normal merge returned HTTP 405 and the isolated rebase
+preserves the adopted upstream result. A fresh normal CI/release is required
+for the combined source. No Platform pin has changed.

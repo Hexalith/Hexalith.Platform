@@ -1,0 +1,18 @@
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.2+0c7aa4991f (64-bit .NET 10.0.14)
+  Discovering: OwnerSnapshot.Tests
+  Discovered:  OwnerSnapshot.Tests
+  Starting:    OwnerSnapshot.Tests
+    Hexalith.Builds.ModuleTool.Tests.Workspace.HostSnapshotRestoreTests.RecordedHostViewRestoresTheActualCandidatePackageAsync [FAIL]
+      System.ArgumentNullException : Value cannot be null. (Parameter 'path')
+      Stack Trace:
+           at System.ArgumentNullException.Throw(String paramName)
+           at System.ArgumentNullException.ThrowIfNull(Object argument, String paramName)
+           at System.ArgumentException.ThrowNullOrEmptyException(String argument, String paramName)
+           at System.IO.File.ReadAllText(String path, Encoding encoding)
+        HostSnapshotRestoreTests.cs(17,0): at Hexalith.Builds.ModuleTool.Tests.Workspace.HostSnapshotRestoreTests.RecordedHostViewRestoresTheActualCandidatePackageAsync()
+        --- End of stack trace from previous location ---
+  Finished:    OwnerSnapshot.Tests (ID = 'c44b3e572c9ed546e5aa865e6cab4fbd90338068942230609ae3497abf9da1b3')
+=== TEST EXECUTION SUMMARY ===
+   OwnerSnapshot.Tests  Total: 6, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.186s
