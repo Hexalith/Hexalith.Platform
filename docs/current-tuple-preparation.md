@@ -49,6 +49,18 @@ metadata and dependency-source differences. Qualification must run against the
 actual checked-out replay commits. Earlier source-equivalent receipts cannot
 qualify newly integrated changes.
 
+The 349-case legacy replay binds Parties source
+`bb2783120c0eed620e3d4f52a2ebaf6aa510126f` and declaration SHA-256
+`40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b`.
+The 412-case pre-extension and current SDK4.2 sources bind Parties
+`ebe1739d70a4e76447938b0bb8c53db508bf6019` and declaration
+`d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348`.
+The exact historical-to-current gitlink transformation is checked before
+initialization; every lane rechecks the actual owner HEAD and manifest bytes
+after initialization. Arbitrary, missing, reversed and older-provenance source
+substitutions refuse. This preserves the original historical assertions and
+adds no runtime or service enrollment authority.
+
 Source release requires all **five tuple jobs** (source resolution, the current
 lane, both historical lanes and aggregate verdict) and all **six SDK catalog
 jobs** at the exact final source. The SDK4.2 catalog row also verifies the signed

@@ -1,0 +1,20 @@
+{
+  "legacySource": "87bf914eb2e990023d46dff1d14fdbf62f42320e",
+  "currentSource": "a88ae34328af405237a5ac51a3bbbaf5f58a493d",
+  "purpose": "same-code-legacy-tuple-regression",
+  "qualificationCredit": false,
+  "binaryEquivalenceClaimed": false,
+  "sourceEquivalence": "verified",
+  "requiredCount": 349,
+  "allowedMetadataDifferences": [
+    ".config/dotnet-tools.json",
+    "eng/builds-tuple.json",
+    "eng/legacy-tuple-source.json",
+    "eng/pre-extension-tuple-source.json",
+    "eng/tuple-ci-suites.json",
+    "hexalith-platform.json",
+    "references/Hexalith.Builds",
+    "references/Hexalith.EventStore",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+  ]
+}

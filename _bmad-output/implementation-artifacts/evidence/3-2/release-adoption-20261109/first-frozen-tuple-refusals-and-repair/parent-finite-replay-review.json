@@ -1,0 +1,76 @@
+{
+  "kind": "independent-finite-replay-and-preflight-review",
+  "createdUtc": "2026-11-09T19:51:10.340567+00:00",
+  "patch": "/tmp/story32-finite-parties-and-preflight-fix-final.diff",
+  "patchSha256": "9f7aacc5899d9afa7e8cba19bf081e16ad5a9b76ee1c3be6fce28e82957e8fb1",
+  "files": {
+    "eng/legacy_tuple_source.py": "6a508bcb98daf210fd48d9f50e0bf72d19f2e8665cc9a6a8e203e60aac6fe867",
+    "eng/pre_extension_tuple_source.py": "3ef8941cadc1502d1b2360353f8afc2e8519b2bbd9da783eb0304b8271443cd8",
+    "eng/test_legacy_tuple_source.py": "4c153abb8a93fda6e5ff2d6d60f32bf610846c2f28fe3510bbe432dd1b3def59",
+    "eng/test_pre_extension_tuple_source.py": "c35fdfc67a58ba5124e8efea3d106126762f9ac298ab2fef46a0ac3a20699e5a",
+    "eng/test_builds_tuple.py": "7abb7623af27e0873b6858ad8d7a1ff4ea47788033390e907a1b9ff40cf54cc5",
+    ".github/workflows/tuple-ci.yml": "9f65439aff505e3ca6265748788a9f8c1a89d5c00d1d331124c31d7e84004a20",
+    ".github/workflows/test-extension-release.yml": "eac3a90082d353bf3192403f9da7254add9c4d9ddadc5c5f9ee9162011691131",
+    "tests/source-release/tuple-workflow.test.mjs": "c3db2bfb3f18ecc3bb45cca199c554bea038df272ba2273139ba3aabece5500f",
+    "tests/source-release/fixture-workflow.test.mjs": "553c3d8785c7838a8b7a049b7f07b09b7045fe9d5b67b06ae431332e8bc07bb9",
+    "_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/linear-replay-materialization-schema-fix/materialize-linear-replays.py": "004cf5630bfa1111b0ecd75ce9e53e6f6b50b35df4c7ad523da546e9caa8b19a"
+  },
+  "independentlyExecuted": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_legacy_tuple_source.py"
+      ],
+      "count": 20,
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_pre_extension_tuple_source.py"
+      ],
+      "count": 9,
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "count": 19,
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "count": 29,
+      "fail": 0,
+      "skip": 0,
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "/home/administrator/.local/bin/actionlint",
+        "-shellcheck=",
+        "-pyflakes=",
+        ".github/workflows/test-extension-release.yml",
+        ".github/workflows/tuple-ci.yml",
+        ".github/workflows/catalog-builder.yml",
+        ".github/workflows/source-release.yml"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "reviewFindings": [],
+  "boundedTransform": "Only the SDK4.2 provenance permits exact legacy BB to current EBE; changed Parties under older provenance refuses. Pre-extension/current must both bind exact EBE. All three hosted lanes check initialized owner HEAD and declaration hash before package execution. Historical assertions and production admission unchanged.",
+  "fixtureCorrection": "Synthetic sibling catalog now includes the exact required single SDK4.1 row; actual historical catalog guard unchanged.",
+  "candidateAcceptance": false,
+  "hostedQualification": false,
+  "signedFixtureCredit": false
+}

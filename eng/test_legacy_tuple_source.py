@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import legacy_tuple_source as legacy
 
@@ -160,6 +161,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.git("checkout", "-q", self.old)
         (self.root / "references/Hexalith.EventStore").mkdir(parents=True)
         self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
         historical = self.commit()
         self.git("checkout", "-q", self.current)
         self.descriptor["sourceRevision"] = historical
@@ -170,6 +173,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.write(legacy.PROVENANCE, json.dumps(selected).encode())
         (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
         self.git("update-index", "--add", "--cacheinfo", "160000,aa16227bd07f0564a3026d619a5abd973e02656f,references/Hexalith.EventStore")
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.CURRENT_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
         current = self.commit()
         self.git("checkout", "-q", historical)
         self.assertEqual(legacy.verify(self.root, current, historical)["requiredCount"], 349)
@@ -178,6 +183,57 @@ class LegacyTupleSourceTests(unittest.TestCase):
         changed = self.commit()
         self.git("checkout", "-q", historical)
         with self.assertRaisesRegex(ValueError, "exact old source"):
+            legacy.verify(self.root, changed, historical)
+
+    def test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings(self):
+        self.git("checkout", "-q", self.old)
+        for path, source in [("references/Hexalith.EventStore", "cab8363c2b6e2c0588efc8ca9c2e09fab0006841"),
+                             (legacy.PARTIES_PATH, legacy.LEGACY_PARTIES_SOURCE)]:
+            (self.root / path).mkdir(parents=True, exist_ok=True)
+            self.git("update-index", "--add", "--cacheinfo", "160000," + source + "," + path)
+        historical = self.commit()
+        for old_source, current_source in [("e" * 40, legacy.CURRENT_PARTIES_SOURCE),
+                (None, legacy.CURRENT_PARTIES_SOURCE), (legacy.CURRENT_PARTIES_SOURCE, legacy.LEGACY_PARTIES_SOURCE),
+                (legacy.LEGACY_PARTIES_SOURCE, "e" * 40), (legacy.LEGACY_PARTIES_SOURCE, None)]:
+            with self.subTest(old=old_source, current=current_source):
+                self.git("checkout", "-q", historical)
+                if old_source is None:
+                    self.git("update-index", "--force-remove", legacy.PARTIES_PATH)
+                else:
+                    self.git("update-index", "--cacheinfo", "160000," + old_source + "," + legacy.PARTIES_PATH)
+                selected_old = historical if old_source == legacy.LEGACY_PARTIES_SOURCE else self.commit()
+                self.git("checkout", "-q", self.current)
+                self.descriptor["sourceRevision"] = selected_old
+                self.write_descriptor()
+                selected = json.loads(self.current_provenance)
+                selected["tenants"].update(version="7.0.5", commit=legacy.TENANTS_705_SOURCE)
+                selected["eventstore"].update(version="4.2.0", commit=legacy.EVENTSTORE_420_SOURCE)
+                self.write(legacy.PROVENANCE, json.dumps(selected).encode())
+                (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
+                (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+                self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.EVENTSTORE_420_SOURCE + ",references/Hexalith.EventStore")
+                if current_source is None:
+                    self.git("update-index", "--force-remove", legacy.PARTIES_PATH)
+                else:
+                    self.git("update-index", "--add", "--cacheinfo", "160000," + current_source + "," + legacy.PARTIES_PATH)
+                selected_current = self.commit()
+                self.git("checkout", "-q", selected_old)
+                with self.assertRaisesRegex(ValueError, "Parties source"):
+                    legacy.verify(self.root, selected_current, selected_old)
+
+    def test_old_provenance_cannot_hide_an_arbitrary_parties_source_change(self):
+        self.git("checkout", "-q", self.old)
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
+        historical = self.commit()
+        self.git("checkout", "-q", self.current)
+        self.descriptor["sourceRevision"] = historical
+        self.write_descriptor()
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + "e" * 40 + "," + legacy.PARTIES_PATH)
+        changed = self.commit()
+        self.git("checkout", "-q", historical)
+        with self.assertRaisesRegex(ValueError, "exact historical BB"):
             legacy.verify(self.root, changed, historical)
 
     def test_new_replay_descriptor_is_finite_metadata_not_a_source_exemption(self):
@@ -214,6 +270,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
         self.git("checkout", "-q", self.old)
         (self.root / "references/Hexalith.EventStore").mkdir(parents=True, exist_ok=True)
         self.git("update-index", "--add", "--cacheinfo", "160000,cab8363c2b6e2c0588efc8ca9c2e09fab0006841,references/Hexalith.EventStore")
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.LEGACY_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
         historical = self.commit()
         self.git("checkout", "-q", self.current)
         self.descriptor["sourceRevision"] = historical
@@ -224,6 +282,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
         document["eventstore"].update(version="4.2.0", commit=legacy.EVENTSTORE_420_SOURCE)
         self.write(legacy.PROVENANCE, json.dumps(document).encode())
         self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.EVENTSTORE_420_SOURCE + ",references/Hexalith.EventStore")
+        (self.root / legacy.PARTIES_PATH).mkdir(parents=True, exist_ok=True)
+        self.git("update-index", "--add", "--cacheinfo", "160000," + legacy.CURRENT_PARTIES_SOURCE + "," + legacy.PARTIES_PATH)
         released = self.commit()
         self.git("checkout", "-q", historical)
         result = legacy.verify(self.root, released, historical)
@@ -279,6 +339,65 @@ class LegacyTupleSourceTests(unittest.TestCase):
                 new = self.commit()
                 self.git("checkout", "-q", bad_old)
                 with self.assertRaises(ValueError): legacy.verify(self.root, new, bad_old)
+
+
+class PartiesCheckoutTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="finite-parties-checkout-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.owner = self.root / legacy.PARTIES_PATH
+        self.owner.mkdir(parents=True)
+        for repository in [self.root, self.owner]:
+            self.git(repository, "init", "-q")
+            self.git(repository, "config", "user.name", "Finite Parties checkout control")
+            self.git(repository, "config", "user.email", "fixture@invalid")
+        self.manifest = self.owner / "module/hexalith.module-manifest.v2.json"
+        self.manifest.parent.mkdir()
+        self.manifest.write_bytes(b'{"scope":"synthetic checkout control only"}\n')
+        self.git(self.owner, "add", ".")
+        self.git(self.owner, "commit", "-q", "-m", "test(tuple): record isolated owner")
+        self.source = self.git(self.owner, "rev-parse", "HEAD")
+        declaration = hashlib.sha256(self.manifest.read_bytes()).hexdigest()
+        self.git(self.root, "update-index", "--add", "--cacheinfo", "160000," + self.source + "," + legacy.PARTIES_PATH)
+        self.git(self.root, "commit", "-q", "-m", "test(tuple): bind isolated owner")
+        # Synthetic constants are scoped to this genuine local Git control, never publication inputs.
+        constants = patch.multiple(legacy, LEGACY_PARTIES_SOURCE=self.source, CURRENT_PARTIES_SOURCE=self.source,
+                                   LEGACY_PARTIES_DECLARATION=declaration, CURRENT_PARTIES_DECLARATION=declaration)
+        constants.start()
+        self.addCleanup(constants.stop)
+
+    def git(self, root, *arguments):
+        return subprocess.run(["git", *arguments], cwd=root, capture_output=True, check=True).stdout.decode().strip()
+
+    def test_actual_initialized_owner_and_manifest_match_both_finite_roles(self):
+        for historical in [False, True]:
+            result = legacy.verify_parties_checkout(self.root, historical)
+            self.assertEqual(result["source"], self.source)
+            self.assertFalse(result["qualificationCredit"])
+
+    def test_wrong_recorded_gitlink_refuses(self):
+        self.git(self.root, "update-index", "--cacheinfo", "160000," + "e" * 40 + "," + legacy.PARTIES_PATH)
+        self.git(self.root, "commit", "-q", "-m", "test(tuple): change recorded owner")
+        with self.assertRaises(ValueError):
+            legacy.verify_parties_checkout(self.root, False)
+
+    def test_wrong_initialized_owner_head_refuses(self):
+        (self.owner / "changed.txt").write_text("different actual owner revision\n")
+        self.git(self.owner, "add", ".")
+        self.git(self.owner, "commit", "-q", "-m", "test(tuple): change initialized owner")
+        with self.assertRaises(ValueError):
+            legacy.verify_parties_checkout(self.root, False)
+
+    def test_changed_manifest_bytes_refuse(self):
+        self.manifest.write_bytes(self.manifest.read_bytes() + b" ")
+        with self.assertRaises(ValueError):
+            legacy.verify_parties_checkout(self.root, False)
+
+    def test_missing_manifest_refuses(self):
+        self.manifest.unlink()
+        with self.assertRaises(ValueError):
+            legacy.verify_parties_checkout(self.root, False)
 
 
 if __name__ == "__main__":

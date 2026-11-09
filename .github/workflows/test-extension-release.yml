@@ -27,8 +27,10 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       FIXTURE_VERSION: ${{ inputs.version }}
-      FIXTURE_PROOF_OUTPUT: ${{ runner.temp }}/fixture-proof.json
     steps:
+      - name: Bind job-local proof output
+        shell: bash
+        run: printf 'FIXTURE_PROOF_OUTPUT=%s/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
@@ -90,9 +92,11 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       FIXTURE_VERSION: ${{ inputs.version }}
-      FIXTURE_EXPECTED_PROOF: ${{ runner.temp }}/fixture-package/fixture-proof.json
       FIXTURE_ARCHIVE_SHA256: ${{ needs.qualify.outputs.archive_sha256 }}
     steps:
+      - name: Bind downloaded qualification proof
+        shell: bash
+        run: printf 'FIXTURE_EXPECTED_PROOF=%s/fixture-package/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0

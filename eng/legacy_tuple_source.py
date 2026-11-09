@@ -17,6 +17,32 @@ TENANTS_CURRENT_SOURCE = "8e20524574901d71ad5f4876804c64c3c6c87b88"
 TENANTS_705_SOURCE = "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35"
 MEMORIES_CURRENT_SOURCE = "246157a7ff8e2dcd8d356c833a77a02514490d2f"
 EVENTSTORE_420_SOURCE = "aa16227bd07f0564a3026d619a5abd973e02656f"
+LEGACY_PARTIES_SOURCE = "bb2783120c0eed620e3d4f52a2ebaf6aa510126f"
+CURRENT_PARTIES_SOURCE = "ebe1739d70a4e76447938b0bb8c53db508bf6019"
+LEGACY_PARTIES_DECLARATION = "40cee6ce4b82902d994b8c2a1baa0629dab33e8f2afc5c8687214fc1dab1641b"
+CURRENT_PARTIES_DECLARATION = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348"
+PARTIES_PATH = "references/Hexalith.Parties"
+
+
+def parties_source(root: Path, revision: str) -> str:
+    try:
+        return git(root, "rev-parse", revision + ":" + PARTIES_PATH).decode().strip()
+    except subprocess.CalledProcessError as error:
+        raise ValueError("The exact Parties source gitlink is missing.") from error
+
+
+def verify_parties_checkout(root: Path, historical: bool) -> dict:
+    """Recheck the actual initialized owner without granting service or host admission."""
+    source = LEGACY_PARTIES_SOURCE if historical else CURRENT_PARTIES_SOURCE
+    declaration = LEGACY_PARTIES_DECLARATION if historical else CURRENT_PARTIES_DECLARATION
+    owner = root / PARTIES_PATH
+    try:
+        if parties_source(root, "HEAD") != source or git(owner, "rev-parse", "HEAD").decode().strip() != source \
+                or hashlib.sha256((owner / "module/hexalith.module-manifest.v2.json").read_bytes()).hexdigest() != declaration:
+            raise ValueError("Parties checkout or declaration differs from its exact historical/current binding.")
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise ValueError("The exact Parties checkout or declaration is unavailable.") from error
+    return {"source": source, "declarationSha256": declaration, "qualificationCredit": False}
 ALLOWED = {PROVENANCE, DESCRIPTOR, "eng/builds-tuple.json", "eng/tuple-ci-suites.json", ".config/dotnet-tools.json",
            "hexalith-platform.json", "references/Hexalith.Builds", "references/Hexalith.Parties", "references/Hexalith.EventStore", "eng/pre-extension-tuple-source.json"}
 
@@ -100,6 +126,10 @@ def verify(root: Path, current: str, legacy: str) -> dict:
         if git(root, "rev-parse", legacy + ":references/Hexalith.EventStore").decode().strip() != "cab8363c2b6e2c0588efc8ca9c2e09fab0006841" \
                 or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != EVENTSTORE_420_SOURCE or selected != sdk_expected:
             raise ValueError("Changed SDK gitlink must retain its exact old source and match the published SDK4.2 provenance.")
+    if (PARTIES_PATH in changed or selected == sdk_expected) and (selected != sdk_expected
+            or parties_source(root, legacy) != LEGACY_PARTIES_SOURCE
+            or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
+        raise ValueError("SDK4.2 replay requires the exact historical BB to current EBE Parties sources.")
     tool = decode(git(root, "show", legacy + ":.config/dotnet-tools.json"))["tools"]["hexalith.builds.module.cli"]
     if tool["version"] != "4.44.3" or tool["rollForward"] is not False:
         raise ValueError("Legacy source changed its exact published tool identity.")

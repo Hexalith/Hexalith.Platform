@@ -49,3 +49,15 @@ test('actual aggregate step exits nonzero for every unsuccessful or absent lane 
     assert.equal(result.status === 0, [source, current, legacy, preExtension].every(value => value === 'success'));
   }
 });
+
+
+test('all three actual lanes recheck the finite initialized Parties owner before package execution', () => {
+  for (const [lane, historical] of [['tuple', false], ['legacy-public-cohort', true], ['pre-extension-public-cohort', false]]) {
+    const steps = workflow.jobs[lane].steps;
+    const check = steps.findIndex(step => step.name === 'Recheck the exact initialized Parties source and declaration');
+    assert.ok(check > 0);
+    assert.ok(steps.slice(0, check).some(step => step.run?.includes('submodule update --init')));
+    assert.ok(steps[check].run.includes(`verify_parties_checkout(Path.cwd(), historical=${historical ? 'True' : 'False'})`));
+    assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
+  }
+});

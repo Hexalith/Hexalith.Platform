@@ -31,6 +31,7 @@ class PreExtensionSourceTests(unittest.TestCase):
         self.write('tests/Control.cs', b'unchanged controls\n')
         self.gitlink('references/Hexalith.Builds', history.BUILDS)
         self.gitlink('references/Hexalith.EventStore', history.EVENTSTORE)
+        self.gitlink('references/Hexalith.Parties', history.CURRENT_PARTIES_SOURCE)
         self.descriptor = dict(schema='hexalith.platform.pre-extension-tuple-source.v1', purpose='same-code-sdk41-tuple-regression',
                                sourceRevision=None, buildsSource=history.BUILDS, eventStoreSource=history.EVENTSTORE,
                                toolVersion='4.45.0', profileSha256=history.PROFILE_HASH, requiredCount=412, qualificationCredit=False)
@@ -143,6 +144,27 @@ class PreExtensionSourceTests(unittest.TestCase):
         self.git('checkout', '-q', self.old)
         with self.assertRaisesRegex(ValueError, 'unapproved metadata'):
             history.verify(self.root, changed, self.old)
+
+    def test_unchanged_foreign_or_missing_parties_gitlinks_cannot_claim_the_new_replay(self):
+        for source in ['d' * 40, None]:
+            with self.subTest(source=source):
+                self.git('checkout', '-q', self.old)
+                if source is None:
+                    self.git('update-index', '--force-remove', 'references/Hexalith.Parties')
+                else:
+                    self.gitlink('references/Hexalith.Parties', source)
+                historical = self.commit()
+                self.git('checkout', '-q', self.current)
+                self.descriptor['sourceRevision'] = historical
+                self.write_descriptor()
+                if source is None:
+                    self.git('update-index', '--force-remove', 'references/Hexalith.Parties')
+                else:
+                    self.gitlink('references/Hexalith.Parties', source)
+                current = self.commit()
+                self.git('checkout', '-q', historical)
+                with self.assertRaisesRegex(ValueError, 'Parties source'):
+                    history.verify(self.root, current, historical)
 
     def test_private_tuple_identity_transformation_changes_only_bound_version_fields(self):
         # These deliberately synthetic private Git/package identities prove only the metadata comparison.

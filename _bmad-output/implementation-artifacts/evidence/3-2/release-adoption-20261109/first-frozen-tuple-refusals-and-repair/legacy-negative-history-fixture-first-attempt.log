@@ -1,0 +1,148 @@
+......E....EEEEEE.
+======================================================================
+ERROR: test_exact_sdk420_tuple_is_accepted_without_relaxing_legacy_or_crossed_provenance (__main__.LegacyTupleSourceTests.test_exact_sdk420_tuple_is_accepted_without_relaxing_legacy_or_crossed_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 29, in parties_source
+    return git(root, "rev-parse", revision + ":" + PARTIES_PATH).decode().strip()
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 65, in git
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'rev-parse', '5179f2ca5be1fb1009d6017a69f09fda5c4eb13b:references/Hexalith.Parties']' returned non-zero exit status 128.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 269, in test_exact_sdk420_tuple_is_accepted_without_relaxing_legacy_or_crossed_provenance
+    result = legacy.verify(self.root, released, historical)
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 127, in verify
+    or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
+       ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 31, in parties_source
+    raise ValueError("The exact Parties source gitlink is missing.") from error
+ValueError: The exact Parties source gitlink is missing.
+
+======================================================================
+ERROR: test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings (__main__.LegacyTupleSourceTests.test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings) (old='eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', current='ebe1739d70a4e76447938b0bb8c53db508bf6019')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 218, in test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings
+    legacy.verify(self.root, selected_current, selected_old)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 124, in verify
+    or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != EVENTSTORE_420_SOURCE or selected != sdk_expected:
+       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 65, in git
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'rev-parse', '8decaf6234204a03a6f30737bbf41c7cd1f18c67:references/Hexalith.EventStore']' returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings (__main__.LegacyTupleSourceTests.test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings) (old=None, current='ebe1739d70a4e76447938b0bb8c53db508bf6019')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 218, in test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings
+    legacy.verify(self.root, selected_current, selected_old)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 124, in verify
+    or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != EVENTSTORE_420_SOURCE or selected != sdk_expected:
+       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 65, in git
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'rev-parse', 'bbe277e84ed8419b24058a1745368883cfde08d6:references/Hexalith.EventStore']' returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings (__main__.LegacyTupleSourceTests.test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings) (old='ebe1739d70a4e76447938b0bb8c53db508bf6019', current='bb2783120c0eed620e3d4f52a2ebaf6aa510126f')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 218, in test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings
+    legacy.verify(self.root, selected_current, selected_old)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 124, in verify
+    or git(root, "rev-parse", current + ":references/Hexalith.EventStore").decode().strip() != EVENTSTORE_420_SOURCE or selected != sdk_expected:
+       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 65, in git
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'rev-parse', '7c264bab2b8ac1ef1d4c85439500deb5ea394ac8:references/Hexalith.EventStore']' returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings (__main__.LegacyTupleSourceTests.test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings) (old='bb2783120c0eed620e3d4f52a2ebaf6aa510126f', current='eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 202, in test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings
+    selected_old = self.commit()
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 63, in commit
+    self.git("commit", "-q", "-m", "test(legacy): record private source fixture")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 51, in git
+    return subprocess.run(["git", *arguments], cwd=self.root, capture_output=True, check=True).stdout.decode().strip()
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'commit', '-q', '-m', 'test(legacy): record private source fixture']' returned non-zero exit status 1.
+
+======================================================================
+ERROR: test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings (__main__.LegacyTupleSourceTests.test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings) (old='bb2783120c0eed620e3d4f52a2ebaf6aa510126f', current=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 202, in test_sdk42_parties_sources_refuse_arbitrary_missing_or_reversed_bindings
+    selected_old = self.commit()
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 63, in commit
+    self.git("commit", "-q", "-m", "test(legacy): record private source fixture")
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 51, in git
+    return subprocess.run(["git", *arguments], cwd=self.root, capture_output=True, check=True).stdout.decode().strip()
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'commit', '-q', '-m', 'test(legacy): record private source fixture']' returned non-zero exit status 1.
+
+======================================================================
+ERROR: test_sdk42_source_and_provenance_transform_is_exact (__main__.LegacyTupleSourceTests.test_sdk42_source_and_provenance_transform_is_exact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 29, in parties_source
+    return git(root, "rev-parse", revision + ":" + PARTIES_PATH).decode().strip()
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 65, in git
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'rev-parse', 'ba51c9d38b63ebf0d39a78ad6ca44c4f9d09272b:references/Hexalith.Parties']' returned non-zero exit status 128.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/test_legacy_tuple_source.py", line 178, in test_sdk42_source_and_provenance_transform_is_exact
+    self.assertEqual(legacy.verify(self.root, current, historical)["requiredCount"], 349)
+                     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 127, in verify
+    or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
+       ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/tmp/story-3-2-broad-20261109-_z_wy84q/current/eng/legacy_tuple_source.py", line 31, in parties_source
+    raise ValueError("The exact Parties source gitlink is missing.") from error
+ValueError: The exact Parties source gitlink is missing.
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.388s
+
+FAILED (errors=7)

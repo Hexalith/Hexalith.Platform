@@ -103,6 +103,15 @@ jobs:
           test "$(git rev-parse HEAD:references/Hexalith.Builds)" = "$builds_source"
           git submodule update --init
           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = "$builds_source"
+      - name: Recheck the exact initialized Parties source and declaration
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'eng')
+          from legacy_tuple_source import verify_parties_checkout
+          verify_parties_checkout(Path.cwd(), historical=False)
+          PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         id: dotnet
         with:
@@ -186,6 +195,15 @@ jobs:
           PYCODE
           git -c submodule.recurse=false submodule update --init
           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = fc2122240a39f03628c04fa8433e5eece90b8b4c
+      - name: Recheck the exact initialized Parties source and declaration
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'eng')
+          from legacy_tuple_source import verify_parties_checkout
+          verify_parties_checkout(Path.cwd(), historical=True)
+          PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json
@@ -231,6 +249,15 @@ jobs:
           git -c submodule.recurse=false submodule update --init
           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = 27145e52ffab5623198ba5efdab5cdb71aa42d28
           test "$(git -C references/Hexalith.EventStore rev-parse HEAD)" = cab8363c2b6e2c0588efc8ca9c2e09fab0006841
+      - name: Recheck the exact initialized Parties source and declaration
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'eng')
+          from legacy_tuple_source import verify_parties_checkout
+          verify_parties_checkout(Path.cwd(), historical=False)
+          PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json

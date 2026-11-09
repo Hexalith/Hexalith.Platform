@@ -6,7 +6,7 @@ import json
 import copy
 import re
 from pathlib import Path
-from legacy_tuple_source import commit, decode, git
+from legacy_tuple_source import commit, decode, git, parties_source, CURRENT_PARTIES_SOURCE
 
 ROOT = Path(__file__).resolve().parents[1]
 DESCRIPTOR = 'eng/pre-extension-tuple-source.json'
@@ -119,6 +119,9 @@ def verify(root: Path, current: str, historical: str) -> dict:
             git(root, 'cat-file', '-e', recorded + '^{commit}')
     if ('references/Hexalith.EventStore' in changed or selected == expected) and (selected != expected or git(root, 'rev-parse', current + ':references/Hexalith.EventStore').decode().strip() != SDK42_SOURCE):
         raise ValueError('Changed SDK gitlink must match the exact published source and provenance.')
+    if selected == expected and (parties_source(root, historical) != CURRENT_PARTIES_SOURCE
+            or parties_source(root, current) != CURRENT_PARTIES_SOURCE):
+        raise ValueError('The pre-extension/current SDK4.2 replay requires unchanged exact EBE Parties sources.')
     verify_tuple_metadata(root, current, historical)
     tool = decode(git(root, 'show', historical + ':.config/dotnet-tools.json'))['tools']['hexalith.builds.module.cli']
     if tool['version'] != '4.45.0' or tool['rollForward'] is not False:

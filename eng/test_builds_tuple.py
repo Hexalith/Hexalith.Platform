@@ -193,7 +193,7 @@ class BuildsTupleTests(unittest.TestCase):
         sibling = owner.parent / "Hexalith.Builds"
         catalog = sibling / "Props/Directory.Packages.props"
         catalog.parent.mkdir(parents=True)
-        catalog_bytes = b"<Project />\n"
+        catalog_bytes = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
         catalog.write_bytes(catalog_bytes)
         self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(catalog_bytes).hexdigest()
         self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
