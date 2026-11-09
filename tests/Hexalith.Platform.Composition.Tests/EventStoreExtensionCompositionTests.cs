@@ -95,6 +95,62 @@ public sealed class EventStoreExtensionCompositionTests
     }
 
     [Fact]
+    public async Task SourceCompositionAssemblesOneGatewayWithBothDistinctExtensionsAsync()
+    {
+        const string secondModule = "secondprobe";
+        const string secondPackage = "Hexalith.Platform.SecondTestExtension";
+        const string secondId = "platform-second";
+        using PlatformOwnerFixture owner = Owner(Extension());
+        JsonNode declaration = JsonNode.Parse(File.ReadAllText(owner.Manifest))!;
+        declaration["modules"]![0]!["identity"]!["dependencies"] = new JsonArray(secondModule);
+        File.WriteAllText(owner.Manifest, declaration.ToJsonString());
+        using PlatformOwnerFixture secondOwner = Owner(new JsonObject
+        {
+            ["packageId"] = secondPackage,
+            ["extensionId"] = secondId,
+            ["extensionApiMajor"] = EventStoreExtensionApi.CurrentMajor,
+            ["configurationInputs"] = new JsonArray(),
+        }, module: secondModule);
+        string secondProject = Path.Combine(secondOwner.Root, "src", secondPackage, secondPackage + ".csproj");
+        Directory.CreateDirectory(Path.GetDirectoryName(secondProject)!);
+        File.WriteAllText(secondProject, "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>");
+        PlatformCompositionOptions options = SourceOptions(owner);
+        options = options with
+        {
+            DeclarationPaths = [owner.Manifest, secondOwner.Manifest],
+            Mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Secondprobe", "source", secondOwner.Root)] },
+            Projects = new Dictionary<string, string>(options.Projects) { [secondModule + "/api"] = "server.csproj" },
+            Configuration = new Dictionary<string, string>(options.Configuration) { [secondModule + "/api/Sample:Setting"] = "second-owner-scoped-value" },
+        };
+        IDistributedApplicationBuilder builder = Builder();
+        PlatformAppModel.Compose(builder, options);
+        using ServiceProvider cleanup = builder.Services.BuildServiceProvider();
+        _ = cleanup.GetRequiredService<PlatformCompositionWorkspace>();
+
+        ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Where(resource => resource.Name == "eventstore").ShouldHaveSingleItem();
+        builder.Resources.Count(resource => resource.Name == "eventstore").ShouldBe(1);
+        PlatformServerBinding binding = gateway.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+        binding.ProjectPath.ShouldBe(HostProject);
+        binding.EventStoreHost.ShouldNotBeNull().Extensions.Select(extension => extension.PackageId).ShouldBe([Package, secondPackage]);
+        (string PackageId, string ExtensionId, string ModuleId)[] expected = [(Package, "platform-test", Module), (secondPackage, secondId, secondModule)];
+        for (int index = 0; index < expected.Length; index++)
+        {
+            string prefix = $"EventStore__Extensions__Packages__{index}__";
+            binding.Environment[prefix + "PackageId"].ShouldBe(expected[index].PackageId);
+            binding.Environment[prefix + "ExtensionId"].ShouldBe(expected[index].ExtensionId);
+            binding.Environment[prefix + "ApiMajor"].ShouldBe(EventStoreExtensionApi.CurrentMajor.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            binding.Environment[prefix + "ModuleId"].ShouldBe(expected[index].ModuleId);
+        }
+
+        string[] arguments = await ArgumentsAsync(gateway);
+        string props = arguments.Single(argument => argument.StartsWith("-p:PlatformEventStoreExtensionBindings=", StringComparison.Ordinal))["-p:PlatformEventStoreExtensionBindings=".Length..];
+        XDocument bindings = XDocument.Load(props);
+        bindings.Descendants("ProjectReference").Select(reference => reference.Attribute("Include")!.Value)
+            .ShouldBe([Path.Combine(owner.Root, "src", Package, Package + ".csproj"), secondProject]);
+        bindings.Descendants("PackageReference").ShouldBeEmpty();
+    }
+
+    [Fact]
     public async Task SourceBindingsBuildTheComposedHostWithTheMappedExtensionAsync()
     {
         using PlatformOwnerFixture owner = Owner(Extension());
@@ -146,6 +202,30 @@ public sealed class EventStoreExtensionCompositionTests
         refusal.Message.ShouldContain("eventstore-extension-unpinned");
         refusal.Message.ShouldContain(Module);
         refusal.Message.ShouldContain("'" + Package + "'");
+    }
+
+    [Fact]
+    public void MissingComposedHostIsRefusedBeforeAnyResourceIsAdded()
+    {
+        using PlatformOwnerFixture owner = Owner(Extension());
+        IDistributedApplicationBuilder builder = Builder();
+        PlatformCompositionOptions options = SourceOptions(owner) with { PlatformRoot = owner.Root };
+        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+        refusal.Message.ShouldContain("eventstore-extension-host-unavailable");
+        refusal.Message.ShouldContain("module '" + Module + "'");
+        builder.Resources.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void MissingGatewayIsRefusedBeforeAnyResourceIsAdded()
+    {
+        using PlatformOwnerFixture owner = Owner(Extension());
+        IDistributedApplicationBuilder builder = Builder();
+        PlatformCompositionOptions options = SourceOptions(owner) with { DomainModule = false };
+        InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+        refusal.Message.ShouldContain("eventstore-extension-gateway-unavailable");
+        refusal.Message.ShouldContain(Module + ": runtime.eventStoreExtensions");
+        builder.Resources.ShouldBeEmpty();
     }
 
     [Fact]

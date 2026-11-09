@@ -107,7 +107,7 @@ public static class PlatformServerBindings
             {
                 // AD-13: one Platform-composed host, assembled from the selected EventStore server plus the declared packages.
                 string composed = PlatformEventStoreExtensionBindings.HostProjectPath(options);
-                if (project is null || !File.Exists(composed)) throw Failure(module, identity, composed, "eventstore-extension-host-unavailable: the Platform-composed EventStore host is unavailable");
+                if (project is null || !File.Exists(composed)) throw Failure(module, identity, composed, $"eventstore-extension-host-unavailable: the Platform-composed EventStore host is unavailable for extensions declared by module '{extensions[0].Module}'");
                 host = new PlatformEventStoreHostBinding(project, extensions);
                 project = composed;
             }

@@ -1,0 +1,126 @@
+{
+  "story": "3.2",
+  "date": "2026-11-09",
+  "status": "in-progress",
+  "worktree": "/tmp/story-3-2-verification-20261109",
+  "branch": "docs/story-3-2-verification-20261109",
+  "baseCommit": "6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2",
+  "preservedStoryBaseline": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+  "dependencyCommits": {
+    "Hexalith.Builds": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+    "Hexalith.EventStore": "cab8363c2b6e2c0588efc8ca9c2e09fab0006841",
+    "Hexalith.Tenants": "d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35",
+    "Hexalith.Memories": "4ff3e6866ecb6d1a497e7063e972c24259252c40",
+    "Hexalith.Parties": "6f8cd78d0a4c41764c0ed843b0f889ba3d5c070d",
+    "Hexalith.Commons": "11555ace9efcae2928a00122dcba91243e5a8a1a",
+    "Hexalith.McpCli": "fa7c51601041ee6cf0d2f9d4613fb405758f2f7c",
+    "Hexalith.PolymorphicSerializations": "bce4eb9f45c6b131b960ab4fa39e50ff01e51960",
+    "Hexalith.AI.Tools": "1745b6663ad32bb1288167135ed0f979366c53a0",
+    "Hexalith.FrontComposer": "e972d0f06a8eec3446db0b2270fdb14eef4c1186"
+  },
+  "focusedPassed": 708,
+  "focusedChecks": [
+    {
+      "name": "extension-composition",
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultXml": "/tmp/story-3-2-review-fix-tests.xml",
+      "sha256": "8387491d4b36afa74a978cc3bf39088e30e88954d3b952b72b5d011267577f8d"
+    },
+    {
+      "name": "gateway-registration-and-seed",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultXml": "/tmp/story-3-2-final-gateways.xml",
+      "sha256": "0f5a225c4043413f8c89eefde7b46fe2d836945c838b6e02f92c9e9dd55a9be3"
+    },
+    {
+      "name": "tool-pin",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultXml": "/tmp/story-3-2-final-pin.xml",
+      "sha256": "ebc8d0701fd247ee0189583ed34e4e6dab73d4e81a3b055533cc18d33ca4db33"
+    },
+    {
+      "name": "eventstore-registration-and-diagnostics",
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultLog": "/tmp/story-3-2-implementation-eventstore-tests.log",
+      "sha256": "049b0f0f620e2c336188c0743107da2ec330db347a14c907f805f406c2f57f66"
+    },
+    {
+      "name": "builds-manifest-and-adoption",
+      "passed": 617,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "resultLog": "/tmp/story-3-2-implementation-builds-tests.log",
+      "sha256": "b0163fce5e4e066d97589ad8a2319e5b58d915d263b68f97a76b31853cb23167"
+    }
+  ],
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "broadCompositionRun": {
+    "status": "incomplete-no-final-summary",
+    "observedFailedRows": 163,
+    "observedSkippedRows": 12,
+    "failureClasses": {
+      "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests": 8,
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests": 11,
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests": 22,
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests": 2,
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests": 7,
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests": 41,
+      "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests": 2,
+      "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests": 21,
+      "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests": 1,
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests": 2,
+      "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests": 2,
+      "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests": 1,
+      "Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests": 1,
+      "Hexalith.Platform.Composition.Tests.AcceptedLaunchDirectoryCensusTests": 1,
+      "Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests": 8,
+      "Hexalith.Platform.Composition.Tests.PlatformFileEntryMappingTests": 2,
+      "Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests": 14,
+      "Hexalith.Platform.Composition.Tests.PlatformAppModelTests": 11
+    },
+    "log": "/tmp/story-3-2-implementation-platform-full.log",
+    "expectedXmlPresent": false
+  },
+  "fullSuitePassed": false,
+  "packageModeStartupQualified": false,
+  "frozenBlockSha256": "4a472331c89e561becf7be150c20b835cf571e2970b282093e30a692b9fa8c49",
+  "implementationChanges": {
+    "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "a92b30da3591c0384253822060d87b31e41af16cbb7e7cebcbbe75bd5c263013",
+    "tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs": "eb36146fadd6375caa3ea046749733512ea2e111f3a17f1e633d25c640fefca2"
+  },
+  "review": {
+    "layers": 3,
+    "individualFindings": 15,
+    "patchEntriesFixed": 2,
+    "newRegressionTests": 3,
+    "carriedDecisions": 11,
+    "newUnverifiedDeferrals": 1,
+    "newLowRejections": 1
+  },
+  "limitations": [
+    "Broad runner exited without a final summary or XML; no exit cause or complete historical-baseline comparison is claimed.",
+    "163 failed rows and 12 skipped checks are observations from the incomplete log, not final suite totals.",
+    "Released package-mode startup, normal CI feature coverage, snapshot-selected package restore and actual owner/extension generated-secret qualification remain deferred.",
+    "One new medium-unverified concurrent source-output isolation check is recorded in the scratch deferred-work ledger."
+  ]
+}

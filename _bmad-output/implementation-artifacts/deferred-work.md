@@ -1897,3 +1897,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: ECH2-X20/ECH3-Y17 — Verify that the registry secrets mapped to v2 and the Parties lifecycle reader are pull-only (maybe-false; high if true, unverified).
   evidence: The workflows check only that the credentials are non-empty and that docker login succeeds. To settle it, inspect the registry.hexalith.com robot-account permissions for the mapped reader secrets, or add a read-only scope assertion.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Verify output isolation for concurrent ordinary source compositions with different declared EventStore extensions (medium, unverified).
+  evidence: Resumed review BH1 observes shared Platform host obj/bin paths outside selected-test artifact isolation; no incorrect loaded inventory has been reproduced. A bounded concurrent two-composition build/startup with distinct extension inventories and loaded-inventory assertions would settle whether this causes cross-run interference.

@@ -268,6 +268,35 @@ Iteration 0 (2026-11-08). Layers: Blind Hunter (BH), Edge Case Hunter (ECH), Ver
 | ECH10/ECH11 | `PackageVersion Update` may match nothing under the host's CPM; conditioned catalog items | maybe-false | Cannot be exercised before the package releases | defer (medium, unverified) |
 | ECH16 | Package mode never yields a host with the extension | false | The Decisions defer package-mode proof to the releases, and the Boundaries forbid claiming it; the enablement follow-up is recorded with BH17 | reject |
 
+
+### Resumed review — 2026-11-09
+
+The three independent review layers examined the pre-fix diff staged at `/tmp/story-3-2-acceptance-392yu4by.diff` against the preserved baseline. The workflow regenerated that file after the corrections. Every finding is classified below before grouping. Existing findings retain their prior verdict/route and are not patched or deferred again.
+
+| Source | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH1 | maybe-false | Ordinary source launches share host output paths, but no supported concurrent run with distinct extension inventories was demonstrated to consume incorrect artifacts. Defer as medium, unverified; a bounded concurrent two-composition startup/build and loaded-inventory assertion would settle it. |
+| BH2 | low | The fixed Platform-owned host path is checked for existence rather than physical containment. The described substitution requires an explicitly modified local Platform project symlink; this is unlikely in ordinary use and another trust guard adds complexity. Reject. |
+| BH3 | maybe-false | carried: generated PackageVersion Update against an absent central item is already W2/BH5. Preserve its deferred medium-unverified package-restore qualification; do not append it again. |
+| BH4 | maybe-false | carried: raw conditioned/imported catalog lookup is already W1/BH4. Preserve its existing deferred medium-unverified route. |
+| BH5 | maybe-false | carried: host-specific snapshot ProjectVersions lookup is already W3/BH6. Preserve its existing deferred medium-unverified route. |
+| BH6 | medium | carried: the missing snapshot-selected package restore assertion is already W6/VG3. Preserve the existing deferral. |
+| BH7 | medium | carried: package-only tuple CI omits the source feature suites, already W4/BH7/VG2. Preserve the existing deferral. |
+| BH8 | medium | carried: the owner/extension secret test bypasses the actual owner binder, already W5/BH9. Preserve the existing Memories-adoption deferral. |
+| BH9 | medium | carried: host csproj-only artifact identity is already deferred to Story 3.9 in review iteration 1. Preserve that route. |
+| BH10 | medium | Initial searches confirmed no tests asserted the named host-unavailable and gateway-unavailable branches. The new missing-host test also exposed the omitted declaring module. Fixed with two atomic-refusal tests and a one-line owner-aware diagnostic correction, preserving the condition. |
+| ECH1 | false | carried: package startup remains unavailable, as already recorded by iteration-0 ECH16 and the later explicit deferral. This run makes no package-qualification/completion claim and retains in-progress status; the frozen no-claims constraint is respected. |
+| VG1 | medium | Successful Platform composition cases enroll one extension; second-module cases only reject duplicates. Truncating Resolve to one entry would escape them. Patch a successful two-extension composition, generated references and both indexed configuration entries. |
+| VG2 | medium | carried: the missing normal CI execution is the same W4 finding; preserve the existing deferral. |
+| VG3 | medium | carried: snapshot-selected restore is the same W6 finding; preserve the existing deferral. |
+| VG4 | medium | carried: actual owner/extension generated-secret sharing is the same W5 finding; preserve the existing deferral. |
+
+Grouped routes: two patch entries (BH10 and VG1), one new medium-unverified deferral (BH1), eleven carried decisions, one new low rejection (BH2). No intent or specification loopback is required.
+
+- [x] [Review][Patch] R3-P1: Add successful composition coverage for two distinct enrolled extensions, both generated references and both host configuration entries.
+- [x] [Review][Patch] R3-P2: Add missing-host and missing-gateway refusals, including stable conditions, declaring module and resource atomicity.
+
+
 ## Design Notes
 
 A new field, not `runtime.extensions[]`: every current manifest uses that field for owner server packages that carry secrets (Parties, Memories, Tenants, Conversations), so applying AD-13 to it would reject all of them. Declared majors are checked at composition time, so the failure comes before startup. Host startup verifies the actual assembly attribute, so a declaration cannot drift from the binary.
@@ -278,3 +307,20 @@ A new field, not `runtime.extensions[]`: every current manifest uses that field 
 - `dotnet build -nodeReuse:false` in each touched repo — expected: 0 warnings, 0 errors (analyzers are errors).
 - `dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Debug/net10.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests` — expected: all pass. Then a full run compared against the baseline failures.
 - Builds `dotnet exec …/Hexalith.Builds.Module.Tests.dll -class …PlatformManifestValidationTests`, and the EventStore Server tests for the extension classes — expected: pass.
+
+
+### Resumed verification and review fixes — 2026-11-09
+
+The original workspace was verified at Platform `6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2` with EventStore `cab8363c2b6e2c0588efc8ca9c2e09fab0006841` and Builds `27145e52ffab5623198ba5efdab5cdb71aa42d28`. The review corrections are prepared in scratch worktree `/tmp/story-3-2-verification-20261109`, branch `docs/story-3-2-verification-20261109`, from that same cached Platform revision. Ten root-declared dependency worktrees are checked out at the exact recorded gitlinks; no remote or nested-submodule operation was used.
+
+Changes: three regression tests cover successful composition across two distinct owner modules/roots and both named unavailable-host/gateway refusals. The missing-host case exposed a missing declaring-module diagnostic; a one-line correction adds that module while preserving `eventstore-extension-host-unavailable`. Both review patch entries are complete. The frozen block and preserved baseline are unchanged.
+
+Final focused evidence: **708 unique tests passed**, with no failures, skips or not-run cases: 33 extension composition, 7 gateway registration/seed, 1 tool-pin alignment, 50 EventStore registration/diagnostic and 617 Builds manifest/adoption cases. The scratch Platform test project and the original owning EventStore/Builds test projects have final builds with **zero warnings and zero errors**. The EventStore/Builds sources were not changed by these corrections; their existing focused evidence remains applicable. Parent verification independently read the final source diff and 33-test XML, then ran the 7 gateway cases and pin check against the scratch binary.
+
+The original-workspace broad Composition run did not finish with a test summary or result XML. Its runner and wrapper are no longer present; its tool session no longer exists. The retained log contains **163 observed failed rows and 12 skipped checks**, including package-byte admission, catalog, Timesheets and fixture cases. These are not final suite totals, and no exact comparison with the historical failure set is claimed. Log: `/tmp/story-3-2-implementation-platform-full.log`; observed failure list: `/tmp/story-3-2-full-failures.txt`. This remains a broad-verification limitation; the failed broad gate was not weakened or treated as passing.
+
+All frozen matrix rows have passing focused coverage at their approved scope. The source startup/readiness path and generated package-reference path are distinct proofs; released package startup and CI qualification remain outstanding. The existing snapshot/restore, owner-secret and artifact-identity follow-ups retain their earlier routes. The new concurrent source-output isolation concern is medium, unverified, and is recorded once in the scratch deferred-work ledger.
+
+Status remains **in-progress**, matching sprint tracking. No SDK publication, dependency-pin change, module-manifest adoption, commit or remote mutation was performed. The build workflow stops at the unresolved broad-verification result rather than marking the story done.
+
+Receipt: [local verification](evidence/3-2/local-verification-20261109/verification.json). Exact scratch build/test commands: `/tmp/story-3-2-review-fix-commands.txt`. Final result XML files: `/tmp/story-3-2-review-fix-tests.xml`, `/tmp/story-3-2-final-gateways.xml`, `/tmp/story-3-2-final-pin.xml`.
