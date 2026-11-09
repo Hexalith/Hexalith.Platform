@@ -19,6 +19,9 @@
   <ItemGroup>
     <None Include="hexalith.module-manifest.v2.json" Pack="true" PackagePath="build/hexalith.module-manifest.v2.json" />
     <None Include="fixture-producer.json" Pack="true" PackagePath="build/fixture-producer.json" />
+    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" Pack="true" PackagePath="build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj" />
+    <None Include="../../../tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs" Pack="true" PackagePath="build/qualification/ReadinessTests.cs" />
+    <None Include="../../../eng/test-extension-release/qualify-host.py" Pack="true" PackagePath="build/qualification/qualify-host.py" />
   </ItemGroup>
   <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">

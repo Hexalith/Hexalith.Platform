@@ -15,6 +15,9 @@ REPOSITORY = "https://github.com/Hexalith/Hexalith.Platform"
 
 DECLARATION = "build/hexalith.module-manifest.v2.json"
 PRODUCER = "build/fixture-producer.json"
+TEST_ENTRY = "build/qualification/qualify-host.py"
+SOURCE_TEST_ENTRY = "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
+NATIVE_SOURCE_FILES = {'tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj': 'build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj', 'tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs': 'build/qualification/ReadinessTests.cs', 'eng/test-extension-release/qualify-host.py': 'build/qualification/qualify-host.py'}
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
 
@@ -22,8 +25,10 @@ FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
 def approved_documents(source):
     if re.fullmatch(r"[a-f0-9]{40}", source) is None:
         raise ValueError("Require an exact immutable fixture source revision")
-    return {member: subprocess.check_output(["git", "show", source + ":" + FIXTURE + name], cwd=ROOT, timeout=30)
-            for member, name in [(DECLARATION, "hexalith.module-manifest.v2.json"), (PRODUCER, "fixture-producer.json")]}
+    paths = {DECLARATION: FIXTURE + "hexalith.module-manifest.v2.json", PRODUCER: FIXTURE + "fixture-producer.json",
+             **{member: source for source, member in NATIVE_SOURCE_FILES.items()}}
+    return {member: subprocess.check_output(["git", "show", source + ":" + path], cwd=ROOT, timeout=30)
+            for member, path in paths.items()}
 
 
 def inspect(path, version, source, *, approved=None):
@@ -44,7 +49,7 @@ def inspect(path, version, source, *, approved=None):
         if len(dependencies) != 1 or dependencies[0].get("id") != "Hexalith.EventStore.DomainService":
             raise ValueError("Unexpected fixture package dependency closure")
         expected_documents = approved_documents(source) if approved is None else approved
-        if set(expected_documents) != {DECLARATION, PRODUCER}:
+        if set(expected_documents) != {DECLARATION, PRODUCER, *NATIVE_SOURCE_FILES.values()}:
             raise ValueError("Require the exact fixture declaration and producer authority")
         for member, expected in expected_documents.items():
             if member not in names or archive.read(member) != expected:
@@ -56,11 +61,17 @@ def inspect(path, version, source, *, approved=None):
                        "publisherRepository": "Hexalith/Hexalith.Platform", "packageId": PACKAGE,
                        "moduleId": "platformtestextension", "declaration": DECLARATION,
                        "extensionId": "platform-test", "extensionApiMajor": 1,
-                       "purpose": "signed-extension-host-qualification-only", "serviceEnrollment": False} \
+                       "purpose": "signed-extension-host-qualification-only", "serviceEnrollment": False,
+                       "ownerRepositoryIdentity": "Hexalith.Platform",
+                       "test": {"name": "eventstore-extension-package", "sourceEntry": SOURCE_TEST_ENTRY,
+                                "files": {source: {"path": member, "sha256": hashlib.sha256(archive.read(member)).hexdigest()}
+                                          for source, member in NATIVE_SOURCE_FILES.items()}}} \
                 or declaration["schema"] != "hexalith.module-manifest.v2" or len(declaration["modules"]) != 1 \
-                or module["identity"] != {"moduleId": "platformtestextension", "servers": [], "dependencies": ["eventstore", "tenants"]} \
+                or module["identity"] != {"moduleId": "platformtestextension", "servers": [], "dependencies": ["eventstore", "tenants", "memories"]} \
                 or module["runtime"]["eventStoreExtensions"] != [{"packageId": PACKAGE, "extensionId": "platform-test", "extensionApiMajor": 1,
-                    "configurationInputs": [{"key": "PlatformTestExtension:Marker", "source": "configuration", "reference": "platform-test-marker"}]}]:
+                    "configurationInputs": [{"key": "PlatformTestExtension:Marker", "source": "configuration", "reference": "platform-test-marker"}]}] \
+                or module.get("tests") != [{"name": "eventstore-extension-package", "executor": "mtp", "entry": SOURCE_TEST_ENTRY,
+                    "reportFormat": "trx", "executionTimeoutSeconds": 120, "stopTimeoutSeconds": 90, "mode": "package"}]:
             raise ValueError("The Platform fixture producer/declaration identity is unsupported")
         body = archive.read(LIBRARY)
         if b"EventStoreExtensionAttribute" not in body or b"platform-test" not in body:
@@ -71,7 +82,9 @@ def inspect(path, version, source, *, approved=None):
             "archiveSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "librarySha256": hashlib.sha256(body).hexdigest(), "bodies": bodies, "dependencies": dependencies,
             "declaration": {"path": DECLARATION, "sha256": bodies[DECLARATION], "moduleId": "platformtestextension"},
-            "producer": {"path": PRODUCER, "sha256": bodies[PRODUCER], "publisherRepository": "Hexalith/Hexalith.Platform"}}
+            "producer": {"path": PRODUCER, "sha256": bodies[PRODUCER], "publisherRepository": "Hexalith/Hexalith.Platform"},
+            "test": {"sourceEntry": SOURCE_TEST_ENTRY, "files": {source: {"path": member, "sha256": bodies[member]}
+                     for source, member in NATIVE_SOURCE_FILES.items()}}}
 
 
 def main():

@@ -86,7 +86,7 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           npm run test:source-release
           node --test eng/test-extension-release/gate.test.mjs
-          python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
+          python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
           python3 -B eng/test_pre_extension_tuple_source.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies

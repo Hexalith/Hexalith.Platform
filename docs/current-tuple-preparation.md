@@ -1,6 +1,38 @@
 # Current tuple preparation
 
-## Current signed Builds4.45.0 and public Parties3.1.0 tuple
+## Measured Builds4.47.0 and EventStore4.2.0 candidate
+
+The candidate binds normal signed [Builds4.47.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0)
+from exact source `5ec1779040606be89306129a7d2b245258c9acd2`, successful push CI
+[42661065183](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42661065183) and normal protected publisher
+[42664680297](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42664680297).
+The exact tool pin and supported floor are `4.47.0`; roll-forward remains disabled.
+The official repository-signed archive SHA256 is
+`1eea9b282d1d247e1f6e9e2213c5969f7895df44105e6900c873b586c5c4f905`.
+The complete measured validation pair is AppHost
+`6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe` and Tooling
+`35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01`.
+Catalog blob `a9472e6159b0b7627b4de543651f9aa1912398ab` hashes to
+`957818ed7df1b29b2299644afb06987393f617c5b87ff8551b9b95b52a23034d`;
+official qualified inventory hashes to
+`806a0fdf6fc08ea0b8a398756b04af43eb196a81d22ebbbff142dcbca9abcc0b`.
+Fresh official archive signature verification, qualified publisher body comparison,
+all carrier members and loaded seed bindings are retained in
+`evidence/3-2/release-adoption-20261109/builds-4.47.0-binding-attempt1`.
+
+The owning catalog selects the measured signed EventStore4.2.0 source
+`aa16227bd07f0564a3026d619a5abd973e02656f` and records the actual
+`Hexalith.Platform.EventStoreHost` consumer view. Extension package binding reads
+that named view through the released three-argument API; default and live catalog
+views cannot substitute. The unchanged declaration body remains SHA256
+`21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495`.
+The finite no-extension4.2 cohort still requires its actual97 cases and9 extension
+component cases, fresh same-code412/349 historical lanes, all five tuple jobs and
+six SDK catalog jobs before source-release qualification. This candidate grants
+no signed test-fixture admission, native parent execution or candidate acceptance.
+The previous producer sections retain their historical facts.
+
+## Previous signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal

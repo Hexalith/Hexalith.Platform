@@ -48,7 +48,7 @@ Local resource-free checks:
 
 ```bash
 node --test eng/test-extension-release/gate.test.mjs
-python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
+python3 -B eng/test-extension-release/run-controls.py
 ```
 
 These checks test release refusals and archive identity validation; they do not
@@ -65,4 +65,31 @@ source. These packaged inputs prepare a concrete declaration authority for
 subsequent finite host admission; they grant no current composition authority.
 
 The publication controls now run automatically in tuple CI and again before
-fixture publication: 14 Node gate cases and 7 Python archive/producer cases.
+fixture publication: 14 Node gate cases and 30 Python readiness, archive/producer and execution-inventory cases.
+
+The fixture declaration has one `mtp` package test,
+`eventstore-extension-package`, implemented in the separate
+`Hexalith.Platform.TestExtension.Qualification.Tests` project. It runs one bounded
+readiness observation after the normal parent supplies the owned endpoint and
+selected profile. It accepts an unhealthy overall `/ready` result only when the
+actual `eventstore-extensions` check is healthy and reports the declared extension
+id, major and package. It does not assert distributed readiness or establish
+package-load provenance by itself. The native case does not forward the parent's
+bearer token.
+
+The producer document binds the exact native project, test source and Python
+observer bodies carried in the archive. The fixture keeps its original
+`platformtestextension` module identity and explicitly declares EventStore,
+Tenants and Memories, preserving its actual domain closure. It remains a test
+fixture with `serviceEnrollment: false`; this source preparation grants no
+ordinary service adoption, owner repository mapping, private parent plan or
+finite host admission. Those require a normally released SDK path that proves
+the signed producer identity and the expanded reader/purpose cohort.
+
+Both tuple preflight and this publisher require exactly 30 resource-free Python
+controls (17 readiness, 9 archive identity, 4 execution-inventory controls) plus the existing 14 Node refusal
+controls. A missing or extra Python control fails the inventory before tests run. Execution
+also requires all 30 controls to run without skips. Readiness redirects are refused,
+and an observation completed after its native deadline cannot report Pass.
+A successful local observer or native report from an unsigned historical
+candidate grants no signed fixture, parent-plan or cohort qualification credit.

@@ -188,7 +188,7 @@ internal static class PlatformEventStoreExtensionBindings
         {
             PlatformRoot = options.PlatformRoot,
             Workspace = options.RunPlan?.Workspace,
-        }.CatalogPackageVersion(package, module.Source);
+        }.CatalogPackageVersion(package, module.Source, "Hexalith.Platform.EventStoreHost");
         return string.IsNullOrWhiteSpace(version)
             ? throw Failure(module, id, field + ".packageId", "eventstore-extension-unpinned", $"package '{package}' has no Builds catalog pin")
             : (package, version);

@@ -40,7 +40,7 @@ jobs:
       - name: Verify publisher refusal and archive controls
         run: |
           node --test eng/test-extension-release/gate.test.mjs
-          python3 -m unittest discover -s eng/test-extension-release -p test_package.py -v
+          python3 -B eng/test-extension-release/run-controls.py
       - name: Require exact current source release and normal qualifications
         run: node eng/test-extension-release/gate.mjs
       - name: Initialize direct dependencies

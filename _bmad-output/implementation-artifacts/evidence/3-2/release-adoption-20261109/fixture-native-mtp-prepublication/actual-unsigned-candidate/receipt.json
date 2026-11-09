@@ -1,0 +1,65 @@
+{
+  "recordedUtc": "2026-11-09T17:52:18.637803+00:00",
+  "scope": "Actual unchanged Platform host Program over loopback Kestrel, restored from the retained unsigned/nonpublic candidate SDK/fixture archives. Test-entry interoperability only; no signed package, normal native parent, cohort or production admission credit.",
+  "sourceHistoricalReceipt": "candidate-attempt-4.json",
+  "sourceHistoricalReceiptSha256": "e91f3fe9604f32c21636c387b84c07f92066f86dd675e6638a3687a43a13dae8",
+  "work": "/tmp/story32-fixture-native-mtp-live-jtkhcl_u",
+  "commands": [
+    {
+      "name": "build",
+      "arguments": [
+        "dotnet",
+        "build",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/platform/candidate-driver/Candidate.csproj",
+        "-c",
+        "Release",
+        "--artifacts-path",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/artifacts",
+        "-m:1",
+        "-nodeReuse:false",
+        "--disable-build-servers",
+        "--nologo",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:RestoreAdditionalProjectSources=/tmp/story32-candidate-package-kcm8w2qx/feed",
+        "-p:PlatformEventStoreExtensionBindings=/tmp/story32-candidate-package-kcm8w2qx/bindings/bindings.props"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "http",
+      "arguments": [
+        "dotnet",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/artifacts/bin/Candidate/release/Candidate.dll",
+        "/tmp/story32-fixture-entry-preparation/repository/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/actual-ready.json",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/native-entry-result.json",
+        "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/native-tests"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "nativeEntry": {
+    "ExitCode": 0,
+    "Output": "Running tests from /tmp/story32-fixture-entry-preparation/native-artifacts/bin/Hexalith.Platform.TestExtension.Qualification.Tests/release/Hexalith.Platform.TestExtension.Qualification.Tests.dll (net10.0|x64)\n/tmp/story32-fixture-entry-preparation/native-artifacts/bin/Hexalith.Platform.TestExtension.Qualification.Tests/release/Hexalith.Platform.TestExtension.Qualification.Tests.dll (net10.0|x64) passed (3s 519ms)\n\n  In process file artifacts produced:\n    - /tmp/story32-fixture-native-mtp-live-jtkhcl_u/native-tests/module-tests.trx\n\nTest run summary: Passed!\n  total: 1\n  failed: 0\n  succeeded: 1\n  skipped: 0\n  duration: 3s 649ms\n",
+    "Error": "",
+    "Endpoint": "http://localhost:5000/"
+  },
+  "extensionReadiness": {
+    "status": "Healthy",
+    "description": "Loaded EventStore extensions: platform-test@1 (Hexalith.Platform.TestExtension).",
+    "duration": "00:00:00.0048340",
+    "data": {
+      "platform-test": 1
+    }
+  },
+  "overallReadiness": "Unhealthy",
+  "fixtureDepsIdentity": "Hexalith.Platform.TestExtension/0.0.0-story32.local.20261109.e3ac98c14dd3",
+  "fixtureDepsType": "package",
+  "fixtureLoadedOutputSha256": "29a7876efee779ee0c588938b050927ad1260a45c069f09e4b305602cf295c85",
+  "fixtureArchiveBodySha256": "29a7876efee779ee0c588938b050927ad1260a45c069f09e4b305602cf295c85",
+  "nativeReportSha256": "a80639677b20a4404df08d6778715bd72be851d0788c0f62690bbfa35107c66c",
+  "qualificationCredit": false,
+  "signedFixtureCredit": false,
+  "nativeAcceptance": false,
+  "distributedReadiness": false
+}

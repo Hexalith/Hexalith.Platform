@@ -1,0 +1,79 @@
+{
+  "recordedUtc": "2026-11-09T17:53:01.025715+00:00",
+  "platformBase": "d360698a9cb5a6ffda28289478eaacd168dbecc7",
+  "privateRoot": "/tmp/story32-fixture-entry-preparation/repository",
+  "patch": "/tmp/story32-fixture-native-mtp-profile-boundaries.patch",
+  "patchSha256": "7f49b8cc89ffe8d4d1e1c8c4e7b6f8c6c96252fd03a3c1e4658eff07ee71cfd1",
+  "sourceBodies": {
+    ".github/workflows/tuple-ci.yml": "e989838b0fc422ab676ae34f284642ad1c7a3ca055687d2c894011b567848419",
+    ".github/workflows/test-extension-release.yml": "113f030156577d99fb2deda3e5ebba5e0216325177af593cc8a2d40902c94009",
+    "eng/test-extension-release/README.md": "fa12e5b3fe0a961141478f0c1e65b338270d3a5b8c208251d8c1d71ea0e6714f",
+    "eng/test-extension-release/verify-package.py": "1e2f35ecf7a629ae72478a950884a93ae82ec6d809262dbcc2922900b754084d",
+    "eng/test-extension-release/test_package.py": "3918e8495b1fb62bea081c76119d687123147dc6dbfb47ad6dbd065d2effa9dd",
+    "eng/test-extension-release/qualify-host.py": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511",
+    "eng/test-extension-release/test_host_entry.py": "a3232032ef64432e75f290d628cd02ae1e56f76decd5fcd6ab78005974fb1e76",
+    "eng/test-extension-release/run-controls.py": "0c21e73b3a5bb4215034d8516f023d5505d2a60c9b16744a38480f720cbb3837",
+    "tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj": "5fab3970aeb06d234cdf497be00abfc1a5a5490f009bacb3db2ccb15c10986bd",
+    "tests/fixtures/Hexalith.Platform.TestExtension/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+    "tests/fixtures/Hexalith.Platform.TestExtension/fixture-producer.json": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+    "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76",
+    "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3",
+    "eng/test-extension-release/test_controls.py": "61aab3a58d05d493dbc0c09af802f035d5940c62cbb7386f80d29ce44c383098"
+  },
+  "manifestValidation": {
+    "path": "/tmp/story32-fixture-native-mtp-manifest-validation.json",
+    "exitCode": 0,
+    "actualNativeExecutor": "mtp"
+  },
+  "build": {
+    "failedFirstAttempt": "/tmp/story32-fixture-native-mtp-build.log",
+    "successfulAttempt": "/tmp/story32-fixture-native-mtp-build-attempt2.log",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "automaticControls": {
+    "command": "python3 -B eng/test-extension-release/run-controls.py",
+    "log": "/tmp/story32-fixture-native-mtp-boundary-controls.log",
+    "expected": 30,
+    "readiness": 17,
+    "archive": 9,
+    "executionInventory": 4,
+    "passed": 30,
+    "skipped": 0
+  },
+  "actualHostInterop": {
+    "work": "/tmp/story32-fixture-native-mtp-live-jtkhcl_u",
+    "receipt": "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/receipt.json",
+    "actualNativeReport": "/tmp/story32-fixture-native-mtp-live-jtkhcl_u/native-tests/module-tests.trx",
+    "actualSdkReportLoader": {
+      "Report": {
+        "FileName": "module-tests.trx",
+        "Sha256": "A80639677B20A4404DF08D6778715BD72BE851D0788C0F62690BBFA35107C66C",
+        "Total": 1,
+        "Passed": 1,
+        "Failed": 0,
+        "Skipped": 0
+      },
+      "Diagnostic": null,
+      "IsValid": true
+    },
+    "endpoint": "http://localhost:5000/",
+    "transport": "Kestrel loopback; no dynamic-port claim",
+    "candidate": "retained unsigned/nonpublic candidate-attempt-4",
+    "scope": "One actual MTP case against actual unchanged Platform host Program, not normal approved native parent/plan execution",
+    "handoffHashCase": "Actual SDK uppercase selected manifest/project hashes"
+  },
+  "trackedAmendmentApplied": false,
+  "qualificationCredit": false,
+  "signedFixtureCredit": false,
+  "nativeParentAcceptance": false,
+  "hostAdmission": false,
+  "distributedReadiness": false,
+  "reviewCorrections": [
+    "Exact executed counts and no skips, with actual nested skipped-case refusal",
+    "No HTTP redirects;302-to-healthy target refused without second request",
+    "Absolute native deadline rechecked after HTTP before Pass",
+    "Actual SDK uppercase SHA256 representation accepted for identical selected bytes"
+  ]
+}

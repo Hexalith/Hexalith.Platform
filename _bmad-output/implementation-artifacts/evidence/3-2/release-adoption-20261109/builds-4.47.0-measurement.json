@@ -1,0 +1,2427 @@
+{
+  "schema": "story32-released-sdk-measurement.v1",
+  "recordedUtc": "2026-11-09T17:52:30.459466+00:00",
+  "repository": "Hexalith/Hexalith.Builds",
+  "source": "5ec1779040606be89306129a7d2b245258c9acd2",
+  "version": "4.47.0",
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0",
+  "releasePublishedUtc": "2026-11-09T17:51:08Z",
+  "work": "/tmp/story32-released-sdk-ktixe3uv",
+  "packages": [
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "4.47.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/4.47.0/hexalith.builds.module.cli.4.47.0.nupkg",
+      "archiveSha256": "1eea9b282d1d247e1f6e9e2213c5969f7895df44105e6900c873b586c5c4f905",
+      "signatureVerification": "\nVerifying Hexalith.Builds.Module.Cli.4.47.0\nContent hash: 5oC3Le2ramMOo+b+dOlMbM7YDmVo+oH4KPSZsL8eiJZpvdCpdD26U5S5v9a0raVxuuiNuY/mWZ3gg6g+EaApZA==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "bodies": {
+        "tools/net10.0/any/Hexalith.Builds.Module.Cli.dll": "6e4b2dd0c5c74585e52b188cfe585089bb8f9167f289711f5b413c715c545939",
+        "tools/net10.0/any/Hexalith.Builds.Tooling.dll": "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01",
+        "tools/net10.0/any/Humanizer.dll": "2769ed8265b691a5482c72506ed274dc52446fa1641997a8c12c66f5b9263d39",
+        "tools/net10.0/any/Json.More.dll": "80b6cd50331fa2ded4fbacdbf80dcedd2b142dee679df227c30299d2a3c3840f",
+        "tools/net10.0/any/JsonPointer.Net.dll": "e5b129abd47347643a903c37faa2e4aff919f7d31bd56ad5c20d1b90451be796",
+        "tools/net10.0/any/JsonSchema.Net.dll": "9aad41d8d1bb4df0f97d9870f37856afe22d5e884f86453ab3995f00893dd1b7",
+        "tools/net10.0/any/Microsoft.Extensions.DependencyInjection.Abstractions.dll": "7d07e2588a256ae5983af6a2e64eac603cb81d8f224dbea5e65eda8d67258175",
+        "tools/net10.0/any/Microsoft.Extensions.Logging.Abstractions.dll": "d0a3cce0caf2bdda4af7d54135a321b45438015947fd902d7c2e6a0a30730c55",
+        "tools/net10.0/any/NuGet.Versioning.dll": "fc2f75a7a5f3be9b4c3dcfc21644b871bb5a41ada8615c92d778713d2a310670",
+        "tools/net10.0/any/RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "tools/net10.0/any/StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "tools/net10.0/any/System.CommandLine.dll": "313d3376dca9c0e5eaf6f78118b765f1f877ae280056ecf56131bb19cfca8a90",
+        "tools/net10.0/any/System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "tools/net10.0/any/YamlDotNet.dll": "d618138109a40e4a7250e49e2abad8c450e3636bee18d7499ab231e37fa9150a",
+        "tools/net10.0/any/cs/System.CommandLine.resources.dll": "383ce91b709ad6a0cbe80f2ad5e70b8180d0c9349a18345fb793ea4e65399017",
+        "tools/net10.0/any/de/System.CommandLine.resources.dll": "e79dba38a34e09342ced52102327ed2d652a3c358f2631eae4965ef9dc72aa26",
+        "tools/net10.0/any/es/System.CommandLine.resources.dll": "3956d4d223d400f213a3f5b9d3eadca36a38593c03bdf9ebeefbbc2f3cbc91cb",
+        "tools/net10.0/any/fr/System.CommandLine.resources.dll": "8d072020cc0b07c8d822cc6d6f34bd0d591830313011eca568f2be56fa770973",
+        "tools/net10.0/any/g4-host/Aspire.Hosting.AppHost.dll": "92da7fa2c740790ad611086097bd7f1bd6625b8441337ca592030397b8b5b40a",
+        "tools/net10.0/any/g4-host/Aspire.Hosting.Keycloak.dll": "052c0ea0fc679b9405eec14c9efb52548df2d50b32cd76d7c6696f2f26f9f616",
+        "tools/net10.0/any/g4-host/Aspire.Hosting.Redis.dll": "40b64b106a52f6b7b5d2841801c35de387de6b0705d124567a88b2f9f646fedb",
+        "tools/net10.0/any/g4-host/Aspire.Hosting.dll": "7ede5667cdfe3ae9fa91cc71ccd8ba1cbd4a96236c73706ba1562eab6549b06d",
+        "tools/net10.0/any/g4-host/ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "tools/net10.0/any/g4-host/CommunityToolkit.Aspire.Hosting.Dapr.dll": "02894c232208a8a6e77ee092e0b62ec7325419babdfd0356f0d342771a1092d9",
+        "tools/net10.0/any/g4-host/Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "tools/net10.0/any/g4-host/Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "tools/net10.0/any/g4-host/Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "tools/net10.0/any/g4-host/Fractions.dll": "e8407a878af8aec1f485f50a9f356c439371610fff20756d4f2284ac6c995cbf",
+        "tools/net10.0/any/g4-host/Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "tools/net10.0/any/g4-host/Google.Protobuf.dll": "8997a69619b59db587a45e75a03c164a44afb613f82db138d35e1636e4cbdc73",
+        "tools/net10.0/any/g4-host/Grpc.AspNetCore.Server.ClientFactory.dll": "c57f69775e2b8acda401efb5f152eba6cfd23d0fc9277b7d2e0ed1f1533158e3",
+        "tools/net10.0/any/g4-host/Grpc.AspNetCore.Server.dll": "a66e142b1a3cbaf8ed3f0835faac72e0484d4eb8b1295e0d3d1de69d72e575b2",
+        "tools/net10.0/any/g4-host/Grpc.Core.Api.dll": "d9b5751a0988cdcf209f669b166e20b76b6ea3af1bc6601e03f3349e97059385",
+        "tools/net10.0/any/g4-host/Grpc.Net.Client.dll": "a2bdafc8d6a7baa8b8f6c0b39d8a7f859ad84af14380ccae118c2f5316602212",
+        "tools/net10.0/any/g4-host/Grpc.Net.ClientFactory.dll": "3e78aed8088e1f83916be34e937d0991fae32a4282b0e8e8577365b7a2847eda",
+        "tools/net10.0/any/g4-host/Grpc.Net.Common.dll": "b2354e7717e4d1b5b23a80d1eaf65ecc128f1b458bf052a7b83334dcbe3f6206",
+        "tools/net10.0/any/g4-host/Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "tools/net10.0/any/g4-host/HealthChecks.Redis.dll": "3ce9e611ecd44219f4bed786d665712759583b87a1bb9228355e9161ce7ffa52",
+        "tools/net10.0/any/g4-host/HealthChecks.Uris.dll": "32f8e0615a70e07c6c37c3e2e0774207c84d2f2695942fba82e7bc3bee1a5708",
+        "tools/net10.0/any/g4-host/Hex1b.dll": "1113557a5737e1fac2fdda1f6579737c50eac4620e83fefb3c29fa2ecc9b12bc",
+        "tools/net10.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll": "6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe",
+        "tools/net10.0/any/g4-host/Hexalith.Builds.Tooling.dll": "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01",
+        "tools/net10.0/any/g4-host/Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "tools/net10.0/any/g4-host/Hexalith.EventStore.Aspire.dll": "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a",
+        "tools/net10.0/any/g4-host/Hexalith.EventStore.Client.dll": "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
+        "tools/net10.0/any/g4-host/Hexalith.EventStore.Contracts.dll": "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
+        "tools/net10.0/any/g4-host/Hexalith.EventStore.ServiceDefaults.dll": "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
+        "tools/net10.0/any/g4-host/Humanizer.dll": "2769ed8265b691a5482c72506ed274dc52446fa1641997a8c12c66f5b9263d39",
+        "tools/net10.0/any/g4-host/Json.More.dll": "80b6cd50331fa2ded4fbacdbf80dcedd2b142dee679df227c30299d2a3c3840f",
+        "tools/net10.0/any/g4-host/JsonPointer.Net.dll": "e5b129abd47347643a903c37faa2e4aff919f7d31bd56ad5c20d1b90451be796",
+        "tools/net10.0/any/g4-host/JsonSchema.Net.dll": "9aad41d8d1bb4df0f97d9870f37856afe22d5e884f86453ab3995f00893dd1b7",
+        "tools/net10.0/any/g4-host/KubernetesClient.dll": "1fdb3ddc3db829a3f4015afc328a00d3747fb228c7866df6f765be4cedb800ce",
+        "tools/net10.0/any/g4-host/MessagePack.Annotations.dll": "1e51e087987bc857e55863eb4e986c2f2f0bf17230eb2c243e5dc25c34e7cf86",
+        "tools/net10.0/any/g4-host/MessagePack.dll": "a7f8d30a8e6f4a1b445bf6752621a4a7b1f4ff11f5d4dc62dba0d8d7d6995e36",
+        "tools/net10.0/any/g4-host/Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "tools/net10.0/any/g4-host/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.AI.Abstractions.dll": "a3216886dec2b2528b2d7212c438d21c3d6de2061b500bd2ea505a41f896f8d3",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "tools/net10.0/any/g4-host/Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "tools/net10.0/any/g4-host/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "tools/net10.0/any/g4-host/Microsoft.NET.StringTools.dll": "887dec541cd0a719b7111458eb90a83b4491d6dd24eff2b16cf03d2782fd26a0",
+        "tools/net10.0/any/g4-host/Microsoft.VisualStudio.Threading.dll": "138e3548e487152de355b81303ae98e1bb52a31fe5c9107fa81a15f66404f426",
+        "tools/net10.0/any/g4-host/Microsoft.VisualStudio.Validation.dll": "59cd5e953cce597847e515a73a1c0975cd5a6b94921a7b91e81045fa9922f57c",
+        "tools/net10.0/any/g4-host/Microsoft.Win32.SystemEvents.dll": "ca495bf6c86b7f092d624928101985a941532d149dcd8acfea170f8a53be8850",
+        "tools/net10.0/any/g4-host/ModelContextProtocol.Core.dll": "0b22f1331cf8bfb0b4de2a34f283ca015648f431e719cffb6a2c230e40cbcc91",
+        "tools/net10.0/any/g4-host/ModelContextProtocol.dll": "b35f769741350446c1dbb70264af903ae628e8cb9cb1359475abecca29fdc782",
+        "tools/net10.0/any/g4-host/Nerdbank.MessagePack.dll": "fc086ce3623a9a3f9213159d438c642d225046e371489e8e7f126d4c62f188fa",
+        "tools/net10.0/any/g4-host/Nerdbank.Streams.dll": "e5c90ffcb7a0bd0cedf51ac33e818b9f64045e9839b19701eb73460356631872",
+        "tools/net10.0/any/g4-host/Newtonsoft.Json.dll": "a28c251dfe36d881e9e2462e171441b8b0ec156fe3f452602c9149b1b9efe05b",
+        "tools/net10.0/any/g4-host/NuGet.Versioning.dll": "fc2f75a7a5f3be9b4c3dcfc21644b871bb5a41ada8615c92d778713d2a310670",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Instrumentation.AspNetCore.dll": "216898bf280cdc8767c40873e8b18268e92070bdc1ac645f51ca5513725fb3fe",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Instrumentation.Http.dll": "06c27aa338a414648119b99ef63a618c9f4b4c4a0b3e50118c9638d2ba579e16",
+        "tools/net10.0/any/g4-host/OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "tools/net10.0/any/g4-host/OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "tools/net10.0/any/g4-host/Polly.Core.dll": "f7f50017ca9f457b854498358ae595c2a8ab69c1fd8b915139d22bed8f7e4f2a",
+        "tools/net10.0/any/g4-host/Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "tools/net10.0/any/g4-host/Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "tools/net10.0/any/g4-host/PolyType.dll": "33d30bc1baf80b85ad9b428a388d9999eaf20999d555a6e684aa758f4f679968",
+        "tools/net10.0/any/g4-host/QRCoder.dll": "2c9a588e08ec91f00fac37a4a43995c8f1966a6cce615e9e8c063eec3d0f145a",
+        "tools/net10.0/any/g4-host/RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "tools/net10.0/any/g4-host/Semver.dll": "a99edcb96efce3d6ff019c667e132d81d879f5a92bc9337591e0b7309d7f493f",
+        "tools/net10.0/any/g4-host/StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "tools/net10.0/any/g4-host/StreamJsonRpc.dll": "ddc6a4d60e6cc940aae31faafc1fdcdbe520dfa51bec8dfc7f505449291536d5",
+        "tools/net10.0/any/g4-host/System.Drawing.Common.dll": "98d07e6b1e7d3641a8608a360b3dc273fe8a0f78926b6e1e5f679a7a074d491f",
+        "tools/net10.0/any/g4-host/System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "tools/net10.0/any/g4-host/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "tools/net10.0/any/g4-host/YamlDotNet.dll": "d618138109a40e4a7250e49e2abad8c450e3636bee18d7499ab231e37fa9150a",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/FluentValidation.DependencyInjectionExtensions.dll": "32385a476b65365d0f9de1819cd1f46d155d1f46beea68176603cf341b29a797",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll": "84293bb54943907a1d2100e4f996a6969ee1de96680789f88293424d0eef0c19",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.Admin.Abstractions.dll": "9b1edf00cc5e31ace475c851587876a4dc0321fab9d1e2af0aa771b114cfb584",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.Client.dll": "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.Contracts.dll": "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.DomainService.dll": "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.Gateway.dll": "a7038a4e7858aca19c78cf2489fbffd5bd78925b956a96f2473d854127ed0b46",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.Server.dll": "95038655c275192a4971ea8f74a1a3748be15793736ed5914813614b84cf6cf1",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Hexalith.EventStore.ServiceDefaults.dll": "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/MediatR.dll": "67b96c20659ee48a48f3ce0e09b3cac90ea72f098dd16c43f56a6f199020cdd3",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/MessagePack.Annotations.dll": "1e51e087987bc857e55863eb4e986c2f2f0bf17230eb2c243e5dc25c34e7cf86",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/MessagePack.dll": "a7f8d30a8e6f4a1b445bf6752621a4a7b1f4ff11f5d4dc62dba0d8d7d6995e36",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.AspNetCore.OpenApi.dll": "5d294400eac9da2753a5f791732938006cc1f16175f1af83ad9a729d96847bf1",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.AspNetCore.SignalR.StackExchangeRedis.dll": "2d09f1c5eac3f55997169585989f268eee717a637d3952917fe3f1fd858ae788",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.NET.StringTools.dll": "e51c8678fd602a21c249b369e833966019935132476f9434da896bef808ba3b1",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Microsoft.OpenApi.dll": "838f23fd0b01bba85157a5bd279847213579786c80b4141b390fef39ad385c12",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.AspNetCore.dll": "216898bf280cdc8767c40873e8b18268e92070bdc1ac645f51ca5513725fb3fe",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.Http.dll": "06c27aa338a414648119b99ef63a618c9f4b4c4a0b3e50118c9638d2ba579e16",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/Swashbuckle.AspNetCore.SwaggerUI.dll": "049dd9177dc6789b95b566b4c7f5b896af9ee7fbf8ba2507a44d7339a22316ef",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "tools/net10.0/any/g4-host/bin/EventStoreHost/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "tools/net10.0/any/g4-host/bin/UiHost/Fluxor.Blazor.Web.dll": "e05df290ff01c96ff09de7e92eac3f82fa5e4f5cf89096319e5f12b6e34beb65",
+        "tools/net10.0/any/g4-host/bin/UiHost/Fluxor.dll": "f9b73d7c618dee8cd124a56e9d73d02267702d1591e993fb465b7276b834cd39",
+        "tools/net10.0/any/g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.dll": "d862c79298ee34d30bf6242c2358679d4f7dc0efd60736bcaceb3db657086bc6",
+        "tools/net10.0/any/g4-host/bin/UiHost/Hexalith.FrontComposer.Contracts.UI.dll": "049b625720dc21bd19664a49143dfb0804e399e8945fe03661cc6d01d1c334f4",
+        "tools/net10.0/any/g4-host/bin/UiHost/Hexalith.FrontComposer.Contracts.dll": "f4ca12ff83ef24b734012c5023fff3a62cbb67c7f19a40649400482c427bbe08",
+        "tools/net10.0/any/g4-host/bin/UiHost/Hexalith.FrontComposer.Shell.dll": "5fa05b3698eacdcc3c0d5f2e5309ea591dabe359191a8581fde497692032d5c1",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": "816fb400ba010c4fcde2e877d5d9c5ceec70b06fe0a9be2182941420beaada24",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.AspNetCore.Http.Connections.Client.dll": "b211741b2b313e19f5beb2c642fa0e8fc3237b394857f83aa43f869c67bdcf39",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.AspNetCore.SignalR.Client.Core.dll": "ef9473d0528be98c24a9bf220ced6ed0323bebb1a42139a2f51b1d3df61d0ae3",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.AspNetCore.SignalR.Client.dll": "f1812b10f889074065f35259e9b334abb7c176e3b99299a958ec0a8939c11d3a",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Color.dll": "951a7c6e090c45094cad4b1f21c495faaa0ead726521640579140a097f20ca76",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.dll": "9006678810eb5709719ccbc8d4c3c197f13b67afc33c0d4de0d75f0a74323552",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Light.dll": "76c071e504c643107a474aee7cc1cfc8b452cf9b082e4b9f33cec4d0497c3c96",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.dll": "ea2d135a4a8f33b92aebb359bd2a03b14002fedc44f2d0015220a09fa3b98bde",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.dll": "709e7efee1a530a2832022f8e382828c29807b1c29aa1bc93ffd50126bf1b997",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.dll": "82718d81e3d28d7a8b80bfb6a543390678ab136bfc4af02af11f55101d613964",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "tools/net10.0/any/g4-host/bin/UiHost/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "tools/net10.0/any/g4-host/bin/UiHost/NUlid.dll": "6f867f7716683b6b48a67877d616ae3805955eab5b2ec92f0e74b49fae467de7",
+        "tools/net10.0/any/g4-host/bin/UiHost/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "tools/net10.0/any/g4-host/bin/UiHost/System.Reactive.dll": "e8070137fc07efeb8fd00e1607a096c7718ee1814c6b2032e4cb865f5cf042a9",
+        "tools/net10.0/any/g4-host/bin/UiHost/fr/fr/Hexalith.FrontComposer.Shell.resources.dll": "d48c80b98656a20c229887004b116f43e25d53b73d2677f224d54da7188986c0",
+        "tools/net10.0/any/g4-host/cs/cs/Aspire.Hosting.resources.dll": "084a343302c9585d488761368d95b46f3f4777025be789f8ae1b27704748b826",
+        "tools/net10.0/any/g4-host/cs/cs/Microsoft.VisualStudio.Threading.resources.dll": "53fa0540b7787d2702df6526dd9df68b1a44575c66ff007f3e11b1e2b528330e",
+        "tools/net10.0/any/g4-host/cs/cs/Microsoft.VisualStudio.Validation.resources.dll": "830b54077b4f3febe75ed87aa163eb49fb58362c61be5ca26cf42d4e13c51f3c",
+        "tools/net10.0/any/g4-host/cs/cs/StreamJsonRpc.resources.dll": "5115a8c09c591d1caa16359b5a45eccece63d9c337e703d89c05a69264ba291b",
+        "tools/net10.0/any/g4-host/de/de/Aspire.Hosting.resources.dll": "894a42da25e58c9d0c6197c6c6e89185934c5bce079feeb01b30055852e4831e",
+        "tools/net10.0/any/g4-host/de/de/Microsoft.VisualStudio.Threading.resources.dll": "0a68bd16faed213eb7bf17025b25125c6aaee5b86a545449afe297632a503853",
+        "tools/net10.0/any/g4-host/de/de/Microsoft.VisualStudio.Validation.resources.dll": "fd7edef2b3f30903f2c287c49d62cb3394f9656fd82ff1c98eb122ad62a04a56",
+        "tools/net10.0/any/g4-host/de/de/StreamJsonRpc.resources.dll": "01e2c454d751b89aba08d4270ca00d8e07fa8af861650ecd704481ce06b87b24",
+        "tools/net10.0/any/g4-host/es/es/Aspire.Hosting.resources.dll": "bf8711925b4b6a57f1eb3b5925dd10da8aa51f8b2f19da9c6decad360cbb57a1",
+        "tools/net10.0/any/g4-host/es/es/Microsoft.VisualStudio.Threading.resources.dll": "7fc33931e5c544e89ce8d767781a729a7be21c60e559294ef693fa249034b066",
+        "tools/net10.0/any/g4-host/es/es/Microsoft.VisualStudio.Validation.resources.dll": "c40129bf64177dbfbd79bf977e11d46f2888c20c3e807336a36dac82370f6d83",
+        "tools/net10.0/any/g4-host/es/es/StreamJsonRpc.resources.dll": "bacf7fadae7361e00f097dcafbe9a4a759f4346f364676389304a688fdb3b636",
+        "tools/net10.0/any/g4-host/fr/fr/Aspire.Hosting.resources.dll": "ca0878b760464fd963a7bc62110cd8d27519ea9ffc2b63b5b06a933a5e6f0352",
+        "tools/net10.0/any/g4-host/fr/fr/Microsoft.VisualStudio.Threading.resources.dll": "abe294e2c7ecf00f3632b83f61e19538b8b9531e6289b5d84992bc447f29783e",
+        "tools/net10.0/any/g4-host/fr/fr/Microsoft.VisualStudio.Validation.resources.dll": "e56fe93ab669c22850389bdb685bbc45317d962849cc683d412bc9e8ad637740",
+        "tools/net10.0/any/g4-host/fr/fr/StreamJsonRpc.resources.dll": "99ee72e2ea1de18367345b83884d0aa8c4192f98f2f3fb6b50bdbbebd6960afc",
+        "tools/net10.0/any/g4-host/it/it/Aspire.Hosting.resources.dll": "749c7f6276682e7d0a668453a3ef6db299cd58a13acf3cd30dc0e725a777a771",
+        "tools/net10.0/any/g4-host/it/it/Microsoft.VisualStudio.Threading.resources.dll": "c6d1c91560f9914f36ff52d9a2704f44255adfd88a2c57ccd44fce62603667a7",
+        "tools/net10.0/any/g4-host/it/it/Microsoft.VisualStudio.Validation.resources.dll": "8918618aaf356bf03333f62507ed4b2511c98850388c3856afe970c41672fae0",
+        "tools/net10.0/any/g4-host/it/it/StreamJsonRpc.resources.dll": "31741ef214310f03ec256b3dd8643e5d4151c9123bd6994bb8f53381ca348244",
+        "tools/net10.0/any/g4-host/ja/ja/Aspire.Hosting.resources.dll": "e69167f8c9007bb031b925c2eb864df02bf4382e1675181be5b20413a4f06090",
+        "tools/net10.0/any/g4-host/ja/ja/Microsoft.VisualStudio.Threading.resources.dll": "e375ebb7fe0f6807371dd42f09671b4eafcab6a1464851af68b8fd14494067c9",
+        "tools/net10.0/any/g4-host/ja/ja/Microsoft.VisualStudio.Validation.resources.dll": "89963143a49c629f52776c88715544a8a53b12f1f6c7b4cd6c686d0751ea0d5b",
+        "tools/net10.0/any/g4-host/ja/ja/StreamJsonRpc.resources.dll": "36897272170334ea43284e4f7c8f908e170bc1f082e9612528787ca03ae9e7ce",
+        "tools/net10.0/any/g4-host/ko/ko/Aspire.Hosting.resources.dll": "0f23adbd3c92a91e817e492d909bea546b0c37a47e3de3ec2a7cc4086fd345b8",
+        "tools/net10.0/any/g4-host/ko/ko/Microsoft.VisualStudio.Threading.resources.dll": "6fda6bb4822f56356cd446ef30750319552780ea28434b741cc35bf3d8111010",
+        "tools/net10.0/any/g4-host/ko/ko/Microsoft.VisualStudio.Validation.resources.dll": "a2be5cbddafa74c4d64b6cb46e60a64b151d46056566e3fc39b810e431cf047f",
+        "tools/net10.0/any/g4-host/ko/ko/StreamJsonRpc.resources.dll": "53ce6c7e88dd7228d968fc26ff7cbf35bcdc81ee88275ca2325eaf8feffe47bc",
+        "tools/net10.0/any/g4-host/pl/pl/Aspire.Hosting.resources.dll": "4de9c47d7df9bfd661c6b92d4bc7ca4923f5197de87e22073cbd7c4bebb92a4f",
+        "tools/net10.0/any/g4-host/pl/pl/Microsoft.VisualStudio.Threading.resources.dll": "c2d599b82424ac6961d568f411a01e366b359ac3c167ab2fce74c5e2c96c1ca6",
+        "tools/net10.0/any/g4-host/pl/pl/Microsoft.VisualStudio.Validation.resources.dll": "f77bd918ee6d7e3dfade1bbbf192fdd0fcd4f2ceb6296d14775f235f1562aea5",
+        "tools/net10.0/any/g4-host/pl/pl/StreamJsonRpc.resources.dll": "2e3d2bc745170f9b323711bf584b56246a6b9e4235e5e1dcac2ce83b7a9a1e1f",
+        "tools/net10.0/any/g4-host/pt-BR/pt-BR/Aspire.Hosting.resources.dll": "42bfec9ce54a8234feb6687e21b0083b3577cb0eab0d29458e6b0d5107088c4f",
+        "tools/net10.0/any/g4-host/pt-BR/pt-BR/Microsoft.VisualStudio.Threading.resources.dll": "432ba5ed5c1f37436ec28d4f4b37b622cee3c833bdb01b44b6cf9fe255a445e5",
+        "tools/net10.0/any/g4-host/pt-BR/pt-BR/Microsoft.VisualStudio.Validation.resources.dll": "656bcea3398e47aff8e86741bfb097940b589f52ebca2236ec104129d0d3014d",
+        "tools/net10.0/any/g4-host/pt-BR/pt-BR/StreamJsonRpc.resources.dll": "990e5f544dd810cc9af2921cd4809c45a4c216697d9a5c4bd22d42700f57d8fc",
+        "tools/net10.0/any/g4-host/ru/ru/Aspire.Hosting.resources.dll": "5f79cfeecef76d936d809829ee12a52fc68a25cbde38b9df15371acf88f7bab3",
+        "tools/net10.0/any/g4-host/ru/ru/Microsoft.VisualStudio.Threading.resources.dll": "ff177fd4f159895d050fd7a19c4632b8e69792e79ef181f3aa1af9ae6c770f21",
+        "tools/net10.0/any/g4-host/ru/ru/Microsoft.VisualStudio.Validation.resources.dll": "db19d56c8e725fc91182ffc75c3803c5d6ca9f0dc6d99d695cbf4e30acc56fce",
+        "tools/net10.0/any/g4-host/ru/ru/StreamJsonRpc.resources.dll": "5a32d75f02d6de17cfabe4f1f7fe57191a5549fcc11d5975fe77427826b38dea",
+        "tools/net10.0/any/g4-host/runtimes/unix/lib/net6.0/runtimes/unix/lib/net6.0/System.Drawing.Common.dll": "89ea595ccb1fd1384480c1e30bd487c92af5d06d3b06f295323eff601acd9019",
+        "tools/net10.0/any/g4-host/runtimes/win-arm64/native/runtimes/win-arm64/native/conpty.dll": "db3d173640b172bafd42d5b541b638a9aeec1c7d0e40dd636bf02822a32c912c",
+        "tools/net10.0/any/g4-host/runtimes/win-x64/native/runtimes/win-x64/native/conpty.dll": "39fba2713e2495117b1591ae8c32a3b904bea7aa66069cf7815e2844c76d75d8",
+        "tools/net10.0/any/g4-host/runtimes/win/lib/net10.0/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.Messages.dll": "403a772d71ed4a5f537bac3e02746f5acc4a13d73bd895fc564af4866cb0e7b6",
+        "tools/net10.0/any/g4-host/runtimes/win/lib/net6.0/runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": "142cce4ed8ac9da22d69c38a6f22738abfb22090dc9313e8b58e6f91978e89af",
+        "tools/net10.0/any/g4-host/runtimes/win/lib/net6.0/runtimes/win/lib/net6.0/System.Drawing.Common.dll": "4d3001697df50cca54f32ed2dbbd1f3f415b48d5d756b1bf9500a43ae9b68da0",
+        "tools/net10.0/any/g4-host/tr/tr/Aspire.Hosting.resources.dll": "b2dc65b1b6e4a21fbec6eeed215d3dcbf8e15c7064f509f3762bfd8b922dfe02",
+        "tools/net10.0/any/g4-host/tr/tr/Microsoft.VisualStudio.Threading.resources.dll": "cfd3afd4bd9b0d7f6f782370ca460f3333bb2ebf7db4977e6d2af22a47b71dd9",
+        "tools/net10.0/any/g4-host/tr/tr/Microsoft.VisualStudio.Validation.resources.dll": "620295974b05a36b268169cd94b39f99848224f7774b9748db014c2a2d027073",
+        "tools/net10.0/any/g4-host/tr/tr/StreamJsonRpc.resources.dll": "1df15719aa69c7915028419f93bdb27cf8814f1ea6455e6d4f23dc110d81f1f1",
+        "tools/net10.0/any/g4-host/zh-Hans/zh-Hans/Aspire.Hosting.resources.dll": "b7e932b1c3eb004b64a52ed8a9f19210984fad52da01a2319f1bd4ede691e10b",
+        "tools/net10.0/any/g4-host/zh-Hans/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll": "ef07ef11562297acd78ee9ec7a21bee4b9fb0f4255794f87ccff0970f9f3ccb4",
+        "tools/net10.0/any/g4-host/zh-Hans/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll": "158f33332fa83a4c01f136482305a1d7d7feffa626fb082d65bfef4a0ce493a3",
+        "tools/net10.0/any/g4-host/zh-Hans/zh-Hans/StreamJsonRpc.resources.dll": "0c3a6e2b27cd768f6b94b9ffcd86097811f2be89583bef4f1bb24fd81a18fd47",
+        "tools/net10.0/any/g4-host/zh-Hant/zh-Hant/Aspire.Hosting.resources.dll": "cad525e7fde6026b09bce9c62cc1ea7950dbb54b47b3fc711dd964c5bffebcb0",
+        "tools/net10.0/any/g4-host/zh-Hant/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll": "d0d594d3590ad804b8a9d5f0b23306864c7e8870ce9a445ef6990597d0ad20ab",
+        "tools/net10.0/any/g4-host/zh-Hant/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll": "8a3bffea88dc96fca9c307a9a8843a20fe1c7cafc2534b1cb95d688f07b6dbfd",
+        "tools/net10.0/any/g4-host/zh-Hant/zh-Hant/StreamJsonRpc.resources.dll": "23e40ffa7c609dbb2b79e8fc38b7097d9d9d9a86f9a03abfd744e5f6bc8330a0",
+        "tools/net10.0/any/it/System.CommandLine.resources.dll": "ae1aa3b60b18b1b1baf7baf2a6dd6b71c9f857db3a6374d14bee1025b5ac8dc3",
+        "tools/net10.0/any/ja/System.CommandLine.resources.dll": "f2199c3c4a701284fe368479f20f1c9da249edf267ffbe30db7e126a8cf9c070",
+        "tools/net10.0/any/ko/System.CommandLine.resources.dll": "1031147536f1da5004c4da9a360fc96885783f8572ff938628c76b6813693ce7",
+        "tools/net10.0/any/pl/System.CommandLine.resources.dll": "20e87d383843ca9d2df2d68e22fdbb73347ef6eaba824bb8214944548b33f612",
+        "tools/net10.0/any/pt-BR/System.CommandLine.resources.dll": "8995714974f5c8746a0adb06aee7ff09e8e467e10392ea6d89139416664a7203",
+        "tools/net10.0/any/ru/System.CommandLine.resources.dll": "606545fac7259bc01887e093b1fc76a8d78b301afa654ea38ec703ceaf0b6853",
+        "tools/net10.0/any/tr/System.CommandLine.resources.dll": "2d538ec2c33686788e7a6ba29b16031adae21aa96ff97713e2a586fef4ebe256",
+        "tools/net10.0/any/zh-Hans/System.CommandLine.resources.dll": "9d3702d71673f1cf67864551eab4df5f30d46add4dd107fe937578f3804382ec",
+        "tools/net10.0/any/zh-Hant/System.CommandLine.resources.dll": "742e75dc0b31dfb626b0f50f080704b987cf61c5172203ad5efa3f8490930843"
+      },
+      "api": [
+        {
+          "type": "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+          "command": [
+            "dnx",
+            "dotnet-inspect",
+            "-y",
+            "--",
+            "member",
+            "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+            "--library",
+            "/tmp/story32-released-sdk-ktixe3uv/Hexalith.Builds.Module.Cli/Hexalith.Builds.Tooling.dll",
+            "--json"
+          ],
+          "exitCode": 0,
+          "result": {
+            "namespace": "Hexalith.Builds.Tooling.Runtime",
+            "name": "CompositionDeclarationOptions",
+            "metadata_name": "CompositionDeclarationOptions",
+            "definition_name": {
+              "namespace": "Hexalith.Builds.Tooling.Runtime",
+              "segments": [
+                "CompositionDeclarationOptions"
+              ]
+            },
+            "introduced_type_parameter_counts": [
+              0
+            ],
+            "kind": "class",
+            "attributes": [],
+            "has_union_attribute": false,
+            "layout": "Auto",
+            "layout_details": {
+              "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+              "type_token": 33554551,
+              "size": 0,
+              "packing_size": 0
+            },
+            "memory_safety": {
+              "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+              "rules": {
+                "kind": "available",
+                "state": 0,
+                "observations": []
+              }
+            },
+            "is_sealed": true,
+            "is_abstract": false,
+            "is_static": false,
+            "is_by_ref_like": false,
+            "is_read_only": false,
+            "base_type": "System.Object",
+            "interfaces": [
+              "System.IEquatable<Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions>"
+            ],
+            "derived_types": [],
+            "type_parameters": [],
+            "members": [
+              {
+                "name": ".ctor",
+                "kind": "constructor",
+                "attributes": [],
+                "signature": "void .ctor(Hexalith.Builds.Tooling.Workspace.SourceMapping Mapping, System.Collections.Generic.IReadOnlyList<string> DeclarationPaths)",
+                "digest": "f0f3e23758",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.#ctor(Hexalith.Builds.Tooling.Workspace.SourceMapping,System.Collections.Generic.IReadOnlyList<string>)",
+                "metadata_token": 100664605,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664605,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664605,
+                  "attributes": "Public, HideBySig, SpecialName, RTSpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "CatalogVersion",
+                "kind": "method",
+                "attributes": [],
+                "signature": "string CatalogVersion(string module, string source)",
+                "digest": "151e25a41a",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.CatalogVersion(string,string)",
+                "metadata_token": 100664629,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664629,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664629,
+                  "attributes": "Public, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "CatalogPackageVersion",
+                "kind": "method",
+                "attributes": [],
+                "signature": "string? CatalogPackageVersion(string packageId, string source)",
+                "digest": "6ee7ecaaab",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.CatalogPackageVersion(string,string)",
+                "metadata_token": 100664630,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664630,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664630,
+                  "attributes": "Public, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "CatalogPackageVersion",
+                "kind": "method",
+                "attributes": [],
+                "signature": "string? CatalogPackageVersion(string packageId, string source, string? projectName)",
+                "digest": "2c43b373b6",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.CatalogPackageVersion(string,string,string?)",
+                "metadata_token": 100664631,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664631,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664631,
+                  "attributes": "Public, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ToString",
+                "kind": "method",
+                "attributes": [],
+                "signature": "string ToString()",
+                "digest": "f0b27178d8",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.ToString()",
+                "metadata_token": 100664637,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664637,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664637,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "op_Inequality",
+                "kind": "operator",
+                "attributes": [],
+                "signature": "bool op_Inequality(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions? left, Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions? right)",
+                "digest": "2e7cc408ca",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.op_Inequality(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions?,Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions?)",
+                "metadata_token": 100664639,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664639,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664639,
+                  "attributes": "Public, Static, HideBySig, SpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "op_Equality",
+                "kind": "operator",
+                "attributes": [],
+                "signature": "bool op_Equality(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions? left, Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions? right)",
+                "digest": "6c92c1bf7a",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.op_Equality(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions?,Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions?)",
+                "metadata_token": 100664640,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664640,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664640,
+                  "attributes": "Public, Static, HideBySig, SpecialName",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "GetHashCode",
+                "kind": "method",
+                "attributes": [],
+                "signature": "int GetHashCode()",
+                "digest": "8e6a916ff8",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.GetHashCode()",
+                "metadata_token": 100664641,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664641,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664641,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Equals",
+                "kind": "method",
+                "attributes": [],
+                "signature": "bool Equals(object? obj)",
+                "digest": "a1e6016056",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.Equals(object?)",
+                "metadata_token": 100664642,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": true,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664642,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664642,
+                  "attributes": "Public, Virtual, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Equals",
+                "kind": "method",
+                "attributes": [],
+                "signature": "bool Equals(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions? other)",
+                "digest": "cc3a625e6e",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.Equals(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions?)",
+                "metadata_token": 100664643,
+                "is_static": false,
+                "is_virtual": true,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664643,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664643,
+                  "attributes": "Public, Final, Virtual, HideBySig, NewSlot",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Deconstruct",
+                "kind": "method",
+                "attributes": [],
+                "signature": "void Deconstruct(out Hexalith.Builds.Tooling.Workspace.SourceMapping Mapping, out System.Collections.Generic.IReadOnlyList<string> DeclarationPaths)",
+                "digest": "d09d71930e",
+                "canonical_signature": "M:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.Deconstruct(out Hexalith.Builds.Tooling.Workspace.SourceMapping,out System.Collections.Generic.IReadOnlyList<string>)",
+                "metadata_token": 100664646,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 100664646,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "has_method_body": true,
+                "method_implementation": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "method_token": 100664646,
+                  "attributes": "Public, HideBySig",
+                  "impl_attributes": "IL",
+                  "has_body_rva": true
+                },
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Mapping",
+                "kind": "property",
+                "attributes": [],
+                "signature": "Hexalith.Builds.Tooling.Workspace.SourceMapping Mapping { get; init; }",
+                "digest": "913d5d5df6",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.Mapping",
+                "index_parameter_count": 0,
+                "getter_token": 100664607,
+                "setter_token": 100664608,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876402,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664607,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876402
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664608,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876402
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109317,
+                      "matched_name": "<Mapping>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664607,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664608,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "DeclarationPaths",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyList<string> DeclarationPaths { get; init; }",
+                "digest": "7e2df24e68",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DeclarationPaths",
+                "index_parameter_count": 0,
+                "getter_token": 100664609,
+                "setter_token": 100664610,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876403,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664609,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876403
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664610,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876403
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109318,
+                      "matched_name": "<DeclarationPaths>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664609,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664610,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "DefaultReleaseCommits",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyDictionary<string, string> DefaultReleaseCommits { get; }",
+                "digest": "a0f71ae659",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseCommits",
+                "index_parameter_count": 0,
+                "getter_token": 100664611,
+                "getter_has_method_body": true,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876404,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664611,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876404
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109319,
+                      "matched_name": "<DefaultReleaseCommits>k__BackingField",
+                      "is_static": true
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664611,
+                    "attributes": "Public, Static, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "DefaultReleaseSnapshotHashes",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyDictionary<string, string> DefaultReleaseSnapshotHashes { get; }",
+                "digest": "21a6525e76",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DefaultReleaseSnapshotHashes",
+                "index_parameter_count": 0,
+                "getter_token": 100664612,
+                "getter_has_method_body": true,
+                "is_static": true,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876405,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664612,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876405
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109320,
+                      "matched_name": "<DefaultReleaseSnapshotHashes>k__BackingField",
+                      "is_static": true
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664612,
+                    "attributes": "Public, Static, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "PlatformRoot",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string PlatformRoot { get; init; }",
+                "digest": "b48767ccdc",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformRoot",
+                "index_parameter_count": 0,
+                "getter_token": 100664613,
+                "setter_token": 100664614,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876406,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664613,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876406
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664614,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876406
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109321,
+                      "matched_name": "<PlatformRoot>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664613,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664614,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ActiveModule",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string? ActiveModule { get; init; }",
+                "digest": "c2b470137b",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.ActiveModule",
+                "index_parameter_count": 0,
+                "getter_token": 100664615,
+                "setter_token": 100664616,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876407,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664615,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876407
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664616,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876407
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109322,
+                      "matched_name": "<ActiveModule>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664615,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664616,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "QualificationOwners",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyList<string> QualificationOwners { get; init; }",
+                "digest": "49657c3446",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.QualificationOwners",
+                "index_parameter_count": 0,
+                "getter_token": 100664617,
+                "setter_token": 100664618,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876408,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664617,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876408
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664618,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876408
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109323,
+                      "matched_name": "<QualificationOwners>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664617,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664618,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "DomainModule",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Nullable<bool> DomainModule { get; init; }",
+                "digest": "e0caec5efa",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.DomainModule",
+                "index_parameter_count": 0,
+                "getter_token": 100664619,
+                "setter_token": 100664620,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876409,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664619,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876409
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664620,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876409
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109324,
+                      "matched_name": "<DomainModule>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664619,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664620,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "TimesheetsEnabled",
+                "kind": "property",
+                "attributes": [],
+                "signature": "bool TimesheetsEnabled { get; init; }",
+                "digest": "a56f9d1394",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.TimesheetsEnabled",
+                "index_parameter_count": 0,
+                "getter_token": 100664621,
+                "setter_token": 100664622,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876410,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664621,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876410
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664622,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876410
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109325,
+                      "matched_name": "<TimesheetsEnabled>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664621,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664622,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "Workspace",
+                "kind": "property",
+                "attributes": [],
+                "signature": "string? Workspace { get; init; }",
+                "digest": "466bc1f1ca",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.Workspace",
+                "index_parameter_count": 0,
+                "getter_token": 100664623,
+                "setter_token": 100664624,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876411,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664623,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876411
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664624,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876411
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109326,
+                      "matched_name": "<Workspace>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664623,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664624,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ReleaseCommits",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyDictionary<string, string> ReleaseCommits { get; init; }",
+                "digest": "ad4545eef8",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.ReleaseCommits",
+                "index_parameter_count": 0,
+                "getter_token": 100664625,
+                "setter_token": 100664626,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876412,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664625,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876412
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664626,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876412
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109327,
+                      "matched_name": "<ReleaseCommits>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664625,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664626,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              },
+              {
+                "name": "ReleaseSnapshotHashes",
+                "kind": "property",
+                "attributes": [],
+                "signature": "System.Collections.Generic.IReadOnlyDictionary<string, string> ReleaseSnapshotHashes { get; init; }",
+                "digest": "17e7c148fe",
+                "canonical_signature": "P:Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.ReleaseSnapshotHashes",
+                "index_parameter_count": 0,
+                "getter_token": 100664627,
+                "setter_token": 100664628,
+                "getter_has_method_body": true,
+                "setter_has_method_body": true,
+                "is_static": false,
+                "is_virtual": false,
+                "is_abstract": false,
+                "is_override": false,
+                "is_sealed": false,
+                "is_read_only": false,
+                "is_const": false,
+                "is_unsafe": false,
+                "is_async": false,
+                "memory_safety": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "caller_contract": {
+                    "kind": "none",
+                    "evidence": {
+                      "member_token": 385876413,
+                      "rules_state": 0,
+                      "pointer": "Absent",
+                      "fixed_buffer": 0,
+                      "direct_attribute": {
+                        "state": 1,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      },
+                      "associated_attribute": {
+                        "state": 0,
+                        "valid_row_count": 0,
+                        "has_malformed_row": false
+                      }
+                    }
+                  },
+                  "signature_pointer": "Absent"
+                },
+                "accessor_memory_safety": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664627,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876413
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "caller_contract": {
+                      "kind": "none",
+                      "evidence": {
+                        "member_token": 100664628,
+                        "rules_state": 0,
+                        "pointer": "Absent",
+                        "fixed_buffer": 0,
+                        "direct_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_attribute": {
+                          "state": 1,
+                          "valid_row_count": 0,
+                          "has_malformed_row": false
+                        },
+                        "associated_member_token": 385876413
+                      }
+                    },
+                    "signature_pointer": "Absent"
+                  }
+                ],
+                "backing_storage": {
+                  "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                  "convention": "AutoProperty",
+                  "state": "Associated",
+                  "candidates": [
+                    {
+                      "field_token": 67109328,
+                      "matched_name": "<ReleaseSnapshotHashes>k__BackingField",
+                      "is_static": false
+                    }
+                  ]
+                },
+                "accessor_implementations": [
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664627,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  },
+                  {
+                    "module_version_id": "12313b9f-6719-4a7c-8060-202ac3ef9719",
+                    "method_token": 100664628,
+                    "attributes": "Public, HideBySig, SpecialName",
+                    "impl_attributes": "IL",
+                    "has_body_rva": true
+                  }
+                ],
+                "is_extension": false,
+                "is_obsolete": false,
+                "documentation": {
+                  "samples": []
+                }
+              }
+            ],
+            "additional_source_files": [],
+            "is_partial_type": false,
+            "is_forwarded": false,
+            "full_name": "Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions",
+            "documentation": {
+              "samples": []
+            }
+          }
+        }
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Hexalith/Hexalith.Builds",
+        "branch": "refs/heads/main",
+        "commit": "5ec1779040606be89306129a7d2b245258c9acd2"
+      }
+    }
+  ],
+  "qualificationCredit": false
+}

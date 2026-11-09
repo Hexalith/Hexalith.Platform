@@ -1,0 +1,33 @@
+{
+  "recordedUtc": "2026-11-09T17:27:04.653821+00:00",
+  "preservedSources": [
+    {
+      "source": "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+      "pushCi": 42657538253,
+      "conclusion": "cancelled"
+    },
+    {
+      "source": "78682df11bb4491c5995d0f5bc2626993ff7674b",
+      "pushCi": 42660614184,
+      "conclusion": "cancelled"
+    },
+    {
+      "source": "5ec1779040606be89306129a7d2b245258c9acd2",
+      "pushCi": 42661065183,
+      "observedAtRecording": "in_progress"
+    }
+  ],
+  "attribution": "Both old push runs were superseded by direct-child main pushes under the normal cancel-in-progress CI group. Failed aggregate checks refused cancelled constituent jobs; no underlying unit/package failure is inferred. This task issued no cancellation.",
+  "concurrentChanges": {
+    "78682": "Environment setup, hooks and integration execution; no Tooling/runtime/catalog/admission paths changed.",
+    "5ec1779": "Only removes the verified temporary stage-four runtime probe workflow and script."
+  },
+  "localControlsAt78682": {
+    "environment": 20,
+    "pipeline": 33,
+    "failed": 0,
+    "note": "Expected embedded .NET failure fixtures are asserted by passing Python controls."
+  },
+  "releaseSourceCredit": false,
+  "platformPinsChanged": false
+}

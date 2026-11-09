@@ -234,12 +234,13 @@ public sealed class EventStoreExtensionCompositionTests
         string sourceMapping = Path.Combine(work, "source-mapping");
         Directory.CreateDirectory(sourceMapping);
         Dictionary<string, string> versions = new() { [Package] = selectedVersion };
+        Dictionary<string, string> defaultVersions = new() { [Package] = "0.0.0-story32.default" };
         Dictionary<string, string> pinnedFiles = new() { ["Props/Directory.Packages.props"] = new string('a', 64) };
         Dictionary<string, IReadOnlyDictionary<string, string>> projectVersions = new() { ["Hexalith.Platform.EventStoreHost"] = versions };
         string catalogCommit = new('b', 40);
         string catalogHash = new('a', 64);
-        CatalogVersionSnapshot snapshot = new(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, versions, projectVersions,
-            CatalogVersionSnapshot.ComputeHash(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, versions, projectVersions));
+        CatalogVersionSnapshot snapshot = new(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, defaultVersions, projectVersions,
+            CatalogVersionSnapshot.ComputeHash(options.Mapping.ContentHash, catalogCommit, catalogHash, pinnedFiles, defaultVersions, projectVersions));
         string snapshotPath = Path.Combine(sourceMapping, "catalog-versions.json");
         File.WriteAllText(snapshotPath, JsonSerializer.Serialize(snapshot));
         // Resolve consumes only Workspace from the plan; the synthetic fixture confers no release or runtime authority.
