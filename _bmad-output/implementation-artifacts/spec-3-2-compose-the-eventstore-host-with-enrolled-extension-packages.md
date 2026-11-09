@@ -297,6 +297,28 @@ Grouped routes: two patch entries (BH10 and VG1), one new medium-unverified defe
 - [x] [Review][Patch] R3-P2: Add missing-host and missing-gateway refusals, including stable conditions, declaring module and resource atomicity.
 
 
+### Resumed build review — 2026-11-09, broad-verification continuation
+
+Three independent reviewers examined the Platform story implementation and the EventStore/Builds owner diffs. The complete Platform baseline diff is retained separately from the focused implementation review artifact; unrelated Story 2.8 changes were excluded from feature review. Each source finding is classified before grouping. Prior routes are preserved under the resumed-review rule.
+
+| Source | Verdict | Evidence and route |
+| --- | --- | --- |
+| BH1 | low | carried: content-root and later-bound gateway settings are the previously rejected iteration-0 BH4/ECH2 and iteration-1 ECH15 boundary. Values require Platform-owned configuration/profile input. Preserve rejection; guidance already states the bounded comparison. |
+| BH2 | low | `ConfigureEnvironment` sets `DOTNET_ENVIRONMENT` before applying the binding dictionary, so an explicitly supplied scoped value could replace it. The declaration alone supplies no value and unbound inputs are refused. No existing extension uses process-control keys; adding a reserved-runtime-key policy adds new guard state for deliberate operator configuration. Reject as uncommon and nontrivial. |
+| BH3 | low | carried: `UsePrebuiltProjects` with newly generated bindings is iteration-0 BH8/VG-O4 and iteration-1 BH9. Preserve rejection: Development/source opt-in and missing extensions fail loudly at host startup. |
+| BH4 | low | carried: the unescaped semicolon in an MSBuild property path is iteration-0 ECH8. Preserve rejection; this follows the existing Platform-controlled workspace/property path convention. |
+| BH5 | low | carried: inherited/imported direct references are iteration-0 BH14/ECH12 and iteration-1 BH6. Preserve the bounded source-audit rejection. |
+| BH6 | low | carried: direct assembly/HintPath reference forms are the same iteration-0 BH14/ECH12 bounded audit finding. Preserve rejection. |
+| BH7 | maybe-false | carried: raw conditional/import/property catalog lookup is W1/BH4. Preserve its medium-unverified package-restore qualification; do not append a duplicate deferral. |
+| BH8 | low | carried: lazy adapter inventory/reflection failures escaping the named wrapper are iteration-1 ECH7 and iteration-2 BH10. The host still fails before serving. Preserve rejection. |
+| BH9 | low | carried: scalar-only Packages configuration is iteration-2 ECH2. Platform emits indexed scalar identities; malformed hand-written sections are outside that normal path. Preserve rejection. |
+| BH10 | low | Structured JSON can introduce an invalid environment name such as `Bad=Name`, which is not checked by the existing flattener. This requires malformed Platform-owned configuration/profile data; current declaration keys and values do not exercise it. Adding platform environment-name validation is a new guard for an uncommon operator error. Reject. |
+| BH11 | low | carried: generated-reference compilation and host readiness are distinct tests, already iteration-1 BH14/AA6. Preserve rejection and the existing whole-environment proof in Story 3.6. |
+| ECH1 | false | carried: package startup is an explicit deferred qualification prerequisite, as recorded by iteration-0 ECH16 and the earlier resumed ECH1. No package-startup qualification or story-completion claim is made. Preserve that existing route. |
+| VG1 | medium | carried: automatic tuple verification excludes source-only extension tests, exactly W4/BH7/VG2. Preserve the existing released-cohort/CI follow-up; no duplicate deferral or unapproved source-CI exception. |
+
+Grouped outcome: eleven carried routes and two new low rejections; no new patch, intent gap, specification loopback or deferred ledger entry. Review completion does not satisfy the still-running broad-verification gate.
+
 ## Design Notes
 
 A new field, not `runtime.extensions[]`: every current manifest uses that field for owner server packages that carry secrets (Parties, Memories, Tenants, Conversations), so applying AD-13 to it would reject all of them. Declared majors are checked at composition time, so the failure comes before startup. Host startup verifies the actual assembly attribute, so a declaration cannot drift from the binary.
@@ -324,3 +346,16 @@ All frozen matrix rows have passing focused coverage at their approved scope. Th
 Status remains **in-progress**, matching sprint tracking. No SDK publication, dependency-pin change, module-manifest adoption, commit or remote mutation was performed. The build workflow stops at the unresolved broad-verification result rather than marking the story done.
 
 Receipt: [local verification](evidence/3-2/local-verification-20261109/verification.json). Exact scratch build/test commands: `/tmp/story-3-2-review-fix-commands.txt`. Final result XML files: `/tmp/story-3-2-review-fix-tests.xml`, `/tmp/story-3-2-final-gateways.xml`, `/tmp/story-3-2-final-pin.xml`.
+
+
+### Completed broad comparison — 2026-11-09
+
+The previous missing-summary limitation is resolved. Both complete class inventories finished with result XML and no class timeouts: current Platform `59fb32933d76a7e71d9479e1903087a73ea66f2b` has **955 cases: 782 passed, 161 failed, 12 skipped, 0 not run**; the preserved baseline `f7c68398cdcb494d535e789e3d9577af9e8d5d36` has **919 cases: 744 passed, 163 failed, 12 skipped, 0 not run**. Each revision used all 17 direct gitlinks recorded at that revision, with no nested initialization, pin change or remote Git operation. Both Debug builds have zero warnings and errors.
+
+The comparison retains all cases, including four truncated-display-name groups with equal all-pass multiplicities and unchanged test source. It finds **160 common failures, 36 added passing tests, no removed tests, three resolved tool-pin failures and one regression**. The regression is `PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded`, strengthened in Story 2.8 commit `6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2` to use the real package fixture; it now reaches the existing genuine-published-Memories-Contracts admission prerequisite. It is attributed explicitly rather than described as an identical failure set. The existing package/cohort fixture qualification route remains; no guard or assertion was weakened.
+
+Fresh focused Platform proof is **45/45**: 33 extension cases, 7 gateway registration/seed cases and 5 enrollment/tool-pin cases. The initially missing locally pinned tool was restored and the rerun retained alongside the initial result. The unchanged EventStore/Builds owner commits retain their previously passing 50/617 focused cases, whose logs and hashes were checked. Generated package-reference proof remains distinct from released package startup qualification.
+
+All three independent reviews finished; the table above records eleven carried routes and two new low rejections, with no new patch or duplicate deferral. This continuation changes verification evidence and review records only. **Status remains in-progress**, matching sprint tracking: the broad gate is red and selected-package extension enablement/startup/CI qualification remains pending. The workflow cannot truthfully mark the story done. The frozen intent and original baseline remain unchanged; publication, SDK adoption and main-checkout changes are outside this continuation.
+
+Durable receipt: [broad verification](evidence/3-2/broad-verification-20261109/verification.json), [comparison](evidence/3-2/broad-verification-20261109/comparison.json), and [regression attribution](evidence/3-2/broad-verification-20261109/regression-attribution.json). Raw class XML/logs and exact replay commands remain in `/tmp/story-3-2-broad-20261109-_z_wy84q`. Changes are prepared on scratch branch `docs/story-3-2-broad-verification-20261109`; concurrent Story 2.8 work in the main checkout was preserved.
