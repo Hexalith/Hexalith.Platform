@@ -6,7 +6,7 @@ release, or establish Story 3.2 acceptance.
 
 Publication has two normally qualified stages to avoid a circular prerequisite.
 First, adopt the released EventStore extension SDK and Builds consumer-view
-correction through a refreshed exact-source L/M tuple, compile the package-mode
+correction through a refreshed exact-source L/N/M tuple, compile the package-mode
 extension tests, and let the existing source-release workflow tag that exact
 current main. The fixture stays outside finite package-host admission at this
 stage. Dispatch `test-extension-release.yml` from that same current main with
@@ -56,7 +56,7 @@ claim a hosted publication or signed-package startup qualification.
 
 The fixture archive also contains the exact Platform-owned v2 declaration for
 `platformtestextension` and its producer descriptor. This pure extension module
-has no servers and depends only on EventStore/Tenants. The verifier reads the
+has no servers and depends only on EventStore/Tenants/Memories. The verifier reads the
 approved declaration and producer directly from the immutable release Git
 object, compares every archived byte, and records their hashes. It refuses a
 foreign producer, missing or changed declaration, a different extension/API,

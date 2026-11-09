@@ -1,0 +1,41 @@
+
+> hexalith-platform@0.0.0-development test:source-release
+> node --test tests/source-release/*.test.mjs
+
+✔ fixture proof paths bind through the actual runtime environment before use (5.825095ms)
+✔ fixture workflow refuses the observed unsupported job runner context (0.670498ms)
+✔ fixture workflow refuses proof path setup after its first use (0.418717ms)
+✔ either final callback requires both latest successful main lanes and exact five/six jobs (2.245081ms)
+✔ the exact SDK 4.2 job is required alongside every historical catalog row (3.561991ms)
+✔ earlier callback defers pending/missing counterpart; later callback can proceed (0.435529ms)
+✔ latest failed/cancelled/timed-out/skipped/neutral counterpart never borrows an earlier success (1.245891ms)
+✔ superseded callback, primary attempt race and latest pending attempt refuse (0.489771ms)
+✔ required job failure/cancellation/skip, missing/unknown and duplicate names refuse (1.152719ms)
+✔ source release requires source resolution, all three execution lanes and aggregate verdict (1.811494ms)
+✔ wrong event/repository/branch/SHA/checkout/unknown workflow and incomplete API discovery refuse (3.83344ms)
+✔ main advancing during collection or immediately before mutation refuses without saving a ready phase (0.646456ms)
+✔ changed qualifying attempt cannot publish notes carrying the earlier run bindings (0.468354ms)
+✔ duplicate callbacks and standard no-release outcome do not force a publication (0.61504ms)
+✔ no-release return after main advance is refused and computed-version failure diagnostics survive (0.206172ms)
+✔ standard real analyzer computes patch/minor/major and declines build/docs/empty commits (9.61995ms)
+✔ explicit source-only plugins omit package publishing and source-main mutations (1.391325ms)
+✔ actual pinned GitHub hooks make no issue, PR, label, package or registry calls (1.933928ms)
+✔ GET transport binds official API and refuses redirects, errors and oversized bodies (0.971255ms)
+✔ workflow separates read-only verification from serialized contents-write publisher and binds callback checkout (1.57308ms)
+✔ real entry point refuses local execution without a positive CI identity or any network/write probe (246.378489ms)
+✔ actual release hook binds computed version/source and retains bounded public run notes (1.479122ms)
+✔ verifier uses the reviewed default-branch code to refuse an older callback before its helper existed (0.191364ms)
+✔ outer CLI failure preserves actual post-tag release failure phase/version/reason and prior published outcome (0.36915ms)
+✔ actual pinned notes generator renders feature fix breaking notes and repository links (28.016031ms)
+✔ current and both genuine historical executions fan out from source resolution (1.022876ms)
+✔ overall tuple verdict refuses failed cancelled skipped or missing lanes (0.183087ms)
+✔ actual aggregate step exits nonzero for every unsuccessful or absent lane result (1088.056056ms)
+✔ all three actual lanes recheck the finite initialized Parties owner before package execution (0.299645ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1146.85142

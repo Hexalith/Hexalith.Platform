@@ -1,0 +1,68 @@
+test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) ... 
+  test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... FAIL
+  test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... FAIL
+test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) ... 
+  test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... FAIL
+  test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... FAIL
+test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) ... 
+  test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... FAIL
+  test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... FAIL
+
+======================================================================
+FAIL: test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/eng/mcpcli-operator-setup/test_prepare.py", line 83, in imported_build_input_change_refuses
+    with self.assertRaisesRegex(ValueError, 'source-inputs-drift-or-unbound'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.092s
+
+FAILED (failures=6)

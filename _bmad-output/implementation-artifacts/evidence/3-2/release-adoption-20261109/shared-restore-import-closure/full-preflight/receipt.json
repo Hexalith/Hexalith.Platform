@@ -1,0 +1,146 @@
+{
+  "scope": "Complete local runner preflight on an isolated uncommitted fixture-copy correction; no hosted environment spoofing or qualification.",
+  "commands": [
+    {
+      "label": "install-node",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "source-release",
+      "command": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "fixture-node",
+      "command": [
+        "node",
+        "--test",
+        "eng/test-extension-release/gate.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "fixture-python",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test-extension-release/run-controls.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "sdk-profiles",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_tuple_sdk_suites.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "preextension",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_pre_extension_tuple_source.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "legacy",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_legacy_tuple_source.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "tuple-binding",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_builds_tuple.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "output-identity",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_tuple_output_identity.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "binding-regressions",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_host_builds_resolution.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "pin-alignment",
+      "command": [
+        "python3",
+        "eng/verify-platform-pins.py",
+        "--catalog",
+        "/tmp/story32-default-source-mode-probe-_o2d3b9r/repository/references/Hexalith.Builds/Props/Directory.Packages.props"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "restore",
+      "command": [
+        "dotnet",
+        "restore",
+        "Hexalith.Platform.slnx",
+        "-p:Configuration=Release",
+        "-p:UseHexalithProjectReferences=false",
+        "-p:HexalithBuildsPublishedToolRoot=/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "source-sdk",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_source_sdk_propagation.py",
+        "--evidence",
+        "/tmp/story32-shared-restore-fixture-closure/full-preflight/source-sdk-controls",
+        "--published-tool-root",
+        "/tmp/story32-builds447-local-qualified-artifacts/published/tools/net10.0/any"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "schema",
+      "command": [
+        "/home/administrator/.local/bin/actionlint",
+        "-shellcheck=",
+        "-pyflakes=",
+        ".github/workflows/tuple-ci.yml",
+        ".github/workflows/catalog-builder.yml",
+        ".github/workflows/source-release.yml",
+        ".github/workflows/test-extension-release.yml"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "qualificationCredit": false
+}

@@ -1,0 +1,19 @@
+{
+  "source": "9ea927c0733a6ac4acdfd25dc6e513b1c5e7be4f",
+  "scope": "Preserve real imported build-input closure in two temporary fixtures and the operator source hash inventory. Unconditional imports, existing assertions and admission checks remain. No runtime, deployment or qualification authority.",
+  "files": {
+    "eng/test_host_builds_resolution.py": "ebbcbdaa590de22d7619830db10e15d40ee41019111f4b5460bf3b9958a63f81",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs": "3cbbace5d9a3423f472db8f06bcd253cbcef021baf1ba870220f029073210bf6",
+    "eng/mcpcli-operator-setup/prepare.py": "71b5c0d7e2838e34823c5534a0aca2461d3f4f46d8bc7cb0804977dbd2d0e4ff",
+    "eng/mcpcli-operator-setup/test_prepare.py": "96e20c6af78fd2bdd0772862027f13c869565bc821a4e686e37a75c5fdef6f02"
+  },
+  "patchSha256": "7a6049e0da09c24284613b3d966d3c5a83b0b71696612fc512c1fb38ec665940",
+  "operatorControls": {
+    "before": "3 tests, 6 subtest failures: added/modified/deleted actual inputs were not bound",
+    "after": "21 tests including 10 preparation and 11 guard-matrix controls; 0 failure/error/skip"
+  },
+  "fixtureBindingControls": "15 unchanged actual MSBuild controls Pass",
+  "completeRunnerPreflight": "All 14 local commands Pass; no hosted environment spoofing; raw retained logs",
+  "csharpCases": "running, not credited",
+  "qualificationCredit": false
+}

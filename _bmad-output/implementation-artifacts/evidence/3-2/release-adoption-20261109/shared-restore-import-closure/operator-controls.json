@@ -1,0 +1,54 @@
+{
+  "scope": "Bound imported files in the existing operator source inventory; no external tool or network action.",
+  "before": {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse",
+      "test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse",
+      "test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse"
+    ],
+    "exitCode": 1,
+    "testsRun": 3,
+    "failures": 6,
+    "cause": "Both actual imported files were omitted, so validate_profile accepted added/modified/deleted bytes instead of refusing."
+  },
+  "after": {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "test_prepare",
+      "test_guard_matrix"
+    ],
+    "exitCode": 0,
+    "testsRun": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "files": {
+    "operator-before.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "operator-before.stderr": {
+      "sha256": "e578fcd649d82185372311d9143fc4be8a54eacc86d6930cfedb60a28c358956",
+      "bytes": 5982
+    },
+    "operator-after.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "operator-after.stderr": {
+      "sha256": "2b4a7b955a6ed56ea3363ee691385835c33ea8e0acf7ead9ab1ca70fd2b72813",
+      "bytes": 3459
+    }
+  },
+  "qualificationCredit": false
+}
