@@ -295,60 +295,75 @@
     "newBlob": "05e0e889695f3701558ba7f965b0a61cb5454cbc",
     "proofCommit": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
     "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2f3fddb25f5ba8833904173088d12af5c1591cfa",
+    "proofCommit": "69b02d738fffb8d992fdd7e86be8b41069438472",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/prepare-ci-package-dependencies.sh",
+    "status": "M",
+    "oldBlob": "26cc6c3621698e160ea7eae6789f513a81a73bdd",
+    "newBlob": "527462746b4c96afe225d46658ecf414c0f3c3f8",
+    "proofCommit": "69b02d738fffb8d992fdd7e86be8b41069438472",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "37d854c53523bae92fb5173fc819b832c96142db",
+    "proofCommit": "69b02d738fffb8d992fdd7e86be8b41069438472",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": ".github/workflows/story-2-8-v2-late-startup-proof.yml",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "2f3fddb25f5ba8833904173088d12af5c1591cfa",
+    "proofCommit": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/prepare-ci-package-dependencies.sh",
+    "status": "M",
+    "oldBlob": "26cc6c3621698e160ea7eae6789f513a81a73bdd",
+    "newBlob": "fe76a18ee98f43728b944eb833e50e971e7a0622",
+    "proofCommit": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+    "class": "proof-branch-only-never-merged"
+   },
+   {
+    "path": "scripts/story-2-8-proof-observer.py",
+    "status": "A",
+    "oldBlob": null,
+    "newBlob": "3124cae1dfb36e02b4602b62b3d2e558df48a066",
+    "proofCommit": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+    "class": "proof-branch-only-never-merged"
    }
   ]
  },
  "platform": {
   "repository": "Hexalith/Hexalith.Platform",
-  "head": "6381fd6f4d36eeef03e0b947b7fe701d1e4ffbb2",
+  "head": "59fb32933d76a7e71d9479e1903087a73ea66f2b",
   "workingTreePaths": [
    {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/README.md",
-    "workingTree": "M",
-    "class": "story-2-8-planning-or-living-evidence-index"
-   },
-   {
     "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/row-index-loop-2.json",
-    "workingTree": "M",
-    "class": "story-2-8-evidence-loop-1-or-2"
+    "workingTree": "M"
    },
    {
-    "path": "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md",
-    "workingTree": "M",
-    "class": "story-2-8-planning-or-living-evidence-index"
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42598774773.json",
+    "workingTree": "??"
    },
    {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42587199919.json",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
-   },
-   {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42593229291.json",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
-   },
-   {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-exec-cancel-42587081454.json",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
-   },
-   {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42593223538.json",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
-   },
-   {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/proof-diff-535b3b62.patch",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
-   },
-   {
-    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/proof-diff-bae4f1b7.patch",
-    "workingTree": "??",
-    "class": "story-2-8-evidence-loop-1-or-2"
+    "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/proof-diff-42af924a.patch",
+    "workingTree": "??"
    }
   ],
-  "note": "Platform main 6381fd6f (external /pushall, 08:39Z) already carries the loop-1 and PB-9/PB-15 edits; the working-tree paths listed here are the later loop-2 evidence, README and spec updates.",
+  "note": "Platform main 6381fd6f, 910697d8 and 59fb3293 (external /pushall) already carry the loop-1/loop-2 edits and earlier evidence; the working-tree paths are the latest loop-2 evidence, README and spec updates.",
   "platformMainPaths": [
    "src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs",
    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",

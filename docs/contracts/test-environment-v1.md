@@ -389,6 +389,7 @@ the receipt:
   `not-allocated`.
 - With a receipt, it leaves owned composed processes, which carry the owner's run tag,
   to the exact `down`.
+
 Before invoking down, it verifies repository/run/attempt/job and durable owner
 bindings. Cleanup completion requires zero owned resources and verified discovery.
 Unknown discovery or leftovers fail with retryable metadata. Only classified,
@@ -407,7 +408,9 @@ archives. It reuses the immutable pre-launch descriptor bindings held by the
 runner; partial startup uses the original issued run/attempt/environment identities
 and explicit unavailable observations. The first outcome/cause/time survives
 cancellation, explicit stop, cleanup errors and retries. Owner cancellation is
-`cancelled`; `withdrawn` remains reserved for future attached runs.
+`cancelled`. `withdrawn` ends attached runs and their holds when their environment is
+withdrawn, never an owner; a later attach to such an owner is refused as
+`owner-withdrawn`.
 
 Command terminal status and outcome preserve that committed observation. Later
 archive and cleanup errors remain visible as diagnostics and cleanup disposition;
@@ -509,3 +512,55 @@ qualifications: the current final acceptance path refuses
 `tool-qualification-authentication-unavailable` until an independently accepted
 qualification authority is available. These checks do not claim live package-mode
 CI qualification or change schemas, tool/catalog pins, publication or staging gates.
+
+## Accepted Platform qualification plan — publication and adoption pending
+
+The Platform owner accepted [Q1–Q6 of the EventStore 4.16 handoff plan](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-09.md)
+with “I accept” on 2026-11-09. The owning planning work is
+[PLAT-ES416-QH](../../_bmad-output/implementation-artifacts/spec-plat-es416-qh-qualification-handoff.md).
+This accepts Platform's plan and planned contract semantics. Builds' acceptance,
+published schemas, runner/reader implementation, EventStore adoption and actual
+qualification are still pending. The current reader continues to accept only the
+v1 versions specified above. No v2 schema or consumer support is published here.
+
+The accepted Platform design requires paired `hexalith.test-environment.v2`
+and `hexalith.test-result.v2`, preserving policy v1 and all existing lifecycle,
+candidate, artifact, deadline and outcome semantics. Qualification executions add
+typed `bindings.qualification`; the result snapshots the same immutable identity
+and advances only permitted observations. Q2 defines the planned groups:
+
+| Group | Planned binding and refusal boundary |
+| --- | --- |
+| `profile` | Purpose and definition content identity; supported SDK/runtime/embedded component type and API version; backend/configuration and capability identities; expected inputs distinct from actually loaded observations and verifier readiness. |
+| `hosts` | Distinct writer host/sidecar/cache instances with owned resource references, shared logical actor identity, writer/reader roles, observed protocol endpoints and placement membership. A peer URL alone supplies no independent-host proof. |
+| `operations` | Owner-supplied lawful operations, fresh owning-actor read route, synthetic partition scope, semantic barriers and exact required-test-set identity. No provider command or private actor-key field. |
+| `controls` | Allowlisted versioned run/owner/attempt/environment/profile/suite-bound operations, owned endpoint references, permitted host/partition/phase, finite deadlines and uses, reset and cleanup obligations. No arbitrary target or shell. |
+| `observations` | Actual loaded identities/capabilities; host/barrier/placement transitions; requested/applied/released/reset control outcomes, times, affected resources and classified diagnostics. Unavailable producers block their required lanes. |
+
+All references must resolve and agree with the existing run/resources/readiness,
+artifact, suite and lifecycle bindings. Wrong versions/policy, foreign or duplicate
+identities, contradictory observations, missing required controls and excessive
+inputs refuse atomically. Publication and explicit adoption must precede handoff;
+there is no in-place v1 amendment, automatic version selection or silent downgrade.
+Existing v1 suites retain their current contract. `--profile` still selects an
+owner-declared suite, and `HEXALITH_TEST_ENVIRONMENT_PATH` remains its descriptor
+transport. No new module-manifest field is assumed available.
+
+The plan also requires explicitly adopted private
+`hexalith.test-endpoint-credentials.v2` for the new protocol/control credential
+kinds, exact endpoint and run/attempt/environment/profile bindings, control scope
+and expiry. Ordinary v1 Dapr invocation suites retain their existing channel.
+Credentials stay outside descriptor/result snapshots, TRX, logs and retained
+diagnostics. Module tests receive no backend principal or erasure signing key;
+qualified HMAC receiver inputs remain in the existing OpenBao/Dapr secret boundary.
+
+Builds must accept and deliver the exact design, mirrors, embedded schemas,
+selection/readers/writers and private-channel support; EventStore must adopt it.
+Platform then qualifies the exact executing tool/profile independently. Missing
+supported Dapr revision/create-once/whole-batch/authorized-erasure capability
+continues to block semantic execution. This planning acceptance changes no tool
+qualification field, pin, readiness verdict or production gate.
+
+The [unpublished v2 design](test-environment-v2.md#synthetic-review-fixtures) now
+provides synthetic review fragments for this accepted planning work. It publishes
+no schema and supplies no reader support, adoption or qualification.

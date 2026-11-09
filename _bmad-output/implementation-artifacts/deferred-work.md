@@ -1901,3 +1901,6 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Verify output isolation for concurrent ordinary source compositions with different declared EventStore extensions (medium, unverified).
   evidence: Resumed review BH1 observes shared Platform host obj/bin paths outside selected-test artifact isolation; no incorrect loaded inventory has been reproduced. A bounded concurrent two-composition build/startup with distinct extension inventories and loaded-inventory assertions would settle whether this causes cross-run interference.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: ECHP2-5 — After Parties Q's tool-only partial-startup SIGKILL, the resumed AppHost may keep provisioning while the exact down runs (maybe-false; medium if true, unverified).
+  evidence: Q now SIGKILLs only the muxer and tool, then resumes the paused AppHost before `down` (qualify-disposable-ci.py partial_startup). To settle it, confirm that Builds `down` stops run-tagged processes before its final discovery, or run the deferred L matrix on a patched Builds release and check the partial-startup inventories.

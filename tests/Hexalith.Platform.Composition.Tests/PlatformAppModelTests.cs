@@ -119,21 +119,42 @@ public sealed partial class PlatformAppModelTests : IDisposable
     [Fact]
     public async Task PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
     {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync().ConfigureAwait(true);
+        await fixture.PersistClaimStateAsync().ConfigureAwait(true);
+        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken).ConfigureAwait(true);
+        CompositionProcessResult preflight = await fixture.RunPublishedValidationAsync(completeCatalog: true).ConfigureAwait(true);
+        preflight.ExitCode.ShouldBe(0);
+        CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(fixture.Plan.DaprConfigPath)!);
+        await File.WriteAllTextAsync(fixture.Plan.DaprConfigPath, CompositionDaprComponentRenderer.RenderConfiguration(fixture.Plan),
+            TestContext.Current.CancellationToken).ConfigureAwait(true);
         var builder = PlatformPartiesPackageFixture.Builder();
+        builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(fixture.Workspace, "never-start-dcp");
+        builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(fixture.Workspace, "never-start-dashboard");
+        string runtime = Path.Combine(fixture.Plan.DaprHome, ".dapr", "bin");
+        Directory.CreateDirectory(runtime);
+        File.WriteAllText(Path.Combine(runtime, "daprd"), "model-only runtime marker; never executed");
+        int? resourcesAtFirstProbe = null;
         fixture.Compose(builder, options =>
         {
             options.Mapping.Mode.ShouldBe(WorkspaceMode.Package);
-            // Binding stays metadata-only: no container, sidecar or project exists before composition.
-            builder.Resources.ShouldBeEmpty();
-            return options with { ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)) };
+            return options with
+            {
+                ImageProbeRunner = (_, _, _) =>
+                {
+                    // Image probes run after binding and before the first container, sidecar or project is added.
+                    resourcesAtFirstProbe ??= builder.Resources.Count;
+                    return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
+                },
+            };
         });
+        resourcesAtFirstProbe.ShouldBe(0);
         using ServiceProvider provider = builder.Services.BuildServiceProvider();
         // Observe what the composition actually produced, rather than recomputing the binding here.
         PlatformNativeTestPreparation preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().ShouldHaveSingleItem();
         preparation.RoutingCatalogObservationsRequired.ShouldBeTrue();
-        preparation.ExpectedCatalogHosts.Keys.ShouldBe(["eventstore", "memories", "tenants"], ignoreOrder: true);
-        foreach (string participant in preparation.ExpectedCatalogHosts.Keys)
+        string[] cohort = ["eventstore", "memories", "memories-domain-service", "parties", "tenants", "tenants-api"];
+        preparation.ExpectedCatalogHosts.Keys.Order(StringComparer.Ordinal).ShouldBe(cohort);
+        foreach (string participant in cohort)
         {
             builder.Resources.Select(resource => resource.Name).ShouldContain(participant);
         }
