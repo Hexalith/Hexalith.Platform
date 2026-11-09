@@ -23,6 +23,12 @@ Story 2.8 delivers CI execution/finalization and focused proof of its original s
 
 ## Execution constraints for this build
 
+The resumed bmad-build invocation on 2026-11-09 uses the current Step 03 rules:
+no pushes, no remote operations, and sequential execution only. Continue the
+remaining resource-free implementation and owning checks within those limits.
+The earlier publication authorization below records a completed follow-up; it
+does not authorize remote qualification in this resumed workflow.
+
 The initial bmad-build implementation step permitted no pushes or remote operations and required sequential execution. Initial implementation and verification were resource-free. The user subsequently instructed "push all changes", authorizing commits, remote synchronization and pushes of the prepared work, including the pre-existing ES416 contract proposal. Required live qualification and acceptance gates remain open; no hosted qualification workflow was dispatched and no local services were started.
 
 ## Tasks and acceptance
