@@ -57,6 +57,8 @@ jobs:
             echo 'fixture-publication: the measured package SDK extension feature is unavailable.' >&2
             exit 1
           fi
+      - name: Compile the source-bound native fixture test
+        run: dotnet build tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -warnaserror -nodeReuse:false --disable-build-servers
       - name: Pack only the Platform-owned fixture from package dependencies
         id: pack
         env:

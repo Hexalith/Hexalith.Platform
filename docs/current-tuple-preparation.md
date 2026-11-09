@@ -26,9 +26,23 @@ The owning catalog selects the measured signed EventStore4.2.0 source
 that named view through the released three-argument API; default and live catalog
 views cannot substitute. The unchanged declaration body remains SHA256
 `21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495`.
-The finite no-extension4.2 cohort still requires its actual97 cases and9 extension
-component cases, fresh same-code412/349 historical lanes, all five tuple jobs and
-six SDK catalog jobs before source-release qualification. This candidate grants
+The actual local no-extension4.2 cohort passed all97 cases, including the three
+real reader/owner entry paths and two owner models; all9 extension component
+cases passed too, with clean unchanged source and output bodies at
+`8a9cbb8d1bf25f6b2ff4c68f81e455551944119a`. The current-source Parties path
+selects the existing normally qualified owner source
+`ebe1739d70a4e76447938b0bb8c53db508bf6019`, whose finite4.2 catalog guards retain
+the unchanged module declaration. Public Parties3.1.0 package/image pins remain.
+The receipt is `evidence/3-2/release-adoption-20261109/measured-sdk42-default-controls-8a9cbb8d`.
+
+Plain Debug source builds carry the selected owning catalog SDK through direct
+and SDK-promoted project references, preserving explicit edge choices and
+existing authenticated mapping authority. The nine real MSBuild metadata controls
+run automatically after package restore in every tuple lane. Package mode retains
+its existing selection. No AssemblyVersion override is used.
+
+Fresh same-code412/349 historical lanes, all five tuple jobs and six SDK catalog
+jobs remain mandatory before source-release qualification. This candidate grants
 no signed test-fixture admission, native parent execution or candidate acceptance.
 The previous producer sections retain their historical facts.
 

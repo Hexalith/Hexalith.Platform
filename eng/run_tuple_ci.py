@@ -233,6 +233,7 @@ def main():
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(catalog)])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
+        run("source-sdk-propagation-controls", [sys.executable, "-B", "eng/test_source_sdk_propagation.py", "--evidence", str(evidence / "source-sdk-metadata"), "--published-tool-root", str(tool)])
         assets = evidence / "assets"
         assets.mkdir()
         for number, project in enumerate(projects):
