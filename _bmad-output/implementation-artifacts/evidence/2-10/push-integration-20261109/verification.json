@@ -1,0 +1,53 @@
+{
+  "schema": "hexalith.story-2-10.push-integration.v1",
+  "recordedAtUtc": "2026-11-09T14:56:54.923216+00:00",
+  "authorization": "User: push all changes",
+  "partiesRemoteBase": "3b4b0fb32200bf071374e73fa0f6993dd83afbbc",
+  "partiesCommittedAndPushedSource": "ee806fd0e82bdf6eec3a8c1f671427080dbed2ac",
+  "partiesBuildsGitlink": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+  "conflictResolution": "Preserved tool-only cancellation, exact outcome lock refusal, exec signal forwarding and scoped reader; extended reader scope to focused-ci.",
+  "checks": [
+    {
+      "command": "python3 -B _bmad-output/implementation-artifacts/evidence/2-10/resource-free-20261109/run_parties_controls.py --helper-source 27145e52ffab5623198ba5efdab5cdb71aa42d28",
+      "cwd": ".",
+      "exitCode": 0,
+      "passed": 106,
+      "failed": 0,
+      "skipped": 0,
+      "output": "parties-after-rebase.txt",
+      "outputSha256": "9cef631e0f3c56ea529cac39d2e3fa7a18fa196e4517a950b3eaaaf9877aea1c"
+    },
+    {
+      "command": "python3 -B -m unittest discover -s tests/ci-lifecycle -v",
+      "cwd": "references/Hexalith.Parties",
+      "exitCode": 1,
+      "ran": 75,
+      "failures": 1,
+      "errors": 27,
+      "output": "parties-canonical-after-rebase.txt",
+      "outputSha256": "ad99b6341fa9fcfda95867cb6688320f1c18b42af0910e0a00b388318f93a010"
+    }
+  ],
+  "additionalChecks": [
+    {
+      "command": "actionlint .github/workflows/ci-lifecycle-qualification.yml",
+      "exitCode": 0,
+      "cwd": "references/Hexalith.Parties"
+    }
+  ],
+  "preparedInputSha256": {
+    "references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml": "1a68d273fd8bcb61e50f8951982950eddb4747f32a75a050974b43b185873e23",
+    "references/Hexalith.Parties/docs/ci-lifecycle-qualification.md": "322bd77698a7b3f453b4a2f088e4631017957eb865e6f601e6ab40bd12312247",
+    "references/Hexalith.Parties/scripts/qualify-disposable-ci.py": "a88d24922608c03dd55aa33471705d9c712583a294b1030927f4f939164391ef",
+    "references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py": "973d9b073e337c917ce4c792454136876c6dd1359a400065588e62582268616a",
+    "references/Hexalith.Parties/tests/ci-lifecycle/test_review_fixes.py": "274c8f47da4831185e653d3c489533403e4089aeec3bd597daca7a9cbbdb1ed0",
+    "references/Hexalith.Parties/tests/ci-lifecycle/test_workflow_boundaries.py": "6434699fbf95271df5427ebae8be727d7d5ae5258cc6411fc1a6b2adcf6c12f9"
+  },
+  "canonicalDiscoveryLimitation": "Uninitialized nested Builds dependency: 75 tests ran with 27 errors and one failure; these results are not a passing canonical check.",
+  "priorVerificationScope": "Original resource-free logs and their input hashes remain historical; the rebased controller and current helper were tested separately.",
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "requiredFreshRowsUnexecuted": 16,
+  "workflowDispatches": 0,
+  "servicesStarted": false
+}

@@ -100,6 +100,7 @@ src/Hexalith.Platform.Composition/PlatformAppModel.cs whitespace=blank-at-eol,bl
 src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformEventStorePackageCatalogReaderTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformSdk42CurrentOwnerMemoriesTransportTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
@@ -119,3 +120,7 @@ tests/Hexalith.Platform.Composition.Tests/Fixtures/pre-extension-*.json -text
 
 # Retain the original preparation logs verbatim, including captured diagnostic whitespace.
 _bmad-output/implementation-artifacts/evidence/3-2/package-preparation-20261109/logs/** -text -whitespace
+
+# Preserve Story 2.10 evidence hashes and verbatim test-emitted whitespace.
+_bmad-output/implementation-artifacts/evidence/2-10/**/*.json -text
+_bmad-output/implementation-artifacts/evidence/2-10/**/*.txt -text -whitespace

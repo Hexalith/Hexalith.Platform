@@ -1,0 +1,115 @@
+{
+  "schema": "hexalith.story-2-10.resource-free-verification.v1",
+  "recordedAtUtc": "2026-11-09T14:36:25.178901+00:00",
+  "sourceRevisions": {
+    "platform": "13b4f99c75978ffdf6bf9de515729aa8e7ed4055",
+    "parties": "6f8cd78d0a4c41764c0ed843b0f889ba3d5c070d",
+    "builds": "27145e52ffab5623198ba5efdab5cdb71aa42d28"
+  },
+  "checks": [
+    {
+      "command": "npm run test:source-release",
+      "cwd": ".",
+      "exitCode": 0,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "output": "platform-source-release.txt",
+      "outputSha256": "54050034abb1bb578a0f87c629a340851ff62de5120d13ddc3fa7d00d3dda806"
+    },
+    {
+      "command": "python3 -B eng/test_legacy_tuple_source.py",
+      "cwd": ".",
+      "exitCode": 0,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "output": "platform-legacy-source.txt",
+      "outputSha256": "4dba1c804e3f37d468b8de2eff69d3b6c6a6f2a3559c7f18b15a96cc4b3b2b06"
+    },
+    {
+      "command": "python3 -B _bmad-output/implementation-artifacts/evidence/2-10/resource-free-20261109/run_parties_controls.py",
+      "cwd": ".",
+      "exitCode": 0,
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "output": "parties-controls.txt",
+      "classification": "fixture-assisted; not canonical owner checks or hosted qualification",
+      "outputSha256": "671aea9390a47ac17dda1cd0ebf47afbd3c80ec30e67cf45de080cc2c5035a5c"
+    },
+    {
+      "command": "python3 -B -m unittest discover -s tests/ci-lifecycle -v",
+      "cwd": "references/Hexalith.Parties",
+      "exitCode": 1,
+      "passed": 4,
+      "importErrors": 6,
+      "output": "parties-canonical-discovery.txt",
+      "limitation": "Nested Builds dependency is uninitialized; preserved without initialization or source fallback",
+      "outputSha256": "1cfecc7fd4237d00765da62c7e4f9d5e1639ef4268590d14fa3b8fb93c3c6c3a"
+    },
+    {
+      "command": "actionlint .github/workflows/tuple-ci.yml",
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "command": "actionlint .github/workflows/ci-lifecycle-qualification.yml",
+      "cwd": "references/Hexalith.Parties",
+      "exitCode": 0
+    },
+    {
+      "command": "git -c core.commitGraph=false diff --check",
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "command": "git -c core.commitGraph=false diff --check",
+      "cwd": "references/Hexalith.Parties",
+      "exitCode": 0
+    }
+  ],
+  "inventoryReferencesVerified": 32,
+  "originalManifestMismatches": 0,
+  "requiredFreshRowsUnexecuted": 16,
+  "inventorySha256": "83e1581287b062b7117079e03959148e6d61437733cf79ea11b75d4d594b1124",
+  "preparedInputSha256": {
+    ".github/workflows/tuple-ci.yml": "8d755ca69e29c5feb86b105b5a4c12086a8a7eeacb5069c07f4e741b10b68691",
+    "eng/source-release/gate.mjs": "cd56e06374de2290cd03e8f7112d542f110ab5c1618830cbba845031ec1c074e",
+    "eng/test_legacy_tuple_source.py": "9c78d33cdb693f6728ae0efb7156f72a5028e315b61accdab31fbda5a82639a7",
+    "tests/source-release/source-release.test.mjs": "8cedf8e997cb79fdcdf584417ad2ee581ad6518a6c1726dae585387e47538790",
+    "tests/source-release/tuple-workflow.test.mjs": "12306074bc0d8d69f2fd94df3ff2a89767b1068ca21a33933064d4d12a36b762",
+    "references/Hexalith.Parties/scripts/qualify-disposable-ci.py": "af9d7cf7c8fce68b135c71317a4f3ec62d0c059e027c44b3f509cab9d6a1b5a6",
+    "references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml": "b1b60d1dc49fc29d4164fb35fa22dd476c43b448989e60eee4f8140f070a8278",
+    "references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py": "6ca6f5374354dbaf90df9ae12ff42ca6fcebf570bb13293c4bd852ee45c9a4d0",
+    "references/Hexalith.Parties/tests/ci-lifecycle/test_workflow_boundaries.py": "ae3acffd76ffeae0a5532002ffee26f4db6a5975ed67c2fbea9bf9e4c65ac691"
+  },
+  "classification": "resource-free preparation; working changes are not a final committed campaign input set",
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "servicesStarted": false,
+  "remoteOperations": false,
+  "setupCacheReuse": "deferred; no measured savings claimed",
+  "unexecutedOwnerChecks": [
+    "Actual Builds stdin process-acknowledgement regression tests"
+  ],
+  "intermediateOutputs": [
+    {
+      "output": "parties-focused.txt",
+      "passed": 7,
+      "classification": "Intermediate prepared input set; four input hashes predate the final files. Final current-byte coverage is in parties-controls.txt."
+    }
+  ],
+  "parentAudit": {
+    "historicalReferencesVerified": 32,
+    "referencedHashOrSizeMismatches": 0,
+    "preparedInputHashMismatches": 0,
+    "finalPartiesFixtureInputsVerified": 35,
+    "requiredFreshRowsUnexecuted": 16,
+    "boundedDiagnosticsTaskComplete": false,
+    "reviewStepReached": false
+  },
+  "budgetsChanged": false,
+  "testsBeforeChanges": "New focused campaign, missing-cache and Platform graph controls were observed failing before their respective implementation.",
+  "initialFixtureAttempt": "Import-only injection passed focused controls but could not propagate into existing process controls; replaced with an isolated copied test tree, with no canonical source changes."
+}

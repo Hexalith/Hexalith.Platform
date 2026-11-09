@@ -42,10 +42,10 @@ function fixture(trigger = 0) {
   return { state, inputs: { event, eventName: 'workflow_run', ownerRepository: repository, checkout: source, source, workflowRef: `${repository}/.github/workflows/source-release.yml@refs/heads/main`, workflowSha: source, job: 'verify', api } };
 }
 
-test('either final callback requires both latest successful main lanes and exact three/six jobs', async () => {
+test('either final callback requires both latest successful main lanes and exact five/six jobs', async () => {
   for (const trigger of [0, 1]) {
     const { inputs } = fixture(trigger); const result = await qualify(inputs);
-    assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [3, 6]);
+    assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [5, 6]);
     assert.deepEqual([result.nativeAcceptance, result.candidateAcceptance, result.storyAcceptance], [false, false, false]);
     assert.ok(Buffer.byteLength(JSON.stringify(result)) < 16384);
   }
@@ -80,6 +80,17 @@ test('required job failure/cancellation/skip, missing/unknown and duplicate name
   const a = fixture(); a.state.jobs[1].pop(); await assert.rejects(qualify(a.inputs), /missing-or-extra-jobs/);
   const b = fixture(); b.state.jobs[1][0].name = 'unknown'; await assert.rejects(qualify(b.inputs), /wrong-required-jobs/);
   const c = fixture(); c.state.jobs[1][0].name = c.state.jobs[1][1].name; await assert.rejects(qualify(c.inputs), /wrong-required-jobs/);
+});
+test('source release requires source resolution, all three execution lanes and aggregate verdict', async () => {
+  assert.deepEqual(workflows[0].jobs, ['resolve-sources', 'tuple', 'Same changed source against the legacy public tuple', 'Same changed source against the pre-extension public tuple', 'tuple-verdict']);
+  for (let index = 0; index < 5; index++) {
+    for (const conclusion of ['failure', 'cancelled', 'skipped']) {
+      const f = fixture(); f.state.jobs[0][index].conclusion = conclusion;
+      await assert.rejects(qualify(f.inputs), /unsuccessful-required-job/);
+    }
+    const f = fixture(); f.state.jobs[0].splice(index, 1);
+    await assert.rejects(qualify(f.inputs), /missing-or-extra-jobs/);
+  }
 });
 test('wrong event/repository/branch/SHA/checkout/unknown workflow and incomplete API discovery refuse', async () => {
   for (const change of [

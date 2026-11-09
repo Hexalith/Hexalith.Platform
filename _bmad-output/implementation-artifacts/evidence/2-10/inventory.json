@@ -1,0 +1,1205 @@
+{
+  "schema": "hexalith.story-2-10.lifecycle-inventory.v1",
+  "recordedAtUtc": "2026-11-09T14:33:59.460844+00:00",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "purpose": "One-time finite reconciliation of original lifecycle evidence and open fresh qualification requirements.",
+  "historicalInventory": [
+    {
+      "runId": "42400061797",
+      "attempt": 1,
+      "status": "failed",
+      "reason": "HXR016: missing Aspire runtime cache; no verified allocation",
+      "subject": {
+        "sourceRevision": "a1da73f5018bf6aa87c07c9bd899aa191c18b948",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "cf290cd6a94b5f7a0c240122335c1046fae5711f20667b3d129b94ab7b52aabe",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "0d09e25443b65f15549ca0841c8f40db12d1387bcc6f7e99c12f96ab2cc9eaf3",
+          "scripts/qualify-disposable-ci.py": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.12",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "b4703ec2247321f867f14cd9caca43fa00190feb",
+          "references/Hexalith.Platform": "52bc7986170f268afaef6227d0519a1d662af256"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-first-manual-matrix-missing-aspire-cache-primary-audit-20261107.json",
+        "sha256": "0835dd72a226aa8322fc1679b4c7c2a918195ffe3ff50adbee172b2d5a55755c",
+        "bytes": 8953
+      },
+      "qualificationCreditForStory210": false
+    },
+    {
+      "runId": "42408333976",
+      "attempt": 1,
+      "status": "failed",
+      "reason": "metadata-lock/reader-directory cleanup failures; partial startup unexecuted",
+      "subject": {
+        "sourceRevision": "9948b5d5621bf8d6a2ffd1397d5937ae4572b760",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "cf290cd6a94b5f7a0c240122335c1046fae5711f20667b3d129b94ab7b52aabe",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "552bd242f2519538c39f77dc6569361e578dbbec6eecc8302a59f83cddea423c",
+          "scripts/qualify-disposable-ci.py": "f17d9723a9f411b21a14c0fd9b2102370ba36fc3443f768b72db0da0ec454fc4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.12",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "b4703ec2247321f867f14cd9caca43fa00190feb",
+          "references/Hexalith.Platform": "52bc7986170f268afaef6227d0519a1d662af256"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-second-manual-matrix-first-cleanup-lock-and-reader-directory-failure-audit-20261107.json",
+        "sha256": "db537c4264c12f989369fc1b18643acd49b9659fabdcf8bf2ba6e2e3dc51ab65",
+        "bytes": 7373
+      },
+      "qualificationCreditForStory210": false
+    },
+    {
+      "runId": "42418257508",
+      "attempt": 1,
+      "status": "failed",
+      "reason": "exact cleanup retry/process acknowledgement failure; partial startup unexecuted",
+      "subject": {
+        "sourceRevision": "f0640604f85d7f3f59abad65beb649d55578f29c",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "cf290cd6a94b5f7a0c240122335c1046fae5711f20667b3d129b94ab7b52aabe",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "5bae124737277ae112ed21a7f0e656a9ae92632d76573dcb3c31bd0dce48a141",
+          "scripts/qualify-disposable-ci.py": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.12",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "b4703ec2247321f867f14cd9caca43fa00190feb",
+          "references/Hexalith.Platform": "52bc7986170f268afaef6227d0519a1d662af256"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/release-phase/remote-resumption-20261103/parent-parties-third-manual-matrix-first-stdin-stop-failure-audit-20261107.json",
+        "sha256": "80ba8ff247f6061762d3429ae582c104b080048dd939cf434698d6c7ead0ce36",
+        "bytes": 8450
+      },
+      "qualificationCreditForStory210": false
+    },
+    {
+      "runId": "42528046681",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "cancel-execution",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-execution-42528046681.json",
+        "sha256": "cce132ee4609f6042b23aa0aa323a70a8b9fff1490a35cda1691b990a971087a",
+        "bytes": 28629
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "133f13ff23768fb57c6b2537de115c9c5447b16d4c3e7f3b93cc15a73f35e226",
+          "scripts/qualify-disposable-ci.py": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "limitation": "Historical cancellation/cleanup observations retained. Withdrawal-before-stop ordering was later recorded unproven because the controller signalled the whole group."
+    },
+    {
+      "runId": "42524190110",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "cancel-startup",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-startup-42524190110.json",
+        "sha256": "8d45c978aa910cecb363153273edfbbda6e314df1af613489afb59beef749fa6",
+        "bytes": 16958
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "03de067657fff291ec5bd04fcafe455e0746db5fd255c331aa7c75f06594f792",
+          "scripts/qualify-disposable-ci.py": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      }
+    },
+    {
+      "runId": "42526256372",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "cancel-startup",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-cancel-startup-42526256372.json",
+        "sha256": "1c08c70eb5e647238e905d4b244c0c1e10fdd79390990f7da8ae7728f6d6df70",
+        "bytes": 20477
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "926c1c3fe08b628ea79fc60dae3eadc87d7aff51",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "133f13ff23768fb57c6b2537de115c9c5447b16d4c3e7f3b93cc15a73f35e226",
+          "scripts/qualify-disposable-ci.py": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "limitation": "Historical cancellation/cleanup observations retained. Withdrawal-before-stop ordering was later recorded unproven because the controller signalled the whole group."
+    },
+    {
+      "runId": "42521615234",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "matrix",
+      "workflowConclusion": "success",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/hosted-matrix-42521615234.json",
+        "sha256": "3d49eecdaff0f6497d6e2700488fc3a894735e4daa6412955bfc2a4900d469e7",
+        "bytes": 74076
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "566b9bfcaff14639003414ee1b5db3e27c7c956a",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "03de067657fff291ec5bd04fcafe455e0746db5fd255c331aa7c75f06594f792",
+          "scripts/qualify-disposable-ci.py": "7c1daf0f172b6ad77731cb9dc2de053d69df5f285a2012bc3223d30bf9b921e4",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      }
+    },
+    {
+      "runId": "42539638836",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "v2-cancellation",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/hosted-v2-cancellation-42539638836.json",
+        "sha256": "13273eb5ceb2b4ae1b83b44a594ffe0c93287276fbb691408e5baa2d42f18e3f",
+        "bytes": 5530
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "c864d9d5ee08e1ea2b8a23e6180d0ed67c40683c",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "6b8b8424033fb46ffea07745c57e0500e7521add4642063c30ff99aa317c217c",
+          "scripts/qualify-disposable-ci.py": "72073d8506ce69fa55832968f5d7d23e042d888dfdc74adf535fcf80dcddd9ec"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "a51f9876d7b204c63b92c370e067d2de1c3b2918",
+        "path": ".github/workflows/domain-ci-v2.yml",
+        "note": "The workflow-owned helper and digest data are checked out at job.workflow_sha; the job log names this exact commit."
+      }
+    },
+    {
+      "runId": "42542502127",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "v2-cancellation",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/hosted-v2-cancellation-42542502127.json",
+        "sha256": "172bde1e5cffe7ac1d46d71c5d3052067d6d60d27b10b4a90ddf0850eca17dd0",
+        "bytes": 4835
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "6cf9d795d110b27b2b48b8fab2c986590fdcc2f5",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "6b8b8424033fb46ffea07745c57e0500e7521add4642063c30ff99aa317c217c",
+          "scripts/qualify-disposable-ci.py": "72073d8506ce69fa55832968f5d7d23e042d888dfdc74adf535fcf80dcddd9ec"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "b411bafbcce5229e28a92ca54813e4c168bae312",
+        "path": ".github/workflows/domain-ci-v2.yml",
+        "workflowShaNamedInJobLog": true
+      }
+    },
+    {
+      "runId": "42583201444",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "l-cancel-execution",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42583201444.json",
+        "sha256": "e1d9d50af8e9dda9232b126486636ef220127137f24a938d3d47f042a915a2a9",
+        "bytes": 3209
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "a03936662457eff5e7f0556d1c9ad03e9c643faa",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "4a184a62238dc09e081e5e73d4201cae6d9ad10ffe00d016be107ad83b4f94bc",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4"
+      }
+    },
+    {
+      "runId": "42584756093",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "l-cancel-execution",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42584756093.json",
+        "sha256": "bea7a14d82b35faac7998dad27bc818541e33d33defa204ab671f04cfe7922a5",
+        "bytes": 4829
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "7f7aa172b3e79aefc4379a58ac0dddbb559ce6a7",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "97d9893ddd51a5702f16c093747ad7e9a045b4bdb93a221268c132f3d4e2a26f",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+        "overlaid": {
+          "Github/run-module-integration/run_module_integration.py": "047670c2c826a67c164dc6d779de563f75f4e0512a8ecd5526590557629c9a13",
+          "Props/dapr-toolchain-sha256.json": "1daa76804f7539ac9df0b311de71163b645dbccefd0b86f9ef29baf7c7882474"
+        }
+      }
+    },
+    {
+      "runId": "42587199919",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "l-cancel-execution",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42587199919.json",
+        "sha256": "94cb675fa29da816443bf388e7e5af41dee9fc664a82dcd3bb1b7672484ecfd2",
+        "bytes": 21305
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "b00e60a69ace273150c133665dd42488841eb7d5",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "a1beeecb372c08747e6840cd6a51248cd4c42feb80ea06461fc3eb203e3f87d5",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+        "namedInJobLog": true
+      },
+      "limitation": "Recorded controller ordering proof only, helper 3c809618. Native-test-host stop precedes admission-closing/withdrawal marks and remains a review caveat. Patched-Builds lifecycle rerun is open."
+    },
+    {
+      "runId": "42593229291",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "l-cancel-execution",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-l-cancel-execution-42593229291.json",
+        "sha256": "e64826c69379366ec3dc2133205d68ea47f85384bdf1b6974409973391509f70",
+        "bytes": 5080
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "535b3b626a67d3bf42c7e9951880c7f8478accdc",
+        "sourceResolution": "git-canonical",
+        "suite": "lifecycle-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "3ff233c9ea31d8ca13f39b7b7c6543106ca694ea0ab3da3be9b9f32e0c702d16",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "ca8f15a1f03fa1781ca6bdcbf5435e2ded4aa717aadd6c80f3e23f84aa3bf19d",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+          "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+        },
+        "declaredTool": {
+          "version": "4.45.1",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+        "tag": "v4.45.1"
+      }
+    },
+    {
+      "runId": "42582136922",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "v2-exec-cancel",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-exec-cancel-42582136922.json",
+        "sha256": "55def0e432b3be23259671b31e752bb3a6b8900928a33f6d7ab677c82e1c43ab",
+        "bytes": 1642
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "a9d812dace3e7e3be41a9f97ae46ad404bfe4061708b2bebf266086992300756",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4"
+      }
+    },
+    {
+      "runId": "42582794137",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "v2-exec-cancel",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-exec-cancel-42582794137.json",
+        "sha256": "bf2587bee01bb54aaffeb67fd81627f24df3f054116528fb44a5fc34f3e1249d",
+        "bytes": 1717
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "a9d812dace3e7e3be41a9f97ae46ad404bfe4061708b2bebf266086992300756",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4"
+      }
+    },
+    {
+      "runId": "42587081454",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "v2-exec-cancel",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-exec-cancel-42587081454.json",
+        "sha256": "b61625d2263a785b5eb07a8b583ab6bde8f6e0074b3d99a21afa56859c99855e",
+        "bytes": 6037
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "a58a2eb0ece2bd9b975b2b39a2f64e7b4a2115ef",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "a9d812dace3e7e3be41a9f97ae46ad404bfe4061708b2bebf266086992300756",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+        "namedInJobLog": true
+      }
+    },
+    {
+      "runId": "42593223538",
+      "attempt": 1,
+      "status": "failed",
+      "scenario": "v2-late-startup",
+      "workflowConclusion": "failure",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42593223538.json",
+        "sha256": "24be746850881b4a9f3b6982a6194087e0ac2ff30d3a5177ff1a8c69e98eb855",
+        "bytes": 10269
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "bae4f1b71cca818d227b24d5b2ffdea135c7ed5c",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "3ff233c9ea31d8ca13f39b7b7c6543106ca694ea0ab3da3be9b9f32e0c702d16",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.45.1",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "25de7a74d14d099faf7baea5da0cbb0b40264592",
+        "tag": "v4.45.1",
+        "path": ".github/workflows/domain-ci-v2.yml",
+        "namedInJobLog": true
+      }
+    },
+    {
+      "runId": "42596887673",
+      "attempt": 1,
+      "status": "incomplete",
+      "scenario": "v2-late-startup",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42596887673.json",
+        "sha256": "ff3186d2053ac4e95adf427211fd5c90400d17be0be9641a4095b06abc28b9c1",
+        "bytes": 8451
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "69b02d738fffb8d992fdd7e86be8b41069438472",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+        "path": ".github/workflows/domain-ci-v2.yml",
+        "namedInJobLog": true
+      }
+    },
+    {
+      "runId": "42598774773",
+      "attempt": 1,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "v2-late-startup",
+      "workflowConclusion": "cancelled",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "baseline-only",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/hosted-v2-late-startup-42598774773.json",
+        "sha256": "49b3ac7b344f0a43ab78d284c7ce06416ed5016c5ed5ea90bee07cb6509452f1",
+        "bytes": 20060
+      },
+      "qualificationCreditForStory210": false,
+      "subject": {
+        "sourceRevision": "42af924a0d6e234ee9614a2ba1507fa2853a1fa1",
+        "sourceResolution": "git-canonical",
+        "suite": "platform-package",
+        "configuration": "Release/package",
+        "inputSha256": {
+          ".config/dotnet-tools.json": "31630169343fea0ee840559251631149540e8c5b5e2d6fe42abdae325d5c7550",
+          "global.json": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+          "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+          ".github/workflows/ci-lifecycle-qualification.yml": "64af689edb16be8e394f8fb7299793870f3b3413391e9ae7e6cf9cbe3ea8760c",
+          "scripts/qualify-disposable-ci.py": "708ad0b9917f00364f5cd5e7e648fe3b8d1eee49b0327bd04314d8b978adf2f0"
+        },
+        "declaredTool": {
+          "version": "4.44.13",
+          "commands": [
+            "hexalith-module"
+          ],
+          "rollForward": false
+        },
+        "rootGitlinks": {
+          "references/Hexalith.Builds": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+          "references/Hexalith.Platform": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44"
+        },
+        "declaredSuiteCompletionIdentity": "Only original descriptor/result can populate; source hashes do not substitute"
+      },
+      "recordedExecutorSources": {
+        "repository": "Hexalith/Hexalith.Builds",
+        "commit": "bde7fd4f875ae147c0631b97c349ef9b73561ed4",
+        "path": ".github/workflows/domain-ci-v2.yml",
+        "namedInJobLog": true,
+        "release": "Called by full SHA. v4.45.1 (25de7a74) contains bde7fd4f with byte-identical helper and v2 workflow; bde7fd4f itself is untagged."
+      },
+      "limitation": "Amended v2 late-startup proof, unchanged tests/tool 4.44.13, reusable workflow bde7fd4f. No new tool acceptance."
+    },
+    {
+      "runId": "883ab6bb-5e7a-4801-a855-e48a5c389637",
+      "attempt": null,
+      "status": "passed-for-original-recorded-subject",
+      "scenario": "local source success/failure/execution-timeout/partial-startup; independent peer",
+      "composition": "Platform synthetic test-environment-provisioning fixture; not the Parties package composition",
+      "sourceRevisions": {
+        ".": "ab539bd7542070ca5cd8c420411ac6d8e47fd915",
+        "references/Hexalith.Builds": "e129a29e6c6e2f8a200581e09b861d75a9f3a7b8",
+        "references/Hexalith.EventStore": "36c78f3435d2d492a73f1b0707cf865c8735d740"
+      },
+      "suite": "PlatformLocalRunLifecycleTests",
+      "configuration": "Debug/source",
+      "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+      "decisionClassification": "local-diagnostic",
+      "evidence": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/runtime-audit.json",
+        "sha256": "73ac45c7d4511bd9d3f7b11798448ec07b2e245a769485a8bef2c99e705c27e1",
+        "bytes": 6296
+      },
+      "qualificationCreditForStory210": false
+    }
+  ],
+  "identityReferences": [
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/campaign-inventory.json",
+      "sha256": "9898fd34cf72357d219326167dcad451441af539a26abcdcf9f3eabd3de2ef43",
+      "bytes": 8525
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/campaign-input-change-1.json",
+      "sha256": "ba3695f710eb03fda7b644fc1de2ab3c77859fed900dc01142e0cf27e0d48297",
+      "bytes": 3228
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/diagnostic-retention.json",
+      "sha256": "22acc55fd4f679886d699e3b860400467c67f1ca5d336fa6269571b9649a9ffe",
+      "bytes": 7762
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/row-index.json",
+      "sha256": "8480a85f2bcce938e1f5520063e57d29cb5e2b529003b03209af849c160c01a0",
+      "bytes": 11378
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/revisions.json",
+      "sha256": "7de5eb266f049544c28c1390bc31e1cefc2135a635b7aa962445eaf6c605f8a9",
+      "bytes": 210
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/source-before-final.json",
+      "sha256": "cf9681c6470ab682c6ec4a245b42f9afa47aed1731720cbcba1f1223be9d1506",
+      "bytes": 42194
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/executed-assemblies-after.json",
+      "sha256": "1a63078a253bd33a70e52bb927f754acc8b463548980e966763e6ae57b7f2531",
+      "bytes": 718
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/schema-parity.json",
+      "sha256": "575c16a4b1ddb9928a01be3c1dd6706c3fcc5d5b83e79f19ad314667f76d3897",
+      "bytes": 472
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/evidence/2-5/live-requalification-20261028/retained-audit.json",
+      "sha256": "f61669f1faf283fb1017ab54c7b6cc98a99f03de2d52453037933606b47cc556",
+      "bytes": 6297
+    }
+  ],
+  "originalManifestChecks": [
+    {
+      "manifest": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/focused-hosted-proof-20261108/evidence-sha256.json",
+        "sha256": "1a9b98f75a0a6ea6d8641eeb232da032264f3fac2b1dc120746f84f7a237aba5",
+        "bytes": 1832
+      },
+      "matchedSelectedRecords": [
+        "hosted-cancel-execution-42528046681.json",
+        "hosted-cancel-startup-42524190110.json",
+        "hosted-cancel-startup-42526256372.json",
+        "hosted-matrix-42521615234.json"
+      ],
+      "mismatches": []
+    },
+    {
+      "manifest": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-1-20261109/evidence-sha256.json",
+        "sha256": "67e48ebb2ad090c9927b7689b93b06dc0dc26afd8499cb4c1b54f794396a3f90",
+        "bytes": 1316
+      },
+      "matchedSelectedRecords": [
+        "hosted-v2-cancellation-42539638836.json",
+        "hosted-v2-cancellation-42542502127.json"
+      ],
+      "mismatches": []
+    },
+    {
+      "manifest": {
+        "path": "_bmad-output/implementation-artifacts/evidence/2-8/review-loop-2-20261109/evidence-sha256.json",
+        "sha256": "772f30cdeb337de9694aa7d93afc7e58c13c52d5b8183a4a0586b44d91881799",
+        "bytes": 2203
+      },
+      "matchedSelectedRecords": [
+        "hosted-l-cancel-execution-42583201444.json",
+        "hosted-l-cancel-execution-42584756093.json",
+        "hosted-l-cancel-execution-42587199919.json",
+        "hosted-l-cancel-execution-42593229291.json",
+        "hosted-v2-exec-cancel-42582136922.json",
+        "hosted-v2-exec-cancel-42582794137.json",
+        "hosted-v2-exec-cancel-42587081454.json",
+        "hosted-v2-late-startup-42593223538.json",
+        "hosted-v2-late-startup-42596887673.json",
+        "hosted-v2-late-startup-42598774773.json"
+      ],
+      "mismatches": []
+    }
+  ],
+  "canonicalSnapshot": {
+    "platform": {
+      "sourceRevision": "13b4f99c75978ffdf6bf9de515729aa8e7ed4055",
+      "tree": "948390b076d8f305ac5ccbe02b954f3dfa41fe25",
+      "qualificationEligible": false,
+      "reason": "Canonical snapshot only. Working changes and unreconciled owner branches are not a final committed qualification input set."
+    },
+    "parties": {
+      "sourceRevision": "6f8cd78d0a4c41764c0ed843b0f889ba3d5c070d",
+      "tree": "71acf87ddcb436509ee7afceb7b48bdcad2f712b",
+      "qualificationEligible": false,
+      "reason": "Canonical snapshot only. Working changes and unreconciled owner branches are not a final committed qualification input set."
+    },
+    "builds": {
+      "sourceRevision": "27145e52ffab5623198ba5efdab5cdb71aa42d28",
+      "tree": "49c1aa225bc3812b5636e1e11807b6a0f06474de",
+      "qualificationEligible": false,
+      "reason": "Canonical snapshot only. Working changes and unreconciled owner branches are not a final committed qualification input set."
+    }
+  },
+  "freshQualification": {
+    "state": "open",
+    "trustedAcceptanceDecision": null,
+    "fixedCommittedInputSet": null,
+    "reuseAllowed": false,
+    "sourceRunIds": [],
+    "sourceDecisionIds": [],
+    "candidateAcceptance": false,
+    "toolAccepted": false,
+    "scenarioRows": [
+      {
+        "scenario": "success-and-failure",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "startup-timeout-and-partial-startup",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "cancellation-and-collision",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "owner-finish-before-attachment-end",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "owner-cancellation-before-attachment-end",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "attached-failure-and-hold-expiry",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "failure-followed-by-cancellation",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      },
+      {
+        "scenario": "metadata-locks-cleanup-retry-and-peer",
+        "local": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "ci": {
+          "status": "unexecuted",
+          "observations": null
+        },
+        "missingRequiredObservations": [
+          "actual startup duration",
+          "effective startup deadline, original origin and justified override",
+          "independent execution deadline and duration",
+          "immutable first terminal outcome, cause and time",
+          "attachment acceptance, original absolute expiry, end time/reason and work/access termination",
+          "classified bounded redacted diagnostics with content identities",
+          "exact owned resources, cleanup attempts, leftovers and independent peer preservation",
+          "declared/executed suite/configuration/required-test-set identities and reconciled nonempty counts",
+          "actual executing tool, package/image digests, policy, source/run/attempt/job and decision identities",
+          "separate setup/build/test/startup/cleanup/audit timing"
+        ],
+        "acceptanceCredit": false
+      }
+    ]
+  },
+  "limitations": [
+    "Read-only local inventory of retained receipts; no remote authenticity refresh or new hosted execution.",
+    "An unavailable observation is explicitly unavailable and cannot be replaced with a prior pass.",
+    "Package/image, suite/configuration and run-specific timing fields remain under each original content-bound receipt; missing values remain missing.",
+    "No local services, workflow dispatches, package publication, accepted pins or dependency updates performed."
+  ]
+}

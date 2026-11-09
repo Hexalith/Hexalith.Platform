@@ -1,0 +1,147 @@
+test_campaign_selection (unittest.loader._FailedTest.test_campaign_selection) ... ERROR
+test_cancellation_phase (unittest.loader._FailedTest.test_cancellation_phase) ... ERROR
+test_cleanup_matrix (unittest.loader._FailedTest.test_cleanup_matrix) ... ERROR
+test_launch_recovery (unittest.loader._FailedTest.test_launch_recovery) ... ERROR
+test_qualification_controller (unittest.loader._FailedTest.test_qualification_controller) ... ERROR
+test_startup_observer (unittest.loader._FailedTest.test_startup_observer) ... ERROR
+test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate (test_workflow_boundaries.WorkflowBoundaryTests.test_baseline_keeps_every_existing_isolated_project_consumer_and_native_gate) ... ok
+test_focused_selection_keeps_full_matrix_and_cancellation_protocol_distinct (test_workflow_boundaries.WorkflowBoundaryTests.test_focused_selection_keeps_full_matrix_and_cancellation_protocol_distinct) ... ok
+test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build (test_workflow_boundaries.WorkflowBoundaryTests.test_qualification_is_explicit_package_suite_excluded_from_ordinary_solution_build) ... ok
+test_reader_permissions_and_independent_finalizer_remain_explicit (test_workflow_boundaries.WorkflowBoundaryTests.test_reader_permissions_and_independent_finalizer_remain_explicit) ... ok
+
+======================================================================
+ERROR: test_campaign_selection (unittest.loader._FailedTest.test_campaign_selection)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_campaign_selection
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_campaign_selection.py", line 11, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 27, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_cancellation_phase (unittest.loader._FailedTest.test_cancellation_phase)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_cancellation_phase
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cancellation_phase.py", line 13, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 27, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_cleanup_matrix (unittest.loader._FailedTest.test_cleanup_matrix)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_cleanup_matrix
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_cleanup_matrix.py", line 15, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 27, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_launch_recovery (unittest.loader._FailedTest.test_launch_recovery)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_launch_recovery
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_launch_recovery.py", line 16, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 27, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_qualification_controller (unittest.loader._FailedTest.test_qualification_controller)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_qualification_controller
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_qualification_controller.py", line 16, in <module>
+    SPEC.loader.exec_module(Q)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/qualify-disposable-ci.py", line 27, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+======================================================================
+ERROR: test_startup_observer (unittest.loader._FailedTest.test_startup_observer)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_startup_observer
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/unittest/loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.14/unittest/loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/tests/ci-lifecycle/test_startup_observer.py", line 19, in <module>
+    SPEC.loader.exec_module(O)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/scripts/observe-current-owner-startup.py", line 23, in <module>
+    _spec.loader.exec_module(HELPER)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/administrator/projects/hexalith/platform/references/Hexalith.Parties/references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py'
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+FAILED (errors=6)

@@ -86,7 +86,7 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
         else
         {
             if (route.Execution?.TargetKind is not null and not "domain-service")
-                throw new InvalidDataException("The owner declaration has no supported installed transport binding.");
+                throw new InvalidDataException($"Owner {assembly.GetName().Name}, route {route.RouteId} has no supported installed transport binding (targetKind={route.Execution.TargetKind}, actorType={route.Execution.ActorType}).");
             method = methods[route.RouteId];
         }
         bindings.Add(new(route.RouteId, appId, method, route.ContractVersion, false, "*"));
