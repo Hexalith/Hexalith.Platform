@@ -3,6 +3,7 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Security.Cryptography;
 using System.Text.Json;
+using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
@@ -15,6 +16,10 @@ public sealed class PlatformSdk42PackageEntryTests
     {
         using PlatformPackageCatalogReaderFixture fixture = new(currentTest: true, sdk42: true);
         await fixture.MaterializeAsync().ConfigureAwait(true);
+        CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllBytes(Path.Combine(fixture.Plan.Workspace, "source-mapping", "catalog-versions.json")))!;
+        snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe("4.2.0");
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe("4.2.0");
         PlatformRoutingCatalog catalog = fixture.Generate();
         PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName);
         var servers = PlatformAppModel.Prepare(fixture.Options);
