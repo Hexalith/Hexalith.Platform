@@ -1,0 +1,71 @@
+{
+  "recordedUtc": "2026-11-09T16:51:43.772830+00:00",
+  "scope": "Reviewable preparation only. No Platform pin, validation-pair admission, replay descriptor, fixture pin or host admission is changed.",
+  "knownEventStore": {
+    "version": "4.2.0",
+    "source": "aa16227bd07f0564a3026d619a5abd973e02656f",
+    "measurementSha256": "c72f8c43de1f4b3eae5eb80f44ac7bacc78d5e3ac6ac8513c2df69baee7150f0",
+    "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+  },
+  "builds": {
+    "candidateSource": "32d2a0685663b5b47115b2c0972e4819c9a36b70",
+    "exactSourcePushCi": 42657538253,
+    "stillRequired": [
+      "Successful exact-current-source push CI",
+      "Normal protected publisher success",
+      "Actual stable version/tag/source and qualified official inventory",
+      "Official repository-signed Module.Cli archive and complete non-signature body proof",
+      "Measured Tooling/AppHost/seed bodies and actual named host snapshot view"
+    ]
+  },
+  "atomicCandidateFiles": [
+    "references/Hexalith.Builds",
+    "references/Hexalith.EventStore",
+    ".config/dotnet-tools.json",
+    "hexalith-platform.json",
+    "eng/builds-tuple.json",
+    "src/Hexalith.Platform.Composition/Declarations/provenance.json",
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs",
+    "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs",
+    "tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs",
+    "docs/current-tuple-preparation.md"
+  ],
+  "preFreezeActualControls": {
+    "sdk42Base": 97,
+    "sdk42ExtensionComponents": 9,
+    "mandatoryActualEntriesAndModels": 5,
+    "currentSourceExtensionAndCompanionRegression": 48
+  },
+  "historicalControls": {
+    "sdk41": 412,
+    "publicLegacy": 349
+  },
+  "exactSourceRequiredJobs": {
+    "tuple": [
+      "resolve-sources",
+      "tuple",
+      "Same changed source against the legacy public tuple",
+      "Same changed source against the pre-extension public tuple",
+      "tuple-verdict"
+    ],
+    "catalogSdks": [
+      "3.130.0",
+      "3.130.1",
+      "3.130.2",
+      "3.132.1",
+      "4.1.0",
+      "4.2.0"
+    ]
+  },
+  "freezeSequence": [
+    "Commit all finalized code/tests/helpers/workflows/docs and append-only local verification evidence in the measured candidate.",
+    "Create real L with the exact original349 profile/4.44.3 metadata/public702 provenance and retained cab EventStore gitlink. Keep code and Parties gitlink identical.",
+    "Create real N with exact4.45/SDK4.1/412 metadata and original provenance bytes; point its legacy descriptor atL.",
+    "Create real M with the actual measured new tuple/SDK4.2 provenance; point its legacy descriptor atL and pre-extension descriptor atN.",
+    "Run verifiers while actually checked out atL andN; retain reports outside the frozen trees. Preserve reachable committed replay refs.",
+    "Require hosted97+9 and412/349 lanes plus all6 catalog jobs at exactM before normal merge/main/source-release qualification."
+  ],
+  "stageOneFixtureAdmission": false,
+  "qualificationCredit": false
+}
