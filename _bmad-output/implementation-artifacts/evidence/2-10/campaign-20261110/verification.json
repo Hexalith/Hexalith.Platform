@@ -1,0 +1,75 @@
+{
+  "schema": "hexalith.story-2-10.qualification-continuation.v1",
+  "recordedAtUtc": "2026-11-10T02:29:46.240898+00:00",
+  "storyStatus": "in-progress",
+  "callerSource": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "buildsCatalogSource": "5ec1779040606be89306129a7d2b245258c9acd2",
+  "toolVersion": "4.47.0",
+  "toolArchiveSha256": "1eea9b282d1d247e1f6e9e2213c5969f7895df44105e6900c873b586c5c4f905",
+  "localControllerSha256": "af6f9fdf6585a59314d6a19686d8da0c6716f185512b1985501fab2b36c5eeee",
+  "resourceFreeControls": {
+    "passed": 33,
+    "failed": 0
+  },
+  "canonicalPartiesControls": {
+    "passed": 106,
+    "failed": 0
+  },
+  "buildsOwnerProject": {
+    "total": 2941,
+    "passed": 2939,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 2,
+    "evidence": "../owning-checks-20261110/verification.json"
+  },
+  "hostedMatrix": {
+    "workflowRunId": "42727219072",
+    "requiredCases": 4,
+    "completedCases": 4,
+    "passed": true,
+    "issuedOwnersVerifiedClean": 5
+  },
+  "realWorkflowCancellation": {
+    "startup": {
+      "workflowRunId": "42737966490",
+      "phaseProofVerified": true,
+      "issuedOwnersVerifiedClean": 1
+    },
+    "execution": {
+      "workflowRunId": "42740407192",
+      "phaseProofVerified": true,
+      "issuedOwnersVerifiedClean": 1
+    }
+  },
+  "requiredScenarioObservationCounts": {
+    "passed": 7,
+    "incomplete": 7,
+    "unexecuted": 2
+  },
+  "localObservationCounts": {
+    "passed": 4,
+    "incomplete": 4
+  },
+  "localOwnersAudited": 17,
+  "unrelatedContainersUnchanged": 10,
+  "limits": {
+    "candidateAcceptance": false,
+    "toolAccepted": false,
+    "acceptedPinsChanged": false,
+    "allRequiredProofComplete": false,
+    "fullNewestLocalControllerCampaignPassed": false,
+    "crossDecisionEvidenceReuse": false,
+    "productionDeadlinesChanged": false,
+    "setupSavingsClaimed": false,
+    "verifiedCiSetupCacheOptimizationComplete": false
+  },
+  "gateResult": "incomplete; do not advance Step 03 or enroll an accepted tool",
+  "remainingProof": [
+    "supervised-attached-suite-and-per-attachment-access-ownership",
+    "actual-interrupted-startup-duration",
+    "complete-executing-tool-and-termination-bindings",
+    "genuine-collision-scenario",
+    "final-compatible-Platform-source-cut-and-complete-fixed-set-qualification"
+  ]
+}

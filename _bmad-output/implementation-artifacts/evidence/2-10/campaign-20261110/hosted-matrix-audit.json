@@ -1,0 +1,687 @@
+{
+  "schema": "hexalith.story-2-10.hosted-matrix-audit.v1",
+  "recordedAtUtc": "2026-11-10T00:57:34.833836+00:00",
+  "workflowRunId": "42727219072",
+  "workflowAttempt": 1,
+  "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "mappingHash": "b90d8e739219e8b63c723932c739c793f3c251fe871b0c3956dcd0562880a102",
+  "executionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42727219072"
+  },
+  "campaign": {
+    "candidateAcceptance": false,
+    "completedCases": [
+      "passing",
+      "failing",
+      "retry-with-peer",
+      "partial-startup"
+    ],
+    "fullMatrixPassed": true,
+    "fullRequiredCount": 4,
+    "requiredCases": [
+      "passing",
+      "failing",
+      "retry-with-peer",
+      "partial-startup"
+    ],
+    "selectedCases": [
+      "passing",
+      "failing",
+      "retry-with-peer",
+      "partial-startup"
+    ],
+    "selectedRequiredCount": 4,
+    "selection": "matrix",
+    "status": "selected-passed"
+  },
+  "allIssuedOwnersClean": true,
+  "issuedOwnerCount": 5,
+  "exactLockRefusals": [
+    "HXR037",
+    "HXR023"
+  ],
+  "activePeerPreserved": true,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "owners": [
+    {
+      "label": "passing",
+      "run": {
+        "attemptId": "10b1da90c84ae619169eb98e3457252e",
+        "attemptSequence": 1,
+        "environmentId": "521254e9ee39f5037269d51ea31014a6",
+        "ownerRunId": "1137be771e967dbc33c32d6bdc56e9b7",
+        "role": "owner",
+        "runId": "1137be771e967dbc33c32d6bdc56e9b7"
+      },
+      "resultSha256": "a0c2e244cb96336b3a1732dcaa3111219dd81ddb2d9a977297c94214149d2b1d",
+      "terminal": {
+        "cause": "tests-completed",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "passed",
+        "recordedAt": "2026-11-10T00:39:29.0889732Z"
+      },
+      "startup": {
+        "actualDurationSeconds": 186.3397658,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T00:45:48.0751997Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T00:35:48.0751997Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "execution": {
+        "actualDurationSeconds": 34.620025399999996,
+        "configurationContentIdentity": "sha256:23fb73745284f392135c157b0bad4803ed333f72ecb25a8c2a3bf4488148c69f",
+        "effectiveSeconds": 300,
+        "expiresAt": "2026-11-10T00:43:54.4458984Z",
+        "origin": "test-execution-started",
+        "originAt": "2026-11-10T00:38:54.4458984Z",
+        "state": "populated"
+      },
+      "catalog": {
+        "commit": "5ec1779040606be89306129a7d2b245258c9acd2",
+        "instanceId": "521254e9ee39f5037269d51ea31014a6-catalog"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "descriptorToolBindingState": "not-yet-populated",
+      "terminationBindingState": "not-yet-populated",
+      "retentionDisposition": "not-retained",
+      "cleanupDisposition": "complete",
+      "ownedLeftovers": [],
+      "attachments": {
+        "holds": [
+          {
+            "acceptedAt": "2026-11-10T00:39:19.1461814Z",
+            "attachedRunId": "4dc3bff0bd388014e055d287f1da7bd9",
+            "effectiveHoldSeconds": 240,
+            "end": {
+              "endedAt": "2026-11-10T00:39:29.2024809Z",
+              "reason": "ci-job-completed",
+              "state": "ended"
+            },
+            "environmentId": "521254e9ee39f5037269d51ea31014a6",
+            "expiresAt": "2026-11-10T00:43:19.1461814Z",
+            "originalAttachmentRequestId": "cdbdefbc54859e362c5dffe8393f76ba",
+            "ownerRunId": "1137be771e967dbc33c32d6bdc56e9b7",
+            "requestedHoldSeconds": 240
+          }
+        ],
+        "state": "populated"
+      }
+    },
+    {
+      "label": "failing",
+      "run": {
+        "attemptId": "1899cb0a06a512a46dfd8f01d24b6350",
+        "attemptSequence": 1,
+        "environmentId": "61da4aba0fce02df2c8971d505e4a18f",
+        "ownerRunId": "3103c7a9651411c7d9016bc137654aaf",
+        "role": "owner",
+        "runId": "3103c7a9651411c7d9016bc137654aaf"
+      },
+      "resultSha256": "c5db04f6a5e196b24ca1b198b06fe3d332b71065c0bc7bf394a1d12d00e61eb8",
+      "terminal": {
+        "cause": "test-failure",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "failed",
+        "recordedAt": "2026-11-10T00:42:41.1334469Z"
+      },
+      "startup": {
+        "actualDurationSeconds": 164.7571306,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T00:49:34.2249332Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T00:39:34.2249332Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "execution": {
+        "actualDurationSeconds": 22.1064852,
+        "configurationContentIdentity": "sha256:23fb73745284f392135c157b0bad4803ed333f72ecb25a8c2a3bf4488148c69f",
+        "effectiveSeconds": 300,
+        "expiresAt": "2026-11-10T00:47:19.0158709Z",
+        "origin": "test-execution-started",
+        "originAt": "2026-11-10T00:42:19.0158709Z",
+        "state": "populated"
+      },
+      "catalog": {
+        "commit": "5ec1779040606be89306129a7d2b245258c9acd2",
+        "instanceId": "61da4aba0fce02df2c8971d505e4a18f-catalog"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "descriptorToolBindingState": "not-yet-populated",
+      "terminationBindingState": "not-yet-populated",
+      "retentionDisposition": "not-retained",
+      "cleanupDisposition": "complete",
+      "ownedLeftovers": [],
+      "attachments": {
+        "holds": [
+          {
+            "acceptedAt": "2026-11-10T00:42:39.5226630Z",
+            "attachedRunId": "e51c5507ba5f800a22aa0f7f0bebb9bb",
+            "effectiveHoldSeconds": 240,
+            "end": {
+              "endedAt": "2026-11-10T00:42:41.3147950Z",
+              "reason": "ci-job-completed",
+              "state": "ended"
+            },
+            "environmentId": "61da4aba0fce02df2c8971d505e4a18f",
+            "expiresAt": "2026-11-10T00:46:39.5226630Z",
+            "originalAttachmentRequestId": "3a2ba426dbe82ac4861a00ac92ad4196",
+            "ownerRunId": "3103c7a9651411c7d9016bc137654aaf",
+            "requestedHoldSeconds": 240
+          }
+        ],
+        "state": "populated"
+      }
+    },
+    {
+      "label": "retry",
+      "run": {
+        "attemptId": "36e1dcf3123acc015f4635b5e1d962b6",
+        "attemptSequence": 1,
+        "environmentId": "88c75e2f34299cd656bfe0d372a32698",
+        "ownerRunId": "a0bb7b04fcfc21a828284438a4212a72",
+        "role": "owner",
+        "runId": "a0bb7b04fcfc21a828284438a4212a72"
+      },
+      "resultSha256": "8e32089adcaef3ff6d4a14b7d2b1f5d5cd4aac879613e1f064bd9b1d29c4f2e6",
+      "terminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-10T00:47:05.1726056Z"
+      },
+      "startup": {
+        "actualDurationSeconds": 230.0174369,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T00:52:46.2290243Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T00:42:46.2290243Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "execution": {
+        "actualDurationSeconds": 43.8575964,
+        "configurationContentIdentity": "sha256:23fb73745284f392135c157b0bad4803ed333f72ecb25a8c2a3bf4488148c69f",
+        "effectiveSeconds": 300,
+        "expiresAt": "2026-11-10T00:51:36.3166207Z",
+        "origin": "test-execution-started",
+        "originAt": "2026-11-10T00:46:36.3166207Z",
+        "state": "populated"
+      },
+      "catalog": {
+        "commit": "5ec1779040606be89306129a7d2b245258c9acd2",
+        "instanceId": "88c75e2f34299cd656bfe0d372a32698-catalog"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "descriptorToolBindingState": "not-yet-populated",
+      "terminationBindingState": "not-yet-populated",
+      "retentionDisposition": "not-retained",
+      "cleanupDisposition": "complete",
+      "ownedLeftovers": [],
+      "attachments": {
+        "holds": [
+          {
+            "acceptedAt": "2026-11-10T00:47:04.4863483Z",
+            "attachedRunId": "ea90f1d697c35e1bab58a18b870e8573",
+            "effectiveHoldSeconds": 240,
+            "end": {
+              "endedAt": "2026-11-10T00:47:11.2511650Z",
+              "reason": "ci-job-cancelled",
+              "state": "ended"
+            },
+            "environmentId": "88c75e2f34299cd656bfe0d372a32698",
+            "expiresAt": "2026-11-10T00:51:04.4863483Z",
+            "originalAttachmentRequestId": "eae83fc7c4b94cd69c4e943c25aa97ac",
+            "ownerRunId": "a0bb7b04fcfc21a828284438a4212a72",
+            "requestedHoldSeconds": 240
+          }
+        ],
+        "state": "populated"
+      }
+    },
+    {
+      "label": "peer",
+      "run": {
+        "attemptId": "17b20b9267498d28763fe7f1320b17f9",
+        "attemptSequence": 1,
+        "environmentId": "92f85f24a22a27b7ef06c455bb32ace2",
+        "ownerRunId": "6fe6179e12777153e190b77e50a69b4e",
+        "role": "owner",
+        "runId": "6fe6179e12777153e190b77e50a69b4e"
+      },
+      "resultSha256": "bb8fe2eab6a430714d7988db9ffa9d185ea90960671927d0a7a20a45e802911c",
+      "terminal": {
+        "cause": "tests-completed",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "passed",
+        "recordedAt": "2026-11-10T00:47:30.4749105Z"
+      },
+      "startup": {
+        "actualDurationSeconds": 228.3358315,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T00:52:47.9271102Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T00:42:47.9271102Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "execution": {
+        "actualDurationSeconds": 54.116062400000004,
+        "configurationContentIdentity": "sha256:23fb73745284f392135c157b0bad4803ed333f72ecb25a8c2a3bf4488148c69f",
+        "effectiveSeconds": 300,
+        "expiresAt": "2026-11-10T00:51:36.3339782Z",
+        "origin": "test-execution-started",
+        "originAt": "2026-11-10T00:46:36.3339782Z",
+        "state": "populated"
+      },
+      "catalog": {
+        "commit": "5ec1779040606be89306129a7d2b245258c9acd2",
+        "instanceId": "92f85f24a22a27b7ef06c455bb32ace2-catalog"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "descriptorToolBindingState": "not-yet-populated",
+      "terminationBindingState": "not-yet-populated",
+      "retentionDisposition": "not-retained",
+      "cleanupDisposition": "complete",
+      "ownedLeftovers": [],
+      "attachments": {
+        "holds": [],
+        "state": "populated"
+      }
+    },
+    {
+      "label": "partial",
+      "run": {
+        "attemptId": "96763eafcdd61c1fa74eab4530c2b750",
+        "attemptSequence": 1,
+        "environmentId": "28c059621ed91e9f3c014ec83c2f4857",
+        "ownerRunId": "eae06bbc75d75d6a90ba9e2f174b80c3",
+        "role": "owner",
+        "runId": "eae06bbc75d75d6a90ba9e2f174b80c3"
+      },
+      "resultSha256": "85303b231fa2bd1902233c91a678bd91127f8be21db8904fac4a8e9bc93d2c00",
+      "terminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-10T00:49:27.8039121Z"
+      },
+      "startup": {
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T00:57:34.9492532Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T00:47:34.9492532Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "execution": {
+        "state": "not-yet-populated"
+      },
+      "catalog": {
+        "state": "not-yet-populated"
+      },
+      "suite": {
+        "completion": {
+          "state": "not-yet-populated"
+        },
+        "declared": {
+          "state": "not-yet-populated"
+        }
+      },
+      "descriptorToolBindingState": "not-yet-populated",
+      "terminationBindingState": "not-yet-populated",
+      "retentionDisposition": "not-retained",
+      "cleanupDisposition": "complete",
+      "ownedLeftovers": [],
+      "attachments": {
+        "holds": [],
+        "state": "populated"
+      },
+      "requiredMissingProof": [
+        "actual-startup-duration",
+        "complete-timeout-scenario"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "ownerRunId": "1137be771e967dbc33c32d6bdc56e9b7",
+      "images": [
+        {
+          "containerId": "de1966fda2f7c195c0a7362a3eb80a62e94961a9992562a23dce1493bacf9d8f",
+          "imageContentId": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "a0df16f9f84f2d79c792f695f5c1e4eefbb308ab7819bb6eda6f1cf8c628812c",
+          "imageContentId": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "2ed249bf19ba87bc0bc4d4e6ea23e856872657ed1580f844307b75530ecff1d6",
+          "imageContentId": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "6747836f8f65eec4ed3f53961102475f716ca4ab98b2e1547bcf2d64c7dc13c1",
+          "imageContentId": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "73321b02b54950a1eb4d7d346ba1116eae5e36d245e8342ffec8e5182daaed8b",
+          "imageContentId": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "a0e005a3fab6dd6b40fbe3901f18f9a61f733adccc02851096d9e1cd9f9f7ff6",
+          "imageContentId": "sha256:1e75c46441255d45474ef08f3c8ea65599419bbed937f323735f60441ef3fbe7",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "9ad8610f195412e0a8c52f43d3bd28fe73ccb0cea0f3a495379043f68809aa5e",
+          "imageContentId": "sha256:1f0fe4b3816cbc0469d693248af01c48191d93eb5f5f4c34999c5c8ec3ceb20c",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "7debb89011231d04d4d46c8e6502be82b07632eaebd193fa623aab341c7c2805",
+          "imageContentId": "sha256:9eafe528d67a445c16ad8981d357ecd9e6f5aa4022992dd94b1de1b08d662559",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "acc5a4d182927c7bd588bf3c07e071e1527e185b4b0743763a4aa3cd464e40dc",
+          "imageContentId": "sha256:5208d4f483b84ac8ec5a83937ecd4678e24b4589634e54ccc5212b7c8fc1762d",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "a0253b1dc2fc8c30eec294fd053ee84fc62e72845970748cd864619b51811bed",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "41f75c55506af31154b85b595582715f8fb346c6951108b479066f3c92496b67",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "0d6e175fcb31c931345f1b0478a49fcabe5261ea4520be796777304fc33ba775",
+          "imageContentId": "sha256:7bd116a0a87ad393afc7954826b8b548f2e27138f9cdad98d1d91c434ca7827f",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "dc7c4b93613e693b83da44d1f65c01eef638ae3e0d25547df333bd2ad27d22ca",
+          "imageContentId": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        }
+      ]
+    },
+    {
+      "ownerRunId": "3103c7a9651411c7d9016bc137654aaf",
+      "images": [
+        {
+          "containerId": "47d5dd550c9a803d25f37e55ecdfff5011325e453b4d9f35558b1e85462c58b6",
+          "imageContentId": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "1ac4b731675cdd25fd0d5c225b232062eb245175c1b568d271f332066d291472",
+          "imageContentId": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "99a5182182af9ac439cd33a97ffe8c90fa457a4ac52399e8a699c9f3cb3b8e35",
+          "imageContentId": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "527fcbfff22f0b96097373d62061f9b1f80b1f77216fc01b26b65175b7baf3fa",
+          "imageContentId": "sha256:1f0fe4b3816cbc0469d693248af01c48191d93eb5f5f4c34999c5c8ec3ceb20c",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "d037dd7220ee924247319ecb5cd7b171b2f4ee932d8e63a921950424251aadcb",
+          "imageContentId": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "d865fdd329bbae93f2899c5c3534386acba646dc3a8b70a1c54a6790db4f798a",
+          "imageContentId": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "66156d99ae7d9cbbe7f266052206e191e5d83f6aa3bd0e8cbfd9a49bf8ab1d1d",
+          "imageContentId": "sha256:1e75c46441255d45474ef08f3c8ea65599419bbed937f323735f60441ef3fbe7",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "ad5c1b122727d7ec4bbf55aa59e7733355b2c59e2e9afc7bde8dda6483ba4013",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "12acb2abe6ff12ad2f9d1366e42316708bf8e8211765abe5233925554dcb39ce",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "66071e06199bb56918fe929e817103fdc04876fefd9e8baec4aa1377b91b7462",
+          "imageContentId": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "8099b011aee644eb4f7726844d121b42315b60ecb193f475b499a49678da8d63",
+          "imageContentId": "sha256:5208d4f483b84ac8ec5a83937ecd4678e24b4589634e54ccc5212b7c8fc1762d",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "ac968df96e455f7423e979569b0561cade40d598b7ba3e51ae295eb9f8de878d",
+          "imageContentId": "sha256:7bd116a0a87ad393afc7954826b8b548f2e27138f9cdad98d1d91c434ca7827f",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "2a5e34ec49da4d5fd06d619b91df678d03c93d29016f5105a32cfec69dda25a1",
+          "imageContentId": "sha256:9eafe528d67a445c16ad8981d357ecd9e6f5aa4022992dd94b1de1b08d662559",
+          "imageReference": "redis/redis-stack:latest"
+        }
+      ]
+    },
+    {
+      "ownerRunId": "a0bb7b04fcfc21a828284438a4212a72",
+      "images": [
+        {
+          "containerId": "74cc5202bc9779ac7eca5a5804e13d5c51e6ff395908e667516306faaf3ab3b3",
+          "imageContentId": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "817753de10b90319df81ca589f612d775a2ef289d0f76c05cc7605bf9dad119e",
+          "imageContentId": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "989cf0df025f2ef7f0094fe00e9a046fc77f75e562b609c44fcfd9579296ad69",
+          "imageContentId": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "e9c0e1c265faede1505ceb08d15ef59b9c202b1e502f106d434851474bcc167d",
+          "imageContentId": "sha256:1f0fe4b3816cbc0469d693248af01c48191d93eb5f5f4c34999c5c8ec3ceb20c",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "64fa81b4ec732f35cca669bee19aca66763292b5855c5dd207811d7c3891a751",
+          "imageContentId": "sha256:1e75c46441255d45474ef08f3c8ea65599419bbed937f323735f60441ef3fbe7",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "a7da440d8db61d222b480dd9e18e0715460da07f8d7688133af6646143e63201",
+          "imageContentId": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "441f3b55fd089744c6626b2566edb7ebffc8396333ae34b050b195644cff46a3",
+          "imageContentId": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "fdfb0f40f3872c6f7569d9e5952f9c3c2cfddfc6b9622faaa05c2daf0a0f03e0",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "af6ebe623d7fcd185f052c5ff7e0c8d1c00efc35d57c39f71b0a0ed302241220",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "cf9bbbfe5cf301d52966cd0d6859bbd9e5d60b75f105000dcb426391d984e4d2",
+          "imageContentId": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "895558a64b81ae6252ff3818adf767698079db410a8b6a31ebcaf77780449ee8",
+          "imageContentId": "sha256:7bd116a0a87ad393afc7954826b8b548f2e27138f9cdad98d1d91c434ca7827f",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "2b7b5512a50cf4667bcb89b9072b617d4cf7367a0b8d6721f54f885cea79e2f8",
+          "imageContentId": "sha256:5208d4f483b84ac8ec5a83937ecd4678e24b4589634e54ccc5212b7c8fc1762d",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "cfd393a76b53a755111ab788c7a2a73d8f1db09543c2a41a4043afe275739778",
+          "imageContentId": "sha256:9eafe528d67a445c16ad8981d357ecd9e6f5aa4022992dd94b1de1b08d662559",
+          "imageReference": "redis/redis-stack:latest"
+        }
+      ]
+    },
+    {
+      "ownerRunId": "6fe6179e12777153e190b77e50a69b4e",
+      "images": [
+        {
+          "containerId": "c606915c65d2ec1262fe2769776cbee04e36e2f8cd9a670318d1e942a4c06df5",
+          "imageContentId": "sha256:75f4716c62b5aeefb70e2041fc23ad5130c3b45100013979f8130dafaad3c970",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "961014e45812e9a3216f509ed8869ec6fbdd8bdfc8f0a7f0f5bb9fe55e5aa35b",
+          "imageContentId": "sha256:42ceca39452096c4f8a978df49790a2892152f683c624146f64ef789ea1c6dcd",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "6663acf189d3fb4fd4597aa4e8ea15e515013ad76e70ed03018706bf686a1b0d",
+          "imageContentId": "sha256:dcd4f805785eaf35e4b422e9361487330e30ee1cb870b0efc3ee09988f5250bf",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "58de4f8e8397600d3f36ce4456c5c828a03b72954bd544b81378bb441ddaf9fd",
+          "imageContentId": "sha256:1e75c46441255d45474ef08f3c8ea65599419bbed937f323735f60441ef3fbe7",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "151a2439212d31c9ac470081966548537f2806ae9d0ada3c9c366249e1995c00",
+          "imageContentId": "sha256:1f0fe4b3816cbc0469d693248af01c48191d93eb5f5f4c34999c5c8ec3ceb20c",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "46ed346dc8f8de26bd02c6e4c75fa74db75ac6b35622f99b9e8da493db4b7c8c",
+          "imageContentId": "sha256:de38da23e55c15843aa7a694d2bc92b11d6cab5c47b683dd240ec16e1298c708",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "2616b10acf7cc0443b9e687c749fa691bd1afe7a8908bfaa4eb0a74d4f9307c0",
+          "imageContentId": "sha256:f315215aa7146f8fcfe8730801737dcaab8980c53c078bd88f233836d62b6412",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "e43f505b493b7bcb595426226e01be5b2aebc12dc519ebcfe7b86f0670a52d9f",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "306c7a61eebe3f2e7e633acc9f063932de99344d6c10ba430dad9b20d11de715",
+          "imageContentId": "sha256:474c86a689c6e4d2858c4db16376367c3c93526943400e2ed5b13a19a0c4edda",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "92eb1df5387d45c480d92989174cb6df2d1f76e2ad30006612d7b96bb9d8158f",
+          "imageContentId": "sha256:5509c0097c6064aa8a3b1df58f1d950e67090fffa6678ae8f3f1dc2385f12deb",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "0e0bd78628461a1746712d118f72212123648591d14a5660b80ee4d5463f843a",
+          "imageContentId": "sha256:9eafe528d67a445c16ad8981d357ecd9e6f5aa4022992dd94b1de1b08d662559",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "d7c4a291dcd3e2b30d3d1856a1fd17f534b995de81fe53bfafc0f55136373413",
+          "imageContentId": "sha256:7bd116a0a87ad393afc7954826b8b548f2e27138f9cdad98d1d91c434ca7827f",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "77ba0b82275636e69c297052d6714caa0e44692407a597d7a54f1449760869ce",
+          "imageContentId": "sha256:5208d4f483b84ac8ec5a83937ecd4678e24b4589634e54ccc5212b7c8fc1762d",
+          "imageReference": "falkordb/falkordb:latest"
+        }
+      ]
+    }
+  ],
+  "scope": "Existing four-case full matrix; does not complete the eight-group local/CI qualification table."
+}

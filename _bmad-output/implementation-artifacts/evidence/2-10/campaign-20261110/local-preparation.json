@@ -1,0 +1,35 @@
+{
+  "schema": "hexalith.story-2-10.local-preparation.v1",
+  "command": [
+    "dotnet",
+    "/home/administrator/.nuget/packages/hexalith.builds.module.cli/4.47.0/tools/net10.0/any/Hexalith.Builds.Module.Cli.dll",
+    "prepare-build",
+    "--manifest",
+    "module/hexalith.module-manifest.v2.json",
+    "--mode",
+    "package",
+    "--workspace",
+    "/tmp/hexalith-story-2-10-20261110/prepared-local",
+    "--output",
+    "json"
+  ],
+  "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "durationSeconds": 0.819,
+  "exitCode": 0,
+  "stdoutSha256": "45c24762bc25d8c43047ead84c3f65ad10610f2c62fd8b9f18b9508ca3b26702",
+  "servicesStarted": false,
+  "candidateAcceptance": false,
+  "status": "prepared",
+  "diagnosticCodes": [],
+  "mappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+  "environmentKeys": [
+    "AfterMicrosoftNETSdkTargets",
+    "Configuration",
+    "CustomAfterDirectoryBuildTargets",
+    "CustomAfterMicrosoftCommonProps",
+    "CustomBeforeDirectoryBuildProps",
+    "CustomBeforeDirectoryBuildTargets",
+    "HEXALITH_SOURCE_MAPPING_HASH"
+  ],
+  "recordedAtUtc": "2026-11-10T00:32:47.843815+00:00"
+}

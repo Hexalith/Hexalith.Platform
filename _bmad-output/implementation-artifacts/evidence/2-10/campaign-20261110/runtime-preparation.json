@@ -1,0 +1,52 @@
+{
+  "schema": "hexalith.story-2-10.runtime-preparation.v1",
+  "recordedAtUtc": "2026-11-10T00:32:12.434833+00:00",
+  "catalogSha256": "957818ed7df1b29b2299644afb06987393f617c5b87ff8551b9b95b52a23034d",
+  "catalogCheckoutSha256": "e8ea866f6e361bbf7ec494787b753807cd74a5f7a6a953c137baa7b0720bf562",
+  "checkoutFormatting": "clean CRLF checkout; normalized bytes equal committed catalog",
+  "catalogSource": "5ec1779040606be89306129a7d2b245258c9acd2",
+  "daprHome": "/tmp/hexalith-story-2-10-20261110/dapr-1.19.1",
+  "cliVersion": "1.19.1",
+  "runtimeVersion": "1.19.1",
+  "binaries": [
+    {
+      "name": "dapr",
+      "repository": "dapr/cli",
+      "version": "1.19.1",
+      "archiveSha256": "6e9a339d261e430e5914909cc4443572573c197c174c3e14504c34116831de3b",
+      "binarySha256": "b651f5fcfe0b261ca6b26058dde31927efc8e17b12267d6743bdbeddca09bafd",
+      "reusedVerifiedArchive": false,
+      "durationSeconds": 2.083
+    },
+    {
+      "name": "daprd",
+      "repository": "dapr/dapr",
+      "version": "1.19.1",
+      "archiveSha256": "93217800d5072cf1735ed89ec8a9cdeedfb9d235895fb9e0d864088bc5d9466c",
+      "binarySha256": "b1ece5da76674bf6e15126aeb019fa58e444b5b8edf4d0ac59e32df895ae8fd2",
+      "reusedVerifiedArchive": false,
+      "durationSeconds": 2.016
+    },
+    {
+      "name": "placement",
+      "repository": "dapr/dapr",
+      "version": "1.19.1",
+      "archiveSha256": "2efbe23d12254f4822d61a17f58460a119c25d9e98740d8507a3a66e1c5aa0d5",
+      "binarySha256": "09dacec2acfdc6c41ab08e05032c619f6500199f8687b54bb54c22b1ce9734c4",
+      "reusedVerifiedArchive": false,
+      "durationSeconds": 0.608
+    },
+    {
+      "name": "scheduler",
+      "repository": "dapr/dapr",
+      "version": "1.19.1",
+      "archiveSha256": "9064b6a6f3c4ff44d9ae69d22a07eedc564b3d11ab2653e9d5945768fc19f3af",
+      "binarySha256": "f67e6948556e40ef6cf816296a24ad0608d22863d578987643d697ce3ff11944",
+      "reusedVerifiedArchive": false,
+      "durationSeconds": 0.692
+    }
+  ],
+  "servicesStarted": false,
+  "shellConfigurationChanged": false,
+  "qualificationCredit": false
+}

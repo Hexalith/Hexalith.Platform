@@ -44,7 +44,7 @@ The initial bmad-build implementation step permitted no pushes or remote operati
 
 - [x] Inventory the reference composition's existing lifecycle evidence once. Classify each row as passed for its original recorded subject, failed, incomplete or unexecuted. Record exact source, suite/configuration, package/image, policy and run identities. Do not reset completed implementation or hide earlier failures.
 - [ ] Close the complete local/reference scenario table below. Real local service execution remains subject to the existing restriction; resource-free checks may run locally, and service scenarios run in the authorized disposable hosted environment unless the user explicitly changes that restriction. An unexecuted required local row remains open.
-- [ ] Finish the broad manual `matrix` campaign, including both metadata-lock refusal stages, exact retry, peer preservation and partial startup. Use the genuine current tool and fixed verified caller inputs. The three failed historical runs remain failed: `42400061797`, `42408333976`, `42418257508`.
+- [x] Finish the broad manual `matrix` campaign, including both metadata-lock refusal stages, exact retry, peer preservation and partial startup. Use the genuine current tool and fixed verified caller inputs. The three failed historical runs remain failed: `42400061797`, `42408333976`, `42418257508`.
 - [x] Account for real startup/execution cancellation proofs from 2.8 under their own identities. A new acceptance decision or changed relevant input requires fresh qualifying evidence; historical diagnostic observations cannot supply a new candidate pass.
 - [ ] Record actual startup duration, effective deadline/override, immutable first outcome, attachment expiry/withdrawal, bounded redacted diagnostics and exact owned leftovers for every required scenario. Required missing/skipped cases do not pass.
 - [ ] Record the qualified tool version as Platform-accepted and pin it in Platform and Parties only after every applicable qualification gate passes. A published version or a completed document alone supplies no acceptance.
@@ -64,12 +64,43 @@ The initial bmad-build implementation step permitted no pushes or remote operati
 
 These are implementation tasks, not capabilities supplied by the planning correction. They do not block a valid qualification run when the existing implementation can complete it correctly.
 
-- [ ] In the owning Parties/Builds controller, add fixed safe failure codes/checkpoints and bounded redacted diagnostic fields. Cover the actual missing-cache, reader-directory and process-acknowledgement regressions with focused tests. Never publish arbitrary exception messages, raw startup output, descriptors or credentials.
+- [x] In the owning Parties/Builds controller, add fixed safe failure codes/checkpoints and bounded redacted diagnostic fields. Cover the actual missing-cache, reader-directory and process-acknowledgement regressions with focused tests. Never publish arbitrary exception messages, raw startup output, descriptors or credentials.
 - [x] Add an explicit focused CI qualification selection for 2.8 if the current full `matrix` controller is its only hosted entry point. Preserve the full matrix for this story. Report selected, required and completed cases; a focused pass must never appear as a full-matrix pass.
 - [ ] Where setup dominates, reuse verified downloads/package inputs keyed by exact relevant toolchain/catalog/package identities. Revalidate consumed content and restore fresh job-local state. Keep isolated tests before provisioning and all fresh acceptance runs required by policy v1. Sharing an old green baseline as a new decision's test result is excluded.
 - [x] In Platform CI, separate current/legacy source resolution from execution so independent lanes can run concurrently. Preserve the actual `tuple` and `legacy-public-cohort` required check contexts, all original tests, real legacy source identity and an overall failure when either lane fails or is missing. The five-SDK matrix is already parallel.
 
 Use a focused test first for each changed mechanism, then the owning repository's required checks. Run full qualification at the final fixed input set; rerun affected evidence when relevant inputs or the acceptance decision change. Retain separate actual workflow runs for cancellation and the ready-artifact-before-cancel protocol.
+
+### Current sequential handoff: local harness preparation
+
+The parent has dispatched the fresh hosted `matrix` as Parties workflow run
+`42727219072`, from committed source
+`c9eb1fe37373b2b25d3759a4ac8f33ac46754e17` on dedicated ref
+`qualify/story-2-10-20261110-c9eb1fe3`. It selects the genuine published tool
+`4.47.0` and exact Builds catalog/helper
+`5ec1779040606be89306129a7d2b245258c9acd2`. The independent fixed local Parties
+checkout is `/tmp/hexalith-story-2-10-20261110/parties` at that same revision,
+with only its direct Builds and Platform dependencies initialized at their
+recorded pins. No local lifecycle services have been started.
+
+Prepare `eng/lifecycle-qualification/local.py` and focused control tests as the
+next implementation unit, then return to the parent before running services or
+dispatching another workflow. The harness must use the actual published CLI,
+the committed Parties `lifecycle-package` fixture and real local context, with
+no fabricated GitHub metadata, fixture-only pass or source tool substitution.
+Use private run-local data/state, durable actual issued owner identities,
+bounded redacted result records, exact PID/birth/ownership checks for signals,
+the original finite startup deadline and exact-owned cleanup in every exit.
+Cover the scenario table wherever the published runner exposes the required
+capability. Record absent producers or attached-work/access enforcement as
+required incomplete proof; never infer them from a hold metadata transition.
+Keep real peer preservation, both metadata lock refusals and exact retry.
+Use the genuine existing private suite control for pass/fail/wait, preserving
+suite and configuration content identities. Focused resource-free tests should
+check consequential ownership, immutable timing and redaction boundaries.
+Do not start a second service campaign while the hosted one is active. The
+parent will prepare the pinned runtime, build the suite and run the live harness
+after this handoff. Earlier evidence and the original baseline remain immutable.
 
 ## Handoff and completion
 
@@ -177,3 +208,78 @@ remain open. Verified setup reuse remains deferred. No services, remote operatio
 workflow dispatch, commit, acceptance, pin or production-budget change was
 performed by this implementation. Status remains `in-progress`; Step 03 cannot
 advance on these results.
+
+## Authorized live continuation — 2026-11-10
+
+The [live campaign record](evidence/2-10/README.md#authorized-live-campaign--2026-11-10)
+records the user's explicit authorization and the actual new subjects. Canonical
+Parties discovery passes 106/106 after its exact nested Builds initialization.
+The isolated Builds owner project passes 2,939 tests, with zero failures/errors
+and two explicit conditional skips; those checks retain their exact source and
+binary identities and supply no published-tool runtime credit by themselves.
+
+The genuine signed 4.47.0 tool and catalog/helper
+`5ec1779040606be89306129a7d2b245258c9acd2` are exercised by committed Parties
+caller `c9eb1fe37373b2b25d3759a4ac8f33ac46754e17`. Fresh hosted matrix run
+`42727219072` passes its baseline, all four original matrix cases and exact
+finalization of five owners, including both lock refusals and peer preservation.
+The broad manual matrix task is complete for this recorded subject.
+
+The new [local controller](../../eng/lifecycle-qualification/local.py) has 33
+passing focused controls. The [local observation index](evidence/2-10/campaign-20261110/local-observation-index.json)
+records four passed and four incomplete scenario groups under their actual
+controller/source hashes. Earlier verifier failures remain separate; fresh
+affected probes verify public expiry projection and real peer preservation.
+No inspected owned container/workspace/active-state leftovers remain across
+17 local owners, and all ten unrelated containers retain identity/status.
+
+Qualification remains incomplete: supervised attached-suite execution and its
+work/access producers belong to the explicitly split follow-up; the fixed caller
+does not expose a genuine exclusive-resource collision selector, and interrupted
+startup lacks reported actual duration. Hosted result tool/termination bindings
+remain unavailable. Fresh GitHub startup cancellation `42737966490` and execution
+cancellation `42740407192` each passed its fresh baseline, published and verified
+its ready artifact, received one audited parent cancellation request and verified
+independent finalization plus exact retry. The first snapshot was actually
+`Starting`; the second had live native execution and an active hold, withdrawn as
+`ci-job-cancelled` before its unchanged expiry. These cancelled workflow results
+retain their own source/run/decision subjects and supply no passed integration
+or missing producer proof. No candidate or tool is accepted, no accepted pin changes,
+and no previous result is relabelled. Keep status `in-progress` and the remaining
+acceptance tasks open; these diagnostic subjects do not supply a final fixed-set
+qualification or a new decision's evidence.
+
+## Authorized canonical owning checks — 2026-11-10
+
+After the explicit user authorization above, only Parties' exact nested Builds
+dependency `5ec1779040606be89306129a7d2b245258c9acd2` was initialized, using local
+Git objects with no fetch or recursion. Canonical Parties discovery now passes
+106/106, including the linked-owner-directory control. No Parties source or pin
+change was needed; its earlier discovery failures remain recorded.
+
+The Builds model assertion reproduced its stale expectation of six servers while
+the selected declarations define seven. Its one-file correction compares exact
+resource names, app IDs and readiness endpoints with those declarations, retaining
+the existing gateway and real HTTP readiness checks. The earlier Docker discovery
+`TargetException`, reported after cancellation, did not reproduce normally; no
+speculative production change was made for it.
+
+The [fresh owning-check evidence](evidence/2-10/owning-checks-20261110/README.md)
+uses clean detached source `da4e896b164f35c0b830a32b975203bb922280f9` at
+`artifacts/story-2-10-builds-da4e896b`, isolating verification from concurrent
+external changes to main. The cache-only restore and Debug build passed without
+warnings/errors. Correction/Docker controls passed 2/2, and actual stdin
+regression classes passed 21/21, both without skips. The complete Module.Tests
+owner project finished in 531.984 seconds within its existing 1,800-second budget:
+2,941 total, 2,939 passed, zero failed/errors, two explicit conditional skips and
+zero not-run. The catalog SDK interception and Windows/macOS native inspection
+skip identities remain explicit and supply no qualification proof.
+
+The manifest binds exact mapped source, declaration, package/catalog and binary
+identities; every bound input remained unchanged through execution and the fixed
+source remained clean. Earlier failed, incomplete and moving-source attempts keep
+their original outcomes. This completes the bounded-diagnostics task and its
+owning checks. This worker ran no local lifecycle campaign or hosted workflow;
+all 16 fresh scenario rows, final compatible qualification input selection, full
+matrix/cancellation campaigns and accepted-tool enrollment/pins remain open.
+Status remains `in-progress` pending those gates.

@@ -1,0 +1,19 @@
+{
+  "schema": "hexalith.story-2-10.setup-attempts.v1",
+  "attempts": [
+    {
+      "checkpoint": "runtime-catalog-checkout-byte-guard",
+      "status": "refused",
+      "exitCode": 1,
+      "observedReason": "expected canonical Git catalog bytes; checkout uses clean CRLF line endings",
+      "archivesConsumed": false,
+      "servicesStarted": false
+    },
+    {
+      "checkpoint": "runtime-catalog-authentication",
+      "status": "passed",
+      "verification": "exact trusted committed blob hash plus clean checkout and normalized-byte equality",
+      "runtimeRecord": "runtime-preparation.json"
+    }
+  ]
+}

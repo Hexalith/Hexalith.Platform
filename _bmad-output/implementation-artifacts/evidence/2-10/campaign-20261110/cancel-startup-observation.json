@@ -1,0 +1,161 @@
+{
+  "schema": "hexalith.story-2-10.cancellation-observation.v1",
+  "recordedAtUtc": "2026-11-10T02:05:50.745832+00:00",
+  "phase": "startup",
+  "workflowRunId": "42737966490",
+  "workflowAttempt": 1,
+  "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "conclusion": "cancelled",
+  "artifactId": 13728363757,
+  "artifactDigest": "sha256:5bef313a5ea18ae64844fd193e993c67f8e2d51792d1de5ab4a33b285c3538ed",
+  "downloadSha256": "5bef313a5ea18ae64844fd193e993c67f8e2d51792d1de5ab4a33b285c3538ed",
+  "executionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42737966490"
+  },
+  "ownerRunId": "7787650750209b8ce5b9087c2cff980d",
+  "cancellationSignals": [
+    {
+      "observedAtUtc": "2026-11-10T02:04:30.332952+00:00",
+      "signal": 2
+    }
+  ],
+  "cancellationSnapshot": {
+    "attemptId": "46a18965f3a8b47ea253306daa4cb080",
+    "environmentId": "e0ffa14686d6b3c729ed506267b4d166",
+    "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42737966490"
+    },
+    "firstOutcome": null,
+    "nativeExecution": null,
+    "observedAtUtc": "2026-11-10T02:04:30.348384+00:00",
+    "readStartedAtUtc": "2026-11-10T02:04:30.346778+00:00",
+    "runId": "7787650750209b8ce5b9087c2cff980d",
+    "stateTestTerminal": null,
+    "stateUpdatedAtUtc": "2026-11-10T02:03:16.3121388+00:00",
+    "status": "Starting"
+  },
+  "terminalBeforeSignalForward": null,
+  "finalizers": [
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [],
+      "issuedOwners": 1,
+      "issuedOwnersCleanupVerified": true,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-10T02:04:33.588050+00:00"
+    }
+  ],
+  "results": [
+    {
+      "member": "cancel/test-result.json",
+      "sha256": "8633620ba3fd31d2934afbddedc658e470d1748745c63e2f21c16b5ea13d6563",
+      "run": {
+        "attemptId": "46a18965f3a8b47ea253306daa4cb080",
+        "attemptSequence": 1,
+        "environmentId": "e0ffa14686d6b3c729ed506267b4d166",
+        "ownerRunId": "7787650750209b8ce5b9087c2cff980d",
+        "role": "owner",
+        "runId": "7787650750209b8ce5b9087c2cff980d"
+      },
+      "startup": {
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T02:11:58.1950914Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T02:01:58.1950914Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "terminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-10T02:04:30.3953889Z"
+      },
+      "cleanup": {
+        "attemptId": "89318cfaef5525ba8d1e3f0d96181593",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "disposition": "complete",
+        "failures": [],
+        "leftoverResourceIds": [],
+        "observedAt": "2026-11-10T02:04:33.5107451Z",
+        "ownedResourceIds": [
+          "resource:eventstore",
+          "resource:dapr-placement-mtls",
+          "resource:dapr-scheduler-mtls",
+          "resource:eventstore-dapr-cli",
+          "resource:memories",
+          "resource:memories-access-telemetry",
+          "resource:memories-access-telemetry-clock",
+          "resource:memories-access-telemetry-clock-dapr-cli",
+          "resource:memories-access-telemetry-dapr-cli",
+          "resource:memories-dapr-cli",
+          "resource:memories-domain-service",
+          "resource:memories-domain-service-dapr-cli",
+          "resource:parties",
+          "resource:parties-dapr-cli",
+          "resource:tenants",
+          "resource:tenants-api",
+          "resource:tenants-api-dapr-cli",
+          "resource:tenants-dapr-cli"
+        ],
+        "state": "populated"
+      },
+      "termination": {
+        "state": "not-yet-populated"
+      }
+    }
+  ],
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "phaseProofVerified": true,
+  "actualCancellationTerminal": {
+    "phase": "startup",
+    "classification": "cancelled",
+    "ownerRunId": "7787650750209b8ce5b9087c2cff980d",
+    "firstOutcome": {
+      "ownerId": "7787650750209b8ce5b9087c2cff980d",
+      "runId": "7787650750209b8ce5b9087c2cff980d",
+      "sourceMappingHash": "b90d8e739219e8b63c723932c739c793f3c251fe871b0c3956dcd0562880a102",
+      "terminalAtUtc": "2026-11-10T02:04:30.3953889+00:00",
+      "terminalCause": "run-cancelled",
+      "terminalOutcome": {
+        "category": "Cancelled",
+        "exitCode": "Cancelled",
+        "phase": "Cleanup",
+        "ruleId": "HXC130"
+      },
+      "terminalStatus": "cancelled"
+    },
+    "candidateAcceptance": false,
+    "parentApiReceiptRequired": true
+  },
+  "parentApiReceipt": "cancel-startup-request.json",
+  "firstOutcomePreservedThroughFinalization": true,
+  "exactRetryVerified": true,
+  "qualificationComplete": false,
+  "requiredMissingProof": [
+    "reported-interrupted-startup-duration",
+    "populated-tool-and-termination-bindings"
+  ]
+}

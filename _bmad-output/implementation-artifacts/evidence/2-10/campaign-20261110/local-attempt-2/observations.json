@@ -1,0 +1,2304 @@
+{
+  "candidateAcceptance": false,
+  "completedCases": [
+    "success-failure",
+    "startup-timeout-partial",
+    "cancellation-collision",
+    "owner-finish-hold",
+    "owner-cancel-hold",
+    "failure-then-cancellation"
+  ],
+  "executionContext": {
+    "kind": "local"
+  },
+  "finalizationVerified": true,
+  "fullCampaignPassed": false,
+  "inputs": {
+    "builds": "5ec1779040606be89306129a7d2b245258c9acd2",
+    "caller": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+    "files": {
+      ".config/dotnet-tools.json": "09ec0514f75537154f1a588e5932f935f948d2b946f8b1f6ca68ffcb4c789631",
+      "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+    },
+    "sourceMapping": {
+      "ContentHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+      "Mode": "package",
+      "Root": "/tmp/hexalith-story-2-10-20261110/parties",
+      "documentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "importsSha256": {
+        "SourceMapping.before-targets.props": "0025861ade58877ba5b775ef7b2b11f268b912a53ea779ca4d2f0d6a1c0b3b68",
+        "SourceMapping.final.targets": "bc721291ba68a755846c9e42efb31888a788ae9cd1b06b6e8af30c810a393d38",
+        "SourceMapping.late.props": "baa667c08f9954fc32c33190de2561ff620c9516c701804ed9e6037bed86ce94",
+        "SourceMapping.props": "0363694f252736cdfd0bcf6a567bb077940df16cc966e410153718a552769e82",
+        "SourceMapping.targets": "366f57656492ff6d6717f8bba99b38c3f3d20ce5d59aa53be70ea0a87850b3c5"
+      }
+    },
+    "tool": {
+      "files": {
+        "DotnetToolSettings.xml": "54d3823e6b43ceb0528859096415c0cfe54e7d2ace67a34afb591527a28b3c02",
+        "Hexalith.Builds.Module.Cli.deps.json": "6c6c14854d45174966f02133f50ad5fd57dc95c994df03108336f818b916de22",
+        "Hexalith.Builds.Module.Cli.dll": "6e4b2dd0c5c74585e52b188cfe585089bb8f9167f289711f5b413c715c545939",
+        "Hexalith.Builds.Module.Cli.pdb": "265ef372ca3305b9c274443f2d9546e5f8ea846d8fc57d6d2c60142fb1438d68",
+        "Hexalith.Builds.Module.Cli.runtimeconfig.json": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+        "Hexalith.Builds.Module.Cli.xml": "4d3f8711ab932c22ab4cb09f9ecf8df8d253cde78d7214318f37acafa7ce30fb",
+        "Hexalith.Builds.Tooling.dll": "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01",
+        "Hexalith.Builds.Tooling.pdb": "e6ed1306b64cf7b0c54443b01224cfa00e91aeb1da069f42903c31c54bb6757d",
+        "Hexalith.Builds.Tooling.xml": "b1664b2bcdafc9732042bfa392bd60d04e5b2021c2d91016c84307dc1e4e911d",
+        "Humanizer.dll": "2769ed8265b691a5482c72506ed274dc52446fa1641997a8c12c66f5b9263d39",
+        "Json.More.dll": "80b6cd50331fa2ded4fbacdbf80dcedd2b142dee679df227c30299d2a3c3840f",
+        "JsonPointer.Net.dll": "e5b129abd47347643a903c37faa2e4aff919f7d31bd56ad5c20d1b90451be796",
+        "JsonSchema.Net.dll": "9aad41d8d1bb4df0f97d9870f37856afe22d5e884f86453ab3995f00893dd1b7",
+        "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "7d07e2588a256ae5983af6a2e64eac603cb81d8f224dbea5e65eda8d67258175",
+        "Microsoft.Extensions.Logging.Abstractions.dll": "d0a3cce0caf2bdda4af7d54135a321b45438015947fd902d7c2e6a0a30730c55",
+        "NuGet.Versioning.dll": "fc2f75a7a5f3be9b4c3dcfc21644b871bb5a41ada8615c92d778713d2a310670",
+        "RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "System.CommandLine.dll": "313d3376dca9c0e5eaf6f78118b765f1f877ae280056ecf56131bb19cfca8a90",
+        "System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "YamlDotNet.dll": "d618138109a40e4a7250e49e2abad8c450e3636bee18d7499ab231e37fa9150a",
+        "cs/System.CommandLine.resources.dll": "383ce91b709ad6a0cbe80f2ad5e70b8180d0c9349a18345fb793ea4e65399017",
+        "de/System.CommandLine.resources.dll": "e79dba38a34e09342ced52102327ed2d652a3c358f2631eae4965ef9dc72aa26",
+        "es/System.CommandLine.resources.dll": "3956d4d223d400f213a3f5b9d3eadca36a38593c03bdf9ebeefbbc2f3cbc91cb",
+        "fr/System.CommandLine.resources.dll": "8d072020cc0b07c8d822cc6d6f34bd0d591830313011eca568f2be56fa770973",
+        "g4-host/Aspire.Hosting.AppHost.dll": "92da7fa2c740790ad611086097bd7f1bd6625b8441337ca592030397b8b5b40a",
+        "g4-host/Aspire.Hosting.Keycloak.dll": "052c0ea0fc679b9405eec14c9efb52548df2d50b32cd76d7c6696f2f26f9f616",
+        "g4-host/Aspire.Hosting.Redis.dll": "40b64b106a52f6b7b5d2841801c35de387de6b0705d124567a88b2f9f646fedb",
+        "g4-host/Aspire.Hosting.dll": "7ede5667cdfe3ae9fa91cc71ccd8ba1cbd4a96236c73706ba1562eab6549b06d",
+        "g4-host/ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "g4-host/CommunityToolkit.Aspire.Hosting.Dapr.dll": "02894c232208a8a6e77ee092e0b62ec7325419babdfd0356f0d342771a1092d9",
+        "g4-host/Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "g4-host/Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "g4-host/Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "g4-host/Fractions.dll": "e8407a878af8aec1f485f50a9f356c439371610fff20756d4f2284ac6c995cbf",
+        "g4-host/Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "g4-host/Google.Protobuf.dll": "8997a69619b59db587a45e75a03c164a44afb613f82db138d35e1636e4cbdc73",
+        "g4-host/Grpc.AspNetCore.Server.ClientFactory.dll": "c57f69775e2b8acda401efb5f152eba6cfd23d0fc9277b7d2e0ed1f1533158e3",
+        "g4-host/Grpc.AspNetCore.Server.dll": "a66e142b1a3cbaf8ed3f0835faac72e0484d4eb8b1295e0d3d1de69d72e575b2",
+        "g4-host/Grpc.Core.Api.dll": "d9b5751a0988cdcf209f669b166e20b76b6ea3af1bc6601e03f3349e97059385",
+        "g4-host/Grpc.Net.Client.dll": "a2bdafc8d6a7baa8b8f6c0b39d8a7f859ad84af14380ccae118c2f5316602212",
+        "g4-host/Grpc.Net.ClientFactory.dll": "3e78aed8088e1f83916be34e937d0991fae32a4282b0e8e8577365b7a2847eda",
+        "g4-host/Grpc.Net.Common.dll": "b2354e7717e4d1b5b23a80d1eaf65ecc128f1b458bf052a7b83334dcbe3f6206",
+        "g4-host/Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "g4-host/HealthChecks.Redis.dll": "3ce9e611ecd44219f4bed786d665712759583b87a1bb9228355e9161ce7ffa52",
+        "g4-host/HealthChecks.Uris.dll": "32f8e0615a70e07c6c37c3e2e0774207c84d2f2695942fba82e7bc3bee1a5708",
+        "g4-host/Hex1b.dll": "1113557a5737e1fac2fdda1f6579737c50eac4620e83fefb3c29fa2ecc9b12bc",
+        "g4-host/Hexalith.Builds.Module.AppHost": "40757760a562ce20ba9e6aad6699f0b772d415875dc01896bd15e1950b5ac464",
+        "g4-host/Hexalith.Builds.Module.AppHost.deps.json": "f7e61d14f37cfe90da46037e7e69a38487334900726a87f0498f70287e6d62f0",
+        "g4-host/Hexalith.Builds.Module.AppHost.dll": "6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe",
+        "g4-host/Hexalith.Builds.Module.AppHost.pdb": "debc807b12f206bf1ca56745c8ff4560485f9d714e8000d5fc88be6438a84932",
+        "g4-host/Hexalith.Builds.Module.AppHost.runtimeconfig.json": "f8bd1713a3691d58eb332a71675f129385b91e852b66e7b6761cae1f34d4efd2",
+        "g4-host/Hexalith.Builds.Module.AppHost.xml": "1699834e4afc63c747a5fe6f3eaa0db690cff4b47c239cfa8eb1692cab7db35d",
+        "g4-host/Hexalith.Builds.Tooling.dll": "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01",
+        "g4-host/Hexalith.Builds.Tooling.pdb": "e6ed1306b64cf7b0c54443b01224cfa00e91aeb1da069f42903c31c54bb6757d",
+        "g4-host/Hexalith.Builds.Tooling.xml": "b1664b2bcdafc9732042bfa392bd60d04e5b2021c2d91016c84307dc1e4e911d",
+        "g4-host/Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "g4-host/Hexalith.EventStore.Aspire.dll": "a68d402265448ae6fb75cd7a8422b4e8581c606aee215914f52a989e758e472a",
+        "g4-host/Hexalith.EventStore.Client.dll": "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
+        "g4-host/Hexalith.EventStore.Contracts.dll": "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
+        "g4-host/Hexalith.EventStore.ServiceDefaults.dll": "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
+        "g4-host/Humanizer.dll": "2769ed8265b691a5482c72506ed274dc52446fa1641997a8c12c66f5b9263d39",
+        "g4-host/Json.More.dll": "80b6cd50331fa2ded4fbacdbf80dcedd2b142dee679df227c30299d2a3c3840f",
+        "g4-host/JsonPointer.Net.dll": "e5b129abd47347643a903c37faa2e4aff919f7d31bd56ad5c20d1b90451be796",
+        "g4-host/JsonSchema.Net.dll": "9aad41d8d1bb4df0f97d9870f37856afe22d5e884f86453ab3995f00893dd1b7",
+        "g4-host/KubernetesClient.dll": "1fdb3ddc3db829a3f4015afc328a00d3747fb228c7866df6f765be4cedb800ce",
+        "g4-host/MessagePack.Annotations.dll": "1e51e087987bc857e55863eb4e986c2f2f0bf17230eb2c243e5dc25c34e7cf86",
+        "g4-host/MessagePack.dll": "a7f8d30a8e6f4a1b445bf6752621a4a7b1f4ff11f5d4dc62dba0d8d7d6995e36",
+        "g4-host/Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "g4-host/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "g4-host/Microsoft.Extensions.AI.Abstractions.dll": "a3216886dec2b2528b2d7212c438d21c3d6de2061b500bd2ea505a41f896f8d3",
+        "g4-host/Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "g4-host/Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "g4-host/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "g4-host/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "g4-host/Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "g4-host/Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "g4-host/Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "g4-host/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "g4-host/Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "g4-host/Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "g4-host/Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "g4-host/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "g4-host/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "g4-host/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "g4-host/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "g4-host/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "g4-host/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "g4-host/Microsoft.NET.StringTools.dll": "887dec541cd0a719b7111458eb90a83b4491d6dd24eff2b16cf03d2782fd26a0",
+        "g4-host/Microsoft.VisualStudio.Threading.dll": "138e3548e487152de355b81303ae98e1bb52a31fe5c9107fa81a15f66404f426",
+        "g4-host/Microsoft.VisualStudio.Validation.dll": "59cd5e953cce597847e515a73a1c0975cd5a6b94921a7b91e81045fa9922f57c",
+        "g4-host/Microsoft.Win32.SystemEvents.dll": "ca495bf6c86b7f092d624928101985a941532d149dcd8acfea170f8a53be8850",
+        "g4-host/ModelContextProtocol.Core.dll": "0b22f1331cf8bfb0b4de2a34f283ca015648f431e719cffb6a2c230e40cbcc91",
+        "g4-host/ModelContextProtocol.dll": "b35f769741350446c1dbb70264af903ae628e8cb9cb1359475abecca29fdc782",
+        "g4-host/Nerdbank.MessagePack.dll": "fc086ce3623a9a3f9213159d438c642d225046e371489e8e7f126d4c62f188fa",
+        "g4-host/Nerdbank.Streams.dll": "e5c90ffcb7a0bd0cedf51ac33e818b9f64045e9839b19701eb73460356631872",
+        "g4-host/Newtonsoft.Json.dll": "a28c251dfe36d881e9e2462e171441b8b0ec156fe3f452602c9149b1b9efe05b",
+        "g4-host/NuGet.Versioning.dll": "fc2f75a7a5f3be9b4c3dcfc21644b871bb5a41ada8615c92d778713d2a310670",
+        "g4-host/OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "g4-host/OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "g4-host/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "g4-host/OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "g4-host/OpenTelemetry.Instrumentation.AspNetCore.dll": "216898bf280cdc8767c40873e8b18268e92070bdc1ac645f51ca5513725fb3fe",
+        "g4-host/OpenTelemetry.Instrumentation.Http.dll": "06c27aa338a414648119b99ef63a618c9f4b4c4a0b3e50118c9638d2ba579e16",
+        "g4-host/OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "g4-host/OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "g4-host/Polly.Core.dll": "f7f50017ca9f457b854498358ae595c2a8ab69c1fd8b915139d22bed8f7e4f2a",
+        "g4-host/Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "g4-host/Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "g4-host/PolyType.dll": "33d30bc1baf80b85ad9b428a388d9999eaf20999d555a6e684aa758f4f679968",
+        "g4-host/QRCoder.dll": "2c9a588e08ec91f00fac37a4a43995c8f1966a6cce615e9e8c063eec3d0f145a",
+        "g4-host/RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "g4-host/Semver.dll": "a99edcb96efce3d6ff019c667e132d81d879f5a92bc9337591e0b7309d7f493f",
+        "g4-host/StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "g4-host/StreamJsonRpc.dll": "ddc6a4d60e6cc940aae31faafc1fdcdbe520dfa51bec8dfc7f505449291536d5",
+        "g4-host/System.Drawing.Common.dll": "98d07e6b1e7d3641a8608a360b3dc273fe8a0f78926b6e1e5f679a7a074d491f",
+        "g4-host/System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "g4-host/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "g4-host/YamlDotNet.dll": "d618138109a40e4a7250e49e2abad8c450e3636bee18d7499ab231e37fa9150a",
+        "g4-host/bin/EventStoreHost/ByteAether.Ulid.dll": "fc4f3d99e88023ffbd37eea2941ddd81f604611fc967fedb116a4daaf9ae4590",
+        "g4-host/bin/EventStoreHost/Dapr.Actors.AspNetCore.dll": "9caf16d3f2591b81215f1cd1c5ea123c9633407046003a7021fc5d1a9333f5b6",
+        "g4-host/bin/EventStoreHost/Dapr.Actors.dll": "8b4ac5fb122eeb1d25fad4b3b24f76a832c05377ae581f306b915707d94e5201",
+        "g4-host/bin/EventStoreHost/Dapr.AspNetCore.dll": "40c6315dec475ef6e2665b3e2b18beeeb7cf11a241e9c15f95dd7cc20a709473",
+        "g4-host/bin/EventStoreHost/Dapr.Client.dll": "701c6ec09bd7fa54690b1aca6bfbe3b5ece2c8376699145a1fb0e7be610ea981",
+        "g4-host/bin/EventStoreHost/Dapr.Common.dll": "a17129663d6fa08f2d8117343fc6a859a86fc3c60743215633813ebdb0d2bf6f",
+        "g4-host/bin/EventStoreHost/Dapr.Protos.dll": "bf96cf02107221910bb6760b29fdcc9131604a260cb79b7c1487240367dba0a0",
+        "g4-host/bin/EventStoreHost/FluentValidation.DependencyInjectionExtensions.dll": "32385a476b65365d0f9de1819cd1f46d155d1f46beea68176603cf341b29a797",
+        "g4-host/bin/EventStoreHost/FluentValidation.dll": "07373bb5527d6d96908c60962102c9c1339b363c4ee8ad62277eb2ffc6387df4",
+        "g4-host/bin/EventStoreHost/Google.Api.CommonProtos.dll": "329cf0f2b66c5cbf675321f0d6b33c17d1092e5761f32d3d2c1307a110c0dbbd",
+        "g4-host/bin/EventStoreHost/Google.Protobuf.dll": "e9b892ac667931162ffefa411ef8dc3eae777d634d8bfe8beddc28b1de95a612",
+        "g4-host/bin/EventStoreHost/Grpc.Core.Api.dll": "5674c1203706b5a261e8bbd3499147d94fc80b5f077bf45f9934ca28a9c8574b",
+        "g4-host/bin/EventStoreHost/Grpc.Net.Client.dll": "f884d8444feb888656cbb7de87ee8f53a50811329bb32c6e7a7a81cb1de008ef",
+        "g4-host/bin/EventStoreHost/Grpc.Net.Common.dll": "fdff383bbd8e5015f3c4aaaa7508b769228f33c92ba14fec4e59d35c5d78e6ae",
+        "g4-host/bin/EventStoreHost/Grpc.Reflection.dll": "87795d17c1385e7c05469c447ad8eecc883c3c71b4804319c5918a5a490c8d57",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost": "e036750fa19213c3ed24614498122ba7c035d576f27e2a297efb496844d6d552",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.deps.json": "feeb9948f7e7149666f1b8cb482f2f79ecc05a793413bf457c30f00983bafafd",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll": "84293bb54943907a1d2100e4f996a6969ee1de96680789f88293424d0eef0c19",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.pdb": "d9109292e5475a3dd91fe9b9996cb7ffa18a67e0e840926be1b4481ddeca16ee",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.runtimeconfig.json": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.staticwebassets.endpoints.json": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.xml": "492425b8a76e3e26b652c5a3faf2e957aa0337cfa836edcb36793abac8618e90",
+        "g4-host/bin/EventStoreHost/Hexalith.Commons.UniqueIds.dll": "06f7eea141c9399cd410d05d2d2897de6c612691644ddffab1147c3abfea3de9",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.Admin.Abstractions.dll": "9b1edf00cc5e31ace475c851587876a4dc0321fab9d1e2af0aa771b114cfb584",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.Client.dll": "5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.Contracts.dll": "7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.DomainService.dll": "d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.Gateway.dll": "a7038a4e7858aca19c78cf2489fbffd5bd78925b956a96f2473d854127ed0b46",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.Server.dll": "95038655c275192a4971ea8f74a1a3748be15793736ed5914813614b84cf6cf1",
+        "g4-host/bin/EventStoreHost/Hexalith.EventStore.ServiceDefaults.dll": "3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12",
+        "g4-host/bin/EventStoreHost/MediatR.Contracts.dll": "c2601304aa9d15c51a543e1c3300368c64ac38633e7277bb835a04f68ddf6a61",
+        "g4-host/bin/EventStoreHost/MediatR.dll": "67b96c20659ee48a48f3ce0e09b3cac90ea72f098dd16c43f56a6f199020cdd3",
+        "g4-host/bin/EventStoreHost/MessagePack.Annotations.dll": "1e51e087987bc857e55863eb4e986c2f2f0bf17230eb2c243e5dc25c34e7cf86",
+        "g4-host/bin/EventStoreHost/MessagePack.dll": "a7f8d30a8e6f4a1b445bf6752621a4a7b1f4ff11f5d4dc62dba0d8d7d6995e36",
+        "g4-host/bin/EventStoreHost/Microsoft.AspNetCore.Authentication.JwtBearer.dll": "e14533ff151d1857910892613933b2429656d21ec29af338e09301a5a261efa6",
+        "g4-host/bin/EventStoreHost/Microsoft.AspNetCore.OpenApi.dll": "5d294400eac9da2753a5f791732938006cc1f16175f1af83ad9a729d96847bf1",
+        "g4-host/bin/EventStoreHost/Microsoft.AspNetCore.SignalR.StackExchangeRedis.dll": "2d09f1c5eac3f55997169585989f268eee717a637d3952917fe3f1fd858ae788",
+        "g4-host/bin/EventStoreHost/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.AmbientMetadata.Application.dll": "aa3fbb981085778df80185ba391253467c363d069308ca5e12213d7a7e689377",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Compliance.Abstractions.dll": "e4df4358dd2dd57be430a9e7f220bc49bef26ab00007c732605c0defc207e065",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": "050802eb79c8d7ce48f40c89753ddca2a68ec1b7e6a6d646a810cd87cd8e9f78",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": "6ae3665434f016222e9d75a54a44a62d01c412ef63b5d7462c3a22ad9757c4d8",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Http.Diagnostics.dll": "56da1ed94fe5551db5b67292820634136fe8b6d991626288aebdce7ee25400ee",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Http.Resilience.dll": "b28b929922d42b1c979ee403f454387f4522bf973c149753f5300ae959d70531",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Resilience.dll": "e7cee26992c26c4484b62da5663601456f7af2c9c10e8da4e47ec0df3b078aa4",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": "58ac3be03e3c4ae03486b8ec619ca769bf94befd38f432d61b32b1fba8d7d193",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.ServiceDiscovery.dll": "3646d627b519e017c3392219b17416b04377c815a918248a503557fd40db9e0a",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Telemetry.Abstractions.dll": "57af8ce079eb3bcec63fd176f1034012f8199c44d38f10168438cc78364a9030",
+        "g4-host/bin/EventStoreHost/Microsoft.Extensions.Telemetry.dll": "cca41d630de69f9afda79cff76c26976c87ee28aec216cba63c2e81241b8f7f5",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "g4-host/bin/EventStoreHost/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "g4-host/bin/EventStoreHost/Microsoft.NET.StringTools.dll": "e51c8678fd602a21c249b369e833966019935132476f9434da896bef808ba3b1",
+        "g4-host/bin/EventStoreHost/Microsoft.OpenApi.dll": "838f23fd0b01bba85157a5bd279847213579786c80b4141b390fef39ad385c12",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Api.ProviderBuilderExtensions.dll": "dfaab1ecfb87773ccef2737aafbf1eb22a9f074c44e9fdd31947702da59234bc",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Api.dll": "bd75bbab25a4bf769727ec6c17457d4bf189a8c2c70034e5c212ae345132591d",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": "65fb06071dcda27215f1dd42d6c8de8cc98691cef0225b36c8fb22f995fd1759",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Extensions.Hosting.dll": "442d9c18f5cc9ffa65e3f486874f01b375866854b0ad08e40e6367139eb9b35a",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.AspNetCore.dll": "216898bf280cdc8767c40873e8b18268e92070bdc1ac645f51ca5513725fb3fe",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.Http.dll": "06c27aa338a414648119b99ef63a618c9f4b4c4a0b3e50118c9638d2ba579e16",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.Instrumentation.Runtime.dll": "5d222223d95be5d1507a5d581a2eebd268b46dfaca0d73b1724b16c8fe25558a",
+        "g4-host/bin/EventStoreHost/OpenTelemetry.dll": "63fb9724258d4a1ac76c7ddffc2e0b18ee5125a1c8ff4b242a570a3410c97fc6",
+        "g4-host/bin/EventStoreHost/Polly.Core.dll": "37762ea6fcf05154685b0a616461705c837c2f07d98e4037dc3a0e4b4c186ea5",
+        "g4-host/bin/EventStoreHost/Polly.Extensions.dll": "8adac7a20cd056b9a8623efb6e6f9b99a82e18d3c7b7f6c788f7fc4b20ce5f18",
+        "g4-host/bin/EventStoreHost/Polly.RateLimiting.dll": "afe3042cd4062438857d42880623845f32575375f460fd1ac07f705ea0211804",
+        "g4-host/bin/EventStoreHost/RESPite.dll": "cc1161bbc0d3a52169c1aff6e852e16ce45155db728b8b646e977a992a86e9e7",
+        "g4-host/bin/EventStoreHost/StackExchange.Redis.dll": "6d05d1eb97f9afceac1d33cc64ea0563546891d036d96809d3b3d87e605de909",
+        "g4-host/bin/EventStoreHost/Swashbuckle.AspNetCore.SwaggerUI.dll": "049dd9177dc6789b95b566b4c7f5b896af9ee7fbf8ba2507a44d7339a22316ef",
+        "g4-host/bin/EventStoreHost/System.IO.Hashing.dll": "550d10bb0ba785057915fb0ecbc6a3e8802fdee2e2ac22d80966691ccb11e2ff",
+        "g4-host/bin/EventStoreHost/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "g4-host/bin/EventStoreHost/appsettings.json": "19c310f519fe5777df466ba19e3703c34ef0965a9cc9017e16ac1307402e5a3e",
+        "g4-host/bin/UiHost/Fluxor.Blazor.Web.dll": "e05df290ff01c96ff09de7e92eac3f82fa5e4f5cf89096319e5f12b6e34beb65",
+        "g4-host/bin/UiHost/Fluxor.dll": "f9b73d7c618dee8cd124a56e9d73d02267702d1591e993fb465b7276b834cd39",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost": "aeab3afb19c3252448d7c241eb028c71eba6779b9332cf1f385f3893ecfcf635",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.deps.json": "a70728a83e7304f789d6da9ee5a4d6044248f0064e6b8ce08eff9a591ae65381",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.dll": "d862c79298ee34d30bf6242c2358679d4f7dc0efd60736bcaceb3db657086bc6",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.pdb": "d6b49039c13eed7ab1715070e5916f49ea200bea30994f053af6345f0bf111ed",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.runtimeconfig.json": "f71b4c67b5233a19be9131b5fe4b45fe7829997cf2b42e762d6baa037da93863",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.staticwebassets.endpoints.json": "15204ecc70de5ff0b09c431dc7e13a9620db493737b2d715c022d562b5ec436e",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.staticwebassets.runtime.json": "86d611b70c66e6bb2748a14f0d4ccb8c9ad027301200a1e28e783c3d93458dd8",
+        "g4-host/bin/UiHost/Hexalith.Builds.Module.UiHost.xml": "544aa10972d4c36a61cb5af9ae86dc0c2840e70ff0816e46484f387c1da59cc5",
+        "g4-host/bin/UiHost/Hexalith.FrontComposer.Contracts.UI.dll": "049b625720dc21bd19664a49143dfb0804e399e8945fe03661cc6d01d1c334f4",
+        "g4-host/bin/UiHost/Hexalith.FrontComposer.Contracts.dll": "f4ca12ff83ef24b734012c5023fff3a62cbb67c7f19a40649400482c427bbe08",
+        "g4-host/bin/UiHost/Hexalith.FrontComposer.Shell.dll": "5fa05b3698eacdcc3c0d5f2e5309ea591dabe359191a8581fde497692032d5c1",
+        "g4-host/bin/UiHost/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": "816fb400ba010c4fcde2e877d5d9c5ceec70b06fe0a9be2182941420beaada24",
+        "g4-host/bin/UiHost/Microsoft.AspNetCore.Http.Connections.Client.dll": "b211741b2b313e19f5beb2c642fa0e8fc3237b394857f83aa43f869c67bdcf39",
+        "g4-host/bin/UiHost/Microsoft.AspNetCore.SignalR.Client.Core.dll": "ef9473d0528be98c24a9bf220ced6ed0323bebb1a42139a2f51b1d3df61d0ae3",
+        "g4-host/bin/UiHost/Microsoft.AspNetCore.SignalR.Client.dll": "f1812b10f889074065f35259e9b334abb7c176e3b99299a958ec0a8939c11d3a",
+        "g4-host/bin/UiHost/Microsoft.Bcl.Cryptography.dll": "91c6bab93638c268569a38bc87770a5e3ef9932676f5b7a6d47aef4208062925",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Color.dll": "951a7c6e090c45094cad4b1f21c495faaa0ead726521640579140a097f20ca76",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.dll": "9006678810eb5709719ccbc8d4c3c197f13b67afc33c0d4de0d75f0a74323552",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Light.dll": "76c071e504c643107a474aee7cc1cfc8b452cf9b082e4b9f33cec4d0497c3c96",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.dll": "ea2d135a4a8f33b92aebb359bd2a03b14002fedc44f2d0015220a09fa3b98bde",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.Icons.dll": "709e7efee1a530a2832022f8e382828c29807b1c29aa1bc93ffd50126bf1b997",
+        "g4-host/bin/UiHost/Microsoft.FluentUI.AspNetCore.Components.dll": "82718d81e3d28d7a8b80bfb6a543390678ab136bfc4af02af11f55101d613964",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.Abstractions.dll": "46f14d67dfc1894eb24d80282895526db25a854af227eee2fa06a0383fd09e4c",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.JsonWebTokens.dll": "b48515aeaa4a8fadc5fcacb45978c808a4d5bbffaf74f8894cc57c0769a9fb9e",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.Logging.dll": "90b6fa70f28a3b7711fe95aa30a0c5551f1e6aa28565187aa7b3681194215c84",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": "cf37440c96bd178f2676867b77fa651df001b56b2f42be99b08e5226b3ab4918",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.Protocols.dll": "dd8823215cada7e1c7fe5d2a3b06395fb906baa5f79ec00411ad6a1f80585f60",
+        "g4-host/bin/UiHost/Microsoft.IdentityModel.Tokens.dll": "84409b8c3a52313fe4f4f621fce39544f42074109e870ac2631e627c8b70210f",
+        "g4-host/bin/UiHost/NUlid.dll": "6f867f7716683b6b48a67877d616ae3805955eab5b2ec92f0e74b49fae467de7",
+        "g4-host/bin/UiHost/System.IdentityModel.Tokens.Jwt.dll": "593c82287b671e9cceefaf10c51df96793f6db30f9cfa60daabaaf80474670bf",
+        "g4-host/bin/UiHost/System.Reactive.dll": "e8070137fc07efeb8fd00e1607a096c7718ee1814c6b2032e4cb865f5cf042a9",
+        "g4-host/bin/UiHost/fr/fr/Hexalith.FrontComposer.Shell.resources.dll": "d48c80b98656a20c229887004b116f43e25d53b73d2677f224d54da7188986c0",
+        "g4-host/cs/cs/Aspire.Hosting.resources.dll": "084a343302c9585d488761368d95b46f3f4777025be789f8ae1b27704748b826",
+        "g4-host/cs/cs/Microsoft.VisualStudio.Threading.resources.dll": "53fa0540b7787d2702df6526dd9df68b1a44575c66ff007f3e11b1e2b528330e",
+        "g4-host/cs/cs/Microsoft.VisualStudio.Validation.resources.dll": "830b54077b4f3febe75ed87aa163eb49fb58362c61be5ca26cf42d4e13c51f3c",
+        "g4-host/cs/cs/StreamJsonRpc.resources.dll": "5115a8c09c591d1caa16359b5a45eccece63d9c337e703d89c05a69264ba291b",
+        "g4-host/de/de/Aspire.Hosting.resources.dll": "894a42da25e58c9d0c6197c6c6e89185934c5bce079feeb01b30055852e4831e",
+        "g4-host/de/de/Microsoft.VisualStudio.Threading.resources.dll": "0a68bd16faed213eb7bf17025b25125c6aaee5b86a545449afe297632a503853",
+        "g4-host/de/de/Microsoft.VisualStudio.Validation.resources.dll": "fd7edef2b3f30903f2c287c49d62cb3394f9656fd82ff1c98eb122ad62a04a56",
+        "g4-host/de/de/StreamJsonRpc.resources.dll": "01e2c454d751b89aba08d4270ca00d8e07fa8af861650ecd704481ce06b87b24",
+        "g4-host/es/es/Aspire.Hosting.resources.dll": "bf8711925b4b6a57f1eb3b5925dd10da8aa51f8b2f19da9c6decad360cbb57a1",
+        "g4-host/es/es/Microsoft.VisualStudio.Threading.resources.dll": "7fc33931e5c544e89ce8d767781a729a7be21c60e559294ef693fa249034b066",
+        "g4-host/es/es/Microsoft.VisualStudio.Validation.resources.dll": "c40129bf64177dbfbd79bf977e11d46f2888c20c3e807336a36dac82370f6d83",
+        "g4-host/es/es/StreamJsonRpc.resources.dll": "bacf7fadae7361e00f097dcafbe9a4a759f4346f364676389304a688fdb3b636",
+        "g4-host/fr/fr/Aspire.Hosting.resources.dll": "ca0878b760464fd963a7bc62110cd8d27519ea9ffc2b63b5b06a933a5e6f0352",
+        "g4-host/fr/fr/Microsoft.VisualStudio.Threading.resources.dll": "abe294e2c7ecf00f3632b83f61e19538b8b9531e6289b5d84992bc447f29783e",
+        "g4-host/fr/fr/Microsoft.VisualStudio.Validation.resources.dll": "e56fe93ab669c22850389bdb685bbc45317d962849cc683d412bc9e8ad637740",
+        "g4-host/fr/fr/StreamJsonRpc.resources.dll": "99ee72e2ea1de18367345b83884d0aa8c4192f98f2f3fb6b50bdbbebd6960afc",
+        "g4-host/it/it/Aspire.Hosting.resources.dll": "749c7f6276682e7d0a668453a3ef6db299cd58a13acf3cd30dc0e725a777a771",
+        "g4-host/it/it/Microsoft.VisualStudio.Threading.resources.dll": "c6d1c91560f9914f36ff52d9a2704f44255adfd88a2c57ccd44fce62603667a7",
+        "g4-host/it/it/Microsoft.VisualStudio.Validation.resources.dll": "8918618aaf356bf03333f62507ed4b2511c98850388c3856afe970c41672fae0",
+        "g4-host/it/it/StreamJsonRpc.resources.dll": "31741ef214310f03ec256b3dd8643e5d4151c9123bd6994bb8f53381ca348244",
+        "g4-host/ja/ja/Aspire.Hosting.resources.dll": "e69167f8c9007bb031b925c2eb864df02bf4382e1675181be5b20413a4f06090",
+        "g4-host/ja/ja/Microsoft.VisualStudio.Threading.resources.dll": "e375ebb7fe0f6807371dd42f09671b4eafcab6a1464851af68b8fd14494067c9",
+        "g4-host/ja/ja/Microsoft.VisualStudio.Validation.resources.dll": "89963143a49c629f52776c88715544a8a53b12f1f6c7b4cd6c686d0751ea0d5b",
+        "g4-host/ja/ja/StreamJsonRpc.resources.dll": "36897272170334ea43284e4f7c8f908e170bc1f082e9612528787ca03ae9e7ce",
+        "g4-host/ko/ko/Aspire.Hosting.resources.dll": "0f23adbd3c92a91e817e492d909bea546b0c37a47e3de3ec2a7cc4086fd345b8",
+        "g4-host/ko/ko/Microsoft.VisualStudio.Threading.resources.dll": "6fda6bb4822f56356cd446ef30750319552780ea28434b741cc35bf3d8111010",
+        "g4-host/ko/ko/Microsoft.VisualStudio.Validation.resources.dll": "a2be5cbddafa74c4d64b6cb46e60a64b151d46056566e3fc39b810e431cf047f",
+        "g4-host/ko/ko/StreamJsonRpc.resources.dll": "53ce6c7e88dd7228d968fc26ff7cbf35bcdc81ee88275ca2325eaf8feffe47bc",
+        "g4-host/pl/pl/Aspire.Hosting.resources.dll": "4de9c47d7df9bfd661c6b92d4bc7ca4923f5197de87e22073cbd7c4bebb92a4f",
+        "g4-host/pl/pl/Microsoft.VisualStudio.Threading.resources.dll": "c2d599b82424ac6961d568f411a01e366b359ac3c167ab2fce74c5e2c96c1ca6",
+        "g4-host/pl/pl/Microsoft.VisualStudio.Validation.resources.dll": "f77bd918ee6d7e3dfade1bbbf192fdd0fcd4f2ceb6296d14775f235f1562aea5",
+        "g4-host/pl/pl/StreamJsonRpc.resources.dll": "2e3d2bc745170f9b323711bf584b56246a6b9e4235e5e1dcac2ce83b7a9a1e1f",
+        "g4-host/projects/EventStore/Host.csproj": "a03945c7044bee30586a80d9a8326dd4a60f58363ee2af1e9ea1abef21810827",
+        "g4-host/projects/EventStore/Placeholder.cs": "070c86886f8d246ad4932af47d8f20fe9d4180861d856019b0bfe1e025c94954",
+        "g4-host/projects/Ui/Host.csproj": "16813c251a95d259e4efdc622466412cea00ced7766b18af13f920619a7f5943",
+        "g4-host/projects/Ui/Placeholder.cs": "070c86886f8d246ad4932af47d8f20fe9d4180861d856019b0bfe1e025c94954",
+        "g4-host/pt-BR/pt-BR/Aspire.Hosting.resources.dll": "42bfec9ce54a8234feb6687e21b0083b3577cb0eab0d29458e6b0d5107088c4f",
+        "g4-host/pt-BR/pt-BR/Microsoft.VisualStudio.Threading.resources.dll": "432ba5ed5c1f37436ec28d4f4b37b622cee3c833bdb01b44b6cf9fe255a445e5",
+        "g4-host/pt-BR/pt-BR/Microsoft.VisualStudio.Validation.resources.dll": "656bcea3398e47aff8e86741bfb097940b589f52ebca2236ec104129d0d3014d",
+        "g4-host/pt-BR/pt-BR/StreamJsonRpc.resources.dll": "990e5f544dd810cc9af2921cd4809c45a4c216697d9a5c4bd22d42700f57d8fc",
+        "g4-host/ru/ru/Aspire.Hosting.resources.dll": "5f79cfeecef76d936d809829ee12a52fc68a25cbde38b9df15371acf88f7bab3",
+        "g4-host/ru/ru/Microsoft.VisualStudio.Threading.resources.dll": "ff177fd4f159895d050fd7a19c4632b8e69792e79ef181f3aa1af9ae6c770f21",
+        "g4-host/ru/ru/Microsoft.VisualStudio.Validation.resources.dll": "db19d56c8e725fc91182ffc75c3803c5d6ca9f0dc6d99d695cbf4e30acc56fce",
+        "g4-host/ru/ru/StreamJsonRpc.resources.dll": "5a32d75f02d6de17cfabe4f1f7fe57191a5549fcc11d5975fe77427826b38dea",
+        "g4-host/runtimes/linux-arm64/native/runtimes/linux-arm64/native/libhex1binterop.so": "285d3f2994da13cc31bd29e757d34adca86c9777248a9898f57eef44368e84fc",
+        "g4-host/runtimes/linux-x64/native/runtimes/linux-x64/native/libhex1binterop.so": "1f06a0d471c52fc72b7d3e2e526a30d8b10cf758acdf3e8225407c96352ebf06",
+        "g4-host/runtimes/osx-arm64/native/runtimes/osx-arm64/native/libhex1binterop.dylib": "334610a7054265032e7d9643192a6d5d9a46e27adb2e6b09f0e841034bff8e0c",
+        "g4-host/runtimes/osx-x64/native/runtimes/osx-x64/native/libhex1binterop.dylib": "ec65750845a042c78802d59c3790135e283bb9a5a20032ac64e28e14120246c0",
+        "g4-host/runtimes/unix/lib/net6.0/runtimes/unix/lib/net6.0/System.Drawing.Common.dll": "89ea595ccb1fd1384480c1e30bd487c92af5d06d3b06f295323eff601acd9019",
+        "g4-host/runtimes/win-arm64/native/arm64/runtimes/win-arm64/native/arm64/OpenConsole.exe": "ed7622fd0d3bedc9ab9f122f5e58edf0def9e7999224f52dd395ba9f54edbe09",
+        "g4-host/runtimes/win-arm64/native/runtimes/win-arm64/native/conpty.dll": "db3d173640b172bafd42d5b541b638a9aeec1c7d0e40dd636bf02822a32c912c",
+        "g4-host/runtimes/win-arm64/native/runtimes/win-arm64/native/hex1bpty.exe": "50375f34089d1562f5bbec9caed634203e42aaf0205e0573e4cfe1a2815b0bf2",
+        "g4-host/runtimes/win-x64/native/arm64/runtimes/win-x64/native/arm64/OpenConsole.exe": "ed7622fd0d3bedc9ab9f122f5e58edf0def9e7999224f52dd395ba9f54edbe09",
+        "g4-host/runtimes/win-x64/native/runtimes/win-x64/native/conpty.dll": "39fba2713e2495117b1591ae8c32a3b904bea7aa66069cf7815e2844c76d75d8",
+        "g4-host/runtimes/win-x64/native/runtimes/win-x64/native/hex1bpty.exe": "64b4fed87df4d22ac3a41d3456403cdc809b5bb1b3080bc43a52e032ea57a16d",
+        "g4-host/runtimes/win-x64/native/x64/runtimes/win-x64/native/x64/OpenConsole.exe": "b7fd936c2668b87b9ecf7b3366dc6568afc1c6f981874cba3e955a1c35cf8160",
+        "g4-host/runtimes/win/lib/net10.0/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.Messages.dll": "403a772d71ed4a5f537bac3e02746f5acc4a13d73bd895fc564af4866cb0e7b6",
+        "g4-host/runtimes/win/lib/net6.0/runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": "142cce4ed8ac9da22d69c38a6f22738abfb22090dc9313e8b58e6f91978e89af",
+        "g4-host/runtimes/win/lib/net6.0/runtimes/win/lib/net6.0/System.Drawing.Common.dll": "4d3001697df50cca54f32ed2dbbd1f3f415b48d5d756b1bf9500a43ae9b68da0",
+        "g4-host/tr/tr/Aspire.Hosting.resources.dll": "b2dc65b1b6e4a21fbec6eeed215d3dcbf8e15c7064f509f3762bfd8b922dfe02",
+        "g4-host/tr/tr/Microsoft.VisualStudio.Threading.resources.dll": "cfd3afd4bd9b0d7f6f782370ca460f3333bb2ebf7db4977e6d2af22a47b71dd9",
+        "g4-host/tr/tr/Microsoft.VisualStudio.Validation.resources.dll": "620295974b05a36b268169cd94b39f99848224f7774b9748db014c2a2d027073",
+        "g4-host/tr/tr/StreamJsonRpc.resources.dll": "1df15719aa69c7915028419f93bdb27cf8814f1ea6455e6d4f23dc110d81f1f1",
+        "g4-host/zh-Hans/zh-Hans/Aspire.Hosting.resources.dll": "b7e932b1c3eb004b64a52ed8a9f19210984fad52da01a2319f1bd4ede691e10b",
+        "g4-host/zh-Hans/zh-Hans/Microsoft.VisualStudio.Threading.resources.dll": "ef07ef11562297acd78ee9ec7a21bee4b9fb0f4255794f87ccff0970f9f3ccb4",
+        "g4-host/zh-Hans/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll": "158f33332fa83a4c01f136482305a1d7d7feffa626fb082d65bfef4a0ce493a3",
+        "g4-host/zh-Hans/zh-Hans/StreamJsonRpc.resources.dll": "0c3a6e2b27cd768f6b94b9ffcd86097811f2be89583bef4f1bb24fd81a18fd47",
+        "g4-host/zh-Hant/zh-Hant/Aspire.Hosting.resources.dll": "cad525e7fde6026b09bce9c62cc1ea7950dbb54b47b3fc711dd964c5bffebcb0",
+        "g4-host/zh-Hant/zh-Hant/Microsoft.VisualStudio.Threading.resources.dll": "d0d594d3590ad804b8a9d5f0b23306864c7e8870ce9a445ef6990597d0ad20ab",
+        "g4-host/zh-Hant/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll": "8a3bffea88dc96fca9c307a9a8843a20fe1c7cafc2534b1cb95d688f07b6dbfd",
+        "g4-host/zh-Hant/zh-Hant/StreamJsonRpc.resources.dll": "23e40ffa7c609dbb2b79e8fc38b7097d9d9d9a86f9a03abfd744e5f6bc8330a0",
+        "it/System.CommandLine.resources.dll": "ae1aa3b60b18b1b1baf7baf2a6dd6b71c9f857db3a6374d14bee1025b5ac8dc3",
+        "ja/System.CommandLine.resources.dll": "f2199c3c4a701284fe368479f20f1c9da249edf267ffbe30db7e126a8cf9c070",
+        "ko/System.CommandLine.resources.dll": "1031147536f1da5004c4da9a360fc96885783f8572ff938628c76b6813693ce7",
+        "pl/System.CommandLine.resources.dll": "20e87d383843ca9d2df2d68e22fdbb73347ef6eaba824bb8214944548b33f612",
+        "pt-BR/System.CommandLine.resources.dll": "8995714974f5c8746a0adb06aee7ff09e8e467e10392ea6d89139416664a7203",
+        "ru/System.CommandLine.resources.dll": "606545fac7259bc01887e093b1fc76a8d78b301afa654ea38ec703ceaf0b6853",
+        "schemas/hexalith.module-manifest.v2.json": "4a7ad6a2a9f52bf7ff7a9578635494a26ef2145de87b4b75fb739d04975b3e23",
+        "schemas/hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+        "schemas/hexalith.test-result.v1.json": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39",
+        "tr/System.CommandLine.resources.dll": "2d538ec2c33686788e7a6ba29b16031adae21aa96ff97713e2a586fef4ebe256",
+        "zh-Hans/System.CommandLine.resources.dll": "9d3702d71673f1cf67864551eab4df5f30d46add4dd107fe937578f3804382ec",
+        "zh-Hant/System.CommandLine.resources.dll": "742e75dc0b31dfb626b0f50f080704b987cf61c5172203ad5efa3f8490930843"
+      },
+      "packageSha256": "1eea9b282d1d247e1f6e9e2213c5969f7895df44105e6900c873b586c5c4f905",
+      "version": "4.47.0"
+    }
+  },
+  "observations": [
+    {
+      "attemptId": "65ca2e8691df24b8fce209071fabe3fb",
+      "createdAt": "2026-11-10T01:02:12.8837723+00:00",
+      "environmentId": "35e0b93c569bf39a6313ca8278be2eff",
+      "kind": "actual-issued-owner",
+      "label": "success",
+      "observedAtUtc": "2026-11-10T01:02:13.933207+00:00",
+      "runId": "695470f1b07303a5bced00a7abdf2326",
+      "startupDeadlineUtc": "2026-11-10T01:12:12.8837723+00:00"
+    },
+    {
+      "descriptorSha256": "a58f40cbda2a289cc3b57964ffd0ff3fc99761f55565dcee6f1e27a16ee581fb",
+      "identity": {
+        "birth": "14395867",
+        "pid": 1351355,
+        "session": 1330435
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:03:21.4025556+00:00",
+      "ownerRunId": "695470f1b07303a5bced00a7abdf2326"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0216f230c9a21e64bbef99909acc195fac610b408c563657c04a6ffec25aef6c",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "0822ac0456ca35fbe2d1c481c649bce3dcfa93eb1578b6a4356b7f234fd1307a",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "3f96038950336aec300f6ed1c8f6b8e41f9cdf69786e3db9eba3e595ae4113bf",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "6cd2bb77c1036a6c5063c923cba90bb143acd7a8c77e914c8f669299142282ae",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "8625e633703abc482185cbdba69b32b9e5d5bca8d4a87205b7dbd213bddcb8f0",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "9516089ddbf8e1d623de47f96acb5da9f8d2afa8f3ff4ce82b63a1af8662a753",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "b4ac11b5aa4551bfca0bc76ec61c266cccbc01adce7cc43220c6cca78bd0c381",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "b8d59ec4e3edfc4a4817fb34270fd391fd8bde1a8f424250cc64389b37e1e640",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "bd47244bf4aaf398ecc5c2e165df81751b3765ce25c7b62d99166e630365afe1",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "c2b78a81576958ebe184fba238ef9838e24a84798bae185b617a39898833a9cc",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "c99ab9bc4094db5e8bac90f81ec2133be8d88ddb144a578510b7a0e189211a2d",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "cec1fd691c91cba7cf1b40d7882b99784b836d69c21b23268d271ce91736b658",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "f93d4aae1ee3dbc8da3acb49f5ac88deff13f726a33e6b6a29f60bae11501245",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:03:21.924291+00:00",
+      "ownerRunId": "695470f1b07303a5bced00a7abdf2326"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:03:31.217747+00:00",
+      "ownerRunId": "695470f1b07303a5bced00a7abdf2326"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:03:31.680331+00:00",
+      "ownerRunId": "695470f1b07303a5bced00a7abdf2326"
+    },
+    {
+      "attemptId": "5e402f8d69d1b2404d0d697f25c82e88",
+      "createdAt": "2026-11-10T01:03:31.8550612+00:00",
+      "environmentId": "77ae32b474b835d23a90242193fa9ad9",
+      "kind": "actual-issued-owner",
+      "label": "failure",
+      "observedAtUtc": "2026-11-10T01:03:32.712679+00:00",
+      "runId": "c9a37a83e3bd8fa8537f493d5f6bec8d",
+      "startupDeadlineUtc": "2026-11-10T01:13:31.8550612+00:00"
+    },
+    {
+      "descriptorSha256": "8aa46d293e13c681a103150af3a6f746048f2c48da5e1679186ce034f81dd336",
+      "identity": {
+        "birth": "14404085",
+        "pid": 1370292,
+        "session": 1354912
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:04:43.7421935+00:00",
+      "ownerRunId": "c9a37a83e3bd8fa8537f493d5f6bec8d"
+    },
+    {
+      "images": [
+        {
+          "containerId": "030dfcf1401d0e6f5000402a9cbe3f77aa640ae0ea61bb0bb2b29112f95438bb",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "13fc4f7c2c725e3d3cc227695ef359ff843b7a0b685d5237cf1764900751e836",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "15d3357416758815af82f23045a05f52964f36c7c80337b956f1117e9327ac2d",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "2927a8f37a5fcb3da49717d3e097af9cf6fbce57bc1ff56842c9b5f5bf4b1eb9",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "2ba4927995a595485ba59feba6d32cc832666718eb8fd9c8a52760b7af841b98",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "3446ef6addb3a0b1462d8a716982b2d06679dcb832c2065ece1d13b9764dcfa9",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "39e9b725cc1001b2b9067f74a955df45f733a341237f7e8824526de3c974389b",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "4ab325296d5494551077ffadf324415077f50951b4e80ee65f43f6e7bb8adb5b",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "4ec93262faafbf8715640e50db5d87c26a48a9bf5657cff6b56cee2b8051d0e8",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "5b95a44d0c70aa021ee9c4754d3f2ac6e222d7e9602efa500616a11d7af95090",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "5d3c4ba8bab371b1a13257de5f6c96e665cd71b56dc56b6cffc3703c0ef49bb0",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "8bb2c1376d8d422c64a4a353578b98830dfd067497d4c15d833d5c9b97e778bd",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "8cc6228501869f935cb26f9463980dde7c7ae70b44ca8e8f46d5b949e2cdd480",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:04:44.258319+00:00",
+      "ownerRunId": "c9a37a83e3bd8fa8537f493d5f6bec8d"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:04:49.830772+00:00",
+      "ownerRunId": "c9a37a83e3bd8fa8537f493d5f6bec8d"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:04:50.362302+00:00",
+      "ownerRunId": "c9a37a83e3bd8fa8537f493d5f6bec8d"
+    },
+    {
+      "attemptId": "469db28653eb129b959e952615df7c89",
+      "createdAt": "2026-11-10T01:04:50.6304319+00:00",
+      "environmentId": "91d3075b6bc624c3e69f6ca2c4426a00",
+      "kind": "actual-issued-owner",
+      "label": "timeout",
+      "observedAtUtc": "2026-11-10T01:04:51.673044+00:00",
+      "runId": "f4ca19c7339297322949010d55f0bdc7",
+      "startupDeadlineUtc": "2026-11-10T01:14:50.6304319+00:00"
+    },
+    {
+      "identity": {
+        "birth": "14407263",
+        "pid": 1376892,
+        "session": 1372842
+      },
+      "kind": "owned-startup-paused",
+      "observedAtUtc": "2026-11-10T01:05:18.461481+00:00",
+      "ownerRunId": "f4ca19c7339297322949010d55f0bdc7"
+    },
+    {
+      "images": [
+        {
+          "containerId": "022dfc0c7128ce5f883d5e92e18b4ee30fc8762fe88bd0d77776f7cd0094b5bc",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "2a40404f2fc6c2be62141a9b7b0dc546367d7af2de90b1b49c4fa3c9a74b73d3",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "a293da718121374e18ce300c0c946209ea6173ee5c3902b642dba3f1a371402e",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "c072a73e0caaf8a79fe473431e2980af0e54c3f2667bb32dfd065739a510e880",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:05:18.659771+00:00",
+      "ownerRunId": "f4ca19c7339297322949010d55f0bdc7"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:14:54.571920+00:00",
+      "ownerRunId": "f4ca19c7339297322949010d55f0bdc7"
+    },
+    {
+      "attemptId": "9a50d2a0b2f59d8929356a985aecbacc",
+      "createdAt": "2026-11-10T01:14:54.8007786+00:00",
+      "environmentId": "a6d7e9e05ffc8246c43cf475adf218cb",
+      "kind": "actual-issued-owner",
+      "label": "partial",
+      "observedAtUtc": "2026-11-10T01:14:55.651606+00:00",
+      "runId": "65f3d90f07d4baeb9622c1b14a73156a",
+      "startupDeadlineUtc": "2026-11-10T01:24:54.8007786+00:00"
+    },
+    {
+      "identity": {
+        "birth": "14467592",
+        "pid": 1475358,
+        "session": 1471548
+      },
+      "kind": "owned-startup-paused",
+      "observedAtUtc": "2026-11-10T01:15:21.078709+00:00",
+      "ownerRunId": "65f3d90f07d4baeb9622c1b14a73156a"
+    },
+    {
+      "images": [
+        {
+          "containerId": "2580c466287da68e463aa995148a28cd7c0d661202f49d3180367308cb619bc0",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "33261e50854d134ea31d1ce4661c2841457510cd4a26e5cf1ec1ecb493c68df7",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "df00e36e2c2bfcef46400716d593c03ae4d81db82c9ea47ead861dfc9faad79a",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "ee1fb09c32654c69f2e9c0286c0f7cad7d8bc234c3bc2e5f1a433a83751115ea",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:15:21.279404+00:00",
+      "ownerRunId": "65f3d90f07d4baeb9622c1b14a73156a"
+    },
+    {
+      "firstOutcomeBeforeSignal": null,
+      "identity": {
+        "birth": "14465762",
+        "pid": 1471548,
+        "session": 1471548
+      },
+      "kind": "actual-tool-signal",
+      "label": "partial",
+      "observedAtUtc": "2026-11-10T01:15:21.318044+00:00",
+      "requestedAtUtc": "2026-11-10T01:15:21.317797+00:00",
+      "signal": 9
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:15:24.583829+00:00",
+      "ownerRunId": "65f3d90f07d4baeb9622c1b14a73156a"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:15:25.112168+00:00",
+      "ownerRunId": "65f3d90f07d4baeb9622c1b14a73156a"
+    },
+    {
+      "attemptId": "0e4705bbee10f38c61418b1d07bbd848",
+      "createdAt": "2026-11-10T01:15:25.3905293+00:00",
+      "environmentId": "f91a1320de61889b1d797fe5a686ad84",
+      "kind": "actual-issued-owner",
+      "label": "cancel",
+      "observedAtUtc": "2026-11-10T01:15:26.339943+00:00",
+      "runId": "898215e0ed87fd2a700e579af0bbb45c",
+      "startupDeadlineUtc": "2026-11-10T01:25:25.3905293+00:00"
+    },
+    {
+      "descriptorSha256": "87ad0071dfb61b57ac54af3e7603ab0a49f52bc7b07f2382c7abc7700ed1468c",
+      "identity": {
+        "birth": "14474643",
+        "pid": 1493281,
+        "session": 1479391
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:16:29.1708401+00:00",
+      "ownerRunId": "898215e0ed87fd2a700e579af0bbb45c"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0952bfbde7c854ced5437f43c6a172a8550bf2a7d35bbd4dd6f3efebe01db763",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "152b205a62463c038e8c7570ac9eb69b40f39c6913d400dc6d99ee1001131e39",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "1d402b8ffcd3b6e0e11dfaafb78de46057372d0d1195110620fc703e459bf65b",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "39035534dfe96a25883e954358183fe1e393d86635b87bc4ba464c57cb84839a",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "748dba1494bb1ebe08a4c9c799f399ffdb7d80c56d164d31d3e0230c1a131c7b",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "7e735044983cd9c5d74157cdd306abef3a7c7df72180d3cf1ae24231597b2913",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "7ed108c0eaca9709ec3f0e5e5f359ed8062e9469eda1f7da2365fdf3d18d49a5",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "885e90ffa199cb7b02f9e7daca19aa988ae70385f81a990242ead6a2b8087571",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "8d45c301479cd6f70af4aec942be4374a14d73292d6b9fab2b88a19a318f2e9d",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "90c29270439c2f54fa19baaaf79fcdcf45a6997fb2a07944ec12734eb3a2ae70",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "95b2e61ddc09b2fd8bdc1bbf399397648861804cb0ebfb46ebd9ebf177e74ef9",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "a551cc9e72f5736aa7a6db370107d8066e4fa149134111ed4b084b81ce3f0c50",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "c1ae59c0cbb53684e4726f48875292d0509b351f63a990df84b2ab9a2b146c8c",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:16:29.630939+00:00",
+      "ownerRunId": "898215e0ed87fd2a700e579af0bbb45c"
+    },
+    {
+      "firstOutcomeBeforeSignal": null,
+      "identity": {
+        "birth": "14468821",
+        "pid": 1479391,
+        "session": 1479391
+      },
+      "kind": "actual-tool-signal",
+      "label": "cancel",
+      "observedAtUtc": "2026-11-10T01:16:29.654258+00:00",
+      "requestedAtUtc": "2026-11-10T01:16:29.654096+00:00",
+      "signal": 2
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:16:34.745632+00:00",
+      "ownerRunId": "898215e0ed87fd2a700e579af0bbb45c"
+    },
+    {
+      "attemptId": "168617cce17c32235169ccfda4d65109",
+      "createdAt": "2026-11-10T01:16:35.0075133+00:00",
+      "environmentId": "2196b8d38ffe59cac7c4c788e42b6ad4",
+      "kind": "actual-issued-owner",
+      "label": "finish-hold",
+      "observedAtUtc": "2026-11-10T01:16:35.959395+00:00",
+      "runId": "1839ad08fe109422417902d3a32dc1fa",
+      "startupDeadlineUtc": "2026-11-10T01:26:35.0075133+00:00"
+    },
+    {
+      "descriptorSha256": "33b76911dfc1bdb2624ce270b5597c3ba75d631ac6e3c77966e512f9e41a72fe",
+      "identity": {
+        "birth": "14481560",
+        "pid": 1509639,
+        "session": 1495702
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:17:38.3399207+00:00",
+      "ownerRunId": "1839ad08fe109422417902d3a32dc1fa"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0eee717cb52f077b975dc78b71c43c13a86424ae00a05de9d7dd30c146f6743f",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "18f5287631901170383427599e0a8f7fad66d0de02f384fb96ddc05cf54948b5",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "2b0e81ceb5ac5d19c196c1a264b43818eba8d4013083f5a0b82efac2a3527b86",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "55dae5b38c8208b99ea29566d9ef99ff534a22e9a98ddaac587a3bdd22b53455",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "5c28b9fe573378cf60214fb18051f40fc4e21977565c9cd2b7e91ba358f3bc76",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "5f52f22624d56a66d22a646a115861d8e4b98e81a79eb1cc2e90bbf1c7ac08b8",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "606ac3a30b4031fd80f4a94b205263abfc78f9f2101b4ecf725f6940a6e4ab4c",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "86054e82552d7319b3b0969994ce8b54a8c66d273de7de35ab450d48362e2660",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "a59804a09a7c178b7d2790acd88395ea30e1eec824bff8a149f4c9cf947224a0",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "afa7ac8ad71551ae98daf2812b8609fa9c580ef27d3d059b6c5dbd16a8705719",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "b53b1b795dd1af14934bff319d6b9965a77191a4001817f7e695e34a02865512",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "bc5c426d05eb1a96bb89a653f914193db5da24f8e557794d5fb69b8996757a64",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "ff3e35becd62530b8927fd77c7e00b470f1c81dad98bcdee8a0090ea1ba5551a",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:17:38.862631+00:00",
+      "ownerRunId": "1839ad08fe109422417902d3a32dc1fa"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:17:38.9073358+00:00",
+        "attachedRunId": "21a5c0c046f2a04ba332a42cabe59246",
+        "effectiveHoldSeconds": 120,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "2196b8d38ffe59cac7c4c788e42b6ad4",
+        "expiresAtUtc": "2026-11-10T01:19:38.9073358+00:00",
+        "originalAttachmentRequestId": "83bf5b67e259f993ee35550a46fd25fa",
+        "outcome": null,
+        "ownerRunId": "1839ad08fe109422417902d3a32dc1fa",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:17:39.034490+00:00",
+      "ownerRunId": "1839ad08fe109422417902d3a32dc1fa"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:17:38.9073358+00:00",
+        "attachedRunId": "21a5c0c046f2a04ba332a42cabe59246",
+        "effectiveHoldSeconds": 120,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "2196b8d38ffe59cac7c4c788e42b6ad4",
+        "expiresAtUtc": "2026-11-10T01:19:38.9073358+00:00",
+        "originalAttachmentRequestId": "83bf5b67e259f993ee35550a46fd25fa",
+        "outcome": null,
+        "ownerRunId": "1839ad08fe109422417902d3a32dc1fa",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:17:39.197315+00:00",
+      "ownerRunId": "1839ad08fe109422417902d3a32dc1fa"
+    },
+    {
+      "actualAttachedSuiteExecuted": false,
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:17:38.9073358+00:00",
+        "attachedRunId": "21a5c0c046f2a04ba332a42cabe59246",
+        "effectiveHoldSeconds": 120,
+        "endReason": "terminal-outcome",
+        "endedAtUtc": "2026-11-10T01:17:44.0852792+00:00",
+        "environmentId": "2196b8d38ffe59cac7c4c788e42b6ad4",
+        "expiresAtUtc": "2026-11-10T01:19:38.9073358+00:00",
+        "originalAttachmentRequestId": "83bf5b67e259f993ee35550a46fd25fa",
+        "outcome": "passed",
+        "ownerRunId": "1839ad08fe109422417902d3a32dc1fa",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "reported-attachment-terminal",
+      "observedAtUtc": "2026-11-10T01:17:44.218765+00:00"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:17:49.256580+00:00",
+      "ownerRunId": "1839ad08fe109422417902d3a32dc1fa"
+    },
+    {
+      "attemptId": "b3b66e19ad34b14d91373bec39313a66",
+      "createdAt": "2026-11-10T01:17:49.4429295+00:00",
+      "environmentId": "88fcf32e33bcebc36ad6cd0c23c0b190",
+      "kind": "actual-issued-owner",
+      "label": "cancel-hold",
+      "observedAtUtc": "2026-11-10T01:17:50.301359+00:00",
+      "runId": "b9416dd9da52e937ea87c47ef609cb84",
+      "startupDeadlineUtc": "2026-11-10T01:27:49.4429295+00:00"
+    },
+    {
+      "descriptorSha256": "8749a967209dbbf4b07ff13beca7e45704128f05e64b2499c4b216ecb2a034ed",
+      "identity": {
+        "birth": "14488782",
+        "pid": 1526179,
+        "session": 1512969
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:18:50.5910253+00:00",
+      "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0c3bfd4ca391ff8a2f0b12c8ed73c19f1c90df9c6eaf467123a0f32052570ad2",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "14937ebbd954df2d41c589e2f91aec53d81fa8ec3d141663056f25b87a487eec",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "4b357a4896503e81a81bca439b71e19b223724a442b948ac322d20ac51d5db0d",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "7237a15a994f692634408fab157b2586e9b999fea93ac886dcbef2ba443c3d68",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "739b435eb24f10249e1eb0a09a65d620cc6c8445dbe728316337a814f137e7ca",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "799af43f66ff140313366a779a5a169ca6b74a7dd90504c561f97ae1737ce48e",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "83afd15a4ccb5126d6627a57de74336ccb8ddaaf93e19628c96c263beaf15566",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "9e12a1460879a31ce9e1ccc7cb7bac6b58ecb85203f852aa56e16ad64b0bb424",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "abd547bf72881bcfb15c3006d1a4e1853a01eb6095db09685dc97337b2352d63",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "abf4a94ed23abb269fd6bdf877b6ce5a6b1f02b038b8124c41ef1175d5f80afc",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "b7518196dc6436767c738f1bbd95879f4da4be90ff8be769223e4018d4c6d7c3",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "eedc1d2aec5da7e1143793281c4c255f08755801dc4fb447d9a7c8e4e0a62cf6",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "fa0e35ae03878ccb89c167ddc1da7cb4068299ef4212f4aac9cf6fb88359ddf1",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:18:51.079510+00:00",
+      "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:18:51.1293414+00:00",
+        "attachedRunId": "1344aadd75934bd080cc9885633cf92e",
+        "effectiveHoldSeconds": 120,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "88fcf32e33bcebc36ad6cd0c23c0b190",
+        "expiresAtUtc": "2026-11-10T01:20:51.1293414+00:00",
+        "originalAttachmentRequestId": "56e919c60d6a7395754d54de908f0d5b",
+        "outcome": null,
+        "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:18:51.254465+00:00",
+      "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84"
+    },
+    {
+      "firstOutcomeBeforeSignal": null,
+      "identity": {
+        "birth": "14483230",
+        "pid": 1512969,
+        "session": 1512969
+      },
+      "kind": "actual-tool-signal",
+      "label": "cancel-hold",
+      "observedAtUtc": "2026-11-10T01:18:51.263253+00:00",
+      "requestedAtUtc": "2026-11-10T01:18:51.263160+00:00",
+      "signal": 2
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:18:51.1293414+00:00",
+        "attachedRunId": "1344aadd75934bd080cc9885633cf92e",
+        "effectiveHoldSeconds": 120,
+        "endReason": "owner-cancelled",
+        "endedAtUtc": "2026-11-10T01:18:51.6011227+00:00",
+        "environmentId": "88fcf32e33bcebc36ad6cd0c23c0b190",
+        "expiresAtUtc": "2026-11-10T01:20:51.1293414+00:00",
+        "originalAttachmentRequestId": "56e919c60d6a7395754d54de908f0d5b",
+        "outcome": "withdrawn",
+        "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "withdrawn-before-teardown",
+      "observedAtUtc": "2026-11-10T01:18:51.742386+00:00",
+      "ownedResourcesStillLive": true
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:18:55.951472+00:00",
+      "ownerRunId": "b9416dd9da52e937ea87c47ef609cb84"
+    },
+    {
+      "attemptId": "ac63e9e3460dadc838517735e8af25ca",
+      "createdAt": "2026-11-10T01:18:56.1411329+00:00",
+      "environmentId": "a91109b6c4880fb65447b5309f588f6d",
+      "kind": "actual-issued-owner",
+      "label": "attached-failure",
+      "observedAtUtc": "2026-11-10T01:18:56.998928+00:00",
+      "runId": "b700e230f90a15604a117ccb811d16c7",
+      "startupDeadlineUtc": "2026-11-10T01:28:56.1411329+00:00"
+    },
+    {
+      "descriptorSha256": "848ed28b0fb53b74a12c87486d59450028c210dcbcd56dfa57e2bd40e4d7b4fe",
+      "identity": {
+        "birth": "14495677",
+        "pid": 1547642,
+        "session": 1528537
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:19:59.6562464+00:00",
+      "ownerRunId": "b700e230f90a15604a117ccb811d16c7"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0f2ae7e0ce96fe64b55043d733ae1b9ad27ab93c766affabb6c34e33157e5599",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "21a9ed9c3d6fee46e93b31b97c47524eac5169541099a0de0615ccf783fca8e1",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "2b808621f4af00d054621cc19606f7ff6e97f9aeec42e74d11169d14c836c1c6",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "4513e551e74c75562b37e17082c7746aef550109d77aa3b6fde1abf49a063ac9",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "59ada8bc7f33ee9a43338ffb8b8a709299f507ae95b7904edbeb65226c11d076",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "61e9527cf5524590e4cdc97cd97cfe2a85fe610710222383f75897a40f068716",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "bec2a6c8c8a7855528c90ed00a009bdbcbf62ccf1f21fc76b08db64f619cf8f7",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "c7d9b7f718fe22e21b3a20b66bd8a4d7bb0e2ca2b67b2b91d7fd64e2c5000d3b",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "c9fc950d62ea388f6969e2065af4947405497956d03ab7195b859d77e9a14941",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "ca79babab41a8a5151e96c903737bfa9eaf5e29fd4b9ff0566d7e1268aa60587",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "d6b3dcd0f93384f7dca153f63a4f90daed3316c05ff0405db2039a2931dd6f59",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "d9e9555084423742f4f48da016c1687683597afa553c145af8c1c4a6e17862a5",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "ee9b65a2e6057ab0efcc5eae12748ffbd99c695a8561e5443f760be0f914ae9a",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:20:00.207964+00:00",
+      "ownerRunId": "b700e230f90a15604a117ccb811d16c7"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:20:00.251269+00:00",
+        "attachedRunId": "e4faf3452e507000f3f0c9cb544a193b",
+        "effectiveHoldSeconds": 120,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "a91109b6c4880fb65447b5309f588f6d",
+        "expiresAtUtc": "2026-11-10T01:22:00.251269+00:00",
+        "originalAttachmentRequestId": "de0808d910ccaf6965a7bfd03c69aa7c",
+        "outcome": null,
+        "ownerRunId": "b700e230f90a15604a117ccb811d16c7",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:20:00.378999+00:00",
+      "ownerRunId": "b700e230f90a15604a117ccb811d16c7"
+    },
+    {
+      "actualAttachedSuiteExecuted": false,
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:20:00.251269+00:00",
+        "attachedRunId": "e4faf3452e507000f3f0c9cb544a193b",
+        "effectiveHoldSeconds": 120,
+        "endReason": "terminal-outcome",
+        "endedAtUtc": "2026-11-10T01:20:00.4199581+00:00",
+        "environmentId": "a91109b6c4880fb65447b5309f588f6d",
+        "expiresAtUtc": "2026-11-10T01:22:00.251269+00:00",
+        "originalAttachmentRequestId": "de0808d910ccaf6965a7bfd03c69aa7c",
+        "outcome": "failed",
+        "ownerRunId": "b700e230f90a15604a117ccb811d16c7",
+        "requestedHoldSeconds": 120
+      },
+      "kind": "reported-attachment-terminal",
+      "observedAtUtc": "2026-11-10T01:20:00.550236+00:00"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:20:05.8015492+00:00",
+        "attachedRunId": "10908590c40abb706b8be06c2107aa07",
+        "effectiveHoldSeconds": 2,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "a91109b6c4880fb65447b5309f588f6d",
+        "expiresAtUtc": "2026-11-10T01:20:07.8015492+00:00",
+        "originalAttachmentRequestId": "a6148f5e756972d6332978d609ca1805",
+        "outcome": null,
+        "ownerRunId": "b700e230f90a15604a117ccb811d16c7",
+        "requestedHoldSeconds": 2
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:20:05.970548+00:00",
+      "ownerRunId": "b700e230f90a15604a117ccb811d16c7"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:20:12.118869+00:00",
+      "ownerRunId": "b700e230f90a15604a117ccb811d16c7"
+    },
+    {
+      "attemptId": "d022e4a250cdfb7f7795bc04c553933a",
+      "createdAt": "2026-11-10T01:20:12.3096258+00:00",
+      "environmentId": "810f2b91a26ed0cfda16f6b6b98ae7fd",
+      "kind": "actual-issued-owner",
+      "label": "failure-cancel",
+      "observedAtUtc": "2026-11-10T01:20:13.165704+00:00",
+      "runId": "fc0c2c41b0d61b23145b6988abb0af98",
+      "startupDeadlineUtc": "2026-11-10T01:30:12.3096258+00:00"
+    },
+    {
+      "descriptorSha256": "5048c8bce808a1f010915d50e29827444ff1cee3b6b8c7eeffafd69e2da6d46d",
+      "identity": {
+        "birth": "14503133",
+        "pid": 1572085,
+        "session": 1554345
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:21:14.0414487+00:00",
+      "ownerRunId": "fc0c2c41b0d61b23145b6988abb0af98"
+    },
+    {
+      "images": [
+        {
+          "containerId": "0c64662cd5a40fbe16248ed1679ce8d5102d148b213fa0f12505c0e31fa49457",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "1be82c7213075417679722771623663a2ea514a8252d08a072f12bde005874d4",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "1df7e7cd7e66593f12d253a877941c6c814bd475e3cce1ac63d0353181870a41",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "2ddfef1784fc670e658e9a0f2c22e5d3b44e6de908786c42d62c3c49791fa486",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "2e1b31c993c6627f0ee274ea158b2309536c6b5a44b9a8557104eda3dbb60a94",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "3abbdf98032bc5331108c50c331c13b2551459e315a86898c0100fb6f15e226c",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "5f2391dc457cb433910d3630f31b8a183225ee4a0c984980d23a7e960548bbb7",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "75c8207fe82e775c5e7f3761bd93be1cc0790a1eff19d9afb035e0b6a9b0beb1",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "7c6b69035c34342e38477332b78cdd53a8fbe1167cb498d15ffb84e57be65e72",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "7d4734ce04dc905fd23a026f8e5472863d4a088cfe3babba3cff2b058d3052e7",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "9c9e308911a02bd498d31471926b05385ffce8ac511eba75b4d36dde316773eb",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "d0762656ccbef8b0a2626cb7e24e057a7d0035d77557fc14c5fa820218ffc911",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "eadc94ef5e0fa67a63371d554915205544a7ec874c91f41cf9680b6562ab1fd5",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:21:14.563167+00:00",
+      "ownerRunId": "fc0c2c41b0d61b23145b6988abb0af98"
+    },
+    {
+      "firstOutcomeBeforeSignal": {
+        "expectedContractCause": "test-failure",
+        "ownerId": "fc0c2c41b0d61b23145b6988abb0af98",
+        "runId": "fc0c2c41b0d61b23145b6988abb0af98",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:21:14.7328385+00:00",
+        "terminalCause": "test-failure",
+        "terminalOutcome": {
+          "category": "ProductOrTest",
+          "exitCode": "ProductOrTest",
+          "phase": "Test",
+          "ruleId": "HXT007"
+        },
+        "terminalStatus": "failed"
+      },
+      "identity": {
+        "birth": "14497517",
+        "pid": 1554345,
+        "session": 1554345
+      },
+      "kind": "actual-tool-signal",
+      "label": "failure-cancel",
+      "observedAtUtc": "2026-11-10T01:21:14.794289+00:00",
+      "requestedAtUtc": "2026-11-10T01:21:14.794166+00:00",
+      "signal": 2
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:21:19.340562+00:00",
+      "ownerRunId": "fc0c2c41b0d61b23145b6988abb0af98"
+    },
+    {
+      "attemptId": "51c691aa273031cf2abcee62d647d15d",
+      "createdAt": "2026-11-10T01:21:19.5323645+00:00",
+      "environmentId": "1f90ed5ac921d3d09133e20c4d0c7bbd",
+      "kind": "actual-issued-owner",
+      "label": "retry",
+      "observedAtUtc": "2026-11-10T01:21:20.389346+00:00",
+      "runId": "f3f1ef76e86124db347a67c96edea9d7",
+      "startupDeadlineUtc": "2026-11-10T01:31:19.5323645+00:00"
+    },
+    {
+      "attemptId": "4e127e6803125494fa40157958866d65",
+      "createdAt": "2026-11-10T01:21:20.5700054+00:00",
+      "environmentId": "9a18f3a47ad381d165af23adf5ec0518",
+      "kind": "actual-issued-owner",
+      "label": "peer",
+      "observedAtUtc": "2026-11-10T01:21:21.527088+00:00",
+      "runId": "005b26824940ce420a5db347dc6324c3",
+      "startupDeadlineUtc": "2026-11-10T01:31:20.5700054+00:00"
+    },
+    {
+      "descriptorSha256": "3d866d6372e931ba6b653c1a059b6ec639d2a5392008cc61e89b63b06b0ae76b",
+      "identity": {
+        "birth": "14510512",
+        "pid": 1598600,
+        "session": 1574957
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:22:28.2621555+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7"
+    },
+    {
+      "images": [
+        {
+          "containerId": "16115473ffec596632a1bfd95f3ff00867a3445aa92104a3e7095a281d5fcff7",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "24281751262e4175765a370a633b156d7206a590e2ec1dab1978fd4d2cfd4aa2",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "343c134f6ad67d6b6e33e85852c2ca0c19c149876add9a92608a68de660b2e9e",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "41ddd4e154ab550988ea25671cad89ba56ba6d01546de5a379386416bf808b10",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "505ac3275162e22a5c7c0670938dfe187f19e66dfe4204ff37d0bafdf20053ea",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "83d5e303ce62d999032472ee432cf83043cdc0409bc13ec7a0543a38b06e9406",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "a800a49ef67513d00840abcd24e2c68028e5715b24e396e62dee00b71e4bcdb5",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "a8ebdd42c4abd302c53aba27aaf1a4c1f5a20c16a7b89782548d6b9f5b6eb70c",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "aa5b6dd59ffd6c3b91e54eb467533da3a2f2c8587095c8f19b1f4b4b2f40480d",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "c9de60ac0481232db11e03cab0fab6ad764aae518326c56807ea805ada2701e3",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "d9649ded79d6044622812dbdc2efed2952ccf3f1b1bf26bddc0306b28fd27a3d",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "f4046dff43acfd492e8d691b6a560cc4533e6b5bad570dd4775b8ca62644c659",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "fb242a732a7ec9260a8ca41db019893c6264f582009a4fa76d5933939dc4476e",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:22:28.799859+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7"
+    },
+    {
+      "descriptorSha256": "61bc918b1d2b60232e1fe11db1361ddf82378c038def9b1765491eca40f2f13a",
+      "identity": {
+        "birth": "14510524",
+        "pid": 1598628,
+        "session": 1575132
+      },
+      "kind": "real-persistence-checkpoint",
+      "observedAtUtc": "2026-11-10T01:22:28.3475961+00:00",
+      "ownerRunId": "005b26824940ce420a5db347dc6324c3"
+    },
+    {
+      "images": [
+        {
+          "containerId": "12c9b130ec7c73ebf3b661d7e68ee6194c4d0fba0e7aeec021edaa1b15fd4641",
+          "imageContentId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+          "imageReference": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+        },
+        {
+          "containerId": "17ba6abf621fb2f300d1778a7a775741fa12d51e18f40a1279b7273a0c163b76",
+          "imageContentId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7",
+          "imageReference": "redis/redis-stack:latest"
+        },
+        {
+          "containerId": "1a5ab1b34491aefe542b1a21d2b4cc0891059a003d2cf9f8f74b6c04a9386ddb",
+          "imageContentId": "sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
+          "imageReference": "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
+        },
+        {
+          "containerId": "299ad1a860c7a71d554453d5639790a18eff95e7336065a4a3953e69ee33bbc7",
+          "imageContentId": "sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
+          "imageReference": "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
+        },
+        {
+          "containerId": "468ed51fc4a75ccfba5d27bf12b4d277ca7e192ce2a93f65121c4ffb6cc9e595",
+          "imageContentId": "sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
+          "imageReference": "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820"
+        },
+        {
+          "containerId": "490871b72f84f335c19d2b9e28b415bd9b87077fa9c16ec9f9a34ff4fe71ad57",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        },
+        {
+          "containerId": "875878e0173c4ea1c136df638e790244a7381338dd1c334b32b11fd36013708d",
+          "imageContentId": "sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
+          "imageReference": "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"
+        },
+        {
+          "containerId": "8d10489f2d2ff91f2b63364c3c12e2c0d4bb6b7a72cb709d45f71254b206349f",
+          "imageContentId": "sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
+          "imageReference": "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a"
+        },
+        {
+          "containerId": "957a1470fae0fb135cdcec4a9b788a69a6a92a13e1ba54ace2dc74ec5900ee1f",
+          "imageContentId": "sha256:9db47522a5e50073e82f4e052c4cb3e5a3bb33865556e2415b141a9387ef0073",
+          "imageReference": "daprio/sentry:1.19.1"
+        },
+        {
+          "containerId": "a12a1c79612e77ee797a32118a0034918134c9f2c81e9a03ac4dc836b4b52857",
+          "imageContentId": "sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b"
+        },
+        {
+          "containerId": "bc08fdfc32e2dfa3b2417fa4680e41a5443d184dcf2644f1b4ca98b78c2265a0",
+          "imageContentId": "sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
+          "imageReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e"
+        },
+        {
+          "containerId": "d3e114b5683f956b75a0c574f73f4340c209c2c00f512947713b3935f4a6dd6c",
+          "imageContentId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f",
+          "imageReference": "falkordb/falkordb:latest"
+        },
+        {
+          "containerId": "fdf33d66e61da151a7bacfbfef78d1eb69af36757d676b3c1b81944e6ef766c5",
+          "imageContentId": "sha256:801b920e02867addcd64f9a5792b8aadf015d6fc365f8b26a72415e2e01bcf98",
+          "imageReference": "daprio/dapr:1.19.1"
+        }
+      ],
+      "kind": "actual-images",
+      "observedAtUtc": "2026-11-10T01:22:29.239135+00:00",
+      "ownerRunId": "005b26824940ce420a5db347dc6324c3"
+    },
+    {
+      "attachment": {
+        "acceptedAtUtc": "2026-11-10T01:22:29.3455142+00:00",
+        "attachedRunId": "efebfc4f055a5e6fc6b3e625e5ed3b90",
+        "effectiveHoldSeconds": 240,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "1f90ed5ac921d3d09133e20c4d0c7bbd",
+        "expiresAtUtc": "2026-11-10T01:26:29.3455142+00:00",
+        "originalAttachmentRequestId": "3703b5790f5f04f1236ef31ebdc1bc84",
+        "outcome": null,
+        "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7",
+        "requestedHoldSeconds": 240
+      },
+      "kind": "actual-admission",
+      "observedAtUtc": "2026-11-10T01:22:29.476060+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7"
+    },
+    {
+      "kind": "real-lock-refusal",
+      "observedAtUtc": "2026-11-10T01:22:34.825755+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7",
+      "ruleId": "HXR037"
+    },
+    {
+      "kind": "real-lock-refusal",
+      "observedAtUtc": "2026-11-10T01:22:40.413956+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7",
+      "ruleId": "HXR023"
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:22:45.009563+00:00",
+      "ownerRunId": "f3f1ef76e86124db347a67c96edea9d7"
+    },
+    {
+      "firstOutcomeBeforeSignal": null,
+      "identity": {
+        "birth": "14504343",
+        "pid": 1575132,
+        "session": 1575132
+      },
+      "kind": "actual-tool-signal",
+      "label": "peer",
+      "observedAtUtc": "2026-11-10T01:22:45.493153+00:00",
+      "requestedAtUtc": "2026-11-10T01:22:45.493087+00:00",
+      "signal": 2
+    },
+    {
+      "kind": "exact-cleanup-verified",
+      "observedAtUtc": "2026-11-10T01:22:50.060164+00:00",
+      "ownerRunId": "005b26824940ce420a5db347dc6324c3"
+    }
+  ],
+  "owners": [
+    {
+      "attemptId": "65ca2e8691df24b8fce209071fabe3fb",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:02:12.8837723+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:02:12.8837723+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:12:12.8837723+00:00"
+      },
+      "environmentId": "35e0b93c569bf39a6313ca8278be2eff",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "tests-completed",
+        "ownerId": "695470f1b07303a5bced00a7abdf2326",
+        "runId": "695470f1b07303a5bced00a7abdf2326",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:03:26.5488376+00:00",
+        "terminalCause": "tests-completed",
+        "terminalOutcome": {
+          "category": "None",
+          "exitCode": "Success",
+          "phase": "None",
+          "ruleId": null
+        },
+        "terminalStatus": "completed"
+      },
+      "issued": true,
+      "label": "success",
+      "launchIdentity": {
+        "birth": "14389568",
+        "pid": 1330435,
+        "session": 1330435
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 4,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 341,
+        "ownerToolBirthTicks": "14389568"
+      },
+      "publicTerminalProof": true,
+      "runId": "695470f1b07303a5bced00a7abdf2326",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:12:12.8837723+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 57.9647295
+    },
+    {
+      "attemptId": "5e402f8d69d1b2404d0d697f25c82e88",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:03:31.8550612+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:03:31.8550612+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:13:31.8550612+00:00"
+      },
+      "environmentId": "77ae32b474b835d23a90242193fa9ad9",
+      "failureRetained": true,
+      "firstOutcome": {
+        "expectedContractCause": "test-failure",
+        "ownerId": "c9a37a83e3bd8fa8537f493d5f6bec8d",
+        "runId": "c9a37a83e3bd8fa8537f493d5f6bec8d",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:04:44.4391297+00:00",
+        "terminalCause": "test-failure",
+        "terminalOutcome": {
+          "category": "ProductOrTest",
+          "exitCode": "ProductOrTest",
+          "phase": "Test",
+          "ruleId": "HXT007"
+        },
+        "terminalStatus": "failed"
+      },
+      "issued": true,
+      "label": "failure",
+      "launchIdentity": {
+        "birth": "14397467",
+        "pid": 1354912,
+        "session": 1354912
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 2,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 341,
+        "ownerToolBirthTicks": "14397467"
+      },
+      "publicTerminalProof": true,
+      "runId": "c9a37a83e3bd8fa8537f493d5f6bec8d",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:13:31.8550612+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 55.2684783
+    },
+    {
+      "attemptId": "469db28653eb129b959e952615df7c89",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:04:50.6304319+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:04:50.6304319+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:14:50.6304319+00:00"
+      },
+      "environmentId": "91d3075b6bc624c3e69f6ca2c4426a00",
+      "failureRetained": true,
+      "firstOutcome": {
+        "expectedContractCause": "startup-timeout",
+        "ownerId": "f4ca19c7339297322949010d55f0bdc7",
+        "runId": "f4ca19c7339297322949010d55f0bdc7",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:14:51.0821162+00:00",
+        "terminalCause": "startup-timeout",
+        "terminalOutcome": {
+          "category": "TopologyOrLifecycle",
+          "exitCode": "TopologyOrLifecycle",
+          "phase": "Topology",
+          "ruleId": "HXR021"
+        },
+        "terminalStatus": "failed"
+      },
+      "issued": true,
+      "label": "timeout",
+      "launchIdentity": {
+        "birth": "14405342",
+        "pid": 1372842,
+        "session": 1372842
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 4,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 340,
+        "ownerToolBirthTicks": "14405342"
+      },
+      "publicTerminalProof": true,
+      "runId": "f4ca19c7339297322949010d55f0bdc7",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:14:50.6304319+00:00",
+      "startupDurationSeconds": null
+    },
+    {
+      "attemptId": "9a50d2a0b2f59d8929356a985aecbacc",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:14:54.8007786+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:14:54.8007786+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:24:54.8007786+00:00"
+      },
+      "environmentId": "a6d7e9e05ffc8246c43cf475adf218cb",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "run-cancelled",
+        "ownerId": "65f3d90f07d4baeb9622c1b14a73156a",
+        "runId": "65f3d90f07d4baeb9622c1b14a73156a",
+        "sourceMappingHash": null,
+        "terminalAtUtc": "2026-11-10T01:15:21.5540392+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "issued": true,
+      "label": "partial",
+      "launchIdentity": {
+        "birth": "14465762",
+        "pid": 1471548,
+        "session": 1471548
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 6,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 341,
+        "ownerToolBirthTicks": "14465762"
+      },
+      "publicTerminalProof": true,
+      "runId": "65f3d90f07d4baeb9622c1b14a73156a",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:24:54.8007786+00:00",
+      "startupDurationSeconds": null
+    },
+    {
+      "attemptId": "0e4705bbee10f38c61418b1d07bbd848",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:15:25.3905293+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:15:25.3905293+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:25:25.3905293+00:00"
+      },
+      "environmentId": "f91a1320de61889b1d797fe5a686ad84",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "run-cancelled",
+        "ownerId": "898215e0ed87fd2a700e579af0bbb45c",
+        "runId": "898215e0ed87fd2a700e579af0bbb45c",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:16:29.7651171+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "issued": true,
+      "label": "cancel",
+      "launchIdentity": {
+        "birth": "14468821",
+        "pid": 1479391,
+        "session": 1479391
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 3,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 336,
+        "ownerToolBirthTicks": "14468821"
+      },
+      "publicTerminalProof": true,
+      "runId": "898215e0ed87fd2a700e579af0bbb45c",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:25:25.3905293+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 53.71304
+    },
+    {
+      "attemptId": "168617cce17c32235169ccfda4d65109",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:16:35.0075133+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:16:35.0075133+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:26:35.0075133+00:00"
+      },
+      "environmentId": "2196b8d38ffe59cac7c4c788e42b6ad4",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "tests-completed",
+        "ownerId": "1839ad08fe109422417902d3a32dc1fa",
+        "runId": "1839ad08fe109422417902d3a32dc1fa",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:17:43.716373+00:00",
+        "terminalCause": "tests-completed",
+        "terminalOutcome": {
+          "category": "None",
+          "exitCode": "Success",
+          "phase": "None",
+          "ruleId": null
+        },
+        "terminalStatus": "completed"
+      },
+      "issued": true,
+      "label": "finish-hold",
+      "launchIdentity": {
+        "birth": "14475784",
+        "pid": 1495702,
+        "session": 1495702
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 1,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 336,
+        "ownerToolBirthTicks": "14475784"
+      },
+      "publicTerminalProof": true,
+      "runId": "1839ad08fe109422417902d3a32dc1fa",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:26:35.0075133+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 53.0679463
+    },
+    {
+      "attemptId": "b3b66e19ad34b14d91373bec39313a66",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:17:49.4429295+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:17:49.4429295+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:27:49.4429295+00:00"
+      },
+      "environmentId": "88fcf32e33bcebc36ad6cd0c23c0b190",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "run-cancelled",
+        "ownerId": "b9416dd9da52e937ea87c47ef609cb84",
+        "runId": "b9416dd9da52e937ea87c47ef609cb84",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:18:51.3730843+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "issued": true,
+      "label": "cancel-hold",
+      "launchIdentity": {
+        "birth": "14483230",
+        "pid": 1512969,
+        "session": 1512969
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 3,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 336,
+        "ownerToolBirthTicks": "14483230"
+      },
+      "publicTerminalProof": true,
+      "runId": "b9416dd9da52e937ea87c47ef609cb84",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:27:49.4429295+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 51.065532
+    },
+    {
+      "attemptId": "ac63e9e3460dadc838517735e8af25ca",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:18:56.1411329+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:18:56.1411329+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:28:56.1411329+00:00"
+      },
+      "environmentId": "a91109b6c4880fb65447b5309f588f6d",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "tests-completed",
+        "ownerId": "b700e230f90a15604a117ccb811d16c7",
+        "runId": "b700e230f90a15604a117ccb811d16c7",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:20:05.3325662+00:00",
+        "terminalCause": "tests-completed",
+        "terminalOutcome": {
+          "category": "None",
+          "exitCode": "Success",
+          "phase": "None",
+          "ruleId": null
+        },
+        "terminalStatus": "completed"
+      },
+      "issued": true,
+      "label": "attached-failure",
+      "launchIdentity": {
+        "birth": "14489900",
+        "pid": 1528537,
+        "session": 1528537
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 1,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 336,
+        "ownerToolBirthTicks": "14489900"
+      },
+      "publicTerminalProof": true,
+      "runId": "b700e230f90a15604a117ccb811d16c7",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:28:56.1411329+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 53.2686594
+    },
+    {
+      "attemptId": "d022e4a250cdfb7f7795bc04c553933a",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:20:12.3096258+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:20:12.3096258+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:30:12.3096258+00:00"
+      },
+      "environmentId": "810f2b91a26ed0cfda16f6b6b98ae7fd",
+      "failureRetained": true,
+      "firstOutcome": {
+        "expectedContractCause": "test-failure",
+        "ownerId": "fc0c2c41b0d61b23145b6988abb0af98",
+        "runId": "fc0c2c41b0d61b23145b6988abb0af98",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:21:14.7328385+00:00",
+        "terminalCause": "test-failure",
+        "terminalOutcome": {
+          "category": "ProductOrTest",
+          "exitCode": "ProductOrTest",
+          "phase": "Test",
+          "ruleId": "HXT007"
+        },
+        "terminalStatus": "failed"
+      },
+      "issued": true,
+      "label": "failure-cancel",
+      "launchIdentity": {
+        "birth": "14497517",
+        "pid": 1554345,
+        "session": 1554345
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 0,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 335,
+        "ownerToolBirthTicks": "14497517"
+      },
+      "publicTerminalProof": true,
+      "runId": "fc0c2c41b0d61b23145b6988abb0af98",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:30:12.3096258+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 51.4544936
+    },
+    {
+      "attemptId": "51c691aa273031cf2abcee62d647d15d",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:21:19.5323645+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:21:19.5323645+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:31:19.5323645+00:00"
+      },
+      "environmentId": "1f90ed5ac921d3d09133e20c4d0c7bbd",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "run-cancelled",
+        "ownerId": "f3f1ef76e86124db347a67c96edea9d7",
+        "runId": "f3f1ef76e86124db347a67c96edea9d7",
+        "sourceMappingHash": null,
+        "terminalAtUtc": "2026-11-10T01:22:29.6449475+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "issued": true,
+      "label": "retry",
+      "launchIdentity": {
+        "birth": "14504239",
+        "pid": 1574957,
+        "session": 1574957
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 1,
+        "completeWithinBoundary": false,
+        "excludedPreexistingProcesses": 185,
+        "ownerToolBirthTicks": "14504239"
+      },
+      "publicTerminalProof": true,
+      "runId": "f3f1ef76e86124db347a67c96edea9d7",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:31:19.5323645+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 56.5291367
+    },
+    {
+      "attemptId": "4e127e6803125494fa40157958866d65",
+      "cleanupVerified": true,
+      "createdAt": "2026-11-10T01:21:20.5700054+00:00",
+      "deadline": {
+        "createdAt": "2026-11-10T01:21:20.5700054+00:00",
+        "effectiveDeadlineIsOverride": false,
+        "effectiveDeadlineSeconds": 600,
+        "startupDeadlineUtc": "2026-11-10T01:31:20.5700054+00:00"
+      },
+      "environmentId": "9a18f3a47ad381d165af23adf5ec0518",
+      "failureRetained": false,
+      "firstOutcome": {
+        "expectedContractCause": "run-cancelled",
+        "ownerId": "005b26824940ce420a5db347dc6324c3",
+        "runId": "005b26824940ce420a5db347dc6324c3",
+        "sourceMappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+        "terminalAtUtc": "2026-11-10T01:22:45.6467119+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "issued": true,
+      "label": "peer",
+      "launchIdentity": {
+        "birth": "14504343",
+        "pid": 1575132,
+        "session": 1575132
+      },
+      "originalMappingProof": true,
+      "ownedLeftovers": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "processIds": [],
+        "workspaceIds": []
+      },
+      "processDiscovery": {
+        "checkedSinceOwnerStart": 10,
+        "completeWithinBoundary": true,
+        "excludedPreexistingProcesses": 331,
+        "ownerToolBirthTicks": "14504343"
+      },
+      "publicTerminalProof": true,
+      "runId": "005b26824940ce420a5db347dc6324c3",
+      "sourceMappingDocumentSha256": "1fec767742bd3498126ea1b87c8589225c4779175a0c125f2f688a020e50d386",
+      "startupDeadlineUtc": "2026-11-10T01:31:20.5700054+00:00",
+      "startupDurationProof": true,
+      "startupDurationSeconds": 55.9455832
+    }
+  ],
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "requiredCases": [
+    "success-failure",
+    "startup-timeout-partial",
+    "cancellation-collision",
+    "owner-finish-hold",
+    "owner-cancel-hold",
+    "attached-failure-expiry",
+    "failure-then-cancellation",
+    "locks-retry-peer"
+  ],
+  "scenarios": {
+    "attached-failure-expiry": {
+      "failure": {
+        "failureCode": "HXLQ202",
+        "failureType": "Refusal",
+        "redacted": true
+      },
+      "finishedAtUtc": "2026-11-10T01:20:08.056225+00:00",
+      "startedAtUtc": "2026-11-10T01:18:55.967254+00:00",
+      "status": "failed"
+    },
+    "cancellation-collision": {
+      "finishedAtUtc": "2026-11-10T01:16:34.765204+00:00",
+      "missingProof": [
+        "exclusive-resource-selection-unavailable"
+      ],
+      "startedAtUtc": "2026-11-10T01:15:25.155123+00:00",
+      "status": "incomplete"
+    },
+    "failure-then-cancellation": {
+      "finishedAtUtc": "2026-11-10T01:21:19.349714+00:00",
+      "missingProof": [],
+      "startedAtUtc": "2026-11-10T01:20:12.134914+00:00",
+      "status": "passed"
+    },
+    "locks-retry-peer": {
+      "failure": {
+        "failureCode": "HXLQ205",
+        "failureType": "PermissionError",
+        "redacted": true
+      },
+      "finishedAtUtc": "2026-11-10T01:22:45.492963+00:00",
+      "startedAtUtc": "2026-11-10T01:21:19.358073+00:00",
+      "status": "failed"
+    },
+    "owner-cancel-hold": {
+      "finishedAtUtc": "2026-11-10T01:18:55.959497+00:00",
+      "missingProof": [
+        "attached-work-access-producer-unavailable"
+      ],
+      "startedAtUtc": "2026-11-10T01:17:49.271016+00:00",
+      "status": "incomplete"
+    },
+    "owner-finish-hold": {
+      "finishedAtUtc": "2026-11-10T01:17:49.263915+00:00",
+      "missingProof": [],
+      "startedAtUtc": "2026-11-10T01:16:34.785279+00:00",
+      "status": "passed"
+    },
+    "startup-timeout-partial": {
+      "finishedAtUtc": "2026-11-10T01:15:25.134831+00:00",
+      "missingProof": [
+        "startup-duration-producer-unavailable"
+      ],
+      "startedAtUtc": "2026-11-10T01:04:50.401144+00:00",
+      "status": "incomplete"
+    },
+    "success-failure": {
+      "finishedAtUtc": "2026-11-10T01:04:50.381642+00:00",
+      "missingProof": [],
+      "startedAtUtc": "2026-11-10T01:02:12.702899+00:00",
+      "status": "passed"
+    }
+  },
+  "schema": "hexalith.local-lifecycle-qualification.v1",
+  "selectedCases": [
+    "success-failure",
+    "startup-timeout-partial",
+    "cancellation-collision",
+    "owner-finish-hold",
+    "owner-cancel-hold",
+    "attached-failure-expiry",
+    "failure-then-cancellation",
+    "locks-retry-peer"
+  ],
+  "selectedPassed": false,
+  "toolAccepted": false
+}

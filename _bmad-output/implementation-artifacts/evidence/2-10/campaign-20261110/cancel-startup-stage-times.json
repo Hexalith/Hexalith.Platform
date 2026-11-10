@@ -1,0 +1,489 @@
+{
+  "schema": "hexalith.story-2-10.workflow-stage-times.v1",
+  "workflowRunId": "42737966490",
+  "jobs": [
+    {
+      "id": 129571761072,
+      "name": "baseline / build-and-test",
+      "conclusion": "success",
+      "started_at": "2026-11-10T01:45:03Z",
+      "completed_at": "2026-11-10T02:00:20Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:04Z",
+          "completed_at": "2026-11-10T01:45:08Z",
+          "durationSeconds": 4.0
+        },
+        {
+          "number": 2,
+          "name": "Validate declared integration inputs",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:08Z",
+          "completed_at": "2026-11-10T01:45:08Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 3,
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:08Z",
+          "completed_at": "2026-11-10T01:45:11Z",
+          "durationSeconds": 3.0
+        },
+        {
+          "number": 4,
+          "name": "Validate governed CI contract",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:45:11Z",
+          "completed_at": "2026-11-10T01:45:11Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 5,
+          "name": "Checkout approved Builds actions",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:45:11Z",
+          "completed_at": "2026-11-10T01:45:11Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 6,
+          "name": "Evaluate governed workflow provenance",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:45:11Z",
+          "completed_at": "2026-11-10T01:45:11Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 7,
+          "name": "Initialize root-declared submodules (governed)",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:45:11Z",
+          "completed_at": "2026-11-10T01:45:11Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 8,
+          "name": "Initialize root-declared submodules",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:11Z",
+          "completed_at": "2026-11-10T01:45:46Z",
+          "durationSeconds": 35.0
+        },
+        {
+          "number": 9,
+          "name": "Initialize .NET",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:46Z",
+          "completed_at": "2026-11-10T01:45:47Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 10,
+          "name": "Checkout workflow-owned Builds preparation",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:47Z",
+          "completed_at": "2026-11-10T01:45:49Z",
+          "durationSeconds": 2.0
+        },
+        {
+          "number": 11,
+          "name": "Prepare module build",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:49Z",
+          "completed_at": "2026-11-10T01:45:57Z",
+          "durationSeconds": 8.0
+        },
+        {
+          "number": 12,
+          "name": "Cache NuGet packages",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:45:57Z",
+          "completed_at": "2026-11-10T01:46:03Z",
+          "durationSeconds": 6.0
+        },
+        {
+          "number": 13,
+          "name": "Validate test platform input",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:46:03Z",
+          "completed_at": "2026-11-10T01:46:03Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 14,
+          "name": "Prepare package dependencies",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:46:03Z",
+          "completed_at": "2026-11-10T01:48:25Z",
+          "durationSeconds": 142.0
+        },
+        {
+          "number": 15,
+          "name": "Restore",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:48:25Z",
+          "completed_at": "2026-11-10T01:48:40Z",
+          "durationSeconds": 15.0
+        },
+        {
+          "number": 16,
+          "name": "Build",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:48:40Z",
+          "completed_at": "2026-11-10T01:49:50Z",
+          "durationSeconds": 70.0
+        },
+        {
+          "number": 17,
+          "name": "Validate package consumer references",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:49:50Z",
+          "completed_at": "2026-11-10T01:50:13Z",
+          "durationSeconds": 23.0
+        },
+        {
+          "number": 18,
+          "name": "Unit tests (Tier 1, VSTest)",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:50:13Z",
+          "completed_at": "2026-11-10T01:50:13Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 19,
+          "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:50:13Z",
+          "completed_at": "2026-11-10T01:56:46Z",
+          "durationSeconds": 393.0
+        },
+        {
+          "number": 20,
+          "name": "Require isolated success before integration",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:56:46Z",
+          "completed_at": "2026-11-10T01:56:46Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 21,
+          "name": "Validate coverage gates",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T01:56:46Z",
+          "completed_at": "2026-11-10T01:56:46Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 22,
+          "name": "Install integration toolchain without starting services",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:56:46Z",
+          "completed_at": "2026-11-10T01:56:46Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 23,
+          "name": "Prepare integration binaries",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:56:46Z",
+          "completed_at": "2026-11-10T01:56:53Z",
+          "durationSeconds": 7.0
+        },
+        {
+          "number": 24,
+          "name": "Authenticate pull-only integration registry",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:56:53Z",
+          "completed_at": "2026-11-10T01:56:55Z",
+          "durationSeconds": 2.0
+        },
+        {
+          "number": 25,
+          "name": "Runner-owned package integration",
+          "conclusion": "success",
+          "started_at": "2026-11-10T01:56:55Z",
+          "completed_at": "2026-11-10T02:00:13Z",
+          "durationSeconds": 198.0
+        },
+        {
+          "number": 26,
+          "name": "Finalize exact CI owner",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:13Z",
+          "completed_at": "2026-11-10T02:00:14Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 27,
+          "name": "Remove integration registry credentials",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:14Z",
+          "completed_at": "2026-11-10T02:00:14Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 28,
+          "name": "Upload classified integration diagnostics",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:14Z",
+          "completed_at": "2026-11-10T02:00:16Z",
+          "durationSeconds": 2.0
+        },
+        {
+          "number": 29,
+          "name": "Fail on blocking test failures",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:16Z",
+          "completed_at": "2026-11-10T02:00:16Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 30,
+          "name": "Upload test and coverage evidence",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:16Z",
+          "completed_at": "2026-11-10T02:00:17Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 57,
+          "name": "Post Cache NuGet packages",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:17Z",
+          "completed_at": "2026-11-10T02:00:17Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 58,
+          "name": "Post Checkout workflow-owned Builds preparation",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:17Z",
+          "completed_at": "2026-11-10T02:00:17Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 59,
+          "name": "Post Initialize .NET",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:17Z",
+          "completed_at": "2026-11-10T02:00:18Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 60,
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:18Z",
+          "completed_at": "2026-11-10T02:00:18Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 61,
+          "name": "Complete job",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:18Z",
+          "completed_at": "2026-11-10T02:00:18Z",
+          "durationSeconds": 0.0
+        }
+      ]
+    },
+    {
+      "id": 129577426735,
+      "name": "qualification",
+      "conclusion": "cancelled",
+      "started_at": "2026-11-10T02:00:24Z",
+      "completed_at": "2026-11-10T02:04:37Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:25Z",
+          "completed_at": "2026-11-10T02:00:26Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:26Z",
+          "completed_at": "2026-11-10T02:00:29Z",
+          "durationSeconds": 3.0
+        },
+        {
+          "number": 3,
+          "name": "Initialize only direct owner dependencies",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:00:29Z",
+          "completed_at": "2026-11-10T02:01:05Z",
+          "durationSeconds": 36.0
+        },
+        {
+          "number": 4,
+          "name": "Test the lifecycle controller before any service",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:05Z",
+          "completed_at": "2026-11-10T02:01:13Z",
+          "durationSeconds": 8.0
+        },
+        {
+          "number": 5,
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:13Z",
+          "completed_at": "2026-11-10T02:01:14Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 6,
+          "name": "Prepare the actual pinned package tool and catalog",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:14Z",
+          "completed_at": "2026-11-10T02:01:24Z",
+          "durationSeconds": 10.0
+        },
+        {
+          "number": 7,
+          "name": "Build the explicit declared lifecycle suite",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:24Z",
+          "completed_at": "2026-11-10T02:01:39Z",
+          "durationSeconds": 15.0
+        },
+        {
+          "number": 8,
+          "name": "Read verified catalog toolchain versions",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:39Z",
+          "completed_at": "2026-11-10T02:01:39Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 9,
+          "name": "Restore verified Aspire runtime packages in this job",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:39Z",
+          "completed_at": "2026-11-10T02:01:47Z",
+          "durationSeconds": 8.0
+        },
+        {
+          "number": 10,
+          "name": "Install toolchain without provisioning services",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:47Z",
+          "completed_at": "2026-11-10T02:01:57Z",
+          "durationSeconds": 10.0
+        },
+        {
+          "number": 11,
+          "name": "Configure only the dedicated pull reader",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:57Z",
+          "completed_at": "2026-11-10T02:01:57Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 12,
+          "name": "Exercise real passing failing partial-startup and exact retry scenarios",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T02:01:57Z",
+          "completed_at": "2026-11-10T02:01:57Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 13,
+          "name": "Exercise only the explicitly selected CI contract cases",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T02:01:57Z",
+          "completed_at": "2026-11-10T02:01:57Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 14,
+          "name": "Observe actual startup cancellation readiness",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:01:57Z",
+          "completed_at": "2026-11-10T02:04:00Z",
+          "durationSeconds": 123.0
+        },
+        {
+          "number": 15,
+          "name": "Observe actual execution cancellation readiness and active hold",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T02:04:00Z",
+          "completed_at": "2026-11-10T02:04:00Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 16,
+          "name": "Publish the actual ready owner before operator cancellation",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:00Z",
+          "completed_at": "2026-11-10T02:04:02Z",
+          "durationSeconds": 2.0
+        },
+        {
+          "number": 17,
+          "name": "Await parent cancellation of this exact ready run",
+          "conclusion": "cancelled",
+          "started_at": "2026-11-10T02:04:02Z",
+          "completed_at": "2026-11-10T02:04:30Z",
+          "durationSeconds": 28.0
+        },
+        {
+          "number": 18,
+          "name": "Independently finalize every exact same-job owner",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:30Z",
+          "completed_at": "2026-11-10T02:04:33Z",
+          "durationSeconds": 3.0
+        },
+        {
+          "number": 19,
+          "name": "Remove the private reader file",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:33Z",
+          "completed_at": "2026-11-10T02:04:33Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 20,
+          "name": "Retain classified lifecycle observations",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:33Z",
+          "completed_at": "2026-11-10T02:04:34Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 39,
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "conclusion": "skipped",
+          "started_at": "2026-11-10T02:04:34Z",
+          "completed_at": "2026-11-10T02:04:34Z",
+          "durationSeconds": 0.0
+        },
+        {
+          "number": 40,
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:34Z",
+          "completed_at": "2026-11-10T02:04:35Z",
+          "durationSeconds": 1.0
+        },
+        {
+          "number": 41,
+          "name": "Complete job",
+          "conclusion": "success",
+          "started_at": "2026-11-10T02:04:35Z",
+          "completed_at": "2026-11-10T02:04:35Z",
+          "durationSeconds": 0.0
+        }
+      ]
+    }
+  ],
+  "timingMeaning": "Observed GitHub job/step intervals; runtime timings are separate. No savings claimed."
+}

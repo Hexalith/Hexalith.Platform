@@ -1,0 +1,79 @@
+{
+  "assemblies": [
+    {
+      "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+      "errors": "0",
+      "failed": "0",
+      "finish-rtf": "2026-11-10T00:11:04.7173250+00:00",
+      "id": "87f7f982-2ba3-45a2-9168-1f8212816a49",
+      "name": "/home/administrator/projects/hexalith/platform/artifacts/story-2-10-builds-da4e896b/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "not-run": "0",
+      "passed": "2939",
+      "run-date": "2026-11-10",
+      "run-time": "00:02:13",
+      "skipped": "2",
+      "start-rtf": "2026-11-10T00:02:13.0748750+00:00",
+      "target-framework": ".NETCoreApp,Version=v10.0",
+      "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+      "time": "531.670",
+      "time-rtf": "00:08:51.6700000",
+      "total": "2941"
+    }
+  ],
+  "candidateAcceptance": false,
+  "classification": "canonical-owner-check",
+  "command": [
+    "dotnet",
+    "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+    "-reporter",
+    "verbose",
+    "-noColor",
+    "-noAutoReporters",
+    "-longRunning",
+    "60",
+    "-result-xml",
+    "/tmp/story-2-10-20261110-fixed-owner.xml"
+  ],
+  "counts": {
+    "errors": 0,
+    "failed": 0,
+    "notRun": 0,
+    "passed": 2939,
+    "skipped": 2,
+    "total": 2941
+  },
+  "cwd": "artifacts/story-2-10-builds-da4e896b",
+  "durationSeconds": 531.984,
+  "exitCode": 0,
+  "failures": [],
+  "finishedAtUtc": "2026-11-10T00:11:04.805487+00:00",
+  "hostedQualification": false,
+  "processId": 282104,
+  "rawOutputBytes": 1003229,
+  "rawOutputRetainedInRepository": false,
+  "rawOutputSha256": "166a2a31d3cb54869dfd95e1e729d490a931a597bcb85a15de8c29538bb485ad",
+  "rawXmlRetainedInRepository": false,
+  "rawXmlSha256": "15d3cfa1f31a0493040f0751213cc4e0413d1cd16f3d85987e8e58c9e40844ab",
+  "redacted": true,
+  "retainedCaseRecords": "test-cases.redacted.json",
+  "runnerSummary": [
+    "Hexalith.Builds.Module.Tests  Total: 2941, Errors: 0, Failed: 0, Skipped: 2, Not Run: 0, Time: 531.670s"
+  ],
+  "skips": [
+    {
+      "class": "Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests",
+      "method": "QualificationCatalogProbeInterceptionIsEstablishedAsync",
+      "reason": "qualification-only-catalog-sdk-interception-harness-not-selected"
+    },
+    {
+      "class": "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests",
+      "method": "NativeTaggedChildRemovalPreservesIndependentPeerAsync",
+      "reason": "native-inspection-control-applies-to-windows-and-macos"
+    }
+  ],
+  "source": "da4e896b164f35c0b830a32b975203bb922280f9",
+  "startedAtUtc": "2026-11-10T00:02:12.848964+00:00",
+  "status": "passed-with-conditional-skips",
+  "timeoutSeconds": 1800,
+  "timeoutSource": ".github/workflows/ci.yml dotnet job timeout-minutes: 30"
+}

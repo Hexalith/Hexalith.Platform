@@ -1,0 +1,234 @@
+{
+  "schema": "hexalith.story-2-10.cancellation-observation.v1",
+  "recordedAtUtc": "2026-11-10T02:26:20.563390+00:00",
+  "phase": "execution",
+  "workflowRunId": "42740407192",
+  "workflowAttempt": 1,
+  "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "conclusion": "cancelled",
+  "artifactId": 13729812882,
+  "artifactDigest": "sha256:a109974b46d05898adc04d16645edcda22091ec033e93e47f8c118d8cde84798",
+  "downloadSha256": "a109974b46d05898adc04d16645edcda22091ec033e93e47f8c118d8cde84798",
+  "executionContext": {
+    "disposable": true,
+    "jobId": "qualification",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "42740407192"
+  },
+  "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+  "cancellationSignals": [
+    {
+      "observedAtUtc": "2026-11-10T02:24:47.393243+00:00",
+      "signal": 2
+    }
+  ],
+  "cancellationSnapshot": {
+    "admission": {
+      "acceptedAtUtc": "2026-11-10T02:23:13.9096605+00:00",
+      "attachedRunId": "f3c280a04e968e4093f63989933830a4",
+      "effectiveHoldSeconds": 240,
+      "endReason": null,
+      "endedAtUtc": null,
+      "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+      "expiresAtUtc": "2026-11-10T02:27:13.9096605+00:00",
+      "originalAttachmentRequestId": "1acbf72ad1b401d6ea3543094662507f",
+      "outcome": null,
+      "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+      "requestedHoldSeconds": 240
+    },
+    "attemptId": "47f6a68d7a2d0d64c20db68c98d2d02c",
+    "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+    "executionContext": {
+      "disposable": true,
+      "jobId": "qualification",
+      "kind": "ci",
+      "operatingSystem": "Linux",
+      "repository": "Hexalith/Hexalith.Parties",
+      "runnerKind": "github-hosted",
+      "workflowAttempt": 1,
+      "workflowRunId": "42740407192"
+    },
+    "firstOutcome": null,
+    "nativeExecution": {
+      "birth": "28233",
+      "processId": 11273
+    },
+    "observedAtUtc": "2026-11-10T02:24:47.442518+00:00",
+    "readStartedAtUtc": "2026-11-10T02:24:47.440438+00:00",
+    "runId": "01288a379769687d9da8ebf89f29891c",
+    "stateTestTerminal": null,
+    "stateUpdatedAtUtc": "2026-11-10T02:22:58.8848024+00:00",
+    "status": "Ready"
+  },
+  "terminalBeforeSignalForward": null,
+  "finalizers": [
+    {
+      "allocationStatus": "allocated",
+      "candidateAcceptance": false,
+      "failures": [],
+      "issuedOwners": 1,
+      "issuedOwnersCleanupVerified": true,
+      "kind": "finalizer-result",
+      "observedAtUtc": "2026-11-10T02:24:52.086790+00:00"
+    }
+  ],
+  "results": [
+    {
+      "member": "cancel/test-result.json",
+      "sha256": "0df3b2cfa5bf1da74ad6855d7031f401e4bbf61fedab0c0027b5e80468eee400",
+      "run": {
+        "attemptId": "47f6a68d7a2d0d64c20db68c98d2d02c",
+        "attemptSequence": 1,
+        "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+        "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+        "role": "owner",
+        "runId": "01288a379769687d9da8ebf89f29891c"
+      },
+      "startup": {
+        "actualDurationSeconds": 164.5547759,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-10T02:30:14.3225361Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-10T02:20:14.3225361Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      },
+      "terminal": {
+        "cause": "run-cancelled",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "outcome": "cancelled",
+        "recordedAt": "2026-11-10T02:24:47.5697259Z"
+      },
+      "cleanup": {
+        "attemptId": "16aeebcce0cf0aa348a29244a924ecaf",
+        "diagnosticIds": [
+          "lifecycle"
+        ],
+        "disposition": "complete",
+        "failures": [],
+        "leftoverResourceIds": [],
+        "observedAt": "2026-11-10T02:24:52.0203243Z",
+        "ownedResourceIds": [
+          "resource:dapr-placement-mtls",
+          "resource:dapr-scheduler-mtls",
+          "resource:dapr-sentry",
+          "resource:eventstore",
+          "resource:eventstore-dapr-cli",
+          "resource:memories",
+          "resource:memories-access-telemetry",
+          "resource:memories-access-telemetry-clock",
+          "resource:memories-access-telemetry-clock-dapr-cli",
+          "resource:memories-access-telemetry-dapr-cli",
+          "resource:memories-dapr-cli",
+          "resource:memories-domain-service",
+          "resource:memories-domain-service-dapr-cli",
+          "resource:memories-graph",
+          "resource:memories-vectors",
+          "resource:parties",
+          "resource:parties-dapr-cli",
+          "resource:redis",
+          "resource:tenants",
+          "resource:tenants-api",
+          "resource:tenants-api-dapr-cli",
+          "resource:tenants-dapr-cli"
+        ],
+        "state": "populated"
+      },
+      "termination": {
+        "state": "not-yet-populated"
+      },
+      "attachments": {
+        "holds": [
+          {
+            "acceptedAt": "2026-11-10T02:23:13.9096605Z",
+            "attachedRunId": "f3c280a04e968e4093f63989933830a4",
+            "effectiveHoldSeconds": 240,
+            "end": {
+              "endedAt": "2026-11-10T02:24:47.7218033Z",
+              "reason": "ci-job-cancelled",
+              "state": "ended"
+            },
+            "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+            "expiresAt": "2026-11-10T02:27:13.9096605Z",
+            "originalAttachmentRequestId": "1acbf72ad1b401d6ea3543094662507f",
+            "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+            "requestedHoldSeconds": 240
+          }
+        ],
+        "state": "populated"
+      }
+    }
+  ],
+  "actualCancellationTerminals": [
+    {
+      "candidateAcceptance": false,
+      "classification": "cancelled",
+      "firstOutcome": {
+        "ownerId": "01288a379769687d9da8ebf89f29891c",
+        "runId": "01288a379769687d9da8ebf89f29891c",
+        "sourceMappingHash": "b90d8e739219e8b63c723932c739c793f3c251fe871b0c3956dcd0562880a102",
+        "terminalAtUtc": "2026-11-10T02:24:47.5697259+00:00",
+        "terminalCause": "run-cancelled",
+        "terminalOutcome": {
+          "category": "Cancelled",
+          "exitCode": "Cancelled",
+          "phase": "Cleanup",
+          "ruleId": "HXC130"
+        },
+        "terminalStatus": "cancelled"
+      },
+      "kind": "actual-cancellation-terminal",
+      "observedAtUtc": "2026-11-10T02:24:52.085387+00:00",
+      "originalAdmission": {
+        "acceptedAtUtc": "2026-11-10T02:23:13.9096605+00:00",
+        "attachedRunId": "f3c280a04e968e4093f63989933830a4",
+        "effectiveHoldSeconds": 240,
+        "endReason": null,
+        "endedAtUtc": null,
+        "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+        "expiresAtUtc": "2026-11-10T02:27:13.9096605+00:00",
+        "originalAttachmentRequestId": "1acbf72ad1b401d6ea3543094662507f",
+        "outcome": null,
+        "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+        "requestedHoldSeconds": 240
+      },
+      "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+      "parentApiReceiptRequired": true,
+      "phase": "execution",
+      "withdrawal": {
+        "acceptedAtUtc": "2026-11-10T02:23:13.9096605+00:00",
+        "attachedRunId": "f3c280a04e968e4093f63989933830a4",
+        "effectiveHoldSeconds": 240,
+        "endReason": "ci-job-cancelled",
+        "endedAtUtc": "2026-11-10T02:24:47.7218033+00:00",
+        "environmentId": "2b6dca7bc8b7b67067ae8e3cbc787993",
+        "expiresAtUtc": "2026-11-10T02:27:13.9096605+00:00",
+        "originalAttachmentRequestId": "1acbf72ad1b401d6ea3543094662507f",
+        "outcome": "withdrawn",
+        "ownerRunId": "01288a379769687d9da8ebf89f29891c",
+        "requestedHoldSeconds": 240
+      }
+    }
+  ],
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "phaseProofVerified": true,
+  "parentApiReceipt": "cancel-execution-request.json",
+  "firstOutcomePreservedThroughFinalization": true,
+  "exactRetryVerified": true,
+  "originalHoldPreservedAndWithdrawnBeforeExpiry": true,
+  "qualificationComplete": false,
+  "requiredMissingProof": [
+    "supervised-attached-suite-execution",
+    "attached-work-and-access-termination-producer",
+    "populated-tool-binding"
+  ]
+}

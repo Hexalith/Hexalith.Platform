@@ -1,0 +1,227 @@
+{
+  "schema": "hexalith.story-2-10.required-scenario-observations.v1",
+  "recordedAtUtc": "2026-11-10T02:29:45.193738+00:00",
+  "statusMeaning": "Observed lifecycle behavior for the named original diagnostic subjects; global required bindings and acceptance gates remain incomplete. No full fixed-set qualification is claimed.",
+  "rows": [
+    {
+      "scenario": "success-failure",
+      "executionContext": "local",
+      "observationStatus": "passed",
+      "missingProof": [],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "passed"
+    },
+    {
+      "scenario": "startup-timeout-partial",
+      "executionContext": "local",
+      "observationStatus": "incomplete",
+      "missingProof": [
+        "startup-duration-producer-unavailable"
+      ],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "incomplete"
+    },
+    {
+      "scenario": "cancellation-collision",
+      "executionContext": "local",
+      "observationStatus": "incomplete",
+      "missingProof": [
+        "exclusive-resource-selection-unavailable"
+      ],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "incomplete"
+    },
+    {
+      "scenario": "owner-finish-hold",
+      "executionContext": "local",
+      "observationStatus": "passed",
+      "missingProof": [],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "passed"
+    },
+    {
+      "scenario": "owner-cancel-hold",
+      "executionContext": "local",
+      "observationStatus": "incomplete",
+      "missingProof": [
+        "attached-work-access-producer-unavailable"
+      ],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "incomplete"
+    },
+    {
+      "scenario": "attached-failure-expiry",
+      "executionContext": "local",
+      "observationStatus": "incomplete",
+      "missingProof": [
+        "attached-suite-execution-unavailable",
+        "attached-work-access-producer-unavailable"
+      ],
+      "subjectControllerSha256": "493a5deecfce21550009bc30fe8185ea661e2796f51af36c8d6aae923848fb8e",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-3/observations.json",
+      "evidenceSha256": "71e1c31ad1eae5953c3614bdc18f700227bf433e740fbfb6fd0f788f2f901c11",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "incomplete"
+    },
+    {
+      "scenario": "failure-then-cancellation",
+      "executionContext": "local",
+      "observationStatus": "passed",
+      "missingProof": [],
+      "subjectControllerSha256": "03fff2fb6acd28f0fecd8e4d73b976f230e5d9452552cee54555f322191eddd8",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-2/observations.json",
+      "evidenceSha256": "2b4e5eb8b567c10d4aa29f276e5903aa4f122b29a750a4bfc7cb6c5e581692c6",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "passed"
+    },
+    {
+      "scenario": "locks-retry-peer",
+      "executionContext": "local",
+      "observationStatus": "passed",
+      "missingProof": [],
+      "subjectControllerSha256": "af6f9fdf6585a59314d6a19686d8da0c6716f185512b1985501fab2b36c5eeee",
+      "subjectSourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "evidence": "local-attempt-4/observations.json",
+      "evidenceSha256": "bb63468a1af03a5278efd7061792ebc8e8bec00854236a4caaf8585246ea0032",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false,
+      "status": "passed"
+    },
+    {
+      "scenario": "success-failure",
+      "executionContext": "ci",
+      "status": "passed",
+      "missingProof": [],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "startup-timeout-partial",
+      "executionContext": "ci",
+      "status": "incomplete",
+      "missingProof": [
+        "ci-startup-timeout-unexecuted",
+        "reported-partial-startup-duration-unavailable"
+      ],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "cancellation-collision",
+      "executionContext": "ci",
+      "status": "incomplete",
+      "missingProof": [
+        "genuine-collision-proof-unexecuted"
+      ],
+      "evidence": "cancel-execution-observation.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "owner-finish-hold",
+      "executionContext": "ci",
+      "status": "passed",
+      "missingProof": [],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "owner-cancel-hold",
+      "executionContext": "ci",
+      "status": "incomplete",
+      "missingProof": [
+        "attached-work-access-producer-unavailable"
+      ],
+      "evidence": "cancel-execution-observation.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "attached-failure-expiry",
+      "executionContext": "ci",
+      "status": "unexecuted",
+      "missingProof": [
+        "required-ci-scenario-not-executed",
+        "supervised-attached-suite-execution-unavailable"
+      ],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "failure-then-cancellation",
+      "executionContext": "ci",
+      "status": "unexecuted",
+      "missingProof": [
+        "required-ci-scenario-not-executed"
+      ],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    },
+    {
+      "scenario": "locks-retry-peer",
+      "executionContext": "ci",
+      "status": "passed",
+      "missingProof": [],
+      "evidence": "hosted-matrix-audit.json",
+      "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+      "toolVersion": "4.47.0",
+      "candidateAcceptance": false
+    }
+  ],
+  "counts": {
+    "passed": 7,
+    "incomplete": 7,
+    "unexecuted": 2
+  },
+  "globalMissingProof": [
+    "supervised-attached-suite-and-per-attachment-access-ownership",
+    "actual-interrupted-startup-duration",
+    "complete-executing-tool-and-termination-bindings",
+    "genuine-collision-scenario",
+    "final-compatible-Platform-source-cut-and-complete-fixed-set-qualification"
+  ],
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "allRequiredProofComplete": false
+}

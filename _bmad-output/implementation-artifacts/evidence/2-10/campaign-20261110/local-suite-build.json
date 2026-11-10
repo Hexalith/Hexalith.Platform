@@ -1,0 +1,27 @@
+{
+  "schema": "hexalith.story-2-10.local-suite-build.v1",
+  "startedAtUtc": "2026-11-10T00:33:09.203576+00:00",
+  "durationSeconds": 4.225,
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+    "--configuration",
+    "Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:UseNuGetDeps=true",
+    "-p:NuGetAudit=false",
+    "-m:1"
+  ],
+  "exitCode": 0,
+  "configuration": "Release",
+  "mode": "package",
+  "sourceRevision": "c9eb1fe37373b2b25d3759a4ac8f33ac46754e17",
+  "mappingHash": "b194b548d8ceb25f36ca40b3a2195cc3586dbd0aa53a29ec2851c3d3b61e7ff5",
+  "outputSha256": "1142f5697e814381b7e35bb499be43bf7815d73b3cc4e54c35f44e64911f8c92",
+  "errorCodes": [],
+  "servicesStarted": false,
+  "candidateAcceptance": false,
+  "warningCount": 0,
+  "errorCount": 0
+}
