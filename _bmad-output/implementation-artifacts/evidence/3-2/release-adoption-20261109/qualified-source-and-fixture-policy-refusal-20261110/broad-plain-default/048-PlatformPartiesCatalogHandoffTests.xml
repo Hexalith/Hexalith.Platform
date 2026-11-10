@@ -1,0 +1,39 @@
+<assemblies schema-version="3" id="c36b3243-df4f-42c4-bfa6-58d79259ca51" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-11-09T22:07:03.3323547+00:00" finish-rtf="2026-11-09T22:07:03.4433795+00:00" timestamp="11/09/2026 23:07:03"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, non-parallel]" id="4766124c-8be8-4626-87c0-09c07eacedb6" name="/tmp/story32-import-closure-candidate-6xkn9mrn/repository/artifacts/story32-broad-source-dca0dbc6-default-source/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-09" run-time="22:07:03" start-rtf="2026-11-09T22:07:03.3323547+00:00" test-framework="xUnit.net v3 4.0.3+384aa7f0b4" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="2" finish-rtf="2026-11-09T22:07:03.4433795+00:00" not-run="0" passed="0" skipped="0" time="0.111" time-rtf="00:00:00.1110000" total="2"><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests (id: 2443745ceb58bbd3ccca0e2406445304b4314e57e4e189b740e29b06fd10acdc)" id="0006e7d7-e70b-4c4c-afa2-608a14d672de" failed="2" not-run="0" passed="0" skipped="0" time="0.034" time-rtf="00:00:00.0340000" total="2"><test id="efadf082-5172-4995-8ad0-cc43c9206241" name="Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: False)" result="Fail" time="0.032" time-rtf="00:00:00.0320000" start-rtf="2026-11-09T22:07:03.3909736+00:00" finish-rtf="2026-11-09T22:07:03.4330268+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests" method="PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync" source-file="/tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs" source-line="15"><failure exception-type="Shouldly.ShouldAssertException"><message>Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\"Hexalith.Memories.Contracts\", cohort)
+    should be
+True
+    but was
+False
+
+Additional Info:
+    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.</message><stack-trace>   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42) in /tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 87
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(Boolean releasedMaterialization) in /tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs:line 20
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)</stack-trace></failure></test><test id="f94dcd63-b8d3-4b9f-a00f-abf1c2a08b84" name="Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(releasedMaterialization: True)" result="Fail" time="0.002" time-rtf="00:00:00.0020000" start-rtf="2026-11-09T22:07:03.4348326+00:00" finish-rtf="2026-11-09T22:07:03.4376710+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests" method="PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync" source-file="/tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs" source-line="15"><failure exception-type="Shouldly.ShouldAssertException"><message>Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches(\"Hexalith.Memories.Contracts\", cohort)
+    should be
+True
+    but was
+False
+
+Additional Info:
+    Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.</message><stack-trace>   at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42) in /tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs:line 87
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests.PublishedPreflightAndOrdinaryCatalogRespectVerifiedDerivationAsync(Boolean releasedMaterialization) in /tmp/story32-import-closure-candidate-6xkn9mrn/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs:line 20
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)</stack-trace></failure></test></collection></assembly></assemblies>

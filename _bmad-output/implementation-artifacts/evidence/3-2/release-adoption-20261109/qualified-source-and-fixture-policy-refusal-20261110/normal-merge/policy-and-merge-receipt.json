@@ -1,0 +1,99 @@
+{
+  "scope": "Normal authorized merge under an existing explicitly named maintainer exception; source qualifications were still mandatory and passed. No rule or account configuration changes, no admin/bypass request field.",
+  "actor": {
+    "id": 6775094,
+    "login": "jpiquot"
+  },
+  "rulesetId": 24657106,
+  "applicableActorException": [
+    {
+      "actor_id": 6775094,
+      "actor_type": "User",
+      "bypass_mode": "always"
+    }
+  ],
+  "normalCliExitCode": 1,
+  "normalCliRefusal": "X Pull request Hexalith/Hexalith.Platform#39 is not mergeable: the base branch policy prohibits the merge.\nTo have the pull request merged after all the requirements have been met, add the `--auto` flag.\nTo use administrator privileges to immediately merge the pull request, add the `--admin` flag.\n",
+  "ordinaryRestRequest": {
+    "sha": "dca0dbc60ffab47ab08a82fa6ef4a8bad8277fe3",
+    "merge_method": "merge",
+    "commit_title": "fix(platform): bind host snapshots and source build context",
+    "commit_message": "Bind the recorded EventStore host snapshot and preserve source context through restore.\n\nGate fixture publication on qualified current source and immutable package inputs.\n"
+  },
+  "ordinaryRestResponse": {
+    "sha": "6e43e042347358e522bfbb2f909986c95fadc6ec",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  },
+  "mainParents": [
+    "081178aa5cc01f5dc736ba0d1980aa80fedc6fe1",
+    "dca0dbc60ffab47ab08a82fa6ef4a8bad8277fe3"
+  ],
+  "mainTree": "680eb05194dac6e443e677743c87875539d2e7ad",
+  "normalMainTupleRun": 42711758062,
+  "normalMainCatalogRun": 42711757909,
+  "firstSourceCallback": {
+    "run": 42712187089,
+    "note": "Do not infer publication from overall success; the exact-main tuple counterpart was still running. Inspect jobs/qualification for deferral."
+  },
+  "candidateAcceptance": false,
+  "signedFixtureCredit": false,
+  "files": {
+    "applicable-ruleset.json": {
+      "sha256": "d29798c517dec20737201c4e9333a26ed15aedc8f517a3a7646de93b919d481d",
+      "bytes": 1143
+    },
+    "authenticated-actor.json": {
+      "sha256": "47d13698f7ea7df6a50652bcc0dc31f86d8092c798f4bce575159e620d3b318c",
+      "bytes": 33
+    },
+    "auto-merge.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "auto-merge.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "merge-body.txt": {
+      "sha256": "286d1ca305727e4f42cdbf5485083b5fa3b60b5356749a7f3e17c991d382b611",
+      "bytes": 172
+    },
+    "merged-main-commit.json": {
+      "sha256": "b50f01f654b3e99a44e498de7d9c9980f82e5108eb2e7f6e50e955442c9be9cb",
+      "bytes": 1424024
+    },
+    "normal-merge.stderr": {
+      "sha256": "610d3f57bd3e9a687b8dd5dc93604b8936501b1e59874ab79086a04a8c4e305e",
+      "bytes": 299
+    },
+    "normal-merge.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "ordinary-rest-merge-commit.txt": {
+      "sha256": "9a81683095bf01d792f148210be855a340b7e2bb45dcd9208d08f8a917d6ba12",
+      "bytes": 233
+    },
+    "ordinary-rest-merge-request.json": {
+      "sha256": "d66fc87b67f193c633b52c3f53887ce4c13c40c011c21937077ea5bc0d02a415",
+      "bytes": 363
+    },
+    "ordinary-rest-merge.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "ordinary-rest-merge.stdout": {
+      "sha256": "57bb4cc4b52b2d1bf09f52709dcf24a5df5b79b6ca1dc03058368d6e1df9e0f9",
+      "bytes": 109
+    },
+    "ready.stderr": {
+      "sha256": "80b00486a1d8010bdfeeb2ef24088fbb0de2e55b597e6fee97491b434171ac34",
+      "bytes": 79
+    },
+    "ready.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

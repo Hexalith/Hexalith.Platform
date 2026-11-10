@@ -1,0 +1,13 @@
+publish	Exchange this repository's OIDC for a temporary NuGet key	﻿2026-11-09T23:05:57.6849744Z ##[group]Run NuGet/login@8d196754b4036150537f80ac539e15c2f1028841
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850054Z with:
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850221Z   user: jpiquot
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850459Z   token-service-url: https://www.nuget.org/api/v2/token
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850741Z   audience: https://www.nuget.org
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850954Z env:
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6852838Z   GH_TOKEN: ***
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853031Z   FIXTURE_VERSION: 1.10.0
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853370Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853863Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6854206Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6854416Z ##[endgroup]
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:59.8384680Z ##[error]Token exchange failed (HTTP 401) at https://www.nuget.org/api/v2/token. Make sure you are using the username of the policy creator, not the policy owner: Workflow mismatch for policy 'Hexalith.Platform': expected 'release.yml', actual 'test-extension-release.yml'

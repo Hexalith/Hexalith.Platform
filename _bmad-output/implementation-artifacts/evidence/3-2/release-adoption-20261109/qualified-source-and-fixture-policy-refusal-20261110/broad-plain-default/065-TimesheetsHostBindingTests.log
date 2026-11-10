@@ -1,0 +1,80 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (20 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate [FAIL]
+      Shouldly.ShouldAssertException : servers.Count
+          should be
+      7
+          but was
+      8
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(165,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.RelativePlatformRootDeduplicatesTheAbsoluteSuppliedCandidate()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection [FAIL]
+      Shouldly.ShouldAssertException : servers.Count
+          should be
+      7
+          but was
+      8
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(104,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: False, count: 6) [FAIL]
+      Shouldly.ShouldAssertException : builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any())
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(362,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(Boolean enabled, Int32 count)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(enabled: True, count: 7) [FAIL]
+      System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(149,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(144,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(68,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(40,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeEntry(IDistributedApplicationBuilder builder)
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(361,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(Boolean enabled, Int32 count)
+           at InvokeStub_TimesheetsHostBindingTests.FileEntryHonorsExplicitOptInAndSelectedMapping(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync [FAIL]
+      System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(149,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(144,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(426,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync [FAIL]
+      System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(149,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(144,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(373,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync [FAIL]
+      System.IO.InvalidDataException : Selected caller 'timesheets' has a gateway/participant grant to 'eventstore//api/v1/commands/status/workload' but lacks catalog enrollment; declaration-driven participant discovery is required by story 3.6.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(149,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.ResolveParticipants(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(144,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(112,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(271,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync()
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged [FAIL]
+      Shouldly.ShouldAssertException : builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any())
+          should be
+      6
+          but was
+      7
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsHostBindingTests.cs(84,0): at Hexalith.Platform.Composition.Tests.TimesheetsHostBindingTests.AbsentOptInKeepsCandidateInertAndReferenceGraphUnchanged()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 35, Errors: 0, Failed: 8, Skipped: 0, Not Run: 0, Time: 48.336s

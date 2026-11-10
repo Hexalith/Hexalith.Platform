@@ -1,0 +1,133 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (13 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(42,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.CloneParties(String directory)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(241,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Timesheets") [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(275,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Works") [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(275,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection)
+           at InvokeStub_PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Agents") [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(275,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection)
+           at InvokeStub_PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsReadsApprovedEnvironmentRoots [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for the approved direct-revision graph.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs(47,0): at Hexalith.Platform.Composition.PlatformHostedPublishing.ReferenceOptions(String root)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(229,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsReadsApprovedEnvironmentRoots()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsRejectsChangedMappingBytes [FAIL]
+      Shouldly.ShouldAssertException : Should.Throw<InvalidDataException>(PlatformHostedPublishing.ReferenceOptions(fixtureDirectory, SourceRoots))
+                      .Message
+          should contain (case insensitive comparison)
+      "mapping is missing or differs"
+          but was actually
+      "HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests."
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(263,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedReferenceOptionsRejectsChangedMappingBytes()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(196,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: False) [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(292,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(Boolean disabled)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(disabled: True) [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(292,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(Boolean disabled)
+           at InvokeStub_PlatformHostedPublishingTests.LocalTimesheetsOptInPrecedesReadinessValidationEvenWithoutEnabledServers(Object, Span`1)
+           at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(149,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(166,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(59,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.NeutralReferenceGraphAndLocalBindingHaveIdenticalServersAndReadiness()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(79,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedGraphDoesNotReadTheLocalProfileAndMatchesTheMaintainedChartInput()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublicRoutesMatchOnlyTheDeclaredPublicServers [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(93,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublicRoutesMatchOnlyTheDeclaredPublicServers()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain [FAIL]
+      System.IO.InvalidDataException : HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT is required for hosted qualification tests.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(24,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SelectedRoot(String name)
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(16,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.get_SourceRoots()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(27,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.ReferenceOptions()
+        tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs(299,0): at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.SharedAclUsesTheSelectedHostedNamespaceAndTrustDomain()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 16, Errors: 0, Failed: 14, Skipped: 0, Not Run: 0, Time: 0.234s

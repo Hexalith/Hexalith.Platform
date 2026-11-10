@@ -1,0 +1,490 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (3 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "run") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "attempt") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "environment") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "mapping") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "source") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "declaration-path") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "selected-test") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "expanded-owner") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "serialized") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "production") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(fault: "catalog-bytes") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(40,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedFullEntryRefusesBeforeEffectsAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: "platform-package") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(20,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(profile: "lifecycle-package") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(20,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.QualifiedOrdinaryEntryReachesAllImmutableImageProbesAsync(String profile)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "missing-server") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "extra-server") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "foreign-image") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "preset-digest") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "missing-owner") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "changed-declaration") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "non-linux") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(fault: "arm64") [FAIL]
+      Shouldly.ShouldAssertException : PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(87,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.CreateAsync(String profile, Boolean sdk42)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+           at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs(81,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests.ChangedQualifiedTopologyOrRuntimeRefusesAsync(String fault)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 21, Errors: 0, Failed: 21, Skipped: 0, Not Run: 0, Time: 0.160s

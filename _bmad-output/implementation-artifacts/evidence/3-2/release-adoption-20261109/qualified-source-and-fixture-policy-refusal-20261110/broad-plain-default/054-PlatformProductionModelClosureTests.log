@@ -1,0 +1,33 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (1 test case to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests.CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync [FAIL]
+      System.IO.InvalidDataException : The package fixture requires one complete authenticated SDK cohort.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(72,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.get_SelectedSdkVersion()
+        tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs(78,0): at Hexalith.Platform.Composition.Tests.PlatformPartiesPackageFixture.get_EventStoreTestCohort()
+        tests/Hexalith.Platform.Composition.Tests/PlatformProductionModelClosureTests.cs(79,0): at Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests.CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync()
+        --- End of stack trace from previous location ---
+      Output:
+          Determining projects to restore...
+          Restored /tmp/story32-import-closure-candidate-6xkn9mrn/repository/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 217 ms).
+          Restored /tmp/story32-import-closure-candidate-6xkn9mrn/repository/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 217 ms).
+          Restored /tmp/story32-import-closure-candidate-6xkn9mrn/repository/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 224 ms).
+          Restored /tmp/story32-import-closure-candidate-6xkn9mrn/repository/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 217 ms).
+          Restored /tmp/story32-import-closure-candidate-6xkn9mrn/repository/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 217 ms).
+          Hexalith.Platform.Works.Runtime -> /tmp/platform-production-model-3e4d122012974c27b410aa0725a9b1b6/hosts/platform-model/Hexalith.Platform.Works.Runtime.dll
+          Hexalith.Platform.Custody -> /tmp/platform-production-model-3e4d122012974c27b410aa0725a9b1b6/hosts/platform-model/Hexalith.Platform.Custody.dll
+          Hexalith.Platform.Custody.Component -> /tmp/platform-production-model-3e4d122012974c27b410aa0725a9b1b6/hosts/platform-model/Hexalith.Platform.Custody.Component.dll
+          Hexalith.Platform.Secrets.Runtime -> /tmp/platform-production-model-3e4d122012974c27b410aa0725a9b1b6/hosts/platform-model/Hexalith.Platform.Secrets.Runtime.dll
+          Hexalith.Platform.Composition -> /tmp/platform-production-model-3e4d122012974c27b410aa0725a9b1b6/hosts/platform-model/Hexalith.Platform.Composition.dll
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:08.96
+        
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 9.316s

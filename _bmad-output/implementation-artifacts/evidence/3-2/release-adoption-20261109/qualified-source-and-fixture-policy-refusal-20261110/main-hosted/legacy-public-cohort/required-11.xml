@@ -1,0 +1,140 @@
+<assemblies schema-version="3" id="3a658496-82ee-4808-9a27-e948dfbf0945" user="runner" start-rtf="2026-11-09T22:33:17.7459883+00:00" finish-rtf="2026-11-09T22:35:09.8139126+00:00" timestamp="11/09/2026 22:35:09"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 4 threads)]" id="f8ae2c2a-4bed-469d-a5cd-b2e04849254b" name="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-09" run-time="22:33:17" start-rtf="2026-11-09T22:33:17.7459883+00:00" test-framework="xUnit.net v3 4.0.2+0c7aa4991f" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="0" finish-rtf="2026-11-09T22:35:09.8139126+00:00" not-run="0" passed="11" skipped="0" time="112.069" time-rtf="00:01:52.0690000" total="11"><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests (id: a78aa0fcc4a3f6e2d43eae97e1b67926c78c109a3a9f291e62c52263e886cf17)" id="3476eec0-39bf-4177-b90e-7ff5153b0bdf" failed="0" not-run="0" passed="11" skipped="0" time="111.899" time-rtf="00:01:51.8990000" total="11"><test id="4def4011-fd4d-41bb-89a5-f902919c10bb" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: False)" result="Pass" time="14.994" time-rtf="00:00:14.9940000" start-rtf="2026-11-09T22:33:17.8621852+00:00" finish-rtf="2026-11-09T22:33:32.8702597+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="33" /><test id="c6af9719-6b30-4b32-988c-a0132be61b6e" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync(tamper: True)" result="Pass" time="12.197" time-rtf="00:00:12.1969999" start-rtf="2026-11-09T22:33:32.8738414+00:00" finish-rtf="2026-11-09T22:33:45.0714156+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="RuntimeMaterializationRetainsVerifiedReaderEnrichmentAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="33" /><test id="00822008-a043-4d53-8fd2-cd3b35901e5e" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync" result="Pass" time="9.348" time-rtf="00:00:09.3480000" start-rtf="2026-11-09T22:33:45.0809570+00:00" finish-rtf="2026-11-09T22:33:54.4293996+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="CoherentGeneratedFullReaderUsesActualPublicBodiesAndOwnerPoliciesAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="22"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+</output></test><test id="3113333a-7639-4019-acf4-7bb5f01e12ce" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \&quot;version\&quot;)" result="Pass" time="10.087" time-rtf="00:00:10.0870000" start-rtf="2026-11-09T22:33:54.4320519+00:00" finish-rtf="2026-11-09T22:34:04.5195129+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="FullReaderRejectsChangedOwnerVersionOrAssetsAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="124"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+/tmp/platform-full-parties-1523a9babd764c06bd07107be07533c1/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.Memories.EventStore' resolves to 3.0.18; pinned Builds catalog fc2122240a39f03628c04fa8433e5eece90b8b4c requires 3.0.23. [/tmp/platform-full-parties-1523a9babd764c06bd07107be07533c1/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+</output></test><test id="0a7aa14d-8b04-4f09-8277-80a86366c85e" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.FullReaderRejectsChangedOwnerVersionOrAssetsAsync(fault: \&quot;assets\&quot;)" result="Pass" time="9.956" time-rtf="00:00:09.9560000" start-rtf="2026-11-09T22:34:04.5196058+00:00" finish-rtf="2026-11-09T22:34:14.4762910+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="FullReaderRejectsChangedOwnerVersionOrAssetsAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="124"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+/tmp/platform-full-parties-d07a069f89a5470286a5dc30d592c850/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.Memories.EventStore' resolves to 3.0.18; pinned Builds catalog fc2122240a39f03628c04fa8433e5eece90b8b4c requires 3.0.23. [/tmp/platform-full-parties-d07a069f89a5470286a5dc30d592c850/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+</output></test><test id="fc5d8aaa-53c7-4d9d-8569-37d94e2f6c37" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.OrdinaryConsumerRetainsActivePartiesSourceGuardAsync" result="Pass" time="6.717" time-rtf="00:00:06.7170000" start-rtf="2026-11-09T22:34:14.4776231+00:00" finish-rtf="2026-11-09T22:34:21.1949024+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="OrdinaryConsumerRetainsActivePartiesSourceGuardAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="172"><output>/tmp/platform-full-parties-720c9fafb8d545bcb0d056f150b97847/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Parties' at '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Parties' duplicates direct package 'Hexalith.Parties.Contracts/3.0.0'. [/tmp/platform-full-parties-720c9fafb8d545bcb0d056f150b97847/ordinary.csproj]
+
+Build FAILED.
+
+/tmp/platform-full-parties-720c9fafb8d545bcb0d056f150b97847/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Parties' at '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Parties' duplicates direct package 'Hexalith.Parties.Contracts/3.0.0'. [/tmp/platform-full-parties-720c9fafb8d545bcb0d056f150b97847/ordinary.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:03.11
+
+</output></test><test id="97c61ba7-9b28-42c8-950b-7b648e06547b" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \&quot;missing-owner\&quot;)" result="Pass" time="9.742" time-rtf="00:00:09.7420000" start-rtf="2026-11-09T22:34:21.1965852+00:00" finish-rtf="2026-11-09T22:34:30.9394611+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="ChangedFullReaderAuthorityRefusesBeforeOutputAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="72"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/platform-full-parties-ec02f96e7f0b4cb6b5239808ea507702/platform-components/catalog-reader/Program.cs:line 36
+
+</output></test><test id="6953f900-7587-4885-bdc8-317402e32627" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \&quot;foreign-owner\&quot;)" result="Pass" time="9.76" time-rtf="00:00:09.7600000" start-rtf="2026-11-09T22:34:30.9395581+00:00" finish-rtf="2026-11-09T22:34:40.6998266+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="ChangedFullReaderAuthorityRefusesBeforeOutputAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="72"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/platform-full-parties-52fc4db9fec7446ba6473a5909380a09/platform-components/catalog-reader/Program.cs:line 36
+
+</output></test><test id="83693ecd-ceb8-46fd-860a-1ab7306eb0be" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \&quot;legacy-cohort\&quot;)" result="Pass" time="9.656" time-rtf="00:00:09.6560000" start-rtf="2026-11-09T22:34:40.6999056+00:00" finish-rtf="2026-11-09T22:34:50.3561649+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="ChangedFullReaderAuthorityRefusesBeforeOutputAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="72"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/platform-full-parties-e2593a1ae814495f8b20af28c67de07f/platform-components/catalog-reader/Program.cs:line 36
+
+</output></test><test id="6069dc1a-1e6f-4867-a69c-db13923c09c4" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \&quot;unknown-cohort\&quot;)" result="Pass" time="9.706" time-rtf="00:00:09.7060000" start-rtf="2026-11-09T22:34:50.3562287+00:00" finish-rtf="2026-11-09T22:35:00.0631465+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="ChangedFullReaderAuthorityRefusesBeforeOutputAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="72"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/platform-full-parties-b325ecd94291473f84d67a33b8955898/platform-components/catalog-reader/Program.cs:line 32
+
+</output></test><test id="4f3b710e-f78b-4a5a-b60d-dc74e2de8580" name="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests.ChangedFullReaderAuthorityRefusesBeforeOutputAsync(fault: \&quot;foreign-body\&quot;)" result="Pass" time="9.736" time-rtf="00:00:09.7360000" start-rtf="2026-11-09T22:35:00.0632155+00:00" finish-rtf="2026-11-09T22:35:09.8001035+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests" method="ChangedFullReaderAuthorityRefusesBeforeOutputAsync" source-file="/home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageReaderTests.cs" source-line="72"><output>full-reader catalog sha256=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a root=7649162bcb2865e08eb61f316cd0859347d3cbf34db6d249ea490eff8c6ae84a mapping=cbc877133a071a44c53d3e188f353d7409b1f8b36707d42633bb6d7610ed45fc public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+Hexalith.Memories.Contracts sha256=28243237fdf46f125cb71deaa2248dc66c632976f80afeaf9fdb6f46dcedc6f7
+Hexalith.Memories.EventStore sha256=325fbd74ba6d08414effeadd3df585ce258c558f432803664c39fd32fe04b1ec
+Hexalith.Memories.EventStoreExtensions sha256=c423380cefd082d996e059fc9a649669eb16992b914ecc54d7d093c2265f2d25
+Hexalith.Parties.Contracts sha256=b10c65c9b15aaf2b07ed1cd3eececb5d8685a62d87efa1465a777adba335eff9
+Hexalith.Parties.EventStoreExtensions sha256=8713e5e44391b000a2e3cfde89eb64dbff20feadea41e3fda912a7d14a50f604
+Hexalith.McpCli.Abstractions sha256=fc59fc5b5d170484fb402ef99ed5be42a78d775274a93cbbb66f9ec161df4d06
+Unhandled exception. System.IO.InvalidDataException: The qualified package catalog reader requires the exact signed public artifact bytes.
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort) in /tmp/platform-full-parties-541ea9488bea47c6ab861259cd099452/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 233
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.&lt;&gt;c__DisplayClass37_0.&lt;VerifyFullParties&gt;b__0(String name) in /tmp/platform-full-parties-541ea9488bea47c6ab861259cd099452/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 221
+   at System.Linq.Enumerable.IteratorSelectIterator`2.Fill(Iterator`1 source, Span`1 results, Func`2 func)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.PreallocatingToArray(Int32 count)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.ToArray()
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(String cohort) in /tmp/platform-full-parties-541ea9488bea47c6ab861259cd099452/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 220
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/platform-full-parties-541ea9488bea47c6ab861259cd099452/platform-components/catalog-reader/Program.cs:line 37
+
+</output></test></collection></assembly></assemblies>

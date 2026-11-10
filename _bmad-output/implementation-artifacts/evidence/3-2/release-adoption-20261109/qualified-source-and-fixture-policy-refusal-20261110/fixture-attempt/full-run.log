@@ -1,0 +1,1039 @@
+qualify	Set up job	﻿2026-11-09T23:01:16.0914299Z Current runner version: '2.338.2'
+qualify	Set up job	2026-11-09T23:01:16.0940603Z ##[group]Runner Image Provisioner
+qualify	Set up job	2026-11-09T23:01:16.0941602Z Hosted Compute Agent
+qualify	Set up job	2026-11-09T23:01:16.0942137Z Version: 20261028.624
+qualify	Set up job	2026-11-09T23:01:16.0942749Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+qualify	Set up job	2026-11-09T23:01:16.0943424Z Build Date: 2026-10-28T21:51:42Z
+qualify	Set up job	2026-11-09T23:01:16.0944050Z Worker ID: {ffbe6a54-2fb8-4e26-ae1c-6af101d3189d}
+qualify	Set up job	2026-11-09T23:01:16.0944985Z Region: eastus3
+qualify	Set up job	2026-11-09T23:01:16.0945715Z Cloud: Azure
+qualify	Set up job	2026-11-09T23:01:16.0946598Z ##[endgroup]
+qualify	Set up job	2026-11-09T23:01:16.0948719Z ##[group]Operating System
+qualify	Set up job	2026-11-09T23:01:16.0949633Z Ubuntu
+qualify	Set up job	2026-11-09T23:01:16.0950553Z 26.04.1
+qualify	Set up job	2026-11-09T23:01:16.0951324Z LTS
+qualify	Set up job	2026-11-09T23:01:16.0952464Z ##[endgroup]
+qualify	Set up job	2026-11-09T23:01:16.0953408Z ##[group]Runner Image
+qualify	Set up job	2026-11-09T23:01:16.0954348Z Image: ubuntu-26.04
+qualify	Set up job	2026-11-09T23:01:16.0955290Z Version: 20261101.186.1
+qualify	Set up job	2026-11-09T23:01:16.0957054Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+qualify	Set up job	2026-11-09T23:01:16.0959804Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+qualify	Set up job	2026-11-09T23:01:16.0961426Z ##[endgroup]
+qualify	Set up job	2026-11-09T23:01:16.0963180Z ##[group]GITHUB_TOKEN Permissions
+qualify	Set up job	2026-11-09T23:01:16.0966260Z Actions: read
+qualify	Set up job	2026-11-09T23:01:16.0967343Z Contents: read
+qualify	Set up job	2026-11-09T23:01:16.0968218Z Metadata: read
+qualify	Set up job	2026-11-09T23:01:16.0969245Z ##[endgroup]
+qualify	Set up job	2026-11-09T23:01:16.0971803Z Secret source: Actions
+qualify	Set up job	2026-11-09T23:01:16.0972747Z Cache mode: write
+qualify	Set up job	2026-11-09T23:01:16.0973500Z Prepare workflow directory
+qualify	Set up job	2026-11-09T23:01:16.1749168Z Prepare all required actions
+qualify	Set up job	2026-11-09T23:01:16.1833184Z Getting action download info
+qualify	Set up job	2026-11-09T23:01:16.4003397Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+qualify	Set up job	2026-11-09T23:01:16.6320373Z Download action repository 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+qualify	Set up job	2026-11-09T23:01:16.7420458Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+qualify	Set up job	2026-11-09T23:01:17.0370194Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+qualify	Set up job	2026-11-09T23:01:17.2789046Z Complete job name: qualify
+qualify	Bind job-local proof output	﻿2026-11-09T23:01:17.3604586Z ##[group]Run printf 'FIXTURE_PROOF_OUTPUT=%s/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3605811Z [36;1mprintf 'FIXTURE_PROOF_OUTPUT=%s/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"[0m
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3640389Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3641340Z env:
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3645065Z   GH_TOKEN: ***
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3645468Z   FIXTURE_VERSION: 1.10.0
+qualify	Bind job-local proof output	2026-11-09T23:01:17.3645896Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	﻿2026-11-09T23:01:17.4002055Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4002818Z with:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4003191Z   fetch-depth: 0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4003589Z   submodules: false
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4004015Z   persist-credentials: false
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4004503Z   repository: Hexalith/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4008269Z   token: ***
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4008825Z   ssh-strict: true
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4009219Z   ssh-user: git
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4009614Z   clean: true
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4010013Z   sparse-checkout-cone-mode: true
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4010474Z   fetch-tags: false
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4010868Z   show-progress: true
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4011266Z   lfs: false
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4011641Z   set-safe-directory: true
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4012081Z   allow-unsafe-pr-checkout: false
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4012535Z env:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4015974Z   GH_TOKEN: ***
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4016362Z   FIXTURE_VERSION: 1.10.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4016912Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:17.4017564Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0828580Z Syncing repository: Hexalith/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0833418Z ##[group]Getting Git version info
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0836163Z Working directory is '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0840480Z [command]/usr/bin/git version
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0842233Z git version 2.56.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0847833Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0859490Z Temporarily overriding HOME='/home/runner/work/_temp/d5d0957f-6e17-40bb-a710-d0a8021f6186' before making global git config changes
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0864772Z Adding repository directory to the temporary git global config as a safe directory
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.0869676Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1193753Z Deleting the contents of '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1199474Z ##[group]Determining repository object format
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1203516Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1206813Z ##[group]Initializing the repository
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1211817Z [command]/usr/bin/git init /home/runner/work/Hexalith.Platform/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1322031Z hint: Using 'master' as the name for the initial branch. This default branch name
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1325565Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1329594Z hint: to use in all of your new repositories, which will suppress this warning,
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1332924Z hint: call:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1334448Z hint:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1335967Z hint: 	git config --global init.defaultBranch <name>
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1337715Z hint:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1340270Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1343042Z hint: 'development'. The just-created branch can be renamed via this command:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1345029Z hint:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1346331Z hint: 	git branch -m <name>
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1347634Z hint:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1352616Z hint: Disable this message with "git config set advice.defaultBranchName false"
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1357463Z Initialized empty Git repository in /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1362990Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1824335Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1827842Z ##[group]Disabling automatic garbage collection
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1830764Z [command]/usr/bin/git config --local gc.auto 0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1861435Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1865559Z ##[group]Setting up auth
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1867926Z Removing SSH command configuration
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1871054Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.1916066Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.2855540Z Removing HTTP extra header
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.2861861Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.2893931Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3138640Z Removing includeIf entries pointing to credentials config files
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3145117Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3182667Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3432521Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3480629Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path /home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3506840Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3545826Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3582204Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3613467Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3616341Z ##[group]Fetching the repository
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:18.3623021Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2927763Z From https://github.com/Hexalith/Hexalith.Platform
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2929932Z  * [new branch]        docs/story-3-2-replay-l-20261109 -> origin/docs/story-3-2-replay-l-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2931245Z  * [new branch]        docs/story-3-2-replay-l-import-closure-20261109 -> origin/docs/story-3-2-replay-l-import-closure-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2933099Z  * [new branch]        docs/story-3-2-replay-l-schema-fix-20261109 -> origin/docs/story-3-2-replay-l-schema-fix-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2935027Z  * [new branch]        docs/story-3-2-replay-l-source-default-fix-20261109 -> origin/docs/story-3-2-replay-l-source-default-fix-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2936273Z  * [new branch]        docs/story-3-2-replay-n-20261109 -> origin/docs/story-3-2-replay-n-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2937394Z  * [new branch]        docs/story-3-2-replay-n-import-closure-20261109 -> origin/docs/story-3-2-replay-n-import-closure-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2938750Z  * [new branch]        docs/story-3-2-replay-n-schema-fix-20261109 -> origin/docs/story-3-2-replay-n-schema-fix-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2940018Z  * [new branch]        docs/story-3-2-replay-n-source-default-fix-20261109 -> origin/docs/story-3-2-replay-n-source-default-fix-20261109
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2940933Z  * [new branch]        fix/sdk420-legacy-qualification -> origin/fix/sdk420-legacy-qualification
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2941480Z  * [new branch]        main       -> origin/main
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2941858Z  * [new tag]           v1.0.0     -> v1.0.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2942212Z  * [new tag]           v1.0.1     -> v1.0.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2942547Z  * [new tag]           v1.1.0     -> v1.1.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2942941Z  * [new tag]           v1.1.1     -> v1.1.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2943563Z  * [new tag]           v1.1.2     -> v1.1.2
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2944299Z  * [new tag]           v1.1.3     -> v1.1.3
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2944656Z  * [new tag]           v1.1.4     -> v1.1.4
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2944988Z  * [new tag]           v1.1.5     -> v1.1.5
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2945311Z  * [new tag]           v1.1.6     -> v1.1.6
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2945638Z  * [new tag]           v1.1.7     -> v1.1.7
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2945961Z  * [new tag]           v1.1.8     -> v1.1.8
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2946306Z  * [new tag]           v1.10.0    -> v1.10.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2946647Z  * [new tag]           v1.2.0     -> v1.2.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2946981Z  * [new tag]           v1.2.1     -> v1.2.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2947316Z  * [new tag]           v1.2.2     -> v1.2.2
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2947649Z  * [new tag]           v1.2.3     -> v1.2.3
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2947984Z  * [new tag]           v1.3.0     -> v1.3.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2948317Z  * [new tag]           v1.4.0     -> v1.4.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2948991Z  * [new tag]           v1.4.1     -> v1.4.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2949510Z  * [new tag]           v1.5.0     -> v1.5.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2950170Z  * [new tag]           v1.5.1     -> v1.5.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2950617Z  * [new tag]           v1.5.2     -> v1.5.2
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2950988Z  * [new tag]           v1.5.3     -> v1.5.3
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2951562Z  * [new tag]           v1.5.4     -> v1.5.4
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2951902Z  * [new tag]           v1.5.5     -> v1.5.5
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2952252Z  * [new tag]           v1.5.6     -> v1.5.6
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2952599Z  * [new tag]           v1.5.7     -> v1.5.7
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2952941Z  * [new tag]           v1.6.0     -> v1.6.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2953285Z  * [new tag]           v1.7.0     -> v1.7.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2953636Z  * [new tag]           v1.7.1     -> v1.7.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2953989Z  * [new tag]           v1.8.0     -> v1.8.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2954342Z  * [new tag]           v1.8.1     -> v1.8.1
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2954670Z  * [new tag]           v1.9.0     -> v1.9.0
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2955890Z [command]/usr/bin/git branch --list --remote origin/main
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2969912Z   origin/main
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.2977339Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3000021Z 6e43e042347358e522bfbb2f909986c95fadc6ec
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3003529Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3004249Z ##[group]Determining the checkout info
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3005052Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3010267Z [command]/usr/bin/git sparse-checkout disable
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3056773Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3086273Z ##[group]Checking out the ref
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:24.3092355Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.3951952Z Updating files:  36% (9047/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.4044708Z Updating files:  37% (9268/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.4133752Z Updating files:  38% (9519/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.4308152Z Updating files:  39% (9769/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.4593110Z Updating files:  40% (10020/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.4775085Z Updating files:  41% (10270/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.5090287Z Updating files:  42% (10521/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.5355551Z Updating files:  43% (10771/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.5462591Z Updating files:  44% (11022/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.6021008Z Updating files:  45% (11272/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.6425645Z Updating files:  46% (11523/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.6988272Z Updating files:  47% (11773/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.7666701Z Updating files:  48% (12024/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.7875962Z Updating files:  49% (12274/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.8196223Z Updating files:  50% (12524/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.8316906Z Updating files:  51% (12775/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.8496485Z Updating files:  52% (13025/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.8707868Z Updating files:  53% (13276/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.8954288Z Updating files:  54% (13526/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.9286924Z Updating files:  55% (13777/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.9434995Z Updating files:  56% (14027/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:25.9595632Z Updating files:  57% (14278/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.0402808Z Updating files:  58% (14528/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.0582721Z Updating files:  59% (14779/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.0705738Z Updating files:  60% (15029/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.0826912Z Updating files:  61% (15280/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.0985353Z Updating files:  62% (15530/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1149215Z Updating files:  63% (15781/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1260230Z Updating files:  64% (16031/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1351510Z Updating files:  65% (16282/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1424415Z Updating files:  66% (16532/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1547890Z Updating files:  67% (16783/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1769631Z Updating files:  68% (17033/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.1952988Z Updating files:  69% (17284/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2137360Z Updating files:  70% (17534/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2319331Z Updating files:  71% (17785/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2481824Z Updating files:  72% (18035/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2566069Z Updating files:  73% (18286/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2670147Z Updating files:  74% (18536/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2759875Z Updating files:  75% (18786/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2848090Z Updating files:  76% (19037/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2913673Z Updating files:  77% (19287/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.2968446Z Updating files:  78% (19538/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.3272999Z Updating files:  79% (19788/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.3329159Z Updating files:  80% (20039/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.3553959Z Updating files:  80% (20087/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.3730184Z Updating files:  81% (20289/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.3818065Z Updating files:  82% (20540/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.4039762Z Updating files:  83% (20790/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.4133987Z Updating files:  84% (21041/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.4485178Z Updating files:  85% (21291/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.4707804Z Updating files:  86% (21542/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.4969232Z Updating files:  87% (21792/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.5278833Z Updating files:  88% (22043/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.5461272Z Updating files:  89% (22293/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.5605772Z Updating files:  90% (22544/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.6617156Z Updating files:  91% (22794/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.6872399Z Updating files:  92% (23045/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7019757Z Updating files:  93% (23295/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7172218Z Updating files:  94% (23546/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7283729Z Updating files:  95% (23796/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7382247Z Updating files:  96% (24047/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7480782Z Updating files:  97% (24297/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7632847Z Updating files:  98% (24548/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7774436Z Updating files:  99% (24798/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7775003Z Updating files: 100% (25048/25048)
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.7775518Z Updating files: 100% (25048/25048), done.
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8098140Z Switched to a new branch 'main'
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8111002Z branch 'main' set up to track 'origin/main'.
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8177411Z ##[endgroup]
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8227533Z [command]/usr/bin/git log -1 --format=%H
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8259908Z 6e43e042347358e522bfbb2f909986c95fadc6ec
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8271311Z ##[group]Removing auth
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8271594Z Removing SSH command configuration
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8275546Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8305576Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8571481Z Removing HTTP extra header
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8575025Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8607438Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8870340Z Removing includeIf entries pointing to credentials config files
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8873739Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8897520Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8898653Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8899161Z includeif.gitdir:/github/workspace/.git.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8899634Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8907010Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8932074Z /home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8940904Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-72bb81f2\-a4d5\-47d7\-9059\-ab128b1c3151\.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8973543Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.8996186Z /home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9007444Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-72bb81f2\-a4d5\-47d7\-9059\-ab128b1c3151\.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9037528Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9106822Z /github/runner_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9110292Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-72bb81f2\-a4d5\-47d7\-9059\-ab128b1c3151\.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9157967Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9179167Z /github/runner_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9186079Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-72bb81f2\-a4d5\-47d7\-9059\-ab128b1c3151\.config
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9217685Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9486379Z Removing credentials config '/home/runner/work/_temp/git-credentials-72bb81f2-a4d5-47d7-9059-ab128b1c3151.config'
+qualify	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:01:26.9496035Z ##[endgroup]
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	﻿2026-11-09T23:01:26.9672991Z ##[group]Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9673392Z with:
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9673585Z   node-version: 24
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9673786Z   check-latest: false
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9676400Z   token: ***
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9676613Z   package-manager-cache: true
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9676846Z env:
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9679642Z   GH_TOKEN: ***
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9679853Z   FIXTURE_VERSION: 1.10.0
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9680161Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:26.9680494Z ##[endgroup]
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:27.0946200Z Found in cache @ /opt/hostedtoolcache/node/24.22.2/x64
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:27.5741240Z ##[group]Environment details
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:29.0360091Z node: v24.22.2
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:29.0360522Z npm: 11.19.1
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:29.0360805Z yarn: 1.22.22
+qualify	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:01:29.0361498Z ##[endgroup]
+qualify	Verify publisher refusal and archive controls	﻿2026-11-09T23:01:29.0476124Z ##[group]Run node --test eng/test-extension-release/gate.test.mjs
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0476643Z [36;1mnode --test eng/test-extension-release/gate.test.mjs[0m
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0477085Z [36;1mpython3 -B eng/test-extension-release/run-controls.py[0m
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0549488Z shell: /usr/bin/bash -e {0}
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0549789Z env:
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0552658Z   GH_TOKEN: ***
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0552899Z   FIXTURE_VERSION: 1.10.0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0553272Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.0553664Z ##[endgroup]
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1909063Z ✔ exact normal source qualifications authorize only the named fixture (2.423711ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1910657Z ✔ refuses foreign repository (0.389505ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1911889Z ✔ refuses different checkout (0.262161ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1912886Z ✔ refuses foreign workflow (0.25284ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1913966Z ✔ refuses arbitrary version (0.28984ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1914834Z ✔ refuses advanced main (0.278745ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1915848Z ✔ refuses different source tag (0.261102ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1916826Z ✔ refuses draft release (0.189145ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1918081Z ✔ refuses latest tuple failed (0.408946ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1919303Z ✔ refuses latest tuple pending (1.58996ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1920098Z ✔ refuses foreign push proof (0.322678ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1922951Z ✔ refuses missing legacy source job (0.246488ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1924807Z ✔ refuses failed catalog job (0.344865ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.1927248Z ✔ refuses incomplete proof discovery (0.193505ms)
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2020151Z ℹ tests 14
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2020621Z ℹ suites 0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2020866Z ℹ pass 14
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2021065Z ℹ fail 0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2021284Z ℹ cancelled 0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2021517Z ℹ skipped 0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2021719Z ℹ todo 0
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2021975Z ℹ duration_ms 92.383036
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2884891Z Publisher controls: 30 (17 readiness, 9 archive identity, 4 execution-inventory controls).
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2887270Z test_incomplete_execution_is_refused_even_without_failure (test_controls.ExecutionInventoryTests.test_incomplete_execution_is_refused_even_without_failure) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2889341Z test_missing_discovered_case_is_refused (test_controls.ExecutionInventoryTests.test_missing_discovered_case_is_refused) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2891183Z test_skipped_discovered_control_is_refused (test_controls.ExecutionInventoryTests.test_skipped_discovered_control_is_refused) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.2892483Z test_successful_exact_inventory_passes (test_controls.ExecutionInventoryTests.test_successful_exact_inventory_passes) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:29.8487084Z test_actual_sdk_uppercase_hash_handoff_passes (test_host_entry.HostEntryTests.test_actual_sdk_uppercase_hash_handoff_passes) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:30.4110270Z test_authentication_failure_cannot_become_a_healthy_extension (test_host_entry.HostEntryTests.test_authentication_failure_cannot_become_a_healthy_extension) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:30.9700396Z test_boolean_is_not_an_api_major (test_host_entry.HostEntryTests.test_boolean_is_not_an_api_major) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:31.4726549Z test_changed_source_hashes_are_refused_before_http (test_host_entry.HostEntryTests.test_changed_source_hashes_are_refused_before_http) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:32.0299095Z test_declared_major_mismatch_is_refused (test_host_entry.HostEntryTests.test_declared_major_mismatch_is_refused) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:32.5893289Z test_existing_report_is_never_overwritten (test_host_entry.HostEntryTests.test_existing_report_is_never_overwritten) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:33.1471610Z test_expiry_during_http_cannot_emit_a_passing_report (test_host_entry.HostEntryTests.test_expiry_during_http_cannot_emit_a_passing_report) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:33.6500300Z test_foreign_producer_is_refused_before_http (test_host_entry.HostEntryTests.test_foreign_producer_is_refused_before_http) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:34.2087259Z test_healthy_extension_is_independent_of_overall_distributed_readiness (test_host_entry.HostEntryTests.test_healthy_extension_is_independent_of_overall_distributed_readiness) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:34.7675454Z test_healthy_extension_with_http200_also_passes (test_host_entry.HostEntryTests.test_healthy_extension_with_http200_also_passes) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:35.2705428Z test_invalid_or_expired_run_is_refused_before_http (test_host_entry.HostEntryTests.test_invalid_or_expired_run_is_refused_before_http) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:35.9024450Z test_malformed_or_oversized_health_body_fails (test_host_entry.HostEntryTests.test_malformed_or_oversized_health_body_fails) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:36.4613271Z test_redirect_to_healthy_target_is_refused_without_second_request (test_host_entry.HostEntryTests.test_redirect_to_healthy_target_is_refused_without_second_request) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:37.0198724Z test_unhealthy_extension_fails_and_retains_a_failed_report (test_host_entry.HostEntryTests.test_unhealthy_extension_fails_and_retains_a_failed_report) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:37.5796428Z test_wrong_extension_or_package_is_refused (test_host_entry.HostEntryTests.test_wrong_extension_or_package_is_refused) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.0824156Z test_wrong_native_owner_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_native_owner_is_refused_before_http) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5851601Z test_wrong_profile_or_mode_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_profile_or_mode_is_refused_before_http) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5880309Z test_accepts_only_the_declared_source_and_fixture (test_package.PackageIdentityTests.test_accepts_only_the_declared_source_and_fixture) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5902046Z test_refuses_altered_declaration_or_foreign_producer (test_package.PackageIdentityTests.test_refuses_altered_declaration_or_foreign_producer) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5912028Z test_refuses_consistently_rebound_foreign_owner_metadata (test_package.PackageIdentityTests.test_refuses_consistently_rebound_foreign_owner_metadata) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5919642Z test_refuses_consistently_rebound_test_profile (test_package.PackageIdentityTests.test_refuses_consistently_rebound_test_profile) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5924942Z test_refuses_different_source (test_package.PackageIdentityTests.test_refuses_different_source) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5936162Z test_refuses_fixture_built_without_extension_api (test_package.PackageIdentityTests.test_refuses_fixture_built_without_extension_api) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5938517Z test_refuses_foreign_dependency (test_package.PackageIdentityTests.test_refuses_foreign_dependency) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5965250Z test_refuses_missing_declaration_or_producer (test_package.PackageIdentityTests.test_refuses_missing_declaration_or_producer) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5973089Z test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent (test_package.PackageIdentityTests.test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent) ... ok
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5974592Z 
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5975160Z ----------------------------------------------------------------------
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5975915Z Ran 30 tests in 9.309s
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5976219Z 
+qualify	Verify publisher refusal and archive controls	2026-11-09T23:01:38.5976410Z OK
+qualify	Require exact current source release and normal qualifications	﻿2026-11-09T23:01:38.6152788Z ##[group]Run node eng/test-extension-release/gate.mjs
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6153199Z [36;1mnode eng/test-extension-release/gate.mjs[0m
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6185015Z shell: /usr/bin/bash -e {0}
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6185289Z env:
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6187910Z   GH_TOKEN: ***
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6188150Z   FIXTURE_VERSION: 1.10.0
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6188591Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:38.6188948Z ##[endgroup]
+qualify	Require exact current source release and normal qualifications	2026-11-09T23:01:42.6782705Z {"schema":"hexalith.platform.test-extension-publication.v1","source":"6e43e042347358e522bfbb2f909986c95fadc6ec","version":"1.10.0","packageId":"Hexalith.Platform.TestExtension","sourceRelease":"https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.10.0","runs":[{"workflow":".github/workflows/tuple-ci.yml","run":42711758062,"attempt":1},{"workflow":".github/workflows/catalog-builder.yml","run":42711757909,"attempt":1}],"candidateAcceptance":false,"storyAcceptance":false}
+qualify	Initialize direct dependencies	﻿2026-11-09T23:01:42.6886588Z ##[group]Run git -c submodule.recurse=false submodule update --init
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6887072Z [36;1mgit -c submodule.recurse=false submodule update --init[0m
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6917806Z shell: /usr/bin/bash -e {0}
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6918080Z env:
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6921043Z   GH_TOKEN: ***
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6921264Z   FIXTURE_VERSION: 1.10.0
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6921590Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.6921943Z ##[endgroup]
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7244145Z Submodule 'references/Hexalith.AI.Tools' (https://github.com/Hexalith/Hexalith.AI.Tools.git) registered for path 'references/Hexalith.AI.Tools'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7246661Z Submodule 'references/Hexalith.Agents' (https://github.com/Hexalith/Hexalith.Agents.git) registered for path 'references/Hexalith.Agents'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7250806Z Submodule 'references/Hexalith.Builds' (https://github.com/Hexalith/Hexalith.Builds.git) registered for path 'references/Hexalith.Builds'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7254647Z Submodule 'references/Hexalith.ChatBot' (https://github.com/Hexalith/Hexalith.ChatBot.git) registered for path 'references/Hexalith.ChatBot'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7258489Z Submodule 'references/Hexalith.Commons' (https://github.com/Hexalith/Hexalith.Commons.git) registered for path 'references/Hexalith.Commons'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7262308Z Submodule 'references/Hexalith.Conversations' (https://github.com/Hexalith/Hexalith.Conversations.git) registered for path 'references/Hexalith.Conversations'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7266082Z Submodule 'references/Hexalith.EventStore' (https://github.com/Hexalith/Hexalith.EventStore.git) registered for path 'references/Hexalith.EventStore'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7270034Z Submodule 'references/Hexalith.Folders' (https://github.com/Hexalith/Hexalith.Folders.git) registered for path 'references/Hexalith.Folders'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7274038Z Submodule 'references/Hexalith.FrontComposer' (https://github.com/Hexalith/Hexalith.FrontComposer.git) registered for path 'references/Hexalith.FrontComposer'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7278148Z Submodule 'references/Hexalith.McpCli' (https://github.com/Hexalith/Hexalith.McpCli.git) registered for path 'references/Hexalith.McpCli'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7282520Z Submodule 'references/Hexalith.Memories' (https://github.com/Hexalith/Hexalith.Memories.git) registered for path 'references/Hexalith.Memories'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7287313Z Submodule 'references/Hexalith.Parties' (https://github.com/Hexalith/Hexalith.Parties.git) registered for path 'references/Hexalith.Parties'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7291906Z Submodule 'references/Hexalith.PolymorphicSerializations' (https://github.com/Hexalith/Hexalith.PolymorphicSerializations.git) registered for path 'references/Hexalith.PolymorphicSerializations'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7295814Z Submodule 'references/Hexalith.Projects' (https://github.com/Hexalith/Hexalith.Projects.git) registered for path 'references/Hexalith.Projects'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7300229Z Submodule 'references/Hexalith.Tenants' (https://github.com/Hexalith/Hexalith.Tenants.git) registered for path 'references/Hexalith.Tenants'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7304429Z Submodule 'references/Hexalith.Timesheets' (https://github.com/Hexalith/Hexalith.Timesheets.git) registered for path 'references/Hexalith.Timesheets'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7308667Z Submodule 'references/Hexalith.Works' (https://github.com/Hexalith/Hexalith.Works.git) registered for path 'references/Hexalith.Works'
+qualify	Initialize direct dependencies	2026-11-09T23:01:42.7339294Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.AI.Tools'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:43.0379708Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Agents'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:45.6193406Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Builds'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:50.6672843Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.ChatBot'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:52.7211270Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Commons'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:53.2070186Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Conversations'...
+qualify	Initialize direct dependencies	2026-11-09T23:01:57.3878826Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.EventStore'...
+qualify	Initialize direct dependencies	2026-11-09T23:02:19.6938783Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Folders'...
+qualify	Initialize direct dependencies	2026-11-09T23:02:31.8841579Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.FrontComposer'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:09.8976510Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.McpCli'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:12.3331072Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Memories'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:14.0855001Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Parties'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:16.4018642Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.PolymorphicSerializations'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:16.7653449Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Projects'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:28.5901089Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Tenants'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:31.5189077Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Timesheets'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:33.9731455Z Cloning into '/home/runner/work/Hexalith.Platform/Hexalith.Platform/references/Hexalith.Works'...
+qualify	Initialize direct dependencies	2026-11-09T23:03:37.0426197Z Submodule path 'references/Hexalith.AI.Tools': checked out '1745b6663ad32bb1288167135ed0f979366c53a0'
+qualify	Initialize direct dependencies	2026-11-09T23:03:38.5405936Z Submodule path 'references/Hexalith.Agents': checked out '7957108c30d38b8e82eb072cf3437b6a67627cd7'
+qualify	Initialize direct dependencies	2026-11-09T23:03:38.8175636Z Submodule path 'references/Hexalith.Builds': checked out '5ec1779040606be89306129a7d2b245258c9acd2'
+qualify	Initialize direct dependencies	2026-11-09T23:03:39.2672657Z Submodule path 'references/Hexalith.ChatBot': checked out 'b13c58006d292836a9c8b242de476765676e5fb2'
+qualify	Initialize direct dependencies	2026-11-09T23:03:39.2844467Z Submodule path 'references/Hexalith.Commons': checked out '11555ace9efcae2928a00122dcba91243e5a8a1a'
+qualify	Initialize direct dependencies	2026-11-09T23:03:45.9718141Z Submodule path 'references/Hexalith.Conversations': checked out 'b2c3cf6684a779a077e179008f7d559b88bd7e4a'
+qualify	Initialize direct dependencies	2026-11-09T23:03:47.0749870Z Submodule path 'references/Hexalith.EventStore': checked out 'aa16227bd07f0564a3026d619a5abd973e02656f'
+qualify	Initialize direct dependencies	2026-11-09T23:03:51.4674142Z Submodule path 'references/Hexalith.Folders': checked out 'e88c940000446e13d17d86a7288649d8653a7138'
+qualify	Initialize direct dependencies	2026-11-09T23:03:52.4184599Z Submodule path 'references/Hexalith.FrontComposer': checked out 'e972d0f06a8eec3446db0b2270fdb14eef4c1186'
+qualify	Initialize direct dependencies	2026-11-09T23:03:53.3845381Z Submodule path 'references/Hexalith.McpCli': checked out 'fa7c51601041ee6cf0d2f9d4613fb405758f2f7c'
+qualify	Initialize direct dependencies	2026-11-09T23:03:54.0861835Z Submodule path 'references/Hexalith.Memories': checked out '4ff3e6866ecb6d1a497e7063e972c24259252c40'
+qualify	Initialize direct dependencies	2026-11-09T23:03:54.8232571Z Submodule path 'references/Hexalith.Parties': checked out 'ebe1739d70a4e76447938b0bb8c53db508bf6019'
+qualify	Initialize direct dependencies	2026-11-09T23:03:54.8863435Z Submodule path 'references/Hexalith.PolymorphicSerializations': checked out 'bce4eb9f45c6b131b960ab4fa39e50ff01e51960'
+qualify	Initialize direct dependencies	2026-11-09T23:03:58.6682769Z Submodule path 'references/Hexalith.Projects': checked out '9ae0571529cb4a9f3ad9750c8b834e6284d4f76b'
+qualify	Initialize direct dependencies	2026-11-09T23:03:59.3806421Z Submodule path 'references/Hexalith.Tenants': checked out 'd88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35'
+qualify	Initialize direct dependencies	2026-11-09T23:04:00.1237777Z Submodule path 'references/Hexalith.Timesheets': checked out 'f5bee2c91bec6e1e78d81b604cea6af0cee764fe'
+qualify	Initialize direct dependencies	2026-11-09T23:04:01.3350521Z Submodule path 'references/Hexalith.Works': checked out '4bd0df1461c89fdf00f1ccf3c47a3bf9bc939a23'
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	﻿2026-11-09T23:04:01.4229213Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4229691Z with:
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4229939Z   global-json-file: global.json
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4230241Z   cache: false
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4230464Z env:
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4233565Z   GH_TOKEN: ***
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4233806Z   FIXTURE_VERSION: 1.10.0
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4234191Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.4234602Z ##[endgroup]
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:01.5685047Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:02.0849295Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:02.0872693Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+qualify	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:04:03.1869563Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+qualify	Require the measured package SDK feature	﻿2026-11-09T23:04:03.1982632Z ##[group]Run set -euo pipefail
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1983076Z [36;1mset -euo pipefail[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1983976Z [36;1mconstants="$(dotnet msbuild tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj -p:Configuration=Release -p:UseHexalithProjectReferences=false -getProperty:DefineConstants -nologo)"[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1985150Z [36;1mif [[ ";$constants;" != *';HEXALITH_PLATFORM_EXTENSION_SDK;'* ]]; then[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1985716Z [36;1m  echo 'fixture-publication: the measured package SDK extension feature is unavailable.' >&2[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1986165Z [36;1m  exit 1[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.1986363Z [36;1mfi[0m
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2035448Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2035804Z env:
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2038664Z   GH_TOKEN: ***
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2038881Z   FIXTURE_VERSION: 1.10.0
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2039220Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2039641Z   DOTNET_ROOT: /usr/share/dotnet
+qualify	Require the measured package SDK feature	2026-11-09T23:04:03.2039904Z ##[endgroup]
+qualify	Compile the source-bound native fixture test	﻿2026-11-09T23:04:06.2495866Z ##[group]Run dotnet build tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -warnaserror -nodeReuse:false --disable-build-servers
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2497659Z [36;1mdotnet build tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -warnaserror -nodeReuse:false --disable-build-servers[0m
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2527963Z shell: /usr/bin/bash -e {0}
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2528233Z env:
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2531820Z   GH_TOKEN: ***
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2532045Z   FIXTURE_VERSION: 1.10.0
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2532385Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2532757Z   DOTNET_ROOT: /usr/share/dotnet
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:06.2533004Z ##[endgroup]
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:08.2957113Z   Determining projects to restore...
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:11.2337586Z   Restored /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj (in 1.45 sec).
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0157390Z   Hexalith.Platform.TestExtension.Qualification.Tests -> /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/Hexalith.Platform.TestExtension.Qualification.Tests/bin/Release/net10.0/Hexalith.Platform.TestExtension.Qualification.Tests.dll
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0317007Z 
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0324458Z Build succeeded.
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0325375Z     0 Warning(s)
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0325677Z     0 Error(s)
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0326848Z 
+qualify	Compile the source-bound native fixture test	2026-11-09T23:04:15.0329147Z Time Elapsed 00:00:08.46
+qualify	Pack only the Platform-owned fixture from package dependencies	﻿2026-11-09T23:04:15.0559433Z ##[group]Run set -euo pipefail
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0559780Z [36;1mset -euo pipefail[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0560032Z [36;1mmkdir -p "$PACKAGE_DIRECTORY"[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0561773Z [36;1mdotnet pack tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj -c Release -p:UseHexalithProjectReferences=false -p:IsPackable=true -p:GeneratePackageOnBuild=false -p:PackageVersion="$FIXTURE_VERSION" -p:SourceRevisionId="$GITHUB_SHA" -p:RepositoryCommit="$GITHUB_SHA" -p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Platform -p:RepositoryType=git -o "$PACKAGE_DIRECTORY" -warnaserror -nodeReuse:false --disable-build-servers[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0564534Z [36;1mpython3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" tests/fixtures/Hexalith.Platform.TestExtension/bin/Release/net10.0/Hexalith.Platform.TestExtension.dll --assets tests/fixtures/Hexalith.Platform.TestExtension/obj/project.assets.json[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0566058Z [36;1mcp "$FIXTURE_PROOF_OUTPUT" "$PACKAGE_DIRECTORY/fixture-proof.json"[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0566837Z [36;1mprintf 'archive_sha256=%s\n' "$(sha256sum "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"[0m
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0596603Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0596943Z env:
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0599864Z   GH_TOKEN: ***
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0600075Z   FIXTURE_VERSION: 1.10.0
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0600401Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0600762Z   DOTNET_ROOT: /usr/share/dotnet
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0601080Z   PACKAGE_DIRECTORY: /home/runner/work/_temp/fixture-package
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.0601409Z ##[endgroup]
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:15.6982327Z   Determining projects to restore...
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:17.3537151Z   Restored /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj (in 1.39 sec).
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:19.9111177Z   Hexalith.Platform.TestExtension -> /home/runner/work/Hexalith.Platform/Hexalith.Platform/tests/fixtures/Hexalith.Platform.TestExtension/bin/Release/net10.0/Hexalith.Platform.TestExtension.dll
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:20.3207727Z   The package Hexalith.Platform.TestExtension.1.10.0 is missing a readme. Go to https://aka.ms/nuget/authoring-best-practices/readme to learn why package readmes are important.
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:20.3209681Z   Successfully created package '/home/runner/work/_temp/fixture-package/Hexalith.Platform.TestExtension.1.10.0.nupkg'.
+qualify	Pack only the Platform-owned fixture from package dependencies	2026-11-09T23:04:22.1847724Z {"archiveSha256": "d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c", "bodies": {"Hexalith.Platform.TestExtension.nuspec": "d4fbf2bbdaa9c70bf9f7d8c95ea410cbbc5affb27de9e4b1a9811fb34a271ec8", "[Content_Types].xml": "834dac411a54062d6bc7ef81f12469e694bf382d6c09996dd2b384a366d78e00", "_rels/.rels": "d3df72f4b320bb1be320f516d3ca3a4e50e03231e82b6a3e7d5d1fdd6b5f3c12", "build/fixture-producer.json": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914", "build/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24", "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76", "build/qualification/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3", "build/qualification/qualify-host.py": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511", "lib/net10.0/Hexalith.Platform.TestExtension.dll": "1b360ea49f77216e8fcb100f06e54221c7ae828c137fd1dd88e8d3f7e71533f4", "lib/net10.0/Hexalith.Platform.TestExtension.xml": "85459f559ba405fad5aaa0675d9d15658fcd8bc71c9e52a1ab84a338ad2b3c15", "package/services/metadata/core-properties/nuget.psmdcp": "c90c0335fb9baf72f1e69ab7f39cf7f6be34be5d91bcf81fb44973b6469bd79f"}, "declaration": {"moduleId": "platformtestextension", "path": "build/hexalith.module-manifest.v2.json", "sha256": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24"}, "dependencies": [{"exclude": "Build,Analyzers", "id": "Hexalith.EventStore.DomainService", "version": "4.2.0"}], "librarySha256": "1b360ea49f77216e8fcb100f06e54221c7ae828c137fd1dd88e8d3f7e71533f4", "packageId": "Hexalith.Platform.TestExtension", "producer": {"path": "build/fixture-producer.json", "publisherRepository": "Hexalith/Hexalith.Platform", "sha256": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914"}, "repository": "https://github.com/Hexalith/Hexalith.Platform", "source": "6e43e042347358e522bfbb2f909986c95fadc6ec", "test": {"files": {"eng/test-extension-release/qualify-host.py": {"path": "build/qualification/qualify-host.py", "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"}, "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {"path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj", "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"}, "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {"path": "build/qualification/ReadinessTests.cs", "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"}}, "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"}, "version": "1.10.0"}
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	﻿2026-11-09T23:04:22.2232242Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2232670Z with:
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2232906Z   name: platform-test-extension-42716926527-1
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2233237Z   path: /home/runner/work/_temp/fixture-package/
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2233535Z   if-no-files-found: error
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2233766Z   retention-days: 30
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2233975Z   compression-level: 6
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2234181Z   overwrite: false
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2234386Z   include-hidden-files: false
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2234613Z   archive: true
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2234804Z env:
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2237383Z   GH_TOKEN: ***
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2237585Z   FIXTURE_VERSION: 1.10.0
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2237908Z   FIXTURE_PROOF_OUTPUT: /home/runner/work/_temp/fixture-proof.json
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2238262Z   DOTNET_ROOT: /usr/share/dotnet
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.2238716Z ##[endgroup]
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.3648991Z With the provided path, there will be 4 files uploaded
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.3655811Z Artifact name is valid!
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.3656499Z Root directory input is valid!
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.6240683Z Uploading artifact: platform-test-extension-42716926527-1.zip
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.6279489Z Beginning upload of artifact content to blob storage
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.7782139Z Uploaded bytes 17259
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.8052228Z Finished uploading artifact content to blob storage!
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.8053408Z SHA256 digest of uploaded artifact is 40574f5cf5050e6f8677db318a750d64c184817a7da15f22d8b61ec12bc3b9f6
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:22.8055306Z Finalizing artifact upload
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:23.1867947Z Artifact platform-test-extension-42716926527-1 successfully finalized. Artifact ID 13718512242
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:23.1869523Z Artifact platform-test-extension-42716926527-1 has been successfully uploaded! Final size is 17259 bytes. Artifact ID is 13718512242
+qualify	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:04:23.1872815Z Artifact download URL: https://github.com/Hexalith/Hexalith.Platform/actions/runs/42716926527/artifacts/13718512242
+qualify	Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	﻿2026-11-09T23:04:23.2026237Z Post job cleanup.
+qualify	Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	﻿2026-11-09T23:04:23.3311407Z Post job cleanup.
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	﻿2026-11-09T23:04:23.4644860Z Post job cleanup.
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5580979Z [command]/usr/bin/git version
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5623994Z git version 2.56.0
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5660048Z Temporarily overriding HOME='/home/runner/work/_temp/9255728a-0129-4b44-a74b-a6bb14f6cd47' before making global git config changes
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5661982Z Adding repository directory to the temporary git global config as a safe directory
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5667011Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5702737Z Removing SSH command configuration
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5710515Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.5750165Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6120388Z Entering 'references/Hexalith.AI.Tools'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6210473Z Entering 'references/Hexalith.Agents'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6303830Z Entering 'references/Hexalith.Builds'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6379844Z Entering 'references/Hexalith.ChatBot'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6466760Z Entering 'references/Hexalith.Commons'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6508687Z Entering 'references/Hexalith.Conversations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6654360Z Entering 'references/Hexalith.EventStore'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6719369Z Entering 'references/Hexalith.Folders'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6789933Z Entering 'references/Hexalith.FrontComposer'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6844574Z Entering 'references/Hexalith.McpCli'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6917893Z Entering 'references/Hexalith.Memories'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.6974333Z Entering 'references/Hexalith.Parties'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7033287Z Entering 'references/Hexalith.PolymorphicSerializations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7076341Z Entering 'references/Hexalith.Projects'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7145175Z Entering 'references/Hexalith.Tenants'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7195734Z Entering 'references/Hexalith.Timesheets'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7249223Z Entering 'references/Hexalith.Works'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7327985Z Removing HTTP extra header
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7334661Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7372259Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7637422Z Entering 'references/Hexalith.AI.Tools'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7683041Z Entering 'references/Hexalith.Agents'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7763273Z Entering 'references/Hexalith.Builds'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7812171Z Entering 'references/Hexalith.ChatBot'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7864184Z Entering 'references/Hexalith.Commons'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.7905786Z Entering 'references/Hexalith.Conversations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8046692Z Entering 'references/Hexalith.EventStore'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8105049Z Entering 'references/Hexalith.Folders'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8171202Z Entering 'references/Hexalith.FrontComposer'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8224293Z Entering 'references/Hexalith.McpCli'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8299909Z Entering 'references/Hexalith.Memories'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8354416Z Entering 'references/Hexalith.Parties'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8410148Z Entering 'references/Hexalith.PolymorphicSerializations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8451556Z Entering 'references/Hexalith.Projects'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8520477Z Entering 'references/Hexalith.Tenants'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8573122Z Entering 'references/Hexalith.Timesheets'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8626796Z Entering 'references/Hexalith.Works'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8703556Z Removing includeIf entries pointing to credentials config files
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8710277Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.8745662Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9007833Z Entering 'references/Hexalith.AI.Tools'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9030469Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.AI.Tools/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9048817Z Entering 'references/Hexalith.Agents'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9068218Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Agents/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9113513Z Entering 'references/Hexalith.Builds'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9136246Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Builds/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9160653Z Entering 'references/Hexalith.ChatBot'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9182515Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.ChatBot/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9212412Z Entering 'references/Hexalith.Commons'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9233244Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Commons/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9251604Z Entering 'references/Hexalith.Conversations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9271699Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Conversations/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9397132Z Entering 'references/Hexalith.EventStore'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9418753Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.EventStore/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9452639Z Entering 'references/Hexalith.Folders'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9475693Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Folders/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9521738Z Entering 'references/Hexalith.FrontComposer'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9545220Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.FrontComposer/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9574275Z Entering 'references/Hexalith.McpCli'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9595335Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.McpCli/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9641920Z Entering 'references/Hexalith.Memories'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9664634Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Memories/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9693929Z Entering 'references/Hexalith.Parties'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9714896Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Parties/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9749800Z Entering 'references/Hexalith.PolymorphicSerializations'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9770897Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.PolymorphicSerializations/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9787793Z Entering 'references/Hexalith.Projects'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9810869Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Projects/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9862957Z Entering 'references/Hexalith.Tenants'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9885621Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Tenants/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9910900Z Entering 'references/Hexalith.Timesheets'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9931906Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Timesheets/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9963880Z Entering 'references/Hexalith.Works'
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:23.9985782Z file:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Works/config	remote.origin.url
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0042893Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.AI.Tools/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0076347Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Agents/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0105908Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Builds/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0134269Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.ChatBot/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0171862Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Commons/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0206617Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Conversations/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0239847Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.EventStore/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0269793Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Folders/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0300961Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.FrontComposer/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0332604Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.McpCli/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0361482Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Memories/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0393774Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Parties/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0430980Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.PolymorphicSerializations/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0464232Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Projects/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0499191Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Tenants/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0534748Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Timesheets/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:04:24.0564564Z [command]/usr/bin/git config --file /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/modules/references/Hexalith.Works/config --name-only --get-regexp ^includeIf\.gitdir:
+qualify	Complete job	﻿2026-11-09T23:04:24.0729555Z Evaluate and set job outputs
+qualify	Complete job	2026-11-09T23:04:24.0735677Z Set output 'archive_sha256'
+qualify	Complete job	2026-11-09T23:04:24.0737576Z Cleaning up orphan processes
+publish	Set up job	﻿2026-11-09T23:05:43.5374552Z Current runner version: '2.338.2'
+publish	Set up job	2026-11-09T23:05:43.5395813Z ##[group]Runner Image Provisioner
+publish	Set up job	2026-11-09T23:05:43.5396617Z Hosted Compute Agent
+publish	Set up job	2026-11-09T23:05:43.5397103Z Version: 20261028.624
+publish	Set up job	2026-11-09T23:05:43.5397643Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+publish	Set up job	2026-11-09T23:05:43.5398841Z Build Date: 2026-10-28T21:51:42Z
+publish	Set up job	2026-11-09T23:05:43.5399401Z Worker ID: {f3364e64-65c5-4867-83a7-5221c2141c99}
+publish	Set up job	2026-11-09T23:05:43.5399950Z Region: eastus2
+publish	Set up job	2026-11-09T23:05:43.5400449Z Cloud: Azure
+publish	Set up job	2026-11-09T23:05:43.5400921Z ##[endgroup]
+publish	Set up job	2026-11-09T23:05:43.5402104Z ##[group]Operating System
+publish	Set up job	2026-11-09T23:05:43.5402650Z Ubuntu
+publish	Set up job	2026-11-09T23:05:43.5403058Z 26.04.1
+publish	Set up job	2026-11-09T23:05:43.5403521Z LTS
+publish	Set up job	2026-11-09T23:05:43.5403975Z ##[endgroup]
+publish	Set up job	2026-11-09T23:05:43.5404445Z ##[group]Runner Image
+publish	Set up job	2026-11-09T23:05:43.5405010Z Image: ubuntu-26.04
+publish	Set up job	2026-11-09T23:05:43.5405481Z Version: 20261101.186.1
+publish	Set up job	2026-11-09T23:05:43.5406370Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261101.186/images/ubuntu/Ubuntu2604-Readme.md
+publish	Set up job	2026-11-09T23:05:43.5407787Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261101.186
+publish	Set up job	2026-11-09T23:05:43.5408864Z ##[endgroup]
+publish	Set up job	2026-11-09T23:05:43.5409869Z ##[group]GITHUB_TOKEN Permissions
+publish	Set up job	2026-11-09T23:05:43.5411642Z Actions: read
+publish	Set up job	2026-11-09T23:05:43.5412167Z Contents: read
+publish	Set up job	2026-11-09T23:05:43.5412685Z Metadata: read
+publish	Set up job	2026-11-09T23:05:43.5413144Z ##[endgroup]
+publish	Set up job	2026-11-09T23:05:43.5414906Z Secret source: Actions
+publish	Set up job	2026-11-09T23:05:43.5415720Z Cache mode: write
+publish	Set up job	2026-11-09T23:05:43.5416255Z Prepare workflow directory
+publish	Set up job	2026-11-09T23:05:43.5896335Z Prepare all required actions
+publish	Set up job	2026-11-09T23:05:43.5935745Z Getting action download info
+publish	Set up job	2026-11-09T23:05:43.8229175Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+publish	Set up job	2026-11-09T23:05:43.9028935Z Download action repository 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+publish	Set up job	2026-11-09T23:05:43.9918140Z Download action repository 'actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+publish	Set up job	2026-11-09T23:05:44.2198818Z Download action repository 'actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333' (SHA:9000827ccba6bdab643e8b6fd33ac0654aef8333)
+publish	Set up job	2026-11-09T23:05:44.4659633Z Download action repository 'NuGet/login@8d196754b4036150537f80ac539e15c2f1028841' (SHA:8d196754b4036150537f80ac539e15c2f1028841)
+publish	Set up job	2026-11-09T23:05:44.6683152Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+publish	Set up job	2026-11-09T23:05:44.8371080Z Complete job name: publish
+publish	Bind downloaded qualification proof	﻿2026-11-09T23:05:44.9052408Z ##[group]Run printf 'FIXTURE_EXPECTED_PROOF=%s/fixture-package/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9054850Z [36;1mprintf 'FIXTURE_EXPECTED_PROOF=%s/fixture-package/fixture-proof.json\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"[0m
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9105469Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9106700Z env:
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9113757Z   GH_TOKEN: ***
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9114436Z   FIXTURE_VERSION: 1.10.0
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9115612Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Bind downloaded qualification proof	2026-11-09T23:05:44.9116915Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	﻿2026-11-09T23:05:44.9510551Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9511699Z with:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9512286Z   fetch-depth: 0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9512925Z   submodules: false
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9513610Z   persist-credentials: false
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9514408Z   repository: Hexalith/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9521291Z   token: ***
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9521923Z   ssh-strict: true
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9522552Z   ssh-user: git
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9523158Z   clean: true
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9547470Z   sparse-checkout-cone-mode: true
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9548595Z   fetch-tags: false
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9549517Z   show-progress: true
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9550182Z   lfs: false
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9550810Z   set-safe-directory: true
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9551562Z   allow-unsafe-pr-checkout: false
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9552315Z env:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9559250Z   GH_TOKEN: ***
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9559926Z   FIXTURE_VERSION: 1.10.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9561122Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9562847Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:44.9564053Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2337223Z Syncing repository: Hexalith/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2340709Z ##[group]Getting Git version info
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2342597Z Working directory is '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2345305Z [command]/usr/bin/git version
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2346467Z git version 2.56.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2361734Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2372374Z Temporarily overriding HOME='/home/runner/work/_temp/a93a168d-51e1-4b0e-95ea-e81fce9380e2' before making global git config changes
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2375541Z Adding repository directory to the temporary git global config as a safe directory
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2378539Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2430726Z Deleting the contents of '/home/runner/work/Hexalith.Platform/Hexalith.Platform'
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2433662Z ##[group]Determining repository object format
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2435336Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2436466Z ##[group]Initializing the repository
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2438669Z [command]/usr/bin/git init /home/runner/work/Hexalith.Platform/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2539961Z hint: Using 'master' as the name for the initial branch. This default branch name
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2542388Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2544341Z hint: to use in all of your new repositories, which will suppress this warning,
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2545998Z hint: call:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2546887Z hint:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2547850Z hint: 	git config --global init.defaultBranch <name>
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2549157Z hint:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2550429Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2552065Z hint: 'development'. The just-created branch can be renamed via this command:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2553197Z hint:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2553833Z hint: 	git branch -m <name>
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2554556Z hint:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2555905Z hint: Disable this message with "git config set advice.defaultBranchName false"
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2557708Z Initialized empty Git repository in /home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2560838Z [command]/usr/bin/git remote add origin https://github.com/Hexalith/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2634822Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2636173Z ##[group]Disabling automatic garbage collection
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2637633Z [command]/usr/bin/git config --local gc.auto 0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2670378Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2671869Z ##[group]Setting up auth
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2672936Z Removing SSH command configuration
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2676256Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.2707777Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3075971Z Removing HTTP extra header
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3081784Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3119065Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3349743Z Removing includeIf entries pointing to credentials config files
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3353562Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3384434Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3620478Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3653440Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path /home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3681984Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3712211Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3739208Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3764691Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3766240Z ##[group]Fetching the repository
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:45.3772096Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6814359Z From https://github.com/Hexalith/Hexalith.Platform
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6815977Z  * [new branch]        docs/story-3-2-replay-l-20261109 -> origin/docs/story-3-2-replay-l-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6817000Z  * [new branch]        docs/story-3-2-replay-l-import-closure-20261109 -> origin/docs/story-3-2-replay-l-import-closure-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6818067Z  * [new branch]        docs/story-3-2-replay-l-schema-fix-20261109 -> origin/docs/story-3-2-replay-l-schema-fix-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6819463Z  * [new branch]        docs/story-3-2-replay-l-source-default-fix-20261109 -> origin/docs/story-3-2-replay-l-source-default-fix-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6820684Z  * [new branch]        docs/story-3-2-replay-n-20261109 -> origin/docs/story-3-2-replay-n-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6821727Z  * [new branch]        docs/story-3-2-replay-n-import-closure-20261109 -> origin/docs/story-3-2-replay-n-import-closure-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6822855Z  * [new branch]        docs/story-3-2-replay-n-schema-fix-20261109 -> origin/docs/story-3-2-replay-n-schema-fix-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6824029Z  * [new branch]        docs/story-3-2-replay-n-source-default-fix-20261109 -> origin/docs/story-3-2-replay-n-source-default-fix-20261109
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6825132Z  * [new branch]        fix/sdk420-legacy-qualification -> origin/fix/sdk420-legacy-qualification
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6825850Z  * [new branch]        main       -> origin/main
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6826410Z  * [new tag]           v1.0.0     -> v1.0.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6826861Z  * [new tag]           v1.0.1     -> v1.0.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6827320Z  * [new tag]           v1.1.0     -> v1.1.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6828128Z  * [new tag]           v1.1.1     -> v1.1.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6828804Z  * [new tag]           v1.1.2     -> v1.1.2
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6829204Z  * [new tag]           v1.1.3     -> v1.1.3
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6829555Z  * [new tag]           v1.1.4     -> v1.1.4
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6829816Z  * [new tag]           v1.1.5     -> v1.1.5
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6830074Z  * [new tag]           v1.1.6     -> v1.1.6
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6830349Z  * [new tag]           v1.1.7     -> v1.1.7
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6830621Z  * [new tag]           v1.1.8     -> v1.1.8
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6831040Z  * [new tag]           v1.10.0    -> v1.10.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6831317Z  * [new tag]           v1.2.0     -> v1.2.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6831577Z  * [new tag]           v1.2.1     -> v1.2.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6831845Z  * [new tag]           v1.2.2     -> v1.2.2
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6832132Z  * [new tag]           v1.2.3     -> v1.2.3
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6832455Z  * [new tag]           v1.3.0     -> v1.3.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6832866Z  * [new tag]           v1.4.0     -> v1.4.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6833241Z  * [new tag]           v1.4.1     -> v1.4.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6833649Z  * [new tag]           v1.5.0     -> v1.5.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6833920Z  * [new tag]           v1.5.1     -> v1.5.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6834187Z  * [new tag]           v1.5.2     -> v1.5.2
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6834481Z  * [new tag]           v1.5.3     -> v1.5.3
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6834914Z  * [new tag]           v1.5.4     -> v1.5.4
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6835184Z  * [new tag]           v1.5.5     -> v1.5.5
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6835457Z  * [new tag]           v1.5.6     -> v1.5.6
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6835721Z  * [new tag]           v1.5.7     -> v1.5.7
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6835985Z  * [new tag]           v1.6.0     -> v1.6.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6836243Z  * [new tag]           v1.7.0     -> v1.7.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6836503Z  * [new tag]           v1.7.1     -> v1.7.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6836770Z  * [new tag]           v1.8.0     -> v1.8.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6837047Z  * [new tag]           v1.8.1     -> v1.8.1
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6837309Z  * [new tag]           v1.9.0     -> v1.9.0
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6838895Z [command]/usr/bin/git branch --list --remote origin/main
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6853101Z   origin/main
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6861309Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6883016Z 6e43e042347358e522bfbb2f909986c95fadc6ec
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6886275Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6886687Z ##[group]Determining the checkout info
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6887247Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6891933Z [command]/usr/bin/git sparse-checkout disable
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6934600Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6960500Z ##[group]Checking out the ref
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:50.6963089Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.7229712Z Updating files:  36% (9232/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.7337107Z Updating files:  37% (9268/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.7449855Z Updating files:  38% (9519/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.7633381Z Updating files:  39% (9769/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.7908009Z Updating files:  40% (10020/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.8091509Z Updating files:  41% (10270/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.8392031Z Updating files:  42% (10521/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.8646883Z Updating files:  43% (10771/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.8766858Z Updating files:  44% (11022/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.9261733Z Updating files:  45% (11272/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:51.9623855Z Updating files:  46% (11523/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.0140892Z Updating files:  47% (11773/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.0740298Z Updating files:  48% (12024/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.0944184Z Updating files:  49% (12274/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.1237821Z Updating files:  50% (12524/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.1347505Z Updating files:  51% (12775/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.1518911Z Updating files:  52% (13025/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.1710679Z Updating files:  53% (13276/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.1942689Z Updating files:  54% (13526/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.2209846Z Updating files:  55% (13777/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.2360470Z Updating files:  56% (14027/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.2484226Z Updating files:  57% (14278/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.2965575Z Updating files:  58% (14528/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3100027Z Updating files:  59% (14779/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3205619Z Updating files:  60% (15029/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3303506Z Updating files:  61% (15280/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3426893Z Updating files:  62% (15530/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3593327Z Updating files:  63% (15781/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3718807Z Updating files:  64% (16031/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3829037Z Updating files:  65% (16282/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.3916123Z Updating files:  66% (16532/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4045620Z Updating files:  67% (16783/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4250233Z Updating files:  68% (17033/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4424755Z Updating files:  69% (17284/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4605146Z Updating files:  70% (17534/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4781435Z Updating files:  71% (17785/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.4938840Z Updating files:  72% (18035/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5035782Z Updating files:  73% (18286/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5157472Z Updating files:  74% (18536/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5261331Z Updating files:  75% (18786/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5362212Z Updating files:  76% (19037/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5442453Z Updating files:  77% (19287/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5513856Z Updating files:  78% (19538/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.5793237Z Updating files:  79% (19788/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6055630Z Updating files:  80% (20039/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6232428Z Updating files:  81% (20289/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6338733Z Updating files:  82% (20540/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6556623Z Updating files:  83% (20790/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6668949Z Updating files:  84% (21041/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.6976276Z Updating files:  85% (21291/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.7175007Z Updating files:  86% (21542/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.7185197Z Updating files:  86% (21749/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.7419960Z Updating files:  87% (21792/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.7697392Z Updating files:  88% (22043/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.7875900Z Updating files:  89% (22293/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.8021706Z Updating files:  90% (22544/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.8859729Z Updating files:  91% (22794/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9100057Z Updating files:  92% (23045/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9249413Z Updating files:  93% (23295/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9406089Z Updating files:  94% (23546/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9517479Z Updating files:  95% (23796/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9626496Z Updating files:  96% (24047/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9736091Z Updating files:  97% (24297/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:52.9890029Z Updating files:  98% (24548/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0036406Z Updating files:  99% (24798/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0036870Z Updating files: 100% (25048/25048)
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0037202Z Updating files: 100% (25048/25048), done.
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0270607Z Switched to a new branch 'main'
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0274806Z branch 'main' set up to track 'origin/main'.
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0386074Z ##[endgroup]
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0432107Z [command]/usr/bin/git log -1 --format=%H
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0455514Z 6e43e042347358e522bfbb2f909986c95fadc6ec
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0466380Z ##[group]Removing auth
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0466621Z Removing SSH command configuration
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0466962Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0499234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0771376Z Removing HTTP extra header
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0781513Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.0810513Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1081775Z Removing includeIf entries pointing to credentials config files
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1084690Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1110473Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1111744Z includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1112672Z includeif.gitdir:/github/workspace/.git.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1113037Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1119677Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1149111Z /home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1160416Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-271ccc84\-6bee\-453a\-b3d3\-09760a6a0557\.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1196069Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1221610Z /home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1230132Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Hexalith.Platform/Hexalith.Platform/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-271ccc84\-6bee\-453a\-b3d3\-09760a6a0557\.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1258803Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1281128Z /github/runner_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1287430Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-271ccc84\-6bee\-453a\-b3d3\-09760a6a0557\.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1317635Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1338400Z /github/runner_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1346689Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-271ccc84\-6bee\-453a\-b3d3\-09760a6a0557\.config
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1375096Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1658189Z Removing credentials config '/home/runner/work/_temp/git-credentials-271ccc84-6bee-453a-b3d3-09760a6a0557.config'
+publish	Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:05:53.1659393Z ##[endgroup]
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	﻿2026-11-09T23:05:53.1840971Z ##[group]Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1841315Z with:
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1841484Z   node-version: 24
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1841669Z   check-latest: false
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1843595Z   token: ***
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1843790Z   package-manager-cache: true
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1843999Z env:
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1845845Z   GH_TOKEN: ***
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1846023Z   FIXTURE_VERSION: 1.10.0
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1846369Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1846843Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.1847173Z ##[endgroup]
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.2931915Z Found in cache @ /opt/hostedtoolcache/node/24.22.2/x64
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.3436417Z ##[group]Environment details
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.6201226Z node: v24.22.2
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.6201707Z npm: 11.19.1
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.6201933Z yarn: 1.22.22
+publish	Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1	2026-11-09T23:05:53.6203029Z ##[endgroup]
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	﻿2026-11-09T23:05:53.6340808Z ##[group]Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6341128Z with:
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6341300Z   global-json-file: global.json
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6341505Z   cache: false
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6341676Z env:
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6343595Z   GH_TOKEN: ***
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6343778Z   FIXTURE_VERSION: 1.10.0
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6344102Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6344731Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.6345063Z ##[endgroup]
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:53.7426210Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:54.1066020Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:54.1085673Z [command]/home/runner/work/_actions/actions/setup-dotnet/a98b56852c35b8e3190ac28c8c2271da59106c68/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0.4xx
+publish	Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68	2026-11-09T23:05:54.3614529Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	﻿2026-11-09T23:05:54.3774084Z ##[group]Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3774440Z with:
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3774645Z   name: platform-test-extension-42716926527-1
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3774935Z   path: /home/runner/work/_temp/fixture-package
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3775184Z   merge-multiple: false
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3775399Z   repository: Hexalith/Hexalith.Platform
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3775620Z   run-id: 42716926527
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3775806Z   skip-decompress: false
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3776003Z   digest-mismatch: error
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3776178Z env:
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3778420Z   GH_TOKEN: ***
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3778628Z   FIXTURE_VERSION: 1.10.0
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3778965Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3779470Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3779812Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.3780022Z ##[endgroup]
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.4882171Z Downloading single artifact
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.6201035Z Preparing to download the following artifacts:
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.6202446Z - platform-test-extension-42716926527-1 (ID: 13718512242, Size: 17259, Expected Digest: sha256:40574f5cf5050e6f8677db318a750d64c184817a7da15f22d8b61ec12bc3b9f6)
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.8613456Z Redirecting to blob download url: https://productionresultssa1.blob.core.windows.net/actions-results/3ba4ea7d-bc50-438d-82e4-d1bdcac847f0/workflow-job-run-139a1061-99b8-50ff-9e28-f285d1a43507/artifacts/755823fdb7ff7a242973363f35d33dbf4b8000955560b372cd75735d7c9c3ab4.zip
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.8615216Z Starting download of artifact to: /home/runner/work/_temp/fixture-package
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9177902Z (node:2491) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9178951Z (Use `node --trace-deprecation ...` to show where the warning was created)
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9231619Z SHA256 digest of downloaded artifact is 40574f5cf5050e6f8677db318a750d64c184817a7da15f22d8b61ec12bc3b9f6
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9232534Z Artifact download completed successfully.
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9233009Z Total of 1 artifact(s) downloaded
+publish	Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333	2026-11-09T23:05:54.9235602Z Download artifact has finished successfully
+publish	Recheck the exact qualified source before OIDC	﻿2026-11-09T23:05:54.9341997Z ##[group]Run node eng/test-extension-release/gate.mjs
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9342374Z [36;1mnode eng/test-extension-release/gate.mjs[0m
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9392696Z shell: /usr/bin/bash -e {0}
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9392924Z env:
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9394880Z   GH_TOKEN: ***
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9395068Z   FIXTURE_VERSION: 1.10.0
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9395398Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9395878Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9396223Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:54.9396427Z ##[endgroup]
+publish	Recheck the exact qualified source before OIDC	2026-11-09T23:05:57.6598460Z {"schema":"hexalith.platform.test-extension-publication.v1","source":"6e43e042347358e522bfbb2f909986c95fadc6ec","version":"1.10.0","packageId":"Hexalith.Platform.TestExtension","sourceRelease":"https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.10.0","runs":[{"workflow":".github/workflows/tuple-ci.yml","run":42711758062,"attempt":1},{"workflow":".github/workflows/catalog-builder.yml","run":42711757909,"attempt":1}],"candidateAcceptance":false,"storyAcceptance":false}
+publish	Require configured owner Trusted Publishing	﻿2026-11-09T23:05:57.6706928Z ##[group]Run set -euo pipefail
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6707205Z [36;1mset -euo pipefail[0m
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6707503Z [36;1mif [[ "$PUBLISH_ENABLED" != 'true' || -z "${NUGET_USER//[[:space:]]/}" ]]; then[0m
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6707998Z [36;1m  echo 'fixture-publication: Platform owner Trusted Publishing is not configured and enabled.' >&2[0m
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6708661Z [36;1m  exit 1[0m
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6708866Z [36;1mfi[0m
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6752533Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6752812Z env:
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6754762Z   GH_TOKEN: ***
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6754965Z   FIXTURE_VERSION: 1.10.0
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6755295Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6755779Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6756128Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6756341Z   PUBLISH_ENABLED: true
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6756576Z   NUGET_USER: jpiquot
+publish	Require configured owner Trusted Publishing	2026-11-09T23:05:57.6756759Z ##[endgroup]
+publish	Exchange this repository's OIDC for a temporary NuGet key	﻿2026-11-09T23:05:57.6849744Z ##[group]Run NuGet/login@8d196754b4036150537f80ac539e15c2f1028841
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850054Z with:
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850221Z   user: jpiquot
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850459Z   token-service-url: https://www.nuget.org/api/v2/token
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850741Z   audience: https://www.nuget.org
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6850954Z env:
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6852838Z   GH_TOKEN: ***
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853031Z   FIXTURE_VERSION: 1.10.0
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853370Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6853863Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6854206Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:57.6854416Z ##[endgroup]
+publish	Exchange this repository's OIDC for a temporary NuGet key	2026-11-09T23:05:59.8384680Z ##[error]Token exchange failed (HTTP 401) at https://www.nuget.org/api/v2/token. Make sure you are using the username of the policy creator, not the policy owner: Workflow mismatch for policy 'Hexalith.Platform': expected 'release.yml', actual 'test-extension-release.yml'
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	﻿2026-11-09T23:05:59.8490182Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8490518Z with:
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8490765Z   name: platform-test-extension-publication-42716926527-1
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8491077Z   path: /home/runner/work/_temp/fixture-package/
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8491338Z   if-no-files-found: error
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8491539Z   retention-days: 90
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8491733Z   compression-level: 6
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8491933Z   overwrite: false
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8492117Z   include-hidden-files: false
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8492329Z   archive: true
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8492495Z env:
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8494449Z   GH_TOKEN: ***
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8494659Z   FIXTURE_VERSION: 1.10.0
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8494991Z   FIXTURE_ARCHIVE_SHA256: d09ad59f348b429090dea3b790758348f1875a9746b745901d5f47b6f607703c
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8495480Z   FIXTURE_EXPECTED_PROOF: /home/runner/work/_temp/fixture-package/fixture-proof.json
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8495836Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.8496076Z ##[endgroup]
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.9673849Z With the provided path, there will be 4 files uploaded
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.9677450Z Artifact name is valid!
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:05:59.9682556Z Root directory input is valid!
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.2027205Z Uploading artifact: platform-test-extension-publication-42716926527-1.zip
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.2051416Z Beginning upload of artifact content to blob storage
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.3104167Z Uploaded bytes 17259
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.3272820Z Finished uploading artifact content to blob storage!
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.3273567Z SHA256 digest of uploaded artifact is 943ff99bb7a03fedec4e4739e43b0c381516f425facd34b2d9bdeda57ea9deaa
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.3274156Z Finalizing artifact upload
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.7018343Z Artifact platform-test-extension-publication-42716926527-1 successfully finalized. Artifact ID 13719116326
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.7019888Z Artifact platform-test-extension-publication-42716926527-1 has been successfully uploaded! Final size is 17259 bytes. Artifact ID is 13719116326
+publish	Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	2026-11-09T23:06:00.7021978Z Artifact download URL: https://github.com/Hexalith/Hexalith.Platform/actions/runs/42716926527/artifacts/13719116326
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	﻿2026-11-09T23:06:00.7183615Z Post job cleanup.
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.7892288Z [command]/usr/bin/git version
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.7938849Z git version 2.56.0
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.7966981Z Temporarily overriding HOME='/home/runner/work/_temp/b4638358-9285-4bb7-8996-96831cbc2b84' before making global git config changes
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.7968444Z Adding repository directory to the temporary git global config as a safe directory
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.7972104Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Hexalith.Platform/Hexalith.Platform
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8002474Z Removing SSH command configuration
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8007087Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8040790Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8332329Z Removing HTTP extra header
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8338121Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8379489Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8665122Z Removing includeIf entries pointing to credentials config files
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8670706Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+publish	Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1	2026-11-09T23:06:00.8700239Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+publish	Complete job	﻿2026-11-09T23:06:00.9124049Z Cleaning up orphan processes

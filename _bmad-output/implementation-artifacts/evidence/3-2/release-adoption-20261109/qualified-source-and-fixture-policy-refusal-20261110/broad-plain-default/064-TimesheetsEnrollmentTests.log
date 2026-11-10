@@ -1,0 +1,22 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (4 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+    Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateValidatesAtomicallyWithTheDomainMinimum [FAIL]
+      Shouldly.ShouldAssertException : result.IsValid
+          should be
+      True
+          but was
+      False
+      
+      Additional Info:
+          modules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+      modules[0].tests[1].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+      modules[0].tests[0].entry: Use an existing module-owned entry of the executor's file type, without symlinks or dependency paths.
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/TimesheetsEnrollmentTests.cs(36,0): at Hexalith.Platform.Composition.Tests.TimesheetsEnrollmentTests.CandidateValidatesAtomicallyWithTheDomainMinimum()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 6, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.376s

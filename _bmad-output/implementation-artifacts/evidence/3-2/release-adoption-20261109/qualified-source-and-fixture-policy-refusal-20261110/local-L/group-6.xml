@@ -1,0 +1,80 @@
+<assemblies schema-version="3" id="f61b34bd-583b-41d0-abeb-7d1efbef82e0" computer="DESKTOP-VIOG240" user="administrator" start-rtf="2026-11-09T21:43:34.4649928+00:00" finish-rtf="2026-11-09T21:43:57.8546807+00:00" timestamp="11/09/2026 22:43:57"><assembly environment="64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]" id="bcd7e4cc-e1ea-41b1-9f81-219ba8109118" name="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/artifacts/replay-L/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-09" run-time="21:43:34" start-rtf="2026-11-09T21:43:34.4649928+00:00" test-framework="xUnit.net v3 4.0.2+0c7aa4991f" target-framework=".NETCoreApp,Version=v10.0" errors="0" failed="0" finish-rtf="2026-11-09T21:43:57.8546807+00:00" not-run="0" passed="9" skipped="0" time="23.390" time-rtf="00:00:23.3900000" total="9"><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests (id: 0db44bdc16e19447895af85966af7225f355af8ceb7b36aa79d307d2fe784c99)" id="ccf5cc3f-852e-4772-828d-c495847b25e1" failed="0" not-run="0" passed="9" skipped="0" time="23.277" time-rtf="00:00:23.2770000" total="9"><test id="7ca5fbef-df84-48c1-82cb-ca4584d55370" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.OrdinaryConsumerStillRejectsMixedActiveSdkSourceAndPackagesAsync" result="Pass" time="4.222" time-rtf="00:00:04.2220000" start-rtf="2026-11-09T21:43:34.5360231+00:00" finish-rtf="2026-11-09T21:43:38.7672431+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="OrdinaryConsumerStillRejectsMixedActiveSdkSourceAndPackagesAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="149"><output>  Determining projects to restore...
+  Restored /tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/src/Hexalith.EventStore.Client/Hexalith.EventStore.Client.csproj (in 64 ms).
+  Restored /tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/reader-run/ordinary.csproj (in 180 ms).
+  Hexalith.EventStore.Client -&gt; /tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/src/Hexalith.EventStore.Client/bin/Release/net10.0/Hexalith.EventStore.Client.dll
+/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/reader-run/source-mapping/mapping.json : error HXW005: Source 'Hexalith.EventStore' at '/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799' duplicates restored package 'Hexalith.EventStore.Contracts/4.1.0'. [/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/reader-run/ordinary.csproj]
+
+Build FAILED.
+
+/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/reader-run/source-mapping/mapping.json : error HXW005: Source 'Hexalith.EventStore' at '/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799' duplicates restored package 'Hexalith.EventStore.Contracts/4.1.0'. [/tmp/platform-qualified-cohort-d8fa27dfc9ab4fc8b75fce295c715799/reader-run/ordinary.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:03.27
+
+</output></test><test id="565c309f-d6f9-4160-9891-eeac1901e4bb" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \&quot;mapping\&quot;)" result="Pass" time="0.705" time-rtf="00:00:00.7050000" start-rtf="2026-11-09T21:43:38.7816493+00:00" finish-rtf="2026-11-09T21:43:39.4875034+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ChangedRunAuthorityRefusesBeforeReaderBuildAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="57"><output>authority-refusal=mapping Source mapping '/tmp/platform-qualified-cohort-e5db295bfcae43978137ed33b521945e/reader-run/source-mapping/mapping.json' has hash '29587e234651567f514284c12458d04f276f47719e23023f5c6cdae711b19e03' and differs from the command-resolved hash '6515d1621977c298169952f11631e1be7ec01c56b11ba28c025423e0f1d90de0'.
+</output></test><test id="95f667a2-f9de-4052-8789-8f5b9b3d1803" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \&quot;snapshot\&quot;)" result="Pass" time="0.67" time-rtf="00:00:00.6700000" start-rtf="2026-11-09T21:43:39.4876120+00:00" finish-rtf="2026-11-09T21:43:40.1581922+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ChangedRunAuthorityRefusesBeforeReaderBuildAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="57"><output>authority-refusal=snapshot The private package reader's pinned catalog validation failed; see /tmp/platform-qualified-cohort-bfcccedb76f845118bebf202e2363bf3/reader-run/platform-components/catalog-reader/catalog-validation.log.
+catalog-validation.log: /tmp/platform-qualified-cohort-bfcccedb76f845118bebf202e2363bf3/reader-run/source-mapping/catalog-versions.json : error HXW012: Pinned catalog validation failed: Pinned catalog snapshot differs from the command-resolved identity. [/tmp/platform-qualified-cohort-bfcccedb76f845118bebf202e2363bf3/reader-run/platform-components/catalog-reader/validate-catalog.proj]
+
+</output></test><test id="36160c73-7e9f-4060-84ed-b6d19dae21a9" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \&quot;catalog\&quot;)" result="Pass" time="0.659" time-rtf="00:00:00.6590000" start-rtf="2026-11-09T21:43:40.1583091+00:00" finish-rtf="2026-11-09T21:43:40.8175146+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ChangedRunAuthorityRefusesBeforeReaderBuildAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="57"><output>authority-refusal=catalog The private package reader's pinned catalog validation failed; see /tmp/platform-qualified-cohort-fb76a34e5599428580122249bdef6e21/reader-run/platform-components/catalog-reader/catalog-validation.log.
+catalog-validation.log: /tmp/platform-qualified-cohort-fb76a34e5599428580122249bdef6e21/reader-run/source-mapping/catalog-versions.json : error HXW012: Pinned catalog validation failed: Pinned catalog snapshot differs from the command-resolved identity. [/tmp/platform-qualified-cohort-fb76a34e5599428580122249bdef6e21/reader-run/platform-components/catalog-reader/validate-catalog.proj]
+
+</output></test><test id="4205b287-88c7-4602-a019-73ddee9c65c8" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ChangedRunAuthorityRefusesBeforeReaderBuildAsync(fault: \&quot;missing-snapshot\&quot;)" result="Pass" time="0.676" time-rtf="00:00:00.6760000" start-rtf="2026-11-09T21:43:40.8176237+00:00" finish-rtf="2026-11-09T21:43:41.4939433+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ChangedRunAuthorityRefusesBeforeReaderBuildAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="57"><output>authority-refusal=missing-snapshot The private package reader's pinned catalog validation failed; see /tmp/platform-qualified-cohort-ba3836dcfa93476c952c1f5f53dfff7e/reader-run/platform-components/catalog-reader/catalog-validation.log.
+catalog-validation.log: /tmp/platform-qualified-cohort-ba3836dcfa93476c952c1f5f53dfff7e/reader-run/source-mapping/catalog-versions.json : error HXW012: Pinned catalog validation failed: Could not find file '/tmp/platform-qualified-cohort-ba3836dcfa93476c952c1f5f53dfff7e/reader-run/source-mapping/catalog-versions.json'. [/tmp/platform-qualified-cohort-ba3836dcfa93476c952c1f5f53dfff7e/reader-run/platform-components/catalog-reader/validate-catalog.proj]
+
+</output></test><test id="0a924bc5-22cb-47d2-9f39-5e9a2b99715f" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.QualifiedTenantsModelForwardsDistinctReceiverTokensAsync" result="Pass" time="4.454" time-rtf="00:00:04.4540000" start-rtf="2026-11-09T21:43:41.4952066+00:00" finish-rtf="2026-11-09T21:43:45.9499005+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="QualifiedTenantsModelForwardsDistinctReceiverTokensAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="166"><output>Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739 mvid=9deab430-42e2-4f83-9be9-4f1f7d2c4cc4
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6 mvid=4d8d5a67-88cc-4356-bb35-e5522df6b18e
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78 mvid=9d3e6d3b-e670-4c0f-a354-a74be296d844
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d mvid=43ff9af1-ee11-466d-a7cf-c436e977901f
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9 mvid=2d5a8c94-2115-4335-bbf0-4b405b7d7a83
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+catalog-root=1756c78fa0cdca5eaf1a712265a54ca9cd7a489afb49d8f0edfb6f84b74588cb
+qualified-tenant-channel-forwarding=domain-and-api; no resources started
+</output></test><test id="a3d28c55-8af7-4f1f-ae20-72186b13481f" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.AuthenticatedPackageReaderBuildsAndExecutesWithPublicArtifactsAsync" result="Pass" time="3.764" time-rtf="00:00:03.7640000" start-rtf="2026-11-09T21:43:45.9509366+00:00" finish-rtf="2026-11-09T21:43:49.7156665+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="AuthenticatedPackageReaderBuildsAndExecutesWithPublicArtifactsAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="25"><output>catalog-root=1756c78fa0cdca5eaf1a712265a54ca9cd7a489afb49d8f0edfb6f84b74588cb
+Hexalith.EventStore.Contracts sha256=f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739 mvid=9deab430-42e2-4f83-9be9-4f1f7d2c4cc4
+Hexalith.EventStore.Client sha256=702dfb7537e990a2065fe37c0b06301cdb70c26907af42faa6acdae331a7bce6 mvid=4d8d5a67-88cc-4356-bb35-e5522df6b18e
+Hexalith.EventStore.DomainService sha256=5d8068c8c116551efc3d545f85d41040023fa38217e5b4e73e4d225fe8e8bf78 mvid=9d3e6d3b-e670-4c0f-a354-a74be296d844
+Hexalith.EventStore.ServiceDefaults sha256=0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d mvid=43ff9af1-ee11-466d-a7cf-c436e977901f
+Hexalith.Tenants.Contracts sha256=4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9 mvid=2d5a8c94-2115-4335-bbf0-4b405b7d7a83
+Hexalith.Tenants.Server sha256=70eca75b01bc7cc8dc056b6babe97529fffec4f78ce81fecc58fbdb1c482003b
+generation.log: 
+catalog-validation.log: 
+build.log:   Determining projects to restore...
+  Restored /tmp/platform-qualified-cohort-151b69eb54e34e2fb4fd3b0b10cb0a70/reader-run/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj (in 245 ms).
+  Hexalith.Platform.CatalogBuilder -&gt; /tmp/platform-qualified-cohort-151b69eb54e34e2fb4fd3b0b10cb0a70/reader-run/platform-components/catalog-reader/output/Hexalith.Platform.CatalogBuilder.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.20
+
+</output></test><test id="3d3cc82d-5038-4c37-b700-3541c66ee56a" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ReaderChecksEffectiveVersionsAndRestoredAssetsAsync(fault: \&quot;version\&quot;)" result="Pass" time="4.02" time-rtf="00:00:04.0199999" start-rtf="2026-11-09T21:43:49.7175926+00:00" finish-rtf="2026-11-09T21:43:53.7386054+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ReaderChecksEffectiveVersionsAndRestoredAssetsAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="104"><output>/tmp/platform-qualified-cohort-7217d2286daa4ac89c952b682f43e2d9/reader-run/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.EventStore.Client' resolves to 4.0.3; pinned Builds catalog fc2122240a39f03628c04fa8433e5eece90b8b4c requires 4.1.0. [/tmp/platform-qualified-cohort-7217d2286daa4ac89c952b682f43e2d9/reader-run/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+generation.log: 
+catalog-validation.log: 
+build.log:   Determining projects to restore...
+  Restored /tmp/platform-qualified-cohort-7217d2286daa4ac89c952b682f43e2d9/reader-run/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj (in 239 ms).
+  Hexalith.Platform.CatalogBuilder -&gt; /tmp/platform-qualified-cohort-7217d2286daa4ac89c952b682f43e2d9/reader-run/platform-components/catalog-reader/output/Hexalith.Platform.CatalogBuilder.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.34
+
+</output></test><test id="52a56168-727a-4f3f-af51-bbdc39d9e47f" name="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests.ReaderChecksEffectiveVersionsAndRestoredAssetsAsync(fault: \&quot;assets\&quot;)" result="Pass" time="4.107" time-rtf="00:00:04.1070000" start-rtf="2026-11-09T21:43:53.7386981+00:00" finish-rtf="2026-11-09T21:43:57.8466251+00:00" type="Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests" method="ReaderChecksEffectiveVersionsAndRestoredAssetsAsync" source-file="/tmp/story32-linear-tuple-freeze-dc1d66b1/actual-L/repository/tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogReaderTests.cs" source-line="104"><output>/tmp/platform-qualified-cohort-9dc8e5ef6ec746008c1af237596581da/reader-run/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.EventStore.Client' resolves to 4.0.3; pinned Builds catalog fc2122240a39f03628c04fa8433e5eece90b8b4c requires 4.1.0. [/tmp/platform-qualified-cohort-9dc8e5ef6ec746008c1af237596581da/reader-run/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+generation.log: 
+catalog-validation.log: 
+build.log:   Determining projects to restore...
+  Restored /tmp/platform-qualified-cohort-9dc8e5ef6ec746008c1af237596581da/reader-run/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj (in 242 ms).
+  Hexalith.Platform.CatalogBuilder -&gt; /tmp/platform-qualified-cohort-9dc8e5ef6ec746008c1af237596581da/reader-run/platform-components/catalog-reader/output/Hexalith.Platform.CatalogBuilder.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.35
+
+</output></test></collection></assembly></assemblies>

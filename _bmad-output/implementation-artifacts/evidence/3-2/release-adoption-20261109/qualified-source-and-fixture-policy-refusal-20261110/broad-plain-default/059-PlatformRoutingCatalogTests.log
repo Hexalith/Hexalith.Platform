@@ -1,0 +1,69 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Platform.Composition.Tests (method display = ClassAndMethod, method display options = None)
+  Discovered:  Hexalith.Platform.Composition.Tests (6 test cases to be run)
+  Starting:    Hexalith.Platform.Composition.Tests (parallel mode = none, stop on fail = off, explicit = off, seed = 575152264)
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 5 domains (global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: TenantAggregate], global-administrators [Projection: GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: TenantProjection])","State":{"DomainCount":5,"DomainDetails":"global-administrators [Aggregate: GlobalAdministratorsAggregate], tenants [Aggregate: TenantAggregate], global-administrators [Projection: GlobalAdministratorProjection], tenant-index [Projection: TenantIndexProjection], tenants [Projection: TenantProjection]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/story32-import-closure-candidate-6xkn9mrn/repository/references/Hexalith.Tenants/src/Hexalith.Tenants","State":{"ContentRoot":"/tmp/story32-import-closure-candidate-6xkn9mrn/repository/references/Hexalith.Tenants/src/Hexalith.Tenants","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+{"EventId":0,"LogLevel":"Information","Category":"Hexalith.EventStore.Client.Registration.EventStoreHostExtensions","Message":"EventStore activated: 3 domains (memories-cases [Aggregate: MemoriesCaseAggregateAdapter], memories-memory-units [Aggregate: MemoriesMemoryUnitAggregateAdapter], memories-tenants [Aggregate: MemoriesTenantAggregateAdapter])","State":{"DomainCount":3,"DomainDetails":"memories-cases [Aggregate: MemoriesCaseAggregateAdapter], memories-memory-units [Aggregate: MemoriesMemoryUnitAggregateAdapter], memories-tenants [Aggregate: MemoriesTenantAggregateAdapter]","{OriginalFormat}":"EventStore activated: {DomainCount} domains ({DomainDetails})"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: /tmp/story32-import-closure-candidate-6xkn9mrn/repository/references/Hexalith.Memories/src/Hexalith.Memories.DomainService","State":{"ContentRoot":"/tmp/story32-import-closure-candidate-6xkn9mrn/repository/references/Hexalith.Memories/src/Hexalith.Memories.DomainService","{OriginalFormat}":"Content root path: {ContentRoot}"}}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."}}
+    Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances [FAIL]
+      System.Reflection.ReflectionTypeLoadException : Unable to load one or more of the requested types.
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Memories.Contracts, Version=3.0.25.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Could not load file or assembly 'Hexalith.Tenants.Contracts, Version=7.0.5.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+      
+      Stack Trace:
+           at System.Reflection.RuntimeModule.GetDefinedTypes()
+           at System.Reflection.RuntimeModule.GetTypes()
+        references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs(886,0): at Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions.AddDomainQueryHandlers(IServiceCollection services, Assembly[] domainAssemblies)
+        references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs(808,0): at Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions.AddEventStoreDomainServiceCore(WebApplicationBuilder builder, Action`1 configureOptions, Assembly[] domainAssemblies)
+        references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs(245,0): at Hexalith.EventStore.DomainService.EventStoreDomainServiceExtensions.AddEventStoreDomainService(WebApplicationBuilder builder, Assembly[] domainAssemblies)
+        references/Hexalith.Parties/src/Hexalith.Parties/Program.cs(20,0): at Program.<Main>$(String[] args)
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+        --- End of stack trace from previous location ---
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.CreateHost()
+           at Microsoft.Extensions.Hosting.HostFactoryResolver.<>c__DisplayClass10_0.<ResolveHostFactory>b__0(String[] args)
+           at Microsoft.AspNetCore.Mvc.Testing.DeferredHostBuilder.Build()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.DelegatedWebApplicationFactory.CreateHost(IHostBuilder builder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.ConfigureHostBuilder(IHostBuilder hostBuilder)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.StartServer()
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateDefaultClient(Uri baseAddress, DelegatingHandler[] handlers)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient(WebApplicationFactoryClientOptions options)
+           at Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory`1.CreateClient()
+        tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs(73,0): at Hexalith.Platform.Composition.Tests.PlatformCatalogOwnerParity.AssertHostAsync[T](PlatformRoutingCatalog catalog, PlatformServerBinding server)
+        tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs(79,0): at Hexalith.Platform.Composition.Tests.PlatformCatalogOwnerParity.AssertHostAsync[T](PlatformRoutingCatalog catalog, PlatformServerBinding server)
+        tests/Hexalith.Platform.Composition.Tests/PlatformCatalogOwnerParity.cs(30,0): at Hexalith.Platform.Composition.Tests.PlatformCatalogOwnerParity.AssertAsync(PlatformRoutingCatalog catalog, IReadOnlyList`1 servers)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRoutingCatalogTests.cs(43,0): at Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogTests.ActualMappedOwnersProduceIdenticalBytesInIndependentOwnedInstances()
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '6475db057051913a8ead64cf56737abc0b780402a9f0bbd3dbb85417bdf2969e')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 7, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 65.363s
