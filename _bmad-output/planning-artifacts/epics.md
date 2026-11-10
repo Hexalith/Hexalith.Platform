@@ -1576,6 +1576,48 @@ So that local and CI integration evidence can be accepted.
 **When** released
 **Then** the tool version that carries it is recorded as Platform-accepted and pinned in Platform and in Parties
 
+**Blocked (2026-11-10, user decision):** The published 4.47.0 lifecycle campaign recorded 7 passed, 7 incomplete and 2 unexecuted local/CI scenario rows. The remaining rows need producers that the tool and the fixed Parties caller lack. [Story 2.11](#story-211-supervise-attached-runs-and-report-the-missing-lifecycle-producers) owns them. This story stays in progress. Once a Builds release carries 2.11, it runs one complete qualification against that fixed input set, then records the Platform-accepted tool and its pins. The 4.47.0 observations keep their own subjects. They supply no acceptance for the new tool.
+
+### Story 2.11: Supervise attached runs and report the missing lifecycle producers
+
+As a Platform maintainer,
+I want the runner to own attached test work and report the full lifecycle record,
+So that Story 2.10 can qualify every required scenario rather than inferring proof from hold metadata.
+
+**Repo:** Hexalith.Builds (runner, result contract, reusable workflow), Hexalith.Parties (qualification caller) · **Covers:** FR-4 (attachment, withdrawn outcome, cleanup), FR-5, AR-13, SM-C4 · **Unblocks:** Story 2.10
+
+**Origin (2026-11-10):** This story takes over the deferred `attached-test-execution-and-expiry-enforcement` follow-up, which the user split from Story 2.9 on 2026-10-30. It also covers the producer gaps found by the Story 2.10 campaign. Qualification, tool acceptance and pins stay in Story 2.10. Publishing this story's release grants none of them.
+
+**Acceptance Criteria:**
+
+**Given** a declared test suite attached to a compatible owner environment
+**When** it runs through the runner
+**Then** the runner owns the attached child work and its per-attachment environment access
+**And** attached declared-suite execution is no longer refused
+
+**Given** an attached run whose hold expires, or whose owner is cancelled or explicitly stopped
+**When** that happens
+**Then** its owned work is stopped and its access ended before owner teardown, with the run recorded as withdrawn
+**And** the first outcome and the original absolute expiry stay unchanged across retries
+**And** a stopping failure is reported without extending the hold and without granting qualification to the withdrawn run
+
+**Given** an attached run
+**When** it ends
+**Then** its result and termination observations are published in the result contract
+
+**Given** a startup that times out, is partial or is interrupted
+**When** its result is recorded
+**Then** the record holds its actual startup duration, with the original effective deadline and any override
+
+**Given** a local or hosted result record
+**When** inspected
+**Then** it binds the executing tool identity and the termination observation
+
+**Given** the Parties qualification caller
+**When** invoked
+**Then** it can select a genuine exclusive-resource collision case, which is refused with an explicit conflict while unrelated resources are preserved
+**And** it can select CI startup-timeout, failure-followed-by-cancellation, owner-cancellation-before-attachment-end and attached-failure/hold-expiry cases
+
 ## Epic 3: Run the complete Hexalith system locally with agent access
 
 A developer starts all seven MVP modules together with one command. They run through the Platform-composed `eventstore` host with extension packages, a run-scoped catalog, a local realm generated from the realm contract and the synthetic tenant. The local McpCli CLI and stdio MCP discover and execute agent-eligible operations and refuse everything else. CI candidate evidence proves exactly which artifacts were loaded. The epic closes with the SM-1, SM-2 and SM-3 evidence stories across all seven modules.

@@ -185,3 +185,13 @@ failures/errors out of 2,941 cases. It ran in a clean fixed detached checkout;
 all bound input hashes remained unchanged. The earlier failed and incomplete
 attempts remain historical. The bounded-diagnostics owning gate is resolved;
 all 16 fresh lifecycle rows and tool acceptance/pins remain open.
+
+## Blocked on Story 2.11 — 2026-11-10
+
+On 2026-11-10 the user chose to block this story on the new
+[Story 2.11](../../../planning-artifacts/epics.md#story-211-supervise-attached-runs-and-report-the-missing-lifecycle-producers).
+That story owns the producers the 4.47.0 campaign lacks: supervised attached
+work/access, interrupted-startup duration, executing-tool and termination
+bindings, and the Parties collision, timeout and attached cases. No observation
+above is relabelled or reused for the future tool. Final qualification, tool
+acceptance and pins stay open here until a Builds release carries 2.11.

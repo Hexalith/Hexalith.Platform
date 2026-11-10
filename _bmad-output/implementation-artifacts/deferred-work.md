@@ -1486,6 +1486,7 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-9-migrate-eventstore-and-parties-fixtures-to-the-environment-descriptor.md`
   summary: Implement supervised attached test execution and expiry enforcement in follow-up attached-test-execution-and-expiry-enforcement.
+  target_story: 2.11 (user decision 2026-11-10; Story 2.10 qualification is blocked on it)
   evidence: User chose split on 2026-10-30. This reassigns the still-open work/access termination obligation previously targeted at Story 2.9 by Story 2.7; it does not resolve or waive it. Fixture migration can ship independently, while Builds currently rejects attached declared-suite execution. The follow-up must establish owned child work and per-attachment access, stop both at original hold expiry or withdrawal, preserve first outcomes and immutable expiry across retries, publish attached result/termination observations, and report stopping failures without extending holds or granting qualification to withdrawn runs.
 
 ## Deferred from: implementation of spec-5-1-decide-the-staging-evidence-policies (2026-10-30)

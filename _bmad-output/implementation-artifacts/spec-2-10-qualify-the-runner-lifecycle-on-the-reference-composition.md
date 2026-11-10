@@ -283,3 +283,32 @@ owning checks. This worker ran no local lifecycle campaign or hosted workflow;
 all 16 fresh scenario rows, final compatible qualification input selection, full
 matrix/cancellation campaigns and accepted-tool enrollment/pins remain open.
 Status remains `in-progress` pending those gates.
+
+## Blocked on Story 2.11 — 2026-11-10
+
+Resuming `/bmad-build 2.10` found no qualification work that can be completed
+with the published 4.47.0 tool. The [campaign ledger](evidence/2-10/campaign-20261110/README.md)
+records 7 passed, 7 incomplete and 2 unexecuted local/CI rows. The missing proof
+is producer capability, not skipped execution:
+
+- supervised attached-suite execution, with per-attachment work/access ownership
+  stopped at hold expiry or withdrawal (deferred follow-up
+  `attached-test-execution-and-expiry-enforcement`);
+- actual startup duration for interrupted or partial startup;
+- executing-tool and termination bindings in local and hosted result records;
+- a genuine exclusive-resource collision selector in the Parties caller, and
+  hosted timeout, failure-then-cancellation and attached cases.
+
+Policy v1 requires full qualification against one fixed compatible input set.
+Any run with 4.47.0 would therefore be repeated once a new tool carries these
+producers. The user chose to block this story and open
+[Story 2.11](../planning-artifacts/epics.md#story-211-supervise-attached-runs-and-report-the-missing-lifecycle-producers)
+for them. Status remains `in-progress`, and every open task above stays open.
+
+Resume this story only after a Builds release carries Story 2.11. Then select
+that tool, the Parties caller and the final Platform source cut as one fixed
+input set. Run the complete local and hosted table and both real cancellation
+runs. Record the Platform-accepted tool and its Platform and Parties pins only
+after every gate passes. The 4.47.0 observations keep their own subjects and
+supply no acceptance for the new tool. No code, services, remote operations,
+pins or budgets changed in this resumption.
