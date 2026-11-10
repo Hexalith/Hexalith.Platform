@@ -1,0 +1,415 @@
+{
+  "repository": "/tmp/hexalith-builds-2-11-part-2-20261110",
+  "head": "4ce510b2b263f8e4ea469638a130f08776ba27a3",
+  "sourceBefore": {
+    "README.md": "e61f650c0e8a8e7bb5496bcb1eac882548ac6be36bdd1b3a3d663e0b4ce3db5f",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "a646d061e7f16695230de1f3a27f60cd891b3ead65138cfc6623e7d9f25f078f",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "d05c9de75031231d8525af61fd06f8c73b88919324f31a7771054f12509bfced",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs": "e9e6fe753248cf09d4a3506b1f892473b60449fc2504a900fa2432da5838da5b",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs": "98fe6099c437b287c716eba9eac67432cff17c8765d25b9848ec8c7d45d567cc",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs": "324d627d338a1a58f1edab175fd46b75287eeaeaba23c5e4a687d5d4bbba0801",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "1d45536e6021e37309537d06028ffb3bfe74b9be71900fb374d906cff49352e3",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs": "2cf194e330cf3d2d2159e263c6ed383971ddd389d08050abc054e368d21b25f3",
+    "test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs": "22562dc2b76eb71b50f6d9908db85a5ddc0b77c7630a087f113acb7b020626d4",
+    "test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs": "286a767c70e0c5d9b2d2afa1d89adc5bf2b4d7e45c0255f627831f7eddb7a2f1",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "abca5637e0ebd5226c3a5ce1f40fd80c3a4926ad8edc9303f0bf7d0065465a3b",
+    "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs": "1ba0ecddf914b5013978260ee4e5612f48ad30c34e2a4002460b582b8c626393"
+  },
+  "classes": [
+    {
+      "class": "NativeTestExecutorTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/NativeTestExecutorTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 5.731,
+      "total": 60,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "LocalRunLifecycleTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/LocalRunLifecycleTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 53.589,
+      "total": 69,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "LocalRunCommittedReviewTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/LocalRunCommittedReviewTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 6.331,
+      "total": 29,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "CompositionProcessTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/CompositionProcessTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 0.917,
+      "total": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "ExecutingToolIdentityTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/ExecutingToolIdentityTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 0.666,
+      "total": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "TestResultWriterTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/TestResultWriterTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 1.117,
+      "total": 31,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "StartupReadinessTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/StartupReadinessTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 76.511,
+      "total": 37,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "StartupCoordinationTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/StartupCoordinationTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 38.161,
+      "total": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "CiRunLifecycleTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/CiRunLifecycleTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 16.306,
+      "total": 29,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "AttachedSuiteExecutionTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/AttachedSuiteExecutionTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 28.736,
+      "total": 45,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "class": "CompositionNativeProcessDiscoveryTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests",
+        "-result-xml",
+        "/tmp/211-pass3-reviewed-final-e7yszu2e/CompositionNativeProcessDiscoveryTests.xml"
+      ],
+      "exitCode": 0,
+      "seconds": 2.621,
+      "total": 2,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "sourceAfter": {
+    "README.md": "e61f650c0e8a8e7bb5496bcb1eac882548ac6be36bdd1b3a3d663e0b4ce3db5f",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs": "a646d061e7f16695230de1f3a27f60cd891b3ead65138cfc6623e7d9f25f078f",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs": "d05c9de75031231d8525af61fd06f8c73b88919324f31a7771054f12509bfced",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs": "e9e6fe753248cf09d4a3506b1f892473b60449fc2504a900fa2432da5838da5b",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs": "98fe6099c437b287c716eba9eac67432cff17c8765d25b9848ec8c7d45d567cc",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs": "324d627d338a1a58f1edab175fd46b75287eeaeaba23c5e4a687d5d4bbba0801",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs": "1d45536e6021e37309537d06028ffb3bfe74b9be71900fb374d906cff49352e3",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs": "2cf194e330cf3d2d2159e263c6ed383971ddd389d08050abc054e368d21b25f3",
+    "test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs": "22562dc2b76eb71b50f6d9908db85a5ddc0b77c7630a087f113acb7b020626d4",
+    "test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs": "286a767c70e0c5d9b2d2afa1d89adc5bf2b4d7e45c0255f627831f7eddb7a2f1",
+    "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs": "abca5637e0ebd5226c3a5ce1f40fd80c3a4926ad8edc9303f0bf7d0065465a3b",
+    "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs": "1ba0ecddf914b5013978260ee4e5612f48ad30c34e2a4002460b582b8c626393"
+  },
+  "totalPassed": 339,
+  "matrixAudit": [
+    {
+      "scenario": "Ready",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync"
+      ]
+    },
+    {
+      "scenario": "Partial",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: False)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True)",
+        "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SetupCancellationRecordsOriginalStartupAndUnissuedWorkAsync"
+      ]
+    },
+    {
+      "scenario": "Recovery",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryReadsNativeLedgerAfterFirstOutcomeCommitAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"source\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"package\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: True)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"absent\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"attempt-only\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"environment-only\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"both\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.LegacyExecutorRemainsUnavailableWithDiagnosticsAsync"
+      ]
+    },
+    {
+      "scenario": "Retained",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True)",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True)",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False)",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True)"
+      ]
+    },
+    {
+      "scenario": "Cleanup",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockImmediatelyRefusesCleanupUntilExactRetryAsync",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"human\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"json\\\")",
+        "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync"
+      ]
+    },
+    {
+      "scenario": "Attached",
+      "passedCases": [
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False)",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True)",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False)",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True)"
+      ]
+    }
+  ],
+  "regressions": {
+    "R3-P1": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewDetachedNativeDescendantsAreVerifiedAsync(discoveryVerified: False)",
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewDetachedNativeDescendantsAreVerifiedAsync(discoveryVerified: True)"
+    ],
+    "R3-P1-discovery": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewProtectedProcessesPreserveNativeDiscoveryHonestyAsync(preexisting: False)",
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewProtectedProcessesPreserveNativeDiscoveryHonestyAsync(preexisting: True)"
+    ],
+    "R3-P1-order": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewCausalOutcomePrecedesDescendantStoppingAsync(recordingFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewCausalOutcomePrecedesDescendantStoppingAsync(recordingFails: True)"
+    ],
+    "R3-P2": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewNativeReplayPreservesFullTerminationObservationTimesAsync"
+    ],
+    "R3-P3": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewNativeAccessKeepsFirstPendingObservation"
+    ],
+    "R3-P4": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunCommittedReviewTests.RunningSuitePublishesExecutionActivationForListingAsync"
+    ],
+    "R3-P5": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"source\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"package\\\")"
+    ]
+  },
+  "postImplementationReviewCoverage": {
+    "NativeTestExecutorTests.ReviewCausalOutcomePrecedesDescendantStoppingAsync": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewCausalOutcomePrecedesDescendantStoppingAsync(recordingFails: False)",
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewCausalOutcomePrecedesDescendantStoppingAsync(recordingFails: True)"
+    ],
+    "NativeTestExecutorTests.ReviewCancelledNativeScanPreservesKnownDescendantsAsync": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewCancelledNativeScanPreservesKnownDescendantsAsync"
+    ],
+    "NativeTestExecutorTests.NativeStoppingDoesNotRenewAfterOutcomeRecordingAsync": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NativeStoppingDoesNotRenewAfterOutcomeRecordingAsync"
+    ],
+    "CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync(privateTag: False)",
+      "Hexalith.Builds.ModuleTool.Tests.CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync(privateTag: True)"
+    ]
+  },
+  "binaryTimestamps": {
+    "/tmp/hexalith-builds-2-11-part-2-20261110/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll": {
+      "mtimeNs": 1794350732300183769,
+      "sha256": "d4d66b9afa7de4cf1fab18742ff57ecbefc647ad4254760e962e5c455ba1d348"
+    },
+    "/tmp/hexalith-builds-2-11-part-2-20261110/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll": {
+      "mtimeNs": 1794350723575852564,
+      "sha256": "64f80651a732dc2e298004ca46ad13146e3240545392c936690f1f1193d9514a"
+    },
+    "/tmp/hexalith-builds-2-11-part-2-20261110/src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll": {
+      "mtimeNs": 1794350724023869802,
+      "sha256": "4b21bcba50a0ee85a9ac5389d2294d9b5199c5290a94fb79d7573514f2cb9711"
+    }
+  },
+  "completedAtUtc": "2026-11-10T22:54:32.647151+00:00",
+  "platformHead": "7b0fa3295de96867be0db2149cb1c65480be5fa6",
+  "branch": "feat/2-11-lifecycle-reporting",
+  "implementationState": "Uncommitted corrections on the existing worktree branch; no commit, push or gitlink update.",
+  "buildCommand": [
+    "dotnet",
+    "build",
+    "test/Hexalith.Builds.Module.Tests",
+    "-c",
+    "Debug",
+    "--no-restore",
+    "-nodeReuse:false"
+  ],
+  "buildResult": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "pythonCommand": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "Github/run-module-integration/tests"
+  ],
+  "pythonPassed": 70,
+  "cliVersionOutput": "1.0.0-20261110224419+4ce510b2b263f8e4ea469638a130f08776ba27a3",
+  "invariants": {
+    "hexalith.test-environment.v1.json": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+    "hexalith.test-result.v1.json": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39",
+    "contractReaderTrackedUnchanged": true,
+    "contractReaderWorktreeSha256": "152f77f4a10fb899d4474997987a208bcf78f401ac97180b2a43dcd67811f44c",
+    "platformGitlink": "da4e896b164f35c0b830a32b975203bb922280f9",
+    "ordinaryBuildsHead": "da4e896b164f35c0b830a32b975203bb922280f9",
+    "frozenIntentSha256": "90a8255c3e54bff4acba3df1280bf15b90004e370341d4052b35c63507324f69"
+  },
+  "patchSha256": "c766a3c46a5a32606a8beed8060ceeeb064851d641199d8a72f67f7848bbdbb3",
+  "testOutputArchiveSha256": "32ec6dcb2654739d11ca53f4e9736a3eb7943cf8cc516979131f2b5722f71650",
+  "limits": [
+    "Local Linux Debug verification; not a full-assembly rerun or package qualification.",
+    "Supported-host private-tag regression ran on Linux; native Windows/macOS inspection did not run here.",
+    "Existing tag-based ownership requires descendants to preserve ownership tags; no process sandbox is introduced."
+  ],
+  "postImplementationReview": {
+    "layers": [
+      "blind-hunter",
+      "edge-case-hunter",
+      "verification-gap"
+    ],
+    "findings": 17,
+    "patchGroups": 9,
+    "rejected": 4,
+    "newDeferred": 0,
+    "remainingRequiredWork": 0
+  },
+  "delivery": {
+    "authorisedOn": "2026-11-11",
+    "buildsCommit": "7461fb05ad170375fc0df66e6a39a4d2432e6247",
+    "buildsBranch": "feat/2-11-lifecycle-reporting",
+    "remoteHeadVerified": true,
+    "sourceBytesMatchVerifiedRun": true,
+    "note": "Verification and binaries precede the source commit; the twelve verified source files are unchanged."
+  }
+}

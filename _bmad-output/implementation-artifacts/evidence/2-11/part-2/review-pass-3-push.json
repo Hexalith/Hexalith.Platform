@@ -1,0 +1,46 @@
+{
+  "authorisedOn": "2026-11-11",
+  "recordedAtUtc": "2026-11-10T23:23:12.119147+00:00",
+  "buildsCommit": "7461fb05ad170375fc0df66e6a39a4d2432e6247",
+  "buildsBranch": "feat/2-11-lifecycle-reporting",
+  "buildsRemote": "https://github.com/Hexalith/Hexalith.Builds.git",
+  "buildsRemoteHeadVerified": "7461fb05ad170375fc0df66e6a39a4d2432e6247",
+  "platformBranch": "main",
+  "platformBase": "7b0fa3295de96867be0db2149cb1c65480be5fa6",
+  "platformRemote": "https://github.com/Hexalith/Hexalith.Platform.git",
+  "commitlint": {
+    "builds": {
+      "repository": "/tmp/hexalith-builds-2-11-part-2-20261110",
+      "cliVersion": "21.2.4",
+      "config": "commitlint.config.mjs",
+      "command": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/tmp/211-pass3-push-n6rikm79/builds-message.txt",
+        "--verbose"
+      ],
+      "message": "fix(module): verify native stopping and preserve lifecycle observations\n\nStop tagged native descendants within the original allowance, retain lifecycle\nobservations during replay and recovery, and cover live launch persistence.\n\nValidation: 339 C# cases and 70 Python tests passed.\n",
+      "messageSha256": "a9fae6d4c507540dd12526e45fd87335bacef49c23e1eca644f20837f25892b0",
+      "result": "\u29d7   --- input ---\nfix(module): verify native stopping and preserve lifecycle observations\n\nStop tagged native descendants within the original allowance, retain lifecycle\nobservations during replay and recovery, and cover live launch persistence.\n\nValidation: 339 C# cases and 70 Python tests passed.\n\u2714   found 0 problems, 0 warnings\n",
+      "exitCode": 0
+    },
+    "platform": {
+      "repository": "/home/administrator/projects/hexalith/platform",
+      "cliVersion": "21.2.4",
+      "config": "commitlint.config.mjs",
+      "command": [
+        "node",
+        "node_modules/@commitlint/cli/cli.js",
+        "--edit",
+        "/tmp/211-pass3-push-n6rikm79/platform-message.txt",
+        "--verbose"
+      ],
+      "message": "docs: record story 2.11 part 2 review pass 3\n\nRecord the five reviewed corrections, their final verification evidence,\nand the pushed Builds feature-branch revision.\nKeep Story 2.11 in progress for the separate Parties caller work.\n",
+      "messageSha256": "d6999aa4a81f3218f405d3bd16233f70142ff23c529cbdf905a8e62f938e069d",
+      "result": "\u29d7   --- input ---\ndocs: record story 2.11 part 2 review pass 3\n\nRecord the five reviewed corrections, their final verification evidence,\nand the pushed Builds feature-branch revision.\nKeep Story 2.11 in progress for the separate Parties caller work.\n\u2714   found 0 problems, 0 warnings\n",
+      "exitCode": 0
+    }
+  },
+  "scope": "Push the completed code on its existing Builds feature branch and all Platform evidence changes; no merge, release or gitlink update."
+}

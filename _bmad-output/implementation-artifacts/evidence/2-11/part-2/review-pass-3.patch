@@ -1,0 +1,1128 @@
+diff --git a/README.md b/README.md
+index d9d66ac3..09aadcb4 100644
+--- a/README.md
++++ b/README.md
+@@ -726,7 +726,14 @@ reconnect preserves the original executor rather than hashing itself.
+ Owner termination separately reports native child work (`native:<run-id>`), environment work
+ (`environment:<run-id>`) and issued access (`access:<run-id>`). Unissued work/access is
+ `not-applicable`; retained environment services and issued access stay `pending`. Observed native
+-exit or bounded stopping can report a terminated child while its environment remains pending.
++exit plus verified absence of native descendants can report terminated work while its environment remains pending.
++Each selected native entry adds a private inherited execution tag, so bounded descendant stopping excludes
++retained environment services and other entries. Selected dotnet children disable reusable MSBuild
++and compiler workers to keep those workers inside their issuing execution. Discovery uncertainty
++reports failed native termination and known unresolved process identities within the original stopping
++allowance. Discovery proves absence of processes retaining the ownership tag; a child that removes
++ownership tags escapes the existing tag-based cleanup boundary and supplies no process-containment proof.
++Repeated publication preserves the observation time of each unchanged status.
+ Verified exact cleanup/deletion advances environment and access to `terminated`; failed or
+ unverifiable cleanup reports `failed` with classified diagnostics and known leftovers. A passing
+ test alone proves neither environment deletion nor access revocation. Recovery preserves the
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+index 1a814987..0e4fcb24 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs
+@@ -810,7 +810,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+                 TerminalCause = terminalCause,
+             };
+ 
+-            record = record with { Termination = native?.OwnerTermination ?? record.Termination ?? nativeObservation };
++            record = record with { Termination = record.Termination ?? nativeObservation };
+ 
+             // Explicit cleanup is monotonic. Publish both completion records before removing discoverable tracking.
+             bool completing = cleanupDisposition == "complete";
+@@ -1475,6 +1475,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+     {
+         List<ToolDiagnostic> bookkeeping = recordingFailed ? [RecordingFailure()] : [];
+         CompositionRunState? state = await ReadOwnedStateAsync(runId, bound).ConfigureAwait(false);
++        DateTimeOffset interruptionObservedAt = DateTimeOffset.UtcNow;
+         if (state is not null && (state.Schema != CompositionRunState.SupportedSchema || state.RunId != runId))
+         {
+             ToolDiagnostic invalid = Diagnostic("HXR024", ToolPhase.Usage, ToolFailureCategory.Usage, "Recorded ownership does not match the requested run.", "runId", null);
+@@ -1497,6 +1498,11 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+             // This marker survives state/workspace deletion and prevents late callbacks restoring retention.
+             try
+             {
++                if (_options.BeforeCleanupRequestWriteOverride is { } beforeWrite)
++                {
++                    await beforeWrite(bound).ConfigureAwait(false);
++                }
++
+                 await CompositionDocumentStore.WriteAsync(Path.Combine(directory, "cleanup-request.json"), new { runId, attemptId }, bound).ConfigureAwait(false);
+             }
+             catch (Exception exception) when (IsTeardownFailure(exception))
+@@ -1511,7 +1517,7 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+ 
+         if (state is { Status: CompositionRunStatus.Starting, StartupDurationSeconds: null, CreatedAt: not null })
+         {
+-            await FreezeStartupAsync(runId, DateTimeOffset.UtcNow, true, bound).ConfigureAwait(false);
++            await FreezeStartupAsync(runId, interruptionObservedAt, true, bound).ConfigureAwait(false);
+             state = await ReadOwnedStateAsync(runId, bound).ConfigureAwait(false) ?? state;
+         }
+ 
+@@ -2738,4 +2744,4 @@ public sealed class CompositionEngine(CompositionEngineOptions options)
+             },
+             cancellationToken).ConfigureAwait(false);
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
+index ebb5d09b..af96411e 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs
+@@ -146,6 +146,9 @@ public sealed record CompositionEngineOptions(string AppHostAssemblyPath, string
+     /// <summary>Gets a test-only CI policy override.</summary>
+     internal bool? ContinuousIntegrationOverride { get; init; }
+ 
++    /// <summary>Gets a test-only boundary before cleanup request bookkeeping is durably published.</summary>
++    internal Func<CancellationToken, Task>? BeforeCleanupRequestWriteOverride { get; init; }
++
+     /// <summary>Gets a test-only boundary immediately before the final ready deadline check.</summary>
+     internal Func<CancellationToken, Task>? BeforeReadyCommitOverride { get; init; }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs
+index 9e4f7fdc..beea563a 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs
+@@ -32,7 +32,7 @@ public sealed record CompositionOwnerTermination(
+     internal static CompositionOwnerTermination Observe(CompositionRunState state, ModuleTestRunRecord record, NativeTestExecutionResult? native)
+     {
+         DateTimeOffset now = DateTimeOffset.UtcNow;
+-        CompositionOwnerTermination? prior = native is null ? record.Termination : ObserveNative(state.RunId, record.Termination, native);
++        CompositionOwnerTermination? prior = native is null ? record.Termination : native.OwnerTermination ?? ObserveNative(state.RunId, record.Termination, native);
+         string childId = "native:" + state.RunId;
+         string environmentId = "environment:" + state.RunId;
+         string accessId = "access:" + state.RunId;
+@@ -91,11 +91,11 @@ public sealed record CompositionOwnerTermination(
+ 
+         CompositionTerminationItem Stable(CompositionTerminationItem item)
+         {
+-            CompositionTerminationItem? previous = new[] { prior, record.Termination }
++            CompositionTerminationItem? previous = new[] { record.Termination, prior }
+                 .Where(observed => observed is not null)
+                 .SelectMany(observed => observed!.OwnedWork.Concat(observed.EnvironmentAccess))
+-                .FirstOrDefault(observed => observed.Id == item.Id);
+-            return previous is not null && previous.Status == item.Status ? previous : item;
++                .FirstOrDefault(observed => observed.Id == item.Id && observed.Status == item.Status);
++            return previous ?? item;
+         }
+ 
+         return new([Stable(child), Stable(environment)], [Stable(access)], [.. record.RemainingResources.ResourceIds.Concat(unresolved).Distinct(StringComparer.Ordinal)])
+@@ -145,7 +145,7 @@ public sealed record CompositionOwnerTermination(
+             "pending" => "Native work was launched; stopping is not yet observed.",
+             _ => "Native process stopping could not be verified.",
+         });
+-        if (!native.Launched && historyIssued && previous is not null)
++        if (previous is not null && previous.Status == child.Status)
+         {
+             child = previous;
+         }
+@@ -158,7 +158,8 @@ public sealed record CompositionOwnerTermination(
+ 
+         bool accessApplicable = native.Launched || expiry is not null || prior?.EnvironmentAccess.Any(item => item.Status != "not-applicable") == true;
+         CompositionTerminationItem access = new("access:" + runId, accessApplicable ? "pending" : "not-applicable", now, accessApplicable ? "Native access ending has not been verified." : "No native environment access was issued.");
+-        return new([child], [access], unresolved)
++        CompositionTerminationItem? previousAccess = prior?.EnvironmentAccess.FirstOrDefault(item => item.Id == access.Id && item.Status == access.Status);
++        return new([child], [previousAccess ?? access], unresolved)
+         {
+             NativeProcessIds = [.. (prior?.NativeProcessIds ?? []).Concat(native.ProcessIds).Concat(native.SurvivingProcessIds).Distinct()],
+             CredentialExpiresAtUtc = expiry,
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs
+index 2cff817b..48f1d463 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcessEnvironmentReader.cs
+@@ -20,8 +20,10 @@ internal static class CompositionProcessEnvironmentReader
+     /// <summary>Discovers owned processes with bounded environment reads and explicit observation uncertainty.</summary>
+     /// <param name="runId">The exact runner-issued owner tag.</param>
+     /// <param name="cancellationToken">The existing scan allowance.</param>
++    /// <param name="environmentVariable">The exact ownership environment entry being observed.</param>
++    /// <param name="preexistingProcessStarts">The private execution's original process identities, absent for owner-wide discovery.</param>
+     /// <returns>Verified matching processes and whether discovery was complete.</returns>
+-    internal static (IReadOnlyList<int> ProcessIds, bool Verified) Find(string runId, CancellationToken cancellationToken)
++    internal static (IReadOnlyList<int> ProcessIds, bool Verified) Find(string runId, CancellationToken cancellationToken, string environmentVariable = CompositionEnvironment.RunId, Dictionary<int, long>? preexistingProcessStarts = null)
+     {
+         if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS())
+         {
+@@ -30,14 +32,18 @@ internal static class CompositionProcessEnvironmentReader
+ 
+         bool verified = true;
+         List<int> matches = [];
+-        string expected = CompositionEnvironment.RunId + "=" + runId;
++        string expected = environmentVariable + "=" + runId;
+         HashSet<int> foreignWindowsProcesses = OperatingSystem.IsWindows() ? ForeignWindowsProcesses() : [];
+         Process[] processes = Process.GetProcesses();
+         try
+         {
+             foreach (int processId in processes.Select(process => process.Id))
+             {
+-                cancellationToken.ThrowIfCancellationRequested();
++                if (cancellationToken.IsCancellationRequested)
++                {
++                    return ([.. matches.Order()], false);
++                }
++
+                 if (processId == Environment.ProcessId || processId <= 4)
+                 {
+                     continue;
+@@ -45,6 +51,11 @@ internal static class CompositionProcessEnvironmentReader
+ 
+                 try
+                 {
++                    if (preexistingProcessStarts is not null && CompositionRunResourceScanner.WasRunningBefore(processId, preexistingProcessStarts))
++                    {
++                        continue;
++                    }
++
+                     byte[]? environment = null;
+                     if (OperatingSystem.IsWindows())
+                     {
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs
+index bcae44fe..12471b7b 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunResourceScanner.cs
+@@ -16,9 +16,17 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+ {
+     private static readonly TimeSpan _dockerTimeout = TimeSpan.FromSeconds(60);
+ 
++    /// <summary>Gets the exact environment entry that distinguishes the processes being observed.</summary>
++    internal string ProcessEnvironmentVariable { get; init; } = CompositionEnvironment.RunId;
++
+     /// <summary>Gets an internal exact-process discovery seam for supported-host verification.</summary>
+     internal Func<string, CancellationToken, (IReadOnlyList<int> ProcessIds, bool Verified)>? ProcessDiscoveryOverride { get; init; }
+ 
++    /// <summary>Gets a test-only observation after an owned process identity has been discovered.</summary>
++    internal Action<int>? ProcessMatchedOverride { get; init; }
++
++    private Dictionary<int, long> PreexistingProcessStarts { get; init; } = [];
++
+     /// <summary>
+     /// Lists every resource still tagged with the run identity.
+     /// </summary>
+@@ -35,7 +43,7 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+ 
+         IReadOnlyList<string>? containers = await FindContainersAsync(runId, cancellationToken).ConfigureAwait(false);
+         (IReadOnlyList<int> processes, bool verified) = ProcessDiscoveryOverride?.Invoke(runId, cancellationToken)
+-            ?? (OperatingSystem.IsLinux() ? (FindProcesses(runId), true) : CompositionProcessEnvironmentReader.Find(runId, cancellationToken));
++            ?? FindTaggedProcesses(runId, cancellationToken);
+         return new CompositionRunResources(containers ?? [], processes, Unverified: containers is null || !verified)
+         {
+             DiscoveryFailures = [.. containers is null ? new string[] { "containers" } : [], .. !verified ? new string[] { "processes" } : []],
+@@ -86,6 +94,44 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+         }
+     }
+ 
++    /// <summary>Captures pre-existing process identities before a fresh private native tag can be issued.</summary>
++    /// <returns>A scanner that distinguishes new unreadable native work from unrelated pre-existing processes.</returns>
++    internal static CompositionRunResourceScanner CreateNativeScanner()
++    {
++        Dictionary<int, long> existing = [];
++        Process[] processes = Process.GetProcesses();
++        try
++        {
++            foreach (int processId in processes.Select(process => process.Id))
++            {
++                if (ProcessStartTicks(processId) is { } started)
++                {
++                    existing.Add(processId, started);
++                }
++            }
++        }
++        finally
++        {
++            foreach (Process process in processes)
++            {
++                process.Dispose();
++            }
++        }
++
++        return new CompositionRunResourceScanner(string.Empty)
++        {
++            ProcessEnvironmentVariable = NativeTestHandoff._nativeExecutionId,
++            PreexistingProcessStarts = existing,
++        };
++    }
++
++    /// <summary>Checks both PID and start identity before excluding a process that predates a native execution.</summary>
++    /// <param name="processId">The current process identity.</param>
++    /// <param name="baseline">The original pre-launch process observations.</param>
++    /// <returns>Whether the same process was already running before launch.</returns>
++    internal static bool WasRunningBefore(int processId, Dictionary<int, long> baseline) =>
++        baseline.TryGetValue(processId, out long started) && ProcessStartTicks(processId) == started;
++
+     /// <summary>Lists only processes tagged with a run identity, such as an attached run's children.</summary>
+     /// <param name="runId">The run identity carried by the process environment tag.</param>
+     /// <param name="cancellationToken">The scan allowance.</param>
+@@ -96,7 +142,7 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+         ArgumentException.ThrowIfNullOrWhiteSpace(runId);
+         _ = CompositionRunPlanFactory.IsRunId(runId) ? runId : throw new ArgumentException("The run identity must be 32 lowercase hexadecimal characters.", nameof(runId));
+         return ProcessDiscoveryOverride?.Invoke(runId, cancellationToken)
+-            ?? (OperatingSystem.IsLinux() ? (FindProcesses(runId), true) : CompositionProcessEnvironmentReader.Find(runId, cancellationToken));
++            ?? (OperatingSystem.IsLinux() ? FindProcesses(runId, ProcessEnvironmentVariable, PreexistingProcessStarts, ProcessMatchedOverride, cancellationToken) : CompositionProcessEnvironmentReader.Find(runId, cancellationToken, ProcessEnvironmentVariable, PreexistingProcessStarts));
+     }
+ 
+     /// <summary>Kills processes tagged with a run identity with bounded retries, never touching other runs.</summary>
+@@ -105,13 +151,17 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+     /// <returns>The processes still tagged after the bound and whether absence is verified.</returns>
+     internal async Task<(IReadOnlyList<int> ProcessIds, bool Verified)> RemoveTaggedProcessesAsync(string runId, CancellationToken cancellationToken)
+     {
+-        (IReadOnlyList<int> remaining, bool verified) = FindTaggedProcesses(runId, cancellationToken);
++        IReadOnlyList<int> remaining = [];
++        bool verified;
+         try
+         {
++            cancellationToken.ThrowIfCancellationRequested();
++            (remaining, verified) = FindTaggedProcesses(runId, cancellationToken);
+             for (int attempt = 0; attempt < 5 && remaining.Count > 0; attempt++)
+             {
+                 foreach (int processId in remaining)
+                 {
++                    cancellationToken.ThrowIfCancellationRequested();
+                     TryKill(processId);
+                 }
+ 
+@@ -128,18 +178,24 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+         return (remaining, verified);
+     }
+ 
+-    private static IReadOnlyList<int> FindProcesses(string runId)
++    private static (IReadOnlyList<int> ProcessIds, bool Verified) FindProcesses(string runId, string environmentVariable, Dictionary<int, long> preexistingProcessStarts, Action<int>? onMatched, CancellationToken cancellationToken)
+     {
+         if (!OperatingSystem.IsLinux() || !Directory.Exists("/proc"))
+         {
+-            return [];
++            return ([], false);
+         }
+ 
+-        byte[] tag = Encoding.ASCII.GetBytes(CompositionEnvironment.RunId + "=" + runId);
++        byte[] tag = Encoding.ASCII.GetBytes(environmentVariable + "=" + runId);
+         int self = Environment.ProcessId;
+         List<int> matches = [];
++        bool verified = true;
+         foreach (string directory in Directory.EnumerateDirectories("/proc"))
+         {
++            if (cancellationToken.IsCancellationRequested)
++            {
++                return ([.. matches.Order()], false);
++            }
++
+             if (!int.TryParse(Path.GetFileName(directory), out int processId) || processId == self)
+             {
+                 continue;
+@@ -151,15 +207,53 @@ public sealed class CompositionRunResourceScanner(string dockerCommand)
+                 if (ContainsEntry(environment, tag))
+                 {
+                     matches.Add(processId);
++                    onMatched?.Invoke(processId);
+                 }
+             }
+             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+             {
+-                // Exited, or owned by another user and therefore never started by this runner.
++                if (environmentVariable == CompositionEnvironment.RunId)
++                {
++                    // Preserve the established owner scanner behavior for inaccessible foreign processes.
++                    continue;
++                }
++
++                if (WasRunningBefore(processId, preexistingProcessStarts))
++                {
++                    // A process that predates the private tag cannot have inherited this native execution's identity.
++                    continue;
++                }
++
++                try
++                {
++                    string[] status = File.ReadAllLines(Path.Combine(directory, "status"));
++                    bool zombie = status.Any(line => line.StartsWith("State:", StringComparison.Ordinal) && line.Contains("Z (zombie)", StringComparison.Ordinal));
++                    if (!zombie)
++                    {
++                        verified = false;
++                    }
++                }
++                catch (Exception readFailure) when (readFailure is IOException or UnauthorizedAccessException)
++                {
++                    verified &= !Directory.Exists(directory);
++                }
+             }
+         }
+ 
+-        return [.. matches.Order()];
++        return ([.. matches.Order()], verified && !cancellationToken.IsCancellationRequested);
++    }
++
++    private static long? ProcessStartTicks(int processId)
++    {
++        try
++        {
++            using Process process = Process.GetProcessById(processId);
++            return process.StartTime.ToUniversalTime().Ticks;
++        }
++        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or System.ComponentModel.Win32Exception or NotSupportedException)
++        {
++            return null;
++        }
+     }
+ 
+     private static bool ContainsEntry(byte[] environment, byte[] entry)
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+index 4706e92a..fe881f2f 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs
+@@ -36,6 +36,7 @@ internal static class NativeTestExecutor
+     /// <param name="archiveDirectory">The optional durable owned diagnostic directory outside the child workspace.</param>
+     /// <param name="onOutcome">The runner callback that commits the observed terminal result before optional archives.</param>
+     /// <param name="ownerCancellationToken">The owner cancellation, distinct from the execution lifetime.</param>
++    /// <param name="nativeProcessScanner">An optional native-only process discovery replacement for verification.</param>
+     /// <returns>A result that passes only for a zero native exit and a passing native report.</returns>
+     public static async Task<NativeTestExecutionResult> ExecuteAsync(
+         CompositionRunSession session,
+@@ -46,7 +47,8 @@ internal static class NativeTestExecutor
+         ModuleTestSelection? selection = null,
+         string? archiveDirectory = null,
+         Func<NativeTestExecutionResult, CancellationToken, Task>? onOutcome = null,
+-        CancellationToken? ownerCancellationToken = null)
++        CancellationToken? ownerCancellationToken = null,
++        CompositionRunResourceScanner? nativeProcessScanner = null)
+     {
+         ArgumentNullException.ThrowIfNull(session);
+         ArgumentNullException.ThrowIfNull(tests);
+@@ -54,7 +56,7 @@ internal static class NativeTestExecutor
+ 
+         if (selection is not null)
+         {
+-            NativeTestExecutionResult selected = await ExecuteSelectedAsync(session, tests, manifestPath, selection, dotnetCommand, archiveDirectory, onOutcome, ownerCancellationToken ?? cancellationToken, cancellationToken).ConfigureAwait(false);
++            NativeTestExecutionResult selected = await ExecuteSelectedAsync(session, tests, manifestPath, selection, dotnetCommand, archiveDirectory, onOutcome, ownerCancellationToken ?? cancellationToken, cancellationToken, nativeProcessScanner: nativeProcessScanner).ConfigureAwait(false);
+             return selected with { OwnerTermination = selected.OwnerTermination ?? session.NativeTermination };
+         }
+ 
+@@ -391,7 +393,7 @@ internal static class NativeTestExecutor
+         }
+     }
+ 
+-    private static async Task<NativeTestExecutionResult> ExecuteSelectedAsync(CompositionRunSession session, PersistedProfileNativeTests tests, string manifestPath, ModuleTestSelection selection, string dotnetCommand, string? archiveDirectory, Func<NativeTestExecutionResult, CancellationToken, Task>? onOutcome, CancellationToken ownerCancellationToken, CancellationToken cancellationToken, AttachedSuiteIdentity? attached = null, Action<int>? onStarted = null, Action<IReadOnlyList<int>>? onStopFailure = null)
++    private static async Task<NativeTestExecutionResult> ExecuteSelectedAsync(CompositionRunSession session, PersistedProfileNativeTests tests, string manifestPath, ModuleTestSelection selection, string dotnetCommand, string? archiveDirectory, Func<NativeTestExecutionResult, CancellationToken, Task>? onOutcome, CancellationToken ownerCancellationToken, CancellationToken cancellationToken, AttachedSuiteIdentity? attached = null, Action<int>? onStarted = null, Action<IReadOnlyList<int>>? onStopFailure = null, CompositionRunResourceScanner? nativeProcessScanner = null)
+     {
+         // An attached run writes only inside its own workspace; the owner's workspace stays the shared read-only source mapping.
+         string privateWorkspace = attached?.Workspace ?? session.Plan.Workspace;
+@@ -513,8 +515,11 @@ internal static class NativeTestExecutor
+             return Failed("HXT009", ToolPhase.Test, ToolFailureCategory.ProductOrTest, ToolExitCode.ProductOrTest);
+         }
+ 
++        string nativeExecutionId = CompositionRunPlanFactory.NewRunId();
++        CompositionRunResourceScanner scanner = nativeProcessScanner ?? CompositionRunResourceScanner.CreateNativeScanner();
+         Dictionary<string, string> environment = new(NativeTestHandoff.Create(session.Plan, session.Readiness, token, attached), StringComparer.Ordinal)
+         {
++            [NativeTestHandoff._nativeExecutionId] = nativeExecutionId,
+             ["HEXALITH_G4_TEST_REPORT_PATH"] = reportPath,
+             [NativeTestHandoff.TestEnvironmentPath] = descriptorPath,
+         };
+@@ -526,10 +531,10 @@ internal static class NativeTestExecutor
+             }
+         }
+ 
+-        if (attached is not null && selection.Executor != "python3")
++        if (selection.Executor != "python3")
+         {
+-            // An attached dotnet child starts no reusable MSBuild node, MSBuild server or compiler server: those would inherit
+-            // the attached run tag and bearer, and the run-tag kill at attachment end would break owner or peer builds reusing them.
++            // Native dotnet children must not reuse MSBuild or compiler servers across runs: those workers would retain
++            // another execution's ownership tag, or let peers reuse workers being stopped at this execution's end.
+             environment["MSBUILDDISABLENODEREUSE"] = "1";
+             environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "0";
+             environment["UseSharedCompilation"] = "false";
+@@ -614,18 +619,22 @@ internal static class NativeTestExecutor
+             process = new CompositionProcessResult(true, -1, string.Empty, false);
+         }
+ 
+-        DateTimeOffset nativeObservedAt = DateTimeOffset.UtcNow;
+         long stoppingTimestamp = firstStop == 0 ? System.Diagnostics.Stopwatch.GetTimestamp() : firstStop;
+         session.StoppingTimestamp ??= stoppingTimestamp;
+-        pending = CompositionOwnerTermination.ObserveNative(session.RunId, pending, new NativeTestExecutionResult(new ToolCommandResult("observed", ToolOutcome.Passed(), []), null, null)
+-        {
+-            Launched = launchedProcessId is not null,
+-            StopObserved = stopObserved,
+-            ProcessIds = launchedProcessId is { } observedPid ? [observedPid] : [],
+-            SurvivingProcessIds = [.. survivors.Concat(process.SurvivingProcessIds).Distinct()],
+-            CredentialExpiresAtUtc = launchedProcessId is null ? null : credentialExpiry,
+-            ObservedAtUtc = nativeObservedAt,
+-        });
++        DateTimeOffset nativeObservedAt = DateTimeOffset.UtcNow;
++        pending = CompositionOwnerTermination.ObserveNative(
++            session.RunId,
++            pending,
++            new NativeTestExecutionResult(new ToolCommandResult("observed", ToolOutcome.Passed(), []), null, null)
++            {
++                Launched = launchedProcessId is not null,
++                StopObserved = false,
++                ProcessIds = launchedProcessId is { } observedPid ? [observedPid] : [],
++                SurvivingProcessIds = [.. survivors.Concat(process.SurvivingProcessIds).Distinct()],
++                CredentialExpiresAtUtc = launchedProcessId is null ? null : credentialExpiry,
++                ObservedAtUtc = nativeObservedAt,
++            },
++            running: launchedProcessId is not null);
+         session.NativeTermination = pending;
+         try
+         {
+@@ -652,7 +661,7 @@ internal static class NativeTestExecutor
+                     MetadataRecordingTimestamp = metadataRecordingTimestamp,
+                     TerminalCause = process.TimedOut && !cancelled && !gate.Failed ? "execution-timeout" : null,
+                     Launched = launchedProcessId is not null,
+-                    StopObserved = stopObserved,
++                    StopObserved = false,
+                     ObservedAtUtc = nativeObservedAt,
+                     ProcessIds = launchedProcessId is { } pid ? [pid] : [],
+                     SurvivingProcessIds = [.. survivors.Concat(process.SurvivingProcessIds).Distinct()],
+@@ -667,19 +676,72 @@ internal static class NativeTestExecutor
+         finally
+         {
+             await gate.DisposeAsync().ConfigureAwait(false);
+-        }
++            if (launchedProcessId is not null)
++            {
++                // A launcher exit does not prove that detached native descendants exited. Only the private execution tag
++                // is stopped here; environment services and other native entries keep their existing ownership and lifetime.
++                TimeSpan remainingStop = TimeSpan.FromSeconds(selection.StopTimeoutSeconds) - System.Diagnostics.Stopwatch.GetElapsedTime(stoppingTimestamp);
++                using CancellationTokenSource stopping = new();
++                if (remainingStop > TimeSpan.Zero)
++                {
++                    stopping.CancelAfter(remainingStop);
++                }
++                else
++                {
++                    await stopping.CancelAsync().ConfigureAwait(false);
++                }
+ 
+-        if (terminationPath is not null)
+-        {
+-            using CancellationTokenSource recording = new(TimeSpan.FromSeconds(5));
+-            try
++                try
++                {
++                    (IReadOnlyList<int> descendants, bool verified) = await scanner.RemoveTaggedProcessesAsync(nativeExecutionId, stopping.Token).ConfigureAwait(false);
++                    survivors = [.. survivors.Concat(process.SurvivingProcessIds).Concat(descendants).Distinct()];
++                    stopObserved = stopObserved && verified && survivors.Count == 0;
++                }
++                catch (Exception exception) when (exception is OperationCanceledException or IOException or UnauthorizedAccessException or InvalidOperationException or System.ComponentModel.Win32Exception)
++                {
++                    stopObserved = false;
++                }
++
++                if (!stopObserved)
++                {
++                    onStopFailure?.Invoke(survivors);
++                }
++            }
++
++            nativeObservedAt = DateTimeOffset.UtcNow;
++            pending = CompositionOwnerTermination.ObserveNative(session.RunId, pending, new NativeTestExecutionResult(new ToolCommandResult("observed", ToolOutcome.Passed(), []), null, null)
+             {
+-                await CompositionDocumentStore.WriteAsync(terminationPath, pending, recording.Token).ConfigureAwait(false);
+-                launchMetadataFailed = false;
++                Launched = launchedProcessId is not null,
++                StopObserved = stopObserved,
++                ProcessIds = launchedProcessId is { } stoppedPid ? [stoppedPid] : [],
++                SurvivingProcessIds = [.. survivors.Concat(process.SurvivingProcessIds).Distinct()],
++                CredentialExpiresAtUtc = launchedProcessId is null ? null : credentialExpiry,
++                ObservedAtUtc = nativeObservedAt,
++            });
++            session.NativeTermination = pending;
++            if (session.FirstObservedOutcome is { } first)
++            {
++                session.FirstObservedOutcome = first with
++                {
++                    OwnerTermination = pending,
++                    StopObserved = stopObserved,
++                    ObservedAtUtc = nativeObservedAt,
++                    SurvivingProcessIds = [.. survivors.Concat(process.SurvivingProcessIds).Distinct()],
++                };
+             }
+-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or OperationCanceledException)
++
++            if (terminationPath is not null)
+             {
+-                launchMetadataFailed = true;
++                using CancellationTokenSource recording = new(TimeSpan.FromSeconds(5));
++                try
++                {
++                    await CompositionDocumentStore.WriteAsync(terminationPath, pending, recording.Token).ConfigureAwait(false);
++                    launchMetadataFailed = false;
++                }
++                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or OperationCanceledException)
++                {
++                    launchMetadataFailed = true;
++                }
+             }
+         }
+ 
+diff --git a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs
+index 9d0067fb..84d1e800 100644
+--- a/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs
++++ b/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestHandoff.cs
+@@ -48,6 +48,9 @@ public static class NativeTestHandoff
+     /// <summary>The strict private channel version, independent of the credential-free v1 environment schema.</summary>
+     public const string EndpointCredentialsSchema = "hexalith.test-endpoint-credentials.v1";
+ 
++    /// <summary>The private execution tag inherited only by one native child and its descendants.</summary>
++    internal const string _nativeExecutionId = "HEXALITH_G4_NATIVE_EXECUTION_ID";
++
+     /// <summary>
+     /// Creates the handoff for one ready run. The signing key is never part of it.
+     /// </summary>
+diff --git a/test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs b/test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs
+index 8caa823a..a6a1d3c2 100644
+--- a/test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/CompositionNativeProcessDiscoveryTests.cs
+@@ -13,18 +13,21 @@ using Shouldly;
+ 
+ using Xunit;
+ 
+-/// <summary>Qualifies real native ownership observations on supported Windows and macOS hosts.</summary>
++/// <summary>Qualifies real process ownership on supported hosts, including the Windows/macOS environment reader.</summary>
+ [Collection(nameof(PlatformManifestTestGrouping))]
+ public sealed class CompositionNativeProcessDiscoveryTests
+ {
+-    /// <summary>Native discovery finds and removes a real tagged child while an independently tagged peer survives.</summary>
+-    /// <returns>The actual child, removal and peer observations without a synthetic discovery override.</returns>
+-    [Fact]
+-    public async Task NativeTaggedChildRemovalPreservesIndependentPeerAsync()
++    /// <summary>Both public and private ownership tags preserve independent work during exact removal.</summary>
++    /// <param name="privateTag">Whether this is an isolated native execution rather than an owner-wide scan.</param>
++    /// <returns>The actual child, owner-service and independent peer observations.</returns>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task NativeTaggedChildRemovalPreservesIndependentPeerAsync(bool privateTag)
+     {
+-        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS())
++        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS() && !OperatingSystem.IsLinux())
+         {
+-            Assert.Skip("Native process inspection is explicitly gated to Windows and macOS.");
++            Assert.Skip("Native process inspection requires a supported host.");
+         }
+ 
+         string root = CompositionTestFiles.CreateDirectory();
+@@ -33,38 +36,53 @@ public sealed class CompositionNativeProcessDiscoveryTests
+             (_, string docker, string daprHome, _) = await CompositionTestFiles.BuildPortableToolchainAsync(root, TestContext.Current.CancellationToken).ConfigureAwait(true);
+             string extension = OperatingSystem.IsWindows() ? ".exe" : string.Empty;
+             string owner = CompositionRunPlanFactory.NewRunId();
++            string identity = privateTag ? CompositionRunPlanFactory.NewRunId() : owner;
+             string peer = CompositionRunPlanFactory.NewRunId();
+-            using Process child = new() { StartInfo = CompositionProcess.CreateStartInfo(Path.Combine(daprHome, ".dapr", "bin", "placement" + extension), [], root, new Dictionary<string, string> { [CompositionEnvironment.RunId] = owner }) };
+-            using Process independent = new() { StartInfo = CompositionProcess.CreateStartInfo(Path.Combine(daprHome, ".dapr", "bin", "scheduler" + extension), [], root, new Dictionary<string, string> { [CompositionEnvironment.RunId] = peer }) };
+-            child.Start().ShouldBeTrue();
+-            independent.Start().ShouldBeTrue();
++            Dictionary<string, string> childEnvironment = new() { [CompositionEnvironment.RunId] = owner };
++            Dictionary<string, string> peerEnvironment = new() { [CompositionEnvironment.RunId] = peer };
++            if (privateTag)
++            {
++                childEnvironment[NativeTestHandoff._nativeExecutionId] = identity;
++                peerEnvironment[NativeTestHandoff._nativeExecutionId] = peer;
++            }
++
++            using Process retained = new() { StartInfo = CompositionProcess.CreateStartInfo(Path.Combine(daprHome, ".dapr", "bin", "scheduler" + extension), [], root, new Dictionary<string, string> { [CompositionEnvironment.RunId] = privateTag ? owner : CompositionRunPlanFactory.NewRunId() }) };
++            retained.Start().ShouldBeTrue();
+             try
+             {
+-                CompositionRunResourceScanner scanner = new(docker);
+-                CompositionRunResources before = await scanner.FindAsync(owner, TestContext.Current.CancellationToken).ConfigureAwait(true);
+-                before.ProcessIds.ShouldContain(child.Id);
+-                before.ProcessIds.ShouldNotContain(independent.Id);
+-                using CancellationTokenSource bound = new(TimeSpan.FromSeconds(10));
+-                CompositionRunResources after = await scanner.RemoveAsync(owner, bound.Token).ConfigureAwait(true);
+-                child.Refresh();
+-                child.HasExited.ShouldBeTrue();
+-                (await scanner.FindAsync(owner, TestContext.Current.CancellationToken).ConfigureAwait(true)).ProcessIds.ShouldNotContain(child.Id);
+-                independent.Refresh();
+-                independent.HasExited.ShouldBeFalse();
+-                (await scanner.FindAsync(peer, TestContext.Current.CancellationToken).ConfigureAwait(true)).ProcessIds.ShouldContain(independent.Id);
+-                if (after.Unverified)
++                CompositionRunResourceScanner scanner = privateTag ? CompositionRunResourceScanner.CreateNativeScanner() : new(docker);
++                using Process child = new() { StartInfo = CompositionProcess.CreateStartInfo(Path.Combine(daprHome, ".dapr", "bin", "placement" + extension), [], root, childEnvironment) };
++                using Process independent = new() { StartInfo = CompositionProcess.CreateStartInfo(Path.Combine(daprHome, ".dapr", "bin", "scheduler" + extension), [], root, peerEnvironment) };
++                child.Start().ShouldBeTrue();
++                independent.Start().ShouldBeTrue();
++                try
+                 {
+-                    after.IsEmpty.ShouldBeFalse();
++                    using CancellationTokenSource bound = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++                    bound.CancelAfter(TimeSpan.FromSeconds(10));
++                    IReadOnlyList<int> before = scanner.FindTaggedProcesses(identity, bound.Token).ProcessIds;
++                    before.ShouldContain(child.Id);
++                    before.ShouldNotContain(independent.Id);
++                    before.ShouldNotContain(retained.Id);
++                    (IReadOnlyList<int> remaining, _) = await scanner.RemoveTaggedProcessesAsync(identity, bound.Token).ConfigureAwait(true);
++                    child.Refresh();
++                    child.HasExited.ShouldBeTrue();
++                    remaining.ShouldNotContain(child.Id);
++                    scanner.FindTaggedProcesses(identity, bound.Token).ProcessIds.ShouldNotContain(child.Id);
++                    independent.Refresh();
++                    independent.HasExited.ShouldBeFalse();
++                    scanner.FindTaggedProcesses(peer, bound.Token).ProcessIds.ShouldContain(independent.Id);
++                    retained.Refresh();
++                    retained.HasExited.ShouldBeFalse("Private native removal must preserve retained owner services.");
+                 }
+-                else
++                finally
+                 {
+-                    after.ProcessIds.ShouldNotContain(child.Id);
++                    CompositionProcess.Kill(child);
++                    CompositionProcess.Kill(independent);
+                 }
+             }
+             finally
+             {
+-                CompositionProcess.Kill(child);
+-                CompositionProcess.Kill(independent);
++                CompositionProcess.Kill(retained);
+             }
+         }
+         finally
+diff --git a/test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs b/test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs
+index 1251f8a0..3b1fa1fd 100644
+--- a/test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/LocalRunCommittedReviewTests.cs
+@@ -393,8 +393,11 @@ public sealed class LocalRunCommittedReviewTests
+         workspace.Change("modules.0.tests.0.executionTimeoutSeconds", "15");
+         string gate = Path.Combine(workspace.Root, "release-child");
+         string started = Path.Combine(workspace.Root, "child-started");
+-        string script = "import os, pathlib, time\n" +
+-            "pathlib.Path(" + JsonSerializer.Serialize(started) + ").write_text('started')\n" +
++        string script = "import json, os, pathlib, time\n" +
++            "started = pathlib.Path(" + JsonSerializer.Serialize(started) + ")\n" +
++            "temporary = started.with_suffix('.tmp')\n" +
++            "temporary.write_text(json.dumps({'pid': os.getpid(), 'expiry': os.environ['HEXALITH_G4_CREDENTIAL_EXPIRY_UTC']}))\n" +
++            "temporary.replace(started)\n" +
+             "while not pathlib.Path(" + JsonSerializer.Serialize(gate) + ").exists(): time.sleep(0.01)\n" +
+             "pathlib.Path(os.environ['HEXALITH_G4_TEST_REPORT_PATH']).write_text('<TestRun><ResultSummary outcome=\"Completed\"><Counters total=\"1\" passed=\"1\" failed=\"0\" /></ResultSummary></TestRun>')\n";
+         await File.WriteAllTextAsync(Path.Combine(workspace.Root, "runner.py"), script, TestContext.Current.CancellationToken).ConfigureAwait(true);
+@@ -420,7 +423,26 @@ public sealed class LocalRunCommittedReviewTests
+             }
+ 
+             File.Exists(started).ShouldBeTrue();
++            string ledgerPath = Path.Combine(store.Directory, "diagnostics", plan.RunId, "native-termination.json");
++            CompositionOwnerTermination? launch = null;
++            while (!execution.IsCompleted)
++            {
++                launch = await CompositionDocumentStore.ReadIfExistsAsync<CompositionOwnerTermination>(ledgerPath, wait.Token).ConfigureAwait(true);
++                if (launch?.NativeProcessIds.Count > 0)
++                {
++                    break;
++                }
++
++                await Task.Delay(20, wait.Token).ConfigureAwait(true);
++            }
++
+             execution.IsCompleted.ShouldBeFalse();
++            using JsonDocument startedObservation = JsonDocument.Parse(await File.ReadAllTextAsync(started, wait.Token).ConfigureAwait(true));
++            launch.ShouldNotBeNull().NativeProcessIds.ShouldBe([startedObservation.RootElement.GetProperty("pid").GetInt32()]);
++            launch.OwnedWork.Single().Status.ShouldBe("pending");
++            launch.EnvironmentAccess.Single().Status.ShouldBe("pending");
++            launch.CredentialExpiresAtUtc.ShouldBe(startedObservation.RootElement.GetProperty("expiry").GetDateTimeOffset());
++            launch.CredentialExpiresAtUtc.ShouldNotBeNull().ShouldBeGreaterThan(DateTimeOffset.UtcNow);
+             ToolCommandResult listed = await CompositionRunListing.ReadAsync(store, DateTimeOffset.UtcNow, TestContext.Current.CancellationToken).ConfigureAwait(true);
+             listed.Outcome.ExitCode.ShouldBe(ToolExitCode.Success);
+             DateTimeOffset deadline = listed.Environments.ShouldNotBeNull().Single().ExecutionDeadlineUtc.ShouldNotBeNull();
+diff --git a/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs b/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs
+index ddf06895..01f893b5 100644
+--- a/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs
+@@ -22,6 +22,44 @@ using Xunit;
+ [Collection(nameof(PlatformManifestTestGrouping))]
+ public sealed class LocalRunLifecycleTests
+ {
++    /// <summary>Native result replay preserves complete environment/access observations before and after cleanup.</summary>
++    /// <returns>The stable full termination snapshots and immutable first-outcome assertions.</returns>
++    [Fact]
++    public async Task ReviewNativeReplayPreservesFullTerminationObservationTimesAsync()
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (ModuleTestSelection selected, CompositionRunState state) = LocalRunLifecycleFixture.Create(workspace);
++        state = state with { Status = CompositionRunStatus.Ready, EnvironmentWorkIssued = true, ExecutingTool = ExecutingToolIdentity.Capture() };
++        CompositionEngine engine = new(LocalRunLifecycleFixture.Options(workspace.Root, selected));
++        await engine.StateStore.WriteAsync(state, TestContext.Current.CancellationToken).ConfigureAwait(true);
++        DateTimeOffset observedAt = DateTimeOffset.UtcNow.AddSeconds(-1);
++        NativeTestExecutionResult native = new(Failure("HXT007"), null, null)
++        {
++            Launched = true,
++            StopObserved = true,
++            ProcessIds = [12345],
++            ObservedAtUtc = observedAt,
++            CredentialExpiresAtUtc = observedAt.AddMinutes(1),
++        };
++        native = native with { OwnerTermination = CompositionOwnerTermination.ObserveNative(state.RunId, null, native) };
++        ModuleTestRunRecord first = (await engine.RecordTestOutcomeAsync(state.RunId, [], native.Result, "retained", new([], [], true), TestContext.Current.CancellationToken, native).ConfigureAwait(true)).ShouldNotBeNull();
++        CompositionOwnerTermination original = first.Termination.ShouldNotBeNull();
++        original.OwnedWork.Single(item => item.Id == "environment:" + state.RunId).Status.ShouldBe("pending");
++        original.EnvironmentAccess.Single().Status.ShouldBe("pending");
++        ModuleTestRunRecord repeated = (await engine.RecordTestOutcomeAsync(state.RunId, [], native.Result, "retained", new([], [], true), TestContext.Current.CancellationToken, native).ConfigureAwait(true)).ShouldNotBeNull();
++        CompositionDocumentStore.Serialize(repeated.Termination).ShouldBe(CompositionDocumentStore.Serialize(original));
++        string attemptId = CompositionRunPlanFactory.NewRunId();
++        ModuleTestRunRecord cleaned = (await engine.RecordTestOutcomeAsync(state.RunId, [], native.Result, "removed", new([], []), TestContext.Current.CancellationToken, cleanupDisposition: "complete", cleanupAttemptId: attemptId).ConfigureAwait(true)).ShouldNotBeNull();
++        CompositionOwnerTermination complete = cleaned.Termination.ShouldNotBeNull();
++        complete.OwnedWork.ShouldAllBe(item => item.Status == "terminated");
++        complete.EnvironmentAccess.Single().Status.ShouldBe("terminated");
++        ModuleTestRunRecord replayed = (await engine.RecordTestOutcomeAsync(state.RunId, [], native.Result, "removed", new([], []), TestContext.Current.CancellationToken, native, cleanupDisposition: "complete", cleanupAttemptId: attemptId).ConfigureAwait(true)).ShouldNotBeNull();
++        CompositionDocumentStore.Serialize(replayed.Termination).ShouldBe(CompositionDocumentStore.Serialize(complete));
++        AssertFirstOutcomeUnchanged(replayed, first);
++        string path = Path.Combine(engine.StateStore.Directory, "diagnostics", state.RunId, "test-result.json");
++        TestEnvironmentContractReader.ReadResult(path, TestContext.Current.CancellationToken).IsValid.ShouldBeTrue();
++    }
++
+     /// <summary>A legacy ready owner without any native history never claims definite nonissuance during recovery.</summary>
+     /// <param name="legacyReady">Whether readiness was recorded before the original runner vanished.</param>
+     /// <returns>The unknown-versus-known-unissued observations and verified cleanup assertions.</returns>
+@@ -182,9 +220,15 @@ public sealed class LocalRunLifecycleTests
+         DateTimeOffset requested = DateTimeOffset.UtcNow.AddSeconds(-10);
+         owner = owner with { CreatedAt = requested, StartupDeadlineUtc = requested.AddSeconds(600), ExecutingTool = original, EnvironmentWorkIssued = true };
+         CompositionWorkspace.CreatePrivateDirectory(owner.Workspace);
++        DateTimeOffset? beforeMarker = null;
+         CompositionEngine cleaner = new(LocalRunLifecycleFixture.Options(workspace.Root, selected) with
+         {
+             ExecutingToolCaptureOverride = () => throw new InvalidOperationException("A cleaner must never capture a replacement executor."),
++            BeforeCleanupRequestWriteOverride = async token =>
++            {
++                beforeMarker = DateTimeOffset.UtcNow;
++                await Task.Delay(300, token).ConfigureAwait(false);
++            },
+         });
+         await cleaner.StateStore.WriteAsync(owner, TestContext.Current.CancellationToken).ConfigureAwait(true);
+         CompositionDownResult down = await cleaner.DownAsync(owner.RunId, TestContext.Current.CancellationToken).ConfigureAwait(true);
+@@ -193,6 +237,7 @@ public sealed class LocalRunLifecycleTests
+         CompositionRunState frozen = (await CompositionDocumentStore.ReadIfExistsAsync<CompositionRunState>(Path.Combine(directory, "owner.json"), TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
+         frozen.StartupInterruptionObserved.ShouldBeTrue();
+         frozen.StartupDurationSeconds.ShouldNotBeNull().ShouldBeGreaterThanOrEqualTo(10);
++        frozen.StartupDurationSeconds.Value.ShouldBeLessThanOrEqualTo((beforeMarker.ShouldNotBeNull() - requested).TotalSeconds);
+         JsonElement first = TestEnvironmentContractReader.ReadResult(Path.Combine(directory, "test-result.json"), TestContext.Current.CancellationToken).Document.ShouldNotBeNull();
+         first.GetProperty("bindings").GetProperty("tool").GetProperty("contentIdentity").GetString().ShouldBe(original.ContentIdentity);
+         first.GetProperty("bindings").GetProperty("deadlines").GetProperty("startup").GetProperty("actualDurationSeconds").GetDouble().ShouldBe(frozen.StartupDurationSeconds.Value);
+diff --git a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+index bf5f5136..cc79910f 100644
+--- a/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
++++ b/test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs
+@@ -32,6 +32,316 @@ public sealed class NativeTestExecutorTests
+ 
+     private static readonly byte[] _reportBytes = Encoding.UTF8.GetBytes("<TestRun><ResultSummary outcome=\"Completed\" /></TestRun>");
+ 
++    /// <summary>Native descendant stopping verifies detached work without stopping owner services or peer executions.</summary>
++    /// <param name="discoveryVerified">Whether process ownership can be completely observed.</param>
++    /// <returns>The real detached-child stopping, uncertainty and peer-isolation assertions.</returns>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task ReviewDetachedNativeDescendantsAreVerifiedAsync(bool discoveryVerified)
++    {
++        if (!OperatingSystem.IsLinux())
++        {
++            Assert.Skip("The detached-child regression observes Linux process state.");
++        }
++
++        using PlatformManifestTestWorkspace workspace = new();
++        const string runner = "import os, pathlib, subprocess, sys\n"
++            + "child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)\n"
++            + "pathlib.Path(__file__).with_name('detached.pid').write_text(str(child.pid))\n"
++            + "pathlib.Path(os.environ['HEXALITH_G4_TEST_REPORT_PATH']).write_text('<TestRun><ResultSummary outcome=\"Completed\"><Counters total=\"1\" passed=\"1\" failed=\"0\" /></ResultSummary></TestRun>')\n";
++        (CompositionRunPlan plan, ModuleTestSelection selection, string manifest) = await PrepareSelectedRunAsync(workspace, runner).ConfigureAwait(true);
++        using Process owner = Process.Start(CompositionProcess.CreateStartInfo("python3", ["-c", "import time; time.sleep(60)"], workspace.Root, new Dictionary<string, string> { [NativeTestHandoff.RunId] = plan.RunId }))!;
++        using Process peer = Process.Start(CompositionProcess.CreateStartInfo("python3", ["-c", "import time; time.sleep(60)"], workspace.Root, new Dictionary<string, string> { [NativeTestHandoff.RunId] = CompositionRunPlanFactory.NewRunId(), [NativeTestHandoff._nativeExecutionId] = CompositionRunPlanFactory.NewRunId() }))!;
++        using Process appHost = new();
++        int? detachedPid = null;
++        try
++        {
++            CompositionRunResourceScanner? scanner = discoveryVerified ? null : new CompositionRunResourceScanner(string.Empty) { ProcessDiscoveryOverride = (_, _) => ([], false) };
++            NativeTestExecutionResult result = await NativeTestExecutor.ExecuteAsync(new CompositionRunSession(plan, HealthyReadiness(plan), "private-detached-key", appHost), new("runner.py", "python3"), manifest, TestContext.Current.CancellationToken, selection: selection, nativeProcessScanner: scanner).ConfigureAwait(true);
++            detachedPid = int.Parse(await File.ReadAllTextAsync(Path.Combine(workspace.Root, "detached.pid"), TestContext.Current.CancellationToken).ConfigureAwait(true), System.Globalization.CultureInfo.InvariantCulture);
++            result.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.Success);
++            result.StopObserved.ShouldBe(discoveryVerified);
++            CompositionOwnerTermination termination = result.OwnerTermination.ShouldNotBeNull();
++            termination.OwnedWork.Single().Status.ShouldBe(discoveryVerified ? "terminated" : "failed");
++            termination.EnvironmentAccess.Single().Status.ShouldBe("pending");
++            bool detachedAlive;
++            try
++            {
++                string stat = await File.ReadAllTextAsync("/proc/" + detachedPid + "/stat", TestContext.Current.CancellationToken).ConfigureAwait(true);
++                detachedAlive = !stat.Contains(") Z ", StringComparison.Ordinal);
++            }
++            catch (Exception exception) when (exception is FileNotFoundException or DirectoryNotFoundException)
++            {
++                detachedAlive = false;
++            }
++
++            detachedAlive.ShouldBe(!discoveryVerified);
++            if (!discoveryVerified)
++            {
++                termination.Failures.ShouldContain("native:" + plan.RunId);
++                termination.LeftoverWorkIds.ShouldContain("process:" + result.ProcessIds.Single().ToString(System.Globalization.CultureInfo.InvariantCulture));
++            }
++
++            owner.HasExited.ShouldBeFalse("Retained owner work has no native execution tag.");
++            peer.HasExited.ShouldBeFalse("A different native execution tag cannot be stopped.");
++            result.StoppingTimestamp.ShouldNotBeNull().ShouldBeLessThanOrEqualTo(System.Diagnostics.Stopwatch.GetTimestamp());
++        }
++        finally
++        {
++            CompositionProcess.Kill(owner);
++            CompositionProcess.Kill(peer);
++            string pidPath = Path.Combine(workspace.Root, "detached.pid");
++            if (detachedPid is null && File.Exists(pidPath))
++            {
++                detachedPid = int.Parse(await File.ReadAllTextAsync(pidPath, TestContext.Current.CancellationToken).ConfigureAwait(true), System.Globalization.CultureInfo.InvariantCulture);
++            }
++
++            if (detachedPid is { } processId)
++            {
++                try
++                {
++                    using Process child = Process.GetProcessById(processId);
++                    CompositionProcess.Kill(child);
++                }
++                catch (ArgumentException)
++                {
++                    // Verified stopping already removed the detached child.
++                }
++            }
++        }
++    }
++
++    /// <summary>Pre-existing protected processes are excluded, but new unreadable native work remains unverified.</summary>
++    /// <param name="preexisting">Whether the protected process existed before the private execution snapshot.</param>
++    /// <returns>The actual Linux ownership uncertainty assertions.</returns>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task ReviewProtectedProcessesPreserveNativeDiscoveryHonestyAsync(bool preexisting)
++    {
++        if (!OperatingSystem.IsLinux())
++        {
++            Assert.Skip("The protected-process regression requires Linux process environment permissions.");
++        }
++
++        using PlatformManifestTestWorkspace workspace = new();
++        string nativeId = CompositionRunPlanFactory.NewRunId();
++        CompositionRunResourceScanner? scanner = preexisting ? null : CompositionRunResourceScanner.CreateNativeScanner();
++        string ready = Path.Combine(workspace.Root, "protected-ready");
++        string script = "import ctypes, pathlib, time\n"
++            + "result = ctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n"
++            + "ready = pathlib.Path(" + JsonSerializer.Serialize(ready) + ")\n"
++            + "temporary = ready.with_suffix('.tmp')\n"
++            + "temporary.write_text(str(result))\n"
++            + "temporary.replace(ready)\n"
++            + "time.sleep(60)\n";
++        Dictionary<string, string> environment = preexisting
++            ? new() { [NativeTestHandoff.RunId] = CompositionRunPlanFactory.NewRunId() }
++            : new() { [NativeTestHandoff._nativeExecutionId] = nativeId };
++        using Process process = Process.Start(CompositionProcess.CreateStartInfo("python3", ["-c", script], workspace.Root, environment))!;
++        try
++        {
++            using CancellationTokenSource wait = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++            wait.CancelAfter(TimeSpan.FromSeconds(30));
++            while (!File.Exists(ready) && !process.HasExited)
++            {
++                await Task.Delay(20, wait.Token).ConfigureAwait(true);
++            }
++
++            File.Exists(ready).ShouldBeTrue();
++            (await File.ReadAllTextAsync(ready, wait.Token).ConfigureAwait(true)).ShouldBe("0");
++            scanner ??= CompositionRunResourceScanner.CreateNativeScanner();
++            (IReadOnlyList<int> processes, bool verified) = scanner.FindTaggedProcesses(nativeId, wait.Token);
++            verified.ShouldBe(preexisting);
++            processes.ShouldBeEmpty("The protected environment is unreadable; new native work cannot be declared absent.");
++            process.HasExited.ShouldBeFalse();
++        }
++        finally
++        {
++            CompositionProcess.Kill(process);
++        }
++    }
++
++    /// <summary>A cancelled scan preserves already discovered native identities and stops no work beyond its allowance.</summary>
++    /// <returns>The actual partial-discovery and unchanged child assertions.</returns>
++    [Fact]
++    public async Task ReviewCancelledNativeScanPreservesKnownDescendantsAsync()
++    {
++        if (!OperatingSystem.IsLinux())
++        {
++            Assert.Skip("The partial native scan regression observes Linux process environments.");
++        }
++
++        using PlatformManifestTestWorkspace workspace = new();
++        string identity = CompositionRunPlanFactory.NewRunId();
++        using CancellationTokenSource stop = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        using Process child = Process.Start(CompositionProcess.CreateStartInfo("python3", ["-c", "import time; time.sleep(60)"], workspace.Root, new Dictionary<string, string> { [NativeTestHandoff._nativeExecutionId] = identity }))!;
++        try
++        {
++            CompositionRunResourceScanner scanner = new(string.Empty)
++            {
++                ProcessEnvironmentVariable = NativeTestHandoff._nativeExecutionId,
++                ProcessMatchedOverride = _ => stop.Cancel(),
++            };
++            (IReadOnlyList<int> remaining, bool verified) = await scanner.RemoveTaggedProcessesAsync(identity, stop.Token).ConfigureAwait(true);
++            verified.ShouldBeFalse();
++            remaining.ShouldContain(child.Id);
++            child.HasExited.ShouldBeFalse();
++        }
++        finally
++        {
++            CompositionProcess.Kill(child);
++        }
++    }
++
++    /// <summary>First-outcome recording cannot renew the original descendant-stopping allowance.</summary>
++    /// <returns>The surviving detached child and failed native termination after stopping has expired.</returns>
++    [Fact]
++    public async Task NativeStoppingDoesNotRenewAfterOutcomeRecordingAsync()
++    {
++        if (!OperatingSystem.IsLinux())
++        {
++            Assert.Skip("The detached-child allowance regression observes Linux process state.");
++        }
++
++        using PlatformManifestTestWorkspace workspace = new();
++        const string runner = "import pathlib, subprocess, sys\n"
++            + "child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)\n"
++            + "pathlib.Path(__file__).with_name('detached.pid').write_text(str(child.pid))\n"
++            + "sys.exit(7)\n";
++        _ = await PrepareSelectedRunAsync(workspace, runner).ConfigureAwait(true);
++        workspace.Change("modules.0.tests.0.stopTimeoutSeconds", "1");
++        string manifest = workspace.Save();
++        ModuleTestSelection selection = ModuleTestSelection.Select(PlatformManifestValidator.Validate([manifest], TestContext.Current.CancellationToken).Declarations!, "verify", manifest, DateTimeOffset.UtcNow).ShouldNotBeNull();
++        SourceMapping mapping = new(WorkspaceMode.Source, workspace.Root, "sample", [new SourceMappingEntry("sample", "source", workspace.Root)], false);
++        CompositionRunPlan plan = await TestEnvironmentProvisioningFixture.PrepareAsync(CompositionTestFiles.CreatePlan(workspace.Root, CompositionRunPlanFactory.NewRunId()) with { SelectedTest = selection, SourceMapping = mapping, Modules = [], UiMarkers = [] }, manifest, workspace.Root).ConfigureAwait(true);
++        using Process appHost = new();
++        try
++        {
++            bool delayed = false;
++            async Task RecordOutcomeAsync(NativeTestExecutionResult first, CancellationToken token)
++            {
++                if (!delayed)
++                {
++                    first.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.ProductOrTest);
++                    delayed = true;
++                    await Task.Delay(TimeSpan.FromMilliseconds(1200), token).ConfigureAwait(false);
++                }
++            }
++
++            NativeTestExecutionResult result = await NativeTestExecutor.ExecuteAsync(new CompositionRunSession(plan, HealthyReadiness(plan), "private-deadline-key", appHost), new("runner.py", "python3"), manifest, TestContext.Current.CancellationToken, selection: selection, onOutcome: RecordOutcomeAsync).ConfigureAwait(true);
++            int detachedPid = int.Parse(await File.ReadAllTextAsync(Path.Combine(workspace.Root, "detached.pid"), TestContext.Current.CancellationToken).ConfigureAwait(true), System.Globalization.CultureInfo.InvariantCulture);
++            using Process child = Process.GetProcessById(detachedPid);
++            child.HasExited.ShouldBeFalse("Expired stopping cannot be renewed by first-outcome recording.");
++            result.StopObserved.ShouldBeFalse();
++            result.OwnerTermination.ShouldNotBeNull().OwnedWork.Single().Status.ShouldBe("failed");
++        }
++        finally
++        {
++            string pidPath = Path.Combine(workspace.Root, "detached.pid");
++            if (File.Exists(pidPath))
++            {
++                int processId = int.Parse(await File.ReadAllTextAsync(pidPath, CancellationToken.None).ConfigureAwait(true), System.Globalization.CultureInfo.InvariantCulture);
++                try
++                {
++                    using Process child = Process.GetProcessById(processId);
++                    CompositionProcess.Kill(child);
++                }
++                catch (ArgumentException)
++                {
++                    // The test teardown never renews the runner's stopping allowance.
++                }
++            }
++        }
++    }
++
++    /// <summary>A causal native failure is published before detached-work stopping or discovery can delay it.</summary>
++    /// <param name="recordingFails">Whether first-outcome publication throws before descendant verification.</param>
++    /// <returns>The outcome-before-stopping and subsequently verified termination assertions.</returns>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public async Task ReviewCausalOutcomePrecedesDescendantStoppingAsync(bool recordingFails)
++    {
++        using PlatformManifestTestWorkspace workspace = new();
++        (CompositionRunPlan plan, ModuleTestSelection selection, string manifest) = await PrepareSelectedRunAsync(workspace, "import sys\nsys.exit(7)\n").ConfigureAwait(true);
++        bool observed = false;
++        bool observedBeforeDiscovery = false;
++        CompositionRunResourceScanner scanner = new(string.Empty)
++        {
++            ProcessDiscoveryOverride = (_, _) =>
++            {
++                observedBeforeDiscovery = observed;
++                return ([], true);
++            },
++        };
++        using Process appHost = new();
++        CompositionRunSession session = new(plan, HealthyReadiness(plan), "private-causal-key", appHost);
++        IOException recordingFailure = new("First outcome recording failed.");
++        Task RecordOutcomeAsync(NativeTestExecutionResult first, CancellationToken metadataToken)
++        {
++            metadataToken.ThrowIfCancellationRequested();
++            if (!observed)
++            {
++                first.Result.Outcome.ExitCode.ShouldBe(ToolExitCode.ProductOrTest);
++                first.StopObserved.ShouldBeFalse();
++                first.OwnerTermination.ShouldNotBeNull().OwnedWork.Single().Status.ShouldBe("pending");
++                observed = true;
++                if (recordingFails)
++                {
++                    return Task.FromException(recordingFailure);
++                }
++            }
++
++            return Task.CompletedTask;
++        }
++
++        string archive = Path.Combine(workspace.Root, "retained");
++        Task<NativeTestExecutionResult> ExecuteAsync() => NativeTestExecutor.ExecuteAsync(session, new("runner.py", "python3"), manifest, TestContext.Current.CancellationToken, selection: selection, archiveDirectory: archive, onOutcome: RecordOutcomeAsync, nativeProcessScanner: scanner);
++        if (recordingFails)
++        {
++            IOException failure = await Should.ThrowAsync<IOException>(ExecuteAsync).ConfigureAwait(true);
++            failure.ShouldBeSameAs(recordingFailure);
++        }
++        else
++        {
++            (await ExecuteAsync().ConfigureAwait(true)).StopObserved.ShouldBeTrue();
++        }
++
++        observed.ShouldBeTrue();
++        observedBeforeDiscovery.ShouldBeTrue();
++        session.NativeTermination.ShouldNotBeNull().OwnedWork.Single().Status.ShouldBe("terminated");
++        session.FirstObservedOutcome.ShouldNotBeNull().OwnerTermination.ShouldNotBeNull().OwnedWork.Single().Status.ShouldBe("terminated");
++        CompositionOwnerTermination durable = (await CompositionDocumentStore.ReadIfExistsAsync<CompositionOwnerTermination>(Path.Combine(archive, "native-termination.json"), TestContext.Current.CancellationToken).ConfigureAwait(true)).ShouldNotBeNull();
++        CompositionDocumentStore.Serialize(durable).ShouldBe(CompositionDocumentStore.Serialize(session.NativeTermination));
++    }
++
++    /// <summary>Launch and completion keep the first pending-access observation while later expiry facts advance.</summary>
++    [Fact]
++    public void ReviewNativeAccessKeepsFirstPendingObservation()
++    {
++        DateTimeOffset launchedAt = DateTimeOffset.UtcNow.AddSeconds(-2);
++        NativeTestExecutionResult launch = new(new("running", ToolOutcome.Passed(), []), null, null)
++        {
++            Launched = true,
++            ProcessIds = [12345],
++            ObservedAtUtc = launchedAt,
++            CredentialExpiresAtUtc = launchedAt.AddSeconds(60),
++        };
++        CompositionOwnerTermination running = CompositionOwnerTermination.ObserveNative(CompositionTestFiles.RunId, null, launch, running: true);
++        NativeTestExecutionResult completion = launch with { StopObserved = true, ObservedAtUtc = launchedAt.AddSeconds(1), CredentialExpiresAtUtc = launchedAt.AddSeconds(90) };
++        CompositionOwnerTermination finished = CompositionOwnerTermination.ObserveNative(CompositionTestFiles.RunId, running, completion);
++        finished.EnvironmentAccess.Single().Status.ShouldBe("pending");
++        finished.EnvironmentAccess.Single().ObservedAtUtc.ShouldBe(launchedAt);
++        finished.CredentialExpiresAtUtc.ShouldBe(completion.CredentialExpiresAtUtc);
++        finished.NativeProcessIds.ShouldBe([12345]);
++        finished.OwnedWork.Single().Status.ShouldBe("terminated");
++        finished.OwnedWork.Single().ObservedAtUtc.ShouldBe(completion.ObservedAtUtc.ShouldNotBeNull());
++        CompositionOwnerTermination repeated = CompositionOwnerTermination.ObserveNative(CompositionTestFiles.RunId, finished, completion with { ObservedAtUtc = launchedAt.AddSeconds(2) });
++        CompositionDocumentStore.Serialize(repeated).ShouldBe(CompositionDocumentStore.Serialize(finished));
++    }
++
+     /// <summary>A native ledger that cannot be durably written is reported instead of being silently dropped.</summary>
+     /// <returns>The launch-metadata retention failure assertions.</returns>
+     [Fact]
+@@ -693,7 +1003,7 @@ public sealed class NativeTestExecutorTests
+         validated.IsValid.ShouldBeTrue();
+         ModuleTestSelection selection = ModuleTestSelection.Select(validated.Declarations!, "verify", manifest, DateTimeOffset.UtcNow).ShouldNotBeNull();
+         SourceMapping mapping = new(WorkspaceMode.Source, workspace.Root, "sample", [new SourceMappingEntry("sample", "source", workspace.Root)], false);
+-        CompositionRunPlan plan = CompositionTestFiles.CreatePlan(workspace.Root) with { SelectedTest = selection, SourceMapping = mapping, Modules = [], UiMarkers = [] };
++        CompositionRunPlan plan = CompositionTestFiles.CreatePlan(workspace.Root, CompositionRunPlanFactory.NewRunId()) with { SelectedTest = selection, SourceMapping = mapping, Modules = [], UiMarkers = [] };
+         plan = await TestEnvironmentProvisioningFixture.PrepareAsync(plan, manifest, workspace.Root).ConfigureAwait(false);
+         return (plan, selection, manifest);
+     }

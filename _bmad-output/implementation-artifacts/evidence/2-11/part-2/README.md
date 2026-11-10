@@ -167,3 +167,55 @@ Original termination outcomes and attachment holds remain distinct from evolving
 
 Local commit messages passed the owning repositories' pinned commitlint 21.2.4 policies;
 [validation evidence](commitlint-validation.json) records the exact messages and commands.
+
+## Review pass 3 corrections (2026-11-10)
+
+All five approved review findings (R3-P1–R3-P5) are resolved in the existing Builds
+worktree on top of `4ce510b2b263f8e4ea469638a130f08776ba27a3`. Verification preceded the commit. With user approval on 2026-11-11, the changes were
+committed as [`7461fb05`](https://github.com/Hexalith/Hexalith.Builds/commit/7461fb05ad170375fc0df66e6a39a4d2432e6247)
+and pushed to `feat/2-11-lifecycle-reporting`. The twelve source-file hashes still
+match the verified run. No release or Platform gitlink update was performed.
+[review-pass-3-push.json](review-pass-3-push.json) records remote verification and
+successful validation of both exact commit messages with commitlint 21.2.4.
+[review-pass-3.patch](review-pass-3.patch) preserves the
+complete correction diff for review and recovery.
+
+Selected native executions use a fresh private process tag to discover and stop
+tagged descendants within the original stopping allowance, preserving retained
+owner services and other native executions. Pre-launch PID/start observations
+exclude unrelated pre-existing protected processes on supported hosts; new
+unreadable work and partial scans remain unverified with known identities retained.
+Causal outcomes are recorded before descendant stopping, and final termination is
+persisted even when that recording throws. Unchanged native/access/environment
+statuses retain their observation times, while recovery captures its interruption
+before cleanup-marker I/O. Live-child coverage now asserts the durable PID, bearer
+expiry and pending statuses before completion, using an atomically published marker.
+
+The follow-up independent reviews produced seventeen findings. Thirteen formed
+nine small correction groups within the five approved findings; four were rejected
+and no new work was deferred. The spec's pass-3 implementation-check table records
+every verdict. Existing deferred entries, including the live-startup question,
+were not changed.
+
+Final parent verification rebuilt with **zero warnings/errors**, then passed
+**339/339 C# cases** in eleven affected classes, with no skips or unexecuted cases.
+The **70/70 Python retention tests** also passed. All six approved matrix rows and
+all five corrections have executed passing coverage, including real detached work,
+protected-process uncertainty, partial-scan cancellation, expired stopping and a
+throwing first-outcome callback. All twelve changed file hashes stayed stable
+through the final C# run; test/CLI/Tooling binaries match and are newer than their
+sources. V1 schemas are byte-identical to Platform authority and baseline; the v1
+contract reader and frozen intent are unchanged.
+
+[review-pass-3-verification.json](review-pass-3-verification.json) records commands,
+case counts, matrix/regression mappings, source/binary hashes, baseline revisions,
+CLI version and invariant checks. [review-pass-3-test-output.tar.gz](review-pass-3-test-output.tar.gz)
+retains final XML/logs, the verification script, and initial failed runs that exposed
+the protected-process scanner and missing-ledger fallback regressions.
+
+This is focused local Linux Debug evidence. The supported-host private-tag test
+also targets Windows/macOS, but their native inspection paths were not executed
+here. This is not a new full-assembly run or hosted/package qualification. Discovery
+proves absence of processes retaining the ownership tag; children that remove those
+tags remain outside the established tag-based cleanup boundary. Part 2 is done;
+Story 2.11 remains in progress for the separate Parties caller work.
