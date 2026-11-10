@@ -1,0 +1,46 @@
+AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [FINISHED] Time: 0.899s
+AttachedSuiteExecutionTests.ReconnectNamingAnotherSuiteIsRefusedAsync [FINISHED] Time: 0.374s
+AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [FINISHED] Time: 0.493s
+AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [FINISHED] Time: 0.323s
+AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [FINISHED] Time: 1.078s
+AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [FINISHED] Time: 0.406s
+AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [FINISHED] Time: 0.305s
+AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [FINISHED] Time: 0.49s
+AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [FINISHED] Time: 2.31s
+AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [FINISHED] Time: 2.306s
+AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [FINISHED] Time: 0.303s
+AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [FINISHED] Time: 0.274s
+AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [FINISHED] Time: 1.435s
+AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync [FINISHED] Time: 2.905s
+AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "expired") [FINISHED] Time: 0.07s
+AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "closed") [FINISHED] Time: 0.075s
+AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "exited") [FINISHED] Time: 0.019s
+AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "start-mismatch") [FINISHED] Time: 0.073s
+AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [FINISHED] Time: 1.848s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [FINISHED] Time: 0.156s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [FINISHED] Time: 0.16s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [FINISHED] Time: 0.159s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [FINISHED] Time: 0.159s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [FINISHED] Time: 0.16s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [FINISHED] Time: 0.155s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [FINISHED] Time: 0.151s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [FINISHED] Time: 0.329s
+AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [FINISHED] Time: 0.345s
+AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [FINISHED] Time: 0.258s
+AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [FINISHED] Time: 1.072s
+AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [FINISHED] Time: 2.34s
+AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [FINISHED] Time: 0.173s
+AttachedSuiteExecutionTests.HoldOnlyLineageNeverBecomesRunnerOwnedAsync [FINISHED] Time: 0.16s
+AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False) [FINISHED] Time: 0.314s
+AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True) [FINISHED] Time: 1.662s
+AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "gate") [FINISHED] Time: 0.278s
+AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "entry-hash") [FINISHED] Time: 0.354s
+AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [FINISHED] Time: 0.548s
+AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [FINISHED] Time: 3.32s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "hold-without-attach", rule: "HXC001") [FINISHED] Time: 0.008s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "request-without-attach", rule: "HXC001") [FINISHED] Time: 0.006s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "two-profiles", rule: "HXC002") [FINISHED] Time: 0.007s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "mode", rule: "HXC002") [FINISHED] Time: 0.01s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "v1-manifest", rule: "HXC002") [FINISHED] Time: 0.006s
+AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "retention", rule: "HXC002") [FINISHED] Time: 0.01s
+   Hexalith.Builds.Module.Tests  Total: 45, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 28.435s

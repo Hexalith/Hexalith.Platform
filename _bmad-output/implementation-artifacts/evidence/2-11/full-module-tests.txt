@@ -1,0 +1,39 @@
+Builds commit 08db49e8c525d3a8f6116eb4b8b11278d415598b, Debug, dotnet exec Hexalith.Builds.Module.Tests.dll -reporter verbose (full assembly)
+   Hexalith.Builds.Module.Tests  Total: 2967, Errors: 0, Failed: 0, Skipped: 5, Not Run: 0, Time: 561.299s
+exit=0
+
+AttachedSuiteExecutionTests and inverted ModuleTestSelectionTests cases:
+ModuleTestSelectionTests.AttachmentRunsAsAttachedSuiteInsteadOfRefusingAsync(filtered: False) [FINISHED] Time: 0.011s
+ModuleTestSelectionTests.AttachmentRunsAsAttachedSuiteInsteadOfRefusingAsync(filtered: True) [FINISHED] Time: 0.007s
+AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [FINISHED] Time: 0.631s
+AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [FINISHED] Time: 0.475s
+AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [FINISHED] Time: 1.148s
+AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [FINISHED] Time: 0.522s
+AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [FINISHED] Time: 0.486s
+AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync [FINISHED] Time: 2.475s
+AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [FINISHED] Time: 0.485s
+AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [FINISHED] Time: 0.495s
+AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [FINISHED] Time: 1.521s
+AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [FINISHED] Time: 2.06s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [FINISHED] Time: 0.321s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [FINISHED] Time: 0.32s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [FINISHED] Time: 0.328s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [FINISHED] Time: 0.312s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [FINISHED] Time: 0.312s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [FINISHED] Time: 0.309s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [FINISHED] Time: 0.327s
+AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [FINISHED] Time: 0.365s
+AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [FINISHED] Time: 0.624s
+AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [FINISHED] Time: 0.547s
+AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [FINISHED] Time: 1.093s
+AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [FINISHED] Time: 2.683s
+AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [FINISHED] Time: 0.271s
+AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [FINISHED] Time: 0.508s
+AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [FINISHED] Time: 1.761s
+
+Skipped:
+Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync [SKIP]
+Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync [SKIP]
+Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync [SKIP]
+CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync [SKIP]
+CompositionNativeProcessDiscoveryTests.NativeTaggedChildRemovalPreservesIndependentPeerAsync [SKIP]

@@ -4,7 +4,7 @@
 
 ## Goal
 
-Provide isolated real-service testing with runner ownership, bounded readiness/attachments, local failure retention and verifiable cleanup. Isolated tests remain independent; package-mode integration blocks CI. Epic 3 adds candidate selection/loaded-artifact proof.
+Give developers and CI real-service integration environments that only the `hexalith-module` runner provisions, owns and cleans. Attachment uses finite holds with an honest `withdrawn` outcome. Local failures are kept for debugging, and CI always cleans up and reports leftovers. Isolated tests run first without Platform, and package-mode integration blocks CI. The epic proves this lifecycle on the Parties reference composition. It also publishes the candidate-and-attachment policy that Epic 3 consumes.
 
 ## Stories
 
@@ -18,35 +18,49 @@ Provide isolated real-service testing with runner ownership, bounded readiness/a
 - Story 2.8: Run CI integration on disposable runners with guaranteed cleanup
 - Story 2.9: Migrate EventStore and Parties test fixtures to the environment descriptor
 - Story 2.10: Qualify the runner lifecycle on the reference composition
+- Story 2.11: Supervise attached runs and report the missing lifecycle producers
 
 ## Requirements & Constraints
 
-- Run the declared minimum real services; Parties requires EventStore, Tenants and Memories. Doubles stay inside isolated tests, which run without Platform or domain servers.
-- Scope resources, ports, volumes, catalog and data per suite/batch, or identify the blocking run. Never reach hosted data.
-- Require readiness and successful startup tasks. Startup defaults to ten minutes from environment request, excluding execution; finite overrides need justification. Record effective deadlines/origins and durations. Startup, execution and hold deadlines are separate.
-- CI uses disposable Linux GitHub-hosted runners: isolated tests first, blocking package-mode integration second. No hosted provider credentials; registry access is read-only pull. Always withdraw attachments before job cleanup, including cancellation/partial startup.
-- Record first outcomes immediately: `passed`, `failed`, `cancelled`, `withdrawn`. Local success waits for holds; any local owner/attached test/startup failure retains surviving resources until explicit cleanup, despite later cancellation/expiry.
-- Cleanup is idempotent, retryable and ownership-limited; report leftovers honestly. Preserve classified, redacted diagnostics/results after deletion.
-- Qualify success, failure, timeout, cancellation, collision and attachment orderings, including owner finish/cancel first, attached failure/expiry and failure then cancellation; record revision, environment, outcome, duration, overrides and diagnostics.
+- Environments run the declared minimum services for real; for Parties, these are EventStore, Tenants and Memories. Doubles exist only inside isolated tests, which run with no Platform or domain server and never satisfy integration acceptance.
+- Each suite or compatible batch gets a fresh run-owned environment, with run-scoped ports, volumes, catalog and data. Otherwise it fails fast, naming the blocking run. Tests never reach hosted data.
+- Readiness means module-defined readiness plus successful startup tasks; a running process does not count. Startup defaults to a 10-minute deadline, which excludes execution. An override must be finite, justified and shown. A timeout names the unready resources. Record the actual duration, the effective deadline and any override, and never present a raised timeout as an improvement.
+- Record a run's first terminal outcome immediately: `passed`, `failed`, `cancelled` or `withdrawn`. A `withdrawn` run is neither a pass nor a failure and never counts as evidence.
+- Locally, success cleans up after holds end. Any owner or attached test or startup failure keeps the surviving resources until explicit cleanup, even after a later cancellation or expiry. A stop or owner cancellation withdraws attached runs first, then removes only resources the owner created. A separately started Aspire environment keeps running.
+- CI runs on disposable Linux GitHub-hosted runners and always cleans up, including after partial provisioning. A run is never counted clean while it still owns resources. Attachments stay within the same job and end before cleanup. CI holds no hosted credentials; its only registry access is a read-only pull.
+- Cleanup is idempotent and limited to owned resources, and it removes resources rather than just metadata. It reports leftovers and is never recorded complete while anything remains. It never touches another environment, or one still serving an attachment within its hold. Results and redacted diagnostics survive cleanup.
+- Qualification runs locally and in CI and covers these scenarios: success, failure, startup timeout, cancellation, collision, owner finish or cancel before an attachment ends, attached failure, hold expiry, and failure followed by cancellation. Each record holds the revision, environment, result, startup duration, any override and diagnostics, plus proof that no other environment was touched. Only runner-owned runs count.
 
 ## Technical Decisions
 
-Platform owns contracts/acceptance; Builds implements `hexalith-module`/workflows. Only the runner manages environments; fixtures consume descriptors without AppHosts. Own-repository fixtures produce no Platform evidence. Use one Aspire model/mapping: Debug source assets locally, Release/NuGet boundaries and catalog dependencies in package mode.
+- **Ownership:** Platform owns the contracts and acceptance; Builds implements them in `hexalith-module` and the reusable workflows. Fixtures (EventStore.Testing(.Integration), module and McpCli tests) consume the versioned descriptor and never start an AppHost. A module's non-exported own-repository fixture is never Platform evidence. A shared AppHost path is not ownership. There is no custom DSL or environment service.
+- **Modes:** locally, Aspire runs Debug sources from the active checkout; CI uses package mode (Release builds, NuGet boundaries, catalog-pinned images).
+- **Contract:** binds these identities:
+  - run, owner, environment and CI job;
+  - composition and mode, endpoints, the run-scoped catalog and the synthetic tenant;
+  - expected and loaded artifacts, and the candidate or `baseline-only` label;
+  - holds, outcomes, the executing tool, termination, cleanup and diagnostics.
 
-Use `hexalith.platform.candidate-and-attachment-policy.v1` from `docs/contracts/candidate-and-attachment-policy-v1.md`, owned by `@jpiquot`. Publication grants no Builds adoption. Missing/unknown/mismatched policy IDs fail closed; changes require versioning/adoption/requalification.
-
-Versioned contracts bind run/owner/environment/CI identities; composition/mode/endpoints/catalog/tenant; readiness/startup; expected/loaded artifacts; executing tool/qualification; candidate/baseline classification; decision/no-reuse lineage; suites/configuration/completion; holds/deadlines/outcomes, work/access termination, cleanup/retention/diagnostics. Unsupported versions name supported versions. Reserve candidate/loaded fields for later population without version changes; missing values cannot qualify evidence.
-
-PR evidence binds committed merge results to exact head/base decisions; releases need fresh runs. Gates authenticate decisions; only latest attempts qualify. No cross-decision reuse. Candidate artifacts use that revision's Release build; dependencies stay catalog-pinned. Acceptance requires content identities, qualification, complete required coverage and runner-owned package-mode CI. Local/baseline runs remain diagnostic.
-
-Attachments require compatible composition/mode/identities/readiness/isolation; reject hosted, developer-started or cross-job environments. Completed owners refuse requests except ready local failure-retained environments, attachable after cancellation until explicit stop/cleanup.
-
-Omitted holds mean 1,800 seconds; explicit whole seconds 1–14,400 are accepted exactly; invalid values fail without clamping/defaulting. Record original request/omission, acceptance UTC time, effective seconds and absolute expiry. Runner-issued lineage preserves expiry across reconnects/retries; fresh requests need admission. Expiry/withdrawal ends active work/access as `withdrawn`, never evidence. Attached cancellation affects only itself. Preserve first outcomes/failure retention; report and retry failed stopping without extending holds.
+  An unsupported version fails, naming the supported versions. Epic 3's fields already exist, marked not yet populated, and a missing value never qualifies evidence.
+- **Policy v1** (immutable): PR evidence binds the committed merge result to its exact head/base pair, and any change needs a new run. Evidence is never reused across decisions; reuse would need a new policy version, adoption and requalification. An unknown or mismatched policy ID fails closed. Local and baseline runs are diagnostic only.
+- **Attachment:** attachment is explicit. The target must be a compatible local or CI run-owned environment, matching on composition, mode, identities, readiness and isolation. Hosted, developer-started or cross-job targets are refused with the reason. After the owner finishes, attachment is refused, except to a failure-retained local environment, until it is stopped or cleaned up. Cancelling an attached run ends only that run.
+- **Holds:** an omitted hold defaults to 1,800 s. An explicit hold must be whole seconds from 1 to 14,400 and is applied exactly; any other value is rejected, never clamped. Record the request, acceptance time, effective seconds and absolute UTC expiry. Runner-issued lineage keeps the original expiry across retries.
+- **Supervision:** the runner owns attached child work and per-attachment access. On expiry or withdrawal, it stops that work and ends access before owner teardown, recording `withdrawn` without changing the first outcome or the expiry. A stop failure is reported, and it neither extends the hold nor grants qualification.
+- **Campaigns:** bind exact revisions, tool and catalog identities, digests and suite configuration. Each service job keeps its own cleanup proof, and cancellation cases use separate real workflow runs. Never carry one tool version's observations to another.
 
 ## UX & Interaction Patterns
 
-Listings show owner, age, failed/attached runs, absolute deadlines and pending cleanup. Refusals explain blockers. Cleanup preserves separately started environments.
+Listings of retained and pending-cleanup environments show owner, age, failed and attached runs, and absolute hold deadlines. Refusals name the reason or the blocking run.
 
 ## Cross-Story Dependencies
 
-Contracts precede provisioning/fixture migration; isolation/readiness underpin qualification. EventStore/Parties owners review adoption. Pin the qualified lifecycle tool in Platform/Parties. Attachments need runner policy adoption; candidate acceptance also needs Platform acceptance/integration qualification. Epic 3 populates reserved fields; lifecycle qualification alone grants no candidate acceptance.
+- Story 2.1's policy and 2.2's contract come before attachment, fixture migration and CI evidence. Story 2.3's run-scoped resources underpin 2.4–2.8.
+- Story 2.9 is done, and 2.8 consumes it, so do not redo the migration. A regression gets a bounded fix, reviewed by the EventStore or Parties owner.
+- Story 2.8 is limited to the CI runner/workflow contract and its six edge-case rows, and it grants no candidate, lifecycle or tool acceptance.
+- Story 2.10 is blocked. The 4.47.0 campaign left rows incomplete or unexecuted because producers were missing.
+  - Story 2.11 adds those producers in the Builds runner, result contract and workflow.
+  - It also makes the Parties caller select these cases: collision, CI startup timeout, failure then cancellation, owner cancellation before attachment end, and attached failure or expiry.
+  - Releasing 2.11 grants no acceptance.
+  - Once a Builds release carries 2.11, Story 2.10 runs one complete qualification on that fixed input set. Then it records the Platform-accepted tool and pins it in Platform and Parties.
+- A cross-repository story is done only when it is merged upstream, released as a Platform-accepted version, pinned, and verified from the Platform workspace.
+- Epic 3 populates the loaded-identity and candidate fields. The unnumbered EventStore 4.16 qualification work (PLAT-ES416-QH) reuses this runner and lifecycle without changing the scope of Stories 2.8–2.10.

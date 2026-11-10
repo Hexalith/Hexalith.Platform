@@ -1909,3 +1909,14 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-explicit-gateway-query-binding.md`
   summary: Add an optional positive private-reader successor-generation scenario that moves an existing actor-query binding from an owner AppId to the selected gateway.
   evidence: The reader already delegates predecessor validation to the versioned SDK builder; existing reader predecessor coverage exercises tampering, while generic positive successor coverage is a pre-existing verification improvement, independent of the canonical gateway mapping and its unchanged command policy semantics.
+
+## Deferred from: scope split of Story 2.11 (2026-11-10)
+
+- source_spec: none
+  summary: Story 2.11 part 2 — record actual startup duration (with the original effective deadline and any override) for timed-out, partial or interrupted startup, and bind the executing tool identity and termination observation in local and hosted result records.
+  target_story: 2.11 (user split 2026-11-10; build after part 1)
+  evidence: User chose to split Story 2.11 on 2026-11-10 and build supervised attached execution first. Result-record completeness is a separate Builds deliverable (startup report and result contract) that can be reviewed and shipped independently. Story 2.10 still needs it before its fresh qualification.
+- source_spec: none
+  summary: Story 2.11 part 3 — extend the Parties qualification caller to select a genuine exclusive-resource collision case (explicit conflict, unrelated resources preserved), CI startup-timeout, failure-followed-by-cancellation, owner-cancellation-before-attachment-end and attached-failure/hold-expiry cases.
+  target_story: 2.11 (user split 2026-11-10; attached cases depend on part 1)
+  evidence: User chose to split Story 2.11 on 2026-11-10. The Parties caller change is a separate repository deliverable. Its attached selectors need the Builds supervised attached execution from part 1, while the collision, timeout and failure-then-cancel selectors do not. Story 2.10 still needs all of them before its fresh qualification.
