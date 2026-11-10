@@ -1922,3 +1922,12 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Story 2.11 part 3 — extend the Parties qualification caller to select a genuine exclusive-resource collision case (explicit conflict, unrelated resources preserved), CI startup-timeout, failure-followed-by-cancellation, owner-cancellation-before-attachment-end and attached-failure/hold-expiry cases.
   target_story: 2.11 (user split 2026-11-10; attached cases depend on part 1)
   evidence: User chose to split Story 2.11 on 2026-11-10. The Parties caller change is a separate repository deliverable. Its attached selectors need the Builds supervised attached execution from part 1, while the collision, timeout and failure-then-cancel selectors do not. Story 2.10 still needs all of them before its fresh qualification.
+
+## Deferred from: review of spec-4-17-local-ci-broker-guarantee-dispositions.md (2026-11-10)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
+  summary: Platform `epics.md` Story 4.17 has no acceptance clause for the EventStore 3.21 local/CI qualification handoff that the 2026-11-09 course correction (P5.H) routed to Platform.
+  evidence: P5.H requires the owning repository to accept its execution work. The 4.17 ACs (epics.md 2412-2432) cover only selection, staging qualification and Subscription rendering, unlike the 4.16 handoff's accepted note (PLAT-ES416-QH). The 2026-11-10 slice relied on the owner's direction instead. The fix is a planning edit.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
+  summary: Execute the untested broker configuration candidates for RabbitMQ rotation, Kafka rotation and Kafka pressure. Candidates: RabbitMQ `reconnectWaitSeconds` and resiliency timeout; Kafka `initialOffset`, `consumeRetryInterval` and group rejoin; Kafka effective-principal and ACL-propagation diagnosis.
+  evidence: EventStore's 1.19.1 `validate_profile` pins every component and harness byte to EventStore's lock, so Platform can run no candidate until EventStore's harness accepts Platform-owned configuration. See docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md.

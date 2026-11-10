@@ -110,7 +110,8 @@ development_status:
   4-14-build-staging-namespaces-storage-and-pod-and-network-isolati: in-progress
   4-15-provide-staging-secrets-through-a-per-environment-openbao-an: backlog
   4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy: backlog
-  4-17-select-and-qualify-the-durable-production-broker: backlog
+  4-17-select-and-qualify-the-durable-production-broker: in-progress
+  # 4.17: 2026-11-10 local/CI slice recorded the five failed 1.19.1 broker guarantees as REJECTED (docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md); no broker selected; staging ACs wait on 4.14-4.16 and AD-26.
   4-18-serve-staging-through-its-own-gateway-hostnames-and-certific: backlog
   4-19-generate-the-staging-realm-and-register-staging-clients: backlog
   4-20-run-the-staging-executor-and-the-module-code-sandbox: backlog
