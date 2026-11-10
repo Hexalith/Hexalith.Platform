@@ -1915,6 +1915,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: none
   summary: Story 2.11 part 2 — record actual startup duration (with the original effective deadline and any override) for timed-out, partial or interrupted startup, and bind the executing tool identity and termination observation in local and hosted result records.
   target_story: 2.11 (user split 2026-11-10; build after part 1)
+  status: done
+  resolution: Implemented and reviewed in spec-2-11-report-lifecycle-observations.md; Builds local commit f118c2440101fe67be2c7f7a569cbe2257223a16. Parent verification passed 290 xUnit and 70 Python cases; part 3, release and Story 2.10 qualification remain separate.
   evidence: User chose to split Story 2.11 on 2026-11-10 and build supervised attached execution first. Result-record completeness is a separate Builds deliverable (startup report and result contract) that can be reviewed and shipped independently. Story 2.10 still needs it before its fresh qualification.
 - source_spec: none
   summary: Story 2.11 part 3 — extend the Parties qualification caller to select a genuine exclusive-resource collision case (explicit conflict, unrelated resources preserved), CI startup-timeout, failure-followed-by-cancellation, owner-cancellation-before-attachment-end and attached-failure/hold-expiry cases.

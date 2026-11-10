@@ -1,0 +1,56 @@
+{
+  "buildsBaseline": "52ea174c70f1afe77b52a2ccf06bb53afa5e962d",
+  "branch": "feat/2-11-lifecycle-reporting",
+  "platformHead": "d7c74e8a5d5627a8773fb36652813fe743de3d6f",
+  "schemaBytes": [
+    {
+      "path": "schemas/hexalith.test-environment.v1.json",
+      "sha256": "bf1e46acc773991037daaae20dff1d815faf4af13ab7887d88339609607ff357",
+      "unchanged": true
+    },
+    {
+      "path": "schemas/hexalith.test-result.v1.json",
+      "sha256": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39",
+      "unchanged": true
+    }
+  ],
+  "readerUnchanged": true,
+  "binaries": [
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/bin/Debug/net10.0/Hexalith.Builds.Tooling.dll",
+      "sha256": "3384df1bb4504dec2a470218091aeff21761c64fbcf4df7768650945c034dc48",
+      "modifiedAtUtc": "2026-11-10T14:53:49.501559+00:00",
+      "latestSource": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+      "latestSourceModifiedAtUtc": "2026-11-10T14:49:26.503287+00:00",
+      "newerThanSources": true
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll",
+      "sha256": "b2fd9174615937900f89b72bd959a4b3d3b0a4f57227eaff45e60e8ee7be5c18",
+      "modifiedAtUtc": "2026-11-10T14:53:50.161587+00:00",
+      "latestSource": "src/libraries/Hexalith.Builds.Module.Cli/pack/projects/Ui/Placeholder.cs",
+      "latestSourceModifiedAtUtc": "2026-11-10T12:57:26.544227+00:00",
+      "newerThanSources": true
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+      "sha256": "9e4484afdb738eed2bfd79e44304d3e4812ac1819c75a4405301fc441336968a",
+      "modifiedAtUtc": "2026-11-10T14:54:00.258017+00:00",
+      "latestSource": "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs",
+      "latestSourceModifiedAtUtc": "2026-11-10T14:40:29.336849+00:00",
+      "newerThanSources": true
+    }
+  ],
+  "cliVersionOutput": "1.0.0-20261110145252+52ea174c70f1afe77b52a2ccf06bb53afa5e962d",
+  "xunitPassed": 290,
+  "pythonPassed": 70,
+  "completedAtUtc": "2026-11-10T14:58:13.231935+00:00",
+  "sourceCount": 28,
+  "sourceHashesStable": true,
+  "verifiedBy": "parent full verification",
+  "parentEvidenceDirectory": "/tmp/hexalith-2-11-parent-verification-ui1brxqk",
+  "implementationPatchSha256": "0ee5ae5b004bb469915520f82a554598790ffd29d10be4b2a6d25dce64ccc48b",
+  "preReviewArchiveSha256": "0049c9d5d3a25fff0c7f003af5fb8a9a464ee8eacbdd55459c26fa0d51fe1279",
+  "buildsImplementationCommit": "f118c2440101fe67be2c7f7a569cbe2257223a16",
+  "commitTiming": "Tests and binary observations precede the local commit; all tested source bytes match the committed implementation."
+}

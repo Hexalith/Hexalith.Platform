@@ -1,0 +1,521 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(517,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(523,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [FINISHED] Time: 1.034s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(151,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [FINISHED] Time: 0.479s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(135,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(151,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [FINISHED] Time: 0.344s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [FINISHED] Time: 0.338s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [FINISHED] Time: 1.921s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync [FINISHED] Time: 2.887s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "gate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "gate") [FINISHED] Time: 0.312s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "entry-hash") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "entry-hash") [FINISHED] Time: 0.325s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(923,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertExpiryAsync(PlatformManifestTestWorkspace workspace, Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(932,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertExpiryAsync(PlatformManifestTestWorkspace workspace, Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(171,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [FINISHED] Time: 2.946s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(923,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertExpiryAsync(PlatformManifestTestWorkspace workspace, Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(932,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertExpiryAsync(PlatformManifestTestWorkspace workspace, Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(171,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [FINISHED] Time: 2.296s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(95,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(108,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [FINISHED] Time: 0.275s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(95,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(108,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(Boolean ci)
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [FINISHED] Time: 0.272s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(489,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(497,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [FINISHED] Time: 2.311s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "expired") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "expired") [FINISHED] Time: 0.071s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "closed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "closed") [FINISHED] Time: 0.072s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "exited") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "exited") [FINISHED] Time: 0.017s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "start-mismatch") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "start-mismatch") [FINISHED] Time: 0.077s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [FINISHED] Time: 0.187s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [FINISHED] Time: 0.175s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [FINISHED] Time: 0.181s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [FINISHED] Time: 0.164s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [FINISHED] Time: 0.158s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [FINISHED] Time: 0.179s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [FINISHED] Time: 0.177s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [FINISHED] Time: 0.308s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ReconnectNamingAnotherSuiteIsRefusedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ReconnectNamingAnotherSuiteIsRefusedAsync [FINISHED] Time: 0.29s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(197,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(201,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [FINISHED] Time: 0.421s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False) [FINISHED] Time: 0.311s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True) [FINISHED] Time: 1.674s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(615,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(626,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [FINISHED] Time: 3.343s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(775,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(781,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [FINISHED] Time: 0.322s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(541,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(546,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [FINISHED] Time: 0.423s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(759,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(760,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [FINISHED] Time: 1.029s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyLineageNeverBecomesRunnerOwnedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyLineageNeverBecomesRunnerOwnedAsync [FINISHED] Time: 0.168s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(594,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(599,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [FINISHED] Time: 1.368s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(269,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(269,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [FINISHED] Time: 0.297s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [FAIL]
+      Shouldly.ShouldAssertException : tool.GetProperty("state").GetString()
+          should be
+      "not-yet-populated"
+          but was
+      "populated"
+          difference
+      Difference     |  |         |    |    |    |         |    |    |    |    |    |    |    |    |    |   
+                     | \|/       \|/  \|/  \|/  \|/       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | n    o    t    -    y    e    t    -    p    o    p    u    l    a    t    e    d    
+      Actual Value   | p    o    p    u    l    a    t    e    d                                            
+      Expected Code  | 110  111  116  45   121  101  116  45   112  111  112  117  108  97   116  101  100  
+      Actual Code    | 112  111  112  117  108  97   116  101  100                                          
+      Stack Trace:
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(959,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(String stateDirectory, String ownerRunId, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(936,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AssertAttachedResult(Owner owner, String attachedRunId, String outcome, String cause, String endReason)
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(566,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+        test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs(570,0): at Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync()
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+        --- End of stack trace from previous location ---
+           at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+           at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task, ConfigureAwaitOptions options)
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [FINISHED] Time: 0.36s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [FINISHED] Time: 0.18s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "hold-without-attach", rule: "HXC001", message: "command line is invalid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "hold-without-attach", rule: "HXC001", message: "command line is invalid") [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "request-without-attach", rule: "HXC001", message: "command line is invalid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "request-without-attach", rule: "HXC001", message: "command line is invalid") [FINISHED] Time: 0.003s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "two-profiles", rule: "HXC002", message: "exactly one declared suite") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "two-profiles", rule: "HXC002", message: "exactly one declared suite") [FINISHED] Time: 0.009s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "mode", rule: "HXC002", message: "mode does not match") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "mode", rule: "HXC002", message: "mode does not match") [FINISHED] Time: 0.005s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "v1-manifest", rule: "HXC002", message: "v2 manifest") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "v1-manifest", rule: "HXC002", message: "v2 manifest") [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "retention", rule: "HXC002", message: "retention gate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "retention", rule: "HXC002", message: "retention gate") [FINISHED] Time: 0.009s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [FINISHED] Time: 1.081s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 45, Errors: 0, Failed: 16, Skipped: 0, Not Run: 0, Time: 28.963s

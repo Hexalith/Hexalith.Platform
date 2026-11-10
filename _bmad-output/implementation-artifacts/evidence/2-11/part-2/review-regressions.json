@@ -1,0 +1,78 @@
+[
+  {
+    "method": "CompositionProcessTests.ReviewSlowLaunchMetadataDoesNotRenewExecutionAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ReviewSlowLaunchMetadataDoesNotRenewExecutionAsync"
+    ]
+  },
+  {
+    "method": "ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: \\\"secret\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: \\\"name\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: \\\"digest\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: \\\"canonical\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: \\\"duplicate\\\")"
+    ]
+  },
+  {
+    "method": "ExecutingToolIdentityTests.ReviewValidPersistedManifestNeedsNoCleanerRehashAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewValidPersistedManifestNeedsNoCleanerRehashAsync"
+    ]
+  },
+  {
+    "method": "LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: True)"
+    ]
+  },
+  {
+    "method": "LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: False)",
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: True)"
+    ]
+  },
+  {
+    "method": "LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync"
+    ]
+  },
+  {
+    "method": "NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: False)",
+      "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: True)"
+    ]
+  },
+  {
+    "method": "StartupCoordinationTests.ReviewCancelledDirectReferenceDoesNotIssueStaleSuiteAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewCancelledDirectReferenceDoesNotIssueStaleSuiteAsync"
+    ]
+  },
+  {
+    "method": "StartupCoordinationTests.ReviewUnwritableCancellationStatePreservesCancellationAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewUnwritableCancellationStatePreservesCancellationAsync"
+    ]
+  },
+  {
+    "method": "StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: False)",
+      "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: True)"
+    ]
+  },
+  {
+    "method": "TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync",
+    "passedCases": [
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: \\\"origin\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: \\\"override\\\")",
+      "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: \\\"budget\\\")"
+    ]
+  }
+]

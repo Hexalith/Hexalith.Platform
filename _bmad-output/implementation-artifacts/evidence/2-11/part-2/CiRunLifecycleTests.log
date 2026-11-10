@@ -1,0 +1,67 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: "directory") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: "directory") [FINISHED] Time: 0.176s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: "workspace") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.UnrecoverableReceiptRefusesBeforeAllocationAsync(location: "workspace") [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ConcurrentReceiptPublicationIssuesAtMostOneOwnerAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ConcurrentReceiptPublicationIssuesAtMostOneOwnerAsync [FINISHED] Time: 0.033s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: False) [FINISHED] Time: 1.521s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.PartialStartupWithFailedCiWithdrawalKeepsResourcesAndReportsLeftoversAsync(cancelled: True) [FINISHED] Time: 1.259s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: True) [FINISHED] Time: 0.032s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.EngineWritesCiOwnerReceiptBeforeStateAndWorkspaceAsync(writable: False) [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptJsonKeysMatchTheIntegrationHelperContractAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptJsonKeysMatchTheIntegrationHelperContractAsync [FINISHED] Time: 0.009s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: False) [FINISHED] Time: 1.529s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.OutcomeCallbackFailureDoesNotRenewStoppingAllowanceAsync(blockedWithdrawal: True) [FINISHED] Time: 5.082s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.FailedOwnerStatusWithinStopAllowanceRefusesLaterAttachmentAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.FailedOwnerStatusWithinStopAllowanceRefusesLaterAttachmentAsync [FINISHED] Time: 0.015s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ReceiptIsDurableBeforeWorkspaceAllocationAndCannotBeReboundAsync [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync [FINISHED] Time: 4.157s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiOwnerListingNeverReportsFailureRetentionAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiOwnerListingNeverReportsFailureRetentionAsync [FINISHED] Time: 0.028s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "passed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "passed") [FINISHED] Time: 0.139s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "failed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "failed") [FINISHED] Time: 0.13s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "cancelled") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "cancelled") [FINISHED] Time: 0.142s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "partial-startup") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "partial-startup") [FINISHED] Time: 0.136s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "failed-then-job-cancelled") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminalCleanupWithdrawsWithoutWaitingAndPreservesPeersAsync(terminal: "failed-then-job-cancelled") [FINISHED] Time: 0.141s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "passed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "passed") [FINISHED] Time: 0.276s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "failed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "failed") [FINISHED] Time: 0.297s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "cancelled") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "cancelled") [FINISHED] Time: 0.332s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "partial-startup-failed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "partial-startup-failed") [FINISHED] Time: 0.115s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "partial-startup-cancelled") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.ExecutingCiOwnerReportsWithdrawalBeforeFirstComposedResourceStopsAsync(scenario: "partial-startup-cancelled") [FINISHED] Time: 0.113s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "cancelled", cancelled: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "cancelled", cancelled: True) [FINISHED] Time: 0.083s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "failure", cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "failure", cancelled: False) [FINISHED] Time: 0.086s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "success", cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "success", cancelled: False) [FINISHED] Time: 0.084s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "", cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: "", cancelled: False) [FINISHED] Time: 0.095s
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: null, cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiJobStatusBridgesThroughCommandOptionsAsync(jobStatus: null, cancelled: False) [FINISHED] Time: 0.097s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 29, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 16.265s

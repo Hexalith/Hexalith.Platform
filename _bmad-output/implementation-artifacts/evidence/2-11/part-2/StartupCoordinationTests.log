@@ -1,0 +1,41 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyDeadlineIsDiscoveredBeforeShortActiveOverrideIsArmedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyDeadlineIsDiscoveredBeforeShortActiveOverrideIsArmedAsync [FINISHED] Time: 0.495s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "run", kind: "v1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "run", kind: "v1") [FINISHED] Time: 2.146s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "debug", kind: "v1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "debug", kind: "v1") [FINISHED] Time: 2.024s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "test", kind: "v1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "test", kind: "v1") [FINISHED] Time: 2.024s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "run", kind: "v2") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "run", kind: "v2") [FINISHED] Time: 2.017s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "debug", kind: "v2") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.MappingConsumesOriginalDefaultDeadlineAsync(command: "debug", kind: "v2") [FINISHED] Time: 2.019s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewUnwritableCancellationStatePreservesCancellationAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewUnwritableCancellationStatePreservesCancellationAsync [FINISHED] Time: 0.027s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyTaskDescendantIsOwnedAndForeignProcessesSurviveAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyTaskDescendantIsOwnedAndForeignProcessesSurviveAsync [FINISHED] Time: 3.596s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewCancelledDirectReferenceDoesNotIssueStaleSuiteAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ReviewCancelledDirectReferenceDoesNotIssueStaleSuiteAsync [FINISHED] Time: 0.006s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync [FINISHED] Time: 4.961s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: False) [FINISHED] Time: 2.27s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SuccessfulTaskRequiresFreshHealthAndRunsOnceAsync(regress: True) [FINISHED] Time: 6.263s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ShortSelectedDeadlineStillBoundsSourceMappingAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.ShortSelectedDeadlineStillBoundsSourceMappingAsync [FINISHED] Time: 0.516s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: "run") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: "run") [FINISHED] Time: 5.257s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: "debug") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DependencyOverrideIncludesMappingDurationAsync(command: "debug") [FINISHED] Time: 5.266s
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SetupCancellationRecordsOriginalStartupAndUnissuedWorkAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SetupCancellationRecordsOriginalStartupAndUnissuedWorkAsync [FINISHED] Time: 0.284s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 16, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 39.283s

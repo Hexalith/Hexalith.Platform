@@ -1,0 +1,143 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ContendedDownPreservesOwnerUntilExplicitRetryAsync(useSession: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ContendedDownPreservesOwnerUntilExplicitRetryAsync(useSession: False) [FINISHED] Time: 2.861s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ContendedDownPreservesOwnerUntilExplicitRetryAsync(useSession: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ContendedDownPreservesOwnerUntilExplicitRetryAsync(useSession: True) [FINISHED] Time: 2.264s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: False) [FINISHED] Time: 0.113s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: False, contended: True) [FINISHED] Time: 0.292s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: False) [FINISHED] Time: 0.079s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupPreservesCommittedOutcomeAsync(unavailable: True, contended: True) [FINISHED] Time: 0.277s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CleanupDeadlinePreservesKnownContainerIdentityAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CleanupDeadlinePreservesKnownContainerIdentityAsync [FINISHED] Time: 0.597s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: False) [FINISHED] Time: 0.035s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SessionlessStartupRejectsMalformedCommittedOutcomeAsync(undefinedExit: True) [FINISHED] Time: 0.024s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: False) [FINISHED] Time: 0.286s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CancellationPreservesFirstOutcomeAndFailureRetentionAsync(failureFirst: True) [FINISHED] Time: 0.133s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: False) [FINISHED] Time: 0.081s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: False, recoverOwner: True) [FINISHED] Time: 0.08s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: False) [FINISHED] Time: 0.093s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OrdinaryRunAndDebugOwnersWithUnknownContextCleanUpAsync(debug: True, recoverOwner: True) [FINISHED] Time: 0.074s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExhaustedExecutionLifetimeBeforeNativeReturnRecordsTimeoutCauseAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExhaustedExecutionLifetimeBeforeNativeReturnRecordsTimeoutCauseAsync [FINISHED] Time: 0.202s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False, contended: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: False, contended: False) [FINISHED] Time: 1.841s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True, contended: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: False, beforeLaunch: True, contended: False) [FINISHED] Time: 1.514s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: False, contended: True) [FINISHED] Time: 7.426s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ConcurrentDownCancelsStartingOwnerAsync(declared: True, beforeLaunch: True, contended: True) [FINISHED] Time: 6.887s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SharedStoppingExpiryPreservesTrackedContainerObservationAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.SharedStoppingExpiryPreservesTrackedContainerObservationAsync [FINISHED] Time: 0.214s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False) [FINISHED] Time: 0.471s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False) [FINISHED] Time: 0.524s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False) [FINISHED] Time: 0.35s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False) [FINISHED] Time: 0.423s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True) [FINISHED] Time: 0.51s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: "source", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True) [FINISHED] Time: 0.473s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: False) [FINISHED] Time: 2.03s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReadySessionLocalityMatchesRecordedExecutionContextAsync(ci: True) [FINISHED] Time: 1.979s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "schema") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "schema") [FINISHED] Time: 0.019s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "run") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "run") [FINISHED] Time: 0.012s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "workspace") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "workspace") [FINISHED] Time: 0.011s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "attempt") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "attempt") [FINISHED] Time: 0.01s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "environment") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "environment") [FINISHED] Time: 0.009s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "duplicate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "duplicate") [FINISHED] Time: 0.008s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "owner-as-attempt") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacyUnknownsDoNotPermitMismatchedOwnershipAsync(invalidField: "owner-as-attempt") [FINISHED] Time: 0.008s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageCommandFailureEstablishesLocalRetentionAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageCommandFailureEstablishesLocalRetentionAsync [FINISHED] Time: 0.232s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TrackingDeletionFailureDoesNotPublishCompleteAsync [FINISHED] Time: 0.44s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExplicitStopAcrossProcessesPreservesFirstFailureAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExplicitStopAcrossProcessesPreservesFirstFailureAsync [FINISHED] Time: 2.246s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryReadsNativeLedgerAfterFirstOutcomeCommitAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryReadsNativeLedgerAfterFirstOutcomeCommitAsync [FINISHED] Time: 0.194s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RetainedSurvivorsAreRecordedAfterStoppingBudgetExpiresAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RetainedSurvivorsAreRecordedAfterStoppingBudgetExpiresAsync [FINISHED] Time: 0.146s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: False) [FINISHED] Time: 1.329s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.PackageOutcomesPreserveRetentionAndOwnedCleanupAsync(fails: True) [FINISHED] Time: 1.342s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockImmediatelyRefusesCleanupUntilExactRetryAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockImmediatelyRefusesCleanupUntilExactRetryAsync [FINISHED] Time: 0.452s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExpiredSharedStoppingTokenReturnsKnownIncompleteCleanupAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ExpiredSharedStoppingTokenReturnsKnownIncompleteCleanupAsync [FINISHED] Time: 0.005s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: False) [FINISHED] Time: 0.262s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: True, invalidOwner: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: True, invalidOwner: False) [FINISHED] Time: 0.246s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DownRecoversAndValidatesDurableOwnerAsync(malformed: False, invalidOwner: True) [FINISHED] Time: 0.093s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RemovalThenDiscoveryFailurePreservesKnownContainerAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RemovalThenDiscoveryFailurePreservesKnownContainerAsync [FINISHED] Time: 1.402s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: "source") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: "source") [FINISHED] Time: 0.4s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: "package") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: "package") [FINISHED] Time: 0.372s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: False) [FINISHED] Time: 0.014s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ClaimTraversalRefusesUnsafePayloadAsync(fifo: True) [FINISHED] Time: 0.014s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: False) [FINISHED] Time: 0.083s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewOwnerNativeStoppingFailuresArePublishedAsync(knownSurvivor: True) [FINISHED] Time: 0.074s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OverlappingDownAndLateCleanupUpdatesPreserveCompletionAsync [FINISHED] Time: 0.67s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: False) [FINISHED] Time: 0.085s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: True) [FINISHED] Time: 0.11s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CorruptClaimDiscoveryStaysIncompleteUntilOwnershipIsRestoredAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.CorruptClaimDiscoveryStaysIncompleteUntilOwnershipIsRestoredAsync [FINISHED] Time: 0.141s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TerminalRecordingDoesNotReadChildReadinessFifoAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.TerminalRecordingDoesNotReadChildReadinessFifoAsync [FINISHED] Time: 0.035s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync [FINISHED] Time: 0.052s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "absent") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "absent") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "attempt-only") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "attempt-only") [FINISHED] Time: 0.042s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "environment-only") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "environment-only") [FINISHED] Time: 0.04s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "both") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: "both") [FINISHED] Time: 0.046s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: "human") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: "human") [FINISHED] Time: 8.25s
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: "json") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: "json") [FINISHED] Time: 8.27s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 67, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 59.499s

@@ -1,0 +1,67 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.LegacyExecutorRemainsUnavailableWithDiagnosticsAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.LegacyExecutorRemainsUnavailableWithDiagnosticsAsync [FINISHED] Time: 0.235s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ImmutableReportsSurviveInterruptedAndRejectedUpdatesAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ImmutableReportsSurviveInterruptedAndRejectedUpdatesAsync [FINISHED] Time: 0.344s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MismatchedOriginalIdentityDoesNotPublishAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MismatchedOriginalIdentityDoesNotPublishAsync [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ResultPublishesAcceptedHoldsWithActualEndsAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ResultPublishesAcceptedHoldsWithActualEndsAsync [FINISHED] Time: 0.039s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.NonStringExecutionKindRefusesWithoutEscapingAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.NonStringExecutionKindRefusesWithoutEscapingAsync [FINISHED] Time: 0.024s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.DiscoveryCategoriesAreRetainedWithoutSecretTextAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.DiscoveryCategoriesAreRetainedWithoutSecretTextAsync [FINISHED] Time: 0.018s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "passed", cause: "tests-completed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "passed", cause: "tests-completed") [FINISHED] Time: 0.022s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "test-failure") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "test-failure") [FINISHED] Time: 0.018s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "startup-failure") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "startup-failure") [FINISHED] Time: 0.024s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "startup-timeout") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "startup-timeout") [FINISHED] Time: 0.024s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "execution-timeout") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "failed", cause: "execution-timeout") [FINISHED] Time: 0.015s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "cancelled", cause: "run-cancelled") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialStartupResultsRemainReadableAfterWorkspaceDeletionAsync(outcome: "cancelled", cause: "run-cancelled") [FINISHED] Time: 0.033s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.RejectedUpdatePreservesPublishedDiagnosticBytesAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.RejectedUpdatePreservesPublishedDiagnosticBytesAsync [FINISHED] Time: 0.029s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "origin") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "origin") [FINISHED] Time: 0.022s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "override") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "override") [FINISHED] Time: 0.018s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "budget") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.ReviewConflictingKnownStartupBindingIsRejectedAsync(conflict: "budget") [FINISHED] Time: 0.017s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialResultsPreserveFrozenStartupAndExecutorAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.PartialResultsPreserveFrozenStartupAndExecutorAsync [FINISHED] Time: 0.057s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.AttachedFailuresPopulateExistingRetentionAndReleaseAsync(local: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.AttachedFailuresPopulateExistingRetentionAndReleaseAsync(local: True) [FINISHED] Time: 0.041s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.AttachedFailuresPopulateExistingRetentionAndReleaseAsync(local: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.AttachedFailuresPopulateExistingRetentionAndReleaseAsync(local: False) [FINISHED] Time: 0.046s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: null) [FINISHED] Time: 0.023s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "null") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "null") [FINISHED] Time: 0.017s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "[]") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "[]") [FINISHED] Time: 0.021s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "deadlines", replacement: "1") [FINISHED] Time: 0.016s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: null) [FINISHED] Time: 0.016s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: "null") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: "null") [FINISHED] Time: 0.019s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: "[]") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "execution", replacement: "[]") [FINISHED] Time: 0.016s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: null) [FINISHED] Time: 0.016s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: "null") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: "null") [FINISHED] Time: 0.015s
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: "1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.MalformedDeadlineBindingsRefuseBeforeUpdatingDurationAsync(field: "state", replacement: "1") [FINISHED] Time: 0.015s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 29, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 1.323s

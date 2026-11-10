@@ -1,0 +1,77 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DownStopsOnlyTaggedResourcesAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DownStopsOnlyTaggedResourcesAsync [FINISHED] Time: 1.276s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DescriptorLoadingUsesRemainingDeadlineAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DescriptorLoadingUsesRemainingDeadlineAsync [FINISHED] Time: 2.93s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeclaredOverrideReplacesFallbackDeadlineAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeclaredOverrideReplacesFallbackDeadlineAsync [FINISHED] Time: 1.901s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False) [FINISHED] Time: 16.048s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True) [FINISHED] Time: 15.282s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.RunningTaskDeadlineReturnsElapsedWithoutFailureAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.RunningTaskDeadlineReturnsElapsedWithoutFailureAsync [FINISHED] Time: 0.605s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync [FINISHED] Time: 1.29s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: "v1") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: "v1") [FINISHED] Time: 1.999s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: "v2") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PublicDebugReachesReadyAndDownClearsStateAsync(kind: "v2") [FINISHED] Time: 1.708s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineStartsBeforePrerequisitesAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineStartsBeforePrerequisitesAsync [FINISHED] Time: 1.114s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: False) [FINISHED] Time: 0.393s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: True) [FINISHED] Time: 0.388s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.TimeoutListsEveryUnreadyResourceAndPreservesDiagnosticsAsync [FINISHED] Time: 9.369s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: True) [FINISHED] Time: 1.799s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ParentStartupTranslatesExclusiveClaimFailuresAsync(validOwner: False) [FINISHED] Time: 1.894s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: "model") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: "model") [FINISHED] Time: 2.894s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: "preflight") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PlatformPreparationUsesRemainingDeadlineAsync(stage: "preflight") [FINISHED] Time: 2.984s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskReadyRequiresItsArgumentsAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskReadyRequiresItsArgumentsAsync [FINISHED] Time: 2.332s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.CallerCancellationIsNotAFailedStartupTaskAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.CallerCancellationIsNotAFailedStartupTaskAsync [FINISHED] Time: 0.303s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugIsRegisteredAndRefusesPackageModeAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugIsRegisteredAndRefusesPackageModeAsync [FINISHED] Time: 0.002s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineBeforeTaskStartIsNotNamedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DeadlineBeforeTaskStartIsNotNamedAsync [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-no-pid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-no-pid") [FINISHED] Time: 2.346s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-partial-pid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DebugNamesProjectsWithoutLauncherIdsAsync(mode: "ready-partial-pid") [FINISHED] Time: 2.176s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: "tools/missing.sh", rule: "HXM005") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: "tools/missing.sh", rule: "HXM005") [FINISHED] Time: 0.003s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: "../invalid.sh", rule: "HXM004") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskExecutableCauseIsPreservedAsync(executable: "../invalid.sh", rule: "HXM004") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True) [FINISHED] Time: 1.848s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False) [FINISHED] Time: 1.805s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: False) [FINISHED] Time: 1.73s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True) [FINISHED] Time: 1.874s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PreservedStreamMirrorKeepsOnlyTokensAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.PreservedStreamMirrorKeepsOnlyTokensAsync [FINISHED] Time: 0.003s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DefaultDeadlineIsSixHundredSeconds [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.DefaultDeadlineIsSixHundredSeconds [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.LargestFiniteOverrideWins [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.LargestFiniteOverrideWins [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: False) [FINISHED] Time: 0.397s
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReviewSetupObservationPrecedesDelayedCaptureAsync(cancelled: True) [FINISHED] Time: 0.436s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 34, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 79.258s

@@ -1,0 +1,109 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.HandoffCarriesRunScopedEndpointsAndIdentity [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.HandoffCarriesRunScopedEndpointsAndIdentity [FINISHED] Time: 0.029s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReportMetadataWithoutCredentialsIsRetained [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReportMetadataWithoutCredentialsIsRetained [FINISHED] Time: 0.009s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "valid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "valid") [FINISHED] Time: 0.371s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "missing") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "missing") [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "group-readable") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "group-readable") [FINISHED] Time: 0.041s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "foreign-run") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "foreign-run") [FINISHED] Time: 0.047s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "endpoints-without-path") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.EndpointCredentialChannelGatesChildExecutionAsync(fault: "endpoints-without-path") [FINISHED] Time: 0.041s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "none", asKey: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "none", asKey: False) [FINISHED] Time: 0.17s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "signing", asKey: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "signing", asKey: False) [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "signing", asKey: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "signing", asKey: True) [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "endpoint", asKey: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "endpoint", asKey: False) [FINISHED] Time: 0.042s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "endpoint", asKey: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "endpoint", asKey: True) [FINISHED] Time: 0.041s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-app", asKey: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-app", asKey: False) [FINISHED] Time: 0.039s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-app", asKey: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-app", asKey: True) [FINISHED] Time: 0.054s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-dapr", asKey: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-dapr", asKey: False) [FINISHED] Time: 0.047s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-dapr", asKey: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.OpaqueHandoffCredentialsCannotEnterRoutingSnapshotsAsync(source: "access-dapr", asKey: True) [FINISHED] Time: 0.047s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PassingReportAndExitBindCounts [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PassingReportAndExitBindCounts [FINISHED] Time: 0.002s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "valid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "valid") [FINISHED] Time: 0.086s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "not-required") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "not-required") [FINISHED] Time: 0.066s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-missing-status") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-missing-status") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-wrong-kind") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-wrong-kind") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-overflow") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "metadata-overflow") [FINISHED] Time: 0.042s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "closure-missing-hosts") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "closure-missing-hosts") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "closure-wrong-kind") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "closure-wrong-kind") [FINISHED] Time: 0.041s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "preparation-missing-flag") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "preparation-missing-flag") [FINISHED] Time: 0.045s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "preparation-wrong-kind") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "preparation-wrong-kind") [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "malformed-json") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RoutingProofShapeGatesChildExecutionAsync(fault: "malformed-json") [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ArgumentsSelectTheNativeReportOfEachPlatform [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ArgumentsSelectTheNativeReportOfEachPlatform [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync [FINISHED] Time: 0.073s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "valid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "valid") [FINISHED] Time: 0.063s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "foreign-run") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "foreign-run") [FINISHED] Time: 0.044s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "foreign-module") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "foreign-module") [FINISHED] Time: 0.039s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "wildcard-domain") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "wildcard-domain") [FINISHED] Time: 0.048s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "wildcard-tenant") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "wildcard-tenant") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "absent-synthetic-tenant") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeGatesChildExecutionAsync(mutation: "absent-synthetic-tenant") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NonzeroExitFailsEvenWithPassingReport [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NonzeroExitFailsEvenWithPassingReport [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT001") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT001") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT002") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT002") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT003") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT003") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT004") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT004") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT005") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT005") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT006") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.InvalidReportKeepsLoaderRule(ruleId: "HXT006") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: False) [FINISHED] Time: 0.091s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.ReviewFailedLaunchPreservesActualBatchHistoryAsync(earlierExecution: True) [FINISHED] Time: 0.133s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.TimeoutAndUnavailableProcessNeverPass [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.TimeoutAndUnavailableProcessNeverPass [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RetainedReportPathFollowsEvidencePath [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.RetainedReportPathFollowsEvidencePath [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NativeExecutionArchivesThePreChildRoutingSnapshotAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.NativeExecutionArchivesThePreChildRoutingSnapshotAsync [FINISHED] Time: 0.152s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun>run-token-value</TestRun>") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun>run-token-value</TestRun>") [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun><StdOut>Authorization: Bearer abcdefghijk"···) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun><StdOut>Authorization: Bearer abcdefghijk"···) [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun><StdOut>password=hunter22</StdOut></TestR"···) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.SecretBearingReportIsRejectedAndDropped(content: "<TestRun><StdOut>password=hunter22</StdOut></TestR"···) [FINISHED] Time: 0s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 50, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 2.466s

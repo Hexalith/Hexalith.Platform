@@ -1,0 +1,118 @@
+{
+  "buildsBaseline": "52ea174c70f1afe77b52a2ccf06bb53afa5e962d",
+  "branch": "feat/2-11-lifecycle-reporting",
+  "files": [
+    {
+      "path": "Github/run-module-integration/run_module_integration.py",
+      "sha256": "b14fa1442f032dba4e9471d78f6df434835131c7aaa5fe886fa209d8bc3da0b7"
+    },
+    {
+      "path": "Github/run-module-integration/tests/test_run_module_integration.py",
+      "sha256": "751954c152ea0b7d1e05ac2990874b4d34fe410b78cbe1acb836c6129d6ba30c"
+    },
+    {
+      "path": "README.md",
+      "sha256": "cca1a7e77d857e160bfd896066f6509221732d33076da4b1749fb74f2c8e5576"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs",
+      "sha256": "2ef0d689967a10c9e0cb299d55e0634bd3fea5197d0188c5743aeac2d1424147"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngineOptions.cs",
+      "sha256": "983997f5ade7b82ef73335af3bc635a64439b54a0cd420ffd261b2d43bbf7b5c"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs",
+      "sha256": "e79396fc6ec450f1b7b2aafec1bda6d1f29822920166ed44fda52c073c4bfb82"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs",
+      "sha256": "a2e68bff58b4a27b7a39e8134899bbdd33674aa493f985ebc26f4c392c0cd377"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlan.cs",
+      "sha256": "2ac55b3bdeb49d84f599a5c2f6e191451ef497e5ea5ef43ccd8cca02065ddb10"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlanFactory.cs",
+      "sha256": "b5f100d81bfb05de087745e7b12a272abf95a55e33d2117ef45ce68543fe0585"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunSession.cs",
+      "sha256": "16e032dc0f0a7c7ada162a31390a7c4676bc2349bcf5b7182ccd996d28f00543"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunState.cs",
+      "sha256": "fc529abe567fd8da248a6cd47180de2b867afe65ad025f909782e6cf900da0de"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs",
+      "sha256": "7e69efc4dc9f64c2776bfefeb738a07035d3666e09bec1d1d1f818843f5d9511"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleTestRunRecord.cs",
+      "sha256": "a5d2351b24a8d88aef9b39565b2347eb02ed47c62107b1a49126db3c9002f219"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutionResult.cs",
+      "sha256": "72f5f44046d463090fb82c8919ce9ce86f5e357adb388881a8b95fa96b6d3bed"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs",
+      "sha256": "54e19127b2806e37686a0a4ce5e871a4f0912e3ec2db26d8b55b2969f18cceac"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/ExecutingToolIdentity.cs",
+      "sha256": "f1b34b27388d18efddaae70be98204137c14e051cf953eaf25db5213662f402f"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs",
+      "sha256": "a0e4a144c32799bafb2bce8691022d17431c6cd87a5a463408bd28c302894b32"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs",
+      "sha256": "7052cf117c9fa814540a4939e17aaba637e4a73dd49c71d121feae13e5ee9149"
+    },
+    {
+      "path": "src/libraries/Hexalith.Builds.Tooling/Workspace/PlatformIdentityResolver.cs",
+      "sha256": "2f044503f34ba84dd6dd4f48182610c452b2cc47b101a7fdca65bfa663589f39"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs",
+      "sha256": "9b34624cb8d022251f745500407bd3d6b4eca6585fa895661cb88bf199138dda"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/CiRunLifecycleTests.cs",
+      "sha256": "baa66d1e0221e8d072e73e42bbf2609e390ca383e5326c094c200cd3fe0cae9a"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/CompositionProcessTests.cs",
+      "sha256": "6f09baa237c71342a68b2613c54653b21a3fbddc74e8e2b1c1bc1209fd1ff2e3"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/ExecutingToolIdentityTests.cs",
+      "sha256": "d8d9c9e7f28baa9504f68bd55de0eb89bdd29575e5715e42d8bae28bc2f5678f"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/LocalRunLifecycleTests.cs",
+      "sha256": "8887aa600b55ca4ef45de8eda5a87ddd0e3d2e48165829b076a54509a1a4ba27"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs",
+      "sha256": "33efc126ee03e6656835eb1df22f571727a8fb118ede1eacc30311320a02c94c"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/StartupCoordinationTests.cs",
+      "sha256": "446cee329f32b052bfe3943cf06c1440f997eb91bebb58cdfb6b3ac66da67e15"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs",
+      "sha256": "e8ea2dce900ac4a982fd04a5dea50dc280a70bdf0675f1b3583306a75097b3ac"
+    },
+    {
+      "path": "test/Hexalith.Builds.Module.Tests/TestResultWriterTests.cs",
+      "sha256": "7463da1fd727bd7c1ef406338d41e36d124cbe265befd1f2d1a121ef8ca56f85"
+    }
+  ]
+}

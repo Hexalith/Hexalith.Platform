@@ -1,0 +1,99 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnCancellationEndsOnlyThatRunAsync [FINISHED] Time: 1.164s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False) [FINISHED] Time: 0.542s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True) [FINISHED] Time: 0.393s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerThatExitedRefusesAttachedSuitesButKeepsHoldOnlyAttachAsync [FINISHED] Time: 0.398s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync [FINISHED] Time: 1.867s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync [FINISHED] Time: 2.89s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "gate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "gate") [FINISHED] Time: 0.298s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "entry-hash") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerReselectionRefusesUnsupportedRequestBeforeLaunchAsync(scenario: "entry-hash") [FINISHED] Time: 0.325s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False) [FINISHED] Time: 2.328s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True) [FINISHED] Time: 2.332s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False) [FINISHED] Time: 0.276s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True) [FINISHED] Time: 0.306s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync [FINISHED] Time: 2.391s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "expired") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "expired") [FINISHED] Time: 0.077s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "closed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "closed") [FINISHED] Time: 0.069s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "exited") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "exited") [FINISHED] Time: 0.019s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "start-mismatch") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.StaleLeaseRefusesAttachedSuiteBeforeAdmissionAsync(scenario: "start-mismatch") [FINISHED] Time: 0.072s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "filter", rule: "HXC002", reason: null) [FINISHED] Time: 0.181s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "evidence", rule: "HXC002", reason: null) [FINISHED] Time: 0.186s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "candidate", rule: "HXC002", reason: null) [FINISHED] Time: 0.166s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "receipt", rule: "HXC002", reason: null) [FINISHED] Time: 0.166s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "with-owner", rule: "HXC002", reason: null) [FINISHED] Time: 0.169s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "gate", rule: "HXC002", reason: null) [FINISHED] Time: 0.198s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "composition", rule: "HXR034", reason: "suite-incompatible") [FINISHED] Time: 0.191s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RefusedRequestAdmitsNothingAndStartsNoChildAsync(scenario: "owner-passed", rule: "HXR035", reason: "owner-passed") [FINISHED] Time: 0.343s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ReconnectNamingAnotherSuiteIsRefusedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ReconnectNamingAnotherSuiteIsRefusedAsync [FINISHED] Time: 0.301s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync [FINISHED] Time: 0.427s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False) [FINISHED] Time: 0.286s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True) [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True) [FINISHED] Time: 1.712s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync [FINISHED] Time: 3.375s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedRunGetsItsOwnCredentialChannelAsync [FINISHED] Time: 0.332s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync [FINISHED] Time: 0.464s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.FailedLocalOwnerStaysOpenUntilAttachedRunsEndAsync [FINISHED] Time: 1.017s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyLineageNeverBecomesRunnerOwnedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyLineageNeverBecomesRunnerOwnedAsync [FINISHED] Time: 0.176s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync [FINISHED] Time: 1.439s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachEndRefusesRunningRunnerOwnedSuiteAsync [FINISHED] Time: 0.378s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiJobEndWithdrawsActiveAttachmentBeforeCleanupAsync [FINISHED] Time: 0.379s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.HoldOnlyAttachRecordsNotApplicableTerminationAsync [FINISHED] Time: 0.192s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "hold-without-attach", rule: "HXC001", message: "command line is invalid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "hold-without-attach", rule: "HXC001", message: "command line is invalid") [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "request-without-attach", rule: "HXC001", message: "command line is invalid") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "request-without-attach", rule: "HXC001", message: "command line is invalid") [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "two-profiles", rule: "HXC002", message: "exactly one declared suite") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "two-profiles", rule: "HXC002", message: "exactly one declared suite") [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "mode", rule: "HXC002", message: "mode does not match") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "mode", rule: "HXC002", message: "mode does not match") [FINISHED] Time: 0.005s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "v1-manifest", rule: "HXC002", message: "v2 manifest") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "v1-manifest", rule: "HXC002", message: "v2 manifest") [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "retention", rule: "HXC002", message: "retention gate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.UnsupportedAttachedCommandIsUsageRefusalAsync(scenario: "retention", rule: "HXC002", message: "retention gate") [FINISHED] Time: 0.007s
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RequestNeverPickedUpIsRecordedAsFailedAsync [FINISHED] Time: 1.066s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 45, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 29.074s

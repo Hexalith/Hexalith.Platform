@@ -1,0 +1,29 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableRetainsOnlySafeLaunchMetadataAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableRetainsOnlySafeLaunchMetadataAsync [FINISHED] Time: 0.018s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ReviewSlowLaunchMetadataDoesNotRenewExecutionAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ReviewSlowLaunchMetadataDoesNotRenewExecutionAsync [FINISHED] Time: 0.198s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.TimedOutProcessHasNoLaunchFailureAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.TimedOutProcessHasNoLaunchFailureAsync [FINISHED] Time: 0.306s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.InvalidStartDescriptionRetainsSafeFailureKindAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.InvalidStartDescriptionRetainsSafeFailureKindAsync [FINISHED] Time: 0s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.StartedNonzeroProcessHasNoLaunchFailureAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.StartedNonzeroProcessHasNoLaunchFailureAsync [FINISHED] Time: 0.005s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ErrorBeyondCaptureBoundRetainsLastMarkerAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.ErrorBeyondCaptureBoundRetainsLastMarkerAsync [FINISHED] Time: 0.002s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.DotnetChildrenRetainSdkControlsWithoutBroadeningOtherHelpers [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.DotnetChildrenRetainSdkControlsWithoutBroadeningOtherHelpers [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableHasNoFirstMatchingLineAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.MissingExecutableHasNoFirstMatchingLineAsync [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.CreateStartInfoScrubsInheritedEnvironmentAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.CreateStartInfoScrubsInheritedEnvironmentAsync [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.OutputBeyondCaptureBoundIsMarkedTruncatedAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests.OutputBeyondCaptureBoundIsMarkedTruncatedAsync [FINISHED] Time: 0.001s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 10, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.621s

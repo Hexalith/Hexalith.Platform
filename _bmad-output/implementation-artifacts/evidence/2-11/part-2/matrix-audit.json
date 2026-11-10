@@ -1,0 +1,182 @@
+[
+  {
+    "scenario": "Ready",
+    "coverage": [
+      {
+        "method": "StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: True)",
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ReadyRunRecordsDeadlineAndDebugProcessIdsAsync(debugAttach: False)"
+        ]
+      },
+      {
+        "method": "StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.DeadlineAtFinalReadyCommitRefusesSuccessAsync"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Partial",
+    "coverage": [
+      {
+        "method": "StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: False)",
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: True)"
+        ]
+      },
+      {
+        "method": "StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: False)",
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskFailureNamesTheTaskAndPreservesDiagnosticsAsync(selected: True)"
+        ]
+      },
+      {
+        "method": "StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False)",
+          "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True)"
+        ]
+      },
+      {
+        "method": "StartupCoordinationTests.SetupCancellationRecordsOriginalStartupAndUnissuedWorkAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests.SetupCancellationRecordsOriginalStartupAndUnissuedWorkAsync"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Recovery",
+    "coverage": [
+      {
+        "method": "LocalRunLifecycleTests.RecoveryReadsNativeLedgerAfterFirstOutcomeCommitAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryReadsNativeLedgerAfterFirstOutcomeCommitAsync"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"source\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.RecoveryPreservesExecutorAndFreezesObservedInterruptionAsync(mode: \\\"package\\\")"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"absent\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"attempt-only\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"environment-only\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.LegacySelectedOwnerRecoveryPreservesUnknownFieldsAsync(identityShape: \\\"both\\\")"
+        ]
+      },
+      {
+        "method": "TestResultWriterTests.LegacyExecutorRemainsUnavailableWithDiagnosticsAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests.LegacyExecutorRemainsUnavailableWithDiagnosticsAsync"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: False)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewLegacyReadyRecoveryDoesNotInventNonissuanceAsync(legacyReady: True)"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.ReviewUnverifiedRecoveryPreservesRecordedNativePidsAsync"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Retained",
+    "coverage": [
+      {
+        "method": "LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: True, archiveFails: False, cleanupFails: False, evidenceFails: False)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: True, cleanupFails: False, evidenceFails: False)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: False)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: True, evidenceFails: True)",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.NativeOutcomeControlsLocalCleanupAsync(mode: \\\"source\\\", fails: False, archiveFails: False, cleanupFails: False, evidenceFails: True)"
+        ]
+      },
+      {
+        "method": "NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.PreparedScopeBindsNativeTokenAndDomainHandoffAsync"
+        ]
+      },
+      {
+        "method": "AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False)",
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True)"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Cleanup",
+    "coverage": [
+      {
+        "method": "CiRunLifecycleTests.CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests.CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"human\\\")",
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.DiscoveryFailureReportsClaimsAndRetryPreservesPeerAsync(format: \\\"json\\\")"
+        ]
+      },
+      {
+        "method": "LocalRunLifecycleTests.OutcomeLockImmediatelyRefusesCleanupUntilExactRetryAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests.OutcomeLockImmediatelyRefusesCleanupUntilExactRetryAsync"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Attached",
+    "coverage": [
+      {
+        "method": "AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: False)",
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.PassingAttachedSuiteEndsWorkAndAccessAsync(ci: True)"
+        ]
+      },
+      {
+        "method": "AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: False)",
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownStopsAttachedWorkOfVanishedOwnerAsync(survivor: True)"
+        ]
+      },
+      {
+        "method": "AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttacherTakesOverWhenOwnerVanishesMidRunAsync"
+        ]
+      },
+      {
+        "method": "AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync",
+        "passedCases": [
+          "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.RetryReconnectsLineageAndRefusesEndedOrExpiredAsync"
+        ]
+      }
+    ]
+  }
+]

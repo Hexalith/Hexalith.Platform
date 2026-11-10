@@ -1,0 +1,29 @@
+The '-verbose' switch has been deprecated in favor of '-reporter verbose' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "secret") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "secret") [FINISHED] Time: 0.043s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "name") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "name") [FINISHED] Time: 0.003s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "digest") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "digest") [FINISHED] Time: 0.002s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "canonical") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "canonical") [FINISHED] Time: 0.002s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "duplicate") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewPersistedManifestMustHaveExactCanonicalShapeAsync(fault: "duplicate") [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.HashFailureRefusesBeforeProvisioningAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.HashFailureRefusesBeforeProvisioningAsync [FINISHED] Time: 0.23s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ChangedBinaryBytesChangeManifestIdentityAsync(changed: "Hexalith.Builds.Module.Cli.dll") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ChangedBinaryBytesChangeManifestIdentityAsync(changed: "Hexalith.Builds.Module.Cli.dll") [FINISHED] Time: 0.008s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ChangedBinaryBytesChangeManifestIdentityAsync(changed: "Hexalith.Builds.Tooling.dll") [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ChangedBinaryBytesChangeManifestIdentityAsync(changed: "Hexalith.Builds.Tooling.dll") [FINISHED] Time: 0.001s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.CaptureUsesActualVersionAndTwoNamedExecutingBinaries [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.CaptureUsesActualVersionAndTwoNamedExecutingBinaries [FINISHED] Time: 0.004s
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewValidPersistedManifestNeedsNoCleanerRehashAsync [STARTING]
+    Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests.ReviewValidPersistedManifestNeedsNoCleanerRehashAsync [FINISHED] Time: 0.014s
+  Finished:    Hexalith.Builds.Module.Tests (ID = '59c447179f49a18f3074a0ed02a0c3a7689817692b590affdd96915febf4aa42')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 10, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.407s

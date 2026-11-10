@@ -1,0 +1,61 @@
+run-module-integration: cleanup evidence was not recorded (OSError)
+run-module-integration: cleanup evidence was not recorded (ValueError)
+run-module-integration: cleanup evidence was not recorded (OSError)
+..../usr/lib/python3.14/subprocess.py:1139: ResourceWarning: subprocess 997385 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/hexalith-builds-2-11-part-2-20261110/Github/run-module-integration/tests/test_run_module_integration.py:1602: ResourceWarning: unclosed file <_io.BufferedReader name=7>
+  with patch.object(helper, "POST_KILL_WAIT_SECONDS", 1), self.assertRaises(subprocess.TimeoutExpired):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/hexalith-builds-2-11-part-2-20261110/Github/run-module-integration/tests/test_run_module_integration.py:1602: ResourceWarning: unclosed file <_io.BufferedReader name=5>
+  with patch.object(helper, "POST_KILL_WAIT_SECONDS", 1), self.assertRaises(subprocess.TimeoutExpired):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+...........run-module-integration: declared diagnostic retention refused after exact cleanup (FileNotFoundError)
+.run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+....run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.run-module-integration: declared diagnostic retention refused after exact cleanup (NotADirectoryError)
+...run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.....run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+..run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+.run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+....run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.....run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+...run-module-integration: declared diagnostic retention refused after exact cleanup (FileNotFoundError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+...run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+...run-module-integration: declared diagnostic retention refused after exact cleanup (OSError)
+.............run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+run-module-integration: declared diagnostic retention refused after exact cleanup (ValueError)
+.....
+----------------------------------------------------------------------
+Ran 70 tests in 22.335s
+
+OK
