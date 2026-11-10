@@ -85,6 +85,52 @@ executed added review regression. The additional legacy-ready recovery test keep
 work/access history conservative until verified cleanup; known unissued controls stay
 not-applicable. Immediate causal outcomes still commit before separate per-entry ledger I/O.
 
+## Review pass 2 corrections (2026-11-10)
+
+A second code review of Builds `52ea174c..f118c244` used four independent layers. It found
+15 patch entries, 1 deferred entry and 23 rejected findings; the spec's Review Findings section
+records every verdict.
+
+**Behaviour corrections**
+
+- Selected-suite prerequisite refusals are again `unavailable` with no run, state, receipt or
+  retained owner.
+- A child that never launched keeps the baseline HXT007 classification. The separate
+  `Launched` flag stays exact.
+- Setup cancellation before the declared deadline is known propagates, so the caller reports
+  it with the declared deadline and override.
+- All setup-cancellation recording failures are contained in the engine and reported as
+  HXC130 plus HXT008.
+- Unchanged termination statuses keep their first `observedAt`.
+- Pre-launch native-ledger I/O runs inside the gate's existing failure handling.
+- A successful final ledger write clears an earlier launch-metadata warning.
+- The unused public `CreateInitialState` parameter was removed.
+
+**Added regressions**
+
+- An engine-level selected prerequisite refusal (no run, state or receipt).
+- A pre-resolution cancellation that propagates.
+- An owner cancellation during the probe that publishes a contained `run-cancelled` result.
+- The owner termination diagnostic's `runId`.
+- Conflicting `tool` and `actualDurationSeconds` snapshots.
+- A failing launch callback that stops its child.
+- An unwritable ledger that reports HXT008.
+- The retained local startup-failure row: native `not-applicable`, environment `pending`,
+  access `not-applicable`.
+
+**Verification**
+
+The Debug build had zero warnings and errors after one SA1118 test-only correction. All
+**298 xUnit cases** in the nine affected classes passed, as did the **70 Python tests**. The
+full Module.Tests assembly passed 3,024 of 3,029 cases with 0 failures and 5 pre-existing
+environment-gated skips.
+
+[review-pass-2/](review-pass-2/) holds the per-class logs and XML,
+[test-results.json](review-pass-2/test-results.json), [build.log](review-pass-2/build.log),
+the compressed full-assembly XML and the exact
+[review-pass-2.patch](review-pass-2/review-pass-2.patch), committed as Builds `4ce510b2b263f8e4ea469638a130f08776ba27a3` on
+`feat/2-11-lifecycle-reporting`.
+
 ## Matrix audit
 
 Every covering method below appears as passing in the linked class XML and verbose log.

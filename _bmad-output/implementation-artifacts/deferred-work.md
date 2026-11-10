@@ -1931,3 +1931,9 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
   summary: Execute the untested broker configuration candidates for RabbitMQ rotation, Kafka rotation and Kafka pressure. Candidates: RabbitMQ `reconnectWaitSeconds` and resiliency timeout; Kafka `initialOffset`, `consumeRetryInterval` and group rejoin; Kafka effective-principal and ACL-propagation diagnosis.
   evidence: EventStore's 1.19.1 `validate_profile` pins every component and harness byte to EventStore's lock, so Platform can run no candidate until EventStore's harness accepts Platform-owned configuration. See docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md.
+
+## Deferred from: code review of spec-2-11-report-lifecycle-observations.md (2026-11-10)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-11-report-lifecycle-observations.md`
+  summary: A `down` from another terminal while a live owner is still starting freezes an "interruption" startup duration before it waits for the provisioning lock. This is unverified; it would be medium if confirmed.
+  evidence: In Builds `f118c244`, `CompositionEngine.DownOwnedCoreAsync` calls `FreezeStartupAsync(..., interruption: true)` at `:1503`, before provisioning-lock acquisition at `:1577`. A live owner holds that lock throughout startup, so down's arrival time can become the persisted startup end. To settle it, check whether that owner can, after readiness or failure, refresh a result whose readiness-based descriptor snapshot conflicts with the persisted duration. That conflict would make `TestResultWriter.PopulateOriginalObservations` throw "frozen startup duration".

@@ -1,0 +1,258 @@
+{
+  "worktree": "/tmp/hexalith-builds-2-11-part-2-20261110",
+  "classes": [
+    {
+      "name": "CompositionProcessTests",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "ExecutingToolIdentityTests",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "TestResultWriterTests",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "LocalRunLifecycleTests",
+      "total": 68,
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "NativeTestExecutorTests",
+      "total": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "StartupReadinessTests",
+      "total": 37,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "StartupCoordinationTests",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "CiRunLifecycleTests",
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    },
+    {
+      "name": "AttachedSuiteExecutionTests",
+      "total": 45,
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "errors": 0,
+      "failedCases": []
+    }
+  ],
+  "commands": [
+    {
+      "name": "CompositionProcessTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionProcessTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/CompositionProcessTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:24:14.109500+00:00",
+      "finishedAtUtc": "2026-11-10T18:24:15.377219+00:00"
+    },
+    {
+      "name": "ExecutingToolIdentityTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.ExecutingToolIdentityTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/ExecutingToolIdentityTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:24:15.377298+00:00",
+      "finishedAtUtc": "2026-11-10T18:24:16.294834+00:00"
+    },
+    {
+      "name": "TestResultWriterTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.TestResultWriterTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/TestResultWriterTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:24:16.294927+00:00",
+      "finishedAtUtc": "2026-11-10T18:24:17.713670+00:00"
+    },
+    {
+      "name": "LocalRunLifecycleTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.LocalRunLifecycleTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/LocalRunLifecycleTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:24:17.713752+00:00",
+      "finishedAtUtc": "2026-11-10T18:25:11.785541+00:00"
+    },
+    {
+      "name": "NativeTestExecutorTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/NativeTestExecutorTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:25:11.785633+00:00",
+      "finishedAtUtc": "2026-11-10T18:25:14.757676+00:00"
+    },
+    {
+      "name": "StartupReadinessTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/StartupReadinessTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:25:14.757752+00:00",
+      "finishedAtUtc": "2026-11-10T18:26:43.730787+00:00"
+    },
+    {
+      "name": "StartupCoordinationTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.StartupCoordinationTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/StartupCoordinationTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:26:43.730886+00:00",
+      "finishedAtUtc": "2026-11-10T18:27:24.436332+00:00"
+    },
+    {
+      "name": "CiRunLifecycleTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CiRunLifecycleTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/CiRunLifecycleTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:27:24.436437+00:00",
+      "finishedAtUtc": "2026-11-10T18:27:40.948768+00:00"
+    },
+    {
+      "name": "AttachedSuiteExecutionTests",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests",
+        "-verbose",
+        "-result-xml",
+        "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/376a7974-ec5c-4d04-8d68-08e44159dfe4/scratchpad/pass2/AttachedSuiteExecutionTests.xml"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:27:40.948854+00:00",
+      "finishedAtUtc": "2026-11-10T18:28:10.388895+00:00"
+    },
+    {
+      "name": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Github/run-module-integration/tests"
+      ],
+      "exitCode": 0,
+      "startedAtUtc": "2026-11-10T18:28:10.388959+00:00",
+      "finishedAtUtc": "2026-11-10T18:28:33.114623+00:00"
+    }
+  ],
+  "xunitPassed": 298,
+  "xunitTotal": 298,
+  "completedAtUtc": "2026-11-10T18:28:33.114679+00:00"
+}

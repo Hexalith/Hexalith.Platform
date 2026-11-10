@@ -71,6 +71,93 @@ Paths below are relative to Builds: B = `src/libraries/Hexalith.Builds.Tooling`,
 - Given local or CI runs, when their first and refreshed results are read, then timing, executor and termination agree with recorded observations and validate as v1.
 - Given cleanup/reconnect by another process, when it updates results, then original startup/tool/terminal identities remain unchanged while termination advances honestly.
 
+### Review Findings
+
+Code review pass 2 (2026-11-10) of Builds `52ea174c..f118c244` (28 files, +1660/-48). Layers: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor, with no layer failures. They raised 49 findings: 25 merge into 15 patch entries, 1 is deferred and 23 are rejected, with none needing a decision. Paths are relative to the Builds repository.
+
+- [x] [Review][Patch] Selected-suite prerequisite refusals now create, publish and locally retain an owner run [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:80] (medium; acceptance-auditor+blind-hunter+edge-case-hunter)
+  - When no run exists yet, `RefuseUnstartedAsync` now mints a run ID and runs `InitializeStateAsync`. That writes state, `owner.json`, the executing-tool diagnostic and any CI receipt. `RefusePreparedRunAsync` then sends the run to `FailAndTearDownAsync`. This applies to Aspire unavailable, Docker/Dapr missing, HXR014 AppHost not built, and Aspire host paths.
+  - Before, these refusals returned `unavailable` with no run. Now they report `failed` with cause `startup-failure`. Locally, `RetainOnFailure` leaves a failure-retained ghost owner that needs an explicit `down`. In CI a receipt is written. If `InitializeStateAsync` throws, the generic catch replaces the original prerequisite diagnostic with HXR020.
+  - The spec scoped issuance to setup cancellation and timeout, and the evidence README promises "preserving existing refusal behavior".
+  - Fix: restore the pre-change no-run refusal when no run identity exists yet. Keep the `_startupObservations.TryAdd` for runs that already have one.
+- [x] [Review][Patch] A pre-launch execution timeout or I/O failure is reclassified HXR030 prerequisite-unavailable [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:569] (medium; blind-hunter+verification-gap+acceptance-auditor+edge-case-hunter)
+  - The expired-before-launch branch (`:569`) and both catches (`:608`, `:613`) now set `CompositionProcessResult.Started` from `launchedProcessId`. Baseline set it to `true`.
+  - With `Started` false, the immediate first outcome and `Evaluate` return HXR030 / PrerequisiteUnavailable, with the ".NET SDK" hint. `TerminalCause` stays `execution-timeout`, so a first outcome that can never change carries a contradictory rule and cause. Baseline reported HXT007 / ProductOrTest.
+  - `Launched` is already derived from `launchedProcessId`, so the change is not needed.
+  - Fix: restore `Started: true` in those three branches.
+- [x] [Review][Patch] Engine-level setup cancellation can publish the default startup deadline instead of the declared override [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:453] (medium; acceptance-auditor)
+  - `StartAsync` starts from `Resolve(null, ReadinessTimeout)` and resolves the declared deadline only at `:125`.
+  - A cancellation in between reaches `ReportSetupCancellationAsync(requestedAt, deadline)`. That covers the `:97` check and `PlatformManifestValidator.Validate`. The engine handles it internally, so the service's correct `startupDeadline` is never used.
+  - The result is an immutable first result showing the default deadline as `not-overridden`. That contradicts the Partial matrix row.
+  - Fix: report engine-level setup cancellation with the declared deadline the service already resolved, or let it propagate to the service's wrapper while the declared deadline is still unresolved.
+- [x] [Review][Patch] Setup-cancellation recording failures can still escape the cancellation path [src/libraries/Hexalith.Builds.Tooling/Runtime/ModuleCommandExecutionService.cs:1076] (low; blind-hunter+edge-case-hunter)
+  - Pass-1 G10 covered only the service call sites. The engine's `:453` call has no wrapper, so an IOException or a timeout from the 5 s recording window leaves the OCE catch. That reports a lifecycle failure instead of HXC130 Cancelled, or mints a second cancellation run.
+  - The wrapper's filter also omits `InvalidDataException` and `JsonException`, which CI receipt validation can throw.
+  - Fix: route the engine call through the same containment and widen the filter.
+- [x] [Review][Patch] Owner termination `observedAt` is re-stamped on every result refresh [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs:34] (low; blind-hunter+acceptance-auditor)
+  - `Observe` rebuilds the environment and access items, and native items upgraded on cleanup, with `UtcNow` on each `RecordTestOutcomeAsync`. That includes items already `terminated` or `not-applicable`.
+  - Refreshes within one run and retried `down`s therefore move the recorded termination time, and each one retains a new content-addressed termination diagnostic.
+  - Fix: carry the prior item, including its `ObservedAtUtc`, whenever its status is unchanged.
+- [x] [Review][Patch] The pre-launch native ledger read/write sits outside the gate's try/finally [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:549] (low; blind-hunter+edge-case-hunter)
+  - A corrupt ledger (`JsonException`) or a failed write escapes `ExecuteSelectedAsync` after the gate is constructed. The gate is never disposed, and the failure bypasses the existing launch-failure classification.
+  - Fix: move both calls inside the existing `try`.
+- [x] [Review][Patch] A spurious HXT008 "launch metadata could not be durably retained" persists after the final ledger write succeeds [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:676] (low; edge-case-hunter)
+  - `launchMetadataFailed` is set when the launch-time write is interrupted and is never cleared after the later final write lands.
+  - Fix: clear it after a successful final write.
+- [x] [Review][Patch] New timing assertions have 50–300 ms margins and will flake under the suite's known cross-session load [test/Hexalith.Builds.Module.Tests/CompositionProcessTests.cs:42] (low; blind-hunter)
+  - `ReviewSlowLaunchMetadataDoesNotRenewExecutionAsync` requires a python3 spawn plus a kill in under 400 ms. `StartupObservationExcludesDelayedTeardownAsync` and `ReviewSetupObservationPrecedesDelayedCaptureAsync` compare 0.3 s sleeps against 0.25 s thresholds (`StartupReadinessTests.cs:57,104`).
+  - Fix: widen the delay/threshold ratios, for example a 5 s callback delay against a 3 s bound.
+  - Applied: the slow-launch test now uses a 5 s callback delay against a 3 s bound. The two startup assertions were left unchanged on re-inspection. Their 0.3 s delays run after the freeze, so load only widens the observed gap; they are lower-bounded, not flaky.
+- [x] [Review][Patch] `CompositionRunPlanFactory.CreateInitialState` gains an unused public optional `executingTool` parameter [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunPlanFactory.cs:31] (low; blind-hunter)
+  - Every caller sets `with { ExecutingTool = ... }` instead. The new parameter changes the method's compiled signature for no use.
+  - Fix: remove it.
+- [x] [Review][Patch] No engine-level test covers selected-suite prerequisite refusal or owner cancellation before the run exists [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:453] (medium; verification-gap, pre-verified)
+  - Deleting the new `RefuseUnstartedAsync` block, or reverting `:453`, fails no test.
+  - Fix:
+    - Add a declared-suite variant of `MissingPrerequisitesStopBeforeAnyResourceAsync` that asserts the restored refusal (no run, no state).
+    - Add an owner-cancelled-during-probe variant that asserts cause `run-cancelled` with the declared deadline/override.
+- [x] [Review][Patch] No C# test asserts the owner `termination` diagnostic's `runId`, which the CI helper requires [src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs:166] (medium; verification-gap, pre-verified)
+  - Renaming or dropping the field passes every C# and Python test. In hosted CI, `retain_artifacts` would then refuse the diagnostic and `finalize` would exit 1.
+  - Fix: assert the field in `CiTerminationDiscoveryFailureAndRetryPreserveFirstIdentityAsync`.
+- [x] [Review][Patch] `PopulateOriginalObservations` has no tests for its conflicting-tool and frozen-duration refusals [src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestResultWriter.cs:452] (medium; verification-gap, pre-verified)
+  - Fix: add `tool` and `actualDurationSeconds` rows to `ReviewConflictingKnownStartupBindingIsRejectedAsync`, with state carrying a captured `ExecutingTool`.
+- [x] [Review][Patch] No test covers the new kill-and-rethrow catch in `RunCoreAsync` for a throwing launch callback [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs:319] (low; verification-gap, pre-verified)
+  - Fix: add a `CompositionProcessTests` case whose `onStartedAsync` throws `InvalidOperationException`. Assert that the exception propagates and that the child has exited.
+- [x] [Review][Patch] No test makes a native ledger write fail and asserts the HXT008 launch-metadata diagnostic [src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:729] (low; verification-gap, pre-verified)
+  - Fix: for example, have a child replace `<archive>/native-termination.json` with a directory before it exits.
+- [x] [Review][Patch] The Retained matrix row lacks a retained local startup-failure termination assertion [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionOwnerTermination.cs:32] (low; acceptance-auditor)
+  - Environment/access `pending` is asserted only for a retained test failure. No test asserts native `not-applicable` with environment `pending` for a `RetainOnFailure` startup failure, although the evidence README claims every row is covered.
+- [x] [Review][Defer] A `down` from another terminal during a live owner's startup freezes an "interruption" duration before waiting for the provisioning lock [src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionEngine.cs:1503] — deferred: maybe-false, medium if confirmed
+  - The freeze precedes provisioning-lock acquisition (`:1577`), so a live owner still starting gets down's arrival time recorded as its startup end.
+  - Settle by checking whether that owner, after readiness or failure, can refresh a result whose readiness-based descriptor snapshot conflicts with the persisted duration. That conflict would trigger `PopulateOriginalObservations` "frozen startup duration" refusals.
+
+**Rejected** (one line each):
+- B3 low: the wrapper's fallback drops the run ID only if `FailAndTearDownAsync` itself throws past its internal guards, which is rare. Fixing it adds return surface.
+- B5 false: recovery prefers the `selected-test.json` record's `Termination` and recomputes environment items in `Observe`, and the engine's final write lands after the executor's. No reader depends on the overwritten shape.
+- B8/E15 false: contract v1 makes diagnostic references opaque ("never fetched by the reader"). The result writer retains its own manifest copy in the diagnostics directory, which survives workspace deletion.
+- B9 false: the CI helper is a custody step. It binds the retained bytes to the declared and tool content identity, and the producer canonicalizes and validates the manifest before writing.
+- B10 false: `Capture()` reads the CLI assembly version, which is what the spec asks for. A malformed persisted version requires tampered local state, which is not a demonstrated path.
+- B11 low: hash failure already refuses before any state, workspace or receipt (the test asserts all three are absent). A dedicated rule ID would add public diagnostic surface.
+- B12/E9 low: the unlocked `MarkEnvironmentIssuedAsync` read-modify-write and the owner.json-only observation persistence can lose an update only in narrow owner/cleaner races. A fix needs new lock coordination.
+- B14 false: HXT008 already denotes "could not be durably retained/recorded" evidence failures. See the README cancellation/cleanup sections and the existing service and attached-command uses.
+- B15 low: the undocumented items are internal files and fields. The one user-visible change (prerequisite refusals creating runs) is reverted by the first patch.
+- B17 false/low:
+  - Clearing caller-supplied selections has no demonstrated harm, because the platform path re-selects.
+  - The method-wide CA2000 suppression names no concrete leak.
+  - The early-selection drift is rejected with E6.
+- B18 false: `Capture()` emits the canonical manifest by construction for the fixed shipped file names, so validation in `RetainAsync` cannot fail after allocation on a production path.
+- B19 false: the spec scopes the manifest to the executing CLI/Tooling binaries, and the README states exactly that coverage.
+- A2/A3/E10 low:
+  - The `Observe` issuance heuristics lack a new-versus-legacy discriminator.
+  - The wrong output appears only for legacy owners recovered across a tool upgrade, or for a cancellation between Ready and child launch.
+  - The fix adds a discriminator branch. The test asserting legacy `not-applicable` is noted as residual risk.
+- E6 (+B17 early selection) low: an owner cancellation during setup that publishes a cancelled run for an invocation that later refusals would reject needs cancel-plus-invalid-arguments timing. A fix duplicates the refusal guards.
+- E7 low: recreating tracking requires a legacy `owner.json` still in Starting with no duration and a retried `down` after complete cleanup. New runs persist the duration at the first freeze or publication.
+- E11 low: the crash window between `Process.Start` and the launch-ledger write is milliseconds. Recording prepared access as issued would reintroduce pass-1 B3/G2.
+- E14 low: abandoning a cancellation-ignoring launch write that then lands after the final ledger is a theoretical race. A fix requires tracking and awaiting the abandoned task.
+- E16 low: installed dotnet-tool binaries are regular files. Following links would loosen a deliberate no-follow open.
+- E17 low: `PreserveDiagnosticsAsync` loses `summary.json` only when owned state is already unverifiable, and the caller then records a recording failure.
+
 ## Implementation Notes
 
 - Approval: user approved implementation on 2026-11-10; the frozen block is locked.
@@ -83,6 +170,12 @@ Paths below are relative to Builds: B = `src/libraries/Hexalith.Builds.Tooling`,
 - Completion: parent Debug build passed with zero warnings/errors; nine affected xUnit classes passed 290 cases and Python passed 70. All 28 source hashes stayed stable; schemas and reader are unchanged. All 12 correction groups are resolved, including every added regression; nothing was deferred.
 - Builds local commit: `f118c2440101fe67be2c7f7a569cbe2257223a16`. The complete implementation patch and initial reviewed snapshot remain in [part 2 evidence](evidence/2-11/part-2/README.md). No push or gitlink change.
 - Tracking: this part is done. The established user split leaves Story 2.11 in progress while part 3 remains open; the workflow’s generic whole-story review transition does not apply to this partial-story completion.
+- Code review pass 2 (2026-11-10): the user chose to apply every patch.
+  - All 15 patch entries are fixed in the worktree on top of `f118c244`. The user approved commit and push: Builds `4ce510b2b263f8e4ea469638a130f08776ba27a3` is on `feat/2-11-lifecycle-reporting` and pushed. Merging it into Builds main and releasing are separate steps.
+  - Debug build: zero warnings and errors after one SA1118 test fix.
+  - The nine affected classes passed 298/298 and Python passed 70/70. The full assembly passed 3,024/3,029 with 0 failures and 5 pre-existing environment skips.
+  - Evidence: [review pass 2](evidence/2-11/part-2/README.md#review-pass-2-corrections-2026-11-10).
+  - One maybe-false item is deferred to `deferred-work.md`.
 
 ## Spec Change Log
 
