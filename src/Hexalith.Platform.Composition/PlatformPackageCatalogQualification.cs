@@ -31,9 +31,9 @@ internal static class PlatformPackageCatalogQualification
             || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
             || (cohort = SelectTestCohort(options)) is null
-            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name && servers.Any(server => server.ImageDigest is not null)
+            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && servers.Any(server => server.ImageDigest is not null)
             || !HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
-            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
+            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
             throw new InvalidDataException(_refusal);
 
         return servers.Select(server => (cohort, server.ServerId, server.Image) switch
@@ -84,10 +84,9 @@ internal static class PlatformPackageCatalogQualification
             && string.Equals(plan.PlatformDeclarationHash, "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495", StringComparison.OrdinalIgnoreCase)
             && MatchesTestSource(options, selected)
             && CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
-            && PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") is "4.1.0" or "4.2.0"
-            && PlatformServerBindings.Version(options, "tenants", "private EventStore package test") == "7.0.5"
-            ? PlatformServerBindings.Version(options, "eventstore", "private EventStore package test") == "4.2.0"
-                ? PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name : PublishedCatalogArtifactCohort.EventStorePackageTestName : null;
+            ? PublishedCatalogArtifactCohort.ForEventStorePackageTestVersions(
+                PlatformServerBindings.Version(options, "eventstore", "private EventStore package test"),
+                PlatformServerBindings.Version(options, "tenants", "private EventStore package test")) : null;
     }
 
     internal static string? SelectCurrentOwnerCohort(PlatformCompositionOptions options)

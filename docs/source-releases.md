@@ -6,8 +6,8 @@ both latest exact-source runs, latest attempts and all five tuple
 orchestration/execution jobs and six SDK jobs to pass. Source resolution fans out
 to the current SDK4.2 lane and genuine same-code 412/349-case historical lanes;
 the aggregate verdict requires all three. The current lane executes the complete
-456-case upstream profile, 97 finite default-cohort cases and nine extension
-component cases: 562 executions, 559 unique identities and three explicitly
+457 retained upstream cases, nine current artifact controls, 97 finite default-cohort
+cases and nine extension component cases: 572 executions, 569 unique identities and three explicitly
 repeated regressions. Every profile retains exact execution counts with zero
 skips. Missing or pending counterparts defer. Failures, cancellations, unknown
 jobs, foreign/PR inputs, stale callbacks and changed main refuse.
@@ -20,10 +20,14 @@ changed-body refusals. It retains the original public Parties3.1 image digest
 and that image's SDK4.1 provenance. The private current-owner purpose separately
 binds exact SDK4.1 or SDK4.2 reference bodies to its measured Release source,
 reader receipt and mapped process files. Neither reader qualification nor model
-controls grant native runtime acceptance. The upstream 456-case profile retains
+controls grant native runtime acceptance. The current 466-case profile retains
 its six SDK4.2 extension controls and 38 artifact boundary controls; the additional
-97/9 profiles do not replace them. The historical
-Works proof remains qualified only for Dapr1.18.7.
+97/9 profiles do not replace them. The additional current reader authenticates
+Tenants7.0.7, Memories3.0.26 and Parties3.1.1 package bodies. It does not grant
+their image tuples native admission. The historical
+Historical Works behavior evidence remains bound to Dapr1.18.7. The current
+Works toolchain records independently verified official Dapr1.19.1 executable
+identities; its complete parity suite remains the behavioral qualification gate.
 
 The read-only verifier runs the reviewed default-branch workflow SHA, so an old
 callback cannot hide behind the absence of newer helper files. Exact workflow ref,

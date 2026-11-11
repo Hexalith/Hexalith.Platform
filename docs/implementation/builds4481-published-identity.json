@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "scope": "Published signed tool identity; no native image or runtime acceptance is inferred.",
+  "candidateAcceptance": false,
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "163f3d0deac6b0db5ec4bdfcc0934b12e6adb46a",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "dd3fc29f55f7cea251f4622a21d3639ce0602e8b",
+        "sha256": "5132476a8b8c9ac95eac1011fc5862211b9bc6afd8ee018f0b164bfb900dd52b"
+      }
+    },
+    "publication": {
+      "version": "4.48.1",
+      "sourceRevision": "163f3d0deac6b0db5ec4bdfcc0934b12e6adb46a",
+      "releaseTag": "v4.48.1",
+      "catalogSha256": "5132476a8b8c9ac95eac1011fc5862211b9bc6afd8ee018f0b164bfb900dd52b",
+      "archiveSha256": "a7360cde79c20d931792e1e8b470f122735359110424f7ef2ed1f21e40601f09",
+      "toolingSha256": "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab",
+      "inventorySha256": "7857faba85d06e4119b445714f99b8fff663074fc894a2524287951142abca64",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.48.1/g4-tool-package-inventory.json"
+    }
+  },
+  "publishedPair": {
+    "version": "4.48.1",
+    "sourceRevision": "163f3d0deac6b0db5ec4bdfcc0934b12e6adb46a",
+    "signedArchiveSha256": "a7360cde79c20d931792e1e8b470f122735359110424f7ef2ed1f21e40601f09",
+    "appHostSha256": "adeffaefcbf7207711d7a8290d975edc9a6ffee446d0ad40194ad96b5299df70",
+    "toolingSha256": "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab",
+    "cliToolingSha256": "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab"
+  },
+  "publishedPackages": [
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "4.48.1",
+      "sourceRevision": "163f3d0deac6b0db5ec4bdfcc0934b12e6adb46a",
+      "signedArchiveSha256": "a7360cde79c20d931792e1e8b470f122735359110424f7ef2ed1f21e40601f09"
+    },
+    {
+      "id": "Hexalith.Builds.Evidence.Cli",
+      "version": "4.48.1",
+      "sourceRevision": "163f3d0deac6b0db5ec4bdfcc0934b12e6adb46a",
+      "signedArchiveSha256": "781513e69df24c115bd0322545cabef5149d81deb72b8dbc6e481fc8452aee53"
+    }
+  ]
+}

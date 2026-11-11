@@ -1,0 +1,23 @@
+{
+  "scope": "Official artifact and executable identity only; full Works parity remains mandatory",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "artifacts": [
+    {
+      "kind": "runtime",
+      "version": "1.19.1",
+      "officialArchive": "https://github.com/dapr/dapr/releases/download/v1.19.1/daprd_linux_amd64.tar.gz",
+      "archiveSha256": "93217800d5072cf1735ed89ec8a9cdeedfb9d235895fb9e0d864088bc5d9466c",
+      "binarySha256": "b1ece5da76674bf6e15126aeb019fa58e444b5b8edf4d0ac59e32df895ae8fd2",
+      "actualVersionOutput": "1.19.1"
+    },
+    {
+      "kind": "cli",
+      "version": "1.19.1",
+      "officialArchive": "https://github.com/dapr/cli/releases/download/v1.19.1/dapr_linux_amd64.tar.gz",
+      "archiveSha256": "6e9a339d261e430e5914909cc4443572573c197c174c3e14504c34116831de3b",
+      "binarySha256": "b651f5fcfe0b261ca6b26058dde31927efc8e17b12267d6743bdbeddca09bafd",
+      "actualVersionOutput": "CLI version: 1.19.1 \nRuntime version: 1.19.1"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import sys
 import datetime
 import platform
 import signal
+import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
 
@@ -156,6 +157,7 @@ def main():
             raise RuntimeError(name + " failed; retained command output is authoritative.")
         return (evidence / (name + ".stdout")).read_text()
 
+    retained_workspace = None
     try:
         revision = run("revision", ["git", "rev-parse", "HEAD"]).strip()
         result["platformRevision"] = revision
@@ -181,8 +183,8 @@ def main():
         required_total = validate_profile(profile)
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
-        if args.suite == "current42" and required_total != 457:
-            raise ValueError("The upstream SDK4.2 current suite must retain all 457 required cases, including package native-preparation binding.")
+        if args.suite == "current42" and required_total != 466:
+            raise ValueError("The SDK4.2 current suite requires all 457 retained cases and nine current artifact controls (466 total).")
         if args.suite == "extensions" and required_total != 9:
             raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:
@@ -253,7 +255,31 @@ def main():
         composition_project = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
         if composition_project not in projects:
             raise ValueError("Composition test outputs are absent from the owner solution.")
-        composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()).resolve()
+        collector_properties = properties
+        if args.suite in ("current42", "base42"):
+            # Retained positive image/source controls consume their actual historical input closure.
+            # Production above and the isolated production-closure test still build the real current catalog.
+            retained_workspace = tempfile.TemporaryDirectory(prefix="platform-retained-reader-", dir=os.environ.get("RUNNER_TEMP"))
+            isolated = Path(retained_workspace.name) / "workspace"
+            receipt_path = evidence / "historical-reader-workspace.json"
+            run("prepare-historical-reader", [sys.executable, "-B", "eng/prepare_tuple_sources.py", "reader-workspace",
+                "--source", revision, "--workspace", str(isolated), "--output", str(receipt_path)])
+            reader_receipt = json.loads(receipt_path.read_bytes())
+            retained_catalog = isolated / "references/Hexalith.Builds/Props/Directory.Packages.props"
+            collector_properties = [*properties, "-p:PlatformPackageReaderWorkspaceRoot=" + str(isolated),
+                "-p:CustomBeforeDirectoryBuildProps=" + str(retained_catalog), "-p:ImportDirectoryPackagesProps=false",
+                "-p:CentralPackageVersionsFileImported=true", "-p:DirectoryPackagesPropsPath=" + str(retained_catalog),
+                "-p:ArtifactsPath=" + str(evidence / "retained-collector")]
+            run("build-retained-collector", ["dotnet", "build", str(composition_project), "-c", "Release", "-m:1", *collector_properties])
+            collector_assets = evidence / "retained-collector/obj/Hexalith.Platform.Composition.Tests/project.assets.json"
+            selected = json.loads(collector_assets.read_bytes())["libraries"]
+            for identity in ("Hexalith.Tenants.Contracts/7.0.5", "Hexalith.Tenants.Server/7.0.5", "Hexalith.Memories.Contracts/3.0.25", "Hexalith.Parties.Contracts/3.1.0"):
+                if selected.get(identity, {}).get("type") != "package":
+                    raise ValueError("The retained collector did not resolve its exact published package input: " + identity)
+            result["historicalReferenceCollector"] = {"workspace": reader_receipt,
+                "catalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(), "packageAssets": str(collector_assets),
+                "scope": "Current code against authenticated retained705/25/310 package/source/image inputs; no new native acceptance"}
+        composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *collector_properties, "-getProperty:TargetPath"]).strip()).resolve()
         verify_test_sdk(composition_assembly, args.eventstore_sdk)
         result["compositionTestOutputs"] = {
             "beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -266,7 +292,8 @@ def main():
                 project = ROOT / group["project"]
                 if project not in projects:
                     raise ValueError("Required test project is absent from the owner solution.")
-                assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties, "-getProperty:TargetPath"]).strip()
+                selected_properties = collector_properties if project == composition_project else properties
+                assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *selected_properties, "-getProperty:TargetPath"]).strip()
                 if project == composition_project and Path(assembly).resolve() != composition_assembly:
                     raise ValueError("Composition test invocation differs from the observed test assembly.")
                 xml = evidence / ("required-" + str(number) + ".xml")
@@ -290,7 +317,7 @@ def main():
             finally:
                 checkpoint()
         for filename, source in [("Hexalith.Builds.Tooling.dll", tool / "Hexalith.Builds.Tooling.dll"), ("Hexalith.Builds.Module.EventStoreHost.dll", tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:
-            output = ROOT / "tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0" / filename
+            output = composition_assembly.parent / filename
             if hashlib.sha256(output.read_bytes()).digest() != hashlib.sha256(source.read_bytes()).digest():
                 raise ValueError("CI output differs from authenticated published artifact: " + filename)
         result["status"] = "passed"
@@ -299,8 +326,19 @@ def main():
         result["blocker"] = str(error)
         raise
     finally:
-        result["limitation"] = "CI build/test preflight only. Fresh authenticated candidate-decision and live generated/direct-host runtime evidence remain separate mandatory gates."
-        checkpoint()
+        try:
+            if retained_workspace is not None:
+                retained_workspace.cleanup()
+                result["historicalReaderWorkspaceRemoved"] = True
+        except OSError as error:
+            result["historicalReaderWorkspaceRemoved"] = False
+            if result["status"] == "passed":
+                result["status"] = "failed"
+                result["blocker"] = "Historical reader workspace cleanup failed: " + str(error)
+            raise
+        finally:
+            result["limitation"] = "CI build/test preflight only. Fresh authenticated candidate-decision and live generated/direct-host runtime evidence remain separate mandatory gates."
+            checkpoint()
 
 
 if __name__ == "__main__":

@@ -98,8 +98,10 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
             || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
-            || !Snapshot(options, declarations, "parties", current ? PlatformCurrentOwnerProof.DeclarationHash : ownerHash!.ToLowerInvariant())
+            || !Snapshot(options, declarations, "parties", current ? options.CurrentOwnerProof!.SelectedDeclarationHash : ownerHash!.ToLowerInvariant())
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
+            // Signed reader artifacts alone cannot authorize new execution image tuples.
+            || cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName
             || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
@@ -125,6 +127,8 @@ internal static class PlatformPartiesPackageCatalogQualification
     {
         (true, PublishedCatalogArtifactCohort.CurrentOwnerName, "3.0.0" or "3.1.0") => true,
         (true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name, "3.1.0") => true,
+        (true, PublishedCatalogArtifactCohort.CurrentOwnerCurrentName, "3.1.1") => true,
+        (false, PublishedCatalogArtifactCohort.PublishedPartiesCurrentName, "3.1.1") => true,
         (false, PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name, "3.1.0") => true,
         (false, PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName, "3.0.0") => true,
         _ => false,
@@ -132,7 +136,9 @@ internal static class PlatformPartiesPackageCatalogQualification
 
     private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort)
         => PlatformServerBindings.Version(options, "memories", "full-Parties qualification")
-                == (current || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name ? "3.0.25" : "3.0.23")
+                == (current ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort)
+                    : cohort == PublishedCatalogArtifactCohort.PublishedPartiesCurrentName ? "3.0.26"
+                    : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name ? "3.0.25" : "3.0.23")
             && MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "full-Parties qualification"), current, cohort);
 
     private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)

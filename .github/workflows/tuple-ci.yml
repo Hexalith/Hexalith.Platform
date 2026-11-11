@@ -47,6 +47,8 @@ jobs:
           test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
           python3 -B eng/test_legacy_tuple_source.py
           python3 -B eng/test_pre_extension_tuple_source.py
+          python3 -B eng/test_current_tuple_source.py
+          python3 -B eng/test_package_reader_source.py
           legacy_source=$(python3 -B eng/legacy_tuple_source.py --current "$PLATFORM_CANDIDATE_SHA" --requested "$REQUESTED_LEGACY_SOURCE")
           pre_extension_source=$(python3 -B eng/pre_extension_tuple_source.py --current "$PLATFORM_CANDIDATE_SHA")
           printf 'current-source=%s\nlegacy-source=%s\npre-extension-source=%s\n' "$PLATFORM_CANDIDATE_SHA" "$legacy_source" "$pre_extension_source" >> "$GITHUB_OUTPUT"
@@ -109,8 +111,9 @@ jobs:
           import sys
           from pathlib import Path
           sys.path.insert(0, 'eng')
-          from legacy_tuple_source import verify_parties_checkout
-          verify_parties_checkout(Path.cwd(), historical=False)
+          from current_tuple_source import verify_checkout
+          import os
+          verify_checkout(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])
           PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         id: dotnet
@@ -204,6 +207,9 @@ jobs:
           sys.path.insert(0, 'eng')
           from legacy_tuple_source import verify_parties_checkout
           verify_parties_checkout(Path.cwd(), historical=True)
+          from current_tuple_source import verify_package_release_identities
+          import os
+          verify_package_release_identities(Path.cwd(), os.environ['CURRENT_PLATFORM_SHA'])
           PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
@@ -258,7 +264,10 @@ jobs:
           from pathlib import Path
           sys.path.insert(0, 'eng')
           from legacy_tuple_source import verify_parties_checkout
-          verify_parties_checkout(Path.cwd(), historical=False)
+          verify_parties_checkout(Path.cwd(), historical=False, pre_extension=True)
+          from current_tuple_source import verify_package_release_identities
+          import os
+          verify_package_release_identities(Path.cwd(), os.environ['CURRENT_PLATFORM_SHA'])
           PY
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:

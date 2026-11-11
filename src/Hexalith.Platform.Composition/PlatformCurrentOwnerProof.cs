@@ -14,6 +14,8 @@ internal sealed class PlatformCurrentOwnerProof
 {
     internal const string Profile = "platform-current-package";
     internal const string DeclarationHash = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348";
+    /// <summary>The independently measured current source declaration; the historical/public hash remains unchanged.</summary>
+    internal const string CurrentDeclarationHash = "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee";
     internal const string TestEntry = "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj";
     private readonly PlatformPartiesRunProof _parent;
     private readonly IReadOnlyDictionary<string, string> _files;
@@ -47,6 +49,15 @@ internal sealed class PlatformCurrentOwnerProof
     internal static AsyncLocal<Action?> PreparedObserver { get; } = new();
 
     internal string Cohort { get; }
+    internal string SelectedDeclarationHash => DeclarationHashForCohort(Cohort);
+
+    /// <summary>Selects exact current-source declaration bytes without relabeling a historical/public declaration.</summary>
+    internal static string DeclarationHashForCohort(string cohort) => cohort switch
+    {
+        PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name => DeclarationHash,
+        PublishedCatalogArtifactCohort.CurrentOwnerCurrentName => CurrentDeclarationHash,
+        _ => throw Refusal(),
+    };
     internal string SdkVersion => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(Cohort);
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
@@ -68,12 +79,13 @@ internal sealed class PlatformCurrentOwnerProof
             || !PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "current owner"), true, cohort!))
             throw Refusal();
         _ = PlatformPartiesRunProof.CreateCurrent(options, key);
-        if (Hash(options.DeclarationPaths.Single()) != DeclarationHash) throw Refusal();
         string sdkVersion = PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(cohort!);
         string active = ActiveRoot(options);
         string revision = Git(active, "rev-parse", "HEAD");
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, options.RunPlan!.StartupDeadlineUtc);
         IReadOnlyDictionary<string, string> inputs = source.Inputs;
+        string declaration = options.DeclarationPaths.Single();
+        VerifyDeclaration(declaration, cohort!, source);
         string project = OwnerProject(options);
         string directory = Path.Combine(options.RunPlan!.Workspace, "current-owner", Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(directory);
@@ -155,8 +167,8 @@ internal sealed class PlatformCurrentOwnerProof
                 if (library.Value.GetProperty("type").GetString() == "package"
                     && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
                         || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != sdkVersion
-                        || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != "7.0.5"
-                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != "3.0.25"
+                        || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion(cohort!)
+                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort!)
                         || name == "Hexalith.McpCli.Abstractions" && actualVersion != "2.0.1")) throw Refusal();
                 if (library.Value.GetProperty("type").GetString() == "project")
                 {
@@ -225,6 +237,13 @@ internal sealed class PlatformCurrentOwnerProof
                 || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name]) throw Refusal();
         }
         PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray(), Cohort);
+    }
+
+    /// <summary>Requires the selected declaration to belong to the already measured immutable source and exact purpose.</summary>
+    internal static void VerifyDeclaration(string path, string cohort, PlatformCurrentOwnerSourceState source)
+    {
+        if (!source.Inputs.TryGetValue(path, out string? measured)
+            || measured != DeclarationHashForCohort(cohort) || Hash(path) != measured) throw Refusal();
     }
 
     internal bool Matches(PlatformCompositionOptions options)

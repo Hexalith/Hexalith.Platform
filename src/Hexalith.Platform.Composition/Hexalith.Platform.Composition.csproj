@@ -42,7 +42,7 @@
     <PackageReference Include="Hexalith.EventStore.DomainService" />
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
     <PackageReference Include="Hexalith.Tenants.Contracts" />
-    <PackageReference Include="Hexalith.Tenants.Server" Condition="('$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0') and '$(HexalithTenantsVersion)' == '7.0.5'" />
+    <PackageReference Include="Hexalith.Tenants.Server" Condition="('$(HexalithEventStoreVersion)' == '4.1.0' or '$(HexalithEventStoreVersion)' == '4.2.0') and ('$(HexalithTenantsVersion)' == '7.0.5' or ('$(HexalithEventStoreVersion)' == '4.2.0' and '$(HexalithTenantsVersion)' == '7.0.7'))" />
     <PackageReference Include="Hexalith.Memories.Contracts" />
     <PackageReference Include="Hexalith.Parties.Contracts" />
   </ItemGroup>

@@ -31,6 +31,12 @@ internal static class PublishedCatalogArtifactCohort
     internal const string CurrentOwnerSdk420Name = "current-parties-eventstore-4.2.0-tenants-7.0.5-memories-3.0.25-mcpcli-2.0.1";
     /// <summary>The SDK4.2 private EventStore package-test purpose; never general launch authority.</summary>
     internal const string EventStorePackageTestSdk420Name = "private-eventstore-package-test-4.2.0-tenants-7.0.5";
+    /// <summary>The independently authenticated current public reader; carries no image or native runtime authority.</summary>
+    internal const string PublishedPartiesCurrentName = "parties-3.1.1-eventstore-4.2.0-tenants-7.0.7-memories-3.0.26-mcpcli-2.0.1";
+    /// <summary>The independently authenticated current private references; carries no image or native runtime authority.</summary>
+    internal const string CurrentOwnerCurrentName = "current-parties-eventstore-4.2.0-tenants-7.0.7-memories-3.0.26-mcpcli-2.0.1";
+    /// <summary>The current private EventStore reader purpose; carries no image or native runtime authority.</summary>
+    internal const string EventStorePackageTestCurrentName = "private-eventstore-package-test-4.2.0-tenants-7.0.7";
     /// <summary>The signed extension SDK bodies only; confers no owner or composed-host cohort admission.</summary>
     internal const string ExtensionSdkName = "extension-sdk-eventstore-4.2.0";
     private static readonly FrozenDictionary<string, string> _extensionSdkHashes = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -146,22 +152,70 @@ internal static class PublishedCatalogArtifactCohort
         .Where(pair => pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
         .ToFrozenDictionary(StringComparer.Ordinal);
 
-    /// <summary>Selects only the two exact private current-owner reference tuples.</summary>
+    // Independently repository-signed package measurements; all retained historical dictionaries stay unchanged.
+    private static readonly FrozenDictionary<string, string> _publishedPartiesCurrentHashes = _publishedPartiesSdk420Hashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal)
+            && !pair.Key.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["Hexalith.Tenants.Contracts"] = "680d324c2371838c40d6e9446476cbcb0b10074b860a8ee79114b054290c8624",
+            ["Hexalith.Tenants.Server"] = "1e180b869b693ab50c5522959f52b6b8f1f5637102d18fc9df1f3fa9768ca68d",
+            ["Hexalith.Memories.Contracts"] = "20787624b423232e58819b05dfaff31e36447241d7f885c3b9429ccf155064c0",
+            ["Hexalith.Memories.EventStore"] = "f0e6d172f4e9e02793d8e253ea942c08a527d7adb60048a2a9471f70759debaa",
+            ["Hexalith.Memories.EventStoreExtensions"] = "4edaa9d9b18db8bc3738ed22238e8764131ba00698839c9249bceaa753e65f80",
+            ["Hexalith.Parties.Contracts"] = "3de20e490c7e1f42209d067caae4749369cf2c22ff982d29d698d97bf838cab5",
+            ["Hexalith.Parties.EventStoreExtensions"] = "d5e8963120f881ca0b812d3f69b023a00e3676dd8e289160b2b870f8d36b4b55",
+        }).ToFrozenDictionary(StringComparer.Ordinal);
+
+    private static readonly FrozenDictionary<string, string> _currentOwnerCurrentHashes = _publishedPartiesCurrentHashes
+        .Where(pair => !pair.Key.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)).ToFrozenDictionary(StringComparer.Ordinal);
+
+    private static readonly FrozenDictionary<string, string> _eventStorePackageTestCurrentHashes = _currentOwnerCurrentHashes
+        .Where(pair => pair.Key.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || pair.Key.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal))
+        .ToFrozenDictionary(StringComparer.Ordinal);
+
+    /// <summary>Selects only the exact independently measured private reference tuples.</summary>
     internal static string? ForCurrentOwnerVersions(string sdk, string tenants, string memories) => (sdk, tenants, memories) switch
     {
         ("4.1.0", "7.0.5", "3.0.25") => CurrentOwnerName,
         ("4.2.0", "7.0.5", "3.0.25") => CurrentOwnerSdk420Name,
+        ("4.2.0", "7.0.7", "3.0.26") => CurrentOwnerCurrentName,
+        _ => null,
+    };
+
+    /// <summary>Selects only exact independently measured private EventStore package readers.</summary>
+    internal static string? ForEventStorePackageTestVersions(string sdk, string tenants) => (sdk, tenants) switch
+    {
+        ("4.1.0", "7.0.5") => EventStorePackageTestName,
+        ("4.2.0", "7.0.5") => EventStorePackageTestSdk420Name,
+        ("4.2.0", "7.0.7") => EventStorePackageTestCurrentName,
         _ => null,
     };
 
     /// <summary>Recognizes only the finite private reference authorities.</summary>
-    internal static bool IsCurrentOwnerCohort(string? cohort) => cohort is CurrentOwnerName or CurrentOwnerSdk420Name;
+    internal static bool IsCurrentOwnerCohort(string? cohort) => cohort is CurrentOwnerName or CurrentOwnerSdk420Name or CurrentOwnerCurrentName;
 
     /// <summary>Returns the SDK bound to the exact private reference authority.</summary>
     internal static string CurrentOwnerSdkVersion(string cohort) => cohort switch
     {
         CurrentOwnerName => "4.1.0",
-        CurrentOwnerSdk420Name => "4.2.0",
+        CurrentOwnerSdk420Name or CurrentOwnerCurrentName => "4.2.0",
+        _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
+    };
+
+    /// <summary>Returns the exact tenant dependency for a private reference cohort.</summary>
+    internal static string CurrentOwnerTenantsVersion(string cohort) => cohort switch
+    {
+        CurrentOwnerName or CurrentOwnerSdk420Name => "7.0.5",
+        CurrentOwnerCurrentName => "7.0.7",
+        _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
+    };
+
+    /// <summary>Returns the exact Memories dependency for a private reference cohort.</summary>
+    internal static string CurrentOwnerMemoriesVersion(string cohort) => cohort switch
+    {
+        CurrentOwnerName or CurrentOwnerSdk420Name => "3.0.25",
+        CurrentOwnerCurrentName => "3.0.26",
         _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
     };
 
@@ -171,6 +225,7 @@ internal static class PublishedCatalogArtifactCohort
         {
             ("4.1.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesName,
             ("4.2.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesSdk420Name,
+            ("4.2.0", "7.0.7", "3.0.26", "3.1.1") => PublishedPartiesCurrentName,
             _ => null,
         };
 
@@ -217,7 +272,7 @@ internal static class PublishedCatalogArtifactCohort
         .Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray();
 
     /// <summary>Checks every measured public dependency before any full-owner attribute or factory is consumed.</summary>
-    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName or PublishedPartiesSdk420Name
+    internal static IReadOnlyList<string> VerifyFullParties(string cohort = FullPartiesName) => cohort is FullPartiesName or CurrentFullPartiesName or PublishedPartiesName or PublishedPartiesSdk420Name or PublishedPartiesCurrentName
         ? Hashes(cohort).Keys.Order(StringComparer.Ordinal).Select(name => Verify(Assembly.Load(name), cohort)).ToArray()
         : throw new InvalidDataException("The requested full public artifact cohort is unavailable.");
 
@@ -271,6 +326,9 @@ internal static class PublishedCatalogArtifactCohort
         EventStorePackageTestName => _eventStorePackageTestHashes,
         EventStorePackageTestSdk420Name => _eventStorePackageTestSdk420Hashes,
         ExtensionSdkName => _extensionSdkHashes,
+        PublishedPartiesCurrentName => _publishedPartiesCurrentHashes,
+        CurrentOwnerCurrentName => _currentOwnerCurrentHashes,
+        EventStorePackageTestCurrentName => _eventStorePackageTestCurrentHashes,
         _ => throw new InvalidDataException("The requested public artifact cohort is unavailable."),
     };
 }

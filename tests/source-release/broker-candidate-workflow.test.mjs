@@ -8,7 +8,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 
 const workflowPath = '.github/workflows/broker-candidate-qualification.yml';
 const workflow = yaml.load(readFileSync(workflowPath, 'utf8'));

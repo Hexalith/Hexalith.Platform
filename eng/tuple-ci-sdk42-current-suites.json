@@ -287,6 +287,15 @@
       ],
       "requiredCount": 38,
       "purpose": "measured-sdk420-public-and-private-artifact-boundaries"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentPackageArtifactCohortTests"
+      ],
+      "requiredCount": 9,
+      "purpose": "current-signed-reader-artifacts-and-measured-source-declaration-no-native-admission"
     }
   ],
   "historicalPublicControls": {

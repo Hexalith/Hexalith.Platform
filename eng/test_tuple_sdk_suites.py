@@ -31,7 +31,7 @@ class SdkSuiteTests(unittest.TestCase):
     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 457)
+        self.assertEqual(validate_profile(profile), 466)
         binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded"
         binding_groups = [group for group in profile["groups"] if binding_test in group["selectors"]]
         self.assertEqual(len(binding_groups), 1)

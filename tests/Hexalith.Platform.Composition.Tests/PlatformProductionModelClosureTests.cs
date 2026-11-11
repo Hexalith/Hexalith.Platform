@@ -6,6 +6,7 @@ using System.Runtime.Loader;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
 /// <summary>Builds the actual production model independently of the test dependency closure; starts no services or image probes.</summary>
@@ -38,6 +39,13 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             string catalog = Path.Combine(workspace, "Directory.Packages.props");
             await ExportCatalogBlobAsync(builds, source, catalog).ConfigureAwait(true);
             Hash(catalog).ShouldBe(catalogHash);
+            string tenantsVersion = System.Xml.Linq.XDocument.Load(catalog).Descendants("HexalithTenantsVersion").Single().Value;
+            (string ExpectedHash, string Cohort) selected = tenantsVersion switch
+            {
+                "7.0.5" => ("e84f4b22485c5db4866636558488e387132369583483b0334839c1bcf66b95ad", PlatformPartiesPackageFixture.EventStoreTestCohort),
+                "7.0.7" => ("1e180b869b693ab50c5522959f52b6b8f1f5637102d18fc9df1f3fa9768ca68d", PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName),
+                _ => throw new InvalidDataException("The production closure requires an independently measured Server package."),
+            };
             string model = Path.Combine(workspace, "hosts", "platform-model");
             string artifacts = Path.Combine(workspace, "build", "platform-model");
             string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
@@ -55,10 +63,10 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             result.OutputTruncated.ShouldBeFalse();
             string server = Path.Combine(model, "Hexalith.Tenants.Server.dll");
             File.Exists(server).ShouldBeTrue("The production model output itself must supply Server; the test project's reference cannot satisfy this prerequisite.");
-            Hash(server).ShouldBe("e84f4b22485c5db4866636558488e387132369583483b0334839c1bcf66b95ad");
+            Hash(server).ShouldBe(selected.ExpectedHash);
             using JsonDocument assets = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")));
-            assets.RootElement.GetProperty("libraries").GetProperty("Hexalith.Tenants.Server/7.0.5").GetProperty("type").GetString().ShouldBe("package");
-            assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/7.0.5")
+            assets.RootElement.GetProperty("libraries").GetProperty("Hexalith.Tenants.Server/" + tenantsVersion).GetProperty("type").GetString().ShouldBe("package");
+            assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
                 .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();
             var context = new AssemblyLoadContext("production-model-only-" + Guid.NewGuid().ToString("N"), isCollectible: true);
             context.Resolving += (load, name) =>
@@ -77,7 +85,7 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                 {
                     Type authority = production.GetType("Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort", throwOnError: true)!;
                     bool matched = (bool)authority.GetMethod("Matches", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
-                        ["Hexalith.Tenants.Server", PlatformPartiesPackageFixture.EventStoreTestCohort])!;
+                        ["Hexalith.Tenants.Server", selected.Cohort])!;
                     matched.ShouldBeTrue("The actual production authority must verify the body from its own isolated model directory.");
                 }
                 context.Assemblies.Single(assembly => assembly.GetName().Name == "Hexalith.Tenants.Server").Location.ShouldBe(server);

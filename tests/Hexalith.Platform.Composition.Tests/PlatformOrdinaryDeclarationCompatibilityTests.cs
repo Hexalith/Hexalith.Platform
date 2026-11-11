@@ -90,9 +90,11 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         const string Builds4450Tooling = "0c8c00e5563730f953f24b19b777dedd1887f4d186e92347145e55783d4d4981";
         const string Builds4470AppHost = "6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe";
         const string Builds4470Tooling = "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01";
+        const string Builds4481AppHost = "adeffaefcbf7207711d7a8290d975edc9a6ffee446d0ad40194ad96b5299df70";
+        const string Builds4481Tooling = "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab";
         var publishedPairs = new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling),
             (NewAppHost, NewTooling), (NextAppHost, NextTooling), (CanonicalClaimsAppHost, CanonicalClaimsTooling),
-            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling) };
+            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling) };
         foreach (var appHostPair in publishedPairs)
             foreach (var toolingPair in publishedPairs)
                 PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)

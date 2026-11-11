@@ -19,7 +19,9 @@ class PreExtensionSourceTests(unittest.TestCase):
         self.git('config', 'user.email', 'fixture@invalid')
         root = Path(__file__).parents[1]
         self.write('eng/tuple-ci-suites.json', (root / 'eng/tuple-ci-suites.json').read_bytes())
-        self.provenance = json.loads((root / history.PROVENANCE).read_bytes())
+        self.provenance = json.loads((root / 'tests/Hexalith.Platform.Composition.Tests/Fixtures/public-702-provenance.json').read_bytes())
+        self.provenance['tenants'].update(version='7.0.5', commit='d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35')
+        self.provenance['memories'].update(version='3.0.25', commit='246157a7ff8e2dcd8d356c833a77a02514490d2f')
         # Explicit immutable SDK4.1/T705/M25 fixture, independent from a future default adoption.
         self.provenance['eventstore'].update(version='4.1.0', commit='dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a')
         self.write(history.PROVENANCE, (json.dumps(self.provenance, indent=2) + '\n').encode())
@@ -186,6 +188,34 @@ class PreExtensionSourceTests(unittest.TestCase):
         result = history.verify(self.root, changed, self.old)
         self.assertFalse(result['qualificationCredit'])
         self.assertEqual(result['sourceEquivalence'], 'verified')
+
+    def test_optional_reader_source_is_an_explicit_available_full_commit(self):
+        from package_reader_source import selected_source
+        self.descriptor['packageReaderSourceRevision'] = self.old
+        self.write_descriptor()
+        current = self.commit()
+        self.assertEqual(history.resolve(self.root, current), self.old)
+        self.assertEqual(selected_source(self.root, current), self.old)
+        for value in [None, 'pending', 'a' * 39, 'A' * 40, 'f' * 40]:
+            self.git('checkout', '-q', current)
+            self.descriptor['packageReaderSourceRevision'] = value
+            self.write_descriptor()
+            changed = self.commit()
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                history.resolve(self.root, changed)
+
+    def test_optional_reader_source_refuses_annotated_tag_object_aliases(self):
+        self.git('tag', '-a', 'reader-alias', self.old, '-m', 'private annotated tag control')
+        self.descriptor['packageReaderSourceRevision'] = self.git('rev-parse', 'reader-alias')
+        self.write_descriptor()
+        changed = self.commit()
+        with self.assertRaisesRegex(ValueError, 'canonical commit'):
+            history.resolve(self.root, changed)
+
+    def test_reader_preparation_never_defaults_to_an_unrecorded_source(self):
+        from package_reader_source import selected_source
+        with self.assertRaisesRegex(ValueError, 'explicit committed'):
+            selected_source(self.root, self.current)
 
     def test_positive_counts_and_exact_old_tool_are_immutable(self):
         for field, value in [('requiredCount', 411), ('toolVersion', '4.45.1'), ('profileSha256', '0' * 64), ('qualificationCredit', True)]:

@@ -31,10 +31,17 @@ def parties_source(root: Path, revision: str) -> str:
         raise ValueError("The exact Parties source gitlink is missing.") from error
 
 
-def verify_parties_checkout(root: Path, historical: bool) -> dict:
+def verify_parties_checkout(root: Path, historical: bool, *, pre_extension: bool = False) -> dict:
     """Recheck the actual initialized owner without granting service or host admission."""
     source = LEGACY_PARTIES_SOURCE if historical else CURRENT_PARTIES_SOURCE
     declaration = LEGACY_PARTIES_DECLARATION if historical else CURRENT_PARTIES_DECLARATION
+    if not historical and not pre_extension:
+        from current_tuple_source import exists, read_selection
+        revision = git(root, "rev-parse", "HEAD").decode().strip()
+        if exists(root, revision):
+            binding, _ = read_selection(root, revision)
+            selected = binding["ownerSources"]["parties"]
+            source, declaration = selected["sourceRevision"], selected["declarationSha256"]
     owner = root / PARTIES_PATH
     try:
         if parties_source(root, "HEAD") != source or git(owner, "rev-parse", "HEAD").decode().strip() != source \
@@ -101,6 +108,22 @@ def verify(root: Path, current: str, legacy: str) -> dict:
     old_provenance = git(root, "show", legacy + ":" + PROVENANCE)
     if hashlib.sha256(old_provenance).hexdigest() != LEGACY_PROVENANCE_HASH:
         raise ValueError("Legacy provenance differs from the authenticated historical Git body.")
+    from current_tuple_source import exists, read_selection, verify_companion_descriptors
+    if exists(root, current):
+        read_selection(root, current)
+        verify_companion_descriptors(root, current, legacy)
+        if git(root, "rev-parse", legacy + ":references/Hexalith.EventStore").decode().strip() != "cab8363c2b6e2c0588efc8ca9c2e09fab0006841" \
+                or parties_source(root, legacy) != LEGACY_PARTIES_SOURCE:
+            raise ValueError("The refreshed legacy replay changed its frozen historical owner sources.")
+        from pre_extension_tuple_source import verify_tuple_metadata
+        verify_tuple_metadata(root, current, legacy,
+            binding_hash="554359e26442ff2a039d927236e9d126d55c1b752c2c0edf632062f767f3ed8a",
+            tools_hash="f11d2b9583071655167b3f98eaf5cd2a1b59de8f120544d244c4729ae91ca149",
+            identity_hash="4b324533e9d3bbcc40532b1e161f0b134ce4eea7fe93d6dffe893007cabc2a27",
+            historical_version="4.44.3")
+        return {"legacySource": legacy, "currentSource": current, "purpose": "same-code-legacy-tuple-regression",
+                "qualificationCredit": False, "binaryEquivalenceClaimed": False, "sourceEquivalence": "verified",
+                "requiredCount": 349, "allowedMetadataDifferences": sorted(path for path in changed if path)}
     original = decode(old_provenance)
     expected = decode(old_provenance)
     expected["tenants"]["version"] = "7.0.4"

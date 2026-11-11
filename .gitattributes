@@ -160,3 +160,7 @@ docs/implementation/story-4-17-broker-candidate-01.json -text
 src/Hexalith.Platform.Composition/PlatformCurrentOwnerSourceState.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/PlatformSourceStateWorker.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerSourceDeadlineTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the exact independently authenticated current declaration and retained private provenance fixtures.
+tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-current-311-declaration.json -text
+tests/Hexalith.Platform.Composition.Tests/Fixtures/private-70525-provenance.json -text

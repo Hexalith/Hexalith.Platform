@@ -5,6 +5,7 @@ import hashlib
 import json
 import copy
 import re
+import subprocess
 from pathlib import Path
 from legacy_tuple_source import commit, decode, git, parties_source, CURRENT_PARTIES_SOURCE
 
@@ -30,13 +31,22 @@ def resolve(root: Path, current: str, requested: str | None = None) -> str:
     if len(raw) > 4096:
         raise ValueError('Pre-extension source descriptor exceeds its fixed bound.')
     document = decode(raw)
-    if set(document) != {'schema', 'purpose', 'sourceRevision', 'buildsSource', 'eventStoreSource', 'toolVersion', 'profileSha256', 'requiredCount', 'qualificationCredit'}:
+    fields = {'schema', 'purpose', 'sourceRevision', 'buildsSource', 'eventStoreSource', 'toolVersion', 'profileSha256', 'requiredCount', 'qualificationCredit'}
+    if set(document) not in (fields, fields | {'packageReaderSourceRevision'}):
         raise ValueError('Unsupported pre-extension source descriptor fields.')
     if document['schema'] != 'hexalith.platform.pre-extension-tuple-source.v1' or document['purpose'] != 'same-code-sdk41-tuple-regression' \
             or document['buildsSource'] != BUILDS or document['eventStoreSource'] != EVENTSTORE \
             or document['toolVersion'] != '4.45.0' or document['profileSha256'] != PROFILE_HASH \
             or document['requiredCount'] != 412 or document['qualificationCredit'] is not False:
         raise ValueError('Pre-extension descriptor changed its finite historical obligations.')
+    if 'packageReaderSourceRevision' in document:
+        reader = commit(document['packageReaderSourceRevision'])
+        try:
+            git(root, 'cat-file', '-e', reader + '^{commit}')
+            if git(root, 'rev-parse', reader + '^{commit}').decode().strip() != reader:
+                raise ValueError('The package reader source requires a canonical commit, not a tag alias.')
+        except subprocess.CalledProcessError as error:
+            raise ValueError('The recorded package reader source is not an available committed revision.') from error
     historical = commit(document['sourceRevision'])
     if requested and commit(requested) != historical:
         raise ValueError('Dispatch cannot substitute another pre-extension source.')
@@ -44,10 +54,11 @@ def resolve(root: Path, current: str, requested: str | None = None) -> str:
 
 
 
-def verify_tuple_metadata(root: Path, current: str, historical: str):
+def verify_tuple_metadata(root: Path, current: str, historical: str, *, binding_hash=BINDING_HASH,
+                          tools_hash=TOOLS_HASH, identity_hash=IDENTITY_HASH, historical_version='4.45.0'):
     """Permit only producer/publication identities and their exact tool/range transformations."""
     previous_raw = git(root, 'show', historical + ':eng/builds-tuple.json')
-    if hashlib.sha256(previous_raw).hexdigest() != BINDING_HASH:
+    if hashlib.sha256(previous_raw).hexdigest() != binding_hash:
         raise ValueError('Historical tuple metadata differs from the exact published4.45 binding.')
     previous = decode(previous_raw)
     selected = decode(git(root, 'show', current + ':eng/builds-tuple.json'))
@@ -72,7 +83,7 @@ def verify_tuple_metadata(root: Path, current: str, historical: str):
             or git(root, 'rev-parse', current + ':references/Hexalith.Builds').decode().strip() != producer['sourceRevision']:
         raise ValueError('Tuple source/version/catalog/publication identities are inconsistent.')
     old_tools_raw = git(root, 'show', historical + ':.config/dotnet-tools.json')
-    if hashlib.sha256(old_tools_raw).hexdigest() != TOOLS_HASH:
+    if hashlib.sha256(old_tools_raw).hexdigest() != tools_hash:
         raise ValueError('Historical tool manifest differs from the exact published4.45 controls.')
     old_tools = decode(old_tools_raw)
     expected_tools = copy.deepcopy(old_tools)
@@ -80,10 +91,10 @@ def verify_tuple_metadata(root: Path, current: str, historical: str):
     if decode(git(root, 'show', current + ':.config/dotnet-tools.json')) != expected_tools:
         raise ValueError('Tool manifest changed more than the exact bound CLI version.')
     old_identity_raw = git(root, 'show', historical + ':hexalith-platform.json')
-    if hashlib.sha256(old_identity_raw).hexdigest() != IDENTITY_HASH:
+    if hashlib.sha256(old_identity_raw).hexdigest() != identity_hash:
         raise ValueError('Historical Platform identity differs from the exact published4.45 controls.')
     old_identity = decode(old_identity_raw)
-    if old_identity.get('toolVersionRange') != '[4.45.0, 5.0.0-0)':
+    if old_identity.get('toolVersionRange') != '[' + historical_version + ', 5.0.0-0)':
         raise ValueError('Historical range floor differs from the exact4.45 tuple.')
     expected_identity = copy.deepcopy(old_identity)
     expected_identity['toolVersionRange'] = '[' + version + ', 5.0.0-0)'
@@ -96,7 +107,10 @@ def verify(root: Path, current: str, historical: str) -> dict:
     if resolve(root, current, historical) != historical or git(root, 'rev-parse', 'HEAD').decode().strip() != historical:
         raise ValueError('Pre-extension job must execute its actual committed source.')
     changed = [path for path in git(root, 'diff', '--name-only', '-z', current, historical).decode().split('\0') if path]
-    if any(path not in ALLOWED for path in changed):
+    from current_tuple_source import exists, read_selection, verify_companion_descriptors
+    refreshed = exists(root, current)
+    allowed = ALLOWED | ({'references/Hexalith.Parties'} if refreshed else set())
+    if any(path not in allowed for path in changed):
         raise ValueError('Production, controls, helpers, build instructions or unapproved metadata differ between sources.')
     for path, expected in [('references/Hexalith.Builds', BUILDS), ('references/Hexalith.EventStore', EVENTSTORE)]:
         if git(root, 'rev-parse', historical + ':' + path).decode().strip() != expected:
@@ -106,6 +120,15 @@ def verify(root: Path, current: str, historical: str) -> dict:
     raw = git(root, 'show', historical + ':' + PROVENANCE)
     if hashlib.sha256(raw).hexdigest() != PROVENANCE_HASH:
         raise ValueError('Pre-extension provenance differs from its authenticated historical Git body.')
+    if refreshed:
+        read_selection(root, current)
+        verify_companion_descriptors(root, current, historical)
+        if parties_source(root, historical) != CURRENT_PARTIES_SOURCE:
+            raise ValueError('The refreshed pre-extension replay changed its exact historical EBE Parties source.')
+        verify_tuple_metadata(root, current, historical)
+        return {'historicalSource': historical, 'currentSource': current, 'sourceEquivalence': 'verified',
+                'purpose': 'same-code-sdk41-tuple-regression', 'qualificationCredit': False,
+                'binaryEquivalenceClaimed': False, 'requiredCount': 412, 'allowedMetadataDifferences': sorted(changed)}
     original = decode(raw)
     expected = decode(raw)
     expected['eventstore'].update(version='4.2.0', commit=SDK42_SOURCE)

@@ -28,7 +28,7 @@
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj" /></ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj" /></ItemGroup>
   <ItemGroup><PackageReference Include="xunit.v3" /><PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="Shouldly" /><PackageReference Include="NSubstitute" /><PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" /><PackageReference Include="Dapr.Client" /></ItemGroup>
-  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="Fixtures/parties-active-declaration.json" /><EmbeddedResource Include="Fixtures/parties-current-declaration.json" /><EmbeddedResource Include="Fixtures/public-702-provenance.json" /><EmbeddedResource Include="Fixtures/public-parties310-image-contracts.dll" /></ItemGroup>
+  <ItemGroup><Using Include="Xunit" /><EmbeddedResource Include="Fixtures/parties-active-declaration.json" /><EmbeddedResource Include="Fixtures/parties-current-declaration.json" /><EmbeddedResource Include="Fixtures/public-702-provenance.json" /><EmbeddedResource Include="Fixtures/private-70525-provenance.json" /><EmbeddedResource Include="Fixtures/public-parties310-image-contracts.dll" /></ItemGroup>
   <!-- This source integration requires an explicit producer mapping and retains its evidence without launching resources. -->
   <ItemGroup Condition="'$(ConversationsCatalogSourceVerification)' != 'true'">
     <Compile Remove="ConversationsCatalogSourceVerificationTests.cs" />
@@ -88,14 +88,14 @@
     <PackageDownload Include="Hexalith.EventStore.Client" Version="[4.0.4];[4.1.0];[4.2.0]" />
     <PackageDownload Include="Hexalith.EventStore.DomainService" Version="[4.0.4];[4.1.0];[4.2.0]" />
     <PackageDownload Include="Hexalith.EventStore.ServiceDefaults" Version="[4.0.4];[4.1.0];[4.2.0]" />
-    <PackageDownload Include="Hexalith.Tenants.Contracts" Version="[7.0.0];[7.0.2];[7.0.4]" />
-    <PackageDownload Include="Hexalith.Tenants.Server" Version="[7.0.0];[7.0.2];[7.0.4]" />
-    <PackageDownload Include="Hexalith.Memories.Contracts" Version="[3.0.23];[3.0.24]" />
-    <PackageDownload Include="Hexalith.Memories.EventStore" Version="[3.0.23];[3.0.24]" />
-    <PackageDownload Include="Hexalith.Memories.EventStoreExtensions" Version="[3.0.23];[3.0.24]" />
+    <PackageDownload Include="Hexalith.Tenants.Contracts" Version="[7.0.0];[7.0.2];[7.0.4];[7.0.5];[7.0.7]" />
+    <PackageDownload Include="Hexalith.Tenants.Server" Version="[7.0.0];[7.0.2];[7.0.4];[7.0.5];[7.0.7]" />
+    <PackageDownload Include="Hexalith.Memories.Contracts" Version="[3.0.23];[3.0.24];[3.0.25];[3.0.26]" />
+    <PackageDownload Include="Hexalith.Memories.EventStore" Version="[3.0.23];[3.0.24];[3.0.25];[3.0.26]" />
+    <PackageDownload Include="Hexalith.Memories.EventStoreExtensions" Version="[3.0.23];[3.0.24];[3.0.25];[3.0.26]" />
     <PackageDownload Include="Hexalith.McpCli.Abstractions" Version="[2.0.0]" />
-    <PackageDownload Include="Hexalith.Parties.Contracts" Version="[3.0.0];[3.1.0]" />
-    <PackageDownload Include="Hexalith.Parties.EventStoreExtensions" Version="[3.0.0];[3.1.0]" />
+    <PackageDownload Include="Hexalith.Parties.Contracts" Version="[3.0.0];[3.1.0];[3.1.1]" />
+    <PackageDownload Include="Hexalith.Parties.EventStoreExtensions" Version="[3.0.0];[3.1.0];[3.1.1]" />
   </ItemGroup>
   <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">

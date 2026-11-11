@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { analyzeCommits } from '@semantic-release/commit-analyzer';
 import { generateNotes as renderReleaseNotes } from '@semantic-release/release-notes-generator';
 import * as github from '@semantic-release/github';

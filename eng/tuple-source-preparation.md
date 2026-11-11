@@ -1,0 +1,70 @@
+# Refreshing historical tuple sources
+
+Current source gitlinks and package release provenance have separate identities.
+`eng/current-tuple-source.json` records synchronized owner Git revisions and their
+committed declaration hashes. Its package-provenance hash binds the selected
+release metadata. CI separately checks every selected package against its actual
+owner release tag, declaration Git blob and Platform declaration snapshot. A
+self-authored hash does not establish publication.
+
+Historical companions carry the current production, tests, workflows, helpers,
+and current-source binding unchanged. Only the five frozen tuple metadata files
+and three frozen owner gitlinks differ. The original 349/412 profiles, published
+tool identities, provenance bodies and owner revisions remain authenticated.
+
+After staging the final current source, obtain `git write-tree` and run:
+
+```bash
+python3 -B eng/prepare_tuple_sources.py binding --source <full-tree-sha> --output /tmp/current-tuple-source.json
+```
+
+Copy that JSON to `eng/current-tuple-source.json`, stage it, and create the current
+source commit after the repository's commit-message validation. Then prepare:
+
+```bash
+python3 -B eng/prepare_tuple_sources.py trees --source <full-current-commit-sha> --output /tmp/tuple-companion-trees.json
+```
+
+The tool reads committed objects only and uses a temporary Git index. It creates
+no commits, refs or remote writes and does not replace an existing output file.
+The third `package-reader` tree preserves the qualified SDK4.2/Builds4.47,
+Tenants705/Memories25 and PartiesEBE reference inputs. Record that companion SHA
+in the optional bounded `packageReaderSourceRevision` field of
+`eng/pre-extension-tuple-source.json`; current reader execution requires it
+explicitly and never substitutes another source.
+
+For each returned tree, validate the exact companion commit message with the
+owning repository's pinned commitlint, then create a commit with the current
+source as parent. Publish those immutable companion commits on new qualification
+refs before recording their full SHAs in the two `*-tuple-source.json` descriptor
+files. Commit and publish the descriptor change. Never update existing companion
+refs or claim a prepared tree ran tests.
+
+Every later production, test, workflow, helper, build, documentation or other
+non-tuple change requires fresh companion trees and descriptor SHAs. The strict
+source comparison deliberately refuses stale companions.
+
+
+For a clean committed current source with all three published companion refs,
+prepare the retained reader workspace with:
+
+```bash
+python3 -B eng/prepare_tuple_sources.py reader-workspace --source <full-current-commit-sha> --workspace /tmp/new-isolated-reader --output /tmp/new-reader-receipt.json
+```
+
+This clones the actual committed root and only its declared direct owner
+repositories into a new directory using shared object stores, then detaches each
+clone at its exact recorded revision. It does not update submodules, initialize
+nested owners, create synthetic commits, or change any source checkout. Source
+comparison permits only authenticated frozen tuple metadata/gitlinks and bounded
+source descriptors; stale production or test code refuses.
+
+`eng/run_tuple_ci.py --suite current42 --eventstore-sdk 4.2.0` and the `base42`
+lane prepare this workspace automatically. They first build current production
+with its actual current catalog. They then build the retained collecting test
+closure from the exact historical catalog, pass
+`PlatformPackageReaderWorkspaceRoot` explicitly, and retain its package assets.
+The nine additive artifact controls still authenticate actual707/26/311 public
+archives and current Parties source; the independent production closure test
+exports the real current producer catalog and proves genuine Server707 output.
+No retained image identity is relabeled as current native acceptance.

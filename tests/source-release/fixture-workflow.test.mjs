@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 
 const workflow = yaml.load(readFileSync('.github/workflows/test-extension-release.yml', 'utf8'));
 const expected = [

@@ -4,6 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Preserve centrally pinned package assemblies across libraries and ASP.NET Core hosts. -->
+    <RestoreEnablePackagePruning>false</RestoreEnablePackagePruning>
     <!-- Use the existing workspace dependency; do not initialize nested submodules. -->
     <HexalithBuildsRoot Condition="'$(HexalithBuildsRoot)' == '' and Exists('$(MSBuildThisFileDirectory)../Hexalith.Builds/Props/Directory.Packages.props')">$(MSBuildThisFileDirectory)../Hexalith.Builds</HexalithBuildsRoot>
     <HexalithBuildsRoot Condition="'$(HexalithBuildsRoot)' == ''">$(MSBuildThisFileDirectory)references/Hexalith.Builds</HexalithBuildsRoot>

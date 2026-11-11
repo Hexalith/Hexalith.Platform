@@ -18,7 +18,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
     internal PlatformPackageCatalogReaderFixture(bool currentTest = false, bool sdk42 = false)
     {
         _owner = sdk42 ? PlatformQualificationPackageFixture.ExtensionSdkTest() : currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
-        string platform = PlatformTestRepository.Root;
+        string platform = PlatformPartiesPackageFixture.PreparedFixtureRoot();
         string root = Metadata("PlatformTestReaderWorkspaceRoot");
         if (string.IsNullOrWhiteSpace(root)) root = platform;
         (Directory.Exists(Path.Combine(root, ".git")) || File.Exists(Path.Combine(root, ".git"))).ShouldBeTrue("The fixture needs a genuine existing Git root; it never creates Git metadata.");
