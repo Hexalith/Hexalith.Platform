@@ -1,0 +1,183 @@
+{
+  "schema": "hexalith.story-2-8.pr-source-checks.v1",
+  "candidateAcceptance": false,
+  "repository": "Hexalith/Hexalith.Builds",
+  "head": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+  "run": 43014505006,
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006",
+  "pullRequest": 181,
+  "pullRequestState": "open",
+  "draft": true,
+  "observedMainAfterChecks": "5050f01a74cd6ba22954030c852a097cffb2b5b8",
+  "mainObservationMethod": "git ls-remote; incoming publisher-only changes inspected separately and preserved",
+  "observedPrMergeRef": "26d360a5b85fa86485933ee60ec1149835dc3242",
+  "jobs": [
+    {
+      "id": 130502283931,
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502283931"
+    },
+    {
+      "id": 130502284011,
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284011"
+    },
+    {
+      "id": 130502284079,
+      "name": "Build and package contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284079"
+    },
+    {
+      "id": 130502284093,
+      "name": "Python contract tests (runner)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284093"
+    },
+    {
+      "id": 130502284114,
+      "name": "Sample module / Build and tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284114"
+    },
+    {
+      "id": 130502284170,
+      "name": "Workflow lint and public API",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284170"
+    },
+    {
+      "id": 130502284171,
+      "name": "Python contract tests (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284171"
+    },
+    {
+      "id": 130502284226,
+      "name": ".NET tests / Build and tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284226"
+    },
+    {
+      "id": 130502572065,
+      "name": "Sample Windows tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502572065"
+    },
+    {
+      "id": 130511909839,
+      "name": "Build and test",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130511909839"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Build and test",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130511909839"
+    },
+    {
+      "name": "CodeQL",
+      "status": "completed",
+      "conclusion": "neutral",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/130503774535"
+    },
+    {
+      "name": "Codacy Static Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/130503046788"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014660201/job/130502597466"
+    },
+    {
+      "name": "Sample Windows tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502572065"
+    },
+    {
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/runs/130502442830"
+    },
+    {
+      "name": ".NET tests / Build and tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284226"
+    },
+    {
+      "name": "Python contract tests (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284171"
+    },
+    {
+      "name": "Workflow lint and public API",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284170"
+    },
+    {
+      "name": "Sample module / Build and tests",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284114"
+    },
+    {
+      "name": "Python contract tests (runner)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284093"
+    },
+    {
+      "name": "Build and package contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284079"
+    },
+    {
+      "name": "CodeQL / analyze",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284011"
+    },
+    {
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502283931"
+    },
+    {
+      "name": "commitlint / commitlint",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505018/job/130502089185"
+    }
+  ],
+  "limits": "Ordinary source CI for this exact PR head only. This is not final Platform current/legacy/SDK qualification, a fresh reference lifecycle campaign, tool acceptance or candidate acceptance. Any actual normal main merge needs its own fresh main source CI before a permitted release. No merge or publication has occurred.",
+  "remainingAuthority": "Recorded hosted-proof authorization still excludes merges and publication. The concrete normal-merge proposal awaits owner approval."
+}

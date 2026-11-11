@@ -2431,6 +2431,25 @@ So that event delivery survives failures, with retention, dead-lettering and bac
 **When** composed in a hosted environment
 **Then** Platform renders its Subscription with the bound component and dead-letter policy
 
+**Owner-accepted bounded local/CI work (2026-11-11):** The owner selected the
+recommended manual hosted workflow for the first Platform configuration candidate.
+Platform accepts implementation ownership of the original candidate input, one
+manual `ubuntu-24.04` job, observed exclusive worker allocation, separate capture /
+integrity / technical / production-authority outcomes and sanitized retained evidence.
+EventStore retains ownership of the pinned producer, verifier, locks and complete
+both-broker/24-vector matrix. This accepts the bounded EventStore 3.21 local/CI
+handoff planning scope; it establishes no general Platform runner/tool acceptance.
+
+The [prepared candidate CI](../../docs/implementation/story-4-17-broker-candidate-01-ci.md)
+implements that scope with offline workflow controls. It has **not** been
+published or dispatched, and no live results exist. Publication, separately
+authorized live dispatch and assessment of the resulting evidence remain open.
+All five historical guarantees remain **REJECTED**. Broader Kafka causality and
+broker diagnosis remain open; this experiment supplies no broker selection,
+exception, staging or production qualification. The selection/profile-inventory,
+staging demonstration and hosted Subscription acceptance criteria above are
+unchanged. Platform 4.17 and EventStore 3.21 remain **in-progress**.
+
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 
 As a team member,

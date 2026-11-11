@@ -1928,12 +1928,30 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
   summary: Platform `epics.md` Story 4.17 has no acceptance clause for the EventStore 3.21 local/CI qualification handoff that the 2026-11-09 course correction (P5.H) routed to Platform.
   evidence: P5.H requires the owning repository to accept its execution work. The 4.17 ACs (epics.md 2412-2432) cover only selection, staging qualification and Subscription rendering, unlike the 4.16 handoff's accepted note (PLAT-ES416-QH). The 2026-11-10 slice relied on the owner's direction instead. The fix is a planning edit.
+  status: resolved (bounded candidate-01 planning/implementation scope only)
+  resolution: On 2026-11-11 the owner selected the recommended manual hosted workflow. Story 4.17 now records Platform's bounded candidate-01 local/CI implementation and evidence ownership, with EventStore retaining harness/evaluation ownership. This planning acceptance supplies no general runner/tool acceptance or live result; original selection, staging and Subscription criteria remain open.
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
   summary: Execute the untested broker configuration candidates for RabbitMQ rotation, Kafka rotation and Kafka pressure. Candidates: RabbitMQ `reconnectWaitSeconds` and resiliency timeout; Kafka `initialOffset`, `consumeRetryInterval` and group rejoin; Kafka effective-principal and ACL-propagation diagnosis.
   evidence: EventStore's 1.19.1 `validate_profile` pins every component and harness byte to EventStore's lock, so Platform can run no candidate until EventStore's harness accepts Platform-owned configuration. See docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md.
+  update: The pinned EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213 now admits the bounded schema-1 input, and candidate 01 passed offline admission. Its manual hosted workflow is prepared with offline controls; publication, separately authorized dispatch and assessed results remain outstanding. This first combined tuning experiment does not resolve the broader diagnosis, exact Kafka causality, broker selection or staging work. `initialOffset` and harness controls remain fixed under the accepted profile.
+
+## Deferred from: bounded candidate-01 CI implementation (2026-11-11)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-17-execute-the-first-platform-broker-candidate.md`
+  summary: Publish the reviewed manual candidate-01 workflow, obtain live-dispatch authorization, execute on its verified fresh hosted VM and assess retained capture, integrity, technical, production-authority and cleanup evidence.
+  target_story: 4.17 with EventStore 3.21 (both in-progress)
+  evidence: `.github/workflows/broker-candidate-qualification.yml` and executable source-release controls are prepared. See docs/implementation/story-4-17-broker-candidate-01-ci.md. No commit, push, publication, dispatch, worker allocation or live qualification occurred during implementation. All five historical guarantees remain REJECTED; selection is null and production eligibility FAIL. Offline tests establish no general Platform runner/tool acceptance or staging/Subscription acceptance.
 
 ## Deferred from: code review of spec-2-11-report-lifecycle-observations.md (2026-11-10)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-11-report-lifecycle-observations.md`
   summary: A `down` from another terminal while a live owner is still starting freezes an "interruption" startup duration before it waits for the provisioning lock. This is unverified; it would be medium if confirmed.
   evidence: In Builds `f118c244`, `CompositionEngine.DownOwnedCoreAsync` calls `FreezeStartupAsync(..., interruption: true)` at `:1503`, before provisioning-lock acquisition at `:1577`. A live owner holds that lock throughout startup, so down's arrival time can become the persisted startup end. To settle it, check whether that owner can, after readiness or failure, refresh a result whose readiness-based descriptor snapshot conflicts with the persisted duration. That conflict would make `TestResultWriter.PopulateOriginalObservations` throw "frozen startup duration".
+
+- source_spec: `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: Add direct owner-descriptor mutation coverage for routing snapshot ownerRunId, runId and role bindings.
+  evidence: Supplemental delivery review SD-BH-2 found this pre-existing gap in SelectedRoutingCatalogSnapshotTests; incoming attached-lifecycle validation bfda07eea7dcc8ef0a6da0fa14643aa70eebec78 already has a foreign-attached-owner test, but not all owner-field mutations. The Story 2.8 fixture repair changes no production guard and its 34 existing cases pass.
+
+- source_spec: `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: Consider enrolling the existing direct-Compose unqualified-catalog refusal test in the mandatory current tuple profile.
+  evidence: Supplemental delivery review SD-BH-3 confirmed UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded was already unselected before this change. Existing selected entry-point and image-refusal controls remain; adding this distinct negative path would improve prior coverage.
