@@ -1,0 +1,123 @@
+{
+  "schema": "hexalith.story-2-8.parent-incremental-audit.v1",
+  "candidateAcceptance": false,
+  "platformSource": "b4b4eda9120e89a52afe6576f46bb7706860f3d1",
+  "buildsBase": "e588605ccf2c6577a2490e1a3fc512f8ffdc3960",
+  "buildsReviewedHead": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+  "originalBaselines": {
+    "platform": "03a099bba258c37a8f16c8b2e842ae842b1ad6d6",
+    "builds": "a22b55f0a4f6d2aaa3a5ccc505896064ac595364"
+  },
+  "method": "Approved incremental active-delta review plus mechanical immutable-evidence authentication; no aggregate-history rereading or cross-decision acceptance.",
+  "diffs": [
+    {
+      "path": "/tmp/story-2-8-iter3-parent-audit-l7za3g51/platform-active.diff",
+      "bytes": 10051,
+      "sha256": "28ac7f523c2ad09f106e24bfcb5c2b5c785554694a3657ccc1bda3c2ab0463ca",
+      "parentRead": true
+    },
+    {
+      "path": "/tmp/story-2-8-iter3-parent-audit-l7za3g51/builds-active.diff",
+      "bytes": 19987,
+      "sha256": "e4718bdc4354007ba10484bd4ed1c0d408eff021acf7273a909324f4bbf7f43c",
+      "parentRead": true
+    },
+    {
+      "path": "/tmp/story-2-8-new-delivery-delta-xpj1vvdw.diff",
+      "bytes": 4902,
+      "sha256": "573cdc1e7d3a8b7ffa05a674a71e159ccb39e3bf48b1a12ffe2aef269c340e06",
+      "parentRead": true
+    }
+  ],
+  "rootPinsUnchanged": true,
+  "rootGitlinks": [
+    "160000 commit 8a3885dd22aea88edd57771cfe592c382df2c583\treferences/Hexalith.AI.Tools",
+    "160000 commit 7957108c30d38b8e82eb072cf3437b6a67627cd7\treferences/Hexalith.Agents",
+    "160000 commit e588605ccf2c6577a2490e1a3fc512f8ffdc3960\treferences/Hexalith.Builds",
+    "160000 commit 82f20d5ecca74993f93e73151a6ae3766d3d6a1d\treferences/Hexalith.ChatBot",
+    "160000 commit 11555ace9efcae2928a00122dcba91243e5a8a1a\treferences/Hexalith.Commons",
+    "160000 commit 8d0e091d849669fc8447e5078d8e3b3380a00c64\treferences/Hexalith.Conversations",
+    "160000 commit c94e6fffaf2d689c94bb288f151a65e10a2fea82\treferences/Hexalith.EventStore",
+    "160000 commit 78e2b9387536229199b8bbc24ecd177daaf46db8\treferences/Hexalith.Folders",
+    "160000 commit 7ace06c5c50406b9021fc95d8d87cf962b5180dd\treferences/Hexalith.FrontComposer",
+    "160000 commit ec458664b0218d07357091b5a5ea12897154db2a\treferences/Hexalith.McpCli",
+    "160000 commit db769a95e2966dd42f5523ce091e7f8f317f22a4\treferences/Hexalith.Memories",
+    "160000 commit 9e4e6bc33b27d62799e25945d53c9f9231ab8112\treferences/Hexalith.Parties",
+    "160000 commit bce4eb9f45c6b131b960ab4fa39e50ff01e51960\treferences/Hexalith.PolymorphicSerializations",
+    "160000 commit 77067782154d35a794ea50d86af1c5e73c8351b6\treferences/Hexalith.Projects",
+    "160000 commit cca5537c3a9d6dde162787053b34e17c8351b21d\treferences/Hexalith.Tenants",
+    "160000 commit f5bee2c91bec6e1e78d81b604cea6af0cee764fe\treferences/Hexalith.Timesheets",
+    "160000 commit 4bd0df1461c89fdf00f1ccf3c47a3bf9bc939a23\treferences/Hexalith.Works"
+  ],
+  "checks": {
+    "childManifestMembersVerified": 16,
+    "routingSnapshotXml": {
+      "passed": 34,
+      "total": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    "independentSuiteControl": {
+      "command": "python3 -B eng/test_tuple_sdk_suites.py",
+      "passed": 8,
+      "total": 8
+    },
+    "activeDiffWhitespace": "passed",
+    "hostedPrSourceCi": {
+      "run": 43014505006,
+      "head": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+      "jobsPassed": 10,
+      "conclusion": "success",
+      "receipt": "pr181-source-checks.json"
+    }
+  },
+  "historicalEvidence": {
+    "archiveSha256": "1714ec845c2c24e66a4fc9fbe2f71c971d20305af9f1743f273942a57971e909",
+    "loop1ManifestMembersVerified": 12,
+    "loop2ManifestMembersVerified": 21,
+    "frozenIntentMatrixSha256": "19044c59bdc8f93eee27bb766b6985fbc2f908f8e9764bebaeb72ecb908d9b0a",
+    "originalCodeMapTasksAcceptanceSha256": "e5bbc388a4f629fa85e56b86c7a9fcb6d0571d69520afc711f67096d00f6e451",
+    "initialPrefixHashCheck": "failed and investigated; original frozen block/code map/tasks/AC are byte-identical. The approved replacement handoff heading and mutable review-loop counter explain the whole-prefix difference. No history body was changed."
+  },
+  "review": {
+    "newDeltaBytes": 4902,
+    "newDeltaSha256": "573cdc1e7d3a8b7ffa05a674a71e159ccb39e3bf48b1a12ffe2aef269c340e06",
+    "edgeCases": [],
+    "verificationGaps": [],
+    "blindFindings": {
+      "SD-BH-1": "false/reject: owning commit exists, enrollment is separately gated",
+      "SD-BH-2": "low/defer: pre-existing owner-descriptor mutation coverage",
+      "SD-BH-3": "low/defer: pre-existing direct-Compose negative selection"
+    }
+  },
+  "remoteActions": {
+    "featureBranchPushes": 2,
+    "draftPullRequest": 181,
+    "pullRequestBodyUpdates": 1,
+    "workflowDispatches": 0,
+    "manualCancellationRequests": 0,
+    "merges": 0,
+    "mainPushes": 0,
+    "publications": 0,
+    "tags": 0,
+    "pinChanges": 0
+  },
+  "retainedFirstFailures": {
+    "baseBuildsCi": {
+      "source": "e588605ccf2c6577a2490e1a3fc512f8ffdc3960",
+      "run": 43006363999,
+      "job": 130474898734,
+      "failure": "Four routing snapshot fixture rows omitted ownerRunId/runId/role: valid, near-limit-valid, schema-properties, cancelled."
+    },
+    "platformDebugBuild": "CS1704 mixed cached EventStore assets; original log retained. Package-mode Release fallback succeeded with no gate or dependency change.",
+    "githubConnectorPrCreate": "HTTP 403; no PR created, verified before configured CLI fallback.",
+    "ghPrEdit": "Deprecated GraphQL projectCards query failed before mutation; confirmed unchanged body, then used one REST PATCH."
+  },
+  "remaining": [
+    "Approved normal owner delivery and any genuinely required publication",
+    "Actual package-binding test execution in final L/M",
+    "Final exact-source current, real-legacy, pre-extension and five-SDK checks",
+    "Patched-release lifecycle cancellation delivery gate"
+  ],
+  "workflowStatus": "in-progress; no completion or candidate/tool acceptance claim"
+}

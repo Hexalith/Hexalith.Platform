@@ -360,6 +360,9 @@ The CI finalizer passes its actual workflow job status to the exact `down` as
 terminal outcome, or a `cancelled`/`withdrawn` terminal ends active holds as `ci-job-cancelled`. Every
 other terminal, including a failed job whose owner recorded a failed outcome, ends them as
 `ci-job-completed`. The owner is recorded as cancelled only for an actual cancellation.
+The helper's own timeout interrupt counts as one: the tool records the owner
+`cancelled` and ends active holds as `ci-job-cancelled`, while the helper's
+`execution.json` records `timedOut` and the step returns 124.
 
 ## CI ownership recovery and finalization
 
@@ -373,25 +376,30 @@ immutable descriptor/result schemas, and confers no candidate acceptance.
 The workflow first requires successful isolated tests, then uses the exact local
 pinned tool, generated Release/package imports and real services for blocking
 integration. The integration step runs the helper as the step process, so the runner's
-cancellation reaches it. The helper delivers it only to the tool's own processes: the
-gated muxer and the tool it runs. Composed processes are never signalled by the helper,
-so the tool records withdrawal before it stops them. The runner's own process-tree kill
-after its cancellation grace is outside the helper's control and can precede that
-record. Even then, the exact `down` below withdraws active attachments before it stops
-what remains. After normal completion or its own timeout, the helper runs exact
-`down --run-id`. The timeout is derived from the step and the job's remaining time, so
+cancellation reaches it. The helper delivers it, and its own timeout, only to the tool's
+own processes: the gated muxer and the tool it runs. The helper never forwards a
+cancellation or timeout to composed processes, so the tool records withdrawal before it
+stops them. The tool handles only SIGINT cooperatively. A tool that has not recorded
+withdrawal by the helper's in-grace SIGTERM (6 s, or a second runner signal), its
+8.5-second kill or its 120-second timeout kill is ended first, and a CI AppHost then
+stops on losing its stdin. The runner's own process-tree kill after its cancellation
+grace can do the same. Even then, the exact `down` below withdraws active attachments
+before it stops what remains. After normal completion or its own timeout, the helper
+runs exact `down --run-id`. The timeout is derived from the step and the job's remaining time, so
 the timeout path and the finalizer both fit. After a cancellation the helper leaves
 the exact down to an independent `always()` step, which also retries it after failure
 or partial startup. That step first stops the surviving tool processes, then re-reads
 the receipt:
 
-- Without a receipt, it stops every other recorded-session process before deciding
-  `not-allocated`.
+- Without a receipt, it stops every other recorded-session process, then re-reads the
+  receipt. A receipt that a tool orphaned by its muxer wrote meanwhile still leads to the
+  exact `down`; only a still-absent receipt is `not-allocated`.
 - With a receipt, it leaves owned composed processes, which carry the owner's run tag,
   to the exact `down`.
 
 Before invoking down, it verifies repository/run/attempt/job and durable owner
-bindings. Cleanup completion requires zero owned resources and verified discovery.
+bindings. A missing, unexecutable or unverifiable tool is recorded as
+`tool-unavailable` unverified cleanup, and declared diagnostics are still retained. Cleanup completion requires zero owned resources and verified discovery.
 Unknown discovery or leftovers fail with retryable metadata. Only classified,
 redacted result and attachment documents are retained outside deleted workspaces;
 private tokens, endpoint credentials and raw logs are excluded.
@@ -408,9 +416,10 @@ archives. It reuses the immutable pre-launch descriptor bindings held by the
 runner; partial startup uses the original issued run/attempt/environment identities
 and explicit unavailable observations. The first outcome/cause/time survives
 cancellation, explicit stop, cleanup errors and retries. Owner cancellation is
-`cancelled`. `withdrawn` ends attached runs and their holds when their environment is
-withdrawn, never an owner; a later attach to such an owner is refused as
-`owner-withdrawn`.
+`cancelled`, and a later attach to that owner is refused as `owner-cancelled`.
+`withdrawn` ends attached runs and their holds on expiry or environment withdrawal.
+`owner-withdrawn` refuses an attach only to an owner whose recorded terminal is itself
+`withdrawn`.
 
 Command terminal status and outcome preserve that committed observation. Later
 archive and cleanup errors remain visible as diagnostics and cleanup disposition;

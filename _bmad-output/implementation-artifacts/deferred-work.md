@@ -1937,3 +1937,11 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-11-report-lifecycle-observations.md`
   summary: A `down` from another terminal while a live owner is still starting freezes an "interruption" startup duration before it waits for the provisioning lock. This is unverified; it would be medium if confirmed.
   evidence: In Builds `f118c244`, `CompositionEngine.DownOwnedCoreAsync` calls `FreezeStartupAsync(..., interruption: true)` at `:1503`, before provisioning-lock acquisition at `:1577`. A live owner holds that lock throughout startup, so down's arrival time can become the persisted startup end. To settle it, check whether that owner can, after readiness or failure, refresh a result whose readiness-based descriptor snapshot conflicts with the persisted duration. That conflict would make `TestResultWriter.PopulateOriginalObservations` throw "frozen startup duration".
+
+- source_spec: `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: Add direct owner-descriptor mutation coverage for routing snapshot ownerRunId, runId and role bindings.
+  evidence: Supplemental delivery review SD-BH-2 found this pre-existing gap in SelectedRoutingCatalogSnapshotTests; incoming attached-lifecycle validation bfda07eea7dcc8ef0a6da0fa14643aa70eebec78 already has a foreign-attached-owner test, but not all owner-field mutations. The Story 2.8 fixture repair changes no production guard and its 34 existing cases pass.
+
+- source_spec: `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
+  summary: Consider enrolling the existing direct-Compose unqualified-catalog refusal test in the mandatory current tuple profile.
+  evidence: Supplemental delivery review SD-BH-3 confirmed UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded was already unselected before this change. Existing selected entry-point and image-refusal controls remain; adding this distinct negative path would improve prior coverage.

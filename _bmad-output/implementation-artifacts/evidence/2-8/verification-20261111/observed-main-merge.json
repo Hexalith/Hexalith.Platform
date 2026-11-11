@@ -1,0 +1,36 @@
+{
+  "schema": "hexalith.story-2-8.observed-normal-main-merge.v1",
+  "repository": "Hexalith/Hexalith.Builds",
+  "pullRequest": 181,
+  "userRequest": "merge to main",
+  "requestedAction": "Normal merge of PR #181; no publication or policy change authorization inferred.",
+  "observation": "Fresh inspection found the merge already completed externally; no merge, push, ready transition or publication was replayed by this turn.",
+  "githubMergedAt": "2026-11-11T12:18:43Z",
+  "githubMergedBy": "jpiquot",
+  "actualMerge": "213aab34be1ce97783a51ebeaf3d2d0c5dab6dd7",
+  "actualTree": "586cd76f23e5155992760186017dd85441516080",
+  "orderedParents": [
+    "5050f01a74cd6ba22954030c852a097cffb2b5b8",
+    "b74b467ac5ce5d9f9fc440f43e279b7093b539de"
+  ],
+  "reviewedHead": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+  "bothFixCommitsAreAncestors": true,
+  "actualMessageSha256": "86fe4cbcf14e9e71c748fc296e10f3af5d91e65a6d77f99aac00d7743ed3e7f9",
+  "actualMessageCommitlintExit": 0,
+  "actualSubject": "build: merge refs/remotes/origin/fix/2-8-review-iter3-fixes into main via /pushall",
+  "mainCi": {
+    "run": 43019233527,
+    "head": "213aab34be1ce97783a51ebeaf3d2d0c5dab6dd7",
+    "event": "push",
+    "observedStatus": "in_progress",
+    "conclusion": null
+  },
+  "mainCommitlint": {
+    "run": 43019233552,
+    "conclusion": "success"
+  },
+  "publicationDispatchedByThisTurn": false,
+  "candidateAcceptance": false,
+  "storyComplete": false,
+  "remaining": "Fresh main CI, separately permitted publication if genuinely required, final Platform L/M execution and patched-release lifecycle gate."
+}

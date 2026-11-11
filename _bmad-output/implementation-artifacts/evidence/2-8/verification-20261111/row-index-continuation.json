@@ -1,0 +1,66 @@
+{
+  "schema": "hexalith.story-2-8.six-row-index.iteration-3-continuation.v1",
+  "candidateAcceptance": false,
+  "classification": "focused-source-regression-audit",
+  "originalMatrixUnchanged": true,
+  "sources": {
+    "localHelper": "f8dba23982fb1599a37c543b41439dce52c0dd19",
+    "hostedOwnerSource": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+    "helperUnchangedBetweenThoseSources": true,
+    "sourceCiRun": 43014505006
+  },
+  "rows": [
+    {
+      "scenario": "Isolated failure",
+      "sourceProof": "Both workflow validator modes passed (312/206 assertions), retaining isolated-before-integration gating and fail-closed input checks.",
+      "result": "results.json"
+    },
+    {
+      "scenario": "Integration success/failure",
+      "helperTests": [
+        "test_passing_execution_requires_verified_cleanup",
+        "test_execution_failure_preserved_and_finalized_after_partial_startup",
+        "test_zero_exit_counts_only_with_a_receipt_and_a_success_outcome"
+      ],
+      "result": "results.json: builds-helper, 71/71"
+    },
+    {
+      "scenario": "Cancellation during startup/execution",
+      "helperTests": [
+        "test_signal_before_the_receipt_never_reports_not_allocated_while_a_tool_survives",
+        "test_runner_cancellation_reaches_only_the_tool_so_withdrawal_precedes_every_composed_stop",
+        "test_helper_timeout_interrupts_the_tool_so_withdrawal_precedes_every_composed_stop",
+        "test_helper_timeout_kills_a_tool_that_ignores_its_interrupt"
+      ],
+      "result": "results.json: builds-helper, 71/71",
+      "hostedLimit": "Prior startup/execution observations retain their original source and classification. The patched-release lifecycle cancellation delivery gate remains open."
+    },
+    {
+      "scenario": "Same-job/cross-job attachment",
+      "sourceProof": "Owner source CI executed the complete Module.Tests project with 3052 passes and four unchanged contextual skips; none of those skips is an AttachAdmissionTests or CiRunLifecycleTests case. This delta changes no admission implementation.",
+      "result": "hosted-source-dotnet.json",
+      "hostedLimit": "Use older row indexes only for their original subjects, not as fresh candidate or final-reference acceptance."
+    },
+    {
+      "scenario": "Cleanup failure or unknown discovery",
+      "helperTests": [
+        "test_cleanup_verification_requires_exit_owner_and_success",
+        "test_a_failed_cleanup_record_never_prevents_the_exact_down",
+        "test_down_timeout_malformed_or_non_json_output_is_unverified_and_still_retains",
+        "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain"
+      ],
+      "result": "results.json: builds-helper, 71/71; routing-snapshot-tests.xml: 34/34"
+    },
+    {
+      "scenario": "Missing tool/suite/package preparation",
+      "helperTests": [
+        "test_missing_or_wrong_mode_suite_refuses_before_process",
+        "test_missing_package_preparation_refuses_before_process",
+        "test_an_exhausted_job_budget_refuses_before_any_allocation",
+        "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain"
+      ],
+      "result": "results.json: builds-helper, 71/71 and workflow validator modes"
+    }
+  ],
+  "limits": "This index audits the touched source regressions. It grants no live reference, new candidate, final Platform tuple or tool-acceptance credit. Existing hosted observations remain bound to their original sources; every pending final delivery gate remains open."
+}

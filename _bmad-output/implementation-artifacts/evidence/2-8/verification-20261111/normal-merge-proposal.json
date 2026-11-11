@@ -1,0 +1,25 @@
+{
+  "repository": "Hexalith/Hexalith.Builds",
+  "pullRequest": 181,
+  "expectedHead": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+  "observedBase": "5050f01a74cd6ba22954030c852a097cffb2b5b8",
+  "mergeMethod": "merge",
+  "commitTitle": "fix(ci): close iteration-3 review gaps in the v2 helper (#181)",
+  "commitMessage": "Merge pull request #181 from Hexalith/fix/2-8-review-iter3-fixes\n\nPreserve durable CI cleanup evidence and secret redaction. Bind\nrouting snapshot fixtures to their owner without changing production\nvalidation or refusal expectations.",
+  "requiredBeforeMutation": [
+    "User normal-delivery approval",
+    "Passing PR source checks for the exact head",
+    "Fresh inspection of actual PR/head/base and rules before one normal merge"
+  ],
+  "approvalPresent": false,
+  "releaseDispatchAuthorized": false,
+  "policyChanges": false,
+  "earlierObservedBase": "1d2ead0166d844f040fa369059a85bb4d75e3043",
+  "sourceCi": {
+    "run": 43014505006,
+    "head": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+    "conclusion": "success",
+    "jobsPassed": 10
+  },
+  "postMergeRequirement": "Inspect the actual main merge and fresh exact-source main CI before any separately permitted publication; no old result transfers to the new source."
+}

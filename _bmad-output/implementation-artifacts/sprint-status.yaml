@@ -63,7 +63,12 @@ development_status:
   2-6-attach-a-run-to-a-compatible-environment: done
   2-7-withdraw-attached-runs-and-keep-failure-retention: done
   # Approved 2026-11-08 correction: bounded CI implementation/proof; original six matrix rows remain required.
-  2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: review
+  # 2026-11-11: iteration-3 review of the PC-1..PC-19 delta resolved: G1 owner decision (helper timeout = owner cancellation) and 15 patches;
+  #   Builds PR #181 merged externally via /pushall as 213aab34; both fix commits verified. All10 PR CI jobs passed (43014505006);
+  #   fresh main CI 43019233527 is running; main commitlint passed. No merge replay or publication by this turn.
+  #   Local helper71/routing34/selector8 and package compilation pass; current42 selects all457 required cases. Platform edits uncommitted;
+  #   final L/M execution, any genuinely required publication approval and the patched-release lifecycle gate remain open.
+  2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: in-progress
   # Fixture migration remains complete; do not repeat it inside 2.8.
   2-9-migrate-eventstore-and-parties-test-fixtures-to-the-environm: done
   # New spec owns complete reference qualification, broad manual matrix and final accepted-tool enrollment.
