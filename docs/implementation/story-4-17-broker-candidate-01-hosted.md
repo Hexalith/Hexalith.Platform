@@ -1,105 +1,114 @@
-# Story 4.17 — candidate 01 publication and hosted-execution status
+# Story 4.17 — candidate 01 first hosted attempt
 
-Assessed on 2026-11-11. **Blocked before hosted execution:** the approved history
-is prepared in [PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40),
-awaiting the repository's required approving review and code-owner review.
-The owner has already approved main publication and exactly one hosted attempt.
-No broker workflow was dispatched; no run, packet or artifact exists to assess.
+Assessed on 2026-11-11. The single approved hosted attempt
+[43097161643, attempt 1](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43097161643)
+ended in **`startup_failure` before any job was allocated**. GitHub reports an
+unexpected service error and support request ID
+`4ed78a69-de10-11f1-8d56-5705d8f2f5ff`. No broker capture ran. There are **zero jobs,
+zero artifacts and 0/24 observed vectors**; packet verification and cleanup
+assessment remain incomplete. No retry was performed.
 
-## Publication and actual source identities
+## Published source and actual run binding
 
 | Identity | Full value |
 | --- | --- |
-| Approved local source baseline | `13aa784958dd634196c540713b3513e67af458ed` |
+| Approved source baseline / workflow commit | `13aa784958dd634196c540713b3513e67af458ed` |
 | Included Story 2.8 commit | `6d422033b959c249c149a4cb3785704e9eebe03c` |
 | Candidate preparation commit | `15926cac7ffe7bb91926617a586f34262beb0665` |
-| Candidate workflow commit | `13aa784958dd634196c540713b3513e67af458ed` |
-| Initially observed remote main | `09946e760b56a7a6ab9675503f2b018d33d45f2c` |
-| Independently advanced remote main, preserved | `3ad2f29ae50858ba665499568623b557725b9d93` |
-| Final review-branch source | `9a829a40718311da3eeb20a9f4e9ba9bc2eea41b` |
-| Review branch | `chore/broker-candidate-01-publication` |
-| Actual hosted execution revision | **Absent — no dispatch** |
-| EventStore gitlink and clean verifier source | `02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213` |
+| Final reviewed branch history | `9a829a40718311da3eeb20a9f4e9ba9bc2eea41b` |
+| Externally published main merge / actual run head SHA | `94001fad925fdf7fa03a90b507b8f8e19074f9e3` |
+| Actual dispatch ref | `refs/heads/chore/broker-candidate-01-hosted-94001fad` |
+| Later independent main advance, preserved | `488723fd7efbccbab3bccdae3be4ad79b05a4994` |
+| Required EventStore pin / clean isolated verifier source | `02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213` |
 | Original candidate SHA-256 | `472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc` |
 | JSON's declared, unauthenticated Platform revision | `6d422033b959c249c149a4cb3785704e9eebe03c` |
 
-The JSON declaration does not authenticate execution. The original candidate,
-workflow and explicit `runtime-lock-1.19.1-platform-config-v1.json` remain unchanged,
-with both brokers and all 24 vectors. EventStore's pinned commit is an ancestor of
-its observed published main. No harness, lock or nested submodule was changed.
+[PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40) was observed merged
+externally at `2026-11-11T20:32:48Z`. The reviews API returned an empty array;
+no review or external bypass evidence is inferred. This slice did not repeat the
+merge or bypass rules. The published merge's complete tree equals the reviewed
+source tree. Earlier independent main changes were preserved through assessed
+ordinary forward integration; the sole `.gitattributes` conflict retained both
+additive rule blocks verbatim.
 
-Active main rules require a pull request with one approval and code-owner review.
-The maintainer's technical bypass capability was not used. The protected default
-branch has not received this workflow, so live dispatch remains gated on publication.
-PR creation through the GitHub connector returned HTTP 403; the same validated PR
-was created through the authenticated `gh` CLI.
+Main advanced again before dispatch and repinned EventStore to
+`0c7b14856f2b730749caa8a552742a77d4882dc7`. The final guard stopped before any
+mutation. Assessment authorized a dedicated reversible source branch at the already
+published `94001fad` commit. It contains no new commit or changed experiment bytes;
+current main and its newer gitlinks were preserved. GitHub's branch/tag dispatch
+binding is documented in the [workflow API](https://docs.github.com/en/enterprise-cloud@latest/rest/actions/workflows).
+The branch was verified at the exact full source before the single dispatch.
+The GitHub connector refused ref creation with HTTP 403; the authenticated `gh`
+CLI created the same assessed ref. See the [source-binding assessment](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/hosted-source-binding-assessment.json)
+and [external-publication receipt](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/external-main-publication.json).
 
-The final PR snapshot is conflict-free (`MERGEABLE`) and `REVIEW_REQUIRED`, with
-zero reviews. Automatic PR CI is separate from the broker experiment. Its
-[pre-extension public tuple job](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865450)
-reported failure while other checks were still running. That result remains a
-publication limitation requiring assessment; no CI implementation was changed
-or gate weakened, and those checks establish no broker result.
+The original candidate, workflow and explicit
+`runtime-lock-1.19.1-platform-config-v1.json` remain unchanged, with both brokers
+and all 24 vectors. Admission validated the clean isolated EventStore pin and all
+91 locked inputs. The JSON declaration is separate from GitHub's actual run-source
+identity. Because no job was allocated, no runner checkout, bootstrap or worker
+allocation observation exists; none is inferred from GitHub's run head SHA.
 
-Remote main advanced during publication preparation. Read-only assessment found
-one conflict: both sides appended distinct preservation rules to `.gitattributes`.
-The assessed normal forward merge retained both blocks verbatim and preserved all
-independent remote source/test bytes. The three approved local commits retain
-their identities. The spec and generated epic context were excluded from the review
-branch. See the [divergence assessment](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/divergence-assessment.json)
-and [final publication checks](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/final-publication-preflight.json).
+## Terminal outcome and missing evidence
 
-## Evidence assessment
-
-| Dimension | Observed result |
+| Dimension | Actual observation |
 | --- | --- |
-| Broker workflow dispatches by this slice | **0**; the approved single attempt remains unused |
-| Run / attempt / job identity | Absent |
-| Capture exit and argv | Not executed; absent |
-| Independent integrity exit and argv | Not executed; no retained packet |
-| Independent technical exit and argv | Not executed; no retained packet |
-| Independent production-authority exit and argv | Not executed; no retained packet |
-| Expected / observed vectors | **24 / 0**; every vector is `NOT_EXECUTED` |
-| Cleanup receipt / verification | Absent / not assessed |
-| Artifact metadata / exact bytes / digest | Absent; no artifact download attempted |
-| Archive inspection and extraction | Not applicable; no archive exists |
+| Dispatch / attempt | Exactly **1 / 1**; no rerun |
+| Run lifetime | Created `20:37:28Z`; terminal update `20:41:54Z`, 2026-11-11 |
+| Terminal result | `startup_failure` |
+| Jobs / check runs / pending deployments | **0 / 0 / 0** |
+| Capture exit and argv | Absent; no job executed |
+| Independent integrity exit and argv | Absent; no packet exists |
+| Independent technical exit and argv | Absent; no packet exists |
+| Independent production-authority exit and argv | Absent; no packet exists |
+| Expected / observed vectors | **24 / 0**; all `NOT_EXECUTED` |
+| Cleanup receipt / verified cleanup | Absent / not established |
+| Expected artifact | `platform-broker-candidate-01-43097161643-1` |
+| Artifact inventory / download | **0**; unavailable, no bytes or digest |
+| Archive path inspection / extraction | Not applicable; no archive exists |
 | Bounded technical success | Not established |
 | Production eligibility / broker selection | **FAIL / null** |
 
-The [execution status](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/execution-status.json),
-[run discovery](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/hosted-run-discovery.json),
-[PR snapshot](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/pull-request.json)
+The [run receipt](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/hosted-run.json),
+[job inventory](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/hosted-jobs.json),
+[artifact inventory](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/hosted-artifacts.json),
+[actual outcome record](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/execution-status.json)
 and [per-vector assessment](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/vector-assessment.json)
-retain the observed boundary. Missing exits are null; they are not synthetic failures
-or successful evaluations. No raw credentials, environment dumps or private broker
-transcripts were retained. The [file manifest](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/file-manifest.json)
-commits the retained preflight and publication-evidence bytes.
+retain these separate results. The [independent-verifier assessment](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/independent-verifier-assessment.json)
+records null argv and exits for all three modes: no verifier was invoked against
+nonexistent evidence. Artifact absence prevents download, archive inspection and
+packet evaluation; those steps remain incomplete.
 
-All five [historical rejected guarantees](story-4-17-local-broker-dispositions-2026-11-10.md)
-remain **REJECTED**: RabbitMQ rotation, pressure and missing binding; Kafka rotation
-and pressure. The 24-vector assessment records absence of new observations and does
-not rewrite those dated dispositions or award qualification credit.
+The [provider diagnostic](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/startup-diagnostic.json)
+retains GitHub's actual unexpected-error annotation and request ID. The CLI's generic
+suggestion of a possible workflow-file issue is not a confirmed root cause.
+Independent current-main tuple/catalog push runs were also queued in the retained
+[snapshot](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/independent-main-runs.json);
+this does not establish a shared cause or their eventual results. The provider's
+suggested retry was not followed because the approved single attempt is consumed.
+
+No raw credential, environment dump or private broker transcript was retained.
+The [file manifest](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/file-manifest.json)
+commits the retained metadata and publication evidence bytes. The earlier
+[blocked-publication report](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/pre-hosted-status/story-4-17-broker-candidate-01-hosted.md)
+is retained as historical context.
 
 ## Verification and remaining work
 
-The integrated review source passed `npm run test:source-release`: **82/82**,
-including 53 executable broker controls. Pinned commitlint **21.2.4** accepted the
-exact merge messages, approved history, PR title and full PR message. An initial
-full-message footer line-length rejection was revised and revalidated before PR
-creation. Final source checks preserved the original candidate digest, clean pinned
-EventStore, all approved source bytes and independent main source/test bytes.
-`git diff --check` passed. These are offline and publication checks.
+The previously integrated source passed `npm run test:source-release`: **82/82**,
+including 53 executable broker controls. The actual published execution source has
+an identical complete tree. Pinned commitlint **21.2.4** validated the authored Git
+and PR messages before their mutations. Fresh checks confirmed the original digest,
+unchanged workflow and gitlink, clean isolated pinned source, locked-input admission,
+exact remote source ref and exactly one hosted attempt. Retained file hashes, links,
+parent sprint values and `git diff --check` were checked. Offline controls do not
+diagnose GitHub's startup failure or establish a broker guarantee.
 
-Required review and permitted default-branch integration remain outstanding.
-After publication, recheck the actual remote revision and dispatch the fixed workflow
-exactly once under the existing approval. Retain its named artifact in a fresh
-location before 30-day expiry, inspect archive paths before extraction, and run all
-three independent verifier modes against the separate original configuration.
-Actual exits, all observed vectors, cleanup proof and artifact delivery must determine
-the resulting assessment. Missing evidence stays incomplete; no automatic rerun is
-authorized. Main publication may trigger existing tuple/catalog CI and their gated
-source tag/GitHub release; those independent gates remain unchanged.
-
-Broader broker diagnosis, exact Kafka causality, selection, exceptions, staging,
-hosted Subscription rendering and production acceptance remain open. Platform 4.17
-and EventStore 3.21 remain **in-progress**.
+All five [historical rejected guarantees](story-4-17-local-broker-dispositions-2026-11-10.md)
+remain **REJECTED**: RabbitMQ rotation, pressure and missing binding; Kafka rotation
+and pressure. Their dated dispositions are unchanged. Investigate the startup
+failure before a separate decision on any further hosted attempt; no second run is
+authorized by this slice. Packet/verifier, cleanup and artifact-delivery assessment
+remain incomplete. Broader diagnosis, exact Kafka causality, broker selection,
+exceptions, staging, hosted Subscription rendering and production acceptance remain
+open. Platform 4.17 and EventStore 3.21 remain **in-progress**.

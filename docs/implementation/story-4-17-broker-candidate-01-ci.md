@@ -2,14 +2,15 @@
 
 Prepared on 2026-11-11 under the owner's accepted bounded implementation scope.
 The [workflow](../../.github/workflows/broker-candidate-qualification.yml) has been
-implemented and verified offline. **No live run occurred.** The owner subsequently
-approved main publication and exactly one hosted attempt. The approved history is
-prepared in [PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40), awaiting
-required approving and code-owner review before default-branch publication.
-The [current hosted status and retained evidence](story-4-17-broker-candidate-01-hosted.md)
-record the actual source identities and zero dispatches. Platform 4.17 and EventStore
-3.21 remain **in-progress**; all five historical guarantees remain **REJECTED**.
-No broker is selected, and staging and production qualification remain open.
+implemented and verified offline. The first approved hosted attempt,
+[43097161643](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43097161643),
+ended in **`startup_failure` before any job was allocated**. No broker capture ran;
+no artifact or packet exists. The [current hosted report and retained evidence](story-4-17-broker-candidate-01-hosted.md)
+record the actual published source, single dispatch, provider diagnostic, 0/24
+observed vectors and null verifier exits. The approved attempt is consumed;
+no automatic retry is authorized. Platform 4.17 and EventStore 3.21 remain
+**in-progress**; all five historical guarantees remain **REJECTED**. No broker is
+selected, and staging and production qualification remain open.
 
 This implements the local/CI configuration handoff for one candidate. Platform
 owns the manual workflow, original configuration, hosted allocation and retained
@@ -53,31 +54,33 @@ each of the three verifier modes receive that same independently supplied origin
 through `--platform-config`. The packet's copy is never substituted for it.
 The [original preparation and handoff](story-4-17-broker-candidate-01.md) is preserved.
 
-## Invocation after required default-branch publication
+## Executed publication and single dispatch
 
-The owner has approved the main publication route, including Story 2.8, and exactly
-one hosted dispatch. Active repository rules require PR approval and code-owner
-review before main integration; bypass is outside the approved scope. PR #40
-preserves independent main history through ordinary forward integration. Its latest
-source identity is retained in the linked hosted report. The workflow must reach
-the default branch before dispatch; no new confirmation of the existing live
-approval is required.
+The owner approved current-main publication, including Story 2.8, and one hosted
+attempt. PR #40 was observed merged externally at full revision
+`94001fad925fdf7fa03a90b507b8f8e19074f9e3`; its reviews API remained empty, so no
+review or external bypass evidence is inferred. The workflow reached the default
+branch before dispatch. A later independent main advance changed the EventStore
+gitlink, and the final guard stopped before dispatching that source.
 
-After permitted publication, recheck the full actual remote revision and select
-**Platform broker candidate 01 (non-promoting)** at that reviewed published source.
-There are no profile, configuration, broker or command inputs to change.
-
-The command, from an authenticated maintainer environment after publication, is:
+Assessment then authorized the dedicated source branch
+`chore/broker-candidate-01-hosted-94001fad` at the already published exact-input
+commit. Current main and all newer gitlinks were preserved. No candidate, workflow,
+harness or lock changed and no new commit was created for the source binding.
+The single executed command was:
 
 ```bash
 gh workflow run broker-candidate-qualification.yml \
-  --repo Hexalith/Hexalith.Platform --ref REVIEWED_PUBLISHED_REF
+  --repo Hexalith/Hexalith.Platform \
+  --ref chore/broker-candidate-01-hosted-94001fad
 ```
 
-Replace `REVIEWED_PUBLISHED_REF` with the published reviewed ref; record its full
-commit alongside the resulting run URL, separately from the JSON declaration.
-The approved single attempt remains unused. Do not rerun automatically; assess any
-failed or incomplete attempt before deciding on further execution scope.
+GitHub bound run `43097161643`, attempt 1, to the full actual source
+`94001fad925fdf7fa03a90b507b8f8e19074f9e3`, separately from the JSON declaration.
+It terminated with `startup_failure`, zero jobs and no artifact. The exact provider
+diagnostic and support request ID are retained in the hosted report. No verification
+mode was invoked without a packet. Any further attempt requires a separate decision;
+do not rerun automatically.
 
 ## Separate outcomes and expected failures
 
@@ -108,7 +111,8 @@ story, staging, Subscription-rendering or production acceptance.
 
 Summary generation and artifact upload each use `always()` independently. The
 artifact is named `platform-broker-candidate-01-RUN_ID-RUN_ATTEMPT`, retained for
-30 days, and available from the future run's Actions page. After a run, download it
+30 days, and available from a run's Actions page when upload succeeds. This first attempt
+produced no artifact, so no download occurred. For an available artifact, download it
 before expiry, for example:
 
 ```bash

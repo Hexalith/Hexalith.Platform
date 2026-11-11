@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "all retained preflight/publication evidence files except this manifest; no hosted artifacts exist",
+  "scope": "all retained publication and first-attempt evidence files except this manifest; no hosted artifact bytes exist",
   "files": [
     {
       "path": "approved-history-commitlint.txt",
@@ -21,6 +21,11 @@
       "path": "connector-pr-create-refusal.json",
       "bytes": 240,
       "sha256": "f9a1f84576816c7c89c6a8705e767a6a47a2bcc904845e3a23d52029e2047fd4"
+    },
+    {
+      "path": "connector-source-branch-refusal.json",
+      "bytes": 229,
+      "sha256": "77f1fab55549399df9e835aa72b524e0f6fbd4b2d6a8afad425258ebf0c81311"
     },
     {
       "path": "divergence-assessment.json",
@@ -59,8 +64,13 @@
     },
     {
       "path": "execution-status.json",
-      "bytes": 4958,
-      "sha256": "2309eb688066df27c403f9de4194ea289f0210e82701e123a14033e2766d41ce"
+      "bytes": 2523,
+      "sha256": "01420f02901f5112155e82830e18553b59d8dcec1cd0a3522bb36d379f015e67"
+    },
+    {
+      "path": "external-main-publication.json",
+      "bytes": 5643,
+      "sha256": "b301eb04d9f53c16b7c6225336239ebe62b28119d3ac393fb46548a6effa3346"
     },
     {
       "path": "final-approved-history-commitlint.txt",
@@ -98,9 +108,69 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "path": "hosted-admission-preflight.json",
+      "bytes": 917,
+      "sha256": "51ee7f2e6612685b4267ab1f456c1d592bc153b5bfd37c9a12b1f1282ab20ca2"
+    },
+    {
+      "path": "hosted-artifacts.json",
+      "bytes": 370,
+      "sha256": "9b3288717afc185cebc0cd477b2eae480b1dc80268cbbb588ae04d43e44dbae1"
+    },
+    {
+      "path": "hosted-check-runs.json",
+      "bytes": 588,
+      "sha256": "e4d20bdbbec0638188d44e77060983859887bbb58c83d244b0b4535826a4cb65"
+    },
+    {
+      "path": "hosted-jobs.json",
+      "bytes": 551,
+      "sha256": "b324d2db97bdf88dc0856c4a17d2df0a6a617cbc18d145700c3ddb7dddd290ee"
+    },
+    {
+      "path": "hosted-pending-deployments.json",
+      "bytes": 532,
+      "sha256": "b972b33b0ffe2be47f55a8bd387e13068743141211548ff027ec1f3b2dca313e"
+    },
+    {
       "path": "hosted-run-discovery.json",
-      "bytes": 354,
-      "sha256": "c21c952000980d6ea592ab1845a60166e354040abd1eeac9a1c97bc7e0f3dce0"
+      "bytes": 1174,
+      "sha256": "3c4a87a0ab215ca67e7f84da5a2acf7ed4a5a942be9dd1a131af735fb74b0d1a"
+    },
+    {
+      "path": "hosted-run.json",
+      "bytes": 774,
+      "sha256": "4427f145bd454f1a6822e022e590c0cdbef9e8f1af86b19bfe7a75ce0efb86d9"
+    },
+    {
+      "path": "hosted-source-binding-assessment.json",
+      "bytes": 960,
+      "sha256": "4820dbd270160ac3af80297a734780b306121c88cfaa5bea4122691ffd5eaf63"
+    },
+    {
+      "path": "hosted-source-branch-create.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "hosted-source-branch-create.stdout",
+      "bytes": 476,
+      "sha256": "19d7b13aa0eb4eaee9aff598429d8591dd7d3b3b0e3fb92ccb24899206318d30"
+    },
+    {
+      "path": "hosted-source-worktrees.json",
+      "bytes": 316,
+      "sha256": "b76204c2ccd7ac3649ea8253bdc46d80aec94425a5d37d2d671bd09b373de167"
+    },
+    {
+      "path": "independent-main-runs.json",
+      "bytes": 1054,
+      "sha256": "7ea9f5f6b603b21c3681bf2c8c07625b5b105875be5f78ca2ee6afc1e825a887"
+    },
+    {
+      "path": "independent-verifier-assessment.json",
+      "bytes": 1086,
+      "sha256": "c01593752f9e93915e93a65a0909d43d38c7d6e9acbe1fb199c723e6621320d0"
     },
     {
       "path": "integration-commit-message-commitlint.txt",
@@ -149,13 +219,18 @@
     },
     {
       "path": "local-verification.json",
-      "bytes": 1920,
-      "sha256": "b471e474f9b6c5ccad132415bc0bbfa91ae9616283b318d195e667c6c284947a"
+      "bytes": 3695,
+      "sha256": "c4c85c0d98b15eab4a6f38be8f4c8f9bfc902ac8f90e7316c0d04fcc207dc9a9"
     },
     {
       "path": "main-rules.json",
       "bytes": 1010,
       "sha256": "44e91dd9bfefc9835fc950224d6f2a3534fa1c6025c95788d89ccb644bbf1f95"
+    },
+    {
+      "path": "monitoring-observations.json",
+      "bytes": 684,
+      "sha256": "74285914ebb247f6b1870a8332c30dab106c365b6320a0447024f725fe5ac0a7"
     },
     {
       "path": "offline-verification.json",
@@ -208,6 +283,46 @@
       "sha256": "147f439ac090d3de90f28dbac1e44479c0e8d2098c2713307c6234104f65351a"
     },
     {
+      "path": "pre-hosted-status/README.md",
+      "bytes": 2039,
+      "sha256": "e6b15782db5940d5e1d1f4478415e26dfe7f6fc098b5b433cbbc1f1acdda3a9c"
+    },
+    {
+      "path": "pre-hosted-status/execution-status.json",
+      "bytes": 4958,
+      "sha256": "2309eb688066df27c403f9de4194ea289f0210e82701e123a14033e2766d41ce"
+    },
+    {
+      "path": "pre-hosted-status/file-manifest.json",
+      "bytes": 8534,
+      "sha256": "51c9659fd6d682e9cfacdd2546f4de3e9b7d72ca8ec2c2b5cc1991bb927eaed8"
+    },
+    {
+      "path": "pre-hosted-status/hosted-run-discovery.json",
+      "bytes": 354,
+      "sha256": "c21c952000980d6ea592ab1845a60166e354040abd1eeac9a1c97bc7e0f3dce0"
+    },
+    {
+      "path": "pre-hosted-status/local-verification.json",
+      "bytes": 1920,
+      "sha256": "b471e474f9b6c5ccad132415bc0bbfa91ae9616283b318d195e667c6c284947a"
+    },
+    {
+      "path": "pre-hosted-status/pull-request.json",
+      "bytes": 5664,
+      "sha256": "f5011c21163206020ff5a878bfb5771a3457496b3e8d21db24030f4f59552575"
+    },
+    {
+      "path": "pre-hosted-status/story-4-17-broker-candidate-01-hosted.md",
+      "bytes": 6644,
+      "sha256": "939c38ad5100fb317db4f0676696086a3f356a3bfd562a951cadc2cb828b557e"
+    },
+    {
+      "path": "pre-hosted-status/vector-assessment.json",
+      "bytes": 5235,
+      "sha256": "55dba0bd9fce6c11569717005ae5d6f40642e1898718b0fdcb4809a83bac1961"
+    },
+    {
       "path": "publication-candidate-revision.txt",
       "bytes": 41,
       "sha256": "85a1a4157f9362b6cb8c099f477f4eed492b0f4563499b736d0ef11d58ea37b9"
@@ -229,8 +344,8 @@
     },
     {
       "path": "pull-request.json",
-      "bytes": 5664,
-      "sha256": "f5011c21163206020ff5a878bfb5771a3457496b3e8d21db24030f4f59552575"
+      "bytes": 5844,
+      "sha256": "458f0fdc3c10b57d027a17457da29000485a808a6eade5118e1730792cdf0aa1"
     },
     {
       "path": "remote-attributes.patch",
@@ -253,9 +368,29 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "path": "single-dispatch.json",
+      "bytes": 589,
+      "sha256": "7ae1f0aaa9f6d2f3358942c72742462fa2ddc7dadfb6dcef9537388c4101a99f"
+    },
+    {
+      "path": "single-dispatch.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "single-dispatch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "startup-diagnostic.json",
+      "bytes": 879,
+      "sha256": "553d5f809225a600e281991de85d6ef4b2d368baf2754965edb6b3047d1d7e82"
+    },
+    {
       "path": "vector-assessment.json",
-      "bytes": 5235,
-      "sha256": "55dba0bd9fce6c11569717005ae5d6f40642e1898718b0fdcb4809a83bac1961"
+      "bytes": 5188,
+      "sha256": "eb8f28e13c6efd86d56961429fd8e3de79f3741813df7790d1c304edc5483b1f"
     },
     {
       "path": "worktree-preparation.txt",

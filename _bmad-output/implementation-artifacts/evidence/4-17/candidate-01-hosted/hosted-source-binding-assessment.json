@@ -1,0 +1,15 @@
+{
+  "observedUtc": "2026-11-11T20:36:50.871558+00:00",
+  "postMergeMain": "488723fd7efbccbab3bccdae3be4ad79b05a4994",
+  "postMergeMainEventStoreGitlink": "0c7b14856f2b730749caa8a552742a77d4882dc7",
+  "requiredEventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "approvedPublishedExecutionRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+  "sourceBranch": "chore/broker-candidate-01-hosted-94001fad",
+  "decision": "parent approved a uniquely named reversible branch at the already-published exact-input commit, with no new commits or main changes, then one dispatch",
+  "reason": "main moved and changed the fixed EventStore gitlink; documented workflow_dispatch ref must name a branch or tag",
+  "dispatchReferenceDocumentation": "https://docs.github.com/en/enterprise-cloud@latest/rest/actions/workflows",
+  "sourceBranchRules": [],
+  "newCommitsPermitted": false,
+  "mainMutationPermitted": false,
+  "singleDispatchStillUnused": true
+}

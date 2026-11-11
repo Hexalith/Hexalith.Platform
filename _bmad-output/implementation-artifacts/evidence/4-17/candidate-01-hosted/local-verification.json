@@ -1,5 +1,5 @@
 {
-  "observedUtc": "2026-11-11T14:50:30.018583+00:00",
+  "observedUtc": "2026-11-11T20:47:40.576820+00:00",
   "result": "PASS",
   "checks": [
     {
@@ -8,51 +8,74 @@
         "diff",
         "--check"
       ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
       "exitCode": 0
     },
     {
       "argv": [
         "git",
         "show",
-        "HEAD:docs/implementation/story-4-17-broker-candidate-01.json"
+        "13aa784958dd634196c540713b3513e67af458ed:docs/implementation/story-4-17-broker-candidate-01.json"
       ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
       "exitCode": 0
     },
     {
       "argv": [
         "git",
         "show",
-        "HEAD:.github/workflows/broker-candidate-qualification.yml"
+        "13aa784958dd634196c540713b3513e67af458ed:.github/workflows/broker-candidate-qualification.yml"
       ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
       "exitCode": 0
     },
     {
       "argv": [
         "git",
         "show",
-        "HEAD:docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md"
+        "13aa784958dd634196c540713b3513e67af458ed:docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md"
       ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
       "exitCode": 0
     },
     {
       "argv": [
         "git",
-        "-C",
-        "references/Hexalith.EventStore",
+        "diff",
+        "--exit-code",
+        "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+      ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
         "status",
         "--porcelain",
         "--untracked-files=all"
       ],
+      "workingDirectory": "/tmp/platform-broker-hosted-source-bpj_05hk/eventstore",
       "exitCode": 0
     },
     {
       "argv": [
         "git",
-        "-C",
-        "references/Hexalith.EventStore",
         "rev-parse",
         "HEAD"
       ],
+      "workingDirectory": "/tmp/platform-broker-hosted-source-bpj_05hk/eventstore",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "workingDirectory": "/tmp/platform-broker-hosted-source-bpj_05hk/platform",
       "exitCode": 0
     },
     {
@@ -60,17 +83,32 @@
         "node",
         "--input-type=module",
         "-e",
-        "import fs from 'node:fs'; import cp from 'node:child_process'; import assert from 'node:assert/strict'; import yaml from 'js-yaml'; const p='_bmad-output/implementation-artifacts/sprint-status.yaml'; assert.deepEqual(yaml.load(fs.readFileSync(p,'utf8')),yaml.load(cp.execFileSync('git',['show','HEAD:'+p],{encoding:'utf8'}))); console.log('PASS: sprint values unchanged; notes only');"
+        "import fs from 'node:fs'; import cp from 'node:child_process'; import assert from 'node:assert/strict'; import yaml from 'js-yaml'; const p='_bmad-output/implementation-artifacts/sprint-status.yaml'; const now=yaml.load(fs.readFileSync(p,'utf8')); const prior=yaml.load(cp.execFileSync('git',['show','HEAD:'+p],{encoding:'utf8'})); assert.deepEqual(now,prior); assert.equal(now.development_status['4-17-select-and-qualify-the-durable-production-broker'],'in-progress'); console.log('PASS: sprint values unchanged; notes only');"
       ],
+      "workingDirectory": "/home/administrator/projects/hexalith/platform",
       "exitCode": 0
     }
   ],
-  "reportAndHandoffLinksExist": true,
+  "currentReportAndHandoffLinksExist": true,
   "protectedCandidateWorkflowAndDatedDispositionsUnchanged": true,
   "candidateSha256Matches": true,
-  "pinnedEventStoreSourceClean": true,
+  "isolatedPinnedEventStoreSourceClean": true,
+  "actualPublishedRunSourceTreeEqualsReviewedTestedTree": true,
+  "sourceReleaseControlsPreviouslyPassed": {
+    "passed": 82,
+    "failed": 0,
+    "brokerControls": 53,
+    "receipt": "final-integration-source-release-tests.stdout",
+    "notRerunBecauseSourceTreeUnchanged": true
+  },
   "sprintYamlValuesUnchanged": true,
   "platformStory4_17": "in-progress",
   "eventStoreStory3_21": "in-progress",
-  "zeroDispatchesAndNullActualExitsPreserved": true
+  "singleAttemptTerminalReceiptCoherent": true,
+  "zeroJobsArtifactsAndVectorsPreserved": true,
+  "absentActualCaptureVerifierExitsPreservedAsNull": true,
+  "noVerifierRunAgainstMissingEvidence": true,
+  "noAutomaticRetry": true,
+  "noInfrastructureExecutedLocally": true,
+  "rootChangesAndNewerGitlinksPreserved": true
 }

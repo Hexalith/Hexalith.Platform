@@ -1,38 +1,34 @@
 {
-  "observedUtc": "2026-11-11T14:49:07.064007+00:00",
-  "status": "blocked-before-dispatch",
-  "reason": "main rules require an approving pull-request review and code-owner review; no bypass permitted",
+  "observedUtc": "2026-11-11T20:44:15.886454+00:00",
+  "status": "completed-hosted-startup-failure-evidence-incomplete",
+  "runConclusion": "startup_failure",
+  "reason": "GitHub terminated the accepted attempt before job allocation with an unexpected-error annotation",
   "pullRequest": "https://github.com/Hexalith/Hexalith.Platform/pull/40",
-  "reviewDecision": "REVIEW_REQUIRED",
-  "mergeable": "MERGEABLE",
-  "mergeStateStatus": "BLOCKED",
-  "reviewBranchRevision": "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
-  "defaultBranchRevision": "3ad2f29ae50858ba665499568623b557725b9d93",
-  "workflowOnObservedDefaultBranch": false,
-  "defaultBranchWorkflowCheck": {
-    "argv": [
-      "git",
-      "cat-file",
-      "-e",
-      "3ad2f29ae50858ba665499568623b557725b9d93:.github/workflows/broker-candidate-qualification.yml"
-    ],
-    "exitCode": 128,
-    "expectedExitCode": 128
-  },
-  "agentDispatchCount": 0,
-  "actualExecutionRevision": null,
-  "runId": null,
-  "runAttempt": null,
+  "publication": "externally-merged-observed",
+  "publicationMergeCommit": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+  "publicationReviewEvidence": "reviews API empty; no review or external bypass evidence inferred",
+  "agentMerged": false,
+  "agentBypassed": false,
+  "agentDispatchCount": 1,
+  "actualExecutionRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+  "executionRef": "refs/heads/chore/broker-candidate-01-hosted-94001fad",
+  "declaredUnauthenticatedPlatformRevision": "6d422033b959c249c149a4cb3785704e9eebe03c",
+  "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "runId": 43097161643,
+  "runAttempt": 1,
+  "runUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43097161643",
   "jobIds": [],
+  "allocatedJobCount": 0,
   "artifact": null,
   "artifactDownload": {
-    "status": "not-applicable-no-run",
+    "status": "unavailable-no-artifacts",
+    "expectedName": "platform-broker-candidate-01-43097161643-1",
     "archivePathInspection": null,
     "bytes": null,
     "sha256": null
   },
   "capture": {
-    "status": "not-executed",
+    "status": "not-executed-no-job",
     "exitCode": null,
     "argv": null
   },
@@ -52,96 +48,29 @@
     "argv": null
   },
   "cleanup": {
-    "status": "not-assessed-no-run",
+    "status": "unobserved-no-job",
     "receipt": null,
     "verified": false
   },
   "artifactDelivery": {
-    "status": "not-attempted-no-run",
+    "status": "unavailable-no-artifacts",
     "verified": false
   },
+  "expectedVectorCount": 24,
+  "observedVectorCount": 0,
   "boundedTechnicalSuccess": false,
-  "selectedBroker": null,
+  "assessmentComplete": false,
   "productionEligibility": "FAIL",
+  "selectedBroker": null,
   "platformStory4_17": "in-progress",
   "eventStoreStory3_21": "in-progress",
+  "automaticRetryPermitted": false,
+  "additionalExecutionRequiresNewDecision": true,
   "historicalRejectedGuarantees": [
     "rabbitmq/secret-rotation",
     "rabbitmq/cancellation-backpressure",
     "rabbitmq/missing-bindings",
     "kafka/secret-rotation",
     "kafka/cancellation-backpressure"
-  ],
-  "independentPullRequestChecks": [
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (3.130.0)",
-      "status": "COMPLETED",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447095"
-    },
-    {
-      "workflowName": "Platform tuple CI preflight",
-      "name": "resolve-sources",
-      "status": "COMPLETED",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595446311"
-    },
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (3.130.1)",
-      "status": "COMPLETED",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447071"
-    },
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (3.130.2)",
-      "status": "COMPLETED",
-      "conclusion": "SUCCESS",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595446939"
-    },
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (3.132.1)",
-      "status": "IN_PROGRESS",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447317"
-    },
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (4.1.0)",
-      "status": "IN_PROGRESS",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447229"
-    },
-    {
-      "workflowName": "Catalog builder consumer binding",
-      "name": "consumer-binding (4.2.0)",
-      "status": "IN_PROGRESS",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447155"
-    },
-    {
-      "workflowName": "Platform tuple CI preflight",
-      "name": "tuple",
-      "status": "IN_PROGRESS",
-      "conclusion": "",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865474"
-    },
-    {
-      "workflowName": "Platform tuple CI preflight",
-      "name": "Same changed source against the legacy public tuple",
-      "status": "COMPLETED",
-      "conclusion": "FAILURE",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865527"
-    },
-    {
-      "workflowName": "Platform tuple CI preflight",
-      "name": "Same changed source against the pre-extension public tuple",
-      "status": "COMPLETED",
-      "conclusion": "FAILURE",
-      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865450"
-    }
   ]
 }

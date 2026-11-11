@@ -1,4 +1,7 @@
 {
+  "observationKind": "historical-pre-hosted-publication-snapshot",
+  "originalSnapshot": "pre-hosted-status/pull-request.json",
+  "supersededBy": "external-main-publication.json",
   "baseRefName": "main",
   "body": "Publish the approved main history containing Story 2.8 and the prepared broker candidate\n01 configuration and manual workflow. Preserve the independently published Keycloak\nworkload binding history through a forward merge.\n\nCandidate SHA-256 remains\n`472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc`; EventStore remains\npinned to `02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213`. The explicit profile, both brokers\nand all 24 vectors are unchanged.\n\nVerification: all 82 source-release controls passed, including 53 executable broker\nworkflow controls; exact candidate bytes and clean pinned EventStore source were checked.\n\nMain requires an approving review and code-owner review. This pull request awaits those\ncontrols; no bypass or live candidate dispatch is authorized before publication through\nthem. After permitted main publication, the approved scope is exactly one manual candidate\nexecution and independent assessment of its retained evidence. No automatic retry or\nbroker selection is permitted.\n\nPublication may trigger the existing tuple/catalog CI and gated automatic source\ntag/GitHub release. Their gates remain unchanged.\n",
   "headRefName": "chore/broker-candidate-01-publication",

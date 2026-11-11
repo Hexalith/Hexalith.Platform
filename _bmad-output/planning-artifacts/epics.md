@@ -2444,12 +2444,17 @@ The [candidate CI](../../docs/implementation/story-4-17-broker-candidate-01-ci.m
 implements that scope with offline workflow controls. On 2026-11-11 the owner
 approved publication of the current main history, including Story 2.8, and exactly
 one hosted attempt. [PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40)
-preserves independent main advances through ordinary forward integration and
-awaits required approving/code-owner review. No default-branch publication or broker
-dispatch occurred; the approved attempt remains unused. The
-[hosted status and retained evidence](../../docs/implementation/story-4-17-broker-candidate-01-hosted.md)
-record separate source identities, null execution/verifier exits and 0/24 observed
-vectors. Main integration, the single dispatch and packet assessment remain open.
+was observed merged externally at `94001fad925fdf7fa03a90b507b8f8e19074f9e3`;
+no review or external bypass evidence is inferred from its empty reviews API.
+After a later main advance changed the fixed EventStore gitlink, assessed binding
+of a dedicated source branch preserved the already-published exact-input source.
+The single [hosted attempt 43097161643](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43097161643)
+ended in `startup_failure` before job allocation, with GitHub's unexpected-error
+annotation. The [hosted report and retained evidence](../../docs/implementation/story-4-17-broker-candidate-01-hosted.md)
+record actual run SHA/ref, zero jobs/artifacts, null capture/verifier exits and 0/24
+observed vectors. The approved attempt is consumed; no retry occurred. Packet,
+cleanup and delivery assessment remain incomplete. A further attempt requires a
+separate decision after diagnosis; no automatic retry is authorized.
 All five historical guarantees remain **REJECTED**. Broader Kafka causality and
 broker diagnosis remain open; this experiment supplies no broker selection,
 exception, staging or production qualification. The selection/profile-inventory,
