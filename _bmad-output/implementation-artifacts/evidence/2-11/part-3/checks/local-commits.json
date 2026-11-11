@@ -1,0 +1,29 @@
+[
+  {
+    "repository": "references/Hexalith.Builds",
+    "commit": "bfda07eea7dcc8ef0a6da0fa14643aa70eebec78",
+    "message": "feat: support attached lifecycle prerequisites",
+    "pushPerformed": false
+  },
+  {
+    "repository": "references/Hexalith.EventStore",
+    "commit": "04e56e1c1d4657d6fbdea0aa03a5f434c0fe51e5",
+    "message": "feat: support attached lifecycle fixtures",
+    "pushPerformed": false
+  },
+  {
+    "repository": "references/Hexalith.Parties",
+    "commit": "e35b8c1eff0184c95444af9a01a8beba78f87110",
+    "message": "feat: complete attached lifecycle caller",
+    "pushPerformed": false,
+    "whitespaceCheck": [
+      "git",
+      "-c",
+      "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "whitespacePolicy": ".editorconfig requires CRLF; check preserves all default space rules."
+  }
+]

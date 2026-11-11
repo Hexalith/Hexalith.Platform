@@ -1,0 +1,5 @@
+$ python3 -B scripts/render-platform-declaration.py --check
+exitCode=0
+
+$ actionlint .github/workflows/ci-lifecycle-qualification.yml
+exitCode=0

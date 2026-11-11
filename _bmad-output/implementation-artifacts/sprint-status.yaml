@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-10
+last_updated: 2026-11-11
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -74,7 +74,8 @@ development_status:
   # 2026-11-10: part 2 code review pass 2 applied 15 patches in the Builds worktree as Builds 4ce510b2 on feat/2-11-lifecycle-reporting (pushed); 298/298 affected, full assembly 0 failures.
   # 2026-11-10: part 2 review pass 3 applied all 5 patches in the Builds worktree (uncommitted); 339/339 affected C# and 70/70 Python passed; part 3 remains open.
   # 2026-11-11: review pass 3 delivered as Builds 7461fb05 on feat/2-11-lifecycle-reporting (pushed); source hashes match verification; part 3 remains open.
-  2-11-supervise-attached-runs-and-report-the-missing-lifecycle-pr: in-progress
+  # 2026-11-11: part 3 source implementation and independent review complete; 427 final controls pass. Compatible releases and actual Story 2.10 qualification remain separate.
+  2-11-supervise-attached-runs-and-report-the-missing-lifecycle-pr: review
   epic-2-retrospective: optional
 
   epic-3: in-progress

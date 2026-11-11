@@ -1,0 +1,12 @@
+$ dotnet tests/Hexalith.EventStore.Testing.Tests/bin/Debug/net10.0/Hexalith.EventStore.Testing.Tests.dll -class Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests -xml /tmp/bmad-211-final-eventstore.xml
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 10.0.14)
+  Discovering: Hexalith.EventStore.Testing.Tests
+  Discovered:  Hexalith.EventStore.Testing.Tests
+  Starting:    Hexalith.EventStore.Testing.Tests
+  Finished:    Hexalith.EventStore.Testing.Tests (ID = '5f71c5bc93185d8eabd98b65d3974169b96d673367fb52d3452458645721d8a1')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.EventStore.Testing.Tests  Total: 62, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 1.366s
+
+exitCode=0
