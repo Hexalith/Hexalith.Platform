@@ -2,7 +2,7 @@
 title: '2.8 Run CI integration on disposable runners with guaranteed cleanup'
 type: 'feature'
 created: '2026-10-31'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '03a099bba258c37a8f16c8b2e842ae842b1ad6d6'
@@ -468,6 +468,18 @@ Read this active spec plus its frontmatter contexts, inspect the actual workspac
 - **Known-bad states:** writing proof output inside any checkout; changing the module manifest, suites or tests; treating the deferred L gate as satisfied before it runs.
 - **KEEP:** everything above, including runs 42593229291 and 42593223538 as recorded failures before cancellation.
 
+### Iteration 3 owner decision — 2026-11-11 (G1 timeout classification)
+
+- **Trigger:** iteration-3 review AA3-1. PC-1 interrupts the tool with SIGINT on a helper timeout so that withdrawal precedes every composed stop. The tool treats that SIGINT as a cancellation: it records the owner `cancelled` and ends active holds as `ci-job-cancelled`.
+- **Owner decision:** accept it as owner cancellation by the helper. This amends PA-1's second clause.
+  - A helper timeout still returns 124, and the helper's `execution.json` records `timedOut: true, cancelled: false`.
+  - The durable owner record and the hold end reasons are `cancelled` and `ci-job-cancelled`.
+  - No runtime change. `domain-ci-v2.md` and the contract record the rule, and Story 2.10 reads `execution.json` to tell a helper timeout from a job cancellation.
+- **Rejected alternatives:**
+  - a tool-owned deadline (new CLI surface and a Builds release);
+  - reverting to SIGTERM, which reintroduces BHB2-1.
+- **KEEP:** everything in the loop-2 KEEP lists. Exit 124 and the helper's `timedOut` classification stay as they are. Withdrawal must still precede every composed stop except the limits recorded under G5.
+
 ## Review Triage Log
 
 Step 04, iteration 0, 2026-11-09. Scope: the Story 2.8 active code since the original baselines, in three diffs. Area 1 is Builds runtime/CLI/tests (238 KB), Area 2 is Builds CI workflows/helper/provenance/docs (267 KB), and Area 3 is Platform composition plus the Parties lifecycle controller through `926c1c3f` (362 KB). Historical evidence and unrelated incoming work were audited mechanically under the approved correction, not reviewed. Layers: blind hunter (BH), edge-case hunter (ECH) and verification gap (VG), one of each per area. Claims were verified read-only against Builds `27145e52`, Platform `7fbe852f` and Parties `926c1c3f`.
@@ -829,3 +841,200 @@ The orchestrator re-verified at those revisions, in fresh worktrees:
 | Platform composition tests | compile with 0 errors |
 
 PC-15 (the PB-9 test) still executes only in Platform L/M delivery, which will also prove that its image-probe check runs before the first resource is added. Step 04 is complete.
+
+### Iteration 3, 2026-11-11 (PC-1 to PC-19 fix-delta review)
+
+Scope: only the iteration-2 patch delta.
+- Builds `bde7fd4f..194e87da`: the helper, its tests, the validator, `CiRunLifecycleTests.cs` and `domain-ci-v2.md`. This delta is merged into `main` by `b5eb25c6`.
+- Parties `4c0167b8..11053e56`, now on `main`.
+- Platform `5cf3e8cb`: `PlatformAppModelTests.cs`, `test-environment-v1.md` and `deferred-work.md`.
+- Excluded: the later Story 2.11 helper edits (Builds `f118c244`).
+
+The combined diff is 640 lines (45 KB). Four layers ran: blind hunter (BH3), edge-case hunter (ECH3), verification gap (VG3) and acceptance auditor (AA3). The orchestrator verified claims read-only against Builds `194e87da`, Parties `11053e56` and Platform `HEAD`. It also ran two scratch-copy checks:
+- **PC-18 mutation:** removing `and not timed` now fails its test.
+- **Regex comparison:** the current `SECRET_TEXT` against the patch proposed in G4.
+
+Verdict routes: **D** (decision needed), **P** (patch), **RJ** (reject).
+
+| ID | Claim | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| AA3-1 | Helper timeout is now recorded as a cancellation | medium | D: G1 | On SIGINT, `ModuleCommandExecutionService.cs:1400-1412` sets `jobCancelled`. It then calls `RecordOwnerCancellationAsync`, which records `Cancelled` (`CompositionEngine.cs:616`), and withdraws holds as `ci-job-cancelled`. The later exact down also selects `ci-job-cancelled` (`:1428`). This contradicts PA-1 ("not finalized as `ci-job-cancelled`") and the contract (`test-environment-v1.md:362`, "cancelled only for an actual cancellation"). Only `execution.json` (`timedOut`) and exit 124 still say "timeout". |
+| BH3-6 | `exact_down`'s `except OSError` lost its only test | medium | P: G2 | The rewritten missing-tool test empties `PATH`, so `verify_tool` fails first. Mutation (VG3): replacing the branch with `return 0` keeps 68/68 green. |
+| AA3-2 | Same as BH3-6 | medium | P: G2 | Same mutation evidence. |
+| ECH3-15 | Same as BH3-6 (deletion form) | medium | P: G2 | Same mutation evidence. |
+| VG3-1 | Same as BH3-6 (pre-verified gap) | medium | P: G2 | Same mutation evidence. |
+| BH3-7 | No test kills a tool that ignores SIGINT after a helper timeout | medium | P: G3 | Both timeout fakes exit on the first SIGINT, and no test patches `TIMEOUT_STOP_SECONDS`. Mutation (VG3): an unbounded `child.wait()` keeps 68/68 green. |
+| VG3-2 | Same as BH3-7 | medium | P: G3 | Same mutation evidence. |
+| BH3-1 | Keyword-first camelCase keys (`secretKey`, `passwordHash`, `tokenValue`) are not redacted | medium | P: G4 | Reproduced: the case-insensitive `(?![a-z])` rejects a following capital. Values shorter than 40 characters survive in retained excerpts. |
+| AA3-6 | Same as BH3-1 | medium | P: G4 | Same reproduction. |
+| ECH3-9 | Same as BH3-1 | medium | P: G4 | Same reproduction. |
+| ECH3-16 | The commit claims camelCase keys are redacted | medium | P: G4 | Same reproduction. |
+| VG3-O1 | Dropping the left boundary redacts `CancellationToken` stack frames | low | P: G4 | Reproduced: `CancellationToken cancellationToken) in /src/CompositionEngine.cs:line 626` becomes `Cancellation<redacted>`, which drops file and line. Same root cause as BH3-1: the boundaries cannot see camelCase. |
+| AA3-3 | Docs say only the runner's kill can precede withdrawal | medium | P: G5 | The delta itself says SIGTERM ends the tool before withdrawal (`run_module_integration.py:954`). Yet on cancellation the helper sends SIGTERM at 6 s (at once on a second runner signal), kills at 8.5 s, and kills at 120 s after a timeout. `cancellation_settled` (`:929`) and `test-environment-v1.md:377-381` claim only the runner's kill can precede withdrawal. BS-4 requires the limit to be recorded honestly. |
+| BH3-3 | `finalize`'s `verify_tool` guard catches fewer errors than the module | low | P: G6 | `document.get` on a non-object manifest raises `AttributeError`, which escapes with no `tool-unavailable` record and no retention. Elsewhere the module catches the six-type tuple. The mislabel half (a pin mismatch recorded as `tool-unavailable`) is rejected: it needs a tool change mid-job, and a new status adds a branch. |
+| AA3-7 | Same as BH3-3 | low | P: G6 | Same evidence. |
+| ECH3-3 | Same as BH3-3 | low | P: G6 | Same evidence. |
+| BH3-4 | `run_down`'s second timeout drops stderr it already read | low | P: G7 | Reproduced on Python 3.14.4: the second `TimeoutExpired.stderr` still holds `b'down stalled: lock held\n'`, but the code replaces it with `b""`. The zombie and pipe part is negligible, because the helper exits soon after. |
+| ECH3-5 | Same as BH3-4 | low | P: G7 | Same reproduction. |
+| BH3-5 | `run_down` docstring is stale, and the lock guarantee no longer holds | low | P: G8 | The docstring at `:771` still says "kills that whole session". The lock half is false: `provisioning.lock` is the tool's own .NET `FileStream` lock (`CompositionEngine.cs:198`), opened close-on-exec. The muxer and the tool are in the killed group, so no exec'd descendant can hold it. |
+| AA3-9 | Same docstring as BH3-5; PC-15 not executed; spec status | low | P: G8 | Docstring as above. PC-15 is already a recorded L/M gate. Correcting the spec status would edit the spec, so that part is rejected. |
+| BH3-11 | Contract's CI recovery section not updated for this delta | low | P: G9 | `test-environment-v1.md:386-390` lacks the post-sweep receipt re-check, `tool-unavailable` and the timeout SIGINT, all of which `domain-ci-v2.md` now describes. |
+| BH3-12 | `domain-ci-v2.md` controls list lacks the three new controls | low | P: G9 | `:255-264` lists none of: timeout-before-composed-stop, muxer-orphan late receipt, timed-out down with an escaped descendant. The "stray paragraph" half is false: Markdown joins lines `263-264` into one sentence. |
+| AA3-4 | Contract still says the helper never signals composed processes | low | P: G9 | The sentence at `:377` sits next to "Without a receipt, it stops every other recorded-session process". This is PC-14's fix missing from the Platform copy. |
+| BH3-10 | PC-16 `withdrawn` text conflicts with the runtime | low | P: G10 | Owner cancellation records `cancelled`, so a later attach is refused as `owner-cancelled`, not `owner-withdrawn` (`CompositionAttachAdmission.cs:342`). The text also omits expiry, which the policy lists as a cause of `withdrawn`. |
+| AA3-5 | Same as BH3-10 | low | P: G10 | Same evidence. |
+| ECH3-18 | Same as BH3-10 | low | P: G10 | Same evidence. |
+| BH3-8 | PC-9 test effectively asserts the step finishes in under 5 s | low | P: G11 | With `started = now - 300` the job term binds and falls one-for-one with wall time, so `latest - earliest` is the step's duration. The bracket alone already pins the exact value. |
+| ECH3-14 | Same as BH3-8 | low | P: G11 | Same evidence. |
+| ECH3-10 | 3 s helper timeout can fire before the fake installs its SIGINT handler | low | P: G12 | The `muxer-apphost` fake starts four Python processes, then installs its handler (`:159`). Under load, a default SIGINT would kill it before withdrawal. |
+| ECH3-11 | The new tests read `int()` from a marker that may still be empty | low | P: G13 | `wait_for` checks only that the path exists (`:282-284`), and `write_text` creates the file before it writes. |
+| ECH3-13 | The descendant test can pass without exercising the new branch | low | P: G13 | Nothing asserts the escaped descendant was spawned. An empty marker in `finally` raises `ValueError`. Same root cause as ECH3-11: marker synchronization. |
+| BH3-15 | PB-9 test no longer ties the probe to the bound servers | low | P: G14 | Probes iterate the servers after `PlatformPackageCatalogQualification.Bind` (`PlatformAppModel.cs:149-166`), but the test does not check the probed image. The sibling `PlatformPublishedPartiesMemoriesTransportTests.cs:46` asserts `PublishedImages.ShouldContain(...)`. The `daprd.exe` half is false: these package tests run on Linux, and the sibling uses `daprd`. |
+| BH3-16 | Failed-cleanup-record test: misnamed helper, final evidence unchecked | low | P: G15 | `first_write_fails` now fails write 1 or 3. For write 3, nothing asserts that `cleanup-1.json` is left `completed` and unverified. |
+| BH3-17 | Late-orphan subtest does not check the down's run id | low | P: G16 | `down.assert_called_once()` alone does not prove the exact down used the late receipt's owner. |
+| BH3-2 | No-receipt sweep can signal composed processes of a receipt written late | low | RJ | Reachable only if the muxer died first and the tool writes its receipt and launches composed processes between the check and the first SIGINT. No attachment can be active before readiness. The fix re-evaluates the selection every round. |
+| AA3-8 | Same as BH3-2 | low | RJ | Same reasoning. |
+| ECH3-1 | Same as BH3-2 | low | RJ | Same reasoning. |
+| ECH3-2 | A partial or foreign late receipt raises without a record | false | RJ | Carried ECHB2-15: refusing a malformed or foreign receipt before destructive commands is documented, and the result is non-success. |
+| ECH3-4 | A descendant that escaped the group keeps `provisioning.lock` | false | RJ | The lock is the tool's close-on-exec `FileStream` (see BH3-5). |
+| ECH3-17 | Doc: "no orphaned down keeps `provisioning.lock`" | false | RJ | Same as ECH3-4. |
+| ECH3-6 | Muxer exits before the tool finishes its SIGINT withdrawal | maybe-false | RJ | Low if true: withdrawal takes under 1 s, and the finalizer sweep starts with SIGINT and allows 5 s. Settle by confirming that the dotnet CLI muxer ignores SIGINT while its child runs, as the `muxer-apphost` fake models. |
+| ECH3-7 | Runner cancellation during the 120 s timeout stop | low | RJ | The handler still forwards: the second runner signal sends SIGTERM at once and the tool exits. The fix adds a loop branch for a window of a few seconds. |
+| ECH3-8 | A suite stop timeout above 120 s is cut | low | RJ | Withdrawal comes before the tool's stops, and the exact down follows the kill. |
+| ECH3-12 | Forked test child leaks if an assertion fails | low | RJ | Only on a failing run; the fix adds cleanup code. |
+| BH3-9 | `CancelAfter` 60 s no longer guards the 5 s production allowance | low | RJ | PC-10 deliberately traded a load-sensitive wall-clock check for stability. The functional assertions (status `Failed`, `owner-failed` refusal) remain. A deterministic guard would be a redesign. |
+| BH3-13 | Mocking all of `Q.HELPER` loses checking | false | RJ | The previous patch asserted nothing about `retain_artifacts` either. `partial_startup` uses only that attribute (AA3). |
+| BH3-14 | Reader tests lack leak, pre-existing-path and symlink cases | low | RJ | The step prints nothing. `mkdir` and `O_EXCL` fail closed. `RUNNER_TEMP` is a real path on hosted runners. These would be new cases beyond PC-19. |
+| OBS3-1 | `FINALIZE_RESERVE_SECONDS` omits the new 10 s post-kill wait and the third termination pass | low | RJ | The 30 s margin absorbs both: the finalizer's worst case is 235 s against a 240 s step. A fix would change the derived step and finalizer budgets (the same class as BHB2-6). |
+
+**Outcome:** 1 decision-needed group (G1), 15 patch groups (G2 to G16) and no defers. 14 findings are rejected, plus four partial claims inside kept findings (listed below).
+
+### Review Findings
+
+- [x] [Review][Decision] G1 (resolved 2026-11-11: accept as owner cancellation; see the iteration-3 owner decision): A helper timeout is now recorded as a cancellation.
+  - PC-1 sends SIGINT on a helper timeout so that withdrawal comes before any composed stop.
+  - The tool treats SIGINT as a job cancellation: the owner is recorded `cancelled` and holds end as `ci-job-cancelled`. This contradicts PA-1 and `test-environment-v1.md:362`.
+  - The options are:
+    - accept and document it as owner cancellation by the helper (this amends the PA-1 wording);
+    - have the tool own the deadline, recording a failed outcome and `ci-job-completed` before it stops;
+    - revert to SIGTERM, which reintroduces BHB2-1.
+- [x] [Review][Patch] G2: Restore an `exact_down` launch-failure subtest. Patch `verify_tool`, make `run_down` raise `FileNotFoundError`, then assert exit 1, a `tool-unavailable` record that is unverified, and a retained `test-result.json` [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1407]
+- [x] [Review][Patch] G3: Test the helper-timeout kill. Use `ignore-all` with `TIMEOUT_STOP_SECONDS` patched to about 1 s, then assert 124, `processExitCode == -SIGKILL` and only SIGINT in the logged signals [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:937]
+- [x] [Review][Patch] G4: Make `SECRET_TEXT` camelCase-aware: `(?i)(?<!cancellation)(…)s?(?-i:(?![a-z]))[^\n]*`. Extend the test with keyword-first keys and a `CancellationToken` stack frame that must keep its file and line [Hexalith.Builds/Github/run-module-integration/run_module_integration.py:70]
+- [x] [Review][Patch] G5: State the withdrawal-ordering limit honestly. The helper's SIGTERM at 6 s (or at a second runner signal), its kill at 8.5 s and the 120 s timeout kill can end a tool that has not yet recorded withdrawal. Fix the `cancellation_settled` comment, `domain-ci-v2.md` and the contract [Hexalith.Builds/Github/run-module-integration/run_module_integration.py:929]
+- [x] [Review][Patch] G6: Catch the module's full exception tuple around `verify_tool` in `finalize` [Hexalith.Builds/Github/run-module-integration/run_module_integration.py:749]
+- [x] [Review][Patch] G7: Keep the accumulated `stdout`/`stderr` of the second `TimeoutExpired` in `run_down` [Hexalith.Builds/Github/run-module-integration/run_module_integration.py:788]
+- [x] [Review][Patch] G8: Fix the `run_down` docstring to say "kills its process group" [Hexalith.Builds/Github/run-module-integration/run_module_integration.py:771]
+- [x] [Review][Patch] G9: Sync the docs with this delta.
+  - Contract: the post-sweep receipt re-check, `tool-unavailable` and the timeout SIGINT, and drop "never signalled by the helper".
+  - `domain-ci-v2.md`: list the three new controls.
+
+  [Hexalith.Platform/docs/contracts/test-environment-v1.md:377]
+- [x] [Review][Patch] G10: Correct the `withdrawn` sentence.
+  - `withdrawn` ends attached runs and holds on expiry or environment withdrawal.
+  - An attach to an owner whose environment was withdrawn by owner cancellation is refused as `owner-cancelled`.
+  - `owner-withdrawn` maps an owner terminal recorded as `withdrawn`.
+
+  [Hexalith.Platform/docs/contracts/test-environment-v1.md:411]
+- [x] [Review][Patch] G11: Delete the `assertLess(latest - earliest, 5)` timing assertion [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1474]
+- [x] [Review][Patch] G12: Raise the new timeout test's helper timeout from 3 s to 10 s [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1488]
+- [x] [Review][Patch] G13: Wait for non-empty marker content. Assert the escaped descendant was spawned, and guard `int()` in `finally` [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1502]
+- [x] [Review][Patch] G14: Assert that each probed image is a published catalog image, as the sibling transport test does [Hexalith.Platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:620]
+- [x] [Review][Patch] G15: Rename `first_write_fails`. For the third-write case, assert that `cleanup-1.json` is left `completed` with `verified: false` [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1382]
+- [x] [Review][Patch] G16: In the late-orphan subtest, assert that the down's `--run-id` is the late receipt's owner run [Hexalith.Builds/Github/run-module-integration/tests/test_run_module_integration.py:1502]
+
+**Rejected (appendix):**
+- BH3-2, AA3-8, ECH3-1 (low): narrow pre-readiness race; the fix re-evaluates every round.
+- ECH3-2 (false): documented fail-closed refusal (ECHB2-15).
+- ECH3-4, ECH3-17 (false): the lock descriptor is close-on-exec and held by the killed tool.
+- ECH3-6 (maybe-false, low if true): settle the muxer's SIGINT handling.
+- ECH3-7 (low): the handler still forwards SIGTERM; a narrow window.
+- ECH3-8 (low): withdrawal comes first and the exact down follows.
+- ECH3-12 (low): failing-run hygiene only.
+- BH3-9 (low): PC-10's deliberate stability trade.
+- BH3-13 (false): nothing was asserted before.
+- BH3-14 (low): fail-closed and beyond PC-19.
+- OBS3-1 (low): absorbed by the margin; the fix changes budgets.
+- The `tool-unavailable` mislabel half of BH3-3, the stray-paragraph half of BH3-12, the `daprd.exe` half of BH3-15 and the spec-status half of AA3-9: rejected as noted in their rows.
+
+**Patches applied, 2026-11-11:** G1 was resolved by owner decision (doc only), and G2 to G16 were all applied. Nothing has been pushed, merged or released.
+- **Builds:** commit `f8dba239` (commitlint-validated) on local branch `fix/2-8-review-iter3-fixes`, cut from `main` `e588605c` (which contains `194e87da`), unpushed:
+  - `run_module_integration.py`: G4, G5 comment, G6, G7, G8 and the G1 docstring.
+  - `test_run_module_integration.py`: G2, G3, G4, G11, G12, G13, G15 and G16, plus controls for G6 and G7.
+  - `domain-ci-v2.md`: G1, G5 and G9.
+- **Platform working tree:** `test-environment-v1.md` (G1, G5, G9, G10) and `PlatformAppModelTests.cs` (G14).
+
+| Check | Result |
+| --- | --- |
+| Builds helper suite | 71/71 |
+| Builds governed provenance | passed |
+| Workflow validator at current `main` | legacy 312 and v2 206 assertions (the restructured validator; no validator file changed) |
+| Platform composition tests (`-nodeReuse:false`) | compile with 0 warnings and 0 errors, fresh DLL |
+| xUnit | not rerun; no C# source changed |
+
+The G2, G3 (kill dropped, and SIGTERM on timeout), G4 (iteration-2 regex), G6 and G7 mutants each fail at least one test; G2 and G6 do so through the missing-tool test. G14 runs only in Platform L/M delivery, like PC-15.
+
+### Demonstrated owner-source gate blocker — 2026-11-11 continuation
+
+Builds draft [PR #181](https://github.com/Hexalith/Hexalith.Builds/pull/181) carries exact iteration-3 commit `f8dba23982fb1599a37c543b41439dce52c0dd19`. Its branch push and PR creation are within the existing hosted-proof authorization; no merge, publication or root pin change occurred. The GitHub connector refused PR creation with HTTP 403; the existing repository CLI connection created it after confirming that no PR already existed.
+
+The owner-source gate has a demonstrated prerequisite failure already present at base `e588605ccf2c6577a2490e1a3fc512f8ffdc3960`: Builds CI run `43006363999`, job `130474898734`, fails four `SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync` rows. `SelectedRoutingCatalogSnapshot.ValidateDescriptor` now requires `ownerRunId`, `runId` and `role`, but that test's `CreateDescriptor` writes only `environmentId`. The positive rows (`valid`, `near-limit-valid`, `schema-properties`) and the cancellation row fail before reaching their intended assertions. This is an actual owner delivery-gate blocker, not a new release or enrollment prerequisite.
+
+- [x] In Builds `test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs`, supply the real plan's owner/run identities and the `owner` role in `CreateDescriptor`, preserving every mutation and refusal assertion. Keep production validation unchanged. Run the existing complete class using resource-free filesystem fixtures only; verify all positive, cancellation and negative rows execute and pass. Commit the minimal fixture correction on the same review branch with the locked commitlint policy, and retain the original failed source outcome.
+- [x] Inspect the resulting PR source checks at their exact head. Final Platform tuple execution and the patched-release lifecycle gate remain open; no merge/publication or main pin-change authority is added.
+
+### Implementation continuation — 2026-11-11 focused verification and hosted selection
+
+The [local verification receipt](evidence/2-8/verification-20261111/results.json) records exact sources, commands, results, file hashes and remaining gates. The implementation role made no remote changes. All 17 root gitlinks are preserved, and these checks provide no hosted, candidate or tool-acceptance credit.
+
+- Builds fixture correction: `b74b467ac5ce5d9f9fc440f43e279b7093b539de`, parent `f8dba23982fb1599a37c543b41439dce52c0dd19`, on `fix/2-8-review-iter3-fixes`. Only `CreateDescriptor` changes: `ownerRunId` and `runId` use `plan.RunId`, and `role` is `owner`. Production validation and every existing mutation/refusal assertion are unchanged. Locked commitlint 21.2.4 passed before the commit. The original failed source outcome above remains failed.
+- The [complete routing-snapshot class](evidence/2-8/verification-20261111/routing-snapshot-tests.xml) passed **34/34**, with zero failures, errors, skips or not-run cases: all 32 theory rows and both facts, including the three positive rows and cancellation. The class uses temporary files, directories, symlinks, JSON, cryptographic values and cancellation only. Its `Process` is never started; the readiness URI is never contacted; `ArchiveSelectedAsync` writes snapshots only.
+- PA-15/PB-9/PC-15/G14 now has an executable hosted selection. The current workflow actually runs `eng/tuple-ci-sdk42-current-suites.json`, so the required package-binding method is added there. Its exact required total increases **456 → 457**; `eng/run_tuple_ci.py` and the existing suite-selection control agree. All previous cases and all historical/other profiles remain unchanged. The control also refuses a same-count substitution of the required method. This enrolls the test; its actual execution remains a Platform L/M gate.
+
+| Focused check | Observed result |
+| --- | --- |
+| Builds helper at `f8dba239` | 71/71 |
+| Builds governed provenance | 90 tests and 105 subtests passed |
+| Builds governed-release controls | 34 tests and 270 subtests passed |
+| Workflow validator | legacy 312 and v2 206 assertions passed |
+| Tuple suite-selection controls | 8/8 |
+| Real-legacy/pre-extension source fixture controls | 20/20 and 9/9 |
+| Builds module-test project compilation | 0 warnings, 0 errors |
+| Complete routing-snapshot class | 34/34 |
+| Platform package-mode Release compilation | 0 warnings, 0 errors |
+
+The initial Platform Debug `--no-restore` compilation failed with CS1704 because cached source assets mixed EventStore 4.1.0 and 4.2.0 in Tenants.Contracts and Memories.DomainService. Its [original log](evidence/2-8/verification-20261111/platform-composition-build.log) is retained. The focused package-mode Release fallback then compiled the composition test project successfully; it changes no dependency or gate and grants compilation credit only.
+
+The exact-head PR source checks, normal review/delivery, actual package-binding test execution, final current/real-legacy/five-SDK L/M checks and the patched-release lifecycle cancellation gate remain open. Story 2.8 stays in progress; Story 2.10 qualification and candidate acceptance remain independently gated.
+
+### Supplemental delivery-delta review — 2026-11-11
+
+Three context-free reviewers examined only the new current42 selection and the routing-snapshot fixture correction: `/tmp/story-2-8-new-delivery-delta-xpj1vvdw.diff`, 4,902 bytes, SHA-256 `573cdc1e7d3a8b7ffa05a674a71e159ccb39e3bf48b1a12ffe2aef269c340e06`. The edge-case reviewer returned no findings; the verification-gap reviewer found no gaps. The blind reviewer calculated a finding floor of three and returned the three claims below. This is an incremental review under the approved audit amendment; it neither reopens prior triage nor grants final hosted acceptance.
+
+| ID | Claim | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| SD-BH-1 | The Builds fixture change has no owning commit or updated Platform pin, so a fresh Platform checkout retains it unfixed. | false | reject | The owning commit is `b74b467ac5ce5d9f9fc440f43e279b7093b539de`, pushed to Builds PR #181 and tested 34/34. Root pins intentionally remain unchanged until the separately recorded delivery boundary. Updating main pins during this proof phase would violate that boundary; this scoped review diff is not a final enrollment proposal. |
+| SD-BH-2 | The repaired fixture supplies valid owner/run/role values without negative cases for each of those fields. | low | defer | Those direct owner-descriptor mutation cases are absent in this class and predate this fixture repair; the production checks came from incoming attached-lifecycle work `bfda07eea7dcc8ef0a6da0fa14643aa70eebec78`. `NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync` already covers a foreign attached owner, but not every owner-descriptor field. The repair restores existing positive/cancellation cases without weakening a guard. Further mutation coverage belongs to the owning identity-validation work. |
+| SD-BH-3 | The current profile omits `UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded`. | low | defer | This method was absent before the new positive binding selector, and this change removes no negative selection. The profile already selects `PlatformPackageCatalogEntryPointTests` (four invalid-binding cases assert zero configuration/probes/resources) and `QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources`. Selecting the additional direct-Compose refusal is a pre-existing coverage improvement, recorded separately. |
+
+The two coverage improvements are appended to `deferred-work.md`. There is no new blocking finding or patch. Exact-head source CI and every previously recorded delivery gate remain required.
+
+### Delivery checkpoint — 2026-11-11
+
+Builds draft [PR #181](https://github.com/Hexalith/Hexalith.Builds/pull/181) is now at `b74b467ac5ce5d9f9fc440f43e279b7093b539de`. Both exact full commit messages passed the owning locked commitlint CLI before their branch pushes. Hosted source CI is [run 43014505006](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006); its outcomes must be read at this exact head before delivery. The earlier `f8dba239` source run is superseded by a genuine fixture change, not retried unchanged, and supplies no final-source credit.
+
+The [parent incremental audit](evidence/2-8/verification-20261111/parent-audit.json) independently checks the 34-case primary XML, the eight tuple controls, all 16 verification bodies, both older review manifests, the archived history and all original frozen/task/acceptance bytes. It records the whole-prefix hash check discrepancy and its resolution (the mutable workflow counter and approved replacement handoff heading); no historical body was rewritten. All 17 root pins remain unchanged. Two feature-branch pushes, draft PR creation and one PR body update were performed; there were no main pushes, merges, tags, publications, manual workflow dispatches or cancellation requests.
+
+The recorded **hosted proof, no merges** boundary remains in force. Finish the PR source checks and report the concrete result before any new normal delivery/publication authorization. Keep this story `in-progress`: the enrolled package-binding test has compiled but still must execute in final L/M, the final exact-source tuple/SDK gates remain open, and the patched-release lifecycle cancellation gate remains separate. Do not mark Step 05 or Story 2.8 complete from local checks or PR source checks alone.
+
+**Checkpoint completed, 2026-11-11 12:07 UTC:** all ten jobs in source CI `43014505006` attempt 1 passed for exact PR head `b74b467ac5ce5d9f9fc440f43e279b7093b539de`, including Release/tool qualification and catalog authority. The [source-check receipt](evidence/2-8/verification-20261111/pr181-source-checks.json) records every job and check; the auxiliary CodeQL status is neutral, while the actual CodeQL analysis passed. The [primary ordinary-source .NET summary](evidence/2-8/verification-20261111/hosted-source-dotnet.json) records 3,052 module passes, zero failures and four contextual skips identical to the base. Its disabled live cases are not reference or lifecycle credit. The [six-row continuation index](evidence/2-8/verification-20261111/row-index-continuation.json) maps the touched regressions without changing any earlier subject or acceptance classification.
+
+The [normal-merge proposal](evidence/2-8/verification-20261111/normal-merge-proposal.json) and its exact full commit message are prepared and commitlint-validated; owner approval is still absent. Git confirmed Builds main advanced independently to `5050f01a74cd6ba22954030c852a097cffb2b5b8` through publisher-only work. Those changes are preserved, the PR head stays fixed, and any actual merge needs fresh main CI before separately permitted publication. The [continuation manifest](evidence/2-8/verification-20261111/continuation-manifest.json) binds the completed evidence. No mutation is queued or running. Resume from the owner delivery decision for PR #181, preserving all remaining final Platform and patched-release lifecycle gates.
+
+### Owner merge request and observed completion — 2026-11-11
+
+The user replied **“merge to main”** to the concrete PR #181 merge question. Fresh inspection found that an external `/pushall` had already merged it at **12:18:43 UTC**, actor `jpiquot`, and GitHub now marks PR #181 merged/closed. No ready transition, merge request, main push or publication was replayed by this turn.
+
+Direct Git fetch and ancestry checks verified actual main merge `213aab34be1ce97783a51ebeaf3d2d0c5dab6dd7`, tree `586cd76f23e5155992760186017dd85441516080`, with ordered parents `5050f01a74cd6ba22954030c852a097cffb2b5b8` and `b74b467ac5ce5d9f9fc440f43e279b7093b539de`. Both the iteration-3 fixes and fixture repair are ancestors. The actual full merge message is the external `/pushall` message, not the earlier prepared PR merge message; the owning locked commitlint CLI accepted its exact Git bytes. The [merge receipt](evidence/2-8/verification-20261111/observed-main-merge.json) and [separate manifest](evidence/2-8/verification-20261111/merge-observation-manifest.json) preserve that distinction.
+
+Fresh main [CI 43019233527](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43019233527) at this exact merge was **in progress** when observed; main commitlint `43019233552` passed. The earlier successful PR CI remains scoped to its own head and does not pass this main run. Root Platform pins and pending changes remain intact. The merge request is fulfilled; Story 2.8 stays in progress pending main CI and the previously recorded publication/final Platform/lifecycle gates. The merge request adds no source-publication authorization. Do not replay PR #181 delivery or start a release from an assumed version.

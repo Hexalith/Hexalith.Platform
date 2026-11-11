@@ -1,0 +1,69 @@
+{
+  "schema": "hexalith.story-2-8.hosted-source-dotnet.v1",
+  "candidateAcceptance": false,
+  "classification": "ordinary-owner-source-ci",
+  "repository": "Hexalith/Hexalith.Builds",
+  "head": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+  "run": 43014505006,
+  "attempt": 1,
+  "job": 130502284226,
+  "url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43014505006/job/130502284226",
+  "conclusion": "success",
+  "results": {
+    "evidence": {
+      "total": 191,
+      "passed": 191,
+      "failed": 0,
+      "skipped": 0
+    },
+    "module": {
+      "total": 3056,
+      "passed": 3052,
+      "failed": 0,
+      "skipped": 4
+    },
+    "integration": {
+      "total": 13,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 12
+    }
+  },
+  "optionalModuleSkips": [
+    "Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync"
+  ],
+  "optionalModuleSkipsUnchangedFromBase": true,
+  "summaries": [
+    [
+      "2026-11-11T11:48:25.4724214Z Test run summary: Passed!",
+      "2026-11-11T11:48:25.4727836Z   total: 191",
+      "2026-11-11T11:48:25.4728031Z   failed: 0",
+      "2026-11-11T11:48:25.4728267Z   succeeded: 191",
+      "2026-11-11T11:48:25.4728495Z   skipped: 0",
+      "2026-11-11T11:48:25.4728774Z   duration: 5s 071ms",
+      "2026-11-11T11:48:25.4873145Z Unit tests: test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj"
+    ],
+    [
+      "2026-11-11T11:58:41.6629092Z Test run summary: Passed!",
+      "2026-11-11T11:58:41.6632772Z   total: 3056",
+      "2026-11-11T11:58:41.6633006Z   failed: 0",
+      "2026-11-11T11:58:41.6633275Z   succeeded: 3052",
+      "2026-11-11T11:58:41.6633511Z   skipped: 4",
+      "2026-11-11T11:58:41.6633831Z   duration: 10m 15s 493ms",
+      "2026-11-11T11:58:41.6784559Z {\"dapr\": \"false\", \"registry\": \"false\", \"browsers\": \"false\", \"after-unit-tests\": \"false\", \"after-integration-tests\": \"false\"}"
+    ],
+    [
+      "2026-11-11T11:58:48.3743166Z Test run summary: Passed!",
+      "2026-11-11T11:58:48.3746207Z   total: 13",
+      "2026-11-11T11:58:48.3746381Z   failed: 0",
+      "2026-11-11T11:58:48.3746737Z   succeeded: 1",
+      "2026-11-11T11:58:48.3746887Z   skipped: 12",
+      "2026-11-11T11:58:48.3747045Z   duration: 644ms",
+      "2026-11-11T11:58:48.4085397Z ##[end-action id=__self_4.__run;outcome=success;conclusion=success;duration_ms=6630]"
+    ]
+  ],
+  "limits": "The ordinary source lane does not enable live integration. Its 12 disabled live cases and four contextual module cases supply no hosted-reference, lifecycle or candidate acceptance. The separate 34-case fixture class execution had zero skips."
+}

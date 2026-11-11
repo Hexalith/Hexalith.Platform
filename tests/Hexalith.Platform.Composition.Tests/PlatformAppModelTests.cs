@@ -139,9 +139,11 @@ public sealed partial class PlatformAppModelTests : IDisposable
             options.Mapping.Mode.ShouldBe(WorkspaceMode.Package);
             return options with
             {
-                ImageProbeRunner = (_, _, _) =>
+                ImageProbeRunner = (start, _, _) =>
                 {
-                    // Image probes run after binding and before the first container, sidecar or project is added.
+                    // Image probes run after binding and before the first container, sidecar or project is added. Each probed
+                    // reference is a bound published catalog image, so binding has already happened at the first probe.
+                    PlatformPartiesPackageFixture.PublishedImages.ShouldContain(start.ArgumentList[2]);
                     resourcesAtFirstProbe ??= builder.Resources.Count;
                     return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
                 },

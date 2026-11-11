@@ -1,0 +1,477 @@
+{
+  "schema": "hexalith.story-2-8.focused-verification.v1",
+  "recordedAtUtc": "2026-11-11T11:37:35.011473+00:00",
+  "candidateAcceptance": false,
+  "classification": "local-diagnostic-only",
+  "scope": "Resource-free source compilation, controlled filesystem/process fixtures and effect-free workflow validation only; no service or listener execution.",
+  "sources": {
+    "platformHead": "b4b4eda9120e89a52afe6576f46bb7706860f3d1",
+    "buildsFixHead": "f8dba23982fb1599a37c543b41439dce52c0dd19",
+    "buildsRootHead": "e588605ccf2c6577a2490e1a3fc512f8ffdc3960",
+    "partiesRootHead": "9e4e6bc33b27d62799e25945d53c9f9231ab8112",
+    "eventStoreRootHead": "c94e6fffaf2d689c94bb288f151a65e10a2fea82"
+  },
+  "checks": [
+    {
+      "name": "builds-helper",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Github/run-module-integration/tests",
+        "-v"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "exitCode": 0,
+      "total": 71,
+      "passed": 71,
+      "failed": 0,
+      "durationSeconds": 35.57,
+      "output": "Observed directly in tool execution; no separate log retained. One ResourceWarning from the escaped-descendant timeout fixture; no test failed."
+    },
+    {
+      "name": "tuple-suite-controls",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_tuple_sdk_suites.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedAtUtc": "2026-11-11T11:37:35.026000+00:00",
+      "exitCode": 0,
+      "log": "tuple-suite-controls.log",
+      "durationSeconds": 0.176,
+      "passed": 8
+    },
+    {
+      "name": "legacy-source-controls",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_legacy_tuple_source.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedAtUtc": "2026-11-11T11:37:35.205003+00:00",
+      "exitCode": 0,
+      "log": "legacy-source-controls.log",
+      "durationSeconds": 4.44,
+      "passed": 20
+    },
+    {
+      "name": "pre-extension-source-controls",
+      "command": [
+        "python3",
+        "-B",
+        "eng/test_pre_extension_tuple_source.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedAtUtc": "2026-11-11T11:37:39.644317+00:00",
+      "exitCode": 0,
+      "log": "pre-extension-source-controls.log",
+      "durationSeconds": 2.556,
+      "passed": 9
+    },
+    {
+      "name": "builds-provenance",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "pytest",
+        "Github/governed-provenance/tests",
+        "-q"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:37:42.200479+00:00",
+      "exitCode": 0,
+      "log": "builds-provenance.log",
+      "durationSeconds": 2.602,
+      "passed": 90,
+      "passedSubtests": 105
+    },
+    {
+      "name": "workflow-legacy",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-domain-workflow-test-platforms.ps1",
+        "-Contract",
+        "legacy"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:37:44.802347+00:00",
+      "exitCode": 0,
+      "log": "workflow-legacy.log",
+      "durationSeconds": 16.815,
+      "passedAssertions": 312
+    },
+    {
+      "name": "workflow-v2",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/test-domain-workflow-test-platforms.ps1",
+        "-Contract",
+        "v2"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:38:01.617712+00:00",
+      "exitCode": 0,
+      "log": "workflow-v2.log",
+      "durationSeconds": 10.751,
+      "passedAssertions": 206
+    },
+    {
+      "name": "governed-release-controls",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "pytest",
+        "Github/publish-containers/tests/test_governed_release_workflow.py",
+        "-q"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:38:51.345343+00:00",
+      "exitCode": 0,
+      "log": "governed-release-controls.log",
+      "durationSeconds": 1.167,
+      "passed": 34,
+      "passedSubtests": 270
+    },
+    {
+      "name": "platform-composition-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedAtUtc": "2026-11-11T11:38:52.512635+00:00",
+      "exitCode": 1,
+      "log": "platform-composition-build.log",
+      "durationSeconds": 49.443
+    },
+    {
+      "name": "platform-composition-package-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-restore",
+        "-p:UseHexalithProjectReferences=false",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "startedAtUtc": "2026-11-11T11:40:12.687054+00:00",
+      "exitCode": 0,
+      "log": "platform-composition-package-build.log",
+      "reason": "Fallback after mixed EventStore 4.1/4.2 cached source assets caused Debug CS1704 failures; no source, pin or gate change.",
+      "durationSeconds": 43.101
+    },
+    {
+      "name": "builds-module-test-build",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:42:30.536045+00:00",
+      "exitCode": 0,
+      "log": "builds-module-test-build.log",
+      "scope": "Compile only after the spec-authorized descriptor fixture correction; no runtime infrastructure.",
+      "durationSeconds": 55.884
+    },
+    {
+      "name": "routing-snapshot-class",
+      "command": [
+        "dotnet",
+        "exec",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/routing-snapshot-tests.xml"
+      ],
+      "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+      "startedAtUtc": "2026-11-11T11:43:56.203908+00:00",
+      "exitCode": 0,
+      "log": "routing-snapshot-class.log",
+      "scope": "All existing 32 theory rows and 2 facts. Filesystem/symlink/metadata/crypto/cancellation only; the Process object is never started and no socket/listener/service is created.",
+      "counts": {
+        "environment": "64-bit (x64) .NET 10.0.14 [collection-per-class, parallel (collections, 14 threads)]",
+        "id": "2b3570eb-3c97-40e6-bae0-98653c790a54",
+        "name": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3/test/Hexalith.Builds.Module.Tests/bin/Debug/net10.0/Hexalith.Builds.Module.Tests.dll",
+        "run-date": "2026-11-11",
+        "run-time": "11:43:56",
+        "start-rtf": "2026-11-11T11:43:56.4246527+00:00",
+        "test-framework": "xUnit.net v3 4.0.3+384aa7f0b4",
+        "target-framework": ".NETCoreApp,Version=v10.0",
+        "errors": "0",
+        "failed": "0",
+        "finish-rtf": "2026-11-11T11:43:58.6876527+00:00",
+        "not-run": "0",
+        "passed": "34",
+        "skipped": "0",
+        "time": "2.263",
+        "time-rtf": "00:00:02.2630000",
+        "total": "34"
+      },
+      "cases": [
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"known-schema-value\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"known-key\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"known-value\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-container-client-secret-object\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-container-access-token-object\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-container-access-token-array\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-container-private-key-object\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-container-private-key-array\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-assignment\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential-key\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"credential\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"invalid-host-name\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"too-many-hosts\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"aggregate-size\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"oversized\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"directory-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"broken-file-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"file-link\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"wrong-builds-commit\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"wrong-instance\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"wrong-environment\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"failed-preparation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"wrong-closure-run\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"missing-host\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"missing-closure\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"missing-metadata\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"missing-preparation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"missing-activation\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"near-limit-valid\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"schema-properties\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.CapturedRoutingProofRequiresTheValidatedOwnedInstanceAsync(scenario: \\\"cancelled\\\")",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.ExistingCatalogWithoutRequiredOwnerObservationsPreservesOptionalRunsAsync",
+          "result": "Pass"
+        },
+        {
+          "name": "Hexalith.Builds.ModuleTool.Tests.SelectedRoutingCatalogSnapshotTests.ACompositionWithoutARoutingCatalogAddsNoSnapshotsAsync",
+          "result": "Pass"
+        }
+      ],
+      "durationSeconds": 2.574
+    }
+  ],
+  "files": {
+    "eng/run_tuple_ci.py": "3b61da7164cf33c4f9b0d9a6b98de1806b62ed8626cc03228f0df327dae9521a",
+    "eng/test_tuple_sdk_suites.py": "168c9dccbf29198e661c1ea177afb362640a748537638a0f15f48d84393758f5",
+    "eng/tuple-ci-sdk42-current-suites.json": "20a1aaacb04a705d896f12c09b442915870028549b86424699b3277ad179f31e",
+    "docs/contracts/test-environment-v1.md": "ec1154dd8cac7b8af03e9ae80fc2c07b4f0288a00b924b2cd4e1333c25fc8fca",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs": "415b7a701fc8225543dbf833a21ccc90c87b7be6263dba218f2c3604468d4395",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111": "Evidence contents are bound by manifest.json; its own contents are excluded from the manifest."
+  },
+  "pending": [
+    "Hosted execution of the selected package native-preparation binding test (PA-15/PB-9/PC-15/G14).",
+    "Exact-head PR source checks, normal review and owner-repository delivery remain gated; the implementation role performed no remote operations.",
+    "Final exact-source current, real-legacy and five-SDK checks through Platform L/M; subsequent patched-Builds lifecycle cancel-execution delivery gate."
+  ],
+  "commitlint": {
+    "command": [
+      "node",
+      "node_modules/@commitlint/cli/cli.js",
+      "--edit",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/builds-fixture-commit-message.txt"
+    ],
+    "cwd": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/9da31dec-d30e-47b7-b9b0-bbe66399d73c/scratchpad/builds-2-8-iter3",
+    "version": "21.2.4",
+    "lockedVersion": "21.2.4",
+    "exitCode": 0,
+    "messageFile": "builds-fixture-commit-message.txt",
+    "log": "builds-fixture-commitlint.log"
+  },
+  "profileEnrollment": {
+    "selector": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded",
+    "previousRequiredTotal": 456,
+    "requiredTotal": 457,
+    "allPreviousGroupsAndCasesPreserved": true,
+    "historicalAndOtherProfilesUnchanged": true,
+    "rootGitlinksUnchanged": true
+  },
+  "rootGitlinks": [
+    "160000 commit 8a3885dd22aea88edd57771cfe592c382df2c583\tHexalith.AI.Tools",
+    "160000 commit 7957108c30d38b8e82eb072cf3437b6a67627cd7\tHexalith.Agents",
+    "160000 commit e588605ccf2c6577a2490e1a3fc512f8ffdc3960\tHexalith.Builds",
+    "160000 commit 82f20d5ecca74993f93e73151a6ae3766d3d6a1d\tHexalith.ChatBot",
+    "160000 commit 11555ace9efcae2928a00122dcba91243e5a8a1a\tHexalith.Commons",
+    "160000 commit 8d0e091d849669fc8447e5078d8e3b3380a00c64\tHexalith.Conversations",
+    "160000 commit c94e6fffaf2d689c94bb288f151a65e10a2fea82\tHexalith.EventStore",
+    "160000 commit 78e2b9387536229199b8bbc24ecd177daaf46db8\tHexalith.Folders",
+    "160000 commit 7ace06c5c50406b9021fc95d8d87cf962b5180dd\tHexalith.FrontComposer",
+    "160000 commit ec458664b0218d07357091b5a5ea12897154db2a\tHexalith.McpCli",
+    "160000 commit db769a95e2966dd42f5523ce091e7f8f317f22a4\tHexalith.Memories",
+    "160000 commit 9e4e6bc33b27d62799e25945d53c9f9231ab8112\tHexalith.Parties",
+    "160000 commit bce4eb9f45c6b131b960ab4fa39e50ff01e51960\tHexalith.PolymorphicSerializations",
+    "160000 commit 77067782154d35a794ea50d86af1c5e73c8351b6\tHexalith.Projects",
+    "160000 commit cca5537c3a9d6dde162787053b34e17c8351b21d\tHexalith.Tenants",
+    "160000 commit f5bee2c91bec6e1e78d81b604cea6af0cee764fe\tHexalith.Timesheets",
+    "160000 commit 4bd0df1461c89fdf00f1ccf3c47a3bf9bc939a23\tHexalith.Works"
+  ],
+  "selectorMutationControl": {
+    "mutation": "Replace the required binding selector with another real method while preserving total 457.",
+    "result": "Expected assertion failure; a same-count substitute cannot silently remove the required test.",
+    "log": "selector-substitution-mutation.log"
+  },
+  "ownerSourceFixtureFix": {
+    "commit": "b74b467ac5ce5d9f9fc440f43e279b7093b539de",
+    "parent": "f8dba23982fb1599a37c543b41439dce52c0dd19",
+    "changedPaths": [
+      "test/Hexalith.Builds.Module.Tests/SelectedRoutingCatalogSnapshotTests.cs"
+    ],
+    "productionValidationUnchanged": true,
+    "firstFailure": {
+      "record": "The active spec retains the independently authenticated original owner-source failure.",
+      "sourceBase": "e588605ccf2c6577a2490e1a3fc512f8ffdc3960",
+      "runId": "43006363999",
+      "jobId": "130474898734",
+      "outcome": "failed",
+      "failedRows": [
+        "valid",
+        "near-limit-valid",
+        "schema-properties",
+        "cancelled"
+      ]
+    },
+    "runtimeScope": "The complete class performs filesystem/symlink/JSON/cryptographic and cancellation operations only. Its Process is never started; the localhost readiness URI is never contacted. ArchiveSelectedAsync writes bytes only."
+  },
+  "remoteActionsByImplementationRole": [],
+  "status": "focused-checks-passed-with-preserved-initial-debug-build-failure",
+  "platformCompilationOutput": {
+    "path": "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll",
+    "sha256": "ca90102a896c6b7cf01877783ed917cc6531a0d3597d4aefb9d0ea237c198b07",
+    "compilationOnly": true,
+    "testExecuted": false
+  },
+  "routingSnapshotClassAudit": {
+    "total": 34,
+    "theoryRows": 32,
+    "facts": 2,
+    "allPassed": true,
+    "positiveAndCancellationRowsExecuted": true,
+    "skipped": 0,
+    "notRun": 0
+  }
+}
