@@ -1,0 +1,176 @@
+{
+  "sourceRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "explicitProfile": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+  "expectedVectorCount": 24,
+  "observedVectorCount": 0,
+  "vectors": [
+    {
+      "broker": "rabbitmq",
+      "scenario": "crash-redelivery",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "broker-restart",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "durable-quarantine",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "failed-diversion",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "retention-expiry",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "stable-id-deduplication",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "app-topic-scopes",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "tls-negative",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "missing-secret",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "secret-rotation",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "cancellation-backpressure",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "missing-bindings",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "crash-redelivery",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "broker-restart",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "durable-quarantine",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "failed-diversion",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "retention-expiry",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "stable-id-deduplication",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "app-topic-scopes",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "tls-negative",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "missing-secret",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "secret-rotation",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "cancellation-backpressure",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "missing-bindings",
+      "status": "NOT_EXECUTED",
+      "observedResult": null,
+      "reason": "publication awaiting required pull-request review"
+    }
+  ]
+}

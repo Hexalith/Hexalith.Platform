@@ -1,0 +1,822 @@
+{
+  "observedUtc": "2026-11-11T14:41:59.709795+00:00",
+  "sourceBaseline": "13aa784958dd634196c540713b3513e67af458ed",
+  "integrationRevision": "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+  "remoteDefaultBranch": "main",
+  "remoteMainRevision": "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+  "publicationBranch": "chore/broker-candidate-01-publication",
+  "localApprovedCommitCount": 3,
+  "approvedPaths": [
+    ".gitattributes",
+    ".github/workflows/broker-candidate-qualification.yml",
+    "_bmad-output/implementation-artifacts/deferred-work.md",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/actual-merge-message.txt",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/builds-fixture-commit-message.txt",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/continuation-manifest.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/hosted-source-dotnet.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/manifest.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/merge-observation-manifest.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/normal-merge-proposal.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/observed-main-merge.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/parent-audit.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/pr181-source-checks.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/proposed-merge-message.txt",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/results.json",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/routing-snapshot-tests.xml",
+    "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/row-index-continuation.json",
+    "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md",
+    "_bmad-output/implementation-artifacts/spec-4-17-execute-the-first-platform-broker-candidate.md",
+    "_bmad-output/implementation-artifacts/spec-4-17-first-platform-broker-configuration-candidate.md",
+    "_bmad-output/implementation-artifacts/sprint-status.yaml",
+    "_bmad-output/planning-artifacts/epics.md",
+    "docs/contracts/test-environment-v1.md",
+    "docs/implementation/story-4-17-broker-candidate-01-ci.md",
+    "docs/implementation/story-4-17-broker-candidate-01.json",
+    "docs/implementation/story-4-17-broker-candidate-01.md",
+    "eng/run_tuple_ci.py",
+    "eng/test_tuple_sdk_suites.py",
+    "eng/tuple-ci-sdk42-current-suites.json",
+    "references/Hexalith.EventStore",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs",
+    "tests/source-release/broker-candidate-workflow.test.mjs"
+  ],
+  "preservedIndependentRemotePaths": [
+    "docs/security/workload-binding-enrollment.md",
+    "infrastructure/keycloak-workload-binding/.gitignore",
+    "infrastructure/keycloak-workload-binding/pom.xml",
+    "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingClientPolicyExecutor.java",
+    "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingClientPolicyExecutorFactory.java",
+    "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingGrantPolicy.java",
+    "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingProtocolMapper.java",
+    "infrastructure/keycloak-workload-binding/src/main/resources/META-INF/services/org.keycloak.protocol.ProtocolMapper",
+    "infrastructure/keycloak-workload-binding/src/main/resources/META-INF/services/org.keycloak.services.clientpolicy.executor.ClientPolicyExecutorProviderFactory",
+    "infrastructure/keycloak-workload-binding/src/test/java/com/hexalith/security/WorkloadBindingGrantPolicyTest.java",
+    "infrastructure/keycloak-workload-binding/verify_component.py",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs"
+  ],
+  "configurationSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+  "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "eventStoreRemoteMain": "cffa12368677cfa83919a1f0bdc4cebc5a1bac01",
+  "eventStoreAvailableOnRemoteMain": true,
+  "eventStoreWorkingTreeClean": true,
+  "mainRequiresPullRequest": true,
+  "mainRequiredApprovingReviews": 1,
+  "mainRequiresCodeOwnerReview": true,
+  "bypassAllowedBySpec": false,
+  "branchRules": [],
+  "checks": [
+    {
+      "argv": [
+        "/home/administrator/projects/hexalith/platform/node_modules/.bin/commitlint",
+        "--from",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "--to",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--verbose"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "b4b4eda9120e89a52afe6576f46bb7706860f3d1",
+        "13aa784958dd634196c540713b3513e67af458ed"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "b4b4eda9120e89a52afe6576f46bb7706860f3d1",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "docs/security/workload-binding-enrollment.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/.gitignore"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/pom.xml"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingClientPolicyExecutor.java"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingClientPolicyExecutorFactory.java"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingGrantPolicy.java"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/java/com/hexalith/security/WorkloadBindingProtocolMapper.java"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/resources/META-INF/services/org.keycloak.protocol.ProtocolMapper"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/main/resources/META-INF/services/org.keycloak.services.clientpolicy.executor.ClientPolicyExecutorProviderFactory"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/src/test/java/com/hexalith/security/WorkloadBindingGrantPolicyTest.java"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "infrastructure/keycloak-workload-binding/verify_component.py"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        ".gitattributes"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        ".github/workflows/broker-candidate-qualification.yml"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/deferred-work.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/actual-merge-message.txt"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/builds-fixture-commit-message.txt"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/continuation-manifest.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/hosted-source-dotnet.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/manifest.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/merge-observation-manifest.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/normal-merge-proposal.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/observed-main-merge.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/parent-audit.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/pr181-source-checks.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/proposed-merge-message.txt"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/results.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/routing-snapshot-tests.xml"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/evidence/2-8/verification-20261111/row-index-continuation.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/spec-4-17-execute-the-first-platform-broker-candidate.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/spec-4-17-first-platform-broker-configuration-candidate.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/implementation-artifacts/sprint-status.yaml"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "_bmad-output/planning-artifacts/epics.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "docs/contracts/test-environment-v1.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "docs/implementation/story-4-17-broker-candidate-01-ci.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "docs/implementation/story-4-17-broker-candidate-01.md"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "eng/run_tuple_ci.py"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "eng/test_tuple_sdk_suites.py"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "eng/tuple-ci-sdk42-current-suites.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "references/Hexalith.EventStore"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "13aa784958dd634196c540713b3513e67af458ed",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+        "--",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975:docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "a8e1551c47b538619c1fc39cee4f05bfb1a2d975:references/Hexalith.EventStore"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "ls-remote",
+        "--heads",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "merge-base",
+        "--is-ancestor",
+        "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+        "cffa12368677cfa83919a1f0bdc4cebc5a1bac01"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "repos/Hexalith/Hexalith.Platform/rules/branches/main"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "repos/Hexalith/Hexalith.Platform/rules/branches/chore%2Fbroker-candidate-01-publication"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/chore/broker-candidate-01-publication"
+      ],
+      "exitCode": 0,
+      "expectedExitCode": 0
+    }
+  ]
+}

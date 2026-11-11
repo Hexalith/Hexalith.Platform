@@ -1,0 +1,38 @@
+[
+  {
+    "argv": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "workingDirectory": "publication integration worktree",
+    "exitCode": 0,
+    "stdout": "integration-npm-ci.stdout",
+    "stderr": "integration-npm-ci.stderr"
+  },
+  {
+    "argv": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "workingDirectory": "publication integration worktree",
+    "exitCode": 0,
+    "stdout": "integration-source-release-tests.stdout",
+    "stderr": "integration-source-release-tests.stderr"
+  },
+  {
+    "argv": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "workingDirectory": "final publication integration worktree",
+    "sourceRevision": "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+    "exitCode": 0,
+    "stdout": "final-integration-source-release-tests.stdout",
+    "stderr": "final-integration-source-release-tests.stderr"
+  }
+]

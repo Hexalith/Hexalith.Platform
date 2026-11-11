@@ -1,0 +1,29 @@
+{
+  "observedUtc": "2026-11-11T14:44:59.872036+00:00",
+  "previousRemoteMain": "09946e760b56a7a6ab9675503f2b018d33d45f2c",
+  "newRemoteMain": "3ad2f29ae50858ba665499568623b557725b9d93",
+  "publicationBranchRevision": "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+  "mergeTreeArgv": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "--messages",
+    "--name-only",
+    "a8e1551c47b538619c1fc39cee4f05bfb1a2d975",
+    "3ad2f29ae50858ba665499568623b557725b9d93"
+  ],
+  "mergeTreeExitCode": 1,
+  "conflictingPaths": [
+    ".gitattributes"
+  ],
+  "diagnosis": "Both sides append distinct byte-preservation rules at EOF. Preserve both blocks in a normal forward merge; all independently changed source/test files merge cleanly.",
+  "branchMutationPerformed": true,
+  "assessmentSentToParent": true,
+  "assessedUtc": "2026-11-11T14:45:28.554154+00:00",
+  "assessmentDecision": "parent approved ordinary forward integration retaining both rule blocks verbatim and all remote source/test bytes",
+  "resolvedPaths": [
+    ".gitattributes"
+  ],
+  "resolvedRevision": "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+  "mainMutationPerformed": false
+}

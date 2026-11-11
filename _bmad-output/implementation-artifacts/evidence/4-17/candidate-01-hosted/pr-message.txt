@@ -1,0 +1,22 @@
+ci: publish broker candidate 01 workflow
+
+Publish the approved main history containing Story 2.8 and the prepared broker candidate
+01 configuration and manual workflow. Preserve the independently published Keycloak
+workload binding history through a forward merge.
+
+Candidate SHA-256 remains
+`472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc`; EventStore remains
+pinned to `02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213`. The explicit profile, both brokers
+and all 24 vectors are unchanged.
+
+Verification: all 82 source-release controls passed, including 53 executable broker
+workflow controls; exact candidate bytes and clean pinned EventStore source were checked.
+
+Main requires an approving review and code-owner review. This pull request awaits those
+controls; no bypass or live candidate dispatch is authorized before publication through
+them. After permitted main publication, the approved scope is exactly one manual candidate
+execution and independent assessment of its retained evidence. No automatic retry or
+broker selection is permitted.
+
+Publication may trigger the existing tuple/catalog CI and gated automatic source
+tag/GitHub release. Their gates remain unchanged.

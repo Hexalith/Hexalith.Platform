@@ -1,0 +1,76 @@
+{
+  "observedUtc": "2026-11-11T14:50:30.018583+00:00",
+  "result": "PASS",
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:.github/workflows/broker-candidate-qualification.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "HEAD:docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "references/Hexalith.EventStore",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import fs from 'node:fs'; import cp from 'node:child_process'; import assert from 'node:assert/strict'; import yaml from 'js-yaml'; const p='_bmad-output/implementation-artifacts/sprint-status.yaml'; assert.deepEqual(yaml.load(fs.readFileSync(p,'utf8')),yaml.load(cp.execFileSync('git',['show','HEAD:'+p],{encoding:'utf8'}))); console.log('PASS: sprint values unchanged; notes only');"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "reportAndHandoffLinksExist": true,
+  "protectedCandidateWorkflowAndDatedDispositionsUnchanged": true,
+  "candidateSha256Matches": true,
+  "pinnedEventStoreSourceClean": true,
+  "sprintYamlValuesUnchanged": true,
+  "platformStory4_17": "in-progress",
+  "eventStoreStory3_21": "in-progress",
+  "zeroDispatchesAndNullActualExitsPreserved": true
+}

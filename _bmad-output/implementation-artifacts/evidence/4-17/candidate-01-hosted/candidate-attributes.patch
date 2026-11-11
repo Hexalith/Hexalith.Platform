@@ -1,0 +1,16 @@
+diff --git a/.gitattributes b/.gitattributes
+index 6b888dd0..e8a77a75 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -147,8 +147,11 @@ eng/SourceRestore.props whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr
+ 
+ # Preserve verbatim lifecycle-reporting test output and evidence bytes.
+ _bmad-output/implementation-artifacts/evidence/2-11/part-2/*.log -text -whitespace
+ _bmad-output/implementation-artifacts/evidence/2-11/part-2/*.xml -text -whitespace
+ _bmad-output/implementation-artifacts/evidence/2-11/part-2/*.patch -text -whitespace
+ 
+ # Preserve the existing CRLF synthetic package fixture while checking whitespace.
+ tests/Hexalith.Platform.Composition.Tests/PlatformPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
++
++# Preserve the exact Platform broker configuration bytes bound by the admission SHA-256.
++docs/implementation/story-4-17-broker-candidate-01.json -text

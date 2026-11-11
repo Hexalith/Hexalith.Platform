@@ -121,7 +121,7 @@ development_status:
   4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy: backlog
   4-17-select-and-qualify-the-durable-production-broker: in-progress
   # 4.17: 2026-11-10 local/CI slice recorded the five failed 1.19.1 broker guarantees as REJECTED (docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md); no broker selected; staging ACs wait on 4.14-4.16 and AD-26.
-  # 4.17: 2026-11-11 owner accepted bounded candidate-01 CI implementation; manual workflow prepared and verified offline (docs/implementation/story-4-17-broker-candidate-01-ci.md). Publication, authorized dispatch/results, broader diagnosis, selection and staging remain open; EventStore 3.21 remains in-progress.
+  # 4.17: 2026-11-11 owner approved current-main publication and one hosted candidate-01 attempt; PR #40 preserves remote history and awaits required approving/code-owner review (docs/implementation/story-4-17-broker-candidate-01-hosted.md). No main publication or dispatch; 0/24 observed vectors, null verifier exits. Required integration, the approved dispatch, assessment, broader diagnosis, selection and staging remain open; EventStore 3.21 remains in-progress.
   4-18-serve-staging-through-its-own-gateway-hostnames-and-certific: backlog
   4-19-generate-the-staging-realm-and-register-staging-clients: backlog
   4-20-run-the-staging-executor-and-the-module-code-sandbox: backlog
