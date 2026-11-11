@@ -36,6 +36,7 @@ jobs:
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json
+          dotnet-version: '10.0.x'
       - name: Verify every finite capability gate once
         if: matrix.sdk == '3.132.1'
         run: >-

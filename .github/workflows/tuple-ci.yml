@@ -116,6 +116,7 @@ jobs:
         id: dotnet
         with:
           global-json-file: global.json
+          dotnet-version: '10.0.x'
       - name: Verify published tuple, reject source fallback, build and test Release
         id: preflight
         run: |
@@ -207,6 +208,7 @@ jobs:
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json
+          dotnet-version: '10.0.x'
       - name: Run all original 349 controls using the real committed legacy tuple
         run: python3 eng/run_tuple_ci.py --evidence artifacts/legacy-public-cohort
       - name: Retain legacy regression evidence separately from current-owner evidence
@@ -261,6 +263,7 @@ jobs:
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:
           global-json-file: global.json
+          dotnet-version: '10.0.x'
       - name: Run all original 412 controls using the real committed pre-extension tuple
         run: python3 eng/run_tuple_ci.py --evidence artifacts/pre-extension-public-cohort --eventstore-sdk 4.1.0
       - name: Retain the historical tuple evidence separately from SDK4.2 admission
