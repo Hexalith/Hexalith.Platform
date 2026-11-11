@@ -1,0 +1,493 @@
+name: Platform broker candidate 01 (non-promoting)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      EVENTSTORE_REVISION: 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213
+      CONFIGURATION_SHA256: 472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc
+      QUALIFICATION_PROFILE: deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONOPTIMIZE: '0'
+    steps:
+      - name: Bootstrap evidence before checkout and setup
+        id: bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          evidence=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-evidence.XXXXXX")
+          phase=bootstrap-bindings
+          trap 'code=$?; printf "%s\n" "$code" > "$evidence/bootstrap.exit"; printf "%s\n" "$phase" > "$evidence/bootstrap.phase"' EXIT
+          printf 'evidence=%s\n' "$evidence" >> "$GITHUB_OUTPUT"
+          printf 'EVIDENCE=%s\n' "$evidence" >> "$GITHUB_ENV"
+          base="$RUNNER_TEMP/platform-broker-candidate-01"
+          printf 'QUALIFICATION_BASE=%s\nQUALIFICATION_OUTPUT=%s/packet\nQUALIFICATION_TOOLS=%s/tools\nQUALIFICATION_EXCLUSIVE_WORKER=%s/worker.json\n' "$base" "$base" "$base" "$base" >> "$GITHUB_ENV"
+          printf 'PLATFORM_CONFIG=%s/docs/implementation/story-4-17-broker-candidate-01.json\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          mkdir "$evidence/private-transcripts"
+          export EVIDENCE="$evidence"
+          phase=bootstrap-context
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          keys = ['GITHUB_SHA', 'GITHUB_REPOSITORY', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB',
+                  'RUNNER_ENVIRONMENT', 'RUNNER_OS', 'RUNNER_ARCH', 'ImageOS', 'ImageVersion']
+          Path(os.environ['EVIDENCE'], 'bootstrap.json').write_text(json.dumps({
+              'status': 'started-only', 'productionEligibility': 'FAIL', 'selectedBroker': None,
+              'context': {key: os.environ.get(key) for key in keys}}, indent=2) + '\n')
+          PY
+          phase=complete
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          persist-credentials: false
+      - name: Guard exact sources and bind this hosted worker
+        id: sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/sources.exit"; printf "%s\n" "$phase" > "$EVIDENCE/sources.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/sources.stdout" 2> "$EVIDENCE/private-transcripts/sources.stderr"
+          phase=runner-environment
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          phase=runner-os-arch
+          test "$RUNNER_OS/$RUNNER_ARCH" = Linux/X64
+          phase=runner-image
+          test "$ImageOS" = ubuntu24
+          phase=runner-image-version
+          test -n "$ImageVersion"
+          phase=host-kernel
+          test "$(uname -s)/$(uname -m)" = Linux/x86_64
+          phase=host-distribution
+          test "$(lsb_release -is)/$(lsb_release -rs)" = Ubuntu/24.04
+          phase=python-version
+          python3 -B -c 'import sys; assert sys.version_info >= (3, 11), "Python 3.11+ required"'
+          phase=openssl-availability
+          openssl version
+          phase=dispatch-revision
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
+          phase=job-identity
+          [[ "$GITHUB_RUN_ID" =~ ^[0-9]+$ && "$GITHUB_RUN_ATTEMPT" =~ ^[0-9]+$ ]]
+          test "$GITHUB_JOB" = candidate-01
+          observe_hex() {
+            if [[ "$2" =~ ^[0-9a-f]+$ && ${#2} -eq "$3" ]]; then
+              printf '%s\n' "$2" > "$EVIDENCE/$1.observed"
+            else
+              printf 'invalid\n' > "$EVIDENCE/$1.observed"
+            fi
+          }
+          phase=platform-revision-query
+          platform_revision=$(git rev-parse HEAD)
+          observe_hex platform-revision "$platform_revision" 40
+          phase=platform-revision-match
+          test "$platform_revision" = "$GITHUB_SHA"
+          phase=eventstore-gitlink-query
+          gitlink=$(git ls-tree HEAD references/Hexalith.EventStore)
+          gitlink_pattern='^(100644|100755|120000|040000|160000) (blob|tree|commit) [0-9a-f]{40}[[:space:]]references/Hexalith[.]EventStore$'
+          if [[ "$gitlink" =~ $gitlink_pattern ]]; then
+            printf '%s\n' "$gitlink" > "$EVIDENCE/eventstore-gitlink.observed"
+          else
+            printf 'invalid\n' > "$EVIDENCE/eventstore-gitlink.observed"
+          fi
+          phase=eventstore-gitlink-match
+          test "$gitlink" = "$(printf '160000 commit %s\treferences/Hexalith.EventStore' "$EVENTSTORE_REVISION")"
+          phase=configuration-file-kind
+          test ! -L "$PLATFORM_CONFIG"
+          phase=configuration-hash-query
+          configuration_identity=$(sha256sum "$PLATFORM_CONFIG")
+          configuration_hash=${configuration_identity%% *}
+          observe_hex configuration-sha256 "$configuration_hash" 64
+          phase=configuration-hash-match
+          test "$configuration_hash" = "$CONFIGURATION_SHA256"
+          phase=platform-status-query
+          platform_status=$(git status --porcelain --untracked-files=all)
+          phase=platform-clean-tree
+          test -z "$platform_status"
+          # A fresh destination is required even if a previous attempt left no packet.
+          phase=fresh-base
+          test ! -e "$QUALIFICATION_BASE" && test ! -L "$QUALIFICATION_BASE"
+          phase=fresh-destinations
+          for path in "$QUALIFICATION_OUTPUT" "$QUALIFICATION_TOOLS" "$QUALIFICATION_EXCLUSIVE_WORKER"; do
+            test ! -e "$path" && test ! -L "$path"
+          done
+          phase=eventstore-initialize
+          git -c submodule.recurse=false submodule update --init -- references/Hexalith.EventStore
+          phase=eventstore-revision-query
+          eventstore_revision=$(git -C references/Hexalith.EventStore rev-parse HEAD)
+          observe_hex eventstore-revision "$eventstore_revision" 40
+          phase=eventstore-revision-match
+          test "$eventstore_revision" = "$EVENTSTORE_REVISION"
+          phase=eventstore-status-query
+          eventstore_status=$(git -C references/Hexalith.EventStore status --porcelain --untracked-files=all)
+          phase=eventstore-clean-tree
+          test -z "$eventstore_status"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          phase=owner-admission
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'tools')
+          from dapr_broker_qualification import BROKERS, SCENARIOS, validate_profile
+          from dapr_platform_broker_configuration import load_configuration
+          from dapr_runtime_qualification import PLATFORM_PROFILE, profile_path
+          profile = json.loads(Path(os.environ['QUALIFICATION_PROFILE']).read_text())
+          validate_profile(profile, Path.cwd())
+          assert profile_path(profile) == PLATFORM_PROFILE == os.environ['QUALIFICATION_PROFILE']
+          assert BROKERS == ('rabbitmq', 'kafka') and len(SCENARIOS) == 12
+          load_configuration(Path(os.environ['PLATFORM_CONFIG']))
+          PY
+          # This allocation is valid only on the verified fresh GitHub-hosted VM.
+          phase=docker-selection
+          test -z "${DOCKER_HOST:-}${DOCKER_CONTEXT:-}${DOCKER_TLS_VERIFY:-}${DOCKER_CERT_PATH:-}"
+          phase=docker-socket-query
+          socket=$(readlink -f /var/run/docker.sock)
+          phase=docker-socket-kind
+          test -S "$socket"
+          endpoint="unix://$socket"
+          phase=docker-context-query
+          context=$(docker context inspect --format '{{.Endpoints.docker.Host}}')
+          phase=docker-context-match
+          test "$context" = unix:///var/run/docker.sock || test "$context" = "$endpoint"
+          phase=docker-daemon-query
+          daemon=$(docker --host "$endpoint" info --format '{{.ID}}')
+          phase=docker-daemon-identity
+          test -n "$daemon"
+          phase=docker-runtime-query
+          architecture=$(docker --host "$endpoint" info --format '{{.OSType}}/{{.Architecture}}')
+          phase=docker-runtime-support
+          test "$architecture" = linux/x86_64 || test "$architecture" = linux/amd64
+          phase=allocation-directory
+          mkdir -m 700 "$QUALIFICATION_BASE"
+          export QUALIFICATION_ENDPOINT="$endpoint" QUALIFICATION_DAEMON="$daemon" QUALIFICATION_SOCKET="$socket"
+          phase=allocation-binding
+          python3 -B - <<'PY'
+          import json, os, platform, stat
+          from pathlib import Path
+          socket = Path(os.environ['QUALIFICATION_SOCKET'])
+          observed = socket.stat()
+          assert socket.resolve() == socket and stat.S_ISSOCK(observed.st_mode)
+          allocation = {'exclusive': True, 'endpoint': os.environ['QUALIFICATION_ENDPOINT'],
+                        'daemonId': os.environ['QUALIFICATION_DAEMON'],
+                        'workerId': '-'.join(os.environ[key] for key in ['GITHUB_RUN_ID', 'GITHUB_JOB', 'GITHUB_RUN_ATTEMPT'])}
+          with Path(os.environ['QUALIFICATION_EXCLUSIVE_WORKER']).open('x') as stream:
+              json.dump(allocation, stream, indent=2)
+          evidence = Path(os.environ['EVIDENCE'])
+          (evidence / 'worker.json').write_text(json.dumps({
+              'allocation': allocation, 'socketIdentity': [observed.st_dev, observed.st_ino],
+              'daemonCommand': ['docker', '--host', allocation['endpoint'], 'info', '--format', '{{.ID}}'],
+              'platformRevision': os.environ['GITHUB_SHA'], 'eventStoreRevision': os.environ['EVENTSTORE_REVISION'],
+              'profile': os.environ['QUALIFICATION_PROFILE'], 'configurationSha256': os.environ['CONFIGURATION_SHA256'],
+              'pythonVersion': platform.python_version()}, indent=2) + '\n')
+          (evidence / 'original-platform-config.json').write_bytes(Path(os.environ['PLATFORM_CONFIG']).read_bytes())
+          PY
+          phase=docker-environment-binding
+          printf 'DOCKER_HOST=%s\n' "$endpoint" >> "$GITHUB_ENV"
+          phase=complete
+      - name: Install verified isolated tools
+        id: install
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/install.exit"; printf "%s\n" "$phase" > "$EVIDENCE/install.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/install.stdout" 2> "$EVIDENCE/private-transcripts/install.stderr"
+          phase=tools-fresh-path
+          test ! -e "$QUALIFICATION_TOOLS" && test ! -L "$QUALIFICATION_TOOLS"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          command=(python3 -B tools/install-dapr-qualification-tools.py --profile "$QUALIFICATION_PROFILE" --destination "$QUALIFICATION_TOOLS")
+          printf '%s\0' "${command[@]}" > "$EVIDENCE/private-transcripts/install.argv"
+          phase=tool-installation
+          "${command[@]}"
+          phase=complete
+      - name: Capture both brokers and all 24 vectors
+        id: capture
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/capture.exit"; printf "%s\n" "$phase" > "$EVIDENCE/capture.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/capture.stdout" 2> "$EVIDENCE/private-transcripts/capture.stderr"
+          phase=packet-fresh-path
+          test ! -e "$QUALIFICATION_OUTPUT" && test ! -L "$QUALIFICATION_OUTPUT"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          export QUALIFICATION_DAPRD="$QUALIFICATION_TOOLS/runtime/daprd"
+          export PATH="$QUALIFICATION_TOOLS/cli:$PATH"
+          command=(python3 -B tools/qualify-dapr-brokers.py --profile "$QUALIFICATION_PROFILE" --platform-config "$PLATFORM_CONFIG" --brokers rabbitmq,kafka --exclusive-worker "$QUALIFICATION_EXCLUSIVE_WORKER" --output "$QUALIFICATION_OUTPUT")
+          printf '%s\0' "${command[@]}" > "$EVIDENCE/private-transcripts/capture.argv"
+          phase=producer-execution
+          "${command[@]}"
+          phase=complete
+      - name: Independently verify capture integrity
+        id: integrity
+        if: ${{ always() && steps.sources.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/integrity.exit"; printf "%s\n" "$phase" > "$EVIDENCE/integrity.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/integrity.stdout" 2> "$EVIDENCE/private-transcripts/integrity.stderr"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          command=(python3 -B tools/validate-dapr-broker-qualification.py "$QUALIFICATION_OUTPUT" --platform-config "$PLATFORM_CONFIG" --allow-failures)
+          printf '%s\0' "${command[@]}" > "$EVIDENCE/private-transcripts/integrity.argv"
+          phase=verifier-execution
+          "${command[@]}"
+          phase=complete
+      - name: Independently evaluate technical qualification
+        id: technical
+        if: ${{ always() && steps.sources.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/technical.exit"; printf "%s\n" "$phase" > "$EVIDENCE/technical.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/technical.stdout" 2> "$EVIDENCE/private-transcripts/technical.stderr"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          command=(python3 -B tools/validate-dapr-broker-qualification.py "$QUALIFICATION_OUTPUT" --platform-config "$PLATFORM_CONFIG")
+          printf '%s\0' "${command[@]}" > "$EVIDENCE/private-transcripts/technical.argv"
+          phase=verifier-execution
+          "${command[@]}"
+          phase=complete
+      - name: Independently evaluate production authority
+        id: authority
+        if: ${{ always() && steps.sources.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          phase=transcript-open
+          trap 'code=$?; printf "%s\n" "$code" > "$EVIDENCE/authority.exit"; printf "%s\n" "$phase" > "$EVIDENCE/authority.phase"' EXIT
+          exec > "$EVIDENCE/private-transcripts/authority.stdout" 2> "$EVIDENCE/private-transcripts/authority.stderr"
+          phase=owner-workdir
+          cd references/Hexalith.EventStore
+          command=(python3 -B tools/validate-dapr-broker-qualification.py "$QUALIFICATION_OUTPUT" --platform-config "$PLATFORM_CONFIG" --require-production-authority)
+          printf '%s\0' "${command[@]}" > "$EVIDENCE/private-transcripts/authority.argv"
+          phase=verifier-execution
+          "${command[@]}"
+          phase=complete
+      - name: Summarize actual outcomes and project sanitized evidence
+        id: report
+        if: always()
+        shell: bash
+        env:
+          BOOTSTRAP_OUTCOME: ${{ steps.bootstrap.outcome }}
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          SOURCES_OUTCOME: ${{ steps.sources.outcome }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          CAPTURE_OUTCOME: ${{ steps.capture.outcome }}
+          INTEGRITY_OUTCOME: ${{ steps.integrity.outcome }}
+          TECHNICAL_OUTCOME: ${{ steps.technical.outcome }}
+          AUTHORITY_OUTCOME: ${{ steps.authority.outcome }}
+        run: |
+          set -euo pipefail
+          if test -z "${EVIDENCE:-}"; then
+            EVIDENCE=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-report.XXXXXX")
+            export EVIDENCE
+          fi
+          printf 'evidence=%s\n' "$EVIDENCE" >> "$GITHUB_OUTPUT"
+          python3 -B - <<'PY'
+          import hashlib, json, os, re, shutil, stat
+          from pathlib import Path
+          root = Path(os.environ['EVIDENCE'])
+          raw = root / 'private-transcripts'
+          errors = []
+          def failed(code):
+              if code not in errors:
+                  errors.append(code)
+          def read_regular(path, code):
+              try:
+                  if not stat.S_ISREG(path.lstat().st_mode):
+                      raise ValueError('regular file required')
+                  return path.read_bytes()
+              except FileNotFoundError:
+                  return None
+              except Exception:
+                  failed(code)
+                  return None
+          def text_file(path, code):
+              data = read_regular(path, code)
+              try:
+                  return data.decode('utf-8') if data is not None else None
+              except Exception:
+                  failed(code)
+                  return None
+          phase_codes = set('''bootstrap-bindings bootstrap-context complete transcript-open
+              runner-environment runner-os-arch runner-image runner-image-version host-kernel host-distribution
+              python-version openssl-availability dispatch-revision job-identity platform-revision-query
+              platform-revision-match eventstore-gitlink-query eventstore-gitlink-match configuration-file-kind
+              configuration-hash-query configuration-hash-match platform-status-query platform-clean-tree
+              fresh-base fresh-destinations eventstore-initialize eventstore-revision-query eventstore-revision-match
+              eventstore-status-query eventstore-clean-tree owner-workdir owner-admission docker-selection
+              docker-socket-query docker-socket-kind docker-context-query docker-context-match docker-daemon-query
+              docker-daemon-identity docker-runtime-query docker-runtime-support allocation-directory
+              allocation-binding docker-environment-binding tools-fresh-path tool-installation packet-fresh-path
+              producer-execution verifier-execution'''.split())
+          outcomes = {}
+          phases = {}
+          for name in ['bootstrap', 'checkout', 'sources', 'install', 'capture', 'integrity', 'technical', 'authority']:
+              value = text_file(root / (name + '.exit'), 'status-read-' + name)
+              value = value.strip() if value is not None else ''
+              exit_code = int(value) if re.fullmatch(r'[0-9]{1,3}', value) and int(value) <= 255 else None
+              if value and exit_code is None:
+                  failed('status-format-' + name)
+              outcomes[name] = {'outcome': os.environ.get(name.upper() + '_OUTCOME', 'unknown'),
+                                'exitCode': exit_code}
+              phase = text_file(root / (name + '.phase'), 'phase-read-' + name)
+              phase = phase.strip() if phase is not None else None
+              phases[name] = phase if phase in phase_codes else ('checkout-action' if name == 'checkout' else None)
+              if phase is not None and phase not in phase_codes:
+                  failed('phase-format-' + name)
+          observations = {}
+          for name, pattern in [('platform-revision', r'[0-9a-f]{40}'), ('eventstore-revision', r'[0-9a-f]{40}'),
+                                ('configuration-sha256', r'[0-9a-f]{64}'),
+                                ('eventstore-gitlink', r'(100644|100755|120000|040000|160000) (blob|tree|commit) [0-9a-f]{40}\sreferences/Hexalith[.]EventStore')]:
+              value = text_file(root / (name + '.observed'), 'observation-read-' + name)
+              value = value.strip() if value is not None else None
+              observations[name] = value if value == 'invalid' or (value is not None and re.fullmatch(pattern, value)) else None
+              if value is not None and observations[name] is None:
+                  failed('observation-format-' + name)
+          # Raw transcripts remain private on the disposable VM. Arbitrary diagnostic
+          # text is represented by exact byte commitments, never copied to artifacts.
+          transcripts = {}
+          try:
+              paths = sorted(raw.iterdir()) if raw.is_dir() and not raw.is_symlink() else []
+          except Exception:
+              failed('transcript-inventory')
+              paths = []
+          for path in paths:
+              if not re.fullmatch(r'(sources|install|capture|integrity|technical|authority)\.(stdout|stderr|argv)', path.name):
+                  failed('transcript-unexpected-file')
+                  continue
+              data = read_regular(path, 'transcript-read-' + path.stem)
+              if data is None:
+                  failed('transcript-unavailable-' + path.stem)
+                  continue
+              row = {'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}
+              if path.suffix == '.argv':
+                  try:
+                      row['argv'] = data.decode('utf-8').rstrip('\0').split('\0')
+                  except Exception:
+                      failed('transcript-argv-decode-' + path.stem)
+              transcripts[path.name] = row
+          try:
+              (root / 'transcripts.json').write_text(json.dumps(transcripts, indent=2) + '\n')
+          except Exception:
+              failed('transcript-projection')
+          expected = ('FAIL: production eligibility FAIL: authenticated AD-26 Architecture/Platform records, '
+                      'Story 3.19 publication/profile binding, Kubernetes rehearsal, restore and Story 4.16 '
+                      'envelope proof are absent; this lane never issues authority\n')
+          authority_text = text_file(raw / 'authority.stdout', 'authority-decode')
+          authority_error = read_regular(raw / 'authority.stderr', 'authority-stderr-read')
+          expected_rejection = (outcomes['authority'] == {'outcome': 'failure', 'exitCode': 1}
+                                and authority_text == expected and authority_error == b'')
+          complete = (all(outcomes[name]['outcome'] == 'success' for name in ['bootstrap', 'checkout'])
+                      and all(outcomes[name] == {'outcome': 'success', 'exitCode': 0}
+                              for name in ['sources', 'install', 'capture', 'integrity', 'technical']))
+          packet = Path(os.environ.get('QUALIFICATION_OUTPUT', '/nonexistent-platform-broker-packet'))
+          packet_retained = False
+          cleanup_receipt_complete = False
+          # The pinned producer owns packet sanitization. Preserve its bytes and
+          # cleanup receipts even when verification rejects them; never upload private
+          # supervisor directories, tool downloads, environment dumps or raw logs.
+          projection = root / 'packet'
+          projection_existed = False
+          try:
+              projection_existed = projection.exists() or projection.is_symlink()
+              if packet.exists() or packet.is_symlink():
+                  if not packet.is_dir() or packet.is_symlink():
+                      raise ValueError('packet directory required')
+                  paths = list(packet.rglob('*'))
+                  if not all(stat.S_ISREG(path.lstat().st_mode) or stat.S_ISDIR(path.lstat().st_mode) for path in paths):
+                      raise ValueError('packet contains unsupported file kinds')
+                  shutil.copytree(packet, projection)
+                  packet_retained = True
+          except Exception:
+              failed('packet-projection')
+              try:
+                  if not projection_existed and (projection.exists() or projection.is_symlink()):
+                      shutil.rmtree(projection)
+              except Exception:
+                  failed('packet-projection-cleanup')
+          cleanup_text = text_file(packet / 'cleanup.json', 'cleanup-read') if packet_retained else None
+          if cleanup_text is not None:
+              try:
+                  cleanup_receipt_complete = json.loads(cleanup_text).get('complete') is True
+              except Exception:
+                  failed('cleanup-decode')
+          def result():
+              integrity_verified = outcomes['integrity'] == {'outcome': 'success', 'exitCode': 0} and not errors
+              cleanup_complete = cleanup_receipt_complete and integrity_verified
+              return {'outcomes': outcomes, 'phases': phases, 'observations': observations,
+                      'evidenceProcessingErrors': list(errors), 'expectedAuthorityRejection': expected_rejection,
+                      'boundedTechnicalSuccess': complete and expected_rejection and packet_retained and cleanup_complete and not errors,
+                      'packetRetained': packet_retained, 'integrityVerified': integrity_verified,
+                      'cleanupReceiptComplete': cleanup_receipt_complete, 'cleanupComplete': cleanup_complete,
+                      'productionEligibility': 'FAIL', 'selectedBroker': None,
+                      'platformStory4_17': 'in-progress', 'eventStoreStory3_21': 'in-progress'}
+          def persist_result():
+              try:
+                  (root / 'outcomes.json').write_text(json.dumps(result(), indent=2) + '\n')
+              except Exception:
+                  failed('outcomes-write')
+          persist_result()
+          try:
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
+                  stream.write('Platform broker candidate 01: bounded technical success = ' + str(result()['boundedTechnicalSuccess']).lower() + '\n\n')
+                  for name, row in outcomes.items():
+                      stream.write(f"- {name}: {row['outcome']}; raw exit = {row['exitCode'] if row['exitCode'] is not None else 'incomplete'}; phase = {phases[name] or 'incomplete'}\n")
+                  stream.write('\nEvidence-processing codes: ' + (', '.join(errors) or 'none') + '\n')
+                  stream.write('\nProduction eligibility: FAIL; selected broker: null. Both parent stories remain in-progress.\n')
+                  stream.write('Missing statuses or cleanup remain incomplete. Cancellation can prevent summary, cleanup or artifact upload.\n')
+          except Exception:
+              failed('summary-write')
+          persist_result()
+          try:
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+                  stream.write('bounded-success=' + str(result()['boundedTechnicalSuccess']).lower() + '\n')
+          except Exception:
+              failed('report-output-write')
+              persist_result()
+          raise SystemExit(1 if errors else 0)
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        id: upload
+        if: always()
+        with:
+          name: platform-broker-candidate-01-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/**
+            !${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/private-transcripts/**
+          include-hidden-files: true
+          retention-days: 30
+          if-no-files-found: error
+      - name: Enforce bounded result after independent artifact attempt
+        if: always()
+        shell: bash
+        env:
+          BOUNDED_SUCCESS: ${{ steps.report.outputs.bounded-success }}
+          REPORT_OUTCOME: ${{ steps.report.outcome }}
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
+        run: |
+          set -euo pipefail
+          test "$REPORT_OUTCOME" = success
+          test "$UPLOAD_OUTCOME" = success
+          test "$BOUNDED_SUCCESS" = true
