@@ -1,0 +1,228 @@
+{
+  "observedUtc": "2026-11-11T20:35:02.367311+00:00",
+  "pullRequest": {
+    "headRefOid": "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+    "mergeCommit": {
+      "oid": "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+    },
+    "mergedAt": "2026-11-11T20:32:48Z",
+    "number": 40,
+    "reviews": [],
+    "state": "MERGED",
+    "url": "https://github.com/Hexalith/Hexalith.Platform/pull/40"
+  },
+  "actualDefaultBranchRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+  "defaultBranch": "main",
+  "rulesObserved": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [],
+        "require_code_owner_review": true,
+        "dismissal_restriction": {
+          "enabled": false,
+          "allowed_actors": []
+        },
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
+        "allowed_merge_methods": [
+          "merge",
+          "squash",
+          "rebase"
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "Hexalith/Hexalith.Platform",
+      "ruleset_id": 24657106
+    }
+  ],
+  "workflow": {
+    "id": 415133929,
+    "name": "Platform broker candidate 01 (non-promoting)",
+    "path": ".github/workflows/broker-candidate-qualification.yml",
+    "state": "active",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/blob/main/.github/workflows/broker-candidate-qualification.yml"
+  },
+  "reviewEvidence": "API reviews array is empty; external merge observed without inferring review or bypass history",
+  "agentMerged": false,
+  "agentBypassed": false,
+  "reviewAndPublishedTreesIdentical": true,
+  "candidateSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+  "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "cleanIsolatedSources": true,
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "-c",
+        "submodule.recurse=false",
+        "fetch",
+        "--no-recurse-submodules",
+        "origin",
+        "main"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "13aa784958dd634196c540713b3513e67af458ed:.github/workflows/broker-candidate-qualification.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3:.github/workflows/broker-candidate-qualification.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "13aa784958dd634196c540713b3513e67af458ed:docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3:docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3:references/Hexalith.EventStore"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3:docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "repos/Hexalith/Hexalith.Platform/rules/branches/main"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "pr",
+        "view",
+        "40",
+        "--repo",
+        "Hexalith/Hexalith.Platform",
+        "--json",
+        "number,url,state,mergedAt,mergeCommit,headRefOid,reviews"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/broker-candidate-qualification.yml"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "--detach",
+        "/tmp/platform-broker-hosted-source-bpj_05hk/platform",
+        "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "--detach",
+        "/tmp/platform-broker-hosted-source-bpj_05hk/eventstore",
+        "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

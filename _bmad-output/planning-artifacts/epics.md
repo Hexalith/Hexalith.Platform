@@ -2440,10 +2440,16 @@ EventStore retains ownership of the pinned producer, verifier, locks and complet
 both-broker/24-vector matrix. This accepts the bounded EventStore 3.21 local/CI
 handoff planning scope; it establishes no general Platform runner/tool acceptance.
 
-The [prepared candidate CI](../../docs/implementation/story-4-17-broker-candidate-01-ci.md)
-implements that scope with offline workflow controls. It has **not** been
-published or dispatched, and no live results exist. Publication, separately
-authorized live dispatch and assessment of the resulting evidence remain open.
+The [candidate CI](../../docs/implementation/story-4-17-broker-candidate-01-ci.md)
+implements that scope with offline workflow controls. On 2026-11-11 the owner
+approved publication of the current main history, including Story 2.8, and exactly
+one hosted attempt. [PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40)
+preserves independent main advances through ordinary forward integration and
+awaits required approving/code-owner review. No default-branch publication or broker
+dispatch occurred; the approved attempt remains unused. The
+[hosted status and retained evidence](../../docs/implementation/story-4-17-broker-candidate-01-hosted.md)
+record separate source identities, null execution/verifier exits and 0/24 observed
+vectors. Main integration, the single dispatch and packet assessment remain open.
 All five historical guarantees remain **REJECTED**. Broader Kafka causality and
 broker diagnosis remain open; this experiment supplies no broker selection,
 exception, staging or production qualification. The selection/profile-inventory,

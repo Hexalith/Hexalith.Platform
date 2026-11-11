@@ -2,8 +2,12 @@
 
 Prepared on 2026-11-11 under the owner's accepted bounded implementation scope.
 The [workflow](../../.github/workflows/broker-candidate-qualification.yml) has been
-implemented and verified offline. **No live run occurred.** Publication, live
-dispatch and result assessment remain outstanding. Platform 4.17 and EventStore
+implemented and verified offline. **No live run occurred.** The owner subsequently
+approved main publication and exactly one hosted attempt. The approved history is
+prepared in [PR #40](https://github.com/Hexalith/Hexalith.Platform/pull/40), awaiting
+required approving and code-owner review before default-branch publication.
+The [current hosted status and retained evidence](story-4-17-broker-candidate-01-hosted.md)
+record the actual source identities and zero dispatches. Platform 4.17 and EventStore
 3.21 remain **in-progress**; all five historical guarantees remain **REJECTED**.
 No broker is selected, and staging and production qualification remain open.
 
@@ -49,17 +53,21 @@ each of the three verifier modes receive that same independently supplied origin
 through `--platform-config`. The packet's copy is never substituted for it.
 The [original preparation and handoff](story-4-17-broker-candidate-01.md) is preserved.
 
-## Invocation after publication and live authorization
+## Invocation after required default-branch publication
 
-Publication and dispatch are separate future actions; neither was performed by
-this implementation. The workflow must exist on the repository's default branch
-before manual dispatch is available, and the person dispatching it needs repository
-write access. Once the reviewed workflow is published and live execution
-is authorized, an authorized maintainer can select **Platform broker candidate 01
-(non-promoting)** in GitHub Actions and run it at the reviewed published revision.
+The owner has approved the main publication route, including Story 2.8, and exactly
+one hosted dispatch. Active repository rules require PR approval and code-owner
+review before main integration; bypass is outside the approved scope. PR #40
+preserves independent main history through ordinary forward integration. Its latest
+source identity is retained in the linked hosted report. The workflow must reach
+the default branch before dispatch; no new confirmation of the existing live
+approval is required.
+
+After permitted publication, recheck the full actual remote revision and select
+**Platform broker candidate 01 (non-promoting)** at that reviewed published source.
 There are no profile, configuration, broker or command inputs to change.
 
-The equivalent future command, from an authenticated maintainer environment, is:
+The command, from an authenticated maintainer environment after publication, is:
 
 ```bash
 gh workflow run broker-candidate-qualification.yml \
@@ -67,8 +75,9 @@ gh workflow run broker-candidate-qualification.yml \
 ```
 
 Replace `REVIEWED_PUBLISHED_REF` with the published reviewed ref; record its full
-commit alongside the resulting run URL. A manual rerun obtains a new hosted VM
-and attempt identity. It must not reuse a prior worker allocation or packet.
+commit alongside the resulting run URL, separately from the JSON declaration.
+The approved single attempt remains unused. Do not rerun automatically; assess any
+failed or incomplete attempt before deciding on further execution scope.
 
 ## Separate outcomes and expected failures
 

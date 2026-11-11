@@ -1933,7 +1933,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-17-local-ci-broker-guarantee-dispositions.md`
   summary: Execute the untested broker configuration candidates for RabbitMQ rotation, Kafka rotation and Kafka pressure. Candidates: RabbitMQ `reconnectWaitSeconds` and resiliency timeout; Kafka `initialOffset`, `consumeRetryInterval` and group rejoin; Kafka effective-principal and ACL-propagation diagnosis.
   evidence: EventStore's 1.19.1 `validate_profile` pins every component and harness byte to EventStore's lock, so Platform can run no candidate until EventStore's harness accepts Platform-owned configuration. See docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md.
-  update: The pinned EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213 now admits the bounded schema-1 input, and candidate 01 passed offline admission. Its manual hosted workflow is prepared with offline controls; publication, separately authorized dispatch and assessed results remain outstanding. This first combined tuning experiment does not resolve the broader diagnosis, exact Kafka causality, broker selection or staging work. `initialOffset` and harness controls remain fixed under the accepted profile.
+  update: The pinned EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213 admits the bounded schema-1 input, and candidate 01 passed offline admission. The owner approved current-main publication and one hosted attempt on 2026-11-11; PR #40 now awaits required approving/code-owner review. No default-branch publication or dispatch occurred; the approved attempt remains unused. See docs/implementation/story-4-17-broker-candidate-01-hosted.md. This combined tuning experiment does not resolve the broader diagnosis, exact Kafka causality, broker selection or staging work. `initialOffset` and harness controls remain fixed under the accepted profile.
 
 ## Deferred from: bounded candidate-01 CI implementation (2026-11-11)
 
@@ -1941,6 +1941,15 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Publish the reviewed manual candidate-01 workflow, obtain live-dispatch authorization, execute on its verified fresh hosted VM and assess retained capture, integrity, technical, production-authority and cleanup evidence.
   target_story: 4.17 with EventStore 3.21 (both in-progress)
   evidence: `.github/workflows/broker-candidate-qualification.yml` and executable source-release controls are prepared. See docs/implementation/story-4-17-broker-candidate-01-ci.md. No commit, push, publication, dispatch, worker allocation or live qualification occurred during implementation. All five historical guarantees remain REJECTED; selection is null and production eligibility FAIL. Offline tests establish no general Platform runner/tool acceptance or staging/Subscription acceptance.
+  update: On 2026-11-11 the owner approved the current-main publication route and one hosted execution. The approved history and independently published main changes are preserved in PR #40 at 9a829a40718311da3eeb20a9f4e9ba9bc2eea41b, awaiting required approving/code-owner review. Main publication and dispatch remain incomplete; 0/24 vectors were observed and no verifier ran. Retained preflight/PR evidence and the current hosted report identify the exact gate without consuming the approved attempt.
+
+## Deferred from: first hosted candidate publication attempt (2026-11-11)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-17-run-and-assess-the-first-hosted-broker-candidate.md`
+  summary: Complete required review and permitted main integration of PR #40, then execute candidate 01 exactly once under the existing approval, retain its artifact and assess all three independent verifier modes, vectors, cleanup and delivery.
+  target_story: 4.17 with EventStore 3.21 (both in-progress)
+  status: open (required review/main-publication gate; no hosted attempt yet)
+  evidence: docs/implementation/story-4-17-broker-candidate-01-hosted.md and evidence/4-17/candidate-01-hosted/ retain approved source identities, active publication rules, the assessed preservation-only forward merge, validated Git/PR messages and PR #40. Source-release controls pass 82/82. No run/job/artifact or actual execution revision exists; capture/integrity/technical/authority exits are null, cleanup is unassessed, observed vectors are 0/24, selection is null and production eligibility FAIL. Recheck remote main before publication/dispatch; no automatic rerun. Broader diagnosis, selection, staging and Subscription acceptance remain open.
 
 ## Deferred from: code review of spec-2-11-report-lifecycle-observations.md (2026-11-10)
 

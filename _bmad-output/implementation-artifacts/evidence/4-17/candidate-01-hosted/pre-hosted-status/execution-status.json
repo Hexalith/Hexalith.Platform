@@ -1,0 +1,147 @@
+{
+  "observedUtc": "2026-11-11T14:49:07.064007+00:00",
+  "status": "blocked-before-dispatch",
+  "reason": "main rules require an approving pull-request review and code-owner review; no bypass permitted",
+  "pullRequest": "https://github.com/Hexalith/Hexalith.Platform/pull/40",
+  "reviewDecision": "REVIEW_REQUIRED",
+  "mergeable": "MERGEABLE",
+  "mergeStateStatus": "BLOCKED",
+  "reviewBranchRevision": "9a829a40718311da3eeb20a9f4e9ba9bc2eea41b",
+  "defaultBranchRevision": "3ad2f29ae50858ba665499568623b557725b9d93",
+  "workflowOnObservedDefaultBranch": false,
+  "defaultBranchWorkflowCheck": {
+    "argv": [
+      "git",
+      "cat-file",
+      "-e",
+      "3ad2f29ae50858ba665499568623b557725b9d93:.github/workflows/broker-candidate-qualification.yml"
+    ],
+    "exitCode": 128,
+    "expectedExitCode": 128
+  },
+  "agentDispatchCount": 0,
+  "actualExecutionRevision": null,
+  "runId": null,
+  "runAttempt": null,
+  "jobIds": [],
+  "artifact": null,
+  "artifactDownload": {
+    "status": "not-applicable-no-run",
+    "archivePathInspection": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "capture": {
+    "status": "not-executed",
+    "exitCode": null,
+    "argv": null
+  },
+  "integrity": {
+    "status": "not-executed-no-packet",
+    "exitCode": null,
+    "argv": null
+  },
+  "technical": {
+    "status": "not-executed-no-packet",
+    "exitCode": null,
+    "argv": null
+  },
+  "productionAuthorityEvaluation": {
+    "status": "not-executed-no-packet",
+    "exitCode": null,
+    "argv": null
+  },
+  "cleanup": {
+    "status": "not-assessed-no-run",
+    "receipt": null,
+    "verified": false
+  },
+  "artifactDelivery": {
+    "status": "not-attempted-no-run",
+    "verified": false
+  },
+  "boundedTechnicalSuccess": false,
+  "selectedBroker": null,
+  "productionEligibility": "FAIL",
+  "platformStory4_17": "in-progress",
+  "eventStoreStory3_21": "in-progress",
+  "historicalRejectedGuarantees": [
+    "rabbitmq/secret-rotation",
+    "rabbitmq/cancellation-backpressure",
+    "rabbitmq/missing-bindings",
+    "kafka/secret-rotation",
+    "kafka/cancellation-backpressure"
+  ],
+  "independentPullRequestChecks": [
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (3.130.0)",
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447095"
+    },
+    {
+      "workflowName": "Platform tuple CI preflight",
+      "name": "resolve-sources",
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595446311"
+    },
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (3.130.1)",
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447071"
+    },
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (3.130.2)",
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595446939"
+    },
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (3.132.1)",
+      "status": "IN_PROGRESS",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447317"
+    },
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (4.1.0)",
+      "status": "IN_PROGRESS",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447229"
+    },
+    {
+      "workflowName": "Catalog builder consumer binding",
+      "name": "consumer-binding (4.2.0)",
+      "status": "IN_PROGRESS",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857770/job/130595447155"
+    },
+    {
+      "workflowName": "Platform tuple CI preflight",
+      "name": "tuple",
+      "status": "IN_PROGRESS",
+      "conclusion": "",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865474"
+    },
+    {
+      "workflowName": "Platform tuple CI preflight",
+      "name": "Same changed source against the legacy public tuple",
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865527"
+    },
+    {
+      "workflowName": "Platform tuple CI preflight",
+      "name": "Same changed source against the pre-extension public tuple",
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43041857636/job/130595865450"
+    }
+  ]
+}
