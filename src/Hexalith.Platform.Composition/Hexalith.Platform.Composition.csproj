@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Hexalith.Platform.Composition.PlatformSourceStateWorker</StartupObject>
     <!-- Builds loads this model from its private output directory; native preparation also uses its runtime dependencies. -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
