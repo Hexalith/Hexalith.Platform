@@ -39,6 +39,13 @@ if not hosting or any(f"`{package}`" not in hosting.group(1) for package in cano
 if arguments.hosting_helper and arguments.hosting_helper not in canonical:
     raise SystemExit(f"{arguments.hosting_helper}: helper is outside the recorded canonical hosting package set; record its ownership in AD-9 before admission.")
 text = (arguments.root / "apphost.cs").read_text()
+# Explicit vendor integration directives share the same exact catalog authority.
+for package in ("Aspire.Hosting.Docker", "Aspire.Hosting.Kubernetes", "Aspire.Hosting.Redis", "Aspire.Hosting.Keycloak"):
+    if re.search(r"^#:package " + re.escape(package) + r"@", text, re.MULTILINE):
+        entries = properties.findall(".//PackageVersion[@Include='" + package + "']")
+        if len(entries) != 1 or not entries[0].get("Version"):
+            raise SystemExit(f"{package}: the file AppHost requires one exact catalog entry.")
+        selected[package] = entries[0].get("Version")
 composition = arguments.root / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
 mapped = None
 if re.search(r"^#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj$", text, re.MULTILINE) and composition.is_file():

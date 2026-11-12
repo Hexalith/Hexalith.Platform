@@ -7,7 +7,7 @@ using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
 
-/// <summary>Executes the genuine signed public transport and fresh ordinary current reader without starting any application resources.</summary>
+/// <summary>Executes the signed entry/Tooling transport with its bounded test-only security overlay and a fresh reader before application resources start.</summary>
 public sealed class PlatformCurrentOwnerHandoffTests
 {
     /// <summary>Preflight can enrich only derived consumer cache; a fresh ordinary proof and reader preserve the same signed command inputs.</summary>
@@ -70,6 +70,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         byte[] cold = File.ReadAllBytes(snapshot);
         var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
         validation.ExitCode.ShouldBe(0);
+        fixture.AssertValidationRuntimeIntegrity();
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         byte[] warm = File.ReadAllBytes(snapshot);
         AssertDerivedEnrichment(cold, warm, Path.GetFileNameWithoutExtension(fixture.Seed));
@@ -96,7 +97,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
             proof.VerifyReader(receipt.RootElement);
             TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
             {
-                phase = "genuine-signed-current-validation-and-fresh-ordinary-reader", proof.SourceRevision,
+                phase = "signed-entry-current-validation-and-fresh-ordinary-reader", proof.SourceRevision,
                 initialKeySource = initialSigningKey is null ? "original-fixture-key" : "fresh-independent-key",
                 priorPlanKeyAnchor = false,
                 qualificationCredit = false, runtimeBodies = proof.Bodies, packageArchives = proof.PackageArchives,

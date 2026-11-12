@@ -123,6 +123,32 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("AD-9", result.stderr)
 
+    def test_explicit_vendor_integrations_require_the_exact_catalog_version(self):
+        for name in ("Aspire.Hosting.Docker", "Aspire.Hosting.Kubernetes", "Aspire.Hosting.Redis", "Aspire.Hosting.Keycloak"):
+            for version, expected in [("13.6.5", 0), ("13.6.4", 1)]:
+                with self.subTest(package=name, version=version), tempfile.TemporaryDirectory() as directory:
+                    root = pathlib.Path(directory)
+                    raw = CATALOG.replace("</Project>", '<ItemGroup><PackageVersion Include="' + name + '" Version="13.6.5" /></ItemGroup></Project>')
+                    (root / "catalog.props").write_text(raw)
+                    (root / "spine.md").write_text(SPINE)
+                    (root / "apphost.cs").write_text(APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0")
+                        + "#:package " + name + "@" + version + "\n")
+                    result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
+                        "--spine", str(root / "spine.md")], capture_output=True, text=True)
+                    self.assertEqual(result.returncode, expected, result.stderr)
+
+    def test_vendor_directive_with_no_catalog_authority_refuses(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "catalog.props").write_text(CATALOG)
+            (root / "spine.md").write_text(SPINE)
+            (root / "apphost.cs").write_text(APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0")
+                + "#:package Aspire.Hosting.Redis@13.6.5\n")
+            result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
+                "--spine", str(root / "spine.md")], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("one exact catalog entry", result.stderr)
+
     def test_only_recorded_helpers_are_admitted(self):
         self.assertEqual(self.run_script(helper="Hexalith.EventStore.ServiceDefaults").returncode, 0)
         self.assertNotEqual(self.run_script(helper="Unrecorded.Hosting").returncode, 0)

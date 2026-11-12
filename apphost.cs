@@ -1,10 +1,10 @@
 #!/usr/bin/env dotnet
-#:sdk Aspire.AppHost.Sdk@13.6.4
+#:sdk Aspire.AppHost.Sdk@13.6.5
 #:property ManagePackageVersionsCentrally=false
-#:package Aspire.Hosting.Docker@13.6.4
-#:package Aspire.Hosting.Kubernetes@13.6.4-preview.1.26523.11
-#:package Aspire.Hosting.Redis@13.6.4
-#:package Aspire.Hosting.Keycloak@13.6.4-preview.1.26523.11
+#:package Aspire.Hosting.Docker@13.6.5
+#:package Aspire.Hosting.Kubernetes@13.6.5-preview.1.26559.7
+#:package Aspire.Hosting.Redis@13.6.5
+#:package Aspire.Hosting.Keycloak@13.6.5-preview.1.26559.7
 #:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.2-beta.959
 #:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
 using Aspire.Hosting;

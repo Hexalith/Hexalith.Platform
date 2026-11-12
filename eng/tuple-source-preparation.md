@@ -78,3 +78,18 @@ SignalR.Redis10.0.14→10.0.15, and its Options/DI.Abstractions10.0.15 dependenc
 closure. The overlay changes only those exact old entries and keeps package
 auditing enabled. CI evaluates every frozen catalog to verify that owner
 versions, unrelated packages and newer patch versions remain unchanged.
+
+The file AppHost is current source shared by every companion. Its SDK and direct
+integration directives are checked against the current main tuple's authenticated
+Builds catalog. Historical CI exports that exact catalog Git blob into evidence
+without changing its frozen model catalog or checkout. Every direct vendor pin
+must match exactly; this does not introduce a version exception.
+
+Historical validation transports use the original signed AppHost and Tooling
+bodies. When their Aspire13.6.4 dependency cannot load the patched model, the
+fixture creates a private validation-only copy and replaces exactly
+Aspire.Hosting.dll with the independently signed and measured13.6.5 body. It
+verifies every original file against the signed archive, records both closure
+hashes and checks the private copy before and after execution. The original
+archive, dependency documents and checkout stay unchanged; this check grants no
+image or native runtime acceptance.

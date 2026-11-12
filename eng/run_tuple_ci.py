@@ -237,7 +237,15 @@ def main():
             run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
-        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(catalog)])
+        file_catalog = catalog
+        current_source = os.environ.get("CURRENT_PLATFORM_SHA")
+        if current_source and current_source != revision:
+            from file_host_catalog import prepare as prepare_file_host_catalog
+            file_catalog, result["fileAppHostCatalog"] = prepare_file_host_catalog(
+                ROOT, builds_root, current_source, evidence / "current-file-host-catalog")
+        run("file-host-catalog-controls", [sys.executable, "-B", "eng/test_file_host_catalog.py"])
+        run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
+        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         run("source-sdk-propagation-controls", [sys.executable, "-B", "eng/test_source_sdk_propagation.py", "--evidence", str(evidence / "source-sdk-metadata"), "--published-tool-root", str(tool)])
         assets = evidence / "assets"

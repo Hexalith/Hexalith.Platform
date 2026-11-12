@@ -13,6 +13,7 @@ using Shouldly;
 internal sealed class PlatformPartiesPackageFixture : IDisposable
 {
     private readonly string _key = CompositionSigningKey.Create();
+    private Action? _validationRuntimeVerify;
 
     private PlatformPartiesPackageFixture(string workspace, CompositionRunPlan plan, string seed)
     {
@@ -197,6 +198,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     {
         string host = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "Hexalith.Builds.Module.AppHost.dll");
         File.Exists(host).ShouldBeTrue("The genuine published AppHost is mandatory; there is no source fallback.");
+        var validationRuntime = PlatformPublishedValidationRuntime.Prepare(host, Workspace, Metadata("PlatformHistoricalPackageRoot"));
+        host = validationRuntime.Host;
+        _validationRuntimeVerify = validationRuntime.Verify;
         string probes = Path.Combine(Workspace, "validation-probes");
         Directory.CreateDirectory(probes);
         string executable = Path.Combine(probes, "docker");
@@ -228,6 +232,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             if (timeout <= TimeSpan.Zero) throw new InvalidDataException("The published validation startup deadline has expired.");
         }
         CompositionProcessResult result = await CompositionProcess.RunAsync(start, timeout, TestContext.Current.CancellationToken);
+        validationRuntime.Verify();
         result.Output.ShouldNotContain(_key);
         result.ErrorOutput.ShouldNotContain(_key);
         if (signingKey is not null)
@@ -240,6 +245,34 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         result.TimedOut.ShouldBeFalse();
         result.OutputTruncated.ShouldBeFalse();
         return result;
+    }
+
+    /// <summary>Checks unknown private runtime changes refuse, restoring only this fixture's own copies.</summary>
+    internal void AssertValidationRuntimeIntegrity()
+    {
+        string copy = Path.Combine(Workspace, "validation-runtime-host");
+        if (!Directory.Exists(copy)) return;
+        Action verify = _validationRuntimeVerify ?? throw new InvalidOperationException("The validation runtime was not prepared.");
+        foreach (string path in new[] { Path.Combine(copy, "Aspire.Hosting.dll"), Path.Combine(copy, "Hexalith.Builds.Module.AppHost.dll"),
+            Path.Combine(copy, "Hexalith.Builds.Tooling.dll"), Path.Combine(copy, "Hexalith.Builds.Module.AppHost.deps.json"), Path.Combine(Workspace, "validation-runtime-overlay.json") })
+        {
+            byte[] original = File.ReadAllBytes(path);
+            try
+            {
+                File.AppendAllText(path, "changed");
+                Should.Throw<InvalidDataException>(verify);
+            }
+            finally { File.WriteAllBytes(path, original); }
+            verify();
+        }
+        string extra = Path.Combine(copy, "unqualified-extra.dll");
+        try
+        {
+            File.WriteAllText(extra, "unqualified");
+            Should.Throw<InvalidDataException>(verify);
+        }
+        finally { File.Delete(extra); }
+        verify();
     }
 
     /// <summary>Checks the real published transport reached every authenticated image identity without rendering or resource claims.</summary>
