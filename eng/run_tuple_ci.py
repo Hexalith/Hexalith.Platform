@@ -233,6 +233,8 @@ def main():
             result["status"] = "graph-verified"
             return
         run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
+        if args.suite == "current42":
+            run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(catalog)])
@@ -267,8 +269,7 @@ def main():
             reader_receipt = json.loads(receipt_path.read_bytes())
             retained_catalog = isolated / "references/Hexalith.Builds/Props/Directory.Packages.props"
             collector_properties = [*properties, "-p:PlatformPackageReaderWorkspaceRoot=" + str(isolated),
-                "-p:CustomBeforeDirectoryBuildProps=" + str(retained_catalog), "-p:ImportDirectoryPackagesProps=false",
-                "-p:CentralPackageVersionsFileImported=true", "-p:DirectoryPackagesPropsPath=" + str(retained_catalog),
+                "-p:HexalithTenantsVersion=7.0.5", "-p:HexalithMemoriesVersion=3.0.25", "-p:HexalithPartiesVersion=3.1.0",
                 "-p:ArtifactsPath=" + str(evidence / "retained-collector")]
             run("build-retained-collector", ["dotnet", "build", str(composition_project), "-c", "Release", "-m:1", *collector_properties])
             collector_assets = evidence / "retained-collector/obj/Hexalith.Platform.Composition.Tests/project.assets.json"
@@ -277,8 +278,9 @@ def main():
                 if selected.get(identity, {}).get("type") != "package":
                     raise ValueError("The retained collector did not resolve its exact published package input: " + identity)
             result["historicalReferenceCollector"] = {"workspace": reader_receipt,
-                "catalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(), "packageAssets": str(collector_assets),
-                "scope": "Current code against authenticated retained705/25/310 package/source/image inputs; no new native acceptance"}
+                "readerInputCatalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(),
+                "collectingBuildCatalogSha256": hashlib.sha256(catalog.read_bytes()).hexdigest(), "packageAssets": str(collector_assets),
+                "scope": "Current code and patched build dependencies with authenticated retained705/25/310 package/source/image inputs; no new native acceptance"}
         composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *collector_properties, "-getProperty:TargetPath"]).strip()).resolve()
         verify_test_sdk(composition_assembly, args.eventstore_sdk)
         result["compositionTestOutputs"] = {

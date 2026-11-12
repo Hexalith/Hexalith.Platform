@@ -61,10 +61,20 @@ source descriptors; stale production or test code refuses.
 
 `eng/run_tuple_ci.py --suite current42 --eventstore-sdk 4.2.0` and the `base42`
 lane prepare this workspace automatically. They first build current production
-with its actual current catalog. They then build the retained collecting test
-closure from the exact historical catalog, pass
-`PlatformPackageReaderWorkspaceRoot` explicitly, and retain its package assets.
+with its actual current catalog. They build the collecting test closure using
+that same current catalog and explicit frozen Tenants705/Memories25/Parties310
+family selections, keeping patched build dependencies and vulnerability checks.
+The real prepared reader workspace retains its exact historical catalog. Both
+catalog hashes and the collecting package assets are recorded, and
+`PlatformPackageReaderWorkspaceRoot` selects the authenticated historical inputs.
 The nine additive artifact controls still authenticate actual707/26/311 public
 archives and current Parties source; the independent production closure test
 exports the real current producer catalog and proves genuine Server707 output.
 No retained image identity is relabeled as current native acceptance.
+
+Historical root builds retain the catalog objects while applying the current
+source's four bounded security dependency patches: Aspire.Hosting13.6.4→13.6.5,
+SignalR.Redis10.0.14→10.0.15, and its Options/DI.Abstractions10.0.15 dependency
+closure. The overlay changes only those exact old entries and keeps package
+auditing enabled. CI evaluates every frozen catalog to verify that owner
+versions, unrelated packages and newer patch versions remain unchanged.

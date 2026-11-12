@@ -5,6 +5,27 @@
     <HexalithBuildsResolvedRoot>$([System.IO.Path]::GetFullPath('$(HexalithBuildsRoot)', '$(MSBuildThisFileDirectory)'))</HexalithBuildsResolvedRoot>
   </PropertyGroup>
   <Import Project="$(HexalithBuildsResolvedRoot)/Props/Directory.Packages.props" />
+  <!-- Historical owner cohorts retain their exact catalog and signed bodies. These two
+       non-owner security patches and their minimum dependency closure keep current Platform
+       test/build graphs auditable without changing any historical catalog object or granting
+       runtime/image acceptance.
+       https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+       https://github.com/advisories/GHSA-wr8v-9x5q-ggcm -->
+  <ItemGroup>
+    <PackageVersion Update="Aspire.Hosting">
+      <Version Condition="'%(PackageVersion.Version)' == '13.6.4'">13.6.5</Version>
+    </PackageVersion>
+    <PackageVersion Update="Microsoft.AspNetCore.SignalR.StackExchangeRedis">
+      <Version Condition="'%(PackageVersion.Version)' == '10.0.14'">10.0.15</Version>
+    </PackageVersion>
+    <!-- SignalR's patched dependency requires the same compatible Options patch. -->
+    <PackageVersion Update="Microsoft.Extensions.Options">
+      <Version Condition="'%(PackageVersion.Version)' == '10.0.14'">10.0.15</Version>
+    </PackageVersion>
+    <PackageVersion Update="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <Version Condition="'%(PackageVersion.Version)' == '10.0.14'">10.0.15</Version>
+    </PackageVersion>
+  </ItemGroup>
   <!-- Keep the EventStore source graph's package compatibility adjustments. -->
   <Import Project="$(HexalithEventStoreRoot)/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' == 'true'" />
 </Project>

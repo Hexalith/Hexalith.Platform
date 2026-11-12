@@ -201,6 +201,9 @@ class CurrentTupleSourceTests(unittest.TestCase):
         for name, descriptor in [("legacy", legacy.DESCRIPTOR), ("pre-extension", pre_extension.DESCRIPTOR)]:
             descriptors[name] = json.loads((production_root / descriptor).read_bytes())
             descriptors[name]["sourceRevision"] = frozen[name]["anchor"]
+            if name == "pre-extension":
+                # Production selectors are unavailable in this private fixture history.
+                descriptors[name]["packageReaderSourceRevision"] = frozen["package-reader"]["anchor"]
             self.write(self.root, descriptor, json.dumps(descriptors[name]).encode())
         selected = self.commit(self.root)
         companions = {}
@@ -210,6 +213,8 @@ class CurrentTupleSourceTests(unittest.TestCase):
                                         "-m", "test(tuple): record private companion control")
         for name, descriptor in [("legacy", legacy.DESCRIPTOR), ("pre-extension", pre_extension.DESCRIPTOR)]:
             descriptors[name]["sourceRevision"] = companions[name]
+            if name == "pre-extension":
+                descriptors[name]["packageReaderSourceRevision"] = companions["package-reader"]
             self.write(self.root, descriptor, json.dumps(descriptors[name]).encode())
         selected = self.commit(self.root)
         for name, verifier in [("legacy", legacy.verify), ("pre-extension", pre_extension.verify)]:
