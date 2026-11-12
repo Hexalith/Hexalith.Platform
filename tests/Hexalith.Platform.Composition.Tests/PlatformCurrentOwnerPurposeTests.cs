@@ -85,7 +85,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
         Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
         PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
         const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.5</HexalithTenantsVersion><HexalithMemoriesVersion>";
-        const string Suffix = "</HexalithMemoriesVersion></PropertyGroup></Project>";
+        const string Suffix = "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"2.0.1\" /></ItemGroup></Project>";
         File.WriteAllText(catalog, Prefix + "3.0.25" + Suffix);
         PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
         foreach (string refused in new[] { "3.0.23", "3.0.24", "3.0.250", "3.0.25+unqualified", "3.0.26" })

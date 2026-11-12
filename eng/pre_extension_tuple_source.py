@@ -78,7 +78,7 @@ def verify_tuple_metadata(root: Path, current: str, historical: str, *, binding_
         if not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None:
             raise ValueError('Tuple identity requires an exact SHA256.')
     version = publication['version']
-    if not isinstance(version, str) or re.fullmatch(r'4\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version) is None \
+    if not isinstance(version, str) or re.fullmatch(r'(?:4|5)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version) is None \
             or publication['releaseTag'] != 'v' + version or publication['sourceRevision'] != producer['sourceRevision'] \
             or publication['catalogSha256'] != producer['catalog']['sha256'] \
             or git(root, 'rev-parse', current + ':references/Hexalith.Builds').decode().strip() != producer['sourceRevision']:
@@ -98,7 +98,8 @@ def verify_tuple_metadata(root: Path, current: str, historical: str, *, binding_
     if old_identity.get('toolVersionRange') != '[' + historical_version + ', 5.0.0-0)':
         raise ValueError('Historical range floor differs from the exact4.45 tuple.')
     expected_identity = copy.deepcopy(old_identity)
-    expected_identity['toolVersionRange'] = '[' + version + ', 5.0.0-0)'
+    upper = str(int(version.split('.')[0]) + 1) + '.0.0-0'
+    expected_identity['toolVersionRange'] = '[' + version + ', ' + upper + ')'
     if decode(git(root, 'show', current + ':hexalith-platform.json')) != expected_identity:
         raise ValueError('Platform identity changed more than the exact bound range floor.')
 

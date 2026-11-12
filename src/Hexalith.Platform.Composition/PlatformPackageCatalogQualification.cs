@@ -63,9 +63,11 @@ internal static class PlatformPackageCatalogQualification
         string sdk = PlatformServerBindings.Version(options, "eventstore", "qualification");
         string tenants = PlatformServerBindings.Version(options, "tenants", "qualification");
         string? historical = PublishedCatalogArtifactCohort.ForVersions(sdk, tenants, fullParties);
-        return historical is not null || !fullParties ? historical
+        if (!fullParties) return historical;
+        string? mcpCli = PlatformMcpCliCatalogVersion.Resolve(options, "qualification");
+        return historical is not null ? mcpCli == "2.0.0" ? historical : null
             : PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants,
-                PlatformServerBindings.Version(options, "memories", "qualification"), PlatformServerBindings.Version(options, "parties", "qualification"));
+                PlatformServerBindings.Version(options, "memories", "qualification"), PlatformServerBindings.Version(options, "parties", "qualification"), mcpCli);
     }
 
     /// <summary>Selects old public pairs or the separately authenticated exact EventStore package-test purpose; performs no resource effects.</summary>
@@ -93,7 +95,8 @@ internal static class PlatformPackageCatalogQualification
         => PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(
             PlatformServerBindings.Version(options, "eventstore", "current qualification"),
             PlatformServerBindings.Version(options, "tenants", "current qualification"),
-            PlatformServerBindings.Version(options, "memories", "current qualification"));
+            PlatformServerBindings.Version(options, "memories", "current qualification"),
+            PlatformMcpCliCatalogVersion.Resolve(options, "current qualification"));
 
     private static bool MatchesTestSource(PlatformCompositionOptions options, ModuleTestSelection selected)
     {

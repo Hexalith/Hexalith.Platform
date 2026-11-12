@@ -47,6 +47,30 @@ class SharedPublicationTests(unittest.TestCase):
         self.assertFalse(receipt["legacyG4AcceptanceClaimed"])
         self.assertNotIn("inventoryUrl", self.binding["publication"])
 
+    def test_net11_shared_publication_requires_its_own_closed_manifest_and_owner_major_range(self):
+        import tempfile
+        from pathlib import Path
+        from builds_tuple import validate_owner_pins
+        publication = self.binding["publication"]
+        publication.update(version="5.0.0", releaseTag="v5.0.0")
+        manifest = json.loads(publication["manifestJson"])
+        manifest["version"] = "5.0.0"
+        for item in manifest["packages"]:
+            item["path"] = "packages/" + item["id"] + ".5.0.0.nupkg"
+        self.manifest(manifest)
+        validate_binding(self.binding)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / ".config").mkdir()
+            (root / ".config/dotnet-tools.json").write_text(json.dumps({
+                "tools": {"hexalith.builds.module.cli": {"version": "5.0.0"}}}))
+            floor = root / "hexalith-platform.json"
+            floor.write_text(json.dumps({"toolVersionRange": "[5.0.0, 6.0.0-0)"}))
+            validate_owner_pins(self.binding, root)
+            floor.write_text(json.dumps({"toolVersionRange": "[5.0.0, 5.0.0-0)"}))
+            with self.assertRaisesRegex(ValueError, "owner tool pin and range floor"):
+                validate_owner_pins(self.binding, root)
+
     def test_unknown_missing_mixed_or_non_numeric_publication_fields_refuse(self):
         for key, value in (("kind", "other/v1"), ("inventoryUrl", "invented"), ("releaseId", True),
                            ("runId", "12"), ("artifactId", -1), ("artifactSha256", "x")):

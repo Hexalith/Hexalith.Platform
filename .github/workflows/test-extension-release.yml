@@ -71,7 +71,7 @@ jobs:
           set -euo pipefail
           mkdir -p "$PACKAGE_DIRECTORY"
           dotnet pack tests/fixtures/Hexalith.Platform.TestExtension/Hexalith.Platform.TestExtension.csproj -c Release -p:UseHexalithProjectReferences=false -p:IsPackable=true -p:GeneratePackageOnBuild=false -p:PackageVersion="$FIXTURE_VERSION" -p:SourceRevisionId="$GITHUB_SHA" -p:RepositoryCommit="$GITHUB_SHA" -p:RepositoryUrl=https://github.com/Hexalith/Hexalith.Platform -p:RepositoryType=git -o "$PACKAGE_DIRECTORY" -warnaserror -nodeReuse:false --disable-build-servers
-          python3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" tests/fixtures/Hexalith.Platform.TestExtension/bin/Release/net10.0/Hexalith.Platform.TestExtension.dll --assets tests/fixtures/Hexalith.Platform.TestExtension/obj/project.assets.json
+          python3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" tests/fixtures/Hexalith.Platform.TestExtension/bin/Release/net11.0/Hexalith.Platform.TestExtension.dll --assets tests/fixtures/Hexalith.Platform.TestExtension/obj/project.assets.json
           cp "$FIXTURE_PROOF_OUTPUT" "$PACKAGE_DIRECTORY/fixture-proof.json"
           printf 'archive_sha256=%s\n' "$(sha256sum "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

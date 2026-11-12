@@ -90,7 +90,7 @@ public sealed class HeldArchiveDirectory:IDisposable
         using var current=Acquire(_path);
         if(_identity.Inode!=current._identity.Inode || _identity.DeviceMajor!=current._identity.DeviceMajor || _identity.DeviceMinor!=current._identity.DeviceMinor) throw new IOException("Enrolled archive directory identity changed.");
     }
-    /// <summary>Opens a relative no-follow nonblocking inode. No caller supplies a nested path.</summary>
+    /// <summary>Acquires a relative no-follow inode without blocking on special files, then prepares the proven regular descriptor for positional IO.</summary>
     public SafeFileHandle OpenFile(string name,int flags,int mode=0x180)
     {
         Name(name);int descriptor=-1;
@@ -102,8 +102,8 @@ public sealed class HeldArchiveDirectory:IDisposable
         }
         if(descriptor<0) throw new IOException("Archive relative file unavailable.");
         var handle=new SafeFileHandle((IntPtr)descriptor,true);
-        if((Inspect(descriptor).Mode&0xf000)!=0x8000) { handle.Dispose();throw new IOException("Archive regular inode required."); }
-        return handle;
+        try { PrepareRegularFile(descriptor);return handle; }
+        catch { handle.Dispose();throw; }
     }
     /// <summary>Allocates an unnamed staging inode owned only by its descriptor. No final filename can alias it.</summary>
     public SafeFileHandle OpenUnpublishedFile()
@@ -130,6 +130,7 @@ public sealed class HeldArchiveDirectory:IDisposable
         if(fd<0) { if(Marshal.GetLastPInvokeError()==2) return null;throw new IOException("Archive original acquisition failed."); }
         using var handle=new SafeFileHandle((IntPtr)fd,true);var before=Inspect(fd);
         if((before.Mode&0xf000)!=0x8000 || before.Size==0 || before.Size>(ulong)maximumBytes) throw new IOException("Bounded immutable original required.");
+        PrepareRegularFile(fd);
         using var stream=new FileStream(handle,FileAccess.Read);byte[] bytes=new byte[(int)before.Size];stream.ReadExactly(bytes);
         var after=Inspect(fd);
         if(stream.ReadByte()!=-1 || before.Size!=after.Size || before.Modified!=after.Modified || before.ModifiedNanos!=after.ModifiedNanos || before.Changed!=after.Changed || before.ChangedNanos!=after.ChangedNanos) throw new IOException("Immutable original changed.");
@@ -154,6 +155,16 @@ public sealed class HeldArchiveDirectory:IDisposable
     { Name(temporary);Name(final);if(RenameAt(Descriptor,temporary,Descriptor,final,replace?0u:1u)!=0) throw new IOException("Atomic archive publication failed."); }
     /// <summary>Flushes the held directory.</summary>
     public void Flush()=>Flush(Descriptor);
+    private static void PrepareRegularFile(int descriptor)
+    {
+        if((Inspect(descriptor).Mode&0xf000)!=0x8000) throw new IOException("Archive regular inode required.");
+        // Acquisition stays nonblocking until the same held inode is proven regular. On .NET 11,
+        // O_NONBLOCK selects non-positional RandomAccess IO even for regular files. Clear only that
+        // status bit before a managed wrapper can cache IsAsync; never reopen or seek the descriptor.
+        int flags=Fcntl(descriptor,3,0);
+        if(flags<0 || Fcntl(descriptor,4,flags&~0x800)!=0 || Fcntl(descriptor,3,0)!=(flags&~0x800))
+            throw new IOException("Exact positional archive descriptor flags unavailable.");
+    }
     private static void Flush(int fd) { if(Fsync(fd)!=0) throw new IOException("Archive directory flush failed."); }
     private static void Name(string name) { if(name.Length==0 || name is "." or ".." || name.Contains('/') || name.Contains('\0')) throw new IOException("Single archive filename required."); }
     private static Status Inspect(int fd) { if(Statx(fd,"",0x1000,0x7ff,out var s)!=0) throw new IOException("Archive descriptor metadata unavailable.");return s; }
@@ -165,6 +176,7 @@ public sealed class HeldArchiveDirectory:IDisposable
     [DllImport("libc",EntryPoint="unlinkat",SetLastError=true)] private static extern int UnlinkAt(int parent,string path,int flags);
     [DllImport("libc",EntryPoint="renameat2",SetLastError=true)] private static extern int RenameAt(int oldParent,string oldPath,int newParent,string newPath,uint flags);
     [DllImport("libc",EntryPoint="linkat",SetLastError=true)] private static extern int LinkAt(int oldParent,string oldPath,int newParent,string newPath,int flags);
+    [DllImport("libc",EntryPoint="fcntl",SetLastError=true)] private static extern int Fcntl(int fd,int command,int flags);
     [DllImport("libc",EntryPoint="fsync",SetLastError=true)] private static extern int Fsync(int fd);
     [DllImport("libc",EntryPoint="statx",SetLastError=true)] private static extern int Statx(int fd,string path,int flags,uint mask,out Status status);
     [StructLayout(LayoutKind.Explicit,Size=256)] private struct Status

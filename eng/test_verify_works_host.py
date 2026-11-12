@@ -856,21 +856,113 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 self.verify(root, assembly, record, changed)
 
-    def test_retained_startup_preflight_cannot_supply_platform_or_rollback_parity(self):
+    def retained_preflight_records(self):
         root = self.directory()
         assembly, record = self.host_record(root)
         retained = root / 'runtime/bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll'
         retained.parent.mkdir(parents=True)
         retained.write_bytes(b'exact historical host')
-        record.update(role='retained-rollback', assembly=str(retained), sha256=sha256(retained))
+        ports = {'sentry': 61001, 'placement': 61005, 'scheduler': 61006}
+        record.update(role='retained-rollback', assembly=str(retained), sha256=sha256(retained),
+                      controlPlanePorts=ports, dependencyBuildsSuppressed=True)
+        inventory = {}
+        for name in ('coreLib', 'json'):
+            path = root / (name + '.dll')
+            path.write_bytes(name.encode())
+            inventory[name] = verify_works_host.works_managed_runtime.file_identity(path)
+        host = {'pid': 100, 'coreVersion': '11.0.0', **inventory}
+        records = []
+        for offset in (200, 300):
+            current = copy.deepcopy(record)
+            current['managedRuntime'] = {'schema': verify_works_host.works_managed_runtime.SCHEMA,
+                'host': copy.deepcopy(host), 'resources': [dict(host, resource=module['resource'], pid=offset + index)
+                    for index, module in enumerate(current['runtimeModules'])]}
+            records.append(current)
+        arguments = {'retained_assembly': retained, 'retained_preflight': True, 'managed_inventory': inventory,
+                     'control_plane_ports': ports, 'runtime_artifacts': {str(assembly): sha256(assembly)}}
+        return root, assembly, records, arguments
+
+    def verify_preflight_records(self, root, assembly, records, arguments):
         path = root / 'preflight.jsonl'
-        path.write_text(json.dumps(record) + '\n')
-        self.assertEqual(len(verify_host_records(path, assembly, root, VERSION,
-            retained_assembly=retained, retained_preflight=True)), 1)
+        path.write_text(''.join(json.dumps(record) + '\n' for record in records))
+        return verify_host_records(path, assembly, root, VERSION, **arguments)
+
+    def test_retained_startup_preflight_cannot_supply_platform_or_rollback_parity(self):
+        root, assembly, records, arguments = self.retained_preflight_records()
+        self.assertEqual(len(self.verify_preflight_records(root, assembly, records, arguments)), 2)
         with self.assertRaisesRegex(ValueError, 'No actual Platform starts'):
-            verify_host_records(path, assembly, root, VERSION, retained_assembly=retained)
-        with self.assertRaisesRegex(ValueError, 'exactly one'):
-            verify_host_records(path, assembly, root, VERSION, retained_preflight=True)
+            self.verify_preflight_records(root, assembly, records, arguments | {'retained_preflight': False})
+        with self.assertRaisesRegex(ValueError, 'exactly two'):
+            self.verify_preflight_records(root, assembly, records, arguments | {'retained_assembly': None})
+
+    def test_retained_preflight_refuses_incomplete_extra_target_or_unknown_starts(self):
+        root, assembly, records, arguments = self.retained_preflight_records()
+        invalid = [[], records[:1], records + [copy.deepcopy(records[0])]]
+        for index in range(2):
+            for role in ('platform-target', 'unknown'):
+                changed = copy.deepcopy(records)
+                changed[index]['role'] = role
+                invalid.append(changed)
+        for changed in invalid:
+            with self.subTest(roles=[item['role'] for item in changed]), self.assertRaisesRegex(ValueError, 'exactly two'):
+                self.verify_preflight_records(root, assembly, changed, arguments)
+
+    def test_retained_preflight_refuses_duplicate_fleets_or_mixed_host_backend_and_source(self):
+        root, assembly, records, arguments = self.retained_preflight_records()
+        mutations = {
+            'duplicate observation': lambda value: value.update(managedRuntime=copy.deepcopy(records[0]['managedRuntime'])),
+            'one reused resource PID': lambda value: value['managedRuntime']['resources'][0].update(pid=200),
+            'another test host': lambda value: value['managedRuntime']['host'].update(pid=101),
+            'another owned backend': lambda value: value.update(schedulerVolume=VOLUME + '-other'),
+            'another source directory': lambda value: value.update(directory=str(root / 'another-source')),
+            'missing source directory': lambda value: value.pop('directory'),
+        }
+        for name, mutate in mutations.items():
+            changed = copy.deepcopy(records)
+            mutate(changed[1])
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                self.verify_preflight_records(root, assembly, changed, arguments)
+
+    def test_both_retained_preflight_starts_retain_full_artifact_readiness_sdk_and_port_checks(self):
+        root, assembly, records, arguments = self.retained_preflight_records()
+        other = root / 'other/release/Hexalith.Works.AppHost.dll'
+        other.parent.mkdir(parents=True)
+        other.write_bytes(b'independently hashed foreign host')
+        mutations = {
+            'another archive': lambda value: value.update(assembly=str(other), sha256=sha256(other)),
+            'changed archive body': lambda value: value.update(sha256='0' * 64),
+            'missing readiness': lambda value: value.pop('readinessPassed'),
+            'degraded archive': lambda value: value.update(readinessPassed=False, worksReadinessExpectation='Degraded'),
+            'missing SDK bodies': lambda value: value.update(sdkAssemblies=[]),
+            'unbound module body': lambda value: value['runtimeModules'][0].update(entrySha256='0' * 64),
+            'foreign ports': lambda value: value.update(controlPlanePorts=value['controlPlanePorts'] | {'sentry': 50001}),
+            'mutable dependency builds': lambda value: value.update(dependencyBuildsSuppressed=False),
+        }
+        for index in range(2):
+            for name, mutate in mutations.items():
+                changed = copy.deepcopy(records)
+                mutate(changed[index])
+                with self.subTest(start=index, name=name), self.assertRaises(ValueError):
+                    self.verify_preflight_records(root, assembly, changed, arguments)
+
+    def test_both_retained_preflight_starts_require_measured_complete_independent_managed_maps(self):
+        root, assembly, records, arguments = self.retained_preflight_records()
+        with self.assertRaisesRegex(ValueError, 'measured managed runtime inventory'):
+            self.verify_preflight_records(root, assembly, records, arguments | {'managed_inventory': None})
+        mutations = {
+            'absent managed map': lambda value: value.pop('managedRuntime'),
+            'missing resource': lambda value: value['managedRuntime']['resources'].pop(),
+            'forged shared JSON': lambda value: value['managedRuntime']['resources'][0]['json'].update(sha256='0' * 64),
+            'no observed PID': lambda value: value['managedRuntime']['resources'][0].update(pid=0),
+            'extra resource': lambda value: (value['runtimeModules'].append(dict(value['runtimeModules'][0], resource='works-ha')),
+                value['managedRuntime']['resources'].append(dict(value['managedRuntime']['resources'][0], resource='works-ha', pid=900))),
+        }
+        for index in range(2):
+            for name, mutate in mutations.items():
+                changed = copy.deepcopy(records)
+                mutate(changed[index])
+                with self.subTest(start=index, name=name), self.assertRaises(ValueError):
+                    self.verify_preflight_records(root, assembly, changed, arguments)
 
     def test_mixed_or_missing_fleet_configuration_cannot_qualify(self):
         root = self.directory()

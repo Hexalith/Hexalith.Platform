@@ -97,7 +97,7 @@ def sample_fixture(work, args):
             hashes[f"{sample_name}/{relative}"] = {"source": url, "sha256": digest(path)}
         project = ET.Element("Project", {"Sdk": "Microsoft.NET.Sdk"})
         props = ET.SubElement(project, "PropertyGroup")
-        for key, value in {"TargetFramework": "net10.0", "ImplicitUsings": "enable", "Nullable": "enable",
+        for key, value in {"TargetFramework": "net11.0", "ImplicitUsings": "enable", "Nullable": "enable",
                            "IsPackable": "false", "IsPublishable": "false", "TreatWarningsAsErrors": "true"}.items():
             ET.SubElement(props, key).text = value
         items = ET.SubElement(project, "ItemGroup")
@@ -152,7 +152,7 @@ def make_project(path, *, probe=False, program=None):
     if probe:
         project = ET.Element("Project", {"Sdk": "Microsoft.NET.Sdk"})
         props = ET.SubElement(project, "PropertyGroup")
-        for name, value in {"OutputType": "Exe", "TargetFramework": "net10.0", "ImplicitUsings": "enable",
+        for name, value in {"OutputType": "Exe", "TargetFramework": "net11.0", "ImplicitUsings": "enable",
                             "Nullable": "enable", "TreatWarningsAsErrors": "true"}.items():
             ET.SubElement(props, name).text = value
         items = ET.SubElement(project, "ItemGroup")
@@ -241,7 +241,7 @@ def qualify(args):
         make_project(probe_project, probe=True)
         execute(["dotnet", "build", str(probe_project), "-c", "Release", "-m:1", "-nr:false", "-warnaserror",
                  *properties(args.builds_root, args.sdk_version, args.tenants_version)], args.evidence / "probe-build.log")
-        probe = probe_dir / "bin/Release/net10.0/CatalogActivationProbe.dll"
+        probe = probe_dir / "bin/Release/net11.0/CatalogActivationProbe.dll"
         executed["probe"] = retain_execution(probe_project, probe.parent, "probe", args.evidence, args.sdk_version)
         cases = []
         for kind, gateway in [("baseline", "eventstore-binding-check"), ("actual", "eventstore-binding-check"), ("actual", "eventstore-second-check"),

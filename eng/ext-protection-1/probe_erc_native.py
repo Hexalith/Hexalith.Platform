@@ -86,7 +86,7 @@ class ErcProbe(base.Probe):
                            isolationSourceSha256=hashlib.sha256(BASE_FILE.read_bytes()).hexdigest())
 
     def execute(self):
-        expected = ROOT / 'tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll'
+        expected = ROOT / 'tests/Hexalith.Platform.Protection.Tests/bin/Debug/net11.0/Hexalith.Platform.Protection.Tests.dll'
         frozen_runtime = False
         if self.runtime_manifest is not None:
             if not self.runtime_manifest.is_absolute() or self.runtime_manifest.is_symlink() or not self.runtime_manifest.is_file() or hashlib.sha256(self.runtime_manifest.read_bytes()).hexdigest() != self.runtime_manifest_sha256:

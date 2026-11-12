@@ -17,13 +17,13 @@ context:
 
 **Problem:** The workspace is synchronized but its release inputs, dependencies, SDK selections and CI checks have drifted. Current Platform qualification fails before execution, and several module pipelines cannot publish current source.
 
-**Approach:** Update the SDK and compatible package versions, repair actual CI failures, then publish the synchronized source and packages with automated verification. The user explicitly authorizes committing, pushing and releases, including passing human approval gates without another question. This authorization supersedes workflow checkpoints that request human validation.
+**Approach:** Complete the active .NET 11 runtime migration, update the SDK and current packages, repair actual CI failures, then publish the synchronized source and dependent package majors with automated verification. On 2026-11-12 the user explicitly chose: "Include the full .NET 11 runtime migration and dependent releases." This replaces the earlier net10 consumer boundary. The user explicitly authorizes committing, pushing and releases, including passing human approval gates without another question. This authorization supersedes workflow checkpoints that request human validation.
 
 ## Boundaries & Constraints
 
-**Always:** Preserve net10 consumer targets while selecting stable SDK11.0.100. Keep SDK10 runtime/reference packs available in CI. Preserve exact-source and artifact integrity checks, test assertions, historical regression cohorts, and honest acceptance labels. Validate exact commit messages with each owning repository's pinned commitlint before committing. Push submodule commits before the parent pointer commit. Verify package identity and actual NuGet availability after publication. Make changes sequentially within each dependency chain.
+**Always:** Migrate active owned application and library targets, runtime contracts, container bases and current artifact consumers to .NET 11 with stable SDK11.0.100. Keep compiler-host compatibility targets and intentional historical net10 fixtures and SDK10 runtime/reference packs where their retained checks require them. Preserve exact-source and artifact integrity checks, test assertions, historical regression cohorts, and honest acceptance labels. Treat net11-only public package changes as breaking compatibility and use the normal corresponding major release. Validate exact commit messages with each owning repository's pinned commitlint before committing. Push submodule commits before the parent pointer commit. Verify package identity and actual NuGet availability after publication. Make changes sequentially within each dependency chain.
 
-**Never:** Initialize nested submodules, force-push, fabricate passing results, remove automated qualification merely to release, print credentials, or claim native runtime acceptance from source/package checks. Existing compatible ABI holds require an explicit reason when a newer package is unavailable to net10 consumers. Do not rewrite frozen historical evidence.
+**Never:** Initialize nested submodules, force-push, fabricate passing results, remove automated qualification merely to release, print credentials, or claim native runtime acceptance from source/package checks. Never relabel the old net10 qualification as proof of a net11 target. Preserve strict assembly identity, MVID, byte and prebuild snapshot checks when introducing actual shared-framework resolution for net11 SDK children. Do not rewrite frozen historical evidence.
 
 </frozen-after-approval>
 
@@ -42,6 +42,7 @@ context:
 
 **Execution:**
 - [x] Five submodule SDK files and applicable workflow setup steps: select SDK11 and retain net10 runtime availability.
+- [ ] Full user-approved runtime expansion: migrate active TFMs and containers, use the genuine signed Builds5 tool/model libraries, qualify the SDK's actual net11 framework dependency resolution, and publish dependent net11 package majors in dependency order.
 - [ ] Owning package manifests/catalogs: update compatible stable dependencies and lockfiles, document necessary compatibility holds, run affected controls.
 - [ ] Owning CI tooling/tests: fix root causes shown by current CI logs, preserving assertions and source provenance requirements. Include supported shared-workflow pins, release runtime retention, exact npm inventory assertions and current production closure expectations.
 - [ ] Builds publication and Platform tuple files: bind a real current published producer, then repair historical same-code companions and current owner verification. Independently measure finite707/326 owner artifacts, retain historical cohorts, authenticate current declaration bytes, and protect Git commit/blob/checkout checks with behavioral controls.

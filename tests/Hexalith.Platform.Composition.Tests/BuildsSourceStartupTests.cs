@@ -32,7 +32,7 @@ public sealed class BuildsSourceStartupTests
         string workspace = Path.Combine(Path.GetTempPath(), "platform-builds-smoke-" + Guid.NewGuid().ToString("N"));
         string log = Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_BUILDS_SMOKE_LOG") ?? Path.Combine(workspace, "apphost.log");
         CompositionEngine engine = new(new CompositionEngineOptions(
-            Path.Combine(root, "references", "Hexalith.Builds", "src", "hosts", "Hexalith.Builds.Module.AppHost", "bin", "Debug", "net10.0", "Hexalith.Builds.Module.AppHost.dll"),
+            PlatformPublishedValidationRuntime.SourceAppHostPath(root),
             typeof(CompositionEngine).Assembly.Location)
         {
             AspireCommand = Environment.GetEnvironmentVariable("HEXALITH_ASPIRE_CLI") ?? "aspire",

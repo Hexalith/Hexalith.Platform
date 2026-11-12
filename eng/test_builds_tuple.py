@@ -56,7 +56,7 @@ class BuildsTupleTests(unittest.TestCase):
 
     def test_supported_nuget_version_boundaries(self):
         valid = ("4.0.0", "4.38.3", "4.38.3-0", "4.38.3-beta--x", "4.38.3-alpha.0", "4.2147483647.2147483647")
-        invalid = ("5.0.0", "3.9.9", "4.0", "04.0.0", "4.01.0", "4.0.01", "4.38.3-01", "4.38.3-beta.01", "4.38.3-alpha..x", "4.38.3-beta_x", "4.38.3+build", "4.2147483648.0")
+        invalid = ("6.0.0", "3.9.9", "4.0", "04.0.0", "4.01.0", "4.0.01", "4.38.3-01", "4.38.3-beta.01", "4.38.3-alpha..x", "4.38.3-beta_x", "4.38.3+build", "4.2147483648.0", "5.01.0", "5.2147483648.0")
         for version in (*valid, *invalid):
             with self.subTest(version=version):
                 self.binding["publication"].update(version=version, releaseTag="v" + version,
@@ -77,6 +77,12 @@ class BuildsTupleTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, message):
                     self.load()
                 self.binding["publication"][key] = original
+
+    def test_net11_major_cannot_inherit_legacy_inventory_authority(self):
+        self.binding["publication"].update(version="5.0.0", releaseTag="v5.0.0",
+            inventoryUrl="https://github.com/Hexalith/Hexalith.Builds/releases/download/v5.0.0/g4-tool-package-inventory.json")
+        with self.assertRaisesRegex(ValueError, "NET11 Builds 5 requires the shared release"):
+            self.load()
 
     def test_source_tag_and_catalog_mismatches_refuse(self):
         for key, value in (("sourceRevision", load_binding(require_publication=False)["producer"]["sourceRevision"]),

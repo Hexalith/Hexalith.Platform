@@ -9,7 +9,7 @@ import zipfile
 import re
 
 PACKAGE = "Hexalith.Platform.TestExtension"
-LIBRARY = "lib/net10.0/" + PACKAGE + ".dll"
+LIBRARY = "lib/net11.0/" + PACKAGE + ".dll"
 REPOSITORY = "https://github.com/Hexalith/Hexalith.Platform"
 
 

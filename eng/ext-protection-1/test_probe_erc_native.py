@@ -27,7 +27,7 @@ class NativeHarnessControls(unittest.TestCase):
         self.assertFalse(result['liveExecuted'])
 
     def test_missing_local_image_cannot_create_or_pull(self):
-        assembly = probe.ROOT / 'tests/Hexalith.Platform.Protection.Tests/bin/Debug/net10.0/Hexalith.Platform.Protection.Tests.dll'
+        assembly = probe.ROOT / 'tests/Hexalith.Platform.Protection.Tests/bin/Debug/net11.0/Hexalith.Platform.Protection.Tests.dll'
         if not assembly.is_file():
             self.skipTest('Build the owned Debug test assembly first')
         calls = []

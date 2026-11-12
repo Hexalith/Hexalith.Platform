@@ -110,7 +110,7 @@ public sealed class PlatformSdk42PublishedPartiesCohortTests
     [InlineData("4.2.0", "7.0.5.0", "3.0.25", "3.1.0", false)]
     [InlineData("unknown", "unknown", "unknown", "unknown", false)]
     public void OnlyTheCompleteMeasuredVersionsSelectPublicAuthority(string sdk, string tenants, string memories, string parties, bool accepted)
-        => PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants, memories, parties)
+        => PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants, memories, parties, "2.0.1")
             .ShouldBe(accepted ? PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName : null);
 
     /// <summary>The measured NuGet Contracts body is distinct from the measured OCI owner body; neither label grants cross-role equality.</summary>

@@ -49,9 +49,11 @@ def validate_binding(binding, require_publication=True):
         if set(publication) != required:
             raise ValueError("Unsupported official publication fields.")
         version = publication["version"]
-        match = re.fullmatch(r"4\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?", version) if isinstance(version, str) else None
+        match = re.fullmatch(r"(?:4|5)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?", version) if isinstance(version, str) else None
         if not match or any(int(number) > 2147483647 for number in match.group(1, 2)) or any(identifier.isdigit() and len(identifier) > 1 and identifier.startswith("0") for identifier in (match.group(3) or "").split(".")):
-            raise ValueError("Publication requires an exact supported 4.x NuGet semantic version with valid prerelease identifiers.")
+            raise ValueError("Publication requires an exact supported 4.x NuGet semantic version or 5.x NET11 version with valid prerelease identifiers.")
+        if version.startswith("5.") and not shared:
+            raise ValueError("NET11 Builds 5 requires the shared release handoff; legacy inventory authority is unavailable.")
         if publication["sourceRevision"] != producer["sourceRevision"] or publication["releaseTag"] != "v" + version:
             raise ValueError("Publication source/tag differs from the exact producer binding.")
         if publication["catalogSha256"] != catalog["sha256"]:
@@ -94,7 +96,8 @@ def validate_owner_pins(binding, root):
     version = binding["publication"]["version"]
     tools = json.loads((root / ".config/dotnet-tools.json").read_bytes())
     floor = json.loads((root / "hexalith-platform.json").read_bytes())
-    if tools["tools"]["hexalith.builds.module.cli"]["version"] != version or floor["toolVersionRange"] != "[" + version + ", 5.0.0-0)":
+    upper = str(int(version.split(".")[0]) + 1) + ".0.0-0"
+    if tools["tools"]["hexalith.builds.module.cli"]["version"] != version or floor["toolVersionRange"] != "[" + version + ", " + upper + ")":
         raise ValueError("Published tuple must match the owner tool pin and range floor.")
 
 
