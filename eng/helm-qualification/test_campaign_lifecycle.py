@@ -21,7 +21,11 @@ from qualify import Qualification
 
 BUILDS = next(root for root in (lifecycle.ROOT.parent / 'Hexalith.Builds', lifecycle.ROOT / 'references/Hexalith.Builds')
               if (root / 'Props/Directory.Packages.props').is_file())
-CLI = BUILDS / 'src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/net10.0/Hexalith.Builds.Module.Cli.dll'
+TOOL_VERSION = json.loads((lifecycle.ROOT / '.config/dotnet-tools.json').read_bytes())['tools']['hexalith.builds.module.cli']['version']
+if TOOL_VERSION.split('.')[0] not in ('4', '5'):
+    raise ValueError('An explicitly supported Builds source generation is required')
+TOOL_FRAMEWORK = 'net11.0' if TOOL_VERSION.startswith('5.') else 'net10.0'
+CLI = BUILDS / ('src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/' + TOOL_FRAMEWORK + '/Hexalith.Builds.Module.Cli.dll')
 
 
 class CampaignLifecycleTests(unittest.TestCase):

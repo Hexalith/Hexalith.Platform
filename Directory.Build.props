@@ -1,6 +1,10 @@
 <Project>
   <PropertyGroup>
+    <!-- Exact authenticated historical tool manifests keep their original regression runtime.
+         Reading this owning file also reaches the genuine Builds 4 child builds, whose environment is scrubbed. -->
+    <_PlatformRuntimeToolManifest Condition="Exists('$(MSBuildThisFileDirectory).config/dotnet-tools.json')">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory).config/dotnet-tools.json'))</_PlatformRuntimeToolManifest>
     <TargetFramework>net11.0</TargetFramework>
+    <TargetFramework Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(_PlatformRuntimeToolManifest)', '&quot;hexalith\.builds\.module\.cli&quot;\s*:\s*\{\s*&quot;version&quot;\s*:\s*&quot;(4\.44\.3|4\.45\.0|4\.47\.0)&quot;'))">net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

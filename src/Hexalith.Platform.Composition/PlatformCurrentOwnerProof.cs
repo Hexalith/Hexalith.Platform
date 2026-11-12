@@ -1,7 +1,9 @@
 namespace Hexalith.Platform.Composition;
 
 using System.IO.Compression;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -40,7 +42,7 @@ internal sealed class PlatformCurrentOwnerProof
         {
             profile = Profile, revision = source.Revision, options.Mapping.ContentHash,
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
-            platform = options.Mapping.PlatformIdentity, configuration = "Release", cohort = Cohort, sdkVersion = SdkVersion, bodies, files,
+            platform = options.Mapping.PlatformIdentity, configuration = "Release", targetFramework = PreparationTargetFramework, cohort = Cohort, sdkVersion = SdkVersion, bodies, files,
         });
         _seal = Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt)));
     }
@@ -58,6 +60,24 @@ internal sealed class PlatformCurrentOwnerProof
         PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name => CurrentDeclarationHash,
         _ => throw Refusal(),
     };
+    /// <summary>The authenticated loaded Builds generation fixes this private preparation target.</summary>
+    internal static string PreparationTargetFramework => typeof(CompositionEngine).Assembly
+        .GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName switch
+        {
+            ".NETCoreApp,Version=v10.0" => "net10.0",
+            ".NETCoreApp,Version=v11.0" => "net11.0",
+            _ => throw Refusal(),
+        };
+
+    /// <summary>Refuses old or mixed owner graphs before private artifact authority can be issued.</summary>
+    internal static void RequirePreparationFramework(JsonElement assets, string expected)
+    {
+        if (expected is not ("net10.0" or "net11.0")) throw Refusal();
+        JsonProperty[] frameworks = assets.GetProperty("project").GetProperty("frameworks").EnumerateObject().ToArray();
+        if (frameworks.Length != 1 || frameworks[0].Name != expected
+            || frameworks[0].Value.GetProperty("targetAlias").GetString() != expected) throw Refusal();
+    }
+
     internal string SdkVersion => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(Cohort);
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
@@ -148,7 +168,7 @@ internal sealed class PlatformCurrentOwnerProof
                 || metadata.Elements().Single(element => element.Name.LocalName == "version").Value != version
                 || (string?)repository.Attribute("commit") != revision
                 || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Parties") throw Refusal();
-            using Stream embedded = package.GetEntry("lib/net10.0/" + name + ".dll")?.Open() ?? throw Refusal();
+            using Stream embedded = package.GetEntry("lib/" + PreparationTargetFramework + "/" + name + ".dll")?.Open() ?? throw Refusal();
             string digest = Convert.ToHexStringLower(SHA256.HashData(embedded));
             if (digest != Hash(body) || bodies.TryGetValue(name, out string? runtime) && runtime != digest) throw Refusal();
             bodies[name] = digest;
@@ -160,6 +180,7 @@ internal sealed class PlatformCurrentOwnerProof
         foreach (string asset in System.IO.Directory.GetFiles(Path.Combine(artifacts, "obj"), "project.assets.json", SearchOption.AllDirectories))
         {
             using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(asset));
+            RequirePreparationFramework(document.RootElement, PreparationTargetFramework);
             foreach (JsonProperty library in document.RootElement.GetProperty("libraries").EnumerateObject())
             {
                 string name = library.Name.Split('/')[0];

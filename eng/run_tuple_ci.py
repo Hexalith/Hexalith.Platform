@@ -19,6 +19,27 @@ from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins,
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def tuple_runtime_context(binding, suite, profile_sha256):
+    """Select exact historical regression targets without changing current NET11 authority."""
+    from prepare_tuple_sources import FROZEN
+    publication = binding["publication"]
+    source, version = binding["producer"]["sourceRevision"], publication["version"]
+    if suite == "current":
+        for name, tool_version in (("legacy", "4.44.3"), ("pre-extension", "4.45.0")):
+            frozen = FROZEN[name]
+            if source == frozen["gitlinks"]["references/Hexalith.Builds"] and version == tool_version \
+                    and profile_sha256 == frozen["hashes"]["eng/tuple-ci-suites.json"]:
+                return {"purpose": name + "-same-code-net10-regression", "targetFramework": "net10.0",
+                        "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
+                        "currentRuntimeQualification": False}
+        raise ValueError("A retained runtime requires its exact frozen source, tool version and profile.")
+    if suite not in ("current42", "base42", "extensions") or not version.startswith("5."):
+        raise ValueError("Current runtime qualification requires the bound NET11 Builds generation.")
+    return {"purpose": "current-net11-with-retained-public-sdk42", "targetFramework": "net11.0",
+            "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
+            "nativeAcceptance": False}
+
+
 def validate_profile(profile):
     groups = profile.get("groups")
     if not isinstance(groups, list) or not groups:
@@ -168,6 +189,10 @@ def main():
         run("dotnet-info", ["dotnet", "--info"])
         binding = load_binding()
         result["tupleBinding"] = binding
+        runtime_context = None
+        if not args.audit_only:
+            runtime_context = tuple_runtime_context(binding, args.suite, hashlib.sha256((ROOT / profile_path).read_bytes()).hexdigest())
+            result["runtimeBuildContext"] = runtime_context
         version, source = binding["publication"]["version"], binding["producer"]["sourceRevision"]
         archive_sha256 = binding["publication"]["archiveSha256"]
         validate_owner_pins(binding, ROOT)
@@ -183,8 +208,8 @@ def main():
         required_total = validate_profile(profile)
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
-        if args.suite == "current42" and required_total != 477:
-            raise ValueError("The SDK4.2 current suite requires all 457 retained cases, seventeen current artifact controls and three explicit MCP selection controls (477 total).")
+        if args.suite == "current42" and required_total != 478:
+            raise ValueError("The SDK4.2 current suite requires all 457 retained cases, seventeen current artifact controls, three explicit MCP selection controls and one private target-framework control (478 total).")
         if args.suite == "extensions" and required_total != 9:
             raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:
@@ -255,6 +280,8 @@ def main():
             path = project.parent / "obj/project.assets.json"
             payload = path.read_bytes()
             document = json.loads(payload)
+            if set(document["project"]["frameworks"]) != {runtime_context["targetFramework"]}:
+                raise ValueError("Restored graph does not match its exact current or historical runtime context.")
             for name, library in document["libraries"].items():
                 if library["type"] == "project":
                     source = (project.parent / library["msbuildProject"]).resolve()
@@ -311,6 +338,9 @@ def main():
                 selectors = [argument for name in group["selectors"] for argument in [group["filter"], name]]
                 run("test-" + str(number), ["dotnet", assembly, *selectors, "-result-xml", str(xml)])
                 counts = ET.parse(xml).getroot().find("assembly").attrib
+                expected_test_framework = ".NETCoreApp,Version=v" + runtime_context["targetFramework"].removeprefix("net")
+                if counts.get("target-framework") != expected_test_framework:
+                    raise ValueError("Executed tests do not match their recorded runtime context.")
                 if int(counts["total"]) != group["requiredCount"] or int(counts["total"]) <= 0 or int(counts["passed"]) != int(counts["total"]) or any(int(counts.get(key, "0")) for key in ["failed", "errors", "skipped", "not-run"]):
                     raise ValueError("Incomplete/nonpassing required suite: " + project.stem)
                 result["tests"].append({"project": str(project.relative_to(ROOT)), "purpose": group.get("purpose", "recorded-tuple-boundary"), "selectors": group["selectors"], "platformSource": revision, "counts": counts})

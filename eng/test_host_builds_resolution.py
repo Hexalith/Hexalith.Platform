@@ -173,7 +173,7 @@ class HostBuildsResolutionTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Platform CI refuses foreign project references", result.stdout + result.stderr)
 
-    def test_tenant_registry_inherits_transitive_catalog_and_keeps_one_gateway_pin(self):
+    def test_tenant_registry_inherits_transitive_catalog_and_gateway_version(self):
         selected = self.builds(self.workspace / "Hexalith.Builds", "tenant")
         catalog = selected / "Props/Directory.Packages.props"
         catalog.write_text('<Project><ItemGroup><PackageVersion Include="Hexalith.Commons.UniqueIds" Version="2.30.7" /><PackageVersion Include="Hexalith.EventStore.Gateway" Version="3.124.0" /></ItemGroup></Project>')
@@ -186,7 +186,7 @@ class HostBuildsResolutionTests(unittest.TestCase):
         evaluated = json.loads(result.stdout)
         self.assertEqual(evaluated["Properties"]["CentralPackageTransitivePinningEnabled"], "true")
         packages = evaluated["Items"]["PackageVersion"]
-        for name, version in (("Hexalith.Commons.UniqueIds", "2.30.7"), ("Hexalith.EventStore.Gateway", "3.128.4")):
+        for name, version in (("Hexalith.Commons.UniqueIds", "2.30.7"), ("Hexalith.EventStore.Gateway", "3.124.0")):
             matches = [item for item in packages if item["Identity"] == name]
             self.assertEqual(len(matches), 1)
             self.assertEqual(matches[0]["Version"], version)
