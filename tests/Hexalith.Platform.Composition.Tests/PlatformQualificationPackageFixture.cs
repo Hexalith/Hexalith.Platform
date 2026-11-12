@@ -14,6 +14,10 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
     /// <summary>Selects the exact retained SDK4.1/Tenants705/Memories25 private-test reference provenance; grants no public or runtime acceptance.</summary>
     internal static PlatformQualificationPackageFixture CurrentTest() => new(currentTest: true);
 
+    /// <summary>Selects the independently authenticated loaded SDK for generic private component controls; grants no runtime acceptance.</summary>
+    internal static PlatformQualificationPackageFixture SelectedSdkTest() => PlatformPartiesPackageFixture.SelectedSdkVersion == "4.2.0"
+        ? ExtensionSdkTest() : CurrentTest();
+
     /// <summary>Uses the independently released SDK4.2 source binding in an isolated component fixture.</summary>
     internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true, sdk42: true);
 

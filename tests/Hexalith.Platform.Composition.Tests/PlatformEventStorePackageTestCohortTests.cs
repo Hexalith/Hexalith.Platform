@@ -68,7 +68,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
     [Fact]
     public void ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes()
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = Sign(fixture.Plan, key);
         var builder = Builder();
@@ -127,7 +127,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
     [InlineData("declaration")]
     public void InvalidRequestsRefuseBeforeComposeRunEffects(string fault)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         RequireBaseline(fixture);
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = fixture.Plan;
@@ -199,7 +199,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
     [InlineData("changed-declaration")]
     public void ChangedResolvedTopologyRefusesBeforeEffects(string fault)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var original = PlatformServerBindings.Resolve(fixture.Options, declarations);
         PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, original, true).Count.ShouldBe(3);
@@ -228,7 +228,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
     [Fact]
     public void OrdinaryAndSerializedOptionsCannotSelectThePrivatePurpose()
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         RequireBaseline(fixture);
         string serialized = JsonSerializer.Serialize(fixture.Options);
         serialized.ShouldNotContain("QualificationOwnerProof");
