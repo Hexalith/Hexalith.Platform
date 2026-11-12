@@ -1,0 +1,9 @@
+Review pass 3 mutation checks (scratch worktree, controller restored byte-identical after each run).
+Each mutation was applied to scripts/qualify-disposable-ci.py and the full ci-lifecycle suite rerun:
+collision-port-check (drop endpoint.port == plan port): FAILED (failures=2)
+collision-connect (drop live TCP connect): FAILED (failures=2)
+handoff-reason (default expected_reason -> attachment-expired): FAILED (errors=1)
+public-runid (drop public runId binding): FAILED (failures=3)
+relay-fallback (restore refusal of unmapped failed exits): FAILED (failures=4, errors=2)
+intentional (drop intentional-failure strictness): FAILED (failures=1)
+Unmutated suite: Ran 183 tests, OK.

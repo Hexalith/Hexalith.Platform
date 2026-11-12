@@ -183,6 +183,75 @@ Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda
 - `low` — The finalizer never signals a live admitted attached CLI after a refused owner drain (blind-hunter): this is the rare `HXR037` path, it fails loudly, and the fix adds a branch.
 - `low` — Invalid-lineage probes bypass the attached journal and launch gate (acceptance-auditor): this matters only if the expected refusal regresses, in which case the unchanged-ledger check fails. Journaling the probes adds complexity.
 
+#### Code review pass 3 (2026-11-12)
+
+Pass 3 reviewed the resumed correction run: Platform `3f7659e2` (`src/` and `tests/` only), Builds `3c2f5944..565b9e63`, EventStore `76f743ba..8934b4f4` and Parties `e2a135cd..9a08b88e`. That is 14 files and 1,257 diff lines; evidence files were left out. All four layers completed: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor. They raised 42 findings. Triage produced 0 decision-needed, 9 patch, 0 defer and 23 rejected. The acceptance auditor confirmed that all 21 pass-2 patch items are implemented. Line anchors refer to the delivered commits.
+
+- [x] [Review][Patch] `collision` still passes on a claim-only conflict; nothing proves the owner's EventStore listens on the requested port [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1482] (medium; acceptance-auditor+verification-gap+edge-case-hunter)
+  - `collision()` reads `plan['ports']['eventStoreHttp']` and accepts any `HXR031` that names the owner.
+  - Builds `AllocateOwned` claims the port before probing it (`CompositionPortAllocator.cs:185-188`). The challenger therefore gets `HXR031` whether or not the port is actually bound.
+  - Under the current pins, the Platform composition release lacks `3f7659e2`. The owner's EventStore then listens on an Aspire-assigned port, yet the hosted case still passes. The Parties doc itself says "a claim conflict alone supplies no live-service proof".
+  - Fix:
+    - Before launching the challenger, read the owner's readiness document (`<workspace>/readiness.json`, `eventStoreEndpoint`) and require its loopback port to equal the plan port.
+    - Add a `wrong-bound-port` fault to `test_collision_requires_exact_blocker_and_unchanged_peer`.
+- [x] [Review][Patch] `AttachedExpiryCancelsFixtureRequests` can still flake or hang [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:76] (medium; acceptance-auditor+edge-case-hunter+blind-hunter)
+  - **Flake:** the 5 s hold starts at `accepted`. That is before the file write, the reader, client creation, the TCP accept and the 2 s header read. On a loaded agent, either the constructor throws `HXT108` or `IsCompleted.ShouldBeFalse` fails.
+  - **Hang:** if the hold expires before the client connects, the request is cancelled. `AcceptTcpClientAsync` (`:83`) waits only on the test-context token, so the test hangs.
+  - **Missing assertion:** nothing checks that cancellation happened at or after `expiresAt`, so an early cancellation also passes.
+  - Fix: use a longer hold (about 15 s), bound the accept with `WaitAsync`, and assert that the observed cancellation is not earlier than the hold expiry.
+- [x] [Review][Patch] The non-`test-failure` branch of `verify_attached_command` is never exercised [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1428] (medium; verification-gap+blind-hunter)
+  - Replacing the branch with the fixed `(4, 'ProductOrTest', 'HXT007', 'ProductOrTest')` tuple leaves the whole suite passing.
+  - The `rebound-failure` fault only proves that the branch is not taken.
+  - Its `ruleId or 'HXT007'` default mirrors Relay and is correct.
+  - Fix:
+    - Add finalize cases for failed outcomes with a cause other than test-failure, with exits 3 and 6.
+    - Add a mismatched-category counterpart that must refuse.
+- [x] [Review][Patch] No test pins the attached public result's `runId` binding [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1454] (medium; verification-gap)
+  - Replacing the `runId` condition with `True` leaves the suite passing. Another run's public output could then be verified and retained as this run's evidence.
+  - Fix: add a `foreign-run` fault to `test_attached_exit_public_mapping_and_cleanup_diagnostics_are_verified_for_each_cause`.
+- [x] [Review][Patch] No positive test checks the refusal reason that `invalid_handoff` expects [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1594] (medium; verification-gap)
+  - Changing the call to `expected_reason='attachment-expired'` leaves the suite passing.
+  - Builds `Retry` returns `attachment-ended` for an ended hold, so with that change the hosted case would fail.
+  - Fix: add a positive `invalid_handoff` test.
+    - The double returns `HXR036` with `attachment-ended`, then `unknown-attachment-request`.
+    - Assert success and both evidence tags.
+- [x] [Review][Patch] The failed-outcome mapping in `verify_attached_command` differs from Builds `AttachedSuiteCommand.Relay` [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1426] (low; blind-hunter+acceptance-auditor+edge-case-hunter)
+  - For every failed outcome, Relay uses the ledger's `execution.exitCode` (it maps null, 0 and 130 to `ProductOrTest`) and `execution.ruleId ?? HXT007`.
+  - The controller hard-codes `(4, HXT007)` for `test-failure`, which leads to refusals:
+    - The host-vanished stamp (`AttachedSuiteTermination.cs:249`: exit 3, `HXT009`) is refused as "public outcome differs".
+    - A skipped-test `HXT004` failure is refused the same way.
+    - The fallback branch refuses exit codes that Builds maps to 4.
+  - Only runs that have already failed are affected. Even so, the finalizer reports a correct CLI result as a contract mismatch.
+  - Fix: for every failed outcome, derive the expected tuple from the ledger execution exactly as Relay does.
+- [x] [Review][Patch] The identity comparison inside `verify_attached_command` can never fail [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1445] (low; verification-gap+blind-hunter)
+  - `recover_launch` already refuses a changed attached identity. It then copies the record's identity onto the entry, so the second comparison checks the entry against itself.
+  - Only `recover_launch` (`:917`) catches a rebound record. The owner-side rebind claim was not demonstrated, because `begin()` refuses a second launch per label.
+  - Fix: delete the redundant comparison.
+- [x] [Review][Patch] The Platform isolation assertion checks only `Port`, not `TargetPort` [tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs:41] (low; edge-case-hunter)
+  - If another resource reused the run-plan EventStore port as its target port, the assertion would still pass.
+  - Fix: also require `value.TargetPort != plan.Ports.EventStoreHttp`.
+- [x] [Review][Patch] `test_review_pass2.py` imports `json` without using it, and its imports are out of order [references/Hexalith.Parties/tests/ci-lifecycle/test_review_pass2.py:3] (low; blind-hunter)
+
+**Rejected (pass 3):**
+- `false` — The service accepts `--eventstore-port` with an attached suite (blind-hunter, edge-case-hunter): the CLI passes `attachTo` as the service `runId` (`ModuleCommandApplication.cs:478`), so the guard `runId is not null` refuses it.
+- `false` — The routing-snapshot theory has no rows for descriptor `environmentId` or `catalog.instanceId` (blind-hunter, edge-case-hunter): `SelectedRoutingCatalogSnapshotTests` already covers both, as `wrong-environment` and `wrong-instance`.
+- `false` — The binding applies to every v2 run, not only explicit ports; and the Platform test lacks an explicit-port case (blind-hunter, acceptance-auditor): this is resolved decision (a), "when a run plan exists". The runner already claims the plan port for every run. The model only sees `plan.Ports`, so an explicit port and an allocated port reach it as the same input. The unowned-case assertion is vacuous on purpose, because there is no plan port. Proof that the port is actually bound belongs to the collision patch.
+- `false` — The proxied endpoint leaves EventStore on an unclaimed DCP target port (edge-case-hunter): EventStore already listened on an Aspire-assigned port before this change. The claimed, published endpoint the challenger requests is now the plan port.
+- `false` — A non-object public result or non-dict diagnostics escape the finalizer as `AttributeError` (edge-case-hunter): the file is the typed `ToolCommandResult` output. This is the same unreachable malformed-producer input rejected in passes 1 and 2.
+- `low` — `write()` is uncapped for every caller (blind-hunter, verification-gap, edge-case-hunter): `write()` was already uncapped at the pre-part-3 baseline `fc9ea3f3`. Patch 21 restored that and kept the cap on retained artifact copies. A tool output over 8 MiB is unlikely, and a second writer adds surface.
+- `low` — The live-child path never cross-checks the durable exit record (blind-hunter): this only matters if the supervisor fails to write its own record, and the fix adds a guard.
+- `low` — The same invalid port gets `HXC001` from the CLI and `HXC002` from the service (blind-hunter): this layering predates the change and was already noted in pass 2.
+- `low` — The README does not describe the `SocketException` when an unmanaged process holds the port (blind-hunter): pass 2 rejected this same behavior as low.
+- `low` — The candidate-policy test covers one of the executor's four refusal conditions (blind-hunter): pass 2 asked only for `CandidatePolicy`. Snapshot and admission tests cover hold identity mismatches, and the CLI refuses observation-requiring suites earlier with `HXC002`.
+- `low` — No step-level timeout reserves time for the finalizer (blind-hunter): the structure predates this change, and `always()` steps still run after the job is cancelled.
+- `low` — Nothing measures the hold-expiry margin (blind-hunter): `observe()` timestamps every observation, and a missed window still fails loudly.
+- `low` — The Parties doc names the pre-binding Platform input and keeps a review log (blind-hunter): it states the binding behavior that is required, following the pattern of the existing preparation paragraph.
+- `low` — The EventStore constructor's own foreign, missing and snapshot checks are never reached (acceptance-auditor): the reader refuses those rows first, as pass 2's patch asserted. Reaching the constructor would need a test that bypasses the reader.
+- `low` — The main-level failure-then-cancellation test replaces `finalize` (acceptance-auditor): it covers the three mutations pass 2 named. Testing the full chain needs a new harness.
+- `low` — A signal arriving between the release write and handler installation kills the supervisor (edge-case-hunter): this microsecond window existed before the change, and the finalizer then fails loudly on the missing admission or exit record.
+- `low` — A signal-killed CLI is recorded as `-N` while the supervisor exits `256-N` (edge-case-hunter): both values fail every expected mapping, so no outcome changes.
+- `low` — An early signal can reach only the muxer before the tool process exists (edge-case-hunter): this muxer boundary predates the change, and owner withdrawal still ends the attached run. The fix would add waiting and retries.
+
 ## Implementation Notes
 
 Approved by the user on 2026-11-11 with “approve and stop”. The frozen intent is locked. The initial implementation and both review passes are complete. All 21 approved review-pass-2 corrections and the three independently identified correction groups were completed in the resumed 2026-11-12 bmad-build run.
@@ -274,3 +343,27 @@ The seven surviving reports share three roots: G1 aligns operational metadata re
 - G1 now reads operational journals through the matching uncapped metadata contract while preserving artifact and held-file/link checks; G2 queues SIGINT/SIGTERM through child construction/birth capture; G3 verifies hold expiry cancels an actual outstanding HTTP request with a longer independent timeout. [Final verification](evidence/2-11/part-3/checks/review-pass-2-final-verification.json) and [matrix/correction audit](evidence/2-11/part-3/checks/review-pass-2-final-matrix-audit.json) retain exact named passing evidence.
 - All 13 independent findings were triaged individually: seven reports corrected in three groups, six rejected on traced publisher/recovery invariants, with no new deferral. Previously deferred hosted timing/order measurements remain open. Default Platform framework drift and broader catalog isolation remain documented limitations; successful focused validation uses the saved local framework/helper overrides. No hosted qualification, release publication or pin change is claimed.
 - Local delivery follows the workflow using pinned commitlint 21.2.4 for every exact full message. Builds, EventStore and Parties local commits are recorded in [the delivery manifest](evidence/2-11/part-3/checks/review-pass-2-local-commits.json). The Platform commit preserves its original submodule pointers; there is no push or remote operation.
+
+### Review pass 3 corrections (2026-11-12)
+
+The user chose to apply all 9 pass-3 patches.
+
+- **Parties** `f5321450` (`fix(ci): prove the live collision endpoint`) and **EventStore** `bb9e2b51f` (`test(testing): bound the attached expiry request check`):
+  - Each was made in a scratch worktree on `fix/2-11-review-pass3`, branched from the delivered heads `9a08b88e` and `8934b4f48`.
+  - Pushed to module `main` on 2026-11-13 at the user's request:
+    - Parties fast-forwarded `e2a135cd..f5321450`.
+    - EventStore merged as `76fe863f1`.
+    - Builds `565b9e63` merged as `90263457`.
+  - The Platform Parties and EventStore gitlinks now pin exactly `f5321450` and `bb9e2b51f`. The Builds gitlink stays at `565b9e63`.
+- **Platform**: the `PlatformRunIsolationTests.cs` `TargetPort` assertion is committed with this record.
+- **What changed:**
+  - `collision()` now requires the owner readiness `eventStoreEndpoint` to be a loopback `http` URL on the claimed plan port, and to accept a TCP connection, before the challenger runs.
+  - `verify_attached_command` mirrors Builds `Relay` for every failed outcome. The hosted `attached-failure` case still requires the intentional `(4, ProductOrTest, HXT007)` test failure.
+  - The dead identity re-check was removed.
+  - The EventStore expiry test uses a 15 s hold and a bounded accept, and asserts that cancellation is not earlier than the expiry (250 ms tolerance).
+- **Local results:**
+  - Parties controller: 183/183 pass. Six mutations of the new checks each fail the suite, and the controller was restored byte-identical after each one.
+  - EventStore `TestEnvironmentDescriptorReaderTests`: 62/62 pass.
+  - Platform `EventStoreEndpointUsesRunPlanPortAndKeepsUnownedAllocationAsync`: 2/2 pass, run with the saved net11 props and `pwsh` on `PATH`.
+  - The outputs are in `evidence/2-11/part-3/checks/review-pass-3-*`.
+- The Builds sources and tests, the workflow, the declarations and the schemas are unchanged. No hosted qualification, release publication or pin change is claimed.

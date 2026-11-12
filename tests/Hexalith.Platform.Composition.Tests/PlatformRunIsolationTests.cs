@@ -38,7 +38,7 @@ public sealed partial class PlatformAppModelTests
             var endpoint = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<EndpointAnnotation>().Single(value => value.Name == "http");
             endpoint.Port.ShouldBe(plan?.Ports.EventStoreHttp);
             endpoint.IsProxied.ShouldBeTrue();
-            builder.Resources.Where(resource => resource.Name != "eventstore").ShouldAllBe(resource => resource.Annotations.OfType<EndpointAnnotation>().All(value => plan == null || value.Port != plan.Ports.EventStoreHttp));
+            builder.Resources.Where(resource => resource.Name != "eventstore").ShouldAllBe(resource => resource.Annotations.OfType<EndpointAnnotation>().All(value => plan == null || (value.Port != plan.Ports.EventStoreHttp && value.TargetPort != plan.Ports.EventStoreHttp)));
         }
         finally
         {
