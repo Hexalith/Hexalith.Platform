@@ -24,9 +24,11 @@ public sealed class PlatformPackageCatalogQualificationTests
         PlatformServerBindings.Version(fixture.Options, "memories", "historical public fixture").ShouldBe("3.0.23");
         using PlatformQualificationPackageFixture current = PlatformQualificationPackageFixture.CurrentTest();
         string currentProvenance = Path.Combine(current.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
-        byte[] actualProvenance = File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json"));
-        File.ReadAllBytes(currentProvenance).ShouldBe(actualProvenance);
-        PlatformServerBindings.Version(current.Options, "tenants", "current test fixture").ShouldBe(JsonNode.Parse(actualProvenance)!["tenants"]!["version"]!.GetValue<string>());
+        Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(currentProvenance)))
+            .ShouldBe("3931a6ff47adf0edd4b6d19430294f6ebed2c334b50655528e751eee049fc846");
+        PlatformServerBindings.Version(current.Options, "eventstore", "retained private fixture").ShouldBe("4.1.0");
+        PlatformServerBindings.Version(current.Options, "tenants", "retained private fixture").ShouldBe("7.0.5");
+        PlatformServerBindings.Version(current.Options, "memories", "retained private fixture").ShouldBe("3.0.25");
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);

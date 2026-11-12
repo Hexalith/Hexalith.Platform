@@ -102,10 +102,12 @@ def verify_checkout(root: Path, revision: str) -> dict:
         try:
             source = git(owner, "rev-parse", "HEAD").decode().strip()
             manifest = git(owner, "show", source + ":" + MANIFEST)
+            # Keep the canonical blob hash; permit only Git's exact declared checkout form as an alternative.
+            checkout_manifest = git(owner, "cat-file", "--filters", source + ":" + MANIFEST)
             actual = (owner / MANIFEST).read_bytes()
         except (OSError, subprocess.CalledProcessError) as error:
             raise ValueError("The selected current owner or declaration is unavailable: " + repository) from error
-        if source != selected["sourceRevision"] or digest(manifest) != selected["declarationSha256"] or actual != manifest:
+        if source != selected["sourceRevision"] or digest(manifest) != selected["declarationSha256"] or actual not in (manifest, checkout_manifest):
             raise ValueError("Current owner checkout or declaration differs from its committed source binding: " + repository)
     verify_package_release_identities(root, revision)
     return {"owners": binding["ownerSources"], "qualificationCredit": False}

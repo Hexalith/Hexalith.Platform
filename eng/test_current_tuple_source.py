@@ -86,6 +86,29 @@ class CurrentTupleSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "checkout or declaration differs"):
             current.verify_checkout(self.root, self.source)
 
+    def test_declared_checkout_line_endings_preserve_canonical_binding_and_tampering_refuses(self):
+        owner = self.root / "references/Hexalith.Memories"
+        self.write(owner, ".gitattributes", b"* text=auto eol=crlf\n")
+        source = self.commit(owner)
+        self.gitlink("Hexalith.Memories", source)
+        unbound = self.commit(self.root)
+        self.binding = current.create_binding(self.root, unbound)
+        self.write(self.root, current.BINDING, json.dumps(self.binding).encode())
+        selected = self.commit(self.root)
+        (owner / current.MANIFEST).unlink()
+        self.git(owner, "checkout-index", "--force", "--", current.MANIFEST)
+        actual = (owner / current.MANIFEST).read_bytes()
+        canonical = subprocess.check_output(["git", "show", source + ":" + current.MANIFEST], cwd=owner)
+        self.assertIn(b"\r\n", actual)
+        self.assertNotEqual(actual, canonical)
+        self.assertEqual(hashlib.sha256(canonical).hexdigest(), self.binding["ownerSources"]["memories"]["declarationSha256"])
+        current.verify_checkout(self.root, selected)
+        self.write(owner, current.MANIFEST, canonical)
+        current.verify_checkout(self.root, selected)
+        self.write(owner, current.MANIFEST, actual.replace(b'"owner"', b'"tampered-owner"'))
+        with self.assertRaisesRegex(ValueError, "checkout or declaration differs"):
+            current.verify_checkout(self.root, selected)
+
     def test_wrong_initialized_owner_head_refuses_with_unchanged_manifest(self):
         owner = self.root / "references/Hexalith.Parties"
         manifest = (owner / current.MANIFEST).read_bytes()
