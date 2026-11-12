@@ -55,7 +55,8 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                 ["build", project, "--configuration", "Release", "--output", model, "--artifacts-path", artifacts,
                  "-p:UseHexalithProjectReferences=false", "-p:HexalithBuildsRoot=" + builds, "-p:BuildsToolingAssemblyPath=" + tooling,
                  "-p:CustomBeforeDirectoryBuildProps=" + catalog, "-p:CustomAfterMicrosoftCommonProps=" + security, "-p:ImportDirectoryPackagesProps=false",
-                 "-p:CentralPackageVersionsFileImported=true", "-p:DirectoryPackagesPropsPath=" + catalog,
+                 "-p:CentralPackageVersionsFileImported=true", "-p:CentralPackageTransitivePinningEnabled=true",
+                 "-p:NuGetAudit=true", "-p:NuGetAuditMode=all", "-p:NuGetAuditLevel=low", "-p:DirectoryPackagesPropsPath=" + catalog,
                  "-p:CopyLocalLockFileAssemblies=true", "-p:UseSharedCompilation=false", "-nodeReuse:false", "-m:1",
                  "-p:BuildInParallel=false", "-p:RestoreBuildInParallel=false"], root, null),
                 TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken).ConfigureAwait(true);
@@ -71,6 +72,7 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             JsonElement audit = assets.RootElement.GetProperty("project").GetProperty("restore").GetProperty("restoreAuditProperties");
             audit.GetProperty("enableAudit").GetString().ShouldBe("true");
             audit.GetProperty("auditMode").GetString().ShouldBe("all");
+            audit.GetProperty("auditLevel").GetString().ShouldBe("low");
             assets.RootElement.GetProperty("libraries").GetProperty("Hexalith.Tenants.Server/" + tenantsVersion).GetProperty("type").GetString().ShouldBe("package");
             assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
                 .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();

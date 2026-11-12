@@ -17,6 +17,56 @@ from prepare_builds_artifacts import source_state
 from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_COLLECTOR_SELECTORS = frozenset("Hexalith.Platform.Composition.Tests." + name for name in (
+    "PlatformCurrentPackageArtifactCohortTests", "PlatformMcpCliCatalogSelectionTests",
+    "PlatformCurrentOwnerTargetFrameworkTests", "PlatformProductionModelClosureTests",
+    "GatewayExtensionRegistrationTests",
+    "EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+    "EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+    "EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+))
+
+
+def collector_for(group, suite):
+    """Keep current production/artifact controls on the actual current collector."""
+    if suite == "current42":
+        selections = [selector in CURRENT_COLLECTOR_SELECTORS for selector in group["selectors"]]
+        if any(selections) != all(selections):
+            raise ValueError("Current and retained collector selectors must be separate explicit groups.")
+        expected = "current" if all(selections) else "retained"
+        if group.get("collector") != expected:
+            raise ValueError("Every current profile group requires its exact declared collector context.")
+        return expected
+    expected = "retained" if suite == "base42" else "current"
+    if group.get("collector") not in (None, expected):
+        raise ValueError("The selected suite cannot substitute another collector context.")
+    return expected
+
+
+def require_collector_framework(document, expected):
+    """Refuse a mixed or changed target before any collector may execute tests."""
+    if expected not in ("net10.0", "net11.0") or set(document["project"]["frameworks"]) != {expected}:
+        raise ValueError("Collector assets differ from their exact recorded target framework.")
+
+
+def require_collector_execution(counts, expected):
+    """The executed assembly and actual runtime must match the selected collector."""
+    import re
+    framework = ".NETCoreApp,Version=v" + expected.removeprefix("net")
+    runtime = re.search(r"(?:^|\s)\.NET ([0-9]+)\.[0-9]+\.[0-9]+(?:\s|$)", counts.get("environment", ""))
+    if counts.get("target-framework") != framework or runtime is None \
+            or runtime.group(1) != expected.removeprefix("net").split(".")[0]:
+        raise ValueError("Executed tests do not match their collector target and actual managed runtime.")
+
+
+def require_retained_collector_binding(binding, raw):
+    """Only the genuine frozen signed4.47 producer may collect retained SDK4.2 tests."""
+    from prepare_tuple_sources import FROZEN
+    frozen = FROZEN["package-reader"]
+    if hashlib.sha256(raw).hexdigest() != frozen["hashes"]["eng/builds-tuple.json"] or json.loads(raw) != binding \
+            or binding["publication"]["version"] != "4.47.0" \
+            or binding["producer"]["sourceRevision"] != frozen["gitlinks"]["references/Hexalith.Builds"]:
+        raise ValueError("The retained collector requires the exact authenticated signed4.47 tuple.")
 
 
 def tuple_runtime_context(binding, suite, profile_sha256):
@@ -160,13 +210,15 @@ def main():
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
 
-    def run(name, argv):
-        command = {"name": name, "argv": argv, "cwd": str(ROOT), "exitCode": None, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "timeoutSeconds": 1200}
+    def run(name, argv, *, cwd=ROOT, environment=None):
+        command = {"name": name, "argv": argv, "cwd": str(cwd), "exitCode": None, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "timeoutSeconds": 1200}
+        if environment is not None:
+            command["managedRuntimeRollForward"] = environment.get("DOTNET_ROLL_FORWARD")
         result["commands"].append(command)
         checkpoint()
         try:
             with (evidence / (name + ".stdout")).open("w") as stdout, (evidence / (name + ".stderr")).open("w") as stderr:
-                completed = subprocess.run(argv, cwd=ROOT, stdout=stdout, stderr=stderr, text=True, timeout=1200)
+                completed = subprocess.run(argv, cwd=cwd, env=environment, stdout=stdout, stderr=stderr, text=True, timeout=1200)
         except subprocess.TimeoutExpired:
             command["timedOut"] = True
             checkpoint()
@@ -194,6 +246,7 @@ def main():
             runtime_context = tuple_runtime_context(binding, args.suite, hashlib.sha256((ROOT / profile_path).read_bytes()).hexdigest())
             result["runtimeBuildContext"] = runtime_context
             run("runtime-context-controls", [sys.executable, "-B", "eng/test_tuple_runtime_context.py"])
+            run("collector-context-controls", [sys.executable, "-B", "eng/test_tuple_collectors.py"])
         version, source = binding["publication"]["version"], binding["producer"]["sourceRevision"]
         archive_sha256 = binding["publication"]["archiveSha256"]
         validate_owner_pins(binding, ROOT)
@@ -207,6 +260,7 @@ def main():
             verify_historical_catalog_pin(catalog)
         profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
+        selected_collectors = {collector_for(group, args.suite) for group in profile["groups"]}
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
         if args.suite == "current42" and required_total != 478:
@@ -281,7 +335,7 @@ def main():
             path = project.parent / "obj/project.assets.json"
             payload = path.read_bytes()
             document = json.loads(payload)
-            if set(document["project"]["frameworks"]) != {runtime_context["targetFramework"]}:
+            if runtime_context is not None and set(document["project"]["frameworks"]) != {runtime_context["targetFramework"]}:
                 raise ValueError("Restored graph does not match its exact current or historical runtime context.")
             for name, library in document["libraries"].items():
                 if library["type"] == "project":
@@ -294,36 +348,74 @@ def main():
         composition_project = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
         if composition_project not in projects:
             raise ValueError("Composition test outputs are absent from the owner solution.")
-        collector_properties = properties
-        if args.suite in ("current42", "base42"):
-            # Retained positive image/source controls consume their actual historical input closure.
-            # Production above and the isolated production-closure test still build the real current catalog.
+        def measure_collector(name, root, project, selected_properties, selected_tool, selected_binding, expected_framework, source):
+            measured = json.loads(run(name + "-test-path", ["dotnet", "msbuild", str(project), "-nologo",
+                *selected_properties, "-getProperty:TargetPath,TargetFramework,ProjectAssetsFile"], cwd=root))["Properties"]
+            framework = measured["TargetFramework"]
+            if framework not in ("net10.0", "net11.0") or expected_framework is not None and framework != expected_framework:
+                raise ValueError("The actual collector target differs from its selected runtime context.")
+            assembly = Path(measured["TargetPath"]).resolve(strict=True)
+            asset_path = Path(measured["ProjectAssetsFile"]).resolve(strict=True)
+            require_collector_framework(json.loads(asset_path.read_bytes()), framework)
+            verify_test_sdk(assembly, args.eventstore_sdk)
+            return {"source": source, "root": str(root), "project": str(project), "assembly": str(assembly),
+                "properties": selected_properties, "targetFramework": framework, "toolRoot": str(selected_tool),
+                "toolVersion": selected_binding["publication"]["version"],
+                "buildsSource": selected_binding["producer"]["sourceRevision"], "tupleBinding": selected_binding,
+                "packageAssets": str(asset_path), "packageAssetsSha256": hashlib.sha256(asset_path.read_bytes()).hexdigest(),
+                "nativeAcceptance": False}
+
+        collectors = {"current": measure_collector("current", ROOT, composition_project, properties, tool, binding,
+            runtime_context["targetFramework"] if runtime_context else None, revision)}
+        if "retained" in selected_collectors:
+            # The old controls must load the actual signed old producer in their own same-code NET10 workspace.
             retained_workspace = tempfile.TemporaryDirectory(prefix="platform-retained-reader-", dir=os.environ.get("RUNNER_TEMP"))
             isolated = Path(retained_workspace.name) / "workspace"
             receipt_path = evidence / "historical-reader-workspace.json"
             run("prepare-historical-reader", [sys.executable, "-B", "eng/prepare_tuple_sources.py", "reader-workspace",
                 "--source", revision, "--workspace", str(isolated), "--output", str(receipt_path)])
             reader_receipt = json.loads(receipt_path.read_bytes())
-            retained_catalog = isolated / "references/Hexalith.Builds/Props/Directory.Packages.props"
-            collector_properties = [*properties, "-p:PlatformPackageReaderWorkspaceRoot=" + str(isolated),
-                "-p:HexalithTenantsVersion=7.0.5", "-p:HexalithMemoriesVersion=3.0.25", "-p:HexalithPartiesVersion=3.1.0",
+            retained_binding = load_binding(isolated / "eng/builds-tuple.json")
+            committed_binding = subprocess.check_output(["git", "show", "HEAD:eng/builds-tuple.json"], cwd=isolated)
+            require_retained_collector_binding(retained_binding, committed_binding)
+            retained_tool = Path(run("retained-published-artifacts", [sys.executable,
+                str(isolated / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds-retained"),
+                "--require-recorded"], cwd=isolated).strip())
+            retained_project = isolated / composition_project.relative_to(ROOT)
+            retained_properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
+                "-p:HexalithBuildsRoot=" + str(isolated / "references/Hexalith.Builds"),
+                "-p:HexalithBuildsPublishedToolRoot=" + str(retained_tool),
+                "-p:PlatformPackageReaderWorkspaceRoot=" + str(isolated),
+                "-p:HexalithEventStoreVersion=4.2.0", "-p:HexalithTenantsVersion=7.0.5",
+                "-p:HexalithMemoriesVersion=3.0.25", "-p:HexalithPartiesVersion=3.1.0",
                 "-p:ArtifactsPath=" + str(evidence / "retained-collector")]
-            run("build-retained-collector", ["dotnet", "build", str(composition_project), "-c", "Release", "-m:1", *collector_properties])
-            collector_assets = evidence / "retained-collector/obj/Hexalith.Platform.Composition.Tests/project.assets.json"
-            selected = json.loads(collector_assets.read_bytes())["libraries"]
+            run("build-retained-collector", ["dotnet", "build", str(retained_project), "-c", "Release", "-m:1",
+                *retained_properties], cwd=isolated)
+            retained_assets = evidence / "retained-collector/obj/Hexalith.Platform.Composition.Tests/project.assets.json"
+            selected = json.loads(retained_assets.read_bytes())["libraries"]
             for identity in ("Hexalith.Tenants.Contracts/7.0.5", "Hexalith.Tenants.Server/7.0.5", "Hexalith.Memories.Contracts/3.0.25", "Hexalith.Parties.Contracts/3.1.0"):
                 if selected.get(identity, {}).get("type") != "package":
                     raise ValueError("The retained collector did not resolve its exact published package input: " + identity)
+            retained_graphs = sorted((evidence / "retained-collector/obj").rglob("project.assets.json"))
+            if not retained_graphs:
+                raise ValueError("The retained collector has no measured restored graphs.")
+            for path in retained_graphs:
+                require_collector_framework(json.loads(path.read_bytes()), "net10.0")
+            collectors["retained"] = measure_collector("retained", isolated, retained_project, retained_properties,
+                retained_tool, retained_binding, "net10.0", reader_receipt["packageReaderSourceRevision"])
+            retained_catalog = isolated / "references/Hexalith.Builds/Props/Directory.Packages.props"
             result["historicalReferenceCollector"] = {"workspace": reader_receipt,
                 "readerInputCatalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(),
-                "collectingBuildCatalogSha256": hashlib.sha256(catalog.read_bytes()).hexdigest(), "packageAssets": str(collector_assets),
-                "scope": "Current code and patched build dependencies with authenticated retained705/25/310 package/source/image inputs; no new native acceptance"}
-        composition_assembly = Path(run("composition-test-path", ["dotnet", "msbuild", str(composition_project), "-nologo", *collector_properties, "-getProperty:TargetPath"]).strip()).resolve()
-        verify_test_sdk(composition_assembly, args.eventstore_sdk)
-        result["compositionTestOutputs"] = {
-            "beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "before": snapshot_composition_test_outputs(composition_assembly),
-        }
+                "collectingBuildCatalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(),
+                "packageAssets": str(retained_assets), "artifactIdentity": str(evidence / "builds-retained/artifact-identity.json"),
+                "restoredGraphs": {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in retained_graphs},
+                "scope": "Same-code signed4.47/NET10 regression with authenticated retained705/25/310 inputs; no current NET11 or native acceptance"}
+        result["collectors"] = collectors
+        snapshots = {}
+        for name, collector in collectors.items():
+            key = "compositionTestOutputs" if name == "current" else "retainedCompositionTestOutputs"
+            snapshots[name] = result[key] = {"beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                "before": snapshot_composition_test_outputs(collector["assembly"])}
         checkpoint()
         test_failure = False
         try:
@@ -331,37 +423,49 @@ def main():
                 project = ROOT / group["project"]
                 if project not in projects:
                     raise ValueError("Required test project is absent from the owner solution.")
-                selected_properties = collector_properties if project == composition_project else properties
-                assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *selected_properties, "-getProperty:TargetPath"]).strip()
-                if project == composition_project and Path(assembly).resolve() != composition_assembly:
-                    raise ValueError("Composition test invocation differs from the observed test assembly.")
+                role = collector_for(group, args.suite)
+                collector = collectors[role]
+                if project != composition_project:
+                    if role != "current":
+                        raise ValueError("Only the declared composition project may use the retained collector.")
+                    assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties,
+                        "-getProperty:TargetPath"]).strip()
+                else:
+                    assembly = collector["assembly"]
                 xml = evidence / ("required-" + str(number) + ".xml")
                 selectors = [argument for name in group["selectors"] for argument in [group["filter"], name]]
-                run("test-" + str(number), ["dotnet", assembly, *selectors, "-result-xml", str(xml)])
+                environment = dict(os.environ, DOTNET_ROLL_FORWARD="LatestPatch")
+                run("test-" + str(number), ["dotnet", assembly, *selectors, "-result-xml", str(xml)],
+                    cwd=Path(collector["root"]), environment=environment)
                 counts = ET.parse(xml).getroot().find("assembly").attrib
-                expected_test_framework = ".NETCoreApp,Version=v" + runtime_context["targetFramework"].removeprefix("net")
-                if counts.get("target-framework") != expected_test_framework:
-                    raise ValueError("Executed tests do not match their recorded runtime context.")
+                require_collector_execution(counts, collector["targetFramework"])
                 if int(counts["total"]) != group["requiredCount"] or int(counts["total"]) <= 0 or int(counts["passed"]) != int(counts["total"]) or any(int(counts.get(key, "0")) for key in ["failed", "errors", "skipped", "not-run"]):
                     raise ValueError("Incomplete/nonpassing required suite: " + project.stem)
-                result["tests"].append({"project": str(project.relative_to(ROOT)), "purpose": group.get("purpose", "recorded-tuple-boundary"), "selectors": group["selectors"], "platformSource": revision, "counts": counts})
+                result["tests"].append({"project": str(project.relative_to(ROOT)), "purpose": group.get("purpose", "recorded-tuple-boundary"),
+                    "selectors": group["selectors"], "platformSource": collector["source"], "currentSource": revision,
+                    "collector": role, "targetFramework": collector["targetFramework"], "toolVersion": collector["toolVersion"], "counts": counts})
             if sum(int(group["counts"]["passed"]) for group in result["tests"]) != required_total:
                 raise ValueError("Declared required test total did not execute.")
         except BaseException:
             test_failure = True
             raise
         finally:
-            try:
-                verify_composition_test_outputs_unchanged(result["compositionTestOutputs"])
-            except Exception:
-                if not test_failure:
-                    raise
-            finally:
-                checkpoint()
-        for filename, source in [("Hexalith.Builds.Tooling.dll", tool / "Hexalith.Builds.Tooling.dll"), ("Hexalith.Builds.Module.EventStoreHost.dll", tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:
-            output = composition_assembly.parent / filename
-            if hashlib.sha256(output.read_bytes()).digest() != hashlib.sha256(source.read_bytes()).digest():
-                raise ValueError("CI output differs from authenticated published artifact: " + filename)
+            verification_failure = None
+            for record in snapshots.values():
+                try:
+                    verify_composition_test_outputs_unchanged(record)
+                except Exception as error:
+                    if verification_failure is None: verification_failure = error
+            checkpoint()
+            if verification_failure is not None and not test_failure:
+                raise verification_failure
+        for collector in collectors.values():
+            selected_tool = Path(collector["toolRoot"])
+            for filename, source in [("Hexalith.Builds.Tooling.dll", selected_tool / "Hexalith.Builds.Tooling.dll"),
+                    ("Hexalith.Builds.Module.EventStoreHost.dll", selected_tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:
+                output = Path(collector["assembly"]).parent / filename
+                if hashlib.sha256(output.read_bytes()).digest() != hashlib.sha256(source.read_bytes()).digest():
+                    raise ValueError("Collector output differs from its authenticated published artifact: " + filename)
         result["status"] = "passed"
     except Exception as error:
         result["status"] = "failed"
