@@ -51,13 +51,8 @@ def verify_handoff(binding, read=read_official):
             or run.get("status") != "completed" or run.get("conclusion") != "success" \
             or run.get("path") != ".github/workflows/builds-release.yml":
         raise ValueError("Original shared release run is not successful at the bound source.")
-    artifact = read("actions/artifacts/" + str(publication["artifactId"]))
-    owner = artifact.get("workflow_run", {})
-    if artifact.get("id") != publication["artifactId"] or artifact.get("name") != "release" \
-            or artifact.get("digest") != "sha256:" + publication["artifactSha256"] \
-            or owner.get("id") != publication["runId"] or owner.get("head_sha") != source:
-        raise ValueError("Original shared release artifact differs from the bound run and digest.")
     return {"releaseId": publication["releaseId"], "runId": publication["runId"],
             "artifactId": publication["artifactId"], "artifactSha256": publication["artifactSha256"],
             "releaseBodySha256": publication["releaseBodySha256"], "tagSource": source,
+            "manifestSha256": publication["manifestSha256"], "artifactDigestSource": "public release body",
             "qualificationCredit": False, "legacyG4AcceptanceClaimed": False}

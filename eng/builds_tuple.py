@@ -40,7 +40,8 @@ def validate_binding(binding, require_publication=True):
         shared = publication.get("kind") == "shared-release-handoff/v1"
         if "kind" in publication and not shared:
             raise ValueError("Unsupported official publication kind.")
-        required = common | ({"kind", "releaseId", "runId", "artifactId", "artifactSha256", "releaseBodySha256"}
+        required = common | ({"kind", "releaseId", "runId", "artifactId", "artifactSha256", "releaseBodySha256",
+                              "manifestJson", "manifestSha256"}
                              if shared else {"inventorySha256", "inventoryUrl"})
         missing = [key for key in required if not publication.get(key)]
         if missing:
@@ -55,7 +56,7 @@ def validate_binding(binding, require_publication=True):
             raise ValueError("Publication source/tag differs from the exact producer binding.")
         if publication["catalogSha256"] != catalog["sha256"]:
             raise ValueError("Publication catalog differs from the prepared source catalog.")
-        digests = ("archiveSha256", "toolingSha256") + (("artifactSha256", "releaseBodySha256") if shared else ("inventorySha256",))
+        digests = ("archiveSha256", "toolingSha256") + (("artifactSha256", "releaseBodySha256", "manifestSha256") if shared else ("inventorySha256",))
         for key in digests:
             if not isinstance(publication[key], str) or not re.fullmatch(r"[0-9a-f]{64}", publication[key]):
                 raise ValueError("Publication requires a lowercase SHA-256 for " + key + ".")
@@ -63,6 +64,25 @@ def validate_binding(binding, require_publication=True):
             for key in ("releaseId", "runId", "artifactId"):
                 if type(publication[key]) is not int or publication[key] <= 0:
                     raise ValueError("Shared release requires a positive numeric " + key + ".")
+            raw = publication["manifestJson"]
+            if not isinstance(raw, str) or len(raw.encode()) > 4096 or hashlib.sha256(raw.encode()).hexdigest() != publication["manifestSha256"]:
+                raise ValueError("Original shared release manifest bytes differ from their exact digest.")
+            def unique(pairs):
+                result = {}
+                for key, value in pairs:
+                    if key in result:
+                        raise ValueError("Duplicate original shared release manifest key.")
+                    result[key] = value
+                return result
+            try:
+                manifest = json.loads(raw, object_pairs_hook=unique)
+            except (ValueError, TypeError) as error:
+                raise ValueError("Original shared release manifest is invalid.") from error
+            expected = {"sha": producer["sourceRevision"], "version": version, "packages": [
+                {"id": identity, "path": "packages/" + identity + "." + version + ".nupkg"}
+                for identity in ("Hexalith.Builds.Evidence.Cli", "Hexalith.Builds.Module.Cli")], "containers": []}
+            if manifest != expected:
+                raise ValueError("Original shared release manifest source/version/package closure differs.")
         else:
             expected_inventory = "https://github.com/Hexalith/Hexalith.Builds/releases/download/" + publication["releaseTag"] + "/g4-tool-package-inventory.json"
             if publication["inventoryUrl"] != expected_inventory:

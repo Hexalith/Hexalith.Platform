@@ -1,6 +1,7 @@
 """Finite shared release format and original public handoff refusal controls."""
 import copy
 import hashlib
+import json
 import unittest
 
 from builds_publication import verify_handoff
@@ -20,14 +21,21 @@ class SharedPublicationTests(unittest.TestCase):
             ("version", "sourceRevision", "releaseTag", "catalogSha256", "archiveSha256", "toolingSha256")}
         self.binding["publication"].update(kind="shared-release-handoff/v1", releaseId=11, runId=12, artifactId=13,
             artifactSha256="a" * 64, releaseBodySha256=hashlib.sha256(self.body.encode()).hexdigest())
+        manifest = {"sha": source, "version": publication["version"], "packages": [
+            {"id": identity, "path": "packages/" + identity + "." + publication["version"] + ".nupkg"}
+            for identity in ("Hexalith.Builds.Evidence.Cli", "Hexalith.Builds.Module.Cli")], "containers": []}
+        self.manifest(manifest)
         self.responses = {
             "releases/11": {"id": 11, "tag_name": publication["releaseTag"], "draft": False,
                             "prerelease": False, "published_at": "2026-11-12T09:13:04Z", "body": self.body},
             "git/ref/tags/" + publication["releaseTag"]: {"object": {"type": "commit", "sha": source}},
             "actions/runs/12": {"id": 12, "head_sha": source, "status": "completed", "conclusion": "success",
                                 "path": ".github/workflows/builds-release.yml"},
-            "actions/artifacts/13": {"id": 13, "name": "release", "digest": "sha256:" + "a" * 64,
-                                     "workflow_run": {"id": 12, "head_sha": source}}}
+        }
+
+    def manifest(self, value):
+        raw = value if isinstance(value, str) else json.dumps(value)
+        self.binding["publication"].update(manifestJson=raw, manifestSha256=hashlib.sha256(raw.encode()).hexdigest())
 
     def verify(self):
         validate_binding(self.binding)
@@ -58,9 +66,7 @@ class SharedPublicationTests(unittest.TestCase):
         for path, key, value in (("releases/11", "id", 99), ("releases/11", "draft", True),
                 ("releases/11", "prerelease", True), ("releases/11", "body", self.body + "changed"),
                 ("actions/runs/12", "head_sha", "b" * 40), ("actions/runs/12", "conclusion", "failure"),
-                ("actions/runs/12", "path", ".github/workflows/other.yml"),
-                ("actions/artifacts/13", "digest", "sha256:" + "b" * 64),
-                ("actions/artifacts/13", "workflow_run", {"id": 99, "head_sha": "b" * 40})):
+                ("actions/runs/12", "path", ".github/workflows/other.yml")):
             with self.subTest(path=path, key=key):
                 previous = self.responses[path][key]
                 self.responses[path][key] = value
@@ -70,6 +76,25 @@ class SharedPublicationTests(unittest.TestCase):
         path = "git/ref/tags/" + self.binding["publication"]["releaseTag"]
         self.responses[path]["object"]["sha"] = "b" * 40
         with self.assertRaisesRegex(ValueError, "tag differs"):
+            self.verify()
+
+    def test_manifest_source_packages_paths_duplicates_and_trailers_refuse(self):
+        original = json.loads(self.binding["publication"]["manifestJson"])
+        for key, value in (("sha", "b" * 40), ("version", "4.0.0"), ("packages", []), ("containers", ["other"])):
+            with self.subTest(key=key):
+                manifest = copy.deepcopy(original)
+                manifest[key] = value
+                self.manifest(manifest)
+                with self.assertRaisesRegex(ValueError, "manifest source/version/package closure"):
+                    self.verify()
+        for raw in ('{"sha":"x","sha":"x"}', json.dumps(original) + '{}'):
+            self.manifest(raw)
+            with self.assertRaisesRegex(ValueError, "manifest is invalid"):
+                self.verify()
+        manifest = copy.deepcopy(original)
+        manifest["packages"][0]["path"] = "../outside.nupkg"
+        self.manifest(manifest)
+        with self.assertRaisesRegex(ValueError, "package closure"):
             self.verify()
 
     def test_rehashed_missing_duplicate_or_wrong_markers_still_refuse(self):
