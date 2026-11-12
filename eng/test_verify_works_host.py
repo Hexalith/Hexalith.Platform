@@ -29,7 +29,7 @@ HOOK_TYPE = 'Hexalith.Platform.Works.Runtime.WorksRecoveryHostingStartup'
 VOLUME = 'works-sdk416-owned'
 RETAINED = [{'role': 'retained-rollback', 'schedulerVolume': VOLUME}]
 PREVIEW_MODEL = Path(__file__).resolve().parents[1] / 'src/Hexalith.Platform.Composition/WorksPreviewModel.cs'
-LITERALS = {'EventStore__RateLimiting__PermitLimit': '8192', 'EventStore__RateLimiting__ConsumerPermitLimit': '8192',
+LITERALS = {'DOTNET_ROLL_FORWARD': 'LatestMajor', 'EventStore__RateLimiting__PermitLimit': '8192', 'EventStore__RateLimiting__ConsumerPermitLimit': '8192',
             'Authentication__Workload__AllowedCallers__0': 'eventstore', 'Authentication__Workload__AllowedCallers__1': 'eventstore-admin',
             'Works__Recovery__UseSdkRuntime': 'true', 'Works__Projection__UseSdkDelivery': 'true'}
 
@@ -43,7 +43,7 @@ def identity(calls=2):
 
 def compositions():
     """Platform's composed tracked values per resource, as the harness records them."""
-    common = {'DOTNET_ENVIRONMENT': 'Development'}
+    common = {'DOTNET_ENVIRONMENT': 'Development', 'DOTNET_ROLL_FORWARD': 'LatestMajor'}
     return {'eventstore': common | {key: value for key, value in LITERALS.items() if key.startswith('EventStore__RateLimiting__')},
             'works': common | {key: value for key, value in LITERALS.items() if not key.startswith('EventStore__RateLimiting__')},
             'eventstore-operations': dict(common), 'eventstore-admin': dict(common)}
@@ -379,6 +379,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
 
         with ExitStack() as final_checks, \
                 patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
+                patch('verify_works_host.works_managed_runtime.inventory', return_value={'version': '11.0.0'}), \
                 patch('verify_works_host.require_consumer_pins', return_value={}), \
                 patch('verify_works_host.require_host_package_pins', return_value={}), \
                 patch('verify_works_host.source_snapshot', return_value=snapshot), \
@@ -672,13 +673,38 @@ class WorksEvidenceGateTests(unittest.TestCase):
                                               'sdkAssemblies': sdk} for name in names],
                           'hostingStartups': startups, 'compositionGuard': guard, 'effectiveEnvironment': effective}
 
-    def verify(self, root, assembly, *records, runtime_artifacts=None, control_plane_ports=None):
+    def verify(self, root, assembly, *records, runtime_artifacts=None, control_plane_ports=None, managed_inventory=None):
         path = root / 'starts.jsonl'
         path.write_text(''.join(json.dumps(record) + '\n' for record in records))
         return verify_host_records(path, assembly, root, VERSION,
                                    runtime_artifacts={str(assembly): sha256(assembly)} if runtime_artifacts is None else runtime_artifacts,
                                    host_runtime=root / 'bin/release/Hexalith.Platform.Works.Runtime.dll', composition_literals=LITERALS,
-                                   control_plane_ports=control_plane_ports)
+                                   control_plane_ports=control_plane_ports, managed_inventory=managed_inventory)
+
+    def test_platform_and_retained_starts_require_actual_managed_runtime_evidence(self):
+        root = self.directory()
+        assembly, target = self.host_record(root, ha=True)
+        _, retained = self.host_record(root, role='retained-rollback')
+        archived = root / 'retained/bin/release/Hexalith.Works.AppHost.dll'
+        archived.parent.mkdir(parents=True)
+        archived.write_bytes(b'bound retained fixture')
+        retained.update(assembly=str(archived), sha256=sha256(archived))
+        expected = {}
+        for name in ('coreLib', 'json'):
+            path = root / (name + '.dll')
+            path.write_bytes(name.encode())
+            expected[name] = verify_works_host.works_managed_runtime.file_identity(path)
+        process = {'pid': 100, 'coreVersion': '11.0.0', **expected}
+        for record in (target, retained):
+            record['managedRuntime'] = {'schema': verify_works_host.works_managed_runtime.SCHEMA, 'host': process,
+                'resources': [dict(process, resource=module['resource'], pid=index + 200)
+                              for index, module in enumerate(record['runtimeModules'])]}
+        self.assertEqual(len(self.verify(root, assembly, target, retained, managed_inventory=expected)), 2)
+        for index in (0, 1):
+            changed = copy.deepcopy([target, retained])
+            del changed[index]['managedRuntime']
+            with self.subTest(role=changed[index]['role']), self.assertRaisesRegex(ValueError, 'managed runtime evidence'):
+                self.verify(root, assembly, *changed, managed_inventory=expected)
 
     def test_every_start_binds_run_owned_ports_and_preserves_prebuilt_dependencies(self):
         root = self.directory()

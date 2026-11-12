@@ -1,6 +1,7 @@
 #!/usr/bin/env dotnet
 #:sdk Aspire.AppHost.Sdk@13.6.5
 #:property ManagePackageVersionsCentrally=false
+#:property RuntimeFrameworkVersion=11.0.0
 #:package Aspire.Hosting.Docker@13.6.5
 #:package Aspire.Hosting.Kubernetes@13.6.5-preview.1.26559.7
 #:package Aspire.Hosting.Redis@13.6.5

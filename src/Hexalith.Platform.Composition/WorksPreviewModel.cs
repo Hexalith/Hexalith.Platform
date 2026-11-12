@@ -99,6 +99,7 @@ public static class WorksPreviewModel
         // Refuse a misplaced certificate parent before this preview creates its workspace.
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, platformRoot, workspace, checkouts);
         var developmentProfile = WorksDevelopmentCatalogProfile.Load(builder.Configuration, platformRoot, worksRoot, eventStoreRoot);
+        WorksPreviewManagedRuntime.Require();
         stateStorePath = developmentProfile.StateStoreComponentPath;
         CompositionWorkspace.CreatePrivateDirectory(workspace);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
@@ -297,6 +298,8 @@ public static class WorksPreviewModel
         {
             _ = jwtValidator
                 .WithEnvironment("DOTNET_ENVIRONMENT", builder.Environment.EnvironmentName)
+                // These source projects retain net10 targets; only this Development graph uses the qualified shared exporter.
+                .WithEnvironment("DOTNET_ROLL_FORWARD", "LatestMajor")
                 .WithEnvironment("Authentication__JwtBearer__Authority", string.Empty)
                 .WithEnvironment("Authentication__JwtBearer__Issuer", "hexalith-dev")
                 .WithEnvironment("Authentication__JwtBearer__Audience", HexalithEventStoreSecurityOptions.DefaultAudience)

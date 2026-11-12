@@ -94,9 +94,11 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         const string Builds4481Tooling = "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab";
         const string Builds4482AppHost = "f8f7b6e743a798e37784f5e3d44f62bc81c5cef112c8fa9ec643fcb35da825ba";
         const string Builds4482Tooling = "142bd3fdd26ff4e5ba8eadd91d00de92b738b019270fa6742e3a35f41460b1cf";
+        const string Builds4483AppHost = "7ccaa52a5fb6144bb570fddc1d98514822c9ef22ceccbdc2c3ae840afa701340";
+        const string Builds4483Tooling = "e2248aa6b6978385a369f04668f167360775db72cb3bd773903af51266d77a6f";
         var publishedPairs = new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling),
             (NewAppHost, NewTooling), (NextAppHost, NextTooling), (CanonicalClaimsAppHost, CanonicalClaimsTooling),
-            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling), (Builds4482AppHost, Builds4482Tooling) };
+            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling), (Builds4482AppHost, Builds4482Tooling), (Builds4483AppHost, Builds4483Tooling) };
         foreach (var appHostPair in publishedPairs)
             foreach (var toolingPair in publishedPairs)
                 PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)

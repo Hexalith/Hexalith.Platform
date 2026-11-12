@@ -18,6 +18,7 @@ import isolated_daprd
 import retained_works_host
 import works_host_snapshot
 import works_toolchain
+import works_managed_runtime
 from works_verifier_command import run_owned
 
 from verify_works_producer import (builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
@@ -33,6 +34,7 @@ VERIFIER_HELPERS = (
     "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
     "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py",
     "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
+    "works_managed_runtime.py", "test_works_managed_runtime.py",
 )
 
 ROWS = {
@@ -343,7 +345,7 @@ PERMITTED_OVERLAPS = {
     "OTEL_EXPORTER_OTLP_PROTOCOL": "redirects-otlp-export-to-owned-loopback-collector",
     "OTEL_METRIC_EXPORT_INTERVAL": "redirects-otlp-export-to-owned-loopback-collector",
 }
-TRACKED_KEYS = ("DOTNET_ENVIRONMENT", "Works__Recovery__UseSdkRuntime", "Works__Projection__UseSdkDelivery")
+TRACKED_KEYS = ("DOTNET_ENVIRONMENT", "DOTNET_ROLL_FORWARD", "Works__Recovery__UseSdkRuntime", "Works__Projection__UseSdkDelivery")
 TRACKED_PREFIXES = ("EventStore__RateLimiting__", "Authentication__Workload__AllowedCallers__")
 # Each Platform resource must compose these tracked literal families; the values come from Platform's own source.
 REQUIRED_COMPOSITION = {"eventstore": ("EventStore__RateLimiting__",),
@@ -360,6 +362,9 @@ def tracked(key):
 def platform_composition_literals(source):
     """Read the tracked literal values Platform's Works preview composes, straight from its bound source."""
     text = Path(source).read_text()
+    managed = Path(source).with_name("WorksPreviewManagedRuntime.cs")
+    if managed.is_file():
+        text += "\n" + managed.read_text()
     literals = {}
     for key, value in LITERAL_TUPLE.findall(text) + LITERAL_ENVIRONMENT.findall(text):
         if tracked(key):
@@ -421,7 +426,7 @@ def require_platform_composition(record, literals):
     return observed
 
 
-def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None, retained_assembly=None, retained_preflight=False):
+def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None, retained_assembly=None, retained_preflight=False, managed_inventory=None):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
@@ -435,6 +440,8 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
         if not any("works-ha" in {module.get("resource") for module in record.get("runtimeModules", [])} for record in target):
             raise ValueError("No platform-target start bound the independent works-ha replica module")
     for record in records:
+        if managed_inventory is not None:
+            works_managed_runtime.require_start(record, managed_inventory)
         if control_plane_ports is not None and record.get("controlPlanePorts") != control_plane_ports:
             raise ValueError("A live start did not bind the run-owned control-plane ports")
         if control_plane_ports is not None and record.get("dependencyBuildsSuppressed") is not True:
@@ -1102,6 +1109,8 @@ def require_unchanged_inputs(summary, works, platform, snapshot_manifest, epheme
         current = canonical_source_snapshot(Path(baseline["root"]))
         if current != baseline:
             raise ValueError("Canonical " + name + " revision or ordinary build/source/test/verifier inputs changed during execution")
+    if "managedRuntimeInventory" in summary and works_managed_runtime.inventory() != summary["managedRuntimeInventory"]:
+        raise ValueError("The selected managed runtime inventory or shared runtime files changed during execution")
     if host_ephemeral_port_range() != ephemeral_range:
         raise ValueError("The host ephemeral application-port range changed during execution")
     if host_reserved_port_ranges() != reserved_ranges:
@@ -1183,8 +1192,9 @@ def run_verification(args):
         summary["linkedFixtureSources"] = linked_fixture_snapshot(works, platform)
         summary["verifierSha256"] = sha256(Path(__file__))
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
+        summary["managedRuntimeInventory"] = works_managed_runtime.inventory()
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs", "test_works_managed_runtime"], platform / "eng")
         run("component-evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_full", "test_prepare_acceptance"], platform / "eng/ext-host-1")
         agents_configuration = ["--configuration", profile["agentsConfiguration"]]
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", *agents_configuration, "--artifacts-path", str(artifacts / "agents-full")],
@@ -1293,7 +1303,8 @@ def run_verification(args):
             "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output)]
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
-            properties = runtime_properties + (["-p:BuildProjectReferences=false"] if "Hexalith.Works.AppHost" in project.stem else [])
+            # The immutable rollback source is rebuilt only for this qualification's managed-runtime context.
+            properties = runtime_properties + (["-p:BuildProjectReferences=false", "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION] if "Hexalith.Works.AppHost" in project.stem else [])
             build("runtime-release-prebuild-" + str(index), str(project), "Release", works, runtime_output, extra=properties)
             runtime_directories.append(runtime_output / "bin" / project.stem / "release")
         retained_assembly = runtime_output / "bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll"
@@ -1376,7 +1387,7 @@ def run_verification(args):
         summary["checks"]["retainedStartupPreflight"] = require_passed_tests(preflight_xml, ["ArchivedTopologyReachesHealthyReadiness"])
         summary["retainedPreflightStarts"] = verify_host_records(artifacts / "retained-preflight-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], control_plane_ports=control_plane_ports,
-            retained_assembly=retained_assembly, retained_preflight=True)
+            retained_assembly=retained_assembly, retained_preflight=True, managed_inventory=summary["managedRuntimeInventory"])
         summary["retainedPreflightRuntimeEvidence"] = isolated_daprd.verify(preflight_runtime,
             summary["retainedPreflightRuntime"], summary["retainedPreflightStarts"])
         save()
@@ -1400,7 +1411,7 @@ def run_verification(args):
         summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], host_runtime=host_runtime,
             composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
-            control_plane_ports=control_plane_ports, retained_assembly=retained_assembly)
+            control_plane_ports=control_plane_ports, retained_assembly=retained_assembly, managed_inventory=summary["managedRuntimeInventory"])
         summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
             row["targetCommands"] = target_commands(summary["commands"])

@@ -8,6 +8,7 @@ import urllib.request
 import zipfile
 
 from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_publication import verify_handoff
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -40,6 +41,7 @@ def main():
         pin = subprocess.check_output(["git", "rev-parse", "HEAD:references/Hexalith.Builds"], cwd=ROOT, text=True).strip()
         validate_recorded_source(binding, pin, state["dirty"])
         verify_catalog(binding, resolve_builds_root(ROOT))
+    handoff = verify_handoff(binding)
     output.mkdir(parents=True)
     archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
     if args.archive:
@@ -78,7 +80,8 @@ def main():
     receipt = {"platformRevision": revision, "platformSourceState": state, "buildsRevision": source, "version": version,
                "archiveSha256": archive_sha256, "files": hashes,
                "toolRoot": str(tool), "toolingAssembly": str(tool / "Hexalith.Builds.Tooling.dll"),
-               "eventStoreHostAssembly": str(host), "tupleBinding": binding, "qualification": "artifact identity only", "candidateAcceptance": False}
+               "eventStoreHostAssembly": str(host), "tupleBinding": binding, "publicationHandoff": handoff,
+               "qualification": "artifact identity only", "candidateAcceptance": False}
     (output / "artifact-identity.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(str(tool))
 
