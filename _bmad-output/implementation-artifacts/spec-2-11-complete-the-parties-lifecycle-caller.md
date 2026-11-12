@@ -2,7 +2,7 @@
 title: '2.11 (part 3) Complete the Parties lifecycle caller'
 type: 'feature'
 created: '2026-11-11'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '34dfbcb9a584fd0c3a71d449c75e8e290b9c47bb'
 builds_baseline_commit: 'b1681870d0b08a5fe103133214c67fda7a449eb1'
 eventstore_baseline_commit: 'b882c1005050aaebfa70618b5a72c1c8be452281'
@@ -74,7 +74,7 @@ Dependency order:
 
 Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda07ee`, EventStore `b882c100..04e56e1c`, Parties `fc9ea3f3..e35b8c1e` (33 files, 2,579 diff lines). Platform evidence files were left out. All four layers ran with no failures: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor. They raised 53 findings. Triage produced 2 decision-needed entries (both resolved to patch), 19 patch, 2 defer, and 12 rejected findings. Line anchors refer to the delivered commits.
 
-- [ ] [Review][Patch] `--eventstore-port` is claimed but never bound in Platform v2 compositions, so `collision` proves only a claim conflict [src/Hexalith.Platform.Composition/PlatformAppModel.cs:309] (high; verification-gap+edge-case-hunter; decision resolved 2026-11-12: option (a), bind it in v2)
+- [x] [Review][Patch] `--eventstore-port` is claimed but never bound in Platform v2 compositions, so `collision` proves only a claim conflict [src/Hexalith.Platform.Composition/PlatformAppModel.cs:309] (high; verification-gap+edge-case-hunter; decision resolved 2026-11-12: option (a), bind it in v2)
   - In v2, `RunTopology.ComposePlatform` hands the plan to `PlatformAppModel.ComposeRun`. That model registers eventstore with `WithHttpEndpoint(name: "http")` and no port (`src/Hexalith.Platform.Composition/PlatformAppModel.cs:309`). Nothing in v2 reads `plan.Ports.EventStoreHttp`; only the legacy `RunTopology.ConfigureEventStore` path binds it (`RunTopology.cs:110`).
   - Parties uses a v2 manifest. An owner started with `--eventstore-port N` therefore claims and probes N, while EventStore listens on a port Aspire assigns.
   - The challenger's `HXR031` comes from the runner claim store on an unbound plan port, not from "the live owner's EventStore endpoint". The Builds README and the Parties document both claim the live endpoint.
@@ -84,7 +84,7 @@ Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda
     - (a) Bind eventstore HTTP to `plan.Ports.EventStoreHttp` in `PlatformAppModel` when a run plan exists. This is a Platform model change, so it needs a Platform release and the Parties model pin.
     - (b) Refuse `--eventstore-port` for v2 with `HXC002` and choose another genuine resource that v2 binds from the plan.
     - (c) Accept the claim-level conflict and correct the README and docs.
-- [ ] [Review][Patch] The ten-case `matrix` cannot finish inside the unchanged 45-minute qualification job [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:55] (high; blind-hunter+acceptance-auditor+edge-case-hunter; decision resolved 2026-11-12: option (a), raise only this job's `timeout-minutes` to 90. The user confirmed that the frozen "Never raise budgets" covers lifecycle and policy deadlines, not CI wall-clock time)
+- [x] [Review][Patch] The ten-case `matrix` cannot finish inside the unchanged 45-minute qualification job [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:55] (high; blind-hunter+acceptance-auditor+edge-case-hunter; decision resolved 2026-11-12: option (a), raise only this job's `timeout-minutes` to 90. The user confirmed that the frozen "Never raise budgets" covers lifecycle and policy deadlines, not CI wall-clock time)
   - `timeout-minutes: 45` is unchanged (`ci-lifecycle-qualification.yml:55`).
   - Measured in hosted run 42727219072: the whole job took 15.3 minutes, and the four-case matrix step 827 s. Owner startups took 165–230 s.
   - The six added cases cost roughly 40 more minutes:
@@ -96,71 +96,71 @@ Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda
     - (a) Raise the job timeout. This is a CI wall-clock change, not a lifecycle deadline, but it touches the frozen "Never raise budgets".
     - (b) Split the matrix across jobs and aggregate the campaign.
     - (c) Treat the per-case dispatches as the qualification route and re-scope `matrix`.
-- [ ] [Review][Patch] `collision` and `hold-expiry` start their peer only after the owner suite's 240 s bound has begun [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1394] (high; edge-case-hunter)
+- [x] [Review][Patch] `collision` and `hold-expiry` start their peer only after the owner suite's 240 s bound has begun [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1394] (high; edge-case-hunter)
   - `LifecycleQualificationTests` cancels itself 240 s after its test starts.
   - `self.start(owner)` returns once the owner is executing. Only then does `self.start('collision-peer')` or `self.start('expiry-peer')` (`:1433`) run a complete peer startup, which took 165–230 s in hosted CI.
   - `hold-expiry` then adds the attached launch, the 120 s hold and two lineage probes before `pass`, so the owner suite's bound expires first and the case fails deterministically. `collision` leaves roughly 0–55 s for the challenger.
   - Fix: `begin()` both owners and then `ready()` both, as `retry_with_peer` already does (`:1529`). After the fix, `hold-expiry` stays tight at about 160–200 s of about 210 s; record that margin.
-- [ ] [Review][Patch] `invalid_lineage` accepts any `HXR033`/`HXR036` refusal [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1490] (medium; blind-hunter+edge-case-hunter)
+- [x] [Review][Patch] `invalid_lineage` accepts any `HXR033`/`HXR036` refusal [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1490] (medium; blind-hunter+edge-case-hunter)
   - Builds emits a specific reason for each refusal:
     - `HXR036 attachment-ended` / `attachment-expired` from `Retry`;
     - `HXR036 unknown-attachment-request`;
     - `HXR033` for unrelated preconditions such as `owner-not-live` and `attacher-context-unverifiable` (`CompositionAttachAdmission.cs:313-331`, `:241`, `:284`).
   - An unrelated refusal therefore passes the hold-expiry and invalid-handoff lineage proofs.
   - Fix: require `HXR036` with the exact expected reason for each presented lineage: expired, ended or unknown.
-- [ ] [Review][Patch] The attached CLI's own exit code and public diagnostics are never verified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1456] (medium; acceptance-auditor)
+- [x] [Review][Patch] The attached CLI's own exit code and public diagnostics are never verified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1456] (medium; acceptance-auditor)
   - `attached_case` waits on the attached child but never inspects its return code or diagnostics.
   - `finalize_attached` (`:1376`) checks only the public `runId`.
   - Owners pass through `verify_original_owner_command`. An attached command that reports a cleanup or evidence diagnostic alongside a valid result passes unnoticed.
   - Fix: assert the attached exit code and diagnostic categories for each expected cause, using the Builds attached result mapping.
-- [ ] [Review][Patch] Builds README: the new section sits under License and earlier passages now contradict it [references/Hexalith.Builds/README.md:1399] (medium; blind-hunter)
+- [x] [Review][Patch] Builds README: the new section sits under License and earlier passages now contradict it [references/Hexalith.Builds/README.md:1399] (medium; blind-hunter)
   - `:641-643` still says "the Parties caller is not adopted, owners requiring routing-catalog observations fail an attached run as `startup-failure`".
   - `:752-756` says claim conflicts always retry up to 64 attempts; an explicit port never retries.
   - The `--attach-to` incompatibility list at `:635` omits `--eventstore-port`.
   - Fix: edit these in place and move the section. The explicit-port wording depends on the first decision above.
-- [ ] [Review][Patch] `AttachedExpiryCancelsFixtureRequests` relies on a 1-second hold measured from the wall clock [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:59] (medium; blind-hunter+verification-gap+edge-case-hunter)
+- [x] [Review][Patch] `AttachedExpiryCancelsFixtureRequests` relies on a 1-second hold measured from the wall clock [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:59] (medium; blind-hunter+verification-gap+edge-case-hunter)
   - The hold starts before the file write, schema evaluation and client creation.
   - On a loaded agent the constructor throws `HXT108`, or `CreateHttpClient` throws `OperationCanceledException`, so the test is flaky.
   - Fix: use a multi-second hold.
-- [ ] [Review][Patch] The explicit-port parse test cannot tell a refusal from an accepted port [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs:37] (medium; verification-gap)
+- [x] [Review][Patch] The explicit-port parse test cannot tell a refusal from an accepted port [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs:37] (medium; verification-gap)
   - The test uses the manifest `unused`, so an accepted port also ends in `HXM005` with exit 1.
   - Fix: assert `HXC001` for each case.
-- [ ] [Review][Patch] The explicit-port guards with `--attach-to`, `Down` and existing runs are untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs:450] (medium; verification-gap+blind-hunter+acceptance-auditor)
+- [x] [Review][Patch] The explicit-port guards with `--attach-to`, `Down` and existing runs are untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs:450] (medium; verification-gap+blind-hunter+acceptance-auditor)
   - Deleting both the CLI guard and the `ModuleCommandExecutionService.cs:119` guard leaves every test passing.
   - Fix: add an attached `--eventstore-port` refusal to `RefusedRequestAdmitsNothingAndStartsNoChildAsync`, plus service-level cases.
   - Not required here: the CLI refuses this case with `HXC001`, while other attach-incompatible options use `HXC002`.
-- [ ] [Review][Patch] The attached candidate-policy refusal has no test [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:400] (medium; verification-gap+blind-hunter)
+- [x] [Review][Patch] The attached candidate-policy refusal has no test [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:400] (medium; verification-gap+blind-hunter)
   - This is now the only guard keeping attached suites out of candidate-gated owners. Removing `CandidatePolicy is not null` leaves every test passing.
-- [ ] [Review][Patch] Only the foreign-`ownerRunId` row of the routing-snapshot identity checks is tested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs:83] (medium; verification-gap+blind-hunter)
+- [x] [Review][Patch] Only the foreign-`ownerRunId` row of the routing-snapshot identity checks is tested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs:83] (medium; verification-gap+blind-hunter)
   - Add rows for a sibling `runId`, the owner role on an attached identity, and a hold with a foreign owner or environment. Cover the owner-descriptor `role`/`ownerRunId` requirement too.
-- [ ] [Review][Patch] Controller launch arguments for attached and collision launches are unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:441] (medium; verification-gap+blind-hunter)
+- [x] [Review][Patch] Controller launch arguments for attached and collision launches are unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:441] (medium; verification-gap+blind-hunter)
   - Mutation check: dropping `--eventstore-port`, `--attach-to`/`--hold-seconds` or the journaled `eventStorePort` leaves all 167 tests passing.
   - Fix: add `launch_owner` argument tests with `gated_exec` patched.
-- [ ] [Review][Patch] Failure-then-cancellation is only tested at helper level [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1806] (medium; verification-gap)
+- [x] [Review][Patch] Failure-then-cancellation is only tested at helper level [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1806] (medium; verification-gap)
   - Mutating the `start-cancellation --phase failure` capture, the `wait-cancellation` tolerance or the failure classification in `finalize_cancellation` leaves all tests passing.
   - Fix: add tests at `main()` level.
-- [ ] [Review][Patch] The attached control/readiness handshake with the C# fixture is unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1271] (medium; verification-gap)
+- [x] [Review][Patch] The attached control/readiness handshake with the C# fixture is unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1271] (medium; verification-gap)
   - `attached_control` is always mocked. The success path of `begin_attached` (`:1222`) and its marker checks are untested.
   - Mutation check: trimming the payload or deleting the marker binding leaves all tests passing.
   - Fix: assert the exact control keys, and that a mismatched marker is rejected. The C# compile lane waits for the Testing package release.
-- [ ] [Review][Patch] The `invalid_lineage`/`invalid_handoff` refusal checks are always mocked [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1479] (medium; verification-gap+acceptance-auditor)
+- [x] [Review][Patch] The `invalid_lineage`/`invalid_handoff` refusal checks are always mocked [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1479] (medium; verification-gap+acceptance-auditor)
   - Replacing the whole `require` with `pass` leaves all tests passing.
   - Fix: patch `tool` to return success, an admission, the wrong rule or a changed ledger, and expect each to raise.
-- [ ] [Review][Patch] The C# owner-label list must match Python `OWNER_LABELS`, but nothing checks it [references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs:119] (medium; verification-gap+blind-hunter)
+- [x] [Review][Patch] The C# owner-label list must match Python `OWNER_LABELS`, but nothing checks it [references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs:119] (medium; verification-gap+blind-hunter)
   - Drift breaks every later owner's native-diagnostic check in the hosted matrix.
   - Fix: add a test that ties the two sets together.
-- [ ] [Review][Patch] Both lineage probes overwrite one retained evidence file [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1486] (low; acceptance-auditor+edge-case-hunter)
+- [x] [Review][Patch] Both lineage probes overwrite one retained evidence file [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1486] (low; acceptance-auditor+edge-case-hunter)
   - Both use the tag `invalid-attached-lineage`, and `tool()` writes `<label>-<tag>.json`.
   - Fix: use a distinct tag for each lineage.
-- [ ] [Review][Patch] The EventStore attached-hold theory does not assert which rule refused each case [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:21] (low; blind-hunter)
+- [x] [Review][Patch] The EventStore attached-hold theory does not assert which rule refused each case [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:21] (low; blind-hunter)
   - The `foreign`, `snapshot` and `missing` rows are refused earlier by reader binding validation, so the new constructor checks are never reached.
   - Fix: assert the expected rule for each row.
-- [ ] [Review][Patch] The EventStore docs paragraph sits after the Next/Related footer and has no heading [references/Hexalith.EventStore/docs/reference/nuget-packages.md:672] (low; blind-hunter)
+- [x] [Review][Patch] The EventStore docs paragraph sits after the Next/Related footer and has no heading [references/Hexalith.EventStore/docs/reference/nuget-packages.md:672] (low; blind-hunter)
   - Move it into the `Hexalith.EventStore.Testing` section and update the "qualifies no attached execution" sentence there (`:541-543`).
-- [ ] [Review][Patch] Two workflow step names are stale [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:186] (low; blind-hunter)
+- [x] [Review][Patch] Two workflow step names are stale [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:186] (low; blind-hunter)
   - "...passing failing partial-startup and exact retry scenarios" now runs ten cases; "Build the explicit declared lifecycle suites" builds one project.
   - Rename both, together with the name lookups in `test_review_fixes.py`.
-- [ ] [Review][Patch] The new 8 MiB retained-artifact cap also applies to the journal and `observations.json` [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:315] (low; blind-hunter)
+- [x] [Review][Patch] The new 8 MiB retained-artifact cap also applies to the journal and `observations.json` [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:315] (low; blind-hunter)
   - `write()` now goes through `write_retained_bytes`. Observed journals are 60–130 KB, so this is latent.
   - Fix: apply the cap only to retained artifact copies.
 - [x] [Review][Defer] The owner-cancellation ordering proof may lose its polling race [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1442] — deferred: unverified, high if confirmed (blind-hunter+edge-case-hunter)
@@ -185,7 +185,9 @@ Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda
 
 ## Implementation Notes
 
-Approved by the user on 2026-11-11 with “approve and stop”. The frozen intent is locked. Implementation, task/matrix audit, independent review and final verification are complete.
+Approved by the user on 2026-11-11 with “approve and stop”. The frozen intent is locked. The initial implementation and both review passes are complete. All 21 approved review-pass-2 corrections and the three independently identified correction groups were completed in the resumed 2026-11-12 bmad-build run.
+
+Resume from the current checked-out revisions, preserving incoming work and the original baseline identifiers. Execute sequentially with no push or other remote operations. The resolved review decisions authorize binding the Platform v2 EventStore HTTP endpoint to the run-plan port and increasing only the qualification job wall-clock timeout to 90 minutes. Compatible Platform release adoption remains a documented release dependency; do not publish or update pins. Save this run's local verification under `evidence/2-11/part-3/checks/review-pass-2-*` and record exact current input revisions and modified bytes.
 
 Baseline: 106/106 caller tests. Recheck concurrently advancing heads; preserve incoming work. Package/hosted verification requires compatible releases.
 
@@ -237,3 +239,38 @@ Build changed C# projects in Debug with source references and `-nodeReuse:false`
 - [Final matrix audit](evidence/2-11/part-3/checks/review-pass-1-matrix-audit.json) records executed passing coverage for all seven frozen rows. Final source/document hashes are stable; all five v1 schema files still match owning HEAD bytes.
 - The three review layers produced 15 findings, recorded individually above. Fourteen were corrected in 11 groups; B7 was rejected under the low-finding complexity rule. No finding was silently dropped or deferred.
 - Local delivery: Builds `bfda07eea7dcc8ef0a6da0fa14643aa70eebec78`, EventStore `04e56e1c1d4657d6fbdea0aa03a5f434c0fe51e5`, Parties `e35b8c1eff0184c95444af9a01a8beba78f87110`. Exact messages passed pinned commitlint 21.2.4. No push or gitlink/pin update. The only source-tree edit after verification removes stale “uncommitted” wording from Parties documentation; all tested code bytes are unchanged.
+
+### Resumed second-review implementation audit (2026-11-12)
+
+- Independently read the complete correction diff across all four owning repositories, including new tests; all 21 approved patch items are complete. The original baseline identifiers remain unchanged, and intervening incoming work is preserved. Private Git indexes captured the original-baseline and resumed-run diffs without altering user staging.
+- Verified all modified input bytes against the saved manifest and all 268 selected xUnit results as passing. The 180 controller and 7 declaration controls also pass, totaling 455 local cases. All seven frozen matrix rows have named passing coverage in [the matrix audit](evidence/2-11/part-3/checks/review-pass-2-matrix-audit.json).
+- Five Debug builds, renderer and actionlint pass under the documented local source/framework arrangements. Standard Platform framework drift and the broader generated-reader isolation blocker remain visible; hosted qualification and its timing measurements remain separate.
+
+### Resumed correction review (2026-11-12)
+
+All three independent layers completed before triage: blind hunter (B), edge-case hunter (E) and verification-gap reviewer (V). Their 13 findings are recorded individually below, before grouping. V1/V2 were filed as Other findings and independently reproduced. Review compares the resumed-run delta against the four exact input HEADs; original baseline history, claims and unrelated incoming work are retained separately.
+
+| Finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| B1 | medium | patch G1 | Independently reproduced: write() publishes >8 MiB JSON, but read() and optional_read() reject it; launch_owner and independent Qualification construction use those readers. |
+| B2 | medium | patch G2 | Independently reproduced SIGINT during Popen entry: child_birth is unset and forward() makes no delivery; attached process_signal targets only this supervisor. |
+| B3 | false | reject | The cached code is itself a genuine Popen OS observation durably saved in the job-bound journal, or a previously verified monitor observation. finalize_attached still recovers the launch and checks its identity; no production writer changes an already-published exit. Editing or removing exit fields does not invalidate the separately persisted observation. |
+| B4 | false | reject | Actual public files are generated from Builds typed ToolCommandResult, ToolOutcome and ToolDiagnostic objects. No demonstrated publisher/caller emits the proposed array outcome or string diagnostic; this needs manually substituted malformed output, as with the prior rejected malformed-producer finding. |
+| B5 | false | reject | AttachedSuiteCommand.Relay derives status, typed phase/category/rule and top-level outcome from the same final attachment. Its actual publisher cannot emit completed status with a failed outcome, or a non-null rule on Passed(); the proposed inconsistent document has no reachable producing path. |
+| B6 | false | reject | Relay assigns RunId and Attachment from the same validated final CompositionAttachment. Existing admission/result/ledger checks bind that hold; the proposed foreign attachment with the original top-level runId requires substituting publisher output. |
+| B7 | false | reject | The only writer uses now() after child.wait(); year-2999 content in a present-time record needs forged metadata or an unshown clock change. No demonstrated runtime path publishes the proposed timestamp contradiction. |
+| B8 | false | reject | CompositionAttachAdmission.Refuse returns a single HXR036 topology diagnostic and TopologyOrLifecycle exit; AttachedSuiteCommand returns that refusal directly before execution. No real expected-reason refusal adds an evidence failure or another exit mapping. |
+| B9 | low | patch G3 | The test only delays on RequestCancellation. Existing disposal tests cover client linkage, but a blocked fixture HTTP request directly verifies the attached-expiry behavior with a small test-only correction. |
+| E1 | medium | patch G2 | Same independently reproduced launch-boundary defect as B2; retain this distinct finding and correct the shared pending-signal loss. |
+| E2 | medium | patch G1 | Same independently reproduced metadata contract mismatch as B1; the unchanged bounded read_bytes default is still used by metadata readers. |
+| V1 | medium | patch G1 | Filed as Other findings, independently verified: the regression uses json.loads(path.read_text()) and misses read()/optional_read() rejecting the writer-created journal. |
+| V2 | medium | patch G2 | Filed as Other findings, independently verified: signalling at the Popen boundary is lost, while the existing real-child test waits until the ready marker before interrupting. |
+
+The seven surviving reports share three roots: G1 aligns operational metadata reads/writes, G2 preserves cancellation through child launch, and G3 strengthens the SDK expiry test with an outstanding request. These are direct internal corrections or a focused test change; no public contract, frozen intent, pin or new policy decision is needed. No new deferral or loopback applies.
+
+### Final resumed-run verification and delivery (2026-11-12)
+
+- Re-engaged the original implementer for G1–G3, read the complete patch diff, then independently reran all five Debug builds and the complete local verification set. All 456 cases pass: Builds 176, EventStore 62, Platform 2, Parties C# 28, controller 181 and declaration 7. All five builds have zero warnings/errors; renderer and actionlint pass. Tested source bytes stayed unchanged during this run.
+- G1 now reads operational journals through the matching uncapped metadata contract while preserving artifact and held-file/link checks; G2 queues SIGINT/SIGTERM through child construction/birth capture; G3 verifies hold expiry cancels an actual outstanding HTTP request with a longer independent timeout. [Final verification](evidence/2-11/part-3/checks/review-pass-2-final-verification.json) and [matrix/correction audit](evidence/2-11/part-3/checks/review-pass-2-final-matrix-audit.json) retain exact named passing evidence.
+- All 13 independent findings were triaged individually: seven reports corrected in three groups, six rejected on traced publisher/recovery invariants, with no new deferral. Previously deferred hosted timing/order measurements remain open. Default Platform framework drift and broader catalog isolation remain documented limitations; successful focused validation uses the saved local framework/helper overrides. No hosted qualification, release publication or pin change is claimed.
+- Local delivery follows the workflow using pinned commitlint 21.2.4 for every exact full message. Builds, EventStore and Parties local commits are recorded in [the delivery manifest](evidence/2-11/part-3/checks/review-pass-2-local-commits.json). The Platform commit preserves its original submodule pointers; there is no push or remote operation.

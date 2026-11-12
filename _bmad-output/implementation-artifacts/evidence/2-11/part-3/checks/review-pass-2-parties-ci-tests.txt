@@ -1,0 +1,13 @@
+$ dotnet tests/Hexalith.Parties.Ci.Tests/bin/Debug/net11.0/Hexalith.Parties.Ci.Tests.dll -class Hexalith.Parties.Ci.Tests.StandaloneSolutionTests -class Hexalith.Parties.Ci.Tests.PublicRuntimeImageObservationTests -result-xml /tmp/review-pass2-parties-ci-tests.xml
+
+cwd=/home/administrator/projects/hexalith/platform/references/Hexalith.Parties
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Parties.Ci.Tests
+  Discovered:  Hexalith.Parties.Ci.Tests
+  Starting:    Hexalith.Parties.Ci.Tests
+  Finished:    Hexalith.Parties.Ci.Tests (ID = '624c5da3cf1727191ac5d030b65dd40792391d8c779c2a37730968309d2b0da1')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Parties.Ci.Tests  Total: 28, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.197s
+
+exitCode=0

@@ -1,0 +1,229 @@
+{
+  "scope": "final-post-review-local-source-verification",
+  "commands": [
+    {
+      "name": "builds-build",
+      "command": [
+        "dotnet",
+        "build",
+        "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseSharedCompilation=false",
+        "--nologo",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "exitCode": 0,
+      "output": "review-pass-2-final-builds-build.txt"
+    },
+    {
+      "name": "builds-tests",
+      "command": [
+        "dotnet",
+        "test/Hexalith.Builds.Module.Tests/bin/Debug/net11.0/Hexalith.Builds.Module.Tests.dll",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests",
+        "-class",
+        "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-final-builds-tests.xml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+      "exitCode": 0,
+      "output": "review-pass-2-final-builds-tests.txt",
+      "xml": "review-pass-2-final-builds-tests.xml",
+      "passed": 176
+    },
+    {
+      "name": "eventstore-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseSharedCompilation=false",
+        "--nologo",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+      "exitCode": 0,
+      "output": "review-pass-2-final-eventstore-build.txt"
+    },
+    {
+      "name": "eventstore-tests",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.EventStore.Testing.Tests/bin/Debug/net11.0/Hexalith.EventStore.Testing.Tests.dll",
+        "-class",
+        "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-final-eventstore-tests.xml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+      "exitCode": 0,
+      "output": "review-pass-2-final-eventstore-tests.txt",
+      "xml": "review-pass-2-final-eventstore-tests.xml",
+      "passed": 62
+    },
+    {
+      "name": "platform-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-net11-props.props",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseSharedCompilation=false",
+        "--nologo",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "output": "review-pass-2-final-platform-build.txt"
+    },
+    {
+      "name": "platform-tests",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+        "-method",
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreEndpointUsesRunPlanPortAndKeepsUnownedAllocationAsync",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-final-platform-tests.xml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "output": "review-pass-2-final-platform-tests.txt",
+      "xml": "review-pass-2-final-platform-tests.xml",
+      "passed": 2
+    },
+    {
+      "name": "parties-ci-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseSharedCompilation=false",
+        "--nologo",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-ci-build.txt"
+    },
+    {
+      "name": "parties-ci-tests",
+      "command": [
+        "dotnet",
+        "tests/Hexalith.Parties.Ci.Tests/bin/Debug/net11.0/Hexalith.Parties.Ci.Tests.dll",
+        "-class",
+        "Hexalith.Parties.Ci.Tests.StandaloneSolutionTests",
+        "-class",
+        "Hexalith.Parties.Ci.Tests.PublicRuntimeImageObservationTests",
+        "-result-xml",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-final-parties-ci-tests.xml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-ci-tests.txt",
+      "xml": "review-pass-2-final-parties-ci-tests.xml",
+      "passed": 28
+    },
+    {
+      "name": "parties-attached-build",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleTests.csproj",
+        "-c",
+        "Debug",
+        "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "-p:HexalithEventStoreFromSource=true",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+        "-p:UseHexalithProjectReferences=true",
+        "-m:1",
+        "-nodeReuse:false",
+        "-p:UseSharedCompilation=false",
+        "--nologo",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-attached-build.txt"
+    },
+    {
+      "name": "parties-controller-tests",
+      "command": [
+        "python3",
+        "-B",
+        "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-loader.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-controller-tests.txt"
+    },
+    {
+      "name": "parties-renderer",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render-platform-declaration.py",
+        "--check"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-renderer.txt"
+    },
+    {
+      "name": "parties-declaration-tests",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/test_platform_declaration.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-declaration-tests.txt"
+    },
+    {
+      "name": "parties-actionlint",
+      "command": [
+        "actionlint",
+        ".github/workflows/ci-lifecycle-qualification.yml"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+      "exitCode": 0,
+      "output": "review-pass-2-final-parties-actionlint.txt"
+    }
+  ],
+  "defaultBlockers": "review-pass-2-verification.json",
+  "temporaryFrameworkOverride": "review-pass-2-net11-props.props",
+  "temporaryHelperMapping": "review-pass-2-parties-loader.py",
+  "sourceBytesStableDuringVerification": true,
+  "csharpPassed": 268,
+  "controllerPassed": 181,
+  "declarationPassed": 7,
+  "totalPassed": 456
+}

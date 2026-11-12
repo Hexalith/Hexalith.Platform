@@ -1,0 +1,93 @@
+[
+  {
+    "id": "B1",
+    "verdict": "medium",
+    "route": "patch G1",
+    "claim": "Operational metadata writer/reader limits disagree.",
+    "evidence": "Independently reproduced: write() publishes >8 MiB JSON, but read() and optional_read() reject it; launch_owner and independent Qualification construction use those readers."
+  },
+  {
+    "id": "B2",
+    "verdict": "medium",
+    "route": "patch G2",
+    "claim": "The attached supervisor loses a cancellation during child creation.",
+    "evidence": "Independently reproduced SIGINT during Popen entry: child_birth is unset and forward() makes no delivery; attached process_signal targets only this supervisor."
+  },
+  {
+    "id": "B3",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "Cached command exits bypass repeated exit-record validation.",
+    "evidence": "The cached code is itself a genuine Popen OS observation durably saved in the job-bound journal, or a previously verified monitor observation. finalize_attached still recovers the launch and checks its identity; no production writer changes an already-published exit. Editing or removing exit fields does not invalidate the separately persisted observation."
+  },
+  {
+    "id": "B4",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "Malformed public outcome/diagnostic shapes can raise AttributeError.",
+    "evidence": "Actual public files are generated from Builds typed ToolCommandResult, ToolOutcome and ToolDiagnostic objects. No demonstrated publisher/caller emits the proposed array outcome or string diagnostic; this needs manually substituted malformed output, as with the prior rejected malformed-producer finding."
+  },
+  {
+    "id": "B5",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "Public status/phase/success rule fields are not independently compared.",
+    "evidence": "AttachedSuiteCommand.Relay derives status, typed phase/category/rule and top-level outcome from the same final attachment. Its actual publisher cannot emit completed status with a failed outcome, or a non-null rule on Passed(); the proposed inconsistent document has no reachable producing path."
+  },
+  {
+    "id": "B6",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "Public attachment binding is not independently compared.",
+    "evidence": "Relay assigns RunId and Attachment from the same validated final CompositionAttachment. Existing admission/result/ledger checks bind that hold; the proposed foreign attachment with the original top-level runId requires substituting publisher output."
+  },
+  {
+    "id": "B7",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "A future recovered command exit timestamp would be accepted.",
+    "evidence": "The only writer uses now() after child.wait(); year-2999 content in a present-time record needs forged metadata or an unshown clock change. No demonstrated runtime path publishes the proposed timestamp contradiction."
+  },
+  {
+    "id": "B8",
+    "verdict": "false",
+    "route": "reject",
+    "claim": "Lineage proof does not independently compare the CLI outcome mapping.",
+    "evidence": "CompositionAttachAdmission.Refuse returns a single HXR036 topology diagnostic and TopologyOrLifecycle exit; AttachedSuiteCommand returns that refusal directly before execution. No real expected-reason refusal adds an evidence failure or another exit mapping."
+  },
+  {
+    "id": "B9",
+    "verdict": "low",
+    "route": "patch G3",
+    "claim": "The SDK expiry regression does not issue an HTTP request.",
+    "evidence": "The test only delays on RequestCancellation. Existing disposal tests cover client linkage, but a blocked fixture HTTP request directly verifies the attached-expiry behavior with a small test-only correction."
+  },
+  {
+    "id": "E1",
+    "verdict": "medium",
+    "route": "patch G2",
+    "claim": "Cancellation before child birth capture is discarded.",
+    "evidence": "Same independently reproduced launch-boundary defect as B2; retain this distinct finding and correct the shared pending-signal loss."
+  },
+  {
+    "id": "E2",
+    "verdict": "medium",
+    "route": "patch G1",
+    "claim": "Large written journals cannot be recovered.",
+    "evidence": "Same independently reproduced metadata contract mismatch as B1; the unchanged bounded read_bytes default is still used by metadata readers."
+  },
+  {
+    "id": "V1",
+    "verdict": "medium",
+    "route": "patch G1",
+    "claim": "The metadata bound test bypasses production recovery readers.",
+    "evidence": "Filed as Other findings, independently verified: the regression uses json.loads(path.read_text()) and misses read()/optional_read() rejecting the writer-created journal."
+  },
+  {
+    "id": "V2",
+    "verdict": "medium",
+    "route": "patch G2",
+    "claim": "The real process test only signals after readiness.",
+    "evidence": "Filed as Other findings, independently verified: signalling at the Popen boundary is lost, while the existing real-child test waits until the ready marker before interrupting."
+  }
+]

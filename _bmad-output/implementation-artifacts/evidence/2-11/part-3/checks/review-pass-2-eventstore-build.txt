@@ -1,0 +1,12 @@
+$ dotnet build tests/Hexalith.EventStore.Testing.Tests/Hexalith.EventStore.Testing.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -m:1 -nodeReuse:false -p:UseSharedCompilation=false --nologo -v:q
+
+cwd=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore
+
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:20.10
+
+exitCode=0

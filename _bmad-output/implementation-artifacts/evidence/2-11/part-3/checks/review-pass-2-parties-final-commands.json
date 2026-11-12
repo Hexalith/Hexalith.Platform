@@ -1,0 +1,46 @@
+[
+  {
+    "name": "parties-controller-tests",
+    "command": [
+      "python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-loader.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "output": "_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-controller-tests.txt"
+  },
+  {
+    "name": "parties-renderer",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/render-platform-declaration.py",
+      "--check"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "output": "_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-renderer.txt"
+  },
+  {
+    "name": "parties-declaration-tests",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/test_platform_declaration.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "output": "_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-declaration-tests.txt"
+  },
+  {
+    "name": "parties-actionlint",
+    "command": [
+      "actionlint",
+      ".github/workflows/ci-lifecycle-qualification.yml"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Parties",
+    "exitCode": 0,
+    "output": "_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-actionlint.txt"
+  }
+]

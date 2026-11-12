@@ -1,0 +1,25 @@
+{
+  "rawEvidenceCheck": {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exitCode": 2,
+    "reason": "The exact archived unittest blocker stdout contains trailing spaces after progress ellipses. Preserve those original evidence bytes."
+  },
+  "sourceProseAndOtherEvidenceCheck": {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":(exclude)_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-parties-direct-blocker.txt"
+    ],
+    "exitCode": 0,
+    "output": ""
+  }
+}

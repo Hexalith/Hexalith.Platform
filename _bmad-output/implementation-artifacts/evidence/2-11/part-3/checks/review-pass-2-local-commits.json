@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "builds",
+    "commit": "565b9e63bce9d3b5b43483d01da81ef7ceb33a20",
+    "parent": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+    "files": [
+      "README.md",
+      "test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs",
+      "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs",
+      "test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs"
+    ],
+    "output": "[main 565b9e63] test(runtime): cover attached lifecycle guards\n 4 files changed, 107 insertions(+), 31 deletions(-)\n"
+  },
+  {
+    "repository": "eventstore",
+    "commit": "8934b4f48c3035efd11ef6b89d8c8eba9de5fbd3",
+    "parent": "76f743ba0a62c254a66973aa707a701d95a6ce43",
+    "files": [
+      "docs/reference/nuget-packages.md",
+      "tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs"
+    ],
+    "output": "[main 8934b4f48] test(testing): verify attached request expiry\n 2 files changed, 30 insertions(+), 17 deletions(-)\n"
+  },
+  {
+    "repository": "parties",
+    "commit": "9a08b88e3b7ecc8aa2bb8f707dacaebefd479b28",
+    "parent": "e2a135cd6e4e3700de9d9360bd6d4eac7ac34191",
+    "files": [
+      ".github/workflows/ci-lifecycle-qualification.yml",
+      "docs/ci-lifecycle-qualification.md",
+      "scripts/qualify-disposable-ci.py",
+      "tests/ci-lifecycle/test_attached_lifecycle.py",
+      "tests/ci-lifecycle/test_review_fixes.py",
+      "tests/ci-lifecycle/test_review_pass2.py"
+    ],
+    "output": "warning: unable to find all commit-graph files\n[main 9a08b88e] fix(ci): harden lifecycle qualification\n 6 files changed, 584 insertions(+), 44 deletions(-)\n create mode 100644 tests/ci-lifecycle/test_review_pass2.py\n"
+  }
+]

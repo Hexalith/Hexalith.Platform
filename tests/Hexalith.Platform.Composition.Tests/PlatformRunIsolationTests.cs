@@ -17,6 +17,40 @@ public sealed partial class PlatformAppModelTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
+    public async Task EventStoreEndpointUsesRunPlanPortAndKeepsUnownedAllocationAsync(bool owned)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "platform-eventstore-port-" + Guid.NewGuid().ToString("N"));
+        CompositionWorkspace.CreatePrivateDirectory(directory);
+        var builder = Builder();
+        try
+        {
+            CompositionRunPlan? plan = null;
+            if (owned)
+            {
+                var mapping = Options().Mapping with { Entries = [.. Options().Mapping.Entries, new Hexalith.Builds.Tooling.Workspace.SourceMappingEntry("Hexalith.Platform", "source", Root)] };
+                plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.Combine(directory, "run"), directory,
+                    CompositionPortAllocator.Allocate(1), [], [], mapping,
+                    [Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.EventStore"), "module", "hexalith.module-manifest.v2.json")], "eventstore", typeof(PlatformAppModel).Assembly.Location);
+                await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+                PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), null);
+            }
+            else PlatformAppModel.Compose(builder, Options(active: "eventstore"));
+            var endpoint = builder.Resources.Single(resource => resource.Name == "eventstore").Annotations.OfType<EndpointAnnotation>().Single(value => value.Name == "http");
+            endpoint.Port.ShouldBe(plan?.Ports.EventStoreHttp);
+            endpoint.IsProxied.ShouldBeTrue();
+            builder.Resources.Where(resource => resource.Name != "eventstore").ShouldAllBe(resource => resource.Annotations.OfType<EndpointAnnotation>().All(value => plan == null || value.Port != plan.Ports.EventStoreHttp));
+        }
+        finally
+        {
+            using ServiceProvider services = builder.Services.BuildServiceProvider();
+            services.GetService<PlatformCompositionWorkspace>()?.Dispose();
+            await CompositionWorkspace.TryDeleteAsync(directory, CancellationToken.None);
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
     public async Task IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(bool signed)
     {
         string directory = Path.Combine(Path.GetTempPath(), "platform-isolation-" + Guid.NewGuid().ToString("N"));

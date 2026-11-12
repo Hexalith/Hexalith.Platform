@@ -1,0 +1,15 @@
+$ dotnet test/Hexalith.Builds.Module.Tests/bin/Debug/net11.0/Hexalith.Builds.Module.Tests.dll -class Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests -class Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests -class Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests -class Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests -xml /tmp/review-pass2-builds-tests.xml
+
+cwd=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds
+
+The '-xml' switch has been deprecated in favor of '-result-xml' and will be removed in the next major version
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+  Finished:    Hexalith.Builds.Module.Tests (ID = '77c9cda9141ed6329cfad383d6fc77fce513527c3038c1ca4941236d3d6eb635')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 176, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 101.663s
+
+exitCode=0

@@ -1,0 +1,58 @@
+[
+  {
+    "repository": "builds",
+    "message": "test(runtime): cover attached lifecycle guards\n\nCover explicit ports, candidate-gated attachment refusal and routing\nidentity checks. Align lifecycle documentation with supported callers.\n",
+    "version": "21.2.4",
+    "command": [
+      "./node_modules/.bin/commitlint",
+      "--config",
+      "commitlint.config.mjs",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "output": "\u29d7   --- input ---\ntest(runtime): cover attached lifecycle guards\n\nCover explicit ports, candidate-gated attachment refusal and routing\nidentity checks. Align lifecycle documentation with supported callers.\n\u2714   found 0 problems, 0 warnings\n",
+    "messageFile": "/tmp/bmad-2-11-audit-93vgk7vc/builds-commit-message.txt"
+  },
+  {
+    "repository": "eventstore",
+    "message": "test(testing): verify attached request expiry\n\nVerify stable hold refusals and cancellation of a real outstanding\nHTTP request at the original expiry. Align Testing documentation.\n",
+    "version": "21.2.4",
+    "command": [
+      "./node_modules/.bin/commitlint",
+      "--config",
+      "commitlint.config.mjs",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "output": "\u29d7   --- input ---\ntest(testing): verify attached request expiry\n\nVerify stable hold refusals and cancellation of a real outstanding\nHTTP request at the original expiry. Align Testing documentation.\n\u2714   found 0 problems, 0 warnings\n",
+    "messageFile": "/tmp/bmad-2-11-audit-93vgk7vc/eventstore-commit-message.txt"
+  },
+  {
+    "repository": "parties",
+    "message": "fix(ci): harden lifecycle qualification\n\nPreserve cancellation through attached command launch and durably record\nits exit. Verify exact lineage outcomes, launch arguments and fixture\nhandshakes, and start owner peers concurrently.\n\nRaise only the qualification job wall-clock timeout to 90 minutes.\n",
+    "version": "21.2.4",
+    "command": [
+      "./node_modules/.bin/commitlint",
+      "--config",
+      "commitlint.config.mjs",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "output": "\u29d7   --- input ---\nfix(ci): harden lifecycle qualification\n\nPreserve cancellation through attached command launch and durably record\nits exit. Verify exact lineage outcomes, launch arguments and fixture\nhandshakes, and start owner peers concurrently.\n\nRaise only the qualification job wall-clock timeout to 90 minutes.\n\u2714   found 0 problems, 0 warnings\n",
+    "messageFile": "/tmp/bmad-2-11-audit-93vgk7vc/parties-commit-message.txt"
+  },
+  {
+    "repository": "platform",
+    "message": "fix(runtime): bind the eventstore run port\n\nBind v2 EventStore HTTP endpoints to the run-plan port and cover owned\nand unowned compositions. Record Story 2.11 corrections and final local\nverification, preserving package pins and submodule pointers.\n\nLocal controls: 456 passing cases; hosted qualification remains separate.\n",
+    "version": "21.2.4",
+    "command": [
+      "./node_modules/.bin/commitlint",
+      "--config",
+      "commitlint.config.mjs",
+      "--verbose"
+    ],
+    "exitCode": 0,
+    "output": "\u29d7   --- input ---\nfix(runtime): bind the eventstore run port\n\nBind v2 EventStore HTTP endpoints to the run-plan port and cover owned\nand unowned compositions. Record Story 2.11 corrections and final local\nverification, preserving package pins and submodule pointers.\n\nLocal controls: 456 passing cases; hosted qualification remains separate.\n\u2714   found 0 problems, 0 warnings\n",
+    "messageFile": "/tmp/bmad-2-11-audit-93vgk7vc/platform-commit-message.txt"
+  }
+]

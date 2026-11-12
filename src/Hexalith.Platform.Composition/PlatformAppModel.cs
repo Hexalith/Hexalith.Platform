@@ -306,7 +306,7 @@ public static class PlatformAppModel
                             .WithEnvironment("Timesheets__InternalSurface__Port", project.GetEndpoint("internal").Property(EndpointProperty.TargetPort))
                             .WithArgs("-p:HexalithEventStoreRoot=" + options.Mapping.Entries.Single(entry => entry.Identity.Equals("Hexalith.EventStore", StringComparison.OrdinalIgnoreCase)).Path);
                     }
-                    else project.WithHttpEndpoint(name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
+                    else project.WithHttpEndpoint(port: server.ResourceId == "eventstore" ? options.RunPlan?.Ports.EventStoreHttp : null, name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
                     ConfigureEnvironment(project, server, options, clockKey);
                     catalog?.Configure(project, server);
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);

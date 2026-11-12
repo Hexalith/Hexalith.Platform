@@ -113,8 +113,8 @@ Policy v1, schemas, pins and local failure retention semantics are unchanged.
 ## Release and hosted evidence dependencies
 
 The committed package workflow still selects its existing public tool/SDK pins.
-It cannot execute the new options/fixture support until compatible Builds and
-EventStore Testing releases are independently published and deliberately adopted.
+It cannot execute the new options/fixture support until compatible Builds, Platform
+composition and EventStore Testing releases are independently published and deliberately adopted.
 This change neither publishes those prerequisites nor updates pins.
 
 No live hosted or local real-service campaign, cancellation API call, published
@@ -179,3 +179,136 @@ The exact messages passed each repository's pinned commitlint 21.2.4 before
 commit. `checks/local-commit-messages.json` and `checks/local-commits.json` retain
 the validation and canonical identifiers. These local-only workflow commits do
 not push, publish, update tool/catalog pins, or advance Platform's gitlinks.
+
+## Review pass 2 — current-main corrections (2026-11-12)
+
+`checks/review-pass-2-input-revisions.json` records the exact current input HEADs
+and incoming status, preserving the original spec baselines above. This run
+implements the 21 approved second-review patches. The implementation phase
+left changes uncommitted; final workflow delivery creates the local commits
+recorded below. No push, nested-submodule initialization, publication, workflow
+dispatch or accepted-pin change occurs.
+
+Platform v2 now binds its EventStore project endpoint to the runner plan's
+`EventStoreHttp` port. Both source and package server selection require a project
+(the package path uses the seed host), so an EventStore container branch is not
+reachable in the supported graph. The run-isolation model regression checks the
+port annotation and the unowned default; real listener and collision proof still
+requires a compatible published Platform model in the hosted campaign.
+
+The qualification job has a 90-minute wall-clock limit. Lifecycle/policy budgets,
+startup/execution deadlines and hold expiry are unchanged. Collision and expiry
+begin both owners before waiting for readiness. Hold-expiry is estimated to use
+160–200 seconds of about 210 remaining seconds, giving roughly 10–50 seconds of
+margin; this is not a hosted measurement. The first real campaign must measure
+that margin and the two already-deferred cancellation timing/order questions.
+
+Lineage checks now require each exact HXR036 reason and retain separate probe
+artifacts. Every attached CLI exit, public outcome and diagnostic category is
+verified during the case and finalizer; interrupted runs without observed exit
+proof fail explicitly. Journal/observations writes use the atomic writer without
+the retained-copy byte cap. Documentation, parser/service guards, candidate-policy
+refusals, descriptor/hold identity checks, original failure cancellation and the
+C#/Python fixture handshake have direct regression coverage.
+
+The direct Parties command `python3 -B -m unittest discover -s tests/ci-lifecycle
+-v` is blocked by the empty nested Builds checkout. The saved
+`checks/review-pass-2-parties-direct-blocker.txt` contains its exact result.
+`checks/review-pass-2-parties-loader.py` redirects only that unavailable helper
+import to this workspace's root-declared Builds source. It does not replace any
+helper behavior or initialize the nested checkout. Run it from Parties with
+`python3 -B <absolute-evidence-path>/checks/review-pass-2-parties-loader.py`.
+These controls grant local source verification only.
+
+The first no-restore Builds build found stale net10 assets after current main's
+net11 migration. A restore-enabled Debug build refreshed the existing package
+graph without pin changes; final builds use the current net11 target. Final
+check commands, outputs, exit codes and modified-byte hashes are recorded in the
+`review-pass-2-*` evidence files below. Compatible Builds, Platform composition
+and EventStore Testing releases and their deliberate adoption remain required
+before hosted qualification; no Story 2.10 qualification is claimed.
+
+The attached gate's supervisor durably records the actual CLI exit/time on its
+original launch record. Recovery checks the already-journaled PID, birth and
+process group before accepting that exit. Attached signals target only the
+supervisor; it forwards once to the exact muxer/tool processes. A real gated
+muxer/child regression checks exit 4 and SIGINT exit 130, exactly one received
+signal, reconstruction of a separate controller and refusal of a rebound record.
+
+Normal Platform source validation is blocked by current-main framework drift:
+Memories targets net10 while source EventStore targets net11 (`NU1201`). The
+saved temporary props wrapper imports each project's own build props and selects
+net11 for local validation only. This builds the full test project without
+changing tracked build configuration. The existing full isolation theory still
+reaches a generated routing-reader child build with the original incompatible
+framework graph, so that broader check remains explicitly blocked. The new
+focused owned/unowned EventStore endpoint theory bypasses unrelated catalog
+owner generation and exercises the actual model endpoint binding.
+
+### Final second-review checks
+
+| Local check | Result |
+| --- | --- |
+| Builds affected four classes | 176/176, no skips or unexecuted tests |
+| EventStore descriptor reader | 62/62, no skips or unexecuted tests |
+| Platform owned/unowned endpoint model | 2/2, no skips or unexecuted tests |
+| Parties focused C# controls | 28/28, no skips or unexecuted tests |
+| Parties controller controls | 180/180 |
+| Parties declaration controls | 7/7 |
+| Five Debug builds | Zero warnings/errors |
+| Declaration renderer and actionlint | Exit 0 |
+| Authoritative/mirrored v1 schemas | All five unchanged against owning HEAD |
+
+These are 455 passing cases. The Platform build/test qualification applies only
+to the explicit local framework override described above; its saved default and
+broader isolation blockers remain open environmental limitations.
+
+[Verification commands and results](checks/review-pass-2-verification.json)
+record the exact commands, exit codes, framework/helper overrides and remaining
+hosted questions. The four `review-pass-2-*-tests.xml` files retain individual
+xUnit case names/results; the Python controller/declaration logs retain named
+controls. [Modified input byte identities](checks/review-pass-2-modified-files.json)
+identify every changed source/document file and its owning HEAD. The schema audit
+compares both the original expected hashes and owning Git objects. No hosted or
+package qualification is inferred from these local checks.
+
+### Final independent-review corrections and local delivery
+
+All three review layers completed and their 13 findings were triaged separately.
+Seven reports were corrected in three groups; six were rejected after tracing
+the actual typed publisher and persisted exit-observation paths. No new work was
+deferred. The already-recorded hosted timing/order measurements remain open.
+
+The final corrections preserve early SIGINT/SIGTERM until child identity binding,
+make operational journals readable under their writer contract while retaining
+artifact/link checks, and verify expiry against an actual blocked HTTP request.
+The orchestrator read the patch diff and reran the complete local set:
+
+| Final check | Result |
+| --- | --- |
+| Builds / EventStore / Platform / Parties C# | 176 / 62 / 2 / 28 passed |
+| Controller / declaration | 181 / 7 passed |
+| Total local cases | 456 passed, no selected xUnit skips or failures |
+| Five Debug builds | Zero warnings/errors |
+| Renderer / actionlint | Exit 0 |
+
+[Final commands and results](checks/review-pass-2-final-verification.json) and
+[final matrix/correction coverage](checks/review-pass-2-final-matrix-audit.json)
+retain the passing named evidence. The documented helper/framework overrides and
+standard/broader blockers still apply. No hosted or package qualification follows
+from these local controls. Tested source bytes stayed unchanged during final
+verification; the evidence narrative and status updates were finalized afterwards.
+
+Local commits below passed each owning repository's pinned commitlint 21.2.4.
+Platform records its source/evidence/status changes separately and preserves its
+existing gitlinks; unpublished submodule commits are not recorded in those pointers.
+
+| Repository | Local correction commit |
+| --- | --- |
+| builds | `565b9e63bce9d3b5b43483d01da81ef7ceb33a20` |
+| eventstore | `8934b4f48c3035efd11ef6b89d8c8eba9de5fbd3` |
+| parties | `9a08b88e3b7ecc8aa2bb8f707dacaebefd479b28` |
+
+[Commitlint evidence](checks/review-pass-2-commitlint.json) retains every exact
+validated message. Final modified-file hashes refer to the bytes at delivery;
+`headSha256` identifies each file at its saved input HEAD before these commits.

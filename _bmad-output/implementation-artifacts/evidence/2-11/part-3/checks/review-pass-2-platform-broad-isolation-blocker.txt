@@ -1,0 +1,33 @@
+$ dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync -result-xml /tmp/review-pass2-platform-tests.xml
+
+cwd=/home/administrator/projects/hexalith/platform
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: False) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-platform/f08b378438c041acbe3a1b29394cabd1/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(78,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(158,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(198,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(46,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(183,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        --- End of stack trace from previous location ---
+    Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(signed: True) [FAIL]
+      System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/platform-isolation-c7a41687ad1548e1b6188612e4df32c6/run-0/platform-components/catalog-reader/build.log.
+      Stack Trace:
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs(78,0): at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace)
+        src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs(158,0): at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(198,0): at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(112,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject, Func`2 configureOptions)
+        src/Hexalith.Platform.Composition/PlatformAppModel.cs(76,0): at Hexalith.Platform.Composition.PlatformAppModel.ComposeRun(IDistributedApplicationBuilder builder, CompositionRunPlan plan, String signingKey, String seedProject)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(44,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs(183,0): at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.IdenticalSelectionsOwnPortsCredentialsDiscoveryAndStorageAsync(Boolean signed)
+        --- End of stack trace from previous location ---
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '2ddda01ee7294015bacad938e86bda97f6b00c49c169eac7f1833bf50239e8d9')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 2, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 4.481s
+
+exitCode=1

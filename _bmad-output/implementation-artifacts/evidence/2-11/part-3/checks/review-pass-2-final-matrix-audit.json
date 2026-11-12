@@ -1,0 +1,269 @@
+{
+  "scope": "final-post-review-local-controls",
+  "rows": [
+    {
+      "row": "Collision",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests.ExplicitEndpointConflictPreservesOwnerAndPeer",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.ExplicitPortCommandForwardsAndNamesManagedOwnerAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-platform-tests.xml",
+          "test": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreEndpointUsesRunPlanPortAndKeepsUnownedAllocationAsync(owned: False)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-platform-tests.xml",
+          "test": "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.EventStoreEndpointUsesRunPlanPortAndKeepsUnownedAllocationAsync(owned: True)",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "row": "Startup timeout",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: False)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupTaskIsStoppedAtTheDeadlineAsync(selected: True)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.SelectedStartupTokenExpiresDuringModelBuildAndPreservesSummaryAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: False)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests.StartupObservationExcludesDelayedTeardownAsync(cancelled: True)",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "row": "Failure then cancellation",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-parties-controller-tests.txt",
+          "test": "test_main_wait_and_finalize_preserve_failure_without_live_owner_or_cancellation_credit",
+          "result": "Pass (final suite exit 0, 181/181)"
+        },
+        {
+          "output": "review-pass-2-final-parties-controller-tests.txt",
+          "test": "test_failure_start_requires_failed_exit_and_durable_failed_result",
+          "result": "Pass (final suite exit 0, 181/181)"
+        }
+      ]
+    },
+    {
+      "row": "Owner cancellation",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.OwnerCancellationEndsAttachedWorkBeforeOwnerTeardownAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.CiOwnerCancellationWithdrawsActiveAttachmentAsJobCancelledAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.DownFromAnotherTerminalEndsAttachedWorkBeforeOwnerResourcesStopAsync",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "row": "Attached failure",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: False)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.AttachedFailureRetainsOnlyLocallyAndLeavesOwnerUntouchedAsync(ci: True)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-parties-controller-tests.txt",
+          "test": "test_attached_exit_public_mapping_and_cleanup_diagnostics_are_verified_for_each_cause",
+          "result": "Pass (final suite exit 0, 181/181)"
+        }
+      ]
+    },
+    {
+      "row": "Hold expiry",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: False)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiryStopsRunningChildAndIgnoresLateReportAsync(ci: True)",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.ExpiringAttachmentLeavesPeerAndOwnerRunningAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests.SurvivingChildIsReportedWithoutChangingOutcomeOrExpiryAsync",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedExpiryCancelsFixtureRequests",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "row": "Invalid handoff",
+      "status": "passed-local-controls",
+      "evidence": [
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"none\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"expired\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"ended\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"foreign\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"missing\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-eventstore-tests.xml",
+          "test": "Hexalith.EventStore.Testing.Tests.TestEnvironmentDescriptorReaderTests.AttachedFixturesRequireOriginalActiveHold(fault: \\\"snapshot\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"none\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"foreign-owner\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"sibling-run\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"owner-role\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"hold-owner\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"hold-environment\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"owner-descriptor\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"owner-descriptor-role\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-builds-tests.xml",
+          "test": "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests.AttachedRoutingSnapshotsRequireExactOwnerAsync(fault: \\\"owner-descriptor-owner\\\")",
+          "result": "Pass"
+        },
+        {
+          "output": "review-pass-2-final-parties-controller-tests.txt",
+          "test": "test_only_exact_expired_ended_unknown_refusals_with_unchanged_ledger_pass",
+          "result": "Pass (final suite exit 0, 181/181)"
+        },
+        {
+          "output": "review-pass-2-final-parties-controller-tests.txt",
+          "test": "test_real_begin_writes_exact_control_and_binds_every_ready_marker_field",
+          "result": "Pass (final suite exit 0, 181/181)"
+        }
+      ]
+    }
+  ],
+  "modifiedInputsVerified": 15,
+  "modifiedInputMismatches": [],
+  "originalBaselineDiff": "/tmp/bmad-2-11-audit-93vgk7vc/original-baselines.diff",
+  "correctionDiff": "/tmp/bmad-2-11-audit-93vgk7vc/corrections.diff",
+  "originalBaselineDiffSha256": "1f1235b2ba7e7ff5690a8f11f6154fbd4edd8189f186940c3d18ce5f0afd71e4",
+  "note": "The original baselines include intervening incoming releases and evidence. The correction review compares all four repositories with the canonical input HEADs saved for this resumed run. No actual Git index was changed; private indexes captured untracked files.",
+  "corrections": [
+    {
+      "group": "G1",
+      "test": "test_large_writer_created_metadata_is_readable_and_recoverable_without_relaxing_artifacts",
+      "output": "review-pass-2-final-parties-controller-tests.txt",
+      "result": "Pass"
+    },
+    {
+      "group": "G2",
+      "test": "test_cancellation_during_process_construction_or_birth_capture_is_forwarded_once_after_binding",
+      "output": "review-pass-2-final-parties-controller-tests.txt",
+      "result": "Pass"
+    },
+    {
+      "group": "G3",
+      "test": "AttachedExpiryCancelsFixtureRequests",
+      "output": "review-pass-2-final-eventstore-tests.xml",
+      "result": "Pass"
+    }
+  ],
+  "localPassingCases": 456
+}

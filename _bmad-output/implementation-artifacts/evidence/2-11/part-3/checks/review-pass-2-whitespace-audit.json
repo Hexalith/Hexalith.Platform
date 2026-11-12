@@ -1,0 +1,61 @@
+[
+  {
+    "repository": "platform",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs",
+      "tests/Hexalith.Platform.Composition.Tests/PlatformRunIsolationTests.cs",
+      "_bmad-output/implementation-artifacts/evidence/2-11/part-3/README.md"
+    ],
+    "exitCode": 0,
+    "output": ""
+  },
+  {
+    "repository": "builds",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "README.md",
+      "test/Hexalith.Builds.Module.Tests/AttachedSuiteExecutionTests.cs",
+      "test/Hexalith.Builds.Module.Tests/NativeTestExecutorTests.cs",
+      "test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs"
+    ],
+    "exitCode": 0,
+    "output": ""
+  },
+  {
+    "repository": "eventstore",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "docs/reference/nuget-packages.md",
+      "tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs"
+    ],
+    "exitCode": 0,
+    "output": ""
+  },
+  {
+    "repository": "parties",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      ".github/workflows/ci-lifecycle-qualification.yml",
+      "docs/ci-lifecycle-qualification.md",
+      "scripts/qualify-disposable-ci.py",
+      "tests/ci-lifecycle/test_attached_lifecycle.py",
+      "tests/ci-lifecycle/test_review_fixes.py",
+      "tests/ci-lifecycle/test_review_pass2.py"
+    ],
+    "exitCode": 0,
+    "output": ""
+  }
+]

@@ -1,0 +1,12 @@
+command=["dotnet", "test/Hexalith.Builds.Module.Tests/bin/Debug/net11.0/Hexalith.Builds.Module.Tests.dll", "-class", "Hexalith.Builds.ModuleTool.Tests.CompositionResourceClaimStoreTests", "-class", "Hexalith.Builds.ModuleTool.Tests.NativeTestExecutorTests", "-class", "Hexalith.Builds.ModuleTool.Tests.StartupReadinessTests", "-class", "Hexalith.Builds.ModuleTool.Tests.AttachedSuiteExecutionTests", "-result-xml", "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-11/part-3/checks/review-pass-2-final-builds-tests.xml"]
+cwd=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds
+
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Builds.Module.Tests
+  Discovered:  Hexalith.Builds.Module.Tests
+  Starting:    Hexalith.Builds.Module.Tests
+  Finished:    Hexalith.Builds.Module.Tests (ID = '77c9cda9141ed6329cfad383d6fc77fce513527c3038c1ca4941236d3d6eb635')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Builds.Module.Tests  Total: 176, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 98.282s
+
+exitCode=0
