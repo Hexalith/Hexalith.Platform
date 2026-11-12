@@ -432,8 +432,18 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
     target = [record for record in records if record.get("role") == "platform-target"]
     if retained_preflight:
-        if target or len(records) != 1 or retained_assembly is None or records[0].get("role") != "retained-rollback":
-            raise ValueError("Retained startup preflight requires exactly one separately bound historical host; it cannot supply parity or rollback proof")
+        # The current native protocol starts the same archive before and after its
+        # complete owned-fleet restore. Its test asserts sequence and successor epoch;
+        # these records independently bind both starts, without supplying matrix proof.
+        if (len(records) != 2 or retained_assembly is None
+                or any(record.get("role") != "retained-rollback" for record in records)):
+            raise ValueError("Retained startup preflight requires exactly two separately bound historical starts; it cannot supply parity or rollback proof")
+        if managed_inventory is None:
+            raise ValueError("Retained startup preflight requires the measured managed runtime inventory")
+        for key in ("schedulerVolume", "directory"):
+            if (not isinstance(records[0].get(key), str) or not records[0][key]
+                    or records[0][key] != records[1].get(key)):
+                raise ValueError("Retained startup preflight did not restart the same owned backend and source directory")
     else:
         if not target:
             raise ValueError("No actual Platform starts were recorded")
@@ -498,6 +508,14 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
                 raise ValueError("Rollback did not select the retained Works host")
         else:
             raise ValueError("An unknown host role cannot qualify parity")
+    if retained_preflight:
+        managed = [record["managedRuntime"] for record in records]
+        expected_resources = {"eventstore", "eventstore-admin", "eventstore-operations", "works"}
+        if (managed[0]["host"]["pid"] != managed[1]["host"]["pid"]
+                or any({item["resource"] for item in value["resources"]} != expected_resources for value in managed)
+                or {item["pid"] for item in managed[0]["resources"]}
+                & {item["pid"] for item in managed[1]["resources"]}):
+            raise ValueError("Retained startup preflight requires two distinct complete resource fleets in one test host")
     return records
 
 
