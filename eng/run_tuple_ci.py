@@ -69,6 +69,14 @@ def require_retained_collector_binding(binding, raw):
         raise ValueError("The retained collector requires the exact authenticated signed4.47 tuple.")
 
 
+def require_collector_source(root, source):
+    """A receipt cannot substitute for the actual unchanged source and direct checkouts."""
+    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+    status = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=normal"], cwd=root, text=True)
+    if revision != source or status.strip():
+        raise ValueError("Collector source identity or clean recorded owner checkouts changed.")
+
+
 def tuple_runtime_context(binding, suite, profile_sha256):
     """Select exact historical regression targets without changing current NET11 authority."""
     from prepare_tuple_sources import FROZEN
@@ -375,6 +383,7 @@ def main():
             run("prepare-historical-reader", [sys.executable, "-B", "eng/prepare_tuple_sources.py", "reader-workspace",
                 "--source", revision, "--workspace", str(isolated), "--output", str(receipt_path)])
             reader_receipt = json.loads(receipt_path.read_bytes())
+            require_collector_source(isolated, reader_receipt["packageReaderSourceRevision"])
             retained_binding = load_binding(isolated / "eng/builds-tuple.json")
             committed_binding = subprocess.check_output(["git", "show", "HEAD:eng/builds-tuple.json"], cwd=isolated)
             require_retained_collector_binding(retained_binding, committed_binding)
@@ -460,6 +469,7 @@ def main():
             if verification_failure is not None and not test_failure:
                 raise verification_failure
         for collector in collectors.values():
+            require_collector_source(Path(collector["root"]), collector["source"])
             selected_tool = Path(collector["toolRoot"])
             for filename, source in [("Hexalith.Builds.Tooling.dll", selected_tool / "Hexalith.Builds.Tooling.dll"),
                     ("Hexalith.Builds.Module.EventStoreHost.dll", selected_tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:

@@ -3,11 +3,13 @@ import copy
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 from legacy_tuple_source import git
 from prepare_tuple_sources import FROZEN
 from run_tuple_ci import (CURRENT_COLLECTOR_SELECTORS, collector_for, require_collector_execution,
-                          require_collector_framework, require_retained_collector_binding, validate_profile)
+                          require_collector_framework, require_collector_source,
+                          require_retained_collector_binding, validate_profile)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -75,6 +77,18 @@ class TupleCollectorTests(unittest.TestCase):
                             {**exact, 'environment': ''}, {**exact, 'target-framework': ''}):
                 with self.subTest(framework=framework, changed=changed), self.assertRaises(ValueError):
                     require_collector_execution(changed, framework)
+
+    def test_a_moved_source_or_dirty_direct_owner_cannot_reuse_the_collector_receipt(self):
+        source = 'a' * 40
+        with patch('run_tuple_ci.subprocess.check_output', side_effect=[source + '\n', '']) as git:
+            require_collector_source(ROOT, source)
+            self.assertTrue(all(call.kwargs['cwd'] == ROOT for call in git.call_args_list))
+        for revision, status in (('b' * 40, ''), (source, ' M Directory.Build.props\n'),
+                                 (source, ' M references/Hexalith.Builds\n'), (source, '?? unexpected.cs\n')):
+            with self.subTest(revision=revision, status=status), \
+                    patch('run_tuple_ci.subprocess.check_output', side_effect=[revision + '\n', status]), \
+                    self.assertRaisesRegex(ValueError, 'source identity or clean recorded owner'):
+                require_collector_source(ROOT, source)
 
 
 if __name__ == '__main__':
