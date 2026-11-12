@@ -2,7 +2,7 @@
 title: '2.11 (part 3) Complete the Parties lifecycle caller'
 type: 'feature'
 created: '2026-11-11'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '34dfbcb9a584fd0c3a71d449c75e8e290b9c47bb'
 builds_baseline_commit: 'b1681870d0b08a5fe103133214c67fda7a449eb1'
 eventstore_baseline_commit: 'b882c1005050aaebfa70618b5a72c1c8be452281'
@@ -69,6 +69,119 @@ Dependency order:
 **Acceptance Criteria:**
 - Given supported prerequisites, when a case runs, then its real mechanism and contract records are verified; missing evidence fails.
 - Given failure/interruption, when finalization runs, then all issued owners receive exact cleanup and unrelated resources survive.
+
+### Review Findings
+
+Code review pass 2 (2026-11-12) of the delivered commits: Builds `b1681870..bfda07ee`, EventStore `b882c100..04e56e1c`, Parties `fc9ea3f3..e35b8c1e` (33 files, 2,579 diff lines). Platform evidence files were left out. All four layers ran with no failures: blind-hunter, edge-case-hunter, verification-gap and acceptance-auditor. They raised 53 findings. Triage produced 2 decision-needed entries (both resolved to patch), 19 patch, 2 defer, and 12 rejected findings. Line anchors refer to the delivered commits.
+
+- [ ] [Review][Patch] `--eventstore-port` is claimed but never bound in Platform v2 compositions, so `collision` proves only a claim conflict [src/Hexalith.Platform.Composition/PlatformAppModel.cs:309] (high; verification-gap+edge-case-hunter; decision resolved 2026-11-12: option (a), bind it in v2)
+  - In v2, `RunTopology.ComposePlatform` hands the plan to `PlatformAppModel.ComposeRun`. That model registers eventstore with `WithHttpEndpoint(name: "http")` and no port (`src/Hexalith.Platform.Composition/PlatformAppModel.cs:309`). Nothing in v2 reads `plan.Ports.EventStoreHttp`; only the legacy `RunTopology.ConfigureEventStore` path binds it (`RunTopology.cs:110`).
+  - Parties uses a v2 manifest. An owner started with `--eventstore-port N` therefore claims and probes N, while EventStore listens on a port Aspire assigns.
+  - The challenger's `HXR031` comes from the runner claim store on an unbound plan port, not from "the live owner's EventStore endpoint". The Builds README and the Parties document both claim the live endpoint.
+  - `ExplicitPortCommandForwardsAndNamesManagedOwnerAsync` only covers a v1 manifest with a fake AppHost.
+  - Frozen matrix row: "Challenger requests a live owner's endpoint port"; Never: "replace collisions with metadata locks".
+  - Options:
+    - (a) Bind eventstore HTTP to `plan.Ports.EventStoreHttp` in `PlatformAppModel` when a run plan exists. This is a Platform model change, so it needs a Platform release and the Parties model pin.
+    - (b) Refuse `--eventstore-port` for v2 with `HXC002` and choose another genuine resource that v2 binds from the plan.
+    - (c) Accept the claim-level conflict and correct the README and docs.
+- [ ] [Review][Patch] The ten-case `matrix` cannot finish inside the unchanged 45-minute qualification job [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:55] (high; blind-hunter+acceptance-auditor+edge-case-hunter; decision resolved 2026-11-12: option (a), raise only this job's `timeout-minutes` to 90. The user confirmed that the frozen "Never raise budgets" covers lifecycle and policy deadlines, not CI wall-clock time)
+  - `timeout-minutes: 45` is unchanged (`ci-lifecycle-qualification.yml:55`).
+  - Measured in hosted run 42727219072: the whole job took 15.3 minutes, and the four-case matrix step 827 s. Owner startups took 165–230 s.
+  - The six added cases cost roughly 40 more minutes:
+    - `startup-timeout` waits the 600 s default deadline plus up to 95 s;
+    - `collision` and `hold-expiry` each start two owners;
+    - every attached case starts its own owner.
+  - So `fullMatrixPassed` can never become true. The `always()` finalizer shares the same budget.
+  - Options:
+    - (a) Raise the job timeout. This is a CI wall-clock change, not a lifecycle deadline, but it touches the frozen "Never raise budgets".
+    - (b) Split the matrix across jobs and aggregate the campaign.
+    - (c) Treat the per-case dispatches as the qualification route and re-scope `matrix`.
+- [ ] [Review][Patch] `collision` and `hold-expiry` start their peer only after the owner suite's 240 s bound has begun [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1394] (high; edge-case-hunter)
+  - `LifecycleQualificationTests` cancels itself 240 s after its test starts.
+  - `self.start(owner)` returns once the owner is executing. Only then does `self.start('collision-peer')` or `self.start('expiry-peer')` (`:1433`) run a complete peer startup, which took 165–230 s in hosted CI.
+  - `hold-expiry` then adds the attached launch, the 120 s hold and two lineage probes before `pass`, so the owner suite's bound expires first and the case fails deterministically. `collision` leaves roughly 0–55 s for the challenger.
+  - Fix: `begin()` both owners and then `ready()` both, as `retry_with_peer` already does (`:1529`). After the fix, `hold-expiry` stays tight at about 160–200 s of about 210 s; record that margin.
+- [ ] [Review][Patch] `invalid_lineage` accepts any `HXR033`/`HXR036` refusal [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1490] (medium; blind-hunter+edge-case-hunter)
+  - Builds emits a specific reason for each refusal:
+    - `HXR036 attachment-ended` / `attachment-expired` from `Retry`;
+    - `HXR036 unknown-attachment-request`;
+    - `HXR033` for unrelated preconditions such as `owner-not-live` and `attacher-context-unverifiable` (`CompositionAttachAdmission.cs:313-331`, `:241`, `:284`).
+  - An unrelated refusal therefore passes the hold-expiry and invalid-handoff lineage proofs.
+  - Fix: require `HXR036` with the exact expected reason for each presented lineage: expired, ended or unknown.
+- [ ] [Review][Patch] The attached CLI's own exit code and public diagnostics are never verified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1456] (medium; acceptance-auditor)
+  - `attached_case` waits on the attached child but never inspects its return code or diagnostics.
+  - `finalize_attached` (`:1376`) checks only the public `runId`.
+  - Owners pass through `verify_original_owner_command`. An attached command that reports a cleanup or evidence diagnostic alongside a valid result passes unnoticed.
+  - Fix: assert the attached exit code and diagnostic categories for each expected cause, using the Builds attached result mapping.
+- [ ] [Review][Patch] Builds README: the new section sits under License and earlier passages now contradict it [references/Hexalith.Builds/README.md:1399] (medium; blind-hunter)
+  - `:641-643` still says "the Parties caller is not adopted, owners requiring routing-catalog observations fail an attached run as `startup-failure`".
+  - `:752-756` says claim conflicts always retry up to 64 attempts; an explicit port never retries.
+  - The `--attach-to` incompatibility list at `:635` omits `--eventstore-port`.
+  - Fix: edit these in place and move the section. The explicit-port wording depends on the first decision above.
+- [ ] [Review][Patch] `AttachedExpiryCancelsFixtureRequests` relies on a 1-second hold measured from the wall clock [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:59] (medium; blind-hunter+verification-gap+edge-case-hunter)
+  - The hold starts before the file write, schema evaluation and client creation.
+  - On a loaded agent the constructor throws `HXT108`, or `CreateHttpClient` throws `OperationCanceledException`, so the test is flaky.
+  - Fix: use a multi-second hold.
+- [ ] [Review][Patch] The explicit-port parse test cannot tell a refusal from an accepted port [references/Hexalith.Builds/test/Hexalith.Builds.Module.Tests/StartupReadinessTests.cs:37] (medium; verification-gap)
+  - The test uses the manifest `unused`, so an accepted port also ends in `HXM005` with exit 1.
+  - Fix: assert `HXC001` for each case.
+- [ ] [Review][Patch] The explicit-port guards with `--attach-to`, `Down` and existing runs are untested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Module.Cli/ModuleCommandApplication.cs:450] (medium; verification-gap+blind-hunter+acceptance-auditor)
+  - Deleting both the CLI guard and the `ModuleCommandExecutionService.cs:119` guard leaves every test passing.
+  - Fix: add an attached `--eventstore-port` refusal to `RefusedRequestAdmitsNothingAndStartsNoChildAsync`, plus service-level cases.
+  - Not required here: the CLI refuses this case with `HXC001`, while other attach-incompatible options use `HXC002`.
+- [ ] [Review][Patch] The attached candidate-policy refusal has no test [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:400] (medium; verification-gap+blind-hunter)
+  - This is now the only guard keeping attached suites out of candidate-gated owners. Removing `CandidatePolicy is not null` leaves every test passing.
+- [ ] [Review][Patch] Only the foreign-`ownerRunId` row of the routing-snapshot identity checks is tested [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/SelectedRoutingCatalogSnapshot.cs:83] (medium; verification-gap+blind-hunter)
+  - Add rows for a sibling `runId`, the owner role on an attached identity, and a hold with a foreign owner or environment. Cover the owner-descriptor `role`/`ownerRunId` requirement too.
+- [ ] [Review][Patch] Controller launch arguments for attached and collision launches are unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:441] (medium; verification-gap+blind-hunter)
+  - Mutation check: dropping `--eventstore-port`, `--attach-to`/`--hold-seconds` or the journaled `eventStorePort` leaves all 167 tests passing.
+  - Fix: add `launch_owner` argument tests with `gated_exec` patched.
+- [ ] [Review][Patch] Failure-then-cancellation is only tested at helper level [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1806] (medium; verification-gap)
+  - Mutating the `start-cancellation --phase failure` capture, the `wait-cancellation` tolerance or the failure classification in `finalize_cancellation` leaves all tests passing.
+  - Fix: add tests at `main()` level.
+- [ ] [Review][Patch] The attached control/readiness handshake with the C# fixture is unverified [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1271] (medium; verification-gap)
+  - `attached_control` is always mocked. The success path of `begin_attached` (`:1222`) and its marker checks are untested.
+  - Mutation check: trimming the payload or deleting the marker binding leaves all tests passing.
+  - Fix: assert the exact control keys, and that a mismatched marker is rejected. The C# compile lane waits for the Testing package release.
+- [ ] [Review][Patch] The `invalid_lineage`/`invalid_handoff` refusal checks are always mocked [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1479] (medium; verification-gap+acceptance-auditor)
+  - Replacing the whole `require` with `pass` leaves all tests passing.
+  - Fix: patch `tool` to return success, an admission, the wrong rule or a changed ledger, and expect each to raise.
+- [ ] [Review][Patch] The C# owner-label list must match Python `OWNER_LABELS`, but nothing checks it [references/Hexalith.Parties/tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs:119] (medium; verification-gap+blind-hunter)
+  - Drift breaks every later owner's native-diagnostic check in the hosted matrix.
+  - Fix: add a test that ties the two sets together.
+- [ ] [Review][Patch] Both lineage probes overwrite one retained evidence file [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1486] (low; acceptance-auditor+edge-case-hunter)
+  - Both use the tag `invalid-attached-lineage`, and `tool()` writes `<label>-<tag>.json`.
+  - Fix: use a distinct tag for each lineage.
+- [ ] [Review][Patch] The EventStore attached-hold theory does not assert which rule refused each case [references/Hexalith.EventStore/tests/Hexalith.EventStore.Testing.Tests/TestEnvironmentDescriptorReaderTests.cs:21] (low; blind-hunter)
+  - The `foreign`, `snapshot` and `missing` rows are refused earlier by reader binding validation, so the new constructor checks are never reached.
+  - Fix: assert the expected rule for each row.
+- [ ] [Review][Patch] The EventStore docs paragraph sits after the Next/Related footer and has no heading [references/Hexalith.EventStore/docs/reference/nuget-packages.md:672] (low; blind-hunter)
+  - Move it into the `Hexalith.EventStore.Testing` section and update the "qualifies no attached execution" sentence there (`:541-543`).
+- [ ] [Review][Patch] Two workflow step names are stale [references/Hexalith.Parties/.github/workflows/ci-lifecycle-qualification.yml:186] (low; blind-hunter)
+  - "...passing failing partial-startup and exact retry scenarios" now runs ten cases; "Build the explicit declared lifecycle suites" builds one project.
+  - Rename both, together with the name lookups in `test_review_fixes.py`.
+- [ ] [Review][Patch] The new 8 MiB retained-artifact cap also applies to the journal and `observations.json` [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:315] (low; blind-hunter)
+  - `write()` now goes through `write_retained_bytes`. Observed journals are 60–130 KB, so this is latent.
+  - Fix: apply the cap only to retained artifact copies.
+- [x] [Review][Defer] The owner-cancellation ordering proof may lose its polling race [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1442] — deferred: unverified, high if confirmed (blind-hunter+edge-case-hunter)
+  - Builds calls `StopSessionAsync` immediately after the drain (`CompositionEngine.cs:1572-1585`).
+  - The controller re-derives the running inventory with `docker ps`, a per-container `docker inspect` and `/proc` reads after it sees the result.
+  - To settle it, measure the interval between attached result publication and the first owner process or container change against one poll cycle in a real run. Alternatively, prove the order from timestamps (`terminal.recordedAt` vs container `State.FinishedAt`).
+- [x] [Review][Defer] `cancel-execution` may exhaust the owner suite's 240 s bound before operator cancellation [references/Hexalith.Parties/scripts/qualify-disposable-ci.py:1803] — deferred: unverified, medium if confirmed (edge-case-hunter)
+  - The attached launch now precedes readiness. The 2.10 operator took about 94 s from admission to signal, so the estimate fits, but only narrowly.
+  - To settle it, measure elapsed owner-suite time at signal in the first hosted run.
+
+**Rejected:**
+- `false` — The new project is missing from `test.ps1`, `DocumentationFitnessTests` and `tests/README.md` (blind-hunter): later Parties commits on `main` list it in all three.
+- `false` — Raw string comparison of the marker's `expiresAtUtc` (blind-hunter): both the ledger (`CompositionDocumentStore.SerializerOptions`, with no `DateTimeOffset` converter) and the marker use System.Text.Json's default `DateTimeOffset` writer for the same UTC instant. The 2.10 evidence shows `…9096605+00:00`.
+- `false` — The hosted `invalid-handoff` never presents foreign or mismatched snapshots (acceptance-auditor): the real runner cannot issue them without forging, which is forbidden. The SDK reader and constructor refusals cover them, as the docs state.
+- `false` — `cancel-execution` cannot run at current pins (acceptance-auditor): this is the documented dependency on compatible releases that every new case shares, and Story 2.10 reruns after those releases.
+- `false` — `AttributeError` escapes the finalizer on a non-dict hold end or diagnostic (edge-case-hunter): `TestResultWriter` validates v1 before atomic publication, so that input is unreachable and would fail loudly.
+- `low` — A `SocketException` maps to generic `HXR020`, and the probe checks IPv4 only (blind-hunter, edge-case-hunter): this affects only an occupied explicit port held by a non-runner process, and the fix needs a new mapping.
+- `low` — An explicit port inside the ephemeral range can be taken before bind (edge-case-hunter): this is unlikely, and the fix adds a guard.
+- `low` — The attached routing read re-reads the owner's live files instead of its held capture (blind-hunter, edge-case-hunter): this needs an owner child that mutates its own platform-components; the attached bytes are still fully validated; the fix adds comparison logic.
+- `low` — The finalizer never signals a live admitted attached CLI after a refused owner drain (blind-hunter): this is the rare `HXR037` path, it fails loudly, and the fix adds a branch.
+- `low` — Invalid-lineage probes bypass the attached journal and launch gate (acceptance-auditor): this matters only if the expected refusal regresses, in which case the unchanged-ledger check fails. Journaling the probes adds complexity.
 
 ## Implementation Notes
 

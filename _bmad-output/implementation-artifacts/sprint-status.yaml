@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -80,7 +80,9 @@ development_status:
   # 2026-11-10: part 2 review pass 3 applied all 5 patches in the Builds worktree (uncommitted); 339/339 affected C# and 70/70 Python passed; part 3 remains open.
   # 2026-11-11: review pass 3 delivered as Builds 7461fb05 on feat/2-11-lifecycle-reporting (pushed); source hashes match verification; part 3 remains open.
   # 2026-11-11: part 3 source implementation and independent review complete; 427 final controls pass. Compatible releases and actual Story 2.10 qualification remain separate.
-  2-11-supervise-attached-runs-and-report-the-missing-lifecycle-pr: review
+  # 2026-11-12: part 3 code review pass 2 (delivered commits): 2 decisions resolved (bind v2 EventStore HTTP to the plan port; qualification job timeout 90 min);
+  #   21 patches left as action items in the part 3 spec, 2 deferred; 12 rejected.
+  2-11-supervise-attached-runs-and-report-the-missing-lifecycle-pr: in-progress
   epic-2-retrospective: optional
 
   epic-3: in-progress

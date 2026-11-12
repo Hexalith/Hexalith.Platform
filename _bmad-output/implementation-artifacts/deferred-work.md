@@ -1970,3 +1970,13 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: Consider enrolling the existing direct-Compose unqualified-catalog refusal test in the mandatory current tuple profile.
   evidence: Supplemental delivery review SD-BH-3 confirmed UnqualifiedPackageCatalogCompositionRefusesBeforeContainersOrSidecarsAreAdded was already unselected before this change. Existing selected entry-point and image-refusal controls remain; adding this distinct negative path would improve prior coverage.
+
+## Deferred from: code review of spec-2-11-complete-the-parties-lifecycle-caller.md (2026-11-12)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-11-complete-the-parties-lifecycle-caller.md`
+  summary: The owner-cancellation ordering proof may lose its polling race. After seeing the attached result, the controller re-derives the owner's running inventory with docker ps, docker inspect and /proc. Builds starts StopSessionAsync immediately after the drain. Unverified; high if confirmed.
+  evidence: Parties `e35b8c1e` qualify-disposable-ci.py:1442-1452 and running_owner_inventory; Builds `bfda07ee` CompositionEngine.cs:1572-1585. To settle it, measure the interval from attached result publication to the first owner process or container change against one poll cycle in a real hosted run, or prove the order from terminal.recordedAt vs container State.FinishedAt.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-11-complete-the-parties-lifecycle-caller.md`
+  summary: cancel-execution may exhaust the owner suite's 240 s bound before operator cancellation, now that an attached launch precedes readiness. Unverified; medium if confirmed.
+  evidence: Parties `e35b8c1e` qualify-disposable-ci.py:1800-1805; LifecycleQualificationTests bound.CancelAfter(240 s). In the 2.10 hosted cancel-execution run the operator took about 94 s from admission to signal. To settle it, measure elapsed owner-suite time at signal in the first hosted run.
