@@ -193,6 +193,7 @@ def main():
         if not args.audit_only:
             runtime_context = tuple_runtime_context(binding, args.suite, hashlib.sha256((ROOT / profile_path).read_bytes()).hexdigest())
             result["runtimeBuildContext"] = runtime_context
+            run("runtime-context-controls", [sys.executable, "-B", "eng/test_tuple_runtime_context.py"])
         version, source = binding["publication"]["version"], binding["producer"]["sourceRevision"]
         archive_sha256 = binding["publication"]["archiveSha256"]
         validate_owner_pins(binding, ROOT)
