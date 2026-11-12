@@ -1,0 +1,118 @@
+{
+  "source": "https://www.githubstatus.com/api/v2/incidents.json",
+  "selectedIncidents": [
+    {
+      "id": "dvy0t3mvh1lg",
+      "name": "Impact across multiple GitHub products including Actions, Pages, and Copilot products.",
+      "impact": "critical",
+      "createdAt": "2026-11-11T20:48:12.265Z",
+      "startedAt": "2026-11-11T20:48:12.260Z",
+      "resolvedAt": "2026-11-11T21:21:39.473Z",
+      "shortlink": "https://stspg.io/jdjlq5zjyl48",
+      "components": [
+        "Webhooks",
+        "Actions",
+        "Pages",
+        "Copilot"
+      ],
+      "updates": [
+        {
+          "createdAt": "2026-11-11T20:48:12.349Z",
+          "status": "investigating",
+          "body": "We are investigating reports of degraded availability for Pages"
+        },
+        {
+          "createdAt": "2026-11-11T20:48:25.576Z",
+          "status": "investigating",
+          "body": "Actions is experiencing degraded availability. We are continuing to investigate."
+        },
+        {
+          "createdAt": "2026-11-11T20:48:46.733Z",
+          "status": "investigating",
+          "body": "Webhooks is experiencing degraded performance. We are continuing to investigate."
+        },
+        {
+          "createdAt": "2026-11-11T20:56:26.453Z",
+          "status": "investigating",
+          "body": "Pages is experiencing degraded availability. We are continuing to investigate."
+        },
+        {
+          "createdAt": "2026-11-11T20:56:49.378Z",
+          "status": "investigating",
+          "body": "We\u2019re investigating issues impacting multiple GitHub products including Actions, Pages, and Copilot products."
+        },
+        {
+          "createdAt": "2026-11-11T20:57:40.222Z",
+          "status": "investigating",
+          "body": "Copilot is experiencing degraded availability. We are continuing to investigate."
+        },
+        {
+          "createdAt": "2026-11-11T21:07:24.649Z",
+          "status": "monitoring",
+          "body": "The degradation affecting Actions, Copilot, Pages and Webhooks has been mitigated. We are monitoring to ensure stability."
+        },
+        {
+          "createdAt": "2026-11-11T21:07:26.447Z",
+          "status": "monitoring",
+          "body": "We\u2019re seeing recovery across all services and continuing to monitor. The backlog of Actions jobs are being processed. We\u2019ll update when we see full recovery."
+        },
+        {
+          "createdAt": "2026-11-11T21:21:32.087Z",
+          "status": "monitoring",
+          "body": "The backlog of Actions jobs has been fully processed. We\u2019re observing full recovery across all impacted services."
+        },
+        {
+          "createdAt": "2026-11-11T21:21:39.473Z",
+          "status": "resolved",
+          "body": "This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
+        }
+      ]
+    },
+    {
+      "id": "1h2wbly1y72t",
+      "name": "Incident with Webhooks",
+      "impact": "minor",
+      "createdAt": "2026-11-11T20:22:20.729Z",
+      "startedAt": "2026-11-11T20:22:20.718Z",
+      "resolvedAt": "2026-11-11T20:26:23.897Z",
+      "shortlink": "https://stspg.io/r0jrtx03yvll",
+      "components": [
+        "Webhooks"
+      ],
+      "updates": [
+        {
+          "createdAt": "2026-11-11T20:22:20.861Z",
+          "status": "investigating",
+          "body": "We are investigating reports of degraded performance for Webhooks"
+        },
+        {
+          "createdAt": "2026-11-11T20:26:20.931Z",
+          "status": "monitoring",
+          "body": "Webhooks is operating normally."
+        },
+        {
+          "createdAt": "2026-11-11T20:26:23.897Z",
+          "status": "resolved",
+          "body": "This incident has been resolved. Thank you for your patience and understanding as we addressed this issue. A detailed root cause analysis will be shared as soon as it is available."
+        }
+      ]
+    }
+  ],
+  "query": {
+    "label": "githubstatus-incidents",
+    "observedUtc": "2026-11-12T23:50:25.874602+00:00",
+    "argv": [
+      "curl",
+      "-sS",
+      "-A",
+      "status-check",
+      "https://www.githubstatus.com/api/v2/incidents.json"
+    ],
+    "method": "GET",
+    "exitCode": 0,
+    "listedRange": [
+      "2026-09-16T07:20:59.980Z",
+      "2026-11-12T19:36:45.563Z"
+    ]
+  }
+}

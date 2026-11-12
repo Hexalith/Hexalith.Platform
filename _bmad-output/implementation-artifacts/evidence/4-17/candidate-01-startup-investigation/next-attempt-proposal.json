@@ -1,0 +1,132 @@
+{
+  "observedUtc": "2026-11-12T23:50:37Z",
+  "investigationBaselinePlatformRevision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+  "governs": "this JSON is the authoritative proposal; the report summarizes it",
+  "status": "proposed-not-authorized",
+  "attemptsProposed": 1,
+  "automaticRetryPermitted": false,
+  "source": {
+    "repository": "Hexalith/Hexalith.Platform",
+    "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "workflowBlob": "9130ed4243e3961326e984e8fd22e49b70695aa4",
+    "candidateSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+    "eventStoreGitlink": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "profile": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+    "profileSha256": "1c1da59176f78b9b60a87ba85b6076b8d215ff912840ecb52bdb7432497c587f",
+    "brokers": [
+      "rabbitmq",
+      "kafka"
+    ],
+    "expectedVectors": 24,
+    "newCommitsPermitted": false
+  },
+  "dispatchRef": {
+    "recommended": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+    "why": "ruleset 24657570 makes every tag non-updatable and non-deletable with no bypass (observed 2026-11-12), and workflow-trigger-survey.json shows no workflow triggers on tags at 94001fad or at the baseline; the ref cannot disappear while the run is queued or before assessment, as long as that ruleset stays active",
+    "creation": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/Hexalith/Hexalith.Platform/git/refs",
+      "-f",
+      "ref=refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+      "-f",
+      "sha=94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+    ],
+    "creationAuthority": "ruleset 24657217 restricts non-v* tag creation to the repository owner's bypass, so the owner's gh login is required",
+    "irreversible": "the tag is permanent and public; it cannot be moved or deleted",
+    "verification": [
+      "git",
+      "ls-remote",
+      "origin",
+      "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad"
+    ],
+    "alternatives": [
+      {
+        "ref": "a re-created branch chore/broker-candidate-01-hosted-94001fad-attempt-2",
+        "consequence": "reversible, but any /pushall-style prune of merged branches can delete it while queued, which recreates the unresolved confounder"
+      },
+      {
+        "ref": "a branch protected by a new deletion ruleset",
+        "consequence": "reversible, but needs a repository-settings change that this slice does not authorize"
+      }
+    ]
+  },
+  "inputs": "none; the workflow has workflow_dispatch without inputs",
+  "dispatch": [
+    "gh",
+    "workflow",
+    "run",
+    "broker-candidate-qualification.yml",
+    "--repo",
+    "Hexalith/Hexalith.Platform",
+    "--ref",
+    "qualification/broker-candidate-01/attempt-2-94001fad"
+  ],
+  "goNoGoBeforeDispatch": [
+    "explicit owner authorization for the tag creation and for exactly one dispatch, including the queue-timeout handling below",
+    "https://www.githubstatus.com/api/v2/summary.json reports the Actions component operational and no unresolved incident naming Actions",
+    "immediately before creating the tag, rulesets 24657570 (active, rules update and deletion, no bypass actors) and 24657217 (active, creation rule) match repository-policy.json",
+    "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad does not already exist on origin",
+    "workflow 415133929 is active and still lists exactly one run (43097161643), and no queued or in-progress run of it exists",
+    "after creation the tag resolves to 94001fad925fdf7fa03a90b507b8f8e19074f9e3 on origin, and git show of the workflow, candidate and gitlink at that revision reproduces the identities above",
+    "no workflow at the dispatched revision triggers on tags (rerun the workflow-trigger-survey.json check)"
+  ],
+  "workerRequirements": {
+    "runner": "standard GitHub-hosted runs-on ubuntu-24.04; no self-hosted or larger runner",
+    "guardedEnvironment": [
+      "RUNNER_ENVIRONMENT=github-hosted",
+      "RUNNER_OS/RUNNER_ARCH=Linux/X64",
+      "ImageOS=ubuntu24 with non-empty ImageVersion",
+      "uname Linux/x86_64",
+      "lsb_release Ubuntu/24.04",
+      "python3 >= 3.11",
+      "openssl available"
+    ],
+    "docker": "local daemon at /var/run/docker.sock reporting linux/x86_64 or linux/amd64; DOCKER_HOST, DOCKER_CONTEXT, DOCKER_TLS_VERIFY and DOCKER_CERT_PATH unset",
+    "egress": [
+      "github.com release downloads for Dapr runtime and CLI v1.19.1",
+      "ghcr.io/dapr images (daprd, operator, injector, sentry, placement, scheduler) by digest",
+      "docker.io/apache/kafka and docker.io/library/rabbitmq by digest",
+      "quay.io/openbao/openbao 2.6.2 by digest"
+    ],
+    "jobTimeoutMinutes": 40,
+    "permissions": "contents: read",
+    "actions": [
+      "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+    ],
+    "artifactRetentionDays": 30
+  },
+  "expectedVerification": [
+    "exactly one new run of workflow 415133929: event workflow_dispatch, head_sha 94001fad925fdf7fa03a90b507b8f8e19074f9e3, head_branch equal to the tag name, run_attempt 1, no rerun",
+    "job candidate-01 allocated on an ubuntu-24.04 GitHub-hosted runner; record job id, runner name and image version",
+    "artifact platform-broker-candidate-01-RUN_ID-1 listed; download to a fresh directory before expiry, inspect archive paths before extraction, record bytes and SHA-256",
+    "outcomes.json observations equal 94001fad.../02a4d3b2.../160000 gitlink/472bae6b...; phases and raw exits recorded per step",
+    "with an isolated clean EventStore at 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213, run validate-dapr-broker-qualification.py in --allow-failures, technical and --require-production-authority modes, each with --platform-config pointing at the original JSON; record argv and exits",
+    "production-authority exit 1 with the exact pinned AD-26/3.19/Kubernetes/restore/4.16 rejection message; any other result is a failure",
+    "24 of 24 vectors observed and assessed per vector; cleanup credit only with a complete cleanup receipt and verified integrity",
+    "the tag still resolves to 94001fad925fdf7fa03a90b507b8f8e19074f9e3 after the terminal status",
+    "rulesets 24657570 and 24657217 are unchanged after the terminal status"
+  ],
+  "stopConditions": [
+    "an Actions incident is open: do not dispatch",
+    "the dispatch command fails: record and stop; no retry",
+    "no job allocated within 30 minutes: apply queueTimeout and stop",
+    "startup_failure or no job allocation recurs while the provider is healthy and the tag is intact: record request IDs, open a GitHub Support case and stop; the result then points at a workflow- or account-side cause"
+  ],
+  "unchangedByAnyOutcome": {
+    "historicalRejectedGuarantees": "REJECTED",
+    "productionEligibility": "FAIL",
+    "selectedBroker": null,
+    "platformStory4_17": "in-progress",
+    "eventStoreStory3_21": "in-progress"
+  },
+  "queueTimeout": {
+    "rule": "if no job is allocated within 30 minutes of run creation, record the run as not-allocated with its run, attempt and job inventories",
+    "cancellation": "cancelling the stuck run is a mutation; the owner authorization must state whether the agent may cancel it, otherwise it is left queued and reported",
+    "attemptAccounting": "a dispatched run consumes the single authorized attempt whether or not a job is allocated; there is no automatic second dispatch",
+    "rationale": "the 43 runs from the 2026-11-11 window never left queued, so waiting without a bound is not a terminal outcome"
+  }
+}

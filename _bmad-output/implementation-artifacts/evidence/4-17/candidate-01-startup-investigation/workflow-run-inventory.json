@@ -1,0 +1,86 @@
+{
+  "workflow": {
+    "id": 415133929,
+    "name": "Platform broker candidate 01 (non-promoting)",
+    "path": ".github/workflows/broker-candidate-qualification.yml",
+    "state": "active",
+    "created_at": "2026-11-11T21:32:47.000+01:00",
+    "updated_at": "2026-11-11T21:32:47.000+01:00"
+  },
+  "workflowRunsTotalCount": 1,
+  "workflowRuns": [
+    {
+      "id": 43097161643,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "startup_failure",
+      "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "created_at": "2026-11-11T20:37:28Z"
+    }
+  ],
+  "repositoryStartupFailureTotalCount": 1,
+  "repositoryStartupFailures": [
+    {
+      "id": 43097161643,
+      "name": "Platform broker candidate 01 (non-promoting)",
+      "created_at": "2026-11-11T20:37:28Z",
+      "head_branch": "chore/broker-candidate-01-hosted-94001fad"
+    }
+  ],
+  "queries": [
+    {
+      "label": "workflow",
+      "observedUtc": "2026-11-12T23:50:06.384743+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/415133929",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF2A:A5CC:2A99E2B:4046003:6AF650AE",
+      "rawBodySha256": "e8119a6164a7ded466e881130829aa5eb080a5f33c481c872b7724cf06660016"
+    },
+    {
+      "label": "workflow-runs",
+      "observedUtc": "2026-11-12T23:50:06.752765+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF28:37AD0B:13D1D4:23101B:6AF650AE",
+      "rawBodySha256": "2808d61dced167e3147cce3524faedefc15bb4b8ce57268c4b65c94512e0e879"
+    },
+    {
+      "label": "repository-startup-failures",
+      "observedUtc": "2026-11-12T23:50:07.141841+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs?status=startup_failure&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?status=startup_failure&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF2E:1E20A:137D00:22BEC3:6AF650AE",
+      "rawBodySha256": "2808d61dced167e3147cce3524faedefc15bb4b8ce57268c4b65c94512e0e879"
+    }
+  ]
+}

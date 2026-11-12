@@ -112,3 +112,13 @@ authorized by this slice. Packet/verifier, cleanup and artifact-delivery assessm
 remain incomplete. Broader diagnosis, exact Kafka causality, broker selection,
 exceptions, staging, hosted Subscription rendering and production acceptance remain
 open. Platform 4.17 and EventStore 3.21 remain **in-progress**.
+
+## Later startup investigation (2026-11-13)
+
+A read-only [startup investigation](story-4-17-broker-candidate-01-startup-investigation.md)
+classifies this attempt's failure as **provider failure** (strongly indicated,
+unconfirmed, mechanism unresolved). It found no workflow defect and changed no code.
+It also found that the dispatch branch above was deleted at `20:39:42Z`, while the
+run was still queued; the deleting process is unidentified. This report's dated
+observations and evidence bytes are unchanged. Any further attempt still needs a new
+owner decision.

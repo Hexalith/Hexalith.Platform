@@ -1,0 +1,31 @@
+{
+  "observedUtc": "2026-11-12T23:50:37Z",
+  "question": "which local process deleted refs/heads/chore/broker-candidate-01-hosted-94001fad at 2026-11-11T20:39:42Z",
+  "sourcesSearched": [
+    "local Claude Code session transcripts for the Platform project and other projects",
+    "local Codex session logs dated 2026-11-11, narrowed to 70 logs modified after 20:39Z, then to 12 logs with events between 20:39:20Z and 20:39:50Z"
+  ],
+  "patterns": [
+    "the dispatch branch name together with --delete, prune, [deleted] or branch_deletion",
+    "git push commands issued between 20:39:20Z and 20:39:50Z"
+  ],
+  "result": "not identified",
+  "observations": [
+    "Hexalith.Platform is a root-declared submodule of 15 local superprojects",
+    "several concurrent agent sessions were synchronizing submodules at 20:39Z; one fast-forwarded its embedded Platform checkout from 94001fad to 488723fd at 20:39:35Z without a recorded deletion",
+    "the 4.17 dispatch session was polling run status and writing receipts at 20:39:43Z; no deletion command appears in its log",
+    "the committed /pushall skill prunes each origin branch whose fetched tip is an ancestor of the pushed default branch; 94001fad is an ancestor of main, so that procedure would have deleted this branch; a no-op default-branch push leaves no repository activity record"
+  ],
+  "contentRetained": "only this summary; no transcript content from other sessions is retained",
+  "limitations": [
+    "some subagent messages in Codex logs are encrypted and cannot be searched",
+    "a deletion from a process without a local log (for example another machine or the web UI) cannot be excluded"
+  ],
+  "remoteLeads": {
+    "source": "dispatch-ref-lifecycle.json deletionLeads",
+    "deleteBranchOnMerge": "true; explains the 20:32:49Z deletion of the PR #40 head branch, not the dispatch branch, which never had a pull request",
+    "pullRequestsWithDispatchBranchAsHead": 0,
+    "orgAuditLog": "HTTP 404 for the organization audit-log API; not available to this account or plan",
+    "accountSecurityLog": "not available through the REST API; not consulted"
+  }
+}

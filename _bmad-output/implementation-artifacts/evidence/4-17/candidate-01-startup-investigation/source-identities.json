@@ -1,0 +1,52 @@
+{
+  "observedUtc": "2026-11-12T23:50:37Z",
+  "investigationBaselinePlatformRevision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+  "originalAttempt": {
+    "runId": 43097161643,
+    "runAttempt": 1,
+    "workflowId": 415133929,
+    "actualExecutionRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "actualDispatchRef": "refs/heads/chore/broker-candidate-01-hosted-94001fad",
+    "dispatchRefCurrentlyExists": false,
+    "githubSupportRequestId": "4ed78a69-de10-11f1-8d56-5705d8f2f5ff"
+  },
+  "experimentBytesAtExecutionRevision": {
+    "workflow": {
+      "path": ".github/workflows/broker-candidate-qualification.yml",
+      "gitBlob": "9130ed4243e3961326e984e8fd22e49b70695aa4",
+      "identicalAtInvestigationBaseline": true
+    },
+    "candidateConfiguration": {
+      "path": "docs/implementation/story-4-17-broker-candidate-01.json",
+      "gitBlob": "d99300ca00320e0e2f0bdeccddaaa63d5e91a10b",
+      "sha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+      "identicalAtInvestigationBaseline": true,
+      "declaredUnauthenticatedPlatformRevision": "6d422033b959c249c149a4cb3785704e9eebe03c"
+    },
+    "eventStoreGitlink": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "qualificationProfile": {
+      "path": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+      "gitBlob": "94b7667759f37454bf9e74e0b7dd3393e2a84770",
+      "sha256": "1c1da59176f78b9b60a87ba85b6076b8d215ff912840ecb52bdb7432497c587f",
+      "profileId": "platform-config-v1",
+      "executionStage": "local-docker-first-stage",
+      "lockedInputCount": 91,
+      "scenariosPerBroker": 12,
+      "brokers": [
+        "rabbitmq",
+        "kafka"
+      ]
+    },
+    "workflowTestControls": {
+      "path": "tests/source-release/broker-candidate-workflow.test.mjs",
+      "gitBlobAtExecutionRevision": "c4bb33b5d050af0ad800857a7c6aee28945cf94b",
+      "gitBlobAtInvestigationBaseline": "e5b899abe533ed6bd279180b62d787bedae2be54",
+      "difference": "single import form change for js-yaml (default import to namespace import) in a96066d2; no workflow-behavior assertion changed"
+    }
+  },
+  "currentMainEventStoreGitlink": "bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+  "currentMainUsableAsExecutionSource": false,
+  "reasonCurrentMainUnusable": "the workflow requires EventStore gitlink 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213; main now pins bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+  "executionRevisionIsAncestorOfCurrentMain": true
+}

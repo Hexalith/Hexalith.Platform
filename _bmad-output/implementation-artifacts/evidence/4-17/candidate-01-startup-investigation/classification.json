@@ -1,0 +1,91 @@
+{
+  "observedUtc": "2026-11-12T23:50:37Z",
+  "investigationBaselinePlatformRevision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+  "runId": 43097161643,
+  "runAttempt": 1,
+  "classification": "provider-failure",
+  "confidence": "strongly indicated by organization-wide correlated provider evidence; GitHub has not published a root cause and the exact mechanism is unresolved",
+  "confirmedRootCause": null,
+  "workflowDefectDemonstrated": false,
+  "repositoryCodeChanged": false,
+  "supportingEvidence": [
+    {
+      "fact": "43 runs across six Hexalith repositories, created 2026-11-11T20:29:41Z..20:52:47Z, still show queued with zero jobs. Each repository's listing has no completed run created inside its own queued span except this startup_failure. Allocation resumed for runs created from 20:54:28Z",
+      "source": "cross-repository-runs-window.json"
+    },
+    {
+      "fact": "inside this repository, the six other runs created 20:32:49Z..20:44:07Z (tuple-ci and catalog-builder push runs, two of them at the same 94001fad commit) are still queued with zero jobs; runs created from 20:54:28Z were allocated from 20:58:05Z",
+      "source": "repository-runs-window.json"
+    },
+    {
+      "fact": "githubstatus incident dvy0t3mvh1lg (critical, Actions degraded availability) was posted at 20:48:12Z, mitigated at 21:07:24Z, and its Actions backlog fully processed by 21:21:32Z",
+      "source": "provider-status.json"
+    },
+    {
+      "fact": "GitHub's run annotation is its generic unexpected-service-error text with support request 4ed78a69-de10-11f1-8d56-5705d8f2f5ff; it names no workflow line, key or policy",
+      "source": "../candidate-01-hosted/startup-diagnostic.json"
+    },
+    {
+      "fact": "the run stayed queued from 20:37:28Z until its terminal update at 20:41:54Z (run_duration_ms 266000)",
+      "source": "run-current.json, ../candidate-01-hosted/monitoring-observations.json"
+    },
+    {
+      "fact": "catalog-builder's cancel-in-progress concurrency group did not cancel its orphaned queued runs when newer runs started, consistent with lost provider run state",
+      "source": "repository-runs-window.json, .github/workflows/catalog-builder.yml"
+    },
+    {
+      "fact": "run 43097161643 is this workflow's only run and the repository's only startup_failure",
+      "source": "workflow-run-inventory.json"
+    }
+  ],
+  "workflowDefectChecks": [
+    "actionlint 1.7.12 reports no findings on the execution-revision bytes or the baseline bytes; the workflow blob 9130ed4243e3961326e984e8fd22e49b70695aa4 is the same in both",
+    "53/53 executable workflow controls pass (baseline test file against the identical workflow bytes; see offline-checks.json)",
+    "Actions policy: enabled, allowed_actions all, sha_pinning_required false, default workflow permissions read",
+    "the same actions/checkout 3d3c42e5aac5ba805825da76410c181273ba90b1 and actions/upload-artifact 043fb46d1a93c77aae656e7c1c64a875d1fc6a0a pins ran in catalog-builder jobs from 20:58:08Z",
+    "GitHub registered the workflow as active with its parsed name"
+  ],
+  "cliHint": {
+    "text": "This run likely failed because of a workflow file issue.",
+    "assessment": "a client-side suggestion shown with the startup_failure conclusion; GitHub returned no validation annotation, and the other evidence favours a provider failure. It is not treated as a diagnosis, and it is not excluded"
+  },
+  "differencesFromStuckSiblingRuns": {
+    "note": "the six stuck Platform runs and the 37 stuck runs in other repositories never reached a terminal state; this run did. Any of these differences may explain it:",
+    "items": [
+      "event workflow_dispatch, where the six Platform siblings were push runs (other repositories' events were not recorded)",
+      "runs-on ubuntu-24.04, a label never allocated in this repository, where the Platform siblings used ubuntu-latest",
+      "first run of a workflow GitHub registered at 2026-11-11T20:32:47Z, 4m41s before dispatch",
+      "its dispatch ref was deleted while it was queued (see unresolvedConfounder)"
+    ]
+  },
+  "unresolvedConfounder": {
+    "fact": "the dispatch branch refs/heads/chore/broker-candidate-01-hosted-94001fad was created at 20:37:25Z and deleted at 20:39:42Z by the repository owner account. The run was then still queued; its terminal update came 2m12s later. The prior attempt's receipts do not record this deletion",
+    "source": "dispatch-ref-lifecycle.json",
+    "deletingProcess": "not identified (local-log-search.json)",
+    "possibleContribution": "provider-delayed run setup may have failed to resolve a ref deleted while queued",
+    "excluded": false,
+    "proven": false
+  },
+  "remainingUncertainty": [
+    "GitHub has published no root-cause analysis for dvy0t3mvh1lg; its public start time 20:48:12Z is later than this run's terminal update, so correlation relies on the organization's stuck runs, which began by 20:29:41Z",
+    "the window's start is bounded only by the first stuck run observed; the latest completed runs created earlier in these listings are at 17:04:14Z (EventStore) and 17:34:26Z (Tenants)",
+    "the claim that a rejected workflow file fails at creation with a validation annotation rests on general GitHub Actions behaviour, not on a cited source or a test in this repository",
+    "the support request ID cannot be resolved through any public API",
+    "the effect of deleting a queued workflow_dispatch run's ref is undocumented and was not tested",
+    "the ubuntu-24.04 label has never been allocated in this repository; it is a standard GitHub-hosted label",
+    "the deleting process is unidentified"
+  ],
+  "historicalRejectedGuarantees": [
+    "rabbitmq/secret-rotation",
+    "rabbitmq/cancellation-backpressure",
+    "rabbitmq/missing-bindings",
+    "kafka/secret-rotation",
+    "kafka/cancellation-backpressure"
+  ],
+  "historicalRejectedGuaranteesStatus": "REJECTED (unchanged)",
+  "productionEligibility": "FAIL",
+  "selectedBroker": null,
+  "platformStory4_17": "in-progress",
+  "eventStoreStory3_21": "in-progress",
+  "dispatchesOrRerunsPerformed": 0
+}

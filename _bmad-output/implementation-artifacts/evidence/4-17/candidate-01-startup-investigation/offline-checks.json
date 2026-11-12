@@ -1,0 +1,71 @@
+{
+  "observedUtc": "2026-11-12T23:50:37Z",
+  "platformRevision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+  "networkOrInfrastructureUsed": false,
+  "checks": [
+    {
+      "name": "broker workflow executable controls",
+      "argv": [
+        "node",
+        "--test",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "nodeVersion": "v26.4.0",
+      "exitCode": 0,
+      "result": "53 tests, 53 pass, 0 fail, 0 cancelled, 0 skipped",
+      "stdout": "offline-broker-workflow-tests.stdout",
+      "stderr": "offline-broker-workflow-tests.stderr",
+      "scope": "ran the baseline test file (blob e5b899abe533ed6bd279180b62d787bedae2be54) against the workflow blob 9130ed4243e3961326e984e8fd22e49b70695aa4, which is identical at the execution revision; the execution revision's test file (blob c4bb33b5d050af0ad800857a7c6aee28945cf94b) differs only in its js-yaml import form and was not run"
+    },
+    {
+      "name": "actionlint on baseline workflow",
+      "argv": [
+        "actionlint",
+        "-no-color",
+        ".github/workflows/broker-candidate-qualification.yml"
+      ],
+      "actionlintVersion": "1.7.12",
+      "exitCode": 0,
+      "output": "offline-actionlint-head.txt",
+      "result": "no findings"
+    },
+    {
+      "name": "actionlint on execution-revision workflow bytes",
+      "argv": [
+        "actionlint",
+        "-no-color",
+        "SCRATCH/broker-candidate-qualification-94001fad.yml"
+      ],
+      "inputProduction": "git show 94001fad925fdf7fa03a90b507b8f8e19074f9e3:.github/workflows/broker-candidate-qualification.yml",
+      "inputGitBlob": "9130ed4243e3961326e984e8fd22e49b70695aa4",
+      "actionlintVersion": "1.7.12",
+      "exitCode": 0,
+      "output": "offline-actionlint-94001fad.txt",
+      "result": "no findings"
+    },
+    {
+      "name": "candidate configuration digest",
+      "argv": [
+        "sha256sum",
+        "docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "exitCode": 0,
+      "result": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc at baseline and at 94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+    },
+    {
+      "name": "original attempt evidence preservation",
+      "argv": [
+        "python3",
+        "-I",
+        "_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/verify-manifest.py",
+        "_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/file-manifest.json"
+      ],
+      "exitCode": 0,
+      "result": "79 of 79 commitments verified, 151443 bytes, 0 failures; no original evidence file modified"
+    }
+  ],
+  "limitations": [
+    "actionlint ran without its shellcheck and pyflakes integrations (neither is installed); embedded Bash and Python are covered by the executable controls instead",
+    "offline controls cannot reproduce GitHub run setup, runner allocation or provider behavior"
+  ]
+}

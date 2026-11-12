@@ -2461,6 +2461,12 @@ exception, staging or production qualification. The selection/profile-inventory,
 staging demonstration and hosted Subscription acceptance criteria above are
 unchanged. Platform 4.17 and EventStore 3.21 remain **in-progress**.
 
+On 2026-11-13 a read-only [startup investigation](../../docs/implementation/story-4-17-broker-candidate-01-startup-investigation.md)
+classified that attempt as a provider failure (strongly indicated, unconfirmed). It found
+no workflow defect and recorded that the dispatch branch was deleted while the run was
+queued. One further attempt from an immutable tag at the same source is proposed,
+not authorized. These acceptance criteria and statuses are unchanged.
+
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 
 As a team member,

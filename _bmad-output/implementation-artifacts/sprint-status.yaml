@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-12
+last_updated: 2026-11-13
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -129,6 +129,7 @@ development_status:
   4-17-select-and-qualify-the-durable-production-broker: in-progress
   # 4.17: 2026-11-10 local/CI slice recorded the five failed 1.19.1 broker guarantees as REJECTED (docs/implementation/story-4-17-local-broker-dispositions-2026-11-10.md); no broker selected; staging ACs wait on 4.14-4.16 and AD-26.
   # 4.17: 2026-11-11 PR #40 merged externally; one approved run 43097161643 at published source 94001fad925fdf7fa03a90b507b8f8e19074f9e3 ended startup_failure before job allocation (docs/implementation/story-4-17-broker-candidate-01-hosted.md). GitHub reported an unexpected error; zero jobs/artifacts, 0/24 observed vectors, null capture/verifier exits, cleanup unobserved. Attempt consumed; no retry. Packet assessment, broader diagnosis, selection, staging and Subscription acceptance remain open; EventStore 3.21 remains in-progress.
+  # 4.17: 2026-11-13 read-only startup investigation (docs/implementation/story-4-17-broker-candidate-01-startup-investigation.md) classifies run 43097161643 as provider failure (strongly indicated, unconfirmed); no workflow defect, no code change; dispatch branch was deleted at 20:39:42Z while queued (process unidentified). One further attempt from an immutable tag at 94001fad925fdf7fa03a90b507b8f8e19074f9e3 is proposed, not authorized. Five guarantees REJECTED; selection null; production FAIL; EventStore 3.21 remains in-progress.
   4-18-serve-staging-through-its-own-gateway-hostnames-and-certific: backlog
   4-19-generate-the-staging-realm-and-register-staging-clients: backlog
   4-20-run-the-staging-executor-and-the-module-code-sandbox: backlog

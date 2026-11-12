@@ -82,6 +82,11 @@ diagnostic and support request ID are retained in the hosted report. No verifica
 mode was invoked without a packet. Any further attempt requires a separate decision;
 do not rerun automatically.
 
+The later [startup investigation](story-4-17-broker-candidate-01-startup-investigation.md)
+classifies the failure as provider-side and finds no workflow defect. It records that
+the dispatch branch was deleted while the run was queued. It proposes, but does not
+authorize, one further attempt from an immutable tag at the same source.
+
 ## Separate outcomes and expected failures
 
 The workflow preserves raw exits separately for source setup, installation,

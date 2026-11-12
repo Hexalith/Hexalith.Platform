@@ -1,0 +1,853 @@
+{
+  "readOnly": true,
+  "mutatingRequests": 0,
+  "commands": [
+    {
+      "label": "run",
+      "observedUtc": "2026-11-12T23:50:04.240802+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD14:1494B2:143F90:237536:6AF650AB",
+      "rawBodySha256": "8809e6f44faa22824786455822ed14dbc56d5f0f968b4556c7ea384ad72a7d80"
+    },
+    {
+      "label": "run-attempt-1",
+      "observedUtc": "2026-11-12T23:50:04.609158+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD16:1C1913:13A6FF:22E3BD:6AF650AC",
+      "rawBodySha256": "5c51ab6ebf9e270b5961183d32f39a348e9f6edb4e53aa6aceb450443092dc53"
+    },
+    {
+      "label": "run-timing",
+      "observedUtc": "2026-11-12T23:50:04.978258+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/timing"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/timing",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD20:1E2E0:1377AA:22B35A:6AF650AC",
+      "rawBodySha256": "e258db55138d8d0b07456c78223cb992971c85052e3e77dbcf37d5b788566f9a"
+    },
+    {
+      "label": "run-jobs-all-attempts",
+      "observedUtc": "2026-11-12T23:50:05.323538+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD30:1D901E:13BBAA:22F9DD:6AF650AD",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "run-artifacts",
+      "observedUtc": "2026-11-12T23:50:05.715016+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/artifacts"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/artifacts",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF4E:16FA:B5DC9:11FBB7:6AF650AD",
+      "rawBodySha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "label": "run-logs-probe",
+      "observedUtc": "2026-11-12T23:50:06.053279+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/logs"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/logs",
+      "exitCode": 1,
+      "httpStatus": 404,
+      "githubRequestId": "FF1E:11593A:13EB00:232AE3:6AF650AD",
+      "rawBodySha256": "e8fa4851e502f3095a703c63ad22e9fd551fe971c46d41f9ed673989835740ab"
+    },
+    {
+      "label": "workflow",
+      "observedUtc": "2026-11-12T23:50:06.384743+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/415133929",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF2A:A5CC:2A99E2B:4046003:6AF650AE",
+      "rawBodySha256": "e8119a6164a7ded466e881130829aa5eb080a5f33c481c872b7724cf06660016"
+    },
+    {
+      "label": "workflow-runs",
+      "observedUtc": "2026-11-12T23:50:06.752765+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF28:37AD0B:13D1D4:23101B:6AF650AE",
+      "rawBodySha256": "2808d61dced167e3147cce3524faedefc15bb4b8ce57268c4b65c94512e0e879"
+    },
+    {
+      "label": "repository-startup-failures",
+      "observedUtc": "2026-11-12T23:50:07.141841+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs?status=startup_failure&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?status=startup_failure&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF2E:1E20A:137D00:22BEC3:6AF650AE",
+      "rawBodySha256": "2808d61dced167e3147cce3524faedefc15bb4b8ce57268c4b65c94512e0e879"
+    },
+    {
+      "label": "repository-runs-window",
+      "observedUtc": "2026-11-12T23:50:07.525180+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs?created=2026-11-11T19:30:00Z..2026-11-11T22:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?created=2026-11-11T19:30:00Z..2026-11-11T22:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF30:B70A3:14220D:236991:6AF650AF",
+      "rawBodySha256": "17ecbd80c6b34b0667aa8f67517c42d718c3496a92076c76cb9df95655386f1e"
+    },
+    {
+      "label": "jobs-43111985003",
+      "observedUtc": "2026-11-12T23:50:08.203436+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43111985003/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43111985003/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF3C:A35D8:148E4B:23CCE2:6AF650AF",
+      "rawBodySha256": "df45d6554b82181c6bbe97c3672af0815f4472ded9d72aaeb29a02fcf6d25675"
+    },
+    {
+      "label": "jobs-43111984994",
+      "observedUtc": "2026-11-12T23:50:08.790780+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43111984994/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43111984994/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF4A:37EA48:13F6BB:232A60:6AF650B0",
+      "rawBodySha256": "8a035faa53ecb6bc9312d8e2b1ef245d9a8860b9e0106148c4147461592b7a13"
+    },
+    {
+      "label": "jobs-43104595551",
+      "observedUtc": "2026-11-12T23:50:09.464176+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43104595551/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43104595551/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF52:3042B3:13D501:230822:6AF650B1",
+      "rawBodySha256": "0d2e2bd3b391c7af1347e2208ba8b0c23beab5b13a0cffd2c2575cbdb9f30097"
+    },
+    {
+      "label": "jobs-43104508070",
+      "observedUtc": "2026-11-12T23:50:09.941723+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43104508070/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43104508070/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF38:277178:2B10B9B:412F163:6AF650B1",
+      "rawBodySha256": "8286b9125acfcc6eeea8795efb425faa8bea071037df57a9f4921abc4e54f347"
+    },
+    {
+      "label": "jobs-43102219052",
+      "observedUtc": "2026-11-12T23:50:10.371890+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43102219052/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43102219052/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD22:1C7369:148E2B:23D03D:6AF650B2",
+      "rawBodySha256": "a6217a04316fb6e2c477b45f590530a1c61ca7f7193e1cee9c5781e7137ec969"
+    },
+    {
+      "label": "jobs-43102219030",
+      "observedUtc": "2026-11-12T23:50:10.953490+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43102219030/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43102219030/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF5C:171E71:142025:2355EA:6AF650B2",
+      "rawBodySha256": "fc7081ae9d77ff43ac3e17f0671c0cce1a6944799cbc9270af32fca203855b25"
+    },
+    {
+      "label": "jobs-43100115018",
+      "observedUtc": "2026-11-12T23:50:11.558494+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43100115018/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43100115018/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF14:25D477:29DCFF1:3F3C62A:6AF650B3",
+      "rawBodySha256": "318729815ffebabbf35ca3ad31c0fbf91e8fcb68f954615666312d391e186c69"
+    },
+    {
+      "label": "jobs-43100049752",
+      "observedUtc": "2026-11-12T23:50:11.979603+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43100049752/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43100049752/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF60:1C7166:13EF23:2328F7:6AF650B3",
+      "rawBodySha256": "d81ac8a72237bc841595a7b3a9140cc8d253540f4605134bf5adb147d2497684"
+    },
+    {
+      "label": "jobs-43098747911",
+      "observedUtc": "2026-11-12T23:50:12.410460+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43098747911/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43098747911/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD32:DD439:14B59D:23F6F1:6AF650B4",
+      "rawBodySha256": "9d0615ad96584ba41eb2acd69794feef51cb082354bc65186b8e0f9bf2c12bfe"
+    },
+    {
+      "label": "jobs-43098748033",
+      "observedUtc": "2026-11-12T23:50:12.940428+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43098748033/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43098748033/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF04:343601:145EA8:23A4FA:6AF650B4",
+      "rawBodySha256": "595dc922780e43499a285fba4b79ddc7c58d0b17200f6b54d1442d671cb309bc"
+    },
+    {
+      "label": "jobs-43097799008",
+      "observedUtc": "2026-11-12T23:50:13.527688+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF10:11A37:13D664:231895:6AF650B5",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43097799209",
+      "observedUtc": "2026-11-12T23:50:13.954230+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF1A:2C21DE:1411E4:23502F:6AF650B5",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43097161643",
+      "observedUtc": "2026-11-12T23:50:14.348681+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "CD34:269CAB:2A38E9E:3FC9640:6AF650B6",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43096933638",
+      "observedUtc": "2026-11-12T23:50:14.740079+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF1C:A5CC:2A9E5D5:404CC0E:6AF650B6",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43096933600",
+      "observedUtc": "2026-11-12T23:50:15.082105+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF24:D514B:264643:3B790E:6AF650B6",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43096691408",
+      "observedUtc": "2026-11-12T23:50:15.484634+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF34:2D90FF:1434C1:2377A7:6AF650B7",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "jobs-43096691518",
+      "observedUtc": "2026-11-12T23:50:15.909216+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/jobs?filter=all&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/jobs?filter=all&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF62:3C24E5:13B008:22EBCA:6AF650B7",
+      "rawBodySha256": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6"
+    },
+    {
+      "label": "repository-queued-runs",
+      "observedUtc": "2026-11-12T23:50:16.285551+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF56:23C15E:2A204E8:3F9864B:6AF650B7",
+      "rawBodySha256": "46137963173150f2f60206ebae98f8fefeb4f1350aea59c01981bd0f7b8b22d0"
+    },
+    {
+      "label": "dispatch-ref-activity",
+      "observedUtc": "2026-11-12T23:50:16.770870+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/activity?ref=refs/heads/chore/broker-candidate-01-hosted-94001fad&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/activity?ref=refs/heads/chore/broker-candidate-01-hosted-94001fad&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF58:23C15E:2A20892:3F98C0E:6AF650B8",
+      "rawBodySha256": "14c44cc33666633881fc40df77f8ed5a73d0f84050ff5946fa22f89d8a6393be"
+    },
+    {
+      "label": "repository-ref-activity-week-paginated",
+      "observedUtc": "2026-11-12T23:50:17.098781+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "--paginate",
+        "--jq",
+        ".[] | @json",
+        "repos/Hexalith/Hexalith.Platform/activity?time_period=week&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/activity?time_period=week&per_page=100",
+      "exitCode": 0,
+      "httpStatus": null,
+      "rows": 251,
+      "rawOutputSha256": "dbefec1997b38b4dcb1b9dca49da7f03d87647ce8b013f870bf14b2fd6e1a2b4"
+    },
+    {
+      "label": "dispatch-branch-current",
+      "observedUtc": "2026-11-12T23:50:18.189784+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/branches/chore/broker-candidate-01-hosted-94001fad"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/branches/chore/broker-candidate-01-hosted-94001fad",
+      "exitCode": 1,
+      "httpStatus": 404,
+      "githubRequestId": "FF0E:32B6BE:13D2A2:230FDC:6AF650B9",
+      "rawBodySha256": "35a8e0403a6493e9dfa44e29a817364187590ba2fc33c970e82b038b568d4256"
+    },
+    {
+      "label": "dispatch-ref-matching",
+      "observedUtc": "2026-11-12T23:50:18.536507+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/git/matching-refs/heads/chore/broker-candidate-01-hosted"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/matching-refs/heads/chore/broker-candidate-01-hosted",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF5E:1E1C18:29047C8:3E12F7A:6AF650BA",
+      "rawBodySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "label": "repository-settings",
+      "observedUtc": "2026-11-12T23:50:18.889779+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF06:1CE8C8:28E65A8:3DCF5F3:6AF650BA",
+      "rawBodySha256": "db9d89db483a83bb1bef1f6265925f124f43a73f67a9a5725a0a4a00e8f1d82e"
+    },
+    {
+      "label": "dispatch-branch-pulls",
+      "observedUtc": "2026-11-12T23:50:19.310248+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/pulls?head=Hexalith:chore/broker-candidate-01-hosted-94001fad&state=all"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/pulls?head=Hexalith:chore/broker-candidate-01-hosted-94001fad&state=all",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF08:1BC20B:2BC1AF2:41EA873:6AF650BA",
+      "rawBodySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "label": "org-audit-log-probe",
+      "observedUtc": "2026-11-12T23:50:19.722507+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "orgs/Hexalith/audit-log?phrase=action:git.branch_delete"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/orgs/Hexalith/audit-log?phrase=action:git.branch_delete",
+      "exitCode": 1,
+      "httpStatus": 404,
+      "githubRequestId": "FF16:1D6693:13A8D4:22EB21:6AF650BB",
+      "rawBodySha256": "127f807b29f398456b83200c707741cdba4108d1ddf6bafcc31669298545b28c"
+    },
+    {
+      "label": "actions-permissions",
+      "observedUtc": "2026-11-12T23:50:19.971711+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/permissions"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/permissions",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF0A:277178:2B162A3:41373A2:6AF650BB",
+      "rawBodySha256": "0bffee97e4ad52676c0127aacb5b4b304a2675f5c524de641acf1326e0b0e857"
+    },
+    {
+      "label": "actions-workflow-permissions",
+      "observedUtc": "2026-11-12T23:50:20.251543+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/permissions/workflow"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/permissions/workflow",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF20:277178:2B164FE:413770F:6AF650BB",
+      "rawBodySha256": "b6b16dd0b1e2894083a98dcb5ff00ac0dc6e9d9586db5f00b3a323c0caeb5301"
+    },
+    {
+      "label": "ruleset-24657570",
+      "observedUtc": "2026-11-12T23:50:20.533574+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF40:33ED:238B1A8:35CEFF3:6AF650BC",
+      "rawBodySha256": "946aada644285e508164d4dd4185b8d2cfd582c83c3b5e4692cdcbc193082ce1"
+    },
+    {
+      "label": "ruleset-24657217",
+      "observedUtc": "2026-11-12T23:50:20.869012+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657217"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657217",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF22:2612C7:14184A:2353B9:6AF650BC",
+      "rawBodySha256": "c0195a5eda84fc7caf998124dca7863c40a1ed6bd70e44bc1adbeea6553cd8da"
+    },
+    {
+      "label": "ruleset-24657106",
+      "observedUtc": "2026-11-12T23:50:21.230969+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657106"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657106",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF0C:33ED:238B6E7:35CF894:6AF650BC",
+      "rawBodySha256": "d29798c517dec20737201c4e9333a26ed15aedc8f517a3a7646de93b919d481d"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.Platform",
+      "observedUtc": "2026-11-12T23:50:21.632914+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF42:226639:13B773:22F789:6AF650BD",
+      "rawBodySha256": "49445bfabd931fd64e70b67fdcd1109b42513b465dac94d47db7ff9d023b1e2e"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.EventStore",
+      "observedUtc": "2026-11-12T23:50:22.273869+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.EventStore/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF46:1BC20B:2BC34AB:41ECF39:6AF650BD",
+      "rawBodySha256": "732626dedb57a945931c96af7df523268391937b14764b5a18c6143e736cad98"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.Parties",
+      "observedUtc": "2026-11-12T23:50:23.303958+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Parties/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF03:24884:141640:235100:6AF650BE",
+      "rawBodySha256": "6ce5c50dd769e144070606b9968b48557354a252e1c8b5c0cfb12f0aa613b4c5"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.Memories",
+      "observedUtc": "2026-11-12T23:50:23.962431+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Memories/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Memories/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF05:25D477:29E3843:3F46208:6AF650BF",
+      "rawBodySha256": "6f61ec6358bbab374513ce9d59a2c38f0561aeb4f6ae40575da3bf85493685be"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.Tenants",
+      "observedUtc": "2026-11-12T23:50:24.458460+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Tenants/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Tenants/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF07:134D4A:139DD7:22E6EE:6AF650C0",
+      "rawBodySha256": "3525b7d983bdcf3ca612200dd606f8e1182017be38597a2f920608e62d24a068"
+    },
+    {
+      "label": "cross-repository-runs-Hexalith.Builds",
+      "observedUtc": "2026-11-12T23:50:25.190700+00:00",
+      "argv": [
+        "gh",
+        "api",
+        "--include",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Builds/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100"
+      ],
+      "method": "GET",
+      "endpoint": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs?created=2026-11-11T17:00:00Z..2026-11-11T21:30:00Z&per_page=100",
+      "exitCode": 0,
+      "httpStatus": 200,
+      "githubRequestId": "FF09:317CC2:298EE21:3EA257B:6AF650C0",
+      "rawBodySha256": "217e2479996a06511387ea2863b0aa06ed2168827aa85ad3e96c47a71661d202"
+    },
+    {
+      "label": "githubstatus-incidents",
+      "observedUtc": "2026-11-12T23:50:25.874602+00:00",
+      "argv": [
+        "curl",
+        "-sS",
+        "-A",
+        "status-check",
+        "https://www.githubstatus.com/api/v2/incidents.json"
+      ],
+      "method": "GET",
+      "exitCode": 0,
+      "listedRange": [
+        "2026-09-16T07:20:59.980Z",
+        "2026-11-12T19:36:45.563Z"
+      ]
+    }
+  ]
+}

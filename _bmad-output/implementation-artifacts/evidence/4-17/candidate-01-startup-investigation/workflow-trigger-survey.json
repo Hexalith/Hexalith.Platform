@@ -1,0 +1,98 @@
+{
+  "workflows": [
+    {
+      "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "workflow": ".github/workflows/broker-candidate-qualification.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "triggers": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "workflow": ".github/workflows/source-release.yml",
+      "triggers": [
+        "workflow_run"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "workflow": ".github/workflows/test-extension-release.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "triggers": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+      "workflow": ".github/workflows/broker-candidate-qualification.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "triggers": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+      "workflow": ".github/workflows/source-release.yml",
+      "triggers": [
+        "workflow_run"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+      "workflow": ".github/workflows/test-extension-release.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    },
+    {
+      "revision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "triggers": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "mentionsTags": false
+    }
+  ],
+  "anyTagTrigger": false,
+  "argv": [
+    "git",
+    "show",
+    "REVISION:.github/workflows/NAME"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-11-12T23:58:00Z",
+  "investigationBaselinePlatformRevision": "0c97b496f3d9a4fc9a82c656ff1c159fba54325c",
+  "scope": "all retained startup-investigation evidence files except this manifest; the original attempt evidence in ../candidate-01-hosted is unchanged and keeps its own manifest",
+  "verify": "python3 -I verify-manifest.py file-manifest.json",
+  "files": [
+    {
+      "path": "classification.json",
+      "bytes": 6091,
+      "sha256": "6f3e92bfe2e9bbaf310fd9a8619aed29c6e2638bf1ccfd7158fe6e45ce7d0f53"
+    },
+    {
+      "path": "collect_startup_evidence.py",
+      "bytes": 15157,
+      "sha256": "c31dfd840047392d661fe9fc68335eef91c5dc1935ac73ca10f6b2d3f10b671b"
+    },
+    {
+      "path": "commands.json",
+      "bytes": 30815,
+      "sha256": "107456604928adc00b549e7d86dd964a9a750e7dd5ddd62c6f37bd83c3f2ecd2"
+    },
+    {
+      "path": "cross-repository-runs-window.json",
+      "bytes": 7067,
+      "sha256": "1877de37ad289b01c2b83b91c08fba1a98a7db30b0de0614ab865af5bad33eec"
+    },
+    {
+      "path": "dispatch-ref-lifecycle.json",
+      "bytes": 8683,
+      "sha256": "6cd26afecb17341da4a8eace5be7b31c74e87b0afc95d28663d480f95926b584"
+    },
+    {
+      "path": "local-log-search.json",
+      "bytes": 2128,
+      "sha256": "4536b757c8c64a9415a8c439d1fd76b36dc6435c32b6bd591ba9c6b43b2514be"
+    },
+    {
+      "path": "next-attempt-proposal.json",
+      "bytes": 7664,
+      "sha256": "de8202bacc3316bbf3122563c5dad093c59ec57910bcaa9924bb9b4b07a3e2d2"
+    },
+    {
+      "path": "offline-actionlint-94001fad.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "offline-actionlint-head.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "offline-broker-workflow-tests.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "offline-broker-workflow-tests.stdout",
+      "bytes": 5790,
+      "sha256": "0b9b55acd1e0aa400678dd6bb282f7b664d54e63b52d162f4511da6e36355ee7"
+    },
+    {
+      "path": "offline-checks.json",
+      "bytes": 2911,
+      "sha256": "ec66fd84edd04858594490d90d66a52bb53aab56fdfa4a04a33bc94a3dfca066"
+    },
+    {
+      "path": "provider-status.json",
+      "bytes": 4384,
+      "sha256": "02e8ef98a5bf054fc9b755906e5596f1c261b39f6fdc03c65090b705e7d9e7ff"
+    },
+    {
+      "path": "repository-policy.json",
+      "bytes": 4850,
+      "sha256": "0e90f53e43ea9d6e15801abcf6f686e33192b6032835dad871850d40515b402a"
+    },
+    {
+      "path": "repository-runs-window.json",
+      "bytes": 22755,
+      "sha256": "02466a6843a40af3ef929b7e2dc63307cd1536c84e279791ede07d4ee14de9aa"
+    },
+    {
+      "path": "run-current.json",
+      "bytes": 4806,
+      "sha256": "504656c988af402145dfa337f8a871662752e3ccff5f41fdd621d6104f86e1ce"
+    },
+    {
+      "path": "source-identities.json",
+      "bytes": 2547,
+      "sha256": "30ee0cb0b7cfe162d7254965a6d4d566fab93bfbce8f0528b1b8a2f08bc8b58b"
+    },
+    {
+      "path": "verify-manifest.py",
+      "bytes": 1001,
+      "sha256": "b4330479f9373fbff88288cd4d6efcb907e3095db4ebd8dd727389ea37beee0e"
+    },
+    {
+      "path": "workflow-run-inventory.json",
+      "bytes": 2811,
+      "sha256": "518debee88c9f979002b059dc6e78b0b5ec2e31b3e795402e574a9dc5780f556"
+    },
+    {
+      "path": "workflow-trigger-survey.json",
+      "bytes": 2496,
+      "sha256": "66c949c93e513f2e6335b02ac8ee7676d7c4d77d8c41fbb94512d228b5d980bf"
+    }
+  ]
+}
