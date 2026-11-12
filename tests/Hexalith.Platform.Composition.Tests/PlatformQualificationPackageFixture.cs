@@ -65,7 +65,7 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         string sdkVersion = provenance["eventstore"]!["version"]!.GetValue<string>();
         string tenantsVersion = provenance["tenants"]!["version"]!.GetValue<string>();
         // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup></Project>");
+        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + (currentTest ? "2.0.1" : "2.0.0") + "\" /></ItemGroup></Project>");
         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);

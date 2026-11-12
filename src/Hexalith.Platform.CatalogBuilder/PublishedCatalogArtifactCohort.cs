@@ -191,12 +191,12 @@ internal static class PublishedCatalogArtifactCohort
         .ToFrozenDictionary(StringComparer.Ordinal);
 
     /// <summary>Selects only the exact independently measured private reference tuples.</summary>
-    internal static string? ForCurrentOwnerVersions(string sdk, string tenants, string memories) => (sdk, tenants, memories) switch
+    internal static string? ForCurrentOwnerVersions(string sdk, string tenants, string memories, string? mcpCli) => (sdk, tenants, memories, mcpCli) switch
     {
-        ("4.1.0", "7.0.5", "3.0.25") => CurrentOwnerName,
-        ("4.2.0", "7.0.5", "3.0.25") => CurrentOwnerSdk420Name,
-        ("4.2.0", "7.0.7", "3.0.26") => CurrentOwnerCurrentName,
-        ("4.2.0", "7.0.7", "3.0.27") => CurrentOwnerMemories327Name,
+        ("4.1.0", "7.0.5", "3.0.25", "2.0.1") => CurrentOwnerName,
+        ("4.2.0", "7.0.5", "3.0.25", "2.0.1") => CurrentOwnerSdk420Name,
+        ("4.2.0", "7.0.7", "3.0.26", "2.0.1") => CurrentOwnerCurrentName,
+        ("4.2.0", "7.0.7", "3.0.27", "2.0.1") => CurrentOwnerMemories327Name,
         _ => null,
     };
 
@@ -237,14 +237,21 @@ internal static class PublishedCatalogArtifactCohort
         _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
     };
 
+    /// <summary>Returns the exact MCP abstraction dependency for a private reference cohort.</summary>
+    internal static string CurrentOwnerMcpCliVersion(string cohort) => cohort switch
+    {
+        CurrentOwnerName or CurrentOwnerSdk420Name or CurrentOwnerCurrentName or CurrentOwnerMemories327Name => "2.0.1",
+        _ => throw new InvalidDataException("The requested private current-owner cohort is unavailable."),
+    };
+
     /// <summary>Selects only complete measured public Parties3.1 readers, without granting a general SDK/Tenants pair.</summary>
-    internal static string? ForPublishedPartiesVersions(string sdk, string tenants, string memories, string parties)
-        => (sdk, tenants, memories, parties) switch
+    internal static string? ForPublishedPartiesVersions(string sdk, string tenants, string memories, string parties, string? mcpCli)
+        => (sdk, tenants, memories, parties, mcpCli) switch
         {
-            ("4.1.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesName,
-            ("4.2.0", "7.0.5", "3.0.25", "3.1.0") => PublishedPartiesSdk420Name,
-            ("4.2.0", "7.0.7", "3.0.26", "3.1.1") => PublishedPartiesCurrentName,
-            ("4.2.0", "7.0.7", "3.0.27", "3.1.1") => PublishedPartiesMemories327Name,
+            ("4.1.0", "7.0.5", "3.0.25", "3.1.0", "2.0.1") => PublishedPartiesName,
+            ("4.2.0", "7.0.5", "3.0.25", "3.1.0", "2.0.1") => PublishedPartiesSdk420Name,
+            ("4.2.0", "7.0.7", "3.0.26", "3.1.1", "2.0.1") => PublishedPartiesCurrentName,
+            ("4.2.0", "7.0.7", "3.0.27", "3.1.1", "2.0.1") => PublishedPartiesMemories327Name,
             _ => null,
         };
 

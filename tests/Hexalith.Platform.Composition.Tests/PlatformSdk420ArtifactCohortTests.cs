@@ -33,7 +33,7 @@ public sealed class PlatformSdk420ArtifactCohortTests
             }
         }
         finally { context.Unload(); }
-        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.5", "3.0.25", "3.1.0")
+        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.5", "3.0.25", "3.1.0", "2.0.1")
             .ShouldBe(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name);
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5").ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5", fullParties: true).ShouldBeNull();
@@ -89,7 +89,7 @@ public sealed class PlatformSdk420ArtifactCohortTests
     [InlineData("4.2.0", "7.0.5", "3.0.25", "3.0.0")]
     [InlineData("4.2.0", "7.0.5", "3.0.25", "3.1.1")]
     public void UnmeasuredPublicTupleRefuses(string sdk, string tenants, string memories, string parties)
-        => PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants, memories, parties).ShouldBeNull();
+        => PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants, memories, parties, "2.0.1").ShouldBeNull();
 
     /// <summary>The private source-owner reference selector retains exact historical and new tuples only.</summary>
     /// <param name="sdk">The selected SDK.</param><param name="tenants">The selected Tenants package.</param>
@@ -107,7 +107,7 @@ public sealed class PlatformSdk420ArtifactCohortTests
     [InlineData("4.2.0", "7.0.5", "3.0.24", null)]
     [InlineData("4.2.0", "7.0.5", "3.0.25+metadata", null)]
     public void PrivateReferenceSelectionRetainsFiniteVersions(string sdk, string tenants, string memories, string? expected)
-        => PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(sdk, tenants, memories).ShouldBe(expected);
+        => PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(sdk, tenants, memories, "2.0.1").ShouldBe(expected);
 
     /// <summary>Complete private receipts bind all actual reference files and cannot mix old SDK bodies or substitute public purpose.</summary>
     [Fact]

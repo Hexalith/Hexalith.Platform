@@ -82,18 +82,23 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
     [InlineData("3.0.27")]
     public void OnlyCompleteCurrentVersionTuplesAreAdmitted(string memoriesVersion)
     {
-        PublishedCatalogArtifactCohort.ForCurrentOwnerVersions("4.2.0", "7.0.7", memoriesVersion).ShouldBe(PrivateCohort(memoriesVersion));
-        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1").ShouldBe(PublicCohort(memoriesVersion));
+        PublishedCatalogArtifactCohort.ForCurrentOwnerVersions("4.2.0", "7.0.7", memoriesVersion, "2.0.1").ShouldBe(PrivateCohort(memoriesVersion));
+        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", "2.0.1").ShouldBe(PublicCohort(memoriesVersion));
         PublishedCatalogArtifactCohort.ForEventStorePackageTestVersions("4.2.0", "7.0.7").ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
-        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.5", "3.0.25", "3.1.0").ShouldBe(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name);
+        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.5", "3.0.25", "3.1.0", "2.0.1").ShouldBe(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name);
         foreach (var tuple in new[] { ("4.1.0", "7.0.7", "3.0.26"), ("4.2.1", "7.0.7", "3.0.26"), ("4.2.0", "7.0.8", "3.0.26"),
             ("4.2.0", "7.0.7+metadata", "3.0.26"), ("4.2.0", "7.0.7", "3.0.28"), ("4.2.0", "7.0.7", "3.0.25"), ("4.2.0", "7.0.5", "3.0.26") })
         {
-            PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(tuple.Item1, tuple.Item2, tuple.Item3).ShouldBeNull();
-            PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(tuple.Item1, tuple.Item2, tuple.Item3, "3.1.1").ShouldBeNull();
+            PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(tuple.Item1, tuple.Item2, tuple.Item3, "2.0.1").ShouldBeNull();
+            PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(tuple.Item1, tuple.Item2, tuple.Item3, "3.1.1", "2.0.1").ShouldBeNull();
         }
         foreach (string refused in new[] { "3.1.0", "3.1.2", "3.1.1+metadata", "3.1.1.0" })
-            PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, refused).ShouldBeNull();
+            PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, refused, "2.0.1").ShouldBeNull();
+        foreach (string? refusedMcpCli in new[] { null, "", "2.0.0", "2.0.2", "2.0.1+metadata", "3.0.0" })
+        {
+            PublishedCatalogArtifactCohort.ForCurrentOwnerVersions("4.2.0", "7.0.7", memoriesVersion, refusedMcpCli).ShouldBeNull();
+            PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", refusedMcpCli).ShouldBeNull();
+        }
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7").ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
     }
@@ -150,7 +155,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
     [InlineData("3.0.27")]
     public void CurrentArtifactsDoNotAcquireOrdinaryImageAuthority(string memoriesVersion)
     {
-        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1").ShouldBe(PublicCohort(memoriesVersion));
+        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", "2.0.1").ShouldBe(PublicCohort(memoriesVersion));
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.CurrentDeclarationHash).ShouldBeFalse();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash).ShouldBeTrue();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
@@ -166,6 +171,11 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBe("3.0.27");
         PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion(PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBe("7.0.5");
         PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBe("3.0.25");
+        foreach (string cohort in new[] { PublishedCatalogArtifactCohort.CurrentOwnerName, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name,
+            PublishedCatalogArtifactCohort.CurrentOwnerCurrentName, PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name })
+            PublishedCatalogArtifactCohort.CurrentOwnerMcpCliVersion(cohort).ShouldBe("2.0.1");
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMcpCliVersion("unknown"));
+        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMcpCliVersion(PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion("unknown"));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion("unknown"));
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true, currentArtifacts: true).ConfigureAwait(true);
