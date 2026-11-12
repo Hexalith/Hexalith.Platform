@@ -67,19 +67,20 @@ def verify_tuple_metadata(root: Path, current: str, historical: str, *, binding_
         raise ValueError('Non-tuple binding fields changed.')
     producer, publication = selected['producer'], selected['publication']
     if set(producer) != set(previous['producer']) or set(producer['catalog']) != set(previous['producer']['catalog']) \
-            or set(publication) != set(previous['publication']) or producer['repository'] != previous['producer']['repository'] \
+            or producer['repository'] != previous['producer']['repository'] \
             or producer['catalog']['path'] != previous['producer']['catalog']['path']:
         raise ValueError('Unapproved tuple producer/publication fields changed.')
     for value in [producer['sourceRevision'], producer['catalog']['blob']]:
         commit(value)
-    for value in [producer['catalog']['sha256'], publication['catalogSha256'], publication['archiveSha256'], publication['toolingSha256'], publication['inventorySha256']]:
+    from builds_tuple import validate_binding
+    validate_binding(selected)
+    for value in [producer['catalog']['sha256'], publication['catalogSha256'], publication['archiveSha256'], publication['toolingSha256']]:
         if not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None:
             raise ValueError('Tuple identity requires an exact SHA256.')
     version = publication['version']
     if not isinstance(version, str) or re.fullmatch(r'4\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version) is None \
             or publication['releaseTag'] != 'v' + version or publication['sourceRevision'] != producer['sourceRevision'] \
             or publication['catalogSha256'] != producer['catalog']['sha256'] \
-            or publication['inventoryUrl'] != 'https://github.com/Hexalith/Hexalith.Builds/releases/download/v' + version + '/g4-tool-package-inventory.json' \
             or git(root, 'rev-parse', current + ':references/Hexalith.Builds').decode().strip() != producer['sourceRevision']:
         raise ValueError('Tuple source/version/catalog/publication identities are inconsistent.')
     old_tools_raw = git(root, 'show', historical + ':.config/dotnet-tools.json')

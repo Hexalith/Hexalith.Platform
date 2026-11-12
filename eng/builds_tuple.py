@@ -18,7 +18,11 @@ def resolve_builds_root(platform_root):
 
 
 def load_binding(path=BINDING, require_publication=True):
-    binding = json.loads(path.read_bytes())
+    return validate_binding(json.loads(path.read_bytes()), require_publication)
+
+
+def validate_binding(binding, require_publication=True):
+    """Validate either the original inventory binding or the finite shared release handoff."""
     if binding.get("schemaVersion") != 1 or binding.get("candidateAcceptance") is not False:
         raise ValueError("Tuple binding must use schema 1 and candidateAcceptance:false.")
     producer = binding["producer"]
@@ -32,10 +36,17 @@ def load_binding(path=BINDING, require_publication=True):
         raise ValueError("Producer catalog path and SHA-256 are required.")
     if require_publication:
         publication = binding["publication"]
-        required = ("version", "sourceRevision", "releaseTag", "catalogSha256", "archiveSha256", "toolingSha256", "inventorySha256", "inventoryUrl")
+        common = {"version", "sourceRevision", "releaseTag", "catalogSha256", "archiveSha256", "toolingSha256"}
+        shared = publication.get("kind") == "shared-release-handoff/v1"
+        if "kind" in publication and not shared:
+            raise ValueError("Unsupported official publication kind.")
+        required = common | ({"kind", "releaseId", "runId", "artifactId", "artifactSha256", "releaseBodySha256"}
+                             if shared else {"inventorySha256", "inventoryUrl"})
         missing = [key for key in required if not publication.get(key)]
         if missing:
             raise ValueError("Official publication binding is unavailable: " + ", ".join(missing) + ". Preparation is unqualified.")
+        if set(publication) != required:
+            raise ValueError("Unsupported official publication fields.")
         version = publication["version"]
         match = re.fullmatch(r"4\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?", version) if isinstance(version, str) else None
         if not match or any(int(number) > 2147483647 for number in match.group(1, 2)) or any(identifier.isdigit() and len(identifier) > 1 and identifier.startswith("0") for identifier in (match.group(3) or "").split(".")):
@@ -44,12 +55,18 @@ def load_binding(path=BINDING, require_publication=True):
             raise ValueError("Publication source/tag differs from the exact producer binding.")
         if publication["catalogSha256"] != catalog["sha256"]:
             raise ValueError("Publication catalog differs from the prepared source catalog.")
-        for key in ("archiveSha256", "toolingSha256", "inventorySha256"):
+        digests = ("archiveSha256", "toolingSha256") + (("artifactSha256", "releaseBodySha256") if shared else ("inventorySha256",))
+        for key in digests:
             if not isinstance(publication[key], str) or not re.fullmatch(r"[0-9a-f]{64}", publication[key]):
                 raise ValueError("Publication requires a lowercase SHA-256 for " + key + ".")
-        expected_inventory = "https://github.com/Hexalith/Hexalith.Builds/releases/download/" + publication["releaseTag"] + "/g4-tool-package-inventory.json"
-        if publication["inventoryUrl"] != expected_inventory:
-            raise ValueError("Qualification inventory requires the exact official release asset locator.")
+        if shared:
+            for key in ("releaseId", "runId", "artifactId"):
+                if type(publication[key]) is not int or publication[key] <= 0:
+                    raise ValueError("Shared release requires a positive numeric " + key + ".")
+        else:
+            expected_inventory = "https://github.com/Hexalith/Hexalith.Builds/releases/download/" + publication["releaseTag"] + "/g4-tool-package-inventory.json"
+            if publication["inventoryUrl"] != expected_inventory:
+                raise ValueError("Qualification inventory requires the exact official release asset locator.")
     return binding
 
 
