@@ -151,16 +151,47 @@ class WorksEvidenceGateTests(unittest.TestCase):
             for configuration in verify_works_host.verification_profile('ci')['consumerConfigurations']:
                 command = verify_works_host.consumer_build_command(project, configuration, VERSION)
                 self.assertEqual(command[command.index('-c') + 1], 'Release')
+                self.assertIn('-p:NuGetAudit=true', command)
+                self.assertIn('-p:NuGetAuditMode=all', command)
+                self.assertIn('-p:NuGetAuditLevel=low', command)
+                self.assertNotIn('-p:NuGetAudit=false', command)
                 self.assertIn('-p:UseHexalithProjectReferences=false', command)
                 self.assertIn('-p:UseNuGetDeps=true', command)
                 self.assertIn('-p:HexalithEventStoreFromSource=false', command)
                 self.assertIn('-p:HexalithPolymorphicSerializationsFromSource=false', command)
                 self.assertNotIn('-p:UseHexalithProjectReferences=true', command)
         debug = verify_works_host.consumer_build_command('consumer.csproj', 'Debug', VERSION)
+        self.assertIn('-p:NuGetAudit=true', debug)
+        self.assertIn('-p:NuGetAuditMode=all', debug)
+        self.assertIn('-p:NuGetAuditLevel=low', debug)
         self.assertIn('-p:UseHexalithProjectReferences=true', debug)
         self.assertIn('-p:UseNuGetDeps=false', debug)
         self.assertIn('-p:HexalithEventStoreFromSource=true', debug)
         self.assertIn('-p:HexalithPolymorphicSerializationsFromSource=true', debug)
+
+    def test_file_host_outputs_bind_exactly_one_complete_sdk_layout(self):
+        required = ('apphost.dll', 'Hexalith.Platform.Composition.dll', 'Hexalith.Platform.Works.Runtime.dll')
+        for relative in ('bin/release', 'bin/apphost.cs/release'):
+            with self.subTest(layout=relative):
+                output = self.directory()
+                expected = output / relative
+                expected.mkdir(parents=True)
+                for name in required:
+                    (expected / name).write_bytes(b'actual test body')
+                self.assertEqual(verify_works_host.file_host_directory(output), expected)
+                (expected / required[-1]).unlink()
+                with self.assertRaisesRegex(ValueError, 'exactly one complete known output'):
+                    verify_works_host.file_host_directory(output)
+        output = self.directory()
+        with self.assertRaisesRegex(ValueError, 'exactly one complete known output'):
+            verify_works_host.file_host_directory(output)
+        for relative in ('bin/release', 'bin/apphost.cs/release'):
+            directory = output / relative
+            directory.mkdir(parents=True)
+            for name in required:
+                (directory / name).write_bytes(b'ambiguous test body')
+        with self.assertRaisesRegex(ValueError, 'exactly one complete known output'):
+            verify_works_host.file_host_directory(output)
 
     def test_r10_points_at_the_current_workload_policy_and_attaches_all_live_commands(self):
         self.assertEqual(ROWS['R10'][3], 'src/Hexalith.Works/Runtime/WorksDomainAdapters.cs')
@@ -321,6 +352,11 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 observed_runtime_envs.append(kwargs['env'])
             if verify_works_host.target_commands([{'name': name}]) and not finish:
                 raise RuntimeError('stopped at live lane ' + name)
+            if name == 'platform-file-host-release':
+                output = artifacts / 'host/bin/release'
+                output.mkdir(parents=True)
+                for filename in ('apphost.dll', 'Hexalith.Platform.Composition.dll', 'Hexalith.Platform.Works.Runtime.dll'):
+                    (output / filename).write_bytes(b'fresh test host output')
             if name == 'works-consumer-release':
                 output = artifacts / 'consumer/bin/Hexalith.Works.IntegrationTests/release'
                 output.mkdir(parents=True)
@@ -516,6 +552,10 @@ class WorksEvidenceGateTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout)
             arguments = captured.read_text().splitlines()
             self.assertEqual(arguments[arguments.index('-c') + 1], configuration)
+            self.assertIn('-p:NuGetAudit=true', arguments)
+            self.assertIn('-p:NuGetAuditMode=all', arguments)
+            self.assertIn('-p:NuGetAuditLevel=low', arguments)
+            self.assertNotIn('-p:NuGetAudit=false', arguments)
             self.assertIn('-p:UseNuGetDeps=' + ('true' if configuration == 'Release' else 'false'), arguments)
             self.assertIn('-p:UseHexalithProjectReferences=' + ('false' if configuration == 'Release' else 'true'), arguments)
         captured.unlink()

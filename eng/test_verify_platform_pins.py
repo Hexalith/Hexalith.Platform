@@ -13,7 +13,17 @@ CATALOG = """<Project>
     <HexalithAspireHostingDaprVersion>9.9.9</HexalithAspireHostingDaprVersion>
     <HexalithAspireHostingDaprVersion Condition="'$(MSBuildProjectName)' == 'Other'">1.0.0</HexalithAspireHostingDaprVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="11.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="11.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="11.0.0" />
+  </ItemGroup>
 </Project>
+"""
+
+REFERENCE_PINS = """#:package Microsoft.Extensions.Hosting@11.0.0
+#:package Microsoft.Extensions.Http@11.0.0
+#:package System.Text.Json@11.0.0
 """
 
 APPHOST = """#!/usr/bin/env dotnet
@@ -21,7 +31,7 @@ APPHOST = """#!/usr/bin/env dotnet
 #:package CommunityToolkit.Aspire.Hosting.Dapr@{dapr}
 #:package Hexalith.EventStore.ServiceDefaults@3.120.0
 {eventstore}
-"""
+""" + REFERENCE_PINS
 
 SPINE = """### AD-9 — Dapr runtime boundary [ADOPTED, AMENDED]
   - *Canonical hosting:* `Hexalith.EventStore.Aspire`, `Hexalith.EventStore.ServiceDefaults` and `CommunityToolkit.Aspire.Hosting.Dapr` form the canonical set.
@@ -36,7 +46,7 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                 root = pathlib.Path(directory)
                 (root / "catalog.props").write_text(CATALOG)
                 (root / "spine.md").write_text(SPINE)
-                (root / "apphost.cs").write_text("#:sdk Aspire.AppHost.Sdk@13.6.1\n#:package CommunityToolkit.Aspire.Hosting.Dapr@9.9.9\n#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n")
+                (root / "apphost.cs").write_text("#:sdk Aspire.AppHost.Sdk@13.6.1\n#:package CommunityToolkit.Aspire.Hosting.Dapr@9.9.9\n#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n" + REFERENCE_PINS)
                 project = root / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
                 project.parent.mkdir(parents=True)
                 project.write_text("<Project><ItemGroup>" + "".join(
@@ -136,6 +146,33 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                     result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
                         "--spine", str(root / "spine.md")], capture_output=True, text=True)
                     self.assertEqual(result.returncode, expected, result.stderr)
+
+    def test_model_reference_floors_require_exact_pins_and_catalog_authority(self):
+        for name in ("Microsoft.Extensions.Hosting", "Microsoft.Extensions.Http", "System.Text.Json"):
+            for mutation in ("missing", "stale", "unknown", "missing-authority", "ambiguous-authority"):
+                with self.subTest(package=name, mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                    root = pathlib.Path(directory)
+                    catalog = CATALOG
+                    host = APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0")
+                    pin = "#:package " + name + "@11.0.0"
+                    authority = '<PackageVersion Include="' + name + '" Version="11.0.0" />'
+                    if mutation == "missing":
+                        host = host.replace(pin, "")
+                    elif mutation == "stale":
+                        host = host.replace(pin, pin.replace("11.0.0", "10.0.15"))
+                    elif mutation == "unknown":
+                        host = host.replace(pin, pin.replace("11.0.0", "11.0.1"))
+                    elif mutation == "missing-authority":
+                        catalog = catalog.replace(authority, "")
+                    else:
+                        catalog = catalog.replace(authority, authority + authority)
+                    (root / "catalog.props").write_text(catalog)
+                    (root / "apphost.cs").write_text(host)
+                    (root / "spine.md").write_text(SPINE)
+                    result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
+                        "--spine", str(root / "spine.md")], capture_output=True, text=True)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn(name, result.stderr)
 
     def test_vendor_directive_with_no_catalog_authority_refuses(self):
         with tempfile.TemporaryDirectory() as directory:

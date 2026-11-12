@@ -80,7 +80,7 @@ else
   echo "Building local Platform scaffold ($CONFIGURATION)..."
   # The file-based AppHost requires full property syntax, rather than -warnaserror shorthand.
   dotnet build ./apphost.cs -c "$CONFIGURATION" --artifacts-path "$ARTIFACTS_DIR" \
-    -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=false -p:MinVerVersionOverride=1.0.0 \
+    -p:TreatWarningsAsErrors=true -p:AspireUseCliBundle=true -p:NuGetAudit=true -p:NuGetAuditMode=all -p:NuGetAuditLevel=low -p:MinVerVersionOverride=1.0.0 \
     -p:UseHexalithProjectReferences="$project_references" -p:UseNuGetDeps="$nuget_dependencies"
   echo "LocalScaffold build succeeded. Full EXT-HOST-1 qualification remains unavailable."
 fi

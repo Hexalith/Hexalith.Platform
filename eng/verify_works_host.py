@@ -69,7 +69,7 @@ def verification_profile(name):
 def consumer_build_command(project, configuration, version, output=None, extra=()):
     """Keep each consumer's configuration and dependency mode coupled in both profiles."""
     command = ["dotnet", "build", project, "-c", configuration, "-p:TreatWarningsAsErrors=true",
-               "-p:NuGetAudit=false", "-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
+               "-p:NuGetAudit=true", "-p:NuGetAuditMode=all", "-p:NuGetAuditLevel=low", "-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
                "-p:MSBuildWarningsAsErrors=MSB3277",
                "-p:UseHexalithProjectReferences=" + ("true" if configuration == "Debug" else "false"),
                "-p:UseNuGetDeps=" + ("false" if configuration == "Debug" else "true"),
@@ -80,6 +80,17 @@ def consumer_build_command(project, configuration, version, output=None, extra=(
     command += ["-p:AspireUseCliBundle=true"] if project.endswith(".cs") else ["-m:1"]
     return command + list(extra)
 
+
+
+def file_host_directory(output):
+    """Bind one complete fresh file-host output across the SDK10 and SDK11 layouts."""
+    output = Path(output)
+    candidates = (output / "bin/release", output / "bin/apphost.cs/release")
+    required = ("apphost.dll", "Hexalith.Platform.Composition.dll", "Hexalith.Platform.Works.Runtime.dll")
+    present = [path for path in candidates if any((path / name).is_file() for name in required)]
+    if len(present) != 1 or any(not (present[0] / name).is_file() for name in required):
+        raise ValueError("The fresh Platform file host requires exactly one complete known output layout.")
+    return present[0]
 
 def consumer_model_environment(works, sdk_root, configuration, version, output):
     """Keep selected-child preparation on the loaded SDK's actual compilation and output context."""
@@ -1214,7 +1225,8 @@ def run_verification(args):
         build("works-consumer-release", "tests/Hexalith.Works.IntegrationTests/Hexalith.Works.IntegrationTests.csproj", "Release", works, consumer_output,
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
                "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources, path_map(consumer_output)])
-        host_runtime = host_output / "bin/release" / (PLATFORM_RUNTIME + ".dll")
+        host_directory = file_host_directory(host_output)
+        host_runtime = host_directory / (PLATFORM_RUNTIME + ".dll")
         summary["platformRuntimeIdentity"] = require_identical_runtime(
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))
         consumer_directory = consumer_output / "bin/Hexalith.Works.IntegrationTests/release"
@@ -1232,7 +1244,7 @@ def run_verification(args):
         if "Debug" in profile["consumerConfigurations"]:
             summary["worksDebugSdkAssemblies"] = {path.name: sha256(path) for path in
                 sorted((artifacts / "consumer-debug/bin/Hexalith.Works.IntegrationTests/debug").glob("Hexalith.EventStore.*.dll"))}
-        assembly = host_output / "bin/release/apphost.dll"
+        assembly = host_directory / "apphost.dll"
         summary["host"] = {"source": str(platform / "apphost.cs"), "sourceSha256": sha256(platform / "apphost.cs"),
                            "assembly": str(assembly), "sha256": sha256(assembly), "configuration": "Release"}
         summary["platformAdapterAssemblies"] = {str(path): sha256(path) for path in [

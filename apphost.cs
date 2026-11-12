@@ -6,6 +6,9 @@
 #:package Aspire.Hosting.Redis@13.6.5
 #:package Aspire.Hosting.Keycloak@13.6.5-preview.1.26559.7
 #:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.2-beta.959
+#:package Microsoft.Extensions.Hosting@11.0.0
+#:package Microsoft.Extensions.Http@11.0.0
+#:package System.Text.Json@11.0.0
 #:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
 using Aspire.Hosting;
 using Hexalith.Platform.Composition;
