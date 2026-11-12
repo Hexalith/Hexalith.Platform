@@ -160,19 +160,26 @@ public sealed class WorksPreviewModelTests : IDisposable
         }
     }
 
-    /// <summary>Every receiver requires a distinct secret app-channel credential even in Development.</summary>
-    [Fact]
-    public async Task EachReceiverRequiresItsOwnSecretAppChannelToken()
+    /// <summary>Every receiver uses the qualified runtime and a distinct secret app-channel credential, including the second Works replica.</summary>
+    /// <param name="replicas">The independently composed Works source replicas.</param>
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task EachReceiverRequiresItsOwnSecretAppChannelToken(int replicas)
     {
         IDistributedApplicationBuilder builder = Builder("Development");
+        string profilePath = builder.Configuration["Platform:Works:DevelopmentCatalogProfile"]!;
+        var profile = JsonSerializer.Deserialize<WorksDevelopmentCatalogProfile>(File.ReadAllBytes(profilePath))!;
+        File.WriteAllBytes(profilePath, JsonSerializer.SerializeToUtf8Bytes(profile with { Replicas = replicas }));
         WorksPreviewModel.Compose(builder);
         HashSet<ParameterResource> tokens = [];
         ProjectResource[] projects = [.. builder.Resources.OfType<ProjectResource>()];
-        projects.Length.ShouldBe(4);
+        projects.Length.ShouldBe(3 + replicas);
         foreach (ProjectResource project in projects)
         {
             Dictionary<string, object> environment = new(StringComparer.Ordinal);
             await CaptureModelEnvironmentAsync(builder, project, environment);
+            environment["DOTNET_ROLL_FORWARD"].ShouldBe("LatestMajor", project.Name);
             environment.TryGetValue("APP_API_TOKEN", out object? value).ShouldBeTrue();
             ParameterResource token = value.ShouldBeOfType<ParameterResource>();
             token.Secret.ShouldBeTrue();
