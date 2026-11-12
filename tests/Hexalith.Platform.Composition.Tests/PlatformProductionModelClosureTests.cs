@@ -46,13 +46,15 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                 "7.0.7" => ("1e180b869b693ab50c5522959f52b6b8f1f5637102d18fc9df1f3fa9768ca68d", PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName),
                 _ => throw new InvalidDataException("The production closure requires an independently measured Server package."),
             };
+            string security = Path.Combine(root, "eng", "HistoricalPackageSecurity.props");
+            File.Exists(security).ShouldBeTrue("The isolated build must use the same bounded security patches as the owning Platform build.");
             string model = Path.Combine(workspace, "hosts", "platform-model");
             string artifacts = Path.Combine(workspace, "build", "platform-model");
             string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
             var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
                 ["build", project, "--configuration", "Release", "--output", model, "--artifacts-path", artifacts,
                  "-p:UseHexalithProjectReferences=false", "-p:HexalithBuildsRoot=" + builds, "-p:BuildsToolingAssemblyPath=" + tooling,
-                 "-p:CustomBeforeDirectoryBuildProps=" + catalog, "-p:ImportDirectoryPackagesProps=false",
+                 "-p:CustomBeforeDirectoryBuildProps=" + catalog, "-p:CustomAfterMicrosoftCommonProps=" + security, "-p:ImportDirectoryPackagesProps=false",
                  "-p:CentralPackageVersionsFileImported=true", "-p:DirectoryPackagesPropsPath=" + catalog,
                  "-p:CopyLocalLockFileAssemblies=true", "-p:UseSharedCompilation=false", "-nodeReuse:false", "-m:1",
                  "-p:BuildInParallel=false", "-p:RestoreBuildInParallel=false"], root, null),
@@ -61,10 +63,14 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             result.ExitCode.ShouldBe(0, result.ErrorOutput);
             result.TimedOut.ShouldBeFalse();
             result.OutputTruncated.ShouldBeFalse();
+            Hash(catalog).ShouldBe(catalogHash, "Security patches must not rewrite the authenticated exported catalog blob.");
             string server = Path.Combine(model, "Hexalith.Tenants.Server.dll");
             File.Exists(server).ShouldBeTrue("The production model output itself must supply Server; the test project's reference cannot satisfy this prerequisite.");
             Hash(server).ShouldBe(selected.ExpectedHash);
             using JsonDocument assets = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")));
+            JsonElement audit = assets.RootElement.GetProperty("project").GetProperty("restore").GetProperty("restoreAuditProperties");
+            audit.GetProperty("enableAudit").GetString().ShouldBe("true");
+            audit.GetProperty("auditMode").GetString().ShouldBe("all");
             assets.RootElement.GetProperty("libraries").GetProperty("Hexalith.Tenants.Server/" + tenantsVersion).GetProperty("type").GetString().ShouldBe("package");
             assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
                 .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();

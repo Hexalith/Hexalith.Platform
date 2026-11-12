@@ -35,16 +35,23 @@ class HistoricalSecurityPackagesTests(unittest.TestCase):
             catalog.parent.mkdir(parents=True)
             catalog.write_bytes(raw)
             outputs = []
-            for name, imported in [("baseline", catalog), ("platform", ROOT / "Directory.Packages.props")]:
+            for name, imported in [("baseline", catalog), ("platform", ROOT / "Directory.Packages.props"), ("isolated", None)]:
                 project = root / name / "Hexalith.Platform.Composition.Tests.csproj"
                 project.parent.mkdir()
+                imported_xml = '' if imported is None else '<Import Project="' + escape(str(imported), {'"': '&quot;'}) + '" />'
                 project.write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>'
                                    '<TargetFramework>net10.0</TargetFramework>'
                                    '<UseHexalithProjectReferences>false</UseHexalithProjectReferences>'
-                                   '</PropertyGroup><Import Project="' + escape(str(imported), {'"': '&quot;'}) + '" /></Project>')
+                                   '</PropertyGroup>' + imported_xml + '</Project>')
+                isolated = [] if name != "isolated" else [
+                    "-p:CustomBeforeDirectoryBuildProps=" + str(catalog),
+                    "-p:CustomAfterMicrosoftCommonProps=" + str(ROOT / "eng/HistoricalPackageSecurity.props"),
+                    "-p:ImportDirectoryPackagesProps=false", "-p:CentralPackageVersionsFileImported=true",
+                    "-p:DirectoryPackagesPropsPath=" + str(catalog),
+                ]
                 completed = subprocess.run(["dotnet", "msbuild", str(project), "-nologo",
                                             "-p:HexalithBuildsRoot=" + str(catalog.parents[1]),
-                                            "-getItem:PackageVersion",
+                                            *isolated, "-getItem:PackageVersion",
                                             "-getProperty:NuGetAudit,NuGetAuditMode,NuGetAuditLevel"],
                                            capture_output=True, text=True, check=True, timeout=30)
                 selected = json.loads(completed.stdout)
@@ -52,7 +59,8 @@ class HistoricalSecurityPackagesTests(unittest.TestCase):
                 outputs.append(collections.Counter((item["Identity"], item["Version"])
                                                    for item in selected["Items"]["PackageVersion"]))
             self.assertEqual(catalog.read_bytes(), raw, "Evaluation must never rewrite the selected historical catalog.")
-            return outputs
+            self.assertEqual(outputs[1], outputs[2], "The normal catalog wrapper and isolated raw-blob build must apply identical bounded security patches.")
+            return outputs[:2]
 
     def test_each_frozen_catalog_changes_only_the_exact_security_dependency_closure(self):
         for revision in HISTORICAL:
