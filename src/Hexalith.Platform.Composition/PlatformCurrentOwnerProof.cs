@@ -55,7 +55,7 @@ internal sealed class PlatformCurrentOwnerProof
     internal static string DeclarationHashForCohort(string cohort) => cohort switch
     {
         PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name => DeclarationHash,
-        PublishedCatalogArtifactCohort.CurrentOwnerCurrentName => CurrentDeclarationHash,
+        PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name => CurrentDeclarationHash,
         _ => throw Refusal(),
     };
     internal string SdkVersion => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(Cohort);

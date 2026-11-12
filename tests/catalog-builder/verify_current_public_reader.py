@@ -29,8 +29,12 @@ PACKAGES = {name: version for version, names in [
 
 
 def qualify(args):
+    memories_version = args.memories_version
+    selected_cohort = COHORT.replace("memories-3.0.26", "memories-" + memories_version)
+    packages = {name: memories_version if name.startswith("Hexalith.Memories.") else version
+                for name, version in PACKAGES.items()}
     args.evidence.mkdir(parents=True, exist_ok=False)
-    report = {"scope": "SDK4.2/Tenants707/Memories26/Parties311 public and private artifact readers only; no image or native authority",
+    report = {"scope": "SDK4.2/Tenants707/Memories" + memories_version + "/Parties311 public and private artifact readers only; no image or native authority",
               "candidateAcceptance": False, "runtimeAcceptance": False, "status": "running", "cases": []}
     result = args.evidence / "result.json"
 
@@ -41,11 +45,12 @@ def qualify(args):
     shutil.copyfile(Path(consumer.__file__), args.evidence / "consumer-helper-source.py")
     save()
     try:
-        measurement_path = consumer.ROOT / "docs/implementation/current-package-cohort-20261112.json"
+        measurement_path = consumer.ROOT / ("docs/implementation/current-package-cohort-20261112"
+                                            + ("-memories27" if memories_version == "3.0.27" else "") + ".json")
         measurement = json.loads(measurement_path.read_text())
         measured = {item["id"]: item for item in measurement["packages"]}
-        assert len(measurement["packages"]) == len(measured) == len(PACKAGES)
-        assert {name: item["version"] for name, item in measured.items()} == PACKAGES
+        assert len(measurement["packages"]) == len(measured) == len(packages)
+        assert {name: item["version"] for name, item in measured.items()} == packages
         assert measurement["runtimeAcceptance"] is False and measurement["candidateAcceptance"] is False
         shutil.copyfile(measurement_path, args.evidence / "package-measurements.json")
         report["packageMeasurementsSha256"] = consumer.digest(measurement_path)
@@ -66,7 +71,7 @@ def qualify(args):
             consumer.make_project(project, program=(consumer.ROOT / "src/Hexalith.Platform.CatalogBuilder/Program.cs").read_text())
             xml = ET.parse(project)
             items = ET.SubElement(xml.getroot(), "ItemGroup")
-            for name in PACKAGES:
+            for name in packages:
                 if not name.startswith("Hexalith.EventStore."):
                     ET.SubElement(items, "PackageReference", {"Include": name})
             xml.write(project, encoding="unicode")
@@ -74,14 +79,14 @@ def qualify(args):
             consumer.execute(["dotnet", "build", str(project), "-c", "Release", "--output", str(output),
                               "-m:1", "-nr:false", "--disable-build-servers", "-warnaserror",
                               *consumer.properties(args.builds_root, "4.2.0", "7.0.7"),
-                              "-p:HexalithMemoriesVersion=3.0.26", "-p:HexalithMcpCliVersion=2.0.1", "-p:HexalithPartiesVersion=3.1.1"],
+                              "-p:HexalithMemoriesVersion=" + memories_version, "-p:HexalithMcpCliVersion=2.0.1", "-p:HexalithPartiesVersion=3.1.1"],
                              args.evidence / "build.log")
             report["executedArtifacts"] = consumer.retain_execution(project, output, "reader", args.evidence, "4.2.0", "7.0.7")
             shutil.copytree(output, args.evidence / "reader-output")
             assets = json.loads((work / "obj/project.assets.json").read_text())
             shutil.copyfile(work / "obj/project.assets.json", args.evidence / "project.assets.json")
             artifacts = []
-            for name, version in PACKAGES.items():
+            for name, version in packages.items():
                 expected = measured[name]
                 assert assets["libraries"][name + "/" + version]["type"] == "package"
                 archive = next(Path(folder) / name.lower() / version / (name.lower() + "." + version + ".nupkg")
@@ -106,7 +111,7 @@ def qualify(args):
                                   "archiveSha256": consumer.digest(archive), "body": member, "sha256": consumer.digest(body)})
             report["publicArtifacts"] = artifacts
 
-            def execute_case(name, cohort=COHORT, owners=OWNERS, fault=None, expected=False):
+            def execute_case(name, cohort=selected_cohort, owners=OWNERS, fault=None, expected=False):
                 destination = args.evidence / (name + "-output")
                 destination.mkdir()
                 request = {"generation": 1, "instanceId": "sdk420-public-reader", "gatewayAppId": "eventstore",
@@ -149,16 +154,16 @@ def qualify(args):
             execute_case("exact-public-sdk420-reader", expected=True)
             execute_case("exact-private-eventstore-sdk420-reader", cohort=PRIVATE_EVENTSTORE_COHORT, owners=OWNERS[:1], expected=True)
             for name, cohort in [
-                    ("unknown", "unknown"), ("near-sdk", COHORT.replace("4.2.0", "4.2.1")),
-                    ("metadata-sdk", COHORT.replace("4.2.0", "4.2.0+metadata")),
-                    ("old-sdk-authority", COHORT.replace("4.2.0", "4.1.0")),
-                    ("private-current-purpose", "current-parties-eventstore-4.2.0-tenants-7.0.7-memories-3.0.26-mcpcli-2.0.1"),
+                    ("unknown", "unknown"), ("near-sdk", selected_cohort.replace("4.2.0", "4.2.1")),
+                    ("metadata-sdk", selected_cohort.replace("4.2.0", "4.2.0+metadata")),
+                    ("old-sdk-authority", selected_cohort.replace("4.2.0", "4.1.0")),
+                    ("private-current-purpose", selected_cohort.replace("parties-3.1.1-", "current-parties-", 1)),
                     ("private-eventstore-purpose", PRIVATE_EVENTSTORE_COHORT)]:
                 execute_case(name, cohort=cohort, owners=OWNERS[:-1] if name == "private-current-purpose" else OWNERS)
             execute_case("missing-owner", owners=OWNERS[:-1])
             execute_case("duplicate-owner", owners=[*OWNERS, OWNERS[0]])
             execute_case("foreign-adapter", owners=[{**OWNERS[0], "adapterAssembly": "Hexalith.Foreign.Server"}, *OWNERS[1:]])
-            for name in PACKAGES:
+            for name in packages:
                 execute_case("changed-" + name, fault=name)
             for name, expected in report["executedArtifacts"]["files"].items():
                 assert consumer.digest(output / name) == expected, name
@@ -175,4 +180,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--builds-root", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
+    parser.add_argument("--memories-version", choices=["3.0.26", "3.0.27"], default="3.0.26")
     qualify(parser.parse_args())

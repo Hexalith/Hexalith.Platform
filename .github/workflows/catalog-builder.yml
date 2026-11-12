@@ -91,6 +91,15 @@ jobs:
           python3 tests/catalog-builder/verify_current_public_reader.py
           --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
           --evidence "$RUNNER_TEMP/catalog-current-public-reader-evidence"
+      - name: Verify the independently signed Memories 3.0.27 reader cohort
+        if: matrix.sdk == '4.2.0'
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
+        run: >-
+          python3 tests/catalog-builder/verify_current_public_reader.py
+          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
+          --memories-version 3.0.27
+          --evidence "$RUNNER_TEMP/catalog-current-memories27-reader-evidence"
       - name: Retain executable and refusal evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -103,4 +112,5 @@ jobs:
             ${{ runner.temp }}/catalog-sdk42-owner-evidence
             ${{ runner.temp }}/catalog-sdk420-public-parties-evidence
             ${{ runner.temp }}/catalog-current-public-reader-evidence
+            ${{ runner.temp }}/catalog-current-memories27-reader-evidence
           if-no-files-found: error

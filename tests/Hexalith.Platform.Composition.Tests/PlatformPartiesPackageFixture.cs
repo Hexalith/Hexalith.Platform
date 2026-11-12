@@ -95,7 +95,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort).ShouldBeTrue();
             if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort).ShouldBeTrue();
         }
-        // The current private producer builds its own fresh707/26 package closure. The collecting
+        // The current private producer builds its own fresh707/26 or707/27 package closure. The collecting
         // test assembly deliberately retains historical bodies and cannot establish those identities.
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
         string root = currentArtifacts ? PlatformTestRepository.Root : PreparedFixtureRoot();
@@ -139,8 +139,15 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
                 PlatformDeclarationHash = Hash(manifest), SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
+            if (currentArtifacts)
+            {
+                cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
+                    ?? throw new InvalidDataException("The current artifact fixture requires an independently authenticated complete tuple.");
+                (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
+                PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
+            }
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", currentArtifacts ? "4.2.0" : SelectedSdkVersion), ("tenants", currentArtifacts ? "7.0.7" : current || published ? "7.0.5" : "7.0.2"), ("memories", currentArtifacts ? "3.0.26" : current || published ? "3.0.25" : "3.0.23"), ("parties", currentArtifacts ? "3.1.1" : published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", currentArtifacts ? "4.2.0" : SelectedSdkVersion), ("tenants", currentArtifacts ? "7.0.7" : current || published ? "7.0.5" : "7.0.2"), ("memories", currentArtifacts ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort) : current || published ? "3.0.25" : "3.0.23"), ("parties", currentArtifacts ? "3.1.1" : published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

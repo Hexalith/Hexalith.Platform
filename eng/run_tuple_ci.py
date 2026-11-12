@@ -183,8 +183,8 @@ def main():
         required_total = validate_profile(profile)
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
-        if args.suite == "current42" and required_total != 466:
-            raise ValueError("The SDK4.2 current suite requires all 457 retained cases and nine current artifact controls (466 total).")
+        if args.suite == "current42" and required_total != 474:
+            raise ValueError("The SDK4.2 current suite requires all 457 retained cases and seventeen current artifact controls (474 total).")
         if args.suite == "extensions" and required_total != 9:
             raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:

@@ -102,6 +102,7 @@ internal static class PlatformPartiesPackageCatalogQualification
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
             // Signed reader artifacts alone cannot authorize new execution image tuples.
             || cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName
+                or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name
             || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
@@ -127,8 +128,8 @@ internal static class PlatformPartiesPackageCatalogQualification
     {
         (true, PublishedCatalogArtifactCohort.CurrentOwnerName, "3.0.0" or "3.1.0") => true,
         (true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name, "3.1.0") => true,
-        (true, PublishedCatalogArtifactCohort.CurrentOwnerCurrentName, "3.1.1") => true,
-        (false, PublishedCatalogArtifactCohort.PublishedPartiesCurrentName, "3.1.1") => true,
+        (true, PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name, "3.1.1") => true,
+        (false, PublishedCatalogArtifactCohort.PublishedPartiesCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name, "3.1.1") => true,
         (false, PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name, "3.1.0") => true,
         (false, PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName, "3.0.0") => true,
         _ => false,
@@ -137,6 +138,7 @@ internal static class PlatformPartiesPackageCatalogQualification
     private static bool VersionsMatch(PlatformCompositionOptions options, bool current, string cohort)
         => PlatformServerBindings.Version(options, "memories", "full-Parties qualification")
                 == (current ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort)
+                    : cohort == PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name ? "3.0.27"
                     : cohort == PublishedCatalogArtifactCohort.PublishedPartiesCurrentName ? "3.0.26"
                     : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name ? "3.0.25" : "3.0.23")
             && MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "full-Parties qualification"), current, cohort);
