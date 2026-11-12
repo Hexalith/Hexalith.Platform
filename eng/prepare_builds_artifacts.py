@@ -70,8 +70,10 @@ def main():
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(payload)
             hashes[entry.filename] = hashlib.sha256(payload).hexdigest()
-    tool = extracted / "tools/net10.0/any"
-    if hashes["tools/net10.0/any/Hexalith.Builds.Tooling.dll"] != tooling_sha256:
+    framework = "net11.0" if version.startswith("5.") else "net10.0"
+    tool_prefix = "tools/" + framework + "/any/"
+    tool = extracted / tool_prefix
+    if hashes[tool_prefix + "Hexalith.Builds.Tooling.dll"] != tooling_sha256:
         raise ValueError("Unexpected published Tooling identity.")
     host = tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
     executable_version = subprocess.check_output(["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"], text=True).strip()

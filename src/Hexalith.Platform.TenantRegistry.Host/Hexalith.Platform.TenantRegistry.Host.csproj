@@ -4,7 +4,7 @@
     <IsPackable>false</IsPackable>
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
     <ContainerRepository>ext-secrets-1-eventstore</ContainerRepository>
-    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:10.0-alpine</ContainerBaseImage>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:11.0-alpine</ContainerBaseImage>
     <ContainerUser>app</ContainerUser>
   </PropertyGroup>
   <ItemGroup><PackageReference Include="Hexalith.EventStore.Gateway" /></ItemGroup>

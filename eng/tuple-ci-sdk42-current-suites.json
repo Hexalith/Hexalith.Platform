@@ -296,6 +296,15 @@
       ],
       "requiredCount": 17,
       "purpose": "current-signed-reader-artifacts-and-measured-source-declaration-no-native-admission"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformMcpCliCatalogSelectionTests"
+      ],
+      "requiredCount": 3,
+      "purpose": "explicit-current-mcp-package-selection"
     }
   ],
   "historicalPublicControls": {

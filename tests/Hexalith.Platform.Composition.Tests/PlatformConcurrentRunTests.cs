@@ -36,7 +36,7 @@ public sealed class PlatformConcurrentRunTests
             for (int index = 0; index < 2; index++)
             {
                 var engine = new CompositionEngine(new CompositionEngineOptions(
-                    Path.Combine(root, "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll"), typeof(CompositionEngine).Assembly.Location)
+                    PlatformPublishedValidationRuntime.SourceAppHostPath(root), typeof(CompositionEngine).Assembly.Location)
                 {
                     AspireCommand = Environment.GetEnvironmentVariable("HEXALITH_ASPIRE_CLI") ?? "aspire",
                     SourceMapping = mapping,

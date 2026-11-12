@@ -183,8 +183,8 @@ def main():
         required_total = validate_profile(profile)
         if args.suite == "base42" and required_total != 97:
             raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
-        if args.suite == "current42" and required_total != 474:
-            raise ValueError("The SDK4.2 current suite requires all 457 retained cases and seventeen current artifact controls (474 total).")
+        if args.suite == "current42" and required_total != 477:
+            raise ValueError("The SDK4.2 current suite requires all 457 retained cases, seventeen current artifact controls and three explicit MCP selection controls (477 total).")
         if args.suite == "extensions" and required_total != 9:
             raise ValueError("The extension SDK suite must retain all nine required package cases.")
         if not args.audit_only:
@@ -196,7 +196,8 @@ def main():
                 raise ValueError("Tracked source is dirty.")
         if args.artifacts:
             identity = json.loads((args.artifacts.resolve() / "artifact-identity.json").read_bytes())
-            tool = args.artifacts.resolve() / "published/tools/net10.0/any"
+            framework = "net11.0" if version.startswith("5.") else "net10.0"
+            tool = args.artifacts.resolve() / ("published/tools/" + framework + "/any")
             if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != version or identity["buildsRevision"] != source or identity.get("tupleBinding") != binding:
                 raise ValueError("Artifact receipt names another tool root or tuple.")
             archive = args.artifacts.resolve() / ("hexalith.builds.module.cli." + version + ".nupkg")

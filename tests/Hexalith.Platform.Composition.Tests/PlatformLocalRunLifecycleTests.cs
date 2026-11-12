@@ -24,7 +24,7 @@ public sealed class PlatformLocalRunLifecycleTests
         Directory.CreateDirectory(evidence);
         string workspace = Path.Combine(Path.GetTempPath(), "platform-local-lifecycle-" + Guid.NewGuid().ToString("N"));
         string original = Path.Combine(root, "eng/test-environment-provisioning/manifest.v2.json");
-        string appHost = Path.Combine(root, "references/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.AppHost/bin/Debug/net10.0/Hexalith.Builds.Module.AppHost.dll");
+        string appHost = PlatformPublishedValidationRuntime.SourceAppHostPath(root);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(original, WorkspaceMode.Source, TestContext.Current.CancellationToken);
         CompositionEngineOptions options = new(appHost, typeof(CompositionEngine).Assembly.Location)
         {

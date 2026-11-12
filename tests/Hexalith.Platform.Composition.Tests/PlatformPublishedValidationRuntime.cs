@@ -10,6 +10,20 @@ using Hexalith.Builds.Tooling.Runtime;
 /// <summary>Prepares an effect-free test transport with one authenticated security dependency patch; grants no deployed runtime authority.</summary>
 internal static class PlatformPublishedValidationRuntime
 {
+    /// <summary>Follow the actual loaded Builds generation for current and retained source-host checks.</summary>
+    internal static string SourceAppHostPath(string platformRoot)
+    {
+        string framework = typeof(CompositionEngine).Assembly
+            .GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>()?.FrameworkName switch
+        {
+            ".NETCoreApp,Version=v10.0" => "net10.0",
+            ".NETCoreApp,Version=v11.0" => "net11.0",
+            _ => throw Refusal(),
+        };
+        return Path.Combine(platformRoot, "references", "Hexalith.Builds", "src", "hosts",
+            "Hexalith.Builds.Module.AppHost", "bin", "Debug", framework, "Hexalith.Builds.Module.AppHost.dll");
+    }
+
     private const string _oldHosting = "7ede5667cdfe3ae9fa91cc71ccd8ba1cbd4a96236c73706ba1562eab6549b06d";
     private const string _patchedHosting = "4833f3e80792a88d5b1ebd55366a3362776e8ca1513b8e7e8bb24834f38d5c98";
     private const string _patchedArchive = "57a52672d4ec2793d2cf1fe05c313cbb373c926ad133cad31c75ea0189dbc8cd";
@@ -73,7 +87,10 @@ internal static class PlatformPublishedValidationRuntime
             XElement repository = metadata.Elements().Single(element => element.Name.LocalName == "repository");
             if (metadata.Elements().Single(element => element.Name.LocalName == "id").Value != "Hexalith.Builds.Module.Cli"
                 || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Builds") throw Refusal();
-            const string prefix = "tools/net10.0/any/g4-host/";
+            string version = metadata.Elements().Single(element => element.Name.LocalName == "version").Value;
+            string framework = version.StartsWith("5.", StringComparison.Ordinal) ? "net11.0"
+                : version.StartsWith("4.", StringComparison.Ordinal) ? "net10.0" : throw Refusal();
+            string prefix = "tools/" + framework + "/any/g4-host/";
             foreach (ZipArchiveEntry entry in package.Entries.Where(entry => entry.FullName.StartsWith(prefix, StringComparison.Ordinal) && !entry.FullName.EndsWith('/')))
             {
                 string relative = entry.FullName[prefix.Length..].Replace('/', Path.DirectorySeparatorChar);
