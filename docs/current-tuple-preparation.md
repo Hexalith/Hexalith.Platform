@@ -24,6 +24,23 @@ private signed transport checks and exact-source release gates remain required.
 Preparation and package measurement supply no hosted qualification, new native
 or image admission, or qualified source publication.
 
+## Signed 5.1.0 validation transport for lifecycle qualification
+
+The separate [5.1.0 pair measurement](implementation/builds510-validation-pair.json)
+binds genuine published source `9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`,
+its original release artifact/manifest, repository-signed package and exact
+AppHost/Tooling members. Only that complete pair can use the existing private
+validation projection; argument, environment, canonical document, source/catalog
+and owner-profile checks remain unchanged. Every crossed pair remains refused.
+
+This permits preparation for a later 5.1.0 qualification caller. It grants no
+tool or lifecycle acceptance and changes neither exact main tool pin. Platform
+retains tool 5.0.1 and its exact published catalog/helper source
+`3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`; the caller must use that same
+catalog source while separately binding the 5.1.0 executable source. Equal
+catalog bytes alone never satisfy the exact source-equality guard. Fresh full
+lifecycle qualification and real cancellation evidence remain required.
+
 ## Current signed Builds4.47.0 and SDK4.2.0 tuple
 
 The producer is genuine [Builds v4.47.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0)

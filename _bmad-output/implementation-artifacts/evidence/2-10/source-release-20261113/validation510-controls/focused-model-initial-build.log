@@ -1,0 +1,27 @@
+  Determining projects to restore...
+  Restored /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 181 ms).
+  Restored /tmp/hexalith-story-2-10-source-release-20261113/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 191 ms).
+  12 of 14 projects are up-to-date for restore.
+  Hexalith.EventStore.Contracts -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/bin/Debug/net11.0/Hexalith.EventStore.Contracts.dll
+  Hexalith.Tenants.Contracts -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Tenants/src/Hexalith.Tenants.Contracts/bin/Debug/net11.0/Hexalith.Tenants.Contracts.dll
+  Hexalith.Memories.Contracts -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories/src/Hexalith.Memories.Contracts/bin/Debug/net10.0/Hexalith.Memories.Contracts.dll
+/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories/Directory.Build.props(98,5): error : Git submodule 'references/Hexalith.Commons' is missing. Run: git submodule update --init references/Hexalith.Commons from the repository root. [/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj]
+  Hexalith.EventStore.Client -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/src/Hexalith.EventStore.Client/bin/Debug/net11.0/Hexalith.EventStore.Client.dll
+  Hexalith.EventStore.ServiceDefaults -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/src/Hexalith.EventStore.ServiceDefaults/bin/Debug/net11.0/Hexalith.EventStore.ServiceDefaults.dll
+  Hexalith.EventStore.RuntimeIdentityProbe -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/tools/Hexalith.EventStore.RuntimeIdentityProbe/bin/Debug/net11.0/Hexalith.EventStore.RuntimeIdentityProbe.dll
+  Hexalith.EventStore.Aspire -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/bin/Debug/net11.0/Hexalith.EventStore.Aspire.dll
+  Platform version catalog validated: Hexalith.EventStore.Aspire/4.2.0, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net11.0.
+  Hexalith.Builds.Tooling -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net11.0/Hexalith.Builds.Tooling.dll
+  Hexalith.EventStore.DomainService -> /tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/bin/Debug/net11.0/Hexalith.EventStore.DomainService.dll
+  Hexalith.Platform.Works.Runtime -> /tmp/hexalith-story-2-10-source-release-20261113/src/Hexalith.Platform.Works.Runtime/bin/Debug/net11.0/Hexalith.Platform.Works.Runtime.dll
+  Hexalith.Platform.Custody -> /tmp/hexalith-story-2-10-source-release-20261113/src/Hexalith.Platform.Custody/bin/Debug/net11.0/Hexalith.Platform.Custody.dll
+  Hexalith.Platform.Custody.Component -> /tmp/hexalith-story-2-10-source-release-20261113/src/Hexalith.Platform.Custody.Component/bin/Debug/net11.0/Hexalith.Platform.Custody.Component.dll
+  Hexalith.Platform.Secrets.Runtime -> /tmp/hexalith-story-2-10-source-release-20261113/src/Hexalith.Platform.Secrets.Runtime/bin/Debug/net11.0/Hexalith.Platform.Secrets.Runtime.dll
+
+Build FAILED.
+
+/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories/Directory.Build.props(98,5): error : Git submodule 'references/Hexalith.Commons' is missing. Run: git submodule update --init references/Hexalith.Commons from the repository root. [/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories/src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:16.22

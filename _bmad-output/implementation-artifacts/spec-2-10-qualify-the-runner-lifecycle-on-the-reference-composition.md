@@ -411,3 +411,57 @@ before-tag/before-publish recheck. Publication must never be inferred from a
 prepared hash or local pass. Only after actual publication may the parent select
 the matching Parties caller and 5.1.0 fixed inputs. All acceptance flags remain
 false until full lifecycle qualification.
+
+## Compatible 5.1.0 validation transport — 2026-11-13
+
+This is the current implementation unit, superseding the completed preparation
+handoff above. The user explicitly confirmed compatibility floor 5.0.1 with both
+exact main tool pins unchanged. The synchronized source base is
+`1cece242bd4a82c517bb92447c6d6799f6313b6f`. Its 5.0.1 tuple and refreshed
+companions are honest, but it cannot run the required genuine 5.1.0 lifecycle
+owner: the published AppHost projects the claim directory during validation,
+and Platform rejects the unrecognized 5.1.0 binary pair with HXP020.
+
+The implementation worker must:
+
+- Add exactly the measured 5.1.0 complete AppHost/Tooling pair in
+  `src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs`.
+  AppHost SHA256 is
+  `c5d2804f71532125f5f53dfc1ddeef8acbd2ed757201615d77a5471c28296a1b`;
+  Tooling SHA256 is
+  `d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff`.
+  `docs/implementation/builds510-validation-pair.json` independently binds the
+  official release, original artifact/manifest, repository-signed package and
+  exact paired bytes. Do not change argument/environment checks, canonical plan
+  projection, source/catalog equality, owner profile selection, or any other guard.
+- Extend the existing all-pairs control in
+  `tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs`
+  with this complete pair, preserving every old positive and crossed-pair
+  negative assertion and all original test counts. Preserve CRLF bytes.
+- Run meaningful focused compiled checks, preferring the canonical owning test
+  project in Debug/source mode. Initialize only missing direct root dependencies
+  using available original workspace Git objects if needed, never nested owners.
+  Keep NuGet auditing and warning policy intact. Retain exact commands/results
+  under `/tmp/hexalith-story-2-10-release-record-20261113`; report blockers honestly.
+  Source/publication controls already passed on unchanged helpers; rerun only
+  checks affected by this guard change. Do not start lifecycle services or AppHost.
+- Return before committing, pushing, publishing or dispatching. The parent owns
+  refreshed immutable companions and all actual hosted release gates after this
+  final production change. Do not edit other files or prior evidence.
+
+The later Parties qualification caller must retain Builds/catalog/helper source
+`3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, matching the exact Platform source
+catalog. It selects genuine CLI 5.1.0/source
+`9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4` separately. Direct caller Builds 9ebc
+would fail HXW009, even though the two catalog blobs and required helpers are
+byte-identical. The fixed-input schema already separates `sources.builds` from
+`tool.sourceRevision`; preserve this distinction. Full lifecycle acceptance and
+both exact main pins remain unchanged.
+
+The canonical owning class passed all 4 cases after the recorded red failure.
+The established private .NET 11 Debug/source context built with zero warnings or
+errors; its default framework mismatch remains a separate retained blocker.
+The final parent incorporated concurrent main documentation
+`e134616ca8a79159a93c5bebde04cde1fc7e116b` before freezing companions. Source
+comparison and every hosted package qualification gate remain mandatory; these
+local controls grant no runtime acceptance.

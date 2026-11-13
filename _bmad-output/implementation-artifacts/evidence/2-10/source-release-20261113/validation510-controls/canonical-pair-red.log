@@ -1,0 +1,17 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+    Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.OnlyTheTwoMeasuredDeclarationsAreCompatible [FAIL]
+      Shouldly.ShouldAssertException : PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)
+          should be
+      True
+          but was
+      False
+      Stack Trace:
+        tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs(110,0): at Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.OnlyTheTwoMeasuredDeclarationsAreCompatible()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '54c3b39eb7b87613a943e78dc0f786caf890980395d7e85bd346daa4329b07b9')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.123s

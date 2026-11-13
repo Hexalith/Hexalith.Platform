@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "dotnet",
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests",
+    "-result-xml",
+    "/tmp/hexalith-story-2-10-release-record-20261113/validation510-controls/canonical-class-green.xml"
+  ],
+  "cwd": "/tmp/hexalith-story-2-10-source-release-20261113",
+  "exitCode": 0,
+  "elapsedSeconds": 0.777457290008897,
+  "counts": {
+    "total": "4",
+    "passed": "4",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0"
+  },
+  "sourceHashes": {
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs": "fb174974fcd8101d7119cdff58bf165c2c026c8cd2bfd369ed76fefbdb94cec9",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs": "f7d9d09737b3c63335b405d98285a67aa38c27cbd758c6e4882e969ce998199b"
+  },
+  "sourceUnchangedDuringExecution": true,
+  "diagnosticFrameworkContextOnly": true
+}

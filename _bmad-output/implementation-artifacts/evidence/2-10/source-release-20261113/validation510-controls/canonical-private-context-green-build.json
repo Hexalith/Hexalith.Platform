@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "--configuration",
+    "Debug",
+    "--nologo",
+    "-m:1",
+    "-nodeReuse:false",
+    "-p:UseSharedCompilation=false",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:DirectoryBuildPropsPath=/tmp/hexalith-story-2-10-release-record-20261113/validation510-controls/net11-private-context.props",
+    "-p:HexalithPlatformRoot=/tmp/hexalith-story-2-10-source-release-20261113",
+    "-p:HexalithBuildsRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Builds",
+    "-p:HexalithEventStoreRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.EventStore",
+    "-p:HexalithTenantsRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Tenants",
+    "-p:HexalithMemoriesRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Parties",
+    "-p:HexalithCommonsRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Commons",
+    "-p:HexalithFrontComposerRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.FrontComposer",
+    "-p:HexalithMcpCliRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.McpCli",
+    "-p:HexalithPolymorphicSerializationsRoot=/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.PolymorphicSerializations",
+    "--no-restore"
+  ],
+  "cwd": "/tmp/hexalith-story-2-10-source-release-20261113",
+  "exitCode": 0,
+  "elapsedSeconds": 18.61564498799271,
+  "diagnosticFrameworkContextOnly": true,
+  "auditingOrWarningsRelaxed": false
+}

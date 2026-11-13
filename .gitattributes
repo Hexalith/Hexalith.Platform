@@ -164,3 +164,6 @@ tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerSourceDeadlineTest
 # Preserve the exact independently authenticated current declaration and retained private provenance fixtures.
 tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-current-311-declaration.json -text
 tests/Hexalith.Platform.Composition.Tests/Fixtures/private-70525-provenance.json -text
+
+# Preserve exact 5.1.0 validation guard build/test receipts.
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/validation510-controls/** -text -whitespace

@@ -1,0 +1,55 @@
+{
+  "schema": "hexalith.platform.published-validation-pair.v1",
+  "scope": "Exact signed validation transport only; no tool, candidate, lifecycle, image or native acceptance",
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "bff475a0afa34bfdf774e21b226c05f788ae6bfe",
+        "sha256": "c55bf73782fa24478fab3a1c963f418cf90440a9532a15f96aee477fdb3b32ea"
+      }
+    },
+    "publication": {
+      "kind": "shared-release-handoff/v1",
+      "version": "5.1.0",
+      "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+      "releaseTag": "v5.1.0",
+      "catalogSha256": "c55bf73782fa24478fab3a1c963f418cf90440a9532a15f96aee477fdb3b32ea",
+      "archiveSha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c",
+      "toolingSha256": "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff",
+      "releaseId": 443617691,
+      "runId": 43325614833,
+      "artifactId": 13992553006,
+      "artifactSha256": "b582f9ea801ca3970a88c87eff98068bbb3eb9250a98615ea07195aefa7d3f6a",
+      "releaseBodySha256": "df9f0939170cdf57a877742e1c4db0177ec2ccb292663fb472eee32b14876741",
+      "manifestJson": "{\n  \"sha\": \"9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4\",\n  \"version\": \"5.1.0\",\n  \"packages\": [\n    {\n      \"id\": \"Hexalith.Builds.Evidence.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Evidence.Cli.5.1.0.nupkg\"\n    },\n    {\n      \"id\": \"Hexalith.Builds.Module.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Module.Cli.5.1.0.nupkg\"\n    }\n  ],\n  \"containers\": []\n}\n",
+      "manifestSha256": "66b5da4b5b190d76c3b7ff5fea7cdec1c64cd337cef965b38a54f50a3cbda8b8"
+    }
+  },
+  "publicationHandoff": {
+    "releaseId": 443617691,
+    "runId": 43325614833,
+    "artifactId": 13992553006,
+    "artifactSha256": "b582f9ea801ca3970a88c87eff98068bbb3eb9250a98615ea07195aefa7d3f6a",
+    "releaseBodySha256": "df9f0939170cdf57a877742e1c4db0177ec2ccb292663fb472eee32b14876741",
+    "tagSource": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+    "manifestSha256": "66b5da4b5b190d76c3b7ff5fea7cdec1c64cd337cef965b38a54f50a3cbda8b8",
+    "artifactDigestSource": "public release body",
+    "qualificationCredit": false,
+    "legacyG4AcceptanceClaimed": false
+  },
+  "signedPackagePayloadMatchesOriginalPublisher": true,
+  "signatureVerificationExitCode": 0,
+  "files": {
+    "tools/net11.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll": "c5d2804f71532125f5f53dfc1ddeef8acbd2ed757201615d77a5471c28296a1b",
+    "tools/net11.0/any/g4-host/Hexalith.Builds.Tooling.dll": "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff",
+    "tools/net11.0/any/Hexalith.Builds.Tooling.dll": "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff"
+  },
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "lifecycleQualification": false
+}

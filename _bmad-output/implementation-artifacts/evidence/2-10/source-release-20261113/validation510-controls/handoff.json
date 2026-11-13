@@ -1,0 +1,69 @@
+{
+  "baseSourceRevision": "1cece242bd4a82c517bb92447c6d6799f6313b6f",
+  "filesChangedByWorker": [
+    "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs"
+  ],
+  "completePairCount": 19,
+  "allPairsAssertions": 361,
+  "positiveCompletePairs": 19,
+  "crossedPairRefusals": 342,
+  "allOriginalGuardBytesPreserved": true,
+  "allOriginalControlBytesPreservedExceptAdditivePair": true,
+  "crlfPreserved": true,
+  "originalTestCaseCountUnchanged": true,
+  "signedPackage": {
+    "path": "/tmp/hexalith-story-2-10-release-record-20261113/hexalith.builds.module.cli.5.1.0.nupkg",
+    "sha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c",
+    "measuredFiles": {
+      "tools/net11.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll": "c5d2804f71532125f5f53dfc1ddeef8acbd2ed757201615d77a5471c28296a1b",
+      "tools/net11.0/any/g4-host/Hexalith.Builds.Tooling.dll": "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff",
+      "tools/net11.0/any/Hexalith.Builds.Tooling.dll": "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff"
+    }
+  },
+  "unchangedTrackedPinsBindingsAndSelectors": [
+    ".config/dotnet-tools.json",
+    "hexalith-platform.json",
+    "eng/builds-tuple.json",
+    "eng/current-tuple-source.json",
+    "eng/legacy-tuple-source.json",
+    "eng/pre-extension-tuple-source.json"
+  ],
+  "compiledBinarySha256": {
+    "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": "a99df83a6bfb73286d0ffba760dc689e02a062715c7c3adfec492d956cb0fe85",
+    "src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": "b86b6560bc975f88064bccfa54021aac9e90b10a55ebf7ae93b7e2052d3d4bc9",
+    "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Debug/net11.0/Hexalith.Builds.Tooling.dll": "ae89552a0debdf857780206919773ab74b3dd9b68561c5ff1517aea73ede70da"
+  },
+  "owningDebugBuild": {
+    "default": "failed: five NU1201 net10 Memories/net11 EventStore incompatibilities",
+    "privateRecordedNet11Context": "passed: zero warnings/errors; diagnostic only"
+  },
+  "focusedControls": {
+    "compiledRed": {
+      "total": 1,
+      "failed": 1,
+      "expected": true
+    },
+    "compiledGreen": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  },
+  "servicesStarted": false,
+  "appHostStarted": false,
+  "commitsCreated": false,
+  "pushesPerformed": false,
+  "workflowsDispatched": false,
+  "toolAccepted": false,
+  "candidateAcceptance": false,
+  "lifecycleQualification": false,
+  "parentFollowup": [
+    "Refresh three immutable historical companions after committing this final production change.",
+    "Run actual hosted exact-source tuple and six catalog SDK publication gates.",
+    "Retain the default source-build blocker separately; private net11 diagnostics grant no runtime or accepted-tool qualification."
+  ]
+}

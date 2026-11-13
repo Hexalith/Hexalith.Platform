@@ -45,3 +45,18 @@ All historical evidence, including the supplied preparation record, keeps its
 original source, tool, run and decision identities. No lifecycle service or
 qualification workflow was run by this source preparation. All acceptance flags
 remain false and Story 2.10 remains in progress.
+
+The later compatibility trace found that genuine 5.1.0 also requires its own
+complete signed AppHost/Tooling validation pair. The additive
+[measurement](../../../../../docs/implementation/builds510-validation-pair.json)
+authenticates that exact pair without changing the plan projection or any
+argument, environment, catalog, source or owner-profile guard. The existing
+Cartesian pair control retains every old pair and refuses all crossings. This
+is validation transport preparation, never lifecycle or tool acceptance.
+
+The compatible qualification caller must keep direct Builds/catalog/helper
+source `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, matching Platform. Its
+separately selected genuine 5.1.0 executable comes from
+`9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`. The preparation schema records
+these distinct identities; neither identical catalog bytes nor a publication
+alone supplies source equality or qualification.

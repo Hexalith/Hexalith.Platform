@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <ReviewOwningBuildProps>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))</ReviewOwningBuildProps>
+  </PropertyGroup>
+  <Import Project="$(ReviewOwningBuildProps)" Condition="'$(ReviewOwningBuildProps)' != ''" />
+  <PropertyGroup><TargetFramework>net11.0</TargetFramework></PropertyGroup>
+</Project>
