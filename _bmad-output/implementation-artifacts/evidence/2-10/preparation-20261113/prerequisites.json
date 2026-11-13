@@ -1,0 +1,55 @@
+{
+  "recordedAtUtc": "2026-11-13T01:21:02.163740+00:00",
+  "schema": "hexalith.lifecycle-prerequisite-audit.v1",
+  "buildsResumePrerequisite": {
+    "met": true,
+    "release": {
+      "publishedAt": "2026-11-12T23:12:31Z",
+      "tagName": "v5.1.0",
+      "targetCommitish": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+      "url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.1.0"
+    }
+  },
+  "platformLatestRelease": {
+    "body": "## [1.11.3](https://github.com/Hexalith/Hexalith.Platform/compare/v1.11.2...v1.11.3) (2026-11-12)\n\n### Bug Fixes\n\n* **verification:** bind both retained-host preflight launches ([87ecbc4](https://github.com/Hexalith/Hexalith.Platform/commit/87ecbc42628c59dbfef2f50c4fe131613d7adaa7))\n\n\nSource: `7e49ce25f79f9228214b0e9bf167cdeb4bf77ece`.\n\n[.github/workflows/tuple-ci.yml, run 43205060271, attempt 1](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43205060271)\n\n[.github/workflows/catalog-builder.yml, run 43205060525, attempt 1](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43205060525)\n\nSource release only. Native, candidate and Story acceptance: false.",
+    "publishedAt": "2026-11-12T11:42:54Z",
+    "tagName": "v1.11.3",
+    "targetCommitish": "main",
+    "url": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v1.11.3"
+  },
+  "sourceReleaseGate": {
+    "runId": 43333610884,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43333610884",
+    "source": "b86201318b70c2d3e4bdef4df6a96c98a64c5dff",
+    "status": "refused",
+    "reason": "unsuccessful-latest-run",
+    "publisher": "skipped",
+    "sourceReleaseReceiptSha256": "30fac4624a6423249866cda2420e24c79db94e6acdcc2f4b791c4176aef899f5"
+  },
+  "tupleFailure": {
+    "runId": 43333012883,
+    "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43333012883",
+    "source": "b86201318b70c2d3e4bdef4df6a96c98a64c5dff",
+    "boundBuildsSource": "9f5d751f7ab0b7a621dcd18b589bf061fabac6ec",
+    "boundToolVersion": "5.0.0",
+    "actualBuildsGitlink": "565b9e63bce9d3b5b43483d01da81ef7ceb33a20",
+    "actualToolVersion": "5.0.1",
+    "currentFailure": "exact-recorded-builds-source-mismatch-before-initialization",
+    "legacyFailure": "production-tests-helpers-build-instructions-or-unapproved-metadata-differ",
+    "preExtensionFailure": "production-controls-helpers-build-instructions-or-unapproved-metadata-differ",
+    "guardsWeakened": false
+  },
+  "nestedBuildsPreparation": {
+    "source": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+    "initialized": true,
+    "otherNestedDependenciesInitialized": false,
+    "fetchRequested": false,
+    "recursiveInitialization": false
+  },
+  "freshFinalQualificationInputSetSelected": false,
+  "newLifecycleRuns": 0,
+  "newHostedDispatches": 0,
+  "pinsChanged": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false
+}

@@ -195,3 +195,16 @@ work/access, interrupted-startup duration, executing-tool and termination
 bindings, and the Parties collision, timeout and attached cases. No observation
 above is relabelled or reused for the future tool. Final qualification, tool
 acceptance and pins stay open here until a Builds release carries 2.11.
+
+## Fixed-input preparation — 2026-11-13
+
+The [new preparation record](preparation-20261113/README.md) verifies that a
+published Builds release now carries Story 2.11. The remaining blocker is the
+compatible Platform source/publication cut and committed caller adoption. The
+investigated publisher and historical source guards correctly refuse the current
+inconsistent cut; none was weakened. A new resource-free utility implements
+content-verified download reuse into fresh private job-local copies, with 12
+focused controls and an actual signed published-package cache/restore proof.
+All 45 Platform lifecycle controls and 183 canonical Parties controls pass.
+The old local controller remains bound to 4.47.0; no new live result, source
+selection, tool acceptance or pin approval is inferred. Status stays in-progress.

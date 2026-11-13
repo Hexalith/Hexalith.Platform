@@ -312,3 +312,43 @@ runs. Record the Platform-accepted tool and its Platform and Parties pins only
 after every gate passes. The 4.47.0 observations keep their own subjects and
 supply no acceptance for the new tool. No code, services, remote operations,
 pins or budgets changed in this resumption.
+
+## Fixed-input preparation after Story 2.11 — 2026-11-13
+
+The [preparation audit](evidence/2-10/preparation-20261113/README.md) confirms that
+the Builds-release resume prerequisite is now met: published 5.1.0 contains the
+Story 2.11 runtime producers. This is separate from the still-open compatible
+Platform source/publication gate. Latest Platform source release v1.11.3 and the
+current Parties Platform gitlink both predate the required live EventStore port
+binding. The actual latest publisher refused its unsuccessful tuple run; that
+run's Builds gitlink/publication binding disagreed, and both historical lanes
+refused changed production/control/helper sources. Preserve these strict guards
+and prepare an honest fresh committed source cut before publication or live
+qualification.
+
+`eng/lifecycle-qualification/prepare.py` now validates explicit exact input
+selections and supports content-verified download caching keyed by source,
+catalog, tool release/framework, toolchain and archive identities. Every hit and
+restore revalidates content; restores use fresh private copies, never prior test
+results, credentials or run state. Poisoning, links, stale/extra state and
+existing or concurrently created destinations fail. The current preparation
+selection matches the caller's 5.0.0 pin and its exact catalog; its source audit
+correctly returns `platform-live-port-binding-unavailable`. Actual signed NuGet
+package population, revalidated reuse and two fresh restores pass. Separate
+operation timings supply no lifecycle or performance-savings claim.
+
+All 45 Platform lifecycle controls (33 original plus 12 preparation) and 183
+canonical Parties controls pass without failures/errors/skips. Only the exact
+recorded nested Builds dependency was initialized, using local objects,
+`--no-fetch` and no recursion under the existing user authorization. The earlier
+151-test canonical attempt with 74 errors and one failure remains recorded.
+Bound source hashes stayed unchanged during the successful checks.
+
+The historical `local.py` remains unchanged and fixed to 4.47.0. A current local
+controller, compatible committed/published Platform source and caller input set,
+fresh complete local/hosted scenarios and real cancellation proofs still remain.
+Setup reuse is implemented as a preparation utility but is not yet integrated
+into a final fixed-set campaign, so its parent task remains open. No service,
+workflow dispatch, commit/push, publication, accepted pin or budget changed.
+Keep status `in-progress` and all remaining acceptance tasks open; this unit
+does not permit Step 03 to advance.
