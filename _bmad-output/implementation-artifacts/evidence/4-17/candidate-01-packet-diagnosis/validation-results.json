@@ -1,0 +1,306 @@
+{
+  "pythonVersion": "3.14.4",
+  "nodeVersion": "v26.4.0",
+  "gitVersion": "2.53.0",
+  "eventStore": [
+    {
+      "revision": "bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+      "purpose": "baseline before any change",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr*qualification.py"
+      ],
+      "exitCode": 1,
+      "log": "baseline-bb9e2b51-dapr-qualification.log",
+      "logSha256": "76ec3c3a656df61c0a9bcf90994af82aba1108eb875a2084f660dd59a1c6cbe1",
+      "logBytes": 162878,
+      "tests": 156,
+      "seconds": 15.364,
+      "result": "FAILED (failures=76, errors=22)",
+      "counts": {
+        "failures": 76,
+        "errors": 22
+      },
+      "firstRejection": "inputs..github/workflows/dapr-runtime-qualification.yml: source/component bytes drifted"
+    },
+    {
+      "revision": "bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+      "purpose": "workflow owner-admission validate_profile on the unfixed base",
+      "exitCode": 0,
+      "result": "REJECTED: inputs..github/workflows/dapr-runtime-qualification.yml: source/component bytes drifted"
+    },
+    {
+      "revision": "a19bad9de1851b5ebfb22689dbe429c890150a13 (working tree before commit)",
+      "purpose": "inventory restore only",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr*qualification.py"
+      ],
+      "exitCode": 0,
+      "log": "inventory-only-dapr-qualification.log",
+      "logSha256": "710b962e5bf625daeabc6811b64e88112029758fc95e0c7b2e4ca1aeb81d3052",
+      "logBytes": 26745,
+      "tests": 156,
+      "seconds": 43.367,
+      "result": "OK"
+    },
+    {
+      "revision": "78bc35aa57e1e33c376847fb2902e69565cce16c (working tree before commit)",
+      "purpose": "verifier fix and topic setup extraction",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr*qualification.py"
+      ],
+      "exitCode": 0,
+      "log": "commit2-test_daprqualification.py.log",
+      "logSha256": "4c73aa715a4ffc3c0d16a1f86dff00ea854e19a56f44a477b78e52726ad02fa0",
+      "logBytes": 260,
+      "tests": 159,
+      "seconds": 44.596,
+      "result": "OK"
+    },
+    {
+      "revision": "78bc35aa57e1e33c376847fb2902e69565cce16c (working tree before commit)",
+      "purpose": "verifier fix and topic setup extraction",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr_platform_broker_configuration.py"
+      ],
+      "exitCode": 0,
+      "log": "commit2-test_dapr_platform_broker_configuration.py.log",
+      "logSha256": "fd42b5edbe39b179e4d8ecde53773aed98b26b2dcd374903b6f2d53d65c3dac7",
+      "logBytes": 131,
+      "tests": 31,
+      "seconds": 11.923,
+      "result": "OK"
+    },
+    {
+      "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "cwd": "clean `git archive` of the stated EventStore revision, or the branch worktree",
+      "purpose": "final committed tip",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr*qualification.py"
+      ],
+      "exitCode": 0,
+      "log": "tip-test_daprqualification.py.log",
+      "logSha256": "7d9ec40a887d4c065d0ab89e656eb727d762cc234dbdb9c3e050eccca71ab65c",
+      "logBytes": 27504,
+      "tests": 160,
+      "seconds": 45.924,
+      "result": "OK"
+    },
+    {
+      "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "cwd": "clean `git archive` of the stated EventStore revision, or the branch worktree",
+      "purpose": "final committed tip",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_dapr_platform_broker_configuration.py"
+      ],
+      "exitCode": 0,
+      "log": "tip-test_dapr_platform_broker_configuration.py.log",
+      "logSha256": "6fb35f8f11d904ae4b4b233a7edcf5b55088c9a10aeaeca354a5a43b8a6f63f1",
+      "logBytes": 6393,
+      "tests": 32,
+      "seconds": 12.036,
+      "result": "OK"
+    },
+    {
+      "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "cwd": "clean `git archive` of the stated EventStore revision, or the branch worktree",
+      "purpose": "final committed tip",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_qualify_internal_actor_admission.py"
+      ],
+      "exitCode": 0,
+      "log": "tip-test_qualify_internal_actor_admission.py.log",
+      "logSha256": "8c120050b0a0202378263e5c19726a4e4870a415d214c0ba550f9abafc584d8c",
+      "logBytes": 2216,
+      "tests": 11,
+      "seconds": 0.767,
+      "result": "OK"
+    },
+    {
+      "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "purpose": "mutation sensitivity of the four new controls",
+      "argv": [
+        "python3",
+        "-I",
+        "mutation_sensitivity.py",
+        "WORKTREE",
+        "SCRATCH",
+        "refresh_qualification_inventory.py",
+        "mutation-sensitivity.json"
+      ],
+      "exitCode": 0,
+      "result": "see mutation-sensitivity.json: every mutation fails at least one new control"
+    },
+    {
+      "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "purpose": "candidate-02 owner admission and producer admission",
+      "argv": [
+        "python3",
+        "-B",
+        "candidate_02_admission.py",
+        "docs/implementation/story-4-17-broker-candidate-02.json",
+        "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+        "candidate-02-offline-admission.json"
+      ],
+      "exitCode": 0,
+      "result": "see candidate-02-offline-admission.json"
+    },
+    {
+      "revision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213 with the fixed file (non-authoritative)",
+      "purpose": "fixed sidecar identification against the real attempt-2 packet",
+      "argv": [
+        "python3",
+        "-I",
+        "diagnostic_fixed_identification.py",
+        "PINNED_ARCHIVE",
+        "FIXED_FILE",
+        "PACKET",
+        "ORIGINAL_CONFIG",
+        "FRESH_COPY",
+        "diagnostic-fixed-identification.json"
+      ],
+      "exitCode": 0,
+      "result": "integrity 0 (PASS), technical 1 (six named FAILs), authority 1 (exact expected rejection)"
+    },
+    {
+      "purpose": "merge into current EventStore main without writing refs",
+      "argv": [
+        "git",
+        "merge-tree",
+        "--write-tree",
+        "f2062f7f7bd8b3dcae946ba209b933ad8e610ff2",
+        "495dd24943031ec75e2822c6168ada3c8b9fdb82"
+      ],
+      "exitCode": 0,
+      "result": "clean, tree ba11ff85d34b779136ecd8837292fad10368a81b; none of the 37 files changed by bb9e2b51f..f2062f7f7 is a platform-config-v1 input"
+    }
+  ],
+  "platform": [
+    {
+      "revision": "aa921804b5e3fcf698bf333f40ec50c390646692 (current workflow)",
+      "cwd": "Platform checkout",
+      "argv": [
+        "node",
+        "--test",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "exitCode": 0,
+      "log": "platform-current-broker-workflow.log",
+      "logSha256": "43975d1ec4d9544869a6a09fec114f2ff78526ab11122293027ca8d302b0521c",
+      "logBytes": 5794,
+      "node_tests": 53,
+      "node_pass": 53,
+      "node_fail": 0
+    },
+    {
+      "revision": "aa921804b5e3fcf698bf333f40ec50c390646692 + candidate-02-platform-change.patch",
+      "cwd": "detached scratch worktree",
+      "argv": [
+        "node",
+        "--test",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "exitCode": 0,
+      "log": "platform-candidate-02-broker-workflow.log",
+      "logSha256": "567e9ded8454ec0423498156d680ad3fa6bfaea334aa53c0d790bf39e8d3a711",
+      "logBytes": 5796,
+      "node_tests": 53,
+      "node_pass": 53,
+      "node_fail": 0
+    },
+    {
+      "revision": "aa921804b5e3fcf698bf333f40ec50c390646692 + candidate-02-platform-change.patch",
+      "cwd": "detached scratch worktree",
+      "argv": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "exitCode": 0,
+      "log": "platform-candidate-02-source-release.log",
+      "logSha256": "2ccdc2efd0b76b10de42b2edca3b407eaa3f8b53e6f66423faa0eda8181c0441",
+      "logBytes": 8903,
+      "node_tests": 82,
+      "node_pass": 82,
+      "node_fail": 0
+    },
+    {
+      "revision": "aa921804b5e3fcf698bf333f40ec50c390646692 + git apply --index --unidiff-zero candidate-02-platform-change.patch",
+      "cwd": "second fresh detached scratch worktree",
+      "argv": [
+        "node",
+        "--test",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "exitCode": 0,
+      "node_tests": 53,
+      "node_pass": 53,
+      "node_fail": 0,
+      "result": "tree 32f73b003465579b15183a761fd49d000dda1667 identical to the prepared change; gitlink 495dd24943031ec75e2822c6168ada3c8b9fdb82"
+    }
+  ],
+  "notRun": [
+    "dotnet build or C# tests: no C#, project or workflow file changed in EventStore",
+    "any Docker, broker, hosted CI, dispatch, tag or push"
+  ]
+}

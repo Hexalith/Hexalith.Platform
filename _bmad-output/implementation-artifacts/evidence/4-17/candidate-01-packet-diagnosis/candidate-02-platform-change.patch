@@ -1,0 +1,110 @@
+diff --git a/.github/workflows/broker-candidate-qualification.yml b/.github/workflows/broker-candidate-qualification.yml
+index 9130ed42..3357cf24 100644
+--- a/.github/workflows/broker-candidate-qualification.yml
++++ b/.github/workflows/broker-candidate-qualification.yml
+@@ -1 +1 @@
+-name: Platform broker candidate 01 (non-promoting)
++name: Platform broker candidate 02 (non-promoting)
+@@ -10 +10 @@ jobs:
+-  candidate-01:
++  candidate-02:
+@@ -14,2 +14,2 @@ jobs:
+-      EVENTSTORE_REVISION: 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213
+-      CONFIGURATION_SHA256: 472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc
++      EVENTSTORE_REVISION: 495dd24943031ec75e2822c6168ada3c8b9fdb82
++      CONFIGURATION_SHA256: b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b
+@@ -26 +26 @@ jobs:
+-          evidence=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-evidence.XXXXXX")
++          evidence=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-02-evidence.XXXXXX")
+@@ -31 +31 @@ jobs:
+-          base="$RUNNER_TEMP/platform-broker-candidate-01"
++          base="$RUNNER_TEMP/platform-broker-candidate-02"
+@@ -33 +33 @@ jobs:
+-          printf 'PLATFORM_CONFIG=%s/docs/implementation/story-4-17-broker-candidate-01.json\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
++          printf 'PLATFORM_CONFIG=%s/docs/implementation/story-4-17-broker-candidate-02.json\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+@@ -82 +82 @@ jobs:
+-          test "$GITHUB_JOB" = candidate-01
++          test "$GITHUB_JOB" = candidate-02
+@@ -303 +303 @@ jobs:
+-            EVIDENCE=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-report.XXXXXX")
++            EVIDENCE=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-02-report.XXXXXX")
+@@ -454 +454 @@ jobs:
+-                  stream.write('Platform broker candidate 01: bounded technical success = ' + str(result()['boundedTechnicalSuccess']).lower() + '\n\n')
++                  stream.write('Platform broker candidate 02: bounded technical success = ' + str(result()['boundedTechnicalSuccess']).lower() + '\n\n')
+@@ -475 +475 @@ jobs:
+-          name: platform-broker-candidate-01-${{ github.run_id }}-${{ github.run_attempt }}
++          name: platform-broker-candidate-02-${{ github.run_id }}-${{ github.run_attempt }}
+@@ -477,2 +477,2 @@ jobs:
+-            ${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/**
+-            !${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/private-transcripts/**
++            ${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}/**
++            !${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}/private-transcripts/**
+diff --git a/docs/implementation/story-4-17-broker-candidate-02.json b/docs/implementation/story-4-17-broker-candidate-02.json
+new file mode 100644
+index 00000000..7cee2a2e
+--- /dev/null
++++ b/docs/implementation/story-4-17-broker-candidate-02.json
+@@ -0,0 +1,13 @@
++{
++  "schemaVersion": 1,
++  "platformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
++  "platformPath": "docs/implementation/story-4-17-broker-candidate-02.json",
++  "rabbitmq": {
++    "reconnectWaitSeconds": 1,
++    "outboundTimeoutMilliseconds": 3000
++  },
++  "kafka": {
++    "consumeRetryIntervalMilliseconds": 200,
++    "group.initial.rebalance.delay.ms": 100
++  }
++}
+diff --git a/references/Hexalith.EventStore b/references/Hexalith.EventStore
+index bb9e2b51..495dd249 160000
+--- a/references/Hexalith.EventStore
++++ b/references/Hexalith.EventStore
+@@ -1 +1 @@
+-Subproject commit bb9e2b51fc8a609181077eba2ae900bcbe40745a
++Subproject commit 495dd24943031ec75e2822c6168ada3c8b9fdb82
+diff --git a/tests/source-release/broker-candidate-workflow.test.mjs b/tests/source-release/broker-candidate-workflow.test.mjs
+index e5b899ab..38ba8ace 100644
+--- a/tests/source-release/broker-candidate-workflow.test.mjs
++++ b/tests/source-release/broker-candidate-workflow.test.mjs
+@@ -15,2 +15,2 @@ const workflow = yaml.load(readFileSync(workflowPath, 'utf8'));
+-const job = workflow.jobs['candidate-01'];
+-const configuration = readFileSync('docs/implementation/story-4-17-broker-candidate-01.json');
++const job = workflow.jobs['candidate-02'];
++const configuration = readFileSync('docs/implementation/story-4-17-broker-candidate-02.json');
+@@ -154 +154 @@ def profile_path(profile):
+-  writeFileSync(join(workspace, 'docs/implementation/story-4-17-broker-candidate-01.json'), configuration);
++  writeFileSync(join(workspace, 'docs/implementation/story-4-17-broker-candidate-02.json'), configuration);
+@@ -170 +170 @@ def profile_path(profile):
+-    GITHUB_JOB: 'candidate-01', RUNNER_ENVIRONMENT: 'github-hosted', RUNNER_OS: 'Linux', RUNNER_ARCH: 'X64',
++    GITHUB_JOB: 'candidate-02', RUNNER_ENVIRONMENT: 'github-hosted', RUNNER_OS: 'Linux', RUNNER_ARCH: 'X64',
+@@ -250 +250 @@ test('candidate workflow is a single fixed manual read-only hosted job with pinn
+-  assert.deepEqual(Object.keys(workflow.jobs), ['candidate-01']);
++  assert.deepEqual(Object.keys(workflow.jobs), ['candidate-02']);
+@@ -253,2 +253,2 @@ test('candidate workflow is a single fixed manual read-only hosted job with pinn
+-  assert.equal(job.env.EVENTSTORE_REVISION, '02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213');
+-  assert.equal(job.env.CONFIGURATION_SHA256, '472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc');
++  assert.equal(job.env.EVENTSTORE_REVISION, '495dd24943031ec75e2822c6168ada3c8b9fdb82');
++  assert.equal(job.env.CONFIGURATION_SHA256, 'b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b');
+@@ -287 +287 @@ test('intended hosted run binds the real allocation and pairs all four invocatio
+-    assert.deepEqual(allocation, { exclusive: true, endpoint: `unix://${current.env.FAKE_SOCKET}`, daemonId: 'fixture-daemon', workerId: '1234-candidate-01-2' });
++    assert.deepEqual(allocation, { exclusive: true, endpoint: `unix://${current.env.FAKE_SOCKET}`, daemonId: 'fixture-daemon', workerId: '1234-candidate-02-2' });
+@@ -370 +370 @@ for (const change of ['hash', 'configuration symlink', 'reused base', 'dangling
+-      if (change === 'hash') writeFileSync(join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-01.json'), '{}');
++      if (change === 'hash') writeFileSync(join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-02.json'), '{}');
+@@ -372 +372 @@ for (const change of ['hash', 'configuration symlink', 'reused base', 'dangling
+-        const path = join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-01.json');
++        const path = join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-02.json');
+@@ -374 +374 @@ for (const change of ['hash', 'configuration symlink', 'reused base', 'dangling
+-        symlinkSync(resolve('docs/implementation/story-4-17-broker-candidate-01.json'), path);
++        symlinkSync(resolve('docs/implementation/story-4-17-broker-candidate-02.json'), path);
+@@ -376,2 +376,2 @@ for (const change of ['hash', 'configuration symlink', 'reused base', 'dangling
+-      if (change === 'reused base') mkdirSync(join(current.temporary, 'platform-broker-candidate-01'));
+-      if (change === 'dangling destination') symlinkSync(join(current.root, 'absent'), join(current.temporary, 'platform-broker-candidate-01'));
++      if (change === 'reused base') mkdirSync(join(current.temporary, 'platform-broker-candidate-02'));
++      if (change === 'dangling destination') symlinkSync(join(current.root, 'absent'), join(current.temporary, 'platform-broker-candidate-02'));
+@@ -578 +578 @@ test('summary and sanitized upload are independent always attempts, with raw tra
+-  const evidencePath = "${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}";
++  const evidencePath = "${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}";

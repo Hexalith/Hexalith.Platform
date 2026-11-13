@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "preparedUtc": "2026-11-13",
+  "status": "proposed; nothing pushed, tagged or dispatched",
+  "governs": "this JSON is the authoritative proposal; docs/implementation/story-4-17-broker-candidate-02-proposal.md summarizes it",
+  "eventStore": {
+    "repository": "Hexalith/Hexalith.EventStore",
+    "branch": "fix/3-21-candidate-01-verifier-and-pressure-retention",
+    "base": "bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+    "revision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+    "tree": "b5346a50ecf28176c714e3040f716b0f06a23034",
+    "commits": [
+      {
+        "sha": "a19bad9de1851b5ebfb22689dbe429c890150a13",
+        "subject": "build(qualification): restore the 1.19.1 lock input inventory"
+      },
+      {
+        "sha": "78bc35aa57e1e33c376847fb2902e69565cce16c",
+        "subject": "build(qualification): stop reading kafka admin --config as a sidecar"
+      },
+      {
+        "sha": "c4b90c42c72cf7e841d45c22ce35b1c5f87872a6",
+        "subject": "build(qualification): keep kafka pressure records beyond topic retention"
+      },
+      {
+        "sha": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+        "subject": "docs(qualification): record candidate-01 attempt-2 corrections"
+      }
+    ],
+    "pushed": false,
+    "currentRemoteMain": "f2062f7f7bd8b3dcae946ba209b933ad8e610ff2",
+    "mergeIntoMain": "clean (git merge-tree tree ba11ff85d34b779136ecd8837292fad10368a81b); merge with a merge commit, never rebase or squash, so 495dd249 stays contained in main",
+    "releaseEffect": "build:/docs: commits only; semantic-release analysis yields no package release from these commits"
+  },
+  "profile": {
+    "path": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+    "sha256": {
+      "candidate01_02a4d3b2": "1c1da59176f78b9b60a87ba85b6076b8d215ff912840ecb52bdb7432497c587f",
+      "base_bb9e2b51": "1c1da59176f78b9b60a87ba85b6076b8d215ff912840ecb52bdb7432497c587f",
+      "candidate02_495dd249": "eae60aeb3ad2734cb54aed7de4b4a4efb19b9b28f3f6ce2eab56fa89850875b6"
+    },
+    "inputs": {
+      "candidate01": 91,
+      "candidate02": 94
+    },
+    "changedInputs": {
+      ".github/workflows/dapr-runtime-qualification.yml": [
+        "12d698191182f3ce2e5ae56d61717615660f0c53f037adbe6e69ccb3df018fbf",
+        "671818c4336c6be3576c397e1000ded83d1b75607c70548d1c70eb535596782c"
+      ],
+      "tools/qualify-internal-actor-admission.py": [
+        "8ef65c22d016916df3cf1fe6dd800c7e1a57af45321ab1b8bab01ab19835ea5a",
+        "d3a3669ee8c79fa4b97193e5cdcd269fe1f9cb4e2a208169ea5ca5b9cd9da6ea"
+      ],
+      "tools/run-dapr-runtime-lane.py": [
+        "2676390e441aadc016718132dff14613cbe21b1b9b6169bd2acca661f7f2f07e",
+        "aaf1c70d6864af9d1b2041df6df60491a2a191228a4793b5396e706c98a185b9"
+      ],
+      "tools/tests/test_qualify_internal_actor_admission.py": [
+        "3f440337d9a3c1819c9a205adfd8da62d42de2d16cad8a8133df49c7092407c9",
+        "54d0e62f8b28c3d4cc80d7b7c3b3d71eebf0b180bfc276ad71e898a4ba502f93"
+      ],
+      "tools/dapr_platform_broker_configuration.py": [
+        "b02daa725824b525f137e9a9b080140dcaf8a87435cc47ada6de7a71f9ce5eb5",
+        "a63df8c9c685b34d21581f8f94576cf3d97c5adc4ba3878cc7095a3bcbe6308b"
+      ],
+      "tools/qualify-dapr-brokers.py": [
+        "bada6bade8e9e5fa7c71e0725866435afd6f7dfc0f104c50e7437086e905489a",
+        "0c1b7d6639884650e997289c6963a19fa1076b074f908e704b8546c2cffba4b6"
+      ],
+      "tools/tests/test_dapr_platform_broker_configuration.py": [
+        "57e4d44a0087562fc1291d3ea302e0e55e1b32bec190a97ceec6244b899ddcbf",
+        "3f92af0fde0c1e06b8e53ca233435248d882b4dc80a0d80dac9a84fb5179e304"
+      ],
+      "deploy/dapr/qualification/public-identities/1.19.1-original-inputs/archive.json": [
+        "286efdb4f98e763c369153d9177dee49aa4263d408091bed0e1f1249c97ecdd8",
+        "370f949584244f0a7410d3a3047ac9c545af66c38aefeb84541615b18c2b0f71"
+      ]
+    },
+    "addedInputs": {
+      "deploy/dapr/qualification/public-identities/1.19.1-original-inputs/.github/workflows/dapr-runtime-qualification.yml": "12d698191182f3ce2e5ae56d61717615660f0c53f037adbe6e69ccb3df018fbf",
+      "deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/qualify-internal-actor-admission.py": "8ef65c22d016916df3cf1fe6dd800c7e1a57af45321ab1b8bab01ab19835ea5a",
+      "deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/run-dapr-runtime-lane.py": "2676390e441aadc016718132dff14613cbe21b1b9b6169bd2acca661f7f2f07e"
+    },
+    "unchanged": "runtime 1.19.1 / CLI 1.19.1 / SDK and components 1.19.0, every image digest, the chart, both historical lock files, all 24 vectors and every pass rule"
+  },
+  "configuration": {
+    "path": "docs/implementation/story-4-17-broker-candidate-02.json",
+    "sha256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+    "bytes": 367,
+    "declaredPlatformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+    "values": {
+      "schemaVersion": 1,
+      "platformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+      "platformPath": "docs/implementation/story-4-17-broker-candidate-02.json",
+      "rabbitmq": {
+        "reconnectWaitSeconds": 1,
+        "outboundTimeoutMilliseconds": 3000
+      },
+      "kafka": {
+        "consumeRetryIntervalMilliseconds": 200,
+        "group.initial.rebalance.delay.ms": 100
+      }
+    },
+    "effective": {
+      "rabbitmq": {
+        "reconnectWaitSeconds": 1,
+        "outboundTimeoutMilliseconds": 3000
+      },
+      "kafka": {
+        "consumeRetryIntervalMilliseconds": 200,
+        "group.initial.rebalance.delay.ms": 100
+      }
+    },
+    "rationale": {
+      "rabbitmq": "candidate-01 (2 s wait, 500 ms timeout) makes publisher reconnection unreachable and caused durable-quarantine and retention-expiry to fail; no admitted value can surface ACCESS_REFUSED (rabbitmq.go:328), so return to the historical defaults",
+      "kafka": "unchanged from candidate-01, so a verified kafka/secret-rotation result can be compared with the unverified attempt-2 PASS"
+    },
+    "alternativeLikeForLike": {
+      "values": {
+        "schemaVersion": 1,
+        "platformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+        "platformPath": "docs/implementation/story-4-17-broker-candidate-02.json",
+        "rabbitmq": {
+          "reconnectWaitSeconds": 2,
+          "outboundTimeoutMilliseconds": 500
+        },
+        "kafka": {
+          "consumeRetryIntervalMilliseconds": 200,
+          "group.initial.rebalance.delay.ms": 100
+        }
+      },
+      "sha256": "26c8d9a18ac72bfbce2fbca4fd5562f041a69e811830a0f88ba098e9f5a5b444",
+      "bytes": 366,
+      "file": "candidate-02-alternative-like-for-like.json",
+      "expectedEffect": "durable-quarantine and retention-expiry expected to fail again for the diagnosed reason"
+    }
+  },
+  "platform": {
+    "gitlink": {
+      "from": "bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+      "to": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "command": "git update-index --cacheinfo 160000,495dd24943031ec75e2822c6168ada3c8b9fdb82,references/Hexalith.EventStore"
+    },
+    "workflow": {
+      "path": ".github/workflows/broker-candidate-qualification.yml",
+      "EVENTSTORE_REVISION": [
+        "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+        "495dd24943031ec75e2822c6168ada3c8b9fdb82"
+      ],
+      "CONFIGURATION_SHA256": [
+        "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+        "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b"
+      ],
+      "PLATFORM_CONFIG": [
+        "docs/implementation/story-4-17-broker-candidate-01.json",
+        "docs/implementation/story-4-17-broker-candidate-02.json"
+      ],
+      "renamed": "job candidate-01 -> candidate-02; run/artifact/temp names platform-broker-candidate-01 -> 02; workflow and summary title \"candidate 01\" -> \"candidate 02\"",
+      "unchanged": "trigger, runner, timeout, permissions, pinned actions, every guard, phase code, verifier invocation and expected rejection"
+    },
+    "patch": {
+      "file": "candidate-02-platform-change.patch",
+      "sha256": "d3a28965f6cdcbabab0cfc5bb9098c9d3336fa65fae8109441455744e3bc45a9",
+      "base": "aa921804b5e3fcf698bf333f40ec50c390646692",
+      "paths": [
+        ".github/workflows/broker-candidate-qualification.yml",
+        "docs/implementation/story-4-17-broker-candidate-02.json",
+        "references/Hexalith.EventStore",
+        "tests/source-release/broker-candidate-workflow.test.mjs"
+      ],
+      "note": "the JSON is committed in this slice; the gitlink, workflow and test changes are not, because a gitlink may only record a pushed EventStore commit",
+      "apply": "git apply --index --unidiff-zero candidate-02-platform-change.patch (on aa921804; zero-context hunks keep the patch free of whitespace errors)",
+      "expectedTree": "32f73b003465579b15183a761fd49d000dda1667",
+      "reproduced": "applied to a fresh detached worktree at aa921804: identical tree, gitlink 495dd249, broker-workflow controls 53/53"
+    },
+    "offlineTests": {
+      "brokerWorkflow": "53/53 pass with the patch",
+      "sourceRelease": "82/82 pass with the patch"
+    }
+  },
+  "tag": {
+    "name": "qualification/broker-candidate-02/attempt-1-<SOURCE8>",
+    "rule": "SOURCE8 is the first 8 hex digits of the published Platform source commit S that carries the gitlink, workflow, test and JSON; it is fixed once S exists and the tag is never reused",
+    "existsNow": false,
+    "existingBrokerTags": [
+      "qualification/broker-candidate-01/attempt-2-94001fad -> 94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+    ],
+    "rulesets": "24657570 blocks tag update and deletion; 24657217 restricts creation to the recorded bypass actor"
+  },
+  "route": [
+    "EventStore: push the branch, merge it into main with a merge commit, then confirm 495dd249 is an ancestor of origin/main and no force_push followed",
+    "Platform: on a dedicated non-main branch from the published base, commit the patch (gitlink, workflow, test) beside this slice's committed JSON as S; push only that branch (neither tuple CI nor catalog-builder triggers on a non-main push)",
+    "Re-run node --test tests/source-release/broker-candidate-workflow.test.mjs at S and the candidate-02 offline admission from the pushed EventStore revision",
+    "Run the attempt-2 go/no-go checks (provider status, rulesets, tag absent, workflow idle, identities, no tag triggers), create the tag via the API at S, confirm no run started",
+    "Dispatch exactly once: gh workflow run broker-candidate-qualification.yml --repo Hexalith/Hexalith.Platform --ref qualification/broker-candidate-02/attempt-1-<SOURCE8>",
+    "No rerun, retry or cancellation except the 30-minute no-job rule; download the artifact before its 30-day expiry and run the three verifier modes locally from the pinned EventStore revision"
+  ],
+  "worker": {
+    "runsOn": "ubuntu-24.04 GitHub-hosted, fresh VM",
+    "guards": "RUNNER_ENVIRONMENT github-hosted, Linux/X64, ImageOS ubuntu24, Ubuntu 24.04 x86_64, Python >= 3.11, OpenSSL, local unix-socket Docker with no DOCKER_HOST/CONTEXT/TLS overrides, linux/amd64 daemon",
+    "allocation": "exclusive allocation created only inside that VM, bound to run/job/attempt, socket device/inode and daemon ID",
+    "timeoutMinutes": 40,
+    "permissions": "contents: read",
+    "sources": "clean Platform tree at the dispatch SHA; gitlink, EventStore HEAD and clean tree equal 495dd249; configuration SHA-256 equals b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b"
+  },
+  "expectedVerification": {
+    "capture": "exit 1 (non-PASS scenarios); cleanup receipt complete",
+    "integrity": "exit 0 expected: the only integrity blocker the 02a4d3b2 verifier reported is fixed, and the fixed rule admitted the real attempt-2 packet (non-authoritative)",
+    "technical": "exit 1 expected. Certain FAILs from code-level or broker behavior no admitted setting reaches: rabbitmq/cancellation-backpressure, rabbitmq/missing-bindings, rabbitmq/secret-rotation, kafka/cancellation-backpressure (negativeConfirmRejected). Predicted, not proven: rabbitmq/durable-quarantine and rabbitmq/retention-expiry PASS with default RabbitMQ tuning; kafka/cancellation-backpressure acknowledgedLoss 0; kafka/secret-rotation unknown",
+    "authority": {
+      "exitCode": 1,
+      "stdout": "FAIL: production eligibility FAIL: authenticated AD-26 Architecture/Platform records, Story 3.19 publication/profile binding, Kubernetes rehearsal, restore and Story 4.16 envelope proof are absent; this lane never issues authority\n",
+      "stderr": "",
+      "observedInDiagnostic": true
+    },
+    "jobConclusion": "failure: boundedTechnicalSuccess is false because technical qualification fails",
+    "credit": "a verified packet credits integrity, cleanup and each verified vector result; it selects no broker and changes no rejected guarantee"
+  },
+  "unchanged": {
+    "platformStory4_17": "in-progress",
+    "eventStoreStory3_21": "in-progress",
+    "historicalRejectedGuarantees": "REJECTED (all five)",
+    "selectedBroker": null,
+    "productionEligibility": "FAIL"
+  }
+}

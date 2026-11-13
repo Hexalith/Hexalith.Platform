@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-11-13T01:50:24Z",
+  "sourceRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+  "scope": "all retained candidate-01 attempt-2 packet-diagnosis evidence except this manifest; the packet bytes and run logs stay outside Git (artifact-redownload.json and validation-results.json record their digests)",
+  "verify": "python3 -I ../candidate-01-startup-investigation/verify-manifest.py file-manifest.json",
+  "files": [
+    {
+      "path": "artifact-redownload.json",
+      "bytes": 2497,
+      "sha256": "0f3d093c4baefbc8b0bd86d398e4184563ecb1dacb511e961dffa95ce437d04c"
+    },
+    {
+      "path": "candidate-02-alternative-like-for-like.json",
+      "bytes": 366,
+      "sha256": "26c8d9a18ac72bfbce2fbca4fd5562f041a69e811830a0f88ba098e9f5a5b444"
+    },
+    {
+      "path": "candidate-02-offline-admission.json",
+      "bytes": 816,
+      "sha256": "baa538e1263920b1bb8fff026eaf3b83b422dc606cccda3ef9e5219db321b396"
+    },
+    {
+      "path": "candidate-02-platform-change.patch",
+      "bytes": 8343,
+      "sha256": "d3a28965f6cdcbabab0cfc5bb9098c9d3336fa65fae8109441455744e3bc45a9"
+    },
+    {
+      "path": "candidate-02-proposal.json",
+      "bytes": 13125,
+      "sha256": "5847d6b446d6c67c03d56ead22571e94b317d4820e515db1717826e9b0c5e21f"
+    },
+    {
+      "path": "candidate_02_admission.py",
+      "bytes": 4048,
+      "sha256": "1cd88657f04618a9a554c30f670494409afe28832ddb734858d5e432a35eb372"
+    },
+    {
+      "path": "diagnose_vectors.py",
+      "bytes": 16000,
+      "sha256": "2760e5e29335b15f726199acef7c5022cb4d3432ede21d9cdb315711a5038344"
+    },
+    {
+      "path": "diagnostic-fixed-identification.json",
+      "bytes": 2430,
+      "sha256": "9d9775df9003c19a0b3e919adb38e55cc056ae5d61c592364023d9102954789c"
+    },
+    {
+      "path": "diagnostic_fixed_identification.py",
+      "bytes": 3282,
+      "sha256": "316e44f2edd75d7af2f27ba528fd9d24465e401f0c39beb69205021018e1f7d4"
+    },
+    {
+      "path": "dump_receipts.py",
+      "bytes": 1160,
+      "sha256": "34277b3a12cbf4274d0fc6d168d7e171813c7f0c4de93938b96e223c80bf8f81"
+    },
+    {
+      "path": "finalize_evidence.py",
+      "bytes": 7774,
+      "sha256": "340a9e29b6c8093dd684a2a514d794d078b6d3b7cb3af577957c923c3c126efe"
+    },
+    {
+      "path": "mutation-sensitivity.json",
+      "bytes": 5619,
+      "sha256": "d4eb5bc04d944885928022334649d7b341ede24d66e4c6d9ce5fd6af6339bb51"
+    },
+    {
+      "path": "mutation_sensitivity.py",
+      "bytes": 3477,
+      "sha256": "3a3834bf1d08c0f872a24f4f628af8f514a609e94f0920be90eb32627a761301"
+    },
+    {
+      "path": "redownload_and_inspect.py",
+      "bytes": 4903,
+      "sha256": "3c7638f2df7f68ae2981c81afee9bb0b8945d181b01b7d7be147d113baf659ab"
+    },
+    {
+      "path": "refresh_qualification_inventory.py",
+      "bytes": 3139,
+      "sha256": "16bc55bcb93567a5badf961fbf886b62c5873a8f90245af49559f16d7eb27646"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 9474,
+      "sha256": "f0b7e64373acdbc75f7ac09c5c23e47c52df53ee2387ad60cab3402e0bcbd015"
+    },
+    {
+      "path": "vector-diagnosis.json",
+      "bytes": 20599,
+      "sha256": "ff6de66a0b003a80921d7d6a9eff4941e2c9e9a6d20e18aef8b43847ff9929f0"
+    }
+  ]
+}

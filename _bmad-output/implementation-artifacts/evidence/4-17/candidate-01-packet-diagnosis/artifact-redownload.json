@@ -1,0 +1,81 @@
+{
+  "startedUtc": "2026-11-13T01:10:51.738041+00:00",
+  "artifactId": 13995674927,
+  "expectedSha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+  "metadataArgv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/Hexalith/Hexalith.Platform/actions/artifacts/13995674927"
+  ],
+  "metadata": {
+    "id": 13995674927,
+    "name": "platform-broker-candidate-01-43333995506-1",
+    "size_in_bytes": 2666335,
+    "digest": "sha256:906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+    "expired": false,
+    "created_at": "2026-11-13T00:11:34Z",
+    "expires_at": "2026-12-13T00:11:32Z",
+    "workflowRun": {
+      "id": 43333995506,
+      "head_branch": "qualification/broker-candidate-01/attempt-2-94001fad",
+      "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+    }
+  },
+  "downloadArgv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/Hexalith/Hexalith.Platform/actions/artifacts/13995674927/zip"
+  ],
+  "downloadExitCode": 0,
+  "downloadedBytes": 2666335,
+  "downloadedSha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+  "sha256MatchesExpected": true,
+  "sha256MatchesArtifactApi": true,
+  "inspection": {
+    "entries": 575,
+    "uncompressedBytes": 50523438,
+    "problems": [],
+    "privateTranscriptEntries": [],
+    "topLevel": [
+      "authority.exit",
+      "authority.phase",
+      "bootstrap.exit",
+      "bootstrap.json",
+      "bootstrap.phase",
+      "capture.exit",
+      "capture.phase",
+      "configuration-sha256.observed",
+      "eventstore-gitlink.observed",
+      "eventstore-revision.observed",
+      "install.exit",
+      "install.phase",
+      "integrity.exit",
+      "integrity.phase",
+      "original-platform-config.json",
+      "outcomes.json",
+      "packet",
+      "platform-revision.observed",
+      "sources.exit",
+      "sources.phase",
+      "technical.exit",
+      "technical.phase",
+      "transcripts.json",
+      "worker.json"
+    ],
+    "crcFirstBadEntry": null
+  },
+  "extracted": {
+    "files": 575,
+    "anySymlink": false,
+    "digestMapSha256": "8c07f6d53a4385ae1634774fa08ed5307d4b521bbdcf9bddc568baa89bc5cae8",
+    "identicalToCommittedRecord": true,
+    "committedRecord": "../candidate-01-hosted-attempt-2/artifact-extracted-digests.json"
+  },
+  "result": "extracted-after-inspection",
+  "finishedUtc": "2026-11-13T01:10:54.400504+00:00",
+  "scratchDirectory": "fresh session scratch directory (outside Git); the archive bytes are not committed"
+}

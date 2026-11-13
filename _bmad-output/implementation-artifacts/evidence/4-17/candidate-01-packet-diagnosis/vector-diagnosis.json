@@ -1,0 +1,420 @@
+{
+  "observedUtc": "2026-11-13T01:39:13.490466+00:00",
+  "packetJsonSha256": "aeb4b7c09d925142684e7444102e4b8e44578740c6805006dee551ac1dc26e59",
+  "commandsJsonSha256": "11f3631967a5a601798381a2ec8dc1afc746aaaa26a7e34da04a908fa074cc1b",
+  "status": "offline diagnosis of producer-reported failures; no vector is verified or credited",
+  "classes": {
+    "genuine-broker-behavior": 5,
+    "harness-timing-defect": 1,
+    "verifier-gap": 0
+  },
+  "vectors": {
+    "rabbitmq/durable-quarantine": {
+      "classification": "genuine-broker-behavior",
+      "detail": "candidate-01 configuration effect on the pinned Dapr RabbitMQ component, not a harness or verifier defect",
+      "mechanism": "The previous vector restarted the broker (docker restart) and recreated only the consumer. The publisher sidecar found its AMQP channel closed on the next publish. The pinned component waits reconnectWait (2 s) before reconnecting but returns when the request context ends (rabbitmq.go:321-328). The 500 ms outbound timeout always ends it first, so no attempt ever reconnects: Dapr resiliency outbound timeout 500 ms x 3 attempts + 2 x 200 ms backoff = 1.9 s, then HTTP 500 \"context deadline exceeded\". The vector never exercised its guarantee; the harness then waited 45 s for an effect that could not arrive.",
+      "citedReceipts": {
+        "brokerRestart": {
+          "index": 128,
+          "argv": [
+            "docker",
+            "restart",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334"
+          ],
+          "startedUtc": "2026-11-13T00:05:05.906346+00:00",
+          "endedUtc": "2026-11-13T00:05:07.111877+00:00",
+          "exitCode": 0
+        },
+        "brokerReady": {
+          "index": 136,
+          "argv": [
+            "docker",
+            "exec",
+            "--user",
+            "rabbitmq",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334",
+            "rabbitmq-diagnostics",
+            "-q",
+            "check_running"
+          ],
+          "startedUtc": "2026-11-13T00:05:08.751109+00:00",
+          "endedUtc": "2026-11-13T00:05:09.235795+00:00",
+          "exitCode": 0
+        },
+        "setupPublishes": [
+          {
+            "index": 149,
+            "argv": [
+              "HTTP",
+              "POST",
+              "http://127.0.0.1:34709/v1.0/publish/pubsub/qualification.poison?metadata.rawPayload=false"
+            ],
+            "startedUtc": "2026-11-13T00:05:10.149393+00:00",
+            "endedUtc": "2026-11-13T00:05:12.053863+00:00",
+            "exitCode": 1,
+            "httpStatus": 500,
+            "elapsedSeconds": 1.904
+          }
+        ],
+        "readback": 373,
+        "publisherProcessLog": 1478
+      },
+      "publisherLogAfterFirstPublish": [
+        "00:05:10.149 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:05:10.851 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:05:11.552 warning rabbitmq pub/sub: publisher is reconnecting in 2s ..."
+      ],
+      "noReconnectObserved": true,
+      "notFixed": "Restarting the publisher after each broker restart would hide a real liveness regression of this configuration. The harness reports the setup publish only as a generic readback timeout; that is a diagnosability gap, not a verdict defect, and is left unchanged.",
+      "historicallyRejected": false,
+      "historicalResult": "PASS with the default 1 s reconnect wait and 3000 ms timeout (2026-11-10 hosted runs)"
+    },
+    "rabbitmq/retention-expiry": {
+      "classification": "genuine-broker-behavior",
+      "detail": "candidate-01 configuration effect on the pinned Dapr RabbitMQ component, not a harness or verifier defect",
+      "mechanism": "The previous vector restarted the broker (docker restart) and recreated only the consumer. The publisher sidecar found its AMQP channel closed on the next publish. The pinned component waits reconnectWait (2 s) before reconnecting but returns when the request context ends (rabbitmq.go:321-328). The 500 ms outbound timeout always ends it first, so no attempt ever reconnects: Dapr resiliency outbound timeout 500 ms x 3 attempts + 2 x 200 ms backoff = 1.9 s, then HTTP 500 \"context deadline exceeded\". The vector never exercised its guarantee; the harness then waited 45 s for an effect that could not arrive.",
+      "citedReceipts": {
+        "brokerRestart": {
+          "index": 396,
+          "argv": [
+            "docker",
+            "restart",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334"
+          ],
+          "startedUtc": "2026-11-13T00:05:59.764018+00:00",
+          "endedUtc": "2026-11-13T00:06:00.973865+00:00",
+          "exitCode": 0
+        },
+        "brokerReady": {
+          "index": 404,
+          "argv": [
+            "docker",
+            "exec",
+            "--user",
+            "rabbitmq",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334",
+            "rabbitmq-diagnostics",
+            "-q",
+            "check_running"
+          ],
+          "startedUtc": "2026-11-13T00:06:02.620411+00:00",
+          "endedUtc": "2026-11-13T00:06:03.077806+00:00",
+          "exitCode": 0
+        },
+        "setupPublishes": [
+          {
+            "index": 416,
+            "argv": [
+              "HTTP",
+              "POST",
+              "http://127.0.0.1:50865/v1.0/publish/pubsub/qualification.expiry?metadata.rawPayload=false&metadata.ttlInSeconds=1"
+            ],
+            "startedUtc": "2026-11-13T00:06:04.721213+00:00",
+            "endedUtc": "2026-11-13T00:06:06.624830+00:00",
+            "exitCode": 1,
+            "httpStatus": 500,
+            "elapsedSeconds": 1.904
+          },
+          {
+            "index": 417,
+            "argv": [
+              "HTTP",
+              "POST",
+              "http://127.0.0.1:50865/v1.0/publish/pubsub/qualification.events?metadata.rawPayload=false"
+            ],
+            "startedUtc": "2026-11-13T00:06:06.624940+00:00",
+            "endedUtc": "2026-11-13T00:06:08.528791+00:00",
+            "exitCode": 1,
+            "httpStatus": 500,
+            "elapsedSeconds": 1.904
+          }
+        ],
+        "readback": 647,
+        "publisherProcessLog": 1483
+      },
+      "publisherLogAfterFirstPublish": [
+        "00:06:04.721 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:06:05.422 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:06:06.123 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:06:06.625 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:06:07.326 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:06:08.027 warning rabbitmq pub/sub: publisher is reconnecting in 2s ..."
+      ],
+      "noReconnectObserved": true,
+      "notFixed": "Restarting the publisher after each broker restart would hide a real liveness regression of this configuration. The harness reports the setup publish only as a generic readback timeout; that is a diagnosability gap, not a verdict defect, and is left unchanged.",
+      "historicallyRejected": false,
+      "historicalResult": "PASS with the default 1 s reconnect wait and 3000 ms timeout (2026-11-10 hosted runs)"
+    },
+    "rabbitmq/secret-rotation": {
+      "classification": "genuine-broker-behavior",
+      "detail": "code-level in the pinned Dapr RabbitMQ component; candidate-01 knobs are inapplicable",
+      "mechanism": "After delete_user, the stale publisher sees its channel closed. The only call that could return the broker's ACCESS_REFUSED is the reconnect dial, but it runs only after reconnectWait and its error is discarded (`_ = r.reconnect(...)`, rabbitmq.go:328). Under candidate-01 the dial never runs (Dapr resiliency outbound timeout 500 ms x 3 attempts + 2 x 200 ms backoff = 1.9 s); with any admitted value its error still cannot become the publish error. The 500 carries \"context deadline exceeded\", which attributable_denial correctly rejects.",
+      "citedReceipts": {
+        "revocation": {
+          "index": 718,
+          "argv": [
+            "docker",
+            "exec",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334",
+            "rabbitmqctl",
+            "delete_user",
+            "qualification"
+          ],
+          "startedUtc": "2026-11-13T00:07:03.539740+00:00",
+          "endedUtc": "2026-11-13T00:07:03.943148+00:00",
+          "exitCode": 0
+        },
+        "userState": {
+          "index": 720,
+          "argv": [
+            "docker",
+            "exec",
+            "91e8e3c142e6736ab656ae6d2c1eb1d10cb720dbac6a0e5f096394b13577f334",
+            "rabbitmqctl",
+            "list_users",
+            "--formatter=json"
+          ],
+          "startedUtc": "2026-11-13T00:07:03.977211+00:00",
+          "endedUtc": "2026-11-13T00:07:04.395913+00:00",
+          "exitCode": 0
+        },
+        "stalePublish": {
+          "index": 721,
+          "argv": [
+            "HTTP",
+            "POST",
+            "http://127.0.0.1:55825/v1.0/publish/pubsub/qualification.events?metadata.rawPayload=false"
+          ],
+          "startedUtc": "2026-11-13T00:07:04.396018+00:00",
+          "endedUtc": "2026-11-13T00:07:06.299443+00:00",
+          "exitCode": 1,
+          "httpStatus": 500,
+          "elapsedSeconds": 1.903
+        },
+        "readback": 738,
+        "stalePublisherProcessLog": 1487
+      },
+      "stalePublisherLog": [
+        "00:07:04.396 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:07:05.097 warning rabbitmq pub/sub: publisher is reconnecting in 2s ...",
+        "00:07:05.798 warning rabbitmq pub/sub: publisher is reconnecting in 2s ..."
+      ],
+      "historicallyRejected": true,
+      "change": "the stale response moved from the harness 599 timeout (2026-11-10) to Dapr 500 \"context deadline exceeded\""
+    },
+    "rabbitmq/cancellation-backpressure": {
+      "classification": "genuine-broker-behavior",
+      "detail": "code-level in the pinned Dapr RabbitMQ component (upstream negative-confirm fix unreleased per the 2026-11-10 record; not re-checked in this offline slice)",
+      "mechanism": "The effective reject-publish/max-length-4 policy was measured. All eight publishes returned 204 while the publisher logged three failed confirmations; the pinned publishSync logs the NACK and returns nil (rabbitmq.go:290-299), so the broker rejection becomes HTTP 204 and three acknowledged IDs are absent at the bound.",
+      "citedReceipts": {
+        "effectivePolicy": 742,
+        "publishes": [
+          743,
+          744,
+          745,
+          746,
+          747,
+          748,
+          749,
+          750
+        ],
+        "pause": 752,
+        "cancelledPublish": {
+          "index": 753,
+          "argv": [
+            "HTTP",
+            "POST",
+            "http://127.0.0.1:48833/v1.0/publish/pubsub/qualification.events?metadata.rawPayload=false"
+          ],
+          "startedUtc": "2026-11-13T00:07:11.104442+00:00",
+          "endedUtc": "2026-11-13T00:07:12.105892+00:00",
+          "exitCode": 1,
+          "httpStatus": 599,
+          "elapsedSeconds": 1.001
+        },
+        "unpause": 755,
+        "readback": 1051,
+        "publisherProcessLog": 1492
+      },
+      "acknowledgedButAbsent": [
+        "c573399d5679e926fe140cad",
+        "7d2ca6972a609f85f08eeb0c",
+        "2acbce99624b901c156bd24e"
+      ],
+      "publisherNackLog": [
+        "00:07:11.053 error rabbitmq pub/sub: publishing to qualification.backpressure failed: did not receive confirmation of publishing",
+        "00:07:11.054 error rabbitmq pub/sub: publishing to qualification.backpressure failed: did not receive confirmation of publishing",
+        "00:07:11.054 error rabbitmq pub/sub: publishing to qualification.backpressure failed: did not receive confirmation of publishing"
+      ],
+      "historicallyRejected": true
+    },
+    "rabbitmq/missing-bindings": {
+      "classification": "genuine-broker-behavior",
+      "detail": "code-level in the pinned Dapr RabbitMQ component",
+      "mechanism": "Binding absence is physically measured before and after the unbound publish, beside a passing bound control. The component publishes with mandatory=false (rabbitmq.go:282), so the broker confirms the unroutable message and Dapr returns 204.",
+      "citedReceipts": {
+        "boundControlPublish": 1054,
+        "bindingsBefore": 1057,
+        "unboundPublish": {
+          "index": 1058,
+          "argv": [
+            "HTTP",
+            "POST",
+            "http://127.0.0.1:48833/v1.0/publish/pubsub/qualification.missing-binding?metadata.rawPayload=false"
+          ],
+          "startedUtc": "2026-11-13T00:07:23.500108+00:00",
+          "endedUtc": "2026-11-13T00:07:23.502112+00:00",
+          "exitCode": 0,
+          "httpStatus": 204,
+          "elapsedSeconds": 0.002
+        },
+        "bindingsAfter": 1061,
+        "readback": 1062
+      },
+      "historicallyRejected": true
+    },
+    "kafka/cancellation-backpressure": {
+      "classification": "harness-timing-defect (acknowledgedLoss) + genuine-broker-behavior (negativeConfirmRejected)",
+      "detail": "two independent failing predicates; only the harness defect is fixed (EventStore c4b90c42); the vector still fails",
+      "mechanism": {
+        "acknowledgedLoss": "The harness creates the pressure topic with retention.ms=60000 and segment.ms=1000 and keeps its consumer stopped through six throttled publishes plus native diagnostics. The two 204 records (offsets 0-1, 00:09:59.33) sat 65 s unconsumed; Kafka deleted segment 0 for a 60000 ms retention breach at 00:10:59.820, 4.5 s before the consumer restarted at 00:11:04.29. The group had no committed backpressure offset, so it began at the advanced log start.",
+        "negativeConfirmRejected": "Produce byte-rate quotas throttle and never reject. Each over-quota publish ran 3 x 3 s Dapr timeouts + 2 x 200 ms = 9.40 s and returned 500 \"context deadline exceeded\", while all three attempts were later appended (log end 20 = 2 + 6 x 3). The only accepted Kafka rejection, \"kafka server: The throttling quota has been exceeded\", is not produced by this fault."
+      },
+      "citedReceipts": {
+        "topicCreation": {
+          "index": 1103,
+          "argv": [
+            "docker",
+            "exec",
+            "964c4a759282fbd2016910f2a9829494b19a5685c6658452822fac408cbffe41",
+            "/opt/kafka/bin/kafka-topics.sh",
+            "--bootstrap-server",
+            "127.0.0.1:51665",
+            "--command-config",
+            "/work/admin.properties",
+            "--create",
+            "--topic",
+            "qualification.backpressure",
+            "--partitions"
+          ],
+          "startedUtc": "2026-11-13T00:07:52.587221+00:00",
+          "endedUtc": "2026-11-13T00:07:54.337065+00:00",
+          "exitCode": 0
+        },
+        "groupBefore": 1371,
+        "quota": 1373,
+        "acknowledgedPublishes": [
+          {
+            "index": 1374,
+            "argv": [
+              "HTTP",
+              "POST",
+              "http://127.0.0.1:48653/v1.0/publish/pubsub/qualification.backpressure?metadata.rawPayload=false"
+            ],
+            "startedUtc": "2026-11-13T00:09:59.333841+00:00",
+            "endedUtc": "2026-11-13T00:09:59.339065+00:00",
+            "exitCode": 0,
+            "httpStatus": 204,
+            "elapsedSeconds": 0.005
+          },
+          {
+            "index": 1375,
+            "argv": [
+              "HTTP",
+              "POST",
+              "http://127.0.0.1:48653/v1.0/publish/pubsub/qualification.backpressure?metadata.rawPayload=false"
+            ],
+            "startedUtc": "2026-11-13T00:09:59.339194+00:00",
+            "endedUtc": "2026-11-13T00:09:59.345008+00:00",
+            "exitCode": 0,
+            "httpStatus": 204,
+            "elapsedSeconds": 0.006
+          }
+        ],
+        "throttledPublishes": [
+          1376,
+          1377,
+          1378,
+          1379,
+          1380,
+          1381
+        ],
+        "offsets": {
+          "before": [
+            1367,
+            1369
+          ],
+          "afterPublish": [
+            1385,
+            1387
+          ],
+          "afterReadback": [
+            1453,
+            1455
+          ]
+        },
+        "cancelledPublish": {
+          "index": 1392,
+          "argv": [
+            "HTTP",
+            "POST",
+            "http://127.0.0.1:48653/v1.0/publish/pubsub/qualification.events?metadata.rawPayload=false"
+          ],
+          "startedUtc": "2026-11-13T00:11:03.238990+00:00",
+          "endedUtc": "2026-11-13T00:11:04.240457+00:00",
+          "exitCode": 1,
+          "httpStatus": 599,
+          "elapsedSeconds": 1.001
+        },
+        "consumerRestartRender": {
+          "index": 1395,
+          "argv": [
+            "CONFIGURATION",
+            "render",
+            "components"
+          ],
+          "startedUtc": "2026-11-13T00:11:04.292581+00:00",
+          "endedUtc": "2026-11-13T00:11:04.292587+00:00",
+          "exitCode": 0
+        },
+        "groupAfterReadback": 1457,
+        "readback": 1458,
+        "kafkaBrokerLog": 1515
+      },
+      "offsets": {
+        "before": [
+          "qualification.backpressure:0:0",
+          "qualification.backpressure:0:0"
+        ],
+        "afterPublish": [
+          "qualification.backpressure:0:0",
+          "qualification.backpressure:0:9"
+        ],
+        "afterReadback": [
+          "qualification.backpressure:0:5",
+          "qualification.backpressure:0:20"
+        ]
+      },
+      "kafkaRetentionLog": [
+        "[2026-11-13 00:10:59,818] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Incremented log start offset to 3 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:10:59,820] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Deleting segment LogSegment(baseOffset=0, size=25836, lastModifiedTime=1794528606309, largestRecordTimestamp=1794528599345) due to log retention time 60000ms breach based on the largest record timestamp in the segment (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:05,817] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Incremented log start offset to 5 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:05,818] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Deleting segment LogSegment(baseOffset=3, size=17164, lastModifiedTime=1794528620789, largestRecordTimestamp=1794528605748) due to log retention time 60000ms breach based on the largest record timestamp in the segment (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:18,818] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Incremented log start offset to 9 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:18,818] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Deleting segment LogSegment(baseOffset=5, size=34269, lastModifiedTime=1794528627627, largestRecordTimestamp=1794528618154) due to log retention time 60000ms breach based on the largest record timestamp in the segment (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:27,817] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Incremented log start offset to 12 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)",
+        "[2026-11-13 00:11:27,818] INFO [UnifiedLog partition=qualification.backpressure-0, dir=/var/lib/kafka/data] Deleting segment LogSegment(baseOffset=9, size=25716, lastModifiedTime=1794528667166, largestRecordTimestamp=1794528627558) due to log retention time 60000ms breach based on the largest record timestamp in the segment (org.apache.kafka.storage.internals.log.UnifiedLog)"
+      ],
+      "receiptCountsOfThrottledIds": {
+        "fcb2d27419af81d5f30a9b5d": 2,
+        "1cc82a0492b84019e6430129": 3,
+        "68c03468ddd38a222d09fc06": 3,
+        "e1d871a8344476b0758ff9e5": 3,
+        "f45366eb64c716f1143cc373": 3,
+        "2eca85afd29cb5555c1ebccc": 3
+      },
+      "historicallyRejected": true
+    }
+  },
+  "otherVectors": "the 18 producer PASS results, including historically rejected kafka/secret-rotation, stay unverified"
+}

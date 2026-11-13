@@ -1,0 +1,70 @@
+{
+  "M1-pinned-02a4d3b2-rule": {
+    "file": "tools/dapr_platform_broker_configuration.py",
+    "exitCode": 1,
+    "perTest": {
+      "testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch": "ERROR",
+      "testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail": "ERROR",
+      "testDuplicatedOrAssignmentFormSidecarFlagsStillFail": "ERROR",
+      "testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention": "ok"
+    },
+    "failureHeadlines": [
+      "ERROR: testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch (test_dapr_platform_broker_configuration.PlatformPacketTests.testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch)",
+      "ERROR: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail)",
+      "ERROR: testDuplicatedOrAssignmentFormSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testDuplicatedOrAssignmentFormSidecarFlagsStillFail)"
+    ],
+    "lastLine": "FAILED (errors=3)"
+  },
+  "M2-skip-every-docker-exec": {
+    "file": "tools/dapr_platform_broker_configuration.py",
+    "exitCode": 1,
+    "perTest": {
+      "testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch": "ok",
+      "testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail": "",
+      "testDuplicatedOrAssignmentFormSidecarFlagsStillFail": "",
+      "testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention": "ok"
+    },
+    "failureHeadlines": [
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [measured sidecar run through the Kafka container]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--app-id inside Kafka administration]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--resources-path inside Kafka administration]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--config in another container]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--config from an executable outside the Kafka tools]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--config against another listener]",
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--config without the admin credentials]",
+      "FAIL: testDuplicatedOrAssignmentFormSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testDuplicatedOrAssignmentFormSidecarFlagsStillFail) [--app-id= inside Kafka administration]",
+      "FAIL: testDuplicatedOrAssignmentFormSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testDuplicatedOrAssignmentFormSidecarFlagsStillFail) [--resources-path= inside Kafka administration]",
+      "FAIL: testDuplicatedOrAssignmentFormSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testDuplicatedOrAssignmentFormSidecarFlagsStillFail) [--config= in another container]"
+    ],
+    "lastLine": "FAILED (failures=10)"
+  },
+  "M3-exemption-without-container-binding": {
+    "file": "tools/dapr_platform_broker_configuration.py",
+    "exitCode": 1,
+    "perTest": {
+      "testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch": "ok",
+      "testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail": "",
+      "testDuplicatedOrAssignmentFormSidecarFlagsStillFail": "",
+      "testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention": "ok"
+    },
+    "failureHeadlines": [
+      "FAIL: testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail) [--config in another container]",
+      "FAIL: testDuplicatedOrAssignmentFormSidecarFlagsStillFail (test_dapr_platform_broker_configuration.PlatformPacketTests.testDuplicatedOrAssignmentFormSidecarFlagsStillFail) [--config= in another container]"
+    ],
+    "lastLine": "FAILED (failures=2)"
+  },
+  "M4-sixty-second-pressure-retention": {
+    "file": "tools/qualify-dapr-brokers.py",
+    "exitCode": 1,
+    "perTest": {
+      "testProducerKafkaTopicCreationConfigIsNotIdentifiedAsSidecarLaunch": "ok",
+      "testUnmeasuredExecutablesAndMisplacedSidecarFlagsStillFail": "ok",
+      "testDuplicatedOrAssignmentFormSidecarFlagsStillFail": "ok",
+      "testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention": "FAIL"
+    },
+    "failureHeadlines": [
+      "FAIL: testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention (test_dapr_platform_broker_configuration.ConfigurationTests.testActualProducerKeepsKafkaPressureRecordsBeyondTopicRetention)"
+    ],
+    "lastLine": "FAILED (failures=1)"
+  }
+}

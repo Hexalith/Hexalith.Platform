@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "platformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+  "platformPath": "docs/implementation/story-4-17-broker-candidate-02.json",
+  "rabbitmq": {
+    "reconnectWaitSeconds": 2,
+    "outboundTimeoutMilliseconds": 500
+  },
+  "kafka": {
+    "consumeRetryIntervalMilliseconds": 200,
+    "group.initial.rebalance.delay.ms": 100
+  }
+}

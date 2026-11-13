@@ -4,6 +4,11 @@ Status: **attempt consumed; packet retained; integrity NOT verified.** Platform 
 EventStore 3.21 remain **in-progress**. All five historical guarantees remain
 **REJECTED**. Broker selection is **null** and production eligibility is **FAIL**.
 
+Follow-up (2026-11-13): the [packet diagnosis](story-4-17-broker-candidate-01-packet-diagnosis.md)
+classifies the six producer failures. It fixes the verifier defect and a Kafka pressure harness
+defect on an unpushed EventStore branch, and the
+[candidate-02 proposal](story-4-17-broker-candidate-02-proposal.md) awaits owner approval.
+
 The machine-readable assessment governs this summary:
 [`attempt-assessment.json`](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted-attempt-2/attempt-assessment.json).
 

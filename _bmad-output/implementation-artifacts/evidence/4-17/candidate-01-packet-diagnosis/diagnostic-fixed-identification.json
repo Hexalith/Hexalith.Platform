@@ -1,0 +1,44 @@
+{
+  "observedUtc": "2026-11-13T01:32:59.517155+00:00",
+  "authoritative": false,
+  "purpose": "check the candidate-02 sidecar identification against the real attempt-2 packet; not qualification evidence",
+  "pinnedSource": "git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "replacedFile": {
+    "path": "tools/dapr_platform_broker_configuration.py",
+    "pinnedSha256": "b02daa725824b525f137e9a9b080140dcaf8a87435cc47ada6de7a71f9ce5eb5",
+    "fixedSha256": "a63df8c9c685b34d21581f8f94576cf3d97c5adc4ba3878cc7095a3bcbe6308b"
+  },
+  "trustedRootRedirect": [
+    "(Path(__file__).resolve().parents[1] / selected_profile)",
+    "owning_root = Path(__file__).resolve().parents[1]"
+  ],
+  "packetJsonSha256": "aeb4b7c09d925142684e7444102e4b8e44578740c6805006dee551ac1dc26e59",
+  "originalConfigurationSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+  "runs": {
+    "integrity": {
+      "flags": [
+        "--allow-failures"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"integrity\": \"PASS\",\n  \"technicalQualification\": \"FAIL\",\n  \"failedScenarios\": [\n    \"rabbitmq/cancellation-backpressure\",\n    \"rabbitmq/durable-quarantine\",\n    \"rabbitmq/missing-bindings\",\n    \"rabbitmq/retention-expiry\",\n    \"rabbitmq/secret-rotation\",\n    \"kafka/cancellation-backpressure\"\n  ],\n  \"productionEligibility\": \"FAIL\",\n  \"selectedBroker\": null\n}\n",
+      "stderr": "",
+      "stdoutSha256": "6db8dfefa32f262f0ff72e1b880803937ef1ecc8f31ec6b7851135310aee98c8"
+    },
+    "technical": {
+      "flags": [],
+      "exitCode": 1,
+      "stdout": "FAIL: technical qualification FAIL: rabbitmq/cancellation-backpressure, rabbitmq/durable-quarantine, rabbitmq/missing-bindings, rabbitmq/retention-expiry, rabbitmq/secret-rotation, kafka/cancellation-backpressure\n",
+      "stderr": "",
+      "stdoutSha256": "326c00f0a0ad21ed12eb9dcc5c9ad7291159c0e078b398c9171bd91af32b46c5"
+    },
+    "authority": {
+      "flags": [
+        "--require-production-authority"
+      ],
+      "exitCode": 1,
+      "stdout": "FAIL: production eligibility FAIL: authenticated AD-26 Architecture/Platform records, Story 3.19 publication/profile binding, Kubernetes rehearsal, restore and Story 4.16 envelope proof are absent; this lane never issues authority\n",
+      "stderr": "",
+      "stdoutSha256": "ac9b7dfc4016a3fda975ceb2e503f75c2071a8af5d7e94ceca2a7072384b5803"
+    }
+  }
+}
