@@ -2,7 +2,7 @@
 title: '2.12 Provision a run-owned workload-binding authority'
 type: 'feature'
 created: '2026-11-13'
-status: 'in-progress'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '375231e1552c98a4238482c67b6e69d92ea43d1a'
@@ -56,6 +56,7 @@ Aliases: C = `src/Hexalith.Platform.Composition`; K = `infrastructure/keycloak-w
 - [x] `A/FolderDurabilityAcceptanceFixture.cs`, `A/OperationalProviderFixture.cs`, `F/src/Hexalith.Folders.AppHost/Hexalith.Folders.AppHost.csproj`: adopt the explicit launcher context before the existing consumer call, link shared helpers, merge trust and connect cleanup. Preserve external owner enrollment when no generated context is selected; refuse mixed contexts.
 - [x] `T/PlatformRunOwnedWorkloadEnrollmentTests.cs`, `K/test_run_owned.py` (new), `K/verify_component.py`, `A/WorkloadEnrollmentComponentTests.cs`, `A/WorkloadEnrollmentConfigurationTests.cs`: add explicit `--run-owned` component selection; cover the matrix with real provider/consumer tests and focused ownership/lifecycle controls, including replicas, two independent proof callers, expiry, partial provisioning and unrelated-resource preservation.
 - [x] `docs/security/workload-binding-enrollment.md`: document launch/build prerequisites, usage and cleanup; allow generated trust only through this disposable path and point the Folders 12.2 paragraph to it. Retain persistent realm-owner requirements.
+- [ ] `A/WorkloadEnrollmentComponentTests.cs`, `A/WorkloadEnrollmentConfigurationTests.cs`: execute the affected Folders runtime suites against a coherent Debug/source build after the existing FrontComposer build blockers are resolved. Supplementary compile-only evidence does not close this validation task.
 
 **Acceptance Criteria:**
 
@@ -120,6 +121,38 @@ Local delivery preserves the original Platform gitlink; the Folders implementati
 
 Publication continuation after the user requested push: the feature was rebased over concurrent upstream work without changing tested source bytes; Folders was published first and its verified remote commit is adopted by Platform. [Push preparation](evidence/2-12/push-preparation.json) records canonical revisions and preservation checks. The earlier local-only delivery record remains historical. No nested submodules or tuple/source-release selection files were updated.
 
+### Continuation independent review (three layers)
+
+All three layers returned before triage. Each report is recorded separately before grouping. B = blind, E = edge-case, V = verification-gap. The preserved historical baseline also includes prior catalog/release work; those findings are recorded as pre-existing to this continuation.
+
+| Finding | Verdict | Route | Verified evidence |
+| --- | --- | --- | --- |
+| B1 | high | patch G14 | `owned_members` excludes only initial direct children. A previously existing grandchild becomes an unexcluded direct child after its unrelated parent exits, so cleanup signals it; both ownership reviewers reproduced this. Preserve the complete pre-existing process trees. |
+| B2 | medium | patch G15 | Lease construction allocates the directory/journal before handler installation and the outer finally. TERM during constructor publication exits without launcher cleanup; the reviewer reproduced and removed the resulting private directory. Protect allocation from cancellation before creating material. |
+| B3 | medium | patch G16 | All Docker operations resolve the mutable default context separately. Switching the default during a lease can make cleanup observe a different daemon and falsely acknowledge absence. Bind the original Docker selection throughout that lease. |
+| B4 | medium | patch G17 | Assembly verification accepts a zero exit without requiring the explicit method to execute or adoption to occur. The actual xUnit runner reports success for Total: 0; require execution and successful provision/consumer observations. |
+| B5 | medium | patch G18 | `probe_child` uses Python assert for claims and the OpenSSL call. Optimization removes the call while still incrementing probe counts. Reject optimized component execution or use explicit failures. |
+| B6 | medium | defer D1 | The already committed named catalog requires an authenticated digest, but `verify-agents-host.sh:61` supplies none. This catalog migration predates the current story continuation; no pin/catalog changes were made here. |
+| B7 | medium | defer D2 | The already selected catalog has conditional and default EventStore versions, but `verify_works_host.selected_sdk_version` still requires one element. This pre-existing catalog-reader mismatch is separate from enrollment. |
+| B8 | false | reject | The claim asks for a broader SDK host test without showing a failing SDK path. The frozen requirement is default TLS on a running enrolled host plus unchanged consumer verification; the fresh ASP.NET child executes both using propagated environment and pinned signer, and the existing SDK paths are not changed here. |
+| B9 | medium | defer D3 | Full Folders runtime verification remains absent because unchanged FrontComposer CA2263 blocks the source build. The limitation is explicitly retained and no strict acceptance or Folders 12.2 claim is made. Fixing the pre-existing FrontComposer build blocker is outside these enrollment edits; editing this spec alone is not an accepted correction. |
+| B10 | low | patch G19 | A missing/unreadable expected trust file throws IOException/UnauthorizedAccessException before the named refusal. This routine precondition should retain `missing-prelaunch-trust`; normalize those reads and cover it. |
+| E1 | maybe-false (medium, unverified) | defer D4 | Cleanup can see no container after an unresolved Docker client outcome, but the report does not demonstrate the daemon subsequently creating the container despite cancellation. Need a delayed-daemon creation reproduction to distinguish an actual late container from a completed failed request; report is retained without claiming the race disproven. |
+| E2 | high | patch G14 | Same independently reproduced unrelated-grandchild reparenting defect as B1; retain both reports and fix their common ownership classification. |
+| E3 | medium | defer D1 | Same authenticated named-catalog call-site mismatch as B6, reproduced against Builds 5.2.1. It predates the current continuation and must be repaired by its catalog owner. |
+| E4 | medium | patch G15 | Same reproduced constructor-time TERM leak as B2. Constructor allocation precedes cancellation protection and the launcher finally. |
+| V1 | medium | patch G20 | Pre-verified regression gap: no C# case cancels adoption after request publication. Deleting catch/dispose leaves all current bridge tests green. Add an explicit scenario that verifies release and prompt cleanup while the child otherwise remains alive. |
+
+The seven patch groups are direct corrections to demonstrated internal behavior or verification, add no public surface, and preserve frozen intent. Four separate deferred entries record two catalog-owner issues, the unchanged Folders build blocker, and the unresolved daemon outcome claim. The SDK-host expansion is rejected on the stated evidence.
+
+### Continuation patch verification and unresolved gate
+
+G14–G20 are implemented and parent-verified. The final run passes 23 provider tests, 28 Python tests, 25 default C# cases, two separately executed explicit C# scenarios (normal consumer/fresh host and cancellation after request publication), and 19 live RSA probes. Both narrow Debug/source builds have zero warnings/errors; all whitespace checks pass. Independent observation finds zero owned containers or private run directories. [Final commands, source hashes and limitations](evidence/2-12/review-pass-2-final/verification.json), [retained outputs](evidence/2-12/review-pass-2-final/outputs.json), and [final matrix audit](evidence/2-12/review-pass-2-final/matrix-audit.json) supersede the implementation handoff for current tested bytes.
+
+The normal Folders build still fails on unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. A temporary validation-only `WarningsNotAsErrors=CA2263` attempt retained that normal failure and exposed existing FrontComposer net10/net11 CS1705; it also failed. No tracked build, dependency, framework, release or CI input was changed. Affected Folders runtime suites and strict acceptance remain unverified, and the validation task above stays open. The possible late-daemon creation claim remains medium/unverified, requiring the reproduction recorded in deferred work.
+
+The rendered bmad-build review step requires halting when verification fails and cannot be fixed within this implementation. Workflow completion is therefore halted at this gate with this spec `in-review`; no completion, Platform lifecycle qualification or Folders 12.2 claim is made. The changes are staged locally in their owning repositories. No commit, push, remote operation or submodule pointer advance occurred, preserving the concurrent release owner's stable-main window.
+
 ## Design Notes
 
 Use a two-phase launcher because the verifier runs inside xUnit: changing trust after process startup is insufficient. The dedicated workload authority is separate from Folders' human Keycloak. An explicit launcher receipt establishes authority ownership without pretending the private Folders fixture supplies Platform runner qualification.
@@ -132,22 +165,22 @@ From K run `mvn -B -ntp package`, `python3 -B -m unittest test_run_owned`, and `
 
 Review pass 2, 2026-11-13. Four layers reported. Each finding was verified before grouping. Severity is the triage verdict.
 
-- [ ] [Review][Patch] Workers replica is given its own AppId, then the test requires a shared secret [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs:95]
-- [ ] [Review][Patch] A descendant that calls setsid survives after group cleanup reports success [infrastructure/keycloak-workload-binding/run_owned.py:428]
-- [ ] [Review][Patch] Docker stdout is parsed with stderr merged in [infrastructure/keycloak-workload-binding/run_owned.py:39]
-- [ ] [Review][Patch] A non-JSON readiness response aborts the lease instead of retrying [infrastructure/keycloak-workload-binding/run_owned.py:316]
-- [ ] [Review][Patch] Cleanup wait is capped by an already past owner deadline [src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs:162]
-- [ ] [Review][Patch] Fresh host exchange accepts a token the consumer verifier would refuse [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:385]
-- [ ] [Review][Patch] Non-1000 caller evidence prints group and secret mode as constants [infrastructure/keycloak-workload-binding/run_owned_component.py:222]
-- [ ] [Review][Patch] Cohort digest re-encodes JSON instead of hashing the request bytes [infrastructure/keycloak-workload-binding/run_owned.py:93]
-- [ ] [Review][Patch] Expiry control shares an eight-second lease with image pull [infrastructure/keycloak-workload-binding/run_owned_component.py:146]
-- [ ] [Review][Patch] A second TERM, INT, or HUP during cleanup skips removal [infrastructure/keycloak-workload-binding/run_owned.py:475]
-- [ ] [Review][Patch] SIGQUIT and SIGABRT skip the cleanup handler [infrastructure/keycloak-workload-binding/run_owned.py:478]
-- [ ] [Review][Patch] Probe revision accepts boolean true and 1.0 [infrastructure/keycloak-workload-binding/run_owned.py:127]
-- [ ] [Review][Patch] Unrelated lifecycle control sleeps less than the five scenario budgets [infrastructure/keycloak-workload-binding/run_owned_component.py:158]
-- [ ] [Review][Patch] Normally run tests never assert probe audience equals the Dapr app id [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:35]
-- [ ] [Review][Patch] global-administrators storage tenant has no negative test [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:69]
-- [ ] [Review][Patch] Producer negative test corrupts global-administrators, not the tenants domain [infrastructure/keycloak-workload-binding/test_run_owned.py:44]
+- [x] [Review][Patch] Workers replica is given its own AppId, then the test requires a shared secret [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs:95]
+- [x] [Review][Patch] A descendant that calls setsid survives after group cleanup reports success [infrastructure/keycloak-workload-binding/run_owned.py:428]
+- [x] [Review][Patch] Docker stdout is parsed with stderr merged in [infrastructure/keycloak-workload-binding/run_owned.py:39]
+- [x] [Review][Patch] A non-JSON readiness response aborts the lease instead of retrying [infrastructure/keycloak-workload-binding/run_owned.py:316]
+- [x] [Review][Patch] Cleanup wait is capped by an already past owner deadline [src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs:162]
+- [x] [Review][Patch] Fresh host exchange accepts a token the consumer verifier would refuse [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:385]
+- [x] [Review][Patch] Non-1000 caller evidence prints group and secret mode as constants [infrastructure/keycloak-workload-binding/run_owned_component.py:222]
+- [x] [Review][Patch] Cohort digest re-encodes JSON instead of hashing the request bytes [infrastructure/keycloak-workload-binding/run_owned.py:93]
+- [x] [Review][Patch] Expiry control shares an eight-second lease with image pull [infrastructure/keycloak-workload-binding/run_owned_component.py:146]
+- [x] [Review][Patch] A second TERM, INT, or HUP during cleanup skips removal [infrastructure/keycloak-workload-binding/run_owned.py:475]
+- [x] [Review][Patch] SIGQUIT and SIGABRT skip the cleanup handler [infrastructure/keycloak-workload-binding/run_owned.py:478]
+- [x] [Review][Patch] Probe revision accepts boolean true and 1.0 [infrastructure/keycloak-workload-binding/run_owned.py:127]
+- [x] [Review][Patch] Unrelated lifecycle control sleeps less than the five scenario budgets [infrastructure/keycloak-workload-binding/run_owned_component.py:158]
+- [x] [Review][Patch] Normally run tests never assert probe audience equals the Dapr app id [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:35]
+- [x] [Review][Patch] global-administrators storage tenant has no negative test [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:69]
+- [x] [Review][Patch] Producer negative test corrupts global-administrators, not the tenants domain [infrastructure/keycloak-workload-binding/test_run_owned.py:44]
 
 - [x] [Review][Defer] Provider trust composition is not asserted outside the opt-in durability suite [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs:39] — deferred: the only execution of this fixture is the opt-in durability suite, and a hermetic assertion requires splitting certificate composition out of Docker startup in StartAsync.
 
@@ -172,3 +205,9 @@ Review pass 2, 2026-11-13. Four layers reported. Each finding was verified befor
 - `_child` with no command raises `IndexError` — false. `launch` refuses an empty command before it spawns `_child`.
 - `trust.pem` can be replaced during the provisioning wait — low, rejected. The file is written once before the child starts, in a 0700 directory. A second hash is an extra guard against same-user substitution.
 - `SSL_CERT_FILE` pointing at a directory aborts provider startup — false. `File.Exists` returns false for a directory, so `StartAsync` writes the Forgejo certificate and does not throw.
+
+### Review pass 2 implementation audit
+
+All 16 patch items above are implemented. Parent acceptance audit checked the staged product changes against the preserved story baseline and all four frozen matrix rows, and confirmed the current source hashes match the executed verification. [Verification and exact commands](evidence/2-12/review-pass-2-implementation/verification.json), [retained outputs](evidence/2-12/review-pass-2-implementation/outputs.json), and [matrix audit](evidence/2-12/review-pass-2-implementation/acceptance-audit.json) record 23 provider tests, 22 Python tests, 23 default C# cases, one separate real consumer/fresh-host case, and 19 live RSA probes. Both narrow Debug/source builds pass with zero warnings/errors. Independent cleanup observation reports zero owned containers/private directories.
+
+The full Folders build remains blocked by unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. Its changed test sources pass supplementary compile-only checking; affected Folders runtime suites and strict acceptance remain unverified. The existing trust-composition deferral remains open. No Platform lifecycle qualification, Folders 12.2 completion, commit, push or submodule pointer update is claimed. Independent workflow review follows this implementation audit.

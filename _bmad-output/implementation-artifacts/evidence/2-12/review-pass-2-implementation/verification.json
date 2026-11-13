@@ -1,0 +1,319 @@
+{
+  "qualification": "run-owned enrollment",
+  "recordedAt": "2026-11-13T13:12:14.148951+00:00",
+  "platformHead": "e13bb671b1be83ae2a493d4e10c94f347b22de54",
+  "foldersHead": "c4510025e2b4812c770d7f85de8ec465d9981649",
+  "status": "implementation handoff; parent owns acceptance audit and spec completion",
+  "checks": [
+    {
+      "check": "provider",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "mvn",
+        "-B",
+        "-ntp",
+        "package"
+      ],
+      "exitCode": 0,
+      "outputKey": "provider",
+      "outputSha256": "372a720dbe5b43b6149394f3487befe5d1a6db091720ff7c2870099329598c52"
+    },
+    {
+      "check": "python",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_run_owned"
+      ],
+      "exitCode": 0,
+      "outputKey": "python",
+      "outputSha256": "5998ed8e614839a4443cccf7493e13057b53d4eb1efda30d830538d58f65f50f"
+    },
+    {
+      "check": "composition-build",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-p:BuildProjectReferences=false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputKey": "composition-build",
+      "outputSha256": "37e2d720ab1034ac8bda41670693ff5e56463bf5cd226d1468555796be79ed22"
+    },
+    {
+      "check": "tests-build",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-p:BuildProjectReferences=false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputKey": "tests-build",
+      "outputSha256": "c507d81197738888277dad1d3b46f37959ce7b02b37a9b77eca6c540919ce0a8"
+    },
+    {
+      "check": "csharp",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+        "-xml",
+        "/tmp/spec2-12-implementation-csharp.xml"
+      ],
+      "exitCode": 0,
+      "outputKey": "csharp",
+      "outputSha256": "4d7a67ccbe74b4717d2d03003269065c92c2305d373f68e36cd5b80eade571bf"
+    },
+    {
+      "check": "consumer-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "verify_component.py",
+        "--run-owned",
+        "--platform-assembly",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      "exitCode": 0,
+      "outputKey": "consumer-live",
+      "outputSha256": "ea0cb3d7e9e8b94bdfc0cf562e2da59e3d414298ed5b48885fd34e83ad94d604"
+    },
+    {
+      "check": "python-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "verify_component.py",
+        "--run-owned"
+      ],
+      "exitCode": 0,
+      "outputKey": "python-live",
+      "outputSha256": "dd02a4e150ada5b122c0ff2bb7b0b2a66a0f00c0d5ac07aabc46ebc345cc0924"
+    },
+    {
+      "check": "folders-build",
+      "cwd": ".",
+      "argv": [
+        "bash",
+        "/tmp/story-2-12-build-folders.sh"
+      ],
+      "exitCode": 1,
+      "outputKey": "folders-build",
+      "outputSha256": "0e50dcb5b393bd0cedf8121d9c0c8d0e46dfc5885d4584e900e06b1e58ce6114"
+    },
+    {
+      "check": "folders-typecheck",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "dotnet",
+        "build",
+        "/tmp/story-2-12-folders-typecheck/Typecheck.csproj",
+        "--no-restore",
+        "-v:q"
+      ],
+      "exitCode": 1,
+      "outputKey": "folders-typecheck",
+      "outputSha256": "d06d1d43ae0f8fdb969640025ec41e3496bcd49540f1eb60af068081a3def94e"
+    },
+    {
+      "check": "folders-compile-only",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "dotnet",
+        "build",
+        "/tmp/story-2-12-folders-typecheck/Typecheck.csproj",
+        "--no-restore",
+        "-p:RunAnalyzers=false",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputKey": "folders-compile-only",
+      "outputSha256": "313c9e0eaa817a379f75ebbbad8cd713db385d83644cb3a85f4cbc70937cb71a"
+    }
+  ],
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "3b41774935f9a4ee4aec9bf685ec4ed003ea7566297d222e85a5454cfc6fdf11",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "74942556284a19b176b90b3e2eb176a3e87c519d35a96a964784a23b67d14163",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "68755801017c1f38ae33e8a604e5ac590a33be07f366ffca15ac2bf4dc02e740",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "9f4ecfcd7763a0e820ea14b1f9c27913c6e7ce00c4b5b236f8a3113ba383c9a1",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "b54576bce2037b8831ac54a126eb5bafd9ff46cb1471602b3b7951a46fd65561",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "f95103fe0eea42e9685c12b7e4412fef99f0dc810583767db5b46322b75fc5f8",
+    "docs/security/workload-binding-enrollment.md": "bd1dc101dd60ed8ce60aa49d4163e2c523aeef81af9133518d256ff2f5e935f3"
+  },
+  "auxiliaryBuildInputs": {
+    "/tmp/story-2-12-uniform-props.xml": {
+      "sha256": "3d36e22660281727d64fa74d0392a5236785d5df5990f76f0b62e1ccf3a25522",
+      "content": "<Project>\n  <Import Project=\"$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))\" />\n  <PropertyGroup><TargetFramework>net11.0</TargetFramework></PropertyGroup>\n</Project>\n"
+    },
+    "/tmp/story-2-12-uniform-targets.xml": {
+      "sha256": "0af67d5533043a51a09b175f68e1ba8363b9441e6cd19bca11a6e2ccb7e43d6b",
+      "content": "<Project>\n  <PropertyGroup><_Story212OriginalTargets>$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildProjectDirectory)'))</_Story212OriginalTargets></PropertyGroup>\n  <Import Project=\"$(_Story212OriginalTargets)\" Condition=\"'$(_Story212OriginalTargets)' != ''\" />\n  <PropertyGroup Condition=\"'$(TargetFramework)' == 'net10.0'\">\n    <TargetFramework>net11.0</TargetFramework><TargetFrameworkVersion>v11.0</TargetFrameworkVersion><TargetFrameworkMoniker>.NETCoreApp,Version=v11.0</TargetFrameworkMoniker><NuGetTargetMoniker>.NETCoreApp,Version=v11.0</NuGetTargetMoniker>\n  </PropertyGroup>\n  <PropertyGroup Condition=\"'$(TargetFrameworks)' != ''\"><TargetFrameworks>$([System.String]::Copy('$(TargetFrameworks)').Replace('net10.0', 'net11.0'))</TargetFrameworks></PropertyGroup>\n</Project>\n"
+    },
+    "/tmp/story-2-12-build-folders.sh": {
+      "sha256": "cc9f31835036f5a6cdcf80a441932f3f5bb47123f62c871710c07034e1f02227",
+      "content": "#!/bin/bash\nset -euo pipefail\ncd /home/administrator/projects/hexalith/platform/references/Hexalith.Folders\ndotnet build tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -p:DirectoryBuildTargetsPath=/tmp/story-2-12-uniform-targets.xml -p:RestoreEnablePackagePruning=false -p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform -p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore -p:HexalithTenantsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants -p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories -p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli -m:1 -v:q\n"
+    },
+    "/tmp/story-2-12-folders-typecheck/Typecheck.csproj": {
+      "sha256": "11d92cbcdc08417693d73c8b6ce85134d7f184b1b482934ece75a44204212418",
+      "content": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net11.0</TargetFramework><IsTestProject>true</IsTestProject><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><TreatWarningsAsErrors>true</TreatWarningsAsErrors><RestoreEnablePackagePruning>false</RestoreEnablePackagePruning></PropertyGroup><ItemGroup><FrameworkReference Include=\"Microsoft.AspNetCore.App\" /><Reference Include=\"Hexalith.Memories.EventStoreExtensions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Memories.EventStoreExtensions.dll\" /><Reference Include=\"Nerdbank.Streams\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Nerdbank.Streams.dll\" /><Reference Include=\"Microsoft.Win32.SystemEvents\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Win32.SystemEvents.dll\" /><Reference Include=\"Microsoft.AspNetCore.TestHost\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.AspNetCore.TestHost.dll\" /><Reference Include=\"Dapr.Actors.AspNetCore\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Actors.AspNetCore.dll\" /><Reference Include=\"Microsoft.AspNetCore.SignalR.StackExchangeRedis\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.AspNetCore.SignalR.StackExchangeRedis.dll\" /><Reference Include=\"Swashbuckle.AspNetCore.SwaggerUI\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Swashbuckle.AspNetCore.SwaggerUI.dll\" /><Reference Include=\"Hexalith.Memories.EventStore\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Memories.EventStore.dll\" /><Reference Include=\"Hexalith.Memories.Contracts\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Memories.Contracts.dll\" /><Reference Include=\"Microsoft.Extensions.Telemetry.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Telemetry.Abstractions.dll\" /><Reference Include=\"Grpc.Net.Client\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.Net.Client.dll\" /><Reference Include=\"Hexalith.Builds.Module.EventStoreHost\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Builds.Module.EventStoreHost.dll\" /><Reference Include=\"Microsoft.ApplicationInsights\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.ApplicationInsights.dll\" /><Reference Include=\"Microsoft.Testing.Extensions.MSBuild\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Testing.Extensions.MSBuild.dll\" /><Reference Include=\"Microsoft.Testing.Extensions.TrxReport.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Testing.Extensions.TrxReport.Abstractions.dll\" /><Reference Include=\"MediatR\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/MediatR.dll\" /><Reference Include=\"Microsoft.IdentityModel.Protocols.OpenIdConnect\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll\" /><Reference Include=\"Microsoft.Extensions.ServiceDiscovery\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.ServiceDiscovery.dll\" /><Reference Include=\"Hexalith.EventStore.ServiceDefaults\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.ServiceDefaults.dll\" /><Reference Include=\"Google.Api.CommonProtos\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Google.Api.CommonProtos.dll\" /><Reference Include=\"Hexalith.Builds.Tooling\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Builds.Tooling.dll\" /><Reference Include=\"Hexalith.Platform.Identity\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Identity.dll\" /><Reference Include=\"Microsoft.TestPlatform.Utilities\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.TestPlatform.Utilities.dll\" /><Reference Include=\"Dapr.Common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Common.dll\" /><Reference Include=\"xunit.v3.runner.utility.netcore\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.runner.utility.netcore.dll\" /><Reference Include=\"OpenTelemetry.Instrumentation.Runtime\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Instrumentation.Runtime.dll\" /><Reference Include=\"JsonSchema.Net\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/JsonSchema.Net.dll\" /><Reference Include=\"Dapr.Workflow.Grpc\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Workflow.Grpc.dll\" /><Reference Include=\"Microsoft.Extensions.DependencyModel\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.DependencyModel.dll\" /><Reference Include=\"Json.More\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Json.More.dll\" /><Reference Include=\"Microsoft.Extensions.Compliance.Redaction\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Compliance.Redaction.dll\" /><Reference Include=\"Microsoft.Extensions.DependencyInjection.AutoActivation\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.DependencyInjection.AutoActivation.dll\" /><Reference Include=\"Grpc.AspNetCore.Server\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.AspNetCore.Server.dll\" /><Reference Include=\"Microsoft.Extensions.Http.Diagnostics\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Http.Diagnostics.dll\" /><Reference Include=\"Microsoft.TestPlatform.PlatformAbstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.TestPlatform.PlatformAbstractions.dll\" /><Reference Include=\"MessagePack.Annotations\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/MessagePack.Annotations.dll\" /><Reference Include=\"Microsoft.TestPlatform.CommunicationUtilities\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.TestPlatform.CommunicationUtilities.dll\" /><Reference Include=\"Microsoft.Extensions.TimeProvider.Testing\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.TimeProvider.Testing.dll\" /><Reference Include=\"Hexalith.EventStore.Aspire\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Aspire.dll\" /><Reference Include=\"CommunityToolkit.Aspire.Hosting.Dapr\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/CommunityToolkit.Aspire.Hosting.Dapr.dll\" /><Reference Include=\"Hexalith.EventStore.DomainService\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.DomainService.dll\" /><Reference Include=\"Microsoft.NET.StringTools\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.NET.StringTools.dll\" /><Reference Include=\"ModelContextProtocol.Core\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/ModelContextProtocol.Core.dll\" /><Reference Include=\"Dapr.Workflow.Versioning.Runtime\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Workflow.Versioning.Runtime.dll\" /><Reference Include=\"xunit.v3.core\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.core.dll\" /><Reference Include=\"MessagePack\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/MessagePack.dll\" /><Reference Include=\"Fractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Fractions.dll\" /><Reference Include=\"ModelContextProtocol\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/ModelContextProtocol.dll\" /><Reference Include=\"Hexalith.Commons.UniqueIds\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Commons.UniqueIds.dll\" /><Reference Include=\"Hexalith.EventStore.Admin.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Admin.Abstractions.dll\" /><Reference Include=\"Nerdbank.MessagePack\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Nerdbank.MessagePack.dll\" /><Reference Include=\"StreamJsonRpc\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/StreamJsonRpc.dll\" /><Reference Include=\"Hexalith.Platform.Custody.Component\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Custody.Component.dll\" /><Reference Include=\"System.Drawing.Common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.Drawing.Common.dll\" /><Reference Include=\"Microsoft.Extensions.AmbientMetadata.Application\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.AmbientMetadata.Application.dll\" /><Reference Include=\"OpenTelemetry.Instrumentation.AspNetCore\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Instrumentation.AspNetCore.dll\" /><Reference Include=\"Microsoft.IdentityModel.Logging\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.Logging.dll\" /><Reference Include=\"Microsoft.IdentityModel.JsonWebTokens\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.JsonWebTokens.dll\" /><Reference Include=\"Grpc.Core.Api\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.Core.Api.dll\" /><Reference Include=\"Hexalith.Commons.Http\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Commons.Http.dll\" /><Reference Include=\"Dapr.BinaryStore.Runtime\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.BinaryStore.Runtime.dll\" /><Reference Include=\"FluentValidation.DependencyInjectionExtensions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/FluentValidation.DependencyInjectionExtensions.dll\" /><Reference Include=\"xunit.v3.runner.common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.runner.common.dll\" /><Reference Include=\"Microsoft.AspNetCore.OpenApi\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.AspNetCore.OpenApi.dll\" /><Reference Include=\"Microsoft.TestPlatform.CoreUtilities\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.TestPlatform.CoreUtilities.dll\" /><Reference Include=\"QRCoder\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/QRCoder.dll\" /><Reference Include=\"Microsoft.IdentityModel.Tokens\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.Tokens.dll\" /><Reference Include=\"Microsoft.VisualStudio.TestPlatform.ObjectModel\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.VisualStudio.TestPlatform.ObjectModel.dll\" /><Reference Include=\"Dapr.Workflow.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Workflow.Abstractions.dll\" /><Reference Include=\"Microsoft.Extensions.Telemetry\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Telemetry.dll\" /><Reference Include=\"System.Management\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.Management.dll\" /><Reference Include=\"Hexalith.Platform.Composition.Tests\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\" /><Reference Include=\"PolyType\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/PolyType.dll\" /><Reference Include=\"Aspire.Hosting.Kubernetes\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Aspire.Hosting.Kubernetes.dll\" /><Reference Include=\"Hexalith.Parties\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.dll\" /><Reference Include=\"Microsoft.Extensions.Resilience\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Resilience.dll\" /><Reference Include=\"RESPite\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/RESPite.dll\" /><Reference Include=\"Microsoft.Testing.Platform\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Testing.Platform.dll\" /><Reference Include=\"Hexalith.McpCli.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.McpCli.Abstractions.dll\" /><Reference Include=\"Hexalith.Commons\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Commons.dll\" /><Reference Include=\"Microsoft.Extensions.Compliance.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Compliance.Abstractions.dll\" /><Reference Include=\"FluentValidation\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/FluentValidation.dll\" /><Reference Include=\"Microsoft.IdentityModel.Protocols\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.Protocols.dll\" /><Reference Include=\"Hexalith.Platform.Works.Runtime\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Works.Runtime.dll\" /><Reference Include=\"Hexalith.Platform.Composition\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll\" /><Reference Include=\"Hexalith.Parties.EventStoreExtensions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.EventStoreExtensions.dll\" /><Reference Include=\"Hexalith.Platform.Secrets.Runtime\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Secrets.Runtime.dll\" /><Reference Include=\"Dapr.AspNetCore\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.AspNetCore.dll\" /><Reference Include=\"Hexalith.EventStore.Server\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Server.dll\" /><Reference Include=\"OpenTelemetry.Instrumentation.Http\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Instrumentation.Http.dll\" /><Reference Include=\"KubernetesClient\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/KubernetesClient.dll\" /><Reference Include=\"Hexalith.Memories.Client.Rest\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Memories.Client.Rest.dll\" /><Reference Include=\"Microsoft.IdentityModel.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.IdentityModel.Abstractions.dll\" /><Reference Include=\"Microsoft.VisualStudio.CodeCoverage.Shim\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll\" /><Reference Include=\"xunit.v3.runner.inproc.console\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.runner.inproc.console.dll\" /><Reference Include=\"Microsoft.Extensions.Http.Resilience\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Http.Resilience.dll\" /><Reference Include=\"Microsoft.VisualStudio.Validation\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.VisualStudio.Validation.dll\" /><Reference Include=\"System.Security.Cryptography.ProtectedData\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.Security.Cryptography.ProtectedData.dll\" /><Reference Include=\"Google.Protobuf\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Google.Protobuf.dll\" /><Reference Include=\"Dapr.Workflow.Versioning.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Workflow.Versioning.Abstractions.dll\" /><Reference Include=\"Hex1b\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hex1b.dll\" /><Reference Include=\"xunit.v3.mtp-v2\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.mtp-v2.dll\" /><Reference Include=\"Microsoft.Bcl.AsyncInterfaces\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Bcl.AsyncInterfaces.dll\" /><Reference Include=\"Polly.Extensions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Polly.Extensions.dll\" /><Reference Include=\"Microsoft.Testing.Extensions.Telemetry\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Testing.Extensions.Telemetry.dll\" /><Reference Include=\"System.CodeDom\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.CodeDom.dll\" /><Reference Include=\"Aspire.Hosting\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Aspire.Hosting.dll\" /><Reference Include=\"Hexalith.EventStore.Client\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Client.dll\" /><Reference Include=\"Hexalith.Parties.Authentication\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.Authentication.dll\" /><Reference Include=\"Microsoft.TestPlatform.CrossPlatEngine\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.TestPlatform.CrossPlatEngine.dll\" /><Reference Include=\"Hexalith.EventStore.Gateway\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Gateway.dll\" /><Reference Include=\"Shouldly\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Shouldly.dll\" /><Reference Include=\"Hexalith.EventStore.Contracts\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.EventStore.Contracts.dll\" /><Reference Include=\"Hexalith.Tenants.Contracts\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Tenants.Contracts.dll\" /><Reference Include=\"Microsoft.Extensions.ServiceDiscovery.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll\" /><Reference Include=\"Hexalith.Platform.EventStoreHost\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.EventStoreHost.dll\" /><Reference Include=\"Newtonsoft.Json\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Newtonsoft.Json.dll\" /><Reference Include=\"System.IO.Hashing\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.IO.Hashing.dll\" /><Reference Include=\"xunit.abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.abstractions.dll\" /><Reference Include=\"HealthChecks.Redis\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/HealthChecks.Redis.dll\" /><Reference Include=\"Dapr.Client\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Client.dll\" /><Reference Include=\"Hexalith.Parties.Projections\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.Projections.dll\" /><Reference Include=\"OpenTelemetry.Extensions.Hosting\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Extensions.Hosting.dll\" /><Reference Include=\"HealthChecks.Uris\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/HealthChecks.Uris.dll\" /><Reference Include=\"OpenTelemetry\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.dll\" /><Reference Include=\"Dapr.Workflow\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Workflow.dll\" /><Reference Include=\"NuGet.Versioning\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/NuGet.Versioning.dll\" /><Reference Include=\"Semver\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Semver.dll\" /><Reference Include=\"OpenTelemetry.Api.ProviderBuilderExtensions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll\" /><Reference Include=\"DiffEngine\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/DiffEngine.dll\" /><Reference Include=\"StackExchange.Redis\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/StackExchange.Redis.dll\" /><Reference Include=\"Dapr.BinaryStore.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.BinaryStore.Abstractions.dll\" /><Reference Include=\"KellermanSoftware.Compare-NET-Objects\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/KellermanSoftware.Compare-NET-Objects.dll\" /><Reference Include=\"Microsoft.VisualStudio.TestPlatform.Common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.VisualStudio.TestPlatform.Common.dll\" /><Reference Include=\"Polly.RateLimiting\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Polly.RateLimiting.dll\" /><Reference Include=\"Microsoft.AspNetCore.Mvc.Testing\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.AspNetCore.Mvc.Testing.dll\" /><Reference Include=\"Hexalith.Parties.Security\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.Security.dll\" /><Reference Include=\"Microsoft.AspNetCore.Authentication.JwtBearer\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll\" /><Reference Include=\"Grpc.Net.ClientFactory\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.Net.ClientFactory.dll\" /><Reference Include=\"Microsoft.Bcl.Cryptography\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Bcl.Cryptography.dll\" /><Reference Include=\"Hexalith.Tenants.Server\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Tenants.Server.dll\" /><Reference Include=\"OpenTelemetry.Api\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Api.dll\" /><Reference Include=\"xunit.v3.assert\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.assert.dll\" /><Reference Include=\"MediatR.Contracts\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/MediatR.Contracts.dll\" /><Reference Include=\"xunit.runner.visualstudio.testadapter\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.runner.visualstudio.testadapter.dll\" /><Reference Include=\"Hexalith.Parties.Contracts\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Parties.Contracts.dll\" /><Reference Include=\"Hexalith.Platform.TestExtension\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.TestExtension.dll\" /><Reference Include=\"Aspire.Hosting.Keycloak\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Aspire.Hosting.Keycloak.dll\" /><Reference Include=\"Aspire.Hosting.Redis\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Aspire.Hosting.Redis.dll\" /><Reference Include=\"Polly.Core\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Polly.Core.dll\" /><Reference Include=\"Hexalith.Platform.Custody\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Custody.dll\" /><Reference Include=\"Grpc.Net.Common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.Net.Common.dll\" /><Reference Include=\"Grpc.AspNetCore.Server.ClientFactory\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.AspNetCore.Server.ClientFactory.dll\" /><Reference Include=\"ByteAether.Ulid\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/ByteAether.Ulid.dll\" /><Reference Include=\"Hexalith.Tenants\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Tenants.dll\" /><Reference Include=\"Dapr.Protos\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Protos.dll\" /><Reference Include=\"Hexalith.Platform.Protection\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Protection.dll\" /><Reference Include=\"Grpc.Reflection\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Grpc.Reflection.dll\" /><Reference Include=\"OpenTelemetry.Exporter.OpenTelemetryProtocol\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll\" /><Reference Include=\"Hexalith.Memories.DomainService\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Memories.DomainService.dll\" /><Reference Include=\"xunit.v3.common\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/xunit.v3.common.dll\" /><Reference Include=\"Castle.Core\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Castle.Core.dll\" /><Reference Include=\"YamlDotNet\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/YamlDotNet.dll\" /><Reference Include=\"EmptyFiles\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/EmptyFiles.dll\" /><Reference Include=\"Dapr.Actors\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Dapr.Actors.dll\" /><Reference Include=\"testhost\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/testhost.dll\" /><Reference Include=\"NSubstitute\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/NSubstitute.dll\" /><Reference Include=\"Microsoft.Extensions.Diagnostics.ExceptionSummarization\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll\" /><Reference Include=\"Microsoft.OpenApi\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.OpenApi.dll\" /><Reference Include=\"Hexalith.Tenants.Client\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Tenants.Client.dll\" /><Reference Include=\"Humanizer\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Humanizer.dll\" /><Reference Include=\"Microsoft.VisualStudio.Threading\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.VisualStudio.Threading.dll\" /><Reference Include=\"System.IdentityModel.Tokens.Jwt\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.IdentityModel.Tokens.Jwt.dll\" /><Reference Include=\"System.Configuration.ConfigurationManager\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/System.Configuration.ConfigurationManager.dll\" /><Reference Include=\"JsonPointer.Net\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/JsonPointer.Net.dll\" /><Reference Include=\"Microsoft.Extensions.AI.Abstractions\" HintPath=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Microsoft.Extensions.AI.Abstractions.dll\" /><Reference Include=\"Aspire.Hosting.Testing\" HintPath=\"/home/administrator/.nuget/packages/aspire.hosting.testing/13.6.5/lib/net8.0/Aspire.Hosting.Testing.dll\" /><Compile Include=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" /><Compile Include=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" /><Compile Include=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/src/Hexalith.Folders.AppHost/obj/Debug/net10.0/Aspire/references/_AppHost.ProjectMetadata.g.cs\" /><Compile Include=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/src/Hexalith.Folders.AppHost/obj/Debug/net10.0/Aspire/references/Hexalith_Folders_Workers.ProjectMetadata.g.cs\" /><Compile Include=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/src/Hexalith.Folders.AppHost/obj/Debug/net10.0/Aspire/references/Hexalith_Folders_Server.ProjectMetadata.g.cs\" /></ItemGroup></Project>"
+    }
+  },
+  "failedDevelopmentAttempts": [
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "test_run_owned.RunOwnedTests.test_command_keeps_machine_stdout_separate_from_stderr",
+        "test_run_owned.RunOwnedTests.test_revision_requires_an_integer_one",
+        "test_run_owned.RunOwnedTests.test_request_digest_hashes_exact_inventory_value_bytes",
+        "test_run_owned.RunOwnedTests.test_readiness_retries_non_json_until_valid_metadata",
+        "test_run_owned.RunOwnedTests.test_escaped_session_descendant_is_reaped_and_preexisting_child_survives"
+      ],
+      "exitCode": 1,
+      "retainedIn": "tool transcript; output was not redirected",
+      "result": "5 methods ran; 7 subtest errors: new digest/readiness controls called Lease.bind before writing trust.pem. Corrected test setup; no live resources were created by those controls.",
+      "sourceHashesCaptured": false
+    },
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "test_run_owned.RunOwnedTests.test_command_keeps_machine_stdout_separate_from_stderr",
+        "test_run_owned.RunOwnedTests.test_revision_requires_an_integer_one",
+        "test_run_owned.RunOwnedTests.test_request_digest_hashes_exact_inventory_value_bytes",
+        "test_run_owned.RunOwnedTests.test_readiness_retries_non_json_until_valid_metadata",
+        "test_run_owned.RunOwnedTests.test_escaped_session_descendant_is_reaped_and_preexisting_child_survives"
+      ],
+      "exitCode": 1,
+      "retainedIn": "tool transcript; output was not redirected",
+      "result": "5 methods ran; 1 error: isolated readiness control used a placeholder trust bundle, which SSL correctly rejected with NO_CERTIFICATE_OR_CRL_FOUND. Replaced with Lease.prepare; final complete suite passes.",
+      "sourceHashesCaptured": false
+    },
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "operation": "test-source edit helper",
+      "exitCode": 1,
+      "result": "FileNotFoundError: infrastructure/keycloak-workload-binding/test_run_owned.py because the helper used a root-relative path from the provider directory. Re-executed with test_run_owned.py; no source change occurred on this failed helper."
+    }
+  ],
+  "matrixCoverage": [
+    {
+      "row": "Final cohort and tenant",
+      "executed": [
+        "python: test_replica_entries_share_only_identical_workload_credentials",
+        "python-live: 19 fresh RSA probes, both replica pairs and two proof callers",
+        "csharp: CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants",
+        "consumer-live: RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:probe_child",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ]
+    },
+    {
+      "row": "Missing launch trust",
+      "executed": [
+        "consumer-live: missing-prelaunch-trust named refusal before adoption",
+        "consumer-live: actual fresh ASP.NET child TLS discovery, pinned signer and complete consumer token verification",
+        "python-live: untrusted-tls negative"
+      ],
+      "sourcePointers": [
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:RunningHostProbeAsync",
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:probe_child"
+      ]
+    },
+    {
+      "row": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "executed": [
+        "python: test_foreign_request_refuses_before_container_creation",
+        "python: test_exact_tenant_cohort_and_permissions_refuse (tenants and global-administrators separately)",
+        "python: test_request_digest_hashes_exact_inventory_value_bytes",
+        "csharp: ChangedInventoryRefuses, MixedOwnerContextRefusesBeforeReadingArtifacts, ProductionModelRefusesGeneratedContext",
+        "consumer-live: receipt expiry/child/directory/foreign capability and manifest probe/signer/tls/permissions/expiry/cohort/tenant controls; profile remains disabled until all succeed"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/test_run_owned.py:RunOwnedTests",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:ChangedInventoryRefuses"
+      ]
+    },
+    {
+      "row": "Exit, cancellation, expiry, partial startup",
+      "executed": [
+        "python and python-live: lifecycle_controls observes real created containers for post-creation failure, cancellation, expiry, child-exit and child-failure and preserves an unrelated live control",
+        "python: test_exit_failure_expiry_and_signal_clean_launcher_material (TERM, QUIT, ABRT, repeated TERM/INT/HUP/QUIT/ABRT)",
+        "python: test_escaped_session_descendant_is_reaped_and_preexisting_child_survives",
+        "python: cleanup-failure reporting, immutable-ID removal and foreign-container preservation controls",
+        "csharp: CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent (failed publish, foreign release, concurrent retry and delayed acknowledgement)"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:lifecycle_controls",
+        "infrastructure/keycloak-workload-binding/test_run_owned.py:test_exit_failure_expiry_and_signal_clean_launcher_material",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent"
+      ]
+    }
+  ],
+  "limitations": [
+    "Full Folders source build remains blocked by unchanged FrontComposer SchemaFingerprintContracts.cs:71 CA2263.",
+    "The isolated Folders compile-only fixture failed existing CA2007 rules when analyzers were enabled; compile-only rerun with RunAnalyzers=false passes. It is not a full build or runtime qualification.",
+    "Folders affected runtime suites, strict acceptance, Folders 12.2 completion and Platform lifecycle qualification remain unverified.",
+    "No commits, pushes, remote operations, tuple/source-release/dependency/framework/CI edits or submodule pointer advancement performed."
+  ],
+  "finalCleanupObservation": {
+    "commands": [
+      [
+        "docker",
+        "ps",
+        "--all",
+        "--filter",
+        "label=com.hexalith.run-owned-workload",
+        "--format",
+        "{{.ID}} {{.Names}}"
+      ],
+      [
+        "find",
+        "/tmp",
+        "-maxdepth",
+        "1",
+        "-type",
+        "d",
+        "-name",
+        "hexalith-run-owned-workload-*",
+        "-print"
+      ]
+    ],
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0
+  }
+}

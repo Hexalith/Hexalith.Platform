@@ -213,7 +213,8 @@ actual publication by owned container ID, and derives the HTTPS localhost
 origin from that binding. Keycloak's [hostname-only setting](https://www.keycloak.org/server/hostname)
 fixes `localhost` while resolving scheme and port from the HTTPS request.
 The launcher pins the exact server version and existing provider digest, and
-discovers the RSA signer through normally validated HTTPS metadata/JWKS. It creates no workload administrative identity and makes no
+keeps the original Docker context or endpoint selection for the entire lease.
+It discovers the RSA signer through normally validated HTTPS metadata/JWKS. It creates no workload administrative identity and makes no
 administrative API calls. The unchanged consumer manifest schema contains only
 owner-only secret references, and its validity, grants and signer approval are
 bounded by the original deadline. Ownership metadata remains in the separate
@@ -229,7 +230,11 @@ Fixture disposal requests producer cleanup. Child success/failure, cancellation,
 launcher signals, expiry and partial provisioning also remove the exact owned
 container, manifest, credentials, realm import and certificates. Cleanup checks
 the container's run label before removal and removes only the private owned
-directory; unrelated resources survive. The launcher reports cleanup failures as
+directory; unrelated resources survive. Child cleanup includes descendants that
+start another session. TERM, INT, HUP, QUIT and ABRT initiate cleanup; subsequent
+signals do not interrupt it. The bridge allows up to 30 seconds for cleanup
+acknowledgement after expiry without extending enrollment validity.
+The launcher reports cleanup failures as
 `owned-container-cleanup-incomplete` or `owned-private-material-cleanup-incomplete`
 and exits unsuccessfully. A failed cleanup must be resolved before claiming a
 clean run. Evidence output is labeled `run-owned enrollment` and contains only
@@ -246,11 +251,18 @@ python3 -B verify_component.py --run-owned --platform-assembly /absolute/path/to
 ```
 
 The assembly commands launch explicit real-provider/consumer controls through
-the same prelaunch receipt path. The Platform assembly offers a focused bridge
+the same prelaunch receipt path and require the selected test to pass, with
+observed adoption, provisioning and cleanup. Component validation requires
+unoptimized Python execution. The Platform assembly also checks cancellation
+after request publication while the child remains alive. It offers a focused bridge
 and unchanged-consumer lane when the larger Folders source graph is blocked;
 record that blocker separately from the focused result. The ordinary `verify_component.py` path retains its
 component-only administrative mutation controls and must never be interpreted as
 run-owned enrollment or persistent authority approval.
+The component expiry control resolves the image before starting its fixed
+eight-second lease, and its unrelated live control remains running until the
+entire scenario set finishes. Caller identity and private-file modes in component
+evidence are read from the actual container and host files.
 
 ## Verification, disable and cleanup
 

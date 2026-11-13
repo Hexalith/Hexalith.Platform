@@ -1,0 +1,76 @@
+{
+  "qualification": "run-owned enrollment",
+  "auditedAt": "2026-11-13T13:14:02.426421+00:00",
+  "reviewPass": 2,
+  "reviewPatchItemsVerified": 16,
+  "matrixRows": [
+    {
+      "row": "Final cohort and tenant",
+      "executed": [
+        "python: test_replica_entries_share_only_identical_workload_credentials",
+        "python-live: 19 fresh RSA probes, both replica pairs and two proof callers",
+        "csharp: CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants",
+        "consumer-live: RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:probe_child",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ],
+      "result": "passed; executed coverage verified against retained outputs"
+    },
+    {
+      "row": "Missing launch trust",
+      "executed": [
+        "consumer-live: missing-prelaunch-trust named refusal before adoption",
+        "consumer-live: actual fresh ASP.NET child TLS discovery, pinned signer and complete consumer token verification",
+        "python-live: untrusted-tls negative"
+      ],
+      "sourcePointers": [
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:RunningHostProbeAsync",
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:probe_child"
+      ],
+      "result": "passed; executed coverage verified against retained outputs"
+    },
+    {
+      "row": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "executed": [
+        "python: test_foreign_request_refuses_before_container_creation",
+        "python: test_exact_tenant_cohort_and_permissions_refuse (tenants and global-administrators separately)",
+        "python: test_request_digest_hashes_exact_inventory_value_bytes",
+        "csharp: ChangedInventoryRefuses, MixedOwnerContextRefusesBeforeReadingArtifacts, ProductionModelRefusesGeneratedContext",
+        "consumer-live: receipt expiry/child/directory/foreign capability and manifest probe/signer/tls/permissions/expiry/cohort/tenant controls; profile remains disabled until all succeed"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/test_run_owned.py:RunOwnedTests",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:ChangedInventoryRefuses"
+      ],
+      "result": "passed; executed coverage verified against retained outputs"
+    },
+    {
+      "row": "Exit, cancellation, expiry, partial startup",
+      "executed": [
+        "python and python-live: lifecycle_controls observes real created containers for post-creation failure, cancellation, expiry, child-exit and child-failure and preserves an unrelated live control",
+        "python: test_exit_failure_expiry_and_signal_clean_launcher_material (TERM, QUIT, ABRT, repeated TERM/INT/HUP/QUIT/ABRT)",
+        "python: test_escaped_session_descendant_is_reaped_and_preexisting_child_survives",
+        "python: cleanup-failure reporting, immutable-ID removal and foreign-container preservation controls",
+        "csharp: CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent (failed publish, foreign release, concurrent retry and delayed acknowledgement)"
+      ],
+      "sourcePointers": [
+        "infrastructure/keycloak-workload-binding/run_owned_component.py:lifecycle_controls",
+        "infrastructure/keycloak-workload-binding/test_run_owned.py:test_exit_failure_expiry_and_signal_clean_launcher_material",
+        "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent"
+      ],
+      "result": "passed; executed coverage verified against retained outputs"
+    }
+  ],
+  "sourceHashesMatch": true,
+  "providerTests": 23,
+  "pythonTests": 22,
+  "defaultCsharpPassed": 23,
+  "explicitConsumerFreshHostPassed": 1,
+  "liveRsaProbes": 19,
+  "foldersRuntimeAndStrictAcceptance": "unverified: unchanged FrontComposer CA2263; compile-only is supplementary",
+  "completeBaselineDiff": "/tmp/bmad-2-12-full-baseline-5uosrfdj.diff",
+  "scopedStoryProductDiff": "/tmp/bmad-2-12-story-product.diff",
+  "scopeNote": "Historical baseline includes unrelated intervening release/lifecycle commits; this continuation modifies only the staged story files. No branch or pin advance."
+}

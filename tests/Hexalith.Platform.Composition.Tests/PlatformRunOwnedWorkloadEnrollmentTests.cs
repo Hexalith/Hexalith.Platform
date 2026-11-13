@@ -36,6 +36,16 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         Caller("folders").ShouldBe(Caller("folders-replica"));
         Caller("folders-workers").ShouldBe(Caller("folders-workers-replica"));
         new[] { Caller("folders-workers"), Caller("folders-workers-proof-a"), Caller("folders-workers-proof-b") }.Distinct().Count().ShouldBe(3);
+        foreach (JsonElement client in clients)
+            foreach (JsonElement probe in client.GetProperty("probes").EnumerateArray())
+            {
+                string operation = probe.GetProperty("operation").GetString()!;
+                string audience = probe.GetProperty("audience").GetString()!;
+                if (operation.StartsWith("eventstore:", StringComparison.Ordinal)) audience.ShouldBe(Caller("eventstore"));
+                else if (probe.GetProperty("bindings").TryGetProperty("eventstore:bound-domain", out JsonElement domain))
+                    audience.ShouldBe(Caller(domain.GetString() == "folders" ? "folders" : "tenants"));
+                else new[] { Caller("folders"), Caller("tenants") }.ShouldContain(audience);
+            }
         JsonElement[] queries = [.. clients.Single(client => client.GetProperty("resource").GetString() == "eventstore").GetProperty("probes").EnumerateArray()
             .Where(probe => probe.GetProperty("operation").GetString() == "domain-service:query")];
         queries.Length.ShouldBe(3);
@@ -55,7 +65,9 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     [InlineData("bootstrap")]
     [InlineData("query")]
     [InlineData("storage-tenant")]
+    [InlineData("global-administrators-storage-tenant")]
     [InlineData("selected-tenant")]
+    [InlineData("audience")]
     public void ChangedInventoryRefuses(string fault)
     {
         IDistributedApplicationBuilder builder = Builder();
@@ -66,7 +78,9 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         if (fault == "callback") Probes("eventstore").RemoveAt(0);
         if (fault == "bootstrap") Probes("tenants").RemoveAt(0);
         if (fault == "query") Probes("eventstore").RemoveAt(8);
+        if (fault == "audience") Probes("eventstore")[0]!["audience"] = "folders";
         if (fault == "storage-tenant") Probes("eventstore")[9]!["bindings"]!["eventstore:bound-tenant"] = "selected-run-tenant";
+        if (fault == "global-administrators-storage-tenant") Probes("eventstore")[10]!["bindings"]!["eventstore:bound-tenant"] = "selected-run-tenant";
         using JsonDocument document = JsonDocument.Parse(inventory.ToJsonString());
         Should.Throw<InvalidOperationException>(() => PlatformWorkloadEnrollmentInventory.Validate(PlatformWorkloadEnrollmentInventory.Cohort(builder),
             [.. document.RootElement.GetProperty("clients").EnumerateArray()], fault == "selected-tenant" ? "other" : "selected-run-tenant"));
@@ -117,11 +131,55 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
             .Message.ShouldContain("disposable-development-run-required");
     }
 
-    /// <summary>A failed publish or expired cleanup wait keeps refusing until private material is absent.</summary>
+    /// <summary>Missing and unreadable expected launch trust refuse by the named prelaunch requirement.</summary>
+    /// <param name="fault">The unavailable trust-file state.</param>
+    [Theory]
+    [InlineData("missing")]
+    [InlineData("unreadable")]
+    public async Task LaunchTrustReadFailuresHaveNamedPrecondition(string fault)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "run-owned-trust-control-" + Path.GetRandomFileName());
+        Directory.CreateDirectory(directory);
+        try
+        {
+            if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            string trustFile = Path.Combine(directory, "trust.pem"), receiptFile = Path.Combine(directory, "receipt.json");
+            MethodInfo identity = typeof(PlatformRunOwnedWorkloadEnrollment).GetMethod("ProcessIdentity", BindingFlags.NonPublic | BindingFlags.Static)!;
+            int ownerPid = (int)typeof(PlatformRunOwnedWorkloadEnrollment).GetMethod("ParentProcess", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [Environment.ProcessId])!;
+            string capability = new('B', 64);
+            byte[] receipt = JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                schema = "hexalith.run-owned-workload/v1", owner = "disposable-folders-acceptance", directory, capability,
+                childPid = Environment.ProcessId, childIdentity = (string)identity.Invoke(null, [Environment.ProcessId])!,
+                ownerPid, ownerIdentity = (string)identity.Invoke(null, [ownerPid])!, runId = new string('A', 32),
+                deadline = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 60, trustFile, trustSha256 = new string('A', 64),
+            });
+            await File.WriteAllBytesAsync(receiptFile, receipt, TestContext.Current.CancellationToken);
+            if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(receiptFile, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            // Opening a directory as a file is denied even for root, making the read failure deterministic.
+            if (fault == "unreadable")
+            {
+                Directory.CreateDirectory(trustFile);
+                if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(trustFile, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            }
+            using EnvironmentScope environment = new(new Dictionary<string, string?>
+            {
+                [PlatformRunOwnedWorkloadEnrollment.ReceiptEnvironmentVariable] = receiptFile,
+                [PlatformRunOwnedWorkloadEnrollment.CapabilityEnvironmentVariable] = capability,
+                ["SSL_CERT_FILE"] = trustFile,
+            });
+            (await Should.ThrowAsync<InvalidOperationException>(() => PlatformRunOwnedWorkloadEnrollment.AdoptAsync(Builder(), "selected-run-tenant", TestContext.Current.CancellationToken)))
+                .Message.ShouldContain("missing-prelaunch-trust");
+            File.Exists(Path.Combine(directory, "request.json")).ShouldBeFalse();
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    /// <summary>A failed publish or foreign release keeps refusing until this owner's cleanup is acknowledged.</summary>
     /// <param name="fault">The failed disposal stage.</param>
     [Theory]
     [InlineData("publish")]
-    [InlineData("timeout")]
+    [InlineData("foreign-release")]
     public async Task CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent(string fault)
     {
         string directory = Path.Combine(Path.GetTempPath(), "run-owned-cleanup-retry-" + Path.GetRandomFileName());
@@ -129,32 +187,84 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         try
         {
             ConstructorInfo constructor = typeof(PlatformRunOwnedWorkloadEnrollment).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
-                null, [typeof(string), typeof(string), typeof(string), typeof(long)], null)!;
-            var enrollment = (PlatformRunOwnedWorkloadEnrollment)constructor.Invoke([directory, new string('A', 32), new string('B', 64), DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1]);
+                null, [typeof(string), typeof(string), typeof(string)], null)!;
+            var enrollment = (PlatformRunOwnedWorkloadEnrollment)constructor.Invoke([directory, new string('A', 32), new string('B', 64)]);
             string releasePath = Path.Combine(directory, "release.json");
             if (fault == "publish") Directory.CreateDirectory(releasePath);
+            else
+            {
+                await File.WriteAllTextAsync(releasePath, "{\"runId\":\"foreign\",\"capability\":\"foreign\"}", TestContext.Current.CancellationToken);
+                if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(releasePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            }
             for (int attempt = 0; attempt < 2; attempt++)
             {
                 (await Should.ThrowAsync<InvalidOperationException>(() => enrollment.DisposeAsync().AsTask()))
                     .Message.ShouldContain("owned-cleanup-incomplete");
                 Directory.Exists(directory).ShouldBeTrue();
             }
-            if (fault == "publish")
-            {
-                Directory.Delete(releasePath);
-                (await Should.ThrowAsync<InvalidOperationException>(() => enrollment.DisposeAsync().AsTask()))
-                    .Message.ShouldContain("owned-cleanup-incomplete");
-            }
+            if (fault == "publish") Directory.Delete(releasePath);
+            else File.Delete(releasePath);
+            Task cleanup = enrollment.DisposeAsync().AsTask();
+            using CancellationTokenSource publication = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+            publication.CancelAfter(TimeSpan.FromSeconds(2));
+            while (!File.Exists(releasePath) && !cleanup.IsCompleted) await Task.Delay(10, publication.Token);
             File.Exists(releasePath).ShouldBeTrue("A retry publishes or reuses the owner's release request.");
             byte[] published = await File.ReadAllBytesAsync(releasePath, TestContext.Current.CancellationToken);
-            (await Should.ThrowAsync<InvalidOperationException>(() => enrollment.DisposeAsync().AsTask()))
-                .Message.ShouldContain("owned-cleanup-incomplete");
+            Task concurrentCleanup = enrollment.DisposeAsync().AsTask();
+            await Task.Delay(150, TestContext.Current.CancellationToken);
+            cleanup.IsCompleted.ShouldBeFalse("Cleanup waits until the owner removes private material.");
             (await File.ReadAllBytesAsync(releasePath, TestContext.Current.CancellationToken)).AsSpan().SequenceEqual(published).ShouldBeTrue();
             Directory.Delete(directory, recursive: true);
+            await Task.WhenAll(cleanup, concurrentCleanup).WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
             await enrollment.DisposeAsync();
             await enrollment.DisposeAsync();
         }
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true); }
+    }
+
+    /// <summary>The fresh host applies the consumer's complete signed grant, binding and validity checks.</summary>
+    /// <param name="fault">The otherwise correctly signed token mutation.</param>
+    [Theory]
+    [InlineData("none")]
+    [InlineData("grant")]
+    [InlineData("revision")]
+    [InlineData("surface")]
+    [InlineData("binding")]
+    [InlineData("extra-binding")]
+    [InlineData("issued")]
+    [InlineData("not-before")]
+    [InlineData("lifetime")]
+    public void FreshHostUsesCompleteConsumerTokenVerification(string fault)
+    {
+        using RSA signer = RSA.Create(2048);
+        JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(Builder(), "selected-run-tenant");
+        JsonElement client = inventory.GetProperty("clients").EnumerateArray().Single(value => value.GetProperty("resource").GetString() == "folders-workers-proof-a");
+        JsonElement probe = client.GetProperty("probes")[0];
+        string workload = client.GetProperty("workload").GetString()!;
+        const string issuer = "https://localhost/realms/run-owned", kid = "approved-signer";
+        long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        JsonObject payload = new()
+        {
+            ["iss"] = issuer, ["azp"] = workload, ["aud"] = probe.GetProperty("audience").GetString(),
+            ["iat"] = now - 1, ["nbf"] = now - 1, ["exp"] = now + 60,
+            ["eventstore:operation"] = probe.GetProperty("operation").GetString(), ["eventstore:surface"] = "service",
+            ["eventstore:grant-id"] = probe.GetProperty("grantId").GetString(), ["eventstore:grant-revision"] = probe.GetProperty("revision").GetInt64(),
+        };
+        foreach (JsonProperty binding in probe.GetProperty("bindings").EnumerateObject()) payload[binding.Name] = binding.Value.GetString();
+        if (fault == "grant") payload["eventstore:grant-id"] = "foreign-grant";
+        if (fault == "revision") payload["eventstore:grant-revision"] = 2;
+        if (fault == "surface") payload["eventstore:surface"] = "human";
+        if (fault == "binding") payload["eventstore:bound-tenant"] = "foreign-tenant";
+        if (fault == "extra-binding") payload["eventstore:bound-extra"] = "extra";
+        if (fault == "issued") payload["iat"] = now + 60;
+        if (fault == "not-before") payload["nbf"] = now + 60;
+        if (fault == "lifetime") payload["exp"] = now + 121;
+        static string Encode(byte[] bytes) => Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        string signed = Encode(JsonSerializer.SerializeToUtf8Bytes(new { alg = "RS256", kid })) + "." + Encode(JsonSerializer.SerializeToUtf8Bytes(payload));
+        string token = signed + "." + Encode(signer.SignData(System.Text.Encoding.ASCII.GetBytes(signed), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
+        if (fault == "none") VerifyHostToken(token, signer, kid, issuer, workload, probe, now + 300);
+        else Should.Throw<TargetInvocationException>(() => VerifyHostToken(token, signer, kid, issuer, workload, probe, now + 300))
+            .InnerException.ShouldBeOfType<InvalidOperationException>();
     }
 
     /// <summary>Exercises the real producer bridge and the unchanged live consumer under prelaunch trust.</summary>
@@ -168,6 +278,11 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         }
         if (Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_COMPONENT") != "true")
             throw new InvalidOperationException("Run verify_component.py --run-owned --platform-assembly <Debug assembly>.");
+        if (Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_BRIDGE_CANCELLATION") == "true")
+        {
+            await CancelBridgeAfterRequestAsync();
+            return;
+        }
         IDistributedApplicationBuilder builder = Builder();
         const string tenant = "selected-live-tenant";
         string trust = Environment.GetEnvironmentVariable("SSL_CERT_FILE")!;
@@ -307,12 +422,45 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         using JsonDocument finalManifest = JsonDocument.Parse(original);
         ProjectResource runningHost = PlatformWorkloadEnrollmentInventory.Cohort(builder).Single(resource => resource.Name == "folders-workers-proof-a");
         JsonElement runningClient = finalManifest.RootElement.GetProperty("clients").EnumerateArray().Single(client => client.GetProperty("resource").GetString() == runningHost.Name);
-        await VerifyFreshHostAsync(await EnvironmentAsync(builder, runningHost), runningClient.GetProperty("probes")[0], receipt.RootElement.GetProperty("deadline").GetInt64());
+        await VerifyFreshHostAsync(await EnvironmentAsync(builder, runningHost), runningClient.GetProperty("probes")[0], finalManifest.RootElement);
         Console.WriteLine("RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2 controls=missing-trust,foreign-receipt,receipt-expiry,child,directory,host-trust-merge,probe,signer,tls,permissions,expiry,cohort,tenant assertions=host-trust,profile-before-and-after,human-authentication,independent-rsa-proofs,first-adopter-survives-competitor,fresh-running-host-tls-and-exchange");
     }
 
-    private static async Task VerifyFreshHostAsync(Dictionary<string, object> environment, JsonElement probe, long deadline)
+    private static async Task CancelBridgeAfterRequestAsync()
     {
+        string receiptPath = Environment.GetEnvironmentVariable(PlatformRunOwnedWorkloadEnrollment.ReceiptEnvironmentVariable)!;
+        string directory = Path.GetDirectoryName(receiptPath)!;
+        using JsonDocument receipt = JsonDocument.Parse(await File.ReadAllBytesAsync(receiptPath, TestContext.Current.CancellationToken));
+        IDistributedApplicationBuilder builder = Builder();
+        using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        Task<PlatformRunOwnedWorkloadEnrollment?> adoption = PlatformRunOwnedWorkloadEnrollment.AdoptAsync(builder, "selected-cancellation-tenant", cancellation.Token);
+        using CancellationTokenSource observation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        observation.CancelAfter(TimeSpan.FromSeconds(30));
+        string requestPath = Path.Combine(directory, "request.json");
+        while (!File.Exists(requestPath)) await Task.Delay(10, observation.Token);
+        while (!File.Exists(Path.Combine(directory, "bridge-ready.json"))) await Task.Delay(20, observation.Token);
+        cancellation.Cancel();
+        string releasePath = Path.Combine(directory, "release.json");
+        while (!File.Exists(releasePath) && Directory.Exists(directory)) await Task.Delay(10, observation.Token);
+        File.Exists(releasePath).ShouldBeTrue("Cancellation after exclusive publication must release the producer before returning.");
+        using (JsonDocument release = JsonDocument.Parse(await File.ReadAllBytesAsync(releasePath, observation.Token)))
+        {
+            (release.RootElement.GetProperty("runId").GetString() == receipt.RootElement.GetProperty("runId").GetString()).ShouldBeTrue("Cancellation releases this run.");
+            (release.RootElement.GetProperty("capability").GetString() == receipt.RootElement.GetProperty("capability").GetString()).ShouldBeTrue("Cancellation uses this owner's private capability.");
+        }
+        string observedPath = Path.Combine(directory, "cancellation-observed.json");
+        await File.WriteAllTextAsync(observedPath, "{}", observation.Token);
+        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(observedPath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        await Should.ThrowAsync<OperationCanceledException>(async () => await adoption.WaitAsync(TimeSpan.FromSeconds(10), observation.Token));
+        Directory.Exists(directory).ShouldBeFalse("The cancelled adopter waits for actual authority and private-material cleanup.");
+        builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBeNull();
+        await Task.Delay(150, observation.Token);
+        Console.WriteLine("RUN_OWNED_BRIDGE_CANCELLATION requestPublished=true cancellationObserved=true releasePublished=true childAliveAfterCleanup=true");
+    }
+
+    private static async Task VerifyFreshHostAsync(Dictionary<string, object> environment, JsonElement probe, JsonElement manifest)
+    {
+        long deadline = manifest.GetProperty("expiresAt").GetInt64();
         ProcessStartInfo start = new("dotnet") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
         foreach (string argument in new[] { typeof(PlatformRunOwnedWorkloadEnrollmentTests).Assembly.Location, "-explicit", "on", "-method",
             "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls" })
@@ -324,6 +472,8 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE"] = "true";
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE_JSON"] = probe.GetRawText();
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_DEADLINE"] = deadline.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_KID"] = manifest.GetProperty("signingKeyId").GetString();
+        start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_SHA256"] = manifest.GetProperty("signingPublicKeySha256").GetString();
         using CancellationTokenSource bounded = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         bounded.CancelAfter(TimeSpan.FromSeconds(Math.Max(0, Math.Min(30, deadline - DateTimeOffset.UtcNow.ToUnixTimeSeconds()))));
         using Process child = Process.Start(start) ?? throw new InvalidOperationException("Fresh running-host child did not start.");
@@ -375,23 +525,30 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
             using HttpResponseMessage response = await http.PostAsync(endpoint, form, bounded.Token);
             if (!response.IsSuccessStatusCode) throw new InvalidOperationException("Running host workload exchange refused.");
             using JsonDocument issued = JsonDocument.Parse(await response.Content.ReadAsStringAsync(bounded.Token));
-            string[] token = issued.RootElement.GetProperty("access_token").GetString()!.Split('.');
             static byte[] Decode(string value) => Convert.FromBase64String(value.Replace('-', '+').Replace('_', '/') + new string('=', (4 - value.Length % 4) % 4));
-            using JsonDocument header = JsonDocument.Parse(Decode(token[0])), payload = JsonDocument.Parse(Decode(token[1]));
-            JsonElement signer = jwks.RootElement.GetProperty("keys").EnumerateArray().Single(key => key.GetProperty("kid").GetString() == header.RootElement.GetProperty("kid").GetString());
+            string kid = Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_KID")!;
+            JsonElement signer = jwks.RootElement.GetProperty("keys").EnumerateArray().Single(key => key.GetProperty("kid").GetString() == kid);
+            if (signer.GetProperty("kty").GetString() != "RSA" || signer.GetProperty("alg").GetString() != "RS256" || signer.GetProperty("use").GetString() != "sig")
+                throw new InvalidOperationException("Running host signer refused.");
             using RSA rsa = RSA.Create();
             rsa.ImportParameters(new RSAParameters { Modulus = Decode(signer.GetProperty("n").GetString()!), Exponent = Decode(signer.GetProperty("e").GetString()!) });
-            JsonElement claims = payload.RootElement;
-            bool valid = header.RootElement.GetProperty("alg").GetString() == "RS256" && rsa.KeySize >= 2048
-                && rsa.VerifyData(System.Text.Encoding.ASCII.GetBytes(token[0] + "." + token[1]), Decode(token[2]), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1)
-                && claims.GetProperty("iss").GetString() == authority && claims.GetProperty("aud").GetString() == audience
-                && claims.GetProperty("azp").GetString() == app.Configuration["Authentication:WorkloadIssuer:Workload"]
-                && claims.GetProperty("eventstore:operation").GetString() == operation
-                && claims.GetProperty("exp").GetInt64() > DateTimeOffset.UtcNow.ToUnixTimeSeconds() && claims.GetProperty("exp").GetInt64() <= deadline;
-            if (!valid) throw new InvalidOperationException("Running host workload signature or identity refused.");
+            if (rsa.KeySize < 2048 || Convert.ToHexString(SHA256.HashData(rsa.ExportSubjectPublicKeyInfo())) != Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_SHA256"))
+                throw new InvalidOperationException("Running host signer binding refused.");
+            using X509Certificate2 certificate = X509CertificateLoader.LoadCertificate(Convert.FromBase64String(signer.GetProperty("x5c")[0].GetString()!));
+            using RSA? certifiedSigner = certificate.GetRSAPublicKey();
+            if (certificate.NotBefore.ToUniversalTime() > DateTime.UtcNow || certificate.NotAfter.ToUniversalTime() <= DateTime.UtcNow
+                || certifiedSigner is null || !certifiedSigner.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(rsa.ExportSubjectPublicKeyInfo()))
+                throw new InvalidOperationException("Running host signer certificate refused.");
+            VerifyHostToken(issued.RootElement.GetProperty("access_token").GetString()!, rsa, kid, authority,
+                app.Configuration["Authentication:WorkloadIssuer:Workload"]!, probe,
+                Math.Min(deadline, new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ToUnixTimeSeconds()));
         }
         finally { await app.StopAsync(CancellationToken.None); }
     }
+
+    private static void VerifyHostToken(string token, RSA signer, string kid, string issuer, string workload, JsonElement probe, long maximumExpiry)
+        => typeof(PlatformWorkloadEnrollment).GetMethod("VerifyToken", BindingFlags.NonPublic | BindingFlags.Static)!
+            .Invoke(null, [token, signer, kid, issuer, workload, probe, maximumExpiry]);
 
     private static async Task<Dictionary<string, object>> EnvironmentAsync(IDistributedApplicationBuilder builder, ProjectResource resource)
     {

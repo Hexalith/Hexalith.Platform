@@ -36,12 +36,12 @@ def refuse(code):
     raise RuntimeError("Run-owned workload enrollment refused: " + code)
 
 
-def command(*args, timeout=30, binary=False):
+def command(*args, timeout=30, binary=False, environment=None):
     try:
-        result = subprocess.check_output(args, stderr=subprocess.STDOUT, timeout=timeout)
-        return result if binary else result.decode().strip()
+        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=True, env=environment)
+        return result.stdout if binary else result.stdout.decode().strip()
     except (subprocess.SubprocessError, OSError) as error:
-        output = getattr(error, "output", b"") or b""
+        output = (getattr(error, "output", b"") or b"") + (getattr(error, "stderr", b"") or b"")
         if isinstance(output, bytes):
             output = output.decode(errors="replace")
         reason = next((name for name, phrase in (("port-conflict", "already allocated"), ("address-conflict", "address already in use"),
@@ -79,20 +79,45 @@ def unique(pairs):
     return result
 
 
-def read_private(path, maximum=65536):
+def read_private(path, maximum=65536, include_raw=False):
     info = path.lstat()
     if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077 or info.st_size > maximum:
         refuse("private-artifact-required")
-    return json.loads(path.read_bytes(), object_pairs_hook=unique)
+    raw = path.read_bytes()
+    value = json.loads(raw, object_pairs_hook=unique)
+    return (value, raw) if include_raw else value
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
-def cohort_digest(inventory):
+def cohort_digest(inventory_bytes):
     # This is the SHA-256 of the exact request inventory bytes, not a second JSON canonicalization.
-    return hashlib.sha256(json.dumps(inventory, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest().upper()
+    return hashlib.sha256(inventory_bytes).hexdigest().upper()
+
+
+def request_inventory_bytes(raw):
+    """Extract the already validated inventory value without changing its JSON spelling."""
+    value = raw.decode("utf-8")
+    decoder = json.JSONDecoder(object_pairs_hook=unique)
+    offset = value.index("{") + 1
+    while True:
+        offset += len(value[offset:]) - len(value[offset:].lstrip())
+        name, offset = decoder.raw_decode(value, offset)
+        offset += len(value[offset:]) - len(value[offset:].lstrip())
+        if value[offset] != ":":
+            refuse("request-fields")
+        offset += 1
+        offset += len(value[offset:]) - len(value[offset:].lstrip())
+        start = offset
+        _, offset = decoder.raw_decode(value, offset)
+        if name == "inventory":
+            return value[start:offset].encode("utf-8")
+        offset += len(value[offset:]) - len(value[offset:].lstrip())
+        if value[offset] != ",":
+            refuse("request-fields")
+        offset += 1
 
 
 def validate_inventory(inventory):
@@ -124,7 +149,7 @@ def validate_inventory(inventory):
             refuse("replica-permissions-changed")
         identities[workload] = probes
         for probe in probes:
-            if set(probe) != {"grantId", "revision", "audience", "operation", "bindings"} or probe["revision"] != 1:
+            if set(probe) != {"grantId", "revision", "audience", "operation", "bindings"} or type(probe["revision"]) is not int or probe["revision"] != 1:
                 refuse("probe-fields")
             if not isinstance(probe["grantId"], str) or not re.fullmatch(r"[A-Za-z0-9-]{1,128}", probe["grantId"]):
                 refuse("grant-identity")
@@ -203,13 +228,17 @@ class Lease:
             refuse("explicit-disposable-owner-and-finite-linux-lifetime-required")
         if not JAR.is_file():
             refuse("build-provider-first")
+        self.deadline = int(time.time()) + lifetime
+        self.command_environment = dict(os.environ)
+        if not self.command_environment.get("DOCKER_CONTEXT") and not self.command_environment.get("DOCKER_HOST"):
+            self.command_environment["DOCKER_CONTEXT"] = command("docker", "context", "show",
+                timeout=min(30, self.remaining()), environment=self.command_environment)
         self.run_id = secrets.token_hex(16)
         self.directory = Path(tempfile.mkdtemp(prefix="hexalith-run-owned-workload-"))
         try:
             os.chmod(self.directory, 0o700)
             self.directory_inode = self.directory.stat().st_ino
             self.name = "hexalith-run-owned-workload-" + self.run_id
-            self.deadline = int(time.time()) + lifetime
             self.child = None
             self.created = False
             self.container_id = None
@@ -231,7 +260,7 @@ class Lease:
 
     def run(self, *args, binary=False, limit=30):
         # Cleanup has its own bounded commands; every preparation/provisioning command uses the original lease.
-        return command(*args, timeout=min(limit, self.remaining()), binary=binary)
+        return command(*args, timeout=min(limit, self.remaining()), binary=binary, environment=self.command_environment)
 
     def prepare(self):
         directory = self.directory
@@ -273,14 +302,14 @@ class Lease:
 
     def provision(self):
         self.check(require_child=True)
-        request = read_private(self.directory / "request.json")
+        request, request_bytes = read_private(self.directory / "request.json", include_raw=True)
         if set(request) != {"runId", "capability", "childPid", "childIdentity", "deadline", "inventory", "inventorySha256"}:
             refuse("request-fields")
         for field in ("runId", "capability", "childPid", "childIdentity", "deadline"):
             if request[field] != self.receipt[field]:
                 refuse("foreign-owner-request")
         inventory = request["inventory"]
-        if request["inventorySha256"] != cohort_digest(inventory):
+        if request["inventorySha256"] != cohort_digest(request_inventory_bytes(request_bytes)):
             refuse("cohort-binding-changed")
         if digest(JAR) != self.receipt["providerSha256"]:
             refuse("provider-binding-changed")
@@ -313,7 +342,7 @@ class Lease:
             try:
                 metadata = self.get(issuer + "/.well-known/openid-configuration", context)
                 break
-            except OSError:
+            except (OSError, json.JSONDecodeError, UnicodeDecodeError):
                 time.sleep(0.25)
         version = self.run("docker", "exec", self.container_id, "/opt/keycloak/bin/kc.sh", "--version")
         if not re.search(r"Keycloak 26\.6\.4(?:\s|$)", version):
@@ -372,7 +401,7 @@ class Lease:
         # ID and ownership label are captured in one daemon snapshot. A reused name is never a delete target.
         selector = "id=" + self.container_id if self.container_id else "name=^/" + self.name + "$"
         template = '{"id":"{{.ID}}","runId":"{{.Label "' + LABEL + '"}}"}'
-        found = command("docker", "ps", "--all", "--no-trunc", "--filter", selector, "--format", template, timeout=10)
+        found = command("docker", "ps", "--all", "--no-trunc", "--filter", selector, "--format", template, timeout=10, environment=self.command_environment)
         if not found:
             return None
         snapshot = json.loads(found, object_pairs_hook=unique)
@@ -391,7 +420,7 @@ class Lease:
             try:
                 container_id = self.container_snapshot()
                 if container_id:
-                    command("docker", "rm", "--force", "--volumes", container_id, timeout=10)
+                    command("docker", "rm", "--force", "--volumes", container_id, timeout=10, environment=self.command_environment)
                     if self.container_snapshot():
                         refuse("owned-container-remains")
             except (RuntimeError, OSError, ValueError, KeyError, TypeError):
@@ -440,49 +469,99 @@ def group_members(group):
     return members
 
 
-def stop_child(child):
+def process_snapshot():
+    processes = {}
+    for path in Path("/proc").iterdir():
+        if not path.name.isdigit():
+            continue
+        try:
+            value = (path / "stat").read_text()
+            fields = value[value.rindex(")") + 2:].split()
+            processes[int(path.name)] = (int(fields[1]), int(fields[2]), int(fields[3]), fields[19])
+        except (OSError, ValueError, IndexError):
+            continue
+    return processes
+
+
+def owned_members(child, existing):
+    # The dedicated subreaper owns newly adopted children even when they escape with setsid.
+    # Every process in a tree that predates this launch remains unrelated after reparenting.
+    processes = process_snapshot()
+    members = {pid for pid, (parent, group, session, start) in processes.items()
+        if group == child.pid or session == child.pid
+        or parent == os.getpid() and (pid, start) not in existing}
+    while True:
+        descendants = {pid for pid, (parent, _, _, _) in processes.items() if parent in members}
+        expanded = members | descendants
+        if expanded == members:
+            return {pid: processes[pid][3] for pid in members}
+        members = expanded
+
+
+def existing_process_tree():
+    processes = process_snapshot()
+    members = {os.getpid()}
+    while True:
+        expanded = members | {pid for pid, (parent, _, _, _) in processes.items() if parent in members}
+        if expanded == members:
+            return {(pid, processes[pid][3]) for pid in members if pid != os.getpid()}
+        members = expanded
+
+
+def stop_child(child, existing_children):
     if child is None:
         return
-    # A session/group ID stays reserved while descendants survive, including after leader exit.
+    # Re-scan while terminating: descendants can create a new session or become subreaper children.
     for number in (signal.SIGTERM, signal.SIGKILL):
-        if group_members(child.pid):
-            try:
-                os.killpg(child.pid, number)
-            except ProcessLookupError:
-                pass
         deadline = time.monotonic() + 5
         while True:
             child.poll()
-            try:
-                while os.waitpid(-child.pid, os.WNOHANG)[0]:
+            members = owned_members(child, existing_children)
+            for pid, start in members.items():
+                try:
+                    # A recycled PID is never a signal target.
+                    if process_snapshot().get(pid, (None, None, None, None))[3] == start:
+                        os.kill(pid, number)
+                    os.waitpid(pid, os.WNOHANG)
+                except (ProcessLookupError, ChildProcessError):
                     pass
-            except ChildProcessError:
-                pass
-            if not group_members(child.pid):
+            if not owned_members(child, existing_children):
                 return
             if time.monotonic() >= deadline:
                 break
             time.sleep(0.02)
-    refuse("owned-child-group-cleanup-incomplete")
+    refuse("owned-child-tree-cleanup-incomplete")
 
 
 def launch(lifetime, owner, arguments):
     if not arguments:
         refuse("child-command-required")
-    lease = Lease(lifetime, owner)
+    lease = None
     summary = dict(qualification="run-owned enrollment", provisioned=False)
     previous = {}
+    existing_children = set()
+    terminating = False
+    terminal_signals = (signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT, signal.SIGABRT)
+    # Hold cancellation until both the handlers and the cleanup owner cover allocation.
+    previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, terminal_signals)
     def terminal(signum, frame):
+        nonlocal terminating
+        if terminating:
+            return
+        terminating = True
         raise InterruptedError("Run-owned workload enrollment cancelled.")
     try:
-        for number in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+        for number in terminal_signals:
             previous[number] = signal.signal(number, terminal)
+        lease = Lease(lifetime, owner)
+        signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
         lease.prepare()
         enable_subreaper()
         capability = secrets.token_hex(32)
-        environment = dict(os.environ, **{PREFIX + "RECEIPT": str(lease.directory / "receipt.json"), PREFIX + "CAPABILITY": capability,
+        environment = dict(lease.command_environment, **{PREFIX + "RECEIPT": str(lease.directory / "receipt.json"), PREFIX + "CAPABILITY": capability,
             "SSL_CERT_FILE": str(lease.directory / "trust.pem")})
         lease.check()
+        existing_children = existing_process_tree()
         lease.child = subprocess.Popen([sys.executable, "-B", str(Path(__file__).resolve()), "_child", *arguments], env=environment, start_new_session=True)
         lease.bind(lease.child.pid, capability)
         adopted = False
@@ -490,7 +569,12 @@ def launch(lifetime, owner, arguments):
             lease.check()
             if not adopted and (lease.directory / "request.json").exists():
                 adopted = True
-                summary.update(lease.provision(), provisioned=True)
+                try:
+                    summary.update(lease.provision(), provisioned=True)
+                except RuntimeError as error:
+                    if str(error) != "Run-owned workload enrollment refused: cohort-adoption-cancelled":
+                        raise
+                    summary["adoptionCancelled"] = True
             if (lease.directory / "release.json").exists():
                 release = read_private(lease.directory / "release.json")
                 if release != {"runId": lease.run_id, "capability": capability}:
@@ -503,14 +587,17 @@ def launch(lifetime, owner, arguments):
             time.sleep(0.05)
         return lease.child.returncode
     finally:
+        terminating = True
         try:
             try:
-                stop_child(lease.child)
+                if lease is not None: stop_child(lease.child, existing_children)
             finally:
-                lease.cleanup()
-            summary.update(observedRemainingContainers=0, observedRemainingTemporaryPaths=0)
+                if lease is not None: lease.cleanup()
+            if lease is not None:
+                summary.update(observedRemainingContainers=0, observedRemainingTemporaryPaths=0)
             print(json.dumps(summary), flush=True)
         finally:
+            signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
             for number, handler in previous.items():
                 signal.signal(number, handler)
 

@@ -13,10 +13,163 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import run_owned as owned
+import run_owned_component as component
 from run_owned_component import inventory, lifecycle_controls, nonstandard_caller_control
 
 
 class RunOwnedTests(unittest.TestCase):
+    def test_lease_pins_original_docker_selection_across_default_context_switch(self):
+        for selection in ({}, {"DOCKER_CONTEXT": "explicit"}, {"DOCKER_HOST": "unix:///original.sock"}):
+            with self.subTest(selection=selection), patch.dict(os.environ, selection, clear=True):
+                current = "original"
+                removed = False
+                calls = []
+                def command(*args, **kwargs):
+                    nonlocal removed
+                    if args == ("docker", "context", "show"): return current
+                    environment = kwargs["environment"]
+                    actual = environment.get("DOCKER_CONTEXT") or environment.get("DOCKER_HOST") or current
+                    calls.append((args[1], actual))
+                    if args[1] == "ps":
+                        return "" if removed or actual == "foreign" else json.dumps(dict(id="a" * 64, runId=lease.run_id))
+                    if args[1] == "rm": removed = True
+                    return ""
+                with patch.object(owned, "command", side_effect=command):
+                    lease = owned.Lease(60)
+                    try:
+                        current = "foreign"
+                        for operation in ("run", "exec", "inspect"): lease.run("docker", operation)
+                        lease.created = True
+                        lease.container_id = "a" * 64
+                        lease.cleanup()
+                        expected = selection.get("DOCKER_CONTEXT") or selection.get("DOCKER_HOST") or "original"
+                        self.assertTrue(removed)
+                        self.assertEqual({expected}, {actual for _, actual in calls})
+                        self.assertEqual("foreign", current)
+                    finally:
+                        lease.cleanup()
+
+    def test_constructor_time_termination_cleans_before_child_launch(self):
+        with tempfile.TemporaryDirectory() as name:
+            observation, child_marker = Path(name) / "allocated", Path(name) / "child-started"
+            script = "import os,pathlib,signal,sys; import run_owned as o; original=o.private_write\n" \
+                + "def publish(path,data):\n if path.name=='journal.json':\n  pathlib.Path(" + repr(str(observation)) + ").write_text(str(path.parent)); os.kill(os.getpid(),signal.SIGTERM)\n original(path,data)\n" \
+                + "o.private_write=publish\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c'," + repr("from pathlib import Path; Path(" + repr(str(child_marker)) + ").touch()") + "])\nexcept InterruptedError:\n sys.exit(1)"
+            completed = subprocess.run([sys.executable, "-B", "-c", script], capture_output=True, text=True, timeout=15)
+            self.assertEqual(1, completed.returncode, completed.stderr)
+            self.assertTrue(observation.exists())
+            self.assertFalse(Path(observation.read_text()).exists())
+            self.assertFalse(child_marker.exists())
+            self.assertIn('"observedRemainingTemporaryPaths": 0', completed.stdout)
+
+    def test_preexisting_grandchild_survives_its_parent_exiting_during_launch(self):
+        with tempfile.TemporaryDirectory() as name:
+            observation, parent_exit = Path(name) / "grandchild", Path(name) / "parent-exit"
+            parent = "import pathlib,subprocess,sys,time; child=subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)']); pathlib.Path(" + repr(str(observation)) + ").write_text(str(child.pid))\nwhile not pathlib.Path(" + repr(str(parent_exit)) + ").exists(): time.sleep(.01)"
+            child = "import pathlib,time; pathlib.Path(" + repr(str(parent_exit)) + ").touch()\nwhile True:\n try: state=pathlib.Path('/proc/PARENT/stat').read_text().split(') ',1)[1].split()[0]\n except FileNotFoundError: break\n if state=='Z': break\n time.sleep(.01)"
+            wrapper = "import os,pathlib,signal,subprocess,sys,time; import run_owned as o; o.enable_subreaper(); parent=subprocess.Popen([sys.executable,'-c'," + repr(parent) + "])\n" \
+                + "while not pathlib.Path(" + repr(str(observation)) + ").exists(): time.sleep(.01)\n" \
+                + "pid=int(pathlib.Path(" + repr(str(observation)) + ").read_text())\ntry:\n result=o.launch(30,o.OWNER,[sys.executable,'-c'," + repr(child) + ".replace('PARENT',str(parent.pid))]); assert result==0; parent.wait(timeout=1); os.kill(pid,0)\nfinally:\n os.kill(pid,signal.SIGTERM); os.waitpid(pid,0); parent.wait()"
+            completed = subprocess.run([sys.executable, "-B", "-c", wrapper], capture_output=True, text=True, timeout=15)
+            self.assertEqual(0, completed.returncode, completed.stderr)
+
+    def test_optimized_component_refuses_before_allocating_resources(self):
+        script = "import tempfile; tempfile.mkdtemp=lambda *a,**k: (_ for _ in ()).throw(RuntimeError('resource-allocation-attempted')); import run_owned_component; run_owned_component.run()"
+        completed = subprocess.run([sys.executable, "-B", "-c", script], env=dict(os.environ, PYTHONOPTIMIZE="1"), capture_output=True, text=True, timeout=10)
+        self.assertNotEqual(0, completed.returncode)
+        self.assertIn("require unoptimized Python execution", completed.stderr)
+        self.assertEqual("RuntimeError: Run-owned component controls require unoptimized Python execution.", completed.stderr.splitlines()[-1])
+
+    def test_assembly_harness_refuses_exit_zero_with_no_executed_test(self):
+        def zero_test(arguments, **kwargs):
+            Path(arguments[arguments.index("-xml") + 1]).write_text('<assemblies><assembly total="0" passed="0" failed="0" errors="0" skipped="0" not-run="0" /></assemblies>')
+            return SimpleNamespace(returncode=0, stdout="Total: 0", stderr="")
+        with patch.object(component.subprocess, "run", side_effect=zero_test):
+            with self.assertRaisesRegex(RuntimeError, "lack executed-test"):
+                component.run_assembly("unselected.dll", "Tests.Expected.ExplicitMethod")
+
+    def test_assembly_harness_requires_consumer_and_provision_observations(self):
+        method = "Tests.Expected.ExplicitMethod"
+        with tempfile.TemporaryDirectory() as name:
+            result = Path(name) / "result.xml"
+            result.write_text('<assemblies><assembly total="1" passed="1" failed="0" errors="0" skipped="0" not-run="0"><collection><test type="Tests.Expected" method="ExplicitMethod" result="Pass" /></collection></assembly></assemblies>')
+            summary = dict(qualification="run-owned enrollment", provisioned=True, resourceCount=8, workloadCount=6, serverVersion="26.6.4",
+                startupImport=True, administrativeIdentity=False, observedRemainingContainers=0, observedRemainingTemporaryPaths=0)
+            markers = ["WORKLOAD_ENROLLMENT_CONTEXT qualification=run-owned enrollment resources=8",
+                "WORKLOAD_ENROLLMENT_VERIFIED manifestSha256=" + "A" * 64 + " receivers=8 clients=8",
+                "RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2"]
+            component.validate_assembly_result("\n".join([*markers, json.dumps(summary)]), result, method)
+            for missing in range(len(markers)):
+                with self.subTest(missing=missing), self.assertRaisesRegex(RuntimeError, "lack executed-test"):
+                    component.validate_assembly_result("\n".join([*(line for i, line in enumerate(markers) if i != missing), json.dumps(summary)]), result, method)
+            summary["provisioned"] = False
+            with self.assertRaisesRegex(RuntimeError, "lack executed-test"):
+                component.validate_assembly_result("\n".join([*markers, json.dumps(summary)]), result, method)
+
+    def test_command_keeps_machine_stdout_separate_from_stderr(self):
+        output = owned.command(sys.executable, "-c", "import sys; print('a'*64); print('daemon warning', file=sys.stderr)")
+        self.assertEqual("a" * 64, output)
+        self.assertEqual(b"public-key-bytes", owned.command(sys.executable, "-c",
+            "import sys; sys.stdout.buffer.write(b'public-key-bytes'); print('warning', file=sys.stderr)", binary=True))
+        with self.assertRaisesRegex(RuntimeError, "permissions"):
+            owned.command(sys.executable, "-c", "import sys; print('permission denied', file=sys.stderr); sys.exit(1)")
+
+    def test_revision_requires_an_integer_one(self):
+        for revision in (True, False, 1.0, "1", 2, None):
+            with self.subTest(revision=repr(revision)):
+                model = inventory()
+                model["clients"][0]["probes"][0]["revision"] = revision
+                with self.assertRaisesRegex(RuntimeError, "probe-fields"):
+                    owned.validate_inventory(model)
+
+    def test_request_digest_hashes_exact_inventory_value_bytes(self):
+        model = inventory()
+        compact = json.dumps(model, separators=(",", ":")).encode()
+        variants = [compact, json.dumps(model, indent=2).encode(), compact.replace(b'"tenant"', b'"\\u0074enant"', 1)]
+        for raw_inventory in variants:
+            for matches in (True, False):
+                with self.subTest(format=variants.index(raw_inventory), matches=matches):
+                    lease = owned.Lease(60)
+                    try:
+                        owned.private_write(lease.directory / "trust.pem", b"isolated-command-control")
+                        lease.bind(os.getpid(), "A" * 64)
+                        request = {name: lease.receipt[name] for name in ("runId", "capability", "childPid", "childIdentity", "deadline")}
+                        request.update(inventory="RAW-INVENTORY", inventorySha256=owned.cohort_digest(raw_inventory) if matches else "0" * 64)
+                        raw = json.dumps(request).encode().replace(b'"RAW-INVENTORY"', raw_inventory)
+                        owned.private_write(lease.directory / "request.json", raw)
+                        self.assertEqual(raw_inventory, owned.request_inventory_bytes(raw))
+                        with patch.object(lease, "run", side_effect=RuntimeError("stop-at-create")) as command:
+                            with self.assertRaisesRegex(RuntimeError, "stop-at-create" if matches else "cohort-binding-changed"):
+                                lease.provision()
+                            self.assertEqual(1 if matches else 0, command.call_count)
+                    finally:
+                        with patch.object(owned, "command", return_value=""):
+                            lease.cleanup()
+
+    def test_readiness_retries_non_json_until_valid_metadata(self):
+        lease = owned.Lease(60)
+        base = "https://localhost:49153/realms/run-owned"
+        metadata = dict(issuer=base, token_endpoint=base + "/protocol/openid-connect/token", jwks_uri=base + "/protocol/openid-connect/certs")
+        jwks = dict(keys=[dict(kty="RSA", alg="RS256", use="sig", kid="test-signer", x5c=["certificate"])])
+        def command(*args, **kwargs):
+            if args[:2] == ("docker", "run"): return "e" * 64
+            if args[:2] == ("docker", "exec"): return "Keycloak 26.6.4"
+            return b"public-key" if kwargs.get("binary") else "public-key"
+        try:
+            lease.prepare()
+            lease.bind(os.getpid(), "A" * 64)
+            model = inventory()
+            request = {name: lease.receipt[name] for name in ("runId", "capability", "childPid", "childIdentity", "deadline")}
+            request.update(inventory=model, inventorySha256=owned.cohort_digest(json.dumps(model, separators=(",", ":")).encode()))
+            owned.private_write(lease.directory / "request.json", request)
+            with patch.object(lease, "run", side_effect=command), patch.object(lease, "https_origin", return_value="https://localhost:49153"), \
+                patch.object(lease, "get", side_effect=[json.JSONDecodeError("startup response", "not JSON", 0), OSError(), metadata, jwks]) as get:
+                self.assertEqual("26.6.4", lease.provision()["serverVersion"])
+                self.assertEqual(4, get.call_count)
+        finally:
+            with patch.object(owned, "command", return_value=""):
+                lease.cleanup()
+
     def test_replica_entries_share_only_identical_workload_credentials(self):
         with tempfile.TemporaryDirectory() as name:
             realm, entries = owned.build_realm(inventory(), Path(name), int(time.time()) - 1, int(time.time()) + 60)
@@ -36,12 +189,14 @@ class RunOwnedTests(unittest.TestCase):
 
     def test_exact_tenant_cohort_and_permissions_refuse(self):
         original = inventory()
-        for fault in ("tenant", "tenants-storage", "missing", "callback", "proof", "replica", "foreign", "extra"):
+        for fault in ("tenant", "tenants-storage", "global-administrators-storage", "missing", "callback", "proof", "replica", "foreign", "extra"):
             with self.subTest(fault=fault):
                 changed = copy.deepcopy(original)
                 clients = {client["resource"]: client for client in changed["clients"]}
                 if fault == "tenant": changed["tenant"] = "other"
-                if fault == "tenants-storage": clients["eventstore"]["probes"][-1]["bindings"]["eventstore:bound-tenant"] = changed["tenant"]
+                if fault in ("tenants-storage", "global-administrators-storage"):
+                    domain = "tenants" if fault == "tenants-storage" else "global-administrators"
+                    next(probe for probe in clients["eventstore"]["probes"] if probe["bindings"].get("eventstore:bound-domain") == domain)["bindings"]["eventstore:bound-tenant"] = changed["tenant"]
                 if fault == "missing": clients["eventstore"]["probes"].pop()
                 if fault == "callback": clients["eventstore"]["probes"][0]["bindings"] = {"eventstore:bound-tenant": changed["tenant"]}
                 if fault == "proof": clients["folders-workers-proof-b"]["workload"] = clients["folders-workers-proof-b"]["clientId"] = clients["folders-workers-proof-a"]["workload"]
@@ -77,7 +232,7 @@ class RunOwnedTests(unittest.TestCase):
                     lease.bind(os.getpid(), "A" * 64)
                     model = inventory()
                     request = {k: lease.receipt[k] for k in ("runId", "capability", "childPid", "childIdentity", "deadline")}
-                    request.update(inventory=model, inventorySha256=owned.cohort_digest(model))
+                    request.update(inventory=model, inventorySha256=owned.cohort_digest(json.dumps(model, separators=(",", ":")).encode()))
                     request[fault] = "foreign" if isinstance(request[fault], str) else request[fault] + 1
                     owned.private_write(lease.directory / "request.json", request)
                     with patch.object(owned, "command") as command:
@@ -188,6 +343,19 @@ class RunOwnedTests(unittest.TestCase):
             self.assertFalse(Path("/proc/" + str(observed["descendant"])).exists())
             self.assertFalse(owned.group_members(observed["group"]))
 
+    def test_escaped_session_descendant_is_reaped_and_preexisting_child_survives(self):
+        with tempfile.TemporaryDirectory() as name:
+            observation = Path(name) / "descendant.json"
+            child = "import json,os,pathlib,subprocess,sys; p=subprocess.Popen([sys.executable,'-c','import signal,time; signal.signal(signal.SIGTERM,signal.SIG_IGN); time.sleep(60)'],start_new_session=True); pathlib.Path(" + repr(str(observation)) + ").write_text(json.dumps({'descendant':p.pid,'group':os.getpgrp()}))"
+            wrapper = "import run_owned as o,subprocess,sys; control=subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)']); " \
+                + "\ntry:\n result=o.launch(30,o.OWNER,[sys.executable,'-c'," + repr(child) + "]); assert result==0; assert control.poll() is None" \
+                + "\nfinally:\n control.terminate(); control.wait()"
+            completed = subprocess.run([sys.executable, "-B", "-c", wrapper], capture_output=True, text=True, timeout=20)
+            self.assertEqual(0, completed.returncode, completed.stderr)
+            observed = json.loads(observation.read_text())
+            self.assertFalse(Path("/proc/" + str(observed["descendant"])).exists())
+            self.assertFalse(owned.group_members(observed["group"]))
+
     def test_docker_allocated_binding_is_owned_https_loopback_only(self):
         lease = owned.Lease(60)
         lease.container_id = "c" * 64
@@ -223,7 +391,7 @@ class RunOwnedTests(unittest.TestCase):
             lease.bind(os.getpid(), "A" * 64)
             model = inventory()
             request = {name: lease.receipt[name] for name in ("runId", "capability", "childPid", "childIdentity", "deadline")}
-            request.update(inventory=model, inventorySha256=owned.cohort_digest(model))
+            request.update(inventory=model, inventorySha256=owned.cohort_digest(json.dumps(model, separators=(",", ":")).encode()))
             owned.private_write(lease.directory / "request.json", request)
             with patch.object(lease, "run", return_value="e" * 64) as run, patch.object(lease, "https_origin", side_effect=RuntimeError("Stop after binding inspection")) as origin:
                 with self.assertRaisesRegex(RuntimeError, "Stop after binding inspection"): lease.provision()
@@ -244,18 +412,26 @@ class RunOwnedTests(unittest.TestCase):
         nonstandard_caller_control()
 
     def test_exit_failure_expiry_and_signal_clean_launcher_material(self):
-        for scenario in ("success", "failure", "expiry", "signal"):
+        for scenario in ("success", "failure", "expiry", "signal", "quit", "abort", "repeated-signal"):
             with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as name:
                 observation = Path(name) / "observation.json"
                 child = "import json,os,pathlib,time; p=pathlib.Path(os.environ['" + owned.PREFIX + "RECEIPT']); pathlib.Path(" + repr(str(observation)) + ").write_text(json.dumps({'directory':str(p.parent),'owner':json.loads(p.read_text())['ownerPid']})); "
-                child += "raise SystemExit(3)" if scenario == "failure" else "time.sleep(30)" if scenario in ("expiry", "signal") else "pass"
+                if scenario == "repeated-signal": child = "import signal; signal.signal(signal.SIGTERM,signal.SIG_IGN); " + child
+                child += "raise SystemExit(3)" if scenario == "failure" else "time.sleep(30)" if scenario not in ("success", "repeated-signal") else "pass" if scenario == "success" else "import signal; signal.signal(signal.SIGTERM,signal.SIG_IGN); time.sleep(30)"
                 process = subprocess.Popen([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER,
                     "--lifetime-seconds", "2" if scenario == "expiry" else "30", "--", sys.executable, "-B", "-c", child], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                 limit = time.monotonic() + 15
                 while not observation.exists() and process.poll() is None and time.monotonic() < limit: time.sleep(0.02)
                 self.assertTrue(observation.exists())
                 observed = json.loads(observation.read_text())
-                if scenario == "signal": os.kill(process.pid, signal.SIGTERM)
+                if scenario in ("signal", "quit", "abort", "repeated-signal"):
+                    os.kill(process.pid, signal.SIGQUIT if scenario == "quit" else signal.SIGABRT if scenario == "abort" else signal.SIGTERM)
+                if scenario == "repeated-signal":
+                    time.sleep(0.1)
+                    for number in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT, signal.SIGABRT):
+                        if process.poll() is None:
+                            os.kill(process.pid, number)
+                            time.sleep(0.02)
                 out, err = process.communicate(timeout=15)
                 self.assertFalse(Path(observed["directory"]).exists())
                 self.assertEqual(0 if scenario == "success" else 3 if scenario == "failure" else 1, process.returncode)

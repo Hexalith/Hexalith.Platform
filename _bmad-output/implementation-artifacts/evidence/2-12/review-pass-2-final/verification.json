@@ -1,0 +1,273 @@
+{
+  "schema": "hexalith.run-owned-enrollment-review-verification/v2",
+  "qualification": "run-owned enrollment",
+  "recordedAt": "2026-11-13T13:39:41.108645+00:00",
+  "status": "focused verification passed; workflow completion blocked by full Folders build/runtime validation",
+  "platformHead": "e13bb671b1be83ae2a493d4e10c94f347b22de54",
+  "foldersHead": "c4510025e2b4812c770d7f85de8ec465d9981649",
+  "preservedStoryBaseline": "375231e1552c98a4238482c67b6e69d92ea43d1a",
+  "checks": [
+    {
+      "check": "provider",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "mvn",
+        "-B",
+        "-ntp",
+        "package"
+      ],
+      "exitCode": 0,
+      "outputSha256": "201bfdc6a44d191c91115a24a7b78fb31b0f604615cc379e10053638c8bd8835"
+    },
+    {
+      "check": "composition-build",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-p:BuildProjectReferences=false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputSha256": "a0933e07351abba00b8f373ae25c6884b40cd15bb233dccf8438a99829cbcbd5"
+    },
+    {
+      "check": "tests-build",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "--no-restore",
+        "-p:BuildProjectReferences=false",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputSha256": "7e98bd9075e0226faff24d2565c2008646a0520325746de02cb74a4f9107ed20"
+    },
+    {
+      "check": "python",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_run_owned"
+      ],
+      "exitCode": 0,
+      "outputSha256": "2c8337cc0e3da1c70e9232ba2fb6b5c1afe3fab33a12dab4228036782517f63b"
+    },
+    {
+      "check": "csharp",
+      "cwd": ".",
+      "argv": [
+        "dotnet",
+        "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+        "-class",
+        "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+        "-xml",
+        "/tmp/story-2-12-final-verification/csharp.xml"
+      ],
+      "exitCode": 0,
+      "outputSha256": "31fd7d65baa9a62d79025459a969561a016ae984aa3ecfd4a4c0fe4b1190133d"
+    },
+    {
+      "check": "consumer-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "verify_component.py",
+        "--run-owned",
+        "--platform-assembly",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      "exitCode": 0,
+      "outputSha256": "ace41e6e2d440ab9ab40db828b1612d266d1028320ddf251a60e0849c16176d2"
+    },
+    {
+      "check": "python-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "argv": [
+        "python3",
+        "-B",
+        "verify_component.py",
+        "--run-owned"
+      ],
+      "exitCode": 0,
+      "outputSha256": "dd02a4e150ada5b122c0ff2bb7b0b2a66a0f00c0d5ac07aabc46ebc345cc0924"
+    },
+    {
+      "check": "folders-build",
+      "cwd": ".",
+      "argv": [
+        "bash",
+        "/tmp/story-2-12-build-folders.sh"
+      ],
+      "exitCode": 1,
+      "disposition": "known unchanged FrontComposer build blocker; no Folders runtime or strict acceptance claim",
+      "outputSha256": "c22bea63a9fd42acc809fd22c341d69f379a431e168282487932b647be558a57"
+    },
+    {
+      "check": "folders-compile-only",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "dotnet",
+        "build",
+        "/tmp/story-2-12-folders-typecheck/Typecheck.csproj",
+        "--no-restore",
+        "-p:RunAnalyzers=false",
+        "-v:q"
+      ],
+      "exitCode": 0,
+      "outputSha256": "7933baa6162bd29ecf9d024d095ec4a694f7b8ae0a2c4af3a47beecf6f2aad71"
+    },
+    {
+      "check": "root-whitespace",
+      "cwd": ".",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "outputSha256": "d53a16292fa550a3958f0cc74201d5bbee28b28b3ec6c542441218d02fac5273"
+    },
+    {
+      "check": "root-staged-whitespace",
+      "cwd": ".",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "folders-whitespace",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "outputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "folders-staged-whitespace",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "outputSha256": "ed658cc2701b76b948a5c9308b123bc927a68ee04fbe54746d47d779d0d14f7c"
+    },
+    {
+      "check": "folders-supplementary-build",
+      "cwd": "references/Hexalith.Folders",
+      "argv": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+        "-p:DirectoryBuildTargetsPath=/tmp/story-2-12-uniform-targets.xml",
+        "-p:RestoreEnablePackagePruning=false",
+        "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+        "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons",
+        "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+        "-p:HexalithTenantsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants",
+        "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories",
+        "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli",
+        "-m:1",
+        "-v:q",
+        "-p:WarningsNotAsErrors=CA2263"
+      ],
+      "exitCode": 1,
+      "disposition": "temporary validation-only warning exception; normal gate failure retained; not CI or release qualification",
+      "outputSha256": "ba97aaa325c0534d7ec2e2e0948da289b800c4c9f8d3d2ffe32b98bbdc9d6e39"
+    }
+  ],
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "a1b0737c1b50b554d4b364d8dff2048b93ee8ddd45cc985fb5a2fe01e5bf3e5d",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "dd99ce9b78e90a44cc5560ccde4c2edbbf7b9e69feca80eacdf0c65b79226ecf",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "e32183ff874315245e74e839d5d4e93bfd713bb85ee31aaf2836e0385a558763",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "c8889d1a71f5ae4cdd4d333d94509af32ec9073b7a727881228552d4a0daf9b3",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "bddd7b175fca09e5b362f442609d93dbcd2e2d09718475ea747a3d1a56bb891b",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "f95103fe0eea42e9685c12b7e4412fef99f0dc810583767db5b46322b75fc5f8",
+    "docs/security/workload-binding-enrollment.md": "b06e85c3d723154fbf161e967ddfbac04f6d9e98896c24e49d5337559656ed5d"
+  },
+  "providerSha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+  "providerTests": 23,
+  "pythonTests": 28,
+  "defaultCsharpPassed": 25,
+  "explicitCsharpPassed": 2,
+  "liveRsaProbes": 19,
+  "review": {
+    "layers": 3,
+    "individualReports": 15,
+    "correctedReports": 9,
+    "correctedPatchGroups": [
+      "G14",
+      "G15",
+      "G16",
+      "G17",
+      "G18",
+      "G19",
+      "G20"
+    ],
+    "deferredReports": 5,
+    "deferredEntries": 4,
+    "rejectedReports": 1,
+    "priorReviewPatchItemsCompleted": 16
+  },
+  "auxiliaryBuildInputsReference": "../review-pass-2-implementation/verification.json#auxiliaryBuildInputs",
+  "validationOnlyWarningException": "The supplementary Folders attempt used WarningsNotAsErrors=CA2263, retained the normal failing gate, and then failed on net10/net11 FrontComposer CS1705. No tracked build/dependency/framework/CI inputs were changed.",
+  "failedDevelopmentAttemptsReference": "../review-pass-2-implementation/verification.json#failedDevelopmentAttempts",
+  "reviewPatchDevelopmentAttempt": "Initial focused Python optimization test failed its own sentinel assertion because the sentinel appeared in traceback source. Actual optimized-mode refusal worked. Corrected isolated and final full Python suites passed; all focused logs retained in outputs.json.",
+  "cleanup": {
+    "commands": [
+      [
+        "docker",
+        "ps",
+        "--all",
+        "--filter",
+        "label=com.hexalith.run-owned-workload",
+        "--format",
+        "{{.ID}} {{.Names}}"
+      ]
+    ],
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0
+  },
+  "limitations": [
+    "Full normal Folders source build fails on unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71.",
+    "Supplementary warning-only attempt exposes existing FrontComposer net10/net11 CS1705. Folders runtime suites and strict acceptance remain unverified; compile-only evidence does not close this gap.",
+    "Possible late daemon creation after a Docker client timeout is deferred as medium/unverified, pending an actual delayed-daemon reproduction.",
+    "Pre-existing Agents/Works catalog reader defects and earlier provider trust-composition deferral remain recorded.",
+    "No Platform lifecycle qualification or Folders 12.2 completion; no commits, pushes, remote operations or pointer advances."
+  ]
+}

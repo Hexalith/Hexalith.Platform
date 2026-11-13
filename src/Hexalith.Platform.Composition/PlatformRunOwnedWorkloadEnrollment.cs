@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,14 +22,12 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
     private readonly string _directory;
     private readonly string _runId;
     private readonly string _capability;
-    private readonly long _deadline;
 
-    private PlatformRunOwnedWorkloadEnrollment(string directory, string runId, string capability, long deadline)
+    private PlatformRunOwnedWorkloadEnrollment(string directory, string runId, string capability)
     {
         _directory = directory;
         _runId = runId;
         _capability = capability;
-        _deadline = deadline;
     }
 
     /// <summary>Adopts the final cohort, publishes private manifest references and propagates prelaunch TLS trust.</summary>
@@ -71,11 +70,18 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
             string runId = root.GetProperty("runId").GetString()!;
             if (runId.Length != 32 || !runId.All(char.IsAsciiHexDigit) || capability.Length != 64 || !capability.All(char.IsAsciiHexDigit)) throw Refused("owner-identity");
             string trustFile = Path.Combine(directory, "trust.pem");
-            if (root.GetProperty("trustFile").GetString() != trustFile || Environment.GetEnvironmentVariable("SSL_CERT_FILE") != trustFile
-                || Convert.ToHexString(SHA256.HashData(ReadProtected(trustFile, 4194304))) != root.GetProperty("trustSha256").GetString())
-                throw Refused("missing-prelaunch-trust");
+            byte[] launchTrust;
+            try
+            {
+                if (root.GetProperty("trustFile").GetString() != trustFile || Environment.GetEnvironmentVariable("SSL_CERT_FILE") != trustFile)
+                    throw Refused("missing-prelaunch-trust");
+                launchTrust = ReadProtected(trustFile, 4194304);
+                if (Convert.ToHexString(SHA256.HashData(launchTrust)) != root.GetProperty("trustSha256").GetString())
+                    throw Refused("missing-prelaunch-trust");
+            }
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { throw Refused("missing-prelaunch-trust"); }
             if (hostTrustFile is not null && (!Path.IsPathFullyQualified(hostTrustFile)
-                || !File.ReadAllText(hostTrustFile).Contains(File.ReadAllText(trustFile), StringComparison.Ordinal))) throw Refused("host-trust-must-merge-launch-trust");
+                || !File.ReadAllText(hostTrustFile).Contains(Encoding.UTF8.GetString(launchTrust), StringComparison.Ordinal))) throw Refused("host-trust-must-merge-launch-trust");
             JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(builder, selectedTenant);
             string inventorySha256 = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(inventory.GetRawText())));
             byte[] request = JsonSerializer.SerializeToUtf8Bytes(new { runId, capability, childPid, childIdentity, deadline, inventory, inventorySha256 });
@@ -85,7 +91,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
             }
             catch (IOException) when (File.Exists(Path.Combine(directory, "request.json"))) { throw Refused("owner-request-already-adopted"); }
             // Only the exclusive request publisher owns release; a refused competing adopter cannot tear it down.
-            lease = new(directory, runId, capability, deadline);
+            lease = new(directory, runId, capability);
             string resultPath = Path.Combine(directory, "result.json");
             while (!File.Exists(resultPath))
             {
@@ -159,10 +165,11 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
             JsonElement request = release.RootElement;
             if (request.EnumerateObject().Count() != 2 || request.GetProperty("runId").GetString() != _runId
                 || request.GetProperty("capability").GetString() != _capability) throw Refused("owned-cleanup-incomplete");
-            long cleanupDeadline = Math.Min(_deadline, DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 30);
+            // Cleanup has its own finite allowance after expiry; it never extends enrollment validity.
+            Stopwatch cleanupWait = Stopwatch.StartNew();
             while (Directory.Exists(_directory))
             {
-                if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() >= cleanupDeadline) throw Refused("owned-cleanup-incomplete");
+                if (cleanupWait.Elapsed >= TimeSpan.FromSeconds(30)) throw Refused("owned-cleanup-incomplete");
                 await Task.Delay(50, CancellationToken.None).ConfigureAwait(false);
             }
         }

@@ -11,14 +11,19 @@ import subprocess
 import sys
 import signal
 import shutil
+import stat
 import tempfile
 from unittest.mock import patch
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ElementTree
 
 import run_owned as owned
+
+if not __debug__:
+    raise RuntimeError("Run-owned component controls require unoptimized Python execution.")
 
 
 def inventory():
@@ -52,7 +57,8 @@ def publish_request():
     receipt = owned.read_private(directory / "receipt.json")
     expected = inventory()
     owned.private_write(directory / "request.json", dict(runId=receipt["runId"], capability=receipt["capability"], childPid=os.getpid(),
-        childIdentity=owned.process_identity(os.getpid()), deadline=receipt["deadline"], inventory=expected, inventorySha256=owned.cohort_digest(expected)))
+        childIdentity=owned.process_identity(os.getpid()), deadline=receipt["deadline"], inventory=expected,
+        inventorySha256=owned.cohort_digest(json.dumps(expected, separators=(",", ":")).encode())))
     return directory, receipt
 
 
@@ -106,8 +112,13 @@ def probe_child():
     except urllib.error.URLError:
         pass
     assert "users" not in owned.read_private(directory / "realm.json")
+    container_user = owned.command("docker", "inspect", owned.read_private(directory / "journal.json")["containerId"], "--format", "{{.Config.User}}")
+    secret_stats = [Path(path).stat() for path in set(files.values())]
     print(json.dumps(dict(qualification="run-owned enrollment", freshRsaProbes=verified, exactVersion="26.6.4", replicas=True,
         independentProofCallers=2, dynamicQueryDigest=True, negativeControls=["untrusted-tls", "changed-tenant", "changed-domain"], administrativeIdentity=False)), flush=True)
+    print(json.dumps(dict(qualification="run-owned enrollment", observedCallerUid=os.getuid(), observedContainerUser=container_user,
+        observedHostSecretModes=sorted({format(stat.S_IMODE(info.st_mode), "04o") for info in secret_stats}),
+        observedHostSecretOwners=sorted({info.st_uid for info in secret_stats}))), flush=True)
     owned.private_write(directory / "release.json", dict(runId=receipt["runId"], capability=receipt["capability"]))
     while directory.exists():
         time.sleep(0.05)
@@ -135,6 +146,11 @@ def terminal_child(observation, scenario):
 
 
 def terminal_launcher(scenario, observation):
+    # Resolve/pull before the fixed expiry-control lease begins, including standalone execution.
+    try:
+        owned.command("docker", "image", "inspect", owned.IMAGE, timeout=5)
+    except RuntimeError:
+        owned.command("docker", "pull", owned.IMAGE, timeout=120)
     original = owned.Lease.run
     def fail_after_creation(lease, *args, **kwargs):
         result = original(lease, *args, **kwargs)
@@ -155,7 +171,7 @@ def lifecycle_controls():
         control_name = "hexalith-run-owned-unrelated-" + secrets.token_hex(8)
         owned.private_write(directory / "control-journal.json", dict(container=control_name))
         control_id = owned.command("docker", "run", "--detach", "--rm", "--name", control_name,
-            "--label", "com.hexalith.run-owned-control=" + control_name, "--entrypoint", "/bin/sh", owned.IMAGE, "-c", "sleep 180")
+            "--label", "com.hexalith.run-owned-control=" + control_name, "--entrypoint", "/bin/sh", owned.IMAGE, "-c", "while :; do sleep 60; done")
         try:
             for scenario in ("post-creation-failure", "cancellation", "expiry", "child-exit", "child-failure"):
                 observation = directory / (scenario + ".json")
@@ -172,6 +188,10 @@ def lifecycle_controls():
                     observed = owned.read_private(observation)
                     if scenario == "cancellation":
                         process.send_signal(signal.SIGTERM)
+                        for number in (signal.SIGINT, signal.SIGHUP, signal.SIGQUIT, signal.SIGABRT, signal.SIGTERM):
+                            if process.poll() is None:
+                                process.send_signal(number)
+                                time.sleep(0.02)
                     output, errors = process.communicate(timeout=20)
                     if process.returncode == 0 or not observed["creationObserved"]:
                         raise RuntimeError("Real lifecycle control did not exercise terminal provisioning: " + scenario)
@@ -219,29 +239,94 @@ def nonstandard_caller_control():
             if result.returncode or '"observedRemainingTemporaryPaths": 0' not in result.stdout:
                 reason = next((line for line in result.stderr.splitlines() if line.startswith("Run-owned workload enrollment refused:")), "protected output withheld")
                 raise RuntimeError("Real non-1000 caller enrollment or cleanup failed: " + reason)
-            print(json.dumps(dict(qualification="run-owned enrollment", non1000Caller=caller, runtimeGroup=0,
-                hostSecretPermissions="0600", realProviderAndCleanup=True)), flush=True)
+            observations = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+            observed = next(item for item in observations if "observedContainerUser" in item)
+            container_identity = observed["observedContainerUser"].split(":")
+            if observed["observedCallerUid"] != caller or container_identity != [str(caller), "0"] \
+                or observed["observedHostSecretModes"] != ["0600"] or observed["observedHostSecretOwners"] != [caller]:
+                raise RuntimeError("Real non-1000 caller identity or private host modes did not match observed resources.")
+            print(json.dumps(dict(qualification="run-owned enrollment", non1000Caller=observed["observedCallerUid"],
+                runtimeGroup=int(container_identity[1]), hostSecretPermissions=observed["observedHostSecretModes"],
+                hostSecretOwners=observed["observedHostSecretOwners"], realProviderAndCleanup=True)), flush=True)
         finally:
             if elevated:
                 owned.command("sudo", "-n", "chown", "--recursive", str(os.getuid()) + ":" + str(os.getgid()), str(directory))
 
 
+def validate_assembly_result(output, result_path, method, cancellation=False):
+    try:
+        root = ElementTree.parse(result_path).getroot()
+        assemblies = root.findall("assembly")
+        tests = list(root.iter("test"))
+        test_type, test_method = method.rsplit(".", 1)
+        if len(assemblies) != 1 or any(assemblies[0].get(name) != value for name, value in
+            (("total", "1"), ("passed", "1"), ("failed", "0"), ("errors", "0"), ("skipped", "0"), ("not-run", "0"))) \
+            or len(tests) != 1 or tests[0].get("result") != "Pass" or tests[0].get("type") != test_type or tests[0].get("method") != test_method:
+            raise ValueError("Intended explicit test did not pass exactly once.")
+        summaries = [json.loads(line) for line in output.splitlines() if line.startswith("{")]
+        summary = next(item for item in reversed(summaries) if item.get("qualification") == "run-owned enrollment" and "provisioned" in item)
+        if summary.get("observedRemainingContainers") != 0 or summary.get("observedRemainingTemporaryPaths") != 0:
+            raise ValueError("Cleanup was not observed.")
+        if cancellation:
+            if summary.get("provisioned") is not False or summary.get("adoptionCancelled") is not True \
+                or "RUN_OWNED_BRIDGE_CANCELLATION_AUTHORITY creationObserved=true" not in output \
+                or "RUN_OWNED_BRIDGE_CANCELLATION requestPublished=true cancellationObserved=true releasePublished=true childAliveAfterCleanup=true" not in output:
+                raise ValueError("Bridge cancellation was not observed.")
+        elif summary.get("provisioned") is not True or summary.get("resourceCount") != 8 or summary.get("workloadCount") != 6 \
+            or summary.get("serverVersion") != "26.6.4" or summary.get("startupImport") is not True or summary.get("administrativeIdentity") is not False \
+            or "WORKLOAD_ENROLLMENT_CONTEXT qualification=run-owned enrollment resources=8" not in output \
+            or "WORKLOAD_ENROLLMENT_VERIFIED manifestSha256=" not in output \
+            or "receivers=8 clients=8" not in output \
+            or "RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2" not in output:
+            raise ValueError("Consumer adoption and provisioning were not observed.")
+    except (OSError, ValueError, KeyError, StopIteration, ElementTree.ParseError):
+        raise RuntimeError("Explicit run-owned component controls lack executed-test, adoption or lifecycle proof.") from None
+
+
+def run_assembly(assembly, method, cancellation=False):
+    environment = dict(os.environ, HEXALITH_RUN_OWNED_WORKLOAD_COMPONENT="true")
+    if cancellation:
+        environment["HEXALITH_RUN_OWNED_WORKLOAD_BRIDGE_CANCELLATION"] = "true"
+    else:
+        environment.pop("HEXALITH_RUN_OWNED_WORKLOAD_BRIDGE_CANCELLATION", None)
+    with tempfile.TemporaryDirectory(prefix="run-owned-component-result-") as name:
+        result_path = Path(name) / "test.xml"
+        arguments = ["dotnet", str(Path(assembly).resolve()), "-explicit", "on", "-method", method, "-xml", str(result_path)]
+        launcher = [str(Path(__file__).resolve()), "_bridge-cancellation-launcher"] if cancellation else \
+            [str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "180", "--"]
+        result = subprocess.run([sys.executable, "-B", *launcher, *arguments], env=environment, capture_output=True, text=True)
+        if result.returncode:
+            raise RuntimeError("Explicit run-owned component controls failed; protected output withheld.")
+        validate_assembly_result(result.stdout, result_path, method, cancellation)
+        print(result.stdout, end="", flush=True)
+
+
+def bridge_cancellation_launcher(arguments):
+    def wait_for_cancellation(lease, url, context):
+        if lease.run("docker", "inspect", lease.container_id, "--format", "{{.State.Running}}") != "true":
+            raise RuntimeError("Bridge cancellation control never observed its authority.")
+        owned.private_write(lease.directory / "bridge-ready.json", dict(creationObserved=True))
+        print("RUN_OWNED_BRIDGE_CANCELLATION_AUTHORITY creationObserved=true", flush=True)
+        while not (lease.directory / "release.json").exists() or not (lease.directory / "cancellation-observed.json").exists():
+            lease.check(require_child=True)
+            time.sleep(0.02)
+        owned.refuse("cohort-adoption-cancelled")
+    with patch.object(owned.Lease, "get", wait_for_cancellation):
+        return owned.launch(180, owned.OWNER, arguments)
+
+
 def run(apphost_assembly=None, platform_assembly=None):
     if apphost_assembly:
-        environment = dict(os.environ, HEXALITH_RUN_OWNED_WORKLOAD_COMPONENT="true")
-        arguments = ["dotnet", str(Path(apphost_assembly).resolve()), "-explicit", "on", "-method",
-            "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.RunOwnedAuthorityVerifiesFinalCohortAndAllRefusals"]
+        run_assembly(apphost_assembly, "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.RunOwnedAuthorityVerifiesFinalCohortAndAllRefusals")
     elif platform_assembly:
-        environment = dict(os.environ, HEXALITH_RUN_OWNED_WORKLOAD_COMPONENT="true")
-        arguments = ["dotnet", str(Path(platform_assembly).resolve()), "-explicit", "on", "-method",
-            "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"]
+        method = "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+        run_assembly(platform_assembly, method)
+        run_assembly(platform_assembly, method, cancellation=True)
     else:
-        environment = os.environ
         arguments = [sys.executable, "-B", str(Path(__file__).resolve()), "_probe"]
-    result = subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "180", "--", *arguments], env=environment)
-    if result.returncode:
-        raise RuntimeError("Explicit run-owned component controls failed.")
-    if not apphost_assembly and not platform_assembly:
+        result = subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "180", "--", *arguments])
+        if result.returncode:
+            raise RuntimeError("Explicit run-owned component controls failed.")
         lifecycle_controls()
         nonstandard_caller_control()
 
@@ -259,5 +344,7 @@ if __name__ == "__main__":
             sys.exit(1)
         except InterruptedError:
             sys.exit(1)
+    elif sys.argv[1:2] == ["_bridge-cancellation-launcher"]:
+        sys.exit(bridge_cancellation_launcher(sys.argv[2:]))
     else:
         run()

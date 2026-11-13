@@ -2005,3 +2005,19 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 ## Deferred from: code review of spec-2-12-provision-a-run-owned-workload-binding-authority.md (2026-11-13)
 
 - Provider trust composition is not asserted outside the opt-in durability suite (`OperationalProviderFixture.cs:39`). `StartAsync` reads `SSL_CERT_FILE` when set, otherwise the system bundle, then appends the Forgejo certificate. No normally run test reads `TrustFile`. A hermetic assertion requires splitting certificate composition out of Docker startup; the durability suite that executes this fixture is opt-in.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: D1: Update existing authenticated catalog callers, including verify-agents-host.sh and its documented command.
+  evidence: B6/E3: the pre-existing named Builds catalog requires --catalog-sha256, while the unchanged Agents host caller passes none; the reviewer reproduced refusal against 5.2.1.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: D2: Adapt verify_works_host.selected_sdk_version to the authenticated conditional catalog view.
+  evidence: B7: the selected catalog has conditional/default EventStore versions while this pre-existing reader requires one XML element.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: D3: Resolve unchanged FrontComposer CA2263 and execute the affected Folders runtime and strict acceptance suites.
+  evidence: B9: full Debug/source build stops at SchemaFingerprintContracts.cs:71; changed enrollment sources compile separately, but runtime/strict acceptance remains unverified.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: D4: Verify the possible late Docker creation race after a client timeout (medium, unverified).
+  evidence: E1: one absent cleanup snapshot is insufficient if daemon creation can complete later; settle with a delayed-daemon reproduction that observes creation after the first cleanup snapshot and inspect retained ownership/cleanup behavior.
