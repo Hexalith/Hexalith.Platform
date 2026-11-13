@@ -1,6 +1,34 @@
 # Hexalith.Platform
 
-## Current signed Builds4.45.0 and public Parties3.1.0 tuple
+## Current signed Builds5.2.1 NET11 preparation
+
+The current producer is genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
+at `0e7424fdce6373920fb2019d1ad2a74d8fe5295c`, from successful normal
+[release43417380822](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43417380822).
+The exact module-tool pin is `5.2.1`, its range is `[5.2.1, 6.0.0-0)`,
+roll-forward is disabled and `candidateAcceptance` remains false. Catalog blob
+`313a6a8fe6acff74f799fc9e381cc3a608ec61cc` has SHA-256
+`9e5d1fafaf46d051b68da2090399733d9470873082d20f6444493e3594b0cab3`.
+The finite named Platform views retain SDK4.2.0 and OpenAPI2, with the existing
+SDK5 default for unqualified consumers.
+
+The signed Module archive SHA-256 is
+`3f86fc9ccabdd36639a32520f83dcb4c82b3ba0af0c458b0c39c199235c37313`.
+Its complete validation pair is AppHost
+`a229438e01238f7e0ff2063eefb9595f37b072c893f3f3d138a348c1b970305f` and Tooling
+`2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088`.
+The [measurement receipt](docs/implementation/builds521-validation-pair.json)
+records both repository-signed NuGet bodies, SHA-512 observations, source
+identities and exact original publisher payload comparisons. Historical pairs
+remain admitted only as complete pairs; crossed pairs remain refused.
+
+See [current tuple preparation](docs/current-tuple-preparation.md) for the full
+handoff and qualification boundary. This prepares authenticated identities;
+unchanged exact-source tuple/catalog qualification and the normal source
+publisher remain required. It grants no native, lifecycle, image, candidate or
+Story acceptance. Previous sections retain their own historical facts and counts.
+
+## Previous signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal
@@ -166,7 +194,7 @@ Those hosting concerns live here.
 ## Requirements
 
 - .NET SDK `11.0.100` (`latestPatch` roll-forward) and the .NET 10 ASP.NET Core runtime
-- Aspire CLI `13.6.4` exactly for the prepared tool below. The module tool compares `aspire --version` with
+- Aspire CLI `13.6.5` exactly for the current prepared tool. The module tool compares `aspire --version` with
   the catalog-selected `Aspire.AppHost.Sdk` and refuses any other version with
   `HXR015`.
 
@@ -188,13 +216,13 @@ The historical same-code lane L retains genuine Builds `4.44.3` at
 `fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
 Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
-`3.0.0`. The current model M prepares a separate measured source-owned Parties
+`3.0.0`. The historical model M preparation used a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
-271 primary cases. M selects genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
+271 primary cases. That preparation selected genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
 at `f4e908206f2d6481c0ced6b7d4e62e28dcf3b330`, published by successful normal
 [release 42223647770](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42223647770)
 after exact-source [CI 42221243284](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42221243284).
-Its pin and supported floor are `4.44.10`; its catalog Git blob is
+Its historical pin and supported floor were `4.44.10`; its catalog Git blob is
 `2eccd7598d0e243b308fa504ef6f23724125d542`, SHA-256
 `91ad525c4eb88e21d5f168115c9ea2143f7996526032687ede99cfdc37647825`.
 The tuple binds the observed signed archive, paired validation bodies and
@@ -203,17 +231,17 @@ inventory; this publication does not establish current model/native acceptance.
 The previous Builds `4.44.6` producer and its complete signed pair remain
 historical evidence in [the retained tuple record](docs/current-tuple-preparation.md#previous-published-builds-4446-tuple).
 
-Both lanes must execute their actual committed source and tuple. Shared code,
-tests, helpers, workflows and documentation must match; only eight explicitly
-bounded metadata paths may differ. L is historical regression evidence, with no
-current qualification credit or binary-equivalence claim. The current private
+Current qualification uses all three immutable historical companions and the
+actual final current source. Shared code, tests, helpers, workflows and
+documentation must match under the bounded tuple-source rules. L is historical
+regression evidence, with no current qualification credit or binary-equivalence claim. The current private
 reader/reference cases, native execution and cleanup remain separate obligations
 from L's old public package/image qualification. Fresh exact-source hosted
 qualification is required; publication and positive counts alone establish no
 runtime or deployment acceptance.
 
-The configured range permits later 4.x versions, including prereleases, and excludes
-5.0 prereleases. Each accepted tool carries its own catalog; matching the range
+The configured range permits later 5.x versions from `5.2.1`, including prereleases
+within that range, and excludes `6.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
 alone does not establish integration qualification. The exact tool pin and Builds
 gitlink must identify the same published release before acceptance.
 See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)
@@ -368,7 +396,7 @@ duplicates a module and fails with `HXP003`/`HXP020`).
 ### Prerequisites
 
 - The pinned tool (`dotnet tool restore`), the .NET SDK and Aspire CLI
-  `13.6.4` listed above, and a running Docker engine. This candidate's integration
+  `13.6.5` listed above, and a running Docker engine. This candidate's integration
   qualification remains pending.
 - The direct submodules `references/Hexalith.Builds`, `references/Hexalith.EventStore`,
   `references/Hexalith.Tenants` and `references/Hexalith.Memories`, initialized
@@ -380,7 +408,7 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   Each checkout's `HEAD` must equal the gitlink staged in this
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
-- The local Aspire orchestration and dashboard packages at `13.6.4`. From this
+- The local Aspire orchestration and dashboard packages at `13.6.5`. From this
   workspace, run `dotnet restore apphost.cs` once before the first `run` or `debug`.
   Tool restore alone does not install these SDK packages. If NuGet uses a custom
   `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both

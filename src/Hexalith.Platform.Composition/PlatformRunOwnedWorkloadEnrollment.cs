@@ -208,7 +208,8 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
         string temporary = path + "." + Path.GetRandomFileName() + ".writing";
         try
         {
-            await using (FileStream stream = new(temporary, new FileStreamOptions { Mode = FileMode.CreateNew, Access = FileAccess.Write, UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite }))
+            FileStream stream = new(temporary, new FileStreamOptions { Mode = FileMode.CreateNew, Access = FileAccess.Write, UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite });
+            await using (stream.ConfigureAwait(false))
                 await stream.WriteAsync(bytes, cancellationToken).ConfigureAwait(false);
             File.Move(temporary, path, overwrite: false);
         }

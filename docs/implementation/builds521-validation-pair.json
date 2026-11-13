@@ -1,0 +1,136 @@
+{
+  "schema": "hexalith.platform.published-validation-pair.v1",
+  "scope": "Published identity and exact signed validation transport only; no hosted runtime, candidate, lifecycle, image or native acceptance",
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "0e7424fdce6373920fb2019d1ad2a74d8fe5295c",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "313a6a8fe6acff74f799fc9e381cc3a608ec61cc",
+        "sha256": "9e5d1fafaf46d051b68da2090399733d9470873082d20f6444493e3594b0cab3"
+      }
+    },
+    "publication": {
+      "kind": "shared-release-handoff/v1",
+      "version": "5.2.1",
+      "sourceRevision": "0e7424fdce6373920fb2019d1ad2a74d8fe5295c",
+      "releaseTag": "v5.2.1",
+      "catalogSha256": "9e5d1fafaf46d051b68da2090399733d9470873082d20f6444493e3594b0cab3",
+      "archiveSha256": "3f86fc9ccabdd36639a32520f83dcb4c82b3ba0af0c458b0c39c199235c37313",
+      "toolingSha256": "2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088",
+      "releaseId": 444154251,
+      "runId": 43417380822,
+      "artifactId": 14032177800,
+      "artifactSha256": "d205038c186b6b985fa6f1e4d1119a896c0656609d509408cc72dd9122b59015",
+      "releaseBodySha256": "32c8eae7987f9dfaad6864ac23ad09773d49ccbe698a39b5b70c279fd8cc4664",
+      "manifestJson": "{\n  \"sha\": \"0e7424fdce6373920fb2019d1ad2a74d8fe5295c\",\n  \"version\": \"5.2.1\",\n  \"packages\": [\n    {\n      \"id\": \"Hexalith.Builds.Evidence.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Evidence.Cli.5.2.1.nupkg\"\n    },\n    {\n      \"id\": \"Hexalith.Builds.Module.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Module.Cli.5.2.1.nupkg\"\n    }\n  ],\n  \"containers\": []\n}\n",
+      "manifestSha256": "03bc070532b303fde308646f229e3e08d34ba996eb5673c9fc94930ea80e5b53"
+    }
+  },
+  "publicationHandoff": {
+    "releaseId": 444154251,
+    "runId": 43417380822,
+    "artifactId": 14032177800,
+    "artifactSha256": "d205038c186b6b985fa6f1e4d1119a896c0656609d509408cc72dd9122b59015",
+    "releaseBodySha256": "32c8eae7987f9dfaad6864ac23ad09773d49ccbe698a39b5b70c279fd8cc4664",
+    "manifestSha256": "03bc070532b303fde308646f229e3e08d34ba996eb5673c9fc94930ea80e5b53",
+    "tagSource": "0e7424fdce6373920fb2019d1ad2a74d8fe5295c",
+    "artifactDigestSource": "public release body",
+    "qualificationCredit": false,
+    "legacyG4AcceptanceClaimed": false
+  },
+  "packages": {
+    "Hexalith.Builds.Evidence.Cli": {
+      "version": "5.2.1",
+      "archive": "Hexalith.Builds.Evidence.Cli.5.2.1.nupkg",
+      "sha256": "dc0b3b8642b064ff8917ab003dc73aae24387effc2c91a45be33ee3fb271e0cf",
+      "sha512": "KVawWUjBVT7f0xM2hVDGgzEgU4mcaQVOxlXgGkkvI4kyGyd1b/A+y1dHGeMFnRkY/rlpKiTtb6Xy6PoH5XGc9Q==",
+      "originalPayloadFiles": 38,
+      "nuspecSource": "0e7424fdce6373920fb2019d1ad2a74d8fe5295c",
+      "repositorySignatureVerified": true,
+      "signatureVerificationExitCode": 0,
+      "signedPayloadMatchesOriginalPublisher": true,
+      "signedArchiveAddsOnlyRepositorySignature": true
+    },
+    "Hexalith.Builds.Module.Cli": {
+      "version": "5.2.1",
+      "archive": "Hexalith.Builds.Module.Cli.5.2.1.nupkg",
+      "sha256": "3f86fc9ccabdd36639a32520f83dcb4c82b3ba0af0c458b0c39c199235c37313",
+      "sha512": "KSOYBlRleHoAzYlQiteDY4jIqKSmVGTGEwWwCLH2L4kNOoDY2qZwkVZhBOrt+Eo+JWi0SCCeGRhyy9CcCLkPbQ==",
+      "originalPayloadFiles": 316,
+      "nuspecSource": "0e7424fdce6373920fb2019d1ad2a74d8fe5295c",
+      "repositorySignatureVerified": true,
+      "signatureVerificationExitCode": 0,
+      "signedPayloadMatchesOriginalPublisher": true,
+      "signedArchiveAddsOnlyRepositorySignature": true
+    }
+  },
+  "signedPackagePayloadMatchesOriginalPublisher": true,
+  "signatureVerificationExitCode": 0,
+  "files": {
+    "tools/net11.0/any/g4-host/Hexalith.Builds.Module.AppHost.dll": "a229438e01238f7e0ff2063eefb9595f37b072c893f3f3d138a348c1b970305f",
+    "tools/net11.0/any/g4-host/Hexalith.Builds.Tooling.dll": "2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088",
+    "tools/net11.0/any/Hexalith.Builds.Tooling.dll": "2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088"
+  },
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "hostedRuntimeQualification": false,
+  "lifecycleQualification": false,
+  "nativeAcceptance": false,
+  "verificationEvidence": {
+    "documentation": {
+      "path": "builds521-verification/README.md",
+      "sha256": "a4e83fdeeddb14ff0b61a79e893b5e1563b0b31fc61a3e253bea440e08f8157c"
+    },
+    "originalVerificationProcedure": {
+      "path": "builds521-verification/verify-builds-successor.py.txt",
+      "sha256": "e66d2f4d9979b91f6bccac618be447a48d9cd3e5782c6ab831d900214434c917"
+    },
+    "signatureCommands": {
+      "path": "builds521-verification/signature-commands.json",
+      "sha256": "490348958a9c46eca519f7413c8c89fac13bb2e4c0a9c1122f66bb2524a119c6"
+    },
+    "evidencePackageSignatureTranscript": {
+      "path": "builds521-verification/Hexalith.Builds.Evidence.Cli.signature.txt",
+      "sha256": "4fa231c660560bd9e43ffda1b8bcf23adfc1f133e8708fdaa4eada69da4e5ceb"
+    },
+    "modulePackageSignatureTranscript": {
+      "path": "builds521-verification/Hexalith.Builds.Module.Cli.signature.txt",
+      "sha256": "cfebf999a3e446603a3b4b133604d958bdb76c39fbacf2af8adde84114843baa"
+    },
+    "publisherMemberMeasurementProcedure": {
+      "path": "builds521-verification/measure-original-members.py.txt",
+      "sha256": "e418b8cd16d5c9901962841f6913fcc0169bb600ce8956b18d42ed56d635d04b"
+    },
+    "publisherMemberComparison": {
+      "path": "builds521-verification/publisher-member-comparison.json.gz",
+      "sha256": "a32832520fc6e8626c0459f03bcc3efbe544bde6ef0d5de00cbb154d0c38f594",
+      "uncompressedSha256": "ff5e577ea4cd73900c2e2d09b3234fa0f152130cea718829df87a1bba0b2a5a2"
+    },
+    "defaultOwningProjectCommands": {
+      "path": "builds521-verification/default-project-commands.json",
+      "sha256": "9b757721a2e2898dd43bfe0264344f4984360038c2897de57c4932aad1315bff"
+    },
+    "defaultOwningProjectEvaluation": {
+      "path": "builds521-verification/default-project-evaluation.json.gz",
+      "sha256": "eed346839988e167e5435671610b1440d099592651a3238b62b4401ada01531d",
+      "uncompressedSha256": "6a09458ddd721f42064ce0a0bd4144c22eb2069f5aba1011000ebbcc0eb6df08"
+    },
+    "defaultOwningProjectEvaluationStderr": {
+      "path": "builds521-verification/default-project-evaluation.stderr.txt",
+      "sha256": "d7583bee0ee828ca3f8cde2706bb62db25edcfa58258fadbb24241a756dc354e"
+    },
+    "defaultOwningProjectBuildOutput": {
+      "path": "builds521-verification/default-project-build.txt",
+      "sha256": "fba45a14f0b06a9e348b7587684dbc1ae46b4502acf062939ee04b5a9d6a6a29"
+    },
+    "defaultOwningProjectVerification": {
+      "path": "builds521-verification/default-project-verification.json.gz",
+      "sha256": "cd2a9fc729b8b408ed0ca22b3f1f4a2baaff15dd7deaf1997b2dc4c75331b794",
+      "uncompressedSha256": "b810d2845c2c10f1a8aadd47290c7c21ab6f39e1b09b76cca276f3b3d01cd8f3"
+    }
+  }
+}

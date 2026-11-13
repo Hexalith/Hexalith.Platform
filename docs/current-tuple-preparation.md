@@ -1,8 +1,47 @@
 # Current tuple preparation
 
-## Current signed Builds5.0.1 NET11 preparation
+## Current signed Builds5.2.1 NET11 preparation
 
-The current producer is genuine [Builds v5.0.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.0.1)
+The current producer is genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
+at `0e7424fdce6373920fb2019d1ad2a74d8fe5295c`, published by successful normal
+[release43417380822](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43417380822).
+The exact tool pin and range floor are `5.2.1`, with upper bound `6.0.0-0`,
+roll-forward disabled and `candidateAcceptance` false. Catalog Git blob
+`313a6a8fe6acff74f799fc9e381cc3a608ec61cc` has raw SHA-256
+`9e5d1fafaf46d051b68da2090399733d9470873082d20f6444493e3594b0cab3`.
+Its finite named Platform consumers retain SDK4.2.0 and OpenAPI2; the unqualified
+consumer default remains SDK5.0.0. No wildcard or additional catalog exception
+is introduced.
+
+The [published identity and validation pair receipt](implementation/builds521-validation-pair.json)
+records both signed NuGet package SHA-256/SHA-512 observations, exact nuspec
+source revisions and successful repository signature verification. Both signed
+archives contain precisely the original normal publisher payload plus their
+repository signature: 38 Evidence payload files and 316 Module payload files.
+Release444154251 and original artifact14032177800 bind the public handoff;
+the original artifact SHA-256 is
+`d205038c186b6b985fa6f1e4d1119a896c0656609d509408cc72dd9122b59015`.
+The signed Module archive SHA-256 is
+`3f86fc9ccabdd36639a32520f83dcb4c82b3ba0af0c458b0c39c199235c37313`.
+The complete additional validation pair is AppHost
+`a229438e01238f7e0ff2063eefb9595f37b072c893f3f3d138a348c1b970305f` and Tooling
+`2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088`.
+Every historical pair remains present and every crossed pair remains refused.
+
+Package identity and local preparation provide no hosted runtime, lifecycle,
+image, native, candidate or Story acceptance. Final source binding and all three
+immutable companions must be regenerated from the actual selected owner inputs.
+Unchanged automated tuple/catalog gates and the normal qualified source
+publisher remain required at that final exact source. Story2.12, all historical
+SDK cohorts, finite SDK4.2 views, required suite counts and source-release controls
+retain their existing authority.
+
+The previous sections below retain the measured identities and requirements of
+their own historical preparations; they do not describe the current tool pin.
+
+## Previous signed Builds5.0.1 NET11 preparation
+
+The previous producer is genuine [Builds v5.0.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.0.1)
 at `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, published by successful normal
 [release43241459875](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43241459875).
 The exact tool pin and range floor are `5.0.1`, with upper bound `6.0.0-0` and
@@ -24,7 +63,7 @@ private signed transport checks and exact-source release gates remain required.
 Preparation and package measurement supply no hosted qualification, new native
 or image admission, or qualified source publication.
 
-## Signed 5.1.0 validation transport for lifecycle qualification
+## Previous signed 5.1.0 validation transport for lifecycle qualification
 
 The separate [5.1.0 pair measurement](implementation/builds510-validation-pair.json)
 binds genuine published source `9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`,
@@ -33,15 +72,15 @@ AppHost/Tooling members. Only that complete pair can use the existing private
 validation projection; argument, environment, canonical document, source/catalog
 and owner-profile checks remain unchanged. Every crossed pair remains refused.
 
-This permits preparation for a later 5.1.0 qualification caller. It grants no
-tool or lifecycle acceptance and changes neither exact main tool pin. Platform
-retains tool 5.0.1 and its exact published catalog/helper source
+That preparation permitted a later 5.1.0 qualification caller. It granted no
+tool or lifecycle acceptance and changed neither exact main tool pin. Platform
+then retained tool 5.0.1 and its exact published catalog/helper source
 `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`; the caller must use that same
 catalog source while separately binding the 5.1.0 executable source. Equal
 catalog bytes alone never satisfy the exact source-equality guard. Fresh full
 lifecycle qualification and real cancellation evidence remain required.
 
-## Current signed Builds4.47.0 and SDK4.2.0 tuple
+## Previous signed Builds4.47.0 and SDK4.2.0 tuple
 
 The producer is genuine [Builds v4.47.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0)
 at `5ec1779040606be89306129a7d2b245258c9acd2`, from normal

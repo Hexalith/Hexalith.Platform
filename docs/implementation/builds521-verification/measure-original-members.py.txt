@@ -1,0 +1,75 @@
+"""Retained documentation procedure for the already authenticated local archive comparison."""
+import argparse
+import base64
+import hashlib
+import io
+import json
+from pathlib import Path
+import zipfile
+
+
+def entries(payload):
+    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        names = [entry.filename for entry in archive.infolist() if not entry.is_dir()]
+        assert len(names) == len(set(names)), "Duplicate archive member"
+        return {name: archive.read(name) for name in names}
+
+
+def sha256(payload):
+    return hashlib.sha256(payload).hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--inputs", type=Path, required=True)
+    parser.add_argument("--receipt", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    receipt = json.loads(args.receipt.read_bytes())
+    original_zip = (args.inputs / "original-release.zip").read_bytes()
+    assert sha256(original_zip) == receipt["binding"]["publication"]["artifactSha256"]
+    original_release = entries(original_zip)
+    packages = {}
+    for identity, observation in receipt["packages"].items():
+        archive_name = observation["archive"]
+        original_package = original_release["packages/" + archive_name]
+        signed_package = (args.inputs / archive_name).read_bytes()
+        assert sha256(signed_package) == observation["sha256"]
+        assert base64.b64encode(hashlib.sha512(signed_package).digest()).decode() == observation["sha512"]
+        original = entries(original_package)
+        signed = entries(signed_package)
+        assert len(original) == observation["originalPayloadFiles"]
+        assert set(signed) == set(original) | {".signature.p7s"}
+        assert ".signature.p7s" not in original
+        members = []
+        for name, payload in sorted(original.items()):
+            assert payload == signed[name], identity + "/" + name
+            members.append({"member": name, "bytes": len(payload),
+                            "originalSha256": sha256(payload), "signedSha256": sha256(signed[name]),
+                            "identical": True})
+        packages[identity] = {
+            "archive": archive_name,
+            "originalPublisherArchiveSha256": sha256(original_package),
+            "signedArchiveSha256": sha256(signed_package),
+            "originalPayloadFiles": len(members),
+            "signedOnlyMembers": [{"member": ".signature.p7s", "sha256": sha256(signed[".signature.p7s"])}],
+            "members": members,
+        }
+    result = {
+        "schema": "hexalith.platform.original-publisher-member-comparison.v1",
+        "scope": "Measured public package identity only; no runtime qualification or acceptance",
+        "version": receipt["binding"]["publication"]["version"],
+        "sourceRevision": receipt["binding"]["producer"]["sourceRevision"],
+        "originalReleaseArtifactSha256": sha256(original_zip),
+        "totalOriginalPayloadFiles": sum(package["originalPayloadFiles"] for package in packages.values()),
+        "packages": packages,
+        "candidateAcceptance": False,
+        "runtimeQualification": False,
+    }
+    with args.output.open("x") as target:
+        target.write(json.dumps(result, indent=2) + "\n")
+    print("PASS: " + str(result["totalOriginalPayloadFiles"]) + " original publisher members match; each signed archive adds only .signature.p7s")
+
+
+if __name__ == "__main__":
+    main()

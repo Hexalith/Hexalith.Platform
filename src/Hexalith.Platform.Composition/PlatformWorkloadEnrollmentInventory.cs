@@ -64,15 +64,23 @@ public static class PlatformWorkloadEnrollmentInventory
     /// <summary>Reads the actual Dapr caller identity of one physical resource.</summary>
     /// <param name="resource">The enrolled host.</param>
     /// <returns>The actual caller identifier.</returns>
-    public static string Workload(ProjectResource resource) => resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar
-        .Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.AppId ?? throw Refused();
+    public static string Workload(ProjectResource resource)
+    {
+        ArgumentNullException.ThrowIfNull(resource);
+        return resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar
+            .Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.AppId ?? throw Refused();
+    }
 
     /// <summary>Gets every physical enrolled resource from the final application model.</summary>
     /// <param name="builder">The final application model.</param>
     /// <returns>The complete physical cohort, including replicas and proof callers.</returns>
-    public static ProjectResource[] Cohort(IDistributedApplicationBuilder builder) => [.. builder.Resources.OfType<ProjectResource>().Where(project =>
-        project.Name is "eventstore" or "tenants" or "folders" or "folders-replica"
-        || project.Name.StartsWith("folders-workers", StringComparison.Ordinal))];
+    public static ProjectResource[] Cohort(IDistributedApplicationBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        return [.. builder.Resources.OfType<ProjectResource>().Where(project =>
+            project.Name is "eventstore" or "tenants" or "folders" or "folders-replica"
+            || project.Name.StartsWith("folders-workers", StringComparison.Ordinal))];
+    }
 
     /// <summary>Checks the exact source, callback, bootstrap and bound query inventory.</summary>
     /// <param name="cohort">Every physical enrolled resource.</param>

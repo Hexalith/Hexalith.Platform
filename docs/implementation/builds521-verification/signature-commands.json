@@ -1,0 +1,31 @@
+{
+  "scope": "Original signature commands and exact captured stdout/stderr from the authenticated verification procedure",
+  "commands": [
+    {
+      "package": "Hexalith.Builds.Evidence.Cli",
+      "argv": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/tmp/parties-builds521-verified-final/Hexalith.Builds.Evidence.Cli.5.2.1.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "transcript": "Hexalith.Builds.Evidence.Cli.signature.txt",
+      "transcriptSha256": "4fa231c660560bd9e43ffda1b8bcf23adfc1f133e8708fdaa4eada69da4e5ceb"
+    },
+    {
+      "package": "Hexalith.Builds.Module.Cli",
+      "argv": [
+        "dotnet",
+        "nuget",
+        "verify",
+        "/tmp/parties-builds521-verified-final/Hexalith.Builds.Module.Cli.5.2.1.nupkg",
+        "--all"
+      ],
+      "exitCode": 0,
+      "transcript": "Hexalith.Builds.Module.Cli.signature.txt",
+      "transcriptSha256": "cfebf999a3e446603a3b4b133604d958bdb76c39fbacf2af8adde84114843baa"
+    }
+  ]
+}

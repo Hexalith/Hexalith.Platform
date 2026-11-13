@@ -77,5 +77,5 @@ Original Story2.8 public Parties, native/manual, cleanup and acceptance gates re
 References: [GitHub workflow_run context](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run),
 [standard semantic-release configuration](https://semantic-release.org/usage/configuration/),
 and [the disabled-comment issue](https://github.com/semantic-release/github/issues/1083).
-The exact pinned12.0.10 hook implementation and its executable API controls, rather
+The exact pinned12.0.11 hook implementation and its executable API controls, rather
 than a comment-setting assumption, establish the source-only permission boundary.

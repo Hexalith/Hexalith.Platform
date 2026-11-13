@@ -1,0 +1,50 @@
+{
+  "workingDirectory": "/dev/shm/parties-platform521-default-owner-Y78BIc",
+  "environmentPolicy": "Only the recorded operating-system and package-location keys were inherited; no catalog/version or source-mapping override was inherited",
+  "inheritedEnvironmentKeys": [
+    "DOTNET_ROOT",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "PATH"
+  ],
+  "explicitEventStoreVersionOverride": false,
+  "evaluate": [
+    "dotnet",
+    "msbuild",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-nologo",
+    "-p:Configuration=Release",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/parties-platform521-implementation-Y78BIc/published-builds/published/tools/net11.0/any",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Builds",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.EventStore",
+    "-p:HexalithTenantsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Tenants",
+    "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Parties",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Commons",
+    "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.McpCli",
+    "-p:HexalithPolymorphicSerializationsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.PolymorphicSerializations",
+    "-getProperty:HexalithEventStoreVersion,HexalithPlatformSdk42CatalogView,HexalithPartiesSdk42CatalogView,HexalithAspNetCoreOpenApiVersion,HexalithOpenApiVersion,TreatWarningsAsErrors,UseHexalithProjectReferences,Configuration,TargetFramework,HexalithBuildsRoot,BuildsToolingAssemblyPath",
+    "-getItem:PackageVersion,Reference"
+  ],
+  "build": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "--no-incremental",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/parties-platform521-implementation-Y78BIc/published-builds/published/tools/net11.0/any",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Builds",
+    "-p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.EventStore",
+    "-p:HexalithTenantsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Tenants",
+    "-p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Memories",
+    "-p:HexalithPartiesRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Parties",
+    "-p:HexalithCommonsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.Commons",
+    "-p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.McpCli",
+    "-p:HexalithPolymorphicSerializationsRoot=/home/administrator/projects/hexalith/parties/references/Hexalith.Platform/references/Hexalith.PolymorphicSerializations"
+  ]
+}

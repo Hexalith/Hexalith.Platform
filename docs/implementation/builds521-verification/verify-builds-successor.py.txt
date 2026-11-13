@@ -1,0 +1,150 @@
+import argparse
+import base64
+import hashlib
+import gzip
+import io
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import urllib.request
+import urllib.error
+import time
+import xml.etree.ElementTree as ET
+import zipfile
+
+
+def github(path):
+    return json.loads(subprocess.check_output(['gh', 'api', path]))
+
+
+def download(url):
+    for attempt in range(40):
+        try:
+            with urllib.request.urlopen(url, timeout=90) as response:
+                data = response.read()
+                return gzip.decompress(data) if data.startswith(bytes([31, 139])) else data
+        except urllib.error.HTTPError as error:
+            if error.code not in (404, 429, 502, 503) or attempt == 39:
+                raise
+            time.sleep(20)
+
+
+
+def sha256(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def entries(data):
+    with zipfile.ZipFile(io.BytesIO(data)) as archive:
+        names = [x.filename for x in archive.infolist() if not x.is_dir()]
+        assert len(names) == len(set(names)), 'Duplicate archive entry'
+        return {name: archive.read(name) for name in names}
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--version', required=True)
+    parser.add_argument('--source', required=True)
+    parser.add_argument('--builds-root', type=Path, required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    assert re.fullmatch(r'5\.[0-9]+\.[0-9]+', args.version)
+    assert re.fullmatch(r'[a-f0-9]{40}', args.source)
+    args.output.mkdir(parents=True, exist_ok=False)
+    repository = 'repos/Hexalith/Hexalith.Builds/'
+    release = github(repository + 'releases/tags/v' + args.version)
+    assert release['draft'] is False and release['prerelease'] is False
+    assert release.get('published_at')
+    reference = github(repository + 'git/ref/tags/v' + args.version)['object']
+    for _ in range(4):
+        if reference['type'] == 'commit':
+            break
+        assert reference['type'] == 'tag'
+        reference = github(repository + 'git/tags/' + reference['sha'])['object']
+    assert reference['type'] == 'commit' and reference['sha'] == args.source
+    markers = {}
+    for line in release['body'].splitlines():
+        if line.startswith('hexalith-release'):
+            key, _, value = line.partition(':')
+            assert key not in markers
+            markers[key] = value.strip()
+    assert markers['hexalith-release'] == args.source
+    run_id = int(markers['hexalith-release-run'])
+    artifact_match = re.fullmatch(r'([0-9]+) sha256:([a-f0-9]{64})', markers['hexalith-release-artifact'])
+    assert artifact_match
+    artifact_id, artifact_hash = int(artifact_match[1]), artifact_match[2]
+    run = github(repository + 'actions/runs/' + str(run_id))
+    assert run['head_sha'] == args.source and run['status'] == 'completed' and run['conclusion'] == 'success'
+    assert run['path'] == '.github/workflows/builds-release.yml'
+    artifact = github(repository + 'actions/artifacts/' + str(artifact_id))
+    assert artifact['workflow_run']['id'] == run_id and artifact['expired'] is False
+    assert artifact['name'] == 'release'
+    original_zip = subprocess.check_output(['gh', 'api', repository + 'actions/artifacts/' + str(artifact_id) + '/zip'])
+    assert sha256(original_zip) == artifact_hash
+    (args.output / 'original-release.zip').write_bytes(original_zip)
+    original = entries(original_zip)
+    manifest_names = [name for name in original if name.endswith('release-manifest.json')]
+    assert len(manifest_names) == 1
+    raw_manifest = original[manifest_names[0]].decode()
+    manifest = json.loads(raw_manifest)
+    identities = ('Hexalith.Builds.Evidence.Cli', 'Hexalith.Builds.Module.Cli')
+    assert manifest == {'sha': args.source, 'version': args.version,
+                        'packages': [{'id': identity, 'path': f'packages/{identity}.{args.version}.nupkg'} for identity in identities],
+                        'containers': []}
+    observed = {}
+    module_entries = None
+    for identity in identities:
+        key = identity.lower()
+        data = download(f'https://api.nuget.org/v3-flatcontainer/{key}/{args.version}/{key}.{args.version}.nupkg')
+        path = args.output / f'{identity}.{args.version}.nupkg'
+        path.write_bytes(data)
+        signed = entries(data)
+        assert '.signature.p7s' in signed
+        original_name = f'packages/{identity}.{args.version}.nupkg'
+        unsigned = entries(original[original_name])
+        for name, payload in unsigned.items():
+            assert signed.get(name) == payload, f'Publisher payload changed: {identity}/{name}'
+        registration = json.loads(download(f'https://api.nuget.org/v3/registration5-gz-semver2/{key}/{args.version}.json'))
+        catalog = json.loads(download(registration['catalogEntry']))
+        assert catalog['packageHashAlgorithm'].upper() == 'SHA512'
+        assert catalog['packageHash'] == base64.b64encode(hashlib.sha512(data).digest()).decode()
+        nuspec_names = [name for name in signed if name.lower().endswith('.nuspec')]
+        assert len(nuspec_names) == 1
+        metadata = next(node for node in ET.fromstring(signed[nuspec_names[0]]) if node.tag.endswith('metadata'))
+        fields = {node.tag.rsplit('}', 1)[-1]: node for node in metadata}
+        assert fields['id'].text == identity and fields['version'].text == args.version
+        assert fields['repository'].get('commit') == args.source
+        result = subprocess.run(['dotnet', 'nuget', 'verify', str(path), '--all'], capture_output=True, text=True)
+        (args.output / f'{identity}.signature.txt').write_text(result.stdout + result.stderr)
+        assert result.returncode == 0, f'Signature verification failed: {identity}'
+        observed[identity] = {'sha256': sha256(data), 'sha512': catalog['packageHash'],
+                              'originalPayloadFiles': len(unsigned), 'nuspecSource': args.source,
+                              'repositorySignatureVerified': True}
+        if identity == 'Hexalith.Builds.Module.Cli':
+            module_entries = signed
+    prefix = 'tools/net11.0/any/'
+    apphost = module_entries[prefix + 'g4-host/Hexalith.Builds.Module.AppHost.dll']
+    tooling = module_entries[prefix + 'Hexalith.Builds.Tooling.dll']
+    assert tooling == module_entries[prefix + 'g4-host/Hexalith.Builds.Tooling.dll']
+    raw_catalog = subprocess.check_output(['git', '-C', str(args.builds_root), 'show', args.source + ':Props/Directory.Packages.props'])
+    blob = subprocess.check_output(['git', '-C', str(args.builds_root), 'rev-parse', args.source + ':Props/Directory.Packages.props'], text=True).strip()
+    binding = {'schemaVersion': 1, 'candidateAcceptance': False,
+               'producer': {'repository': 'https://github.com/Hexalith/Hexalith.Builds.git', 'sourceRevision': args.source,
+                            'catalog': {'path': 'Props/Directory.Packages.props', 'blob': blob, 'sha256': sha256(raw_catalog)}},
+               'publication': {'kind': 'shared-release-handoff/v1', 'version': args.version, 'sourceRevision': args.source,
+                               'releaseTag': 'v' + args.version, 'catalogSha256': sha256(raw_catalog),
+                               'archiveSha256': observed['Hexalith.Builds.Module.Cli']['sha256'], 'toolingSha256': sha256(tooling),
+                               'releaseId': release['id'], 'runId': run_id, 'artifactId': artifact_id, 'artifactSha256': artifact_hash,
+                               'releaseBodySha256': sha256(release['body'].encode()), 'manifestJson': raw_manifest,
+                               'manifestSha256': sha256(raw_manifest.encode())}}
+    receipt = {'scope': 'Published identity verification; no Platform runtime qualification claimed',
+               'binding': binding, 'packages': observed, 'appHostSha256': sha256(apphost), 'toolingSha256': sha256(tooling)}
+    (args.output / 'binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+    (args.output / 'verification.json').write_text(json.dumps(receipt, indent=2) + '\n')
+    print(json.dumps({'version': args.version, 'source': args.source, 'apphost': sha256(apphost), 'tooling': sha256(tooling)}))
+
+
+if __name__ == '__main__':
+    main()
