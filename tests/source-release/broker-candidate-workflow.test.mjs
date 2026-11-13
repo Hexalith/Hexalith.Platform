@@ -12,8 +12,8 @@ import * as yaml from 'js-yaml';
 
 const workflowPath = '.github/workflows/broker-candidate-qualification.yml';
 const workflow = yaml.load(readFileSync(workflowPath, 'utf8'));
-const job = workflow.jobs['candidate-01'];
-const configuration = readFileSync('docs/implementation/story-4-17-broker-candidate-01.json');
+const job = workflow.jobs['candidate-02'];
+const configuration = readFileSync('docs/implementation/story-4-17-broker-candidate-02.json');
 const python = spawnSync('python3', ['-c', 'import sys; print(sys.executable)'], { encoding: 'utf8' }).stdout.trim();
 const authorityMessage = 'FAIL: production eligibility FAIL: authenticated AD-26 Architecture/Platform records, '
   + 'Story 3.19 publication/profile binding, Kubernetes rehearsal, restore and Story 4.16 '
@@ -151,7 +151,7 @@ PLATFORM_PROFILE = '${job.env.QUALIFICATION_PROFILE}'
 def profile_path(profile):
     return PLATFORM_PROFILE
 `);
-  writeFileSync(join(workspace, 'docs/implementation/story-4-17-broker-candidate-01.json'), configuration);
+  writeFileSync(join(workspace, 'docs/implementation/story-4-17-broker-candidate-02.json'), configuration);
   const fake = join(bin, 'fake');
   writeFileSync(fake, fakeCommands);
   chmodSync(fake, 0o755);
@@ -167,7 +167,7 @@ def profile_path(profile):
     GITHUB_ENV: join(root, 'github-env'), GITHUB_OUTPUT: join(root, 'github-output'),
     GITHUB_STEP_SUMMARY: join(root, 'summary'), GITHUB_SHA: 'a'.repeat(40),
     GITHUB_REPOSITORY: 'Hexalith/Hexalith.Platform', GITHUB_RUN_ID: '1234', GITHUB_RUN_ATTEMPT: '2',
-    GITHUB_JOB: 'candidate-01', RUNNER_ENVIRONMENT: 'github-hosted', RUNNER_OS: 'Linux', RUNNER_ARCH: 'X64',
+    GITHUB_JOB: 'candidate-02', RUNNER_ENVIRONMENT: 'github-hosted', RUNNER_OS: 'Linux', RUNNER_ARCH: 'X64',
     ImageOS: 'ubuntu24', ImageVersion: '20261111.1.0',
     FAKE_SOCKET: socket, FAKE_CALLS: join(root, 'calls.jsonl'), FAKE_TOOL_RECEIPTS: join(root, 'tool-receipts.jsonl'),
   };
@@ -247,11 +247,11 @@ function invocations(current, name) {
 test('candidate workflow is a single fixed manual read-only hosted job with pinned actions', () => {
   assert.deepEqual(workflow.on, { workflow_dispatch: null });
   assert.deepEqual(workflow.permissions, { contents: 'read' });
-  assert.deepEqual(Object.keys(workflow.jobs), ['candidate-01']);
+  assert.deepEqual(Object.keys(workflow.jobs), ['candidate-02']);
   assert.equal(job['runs-on'], 'ubuntu-24.04');
   assert.equal(job['timeout-minutes'], 40);
-  assert.equal(job.env.EVENTSTORE_REVISION, '02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213');
-  assert.equal(job.env.CONFIGURATION_SHA256, '472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc');
+  assert.equal(job.env.EVENTSTORE_REVISION, '495dd24943031ec75e2822c6168ada3c8b9fdb82');
+  assert.equal(job.env.CONFIGURATION_SHA256, 'b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b');
   assert.equal(job.env.QUALIFICATION_PROFILE, 'deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json');
   assert.equal(job.steps[0].id, 'bootstrap');
   const checkout = job.steps.find(step => step.id === 'checkout');
@@ -284,7 +284,7 @@ test('intended hosted run binds the real allocation and pairs all four invocatio
     assert.equal(report.observations['eventstore-revision'], job.env.EVENTSTORE_REVISION);
     assert.equal(report.observations['configuration-sha256'], job.env.CONFIGURATION_SHA256);
     const allocation = JSON.parse(readFileSync(current.env.QUALIFICATION_EXCLUSIVE_WORKER));
-    assert.deepEqual(allocation, { exclusive: true, endpoint: `unix://${current.env.FAKE_SOCKET}`, daemonId: 'fixture-daemon', workerId: '1234-candidate-01-2' });
+    assert.deepEqual(allocation, { exclusive: true, endpoint: `unix://${current.env.FAKE_SOCKET}`, daemonId: 'fixture-daemon', workerId: '1234-candidate-02-2' });
     const witness = JSON.parse(readFileSync(join(current.env.EVIDENCE, 'worker.json')));
     assert.equal(witness.platformRevision, current.env.GITHUB_SHA);
     assert.equal(witness.eventStoreRevision, job.env.EVENTSTORE_REVISION);
@@ -367,14 +367,14 @@ for (const [name, options] of guards) {
 for (const change of ['hash', 'configuration symlink', 'reused base', 'dangling destination']) {
   test(`${change} is rejected before any installation or producer`, () => {
     withFixture({}, current => {
-      if (change === 'hash') writeFileSync(join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-01.json'), '{}');
+      if (change === 'hash') writeFileSync(join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-02.json'), '{}');
       if (change === 'configuration symlink') {
-        const path = join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-01.json');
+        const path = join(current.workspace, 'docs/implementation/story-4-17-broker-candidate-02.json');
         rmSync(path);
-        symlinkSync(resolve('docs/implementation/story-4-17-broker-candidate-01.json'), path);
+        symlinkSync(resolve('docs/implementation/story-4-17-broker-candidate-02.json'), path);
       }
-      if (change === 'reused base') mkdirSync(join(current.temporary, 'platform-broker-candidate-01'));
-      if (change === 'dangling destination') symlinkSync(join(current.root, 'absent'), join(current.temporary, 'platform-broker-candidate-01'));
+      if (change === 'reused base') mkdirSync(join(current.temporary, 'platform-broker-candidate-02'));
+      if (change === 'dangling destination') symlinkSync(join(current.root, 'absent'), join(current.temporary, 'platform-broker-candidate-02'));
       const { gate, report } = current.run();
       assert.notEqual(gate.status, 0);
       assert.equal(report.outcomes.sources.outcome, 'failure');
@@ -575,7 +575,7 @@ test('summary and sanitized upload are independent always attempts, with raw tra
   assert.equal(upload.with['retention-days'], 30);
   assert.equal(upload.with['include-hidden-files'], true);
   assert.equal(upload.with['if-no-files-found'], 'error');
-  const evidencePath = "${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}";
+  const evidencePath = "${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}";
   assert.equal(upload.with.path, `${evidencePath}/**\n!${evidencePath}/private-transcripts/**\n`);
   for (const id of ['integrity', 'technical', 'authority']) {
     const step = job.steps.find(item => item.id === id);
