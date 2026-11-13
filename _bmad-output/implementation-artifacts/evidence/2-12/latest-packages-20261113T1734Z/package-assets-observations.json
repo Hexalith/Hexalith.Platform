@@ -1,0 +1,86 @@
+{
+  "src/Hexalith.Platform.Composition": {
+    "assetSha256": "c3b015f4ba04a817769f07634081c58eee0392dfbe6e6d298d2b16ebec4041e3",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithPackages": [
+      "Hexalith.Commons.UniqueIds/3.0.0",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/4.0.0",
+      "Hexalith.Parties.Contracts/3.1.1",
+      "Hexalith.Tenants.Contracts/7.0.7"
+    ],
+    "testOrConsumerAssemblySha256": "79f131e178a27139aca9841061e5856930e67eaf96ede1ae2bca7f365fc77141"
+  },
+  "tests/Hexalith.Platform.Composition.Tests": {
+    "assetSha256": "8ded29d7205332c50d2a6753691a9b66949ebe13397e4e3871e1c26d1cde13e3",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithPackages": [
+      "Hexalith.Commons.UniqueIds/3.0.0",
+      "Hexalith.EventStore.Admin.Abstractions/5.0.1",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.Gateway/5.0.1",
+      "Hexalith.EventStore.Server/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/4.0.0",
+      "Hexalith.Memories.EventStore/4.0.0",
+      "Hexalith.Memories.EventStoreExtensions/4.0.0",
+      "Hexalith.Parties.Contracts/3.1.1",
+      "Hexalith.Parties.EventStoreExtensions/3.1.1",
+      "Hexalith.Tenants.Contracts/7.0.7",
+      "Hexalith.Tenants.Server/7.0.7"
+    ],
+    "testOrConsumerAssemblySha256": "50e78207eaeaefea058558876921ccce8d63889158f04c5ede434d040b0b9c8a"
+  },
+  "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests": {
+    "assetSha256": "f97d1335fd8241782c3cc0e207e714e54cd5670bb9a230e93cbf3e69d22f3a29",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithPackages": [
+      "Hexalith.Commons.UniqueIds/3.0.0",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Aspire/4.0.0",
+      "Hexalith.Memories.Contracts/4.0.0",
+      "Hexalith.Tenants.Aspire/7.0.7",
+      "Hexalith.Tenants.Client/7.0.7",
+      "Hexalith.Tenants.Contracts/7.0.7"
+    ],
+    "testOrConsumerAssemblySha256": "2a0daeef98155928618359de39133afe471710529d6b1c97e0ab2c7914d53658"
+  },
+  "references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests": {
+    "assetSha256": "6827e0e950095cff5f9d5048c7e121ddbe349236af3255e35ec703606c642ccc",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithPackages": [
+      "Hexalith.Commons.UniqueIds/3.0.0",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.FrontComposer.Contracts.UI/5.0.0",
+      "Hexalith.FrontComposer.Contracts/5.0.0",
+      "Hexalith.FrontComposer.Shell/5.0.0",
+      "Hexalith.FrontComposer.Testing/5.0.0",
+      "Hexalith.McpCli.Abstractions/2.0.1"
+    ],
+    "testOrConsumerAssemblySha256": "1e68bc18cae8f6d0d57aefd82530c6871b1d2eb161db20f65479ac70e62321ce"
+  }
+}

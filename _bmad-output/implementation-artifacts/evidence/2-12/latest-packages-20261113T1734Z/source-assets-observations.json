@@ -1,0 +1,105 @@
+{
+  "src/Hexalith.Platform.Composition": {
+    "assetSha256": "2a15f0bd03661e24748b98790a94446206e42718c43fde75e1f4c211b4c1de27",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithProjects": [
+      "Hexalith.Builds.Tooling/1.0.0-20261113174717",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Platform.Custody.Component/1.0.0",
+      "Hexalith.Platform.Custody/1.0.0",
+      "Hexalith.Platform.Secrets.Runtime/1.0.0",
+      "Hexalith.Platform.Works.Runtime/1.0.0",
+      "Hexalith.Tenants.Contracts/7.0.6"
+    ],
+    "hexalithPackages": [],
+    "testOrConsumerAssemblySha256": "e09c76a1aadca16194ff9e86e12f4f6efec08456b420fdd80993174b29c7b09f"
+  },
+  "tests/Hexalith.Platform.Composition.Tests": {
+    "assetSha256": "b204b8fa2983a3990803db2dcc08e8731728813a02574b9937a543d701c5480c",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithProjects": [
+      "Hexalith.Builds.Module.EventStoreHost/1.0.0",
+      "Hexalith.Builds.Tooling/1.0.0-20261113174717",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Admin.Abstractions/5.0.1",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.Gateway/5.0.1",
+      "Hexalith.EventStore.Server/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Memories.DomainService/1.0.0",
+      "Hexalith.Memories.EventStore/1.0.0",
+      "Hexalith.Memories.EventStoreExtensions/1.0.0",
+      "Hexalith.Parties.Authentication/1.0.0",
+      "Hexalith.Parties.Contracts/1.0.0",
+      "Hexalith.Parties.EventStoreExtensions/1.0.0",
+      "Hexalith.Parties.Projections/1.0.0",
+      "Hexalith.Parties.Security/1.0.0",
+      "Hexalith.Parties/1.0.0",
+      "Hexalith.Platform.Composition/1.0.0",
+      "Hexalith.Platform.Custody.Component/1.0.0",
+      "Hexalith.Platform.Custody/1.0.0",
+      "Hexalith.Platform.EventStoreHost/1.0.0",
+      "Hexalith.Platform.Identity/1.0.0",
+      "Hexalith.Platform.Protection/1.0.0",
+      "Hexalith.Platform.Secrets.Runtime/1.0.0",
+      "Hexalith.Platform.TestExtension/1.0.0",
+      "Hexalith.Platform.Works.Runtime/1.0.0",
+      "Hexalith.Tenants.Contracts/7.0.6",
+      "Hexalith.Tenants.Server/7.0.6",
+      "Hexalith.Tenants/7.0.6"
+    ],
+    "hexalithPackages": [
+      "Hexalith.Commons.Http/3.0.0",
+      "Hexalith.Commons/3.0.0",
+      "Hexalith.Memories.Client.Rest/4.0.0",
+      "Hexalith.Tenants.Client/7.0.7"
+    ],
+    "testOrConsumerAssemblySha256": "674382323135b3844333d5cd8ae580e22442f19ce19be9a16c7c407003b48f9a"
+  },
+  "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests": {
+    "assetSha256": "daeda7d6918049a1dd304b6c4c6bf946beb025b177b02d632a6cf8a6618d3c2e",
+    "frameworks": [
+      "net11.0"
+    ],
+    "hexalithProjects": [
+      "Hexalith.Builds.Tooling/1.0.0-20261113174942",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Aspire/5.0.1",
+      "Hexalith.EventStore.Client/5.0.1",
+      "Hexalith.EventStore.Contracts/5.0.1",
+      "Hexalith.EventStore.DomainService/5.0.1",
+      "Hexalith.EventStore.ServiceDefaults/5.0.1",
+      "Hexalith.Folders.AppHost/1.0.0",
+      "Hexalith.Folders.Aspire/1.0.0",
+      "Hexalith.Folders.Client/1.0.0",
+      "Hexalith.Folders.Contracts/1.0.0",
+      "Hexalith.Folders.ServiceDefaults/1.0.0",
+      "Hexalith.Folders.Workers/1.0.0",
+      "Hexalith.Folders/1.0.0",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Aspire/1.0.0",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Tenants.Aspire/7.0.6",
+      "Hexalith.Tenants.Client/7.0.6",
+      "Hexalith.Tenants.Contracts/7.0.6"
+    ],
+    "hexalithPackages": [],
+    "testOrConsumerAssemblySha256": "ea3d1fbdbbf395dfaca6a5c564b4831bcbb1e5d374b3155849342121314ebd98"
+  }
+}

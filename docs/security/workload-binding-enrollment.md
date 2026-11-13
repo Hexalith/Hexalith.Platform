@@ -173,6 +173,16 @@ supply Docker socket group access. Root or an existing non-1000 Docker caller
 can run that control directly. This requirement belongs only to component
 validation; ordinary launcher use requires no UID switch or sudo authorization.
 
+Current published-package validation uses .NET 11 and
+`-p:UseHexalithProjectReferences=false` with the owning central catalog. Its
+current EventStore `5.0.1` and Memories `4.0.0` selections are independent of
+retained historical qualification inputs. Build the same test projects in Debug
+with that property, then run their affected classes and the explicit component
+commands below against the newly built `net11.0` assemblies. Package-mode
+results do not close source-mode build/runtime gates, qualify a new SDK cohort,
+or replace strict Folders acceptance. Folders targets .NET 11 for both current
+source and package graphs.
+
 Launch a built test assembly directly so the test process retains the launcher's
 recorded child identity. Supply the existing Folders integration opt-in as usual:
 
