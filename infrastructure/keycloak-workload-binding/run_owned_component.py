@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import ssl
 import subprocess
@@ -283,6 +284,29 @@ def validate_assembly_result(output, result_path, method, cancellation=False):
         raise RuntimeError("Explicit run-owned component controls lack executed-test, adoption or lifecycle proof.") from None
 
 
+def report_cleanup_incomplete(output):
+    # Preserve only the launcher's sanitized leftover record, never captured test output.
+    for line in output.splitlines():
+        try:
+            record = json.loads(line)
+        except (ValueError, TypeError):
+            continue
+        if not isinstance(record, dict) or record.get("qualification") != "run-owned enrollment":
+            continue
+        failures = record.get("cleanupIncomplete")
+        if not isinstance(failures, list) or not failures or any(code not in
+            ("owned-container-cleanup-incomplete", "owned-private-material-cleanup-incomplete") for code in failures):
+            continue
+        container, directory = record.get("remainingContainer"), record.get("remainingPrivateDirectory")
+        if container is not None and (not isinstance(container, str) or not re.fullmatch(r"(?:[0-9a-f]{64}|hexalith-run-owned-workload-[0-9a-f]{32})", container)):
+            continue
+        if directory is not None and (not isinstance(directory, str) or not Path(directory).is_absolute()
+            or "\n" in directory or not re.fullmatch(r"hexalith-run-owned-workload-[A-Za-z0-9_-]+", Path(directory).name)):
+            continue
+        print(json.dumps(dict(qualification="run-owned enrollment", cleanupIncomplete=failures,
+            remainingContainer=container, remainingPrivateDirectory=directory)), flush=True)
+
+
 def run_assembly(assembly, method, cancellation=False):
     environment = dict(os.environ, HEXALITH_RUN_OWNED_WORKLOAD_COMPONENT="true")
     if cancellation:
@@ -296,6 +320,7 @@ def run_assembly(assembly, method, cancellation=False):
             [str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "180", "--"]
         result = subprocess.run([sys.executable, "-B", *launcher, *arguments], env=environment, capture_output=True, text=True)
         if result.returncode:
+            report_cleanup_incomplete(result.stdout)
             raise RuntimeError("Explicit run-owned component controls failed; protected output withheld.")
         validate_assembly_result(result.stdout, result_path, method, cancellation)
         print(result.stdout, end="", flush=True)

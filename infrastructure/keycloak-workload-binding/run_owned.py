@@ -249,6 +249,9 @@ class Lease:
             try:
                 shutil.rmtree(self.directory)
             except OSError:
+                print(json.dumps(dict(qualification="run-owned enrollment",
+                    cleanupIncomplete=["owned-private-material-cleanup-incomplete"], remainingContainer=None,
+                    remainingPrivateDirectory=str(self.directory))), flush=True)
                 refuse("owned-private-material-cleanup-incomplete")
             raise
 
@@ -264,6 +267,7 @@ class Lease:
 
     def prepare(self):
         directory = self.directory
+        self.pin_docker_context()
         self.run("openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1", "-subj", "/CN=Run-owned workload CA",
             "-addext", "basicConstraints=critical,CA:TRUE", "-addext", "keyUsage=critical,keyCertSign,cRLSign", "-keyout", str(directory / "ca.key"), "-out", str(directory / "ca.pem"))
         self.run("openssl", "req", "-newkey", "rsa:2048", "-nodes", "-subj", "/CN=localhost", "-keyout", str(directory / "tls.key"), "-out", str(directory / "tls.csr"))
@@ -281,9 +285,22 @@ class Lease:
         except OSError:
             refuse("system-or-inherited-launch-trust-required")
         private_write(directory / "trust.pem", inherited_trust + b"\n" + (directory / "ca.pem").read_bytes())
-        for path in directory.iterdir():
-            path.chmod(0o600)
+        for path in directory.rglob("*"):
+            path.chmod(0o700 if path.is_dir() else 0o600)
         self.check()
+
+    def pin_docker_context(self):
+        context = self.command_environment.get("DOCKER_CONTEXT")
+        if not context or context == "default":
+            return
+        # Context names are mutable. Import the selected endpoint and TLS material into private config.
+        archive = self.directory / "docker-context.tar"
+        self.run("docker", "context", "export", context, str(archive))
+        archive.chmod(0o600)
+        configuration = self.directory / "docker-config"
+        configuration.mkdir(mode=0o700)
+        self.command_environment["DOCKER_CONFIG"] = str(configuration)
+        self.run("docker", "context", "import", context, str(archive))
 
     def bind(self, child_pid, capability):
         self.receipt = dict(schema="hexalith.run-owned-workload/v1", owner=OWNER, runId=self.run_id, capability=capability,
@@ -536,6 +553,10 @@ def stop_child(child, existing_children):
 def launch(lifetime, owner, arguments):
     if not arguments:
         refuse("child-command-required")
+    # The CLI is a dedicated supervisor. Embedding it beside an unrelated live tree is unsafe:
+    # later descendants can be adopted after their original ancestry is no longer observable.
+    if existing_process_tree():
+        refuse("dedicated-launcher-process-required")
     lease = None
     summary = dict(qualification="run-owned enrollment", provisioned=False)
     previous = {}
@@ -554,11 +575,12 @@ def launch(lifetime, owner, arguments):
         for number in terminal_signals:
             previous[number] = signal.signal(number, terminal)
         lease = Lease(lifetime, owner)
+        child_environment = dict(lease.command_environment)
         signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
         lease.prepare()
         enable_subreaper()
         capability = secrets.token_hex(32)
-        environment = dict(lease.command_environment, **{PREFIX + "RECEIPT": str(lease.directory / "receipt.json"), PREFIX + "CAPABILITY": capability,
+        environment = dict(child_environment, **{PREFIX + "RECEIPT": str(lease.directory / "receipt.json"), PREFIX + "CAPABILITY": capability,
             "SSL_CERT_FILE": str(lease.directory / "trust.pem")})
         lease.check()
         existing_children = existing_process_tree()

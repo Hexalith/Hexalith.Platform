@@ -2021,3 +2021,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: D4: Verify the possible late Docker creation race after a client timeout (medium, unverified).
   evidence: E1: one absent cleanup snapshot is insufficient if daemon creation can complete later; settle with a delayed-daemon reproduction that observes creation after the first cleanup snapshot and inspect retained ownership/cleanup behavior.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Align the current Platform source build with the authoritative Builds SDK catalog before fresh enrollment validation.
+  evidence: The resumed Composition and Composition.Tests Debug/source builds fail in Builds Tooling catalog generation; the direct write-platform-version-catalog command reports inherited EventStore 4.2.0 versus authoritative 5.0.0. Exact commands and retained diagnostics are in evidence/2-12/review-resume-20261113/verification.json and outputs.json. Existing test assembly execution does not close this fresh-build gate; no dependency or release selections changed in this continuation.

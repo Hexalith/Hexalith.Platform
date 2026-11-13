@@ -1,0 +1,40 @@
+{
+  "qualification": "run-owned enrollment",
+  "status": "component controls verified; full Folders runtime gate blocked",
+  "rows": [
+    {
+      "state": "Final cohort and tenant",
+      "evidence": [
+        "python-final-complete.log: 32 tests",
+        "python-live-final.log: 19 RSA probes, 8 resources/6 workloads",
+        "consumer-live-final.log: executed unchanged consumer/fresh host"
+      ],
+      "limitation": "The latter uses the existing source-built test assembly."
+    },
+    {
+      "state": "Missing launch trust",
+      "evidence": [
+        "consumer-live-final.log: named negative controls",
+        "pem-fixture.log: actual provider fixture preserves inherited root without a final newline"
+      ]
+    },
+    {
+      "state": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "evidence": [
+        "python-final-complete.log: final exact inventory/ownership refusals",
+        "named-context-final.log: real Docker context retargeting and child environment preservation",
+        "consumer-live-final.log: existing explicit bridge/consumer checks"
+      ]
+    },
+    {
+      "state": "Exit, cancellation, expiry, partial startup",
+      "evidence": [
+        "python-final-complete.log: real lifecycle controls and new diagnostic controls",
+        "python-live-final.log: five real terminal cases, unrelated live control preserved",
+        "consumer-live-final.log: cancellation after request publication",
+        "verification.json: independent final zero-leftover observation"
+      ]
+    }
+  ],
+  "openGate": "Fresh Platform/Folders builds and affected Folders runtime/strict suites remain blocked; no story completion is claimed."
+}

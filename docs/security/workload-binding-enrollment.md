@@ -186,7 +186,9 @@ python3 -B infrastructure/keycloak-workload-binding/run_owned.py \
 Choose the fixed finite lifetime before launch (1–86,400 seconds). It is an upper
 bound, never extended by adoption or retries. The fixture's existing four-minute
 startup deadline and all strict acceptance budgets remain unchanged. Use one
-launcher for one final cohort; a second adoption refuses. Do not combine generated
+launcher for one final cohort; a second adoption refuses. Run the dedicated CLI
+process; embedding `launch()` in a process with pre-existing children refuses
+before allocation with `dedicated-launcher-process-required`. Do not combine generated
 context with external `ManifestPath` or `ManifestSha256` configuration.
 
 Before starting the child, the launcher creates a private 0700 run directory,
@@ -214,6 +216,9 @@ origin from that binding. Keycloak's [hostname-only setting](https://www.keycloa
 fixes `localhost` while resolving scheme and port from the HTTPS request.
 The launcher pins the exact server version and existing provider digest, and
 keeps the original Docker context or endpoint selection for the entire lease.
+Named contexts are copied, including their TLS material, into private run-owned
+Docker configuration so retargeting the original name cannot redirect authority
+cleanup. This private configuration is not passed to the test child.
 It discovers the RSA signer through normally validated HTTPS metadata/JWKS. It creates no workload administrative identity and makes no
 administrative API calls. The unchanged consumer manifest schema contains only
 owner-only secret references, and its validity, grants and signer approval are
@@ -236,7 +241,8 @@ signals do not interrupt it. The bridge allows up to 30 seconds for cleanup
 acknowledgement after expiry without extending enrollment validity.
 The launcher reports cleanup failures as
 `owned-container-cleanup-incomplete` or `owned-private-material-cleanup-incomplete`
-and exits unsuccessfully. A failed cleanup must be resolved before claiming a
+and exits unsuccessfully. The component harness preserves these sanitized
+leftover records even when a captured test fails. A failed cleanup must be resolved before claiming a
 clean run. Evidence output is labeled `run-owned enrollment` and contains only
 counts, version/digests, control names and observed leftovers; retain no private
 run directory, credentials, tokens, grants, certificates or keys.

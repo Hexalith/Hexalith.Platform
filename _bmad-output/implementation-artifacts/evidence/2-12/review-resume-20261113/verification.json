@@ -1,0 +1,179 @@
+{
+  "schema": "hexalith.run-owned-enrollment-review-verification/v3",
+  "qualification": "run-owned enrollment",
+  "recordedAt": "2026-11-13T14:03:43.966654+00:00",
+  "status": "review corrections verified; full build/runtime gate remains blocked",
+  "initialHeads": {
+    "platform": "79b3ec6a0e377b896fd0ad70347177502659d5ba",
+    "folders": "c4510025e2b4812c770d7f85de8ec465d9981649"
+  },
+  "platformHead": "79b3ec6a0e377b896fd0ad70347177502659d5ba",
+  "foldersHead": "c4510025e2b4812c770d7f85de8ec465d9981649",
+  "preservedStoryBaseline": "375231e1552c98a4238482c67b6e69d92ea43d1a",
+  "checks": [
+    {
+      "name": "provider",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "mvn -B -ntp package",
+      "exitCode": 0,
+      "passed": 23,
+      "log": "provider.log",
+      "outputSha256": "4898585568d46096cfeb0226163b88ca7b1d85a53f0cc6b8ff497d871b9528be"
+    },
+    {
+      "name": "python-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned",
+      "exitCode": 0,
+      "passed": 32,
+      "log": "python-final-complete.log",
+      "outputSha256": "662cc97ecba266a8247f5b14685455306231d7e3470d161ff970acfa9691212b"
+    },
+    {
+      "name": "named-context-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned.RunOwnedTests.test_named_context_retargeting_does_not_change_private_endpoint",
+      "exitCode": 0,
+      "log": "named-context-final.log",
+      "outputSha256": "cd57edebfba13dd6880503972dba3205ba2ed3365bf78b8dcda37de7d7d83c9d"
+    },
+    {
+      "name": "python-live-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned",
+      "exitCode": 0,
+      "rsaProbes": 19,
+      "realContainerTerminalCases": 5,
+      "log": "python-live-final.log",
+      "outputSha256": "dd02a4e150ada5b122c0ff2bb7b0b2a66a0f00c0d5ac07aabc46ebc345cc0924"
+    },
+    {
+      "name": "consumer-live-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned --platform-assembly /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+      "exitCode": 0,
+      "explicitPassed": 2,
+      "log": "consumer-live-final.log",
+      "limitation": "Uses the existing source-built assembly; the fresh source build fails independently.",
+      "outputSha256": "5f1e4e26ba487135f18c8256f8205857e0247a45cf3767e35777dcfc2ddc8e4b"
+    },
+    {
+      "name": "default-csharp",
+      "cwd": ".",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests -xml /tmp/story-2-12-resume-fe5ptxia/csharp.xml",
+      "exitCode": 0,
+      "passed": 25,
+      "explicitNotRun": 1,
+      "log": "csharp.log",
+      "limitation": "Existing source-built assembly; new fresh-build gate fails.",
+      "outputSha256": "4a05a2b878f07f748cd342ba82a29b1a0e7b2f51af3cf1d0554c071d7478d5a4"
+    },
+    {
+      "name": "actual-provider-pem-fixture",
+      "cwd": ".",
+      "command": "dotnet run --project /tmp/story-2-12-resume-fe5ptxia/pem-fixture/PemFixture.csproj -c Debug",
+      "exitCode": 0,
+      "log": "pem-fixture.log",
+      "limitation": "Runs linked actual fixture source until an intercepted Docker boundary. It verifies two preserved PEM roots, not full Folders runtime or provider startup.",
+      "outputSha256": "6dd602614fc8bfb6cbaa937c374c0a5b591eb05cc00931a77052da0d239e83b4"
+    },
+    {
+      "name": "folders-source-build",
+      "cwd": ".",
+      "command": "bash /tmp/story-2-12-build-folders.sh",
+      "commandArtifact": "build-folders.sh",
+      "exitCode": 1,
+      "log": "folders-build-final.log",
+      "failure": "Unchanged FrontComposer SchemaFingerprintContracts.cs:71 CA2263.",
+      "outputSha256": "846d115f55c6addddd352b842a45da1b638af56d688a45e3b87b07ad479bcbf9"
+    },
+    {
+      "name": "composition-source-build",
+      "cwd": ".",
+      "command": "dotnet build src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -m:1 -v:q",
+      "exitCode": 1,
+      "log": "composition-build.log",
+      "failure": "Builds Tooling catalog generation fails: inherited EventStore 4.2.0 conflicts with authoritative 5.0.0.",
+      "outputSha256": "57ec157389ae3ea865d296954c7ed65d07b4b0e39f541e68eb9f5b184ca9139e"
+    },
+    {
+      "name": "tests-source-build-final",
+      "cwd": ".",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -m:1 -v:q",
+      "exitCode": 1,
+      "log": "tests-build-final.log",
+      "failure": "Builds Tooling catalog generation refuses an inconsistent SDK selection.",
+      "outputSha256": "68a1f651af09b2e69d3856e15fae3eedd14a685cd7a405bcdc45f3cd5e5a5b17"
+    },
+    {
+      "name": "catalog-diagnostic",
+      "cwd": ".",
+      "command": "pwsh -NoLogo -NoProfile -File references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1 -CatalogPath references/Hexalith.Builds/Props/Directory.Packages.props -OutputPath /tmp/story-2-12-resume-fe5ptxia/platform-version-catalog-final.json -BuildSelectionsPath references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/obj/Debug/net11.0/platform-version-catalog.build.txt -Configuration Debug -TargetFramework net11.0",
+      "exitCode": 1,
+      "log": "catalog-diagnostic.log",
+      "outputSha256": "47ca6ddba8898a1b96e8d0c260f3bb89f5b68fa0fbdacd1456783116d7fd3888"
+    },
+    {
+      "name": "folders-supplementary-typecheck",
+      "cwd": "references/Hexalith.Folders",
+      "command": "dotnet build /tmp/story-2-12-folders-typecheck/Typecheck.csproj --no-restore -p:RunAnalyzers=false -v:q",
+      "exitCode": 0,
+      "log": "folders-typecheck-final.log",
+      "limitation": "Compile-only check of the two affected enrollment classes using existing reference assemblies; it does not close the full build/runtime gate.",
+      "projectSha256": "11d92cbcdc08417693d73c8b6ce85134d7f184b1b482934ece75a44204212418",
+      "outputSha256": "9f5eb33c18a4f224ef3e1fdb6b707692d214eda2bec898c19ebc9240a7e6fdc2"
+    },
+    {
+      "name": "platform-whitespace",
+      "cwd": ".",
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "name": "folders-whitespace",
+      "cwd": "references/Hexalith.Folders",
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "85f66b1f5858acbf9e61e7fc875125358818031a62619794692bb960997081f0",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "ddd7fc389ddfea3f730633c417579006628495f37b8c410db81cae476a40708d",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "8e00f063da421bb98b6c23b2ffe0526d34083212f2e6f19af612e94a1e15b333",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "c8889d1a71f5ae4cdd4d333d94509af32ec9073b7a727881228552d4a0daf9b3",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "19958adaf2c2fdf050fb25ed2f2bbb4810b92a8844cbf5b2a67533417df9a676",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "bddd7b175fca09e5b362f442609d93dbcd2e2d09718475ea747a3d1a56bb891b",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "f95103fe0eea42e9685c12b7e4412fef99f0dc810583767db5b46322b75fc5f8",
+    "docs/security/workload-binding-enrollment.md": "ad08b997c7da3bf16f100472f65ebbfc6a48fa7cb071871038b9a6896cfac687"
+  },
+  "providerSha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+  "existingTestAssemblySha256": "4bba735ce75917a3a93f947f53f00a67463028413aff799ec056ed3324e98353",
+  "review": {
+    "layers": 3,
+    "reports": 12,
+    "patchGroups": [
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "carriedDeferrals": 5,
+    "rejected": 2
+  },
+  "cleanup": {
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0,
+    "remainingContainers": [],
+    "remainingDirectories": []
+  },
+  "workspaceChanges": "Concurrent external commits advanced Platform HEAD and removed the initially staged Folders replica correction. External CI/source changes were preserved; the exact story repair was restored without staging.",
+  "delivery": "No staging, commit, push, remote operation or submodule pointer advance by this workflow continuation.",
+  "limitations": [
+    "Fresh Folders source build fails at unchanged FrontComposer CA2263; affected Folders runtime suites and strict acceptance remain unexecuted.",
+    "Fresh Platform builds fail in Builds catalog validation, inherited SDK 4.2.0 versus authoritative 5.0.0. Existing assembly execution is supplementary.",
+    "Delayed-daemon creation claim remains medium/unverified in the prior deferred ledger.",
+    "No Platform lifecycle qualification or Folders 12.2 completion."
+  ]
+}

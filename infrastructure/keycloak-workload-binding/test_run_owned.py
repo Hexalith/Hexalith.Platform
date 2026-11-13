@@ -9,6 +9,8 @@ import sys
 import tempfile
 import time
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -18,6 +20,69 @@ from run_owned_component import inventory, lifecycle_controls, nonstandard_calle
 
 
 class RunOwnedTests(unittest.TestCase):
+    def test_named_context_retargeting_does_not_change_private_endpoint(self):
+        with tempfile.TemporaryDirectory() as name:
+            environment = dict(os.environ, DOCKER_CONFIG=name, DOCKER_CONTEXT="run-owned-context-control")
+            environment.pop("DOCKER_HOST", None)
+            owned.command("docker", "context", "create", "run-owned-context-control", "--docker", "host=unix:///original.sock", environment=environment)
+            with patch.dict(os.environ, environment, clear=True):
+                lease = owned.Lease(60)
+                try:
+                    lease.pin_docker_context()
+                    owned.command("docker", "context", "update", "run-owned-context-control", "--docker", "host=unix:///replacement.sock", environment=environment)
+                    arguments = ("docker", "context", "inspect", "run-owned-context-control", "--format", "{{.Endpoints.docker.Host}}")
+                    self.assertEqual("unix:///replacement.sock", owned.command(*arguments, environment=environment))
+                    self.assertEqual("unix:///original.sock", lease.run(*arguments))
+                    self.assertEqual(0o600, (lease.directory / "docker-context.tar").stat().st_mode & 0o777)
+                finally:
+                    lease.cleanup()
+                self.assertFalse(lease.directory.exists())
+                child = "import os; assert os.environ['DOCKER_CONFIG']==" + repr(name)
+                completed = subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER,
+                    "--lifetime-seconds", "30", "--", sys.executable, "-c", child], env=environment, capture_output=True, text=True, timeout=15)
+                self.assertEqual(0, completed.returncode, completed.stderr)
+
+    def test_constructor_cleanup_failure_reports_the_owned_directory(self):
+        output = StringIO()
+        def fail_publication(path, data):
+            raise OSError("publication-failed")
+        with redirect_stdout(output), patch.object(owned, "private_write", side_effect=fail_publication), \
+            patch.object(owned.shutil, "rmtree", side_effect=OSError("removal-failed")):
+            with self.assertRaisesRegex(RuntimeError, "owned-private-material-cleanup-incomplete"):
+                owned.Lease(60)
+        record = json.loads(output.getvalue())
+        directory = Path(record["remainingPrivateDirectory"])
+        try:
+            self.assertTrue(directory.is_dir())
+            self.assertEqual(["owned-private-material-cleanup-incomplete"], record["cleanupIncomplete"])
+            self.assertIsNone(record["remainingContainer"])
+        finally:
+            owned.shutil.rmtree(directory)
+
+    def test_failed_assembly_preserves_only_sanitized_cleanup_metadata(self):
+        metadata = dict(qualification="run-owned enrollment", cleanupIncomplete=["owned-container-cleanup-incomplete"],
+            remainingContainer="a" * 64, remainingPrivateDirectory="/tmp/hexalith-run-owned-workload-owned")
+        captured = "secret-token-must-not-appear\n" + json.dumps(dict(metadata, client_secret="secret-token-must-not-appear"))
+        output = StringIO()
+        with redirect_stdout(output), patch.object(component.subprocess, "run", return_value=SimpleNamespace(returncode=1, stdout=captured, stderr="private-stderr")):
+            with self.assertRaisesRegex(RuntimeError, "protected output withheld"):
+                component.run_assembly("failed.dll", "Tests.Method")
+        self.assertEqual(metadata, json.loads(output.getvalue()))
+        self.assertNotIn("secret-token", output.getvalue())
+        self.assertNotIn("private-stderr", output.getvalue())
+
+    def test_embedding_beside_unrelated_children_refuses_before_allocation(self):
+        control = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"])
+        try:
+            with patch.object(owned, "Lease") as lease:
+                with self.assertRaisesRegex(RuntimeError, "dedicated-launcher-process-required"):
+                    owned.launch(60, owned.OWNER, [sys.executable, "-c", "pass"])
+                lease.assert_not_called()
+            self.assertIsNone(control.poll())
+        finally:
+            control.terminate()
+            control.wait(timeout=5)
+
     def test_lease_pins_original_docker_selection_across_default_context_switch(self):
         for selection in ({}, {"DOCKER_CONTEXT": "explicit"}, {"DOCKER_HOST": "unix:///original.sock"}):
             with self.subTest(selection=selection), patch.dict(os.environ, selection, clear=True):
@@ -69,7 +134,7 @@ class RunOwnedTests(unittest.TestCase):
             child = "import pathlib,time; pathlib.Path(" + repr(str(parent_exit)) + ").touch()\nwhile True:\n try: state=pathlib.Path('/proc/PARENT/stat').read_text().split(') ',1)[1].split()[0]\n except FileNotFoundError: break\n if state=='Z': break\n time.sleep(.01)"
             wrapper = "import os,pathlib,signal,subprocess,sys,time; import run_owned as o; o.enable_subreaper(); parent=subprocess.Popen([sys.executable,'-c'," + repr(parent) + "])\n" \
                 + "while not pathlib.Path(" + repr(str(observation)) + ").exists(): time.sleep(.01)\n" \
-                + "pid=int(pathlib.Path(" + repr(str(observation)) + ").read_text())\ntry:\n result=o.launch(30,o.OWNER,[sys.executable,'-c'," + repr(child) + ".replace('PARENT',str(parent.pid))]); assert result==0; parent.wait(timeout=1); os.kill(pid,0)\nfinally:\n os.kill(pid,signal.SIGTERM); os.waitpid(pid,0); parent.wait()"
+                + "pid=int(pathlib.Path(" + repr(str(observation)) + ").read_text())\ntry:\n result=subprocess.run([sys.executable,'-B',str(o.ROOT/'run_owned.py'),'--owner',o.OWNER,'--lifetime-seconds','30','--',sys.executable,'-c'," + repr(child) + ".replace('PARENT',str(parent.pid))]).returncode; assert result==0; parent.wait(timeout=1); os.kill(pid,0)\nfinally:\n os.kill(pid,signal.SIGTERM); os.waitpid(pid,0); parent.wait()"
             completed = subprocess.run([sys.executable, "-B", "-c", wrapper], capture_output=True, text=True, timeout=15)
             self.assertEqual(0, completed.returncode, completed.stderr)
 
@@ -348,7 +413,7 @@ class RunOwnedTests(unittest.TestCase):
             observation = Path(name) / "descendant.json"
             child = "import json,os,pathlib,subprocess,sys; p=subprocess.Popen([sys.executable,'-c','import signal,time; signal.signal(signal.SIGTERM,signal.SIG_IGN); time.sleep(60)'],start_new_session=True); pathlib.Path(" + repr(str(observation)) + ").write_text(json.dumps({'descendant':p.pid,'group':os.getpgrp()}))"
             wrapper = "import run_owned as o,subprocess,sys; control=subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)']); " \
-                + "\ntry:\n result=o.launch(30,o.OWNER,[sys.executable,'-c'," + repr(child) + "]); assert result==0; assert control.poll() is None" \
+                + "\ntry:\n result=subprocess.run([sys.executable,'-B',str(o.ROOT/'run_owned.py'),'--owner',o.OWNER,'--lifetime-seconds','30','--',sys.executable,'-c'," + repr(child) + "]).returncode; assert result==0; assert control.poll() is None" \
                 + "\nfinally:\n control.terminate(); control.wait()"
             completed = subprocess.run([sys.executable, "-B", "-c", wrapper], capture_output=True, text=True, timeout=20)
             self.assertEqual(0, completed.returncode, completed.stderr)
