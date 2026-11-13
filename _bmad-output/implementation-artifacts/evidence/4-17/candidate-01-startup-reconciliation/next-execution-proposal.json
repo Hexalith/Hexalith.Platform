@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "status": "proposal-only-not-accepted-not-dispatched",
+  "scope": "one further non-promoting candidate-01 startup/capture diagnostic execution",
+  "candidateExecutionOrdinal": 3,
+  "githubRunAttempt": 1,
+  "automaticRetryPermitted": false,
+  "executionAcceptance": null,
+  "attemptsProposed": 1,
+  "remoteMutationsPerformed": 0,
+  "priorConsumedScopes": [
+    {
+      "runId": 43097161643,
+      "runAttempt": 1,
+      "result": "startup_failure; 0 jobs/artifacts and 0/24 vectors"
+    },
+    {
+      "runId": 43333995506,
+      "runAttempt": 1,
+      "result": "allocated; 24 producer vectors; all pinned verifier modes refused; no credit"
+    }
+  ],
+  "source": {
+    "repository": "Hexalith/Hexalith.Platform",
+    "platformRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "workflowPath": ".github/workflows/broker-candidate-qualification.yml",
+    "workflowId": 415133929,
+    "workflowBlob": "9130ed4243e3961326e984e8fd22e49b70695aa4",
+    "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "configurationPath": "docs/implementation/story-4-17-broker-candidate-01.json",
+    "configurationSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+    "configurationDeclaredUnauthenticatedPlatformRevision": "6d422033b959c249c149a4cb3785704e9eebe03c",
+    "profilePath": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+    "profileSha256": "1c1da59176f78b9b60a87ba85b6076b8d215ff912840ecb52bdb7432497c587f",
+    "profileLockedInputs": 91,
+    "brokers": [
+      "rabbitmq",
+      "kafka"
+    ],
+    "scenariosPerBroker": 12,
+    "expectedVectors": 24,
+    "newSourceCommitsPermitted": false,
+    "inputOrLockRefreshPermitted": false
+  },
+  "dispatch": {
+    "event": "workflow_dispatch",
+    "inputs": {},
+    "ref": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+    "refUse": "reuse existing immutable source tag; its attempt-2 name denotes the historical source reference, not permission or a rerun",
+    "refCreationRequired": false,
+    "argv": [
+      "gh",
+      "workflow",
+      "run",
+      "broker-candidate-qualification.yml",
+      "--repo",
+      "Hexalith/Hexalith.Platform",
+      "--ref",
+      "qualification/broker-candidate-01/attempt-2-94001fad"
+    ],
+    "executionState": "NOT_DISPATCHED; argv is proposal text only",
+    "runBindingProcedure": [
+      "Before the accepted dispatch, retain a timestamped complete paginated inventory of workflow 415133929 run IDs and verify it is idle; record the accepted source/ref and dispatch start/end UTC.",
+      "After exactly one dispatch command, use GET polling of the workflow inventory. Identify the unique new run absent from the prior inventory with workflow_id 415133929, event workflow_dispatch, head_sha 94001fad925fdf7fa03a90b507b8f8e19074f9e3, head_branch qualification/broker-candidate-01/attempt-2-94001fad, run_attempt 1 and creation within the recorded dispatch observation interval.",
+      "Record the exact run ID and API URL before job monitoring, worker binding or artifact retrieval. Capture post-dispatch inventory time and retain responses, not just the matched ID.",
+      "If zero runs appear, keep bounded GET discovery observations and stop without retry when the separately accepted discovery bound expires (30 minutes). If more than one run matches or provenance is inconsistent, retain all candidates and stop for owner resolution; never guess a run ID or dispatch again."
+    ]
+  },
+  "worker": {
+    "allocationStatus": "NOT_ALLOCATED; acceptance must precede dispatch",
+    "job": "candidate-01",
+    "runsOn": "ubuntu-24.04",
+    "environment": "fresh GitHub-hosted Linux/X64 VM exclusively assigned to this job; no self-hosted, shared, remote or reused daemon",
+    "runnerId": null,
+    "runnerName": null,
+    "imageVersion": null,
+    "workerIdTemplate": "NEW_RUN_ID-candidate-01-1",
+    "exclusiveWorkerReceipt": "$RUNNER_TEMP/platform-broker-candidate-01/worker.json",
+    "requirements": [
+      "RUNNER_ENVIRONMENT=github-hosted; RUNNER_OS/RUNNER_ARCH=Linux/X64; ImageOS=ubuntu24; nonempty ImageVersion; uname Linux/x86_64; Ubuntu/24.04",
+      "Python >=3.11 and openssl; exact clean Platform checkout/gitlink/EventStore HEAD and original configuration hash before owner admission",
+      "all 91 profile inputs admitted before local worker allocation; fresh qualification base, tools, output and worker.json destinations",
+      "DOCKER_HOST, DOCKER_CONTEXT, DOCKER_TLS_VERIFY, DOCKER_CERT_PATH unset; /var/run/docker.sock resolves to a local socket; context endpoint equals the local socket",
+      "daemon reports linux/amd64 or linux/x86_64 with a nonempty ID; exclusive receipt binds NEW_RUN_ID-candidate-01-1, endpoint and daemon ID; evidence also records socket device/inode",
+      "record actual job ID, runner name, image version, daemon ID and socket identity after allocation; never substitute attempt-2's worker",
+      "The unique newly bound run supplies NEW_RUN_ID; no worker or artifact from another matching concurrent dispatch may be selected."
+    ],
+    "egress": "original profile's digest-pinned broker/runtime/OpenBao images and official Dapr 1.19.1 release downloads",
+    "timeoutMinutes": 40,
+    "permissions": "contents: read",
+    "artifactRetentionDays": 30
+  },
+  "acceptanceGate": {
+    "status": "NOT_ESTABLISHED",
+    "mustBind": [
+      "this proposal's committed full revision and SHA-256",
+      "exact source/workflow/configuration/profile identities above and no dispatch inputs",
+      "exactly one new dispatch, no rerun or retry, plus evidence retrieval and three independent pinned verifier modes",
+      "new exclusive hosted-worker contract and known inability of the unchanged verifier to establish qualified results",
+      "30-minute no-job observation bound and explicit decision whether one cancellation is permitted; without cancellation acceptance, leave queued and report",
+      "executing operator owns continued read-only discovery/monitoring and artifact retrieval through terminal completion, including a queued run that allocates after the 30-minute observation bound; accepted handoff required if this session cannot continue"
+    ],
+    "mustRecheckBeforeExecution": [
+      "workflow idle; all independently active candidate executions terminal; inventory changes require accounting before proceeding",
+      "GitHub Actions operational with no unresolved Actions incident",
+      "existing tag resolves to exact 94001fad925fdf7fa03a90b507b8f8e19074f9e3; ruleset 24657570 target=tag, enforcement=active, conditions include ~ALL without exclusions, update/deletion restrictions present and bypass_actors empty",
+      "workflow active; exact workflow blob and source identities reproduced from existing tag; no reliance on current main or shared EventStore checkout"
+    ],
+    "snapshotLimitation": "Independent candidate-02 run 43386723091 at source 4d66ff5584e4f62239551bb02311649334171a84 was observed active, then completed/failure by the final inventory; its outcome is outside this investigation and supplies no candidate-01 acceptance. Recheck inventory at future acceptance."
+  },
+  "expectedEvaluation": {
+    "value": "repeat provider allocation and capture observations only; no demonstrated startup defect is repaired",
+    "knownPinnedVerifierLimitation": "if a comparable packet reaches the Kafka topic-creation --config receipt, all three unmodified 02a4d3b2 verifier modes are expected to exit 1 with FAIL: platformConfig.execution: sidecar executable lacks the measured Dapr preflight binding; record actual exits/output rather than assume this result",
+    "authority": "the workflow requires its exact historical production-authority refusal; the observed earlier sidecar-binding refusal does not satisfy it",
+    "integrityOrVectorCredit": "none unless the unmodified pinned verifier establishes integrity; retain producer observations for all 24 vectors without credit when it refuses",
+    "boundedTechnicalSuccessExpected": false
+  },
+  "retrievalAndVerification": {
+    "artifactNameTemplate": "platform-broker-candidate-01-NEW_RUN_ID-1",
+    "archive": "download into a fresh scratch directory before expiry; record API digest, SHA-256/size and inspect every path, link/special-file, duplicate and unsafe member before extraction; execute nothing from the archive",
+    "verifierCwd": "isolated clean git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "originalConfiguration": "independent git show of 94001fad925fdf7fa03a90b507b8f8e19074f9e3:docs/implementation/story-4-17-broker-candidate-01.json; verify SHA-256",
+    "argvTemplates": [
+      [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "ORIGINAL_CONFIG",
+        "--allow-failures"
+      ],
+      [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "ORIGINAL_CONFIG"
+      ],
+      [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "ORIGINAL_CONFIG",
+        "--require-production-authority"
+      ]
+    ],
+    "assessment": "record actual run/job/attempt/source, phase exits/argv, artifact bytes/digest, per-vector expected/observed/disposition for 24 vectors, and cleanup receipt separately from verified cleanup; missing evidence stays incomplete",
+    "archiveRefusal": "Before any extraction, refuse the entire archive on any absolute/traversal/escaping or ambiguously normalized path, duplicate or case-colliding member, link, special file, encrypted/CRC-invalid member or private transcript. Keep the unextracted archive, digest, inventory and rejection receipt outside tracked evidence; no content executes, and no vector or cleanup credit is issued. Use a fresh extraction directory only after every inspection passes."
+  },
+  "stopRules": [
+    "failure before dispatch: do not dispatch",
+    "dispatch command error: record and stop without retry",
+    "no job at 30 minutes: record no allocation and apply only separately accepted cancellation policy; dispatched scope is consumed even if later allocated",
+    "startup_failure recurs: retain annotation and provider request IDs; stop without retry; healthy status and an intact tag narrow hypotheses but do not prove workflow/account fault"
+  ],
+  "unchanged": {
+    "platformStory4_17": "in-progress",
+    "eventStoreStory3_21": "in-progress",
+    "selectedBroker": null,
+    "productionEligibility": "FAIL",
+    "historicalRejectedGuarantees": [
+      "rabbitmq/secret-rotation",
+      "rabbitmq/cancellation-backpressure",
+      "rabbitmq/missing-bindings",
+      "kafka/secret-rotation",
+      "kafka/cancellation-backpressure"
+    ],
+    "historicalDisposition": "REJECTED"
+  },
+  "queueFollowUp": {
+    "atThirtyMinutes": "Record no allocation and apply only the expressly accepted cancellation decision. No retry or replacement dispatch.",
+    "continuedTracking": "The accepted executing operator continues read-only tracking until terminal, even if allocation occurs after the 30-minute bound or a cancellation is refused. Capture late jobs and worker/source bindings; retrieve any resulting artifact before its 30-day expiry and run the same three pinned verifier modes.",
+    "handoff": "A still-queued run remains an open consumed execution. If the session ends, retain its run ID, current status, last observation time, next read-only check and artifact retrieval obligations for the separately accepted monitoring owner; do not silently close or orphan it.",
+    "noExtraAuthority": "Continued GET tracking does not authorize cancellation, rerun, another dispatch or external messages."
+  }
+}

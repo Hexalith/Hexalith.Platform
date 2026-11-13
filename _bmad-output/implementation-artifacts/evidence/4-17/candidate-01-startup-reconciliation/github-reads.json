@@ -1,0 +1,140 @@
+{
+  "recordedUtc": "2026-11-13 07:38:12 UTC",
+  "tool": "mcp__codex_apps__github_fetch",
+  "method": "GET",
+  "projection": "allowlisted provider fields; user/account metadata omitted",
+  "calls": [
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1"
+      },
+      "isError": false,
+      "result": {
+        "id": 43097161643,
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "head_branch": "chore/broker-candidate-01-hosted-94001fad",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "run_attempt": 1,
+        "workflow_id": 415133929,
+        "created_at": "2026-11-11T20:37:28Z",
+        "updated_at": "2026-11-11T20:41:54Z",
+        "previous_attempt_url": null
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1/jobs?per_page=100"
+      },
+      "isError": false,
+      "result": {
+        "total_count": 0,
+        "jobs": []
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/artifacts?per_page=100"
+      },
+      "isError": false,
+      "result": {
+        "total_count": 0,
+        "artifacts": []
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43333995506"
+      },
+      "isError": false,
+      "result": {
+        "id": 43333995506,
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "head_branch": "qualification/broker-candidate-01/attempt-2-94001fad",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "workflow_id": 415133929,
+        "created_at": "2026-11-13T00:03:48Z",
+        "updated_at": "2026-11-13T00:11:39Z",
+        "previous_attempt_url": null
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/ref/tags/qualification/broker-candidate-01/attempt-2-94001fad"
+      },
+      "isError": false,
+      "result": {
+        "ref": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+        "object": {
+          "sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+          "type": "commit",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+        }
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      },
+      "isError": false,
+      "result": {
+        "id": 24657570,
+        "enforcement": "active",
+        "rules": [
+          {
+            "type": "update"
+          },
+          {
+            "type": "deletion"
+          }
+        ],
+        "bypass_actors": [],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100"
+      },
+      "isError": true,
+      "result": {
+        "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+        "error_code": "INVALID_ARGUMENT"
+      }
+    },
+    {
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43333995506/attempts/1/jobs?per_page=100"
+      },
+      "isError": false,
+      "result": {
+        "total_count": 1,
+        "jobs": [
+          {
+            "id": 131585434513,
+            "name": "candidate-01",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-11-13T00:03:53Z",
+            "completed_at": "2026-11-13T00:11:38Z",
+            "runner_name": "GitHub Actions 1000081917",
+            "labels": [
+              "ubuntu-24.04"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

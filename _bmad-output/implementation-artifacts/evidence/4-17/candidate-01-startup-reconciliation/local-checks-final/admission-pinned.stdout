@@ -1,0 +1,24 @@
+{
+  "lockedInputs": 91,
+  "brokers": [
+    "rabbitmq",
+    "kafka"
+  ],
+  "scenarios": [
+    "crash-redelivery",
+    "broker-restart",
+    "durable-quarantine",
+    "failed-diversion",
+    "retention-expiry",
+    "stable-id-deduplication",
+    "app-topic-scopes",
+    "tls-negative",
+    "missing-secret",
+    "secret-rotation",
+    "cancellation-backpressure",
+    "missing-bindings"
+  ],
+  "vectors": 24,
+  "drift": []
+}
+PASS: owner profile and original configuration admission

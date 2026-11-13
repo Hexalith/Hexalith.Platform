@@ -1,0 +1,26 @@
+{
+  "recordedUtc": "2026-11-13T07:50:08.686632+00:00",
+  "probe": {
+    "argv": [
+      "python3",
+      "-I",
+      "_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-reconciliation/recheck_local.py",
+      "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+      "/home/administrator/projects/hexalith/platform/node_modules",
+      "_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-reconciliation/local-checks-reviewed"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "startedUtc": "2026-11-13T07:50:08.622021+00:00",
+    "exitCode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-reconciliation/recheck_local.py\", line 18, in <module>\n    OUT.mkdir(exist_ok=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 1012, in mkdir\n    os.mkdir(self, mode)\n    ~~~~~~~~^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: '/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-reconciliation/local-checks-reviewed'\n",
+    "priorFilesByteIdentical": true
+  },
+  "reviewedAudit": {
+    "exitCode": 0,
+    "subprocesses": 27,
+    "allExpectedExits": true,
+    "configurationReadFromExecutionRevision": true,
+    "workflowEqualityRequired": true,
+    "exactFourDriftPathsAndRefusalRequired": true
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "scope": "fresh per-call observations after review; earlier github-reads.json is a separate coarse-timestamp snapshot, not a timed go/no-go",
+  "calls": [
+    {
+      "startedUtc": "2026-11-13 07:48:46 UTC",
+      "finishedUtc": "2026-11-13 07:48:47 UTC",
+      "tool": "mcp__codex_apps__github_fetch",
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1"
+      },
+      "method": "GET",
+      "isError": false,
+      "result": {
+        "id": 43097161643,
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "head_branch": "chore/broker-candidate-01-hosted-94001fad",
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "run_attempt": 1,
+        "workflow_id": 415133929,
+        "created_at": "2026-11-11T20:37:28Z",
+        "updated_at": "2026-11-11T20:41:54Z",
+        "previous_attempt_url": null
+      }
+    },
+    {
+      "startedUtc": "2026-11-13 07:48:46 UTC",
+      "finishedUtc": "2026-11-13 07:48:47 UTC",
+      "tool": "mcp__codex_apps__github_fetch",
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/attempts/1/jobs?per_page=100"
+      },
+      "method": "GET",
+      "isError": false,
+      "result": {
+        "total_count": 0,
+        "jobs": []
+      }
+    },
+    {
+      "startedUtc": "2026-11-13 07:48:46 UTC",
+      "finishedUtc": "2026-11-13 07:48:48 UTC",
+      "tool": "mcp__codex_apps__github_fetch",
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43097161643/artifacts?per_page=100"
+      },
+      "method": "GET",
+      "isError": false,
+      "result": {
+        "total_count": 0,
+        "artifacts": []
+      }
+    },
+    {
+      "startedUtc": "2026-11-13 07:48:46 UTC",
+      "finishedUtc": "2026-11-13 07:48:47 UTC",
+      "tool": "mcp__codex_apps__github_fetch",
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/ref/tags/qualification/broker-candidate-01/attempt-2-94001fad"
+      },
+      "method": "GET",
+      "isError": false,
+      "result": {
+        "ref": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+        "object": {
+          "sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+          "type": "commit",
+          "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+        }
+      }
+    },
+    {
+      "startedUtc": "2026-11-13 07:48:46 UTC",
+      "finishedUtc": "2026-11-13 07:48:47 UTC",
+      "tool": "mcp__codex_apps__github_fetch",
+      "arguments": {
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      },
+      "method": "GET",
+      "isError": false,
+      "result": {
+        "id": 24657570,
+        "target": "tag",
+        "enforcement": "active",
+        "rules": [
+          {
+            "type": "update"
+          },
+          {
+            "type": "deletion"
+          }
+        ],
+        "bypass_actors": [],
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

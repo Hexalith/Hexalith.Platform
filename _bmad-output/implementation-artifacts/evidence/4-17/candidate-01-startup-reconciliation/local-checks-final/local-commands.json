@@ -1,0 +1,349 @@
+[
+  {
+    "name": "manifest-candidate-01-hosted",
+    "argv": [
+      "python3",
+      "-I",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/verify-manifest.py",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/file-manifest.json"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "manifest-candidate-01-hosted.stdout",
+      "bytes": 219,
+      "sha256": "e77d53410dddf6b07d0b89b854f66f4bff7a71d72fae1795c428ff9f48c1d3e1"
+    },
+    "stderr": {
+      "path": "manifest-candidate-01-hosted.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "manifest-candidate-01-startup-investigation",
+    "argv": [
+      "python3",
+      "-I",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/verify-manifest.py",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/file-manifest.json"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "manifest-candidate-01-startup-investigation.stdout",
+      "bytes": 234,
+      "sha256": "683de35394770cc69aa041429fa85272d417b89d693006669dca714458373ec4"
+    },
+    "stderr": {
+      "path": "manifest-candidate-01-startup-investigation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "manifest-candidate-01-hosted-attempt-2",
+    "argv": [
+      "python3",
+      "-I",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/verify-manifest.py",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted-attempt-2/file-manifest.json"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "manifest-candidate-01-hosted-attempt-2.stdout",
+      "bytes": 229,
+      "sha256": "9c5888831c5b8610e2068910980e99b5f67d1cd5819adfa5a81630aa5405032d"
+    },
+    "stderr": {
+      "path": "manifest-candidate-01-hosted-attempt-2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "manifest-candidate-01-packet-diagnosis",
+    "argv": [
+      "python3",
+      "-I",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-startup-investigation/verify-manifest.py",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-packet-diagnosis/file-manifest.json"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "manifest-candidate-01-packet-diagnosis.stdout",
+      "bytes": 229,
+      "sha256": "9a1c193b9669499d817eaf29f3689868b06355ad5bbc0364d269582a8541e6ff"
+    },
+    "stderr": {
+      "path": "manifest-candidate-01-packet-diagnosis.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "workflow-inventory",
+    "argv": [
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100",
+      "--jq",
+      "{total_count,workflow_runs:[.workflow_runs[]|{id,head_sha,head_branch,event,status,conclusion,run_attempt}]}"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "workflow-inventory.stdout",
+      "bytes": 723,
+      "sha256": "4e27d16d7c61479647fe4861ab14d3b8a0f9e099e7c053fce5133265b1bdd347"
+    },
+    "stderr": {
+      "path": "workflow-inventory.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "broker-workflow-tests",
+    "argv": [
+      "node",
+      "--test",
+      "tests/source-release/broker-candidate-workflow.test.mjs"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "broker-workflow-tests.stdout",
+      "bytes": 5798,
+      "sha256": "b1aa96c0c935265fe8954ac60446f7f145bb694a2dbd30e394d8c85611698697"
+    },
+    "stderr": {
+      "path": "broker-workflow-tests.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "actionlint-version",
+    "argv": [
+      "actionlint",
+      "-version"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "actionlint-version.stdout",
+      "bytes": 95,
+      "sha256": "9d34cdaec053c6005199c08f2bac628bd8c087303faa26fd8ab58c3e22216ff5"
+    },
+    "stderr": {
+      "path": "actionlint-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "actionlint-current",
+    "argv": [
+      "actionlint",
+      "-no-color",
+      "-shellcheck=",
+      "-pyflakes=",
+      ".github/workflows/broker-candidate-qualification.yml"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "actionlint-current.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "actionlint-current.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "archive-pinned-source",
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "--output=/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore.tar",
+      "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "stdout": {
+      "path": "archive-pinned-source.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "archive-pinned-source.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "extract-local-git-archive",
+    "argv": [
+      "tar",
+      "-xf",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore.tar",
+      "-C",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "extract-local-git-archive.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "extract-local-git-archive.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "archive-session-start-checkout",
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "--output=/tmp/candidate-01-pinned-admission-rwb38h5g/session-start-checkout.tar",
+      "f2062f7f7bd8b3dcae946ba209b933ad8e610ff2"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore",
+    "exitCode": 0,
+    "stdout": {
+      "path": "archive-session-start-checkout.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "archive-session-start-checkout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "extract-session-start-archive",
+    "argv": [
+      "tar",
+      "-xf",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/session-start-checkout.tar",
+      "-C",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/session-start-checkout"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "extract-session-start-archive.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "extract-session-start-archive.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "actionlint-execution-source",
+    "argv": [
+      "actionlint",
+      "-no-color",
+      "-shellcheck=",
+      "-pyflakes=",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/broker-candidate-qualification.yml"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "actionlint-execution-source.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "actionlint-execution-source.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "admission-pinned",
+    "argv": [
+      "python3",
+      "-B",
+      "-c",
+      "import hashlib, json, sys\nfrom pathlib import Path\nsys.path.insert(0, 'tools')\nfrom dapr_broker_qualification import BROKERS, SCENARIOS, validate_profile\nfrom dapr_platform_broker_configuration import load_configuration\nfrom dapr_runtime_qualification import source_input\nprofile = json.loads(Path(sys.argv[1]).read_text())\nroot = Path(sys.argv[2])\ndrift = []\nfor name, expected in profile['inputs'].items():\n    try:\n        path = source_input(profile, root, name, expected)\n        actual = hashlib.sha256(path.read_bytes()).hexdigest()\n        if actual != expected:\n            drift.append({'path': name, 'expected': expected, 'actual': actual})\n    except (ValueError, OSError) as error:\n        drift.append({'path': name, 'expected': expected, 'error': str(error)})\nprint(json.dumps({'lockedInputs': len(profile['inputs']), 'brokers': BROKERS, 'scenarios': SCENARIOS, 'vectors': len(BROKERS)*len(SCENARIOS), 'drift': drift}, indent=2))\ntry:\n    validate_profile(profile, root)\n    load_configuration(Path(sys.argv[3]))\nexcept ValueError as error:\n    print('FAIL: ' + str(error))\n    raise SystemExit(1)\nprint('PASS: owner profile and original configuration admission')\n",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore/deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/docs/implementation/story-4-17-broker-candidate-01.json"
+    ],
+    "cwd": "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore",
+    "exitCode": 0,
+    "stdout": {
+      "path": "admission-pinned.stdout",
+      "bytes": 480,
+      "sha256": "edf444d0965cad47df886a24a1fc16e9c545dd5c2aa29b4eb2fa033930bd016e"
+    },
+    "stderr": {
+      "path": "admission-pinned.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "admission-session-start-checkout",
+    "argv": [
+      "python3",
+      "-B",
+      "-c",
+      "import hashlib, json, sys\nfrom pathlib import Path\nsys.path.insert(0, 'tools')\nfrom dapr_broker_qualification import BROKERS, SCENARIOS, validate_profile\nfrom dapr_platform_broker_configuration import load_configuration\nfrom dapr_runtime_qualification import source_input\nprofile = json.loads(Path(sys.argv[1]).read_text())\nroot = Path(sys.argv[2])\ndrift = []\nfor name, expected in profile['inputs'].items():\n    try:\n        path = source_input(profile, root, name, expected)\n        actual = hashlib.sha256(path.read_bytes()).hexdigest()\n        if actual != expected:\n            drift.append({'path': name, 'expected': expected, 'actual': actual})\n    except (ValueError, OSError) as error:\n        drift.append({'path': name, 'expected': expected, 'error': str(error)})\nprint(json.dumps({'lockedInputs': len(profile['inputs']), 'brokers': BROKERS, 'scenarios': SCENARIOS, 'vectors': len(BROKERS)*len(SCENARIOS), 'drift': drift}, indent=2))\ntry:\n    validate_profile(profile, root)\n    load_configuration(Path(sys.argv[3]))\nexcept ValueError as error:\n    print('FAIL: ' + str(error))\n    raise SystemExit(1)\nprint('PASS: owner profile and original configuration admission')\n",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore/deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "/tmp/candidate-01-pinned-admission-rwb38h5g/session-start-checkout",
+      "/tmp/platform-4-17-startup-reconcile.3pnEvB/docs/implementation/story-4-17-broker-candidate-01.json"
+    ],
+    "cwd": "/tmp/candidate-01-pinned-admission-rwb38h5g/eventstore",
+    "exitCode": 1,
+    "stdout": {
+      "path": "admission-session-start-checkout.stdout",
+      "bytes": 1490,
+      "sha256": "d867f24a8356059a71a64dd109b67c00b1966a8507dc6e6cc9dd4d5376ab9fed"
+    },
+    "stderr": {
+      "path": "admission-session-start-checkout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/tmp/platform-4-17-startup-reconcile.3pnEvB",
+    "exitCode": 0,
+    "stdout": {
+      "path": "diff-check.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "diff-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

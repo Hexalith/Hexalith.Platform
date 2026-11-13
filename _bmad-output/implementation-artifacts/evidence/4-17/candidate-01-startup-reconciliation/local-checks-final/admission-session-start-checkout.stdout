@@ -1,0 +1,45 @@
+{
+  "lockedInputs": 91,
+  "brokers": [
+    "rabbitmq",
+    "kafka"
+  ],
+  "scenarios": [
+    "crash-redelivery",
+    "broker-restart",
+    "durable-quarantine",
+    "failed-diversion",
+    "retention-expiry",
+    "stable-id-deduplication",
+    "app-topic-scopes",
+    "tls-negative",
+    "missing-secret",
+    "secret-rotation",
+    "cancellation-backpressure",
+    "missing-bindings"
+  ],
+  "vectors": 24,
+  "drift": [
+    {
+      "path": ".github/workflows/dapr-runtime-qualification.yml",
+      "expected": "12d698191182f3ce2e5ae56d61717615660f0c53f037adbe6e69ccb3df018fbf",
+      "actual": "671818c4336c6be3576c397e1000ded83d1b75607c70548d1c70eb535596782c"
+    },
+    {
+      "path": "tools/qualify-internal-actor-admission.py",
+      "expected": "8ef65c22d016916df3cf1fe6dd800c7e1a57af45321ab1b8bab01ab19835ea5a",
+      "actual": "d3a3669ee8c79fa4b97193e5cdcd269fe1f9cb4e2a208169ea5ca5b9cd9da6ea"
+    },
+    {
+      "path": "tools/run-dapr-runtime-lane.py",
+      "expected": "2676390e441aadc016718132dff14613cbe21b1b9b6169bd2acca661f7f2f07e",
+      "actual": "aaf1c70d6864af9d1b2041df6df60491a2a191228a4793b5396e706c98a185b9"
+    },
+    {
+      "path": "tools/tests/test_qualify_internal_actor_admission.py",
+      "expected": "3f440337d9a3c1819c9a205adfd8da62d42de2d16cad8a8133df49c7092407c9",
+      "actual": "54d0e62f8b28c3d4cc80d7b7c3b3d71eebf0b180bfc276ad71e898a4ba502f93"
+    }
+  ]
+}
+FAIL: inputs..github/workflows/dapr-runtime-qualification.yml: source/component bytes drifted

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "baselinePlatformRevision": "d5928c8b106e1da4179e55dbe8390912b02a7e44",
+  "subject": {
+    "runId": 43097161643,
+    "runAttempt": 1,
+    "conclusion": "startup_failure",
+    "jobs": 0,
+    "artifacts": 0,
+    "observedVectors": 0,
+    "expectedVectors": 24,
+    "captureAndVerifiersExecuted": false
+  },
+  "cause": {
+    "confirmedRootCause": null,
+    "classification": "unresolved exact mechanism; provider disruption strongly indicated",
+    "providerEvidence": "43 zero-job runs in six repositories overlap the window; generic unexpected-service-error annotation; public incident dvy0t3mvh1lg posted after this run terminated",
+    "unresolvedConfounder": "dispatch branch deleted 2026-11-11T20:39:42Z while queued; deleting process and causal effect unknown",
+    "supportRequestId": "4ed78a69-de10-11f1-8d56-5705d8f2f5ff",
+    "cliHintUsedAsDiagnosis": false,
+    "demonstratedPlatformDefect": false,
+    "platformCorrection": null,
+    "laterAllocationEvidence": "43333995506 allocated in 5 seconds with identical source/workflow/label/event; excludes deterministic rejection of those bytes, not transient provider/registration problems",
+    "supportRequiredForExactCause": true
+  },
+  "separateConcerns": {
+    "sessionStartEventStoreCheckout": "f2062f7f7bd8b3dcae946ba209b933ad8e610ff2",
+    "drift": "four mismatches against original 91-input profile, reproduced from immutable archives; not executed by attempt 1",
+    "sharedCheckoutAdvance": "concurrent work moved shared EventStore checkout; initial audit retained its consistency refusal, final audit used archives exclusively",
+    "attempt2Verifier": "02a4d3b2 treats Kafka topic-creation docker exec --config as daprd; all three modes refused before vector assessment; cannot explain zero job allocation",
+    "candidate02": "independent run 43386723091 at 4d66ff5584e4f62239551bb02311649334171a84 observed in_progress, then completed/failure; source differs; its packet and acceptance are outside this investigation"
+  },
+  "verification": {
+    "priorManifestCommitments": 155,
+    "priorManifestBytes": 868243,
+    "priorManifestFailures": 0,
+    "originalHostedManifestCommitments": 79,
+    "originalHostedManifestBytes": 151443,
+    "workflowControls": "53/53 pass",
+    "actionlint": "1.7.12; no findings at exact execution bytes and identical baseline bytes; shellcheck/pyflakes integrations disabled explicitly",
+    "pinnedProfile": "91/91 inputs and original configuration admitted; rabbitmq+kafka, 12 scenarios each, 24 total",
+    "sessionStartSnapshotAdmission": "expected exit 1 on four input drifts; original profile unchanged",
+    "newVectorExecutions": 0,
+    "finalLocalCheckInvocations": 16,
+    "reviewedLocalCheckInvocations": 27,
+    "collectorNonOverwriteProbe": "exit 1 FileExistsError; all existing output bytes unchanged"
+  },
+  "evidence": {
+    "freshProviderReads": "github-reads-reviewed.json (per-call UTC); github-reads.json (earlier snapshot)",
+    "exactCommandsAndLogDigests": "local-checks-reviewed/local-commands.json",
+    "canonicalSourceIdentities": "local-checks-reviewed/source-identities.json",
+    "originalReceipt": "../candidate-01-hosted/execution-status.json",
+    "originalVerifierAssessment": "../candidate-01-hosted/independent-verifier-assessment.json",
+    "providerClassification": "../candidate-01-startup-investigation/classification.json",
+    "branchDeletion": "../candidate-01-startup-investigation/dispatch-ref-lifecycle.json",
+    "attempt2VerifierAssessment": "../candidate-01-hosted-attempt-2/local-verification.json",
+    "furtherExecutionProposal": "next-execution-proposal.json"
+  },
+  "operations": {
+    "githubMethods": [
+      "GET"
+    ],
+    "dispatches": 0,
+    "reruns": 0,
+    "cancellations": 0,
+    "refMutations": 0,
+    "pushes": 0,
+    "lockRefreshes": 0
+  },
+  "unchanged": {
+    "platformStory4_17": "in-progress",
+    "eventStoreStory3_21": "in-progress",
+    "selectedBroker": null,
+    "productionEligibility": "FAIL",
+    "historicalFailedGuarantees": "all five remain REJECTED"
+  }
+}
