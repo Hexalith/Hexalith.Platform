@@ -201,7 +201,25 @@ def verify_test_sdk(assembly, version):
             raise ValueError("The actual test binary does not resolve the selected SDK package: " + identity)
 
 
+def _subprocess_environment(name, environment=None, *, metadata_token=None):
+    """Keep the job token out of ordinary commands, including explicit environments."""
+    child = dict(os.environ if environment is None else environment)
+    child.pop("GH_TOKEN", None)
+    if name in ("published-artifacts", "retained-published-artifacts") and metadata_token is not None:
+        child["GH_TOKEN"] = metadata_token
+    return child
+
+
 def main():
+    metadata_token = os.environ.pop("GH_TOKEN", None)
+    try:
+        _run_tuple_ci(metadata_token)
+    finally:
+        if metadata_token is not None:
+            os.environ["GH_TOKEN"] = metadata_token
+
+
+def _run_tuple_ci(metadata_token):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path)
@@ -236,7 +254,8 @@ def main():
         checkpoint()
         try:
             with (evidence / (name + ".stdout")).open("w") as stdout, (evidence / (name + ".stderr")).open("w") as stderr:
-                completed = subprocess.run(argv, cwd=cwd, env=environment, stdout=stdout, stderr=stderr, text=True, timeout=1200)
+                child_environment = _subprocess_environment(name, environment, metadata_token=metadata_token)
+                completed = subprocess.run(argv, cwd=cwd, env=child_environment, stdout=stdout, stderr=stderr, text=True, timeout=1200)
         except subprocess.TimeoutExpired:
             command["timedOut"] = True
             checkpoint()

@@ -91,6 +91,7 @@ jobs:
           python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
           python3 -B eng/test_pre_extension_tuple_source.py
+          python3 -B eng/test_builds_publication.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies
         id: dependencies
         shell: bash
@@ -122,6 +123,8 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Verify published tuple, reject source fallback, build and test Release
         id: preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-current --suite current42 --eventstore-sdk 4.2.0
@@ -216,6 +219,8 @@ jobs:
           global-json-file: global.json
           dotnet-version: '10.0.x'
       - name: Run all original 349 controls using the real committed legacy tuple
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python3 eng/run_tuple_ci.py --evidence artifacts/legacy-public-cohort
       - name: Retain legacy regression evidence separately from current-owner evidence
         if: always()
@@ -274,6 +279,8 @@ jobs:
           global-json-file: global.json
           dotnet-version: '10.0.x'
       - name: Run all original 412 controls using the real committed pre-extension tuple
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python3 eng/run_tuple_ci.py --evidence artifacts/pre-extension-public-cohort --eventstore-sdk 4.1.0
       - name: Retain the historical tuple evidence separately from SDK4.2 admission
         if: always()

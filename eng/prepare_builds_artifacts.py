@@ -2,13 +2,14 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import urllib.request
 import zipfile
 
 from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
-from builds_publication import verify_handoff
+from builds_publication import _read_official, verify_handoff
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,6 +23,15 @@ def source_state():
 
 
 def main():
+    metadata_token = os.environ.pop("GH_TOKEN", None)
+    try:
+        _prepare_artifacts(metadata_token)
+    finally:
+        if metadata_token is not None:
+            os.environ["GH_TOKEN"] = metadata_token
+
+
+def _prepare_artifacts(metadata_token):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--output", type=Path, required=True)
@@ -41,7 +51,7 @@ def main():
         pin = subprocess.check_output(["git", "rev-parse", "HEAD:references/Hexalith.Builds"], cwd=ROOT, text=True).strip()
         validate_recorded_source(binding, pin, state["dirty"])
         verify_catalog(binding, resolve_builds_root(ROOT))
-    handoff = verify_handoff(binding)
+    handoff = verify_handoff(binding, read=lambda path: _read_official(path, metadata_token))
     output.mkdir(parents=True)
     archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
     if args.archive:
