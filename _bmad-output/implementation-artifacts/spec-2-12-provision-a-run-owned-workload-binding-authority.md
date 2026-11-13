@@ -58,6 +58,7 @@ Aliases: C = `src/Hexalith.Platform.Composition`; K = `infrastructure/keycloak-w
 - [x] `docs/security/workload-binding-enrollment.md`: document launch/build prerequisites, usage and cleanup; allow generated trust only through this disposable path and point the Folders 12.2 paragraph to it. Retain persistent realm-owner requirements.
 - [ ] `A/WorkloadEnrollmentComponentTests.cs`, `A/WorkloadEnrollmentConfigurationTests.cs`: execute the affected Folders runtime suites against a coherent Debug/source build after the existing FrontComposer build blockers are resolved. Supplementary compile-only evidence does not close this validation task.
 - [x] `K/run_owned.py`, `K/run_owned_component.py`, `K/test_run_owned.py`, `A/OperationalProviderFixture.cs`: apply G21–G25 ownership, immutable named-context, cleanup-diagnostic and PEM-separator corrections; preserve child Docker configuration and the replica identity repair.
+- [x] `K/run_owned.py`, `K/test_run_owned.py`: apply G26–G30 provider snapshot, replacement-directory preservation, absolute metadata deadline, repeatable named-context cleanup and child-allocation cancellation corrections; verify all five red-to-green controls.
 - [ ] `C/Hexalith.Platform.Composition.csproj`, `T/Hexalith.Platform.Composition.Tests.csproj`: rerun fresh Debug/source builds after the existing catalog owners resolve inherited EventStore `4.2.0` versus authoritative `5.0.0`. Existing test-assembly execution does not close this build gate.
 
 **Acceptance Criteria:**
@@ -154,6 +155,42 @@ G14–G20 are implemented and parent-verified. The final run passes 23 provider 
 The normal Folders build still fails on unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. A temporary validation-only `WarningsNotAsErrors=CA2263` attempt retained that normal failure and exposed existing FrontComposer net10/net11 CS1705; it also failed. No tracked build, dependency, framework, release or CI input was changed. Affected Folders runtime suites and strict acceptance remain unverified, and the validation task above stays open. The possible late-daemon creation claim remains medium/unverified, requiring the reproduction recorded in deferred work.
 
 The rendered bmad-build review step requires halting when verification fails and cannot be fixed within this implementation. Workflow completion is therefore halted at this gate with this spec `in-review`; no completion, Platform lifecycle qualification or Folders 12.2 claim is made. The changes are staged locally in their owning repositories. No commit, push, remote operation or submodule pointer advance occurred, preserving the concurrent release owner's stable-main window.
+
+### Resumed review after publication — 2026-11-13
+
+All three independent layers completed before triage. B = blind, E = edge-case, V = verification-gap. Each report is recorded separately before grouping. The historical baseline also contains catalog changes preceding this enrollment implementation.
+
+| Finding | Verdict | Route | Verified evidence |
+| --- | --- | --- | --- |
+| B1 | medium | patch G26 | The provider digest is checked on the mutable Maven output before that same path is mounted. An isolated reproduction replaces it between those operations, leaving mounted bytes inconsistent with the receipt. Snapshot the provider into the private owned directory before binding its digest. |
+| B2 | low | patch G27 | Cleanup's container snapshot writes journal.json before the inode check. An isolated directory replacement preserves the replacement directory but overwrites its sentinel journal. Delete this redundant cleanup write; provision already journals the immutable ID. |
+| B3 | medium | patch G28 | A real loopback response delivering one byte per 0.1 seconds completes after 1.01 seconds despite 0.25 seconds remaining. Socket inactivity timeouts do not enforce the fixed lifetime. Bound the complete metadata operation by the absolute remaining lease. |
+| B4 | medium | defer D5 | Fresh builds and the direct catalog command reproduce inherited EventStore 4.2.0 against authoritative 5.0.0. The conflicting catalog/source selection predates enrollment. Existing assembly execution is supplementary; the fresh-build task remains open. |
+| B5 | medium | carried defer D3 | Carried: fresh Folders source build again fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. The affected runtime suites remain unexecuted; this is the same previously logged build/runtime gate. |
+| B6 | medium | carried defer D1 | Carried: verify-agents-host.sh still omits the authenticated catalog digest required by the earlier catalog migration. Same location and claim as the prior D1 reports. |
+| B7 | medium | carried defer D2 | Carried: selected_sdk_version still requires one raw version element despite the conditional/default catalog. Same location and claim as the prior D2 reports. |
+| B8 | false | carried reject | Carried: explicit run-owned verification is the selected story contract. Requiring routine CI registration repeats the previously rejected default-CI policy claim; the explicit live controls execute successfully. |
+| B9 | medium | defer D6 | Ordinary component verification accepts only exit status, and an actual wrong-assembly method selection exits zero with Total: 0. This exit-code-only proof predates the story's narrower method selection; the new run-owned harness already requires exact executed-test and adoption evidence. Record the ordinary harness gap separately. |
+| B10 | medium | carried defer | Carried: the actual provider bundle composition lacks a permanent focused assertion. Same location and claim as the existing trust-composition deferral; supplementary fixture execution does not register a regression test. |
+| E1 | medium | patch G29 | After successful cleanup deletes private named-context configuration, created remains true. The launcher's unconditional second cleanup resolves the now-missing context and falsely reports container cleanup failure. Clear creation state once absence is proven, before deleting private configuration. |
+| E2 | medium | patch G30 | An isolated Popen wrapper delivers TERM immediately after real child creation, before its handle returns. The current handler interrupts assignment, so stop_child(None) leaves the child alive. Defer cancellation through child-handle assignment and receipt binding, then process it normally. |
+| E3 | medium | patch G30 | Same independently reproduced cancellation window as E2 falsifies the terminal-cleanup claim: the launcher reports zero leftovers while its child survives. Retain this claim report and correct the shared allocation boundary. |
+| V1 | medium | carried defer | Carried: focused tests build their own bundle and do not execute the provider composition operation. Same previously recorded trust-composition regression gap; no duplicate deferral. |
+
+Five internal patch groups correct demonstrated behavior without changing frozen intent or public contracts. No implementation agent from the previous session is available to re-engage, so the parent applies these corrections. Two new entries retain the pre-existing catalog build gate and ordinary component executed-test gap; existing deferrals are not duplicated.
+
+
+### Post-publication correction verification and remaining gates
+
+G26–G30 are complete. All five new regression cases failed against the original implementation and pass after the corrections. Two independent reviewers checked the resulting patches and found no concrete regression. The provider is copied into the private owned directory before its receipt digest is bound, and Docker mounts those same bytes. Cleanup performs no journal write into a replacement directory, records confirmed container absence before deleting private Docker configuration, and remains repeatable. A total-operation timer bounds slow metadata headers/body reads by the original lease. Cancellation waits for child-handle ownership and receipt binding, then performs normal cleanup without passing blocked signals to the child.
+
+Final verification passes 23 provider tests, all 37 Python tests, 19 live RSA probes, five real-container terminal controls and the UID 1001 private-file control. The existing source-built C# assembly passes 25 default cases and two separate explicit executions through a real named Docker context, including consumer/fresh-host verification and adoption cancellation. One concurrent full Python invocation timed out at the original 20-second cancellation-control allowance; its complete isolated repeat passed unchanged. Both outputs remain recorded, and no budgets or retry policies changed. Final independent observation finds zero owned containers and zero private run directories.
+
+[Exact commands, canonical revisions, source hashes and limitations](evidence/2-12/post-publication-review-20261113/verification.json), [retained successful and failed output](evidence/2-12/post-publication-review-20261113/outputs.json), and [the final matrix audit](evidence/2-12/post-publication-review-20261113/matrix-audit.json) bind this continuation's evidence. The C# source and existing assembly bytes still match the prior verification; these executions remain supplementary to a fresh source build.
+
+Fresh Composition and Composition.Tests builds still fail in the unchanged Builds catalog gate: inherited EventStore 4.2.0 conflicts with authoritative 5.0.0. The direct catalog command confirms that diagnostic. The Folders Debug/source build still fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. The two validation tasks above remain open; affected Folders runtime suites and strict acceptance remain unexecuted. Previously deferred trust-composition and delayed-daemon claims remain open.
+
+The rendered bmad-build review step requires “if verification fails and the failure cannot be fixed, HALT and escalate to the human.” Those dependency-owner build gates are outside these enrollment corrections, so this continuation halts with status in-review. It makes no completion, Platform lifecycle qualification or Folders 12.2 claim. Changes remain local and unstaged; no commit, push, submodule pointer advance, or dependency/framework/release/CI change occurred.
 
 ## Design Notes
 
@@ -253,3 +290,8 @@ The rendered review step requires “if verification fails and the failure canno
 ### User-requested publication continuation
 
 The user explicitly requested pushing all changes after the halted build report. The prerequisite qualifier confirmed that this publication window is clear and retains ownership of Platform source-release qualification/publication. Folders was committed and pushed first as `f1520098d812964622a3a01bf4ec9f3beca46828`; its exact remote `main` was independently verified. Platform adopts that published gitlink with the reviewed source corrections and evidence. [Publication preparation](evidence/2-12/review-resume-20261113/publication-preparation.json) records canonical revisions, successful commitlint results, all root-declared submodule checks and preservation boundaries. The earlier no-publication notes describe the completed build phase; this user-directed publication is a separate continuation and does not close either build/runtime gate or grant qualification.
+
+
+### User-requested publication of G26–G30
+
+The user requested pushing all changes after the halted build report. All 17 root-declared submodules are clean, and each recorded commit is independently confirmed on an origin remote branch. Platform main is synchronized before the publication commit. [Publication preparation](evidence/2-12/post-publication-review-20261113/publication-preparation.json) records canonical revisions and the repository checks. The local-only notes above describe the completed build phase; this user-directed publication retains status in-review and both fresh-build/runtime gates.

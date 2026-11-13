@@ -1,0 +1,50 @@
+{
+  "qualification": "run-owned enrollment",
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "ee04daee2161d8557da3adde83797f36f6966635610e82984aa15389190a1332",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "ddd7fc389ddfea3f730633c417579006628495f37b8c410db81cae476a40708d",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "a8abf87351131565c83d9280561a57153b2d01b8f904a0f36d7be3eeaf8f2c30",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "c8889d1a71f5ae4cdd4d333d94509af32ec9073b7a727881228552d4a0daf9b3",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "19958adaf2c2fdf050fb25ed2f2bbb4810b92a8844cbf5b2a67533417df9a676",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "bddd7b175fca09e5b362f442609d93dbcd2e2d09718475ea747a3d1a56bb891b",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "f95103fe0eea42e9685c12b7e4412fef99f0dc810583767db5b46322b75fc5f8",
+    "docs/security/workload-binding-enrollment.md": "6d61bcaaa44e20120577d2561475c0ca92ebee1594bd25721c7a5ab10698508b"
+  },
+  "rows": [
+    {
+      "state": "Final cohort and tenant",
+      "evidence": [
+        "python-live-final: 19 fresh RSA probes, exact tenant/domain negatives, six workloads/eight resources",
+        "consumer-named-live-final: unchanged consumer, independent proof callers, and fresh running host TLS/exchange"
+      ],
+      "passed": true
+    },
+    {
+      "state": "Prelaunch trust and missing trust",
+      "evidence": [
+        "default-csharp-final: named trust refusals",
+        "consumer-named-live-final: launch trust, merged host trust, and ordinary default TLS validation"
+      ],
+      "passed": true
+    },
+    {
+      "state": "Foreign context or changed cohort/tenant",
+      "evidence": [
+        "python-final-isolated: protected request and exact inventory refusals",
+        "consumer-named-live-final: foreign receipt, process, directory, tenant and cohort controls"
+      ],
+      "passed": true
+    },
+    {
+      "state": "Terminal cleanup and unrelated resource preservation",
+      "evidence": [
+        "python-final-isolated: five live terminal cases and all five new ownership/deadline regressions",
+        "consumer-named-live-final: repeated named-context cleanup and adoption cancellation",
+        "independent final inventory: zero owned containers/private directories"
+      ],
+      "passed": true
+    }
+  ],
+  "buildGate": "Not passed; fresh Platform and Folders build/runtime tasks remain open. Component rows do not close those tasks."
+}

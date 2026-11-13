@@ -245,6 +245,9 @@ class Lease:
             self.receipt = None
             self.journal = dict(runId=self.run_id, container=self.name, creationStarted=False)
             private_write(self.directory / "journal.json", self.journal)
+            # Maven's output may be rebuilt concurrently; bind and mount one private snapshot.
+            self.provider = self.directory / "provider.jar"
+            private_write(self.provider, JAR.read_bytes())
         except BaseException:
             try:
                 shutil.rmtree(self.directory)
@@ -306,7 +309,7 @@ class Lease:
         self.receipt = dict(schema="hexalith.run-owned-workload/v1", owner=OWNER, runId=self.run_id, capability=capability,
             ownerPid=os.getpid(), ownerIdentity=process_identity(os.getpid()), childPid=child_pid, childIdentity=process_identity(child_pid),
             directory=str(self.directory), deadline=self.deadline, trustFile=str(self.directory / "trust.pem"),
-            trustSha256=digest(self.directory / "trust.pem"), providerSha256=digest(JAR))
+            trustSha256=digest(self.directory / "trust.pem"), providerSha256=digest(self.provider))
         private_write(self.directory / "receipt.json", self.receipt)
 
     def check(self, require_child=False):
@@ -328,7 +331,7 @@ class Lease:
         inventory = request["inventory"]
         if request["inventorySha256"] != cohort_digest(request_inventory_bytes(request_bytes)):
             refuse("cohort-binding-changed")
-        if digest(JAR) != self.receipt["providerSha256"]:
+        if digest(self.provider) != self.receipt["providerSha256"]:
             refuse("provider-binding-changed")
         realm, clients = build_realm(inventory, self.directory, int(time.time()) - 1, self.deadline)
         private_write(self.directory / "realm.json", realm)
@@ -338,7 +341,7 @@ class Lease:
         self.check(require_child=True)
         container_id = self.run("docker", "run", "--detach", "--rm", "--name", self.name, "--label", LABEL + "=" + self.run_id,
             "--user", f"{os.getuid()}:0", "--publish", "127.0.0.1::8443",
-            "--volume", f"{JAR}:/opt/keycloak/providers/workload-binding.jar:ro",
+            "--volume", f"{self.provider}:/opt/keycloak/providers/workload-binding.jar:ro",
             "--volume", f"{self.directory / 'tls.pem'}:/run-owned/tls.pem:ro", "--volume", f"{self.directory / 'tls.key'}:/run-owned/tls.key:ro",
             "--volume", f"{self.directory / 'realm.json'}:/opt/keycloak/data/import/run-owned-realm.json:ro",
             IMAGE, "start-dev", "--import-realm", "--http-enabled=false", "--https-certificate-file=/run-owned/tls.pem",
@@ -408,11 +411,23 @@ class Lease:
         self.check(require_child=True)
         # No redirects or cross-origin followups are allowed for authority metadata.
         opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=context), NoRedirect())
-        with opener.open(url, timeout=min(5, self.remaining())) as response:
-            raw = response.read(65537)
-            if len(raw) > 65536:
-                refuse("public-document-size")
-            return json.loads(raw, object_pairs_hook=unique)
+        # Socket timeouts bound inactivity. The dedicated Linux supervisor also bounds total elapsed time.
+        remaining = self.remaining()
+        previous_handler = signal.signal(signal.SIGALRM, lambda *_: refuse("fixed-owner-deadline-expired"))
+        started = time.monotonic()
+        previous_timer = signal.setitimer(signal.ITIMER_REAL, remaining)
+        try:
+            with opener.open(url, timeout=min(5, self.remaining())) as response:
+                raw = response.read(65537)
+                if len(raw) > 65536:
+                    refuse("public-document-size")
+                self.check(require_child=True)
+                return json.loads(raw, object_pairs_hook=unique)
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, previous_handler)
+            if previous_timer[0]:
+                signal.setitimer(signal.ITIMER_REAL, max(0.000001, previous_timer[0] - (time.monotonic() - started)), previous_timer[1])
 
     def container_snapshot(self):
         # ID and ownership label are captured in one daemon snapshot. A reused name is never a delete target.
@@ -428,7 +443,6 @@ class Lease:
             refuse("foreign-container-preserved")
         self.container_id = snapshot["id"]
         self.journal["containerId"] = self.container_id
-        private_write(self.directory / "journal.json", self.journal)
         return self.container_id
 
     def cleanup(self):
@@ -440,6 +454,7 @@ class Lease:
                     command("docker", "rm", "--force", "--volumes", container_id, timeout=10, environment=self.command_environment)
                     if self.container_snapshot():
                         refuse("owned-container-remains")
+                self.created = False
             except (RuntimeError, OSError, ValueError, KeyError, TypeError):
                 failures.append("owned-container-cleanup-incomplete")
         # Directory absence is the bridge's private acknowledgement. Keep it until container removal is proven.
@@ -562,6 +577,7 @@ def launch(lifetime, owner, arguments):
     previous = {}
     existing_children = set()
     terminating = False
+    starting_child = False
     terminal_signals = (signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT, signal.SIGABRT)
     # Hold cancellation until both the handlers and the cleanup owner cover allocation.
     previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, terminal_signals)
@@ -570,7 +586,8 @@ def launch(lifetime, owner, arguments):
         if terminating:
             return
         terminating = True
-        raise InterruptedError("Run-owned workload enrollment cancelled.")
+        if not starting_child:
+            raise InterruptedError("Run-owned workload enrollment cancelled.")
     try:
         for number in terminal_signals:
             previous[number] = signal.signal(number, terminal)
@@ -584,8 +601,16 @@ def launch(lifetime, owner, arguments):
             "SSL_CERT_FILE": str(lease.directory / "trust.pem")})
         lease.check()
         existing_children = existing_process_tree()
-        lease.child = subprocess.Popen([sys.executable, "-B", str(Path(__file__).resolve()), "_child", *arguments], env=environment, start_new_session=True)
-        lease.bind(lease.child.pid, capability)
+        # A signal can arrive after OS allocation but before Popen returns its handle.
+        # Record ownership before acting on cancellation; the child inherits no blocked signals.
+        starting_child = True
+        try:
+            lease.child = subprocess.Popen([sys.executable, "-B", str(Path(__file__).resolve()), "_child", *arguments], env=environment, start_new_session=True)
+            lease.bind(lease.child.pid, capability)
+        finally:
+            starting_child = False
+        if terminating:
+            raise InterruptedError("Run-owned workload enrollment cancelled.")
         adopted = False
         while lease.child.poll() is None:
             lease.check()

@@ -1,5 +1,6 @@
 """Ownership and lifecycle controls; tests retain no grants, credentials or private material."""
 import copy
+import http.server
 import json
 import os
 from pathlib import Path
@@ -7,6 +8,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from contextlib import redirect_stdout
@@ -20,6 +22,128 @@ from run_owned_component import inventory, lifecycle_controls, nonstandard_calle
 
 
 class RunOwnedTests(unittest.TestCase):
+    def test_provider_mount_uses_receipt_bound_snapshot_during_rebuild(self):
+        with tempfile.TemporaryDirectory() as name:
+            provider = Path(name) / "provider.jar"
+            provider.write_bytes(b"approved-provider")
+            with patch.object(owned, "JAR", provider):
+                lease = owned.Lease(60)
+                try:
+                    owned.private_write(lease.directory / "trust.pem", b"isolated-control")
+                    lease.bind(os.getpid(), "A" * 64)
+                    model = inventory()
+                    request = {key: lease.receipt[key] for key in ("runId", "capability", "childPid", "childIdentity", "deadline")}
+                    request.update(inventory=model, inventorySha256=owned.cohort_digest(json.dumps(model, separators=(",", ":")).encode()))
+                    owned.private_write(lease.directory / "request.json", request)
+                    original = owned.build_realm
+                    def rebuild(*args):
+                        result = original(*args)
+                        provider.write_bytes(b"concurrent-rebuild")
+                        return result
+                    mounted = []
+                    def create(*args, **kwargs):
+                        path = next(value.rsplit(":", 2)[0] for value in args if value.endswith(":/opt/keycloak/providers/workload-binding.jar:ro"))
+                        mounted.append((Path(path), Path(path).read_bytes(), owned.digest(Path(path))))
+                        raise RuntimeError("stop-at-create")
+                    with patch.object(owned, "build_realm", side_effect=rebuild), patch.object(lease, "run", side_effect=create):
+                        with self.assertRaisesRegex(RuntimeError, "stop-at-create"):
+                            lease.provision()
+                    self.assertEqual(b"approved-provider", mounted[0][1])
+                    self.assertEqual(lease.receipt["providerSha256"], mounted[0][2])
+                    self.assertEqual(lease.directory, mounted[0][0].parent)
+                finally:
+                    with patch.object(owned, "command", return_value=""):
+                        lease.cleanup()
+
+    def test_cleanup_preserves_replacement_directory_journal(self):
+        lease = owned.Lease(60)
+        original = lease.directory.with_name(lease.directory.name + "-original")
+        lease.directory.rename(original)
+        lease.directory.mkdir(mode=0o700)
+        sentinel = lease.directory / "journal.json"
+        sentinel.write_text("unrelated-journal")
+        lease.created = True
+        observations = iter([json.dumps(dict(id="a" * 64, runId=lease.run_id)), ""])
+        def command(*args, **kwargs):
+            return next(observations) if args[1] == "ps" else ""
+        try:
+            with patch.object(owned, "command", side_effect=command), patch("builtins.print"):
+                with self.assertRaisesRegex(RuntimeError, "owned-private-material-cleanup-incomplete"):
+                    lease.cleanup()
+            self.assertEqual("unrelated-journal", sentinel.read_text())
+        finally:
+            owned.shutil.rmtree(lease.directory)
+            original.rename(lease.directory)
+            with patch.object(owned, "command", return_value=""):
+                lease.cleanup()
+
+    def test_metadata_trickle_cannot_extend_absolute_deadline(self):
+        class Trickle(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                try:
+                    for value in b'{"ok":true}':
+                        self.wfile.write(bytes([value]))
+                        self.wfile.flush()
+                        time.sleep(0.1)
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
+            def log_message(self, *args):
+                pass
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Trickle)
+        thread = threading.Thread(target=server.serve_forever, kwargs=dict(poll_interval=0.02), daemon=True)
+        thread.start()
+        lease = owned.Lease(60)
+        try:
+            lease.deadline = time.time() + 0.25
+            started = time.monotonic()
+            with self.assertRaisesRegex(RuntimeError, "fixed-owner-deadline-expired"):
+                lease.get("http://127.0.0.1:" + str(server.server_port), None)
+            self.assertLess(time.monotonic() - started, 0.8)
+        finally:
+            lease.cleanup()
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=2)
+
+    def test_named_context_cleanup_is_repeatable_after_private_config_removal(self):
+        endpoint = owned.command("docker", "context", "inspect", "--format", "{{.Endpoints.docker.Host}}")
+        with tempfile.TemporaryDirectory() as name:
+            environment = dict(os.environ, DOCKER_CONFIG=name, DOCKER_CONTEXT="run-owned-repeat-cleanup")
+            environment.pop("DOCKER_HOST", None)
+            owned.command("docker", "context", "create", "run-owned-repeat-cleanup", "--docker", "host=" + endpoint, environment=environment)
+            with patch.dict(os.environ, environment, clear=True):
+                lease = owned.Lease(60)
+                try:
+                    lease.pin_docker_context()
+                    lease.created = True
+                    lease.cleanup()
+                    self.assertFalse(lease.directory.exists())
+                    lease.cleanup()
+                finally:
+                    if lease.directory.exists():
+                        lease.created = False
+                        lease.cleanup()
+
+    def test_cancellation_during_child_creation_retains_cleanup_ownership(self):
+        with tempfile.TemporaryDirectory() as name:
+            observation = Path(name) / "child-pid"
+            wrapper = "import os,pathlib,signal,subprocess,sys; import run_owned as o; original=subprocess.Popen\n" \
+                + "def spawn(*args,**kwargs):\n child=original(*args,**kwargs)\n if '_child' in args[0]:\n  pathlib.Path(" + repr(str(observation)) + ").write_text(str(child.pid)); os.kill(os.getpid(),signal.SIGTERM)\n return child\n" \
+                + "subprocess.Popen=spawn\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c','import time; time.sleep(60)'])\nexcept InterruptedError:\n sys.exit(1)"
+            supervisor = "import json,os,pathlib,signal,subprocess,sys; import run_owned as o; o.enable_subreaper(); " \
+                + "result=subprocess.run([sys.executable,'-B','-c'," + repr(wrapper) + "],capture_output=True,text=True); " \
+                + "pid=int(pathlib.Path(" + repr(str(observation)) + ").read_text()); survived=pathlib.Path('/proc/'+str(pid)).exists()\n" \
+                + "if survived:\n os.kill(pid,signal.SIGKILL); os.waitpid(pid,0)\n" \
+                + "print(json.dumps(dict(returncode=result.returncode,survived=survived,cleanupObserved='\"observedRemainingTemporaryPaths\": 0' in result.stdout)))"
+            completed = subprocess.run([sys.executable, "-B", "-c", supervisor], capture_output=True, text=True, timeout=20)
+            self.assertEqual(0, completed.returncode, completed.stderr)
+            observed = json.loads(completed.stdout)
+            self.assertEqual(1, observed["returncode"])
+            self.assertTrue(observed["cleanupObserved"])
+            self.assertFalse(observed["survived"])
+
     def test_named_context_retargeting_does_not_change_private_endpoint(self):
         with tempfile.TemporaryDirectory() as name:
             environment = dict(os.environ, DOCKER_CONFIG=name, DOCKER_CONTEXT="run-owned-context-control")

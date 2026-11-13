@@ -1,0 +1,271 @@
+{
+  "schema": "hexalith.run-owned-enrollment-review-verification/v4",
+  "qualification": "run-owned enrollment",
+  "recordedAt": "2026-11-13T14:38:09.224155+00:00",
+  "status": "G26-G30 verified; fresh build/runtime gates remain blocked",
+  "platformHead": "341abd8d0c6cc06d57e70fc58f3f16c7e0c49b0c",
+  "foldersHead": "f1520098d812964622a3a01bf4ec9f3beca46828",
+  "preservedStoryBaseline": "375231e1552c98a4238482c67b6e69d92ea43d1a",
+  "checks": [
+    {
+      "name": "catalog-diagnostic",
+      "cwd": ".",
+      "command": "pwsh -NoLogo -NoProfile -File references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1 -CatalogPath references/Hexalith.Builds/Props/Directory.Packages.props -OutputPath /tmp/story-2-12-review-0cxt9in4/platform-version-catalog.json -BuildSelectionsPath references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/obj/Debug/net11.0/platform-version-catalog.build.txt -Configuration Debug -TargetFramework net11.0",
+      "exitCode": 1,
+      "elapsedSeconds": 5.45,
+      "sha256": "47ca6ddba8898a1b96e8d0c260f3bb89f5b68fa0fbdacd1456783116d7fd3888",
+      "output": "outputs.json#catalog-diagnostic"
+    },
+    {
+      "name": "composition-build",
+      "cwd": ".",
+      "command": "dotnet build src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj -c Debug --no-restore -p:UseHexalithProjectReferences=true -m:1 -v:q",
+      "exitCode": 1,
+      "elapsedSeconds": 12.59,
+      "sha256": "b439982e733283d7af05f15ca0895f0883d63c8dcbbee472aeb039730ae6bbe9",
+      "output": "outputs.json#composition-build"
+    },
+    {
+      "name": "composition-final",
+      "cwd": ".",
+      "command": "dotnet build src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-review-0cxt9in4/uniform-props.xml -m:1 -v:q",
+      "exitCode": 1,
+      "elapsedSeconds": 7.49,
+      "sha256": "146eb4e01aa4bcf9314be2ae1cf93260fe557a1212c9ffdb901b8cadeed0555d",
+      "output": "outputs.json#composition-final"
+    },
+    {
+      "name": "consumer-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned --platform-assembly /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+      "exitCode": 0,
+      "elapsedSeconds": 22.2,
+      "sha256": "69795f38037ed67986b63c83fc810a785d6abdf82fb5234a316e8fe6819763d1",
+      "output": "outputs.json#consumer-live"
+    },
+    {
+      "name": "consumer-named-live-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned --platform-assembly /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+      "exitCode": 0,
+      "elapsedSeconds": 47.76,
+      "sha256": "e93feb2448ff3179b3be060cbef8e2f250001264d24ed0888fc20b8282236190",
+      "output": "outputs.json#consumer-named-live-final",
+      "environmentControl": {
+        "DOCKER_CONTEXT": "story-2-12-final-context",
+        "DOCKER_CONFIG": "/tmp/story-2-12-review-0cxt9in4/named-context-control",
+        "selection": "Private named context created with the original selected daemon endpoint; removed after the check. Original selection and child Docker configuration preserved."
+      },
+      "limitation": "Existing source-built test assembly; fresh Platform source build still fails separately."
+    },
+    {
+      "name": "default-csharp-final",
+      "cwd": ".",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests -xml /tmp/story-2-12-review-0cxt9in4/csharp-final.xml",
+      "exitCode": 0,
+      "elapsedSeconds": 1.1,
+      "sha256": "e73b01c6831e055084ad1f6faac8ee85c235cb6353af64d63f33d2cbd79982d0",
+      "output": "outputs.json#default-csharp-final",
+      "limitation": "Existing source-built test assembly; 25 cases pass and one explicit case is separately executed twice by the component harness."
+    },
+    {
+      "name": "default-csharp",
+      "cwd": ".",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests -xml /tmp/story-2-12-review-0cxt9in4/csharp.xml",
+      "exitCode": 0,
+      "elapsedSeconds": 1.28,
+      "sha256": "d126d558939631db5318ab0ef21bfea8ae3edd7823052688440cae74031ff0ca",
+      "output": "outputs.json#default-csharp"
+    },
+    {
+      "name": "folders-build",
+      "cwd": ".",
+      "command": "bash /tmp/story-2-12-review-0cxt9in4/build-folders.sh",
+      "exitCode": 1,
+      "elapsedSeconds": 38.42,
+      "sha256": "d20d9028f0b38bfadafb4e16eec04fec3f333a6d4f931b0a1bfea40432ee9327",
+      "output": "outputs.json#folders-build"
+    },
+    {
+      "name": "folders-final",
+      "cwd": ".",
+      "command": "bash /tmp/story-2-12-review-0cxt9in4/build-folders.sh",
+      "exitCode": 1,
+      "elapsedSeconds": 44.41,
+      "sha256": "f4593087f036ec309708da1a95fea89773da66b6e465d12cbfbdaef0cff5e619",
+      "output": "outputs.json#folders-final"
+    },
+    {
+      "name": "provider-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "mvn -B -ntp package",
+      "exitCode": 0,
+      "elapsedSeconds": 3.82,
+      "sha256": "51fe5359261aba06e995f83ba9eb5eb5700e7c42219eef10427ba051b3a7ec0a",
+      "output": "outputs.json#provider-final"
+    },
+    {
+      "name": "provider",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "mvn -B -ntp package",
+      "exitCode": 0,
+      "elapsedSeconds": 3.33,
+      "sha256": "0679f93e7659674fc4553513d8461c72137d461eca37c07924deaac08db20736",
+      "output": "outputs.json#provider"
+    },
+    {
+      "name": "python-final-isolated",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned",
+      "exitCode": 0,
+      "elapsedSeconds": 55.35,
+      "sha256": "f56759da24e163fe8d80ddffc3517f56d03195d8c69569278c2044d1498ab44b",
+      "output": "outputs.json#python-final-isolated"
+    },
+    {
+      "name": "python-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned",
+      "exitCode": 1,
+      "elapsedSeconds": 85.79,
+      "sha256": "8542a2e502c4b9dbbac086eeb9cb99a6e7c8216a430c62af252eb208bc60b07d",
+      "output": "outputs.json#python-final",
+      "disposition": "Retained failure: cancellation communicate(timeout=20) exceeded its original budget during concurrent .NET and live Docker verification. The complete suite passed unchanged in the later isolated invocation. No budgets or retries were added."
+    },
+    {
+      "name": "python-live-final",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned",
+      "exitCode": 0,
+      "elapsedSeconds": 75.2,
+      "sha256": "dd02a4e150ada5b122c0ff2bb7b0b2a66a0f00c0d5ac07aabc46ebc345cc0924",
+      "output": "outputs.json#python-live-final"
+    },
+    {
+      "name": "python-live",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned",
+      "exitCode": 0,
+      "elapsedSeconds": 55.58,
+      "sha256": "dd02a4e150ada5b122c0ff2bb7b0b2a66a0f00c0d5ac07aabc46ebc345cc0924",
+      "output": "outputs.json#python-live"
+    },
+    {
+      "name": "python",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned",
+      "exitCode": 0,
+      "elapsedSeconds": 55.59,
+      "sha256": "b7f473aca428bfc1fc1f9cdb509bae3371b88c7dc129213a8660bee3c63fcfbb",
+      "output": "outputs.json#python"
+    },
+    {
+      "name": "regressions-green",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned.RunOwnedTests.test_provider_mount_uses_receipt_bound_snapshot_during_rebuild test_run_owned.RunOwnedTests.test_cleanup_preserves_replacement_directory_journal test_run_owned.RunOwnedTests.test_metadata_trickle_cannot_extend_absolute_deadline test_run_owned.RunOwnedTests.test_named_context_cleanup_is_repeatable_after_private_config_removal test_run_owned.RunOwnedTests.test_cancellation_during_child_creation_retains_cleanup_ownership",
+      "exitCode": 0,
+      "elapsedSeconds": 2.42,
+      "sha256": "9f9c4b8b5fa75a82b480af6fd85ce39d7947aff01dfb88381b8297f1cc1b8ddd",
+      "output": "outputs.json#regressions-green"
+    },
+    {
+      "name": "regressions-red",
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest -v test_run_owned.RunOwnedTests.test_provider_mount_uses_receipt_bound_snapshot_during_rebuild test_run_owned.RunOwnedTests.test_cleanup_preserves_replacement_directory_journal test_run_owned.RunOwnedTests.test_metadata_trickle_cannot_extend_absolute_deadline test_run_owned.RunOwnedTests.test_named_context_cleanup_is_repeatable_after_private_config_removal test_run_owned.RunOwnedTests.test_cancellation_during_child_creation_retains_cleanup_ownership",
+      "exitCode": 1,
+      "elapsedSeconds": 12.86,
+      "sha256": "d47ac8442ea6f9dfa39c6fdf7b770024fb36dafca70ba74e23829e6ee4770b6a",
+      "output": "outputs.json#regressions-red"
+    },
+    {
+      "name": "tests-build",
+      "cwd": ".",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-review-0cxt9in4/uniform-props.xml -m:1 -v:q",
+      "exitCode": 1,
+      "elapsedSeconds": 11.17,
+      "sha256": "0a180e9f062dd9007d693758b7e94eebff133d2fb4cdf772cd48d282814e0f50",
+      "output": "outputs.json#tests-build"
+    },
+    {
+      "name": "tests-final",
+      "cwd": ".",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-review-0cxt9in4/uniform-props.xml -m:1 -v:q",
+      "exitCode": 1,
+      "elapsedSeconds": 8.19,
+      "sha256": "c06a4be63804916a6e44d5712c746edfa96e88c570e944e24893a65339849832",
+      "output": "outputs.json#tests-final"
+    },
+    {
+      "name": "platform-whitespace",
+      "cwd": ".",
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "name": "folders-whitespace",
+      "cwd": "references/Hexalith.Folders",
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "finalCounts": {
+    "providerTests": 23,
+    "pythonTests": 37,
+    "newRedToGreenRegressions": 5,
+    "defaultCSharpCasesFromExistingAssembly": 25,
+    "separateExplicitCSharpExecutions": 2,
+    "liveRsaProbes": 19,
+    "realContainerTerminalCases": 5,
+    "nonstandardCallerUid": 1001
+  },
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "ee04daee2161d8557da3adde83797f36f6966635610e82984aa15389190a1332",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "ddd7fc389ddfea3f730633c417579006628495f37b8c410db81cae476a40708d",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "a8abf87351131565c83d9280561a57153b2d01b8f904a0f36d7be3eeaf8f2c30",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "c8889d1a71f5ae4cdd4d333d94509af32ec9073b7a727881228552d4a0daf9b3",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "19958adaf2c2fdf050fb25ed2f2bbb4810b92a8844cbf5b2a67533417df9a676",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "bddd7b175fca09e5b362f442609d93dbcd2e2d09718475ea747a3d1a56bb891b",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "f95103fe0eea42e9685c12b7e4412fef99f0dc810583767db5b46322b75fc5f8",
+    "docs/security/workload-binding-enrollment.md": "6d61bcaaa44e20120577d2561475c0ca92ebee1594bd25721c7a5ab10698508b"
+  },
+  "providerSha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+  "existingTestAssemblySha256": "4bba735ce75917a3a93f947f53f00a67463028413aff799ec056ed3324e98353",
+  "review": {
+    "layers": 3,
+    "reports": 14,
+    "patchGroups": [
+      "G26",
+      "G27",
+      "G28",
+      "G29",
+      "G30"
+    ],
+    "patchesIndependentlyRechecked": true,
+    "newDeferrals": 2,
+    "carriedDeferralReports": 5,
+    "carriedRejectedReports": 1
+  },
+  "cleanup": {
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0,
+    "remainingContainers": [],
+    "remainingDirectories": []
+  },
+  "delivery": "Local unstaged corrections only; no commit, push, dependency/release/CI edit or submodule pointer change.",
+  "limitations": [
+    "Fresh Platform source builds fail because inherited EventStore 4.2.0 conflicts with authoritative 5.0.0.",
+    "Fresh Folders source build fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71; affected Folders runtime suites and strict acceptance remain unexecuted.",
+    "Concurrent final Python suite timed out in the cancellation control; its complete isolated repeat passed unchanged. Both outputs are retained.",
+    "Previously deferred delayed-daemon outcome and provider trust-composition regression gaps remain open.",
+    "No Platform lifecycle qualification or Folders 12.2 completion."
+  ],
+  "finalIntegrityAudit": {
+    "sourceHashesMatch": true,
+    "outputHashesMatch": true,
+    "existingCSharpAssemblyMatchesPriorVerification": true,
+    "frozenIntentUnchanged": true,
+    "platformHeadUnchanged": true,
+    "foldersHeadUnchanged": true
+  }
+}

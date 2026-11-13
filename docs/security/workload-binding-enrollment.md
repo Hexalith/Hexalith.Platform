@@ -214,7 +214,8 @@ asks Docker to allocate a loopback port with `127.0.0.1::8443`, validates the
 actual publication by owned container ID, and derives the HTTPS localhost
 origin from that binding. Keycloak's [hostname-only setting](https://www.keycloak.org/server/hostname)
 fixes `localhost` while resolving scheme and port from the HTTPS request.
-The launcher pins the exact server version and existing provider digest, and
+The launcher pins the exact server version and snapshots the existing provider
+into its private directory before binding the digest and mounting those bytes. It
 keeps the original Docker context or endpoint selection for the entire lease.
 Named contexts are copied, including their TLS material, into private run-owned
 Docker configuration so retargeting the original name cannot redirect authority
