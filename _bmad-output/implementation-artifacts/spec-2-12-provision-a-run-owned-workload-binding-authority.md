@@ -2,7 +2,7 @@
 title: '2.12 Provision a run-owned workload-binding authority'
 type: 'feature'
 created: '2026-11-13'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '375231e1552c98a4238482c67b6e69d92ea43d1a'
@@ -127,3 +127,48 @@ Use a two-phase launcher because the verifier runs inside xUnit: changing trust 
 ## Verification
 
 From K run `mvn -B -ntp package`, `python3 -B -m unittest test_run_owned`, and `python3 -B verify_component.py --run-owned`. Build Platform Composition.Tests and Folders AppHost.Tests individually in Debug/source mode; run their affected xUnit classes directly, including live enrollment controls through the launcher. Record exact commands, revisions, version/provider digests, named negative controls and cleanup observations. Do not substitute component success for the unchanged strict real-provider acceptance suite.
+
+### Review Findings
+
+Review pass 2, 2026-11-13. Four layers reported. Each finding was verified before grouping. Severity is the triage verdict.
+
+- [ ] [Review][Patch] Workers replica is given its own AppId, then the test requires a shared secret [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs:95]
+- [ ] [Review][Patch] A descendant that calls setsid survives after group cleanup reports success [infrastructure/keycloak-workload-binding/run_owned.py:428]
+- [ ] [Review][Patch] Docker stdout is parsed with stderr merged in [infrastructure/keycloak-workload-binding/run_owned.py:39]
+- [ ] [Review][Patch] A non-JSON readiness response aborts the lease instead of retrying [infrastructure/keycloak-workload-binding/run_owned.py:316]
+- [ ] [Review][Patch] Cleanup wait is capped by an already past owner deadline [src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs:162]
+- [ ] [Review][Patch] Fresh host exchange accepts a token the consumer verifier would refuse [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:385]
+- [ ] [Review][Patch] Non-1000 caller evidence prints group and secret mode as constants [infrastructure/keycloak-workload-binding/run_owned_component.py:222]
+- [ ] [Review][Patch] Cohort digest re-encodes JSON instead of hashing the request bytes [infrastructure/keycloak-workload-binding/run_owned.py:93]
+- [ ] [Review][Patch] Expiry control shares an eight-second lease with image pull [infrastructure/keycloak-workload-binding/run_owned_component.py:146]
+- [ ] [Review][Patch] A second TERM, INT, or HUP during cleanup skips removal [infrastructure/keycloak-workload-binding/run_owned.py:475]
+- [ ] [Review][Patch] SIGQUIT and SIGABRT skip the cleanup handler [infrastructure/keycloak-workload-binding/run_owned.py:478]
+- [ ] [Review][Patch] Probe revision accepts boolean true and 1.0 [infrastructure/keycloak-workload-binding/run_owned.py:127]
+- [ ] [Review][Patch] Unrelated lifecycle control sleeps less than the five scenario budgets [infrastructure/keycloak-workload-binding/run_owned_component.py:158]
+- [ ] [Review][Patch] Normally run tests never assert probe audience equals the Dapr app id [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:35]
+- [ ] [Review][Patch] global-administrators storage tenant has no negative test [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:69]
+- [ ] [Review][Patch] Producer negative test corrupts global-administrators, not the tenants domain [infrastructure/keycloak-workload-binding/test_run_owned.py:44]
+
+- [x] [Review][Defer] Provider trust composition is not asserted outside the opt-in durability suite [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs:39] — deferred: the only execution of this fixture is the opt-in durability suite, and a hermetic assertion requires splitting certificate composition out of Docker startup in StartAsync.
+
+#### Rejected
+
+- Dead launcher leaves the owned container running — rejected. Cleanup stays with the launcher. Its `finally` already removes the container and the private directory on every exit that runs Python. A child-side `docker rm` leaves that directory, so `DisposeAsync` still fails, and deleting the directory from the child races the launcher.
+- `Protected` omits uid and regular-file checks — low, rejected. The launcher writes owner-created regular files in a 0700 directory. A substituted fifo is not an everyday path, and the fix needs native file-type and uid inspection.
+- `hostTrustFile` is not size-capped or required to be a regular file — low, rejected. Callers pass a normal PEM. Blocking on a fifo or reading an unbounded file is same-user substitution, and the fix adds type and size guards.
+- A root adopter can read another user's mode-0600 receipt — low, rejected. The receipt path comes from the launcher environment for the same user. Checking uid needs native stat inspection.
+- A descendant with the capability environment can write `release.json` — low, rejected. That capability is the child tree's release secret, and the directory is mode 0700. Binding the writer pid would be a new authorization rule.
+- Host trust is a substring check, the Forgejo PEM is appended without a separator, and the run CA has no path length — low, rejected. The launcher bundle is built with newlines, and the spec requires that bundle on every enrolled host. A path-length limit is extra CA policy.
+- Live producer and cleanup controls are outside default CI — false. The story specifies explicit `--run-owned` selection. The Folders allowlist keeps that explicit fact from failing the not-runnable gate.
+- Four-minute startup still cancels the run, and an expired lease signals the child — false. The code map keeps the four-minute fixture budget. `lease.check()` and `stop_child` are how a finite lease ends the child.
+- The launcher pulls a moving tag and `verify_component.py` still uses Keycloak 26.6 — false. The launcher refuses unless `kc.sh` reports Keycloak 26.6.4. The 26.6 tag is the pre-existing component path.
+- `AdoptAsync` returns null and the fixture continues — false. Both launcher variables absent is the specified external-enrollment path. Missing trust is refused by name only when a receipt is present.
+- The epic cleanup paraphrase dropped other-environment and hold protection — false. The rewrite still requires owned-only removal, proof that other environments were preserved, and stopping attachments before teardown.
+- `killpg` errors other than `ProcessLookupError` abort the signal loop — low, rejected. The launcher owns the session, so a non-ESRCH failure is rare, and `finally` still runs container cleanup. Swallowing every `OSError` adds a guard.
+- `require_child` does nothing when no child exists — false. `provision()` runs only after `launch` assigns `lease.child`.
+- Boolean `True` is accepted as a one-second lifetime — false. `argparse` `type=int` rejects that string, and every in-repo caller passes an int.
+- An empty signer `x5c` raises `IndexError` — low, rejected. The pinned server's JWKS includes `x5c` on this path. A named refusal would be a new guard for a response the live controls do not produce.
+- An empty inherited trust file drops system roots — low, rejected. Everyday `SSL_CERT_FILE` is unset or a real bundle. An emptiness guard is extra.
+- `_child` with no command raises `IndexError` — false. `launch` refuses an empty command before it spawns `_child`.
+- `trust.pem` can be replaced during the provisioning wait — low, rejected. The file is written once before the child starts, in a 0700 directory. A second hash is an extra guard against same-user substitution.
+- `SSL_CERT_FILE` pointing at a directory aborts provider startup — false. `File.Exists` returns false for a directory, so `StartAsync` writes the Forgejo certificate and does not throw.
