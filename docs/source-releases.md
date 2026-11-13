@@ -12,6 +12,12 @@ repeated regressions. Every profile retains exact execution counts with zero
 skips. Missing or pending counterparts defer. Failures, cancellations, unknown
 jobs, foreign/PR inputs, stale callbacks and changed main refuse.
 
+Only the tuple execution steps receive the existing read-only GitHub job token.
+The runner removes it from ambient and ordinary command environments, passing it
+only to published-artifact verification. That verifier retains it privately for
+fixed official Builds API metadata requests; its Git, signature and tool subprocesses
+do not inherit it. Signature, publication, source and execution-count checks remain independent.
+
 The SDK4.2.0 row binds the genuine Sample source and public Tenants7.0.5;
 the SDK4.1.0 row retains its existing public Parties owner regression. A separate
 SDK4.2.0 check authenticates the twelve signed public reader bodies and executes

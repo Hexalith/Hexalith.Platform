@@ -1,14 +1,22 @@
 """Authenticate the normal shared release handoff; this supplies no native qualification credit."""
 import hashlib
 import json
+import os
 import urllib.request
 
 API = "https://api.github.com/repos/Hexalith/Hexalith.Builds/"
 
 
 def read_official(path):
+    return _read_official(path, os.environ.get("GH_TOKEN"))
+
+
+def _read_official(path, token):
     request = urllib.request.Request(API + path, headers={"User-Agent": "Hexalith-Platform-publication-verification/1.0",
                                                        "Accept": "application/vnd.github+json"})
+    if token:
+        # Keep the credential on this official request only, including across redirects.
+        request.add_unredirected_header("Authorization", "Bearer " + token)
     with urllib.request.urlopen(request, timeout=60) as response:
         raw = response.read(2_000_001)
     if len(raw) > 2_000_000:
