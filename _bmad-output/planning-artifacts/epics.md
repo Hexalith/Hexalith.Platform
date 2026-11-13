@@ -643,7 +643,7 @@ No UX design contract exists. None was found under `ux-designs/`, and there is n
 
 **Additional requirements:**
 - Epic 1: AR-1–AR-6, AR-8–AR-10, AR-49, AR-50 (reference-composition adoption), AR-53, AR-54, plus the zero-extension baseline of AR-7.
-- Epic 2: AR-2 (fixed ports and volumes), AR-12 (CI tiers), AR-13, AR-14, AR-15, AR-16 (the complete candidate and attachment policy).
+- Epic 2: AR-2 (fixed ports and volumes), AR-12 (CI tiers), AR-13, AR-14, AR-15, AR-16 (the complete candidate and attachment policy), AR-25 (run-owned workload-binding authority for disposable environments, Story 2.12).
 - Epic 3: AR-7, AR-11, AR-12 (evidence binding), AR-25–AR-27 (local instances), AR-46–AR-48, AR-62; it consumes the AR-16 policy published by Epic 2.
 - Epic 4: AR-17–AR-32, AR-43, AR-45, AR-55, AR-56, AR-59 (Kubernetes currency, Forgejo relocation, public-exposure removal and the capture-lag decision, pulled forward), AR-63; AR-22 module attestation before publication.
 - Epic 5: AR-19, AR-22 (vulnerability policy), AR-33, AR-34, AR-46 (stable publication after staging validation), AR-57.
@@ -1617,6 +1617,51 @@ So that Story 2.10 can qualify every required scenario rather than inferring pro
 **When** invoked
 **Then** it can select a genuine exclusive-resource collision case, which is refused with an explicit conflict while unrelated resources are preserved
 **And** it can select CI startup-timeout, failure-followed-by-cancellation, owner-cancellation-before-attachment-end and attached-failure/hold-expiry cases
+
+### Story 2.12: Provision a run-owned workload-binding authority for disposable test environments
+
+As a module test author,
+I want a disposable test run to get its own workload-binding authority, enrolled for exactly that run's callers and tenant,
+So that real-provider acceptance exercises bound workload tokens without a manual owner enrollment per run.
+
+**Repo:** Hexalith.Platform, Hexalith.Folders (first consumer, owner review) · **Covers:** AR-25 (local and CI instances: run-owned workload binding) · **Unblocks:** Hexalith.Folders Story 12.2 strict real-provider acceptance
+
+**Origin (2026-11-13):** Requested by Hexalith.Folders `sprint-change-proposal-2026-11-13.md`. The Folders acceptance fixture draws a random identity for every run, so a pre-provisioned owner enrollment can never match its callers or tenant. Installing the provider and enrolling persistent, staging and production authorities stays with the realm owner (Story 10.1 for Folders staging). The provider, the enrollment consumer and `verify_component.py` already exist; this story reuses them.
+
+**Acceptance Criteria:**
+
+**Given** a run-owned environment with its final caller cohort and tenant
+**When** the run starts the authority
+**Then** a disposable Keycloak 26.6.4 with the workload-binding provider starts over HTTPS, configured only by a startup realm import, with no administrative user and no admin API call
+**And** it enrolls exactly the inventory the enrollment consumer requires for that cohort and tenant, derived from the consumer's own inventory rule, with grant and manifest validity bounded by the run
+
+**Given** the started authority
+**When** the run continues
+**Then** it writes an owner-only manifest and client secret files in the run directory and supplies `Folders:WorkloadEnrollment:ManifestPath` and `ManifestSha256`
+**And** the unchanged consumer performs its full TLS, signer and probe verification before catalog capture
+
+**Given** TLS between the authority, the consumer and the hosts
+**When** they connect
+**Then** they use default certificate validation, with trust supplied at process launch
+**And** missing trust fails closed with a named precondition, and no validation bypass exists
+
+**Given** a persistent, shared, staging or production authority, or a manifest from another run
+**When** the producer is invoked there, or that manifest is presented
+**Then** it is refused
+
+**Given** a run that passes, fails or is cancelled
+**When** cleanup runs
+**Then** the container, manifest, secrets and certificates the run created are removed
+**And** retained evidence is labeled `run-owned enrollment` and holds no credentials, grants or keys
+
+**Given** the producer
+**When** Platform component tests run
+**Then** they cover a full enrollment, a cohort or tenant mismatch, a foreign-run manifest, missing TLS trust and cleanup
+
+**Given** the workload-binding enrollment runbook
+**When** this story lands
+**Then** it documents this path as the only generated-trust activation, limited to disposable run-owned environments
+**And** its Folders Story 12.2 paragraph points to this path
 
 ## Epic 3: Run the complete Hexalith system locally with agent access
 
@@ -4656,6 +4701,11 @@ So that Folders is proven in a hosted environment before production.
 **When** enrollment is evaluated
 **Then** the Platform MVP recovery envelope takes precedence, and they block nothing
 **And** Folders' module behavior, authorization and release gates still apply
+
+**Given** Folders' workload-binding traffic in staging
+**When** Folders is enrolled
+**Then** Administrator installs the workload-binding provider on the shared Keycloak, Folders' exact grants are enrolled in the staging realm per the enrollment runbook, and the Platform consumer verifies them
+**And** Folders' bound source reads pass in staging, and no run-owned (Story 2.12) enrollment is accepted as staging evidence
 
 ### Story 10.2: Enroll Projects into staging
 
