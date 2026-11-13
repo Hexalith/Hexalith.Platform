@@ -2,7 +2,7 @@
 title: '2.12 Provision a run-owned workload-binding authority'
 type: 'feature'
 created: '2026-11-13'
-status: 'in-review'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '375231e1552c98a4238482c67b6e69d92ea43d1a'
@@ -295,3 +295,82 @@ The user explicitly requested pushing all changes after the halted build report.
 ### User-requested publication of G26–G30
 
 The user requested pushing all changes after the halted build report. All 17 root-declared submodules are clean, and each recorded commit is independently confirmed on an origin remote branch. Platform main is synchronized before the publication commit. [Publication preparation](evidence/2-12/post-publication-review-20261113/publication-preparation.json) records canonical revisions and the repository checks. The local-only notes above describe the completed build phase; this user-directed publication retains status in-review and both fresh-build/runtime gates.
+
+
+### Review Findings
+
+Post-publication review, 2026-11-13. Scope: Platform `375231e1..43a0495a` plus Folders `583d3d49..f1520098`, limited to the enrollment sources (15 files). Four layers reported: B = blind, E = edge-case, V = verification-gap, A = acceptance. Every report was verified before grouping. The severity shown is the triage verdict. P1 was reproduced: a SIGTERM delivered inside `Lease.get` is retried as `OSError`, and a second SIGTERM is ignored. P2 was confirmed: Folders' Platform gitlink `edf62206` lacks both newly linked source files.
+
+- [x] [Review][Patch] Cancellation raises `InterruptedError`, an `OSError` subclass, so the readiness loop retries it, later signals are ignored, and release-path cleanup reports false leftovers (high; B1, E1, E2) [infrastructure/keycloak-workload-binding/run_owned.py:365]
+- [x] [Review][Patch] Folders main compiles `PlatformWorkloadEnrollmentInventory.cs`/`PlatformRunOwnedWorkloadEnrollment.cs`, which are absent from its Platform pin `edf62206`; advance that gitlink to a published Platform commit containing them (high; V other) [references/Hexalith.Folders/src/Hexalith.Folders.AppHost/Hexalith.Folders.AppHost.csproj:37]
+- [x] [Review][Patch] `stop_child` re-sends SIGTERM to every owned process every 20 ms, so second-signal force-exit handlers (Dapr) skip graceful shutdown; signal each identity once per phase (medium; B9) [infrastructure/keycloak-workload-binding/run_owned.py:556]
+- [x] [Review][Patch] `AdoptAsync` refusals after `result.json` (trust digest, result/manifest binding, loopback issuer, cohort, secret location, final re-read) have no tests (medium; V1, A2, B14) [src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs:105]
+- [x] [Review][Patch] Bridge-cancellation lane replaces `Lease.get`, so `provision`'s own `release.json` check is never exercised (medium; V2) [infrastructure/keycloak-workload-binding/run_owned_component.py:330]
+- [x] [Review][Patch] Distinct primary/proof identity and replica-permission refusals are not pinned by code; shared-workload faults trip earlier checks (medium; V3) [infrastructure/keycloak-workload-binding/test_run_owned.py:379]
+- [x] [Review][Patch] Launcher trust-bundle PEM separator is not pinned by a no-trailing-newline case (low; V4) [infrastructure/keycloak-workload-binding/test_run_owned.py:483]
+- [x] [Review][Patch] Test child inherits the launcher-injected `DOCKER_CONTEXT`; copy the child environment from the original environment (low; A3) [infrastructure/keycloak-workload-binding/run_owned.py:595]
+- [x] [Review][Patch] A missing/unreadable `hostTrustFile` escapes the named trust refusal as a raw IO exception (low; A6) [src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs:83]
+- [x] [Review][Patch] Summary `docker inspect` runs after `result.json` is published, so its failure kills an already-adopted child; inspect before publication (low; E4) [infrastructure/keycloak-workload-binding/run_owned.py:388]
+- [x] [Review][Patch] `run_assembly` discards the launcher's constant refusal line on failure (low; B13) [infrastructure/keycloak-workload-binding/run_owned_component.py:322]
+- [x] [Review][Patch] Folders receipt-fault loop asserts only the exception type, not each refusal code (low; B16) [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs:128]
+
+- [x] [Review][Defer] Folders runtime suites and strict acceptance remain unexecuted [references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs:1153] — deferred: carried D3, a pre-existing FrontComposer/net11 build gate; the open validation task already records it (medium; A1)
+- [x] [Review][Defer] Five-second SIGTERM grace may be too short for child teardown [infrastructure/keycloak-workload-binding/run_owned.py:548] — deferred: medium, unverified. Settle by observing whether the xUnit child runs fixture disposal on SIGTERM and how long DCP/fixture teardown takes (E9)
+- [x] [Review][Defer] Explicit assembly lanes misparse the launcher summary when xUnit colors its output [infrastructure/keycloak-workload-binding/run_owned_component.py:270] — deferred: pre-existing to these patches and found during their verification. With `TERM=xterm-256color`, xUnit ends with an ANSI reset and no newline, so the launcher's summary JSON does not start its line. `verify_component.py --run-owned --platform-assembly` then fails proof validation although the test passed; the HEAD launcher reproduces it. Settle by disabling xUnit color in `run_assembly` or by starting the launcher summary on its own line (medium)
+
+#### Rejected
+
+- A4 low: the published port is loopback-only and secrets stay private. Bridge-network isolation would need host networking and port selection, which brings back the R1 forwarder problem.
+- A5 low: losing the child-tree code takes a double cleanup failure, and fixing it needs exception aggregation.
+- A7: the fix would edit the spec under review.
+- A8, B13 (success path) false: the forwarded output is metadata only, and the launcher forwards the same child stdout by design.
+- A9 low: the duplication with `verify_component.py` names no diverging caller, and the fix is a refactor.
+- B2/E3 low: the rm-versus-`--rm` race needs Keycloak to exit on its own during cleanup, and the fix adds an exception branch.
+- B3/E7 low: a Keycloak exit during readiness still ends at the bridge timeout or lease with cleanup. The fix would add a daemon probe on every iteration.
+- B4/E10 low (carried): SIGKILL is uncatchable, and container self-expiry is a new mechanism.
+- B5 low (carried): `kc.sh` enforces the exact version, and retagging the image requires daemon access.
+- B6 low: the CA key sits in a 0700 directory, and the trust it confers is scoped to `SSL_CERT_FILE`. The same user could replace `trust.pem` anyway.
+- B7/E11 low: remote or VM daemons fail loudly (missing mounts, unreachable origin). The fix adds an endpoint guard.
+- B8 low: ending the child at the lease deadline is by design (prior pass), and Debian-family hosts keep their `SSL_CERT_DIR` roots after release.
+- B10 low (carried): the capability is the child tree's release secret.
+- B11/E13 low: bridge-generated grant IDs are unique by construction.
+- B12/E12 low: only hand-crafted malformed requests trigger this, and the traceback carries no data.
+- B14 (`launcher-exited`)/E16 low: this needs the launcher to die mid-adoption. The reported `owned-cleanup-incomplete` is accurate, and naming the original cause would require restructuring disposal.
+- B15/E17 low (carried): this is a same-user substitution, and the check needs native uid inspection.
+- B16 (test name) false: `Validate` is the pre-exchange gate in `ConfigureAsync`.
+- B17/E21 false: the docs list passwordless `sudo`/`setpriv` as a component-validation prerequisite.
+- B18/E20 low: this is a component-only control on the developer host, and it fails loudly.
+- E5 low: the exact image is a documented prerequisite, and a cold pull fails loudly.
+- E6 low: with the prerequisite image present, `docker run` returns quickly. The fix adds release guards.
+- E8 low: orphan zombies are reaped by `stop_child`, and the PID pressure is negligible.
+- E14 low: this needs Maven to rewrite the JAR during the snapshot, and the fix adds a double-read guard.
+- E15 false: a mismatched name is refused loudly by the launcher's cohort validation.
+- E18 low: the authority is already serving when the control runs, and tightening the check adds a guard.
+- E19 low: the current output has no such line, and the fix adds a parse guard.
+- E22 low: `SSL_CERT_FILE` set to a missing path is a misconfiguration. A similar finding was rejected in a prior pass.
+- V other (dispose masking) low: masking needs cleanup to take over 30 s with a live launcher, and the fix needs exception aggregation.
+
+#### Patch application, 2026-11-13
+
+All 12 patches are applied. P2 is local Folders commit `d1ee8d61` (gitlink `edf62206` → `43a0495a`, commitlint clean). Folders is not pushed, and the Platform gitlink is not re-pinned. The other edits are unstaged in Platform and Folders.
+
+- Red-to-green, against HEAD sources:
+  - P1: cancellation was retried for 19.3 s, until the lease deadline.
+  - P3: 16 SIGTERMs were delivered instead of 1.
+  - P8: the child received `DOCKER_CONTEXT`.
+  - P10: `result.json` was published before the inspect failure.
+  - P11: the refusal code was dropped.
+- Guard mutations caught:
+  - Python: the release check (P5), the PEM separator (P7), and the distinct-proof, distinct-primary and replica-permission rules (P6).
+  - C#: the loopback-issuer and secret-directory checks (P4), and the P9 revert. All 3 new theory cases failed under these mutations.
+- Final results:
+  - Python: `python3 -B -m unittest test_run_owned`, 43/43 passing.
+  - C#: `-class PlatformRunOwnedWorkloadEnrollmentTests`, 35 passing (1 explicit test not run).
+  - Live lanes: `verify_component.py --run-owned` gave 19 fresh RSA probes, 5 real-container terminal controls and the UID 1001 caller. `--platform-assembly` with `NO_COLOR=1 TERM=dumb` passed both the consumer/fresh-host lane and the cancellation lane; the cancellation lane recorded `adoptionCancelled` through the production readiness loop.
+  - Leftovers: zero owned containers and zero private run directories.
+  - Whitespace: `git diff --check` is clean in both repositories.
+- Build limits: C# was compiled only for validation. It used `BuildsToolingAssemblyPath`/`BuildsEventStoreHostAssemblyPath` and an empty `GeneratePlatformVersionCatalog` override from the scratchpad, because the D5 catalog conflict (EventStore 4.2.0 vs 5.0.0) still blocks fresh builds. The P12 Folders sources passed the existing analyzer-off typecheck fixture only. Neither open build/runtime validation task is closed, and no Folders 12.2 or lifecycle qualification is claimed.
+
+#### User-requested publication of the post-publication patches
+
+The user asked to push all changes. Folders went first: `d1ee8d61` (Platform pin `edf62206` → `43a0495a`) and `938c6ad7` (receipt refusal codes) were pushed, and `origin/main` was verified at `938c6ad7`. Platform fast-forwarded over two concurrent remote commits (`a777e629`, `b76e0c7c`) that touch none of these files. Its Builds checkout was re-synced to the pinned `v5.2.2` gitlink without recursion. Platform then commits these reviewed corrections and, separately, the Folders gitlink. Status stays `in-progress`; both fresh-build/runtime gates and the medium defers remain open.

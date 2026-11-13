@@ -26,6 +26,8 @@ import run_owned as owned
 if not __debug__:
     raise RuntimeError("Run-owned component controls require unoptimized Python execution.")
 
+REFUSAL = re.compile(r"Run-owned workload enrollment refused: [a-z0-9:,.-]{1,256}")
+
 
 def inventory():
     tenant = "component-" + secrets.token_hex(8)
@@ -321,7 +323,9 @@ def run_assembly(assembly, method, cancellation=False):
         result = subprocess.run([sys.executable, "-B", *launcher, *arguments], env=environment, capture_output=True, text=True)
         if result.returncode:
             report_cleanup_incomplete(result.stdout)
-            raise RuntimeError("Explicit run-owned component controls failed; protected output withheld.")
+            # Only a constant refusal code line survives; any other captured output stays withheld.
+            reason = next((line for line in result.stderr.splitlines() if REFUSAL.fullmatch(line)), None)
+            raise RuntimeError("Explicit run-owned component controls failed; protected output withheld." + (" " + reason if reason else ""))
         validate_assembly_result(result.stdout, result_path, method, cancellation)
         print(result.stdout, end="", flush=True)
 
@@ -335,7 +339,8 @@ def bridge_cancellation_launcher(arguments):
         while not (lease.directory / "release.json").exists() or not (lease.directory / "cancellation-observed.json").exists():
             lease.check(require_child=True)
             time.sleep(0.02)
-        owned.refuse("cohort-adoption-cancelled")
+        # Still not ready: the production readiness loop must observe the release itself.
+        raise OSError("Authority metadata is not ready.")
     with patch.object(owned.Lease, "get", wait_for_cancellation):
         return owned.launch(180, owned.OWNER, arguments)
 
@@ -367,7 +372,7 @@ if __name__ == "__main__":
         except RuntimeError as error:
             print(str(error), file=sys.stderr)
             sys.exit(1)
-        except InterruptedError:
+        except owned.Cancellation:
             sys.exit(1)
     elif sys.argv[1:2] == ["_bridge-cancellation-launcher"]:
         sys.exit(bridge_cancellation_launcher(sys.argv[2:]))

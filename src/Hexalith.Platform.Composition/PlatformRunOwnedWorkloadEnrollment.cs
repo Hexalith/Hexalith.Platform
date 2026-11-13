@@ -80,8 +80,12 @@ public sealed class PlatformRunOwnedWorkloadEnrollment : IAsyncDisposable
                     throw Refused("missing-prelaunch-trust");
             }
             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { throw Refused("missing-prelaunch-trust"); }
-            if (hostTrustFile is not null && (!Path.IsPathFullyQualified(hostTrustFile)
-                || !File.ReadAllText(hostTrustFile).Contains(Encoding.UTF8.GetString(launchTrust), StringComparison.Ordinal))) throw Refused("host-trust-must-merge-launch-trust");
+            try
+            {
+                if (hostTrustFile is not null && (!Path.IsPathFullyQualified(hostTrustFile)
+                    || !File.ReadAllText(hostTrustFile).Contains(Encoding.UTF8.GetString(launchTrust), StringComparison.Ordinal))) throw Refused("host-trust-must-merge-launch-trust");
+            }
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { throw Refused("host-trust-must-merge-launch-trust"); }
             JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(builder, selectedTenant);
             string inventorySha256 = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(inventory.GetRawText())));
             byte[] request = JsonSerializer.SerializeToUtf8Bytes(new { runId, capability, childPid, childIdentity, deadline, inventory, inventorySha256 });

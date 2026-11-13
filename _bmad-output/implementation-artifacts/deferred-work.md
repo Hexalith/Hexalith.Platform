@@ -2032,3 +2032,15 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: Require exact executed-test evidence before ordinary component verification claims consumer live controls.
   evidence: Story 2.12 resumed review B9; verify_component.py accepts only the assembly exit status and derives consumerLiveControls from argument presence. A real wrong-assembly invocation exits zero with Total 0. The acceptance root predates the run-owned path, whose harness already checks exact execution and adoption.
+
+## Deferred from: code review of spec-2-12-provision-a-run-owned-workload-binding-authority.md (2026-11-13, post-publication)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Carried D3, no new work: the Folders runtime suites and strict acceptance remain unexecuted behind the pre-existing FrontComposer/net11 build gate.
+  evidence: Post-publication review A1. The fixture's adoption → consumer → catalog sequence, its merged provider trust and its disposal wiring (FolderDurabilityAcceptanceFixture.cs:1153) have only compiled.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Verify whether the launcher's five-second SIGTERM grace is long enough for child teardown (medium, unverified).
+  evidence: Post-publication review E9. stop_child (run_owned.py:548) escalates to SIGKILL after 5 s. To settle it, observe whether the xUnit child runs fixture disposal on SIGTERM at all, and how long DCP/fixture teardown takes. If disposal does not run, fixture-owned containers leak whatever the grace length.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Make the explicit assembly lanes independent of xUnit console colors (medium).
+  evidence: Found while verifying the post-publication patches. With TERM=xterm-256color, the xUnit v3 runner ends its output with an ANSI reset and no newline, so the launcher's summary JSON lands mid-line. validate_assembly_result (run_owned_component.py:270) then refuses a passing test, and the HEAD launcher reproduces this. Running with NO_COLOR=1 TERM=dumb passes. Fix by disabling runner color in run_assembly, or by starting the launcher summary on its own line.

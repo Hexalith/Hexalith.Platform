@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -131,7 +132,7 @@ class RunOwnedTests(unittest.TestCase):
             observation = Path(name) / "child-pid"
             wrapper = "import os,pathlib,signal,subprocess,sys; import run_owned as o; original=subprocess.Popen\n" \
                 + "def spawn(*args,**kwargs):\n child=original(*args,**kwargs)\n if '_child' in args[0]:\n  pathlib.Path(" + repr(str(observation)) + ").write_text(str(child.pid)); os.kill(os.getpid(),signal.SIGTERM)\n return child\n" \
-                + "subprocess.Popen=spawn\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c','import time; time.sleep(60)'])\nexcept InterruptedError:\n sys.exit(1)"
+                + "subprocess.Popen=spawn\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c','import time; time.sleep(60)'])\nexcept o.Cancellation:\n sys.exit(1)"
             supervisor = "import json,os,pathlib,signal,subprocess,sys; import run_owned as o; o.enable_subreaper(); " \
                 + "result=subprocess.run([sys.executable,'-B','-c'," + repr(wrapper) + "],capture_output=True,text=True); " \
                 + "pid=int(pathlib.Path(" + repr(str(observation)) + ").read_text()); survived=pathlib.Path('/proc/'+str(pid)).exists()\n" \
@@ -194,6 +195,15 @@ class RunOwnedTests(unittest.TestCase):
         self.assertEqual(metadata, json.loads(output.getvalue()))
         self.assertNotIn("secret-token", output.getvalue())
         self.assertNotIn("private-stderr", output.getvalue())
+        refusal = "Run-owned workload enrollment refused: fixed-owner-deadline-expired"
+        stderr = "private-stderr\nRun-owned workload enrollment refused: secret-token-must-not-appear=1\n" + refusal + "\n"
+        with redirect_stdout(StringIO()), patch.object(component.subprocess, "run", return_value=SimpleNamespace(returncode=1, stdout="", stderr=stderr)):
+            with self.assertRaises(RuntimeError) as failure:
+                component.run_assembly("failed.dll", "Tests.Method")
+        self.assertIn("protected output withheld", str(failure.exception))
+        self.assertTrue(str(failure.exception).endswith(refusal))
+        self.assertNotIn("secret-token", str(failure.exception))
+        self.assertNotIn("private-stderr", str(failure.exception))
 
     def test_embedding_beside_unrelated_children_refuses_before_allocation(self):
         control = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"])
@@ -243,7 +253,7 @@ class RunOwnedTests(unittest.TestCase):
             observation, child_marker = Path(name) / "allocated", Path(name) / "child-started"
             script = "import os,pathlib,signal,sys; import run_owned as o; original=o.private_write\n" \
                 + "def publish(path,data):\n if path.name=='journal.json':\n  pathlib.Path(" + repr(str(observation)) + ").write_text(str(path.parent)); os.kill(os.getpid(),signal.SIGTERM)\n original(path,data)\n" \
-                + "o.private_write=publish\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c'," + repr("from pathlib import Path; Path(" + repr(str(child_marker)) + ").touch()") + "])\nexcept InterruptedError:\n sys.exit(1)"
+                + "o.private_write=publish\ntry:\n o.launch(30,o.OWNER,[sys.executable,'-c'," + repr("from pathlib import Path; Path(" + repr(str(child_marker)) + ").touch()") + "])\nexcept o.Cancellation:\n sys.exit(1)"
             completed = subprocess.run([sys.executable, "-B", "-c", script], capture_output=True, text=True, timeout=15)
             self.assertEqual(1, completed.returncode, completed.stderr)
             self.assertTrue(observation.exists())
@@ -378,7 +388,15 @@ class RunOwnedTests(unittest.TestCase):
 
     def test_exact_tenant_cohort_and_permissions_refuse(self):
         original = inventory()
-        for fault in ("tenant", "tenants-storage", "global-administrators-storage", "missing", "callback", "proof", "replica", "foreign", "extra"):
+        expected = {"tenant": "exact-permission-inventory", "tenants-storage": "exact-permission-inventory",
+            "global-administrators-storage": "exact-permission-inventory", "missing": "incomplete-permission-inventory",
+            "callback": "exact-permission-inventory", "proof": "distinct-proof-identities", "primary": "distinct-primary-identities",
+            "replica-permissions": "replica-permissions-changed", "foreign": "cohort", "extra": "exact-permission-inventory"}
+        def share(clients, target, source):
+            # Identical probes, as the bridge derives them for one actual AppId, isolate the identity rule.
+            clients[target]["workload"] = clients[target]["clientId"] = clients[source]["workload"]
+            clients[target]["probes"] = copy.deepcopy(clients[source]["probes"])
+        for fault, code in expected.items():
             with self.subTest(fault=fault):
                 changed = copy.deepcopy(original)
                 clients = {client["resource"]: client for client in changed["clients"]}
@@ -388,11 +406,12 @@ class RunOwnedTests(unittest.TestCase):
                     next(probe for probe in clients["eventstore"]["probes"] if probe["bindings"].get("eventstore:bound-domain") == domain)["bindings"]["eventstore:bound-tenant"] = changed["tenant"]
                 if fault == "missing": clients["eventstore"]["probes"].pop()
                 if fault == "callback": clients["eventstore"]["probes"][0]["bindings"] = {"eventstore:bound-tenant": changed["tenant"]}
-                if fault == "proof": clients["folders-workers-proof-b"]["workload"] = clients["folders-workers-proof-b"]["clientId"] = clients["folders-workers-proof-a"]["workload"]
-                if fault == "replica": clients["folders-replica"]["probes"][0]["revision"] = 2
+                if fault == "proof": share(clients, "folders-workers-proof-b", "folders-workers-proof-a")
+                if fault == "primary": share(clients, "folders-workers", "folders")
+                if fault == "replica-permissions": clients["folders-replica"]["probes"][0]["grantId"] = "replica-specific-grant"
                 if fault == "foreign": changed["receivers"].append("production")
-                if fault == "extra": clients["folders"]["probes"].append(copy.deepcopy(clients["folders"]["probes"][0]))
-                with self.assertRaises(RuntimeError): owned.validate_inventory(changed)
+                if fault == "extra": clients["folders-workers-proof-a"]["probes"].append(copy.deepcopy(clients["folders-workers-proof-a"]["probes"][0]))
+                with self.assertRaisesRegex(RuntimeError, "refused: " + code + "$"): owned.validate_inventory(changed)
 
     def test_explicit_finite_disposable_owner_required(self):
         for lifetime, owner in ((0, owned.OWNER), (-1, owned.OWNER), (86401, owned.OWNER), (float("inf"), owned.OWNER), (60, "production")):
@@ -593,6 +612,121 @@ class RunOwnedTests(unittest.TestCase):
         finally:
             with patch.object(owned, "command", return_value=""):
                 lease.cleanup()
+
+    def provision_request(self, lease):
+        lease.prepare()
+        lease.bind(os.getpid(), "A" * 64)
+        model = inventory()
+        request = {name: lease.receipt[name] for name in ("runId", "capability", "childPid", "childIdentity", "deadline")}
+        request.update(inventory=model, inventorySha256=owned.cohort_digest(json.dumps(model, separators=(",", ":")).encode()))
+        owned.private_write(lease.directory / "request.json", request)
+
+    def test_release_during_unready_metadata_cancels_before_version_inspection(self):
+        lease = owned.Lease(60)
+        calls, attempts = [], []
+        def command(*args, **kwargs):
+            calls.append(args[:2])
+            if args[:2] == ("docker", "run"): return "e" * 64
+            raise RuntimeError("unexpected-" + args[1])
+        def unready(url, context):
+            attempts.append(url)
+            if len(attempts) > 1: raise RuntimeError("release-ignored")
+            owned.private_write(lease.directory / "release.json", dict(runId=lease.run_id, capability="A" * 64))
+            raise OSError("Authority metadata is not ready.")
+        try:
+            self.provision_request(lease)
+            with patch.object(lease, "run", side_effect=command), patch.object(lease, "https_origin", return_value="https://localhost:49153"), \
+                patch.object(lease, "get", side_effect=unready):
+                with self.assertRaisesRegex(RuntimeError, "cohort-adoption-cancelled"): lease.provision()
+            self.assertEqual([("docker", "run")], calls)
+            self.assertFalse((lease.directory / "manifest.json").exists())
+            self.assertFalse((lease.directory / "result.json").exists())
+        finally:
+            with patch.object(owned, "command", return_value=""):
+                lease.cleanup()
+
+    def test_failed_image_inspection_publishes_no_result(self):
+        lease = owned.Lease(60)
+        base = "https://localhost:49153/realms/run-owned"
+        metadata = dict(issuer=base, token_endpoint=base + "/protocol/openid-connect/token", jwks_uri=base + "/protocol/openid-connect/certs")
+        jwks = dict(keys=[dict(kty="RSA", alg="RS256", use="sig", kid="test-signer", x5c=["certificate"])])
+        def command(*args, **kwargs):
+            if args[:2] == ("docker", "run"): return "e" * 64
+            if args[:2] == ("docker", "exec"): return "Keycloak 26.6.4"
+            if args[:2] == ("docker", "inspect"): raise RuntimeError("inspection-failed")
+            return b"public-key" if kwargs.get("binary") else "public-key"
+        try:
+            self.provision_request(lease)
+            with patch.object(lease, "run", side_effect=command), patch.object(lease, "https_origin", return_value="https://localhost:49153"), \
+                patch.object(lease, "get", side_effect=[metadata, jwks]):
+                with self.assertRaisesRegex(RuntimeError, "inspection-failed"): lease.provision()
+            self.assertFalse((lease.directory / "result.json").exists())
+        finally:
+            with patch.object(owned, "command", return_value=""):
+                lease.cleanup()
+
+    def test_inherited_bundle_without_final_newline_keeps_every_root(self):
+        with tempfile.TemporaryDirectory() as name:
+            inherited = Path(name) / "inherited.pem"
+            owned.command("openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1", "-subj", "/CN=Inherited root",
+                "-addext", "basicConstraints=critical,CA:TRUE", "-keyout", str(Path(name) / "inherited.key"), "-out", str(inherited))
+            inherited.write_bytes(inherited.read_bytes().rstrip(b"\n"))
+            lease = owned.Lease(60)
+            try:
+                with patch.dict(os.environ, {"SSL_CERT_FILE": str(inherited)}):
+                    lease.prepare()
+                context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+                context.load_verify_locations(cafile=str(lease.directory / "trust.pem"))
+                self.assertEqual(2, context.cert_store_stats()["x509"])
+            finally:
+                lease.cleanup()
+
+    def test_child_keeps_original_docker_selection_environment(self):
+        environment = {key: value for key, value in os.environ.items() if key not in ("DOCKER_CONTEXT", "DOCKER_HOST", "DOCKER_CONFIG")}
+        child = "import os,sys; sys.exit(3 if {'DOCKER_CONTEXT','DOCKER_HOST','DOCKER_CONFIG'} & set(os.environ) else 0)"
+        completed = subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "30",
+            "--", sys.executable, "-c", child], env=environment, capture_output=True, text=True, timeout=15)
+        self.assertEqual(0, completed.returncode, completed.stderr)
+
+    def test_termination_signals_each_owned_process_once(self):
+        with tempfile.TemporaryDirectory() as name:
+            ready, count = Path(name) / "ready", Path(name) / "count"
+            child = "import pathlib,signal,time; seen=[0]\n" \
+                + "def handle(*_):\n seen[0]+=1; pathlib.Path(" + repr(str(count)) + ").write_text(str(seen[0]))\n" \
+                + "signal.signal(signal.SIGTERM,handle); pathlib.Path(" + repr(str(ready)) + ").touch()\n" \
+                + "while not seen[0]: time.sleep(0.01)\ntime.sleep(0.5)"
+            process = subprocess.Popen([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "30",
+                "--", sys.executable, "-B", "-c", child], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            limit = time.monotonic() + 15
+            while not ready.exists() and process.poll() is None and time.monotonic() < limit: time.sleep(0.02)
+            self.assertTrue(ready.exists())
+            os.kill(process.pid, signal.SIGTERM)
+            out, err = process.communicate(timeout=15)
+            self.assertEqual(1, process.returncode, err)
+            self.assertEqual("1", count.read_text())
+            self.assertIn('"observedRemainingTemporaryPaths": 0', out)
+
+    def test_cancellation_during_metadata_request_is_not_retried(self):
+        # A terminal signal inside a blocking metadata request is cancellation, never a retryable I/O failure.
+        with tempfile.TemporaryDirectory() as name:
+            observation = Path(name) / "in-get"
+            child = "import run_owned_component as c, time; c.publish_request(); time.sleep(60)"
+            wrapper = "import os,pathlib,signal,socket,sys,threading,time; import run_owned as o\n" \
+                + "server=socket.socket(); server.bind(('127.0.0.1',0)); server.listen(8); held=[]\n" \
+                + "threading.Thread(target=lambda: [held.append(server.accept()) for _ in iter(int,1)],daemon=True).start()\n" \
+                + "marker=pathlib.Path(" + repr(str(observation)) + "); real_run=o.Lease.run; real_get=o.Lease.get\n" \
+                + "def run(lease,*args,**kwargs):\n if args[:2]==('docker','run'): return 'e'*64\n return real_run(lease,*args,**kwargs)\n" \
+                + "def get(lease,url,context):\n marker.touch(); return real_get(lease,url,context)\n" \
+                + "o.Lease.run=run; o.Lease.get=get; o.Lease.https_origin=lambda lease: 'https://localhost:'+str(server.getsockname()[1])\n" \
+                + "def cancel():\n while not marker.exists(): time.sleep(0.01)\n for _ in range(3):\n  time.sleep(0.3); os.kill(os.getpid(),signal.SIGTERM)\n" \
+                + "threading.Thread(target=cancel,daemon=True).start()\n" \
+                + "try:\n o.launch(20,o.OWNER,[sys.executable,'-B','-c'," + repr(child) + "])\nexcept o.Cancellation:\n sys.exit(1)"
+            started = time.monotonic()
+            completed = subprocess.run([sys.executable, "-B", "-c", wrapper], capture_output=True, text=True, timeout=40)
+            self.assertTrue(observation.exists())
+            self.assertEqual(1, completed.returncode, completed.stderr)
+            self.assertLess(time.monotonic() - started, 12, "Cancellation was retried until the lease deadline.")
+            self.assertIn('"observedRemainingTemporaryPaths": 0', completed.stdout)
 
     def test_real_post_creation_terminal_paths_preserve_unrelated_live_control(self):
         lifecycle_controls()

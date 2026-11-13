@@ -32,6 +32,10 @@ ROOT = Path(__file__).resolve().parent
 JAR = ROOT / "target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar"
 
 
+class Cancellation(BaseException):
+    """Terminal-signal cancellation. Not an OSError, so I/O retry handlers cannot swallow it."""
+
+
 def refuse(code):
     raise RuntimeError("Run-owned workload enrollment refused: " + code)
 
@@ -381,11 +385,13 @@ class Lease:
         manifest = dict(schema="hexalith.workload-enrollment/v1", authority=issuer, issuer=issuer, tokenEndpoint=metadata["token_endpoint"],
             notBefore=int(time.time()) - 1, expiresAt=self.deadline, signingKeyId=signer["kid"], signingPublicKeySha256=hashlib.sha256(spki).hexdigest().upper(),
             receivers=inventory["receivers"], clients=clients)
+        # Every fallible daemon observation precedes publication; an adopted child is never failed afterwards.
+        image_id = self.run("docker", "inspect", self.container_id, "--format", "{{.Image}}")
         self.check(require_child=True)
         private_write(self.directory / "manifest.json", manifest)
         private_write(self.directory / "result.json", dict(runId=self.run_id, deadline=self.deadline, inventorySha256=request["inventorySha256"],
             manifestPath=str(self.directory / "manifest.json"), manifestSha256=digest(self.directory / "manifest.json")))
-        return dict(qualification="run-owned enrollment", serverVersion="26.6.4", imageId=self.run("docker", "inspect", self.container_id, "--format", "{{.Image}}"),
+        return dict(qualification="run-owned enrollment", serverVersion="26.6.4", imageId=image_id,
             providerSha256=self.receipt["providerSha256"], resourceCount=len(clients), workloadCount=len(realm["clients"]),
             administrativeIdentity=False, startupImport=True)
 
@@ -544,16 +550,19 @@ def stop_child(child, existing_children):
     if child is None:
         return
     # Re-scan while terminating: descendants can create a new session or become subreaper children.
+    # Each identity receives each signal once; repeats would trip second-signal force-exit handlers.
     for number in (signal.SIGTERM, signal.SIGKILL):
         deadline = time.monotonic() + 5
+        signalled = set()
         while True:
             child.poll()
             members = owned_members(child, existing_children)
             for pid, start in members.items():
                 try:
                     # A recycled PID is never a signal target.
-                    if process_snapshot().get(pid, (None, None, None, None))[3] == start:
+                    if (pid, start) not in signalled and process_snapshot().get(pid, (None, None, None, None))[3] == start:
                         os.kill(pid, number)
+                        signalled.add((pid, start))
                     os.waitpid(pid, os.WNOHANG)
                 except (ProcessLookupError, ChildProcessError):
                     pass
@@ -587,12 +596,13 @@ def launch(lifetime, owner, arguments):
             return
         terminating = True
         if not starting_child:
-            raise InterruptedError("Run-owned workload enrollment cancelled.")
+            raise Cancellation("Run-owned workload enrollment cancelled.")
     try:
         for number in terminal_signals:
             previous[number] = signal.signal(number, terminal)
         lease = Lease(lifetime, owner)
-        child_environment = dict(lease.command_environment)
+        # The lease pins Docker selection for its own commands only; the child keeps its original environment.
+        child_environment = dict(os.environ)
         signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
         lease.prepare()
         enable_subreaper()
@@ -610,7 +620,7 @@ def launch(lifetime, owner, arguments):
         finally:
             starting_child = False
         if terminating:
-            raise InterruptedError("Run-owned workload enrollment cancelled.")
+            raise Cancellation("Run-owned workload enrollment cancelled.")
         adopted = False
         while lease.child.poll() is None:
             lease.check()
@@ -678,7 +688,7 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(str(error), file=sys.stderr)
         sys.exit(1)
-    except (InterruptedError, OSError, ValueError, KeyError, TypeError):
+    except (Cancellation, OSError, ValueError, KeyError, TypeError):
         # Protected request data, credentials, token responses and command arguments stay private.
         print("Run-owned workload enrollment refused; private producer or lifecycle precondition failed.", file=sys.stderr)
         sys.exit(1)

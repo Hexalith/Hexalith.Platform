@@ -175,6 +175,107 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         finally { Directory.Delete(directory, recursive: true); }
     }
 
+    /// <summary>Producer artifacts that differ from the receipt, the final cohort or the private run directory refuse before activation.</summary>
+    /// <param name="fault">The isolated trust or producer fault.</param>
+    /// <param name="code">The named refusal.</param>
+    [Theory]
+    [InlineData("trust-digest", "missing-prelaunch-trust")]
+    [InlineData("host-trust", "host-trust-must-merge-launch-trust")]
+    [InlineData("result", "foreign-result-or-changed-cohort")]
+    [InlineData("manifest-digest", "manifest-binding")]
+    [InlineData("issuer", "disposable-loopback-authority-required")]
+    [InlineData("cohort", "changed-cohort")]
+    [InlineData("probes", "changed-cohort-or-tenant")]
+    [InlineData("secret", "foreign-secret-reference")]
+    [InlineData("final-cohort", "changed-final-cohort")]
+    public async Task ForeignProducerArtifactsRefuseBeforeActivation(string fault, string code)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "run-owned-producer-control-" + Path.GetRandomFileName());
+        Directory.CreateDirectory(directory);
+        try
+        {
+            if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            string trustFile = Path.Combine(directory, "trust.pem"), receiptFile = Path.Combine(directory, "receipt.json");
+            byte[] trust = "-----BEGIN CERTIFICATE-----\nrun-owned-control\n-----END CERTIFICATE-----\n"u8.ToArray();
+            await WritePrivateAsync(trustFile, trust);
+            MethodInfo identity = typeof(PlatformRunOwnedWorkloadEnrollment).GetMethod("ProcessIdentity", BindingFlags.NonPublic | BindingFlags.Static)!;
+            int ownerPid = (int)typeof(PlatformRunOwnedWorkloadEnrollment).GetMethod("ParentProcess", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [Environment.ProcessId])!;
+            string capability = new('B', 64), runId = new('A', 32);
+            long deadline = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 60;
+            await WritePrivateAsync(receiptFile, JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                schema = "hexalith.run-owned-workload/v1", owner = "disposable-folders-acceptance", directory, capability,
+                childPid = Environment.ProcessId, childIdentity = (string)identity.Invoke(null, [Environment.ProcessId])!,
+                ownerPid, ownerIdentity = (string)identity.Invoke(null, [ownerPid])!, runId, deadline, trustFile,
+                trustSha256 = fault == "trust-digest" ? new string('A', 64) : Convert.ToHexString(SHA256.HashData(trust)),
+            }));
+            using EnvironmentScope environment = new(new Dictionary<string, string?>
+            {
+                [PlatformRunOwnedWorkloadEnrollment.ReceiptEnvironmentVariable] = receiptFile,
+                [PlatformRunOwnedWorkloadEnrollment.CapabilityEnvironmentVariable] = capability,
+                ["SSL_CERT_FILE"] = trustFile,
+            });
+            IDistributedApplicationBuilder builder = Builder();
+            using CancellationTokenSource limit = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+            limit.CancelAfter(TimeSpan.FromSeconds(30));
+            Task<PlatformRunOwnedWorkloadEnrollment?> adoption = PlatformRunOwnedWorkloadEnrollment.AdoptAsync(builder, "selected-run-tenant", limit.Token,
+                fault == "host-trust" ? Path.Combine(directory, "missing-host-trust.pem") : null);
+            string requestPath = Path.Combine(directory, "request.json");
+            if (fault is not ("trust-digest" or "host-trust"))
+            {
+                // Act as the launcher: answer the published request with one faulty producer artifact.
+                while (!File.Exists(requestPath) && !adoption.IsCompleted) await Task.Delay(10, limit.Token);
+                JsonObject request = JsonNode.Parse(await File.ReadAllBytesAsync(requestPath, limit.Token))!.AsObject();
+                string secretFile = Path.Combine(directory, "client-control.secret");
+                await WritePrivateAsync(secretFile, "control-secret"u8.ToArray());
+                var clients = new JsonArray();
+                foreach (JsonNode? client in request["inventory"]!["clients"]!.AsArray())
+                {
+                    JsonObject entry = client!.DeepClone().AsObject();
+                    entry["secretFile"] = fault == "secret" ? Path.Combine(Path.GetTempPath(), "client-foreign.secret") : secretFile;
+                    clients.Add(entry);
+                }
+                if (fault == "cohort") clients.RemoveAt(clients.Count - 1);
+                if (fault == "probes") clients[0]!["probes"]![0]!["revision"] = 2;
+                string issuer = (fault == "issuer" ? "https://authority.example:8443" : "https://localhost:8443") + "/realms/run-owned";
+                var manifestDocument = new JsonObject
+                {
+                    ["schema"] = "hexalith.workload-enrollment/v1", ["authority"] = issuer, ["issuer"] = issuer, ["tokenEndpoint"] = issuer + "/protocol/openid-connect/token",
+                    ["notBefore"] = deadline - 60, ["expiresAt"] = deadline, ["signingKeyId"] = "control", ["signingPublicKeySha256"] = new string('C', 64),
+                    ["receivers"] = request["inventory"]!["receivers"]!.DeepClone(), ["clients"] = clients,
+                };
+                byte[] manifest = System.Text.Encoding.UTF8.GetBytes(manifestDocument.ToJsonString());
+                string manifestPath = Path.Combine(directory, "manifest.json");
+                await WritePrivateAsync(manifestPath, manifest);
+                if (fault == "final-cohort")
+                    builder.AddProject("folders-workers-late", Path.Combine(PlatformTestRepository.Root, "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj"))
+                        .WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = "folders-workers-late-actual-run" }));
+                await WritePrivateAsync(Path.Combine(directory, "result.json"), JsonSerializer.SerializeToUtf8Bytes(new
+                {
+                    runId = fault == "result" ? new string('F', 32) : runId, deadline, inventorySha256 = request["inventorySha256"]!.GetValue<string>(), manifestPath,
+                    manifestSha256 = fault == "manifest-digest" ? new string('0', 64) : Convert.ToHexString(SHA256.HashData(manifest)),
+                }));
+                // A refused adopter releases its lease; acknowledge it as the launcher does, by removing private material.
+                string releasePath = Path.Combine(directory, "release.json");
+                while (!File.Exists(releasePath) && !adoption.IsCompleted) await Task.Delay(10, limit.Token);
+                File.Exists(releasePath).ShouldBeTrue("A refused adopter publishes its owned release.");
+                Directory.Delete(directory, recursive: true);
+            }
+            (await Should.ThrowAsync<InvalidOperationException>(() => adoption)).Message.ShouldContain(code);
+            builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBeNull();
+            if (fault is "trust-digest" or "host-trust") File.Exists(requestPath).ShouldBeFalse();
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true); }
+    }
+
+    private static async Task WritePrivateAsync(string path, byte[] bytes)
+    {
+        string temporary = path + ".writing";
+        await File.WriteAllBytesAsync(temporary, bytes, TestContext.Current.CancellationToken);
+        if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(temporary, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        File.Move(temporary, path);
+    }
+
     /// <summary>A failed publish or foreign release keeps refusing until this owner's cleanup is acknowledged.</summary>
     /// <param name="fault">The failed disposal stage.</param>
     [Theory]
