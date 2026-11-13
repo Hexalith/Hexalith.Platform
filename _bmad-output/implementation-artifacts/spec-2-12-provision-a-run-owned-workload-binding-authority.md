@@ -118,6 +118,8 @@ Three review layers produced 16 reports: 15 corrected, one low finding rejected,
 
 Local delivery preserves the original Platform gitlink; the Folders implementation is committed in its owning repository and recorded in [the local delivery record](evidence/2-12/local-delivery.json). No push or remote operation was performed.
 
+Publication continuation after the user requested push: the feature was rebased over concurrent upstream work without changing tested source bytes; Folders was published first and its verified remote commit is adopted by Platform. [Push preparation](evidence/2-12/push-preparation.json) records canonical revisions and preservation checks. The earlier local-only delivery record remains historical. No nested submodules or tuple/source-release selection files were updated.
+
 ## Design Notes
 
 Use a two-phase launcher because the verifier runs inside xUnit: changing trust after process startup is insufficient. The dedicated workload authority is separate from Folders' human Keycloak. An explicit launcher receipt establishes authority ownership without pretending the private Folders fixture supplies Platform runner qualification.
