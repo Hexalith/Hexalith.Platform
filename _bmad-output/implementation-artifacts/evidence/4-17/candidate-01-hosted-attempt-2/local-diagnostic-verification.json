@@ -1,0 +1,76 @@
+{
+  "observedUtc": "2026-11-13T00:16:19.362282+00:00",
+  "authoritative": false,
+  "purpose": "locate the pinned verifier rejection; not qualification evidence",
+  "pinnedSource": "git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+  "edits": [
+    {
+      "file": "tools/dapr_platform_broker_configuration.py",
+      "old": "        argv = receipt[\"argv\"]\n        fields = (\"--app-id\", \"--resources-path\", \"--config\")\n",
+      "new": "        argv = receipt[\"argv\"]\n        if argv[:2] == [\"docker\", \"exec\"]:\n            continue\n        fields = (\"--app-id\", \"--resources-path\", \"--config\")\n"
+    },
+    {
+      "file": "tools/dapr_broker_qualification.py",
+      "old": "(Path(__file__).resolve().parents[1] / selected_profile)",
+      "new": "(Path(PINNED_ARCHIVE_ROOT) / selected_profile)"
+    },
+    {
+      "file": "tools/dapr_broker_qualification.py",
+      "old": "owning_root = Path(__file__).resolve().parents[1]",
+      "new": "owning_root = Path(PINNED_ARCHIVE_ROOT)"
+    }
+  ],
+  "patchedFileSha256": {
+    "tools/dapr_broker_qualification.py": "f64c30a429fbff78a972d704c4019e6ef20e3c076ed45519552ccf688e343c82",
+    "tools/dapr_platform_broker_configuration.py": "3c1d0a8f8a18c2fe05467eb200c426208414719589e86377eb5755c31e35896c"
+  },
+  "firstPinnedFalsePositiveReceipt": {
+    "index": 1079,
+    "argv": [
+      "docker",
+      "exec",
+      "964c4a759282fbd2016910f2a9829494b19a5685c6658452822fac408cbffe41",
+      "/opt/kafka/bin/kafka-topics.sh",
+      "--bootstrap-server",
+      "127.0.0.1:51665",
+      "--command-config",
+      "/work/admin.properties",
+      "--create",
+      "--topic",
+      "qualification.events",
+      "--partitions",
+      "1",
+      "--replication-factor",
+      "1",
+      "--config",
+      "retention.ms=60000",
+      "--config",
+      "segment.ms=1000"
+    ],
+    "exitCode": 0
+  },
+  "runs": {
+    "integrity": {
+      "flags": [
+        "--allow-failures"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"integrity\": \"PASS\",\n  \"technicalQualification\": \"FAIL\",\n  \"failedScenarios\": [\n    \"rabbitmq/cancellation-backpressure\",\n    \"rabbitmq/durable-quarantine\",\n    \"rabbitmq/missing-bindings\",\n    \"rabbitmq/retention-expiry\",\n    \"rabbitmq/secret-rotation\",\n    \"kafka/cancellation-backpressure\"\n  ],\n  \"productionEligibility\": \"FAIL\",\n  \"selectedBroker\": null\n}\n",
+      "stderr": ""
+    },
+    "technical": {
+      "flags": [],
+      "exitCode": 1,
+      "stdout": "FAIL: technical qualification FAIL: rabbitmq/cancellation-backpressure, rabbitmq/durable-quarantine, rabbitmq/missing-bindings, rabbitmq/retention-expiry, rabbitmq/secret-rotation, kafka/cancellation-backpressure\n",
+      "stderr": ""
+    },
+    "authority": {
+      "flags": [
+        "--require-production-authority"
+      ],
+      "exitCode": 1,
+      "stdout": "FAIL: production eligibility FAIL: authenticated AD-26 Architecture/Platform records, Story 3.19 publication/profile binding, Kubernetes rehearsal, restore and Story 4.16 envelope proof are absent; this lane never issues authority\n",
+      "stderr": ""
+    }
+  }
+}

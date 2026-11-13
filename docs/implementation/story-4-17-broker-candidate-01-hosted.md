@@ -122,3 +122,11 @@ It also found that the dispatch branch above was deleted at `20:39:42Z`, while t
 run was still queued; the deleting process is unidentified. This report's dated
 observations and evidence bytes are unchanged. Any further attempt still needs a new
 owner decision.
+
+## Later hosted attempt 2 (2026-11-13)
+
+[Attempt 2](story-4-17-broker-candidate-01-hosted-attempt-2.md) (run 43333995506), dispatched once from the immutable tag at the same
+source, was allocated and captured 24/24 vectors. Its packet is retained, but the pinned
+EventStore verifier rejected it in all three modes, because of a demonstrated
+sidecar-identification false positive. No vector, cleanup or authority result is
+credited. This report's dated content is unchanged.

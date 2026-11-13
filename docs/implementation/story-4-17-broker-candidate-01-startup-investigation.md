@@ -245,3 +245,10 @@ All five [historical rejected guarantees](story-4-17-local-broker-dispositions-2
 remain **REJECTED**. Broker selection is **null** and production eligibility is
 **FAIL**. Platform 4.17 and EventStore 3.21 remain **in-progress**. Packet, verifier,
 cleanup and artifact-delivery assessment remain incomplete.
+
+## Later: hosted attempt 2 (2026-11-13)
+
+The owner authorized the recommended option. [Attempt 2](story-4-17-broker-candidate-01-hosted-attempt-2.md) was dispatched once from
+the immutable tag and allocated in 5 seconds. That rules out the workflow file, the
+label and the event type as causes of this run's `startup_failure`; the provider
+incident and the ref deletion remain. The dated findings above are unchanged.

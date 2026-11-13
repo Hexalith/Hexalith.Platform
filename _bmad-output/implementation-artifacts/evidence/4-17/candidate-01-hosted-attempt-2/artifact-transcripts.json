@@ -1,0 +1,120 @@
+{
+  "authority.argv": {
+    "sha256": "3c7cd26708b1ff43832a6d895718c98f147a780e5c1c8e6eb42b7fb41ee369f8",
+    "bytes": 274,
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate-dapr-broker-qualification.py",
+      "/home/runner/work/_temp/platform-broker-candidate-01/packet",
+      "--platform-config",
+      "/home/runner/work/Hexalith.Platform/Hexalith.Platform/docs/implementation/story-4-17-broker-candidate-01.json",
+      "--require-production-authority"
+    ]
+  },
+  "authority.stderr": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "authority.stdout": {
+    "sha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+    "bytes": 93
+  },
+  "capture.argv": {
+    "sha256": "b2aa9ab34af4ff074d0e91c435309aae2d7d361307e97f39a2652dff809ba05c",
+    "bytes": 427,
+    "argv": [
+      "python3",
+      "-B",
+      "tools/qualify-dapr-brokers.py",
+      "--profile",
+      "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "--platform-config",
+      "/home/runner/work/Hexalith.Platform/Hexalith.Platform/docs/implementation/story-4-17-broker-candidate-01.json",
+      "--brokers",
+      "rabbitmq,kafka",
+      "--exclusive-worker",
+      "/home/runner/work/_temp/platform-broker-candidate-01/worker.json",
+      "--output",
+      "/home/runner/work/_temp/platform-broker-candidate-01/packet"
+    ]
+  },
+  "capture.stderr": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "capture.stdout": {
+    "sha256": "bd55603043025e7f485f13894184ded62badd9744dd0d2d676c9ebffcda3ea57",
+    "bytes": 1278
+  },
+  "install.argv": {
+    "sha256": "d37516891bd9550c50795909ff5c2922492652142d8ca239a623ee9c02fb616e",
+    "bytes": 206,
+    "argv": [
+      "python3",
+      "-B",
+      "tools/install-dapr-qualification-tools.py",
+      "--profile",
+      "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "--destination",
+      "/home/runner/work/_temp/platform-broker-candidate-01/tools"
+    ]
+  },
+  "install.stderr": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "install.stdout": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "integrity.argv": {
+    "sha256": "18410551ba87e5be5e2033fa490787edd9133bee1ce51e2b7916b7d5a2058fca",
+    "bytes": 260,
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate-dapr-broker-qualification.py",
+      "/home/runner/work/_temp/platform-broker-candidate-01/packet",
+      "--platform-config",
+      "/home/runner/work/Hexalith.Platform/Hexalith.Platform/docs/implementation/story-4-17-broker-candidate-01.json",
+      "--allow-failures"
+    ]
+  },
+  "integrity.stderr": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "integrity.stdout": {
+    "sha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+    "bytes": 93
+  },
+  "sources.stderr": {
+    "sha256": "a43c2c127b5a72f9b89ced234243058e357c68b607946b9a6f5b2b78720daff8",
+    "bytes": 253
+  },
+  "sources.stdout": {
+    "sha256": "e637d667e12b97592fb9b76b39428e437d632f87dd02e40b1e59a3707fe753c1",
+    "bytes": 169
+  },
+  "technical.argv": {
+    "sha256": "f7ee54618521b3dc33549dcb5af19ca079816969849774af09fe8c05cbb36f9a",
+    "bytes": 243,
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate-dapr-broker-qualification.py",
+      "/home/runner/work/_temp/platform-broker-candidate-01/packet",
+      "--platform-config",
+      "/home/runner/work/Hexalith.Platform/Hexalith.Platform/docs/implementation/story-4-17-broker-candidate-01.json"
+    ]
+  },
+  "technical.stderr": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "technical.stdout": {
+    "sha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+    "bytes": 93
+  }
+}

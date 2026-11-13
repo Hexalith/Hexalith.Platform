@@ -87,6 +87,11 @@ classifies the failure as provider-side and finds no workflow defect. It records
 the dispatch branch was deleted while the run was queued. It proposes, but does not
 authorize, one further attempt from an immutable tag at the same source.
 
+[Hosted attempt 2](story-4-17-broker-candidate-01-hosted-attempt-2.md) then ran once from that tag (run 43333995506). The job was
+allocated, all phases ran and the artifact uploaded. The pinned verifier rejected the
+packet before vector assessment: Kafka topic creation's `--config` argument is
+misread as a daprd launch. The workflow itself behaved as designed.
+
 ## Separate outcomes and expected failures
 
 The workflow preserves raw exits separately for source setup, installation,

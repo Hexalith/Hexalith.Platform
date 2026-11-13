@@ -1,0 +1,348 @@
+{
+  "observedUtc": "2026-11-13T00:15:21.385808+00:00",
+  "tag": {
+    "ref": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+    "objectType": "commit",
+    "objectSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "resolvesToSource": true,
+    "lsRemote": "94001fad925fdf7fa03a90b507b8f8e19074f9e3\trefs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+    "activity": []
+  },
+  "rulesets": [
+    {
+      "id": 24657570,
+      "name": "Platform immutable tags",
+      "target": "tag",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "~ALL"
+          ]
+        }
+      },
+      "rules": [
+        "update",
+        "deletion"
+      ],
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "updatedAt": "2026-10-07T16:10:23.295+02:00",
+      "unchangedFromRepositoryPolicyJson": true
+    },
+    {
+      "id": 24657217,
+      "name": "Platform tag creation authorization",
+      "target": "tag",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [
+            "refs/tags/v[0-9]*"
+          ],
+          "include": [
+            "~ALL"
+          ]
+        }
+      },
+      "rules": [
+        "creation"
+      ],
+      "bypassActors": [
+        {
+          "actorType": "User",
+          "bypassMode": "always",
+          "actor": "repository-owner-user"
+        }
+      ],
+      "currentUserCanBypass": "always",
+      "updatedAt": "2026-11-07T00:20:46.245+01:00",
+      "unchangedFromRepositoryPolicyJson": true
+    }
+  ],
+  "workflowRuns": {
+    "totalCount": 2,
+    "runs": [
+      {
+        "id": 43333995506,
+        "run_number": 2,
+        "run_attempt": 1,
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "failure",
+        "head_branch": "qualification/broker-candidate-01/attempt-2-94001fad",
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "created_at": "2026-11-13T00:03:48Z",
+        "run_started_at": "2026-11-13T00:03:48Z",
+        "updated_at": "2026-11-13T00:11:39Z",
+        "path": ".github/workflows/broker-candidate-qualification.yml"
+      },
+      {
+        "id": 43097161643,
+        "run_number": 1,
+        "run_attempt": 1,
+        "event": "workflow_dispatch",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "head_branch": "chore/broker-candidate-01-hosted-94001fad",
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "created_at": "2026-11-11T20:37:28Z",
+        "run_started_at": "2026-11-11T20:37:28Z",
+        "updated_at": "2026-11-11T20:41:54Z",
+        "path": ".github/workflows/broker-candidate-qualification.yml"
+      }
+    ]
+  },
+  "run": {
+    "id": 43333995506,
+    "run_number": 2,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "failure",
+    "head_branch": "qualification/broker-candidate-01/attempt-2-94001fad",
+    "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "created_at": "2026-11-13T00:03:48Z",
+    "run_started_at": "2026-11-13T00:03:48Z",
+    "updated_at": "2026-11-13T00:11:39Z",
+    "path": ".github/workflows/broker-candidate-qualification.yml"
+  },
+  "jobsAttempt1": {
+    "totalCount": 1,
+    "jobs": [
+      {
+        "id": 131585434513,
+        "name": "candidate-01",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-11-13T00:03:50Z",
+        "started_at": "2026-11-13T00:03:53Z",
+        "completed_at": "2026-11-13T00:11:38Z",
+        "runner_name": "GitHub Actions 1000081917",
+        "runner_group_name": "GitHub Actions",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "head_sha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+        "run_attempt": 1,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:03:54Z",
+            "completed_at": "2026-11-13T00:03:57Z"
+          },
+          {
+            "number": 2,
+            "name": "Bootstrap evidence before checkout and setup",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:03:57Z",
+            "completed_at": "2026-11-13T00:03:58Z"
+          },
+          {
+            "number": 3,
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:03:58Z",
+            "completed_at": "2026-11-13T00:04:10Z"
+          },
+          {
+            "number": 4,
+            "name": "Guard exact sources and bind this hosted worker",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:04:10Z",
+            "completed_at": "2026-11-13T00:04:35Z"
+          },
+          {
+            "number": 5,
+            "name": "Install verified isolated tools",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:04:35Z",
+            "completed_at": "2026-11-13T00:04:39Z"
+          },
+          {
+            "number": 6,
+            "name": "Capture both brokers and all 24 vectors",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:04:39Z",
+            "completed_at": "2026-11-13T00:11:30Z"
+          },
+          {
+            "number": 7,
+            "name": "Independently verify capture integrity",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:30Z",
+            "completed_at": "2026-11-13T00:11:31Z"
+          },
+          {
+            "number": 8,
+            "name": "Independently evaluate technical qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:31Z",
+            "completed_at": "2026-11-13T00:11:31Z"
+          },
+          {
+            "number": 9,
+            "name": "Independently evaluate production authority",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:31Z",
+            "completed_at": "2026-11-13T00:11:32Z"
+          },
+          {
+            "number": 10,
+            "name": "Summarize actual outcomes and project sanitized evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:32Z",
+            "completed_at": "2026-11-13T00:11:32Z"
+          },
+          {
+            "number": 11,
+            "name": "Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:32Z",
+            "completed_at": "2026-11-13T00:11:34Z"
+          },
+          {
+            "number": 12,
+            "name": "Enforce bounded result after independent artifact attempt",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-11-13T00:11:34Z",
+            "completed_at": "2026-11-13T00:11:34Z"
+          },
+          {
+            "number": 24,
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:34Z",
+            "completed_at": "2026-11-13T00:11:35Z"
+          },
+          {
+            "number": 25,
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-13T00:11:35Z",
+            "completed_at": "2026-11-13T00:11:35Z"
+          }
+        ]
+      }
+    ]
+  },
+  "receipts": [
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "user"
+      ],
+      "startedUtc": "2026-11-13T00:15:17.774840+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/git/ref/tags/qualification/broker-candidate-01/attempt-2-94001fad"
+      ],
+      "startedUtc": "2026-11-13T00:15:18.124078+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/activity?ref=refs/tags/qualification/broker-candidate-01/attempt-2-94001fad&per_page=100",
+        "--paginate",
+        "--jq",
+        ".[] | @json"
+      ],
+      "startedUtc": "2026-11-13T00:15:18.948297+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      ],
+      "startedUtc": "2026-11-13T00:15:19.287320+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657217"
+      ],
+      "startedUtc": "2026-11-13T00:15:19.710399+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929/runs?per_page=100"
+      ],
+      "startedUtc": "2026-11-13T00:15:20.080614+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43333995506"
+      ],
+      "startedUtc": "2026-11-13T00:15:20.494231+00:00",
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/runs/43333995506/attempts/1/jobs?per_page=100"
+      ],
+      "startedUtc": "2026-11-13T00:15:20.867878+00:00",
+      "exitCode": 0
+    }
+  ]
+}

@@ -1,0 +1,2911 @@
+{
+  "observedUtc": "2026-11-13T00:12:07.028183+00:00",
+  "totalCount": 1,
+  "artifacts": [
+    {
+      "id": 13995674927,
+      "name": "platform-broker-candidate-01-43333995506-1",
+      "size_in_bytes": 2666335,
+      "digest": "sha256:906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+      "expired": false,
+      "created_at": "2026-11-13T00:11:34Z",
+      "expires_at": "2026-12-13T00:11:32Z"
+    }
+  ],
+  "expectedArtifactName": "platform-broker-candidate-01-43333995506-1",
+  "downloadArgv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/Hexalith/Hexalith.Platform/actions/artifacts/13995674927/zip"
+  ],
+  "downloadExitCode": 0,
+  "downloadedBytes": 2666335,
+  "downloadedSha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+  "digestMatchesArtifactApi": true,
+  "artifactApiDigest": "sha256:906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+  "archiveInspection": {
+    "entries": 575,
+    "problems": [],
+    "privateTranscriptEntries": []
+  },
+  "extraction": "performed-after-inspection",
+  "archiveEntries": [
+    {
+      "name": "authority.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "authority.phase",
+      "bytes": 19,
+      "directory": false
+    },
+    {
+      "name": "bootstrap.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "bootstrap.json",
+      "bytes": 489,
+      "directory": false
+    },
+    {
+      "name": "bootstrap.phase",
+      "bytes": 9,
+      "directory": false
+    },
+    {
+      "name": "capture.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "capture.phase",
+      "bytes": 19,
+      "directory": false
+    },
+    {
+      "name": "configuration-sha256.observed",
+      "bytes": 65,
+      "directory": false
+    },
+    {
+      "name": "eventstore-gitlink.observed",
+      "bytes": 86,
+      "directory": false
+    },
+    {
+      "name": "eventstore-revision.observed",
+      "bytes": 41,
+      "directory": false
+    },
+    {
+      "name": "install.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "install.phase",
+      "bytes": 9,
+      "directory": false
+    },
+    {
+      "name": "integrity.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "integrity.phase",
+      "bytes": 19,
+      "directory": false
+    },
+    {
+      "name": "original-platform-config.json",
+      "bytes": 366,
+      "directory": false
+    },
+    {
+      "name": "outcomes.json",
+      "bytes": 1643,
+      "directory": false
+    },
+    {
+      "name": "packet/child-resource-cleanup.json",
+      "bytes": 1495,
+      "directory": false
+    },
+    {
+      "name": "packet/commands.json",
+      "bytes": 46870442,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-identities.json",
+      "bytes": 1464,
+      "directory": false
+    },
+    {
+      "name": "packet/cleanup.json",
+      "bytes": 197,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/dapr_broker_probe.py",
+      "bytes": 4637,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/dapr_broker_qualification.py",
+      "bytes": 58229,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/dapr_platform_broker_configuration.py",
+      "bytes": 25182,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/dapr_qualification_tcp_proxy.py",
+      "bytes": 1562,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/dapr_runtime_qualification.py",
+      "bytes": 44420,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/install-dapr-qualification-tools.py",
+      "bytes": 2503,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/qualification-docker.py",
+      "bytes": 4680,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/qualify-dapr-brokers.py",
+      "bytes": 73239,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/qualify-dapr-runtime.py",
+      "bytes": 8225,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/qualify-internal-actor-admission.py",
+      "bytes": 44437,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/run-dapr-runtime-lane.py",
+      "bytes": 10212,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/tests/test_dapr_broker_qualification.py",
+      "bytes": 24324,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/tests/test_dapr_platform_broker_configuration.py",
+      "bytes": 38499,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/tests/test_dapr_platform_broker_qualification.py",
+      "bytes": 242,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/tests/test_dapr_runtime_qualification.py",
+      "bytes": 118068,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/tests/test_qualify_internal_actor_admission.py",
+      "bytes": 11185,
+      "directory": false
+    },
+    {
+      "name": "packet/execution-tools/validate-dapr-broker-qualification.py",
+      "bytes": 1116,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/.github/workflows/dapr-runtime-qualification.yml",
+      "bytes": 4739,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/.github/workflows/dapr-broker-qualification.yml",
+      "bytes": 4051,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/README.md",
+      "bytes": 20581,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/kafka.yaml",
+      "bytes": 1632,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/components-common-component-kafka-consumer.go",
+      "bytes": 32183,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/components-pubsub-rabbitmq-metadata.go",
+      "bytes": 12913,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/components-pubsub-rabbitmq-rabbitmq.go",
+      "bytes": 37072,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/components-secretstores-hashicorp-vault-vault.go",
+      "bytes": 14418,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-1.19.1.tgz",
+      "bytes": 41636,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-cli-latest.json",
+      "bytes": 25290,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-cli-release.json",
+      "bytes": 25290,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-cli-tag-object.json",
+      "bytes": 632,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-components-contrib-tag.json",
+      "bytes": 357,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-dapr-go.mod",
+      "bytes": 29737,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-cli-tag.json",
+      "bytes": 321,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-dapr-latest.json",
+      "bytes": 159493,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-dapr-release.json",
+      "bytes": 159493,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-dapr-tag.json",
+      "bytes": 329,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-daprd-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-daprd-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-daprd.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-injector-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-injector-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-injector.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-operator-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-operator-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-operator.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-placement-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-placement-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-placement.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-scheduler-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-scheduler-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-scheduler.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-sentry-amd64.manifest.json",
+      "bytes": 3040,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-sentry-arm64.manifest.json",
+      "bytes": 2940,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr-sentry.manifest.json",
+      "bytes": 1771,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr.actors-versions.json",
+      "bytes": 2660,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr.actors.aspnetcore-versions.json",
+      "bytes": 2636,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr.aspnetcore-versions.json",
+      "bytes": 2656,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr.client-versions.json",
+      "bytes": 2680,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr.workflow-versions.json",
+      "bytes": 1836,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/daprd_linux_amd64.tar.gz.sha256",
+      "bytes": 91,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1/dapr_linux_amd64.tar.gz.sha256",
+      "bytes": 90,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/archive.json",
+      "bytes": 2105,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/deploy/dapr/qualification/README.md",
+      "bytes": 14602,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tests/Hexalith.EventStore.IntegrationTests/Fixtures/DurableBrokerQualificationFixture.cs",
+      "bytes": 5934,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/dapr_broker_qualification.py",
+      "bytes": 53469,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/dapr_runtime_qualification.py",
+      "bytes": 43862,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/qualify-dapr-brokers.py",
+      "bytes": 68344,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/tests/test_dapr_runtime_qualification.py",
+      "bytes": 117788,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/tests/test_dapr_runtime_qualification.py.c94e6fff-original",
+      "bytes": 117794,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/tests/test_qualify_internal_actor_admission.py",
+      "bytes": 11190,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/1.19.1-original-inputs/tools/validate-dapr-broker-qualification.py",
+      "bytes": 951,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/apache-kafka-4.3.1.manifest.json",
+      "bytes": 1609,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/public-identities/library-rabbitmq-4.3.6-management.manifest.json",
+      "bytes": 7810,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/rabbitmq.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+      "bytes": 23027,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/runtime-lock-1.19.1.json",
+      "bytes": 20326,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/runtime-lock.json",
+      "bytes": 7678,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/deploy/dapr/qualification/subscriptions.yaml",
+      "bytes": 1737,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogRuntimeProfile.cs",
+      "bytes": 3076,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogTransport.cs",
+      "bytes": 31092,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/src/Hexalith.EventStore.Aspire/DevelopmentRouteCatalogTransportOptions.cs",
+      "bytes": 1035,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.AppHost.Tests/Configuration/DevelopmentRouteCatalogRuntimeProfileTests.cs",
+      "bytes": 2207,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.IntegrationTests/ContractTests/DurableBrokerConfigurationInputTests.cs",
+      "bytes": 2047,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.IntegrationTests/ContractTests/DurableBrokerQualificationTests.cs",
+      "bytes": 2641,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.IntegrationTests/Fixtures/DurableBrokerQualificationFixture.cs",
+      "bytes": 7577,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.PublishedCompatibility.Tests/PublishedCluster.cs",
+      "bytes": 91499,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.PublishedCompatibility.Tests/QualificationRuntime.cs",
+      "bytes": 42468,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.PublishedCompatibility.Tests/QualificationSelectedRuntimeTests.cs",
+      "bytes": 1966,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Actors/ActorCallbackAdmissionProcessTests.cs",
+      "bytes": 6628,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Fixtures/DaprTestContainerFixture.cs",
+      "bytes": 75192,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Fixtures/RouteCatalogDevelopmentRedis.cs",
+      "bytes": 3608,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Fixtures/RouteCatalogDevelopmentSentry.cs",
+      "bytes": 5531,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Fixtures/RouteCatalogDevelopmentSidecar.cs",
+      "bytes": 11547,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/RouteCatalogHostedLiveTests.TransportCli.cs",
+      "bytes": 8432,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/dapr_broker_qualification.py",
+      "bytes": 58229,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/dapr_broker_probe.py",
+      "bytes": 4637,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tests/Hexalith.EventStore.Server.LiveSidecar.Tests/Integration/RouteCatalogHostedLiveTests.Transport.cs",
+      "bytes": 25132,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/dapr_platform_broker_configuration.py",
+      "bytes": 25182,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/dapr_qualification_tcp_proxy.py",
+      "bytes": 1562,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/dapr_runtime_qualification.py",
+      "bytes": 44420,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/install-dapr-qualification-tools.py",
+      "bytes": 2503,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/qualification-docker.py",
+      "bytes": 4680,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/qualify-dapr-brokers.py",
+      "bytes": 73239,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/qualify-internal-actor-admission.py",
+      "bytes": 44437,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/qualify-dapr-runtime.py",
+      "bytes": 8225,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/run-dapr-runtime-lane.py",
+      "bytes": 10212,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/tests/test_dapr_broker_qualification.py",
+      "bytes": 24324,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/tests/test_dapr_platform_broker_configuration.py",
+      "bytes": 38499,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/tests/test_dapr_platform_broker_qualification.py",
+      "bytes": 242,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/tests/test_dapr_runtime_qualification.py",
+      "bytes": 118068,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/tests/test_qualify_internal_actor_admission.py",
+      "bytes": 11185,
+      "directory": false
+    },
+    {
+      "name": "packet/inputs/tools/validate-dapr-broker-qualification.py",
+      "bytes": 1116,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/app-topic-scopes/application-readback.json",
+      "bytes": 8847,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/app-topic-scopes/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/app-topic-scopes/observation.json",
+      "bytes": 327,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/broker-restart/application-readback.json",
+      "bytes": 1733,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/broker-restart/observation.json",
+      "bytes": 359,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/cancellation-backpressure/application-readback.json",
+      "bytes": 19958,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/broker-restart/broker-diagnostics.json",
+      "bytes": 1471,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/cancellation-backpressure/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/cancellation-backpressure/observation.json",
+      "bytes": 2516,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/crash-redelivery/application-readback.json",
+      "bytes": 1098,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/crash-redelivery/broker-diagnostics.json",
+      "bytes": 1471,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/crash-redelivery/observation.json",
+      "bytes": 183,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/durable-quarantine/application-readback.json",
+      "bytes": 3212,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/durable-quarantine/broker-diagnostics.json",
+      "bytes": 1471,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/durable-quarantine/observation.json",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/effective-inputs/kafka.properties",
+      "bytes": 911,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/failed-diversion/application-readback.json",
+      "bytes": 4247,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/failed-diversion/broker-diagnostics.json",
+      "bytes": 1471,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/failed-diversion/observation.json",
+      "bytes": 252,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/image-identity.json",
+      "bytes": 335,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-1c49e0ed/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-7a2b8d49/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-8f0cbda5/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-97311cf8/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-b0dde5cf/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-c63ee393/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-d695e25d/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/pubsub.yaml",
+      "bytes": 1633,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-e0713dfc/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fcf5cc89/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/state.yaml",
+      "bytes": 385,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-consumer-fd321dcd/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-forbidden-2fe90f6d/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/openbao.yaml",
+      "bytes": 916,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-1905e359/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-e9e31651/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/pubsub.yaml",
+      "bytes": 1639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-ee9c4c52/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/config.yaml",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/pubsub.yaml",
+      "bytes": 1635,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/resiliency.yaml",
+      "bytes": 639,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/loaded-inputs/kafka-qualification-publisher-f3e4a17c/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-1388d4.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-2d6d78.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-4a022c.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-5495a8.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-5cf9c1.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-81018e.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-9f6cdb.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-forbidden-be7662.json",
+      "bytes": 591,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-a5ce7a.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-a6bc68.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-consumer-b504c2.json",
+      "bytes": 2900,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-publisher-4424f7.json",
+      "bytes": 937,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/metadata/qualification-publisher-a5105b.json",
+      "bytes": 937,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-bindings/application-readback.json",
+      "bytes": 20593,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-bindings/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-secret/application-readback.json",
+      "bytes": 10738,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-secret/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-secret/observation.json",
+      "bytes": 348,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/missing-bindings/observation.json",
+      "bytes": 339,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/retention-expiry/application-readback.json",
+      "bytes": 6749,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/retention-expiry/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/secret-rotation/application-readback.json",
+      "bytes": 13236,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/retention-expiry/observation.json",
+      "bytes": 514,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/secret-rotation/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/secret-rotation/observation.json",
+      "bytes": 847,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/stable-id-deduplication/observation.json",
+      "bytes": 167,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/stable-id-deduplication/application-readback.json",
+      "bytes": 8212,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/stable-id-deduplication/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/tls-negative/application-readback.json",
+      "bytes": 10103,
+      "directory": false
+    },
+    {
+      "name": "packet/packet.json",
+      "bytes": 88247,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/tls-negative/broker-diagnostics.json",
+      "bytes": 1965,
+      "directory": false
+    },
+    {
+      "name": "packet/kafka/tls-negative/observation.json",
+      "bytes": 346,
+      "directory": false
+    },
+    {
+      "name": "packet/platform-configuration/configuration.json",
+      "bytes": 366,
+      "directory": false
+    },
+    {
+      "name": "packet/platform-configuration/provenance.json",
+      "bytes": 528,
+      "directory": false
+    },
+    {
+      "name": "packet/platform-configuration/rendered-inputs.json",
+      "bytes": 46027,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/app-topic-scopes/application-readback.json",
+      "bytes": 78350,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/app-topic-scopes/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/app-topic-scopes/observation.json",
+      "bytes": 330,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/broker-restart/application-readback.json",
+      "bytes": 1939,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/broker-restart/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/broker-restart/observation.json",
+      "bytes": 361,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/cancellation-backpressure/application-readback.json",
+      "bytes": 114288,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/cancellation-backpressure/broker-diagnostics.json",
+      "bytes": 1027,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/cancellation-backpressure/observation.json",
+      "bytes": 2304,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/crash-redelivery/application-readback.json",
+      "bytes": 1304,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/crash-redelivery/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/crash-redelivery/observation.json",
+      "bytes": 186,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/durable-quarantine/application-readback.json",
+      "bytes": 1939,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/durable-quarantine/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/durable-quarantine/observation.json",
+      "bytes": 173,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/failed-diversion/application-readback.json",
+      "bytes": 3595,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/failed-diversion/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/failed-diversion/observation.json",
+      "bytes": 254,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/image-identity.json",
+      "bytes": 339,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-0bd37ac1/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7cc79ee8/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-7f84947e/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-a4fdbb79/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-b70be17e/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-ba816c34/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-cfdb521e/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-eea4f378/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/state.yaml",
+      "bytes": 388,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-consumer-f260edc0/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-forbidden-79b3fe35/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-18dd41cd/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-313b07c3/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-485b28fc/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/openbao.yaml",
+      "bytes": 916,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-5ba70ebe/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/pubsub.yaml",
+      "bytes": 1819,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f4988c2c/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/config.yaml",
+      "bytes": 349,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/openbao.yaml",
+      "bytes": 828,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-0.yaml",
+      "bytes": 387,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-1.yaml",
+      "bytes": 281,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/pubsub.yaml",
+      "bytes": 1811,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/resiliency.yaml",
+      "bytes": 685,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-2.yaml",
+      "bytes": 249,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-3.yaml",
+      "bytes": 308,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-4.yaml",
+      "bytes": 237,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/loaded-inputs/rabbitmq-qualification-publisher-f81942ed/subscription-5.yaml",
+      "bytes": 250,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-0bfb26.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-1b815e.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-5beb9a.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-8b08f3.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-a56305.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-c45caf.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-d3f4f7.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-ed169d.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-consumer-fe1712.json",
+      "bytes": 2903,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-forbidden-1ac1fe.json",
+      "bytes": 591,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-publisher-014574.json",
+      "bytes": 940,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-publisher-01eedf.json",
+      "bytes": 940,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-publisher-0c6dd4.json",
+      "bytes": 940,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/metadata/qualification-publisher-9a286c.json",
+      "bytes": 940,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-bindings/application-readback.json",
+      "bytes": 116993,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-bindings/broker-diagnostics.json",
+      "bytes": 1027,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-bindings/observation.json",
+      "bytes": 342,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-secret/application-readback.json",
+      "bytes": 81483,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-secret/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/missing-secret/observation.json",
+      "bytes": 354,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/retention-expiry/application-readback.json",
+      "bytes": 73561,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/retention-expiry/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/retention-expiry/observation.json",
+      "bytes": 171,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/secret-rotation/application-readback.json",
+      "bytes": 93710,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/secret-rotation/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/stable-id-deduplication/application-readback.json",
+      "bytes": 76887,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/secret-rotation/observation.json",
+      "bytes": 776,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/stable-id-deduplication/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/stable-id-deduplication/observation.json",
+      "bytes": 170,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/tls-negative/application-readback.json",
+      "bytes": 80020,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/tls-negative/broker-diagnostics.json",
+      "bytes": 1026,
+      "directory": false
+    },
+    {
+      "name": "packet/rabbitmq/tls-negative/observation.json",
+      "bytes": 352,
+      "directory": false
+    },
+    {
+      "name": "packet/workspace-after.json",
+      "bytes": 441,
+      "directory": false
+    },
+    {
+      "name": "packet/workspace-before.json",
+      "bytes": 441,
+      "directory": false
+    },
+    {
+      "name": "platform-revision.observed",
+      "bytes": 41,
+      "directory": false
+    },
+    {
+      "name": "sources.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "sources.phase",
+      "bytes": 9,
+      "directory": false
+    },
+    {
+      "name": "technical.exit",
+      "bytes": 2,
+      "directory": false
+    },
+    {
+      "name": "technical.phase",
+      "bytes": 19,
+      "directory": false
+    },
+    {
+      "name": "transcripts.json",
+      "bytes": 4009,
+      "directory": false
+    },
+    {
+      "name": "worker.json",
+      "bytes": 706,
+      "directory": false
+    }
+  ]
+}

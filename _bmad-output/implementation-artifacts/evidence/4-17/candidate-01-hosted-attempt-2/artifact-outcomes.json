@@ -1,0 +1,63 @@
+{
+  "outcomes": {
+    "bootstrap": {
+      "outcome": "success",
+      "exitCode": 0
+    },
+    "checkout": {
+      "outcome": "success",
+      "exitCode": null
+    },
+    "sources": {
+      "outcome": "success",
+      "exitCode": 0
+    },
+    "install": {
+      "outcome": "success",
+      "exitCode": 0
+    },
+    "capture": {
+      "outcome": "failure",
+      "exitCode": 1
+    },
+    "integrity": {
+      "outcome": "failure",
+      "exitCode": 1
+    },
+    "technical": {
+      "outcome": "failure",
+      "exitCode": 1
+    },
+    "authority": {
+      "outcome": "failure",
+      "exitCode": 1
+    }
+  },
+  "phases": {
+    "bootstrap": "complete",
+    "checkout": "checkout-action",
+    "sources": "complete",
+    "install": "complete",
+    "capture": "producer-execution",
+    "integrity": "verifier-execution",
+    "technical": "verifier-execution",
+    "authority": "verifier-execution"
+  },
+  "observations": {
+    "platform-revision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "eventstore-revision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "configuration-sha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+    "eventstore-gitlink": "160000 commit 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213\treferences/Hexalith.EventStore"
+  },
+  "evidenceProcessingErrors": [],
+  "expectedAuthorityRejection": false,
+  "boundedTechnicalSuccess": false,
+  "packetRetained": true,
+  "integrityVerified": false,
+  "cleanupReceiptComplete": true,
+  "cleanupComplete": false,
+  "productionEligibility": "FAIL",
+  "selectedBroker": null,
+  "platformStory4_17": "in-progress",
+  "eventStoreStory3_21": "in-progress"
+}

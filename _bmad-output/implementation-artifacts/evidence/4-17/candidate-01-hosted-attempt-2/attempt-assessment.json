@@ -1,0 +1,105 @@
+{
+  "observedUtc": "2026-11-13T00:19:00Z",
+  "governs": "this JSON is the authoritative assessment; the report summarizes it",
+  "runId": 43333995506,
+  "runAttempt": 1,
+  "runUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43333995506",
+  "dispatchRef": "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+  "attemptsAuthorized": 1,
+  "attemptsDispatched": 1,
+  "rerunsOrRetries": 0,
+  "allocation": {
+    "allocated": true,
+    "runCreated": "2026-11-13T00:03:48Z",
+    "jobStarted": "2026-11-13T00:03:53Z",
+    "jobCompleted": "2026-11-13T00:11:38Z",
+    "jobId": 131585434513,
+    "runner": "GitHub Actions 1000081917 (group GitHub Actions, label ubuntu-24.04)",
+    "imageVersion": "20261111.127.1",
+    "queueTimeoutApplied": false
+  },
+  "identitiesObservedOnWorker": {
+    "platformRevision": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+    "eventStoreRevision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+    "eventStoreGitlink": "160000 commit 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213 references/Hexalith.EventStore",
+    "configurationSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+    "allMatchProposal": true
+  },
+  "rawExits": {
+    "bootstrap": 0, "sources": 0, "install": 0, "capture": 1, "integrity": 1, "technical": 1, "authority": 1,
+    "checkout": "action step, no exit file (outcome success)"
+  },
+  "jobConclusion": "failure, set by the final 'Enforce bounded result' step; steps 6-9 are continue-on-error, so their step conclusions read success while their outcomes are failure",
+  "artifact": {
+    "name": "platform-broker-candidate-01-43333995506-1",
+    "id": 13995674927,
+    "bytes": 2666335,
+    "sha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+    "digestMatchesArtifactApi": true,
+    "entries": 575,
+    "inspectionProblems": [],
+    "privateTranscriptEntries": 0,
+    "expiresAt": "2026-12-13T00:11:32Z",
+    "bytesCommitted": false
+  },
+  "pinnedVerifier": {
+    "hosted": "integrity, technical and authority each exit 1 with stdout sha256 149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520 (93 bytes)",
+    "local": "the same three modes from an isolated git archive of EventStore 02a4d3b2 reproduce exit 1 and byte-identical stdout: 'FAIL: platformConfig.execution: sidecar executable lacks the measured Dapr preflight binding'",
+    "integrityVerified": false,
+    "expectedAuthorityRejectionObserved": false
+  },
+  "demonstratedDefect": {
+    "repository": "Hexalith/Hexalith.EventStore",
+    "revision": "02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213, unchanged at bb9e2b51fc8a609181077eba2ae900bcbe40745a",
+    "location": "tools/dapr_platform_broker_configuration.py:298-307 (sidecar identification in the execution check)",
+    "defect": "the check classifies any command receipt whose arguments contain --app-id, --resources-path or --config as a daprd sidecar launch. The producer's own Kafka topic creation (tools/qualify-dapr-brokers.py:442, docker exec ... kafka-topics.sh --create ... --config retention.ms=60000 --config segment.ms=1000) therefore fails the daprd-executable binding",
+    "firstTriggeringReceipt": 1079,
+    "introducedBy": "02a4d3b2 'build: support bounded platform broker configuration' added the check; the Kafka --config topic creation predates it (54261aecc)",
+    "evidence": "local-diagnostic-verification.json",
+    "fixedInThisSlice": false,
+    "whyNotFixed": "the verifier is pinned EventStore source; changing it creates a new EventStore revision, gitlink, workflow pin and candidate, which is beyond this attempt's authorization"
+  },
+  "nonAuthoritativeDiagnostic": {
+    "change": "skip docker exec receipts in sidecar identification, and point the trusted-root binding at the unpatched archive",
+    "integrity": "exit 0, integrity PASS",
+    "technical": "exit 1, six failed scenarios",
+    "authority": "exit 1 with the exact pinned AD-26/3.19/Kubernetes/restore/4.16 rejection message",
+    "meaning": "the false positive is the only integrity blocker the pinned verifier reports for this packet; this is not qualification evidence"
+  },
+  "vectors": {
+    "observed": 24,
+    "verified": 0,
+    "producerPass": 18,
+    "producerFail": 6,
+    "producerFailed": [
+      "rabbitmq/cancellation-backpressure",
+      "rabbitmq/durable-quarantine",
+      "rabbitmq/missing-bindings",
+      "rabbitmq/retention-expiry",
+      "rabbitmq/secret-rotation",
+      "kafka/cancellation-backpressure"
+    ],
+    "detail": "vector-assessment.json"
+  },
+  "cleanup": {
+    "receiptComplete": true,
+    "ownedResourcesRemaining": [],
+    "childResourcesAbsent": 6,
+    "credited": false,
+    "why": "cleanup credit requires verified integrity"
+  },
+  "postTerminal": {
+    "tagResolvesTo94001fad": true,
+    "rulesetsUnchanged": {"24657570": true, "24657217": true},
+    "workflowRuns": 2,
+    "detail": "post-run-checks.json"
+  },
+  "attempt1Implication": "the same source, workflow bytes, runner label and workflow_dispatch event were allocated in 5 seconds on a healthy provider from an immutable ref. Attempt 1's startup_failure was therefore not caused by the workflow file, the label or the event type; the remaining candidates are the 2026-11-11 provider incident and the dispatch-ref deletion, which this attempt does not separate",
+  "unchanged": {
+    "historicalRejectedGuarantees": "REJECTED",
+    "productionEligibility": "FAIL",
+    "selectedBroker": null,
+    "platformStory4_17": "in-progress",
+    "eventStoreStory3_21": "in-progress"
+  }
+}

@@ -1,0 +1,2303 @@
+{
+  "approvedBy": "repository owner, 2026-11-13 decision dialog",
+  "window": "2026-11-11T20:25:00Z..20:55:00Z",
+  "targeted": 43,
+  "actions": {
+    "force-cancel": 43
+  },
+  "afterStatus": {
+    "queued/None": 43
+  },
+  "runs": [
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43097799008,
+      "name": "Platform tuple CI preflight",
+      "headSha": "fce6fd5768fbfce964728f9b4f6b7d66466fc326",
+      "createdAt": "2026-11-11T20:44:07Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-12T23:59:55.219702+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF3C:1EF556:2B64B9E:4181E81:6AF652FA"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:55.735509+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD11:251225:140232:23AAF6:6AF652FA"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:56.269479+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD15:1DE177:143BA9:23E67A:6AF652FB"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:25.541044+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2F:1DE682:2B14861:40F5738:6AF65354"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43097799209,
+      "name": "Catalog builder consumer binding",
+      "headSha": "fce6fd5768fbfce964728f9b4f6b7d66466fc326",
+      "createdAt": "2026-11-11T20:44:07Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-12T23:59:56.663830+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF05:25D477:2AEB469:40DBF55:6AF652FB"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:57.164439+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF07:174F:11CB96E:1B2E031:6AF652FC"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:57.657870+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF09:1B8E77:146AB0:2414B3:6AF652FC"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:25.905520+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4F:340C72:14DDE8:24A2AC:6AF65355"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096933638,
+      "name": "Catalog builder consumer binding",
+      "headSha": "488723fd7efbccbab3bccdae3be4ad79b05a4994",
+      "createdAt": "2026-11-11T20:35:20Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-12T23:59:58.025154+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF12:1DE682:2AE41FB:40ABC64:6AF652FD"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:58.482773+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF0D:141267:2ADDF31:40CD1D0:6AF652FD"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:58.971097+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD02:A5CC:2BB08D2:41F229B:6AF652FE"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:26.346860+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF2C:13F331:14969F:244F7A:6AF65355"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096933600,
+      "name": "Platform tuple CI preflight",
+      "headSha": "488723fd7efbccbab3bccdae3be4ad79b05a4994",
+      "createdAt": "2026-11-11T20:35:20Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-12T23:59:59.393874+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF11:2BBE37:141328:23BED6:6AF652FE"
+        },
+        {
+          "observedUtc": "2026-11-12T23:59:59.849306+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD12:317CC2:2A956EC:4034FD1:6AF652FF"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:00.353688+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF13:21E6E2:14579A:2402A2:6AF652FF"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:26.888006+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF08:1BC20B:2D0D8BD:43E5A84:6AF65356"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096691408,
+      "name": "Platform tuple CI preflight",
+      "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "createdAt": "2026-11-11T20:32:49Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:00.752921+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD24:2DFA0D:146FD3:2423A3:6AF65300"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:01.294131+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD1D:3EE243:14A060:244D92:6AF65300"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:01.797307+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD2E:382CA4:1483E8:24357A:6AF65300"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:27.331884+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF18:16FA:1EACA2:2FEF5C:6AF65356"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096691518,
+      "name": "Catalog builder consumer binding",
+      "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "createdAt": "2026-11-11T20:32:49Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD3A:269CAB:2B4979A:416B395:6AF652FA"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:02.157135+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD26:2FA63C:2B6DB13:418DE8A:6AF65301"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:02.652231+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD3C:1CE8C8:29F03D2:3F67377:6AF65301"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:03.337300+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD1F:1DE682:2AE6C6B:40B022C:6AF65302"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:27.728294+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF36:127F1D:141A56:23DB5C:6AF65357"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064502,
+      "name": "OQ8 governing-design availability",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:04.441345+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF19:3A1DFB:1476B3:242802:6AF65303"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:04.938466+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF1D:2FA63C:2B6F5C0:4190927:6AF65304"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:05.583427+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF1F:1EF556:2B6A5A5:418AC7B:6AF65304"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:28.157153+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF1E:23C15E:2B62E15:418601C:6AF65357"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064843,
+      "name": "Commitlint",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:05.962111+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF21:3B3F9D:2ADFA9D:40CADBC:6AF65305"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:06.605710+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF23:25D477:2AF0BA5:40E4A22:6AF65305"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:07.102902+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF25:7ABDD:1568A:287A5:6AF65306"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:28.516733+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF3A:1E1C18:2A3FC74:3FF5BA0:6AF65357"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064485,
+      "name": "Integration Tests",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:07.497518+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF27:1DB505:1475DF:242BBA:6AF65306"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:08.172115+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF29:1E1C18:2A14CAE:3FB43B4:6AF65307"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:08.667942+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF2F:277178:2C307E9:42EA3CB:6AF65307"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:28.880950+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF4A:1CDC2D:2B4C9AE:4159200:6AF65358"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097065466,
+      "name": "CodeQL",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:09.068032+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD3E:2306D1:14309D:23DF6C:6AF65308"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:09.549546+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD31:1EF556:2B6CF55:418EC61:6AF65308"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:10.404436+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF33:269CAB:2B5223A:4178CAB:6AF65309"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:29.274054+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF22:1D8815:2B8286C:41925E8:6AF65358"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064466,
+      "name": "Payload Protection Azure",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:10.824060+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF35:1B56EE:13FE15:23A3A5:6AF6530A"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:11.757107+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF37:33ED:249E904:37782A5:6AF6530A"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:12.270553+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF39:34CAAE:143825:23E5AD:6AF6530B"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:29.765780+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF4C:141267:2B1050E:4119F85:6AF65358"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064852,
+      "name": "CI",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:12.667229+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD33:2FA63C:2B7419F:4197EE4:6AF6530B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:13.372463+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF3D:30765A:140938:23B255:6AF6530C"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:13.892466+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD40:277178:2C33FA5:42EF427:6AF6530D"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:30.115489+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF4E:9B652:13CBA4:2386A0:6AF65359"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064527,
+      "name": "Payload Protection Lifecycle",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:14.310564+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF43:1DE682:2AEDC94:40BAABC:6AF6530D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:14.982561+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD1B:33ED:24A0CE8:377B5E3:6AF6530D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:15.435393+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF45:141267:2AE819A:40DCC5D:6AF6530E"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:30.516321+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF50:A5CC:2BE4724:4241085:6AF65359"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064532,
+      "name": "Payload Protection",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:16.029466+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF47:1EF556:2B71382:4194E32:6AF6530F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:16.501417+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF49:112AE7:139BA4:234B77:6AF6530F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:17.162647+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD35:30B841:2A413EE:3FD44B0:6AF65310"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:31.210181+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF52:3042B3:147568:2429F9:6AF6535A"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064472,
+      "name": "Advisory Tests",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD2D:19FCF0:13EAD7:2395A6:6AF65303"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:17.549527+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4D:269CAB:2B575D0:418036C:6AF65310"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:18.493383+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD37:CB778:141799:23C2FE:6AF65311"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:18.989537+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF57:2C0B:145C86:240A1C:6AF65312"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:31.648926+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCFC:1BCC34:14C0DB:24781D:6AF6535A"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129631,
+      "name": "CI",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:19.945110+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5D:E3D09:144EC8:2400C9:6AF65313"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:20.608229+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF5F:269CAB:2B5908A:4182B43:6AF65313"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:21.105175+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "FF61:D29DA:14749F:241E76:6AF65314"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:32.023962+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF40:33ED:24CA411:37BAE44:6AF6535B"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129711,
+      "name": "Commitlint",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:21.530318+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF65:30B841:2A43F19:3FD8626:6AF65314"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:23.529123+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C84C:1CDC2D:2B29739:412385A:6AF65316"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:24.120325+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C83E:23C15E:2B3FBEE:4150BA7:6AF65317"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:32.481675+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD08:3B3F9D:2B0EA12:4112602:6AF6535B"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129720,
+      "name": "CodeQL",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:24.518195+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C87C:21E6E2:145E36:240E58:6AF65317"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:25.021426+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CCEE:6FB9:14759F:2427FB:6AF65318"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:25.501516+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C84A:33ED:24A6C21:378480F:6AF65318"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:32.922452+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD0D:1C164:14AB9D:24628B:6AF6535C"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129191,
+      "name": "Release Candidate Gate",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:26.111941+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C852:1D8815:2B5F525:415D702:6AF65319"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:26.591877+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C84E:1BC20B:2CEBF72:43B27AB:6AF65319"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:27.093872+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C878:1EB4B1:14C974:247E93:6AF6531A"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:33.294753+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF54:23C15E:2B65863:418A045:6AF6535C"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957288,
+      "name": "Commitlint",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:27.451482+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C870:277178:2C3C11B:42FB876:6AF6531A"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:27.947321+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C87E:29347:147253:2423AD:6AF6531B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:28.523429+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C85E:3B3F9D:2AEC782:40DE47B:6AF6531B"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:33.867639+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF56:23C15E:2B65B6F:418A52C:6AF6535C"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957381,
+      "name": "CI",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:28.938780+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C880:28B0FA:13EFDE:23A67F:6AF6531C"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:29.412179+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C874:141267:2AEFA39:40E85A0:6AF6531C"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:29.886658+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD44:D514B:389844:5798BF:6AF6531D"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:34.328979+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5A:DBA9:2A4C8B3:3FC6692:6AF6535D"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957328,
+      "name": "CodeQL",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:30.298873+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C86A:2114:2AC767A:407ECF1:6AF6531D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:30.818221+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C886:13A395:14844C:24385F:6AF6531D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:31.310678+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD48:1E1C18:2A21CD2:3FC7E96:6AF6531E"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:34.710723+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF62:2FA63C:2BA1155:41DC159:6AF6535E"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957137,
+      "name": "Release Candidate Gate",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF5B:2FA63C:2B784F3:419E11E:6AF65312"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:31.758133+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C828:30B841:2A49A75:3FE0E1D:6AF6531E"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:32.257374+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C82C:1CE8C8:2A0138D:3F80F2A:6AF6531F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:32.701253+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C82E:33ED:24AAB12:378A7C7:6AF6531F"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:35.176747+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF64:277178:2C60AF0:4333A48:6AF6535E"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097910117,
+      "name": "Commitlint",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4E:25D477:2AFFB89:40FB5B5:6AF65320"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:33.855460+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD00:1DE682:2AF8877:40CAE01:6AF65320"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:34.326813+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CCFA:1DE682:2AF8F0A:40CB787:6AF65321"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:34.816759+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C830:22849E:149395:244C29:6AF65322"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:35.540686+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF66:21FF89:14C0C8:24801C:6AF6535E"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097910202,
+      "name": "CI",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4E:25D477:2AFFB89:40FB5B5:6AF65320"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:35.205746+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C836:30B841:2A4B875:3FE3B69:6AF65322"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:35.682922+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C832:9D5DD:140483:23B503:6AF65322"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:36.633847+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C840:17D9F9:148EA5:2440D8:6AF65323"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:35.987752+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF04:343601:14F601:24BDC1:6AF6535F"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097909997,
+      "name": "CodeQL",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4E:25D477:2AFFB89:40FB5B5:6AF65320"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:37.074203+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C856:6528F:13FE87:23B1F2:6AF65324"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:37.602690+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C866:3903B4:144C26:2406E3:6AF65324"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:38.074081+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C83A:16FA:1D16E0:2D7EF4:6AF65325"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:36.369203+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF06:1CE8C8:2A22ECF:3FB4216:6AF6535F"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097909727,
+      "name": "Qualify Builds publication",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:15Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4E:25D477:2AFFB89:40FB5B5:6AF65320"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:38.436162+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C83C:24D89C:2C0A80C:428A76E:6AF65325"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:38.915062+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C842:1EF556:2B7E3C4:41A88C9:6AF65326"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:39.398738+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD04:1A4AC6:14E496:24969B:6AF65326"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:36.749000+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF0E:32B6BE:146B63:242AA2:6AF65360"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779338,
+      "name": "Source-reference integration",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:40.590066+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C848:2114:2ACCCDE:408705C:6AF65327"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:41.115884+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C854:24EAFA:148B04:24498C:6AF65328"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:41.586478+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C85A:286D7C:14953E:244D11:6AF65328"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:37.181395+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "FF10:11A37:146C56:2430A6:6AF65360"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779519,
+      "name": "CI",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:41.958843+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C85C:2114:2ACDB1B:4088566:6AF65329"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:42.843648+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C864:1E1C18:2A27850:3FD0AAA:6AF65329"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:43.350881+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C86E:28F103:14442B:23FA34:6AF6532A"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:37.587034+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD4C:2B4E43:147A6C:2436DB:6AF65360"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779589,
+      "name": "CodeQL",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:43.733740+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C827:A5CC:2BCAB63:4219ECC:6AF6532B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:44.233171+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD0E:35AEB5:13D83B:238865:6AF6532B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:44.938175+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C829:1CDC2D:2B350BF:41351C1:6AF6532B"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:37.927522+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C869:16841C:14A448:24627B:6AF65361"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779317,
+      "name": "Story Guards",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:45.331874+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD30:1D901E:144D04:240401:6AF6532C"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:45.818049+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C82B:3E71B2:1491C6:244CAF:6AF6532D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:46.262618+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C82D:16FA:1D5991:2DE58B:6AF6532D"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:38.339904+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C86B:30B841:2A6CA5B:40160C7:6AF65361"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779679,
+      "name": "Commitlint",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:46.660207+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C82F:1C1913:143312:23E98A:6AF6532D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:47.418749+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD32:DD439:1546CF:250069:6AF6532E"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:48.007231+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C831:D514B:39372D:58893C:6AF6532F"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:38.908973+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C86D:343601:14F6B8:24BF0A:6AF65362"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378903,
+      "name": "CI",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:42Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:48.374554+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C833:277178:2C47728:430CD32:6AF6532F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:48.885105+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C835:3B3F9D:2AF77F4:40EF001:6AF65330"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:49.370957+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C837:25D477:2B0844E:4108634:6AF65330"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:39.257343+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C86F:1D8815:2B87D00:419A4B4:6AF65362"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378844,
+      "name": "CodeQL",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:42Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:49.711691+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C839:1CE8C8:2A0AD7E:3F8F606:6AF65331"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:50.401196+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C83B:1C7369:1525ED:24E094:6AF65331"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:50.862255+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C83D:2DFA0D:147C38:243A87:6AF65332"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:39.637284+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C871:1CE8C8:2A24832:3FB68CF:6AF65362"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378427,
+      "name": "Story Guards",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:51.247128+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C83F:0BF8:D3A55:178CEC:6AF65332"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:51.754742+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C841:1A00CF:144284:23F08C:6AF65332"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:52.227050+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CCF1:42C23:14AFB6:2466EE:6AF65333"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:40.003969+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C873:240945:1469C8:242883:6AF65363"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378382,
+      "name": "Source-reference integration",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:52.637611+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C843:26985:13F5EC:23AB73:6AF65333"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:53.704684+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C845:317CC2:2AB273C:40616B8:6AF65334"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:54.193747+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C847:382CA4:149140:244DA8:6AF65335"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:40.433087+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C875:7556F:146CB9:2433C8:6AF65363"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378725,
+      "name": "Commitlint",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C846:25D477:2B033E2:4100C11:6AF65327"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:54.567053+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C84B:DD439:15488A:2503A5:6AF65335"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:55.058823+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C84D:73E02:140CE7:23C04D:6AF65336"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:55.825953+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C84F:E296:14C4C5:247D87:6AF65336"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:40.844266+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C877:32B6BE:146C3F:242C3D:6AF65364"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43098593020,
+      "name": "CI",
+      "headSha": "9f85c64beae32befe050240526af398063e81eba",
+      "createdAt": "2026-11-11T20:52:47Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:56.699542+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCFB:1BC20B:2CFD24F:43CC73E:6AF65338"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:57.389771+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD39:141267:2AFE754:40FEE1F:6AF65338"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:57.892623+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD3B:1BC20B:2CFDAF7:43CD512:6AF65339"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:41.177075+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C87B:2114:2AEE434:40B91A8:6AF65364"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43098593098,
+      "name": "Commitlint",
+      "headSha": "9f85c64beae32befe050240526af398063e81eba",
+      "createdAt": "2026-11-11T20:52:47Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:58.331855+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD16:1C1913:14361A:23EF2A:6AF65339"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:59.012948+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C853:23C15E:2B52589:416D1F1:6AF6533A"
+        },
+        {
+          "observedUtc": "2026-11-13T00:00:59.503072+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD22:1C7369:1527F1:24E464:6AF6533A"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:41.557384+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CD1A:269CAB:2B8487C:41C4F7C:6AF65364"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43097270955,
+      "name": "CI",
+      "headSha": "a9f443f0bd482359731dcd54711e44fbd23d58fe",
+      "createdAt": "2026-11-11T20:38:40Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:00:59.883383+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C857:1DE682:2B06743:40E0240:6AF6533B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:00.389037+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD46:DBA9:2A3B211:3FABDFB:6AF6533B"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:00.897957+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C85B:485B:144195:23FB47:6AF6533C"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:41.957824+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C87D:28BB57:13DAFA:239890:6AF65365"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43097271053,
+      "name": "Commitlint",
+      "headSha": "a9f443f0bd482359731dcd54711e44fbd23d58fe",
+      "createdAt": "2026-11-11T20:38:40Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:01:01.326758+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCF4:277178:2C4E895:4317C7C:6AF6533C"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:01.769676+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C85D:1E1C18:2A31C02:3FE04F1:6AF6533D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:02.291397+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "C85F:1FEA1E:1457AB:24164C:6AF6533D"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:42.328527+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C87F:1D6693:144B92:24103F:6AF65365"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43096409340,
+      "name": "Commitlint",
+      "headSha": "ff6b295abcca5159896602bd8a5e87e913950b83",
+      "createdAt": "2026-11-11T20:30:01Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:01:02.826335+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "C867:1935D2:148E4A:2448AA:6AF6533D"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:03.331146+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD05:24D89C:2C18069:429F31C:6AF6533E"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:03.821477+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD09:1BCC34:14B910:246AC9:6AF6533F"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:42.706904+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C881:317CC2:2ACC278:4088C3B:6AF65366"
+      }
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43096409328,
+      "name": "CI",
+      "headSha": "ff6b295abcca5159896602bd8a5e87e913950b83",
+      "createdAt": "2026-11-11T20:30:01Z",
+      "statusBefore": "queued",
+      "listing": {
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs?status=queued&created=2026-11-11T20:25:00Z..2026-11-11T20:55:00Z&per_page=100",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "CCF7:1A4AC6:14E9BE:249F49:6AF65337"
+      },
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T00:01:04.197386+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD23:1DE682:2B08CAA:40E3C0A:6AF6533F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:04.663696+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328/cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD3D:24D89C:2C18C4E:42A05C1:6AF6533F"
+        },
+        {
+          "observedUtc": "2026-11-13T00:01:05.155498+00:00",
+          "method": "POST",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328/force-cancel",
+          "exitCode": 1,
+          "httpStatus": 409,
+          "githubRequestId": "CD3F:2114:2ADAB9C:409BECD:6AF65340"
+        }
+      ],
+      "jobsBefore": 0,
+      "action": "force-cancel",
+      "after": {
+        "observedUtc": "2026-11-13T00:01:43.104171+00:00",
+        "status": "queued",
+        "conclusion": null,
+        "method": "GET",
+        "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328",
+        "exitCode": 0,
+        "httpStatus": 200,
+        "githubRequestId": "C883:1D8815:2B89D98:419D5D5:6AF65366"
+      }
+    }
+  ],
+  "result": "not-cancellable",
+  "providerMessage": "Cannot cancel a workflow run that has not been queued yet. (HTTP 409, for both cancel and force-cancel)",
+  "manualRetry": {
+    "run": 43097799008,
+    "repository": "Hexalith/Hexalith.Platform",
+    "method": "POST",
+    "endpoint": "cancel",
+    "httpStatus": 409,
+    "statusAfter30s": "queued"
+  },
+  "notAttempted": "DELETE of the run records: beyond the approved cancellation; needs a separate owner decision"
+}

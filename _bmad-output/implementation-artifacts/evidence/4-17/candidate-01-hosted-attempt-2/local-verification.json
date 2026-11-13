@@ -1,0 +1,58 @@
+{
+  "observedUtc": "2026-11-13T00:12:10.511799+00:00",
+  "runId": 43333995506,
+  "packetPresent": true,
+  "originalConfigurationSha256": "472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc",
+  "retainedArtifactSummaries": {
+    "outcomes.json": "426b6f64f38d63f396afe8625c6065264340e605c1173d322ff2e9c18b16d10c",
+    "bootstrap.json": "3fe83b3af312afaaad90103b9b3caba18d775f1c5022bca698e09f951d4ac3cd",
+    "worker.json": "539064e1902b974d981294bc6eec25bf1471663161335c800670914bb9986977",
+    "transcripts.json": "0a17828f73e0f781ae1081186bd3d247e60e35b031a12a72a4cf557720536422"
+  },
+  "verifiers": {
+    "integrity": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-01.json",
+        "--allow-failures"
+      ],
+      "cwd": "isolated git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+      "exitCode": 1,
+      "stdoutSha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+      "firstLine": "FAIL: platformConfig.execution: sidecar executable lacks the measured Dapr preflight binding"
+    },
+    "technical": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-01.json"
+      ],
+      "cwd": "isolated git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+      "exitCode": 1,
+      "stdoutSha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+      "firstLine": "FAIL: platformConfig.execution: sidecar executable lacks the measured Dapr preflight binding"
+    },
+    "authority": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-01.json",
+        "--require-production-authority"
+      ],
+      "cwd": "isolated git archive of EventStore 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213",
+      "exitCode": 1,
+      "stdoutSha256": "149cacf3b44dbcdbdb854cd640196f299372492845f938dcace8159cf85b9520",
+      "firstLine": "FAIL: platformConfig.execution: sidecar executable lacks the measured Dapr preflight binding"
+    }
+  }
+}

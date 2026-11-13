@@ -2467,6 +2467,11 @@ no workflow defect and recorded that the dispatch branch was deleted while the r
 queued. One further attempt from an immutable tag at the same source is proposed,
 not authorized. These acceptance criteria and statuses are unchanged.
 
+The owner then authorized that attempt. [Attempt 2](../../docs/implementation/story-4-17-broker-candidate-01-hosted-attempt-2.md) was
+allocated and captured all 24 vectors. The pinned EventStore verifier rejected its packet
+because of a demonstrated false positive, so no vector, cleanup or authority result is
+credited. These acceptance criteria and statuses are unchanged.
+
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 
 As a team member,

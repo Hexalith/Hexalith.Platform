@@ -1,0 +1,57 @@
+{
+  "note": "Transcribed from this session's tool output. These go/no-go reads were run as ad hoc GET commands before tag creation; their raw responses were not separately retained, except provider-status-pre-dispatch.json.",
+  "proposal": "../candidate-01-startup-investigation/next-attempt-proposal.json goNoGoBeforeDispatch",
+  "ownerAuthorization": "2026-11-13 session decision 'Immutable tag (Recommended)': create the tag at 94001fad, check GitHub status, dispatch exactly once; if no job starts within 30 minutes, cancel, record not-allocated and stop; the run counts as the attempt; download the artifact and run the three verifiers locally",
+  "checks": [
+    {
+      "check": "githubstatus summary: Actions operational, no unresolved incident",
+      "resultObservedUtc": "2026-11-13T00:02:37Z",
+      "argv": ["curl", "-sS", "-A", "status-check", "-o", "SCRATCH/summary.json", "-w", "%{http_code}\\n", "https://www.githubstatus.com/api/v2/summary.json"],
+      "result": "HTTP 200; indicator none, All Systems Operational; Actions, API Requests, Git Operations, Webhooks and Packages operational; unresolved incidents []; scheduled maintenances []",
+      "retained": "provider-status-pre-dispatch.json (page updated_at 2026-11-12T23:51:55.544Z)",
+      "pass": true
+    },
+    {
+      "check": "rulesets 24657570 and 24657217 match repository-policy.json",
+      "resultObservedUtc": "2026-11-13T00:02:48Z",
+      "argv": ["gh", "api", "--method", "GET", "repos/Hexalith/Hexalith.Platform/rulesets/{24657570,24657217}"],
+      "result": "24657570 active, ~ALL tags, rules update+deletion, no bypass actors, current_user_can_bypass never; 24657217 active, ~ALL excluding refs/tags/v[0-9]*, rule creation, one User bypass actor (always), current_user_can_bypass always; both equal to the recorded policy",
+      "pass": true
+    },
+    {
+      "check": "the attempt-2 tag does not already exist on origin",
+      "resultObservedUtc": "2026-11-13T00:02:48Z",
+      "argv": ["git", "ls-remote", "origin", "refs/tags/qualification/*"],
+      "result": "exit 0, no refs listed",
+      "pass": true
+    },
+    {
+      "check": "workflow 415133929 active with exactly one run and none queued or in progress",
+      "resultObservedUtc": "2026-11-13T00:02:48Z",
+      "argv": ["gh", "api", "--method", "GET", "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929 and .../runs?per_page=100 and .../runs?status={queued,in_progress,waiting,pending,requested}"],
+      "result": "state active; total_count 1 (43097161643 completed startup_failure); queued 0, in_progress 0, waiting 0, pending 0, requested 0",
+      "pass": true
+    },
+    {
+      "check": "identities at 94001fad and no workflow triggers on tags",
+      "resultObservedUtc": "2026-11-13T00:02:58Z",
+      "argv": ["git", "ls-tree / git show at 94001fad925fdf7fa03a90b507b8f8e19074f9e3 and origin/main, scanning every workflow's on: block for tags"],
+      "result": "workflow blob 9130ed4243e3961326e984e8fd22e49b70695aa4; EventStore gitlink 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213; candidate sha256 472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc; every workflow at 94001fad and at origin/main b86201318b70c2d3e4bdef4df6a96c98a64c5dff has no tags trigger",
+      "pass": true
+    },
+    {
+      "check": "after creation the tag resolves to 94001fad on origin",
+      "resultObservedUtc": "2026-11-13T00:03:20Z",
+      "argv": ["git", "ls-remote", "origin", "refs/tags/qualification/broker-candidate-01/attempt-2-94001fad"],
+      "result": "94001fad925fdf7fa03a90b507b8f8e19074f9e3 refs/tags/qualification/broker-candidate-01/attempt-2-94001fad",
+      "pass": true
+    },
+    {
+      "check": "the tag push started no workflow run",
+      "resultObservedUtc": "2026-11-13T00:03:42Z",
+      "argv": ["gh", "api", "--method", "GET", "repos/Hexalith/Hexalith.Platform/actions/runs?created=>=TAG_CREATE_STARTED&per_page=20"],
+      "result": "total_count 0; workflow 415133929 total_count still 1",
+      "pass": true
+    }
+  ]
+}
