@@ -1,5 +1,29 @@
 # Current tuple preparation
 
+## Current signed Builds5.0.1 NET11 preparation
+
+The current producer is genuine [Builds v5.0.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.0.1)
+at `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, published by successful normal
+[release43241459875](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43241459875).
+The exact tool pin and range floor are `5.0.1`, with upper bound `6.0.0-0` and
+roll-forward disabled. This release carries the patched Aspire13.6.5 and NET11
+Web/SignalR catalog and preserves transitive pins in isolated model builds.
+
+[Independent public archive measurements](implementation/builds501-published-identity.json)
+bind both NuGet repository signatures, official catalog SHA-512 identities,
+source/version metadata, the original publisher artifact and manifest, and
+byte equality of every normal publisher payload member. The only additional
+validation authority is the measured complete5.0.1 AppHost/Tooling pair; crossed
+pairs remain refused. The earlier5.0.0 record remains unchanged.
+
+The current owner-source binding is regenerated from the actual selected owner
+gitlinks. All three historical companions preserve this current source and
+substitute only the authenticated frozen tuple metadata and owner gitlinks.
+The original349/412 controls, current positive/negative controls, package audits,
+private signed transport checks and exact-source release gates remain required.
+Preparation and package measurement supply no hosted qualification, new native
+or image admission, or qualified source publication.
+
 ## Current signed Builds4.47.0 and SDK4.2.0 tuple
 
 The producer is genuine [Builds v4.47.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.47.0)
