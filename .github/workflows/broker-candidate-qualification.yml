@@ -1,4 +1,4 @@
-name: Platform broker candidate 01 (non-promoting)
+name: Platform broker candidate 02 (non-promoting)
 
 on:
   workflow_dispatch:
@@ -7,12 +7,12 @@ permissions:
   contents: read
 
 jobs:
-  candidate-01:
+  candidate-02:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
-      EVENTSTORE_REVISION: 02a4d3b2c9fedd18ea2da4d754ab4b68f7e29213
-      CONFIGURATION_SHA256: 472bae6b4fc77448c96aa066c41469e689d50d0b98dcbea103333d06524208dc
+      EVENTSTORE_REVISION: 495dd24943031ec75e2822c6168ada3c8b9fdb82
+      CONFIGURATION_SHA256: b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b
       QUALIFICATION_PROFILE: deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json
       PYTHONDONTWRITEBYTECODE: '1'
       PYTHONOPTIMIZE: '0'
@@ -23,14 +23,14 @@ jobs:
         run: |
           set -euo pipefail
           umask 077
-          evidence=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-evidence.XXXXXX")
+          evidence=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-02-evidence.XXXXXX")
           phase=bootstrap-bindings
           trap 'code=$?; printf "%s\n" "$code" > "$evidence/bootstrap.exit"; printf "%s\n" "$phase" > "$evidence/bootstrap.phase"' EXIT
           printf 'evidence=%s\n' "$evidence" >> "$GITHUB_OUTPUT"
           printf 'EVIDENCE=%s\n' "$evidence" >> "$GITHUB_ENV"
-          base="$RUNNER_TEMP/platform-broker-candidate-01"
+          base="$RUNNER_TEMP/platform-broker-candidate-02"
           printf 'QUALIFICATION_BASE=%s\nQUALIFICATION_OUTPUT=%s/packet\nQUALIFICATION_TOOLS=%s/tools\nQUALIFICATION_EXCLUSIVE_WORKER=%s/worker.json\n' "$base" "$base" "$base" "$base" >> "$GITHUB_ENV"
-          printf 'PLATFORM_CONFIG=%s/docs/implementation/story-4-17-broker-candidate-01.json\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          printf 'PLATFORM_CONFIG=%s/docs/implementation/story-4-17-broker-candidate-02.json\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
           mkdir "$evidence/private-transcripts"
           export EVIDENCE="$evidence"
           phase=bootstrap-context
@@ -79,7 +79,7 @@ jobs:
           [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
           phase=job-identity
           [[ "$GITHUB_RUN_ID" =~ ^[0-9]+$ && "$GITHUB_RUN_ATTEMPT" =~ ^[0-9]+$ ]]
-          test "$GITHUB_JOB" = candidate-01
+          test "$GITHUB_JOB" = candidate-02
           observe_hex() {
             if [[ "$2" =~ ^[0-9a-f]+$ && ${#2} -eq "$3" ]]; then
               printf '%s\n' "$2" > "$EVIDENCE/$1.observed"
@@ -300,7 +300,7 @@ jobs:
         run: |
           set -euo pipefail
           if test -z "${EVIDENCE:-}"; then
-            EVIDENCE=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-01-report.XXXXXX")
+            EVIDENCE=$(mktemp -d "$RUNNER_TEMP/platform-broker-candidate-02-report.XXXXXX")
             export EVIDENCE
           fi
           printf 'evidence=%s\n' "$EVIDENCE" >> "$GITHUB_OUTPUT"
@@ -451,7 +451,7 @@ jobs:
           persist_result()
           try:
               with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
-                  stream.write('Platform broker candidate 01: bounded technical success = ' + str(result()['boundedTechnicalSuccess']).lower() + '\n\n')
+                  stream.write('Platform broker candidate 02: bounded technical success = ' + str(result()['boundedTechnicalSuccess']).lower() + '\n\n')
                   for name, row in outcomes.items():
                       stream.write(f"- {name}: {row['outcome']}; raw exit = {row['exitCode'] if row['exitCode'] is not None else 'incomplete'}; phase = {phases[name] or 'incomplete'}\n")
                   stream.write('\nEvidence-processing codes: ' + (', '.join(errors) or 'none') + '\n')
@@ -472,10 +472,10 @@ jobs:
         id: upload
         if: always()
         with:
-          name: platform-broker-candidate-01-${{ github.run_id }}-${{ github.run_attempt }}
+          name: platform-broker-candidate-02-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/**
-            !${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-01-evidence-unavailable', runner.temp) }}/private-transcripts/**
+            ${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}/**
+            !${{ steps.report.outputs.evidence || steps.bootstrap.outputs.evidence || format('{0}/platform-broker-candidate-02-evidence-unavailable', runner.temp) }}/private-transcripts/**
           include-hidden-files: true
           retention-days: 30
           if-no-files-found: error
