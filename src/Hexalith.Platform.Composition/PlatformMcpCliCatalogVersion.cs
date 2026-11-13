@@ -3,7 +3,6 @@ namespace Hexalith.Platform.Composition;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Linq;
-using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 
 /// <summary>Resolves the actual MCP abstraction pin without inventing an Aspire package or a version fallback.</summary>
@@ -30,12 +29,8 @@ internal static class PlatformMcpCliCatalogVersion
     {
         string? snapshotPath = options.RunPlan?.Workspace is { } workspace
             ? Path.Combine(workspace, "source-mapping", "catalog-versions.json") : null;
-#if HEXALITH_PLATFORM_EXTENSION_SDK
-        string? selected = new CompositionDeclarationOptions(options.Mapping, options.DeclarationPaths)
-        {
-            PlatformRoot = options.PlatformRoot,
-            Workspace = options.RunPlan?.Workspace,
-        }.CatalogPackageVersion(_package, source);
+#if NET11_0_OR_GREATER || HEXALITH_PLATFORM_EXTENSION_SDK
+        string? selected = PlatformDeclarationSet.DeclarationOptions(options).CatalogPackageVersion(_package, source);
         // The current API authenticates its recorded view. A physical catalog also needs one unambiguous pin.
         return snapshotPath is not null && File.Exists(snapshotPath) ? selected
             : selected == PhysicalPin(options) ? selected : null;

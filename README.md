@@ -1,6 +1,33 @@
 # Hexalith.Platform
 
-## Current signed Builds5.2.1 NET11 preparation
+## Current signed Builds5.2.2 consumer-context preparation
+
+The current producer is genuine [Builds v5.2.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.2)
+at `02ed624aa19781cac75d2c9112940e9bd830441a`, from successful normal
+[release43455256492](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43455256492).
+The exact tool pin and range floor are `5.2.2`, with upper bound `6.0.0-0`,
+roll-forward disabled and `candidateAcceptance` false. Catalog Git blob
+`5e75107dc795be7176ee5cd9b88cada0545ae326` has raw SHA-256
+`bb94e8d4bf659c84cc73357ac2d337aab4036550668150730e003d1abbd27986`.
+The typed shared consumer context selects the authenticated finite Platform
+view for declarations and MCP package pins. SDK4.2.0/OpenAPI2 and every
+historical tool cohort remain unchanged.
+
+The [published pair receipt](docs/implementation/builds522-validation-pair.json)
+records both official NuGet signatures, SHA-512 hashes, source identities
+and exact original publisher payload comparisons. The Module archive SHA-256
+is `8ab5a70ad3989d8b58da0fa2097d9d1792220a879030db4fcbe0060d42325acf`.
+The additional complete validation pair is AppHost
+`e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709` and Tooling
+`1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec`.
+All twenty historical pairs remain present; every crossed pair is refused.
+
+Published identity is distinct from exact-source hosted qualification.
+The unchanged tuple/catalog gates and normal qualified source publisher
+remain required. This grants no candidate, lifecycle, image, native or
+Story acceptance. The previous sections retain their historical facts.
+
+## Previous signed Builds5.2.1 NET11 preparation
 
 The current producer is genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
 at `0e7424fdce6373920fb2019d1ad2a74d8fe5295c`, from successful normal
@@ -240,7 +267,7 @@ from L's old public package/image qualification. Fresh exact-source hosted
 qualification is required; publication and positive counts alone establish no
 runtime or deployment acceptance.
 
-The configured range permits later 5.x versions from `5.2.1`, including prereleases
+The configured range permits later 5.x versions from `5.2.2`, including prereleases
 within that range, and excludes `6.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
 alone does not establish integration qualification. The exact tool pin and Builds
 gitlink must identify the same published release before acceptance.

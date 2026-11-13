@@ -133,9 +133,5 @@ public static class PlatformServerBindings
 
     private static InvalidDataException Failure(PlatformModuleDeclaration module, string identity, string field, string reason) => new($"{module.Source}: {identity}: {field}: {reason}.");
     internal static string Version(PlatformCompositionOptions options, string module, string source) =>
-        new Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions(options.Mapping, options.DeclarationPaths)
-        {
-            PlatformRoot = options.PlatformRoot,
-            Workspace = options.RunPlan?.Workspace,
-        }.CatalogVersion(module, source);
+        PlatformDeclarationSet.DeclarationOptions(options).CatalogVersion(module, source);
 }

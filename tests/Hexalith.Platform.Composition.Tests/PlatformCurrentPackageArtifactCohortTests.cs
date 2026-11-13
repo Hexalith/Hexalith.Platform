@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Platform.CatalogArtifacts;
 using Hexalith.Builds.Tooling.Runtime;
+using Hexalith.Builds.Tooling.Workspace;
 using Shouldly;
 
 /// <summary>Authenticates current signed public reader artifacts separately from all historical and native image authorities.</summary>
@@ -179,6 +180,9 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion("unknown"));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion("unknown"));
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true, currentArtifacts: true).ConfigureAwait(true);
+#if NET11_0_OR_GREATER
+        AssertCurrentConsumerCatalog(fixture);
+#endif
         PlatformCompositionOptions options = fixture.CaptureCurrent();
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof.ShouldNotBeNull();
         string memoriesVersion = PlatformServerBindings.Version(options, "memories", "current preparation");
@@ -219,6 +223,134 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         proof.Matches(options).ShouldBeTrue();
         fixture.AssertNoEffects(builder);
     }
+
+#if NET11_0_OR_GREATER
+    private static void AssertCurrentConsumerCatalog(PlatformPartiesPackageFixture fixture)
+    {
+        SourceMapping mapping = fixture.Plan.SourceMapping!;
+        PlatformCompositionOptions options = new()
+        {
+            PlatformRoot = mapping.PlatformIdentity!.PlatformPath, Mapping = mapping, ActiveModule = "parties",
+            DeclarationPaths = fixture.Plan.PlatformDeclarationPaths, RunPlan = fixture.Plan, EventStoreSeedProject = fixture.Seed,
+        };
+        string path = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
+        byte[] original = File.ReadAllBytes(path);
+        CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(original)!;
+        var defaults = new CompositionDeclarationOptions(mapping, options.DeclarationPaths) { PlatformRoot = options.PlatformRoot, Workspace = fixture.Workspace };
+        defaults.CatalogVersion("eventstore", "current default control").ShouldBe("5.0.0");
+        PlatformDeclarationSet.DeclarationOptions(options).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
+        foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
+            PlatformServerBindings.Version(options, module, "current named control")
+                .ShouldBe(defaults.CatalogVersion(module, "current named control", CompositionDeclarationOptions.PlatformCompositionProjectName));
+        PlatformServerBindings.Version(options, "eventstore", "current named control").ShouldBe("4.2.0");
+        PlatformMcpCliCatalogVersion.Resolve(options, "current named control").ShouldBe("2.0.1");
+        PlatformDeclarationSet.Load(options).Count.ShouldBe(4);
+        string? cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options);
+        cohort.ShouldBe(PrivateCohort(PlatformServerBindings.Version(options, "memories", "current named control")));
+        File.ReadAllBytes(path).ShouldBe(original, "Reading the named view must preserve the default catalog and original snapshot bytes.");
+
+        var projects = snapshot.ProjectVersions.ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+        projects.Remove(CompositionDeclarationOptions.PlatformCompositionProjectName).ShouldBeTrue();
+        try
+        {
+            // Rehashing the negative control distinguishes an absent required view from a stale hash.
+            Write(snapshot with { ProjectVersions = projects });
+            Refuses(options);
+            foreach (string package in new[] { "Hexalith.EventStore.Aspire", "Hexalith.McpCli.Abstractions" })
+            {
+                snapshot.Versions.ContainsKey(package).ShouldBeTrue("The global pin remains present during the named-pin refusal control.");
+                projects = snapshot.ProjectVersions.ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+                var selected = projects[CompositionDeclarationOptions.PlatformCompositionProjectName].ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+                selected.Remove(package).ShouldBeTrue();
+                projects[CompositionDeclarationOptions.PlatformCompositionProjectName] = selected;
+                Write(snapshot with { ProjectVersions = projects });
+                if (package == "Hexalith.EventStore.Aspire")
+                {
+                    Should.Throw<InvalidDataException>(() => PlatformServerBindings.Version(options, "eventstore", "missing named pin"));
+                    Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options));
+                    Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options));
+                }
+                else
+                {
+                    PlatformServerBindings.Version(options, "eventstore", "missing named MCP pin").ShouldBe("4.2.0");
+                    PlatformMcpCliCatalogVersion.Resolve(options, "missing named MCP pin").ShouldBeNull();
+                    PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBeNull();
+                }
+                File.WriteAllBytes(path, original);
+            }
+            File.WriteAllText(path, "{");
+            Refuses(options);
+            File.WriteAllText(path, "null");
+            Refuses(options);
+            File.WriteAllText(path, JsonSerializer.Serialize(snapshot with { Hash = new string('0', 64) }));
+            Refuses(options);
+            Write(snapshot with { MappingHash = new string('0', 64) });
+            Refuses(options);
+            Write(snapshot with { CatalogCommit = new string('0', 40) });
+            Refuses(options);
+            Write(snapshot with { CatalogFileHash = new string('0', 64) });
+            Refuses(options);
+            File.Delete(path);
+            Refuses(options);
+            File.WriteAllBytes(path, original);
+
+            SourceMapping changedSource = mapping with
+            {
+                Entries = mapping.Entries.Select(entry => entry.Identity == "Hexalith.Parties" ? entry with { Path = Path.Combine(fixture.Workspace, "foreign-owner") } : entry).ToArray(),
+            };
+            Refuses(options with { Mapping = changedSource });
+            foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[6.0.0,7.0.0)" })
+            {
+                PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
+                Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));
+                Refuses(changed);
+            }
+
+            foreach (string version in new[] { "5.0.0", "4.2.1", "4.2.0+metadata" })
+            {
+                projects = snapshot.ProjectVersions.ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+                var selected = projects[CompositionDeclarationOptions.PlatformCompositionProjectName].ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+                selected["Hexalith.EventStore.Aspire"] = version;
+                projects[CompositionDeclarationOptions.PlatformCompositionProjectName] = selected;
+                Write(snapshot with { ProjectVersions = projects });
+                PlatformServerBindings.Version(options, "eventstore", "unqualified named control").ShouldBe(version);
+                PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBeNull();
+                Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(options));
+            }
+            File.WriteAllBytes(path, original);
+            foreach (string relative in snapshot.PinnedFiles.Keys)
+            {
+                string pinned = Path.Combine(fixture.Workspace, "source-mapping", "pinned-tree", relative);
+                byte[] bytes = File.ReadAllBytes(pinned);
+                try
+                {
+                    File.WriteAllBytes(pinned, [.. bytes, 0]);
+                    Refuses(options);
+                }
+                finally { File.WriteAllBytes(pinned, bytes); }
+            }
+        }
+        finally { File.WriteAllBytes(path, original); }
+        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBe(cohort);
+        PlatformDeclarationSet.Load(options).Count.ShouldBe(4);
+        File.ReadAllBytes(path).ShouldBe(original);
+
+        void Write(CatalogVersionSnapshot changed)
+            => File.WriteAllText(path, JsonSerializer.Serialize(changed with
+            {
+                Hash = CatalogVersionSnapshot.ComputeHash(changed.MappingHash, changed.CatalogCommit, changed.CatalogFileHash,
+                    changed.PinnedFiles, changed.Versions, changed.ProjectVersions),
+            }));
+
+        static void Refuses(PlatformCompositionOptions changed)
+        {
+            Should.Throw<InvalidDataException>(() => PlatformServerBindings.Version(changed, "eventstore", "current refusal control"));
+            Should.Throw<InvalidDataException>(() => PlatformMcpCliCatalogVersion.Resolve(changed, "current refusal control"));
+            Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.Load(changed));
+            Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(changed));
+        }
+    }
+#endif
 
     private static string CurrentOwnerRoot() => typeof(PlatformCurrentPackageArtifactCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
         .Single(attribute => attribute.Key == "PlatformTestRoot:Hexalith.Parties").Value!;

@@ -78,7 +78,12 @@ public sealed class PlatformMcpCliCatalogSelectionTests
     public void RecordedPinRetainsMappingAndContentValidation()
     {
         using var fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
-        PlatformCompositionOptions options = fixture.Options;
+        // This deliberately unpinned component snapshot tests its own mapping/content hash only.
+        // The fixture's invented catalog commit cannot stand in for genuine pinned source bytes.
+        PlatformCompositionOptions options = fixture.Options with
+        {
+            Mapping = fixture.Options.Mapping with { PlatformIdentity = fixture.Options.Mapping.PlatformIdentity! with { CatalogCommit = null } },
+        };
         string path = Path.Combine(options.RunPlan!.Workspace, "source-mapping", "catalog-versions.json");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         Dictionary<string, string> versions = new() { ["Hexalith.McpCli.Abstractions"] = "2.0.1" };
@@ -108,6 +113,25 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
         PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection").ShouldBeNull();
+#if NET11_0_OR_GREATER && !HEXALITH_PLATFORM_EXTENSION_SDK
+        // NET11's package API selects the named view even when the loaded SDK has no extension API.
+        // These deliberately unpinned component values establish selection only, never artifact authority.
+        PlatformCompositionOptions current = options with
+        {
+            Mapping = options.Mapping with { PlatformIdentity = options.Mapping.PlatformIdentity! with { ToolVersionRange = "[5.0.0,6.0.0-0)" } },
+        };
+        versions["Hexalith.McpCli.Abstractions"] = "2.0.1";
+        projects[Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName] =
+            new Dictionary<string, string> { ["Hexalith.McpCli.Abstractions"] = "2.0.0" };
+        snapshot = snapshot with
+        {
+            MappingHash = current.Mapping.ContentHash,
+            Hash = CatalogVersionSnapshot.ComputeHash(current.Mapping.ContentHash, snapshot.CatalogCommit,
+                snapshot.CatalogFileHash, pinnedFiles, versions, projects),
+        };
+        File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
+        PlatformMcpCliCatalogVersion.Resolve(current, "NET11 without extension component selection").ShouldBe("2.0.0");
+#endif
     }
 
     private static string Catalog(string root) => Path.Combine(root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");

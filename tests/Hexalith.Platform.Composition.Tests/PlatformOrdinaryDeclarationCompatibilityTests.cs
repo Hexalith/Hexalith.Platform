@@ -104,9 +104,11 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         const string Builds510Tooling = "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff";
         const string Builds521AppHost = "a229438e01238f7e0ff2063eefb9595f37b072c893f3f3d138a348c1b970305f";
         const string Builds521Tooling = "2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088";
+        const string Builds522AppHost = "e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709";
+        const string Builds522Tooling = "1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec";
         var publishedPairs = new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling),
             (NewAppHost, NewTooling), (NextAppHost, NextTooling), (CanonicalClaimsAppHost, CanonicalClaimsTooling),
-            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling), (Builds4482AppHost, Builds4482Tooling), (Builds4483AppHost, Builds4483Tooling), (Builds500AppHost, Builds500Tooling), (Builds501AppHost, Builds501Tooling), (Builds510AppHost, Builds510Tooling), (Builds521AppHost, Builds521Tooling) };
+            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling), (Builds4482AppHost, Builds4482Tooling), (Builds4483AppHost, Builds4483Tooling), (Builds500AppHost, Builds500Tooling), (Builds501AppHost, Builds501Tooling), (Builds510AppHost, Builds510Tooling), (Builds521AppHost, Builds521Tooling), (Builds522AppHost, Builds522Tooling) };
         foreach (var appHostPair in publishedPairs)
             foreach (var toolingPair in publishedPairs)
                 PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)

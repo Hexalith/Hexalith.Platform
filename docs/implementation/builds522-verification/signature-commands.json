@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "nuget",
+      "verify",
+      "Hexalith.Builds.Evidence.Cli.5.2.2.nupkg",
+      "--all"
+    ],
+    "exitCode": 0,
+    "transcript": "Hexalith.Builds.Evidence.Cli.signature.txt"
+  },
+  {
+    "command": [
+      "dotnet",
+      "nuget",
+      "verify",
+      "Hexalith.Builds.Module.Cli.5.2.2.nupkg",
+      "--all"
+    ],
+    "exitCode": 0,
+    "transcript": "Hexalith.Builds.Module.Cli.signature.txt"
+  }
+]

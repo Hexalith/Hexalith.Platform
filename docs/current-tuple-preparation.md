@@ -1,6 +1,33 @@
 # Current tuple preparation
 
-## Current signed Builds5.2.1 NET11 preparation
+## Current signed Builds5.2.2 consumer-context preparation
+
+The current producer is genuine [Builds v5.2.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.2)
+at `02ed624aa19781cac75d2c9112940e9bd830441a`, from successful normal
+[release43455256492](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43455256492).
+The exact tool pin and range floor are `5.2.2`, with upper bound `6.0.0-0`,
+roll-forward disabled and `candidateAcceptance` false. Catalog Git blob
+`5e75107dc795be7176ee5cd9b88cada0545ae326` has raw SHA-256
+`bb94e8d4bf659c84cc73357ac2d337aab4036550668150730e003d1abbd27986`.
+The typed shared consumer context selects the authenticated finite Platform
+view for declarations and MCP package pins. SDK4.2.0/OpenAPI2 and every
+historical tool cohort remain unchanged.
+
+The [published pair receipt](implementation/builds522-validation-pair.json)
+records both official NuGet signatures, SHA-512 hashes, source identities
+and exact original publisher payload comparisons. The Module archive SHA-256
+is `8ab5a70ad3989d8b58da0fa2097d9d1792220a879030db4fcbe0060d42325acf`.
+The additional complete validation pair is AppHost
+`e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709` and Tooling
+`1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec`.
+All twenty historical pairs remain present; every crossed pair is refused.
+
+Published identity is distinct from exact-source hosted qualification.
+The unchanged tuple/catalog gates and normal qualified source publisher
+remain required. This grants no candidate, lifecycle, image, native or
+Story acceptance. The previous sections retain their historical facts.
+
+## Previous signed Builds5.2.1 NET11 preparation
 
 The current producer is genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
 at `0e7424fdce6373920fb2019d1ad2a74d8fe5295c`, published by successful normal
@@ -38,6 +65,30 @@ retain their existing authority.
 
 The previous sections below retain the measured identities and requirements of
 their own historical preparations; they do not describe the current tool pin.
+
+## Consumer-context integration with the signed successor
+
+The shared declaration options, module versions and MCP package lookup now use
+one typed Builds consumer context. A stable, inclusive minimum in generation5
+selects the authenticated `Hexalith.Platform.Composition` view. Explicit retained
+generation4 inputs keep their original default view; malformed, floating or
+unbounded ranges, prerelease minima and unsupported generations refuse. This context selection
+adds no SDK cohort, image or runtime authority. Required current named views
+cannot fall back to the global catalog or physical files.
+
+`Directory.Build.props` and the tuple runner retain genuine Builds4.44.3,
+4.45.0 and4.47.0 collectors on net10.0. The new producer member is referenced
+only under `NET11_0_OR_GREATER`; their original349/412 and retained SDK4.2
+contracts remain unchanged. Deliberately unpinned component snapshots test
+mapping/content hashes separately from genuine pinned-source controls.
+
+Signed5.2.1 reproduces the original failure: its global EventStore5.0.0 differs
+from the actual named4.2.0 view, and its shared loader lacks consumer context.
+The original17-case current artifact class now checks the genuine named view,
+missing views/snapshots, changed mapping/pin/source/content and unqualified SDKs
+before its unchanged private producer/reader and image/native refusals. Its
+positive execution uses the genuine signed5.2.2 successor and final source binding.
+Unreleased binaries and source preparation supply no qualification.
 
 ## Previous signed Builds5.0.1 NET11 preparation
 

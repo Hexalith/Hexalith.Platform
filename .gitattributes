@@ -181,3 +181,8 @@ tests/Hexalith.Platform.Composition.Tests/PlatformAppModelReviewTests.cs whitesp
 
 # Preserve verbatim Maven output in the Story 2.12 verification evidence.
 _bmad-output/implementation-artifacts/evidence/2-12/final-checks/provider.txt -text -whitespace
+
+# Recognize existing CRLF in the shared consumer context and its controls.
+src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+src/Hexalith.Platform.Composition/PlatformMcpCliCatalogVersion.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformMcpCliCatalogSelectionTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
