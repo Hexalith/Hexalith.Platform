@@ -1,0 +1,68 @@
+{
+  "head": "8b858660223d81ea8b10ffd819a7854bce3357f1",
+  "headParents": [
+    "1d44297aa7ed94426a51b9e4fb14b7d5896c4157",
+    "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  ],
+  "priorMain": "1d44297aa7ed94426a51b9e4fb14b7d5896c4157",
+  "priorMainTree": "02b3b1cb81f19290643353b0ed1011704cef0faf",
+  "stagedIndexExactlyEqualsPriorMainTree": true,
+  "indexedEntryCount": 9934,
+  "regularFileModesObjectIdsAndGitlinksExact": true,
+  "onlyRepairPaths": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci-lifecycle-qualification.yml",
+    ".github/workflows/ci.yml",
+    "README.md",
+    "docs/architecture.md",
+    "docs/ci-lifecycle-qualification.md",
+    "docs/ci.md",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs"
+  ],
+  "headQualificationDeltaOnly": true,
+  "headTreeEqualsQualificationCandidate": true,
+  "allExternalBusinessPackageTestFixesPreserved": true,
+  "allOtherFilesAndGitlinksPreserved": true,
+  "restoredModuleToolVersion": "5.0.1",
+  "allUpstreamValidationReleaseCodeQlAndSourceGatesPreserved": true,
+  "workingTreeMatchesIndex": true,
+  "whitespaceCheck": "passed",
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--exit-code",
+        "1d44297aa7ed94426a51b9e4fb14b7d5896c4157",
+        "--"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "--"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "indexSha256Before": "1e7f84796f354e5458d3fa585342793cd1d346c4fcc1eb1b8d969e8ad4486a41",
+  "indexSha256After": "1e7f84796f354e5458d3fa585342793cd1d346c4fcc1eb1b8d969e8ad4486a41",
+  "indexUnchangedByReview": true,
+  "stagedRepairMutated": false,
+  "commitCreated": false,
+  "pushed": false,
+  "userApprovalPending": true
+}

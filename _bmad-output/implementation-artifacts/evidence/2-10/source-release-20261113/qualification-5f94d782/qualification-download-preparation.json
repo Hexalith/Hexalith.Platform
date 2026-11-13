@@ -1,0 +1,51 @@
+{
+  "schema": "hexalith.lifecycle-download-preparation.v1",
+  "buildsCatalogSource": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+  "toolSource": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+  "daprDigestDocumentSha256": "5efc6b13da703fb9f83265ef02973877f33e094192e0bf36c1fe30ebdfc23376",
+  "downloads": [
+    {
+      "id": "dapr-cli",
+      "fileName": "dapr_linux_amd64.tar.gz",
+      "sha256": "6e9a339d261e430e5914909cc4443572573c197c174c3e14504c34116831de3b",
+      "bytes": 57298799,
+      "downloadSeconds": 1.082,
+      "sourceUrl": "https://github.com/dapr/cli/releases/download/v1.19.1/dapr_linux_amd64.tar.gz"
+    },
+    {
+      "id": "daprd",
+      "fileName": "daprd_linux_amd64.tar.gz",
+      "sha256": "93217800d5072cf1735ed89ec8a9cdeedfb9d235895fb9e0d864088bc5d9466c",
+      "bytes": 66782579,
+      "downloadSeconds": 2.044,
+      "sourceUrl": "https://github.com/dapr/dapr/releases/download/v1.19.1/daprd_linux_amd64.tar.gz"
+    },
+    {
+      "id": "placement",
+      "fileName": "placement_linux_amd64.tar.gz",
+      "sha256": "2efbe23d12254f4822d61a17f58460a119c25d9e98740d8507a3a66e1c5aa0d5",
+      "bytes": 14435699,
+      "downloadSeconds": 0.759,
+      "sourceUrl": "https://github.com/dapr/dapr/releases/download/v1.19.1/placement_linux_amd64.tar.gz"
+    },
+    {
+      "id": "scheduler",
+      "fileName": "scheduler_linux_amd64.tar.gz",
+      "sha256": "9064b6a6f3c4ff44d9ae69d22a07eedc564b3d11ab2653e9d5945768fc19f3af",
+      "bytes": 18896042,
+      "downloadSeconds": 1.002,
+      "sourceUrl": "https://github.com/dapr/dapr/releases/download/v1.19.1/scheduler_linux_amd64.tar.gz"
+    },
+    {
+      "id": "module-tool",
+      "fileName": "hexalith.builds.module.cli.5.1.0.nupkg",
+      "sha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c",
+      "bytes": 41054438,
+      "sourceUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/5.1.0/hexalith.builds.module.cli.5.1.0.nupkg"
+    }
+  ],
+  "fixedInputSetSelected": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "servicesStarted": false
+}

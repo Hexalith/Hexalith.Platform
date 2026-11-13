@@ -1,0 +1,126 @@
+{
+  "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+  "branch": "qualify/story-2-10-builds-5-1-0-platform-2-0-0-20261113",
+  "parents": [
+    "3a7e1d6ab2ca8375d794426fce135cbcddc2decc",
+    "1d44297aa7ed94426a51b9e4fb14b7d5896c4157"
+  ],
+  "selectedUpstream": "1d44297aa7ed94426a51b9e4fb14b7d5896c4157",
+  "selectedUpstreamToolVersion": "5.0.1",
+  "authoringCheckout": "/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Parties",
+  "standaloneCheckout": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+  "showToplevel": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+  "showSuperprojectWorkingTree": "",
+  "clean": true,
+  "onlyQualificationDeltasFromUpstream": [
+    ".config/dotnet-tools.json",
+    ".github/workflows/ci-lifecycle-qualification.yml",
+    ".github/workflows/ci.yml",
+    "README.md",
+    "docs/architecture.md",
+    "docs/ci-lifecycle-qualification.md",
+    "docs/ci.md",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs"
+  ],
+  "allOtherUpstreamFilesAndGitlinksByteIdentical": true,
+  "upstreamBusinessPackageTestFixesPreserved": true,
+  "upstreamValidationReleaseCodeQlPinsAndAssertionsPreserved": true,
+  "lineEndingsPreserved": true,
+  "sources": {
+    "builds": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+    "platform": "32643bde39b4da0e4538f8388e225727f82122f6",
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  "tool": {
+    "version": "5.1.0",
+    "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+    "verifiedPayloadFileCount": 311,
+    "signedPackageSha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c",
+    "payloadFileSetExact": true,
+    "freshlyRemeasured": true
+  },
+  "inputSha256": {
+    ".config/dotnet-tools.json": "e9d65051d5e2e8bdf3caa613c3e0b2cb0b04fbc9e5b392922464105133d5e726",
+    ".github/workflows/ci-lifecycle-qualification.yml": "e49dd9decef67928d044f28243603446f4753bbc55172bd89c6a8c666eaf01a7",
+    ".github/workflows/ci.yml": "ad869ef978796a68b233ed1de2857ce789c9c9ae7e02f34686cee36e642cd1fd",
+    "README.md": "97581d8b24e3c4ab235003cd158060dd19d5f4a1b9930c3a08c0b09fd0e8ec95",
+    "docs/architecture.md": "d1752ea3e08464124561e9bf2b313f1d7a2e292fa0e0d6b21cb12503165e7a8d",
+    "docs/ci-lifecycle-qualification.md": "adc1a6808d2e34f265ef64179d65b23b1c5b77e6a90073b64bc84cc479d45dd8",
+    "docs/ci.md": "da9ae05e2b95f67ee4c597cb69ade447636d38a5be70eaadd747e8f5bfb9f908",
+    "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550",
+    "references/Hexalith.Builds/Props/Directory.Packages.props": "a42f6074098afe6642d86031cf0d9736948dc61d5c8bc0f3ce159b9f8b4952a8",
+    "references/Hexalith.Builds/schemas/hexalith.test-result.v1.json": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39",
+    "references/Hexalith.Platform/hexalith-platform.json": "9ebd0285488163a6c034da7536ad34ea2f5470934c7f88f37b884c0b2242169f",
+    "scripts/render-platform-declaration.py": "e38e32a98e83685cbb438446f655b205af27d14631f070da2439601392c7fbeb",
+    "scripts/verify-current-owner-integration.py": "700ace4382705ab5bb83c5aad94284c92820d1b1f9112e1ba7fe2f9e14c9f3e3",
+    "tests/Hexalith.Parties.Ci.Tests/CiGitHistoryPreparationTests.cs": "2773f1e2233fc0e88c93bd7cee5c2e1f1947010dcd96cf46dcb5845d91877177",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs": "8c101c67ff93efb4b7753cefacb12e809923a4483cca3614df55531cf34ac270"
+  },
+  "pythonControls": {
+    "lifecycle-controller": {
+      "total": 183,
+      "passed": 183,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integration-readers": {
+      "total": 74,
+      "passed": 74,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "declaration-controls": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "compiledControls": {
+    "total": "78",
+    "passed": "78",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0"
+  },
+  "canonicalDebugBuild": "passed; zero warnings/errors",
+  "actionlint": "passed both workflows",
+  "declarationRenderer": "passed --check",
+  "genuinePreparation": {
+    "status": "prepared",
+    "runId": null,
+    "workspace": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace",
+    "mappingHash": "7a9e395993388c83b2bea633b2d4b27ee2eaeb57a78df74a998ef24547866ee5",
+    "verifiedGeneratedImportCount": 5,
+    "helperSource": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7"
+  },
+  "priorSubject": {
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc",
+    "oldHandoffSha256": "6cff567e92d8997aec955cabfc7abc5e6d810008fd6c4859393665de8c1371f7",
+    "oldMappingSha256": "7a4e7b15c641ace1829e75c2b2c84fe0a550afba61361615ae646a88b163926d",
+    "oldMappingContentHash": "44c1ab38f46ee0fa75bd42163222f27bdaad872e97c84139967dfb01abc9d0a2",
+    "oldCheckout": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+    "oldWorkspace": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-la3rwkrz/workspace"
+  },
+  "priorCallerCheckoutMappingAndRecordsUnchanged": true,
+  "pushed": false,
+  "mainMerged": false,
+  "remoteWritesPerformed": false,
+  "servicesStarted": false,
+  "workflowsDispatched": false,
+  "budgetsChanged": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "lifecycleQualification": false,
+  "remainingBlockers": [],
+  "parentRemainingWork": [
+    "Review and push only the dedicated qualification ref.",
+    "Create final closed fixed inputs/provenance for this new exact caller, preserving tool source9ebc separately from catalog/helper3c2f.",
+    "Keep full local/hosted lifecycle scenarios and actual cancellation evidence open until their own gates pass."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "dotnet",
+    "tests/Hexalith.Parties.Ci.Tests/bin/Debug/net11.0/Hexalith.Parties.Ci.Tests.dll",
+    "-class",
+    "Hexalith.Parties.Ci.Tests.PartiesContainerPublishWorkflowTests",
+    "-class",
+    "Hexalith.Parties.Ci.Tests.CiGitHistoryPreparationTests",
+    "-result-xml",
+    "/tmp/hexalith-story-2-10-release-record-20261113/caller-controls-v2/canonical-ci-focused.xml"
+  ],
+  "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+  "exitCode": 0,
+  "elapsedSeconds": 7.796178307995433,
+  "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+  "counts": {
+    "total": "78",
+    "passed": "78",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0"
+  }
+}

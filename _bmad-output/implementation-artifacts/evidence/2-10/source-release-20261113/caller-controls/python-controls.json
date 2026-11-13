@@ -1,0 +1,69 @@
+[
+  {
+    "name": "lifecycle-controller",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ci-lifecycle",
+      "-v"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+    "exitCode": 0,
+    "elapsedSeconds": 12.285245036007836,
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc"
+  },
+  {
+    "name": "integration-readers",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_*_integration.py"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+    "exitCode": 0,
+    "elapsedSeconds": 0.6079940100025851,
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc"
+  },
+  {
+    "name": "declaration-renderer",
+    "argv": [
+      "python3",
+      "-B",
+      "scripts/render-platform-declaration.py",
+      "--check"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+    "exitCode": 0,
+    "elapsedSeconds": 0.03333870798815042,
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc"
+  },
+  {
+    "name": "declaration-controls",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_platform_declaration.py",
+      "-v"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+    "exitCode": 0,
+    "elapsedSeconds": 0.9171645409951452,
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc"
+  }
+]

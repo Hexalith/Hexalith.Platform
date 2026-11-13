@@ -208,3 +208,23 @@ focused controls and an actual signed published-package cache/restore proof.
 All 45 Platform lifecycle controls and 183 canonical Parties controls pass.
 The old local controller remains bound to 4.47.0; no new live result, source
 selection, tool acceptance or pin approval is inferred. Status stays in-progress.
+
+### Compatible source publication and matching caller — 2026-11-13
+
+[Platform v2.0.0](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.0.0)
+publishes source `32643bde39b4da0e4538f8388e225727f82122f6` after all five tuple
+jobs and six catalog SDK jobs. The [fixed-input handoff](source-release-20261113/qualification-5f94d782/README.md)
+binds separate Parties caller `5f94d7827f5b1d315856bb37b64f700e3ac56910`,
+genuine CLI 5.1.0/source 9ebc and catalog/helper 3c2f. All preparation controls,
+source bindings, signed payload checks, genuine package preparation and archive
+cache/restores pass. These checks grant no full lifecycle or tool acceptance.
+An independent Parties main 5.0.1 update was preserved; this work changed no
+accepted main pin and kept 5.1.0 on its qualification branch. Earlier evidence
+keeps its actual subjects. Full local/hosted scenarios and real cancellations
+remain open, and historical local.py remains 4.47.0.
+
+A subsequent external `/pushall` merged the qualification caller into Parties
+main as `8b858660`, moving its pin to unqualified 5.1.0. The qualification ref
+was restored. [The later observation and prepared repair](source-release-20261113/post-handoff-remote-observation/README.md)
+retain this distinct identity. The user chose to preserve that external merge
+and record its qualification violation; the reviewed repair remains unused. Earlier source/publication/input receipts remain unchanged.

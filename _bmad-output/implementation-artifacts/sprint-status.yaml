@@ -75,6 +75,10 @@ development_status:
   # 2026-11-10: blocked on 2-11 (4.47.0 campaign: 7 passed, 7 incomplete, 2 unexecuted); resume after a Builds release carries 2-11.
   # 2026-11-13: Builds-release prerequisite met; compatible Platform cut/caller adoption remains open. Preparation cache verified;
   #   45 Platform/183 canonical Parties controls pass. No new lifecycle run, acceptance or pin approval; old local controller is still 4.47.0.
+  # 2026-11-13: Platform v2.0.0 source 32643 published after all gates; separate caller 5f94/fixed inputs are prepared.
+  #   5.1.0 remains unaccepted; full lifecycle/local controller/cancellation gates remain open. External Parties main 5.0.1 preserved.
+  # Later external /pushall adopted 5.1.0 into Parties main at 8b858660 before qualification.
+  #   User preserved that merge; violation recorded, no acceptance inferred. Separate qualification ref restored.
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: in-progress
   # 2026-11-10 user decision: takes over attached-test-execution-and-expiry-enforcement plus 2.10's missing producers.
   # 2026-11-10: parts 1-2 done (supervised attached suites and lifecycle observations); part 3 (Parties qualification caller) remains open in deferred-work.md.

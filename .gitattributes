@@ -167,3 +167,11 @@ tests/Hexalith.Platform.Composition.Tests/Fixtures/private-70525-provenance.json
 
 # Preserve exact 5.1.0 validation guard build/test receipts.
 _bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/validation510-controls/** -text -whitespace
+
+# Preserve exact post-publication caller checks under their original identities.
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls/** -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls-v2/** -text -whitespace
+
+# Preserve original mixed-ending patches for the unused concurrent-merge repair.
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/post-handoff-remote-observation/parties-main-premature-adoption-repair.diff -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/post-handoff-remote-observation/unused-repair-controls/reviewed-staged-repair.patch -text -whitespace
