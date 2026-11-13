@@ -1,0 +1,90 @@
+{
+  "schema": "hexalith.platform.source-release.v1",
+  "source": "32643bde39b4da0e4538f8388e225727f82122f6",
+  "eligible": true,
+  "status": "published",
+  "executingWorkflow": {
+    "ref": "Hexalith/Hexalith.Platform/.github/workflows/source-release.yml@refs/heads/main",
+    "sha": "32643bde39b4da0e4538f8388e225727f82122f6",
+    "checkout": "32643bde39b4da0e4538f8388e225727f82122f6",
+    "job": "publish"
+  },
+  "callback": {
+    "run": 43391842440,
+    "attempt": 1,
+    "workflow": ".github/workflows/tuple-ci.yml",
+    "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43391842440"
+  },
+  "qualifyingRuns": [
+    {
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "run": 43391842440,
+      "number": 190,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43391842440",
+      "jobs": [
+        {
+          "name": "resolve-sources",
+          "id": 131773389576
+        },
+        {
+          "name": "Same changed source against the legacy public tuple",
+          "id": 131774194439
+        },
+        {
+          "name": "Same changed source against the pre-extension public tuple",
+          "id": 131774194339
+        },
+        {
+          "name": "tuple",
+          "id": 131774194398
+        },
+        {
+          "name": "tuple-verdict",
+          "id": 131790059454
+        }
+      ]
+    },
+    {
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "run": 43391842426,
+      "number": 246,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43391842426",
+      "jobs": [
+        {
+          "name": "consumer-binding (3.130.0)",
+          "id": 131773393436
+        },
+        {
+          "name": "consumer-binding (3.130.1)",
+          "id": 131773393574
+        },
+        {
+          "name": "consumer-binding (3.130.2)",
+          "id": 131773393177
+        },
+        {
+          "name": "consumer-binding (3.132.1)",
+          "id": 131773393502
+        },
+        {
+          "name": "consumer-binding (4.1.0)",
+          "id": 131773393386
+        },
+        {
+          "name": "consumer-binding (4.2.0)",
+          "id": 131773393444
+        }
+      ]
+    }
+  ],
+  "computedVersion": "2.0.0",
+  "nativeAcceptance": false,
+  "candidateAcceptance": false,
+  "storyAcceptance": false,
+  "tag": "v2.0.0",
+  "releaseUrls": [
+    "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.0.0"
+  ]
+}

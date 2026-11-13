@@ -1,0 +1,18 @@
+{
+  "name": "canonical-ci-build",
+  "argv": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+    "--configuration",
+    "Debug",
+    "--nologo",
+    "-m:1",
+    "-nodeReuse:false",
+    "-p:UseSharedCompilation=false"
+  ],
+  "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+  "exitCode": 0,
+  "elapsedSeconds": 3.095110730995657,
+  "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+}

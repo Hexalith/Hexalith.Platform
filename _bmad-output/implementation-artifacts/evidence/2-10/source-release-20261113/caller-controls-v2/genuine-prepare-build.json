@@ -1,0 +1,66 @@
+{
+  "argv": [
+    "dotnet",
+    "tool",
+    "run",
+    "hexalith-module",
+    "--",
+    "prepare-build",
+    "--manifest",
+    "module/hexalith.module-manifest.v2.json",
+    "--mode",
+    "package",
+    "--workspace",
+    "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace",
+    "--output",
+    "json"
+  ],
+  "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+  "exitCode": 0,
+  "elapsedSeconds": 4.666325299011078,
+  "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+  "workspace": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace",
+  "servicesStarted": false,
+  "fabricatedGitHubMetadata": false,
+  "status": "prepared",
+  "runId": null,
+  "mappingHash": "7a9e395993388c83b2bea633b2d4b27ee2eaeb57a78df74a998ef24547866ee5",
+  "verifiedEnvironment": {
+    "CustomBeforeDirectoryBuildProps": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.targets",
+    "CustomAfterMicrosoftCommonProps": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.props",
+    "CustomBeforeDirectoryBuildTargets": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.before-targets.props",
+    "CustomAfterDirectoryBuildTargets": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.late.props",
+    "AfterMicrosoftNETSdkTargets": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.final.targets",
+    "HEXALITH_SOURCE_MAPPING_HASH": "7a9e395993388c83b2bea633b2d4b27ee2eaeb57a78df74a998ef24547866ee5",
+    "Configuration": "Release"
+  },
+  "imports": {
+    "CustomBeforeDirectoryBuildProps": {
+      "path": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.targets",
+      "sha256": "684df724ea72958ff10caa127e64444e3483b275fb28eacfcd262febf96997d4"
+    },
+    "CustomAfterMicrosoftCommonProps": {
+      "path": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.props",
+      "sha256": "0363694f252736cdfd0bcf6a567bb077940df16cc966e410153718a552769e82"
+    },
+    "CustomBeforeDirectoryBuildTargets": {
+      "path": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.before-targets.props",
+      "sha256": "9a65137e1d76fcbf8d16479382659740bad35f43c926e6a411f923020b706c2a"
+    },
+    "CustomAfterDirectoryBuildTargets": {
+      "path": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.late.props",
+      "sha256": "479f7aaac3fa993fbffdc01a0934963c12c575594a3bb906450fe4f6c13b2bf3"
+    },
+    "AfterMicrosoftNETSdkTargets": {
+      "path": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-v2-7ds1oz9m/workspace/source-mapping/SourceMapping.final.targets",
+      "sha256": "24bee48debad3a5247d76c6bfaa4962e5a5eb825b03b5a8e764310db929b7511"
+    }
+  },
+  "helperSource": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+  "helperSha256": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550",
+  "mappingJsonSha256": "250388b6236f5f50efded4e894ed9af6289e69fc648fdd5b99a05e44a1e2d402",
+  "verifiedBySelectedHelper": true,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "lifecycleQualification": false
+}

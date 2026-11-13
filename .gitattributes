@@ -167,3 +167,7 @@ tests/Hexalith.Platform.Composition.Tests/Fixtures/private-70525-provenance.json
 
 # Preserve exact 5.1.0 validation guard build/test receipts.
 _bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/validation510-controls/** -text -whitespace
+
+# Preserve exact post-publication caller checks under their original identities.
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls/** -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls-v2/** -text -whitespace

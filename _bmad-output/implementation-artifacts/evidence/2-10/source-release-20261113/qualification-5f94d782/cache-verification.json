@@ -1,0 +1,32 @@
+{
+  "schema": "hexalith.lifecycle-preparation.v1",
+  "inputSetSha256": "06ba09a2179dd78dd7de29be5c9195400d172da1afa960a104aa4268a646b91a",
+  "verifiedArchives": 5,
+  "operations": [
+    {
+      "operation": "populate",
+      "cacheHit": false,
+      "elapsedSeconds": 1.843468
+    },
+    {
+      "operation": "revalidated-hit-without-download-source",
+      "cacheHit": true,
+      "elapsedSeconds": 0.10722
+    },
+    {
+      "operation": "restore-first",
+      "elapsedSeconds": 0.76107
+    },
+    {
+      "operation": "restore-second",
+      "elapsedSeconds": 1.032005
+    }
+  ],
+  "freshPrivateIndependentRestores": 2,
+  "archivesOnly": true,
+  "testResultsOrCredentialsRestored": false,
+  "liveQualificationExecuted": false,
+  "toolAccepted": false,
+  "candidateAcceptance": false,
+  "performanceSavingsClaimed": false
+}

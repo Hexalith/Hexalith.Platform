@@ -1,0 +1,109 @@
+{
+  "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc",
+  "branch": "qualify/story-2-10-builds-5-1-0-platform-2-0-0-20261113",
+  "baseCaller": "f532145038992217f6433cd3dc1e36e61a1acc38",
+  "authoringCheckout": "/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Parties",
+  "standaloneCheckout": "/tmp/hexalith-story-2-10-qualification-20261113/parties",
+  "standaloneShowSuperprojectWorkingTree": "",
+  "clean": true,
+  "sources": {
+    "builds": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+    "platform": "32643bde39b4da0e4538f8388e225727f82122f6",
+    "caller": "3a7e1d6ab2ca8375d794426fce135cbcddc2decc"
+  },
+  "tool": {
+    "version": "5.1.0",
+    "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+    "verifiedPayloadFileCount": 311,
+    "signedPackageSha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c"
+  },
+  "inputSha256": {
+    ".config/dotnet-tools.json": "e9d65051d5e2e8bdf3caa613c3e0b2cb0b04fbc9e5b392922464105133d5e726",
+    ".github/workflows/ci.yml": "a37bbd72c545c4e88e51d95b425ddfa00b272b7baba14a7d84d8cceb2c6f4a70",
+    ".github/workflows/ci-lifecycle-qualification.yml": "e49dd9decef67928d044f28243603446f4753bbc55172bd89c6a8c666eaf01a7",
+    "README.md": "0dfcf63c1207927097ee80ea235c5f4a424a87f3fd220193f833ddc56eccb870",
+    "docs/architecture.md": "d1752ea3e08464124561e9bf2b313f1d7a2e292fa0e0d6b21cb12503165e7a8d",
+    "docs/ci.md": "5a4e614322b986328680d0a237df2b9a4c82140bed9bf70d6829c99f726abe7c",
+    "docs/ci-lifecycle-qualification.md": "ded234485e75dc930c28dbb856e755fc37186ec6e97644eb296684ef135e48ea",
+    "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "scripts/verify-current-owner-integration.py": "8f0f0898c3ec53125aa9e3ace6ac5454225cbbba28f3813494ab47a71f97049e",
+    "scripts/render-platform-declaration.py": "e38e32a98e83685cbb438446f655b205af27d14631f070da2439601392c7fbeb",
+    "tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs": "d02d4b423f05ae3315309b43250e588e3a9ebe79e5697649e5e1294483759c29",
+    "tests/Hexalith.Parties.Ci.Tests/CiGitHistoryPreparationTests.cs": "2773f1e2233fc0e88c93bd7cee5c2e1f1947010dcd96cf46dcb5845d91877177",
+    "references/Hexalith.Builds/Props/Directory.Packages.props": "a42f6074098afe6642d86031cf0d9736948dc61d5c8bc0f3ce159b9f8b4952a8",
+    "references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550",
+    "references/Hexalith.Builds/schemas/hexalith.test-result.v1.json": "9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39",
+    "references/Hexalith.Platform/hexalith-platform.json": "9ebd0285488163a6c034da7536ad34ea2f5470934c7f88f37b884c0b2242169f"
+  },
+  "pythonControls": {
+    "lifecycle-controller": {
+      "total": 183,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "integration-readers": {
+      "total": 74,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "declaration-controls": {
+      "total": 7,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "compiledControls": {
+    "total": "78",
+    "passed": "78",
+    "failed": "0",
+    "errors": "0",
+    "skipped": "0",
+    "not-run": "0"
+  },
+  "canonicalDebugBuild": "passed; zero warnings/errors",
+  "actionlint": "passed for both changed workflows",
+  "declarationRenderer": "passed --check",
+  "genuinePreparation": {
+    "status": "prepared",
+    "runId": null,
+    "workspace": "/tmp/hexalith-story-2-10-qualification-20261113/prepare-la3rwkrz/workspace",
+    "mappingHash": "44c1ab38f46ee0fa75bd42163222f27bdaad872e97c84139967dfb01abc9d0a2",
+    "verifiedGeneratedImportCount": 5,
+    "helperSource": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7"
+  },
+  "allWorkflowGatesPreserved": true,
+  "schemaRequiredSetsAndDigestUnchanged": true,
+  "originalLineEndingsPreserved": true,
+  "localMainToolVersion": "5.0.0",
+  "localMainRefUnchanged": true,
+  "platformMainToolVersion": "5.0.1",
+  "officialPartiesMainObservation": {
+    "sourceRevision": "1d44297aa7ed94426a51b9e4fb14b7d5896c4157",
+    "version": "5.0.1",
+    "manifestBlob": "e19a760e7dd85ab7be54222b91c4477747e60fbe",
+    "manifestSha256": "45d77daad0105ffa7b59d88cf6769d63511715d1782885ee883d5f1690097d69",
+    "source": "Exact official GitHub main ref and immutable-commit content API",
+    "remoteWritesPerformed": false,
+    "initialSpecExpectedVersion": "5.0.0",
+    "externalDrift": true
+  },
+  "remoteWritesPerformed": false,
+  "pushed": false,
+  "servicesStarted": false,
+  "workflowsDispatched": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "lifecycleQualification": false,
+  "remainingBlockers": [
+    "The actual official Parties main now selects5.0.1 at1d44297aa7ed94426a51b9e4fb14b7d5896c4157, differing from the spec original5.0.0 assumption. This independent external change was preserved; candidate stays based on the explicitly selectedf5321450."
+  ],
+  "parentRemainingWork": [
+    "Reconcile observed external upstream main drift in the continuation record before final approval; no upstream rollback or merge was performed.",
+    "Review and push only the dedicated qualification ref.",
+    "Close exact fixed input/provenance selection with CLI source9ebc distinct from catalog/helper3c2f.",
+    "Full local/hosted lifecycle scenarios and real cancellation evidence remain separate open acceptance gates."
+  ]
+}

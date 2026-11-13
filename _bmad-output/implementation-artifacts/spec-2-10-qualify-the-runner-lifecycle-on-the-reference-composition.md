@@ -465,3 +465,152 @@ The final parent incorporated concurrent main documentation
 `e134616ca8a79159a93c5bebde04cde1fc7e116b` before freezing companions. Source
 comparison and every hosted package qualification gate remain mandatory; these
 local controls grant no runtime acceptance.
+
+## Matching Parties qualification caller — after verified publication
+
+This is the current implementation unit. Platform source
+`32643bde39b4da0e4538f8388e225727f82122f6` is actually published as 2.0.0
+(release 444010416, publisher 43396965519). The original published receipt is
+`/tmp/hexalith-story-2-10-release-record-20261113/hosted-run-43396965519/14023412455-source-release.json`.
+All five tuple jobs and all six SDK catalog jobs passed for that exact source.
+Source release supplies no native, candidate, Story or accepted-tool authority.
+
+Prepare only a dedicated Parties qualification branch from the recorded clean
+caller `f532145038992217f6433cd3dc1e36e61a1acc38`. Author in the existing isolated
+`/tmp/hexalith-story-2-10-source-release-20261113/references/Hexalith.Parties`,
+whose root superproject supplies the already-read permitted AI baseline. Read
+its AGENTS.md and owning Git/build/commitlint guidance before edits. Set only
+this task-owned clone's origin to official Hexalith.Parties. Keep its main ref
+and the actual Parties upstream main tool manifest at 5.0.0; do not merge main.
+Platform's exact tool pin remains 5.0.1. Use branch
+`qualify/story-2-10-builds-5-1-0-platform-2-0-0-20261113`.
+
+Make the bounded caller changes, preserving line endings and every gate:
+
+- Candidate `.config/dotnet-tools.json`: exact module CLI 5.1.0, unchanged command
+  and rollForward:false. This is a qualification target, not main acceptance.
+- Direct `references/Hexalith.Builds` gitlink: catalog/helper
+  `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, exactly matching Platform's catalog.
+  Direct Platform gitlink: the actual published source above. Initialize only
+  these two direct caller dependencies, with no recursion or other nested owners.
+- Both regular CI and `ci-lifecycle-qualification.yml` baseline use exact
+  `domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`. This is the genuine
+  published 5.1.0 executable/workflow source, distinct from its catalog source.
+  Retain all 15 isolated projects, consumer validation, package profile, needs:
+  baseline, scenario table, independent finalization and actual cancellation.
+- `tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs`:
+  update only BuildsCiSha and the stale exact 4.48.0 module-tool expectation to
+  the new candidate values. Preserve validation/release execution pins and all
+  assertions. Update active CI documentation references, tool version/range and
+  actual net11 target description; retain dated historical evidence as history.
+- `scripts/verify-current-owner-integration.py`: set only the schema source
+  constant to the actual catalog/helper 3c2f source after rederiving its schema.
+  SHA256 remains 9773678febac38025fae837154341d9036ce8aa94e66b0d30c7e15ee668d7e39;
+  required key sets must stay unchanged. Never weaken source checks for equal bytes.
+
+Use pinned Node 24.22.1/npm 11.19.1 at
+`/home/administrator/.nvm/versions/node/v24.22.1/bin` for owning commitlint and
+npm tooling. Validate the exact complete message before any private candidate
+commit. A private candidate commit is necessary to bind HEAD gitlinks for the
+canonical reader tests; it confers no acceptance and is not pushed by the worker.
+
+After authoring/committing, create an independent shared-object checkout of that
+exact caller at `/tmp/hexalith-story-2-10-qualification-20261113/parties`, OUTSIDE
+all Git worktrees. Carry the already-loaded same-owner instructions into this
+immutable execution artifact; do not initialize a dependency for instructions.
+Require actual show-toplevel==that caller and show-superproject-working-tree
+empty. The resolver otherwise climbs to the outer Platform and refuses the dirty
+caller gitlink. Only its own direct Builds 3c2f and Platform 32643 clones are needed.
+Do all genuine preparation and canonical checks there. If a fix is needed, edit
+only authoring checkout, commit a new candidate and make another fresh independent
+verification checkout; retain earlier failed observations under their actual IDs.
+
+Required resource-free checks: canonical `python3 -B -m unittest discover -s
+tests/ci-lifecycle -v`; `python3 -B -m unittest discover -s scripts -p
+'test_*_integration.py'`; declaration renderer --check and declaration controls;
+actionlint for both changed workflows; canonical focused C# CI workflow/history
+assertions in Debug, preserving package audits and warning policy. Default CI
+project has no business ProjectReferences. Record exact commands, counts, source
+and input hashes under `/tmp/hexalith-story-2-10-release-record-20261113/caller-controls`.
+
+Restore and verify the genuine published 5.1.0 tool (the independently verified
+archive and extracted closure are already retained outside the immutable cache).
+Require exact version 5.1.0+9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4 and byte equality
+with its signed archive. Run only genuine runtime-free prepare-build in package
+mode on the independent clean caller, with a new private workspace. Verify the
+producer-issued mapping/environment imports using the actual selected helper.
+Never fabricate GitHub metadata, start services, dispatch workflows, change
+budgets, accept a tool, merge/push main, or alter historical local.py 4.47.0.
+
+Return caller full commit/branch, standalone verified checkout, all control and
+genuine preparation results, and any remaining blocker. The parent owns final
+review, pushing the qualification ref and closed fixed inputs/provenance. It will
+retain CLI 5.1.0/source9ebc separately from catalog/helper 3c2f, Platform 32643 and
+actual caller SHA. Keep every main accepted-tool pin and Story status unchanged.
+
+## Caller upstream reconciliation — current continuation
+
+The first caller 3a7e1d6ab2ca8375d794426fce135cbcddc2decc passed its resource-free
+checks and genuine preparation. Preserve all original observations in
+`caller-controls`; do not relabel them for another source. An external owner
+operation advanced actual Parties main to
+`1d44297aa7ed94426a51b9e4fb14b7d5896c4157`, including NET11 baseline compatibility
+fixes and a 5.0.1 main tool pin. This work did not change that accepted main pin;
+preserve the external state and never roll it back or claim it stayed 5.0.0.
+
+Before pushing the qualification caller, incorporate that exact upstream source
+into the private qualification branch. Keep all external business/package/test
+fixes byte-identical to upstream. Reapply only the qualification target deltas:
+CLI 5.1.0; both domain-ci reusable refs 9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4;
+matching C# BuildsCiSha/tool expectation; clear current qualification documentation.
+Keep upstream validation/release/CodeQL pins and corresponding assertions, all
+baseline/gate/finalization/cancellation definitions, source/catalog 3c2f, Platform 32643
+and schema constants/required sets intact. Use upstream versions as the conflict
+base, then apply the narrow qualification changes, rather than discarding new
+upstream fixes. Update the currently descriptive release-execution paragraph to
+its actual upstream pin; leave dated historical sources/results unchanged.
+
+Validate the exact new candidate message with owning pinned commitlint, then
+commit privately. Record full parent/merge identities. Verify in a NEW independent
+checkout `/tmp/hexalith-story-2-10-qualification-20261113/parties-v2`; retain the
+old standalone checkout and its old producer mapping unchanged. Keep same-owner
+guidance already loaded; no instruction-only dependency init. Re-run the same
+canonical Python, declaration, actionlint and focused compiled C# checks, then
+verified genuine runtime-free package preparation against the new clean caller.
+Retain all results under
+`/tmp/hexalith-story-2-10-release-record-20261113/caller-controls-v2`.
+
+Return the new full caller/branch/source and actual results. Do not push or merge
+main, dispatch workflows, start services, change budgets or accept a tool. The
+parent will create final fixed inputs only for this newly verified subject and
+will state the external main-pin drift accurately in the continuation record.
+
+## Source prerequisite and fixed-input outcome — 2026-11-13
+
+- [x] Publish compatible Platform source 2.0.0 at
+  `32643bde39b4da0e4538f8388e225727f82122f6` after all actual source gates.
+- [x] Publish the separate Parties qualification caller
+  `5f94d7827f5b1d315856bb37b64f700e3ac56910`, retaining upstream 1d44297a
+  fixes and every qualification/finalization/cancellation guard.
+- [x] Record the closed [fixed inputs and full handoff](evidence/2-10/source-release-20261113/qualification-5f94d782/README.md).
+  Canonical input SHA256 is
+  `06ba09a2179dd78dd7de29be5c9195400d172da1afa960a104aa4268a646b91a`.
+  Source audit, no-superproject binding and catalog-source equality pass.
+  All five archive digests, cache hit and two private fresh restores pass.
+- [ ] Full 5.1.0 lifecycle qualification and accepted-tool enrollment remain open.
+
+The actual publisher 43396965519 retained status published with both exact-source
+qualifications and final mutation rechecks. Required tuple controls pass 478/97/9
+for current profiles, 349 legacy and 412 pre-extension; all six catalog SDK jobs
+pass. Caller checks pass 183/74/7 Python and 78 compiled cases with zero skips,
+errors or failures, plus workflow lint, zero-warning Debug build and genuine
+runtime-free package preparation. These remain preparation/source checks, never
+new native, candidate, Story or tool acceptance.
+
+This work changed no main accepted-tool pin. An external operation changed
+Parties main to 5.0.1 at 1d44297a; that state was preserved. CLI 5.1.0 exists only
+on the qualification branch, with catalog/helper 3c2f and published Platform 32643.
+The old source subjects, original 4.47.0 local controller, every failed/incomplete
+observation and all private first-caller 3a7e results retain their identities.
+Story status remains in-progress and the full local/hosted/cancellation table is
+still required. No lifecycle service or qualification workflow was launched.

@@ -1,0 +1,99 @@
+[
+  {
+    "name": "lifecycle-controller",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ci-lifecycle",
+      "-v"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 17.63229833697551,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  {
+    "name": "integration-readers",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_*_integration.py"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 0.9167728070169687,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  {
+    "name": "declaration-renderer",
+    "argv": [
+      "python3",
+      "-B",
+      "scripts/render-platform-declaration.py",
+      "--check"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 0.05150431700167246,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  {
+    "name": "declaration-controls",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "test_platform_declaration.py",
+      "-v"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 1.1861417760082986,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  {
+    "name": "workflow-lint",
+    "argv": [
+      "actionlint",
+      ".github/workflows/ci.yml",
+      ".github/workflows/ci-lifecycle-qualification.yml"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 0.5694342940114439,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  },
+  {
+    "name": "canonical-ci-build",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Ci.Tests/Hexalith.Parties.Ci.Tests.csproj",
+      "--configuration",
+      "Debug",
+      "--nologo",
+      "-m:1",
+      "-nodeReuse:false",
+      "-p:UseSharedCompilation=false"
+    ],
+    "cwd": "/tmp/hexalith-story-2-10-qualification-20261113/parties-v2",
+    "exitCode": 0,
+    "elapsedSeconds": 3.095110730995657,
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910"
+  }
+]
