@@ -1,0 +1,50 @@
+{
+  "baseSourceRevision": "d5928c8b106e1da4179e55dbe8390912b02a7e44",
+  "preparedSourceTree": "800d850d63606f01d2450ba24effaa1f924f31c0",
+  "stagedPaths": [
+    "eng/builds-tuple.json",
+    "eng/current-tuple-source.json",
+    "hexalith-platform.json",
+    "references/Hexalith.Builds"
+  ],
+  "preservedContentHashes": {
+    ".config/dotnet-tools.json": "0a4db3e6eecc0cbc999d7eb179271b4e6e995ea2b9a18b66a0d92b0f7b4d1d4f",
+    "references/Hexalith.Parties/.config/dotnet-tools.json": "56e4684c9801754c23e516d1746dd55f869679d397f054b5e1060168d3fa216f",
+    "eng/legacy-tuple-source.json": "6817f6773b428c23fd965b37b9b477d1230a3e8a7bb20c5cae9b4745e56c40e5",
+    "eng/pre-extension-tuple-source.json": "259e26812dd1af8ab3d4b3b8e262be700d1b99d34f82ae6d17616e55cc4c6788",
+    "eng/tuple-ci-legacy-suites.json": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
+    "eng/tuple-ci-suites.json": "3643ab2f60f255bd0d0b9a91452e1f7060b5f5b69bf0fef0a51cf8336a526c6c"
+  },
+  "packageProvenanceSha256": "bbfcd7d73f6a92467360fd56dfead6c574cb48ca08bb961c7a949356a4d72b39",
+  "requiredLivePortBindingIsAncestor": true,
+  "owningChecks": {
+    "test_builds_tuple": 20,
+    "test_builds_publication": 7,
+    "test_current_tuple_source": 14,
+    "total": 41,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "historicalCompanions": {
+    "legacyUnapprovedDifferences": 171,
+    "preExtensionUnapprovedDifferences": 171,
+    "packageReaderUnapprovedDifferences": 171,
+    "allFrozenMetadataAuthenticated": true
+  },
+  "pendingParentWork": [
+    "Reconcile external main source advancement; regenerate current binding after authoritative gitlink updates.",
+    "Freeze complete source including supplied preparation and documentation, validate exact messages, then create source commit.",
+    "Prepare and publish three fresh immutable companion commits using unchanged frozen anchors.",
+    "Update only bounded legacy/pre-extension source selectors and packageReaderSourceRevision to real companion commits.",
+    "Require exact committed-source push/main success for all three tuple lanes and six catalog SDK lanes; retain publisher before-tag/before-publish checks.",
+    "Record actual guarded Platform source publication before preparing Parties qualification caller and5.1.0 fixed inputs."
+  ],
+  "commitsCreated": false,
+  "remoteWrites": false,
+  "workflowsDispatched": false,
+  "lifecycleServicesStarted": false,
+  "toolAccepted": false,
+  "candidateAcceptance": false,
+  "runtimeAcceptance": false
+}

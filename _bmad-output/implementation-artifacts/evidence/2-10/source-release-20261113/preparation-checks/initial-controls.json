@@ -1,0 +1,87 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "eng/lifecycle-qualification",
+      "-v"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.506,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/00-unittest.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_builds_tuple.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.224,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/01-test_builds_tuple.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_builds_publication.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.059,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/02-test_builds_publication.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_legacy_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 2.136,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/03-test_legacy_tuple_source.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_pre_extension_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 1.409,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/04-test_pre_extension_tuple_source.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_current_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 3.069,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/05-test_current_tuple_source.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_package_reader_source.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.628,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/06-test_package_reader_source.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_tuple_sdk_suites.py"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 0.069,
+    "log": "/tmp/hexalith-story-2-10-release-record-20261113/checks/07-test_tuple_sdk_suites.txt"
+  }
+]

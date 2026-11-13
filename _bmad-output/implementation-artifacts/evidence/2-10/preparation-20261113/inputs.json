@@ -1,0 +1,30 @@
+{
+  "schema": "hexalith.lifecycle-preparation.v1",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "sources": {
+    "caller": "f532145038992217f6433cd3dc1e36e61a1acc38",
+    "builds": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+    "platform": "38402bc77ac0be3e6902002d08923c51d0e73a77"
+  },
+  "minimumPlatformRevision": "3f7659e2ff660212bc4f31c6e118a14a65f55da5",
+  "tool": {
+    "version": "5.0.0",
+    "sourceRevision": "9f5d751f7ab0b7a621dcd18b589bf061fabac6ec",
+    "framework": "net11.0",
+    "downloadId": "module-tool"
+  },
+  "catalogSha256": "afaa900a9467455043f679cbc5af81cfdca029a6b8c5b6c8658044c83296e147",
+  "toolchain": {
+    "dotnetSdk": "11.0.100",
+    "aspire": "13.6.5",
+    "daprCli": "1.19.1",
+    "daprRuntime": "1.19.1"
+  },
+  "downloads": [
+    {
+      "id": "module-tool",
+      "fileName": "hexalith.builds.module.cli.5.0.0.nupkg",
+      "sha256": "5adb0cd150671cfeeb1fbc2f42e8f11903c557986662c64e4e483223f71f3e6e"
+    }
+  ]
+}

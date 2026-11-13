@@ -1,0 +1,99 @@
+{
+  "recordedAtUtc": "2026-11-13T01:19:20.149327+00:00",
+  "schema": "hexalith.lifecycle-preparation-verification.v1",
+  "officialPackageUrl": "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/5.0.0/hexalith.builds.module.cli.5.0.0.nupkg",
+  "officialPackageSha256": "5adb0cd150671cfeeb1fbc2f42e8f11903c557986662c64e4e483223f71f3e6e",
+  "officialPublicationBinding": "eng/builds-tuple.json",
+  "nugetRepositorySignatureVerification": {
+    "exitCode": 0,
+    "command": "dotnet nuget verify --all <official-5.0.0-package>"
+  },
+  "operations": [
+    {
+      "label": "source-audit",
+      "exitCode": 1,
+      "observation": {
+        "candidateAcceptance": false,
+        "elapsedSeconds": 0.041183,
+        "inputSetSha256": "1165f9b77da426b55c43dd8de221ba9f72c0c45180e131166b7ac919f5526dba",
+        "liveQualificationExecuted": false,
+        "operation": "check-sources",
+        "publicationVerified": false,
+        "reasons": [
+          "platform-live-port-binding-unavailable"
+        ],
+        "schema": "hexalith.lifecycle-preparation.v1",
+        "sourceBindingsMatch": false,
+        "sources": {
+          "builds": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+          "caller": "f532145038992217f6433cd3dc1e36e61a1acc38",
+          "platform": "38402bc77ac0be3e6902002d08923c51d0e73a77"
+        },
+        "toolAccepted": false
+      }
+    },
+    {
+      "label": "cache-first",
+      "exitCode": 0,
+      "observation": {
+        "cacheHit": false,
+        "candidateAcceptance": false,
+        "elapsedSeconds": 0.103224,
+        "inputSetSha256": "1165f9b77da426b55c43dd8de221ba9f72c0c45180e131166b7ac919f5526dba",
+        "liveQualificationExecuted": false,
+        "operation": "populate",
+        "schema": "hexalith.lifecycle-preparation.v1",
+        "toolAccepted": false,
+        "verifiedDownloads": 1
+      }
+    },
+    {
+      "label": "cache-hit",
+      "exitCode": 0,
+      "observation": {
+        "cacheHit": true,
+        "candidateAcceptance": false,
+        "elapsedSeconds": 0.022057,
+        "inputSetSha256": "1165f9b77da426b55c43dd8de221ba9f72c0c45180e131166b7ac919f5526dba",
+        "liveQualificationExecuted": false,
+        "operation": "populate",
+        "schema": "hexalith.lifecycle-preparation.v1",
+        "toolAccepted": false,
+        "verifiedDownloads": 1
+      }
+    },
+    {
+      "label": "restore-first",
+      "exitCode": 0,
+      "observation": {
+        "candidateAcceptance": false,
+        "elapsedSeconds": 0.119271,
+        "inputSetSha256": "1165f9b77da426b55c43dd8de221ba9f72c0c45180e131166b7ac919f5526dba",
+        "liveQualificationExecuted": false,
+        "operation": "restore",
+        "schema": "hexalith.lifecycle-preparation.v1",
+        "toolAccepted": false,
+        "verifiedDownloads": 1
+      }
+    },
+    {
+      "label": "restore-second",
+      "exitCode": 0,
+      "observation": {
+        "candidateAcceptance": false,
+        "elapsedSeconds": 0.121625,
+        "inputSetSha256": "1165f9b77da426b55c43dd8de221ba9f72c0c45180e131166b7ac919f5526dba",
+        "liveQualificationExecuted": false,
+        "operation": "restore",
+        "schema": "hexalith.lifecycle-preparation.v1",
+        "toolAccepted": false,
+        "verifiedDownloads": 1
+      }
+    }
+  ],
+  "liveQualificationExecuted": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "savingsClaimed": false,
+  "startupCleanupAuditTimings": "not-executed"
+}

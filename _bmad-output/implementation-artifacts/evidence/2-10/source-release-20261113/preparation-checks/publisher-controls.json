@@ -1,0 +1,45 @@
+{
+  "schema": "hexalith.source-prerequisite-controls.v1",
+  "sourceBase": "d5928c8b106e1da4179e55dbe8390912b02a7e44",
+  "commands": [
+    {
+      "argv": [
+        "npm",
+        "run",
+        "test:source-release"
+      ],
+      "exitCode": 0,
+      "tests": 82,
+      "passed": 82,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "argv": [
+        "node",
+        "--test",
+        "eng/test-extension-release/gate.test.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "eng/test-extension-release/run-controls.py"
+      ],
+      "exitCode": 0,
+      "tests": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "qualificationCredit": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false
+}

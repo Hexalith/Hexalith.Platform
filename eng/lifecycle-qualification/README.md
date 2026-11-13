@@ -100,3 +100,41 @@ window after failure remains incomplete. Missing actual startup-duration proof
 also prevents a pass. These outcomes return nonzero and grant no tool/candidate
 acceptance. The focused controls execute no services; an explicit live invocation
 starts real owned environments.
+
+`prepare.py` provides resource-free preparation for a later fixed input set. Its
+closed `hexalith.lifecycle-preparation.v1` record names exact caller, Builds and
+Platform commits; the catalog digest; the published tool source, version and
+framework; SDK/Aspire/Dapr versions; and each download archive's digest. The
+preparation record is a selection, not publication authority or tool acceptance.
+`check-sources` compares the real caller pins, clean checkout, installed catalog,
+catalog toolchain declarations and SDK with that selection, and checks that the
+selected Platform source contains the required live-port correction. Publication,
+signature verification and qualification remain independent gates. It starts no
+process other than read-only Git commands and allocates no services.
+
+For the recorded, currently blocked preparation:
+
+```bash
+python3 -B eng/lifecycle-qualification/prepare.py check-sources \
+  --inputs _bmad-output/implementation-artifacts/evidence/2-10/preparation-20261113/inputs.json \
+  --checkout references/Hexalith.Parties --platform-repository .
+```
+
+After independently verifying downloads against official publication identities,
+`populate --inputs <selection.json> --cache <private-cache> --downloads <archives>`
+publishes their content-addressed cache entry. `restore --inputs <selection.json>
+--cache <private-cache> --destination <fresh-private-parent/downloads>` rehashes
+every consumed archive and creates independent job-local copies. Both commands
+require the exact selection. Cache hits revalidate all bytes and metadata;
+poisoned entries, links, extra run state and existing destinations fail. No
+test result, native workspace, credential, descriptor or prior run state is
+restored. The Linux no-replace publication also preserves a destination created
+after the initial check. Each operation reports its own elapsed time; it supplies
+no test result or performance-savings claim.
+
+The historical `local.py` remains bound to 4.47.0. These preparation commands do
+not make it a controller for a new release. A compatible committed source set,
+the current producer-aware local controller, fresh owning checks and all required
+live runs are still required. The [preparation record](../../_bmad-output/implementation-artifacts/evidence/2-10/preparation-20261113/README.md)
+keeps the met Builds-release prerequisite separate from the open Platform source
+and publication gates.
