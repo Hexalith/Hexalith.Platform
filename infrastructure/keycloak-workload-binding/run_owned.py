@@ -652,7 +652,8 @@ def launch(lifetime, owner, arguments):
                 if lease is not None: lease.cleanup()
             if lease is not None:
                 summary.update(observedRemainingContainers=0, observedRemainingTemporaryPaths=0)
-            print(json.dumps(summary), flush=True)
+            # Child reporters may finish with an ANSI reset without a newline.
+            print("\n" + json.dumps(summary), flush=True)
         finally:
             signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
             for number, handler in previous.items():

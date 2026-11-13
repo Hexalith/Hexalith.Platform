@@ -1,0 +1,262 @@
+{
+  "schema": "hexalith.run-owned-enrollment-verification/v1",
+  "qualification": "run-owned enrollment",
+  "recordedAt": "2026-11-13T17:22:33.241239+00:00",
+  "status": "Summary-line correction verified; fresh build/runtime gates remain blocked",
+  "platformHead": "e5460573be3a16e50d0728bb42942514fc07ff1f",
+  "foldersHead": "938c6ad73238d357128bf6a0cb8ace717a032abd",
+  "changes": [
+    "Start the launcher metadata summary on its own line after unterminated child output.",
+    "Add a real child-output regression with an ANSI reset and no final newline."
+  ],
+  "checks": [
+    {
+      "name": "catalog-diagnostic",
+      "command": [
+        "pwsh",
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "references/Hexalith.Builds/Tools/write-platform-version-catalog.ps1",
+        "-CatalogPath",
+        "references/Hexalith.Builds/Props/Directory.Packages.props",
+        "-OutputPath",
+        "/tmp/story-2-12-resume-wa1uqzh6/platform-version-catalog.json",
+        "-BuildSelectionsPath",
+        "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/obj/Debug/net11.0/platform-version-catalog.build.txt",
+        "-Configuration",
+        "Debug",
+        "-TargetFramework",
+        "net11.0"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 3.31,
+      "recordedAt": "2026-11-13T17:16:38.987612+00:00",
+      "outputSha256": "47ca6ddba8898a1b96e8d0c260f3bb89f5b68fa0fbdacd1456783116d7fd3888",
+      "output": "outputs.json#catalog-diagnostic"
+    },
+    {
+      "name": "colored-assembly-green",
+      "command": [
+        "env",
+        "-u",
+        "NO_COLOR",
+        "TERM=xterm-256color",
+        "python3",
+        "-B",
+        "infrastructure/keycloak-workload-binding/verify_component.py",
+        "--run-owned",
+        "--platform-assembly",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "elapsedSeconds": 27.3,
+      "recordedAt": "2026-11-13T17:19:49.488077+00:00",
+      "outputSha256": "ce86cd94888434ff656c2370130ff15e7201b477180ed703dd1b9efbb61b7dec",
+      "output": "outputs.json#colored-assembly-green"
+    },
+    {
+      "name": "colored-assembly-red",
+      "command": [
+        "env",
+        "-u",
+        "NO_COLOR",
+        "TERM=xterm-256color",
+        "python3",
+        "-B",
+        "infrastructure/keycloak-workload-binding/verify_component.py",
+        "--run-owned",
+        "--platform-assembly",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 22.05,
+      "recordedAt": "2026-11-13T17:18:38.153381+00:00",
+      "outputSha256": "78ada487ee9666582a094b86f4f17854f06c420a47402db72c25fa2ef5bcbfb3",
+      "disposition": "Expected failure before the summary-line correction; preserved red-to-green evidence.",
+      "output": "outputs.json#colored-assembly-red"
+    },
+    {
+      "name": "composition-fresh",
+      "command": [
+        "dotnet",
+        "build",
+        "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-resume-wa1uqzh6/uniform-props.xml",
+        "-p:DirectoryBuildTargetsPath=/tmp/story-2-12-resume-wa1uqzh6/uniform-targets.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 11.19,
+      "recordedAt": "2026-11-13T17:16:53.168369+00:00",
+      "outputSha256": "7ce0f4b327554169dc1ca9c951447640d5753c37a28d8a0ee59db92ba22295ce",
+      "output": "outputs.json#composition-fresh"
+    },
+    {
+      "name": "composition-tests-fresh",
+      "command": [
+        "dotnet",
+        "build",
+        "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+        "-c",
+        "Debug",
+        "-p:UseHexalithProjectReferences=true",
+        "-p:DirectoryBuildPropsPath=/tmp/story-2-12-resume-wa1uqzh6/uniform-props.xml",
+        "-p:DirectoryBuildTargetsPath=/tmp/story-2-12-resume-wa1uqzh6/uniform-targets.xml",
+        "-m:1",
+        "-v:q"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 2.28,
+      "recordedAt": "2026-11-13T17:17:08.061136+00:00",
+      "outputSha256": "f1b74e9df7ecdae79a7910cfa3e1dc0f6f6184b774d72ef3538902d91dd7da57",
+      "output": "outputs.json#composition-tests-fresh"
+    },
+    {
+      "name": "folders-fresh",
+      "command": [
+        "bash",
+        "/tmp/story-2-12-resume-wa1uqzh6/build-folders.sh"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 33.54,
+      "recordedAt": "2026-11-13T17:17:55.564849+00:00",
+      "outputSha256": "91272aa2d9ae320cb2e8ec887107f71633b74baad92d8e32add065fa6fe3d8f2",
+      "output": "outputs.json#folders-fresh"
+    },
+    {
+      "name": "python-controls-provider-directory",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_run_owned"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+      "exitCode": 0,
+      "elapsedSeconds": 57.68,
+      "recordedAt": "2026-11-13T17:21:57.867896+00:00",
+      "outputSha256": "d6147007193450eb3f1c4c13110ed6ff851eadbadcf5321437cea5cfb440907f",
+      "output": "outputs.json#python-controls-provider-directory"
+    },
+    {
+      "name": "python-controls",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-v",
+        "-s",
+        "infrastructure/keycloak-workload-binding",
+        "-p",
+        "test_run_owned.py"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 52.19,
+      "recordedAt": "2026-11-13T17:20:52.255327+00:00",
+      "outputSha256": "9d7daf332ed4b20e6e906c589f3752a3379df99c55c907c86f2523986e0ec6cd",
+      "disposition": "Invalid invocation from the repository root: six subprocess imports failed. The exact documented command was subsequently executed from the provider directory; no source, timeout or retry change.",
+      "output": "outputs.json#python-controls"
+    },
+    {
+      "name": "summary-line-regression-green",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "infrastructure/keycloak-workload-binding",
+        "-p",
+        "test_run_owned.py",
+        "-k",
+        "test_launcher_summary_follows_unterminated_colored_child_output"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 0,
+      "elapsedSeconds": 0.34,
+      "recordedAt": "2026-11-13T17:19:22.145559+00:00",
+      "outputSha256": "9fd88015119a8650d931385a8ebfd3c02765e110638c9db5663c07d95eb96d3c",
+      "output": "outputs.json#summary-line-regression-green"
+    },
+    {
+      "name": "summary-line-regression-red",
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "infrastructure/keycloak-workload-binding",
+        "-p",
+        "test_run_owned.py",
+        "-k",
+        "test_launcher_summary_follows_unterminated_colored_child_output"
+      ],
+      "cwd": "/home/administrator/projects/hexalith/platform",
+      "exitCode": 1,
+      "elapsedSeconds": 0.32,
+      "recordedAt": "2026-11-13T17:19:13.893023+00:00",
+      "outputSha256": "cef81496f9129651ad140b7588e473273d07af59ad40d81f953ea1d99419a50f",
+      "disposition": "Expected failure before the summary-line correction; preserved red-to-green evidence.",
+      "output": "outputs.json#summary-line-regression-red"
+    }
+  ],
+  "sourceSha256": {
+    "infrastructure/keycloak-workload-binding/run_owned.py": "59001cb85dfc9540f4b4ea0971e33678c66e0d66038e3cdc9d67ea6275ae2d54",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "40ceeb7a26e2052b307bd83a209de1badd0968af108d4514bf31316ff4439627",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "9ae5873a73ab7160e4a154bd779b540945da34c6de437d1ae5618ab346bd153f",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "19958adaf2c2fdf050fb25ed2f2bbb4810b92a8844cbf5b2a67533417df9a676",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "d6ef0f173353bfa024e23856ac12373ef64ebeacdc8c1cf12e64c8fe37e317a5",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "77c90f4642836dcf02f8973b05434d95718b442cfd8c90b678123847617b6374"
+  },
+  "providerSha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+  "existingTestAssemblySha256": "f7e7b8f2529d30a5c3c57ce2d5ff162eedf4c08060ccfb1d389bf14faf0d550f",
+  "cleanup": {
+    "observedRemainingContainers": 0,
+    "remainingContainers": [],
+    "observedRemainingTemporaryPaths": 0,
+    "remainingPrivateDirectories": []
+  },
+  "limitations": [
+    "Fresh Composition build fails in the unchanged Builds catalog gate: inherited EventStore 4.2.0 versus authoritative 5.0.0. The direct catalog command confirms the diagnostic.",
+    "Fresh Composition.Tests restore also fails NU1109: Microsoft.AspNetCore.OpenApi 11.0.0 versus central 10.0.15 through source EventStore.Gateway/Tenants. No controlled selections were changed.",
+    "Fresh Folders source build fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. Affected Folders runtime suites and strict acceptance remain unexecuted.",
+    "The two passing explicit C# executions use the existing local test assembly and are supplementary to the blocked fresh-build tasks.",
+    "No Platform lifecycle qualification or Folders 12.2 completion."
+  ],
+  "delivery": "Story changes and evidence staged locally after parent inspection; no commit, remote operation or submodule pointer update. Concurrent Epic 4 artifacts preserved.",
+  "buildSupportFiles": {
+    "/tmp/story-2-12-resume-wa1uqzh6/uniform-props.xml": {
+      "retainedCopy": "uniform-props.xml",
+      "sha256": "3d36e22660281727d64fa74d0392a5236785d5df5990f76f0b62e1ccf3a25522"
+    },
+    "/tmp/story-2-12-resume-wa1uqzh6/uniform-targets.xml": {
+      "retainedCopy": "uniform-targets.xml",
+      "sha256": "0af67d5533043a51a09b175f68e1ba8363b9441e6cd19bca11a6e2ccb7e43d6b"
+    },
+    "/tmp/story-2-12-resume-wa1uqzh6/build-folders.sh": {
+      "retainedCopy": "build-folders.sh",
+      "sha256": "74fdad777293bba1e9b5ba16ad17d8503165a6753f5c167129690fcd2065d123"
+    }
+  }
+}

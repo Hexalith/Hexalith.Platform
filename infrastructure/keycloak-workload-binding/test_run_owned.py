@@ -287,6 +287,20 @@ class RunOwnedTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "lack executed-test"):
                 component.run_assembly("unselected.dll", "Tests.Expected.ExplicitMethod")
 
+    def test_launcher_summary_follows_unterminated_colored_child_output(self):
+        child = "import sys; sys.stdout.write('child-output\\x1b[0m'); sys.stdout.flush()"
+        environment = dict(os.environ, TERM="xterm-256color")
+        environment.pop("NO_COLOR", None)
+        completed = subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER,
+            "--lifetime-seconds", "30", "--", sys.executable, "-c", child], env=environment,
+            capture_output=True, text=True, timeout=15)
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        summaries = [json.loads(line) for line in completed.stdout.splitlines() if line.startswith("{")]
+        self.assertEqual(1, len(summaries), completed.stdout)
+        self.assertEqual("run-owned enrollment", summaries[0]["qualification"])
+        self.assertEqual(0, summaries[0]["observedRemainingContainers"])
+        self.assertEqual(0, summaries[0]["observedRemainingTemporaryPaths"])
+
     def test_assembly_harness_requires_consumer_and_provision_observations(self):
         method = "Tests.Expected.ExplicitMethod"
         with tempfile.TemporaryDirectory() as name:

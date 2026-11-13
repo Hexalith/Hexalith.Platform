@@ -1,0 +1,60 @@
+{
+  "qualification": "run-owned enrollment",
+  "scope": "Parent audit of the resumed summary-line correction and executed component evidence; full story completion remains blocked.",
+  "sourceHashesVerified": true,
+  "rows": [
+    {
+      "state": "Final cohort and tenant",
+      "passed": true,
+      "evidence": [
+        "colored-assembly-green: Total 1, Failed 0; resources 8, workloads 6, proofCallers 2; startupImport true; administrativeIdentity false"
+      ]
+    },
+    {
+      "state": "Missing launch trust",
+      "passed": true,
+      "evidence": [
+        "colored-assembly-green: missing-trust and host-trust-merge controls; fresh-running-host-tls-and-exchange assertion"
+      ]
+    },
+    {
+      "state": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "passed": true,
+      "evidence": [
+        "colored-assembly-green: foreign receipt, child, directory, cohort and tenant controls",
+        "python-controls-provider-directory: exact tenant/cohort/permissions and foreign request refusals pass",
+        "python-controls-provider-directory: test_docker_allocated_binding_is_owned_https_loopback_only passes address and ownership refusals"
+      ]
+    },
+    {
+      "state": "Exit, cancellation, expiry, partial startup",
+      "passed": true,
+      "evidence": [
+        "python-controls-provider-directory: five real-container terminal cases and unrelated live control preservation pass",
+        "colored-assembly-green: adoptionCancelled true, releasePublished true, childAliveAfterCleanup true",
+        "independent final inventory: zero owned containers and private run directories"
+      ]
+    }
+  ],
+  "pythonControlsPassed": 44,
+  "existingAssemblyExplicitScenariosPassed": 2,
+  "buildGatePassed": false,
+  "openTasks": [
+    "Fresh Platform Composition and Composition.Tests Debug/source builds",
+    "Affected Folders runtime suites against a coherent Debug/source build"
+  ],
+  "workflow": "Stopped at step-03: unfinished required validation prevents advancing to step-04 review.",
+  "limitations": [
+    "Fresh Composition build fails in the unchanged Builds catalog gate: inherited EventStore 4.2.0 versus authoritative 5.0.0. The direct catalog command confirms the diagnostic.",
+    "Fresh Composition.Tests restore also fails NU1109: Microsoft.AspNetCore.OpenApi 11.0.0 versus central 10.0.15 through source EventStore.Gateway/Tenants. No controlled selections were changed.",
+    "Fresh Folders source build fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. Affected Folders runtime suites and strict acceptance remain unexecuted.",
+    "The two passing explicit C# executions use the existing local test assembly and are supplementary to the blocked fresh-build tasks.",
+    "No Platform lifecycle qualification or Folders 12.2 completion."
+  ],
+  "parentCleanupObservation": {
+    "observedRemainingContainers": 0,
+    "containers": [],
+    "observedRemainingTemporaryPaths": 0,
+    "privateDirectories": []
+  }
+}
