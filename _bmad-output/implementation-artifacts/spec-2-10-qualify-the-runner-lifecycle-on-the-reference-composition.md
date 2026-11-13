@@ -366,7 +366,8 @@ no-remote restriction for this source prerequisite work.
 
 The isolated working copy is `/tmp/hexalith-story-2-10-source-release-20261113`,
 initially based on `d5928c8b106e1da4179e55dbe8390912b02a7e44` and synchronized
-with main `8483559f068f8cd7282d878dcdc75ac10870c784` before the final source
+with main `8483559f068f8cd7282d878dcdc75ac10870c784`, then incorporated
+`8cf40085848ab6b65832dbee77af696be93c792f` before the final source
 freeze. It carries exact copies of
 the supplied preparation work; the original workspace and its unrelated
 EventStore checkout must remain unchanged. Retain exact tool pins: Platform
