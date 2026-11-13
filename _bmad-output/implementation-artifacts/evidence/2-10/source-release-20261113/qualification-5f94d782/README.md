@@ -1,5 +1,8 @@
 # Story 2.10 fixed qualification inputs
 
+The initial handoff is recorded below. The final section records the later
+external main adoption and the user decision to preserve it.
+
 Platform [v2.0.0](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.0.0)
 is actual gated source `32643bde39b4da0e4538f8388e225727f82122f6`.
 The [publisher](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43396965519)
@@ -58,3 +61,15 @@ A producer-aware local controller, the fresh complete local/hosted table and
 actual startup/execution cancellation runs remain mandatory before accepting
 5.1.0 or enrolling its main pins. This preparation ran no lifecycle service and
 dispatched no qualification workflow. Every acceptance flag remains false.
+
+## Subsequent concurrent main change
+
+The statements above describe the initial handoff. A later remote check found
+that another `/pushall` operation merged this caller into Parties main as
+`8b858660223d81ea8b10ffd819a7854bce3357f1`, adopting unqualified 5.1.0 and
+deleting its qualification ref. The exact qualification ref was restored.
+The [separate observation and prepared repair](../post-handoff-remote-observation/README.md)
+retain this later identity without changing earlier receipts. The user chose to
+preserve the external merge and record its qualification violation. Parties
+main retains 5.1.0 externally; no repair was applied and full qualification
+is still open. The pin grants no lifecycle acceptance.

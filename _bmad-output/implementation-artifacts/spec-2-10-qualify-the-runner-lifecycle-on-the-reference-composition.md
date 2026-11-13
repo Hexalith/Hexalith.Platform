@@ -614,3 +614,19 @@ The old source subjects, original 4.47.0 local controller, every failed/incomple
 observation and all private first-caller 3a7e results retain their identities.
 Story status remains in-progress and the full local/hosted/cancellation table is
 still required. No lifecycle service or qualification workflow was launched.
+
+## Subsequent external main adoption — 2026-11-13
+
+After the fixed-input handoff was committed, the remote check found another
+`/pushall` had merged the qualification caller into Parties main as
+`8b858660223d81ea8b10ffd819a7854bce3357f1`, adopting 5.1.0 before full
+qualification and removing the qualification branch. This work restored the
+exact qualification ref without changing its caller or closed inputs.
+The earlier handoff records remain historically accurate observations.
+
+An eight-file staged repair restores exactly upstream 1d44297a's tree and
+5.0.1 pin while retaining all history. The user decided to preserve the external
+merge and record its qualification violation. The reviewed repair remains
+unused and uncommitted; no main repair has been pushed. Full lifecycle
+qualification remains open and accepted-tool authority remains false.
+See [the separate observation](evidence/2-10/source-release-20261113/post-handoff-remote-observation/README.md).

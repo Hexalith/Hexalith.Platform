@@ -1,0 +1,12 @@
+⧗   --- input ---
+revert(ci): restore main before lifecycle qualification
+
+Restore main's tree from 1d44297aa7ed94426a51b9e4fb14b7d5896c4157
+after qualification caller 5f94d7827f5b1d315856bb37b64f700e3ac56910
+was merged before lifecycle qualification.
+
+Keep the caller on its dedicated qualification ref and preserve the
+upstream compatibility fixes, release gates, and main CLI 5.0.1 pin.
+
+This reverts commit 8b858660223d81ea8b10ffd819a7854bce3357f1.
+✔   found 0 problems, 0 warnings

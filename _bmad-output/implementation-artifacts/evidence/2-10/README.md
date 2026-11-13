@@ -222,3 +222,9 @@ An independent Parties main 5.0.1 update was preserved; this work changed no
 accepted main pin and kept 5.1.0 on its qualification branch. Earlier evidence
 keeps its actual subjects. Full local/hosted scenarios and real cancellations
 remain open, and historical local.py remains 4.47.0.
+
+A subsequent external `/pushall` merged the qualification caller into Parties
+main as `8b858660`, moving its pin to unqualified 5.1.0. The qualification ref
+was restored. [The later observation and prepared repair](source-release-20261113/post-handoff-remote-observation/README.md)
+retain this distinct identity. The user chose to preserve that external merge
+and record its qualification violation; the reviewed repair remains unused. Earlier source/publication/input receipts remain unchanged.

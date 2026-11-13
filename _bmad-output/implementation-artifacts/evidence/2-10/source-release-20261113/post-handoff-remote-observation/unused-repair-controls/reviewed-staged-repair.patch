@@ -1,0 +1,159 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index 5e2fb2691e4f568498397a94e4f74feaa32b9da0..e19a760e7dd85ab7be54222b91c4477747e60fbe 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -10,7 +10,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "5.1.0",
++      "version": "5.0.1",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+index 6f3c4952c6185ffd07bbf390cddcce8b72e14cd4..49d9d944638116ab007c1f71eba3bd8ddc107760 100644
+--- a/.github/workflows/ci-lifecycle-qualification.yml
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -19,7 +19,7 @@ concurrency:
+ 
+ jobs:
+   baseline:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       additional-sdk-version: '10.0.404'
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 95a60632f3a275b87bbe93f25dc51a4ae4440280..6348c197770322475fd149cb023899aec982ac23 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -19,7 +19,7 @@ permissions:
+ 
+ jobs:
+   ci:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       additional-sdk-version: '10.0.404'
+diff --git a/README.md b/README.md
+index 5e7abc498444b6708bd3682324aa98c5eb6726e1..14dc406824334cfa4de3a84761619b64b32a0b6d 100644
+--- a/README.md
++++ b/README.md
+@@ -44,7 +44,7 @@ dotnet tool restore
+ dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
+ ```
+ 
+-The repository pins module tool **5.1.0** alongside aspirate and uses Aspire CLI
++The repository pins module tool **4.48.0** alongside aspirate and uses Aspire CLI
+ **13.6.5**. From this independent checkout, `debug` resolves direct references
+ once, builds the selected
+ source projects in Debug, and waits for exactly `parties`, `eventstore`, `tenants`,
+diff --git a/docs/architecture.md b/docs/architecture.md
+index 2b5ec3e618d69be284aae26223d7bcd14bcdb7d3..b7c28a0b0a1d5bd57ccc46ad67fbf1b67191d1e1 100644
+--- a/docs/architecture.md
++++ b/docs/architecture.md
+@@ -49,7 +49,7 @@ It is **not** an auth provider, CRM, or identity server — it is the party/cont
+ 
+ | Category | Technology | Version |
+ |----------|-----------|---------|
+-| Runtime | .NET | `net11.0` (SDK `11.0.100`, rollForward latestPatch) |
++| Runtime | .NET | `net10.0` (SDK `11.0.100`, rollForward latestPatch) |
+ | Orchestration | .NET Aspire (`Aspire.Hosting` + hosting integrations) | `13.6.5` |
+ | Actors & pub/sub | DAPR client/actors/AspNetCore | `1.19.1` |
+ | | `CommunityToolkit.Aspire.Hosting.Dapr` | `13.6.2-beta.959` |
+@@ -334,7 +334,7 @@ scripts/  # local test runner, package validation, and Parties container publish
+ ## 11. Testing & CI
+ 
+ - Exactly **17 runnable .NET test projects plus three support hosts and one contracts artifact** (`Hexalith.Parties.EventStoreGateway.TestHost`) and the Playwright e2e workspace, uniformly **xUnit v3** for runnable .NET tests (Shouldly + NSubstitute; bunit for Blazor). Lanes via `scripts/test.ps1 -Lane {unit|integration|topology|ci|all|coverage}`. `Hexalith.Parties.IntegrationTests` spins up the **full Aspire topology** (`Aspire.Hosting.Testing`), gracefully skipping when Docker/DAPR is absent; `Hexalith.Parties.Ci.Tests` validates static GitHub Actions publication contracts and executes the release source-gate shell against mocked GitHub API fixtures. Architectural fitness tests pin contract/dependency boundaries.
+-- **CI/CD:** `.github/workflows/ci.yml` delegates restore/build/package-consumer validation and test tiers to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`; `.github/workflows/release.yml` is a manual caller that requires current `main` and successful exact-source push proof from `ci.yml` before protected approval. Shared preparation and the complete Parties-owned container publisher use one reviewed immutable Hexalith.Builds commit, with caller-owned NuGet trusted publishing. The publication wrapper enforces the same full-CI proof. Submodules are checked out as **root-repository submodules only, never recursive**. See [ci.md](ci.md), [build-gate.md](build-gate.md), [ci-secrets-checklist.md](ci-secrets-checklist.md).
++- **CI/CD:** `.github/workflows/ci.yml` delegates restore/build/package-consumer validation and test tiers to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@5ec1779040606be89306129a7d2b245258c9acd2`; `.github/workflows/release.yml` is a manual caller that requires current `main` and successful exact-source push proof from `ci.yml` before protected approval. Shared preparation and the complete Parties-owned container publisher use one reviewed immutable Hexalith.Builds commit, with caller-owned NuGet trusted publishing. The publication wrapper enforces the same full-CI proof. Submodules are checked out as **root-repository submodules only, never recursive**. See [ci.md](ci.md), [build-gate.md](build-gate.md), [ci-secrets-checklist.md](ci-secrets-checklist.md).
+ - **Package API prerequisite:** resolved by published EventStore 3.117.0. The actual DomainService assembly exposes `RequireEventStoreSidecarChannel<TBuilder>`, and the default package-mode Release solution build passes with zero warnings and errors. Security/rebuild calls, package-mode dependencies, and mandatory exact-source full-CI release proof remain intact. The earlier 3.115.0 CS1061 and 3.88.0 rebuild CS0246 failures are historical. See [ci.md](ci.md#required-eventstore-publication) for publication provenance, consumer verification, and the remaining integrated-topology prerequisites.
+ 
+ ---
+diff --git a/docs/ci-lifecycle-qualification.md b/docs/ci-lifecycle-qualification.md
+index c0358937629e0a5fef42477748e103766e3a58c2..c4bdebfd7084826efe9619204853f0658f11851e 100644
+--- a/docs/ci-lifecycle-qualification.md
++++ b/docs/ci-lifecycle-qualification.md
+@@ -1,18 +1,5 @@
+ # Disposable CI lifecycle qualification
+ 
+-This qualification branch selects genuine module CLI **5.1.0** and the
+-`domain-ci-v2.yml` workflow at Builds
+-`9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`. Its separate catalog/helper
+-source is `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, matching published
+-Platform **2.0.0** source `32643bde39b4da0e4538f8388e225727f82122f6`
+-and compatibility range `[5.0.1, 6.0.0-0)`. Packages and hosts target
+-`net11.0`. This selection grants no lifecycle qualification or tool acceptance.
+-The selected upstream main `1d44297aa7ed94426a51b9e4fb14b7d5896c4157`
+-uses 5.0.1, as does Platform. The full matrix, independent finalization and
+-separate actual cancellation proofs remain required.
+-
+-## Recorded baseline — 2026-11-08
+-
+ This registered manual workflow remains a **baseline-only** diagnostic for
+ Story 2.8. It grants no candidate acceptance or loaded-backend identity credit.
+ The ordinary and manual baseline callers select genuine Builds `v4.44.13`
+diff --git a/docs/ci.md b/docs/ci.md
+index f9e4e170c86f06e42cecc2d2a955ff3fe0f85ded..eedd07584838b5278e3c50486b20bcdd07130e87 100644
+--- a/docs/ci.md
++++ b/docs/ci.md
+@@ -4,7 +4,7 @@ Hexalith.Parties uses GitHub Actions with shared Hexalith.Builds workflows and a
+ 
+ ## Workflows
+ 
+-- `.github/workflows/ci.yml` delegates to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`.
++- `.github/workflows/ci.yml` delegates to `Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`.
+ - `.github/workflows/release.yml` is a manual `workflow_dispatch` workflow with a protected, caller-owned release job. It uses `Hexalith/Hexalith.Builds/Github/prepare-domain-release@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7` and takes the nested publisher from that same immutable Builds checkout.
+ - `.github/workflows/commitlint.yml` delegates Conventional Commit validation to the retained immutable Builds revision `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`, for pull requests and main pushes.
+ - `.github/workflows/dependency-review.yml` delegates dependency review for pull requests.
+@@ -29,16 +29,9 @@ dotnet tests/Hexalith.Parties.Ci.Tests/bin/Release/net11.0/Hexalith.Parties.Ci.T
+ 
+ ## CI
+ 
+-The 5.1.0 selection belongs to the dedicated Story 2.10 qualification branch.
+-The selected upstream main `1d44297aa7ed94426a51b9e4fb14b7d5896c4157`
+-uses 5.0.1, as does Platform; this branch grants no tool acceptance. Its
+-catalog/helper source is `3c2f5944aaa28dc7854a00a8a9df171aa810b0c7`,
+-while the executable and CI workflow source is
+-`9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4`.
+-
+ CI runs on pushes and pull requests to `main`, scheduled nightly runs, and Pact Broker `repository_dispatch` events with type `contract_requiring_verification_published`.
+ 
+-The current tool manifest selects published module CLI **5.1.0**,
++The current tool manifest selects published module CLI **5.0.1**,
+ within the qualified Platform source's `[5.0.1, 6.0.0-0)` prerequisite. The
+ immutable reusable workflow restores that exact manifest. The repository pins
+ .NET SDK **11.0.100** with current Parties targets at `net11.0`; the active
+@@ -531,7 +524,7 @@ change also requires an approved parser-invariant and test update. Edit
+ `TEMPLATE` for non-ACL changes, then regenerate. Missing, duplicate, unsafe or
+ stale input fails without rewriting in `--check` mode.
+ 
+-The local module tool is pinned to 5.1.0 with Aspire CLI 13.6.5 alongside
++The local module tool is pinned to 5.0.1 with Aspire CLI 13.6.5 alongside
+ aspirate; package CI continues to restore packages and build Release. Source mode is selected only
+ by the tool's persisted mapping, with no file-existence fallback. Legacy hosting
+ projects and package publication gates remain in their existing scope.
+diff --git a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+index 5e4e19285bc4c5337f6bd08ccc05a38ee9da1322..5c7e93b72db4456e4db76e6673f1187f6d658b47 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+@@ -7,7 +7,7 @@ namespace Hexalith.Parties.Ci.Tests;
+ public sealed class PartiesContainerPublishWorkflowTests
+ {
+     private const int ExpectedPackageCount = 11;
+-    private const string BuildsCiSha = "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4";
++    private const string BuildsCiSha = "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7";
+     private const string BuildsValidationSha = "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7";
+     private const string BuildsExecutionSha = "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7";
+     private static readonly TimeSpan WorkflowReadTimeout = TimeSpan.FromSeconds(10);
+@@ -143,7 +143,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+         }
+         using JsonDocument tools = JsonDocument.Parse(CiTestPaths.ReadRepoFile(".config/dotnet-tools.json"));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("5.1.0");
++        tool.GetProperty("version").GetString().ShouldBe("5.0.1");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         workflow.ShouldNotContain("submodules: recursive");
+ 

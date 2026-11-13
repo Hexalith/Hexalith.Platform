@@ -171,3 +171,7 @@ _bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/vali
 # Preserve exact post-publication caller checks under their original identities.
 _bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls/** -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/caller-controls-v2/** -text -whitespace
+
+# Preserve original mixed-ending patches for the unused concurrent-merge repair.
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/post-handoff-remote-observation/parties-main-premature-adoption-repair.diff -text -whitespace
+_bmad-output/implementation-artifacts/evidence/2-10/source-release-20261113/post-handoff-remote-observation/unused-repair-controls/reviewed-staged-repair.patch -text -whitespace
