@@ -1,0 +1,34 @@
+{
+  "observedUtc": "2026-11-13T07:41:19.602322+00:00",
+  "artifacts": [
+    {
+      "id": 14018214306,
+      "name": "platform-broker-candidate-02-43386723091-1",
+      "size_in_bytes": 1650434,
+      "digest": "sha256:a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a",
+      "expired": false,
+      "created_at": "2026-11-13T07:40:45Z",
+      "expires_at": "2026-12-13T07:40:43Z"
+    }
+  ],
+  "expectedName": "platform-broker-candidate-02-43386723091-1",
+  "downloadArgv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "repos/Hexalith/Hexalith.Platform/actions/artifacts/14018214306/zip"
+  ],
+  "downloadExitCode": 0,
+  "downloadedBytes": 1650434,
+  "downloadedSha256": "a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a",
+  "digestMatchesArtifactApi": true,
+  "inspection": {
+    "entries": 544,
+    "uncompressedBytes": 21816716,
+    "problems": [],
+    "privateTranscriptEntries": [],
+    "crcFirstBadEntry": null
+  },
+  "extraction": "performed-after-inspection"
+}

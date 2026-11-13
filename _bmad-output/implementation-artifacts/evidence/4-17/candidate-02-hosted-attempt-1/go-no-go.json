@@ -1,0 +1,221 @@
+{
+  "sourceRevision": "4d66ff5584e4f62239551bb02311649334171a84",
+  "tag": "qualification/broker-candidate-02/attempt-1-4d66ff55",
+  "checks": [
+    {
+      "check": "githubstatus: indicator none, core components operational, no unresolved incident",
+      "observedUtc": "2026-11-13T07:34:03Z",
+      "argv": [
+        "curl",
+        "-sS",
+        "-A",
+        "status-check",
+        "https://www.githubstatus.com/api/v2/summary.json"
+      ],
+      "result": {
+        "indicator": "none",
+        "description": "All Systems Operational",
+        "pageUpdatedAt": "2026-11-13T07:09:26.798Z",
+        "components": {
+          "Git Operations": "operational",
+          "Webhooks": "operational",
+          "API Requests": "operational",
+          "Actions": "operational"
+        },
+        "unresolvedIncidents": [],
+        "scheduledMaintenances": []
+      },
+      "pass": true
+    },
+    {
+      "check": "ruleset 24657570 equals the recorded policy",
+      "observedUtc": "2026-11-13T07:34:04Z",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657570"
+      ],
+      "result": {
+        "id": 24657570,
+        "name": "Platform immutable tags",
+        "target": "tag",
+        "enforcement": "active",
+        "conditions": {
+          "ref_name": {
+            "exclude": [],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "rules": [
+          "update",
+          "deletion"
+        ],
+        "bypassActors": [],
+        "currentUserCanBypass": "never"
+      },
+      "pass": true
+    },
+    {
+      "check": "ruleset 24657217 equals the recorded policy",
+      "observedUtc": "2026-11-13T07:34:04Z",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/rulesets/24657217"
+      ],
+      "result": {
+        "id": 24657217,
+        "name": "Platform tag creation authorization",
+        "target": "tag",
+        "enforcement": "active",
+        "conditions": {
+          "ref_name": {
+            "exclude": [
+              "refs/tags/v[0-9]*"
+            ],
+            "include": [
+              "~ALL"
+            ]
+          }
+        },
+        "rules": [
+          "creation"
+        ],
+        "bypassActors": [
+          {
+            "actorType": "User",
+            "bypassMode": "always"
+          }
+        ],
+        "currentUserCanBypass": "always"
+      },
+      "pass": true
+    },
+    {
+      "check": "the candidate-02 tag and namespace do not exist on origin",
+      "observedUtc": "2026-11-13T07:34:04Z",
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/tags/qualification/broker-candidate-02/attempt-1-4d66ff55",
+        "refs/tags/qualification/broker-candidate-02/*"
+      ],
+      "result": {
+        "refs": []
+      },
+      "pass": true
+    },
+    {
+      "check": "workflow 415133929 active with exactly the two earlier runs and none busy",
+      "observedUtc": "2026-11-13T07:34:07Z",
+      "argv": [
+        "gh",
+        "api",
+        "--method",
+        "GET",
+        "repos/Hexalith/Hexalith.Platform/actions/workflows/415133929 (+ /runs, /runs?status=...)"
+      ],
+      "result": {
+        "state": "active",
+        "path": ".github/workflows/broker-candidate-qualification.yml",
+        "totalRuns": 2,
+        "runs": [
+          {
+            "id": 43333995506,
+            "status": "completed",
+            "conclusion": "failure",
+            "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+          },
+          {
+            "id": 43097161643,
+            "status": "completed",
+            "conclusion": "startup_failure",
+            "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3"
+          }
+        ],
+        "busy": {
+          "queued": 0,
+          "in_progress": 0,
+          "waiting": 0,
+          "pending": 0,
+          "requested": 0
+        }
+      },
+      "pass": true
+    },
+    {
+      "check": "source, gitlink, workflow pins, job and configuration identities agree",
+      "observedUtc": "2026-11-13T07:34:08Z",
+      "argv": [
+        "git",
+        "show/ls-tree/ls-remote",
+        "4d66ff5584e4f62239551bb02311649334171a84"
+      ],
+      "result": {
+        "remoteBranch": [
+          "4d66ff5584e4f62239551bb02311649334171a84",
+          "refs/heads/chore/broker-candidate-02-source"
+        ],
+        "workflowBlob": "3357cf244c63c82722baa8363274fdec9b9c4cc6",
+        "workflowSha256": "13ebcd5a80b5419d522f268415d911de134fb71e8d8d345e30d6e9b7716007cb",
+        "env": {
+          "EVENTSTORE_REVISION": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+          "CONFIGURATION_SHA256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+          "QUALIFICATION_PROFILE": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+          "PYTHONDONTWRITEBYTECODE": "'1'",
+          "PYTHONOPTIMIZE": "'0'"
+        },
+        "jobs": [
+          "candidate-02"
+        ],
+        "gitlink": "160000 commit 495dd24943031ec75e2822c6168ada3c8b9fdb82\treferences/Hexalith.EventStore",
+        "configurationSha256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+        "eventStoreRevisionContainedInRemoteMain": true
+      },
+      "pass": true
+    },
+    {
+      "check": "no workflow at the source runs on tag creation",
+      "observedUtc": "2026-11-13T07:34:08Z",
+      "argv": [
+        "git show",
+        "4d66ff5584e4f62239551bb02311649334171a84",
+        ".github/workflows/*",
+        "parsed with js-yaml"
+      ],
+      "result": {
+        "triggers": {
+          ".github/workflows/broker-candidate-qualification.yml": [
+            "workflow_dispatch"
+          ],
+          ".github/workflows/catalog-builder.yml": [
+            "push",
+            "pull_request",
+            "workflow_dispatch"
+          ],
+          ".github/workflows/source-release.yml": [
+            "workflow_run"
+          ],
+          ".github/workflows/test-extension-release.yml": [
+            "workflow_dispatch"
+          ],
+          ".github/workflows/tuple-ci.yml": [
+            "push",
+            "pull_request",
+            "workflow_dispatch"
+          ]
+        },
+        "tagTriggers": []
+      },
+      "pass": true
+    }
+  ],
+  "allPassed": true
+}

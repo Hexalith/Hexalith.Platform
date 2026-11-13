@@ -1,0 +1,22 @@
+{
+  "configurationSha256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+  "platformRevision": "aa921804b5e3fcf698bf333f40ec50c390646692",
+  "platformPath": "docs/implementation/story-4-17-broker-candidate-02.json",
+  "effectiveSettings": {
+    "rabbitmq": {
+      "reconnectWaitSeconds": 1,
+      "outboundTimeoutMilliseconds": 3000
+    },
+    "kafka": {
+      "consumeRetryIntervalMilliseconds": 200,
+      "group.initial.rebalance.delay.ms": 100
+    }
+  },
+  "rabbitmqRendersHistoricalDefaults": true,
+  "profile": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+  "profileSha256": "eae60aeb3ad2734cb54aed7de4b4a4efb19b9b28f3f6ce2eab56fa89850875b6",
+  "profileInputs": 94,
+  "validateProfile": "PASS",
+  "producerAdmission": "PASS",
+  "noSubprocessOrSocket": true
+}
