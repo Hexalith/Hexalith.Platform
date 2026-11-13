@@ -1,0 +1,2045 @@
+{
+  "approvedBy": "repository owner, 2026-11-13 reply \"yes\" to the offer to delete the 43 stuck run records",
+  "targetsFrom": "orphaned-run-cancellation.json",
+  "targeted": 43,
+  "summary": {
+    "not-deleted (DELETE 403, GET after 200)": 43
+  },
+  "retries": 0,
+  "runs": [
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43097799008,
+      "name": "Platform tuple CI preflight",
+      "headSha": "fce6fd5768fbfce964728f9b4f6b7d66466fc326",
+      "createdAt": "2026-11-11T20:44:07Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:02.768979+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD46:1BCC34:1826B4:2A8D9C:6AF66201"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:03.208630+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD02:1C164:17F58D:2A5E4F:6AF66202"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:03.669282+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD01:1F68C3:117795:1AD4CE:6AF66202",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:04.076636+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799008",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD03:3734E0:178829:29F492:6AF66203"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43097799209,
+      "name": "Catalog builder consumer binding",
+      "headSha": "fce6fd5768fbfce964728f9b4f6b7d66466fc326",
+      "createdAt": "2026-11-11T20:44:07Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:04.487933+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD48:20BCC2:110745:1A35BF:6AF66203"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:04.884733+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD4E:28576E:10FF77:1A56ED:6AF66204"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:05.389720+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD4A:20BCC2:110E08:1A400D:6AF66204",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:05.777492+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43097799209",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD05:277308:E3207:1654F2:6AF66205"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096933638,
+      "name": "Catalog builder consumer binding",
+      "headSha": "488723fd7efbccbab3bccdae3be4ad79b05a4994",
+      "createdAt": "2026-11-11T20:35:20Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:06.121032+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD21:28576E:110A54:1A686C:6AF66205"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:06.468594+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD23:208C28:11AE7B:1B237B:6AF66205"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:06.944132+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD25:16ACD0:119C67:1B08D2:6AF66206",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:07.314157+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933638",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD29:28D54C:180FD4:2A7AB6:6AF66206"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096933600,
+      "name": "Platform tuple CI preflight",
+      "headSha": "488723fd7efbccbab3bccdae3be4ad79b05a4994",
+      "createdAt": "2026-11-11T20:35:20Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:07.706324+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD2B:1494B2:185243:2AB9F2:6AF66206"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:08.223416+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD2F:208C28:11BBFD:1B3873:6AF66207"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:08.762135+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD09:2612C7:1815B2:2A82C0:6AF66207",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:09.143348+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096933600",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD31:FE29B:179E2B:2A0E5A:6AF66208"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096691408,
+      "name": "Platform tuple CI preflight",
+      "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "createdAt": "2026-11-11T20:32:49Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:09.498624+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD33:21FF89:17EF2F:2A605A:6AF66208"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:10.099672+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD35:335A31:DB810:1598C1:6AF66209"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:10.589066+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD37:37766A:17CD40:2A41E0:6AF66209",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:10.954135+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691408",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD39:16ACD0:11BD3D:1B3CEE:6AF6620A"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43096691518,
+      "name": "Catalog builder consumer binding",
+      "headSha": "94001fad925fdf7fa03a90b507b8f8e19074f9e3",
+      "createdAt": "2026-11-11T20:32:49Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:11.333779+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD3B:2C0B:17A4D9:2A12DB:6AF6620A"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:11.723295+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD3D:277308:E6442:16A44D:6AF6620A"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:12.195915+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD3F:3DE0C8:11D099:1B59DE:6AF6620B",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:12.578631+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Platform/actions/runs/43096691518",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD3D:277308:E6B7F:16AFDD:6AF6620B"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064502,
+      "name": "OQ8 governing-design availability",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:12.987119+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD43:E3F05:109A9B:1A0010:6AF6620C"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:13.348904+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD45:16ACD0:11D21F:1B5D34:6AF6620C"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:13.790218+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD49:1C1913:178B9C:29FEF7:6AF6620D",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:14.195494+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064502",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD4B:2A0EAB:12E449:1CDD2D:6AF6620D"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064843,
+      "name": "Commitlint",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:14.557608+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD30:20BCC2:11592D:1AB6CF:6AF6620D"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:14.968658+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD4F:2A0EAB:12EB0A:1CE77A:6AF6620E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:15.420888+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF1A:335A31:DE6BE:15E062:6AF6620E",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:15.851497+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064843",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF28:379CF:11B0F8:1B1971:6AF6620F"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064485,
+      "name": "Integration Tests",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:16.230225+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF0A:F4EB0:179F3C:2A1236:6AF6620F"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:16.599415+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF16:271AFB:17D1B9:2A4E77:6AF6620F"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:17.084399+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF1C:269CC9:17CD1B:2A4172:6AF66210",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:17.405555+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064485",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD2A:342574:117A00:1AFE17:6AF66210"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097065466,
+      "name": "CodeQL",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:17.775252+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF56:265D5B:11FE4B:1BAB37:6AF66211"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:18.194082+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5C:2A0EAB:130815:1D142E:6AF66211"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:18.705375+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD16:52CA8:17AD9C:2A24CD:6AF66211",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:19.048647+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097065466",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5E:20BCC2:117E32:1AEFB9:6AF66212"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064466,
+      "name": "Payload Protection Azure",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:19.407280+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF62:3247B2:1102BF:1A7F70:6AF66212"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:19.798107+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF30:E3D09:17ACE6:2A21C7:6AF66213"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:20.254286+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF08:1E6883:12F93C:1D0B67:6AF66213",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:20.675343+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064466",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF38:6FB9:1821C6:2A93F8:6AF66213"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064852,
+      "name": "CI",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:21.349838+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF48:3A7869:17C7C7:2A386F:6AF66214"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:21.743145+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4A:32B6BE:17C9E3:2A3ED4:6AF66215"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:22.185667+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF18:B7BD:1127BD:1A9C68:6AF66215",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:22.609259+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064852",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4C:3CBF3B:1763B5:29CAEB:6AF66215"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064527,
+      "name": "Payload Protection Lifecycle",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:23.020336+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF54:0BF8:10A075:1DAF8F:6AF66216"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:23.441180+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF1E:265D5B:122E5C:1BF3BD:6AF66216"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:23.869713+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF20:2A0EAB:13382D:1D5E37:6AF66217",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:24.256496+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064527",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF64:1D05F1:17EAAB:2A5DBA:6AF66217"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064532,
+      "name": "Payload Protection",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:24.685243+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF0C:2A9B75:17370B:29AA7E:6AF66217"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:25.054562+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF22:1D60F2:173B04:29B1E6:6AF66218"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:25.494662+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF24:E3F05:110244:1AA0B3:6AF66218",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:25.862206+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064532",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF26:24EAFA:17F36F:2A7194:6AF66219"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 43097064472,
+      "name": "Advisory Tests",
+      "headSha": "06ab5c16d1dc38e5e3f29ff06824b2c6724e6ea3",
+      "createdAt": "2026-11-11T20:36:36Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:26.231556+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF3E:1AD24:109330:19E6B2:6AF66219"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:26.622883+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4E:B7BD:11483F:1ACF28:6AF66219"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:27.255950+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF46:1E6883:13332D:1D63AC:6AF6621A",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:27.631042+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.EventStore/actions/runs/43097064472",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD42:18DC9C:180E3E:2A89DE:6AF6621A"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129631,
+      "name": "CI",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:28.033366+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCEC:28576E:11BDCA:1B7E2B:6AF6621B"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:28.434977+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF2C:7556F:17BFC4:2A3D5A:6AF6621B"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:28.919763+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF36:2DFA0D:17F00D:2A6D0B:6AF6621C",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:29.323862+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129631",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF04:265D5B:125E7D:1C3C0F:6AF6621C"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129711,
+      "name": "Commitlint",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:29.693545+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCF7:3DE0C8:125ECA:1C341B:6AF6621C"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:30.090272+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF2E:293FAF:124AC2:1C28E9:6AF6621D"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:30.568488+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD0E:1E3BD0:176B5E:29DCD6:6AF6621D",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:30.909816+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129711",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD0B:335A31:E5F0D:169A5C:6AF6621E"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129720,
+      "name": "CodeQL",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:31.257378+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF06:1F8AA5:11D5C6:1B80D3:6AF6621E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:31.622383+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD1E:3C3EC:1805D0:2A6BFD:6AF6621E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:32.045049+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF3A:20BCC2:11E2C3:1B8ACC:6AF6621F",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:32.386772+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129720",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD0F:1F68C3:126497:1C40BA:6AF6621F"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43098129191,
+      "name": "Release Candidate Gate",
+      "headSha": "c5e236ddaf37f45f1c5b0873ae5388441c0fa4e9",
+      "createdAt": "2026-11-11T20:47:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:32.732546+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF3C:2196CA:129A56:1C9EB8:6AF66220"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:33.128834+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF40:28FEA:12639D:1C689A:6AF66220"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:33.571284+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD4C:26985:17337B:29A64A:6AF66220",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:33.909999+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43098129191",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD11:B7BD:1180EB:1B2496:6AF66221"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957288,
+      "name": "Commitlint",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:34.289461+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF10:BEDE5:176924:29DCBF:6AF66221"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:34.682272+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF42:3247B2:1181DE:1B3E2C:6AF66221"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:35.159280+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF50:181054:177506:29ED35:6AF66222",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:35.573158+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957288",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF58:1DB505:17F5CE:2A7685:6AF66222"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957381,
+      "name": "CI",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:35.897942+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5A:379CF:12520A:1C0D37:6AF66223"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:36.323560+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF03:293FAF:127AB8:1C729A:6AF66223"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:36.992539+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF05:28576E:120122:1BE4A3:6AF66223",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:37.334848+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957381",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF07:1AD24:10E5A0:1A65C3:6AF66224"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957328,
+      "name": "CodeQL",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:37.701395+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF09:342574:121CF8:1BF5AD:6AF66224"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:38.068233+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF0B:2A0EAB:13A865:1E0A62:6AF66225"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:38.505416+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD1B:34D9F:176C3A:29E1B9:6AF66225",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:38.852080+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957328",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF0D:16ACD0:129F9E:1C9696:6AF66226"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Parties",
+      "runId": 43096957137,
+      "name": "Release Candidate Gate",
+      "headSha": "e16c882e4cd9ba5969488ec8d3430e5a79f29d0f",
+      "createdAt": "2026-11-11T20:35:35Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:39.234437+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF0F:9B652:16F163:29607D:6AF66226"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:39.613630+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD18:1F8AA5:121464:1BE079:6AF66226"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:40.037644+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF13:379CF:126FEE:1C3B5E:6AF66227",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:40.439506+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Parties/actions/runs/43096957137",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF15:1DE177:17AF25:2A258A:6AF66227"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097910117,
+      "name": "Commitlint",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:40.850236+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF19:342574:12351B:1C1A8D:6AF66228"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:41.206993+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF1B:335A31:EA8BA:170CDB:6AF66228"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:41.641652+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CD20:1D05F1:17EE6A:2A64C0:6AF66228",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:41.978254+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910117",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF1D:3247B2:11BDDB:1B98C8:6AF66229"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097910202,
+      "name": "CI",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:42.407502+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF1F:264B96:17E6A3:2A5EF4:6AF66229"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:42.840069+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF21:134D4A:17802F:2A03B4:6AF6622A"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:43.633744+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF23:28576E:12366D:1C353F:6AF6622A",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:44.001099+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097910202",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF27:208C28:12E3A9:1CFA7F:6AF6622B"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097909997,
+      "name": "CodeQL",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:16Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:44.341185+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF29:340C72:184044:2AC0B7:6AF6622B"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:44.703511+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD0C:1AD24:111FB1:1ABFD7:6AF6622B"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:45.143340+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF2B:E3F05:1199A8:1B8B1B:6AF6622C",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:45.551389+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909997",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF2D:112AE7:16E683:295B5E:6AF6622C"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Memories",
+      "runId": 43097909727,
+      "name": "Qualify Builds publication",
+      "headSha": "e19d7a704ef10ba01cbaf141776160e6467dff19",
+      "createdAt": "2026-11-11T20:45:15Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:45.896789+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF2F:B69C:17E364:2A5CF8:6AF6622D"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:46.334710+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF31:30A9AF:17BECC:2A3A9E:6AF6622D"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:46.834240+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF33:22849E:17DED0:2A5A9F:6AF6622E",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:47.207307+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Memories/actions/runs/43097909727",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF35:342574:126A13:1C6CEB:6AF6622E"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779338,
+      "name": "Source-reference integration",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:47.630744+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF37:2BBE37:17733F:29EB7D:6AF6622E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:48.042258+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF39:224666:179482:2A135C:6AF6622F"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:48.483830+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF3B:3C24E5:17AC1F:2A201C:6AF6622F",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:48.863226+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779338",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF3D:34CAAE:178A6A:2A024E:6AF66230"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779519,
+      "name": "CI",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:49.234724+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF3F:20265A:12D855:1CFAD1:6AF66230"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:49.615471+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF41:B9F2F:17F6D9:2A67BF:6AF66230"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:50.065822+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF43:208C28:131477:1D455A:6AF66231",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:50.461800+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779519",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF45:1B0855:17AB23:2A222D:6AF66231"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779589,
+      "name": "CodeQL",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:50.806158+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF47:2196CA:1329E4:1D7DC2:6AF66232"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:51.161899+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF49:101C67:179489:2A0EEE:6AF66232"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:51.622998+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF4B:25A575:1818DF:2A8DBB:6AF66232",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:51.970239+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779589",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4D:293FAF:12F47A:1D31D5:6AF66233"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779317,
+      "name": "Story Guards",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:52.329289+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF4F:485B:179A30:2A1423:6AF66233"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:52.679960+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF55:21E6E2:17CAF4:2A4205:6AF66233"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:53.117579+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF57:EC085:18180C:2A8D8C:6AF66234",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:53.466130+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779317",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF59:28576E:128803:1CB40E:6AF66234"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096779679,
+      "name": "Commitlint",
+      "headSha": "6188ea48cab9fdf4207072135c66aab5a7b7fe32",
+      "createdAt": "2026-11-11T20:33:43Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:53.834965+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5B:2D90FF:186D97:2AEA8E:6AF66235"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:54.234616+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF5D:331C39:1810C2:2A8B76:6AF66235"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:54.675265+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "FF5F:293FAF:1308AB:1D50D0:6AF66235",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:55.007634+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096779679",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF61:38AFC:13060B:1D5D18:6AF66236"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378903,
+      "name": "CI",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:42Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:55.350776+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "FF63:1F68C3:131468:1D513A:6AF66236"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:55.692254+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCF0:208C28:1341A3:1D8AC6:6AF66237"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:57.162841+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7F2:2A0EAB:144265:1EF93F:6AF66238",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:57.569752+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378903",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C8:293FAF:131E3C:1D7234:6AF66238"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378844,
+      "name": "CodeQL",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:42Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:57.918452+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D800:265D5B:134964:1DA1A0:6AF66239"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:58.305930+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7E2:F4EB0:17A8EE:2A23E2:6AF66239"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:58.727885+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "CCF4:2A0EAB:144D79:1F0A80:6AF66239",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:59.120403+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378844",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7E8:BEDE5:17731C:29EB67:6AF6623A"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378427,
+      "name": "Story Guards",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:04:59.498573+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7F6:2186E4:17C722:2A3ED6:6AF6623A"
+        },
+        {
+          "observedUtc": "2026-11-13T01:04:59.836884+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7D6:335A31:F31CE:17E59E:6AF6623B"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:00.934021+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7BC:379CF:130B52:1D2AE3:6AF6623B",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:01.311556+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378427",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C2:20265A:13388C:1D8DD2:6AF6623C"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378382,
+      "name": "Source-reference integration",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:01.684861+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7FC:18C397:1743DB:29C95F:6AF6623C"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:02.048661+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7DA:208C28:137108:1DD382:6AF6623D"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:02.498289+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D804:2186E4:17C7D6:2A401B:6AF6623D",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:02.916125+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378382",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7DE:38AFC:133F83:1DB6E9:6AF6623E"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "runId": 43096378725,
+      "name": "Commitlint",
+      "headSha": "fb105d7c6035671bdc66dfb27990a463ea6165b2",
+      "createdAt": "2026-11-11T20:29:41Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:03.328450+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7D0:1F68C3:134E5E:1DABC8:6AF6623E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:03.717869+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD17:342574:12E387:1D2B37:6AF6623E"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:04.695235+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7FA:20265A:1350F0:1DB315:6AF6623F",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:05.115416+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Tenants/actions/runs/43096378725",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7AE:277308:100CA0:19370C:6AF66240"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43098593020,
+      "name": "CI",
+      "headSha": "9f85c64beae32befe050240526af398063e81eba",
+      "createdAt": "2026-11-11T20:52:47Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:05.523495+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7B0:2A0EAB:1482A4:1F5E52:6AF66240"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:05.935749+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7DC:B7BD:127E1F:1CA723:6AF66241"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:06.414258+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7B4:342574:12F787:1D4AB7:6AF66241",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:06.786789+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593020",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7BA:1F68C3:136987:1DD544:6AF66242"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43098593098,
+      "name": "Commitlint",
+      "headSha": "9f85c64beae32befe050240526af398063e81eba",
+      "createdAt": "2026-11-11T20:52:47Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:07.184193+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7BE:1F8AA5:12EAF6:1D2C5B:6AF66242"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:07.516983+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C0:2A0EAB:1493FB:1F7897:6AF66242"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:08.192951+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7CA:265D5B:13984D:1E1A97:6AF66243",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:08.548704+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43098593098",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD0A:B7BD:12933F:1CC7F6:6AF66243"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43097270955,
+      "name": "CI",
+      "headSha": "a9f443f0bd482359731dcd54711e44fbd23d58fe",
+      "createdAt": "2026-11-11T20:38:40Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:08.974286+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7A9:28FEA:137E02:1E1D2F:6AF66244"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:09.343025+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7AB:16ACD0:138F9C:1E09C7:6AF66244"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:10.237896+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7AD:B7BD:129D35:1CD678:6AF66244",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:10.642550+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097270955",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7AF:286D7C:1825E8:2AA721:6AF66245"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43097271053,
+      "name": "Commitlint",
+      "headSha": "a9f443f0bd482359731dcd54711e44fbd23d58fe",
+      "createdAt": "2026-11-11T20:38:40Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:11.030020+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7B1:E3F05:1263AE:1CC428:6AF66246"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:11.426320+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7B3:0C27:7FDDC:EAE0C:6AF66246"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:12.037130+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7B5:265D5B:13B892:1E4B56:6AF66247",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:12.394211+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43097271053",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7B9:20BCC2:1319AA:1D6A5B:6AF66247"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43096409340,
+      "name": "Commitlint",
+      "headSha": "ff6b295abcca5159896602bd8a5e87e913950b83",
+      "createdAt": "2026-11-11T20:30:01Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:12.763285+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CCEF:38AFC:13906E:1E3335:6AF66248"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:13.151610+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7BD:24884:18284F:2AA388:6AF66248"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:13.599862+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7BF:277308:104D89:199B96:6AF66248",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:13.935631+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409340",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C1:20BCC2:132553:1D7C01:6AF66249"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "runId": 43096409328,
+      "name": "CI",
+      "headSha": "ff6b295abcca5159896602bd8a5e87e913950b83",
+      "createdAt": "2026-11-11T20:30:01Z",
+      "steps": [
+        {
+          "observedUtc": "2026-11-13T01:05:14.302603+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C3:1AD24:12028E:1C1DB5:6AF66249"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:14.709251+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328/jobs?filter=all",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "D7C5:255809:176E7E:29E5C6:6AF66249"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:15.366124+00:00",
+          "method": "DELETE",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328",
+          "exitCode": 1,
+          "httpStatus": 403,
+          "githubRequestId": "D7C7:28576E:13320D:1DB82F:6AF6624A",
+          "message": "Could not delete the workflow run"
+        },
+        {
+          "observedUtc": "2026-11-13T01:05:15.745887+00:00",
+          "method": "GET",
+          "path": "repos/Hexalith/Hexalith.Builds/actions/runs/43096409328",
+          "exitCode": 0,
+          "httpStatus": 200,
+          "githubRequestId": "CD36:277308:105F15:19B67C:6AF6624B"
+        }
+      ],
+      "preDeleteState": {
+        "status": "queued",
+        "jobs": 0
+      },
+      "result": "not-deleted (DELETE 403, GET after 200)"
+    }
+  ],
+  "result": "not-deletable-yet",
+  "providerMessage": "Could not delete the workflow run (HTTP 403, every run; each was still queued with zero jobs and remains listed)",
+  "providerRule": {
+    "source": "https://docs.github.com/en/actions/how-tos/manage-workflow-runs/delete-a-workflow-run",
+    "text": "You can delete a workflow run that has been completed, or is more than two weeks old.",
+    "readUtc": "2026-11-13T01:06Z"
+  },
+  "createdRange": [
+    "2026-11-11T20:29:41Z",
+    "2026-11-11T20:52:47Z"
+  ],
+  "allEligibleAfter": "2026-11-25T20:52:47Z",
+  "next": "rerun delete_orphaned_runs.py after 2026-11-25T20:52:47Z under the same owner approval; it re-verifies every target before deleting"
+}

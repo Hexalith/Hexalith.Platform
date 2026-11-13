@@ -157,14 +157,21 @@ the dispatch ref while queued. This attempt does not separate them.
 As the owner approved, all 43 runs still queued with zero jobs were sent `cancel`, then
 `force-cancel`. GitHub refused both with HTTP 409 for every run ("Cannot cancel a
 workflow run that has not been queued yet."). All 43 remain queued
-(`orphaned-run-cancellation.json`). Deleting the run records was not attempted. It is
-beyond the approval and needs a separate decision. `/pushall` is unchanged.
+(`orphaned-run-cancellation.json`). `/pushall` is unchanged.
+
+The owner then approved deleting the 43 records. After re-checking that each was still
+queued with zero jobs, one `DELETE` per run returned HTTP 403 ("Could not delete the
+workflow run"). All 43 remain (`orphaned-run-deletion.json`). GitHub's documentation
+says "You can delete a workflow run that has been completed, or is more than two weeks
+old". These runs cannot complete, so they become deletable after
+2026-11-25T20:52:47Z, two weeks after the newest was created. `delete_orphaned_runs.py`
+can be rerun then.
 
 ## Commands
 
 All are recorded with argv and exits in the evidence directory:
 
-- `cancel_orphaned_runs.py` (cancellation);
+- `cancel_orphaned_runs.py` (cancellation) and `delete_orphaned_runs.py` (deletion);
 - `tag-create.*` and `single-dispatch.*` (the attempt's only two mutations; the
   cancellation POSTs touched only the 43 orphaned runs);
 - `monitor_attempt.py` (GET polling);
