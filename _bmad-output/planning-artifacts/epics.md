@@ -2517,6 +2517,21 @@ allocated and captured all 24 vectors. The pinned EventStore verifier rejected i
 because of a demonstrated false positive, so no vector, cleanup or authority result is
 credited. These acceptance criteria and statuses are unchanged.
 
+The owner subsequently approved [candidate-02 attempt 1](../../docs/implementation/story-4-17-broker-candidate-02-hosted-attempt-1.md).
+Run 43386723091 produced the first independently verified Platform configuration packet:
+20/24 vectors PASS, four FAIL, with cleanup credited. Kafka pressure now has zero acknowledged
+loss but no attributable rejection; RabbitMQ rotation, pressure and missing bindings still fail.
+Kafka rotation has one verified PASS, without adjudication of its historical failure. All five
+historical guarantees remain REJECTED/open; selection stays null and production eligibility FAIL.
+
+On 2026-11-13 the owner selected the recommended offline continuation: preserve the Kafka
+pressure guarantee and investigate a valid rejecting fault, analyze Kafka rotation causality
+without another run, and prepare the RabbitMQ supported-delivery dependency intake without
+exceptions. The [next-candidate intake](../../docs/implementation/story-4-17-next-candidate-intake.md)
+records the findings, owning work and closure controls. It accepts no successor candidate,
+dispatch, private runtime or contract change. Platform 4.17 and EventStore 3.21 remain
+in-progress; the selection, staging and hosted Subscription criteria above are unchanged.
+
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 
 As a team member,

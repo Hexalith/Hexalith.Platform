@@ -4,7 +4,7 @@
 
 ## Goal
 
-Lay the release-and-staging foundation that every later promotion gate relies on. One publication workflow produces an attested, immutable release: the application Helm package, the composed `platform/eventstore` image, the McpCli candidate and a signed release record. A dedicated executor deploys that release by digest into an isolated staging environment on `hexalith.com`. There, team members use the reference composition (Parties, EventStore, Tenants, Memories) and McpCli with staging-only permissions, without any production names or authority. Urgent security and infrastructure work runs first and precedes staging foundations: verified backups, closing public exposure, runner relocation, repository controls, KubeSphere retirement, the Kubernetes upgrade and private Rancher. Folders and Projects join in Epic 10.
+Publish attested, immutable Helm, composed EventStore, McpCli and release-record artifacts; deploy them by digest into isolated staging under `hexalith.com`. Parties, EventStore, Tenants and Memories form the reference composition. Urgent recovery/security work precedes staging; Folders and Projects enroll later.
 
 ## Stories
 
@@ -40,64 +40,34 @@ Lay the release-and-staging foundation that every later promotion gate relies on
 
 ## Requirements & Constraints
 
-- **Separation:** staging has its own data, credentials, namespaces, realm, Gateway, OpenBao and Dapr trust domain. It cannot claim production hostnames, administer production or exhaust production capacity. CI holds no hosted credentials.
-- **Interfaces:** only declared public interfaces are routed and advertised. Required workloads must be ready within 10 minutes of attempt start.
-- **McpCli:**
-  - A profile binds exactly one environment's gateway, issuer and audience.
-  - Tokens are short-lived. Refresh material is stored only in the OS credential store, and `offline_access` is never granted.
-  - The gateway re-authorizes every call and never logs tokens.
-  - Ineligible, disabled, mismatched and unauthorized operations are refused.
-- **Evidence:**
-  - Any missing, stale, unsigned or failed proof blocks the step that depends on it.
-  - A successful backup job is not proof without a verified isolated restore.
-  - Preparation or qualification never authorizes a change to live infrastructure.
-  - Timeouts count as failures. An ownerless or empty suite blocks publication.
-  - Skipped or incomplete checks cannot establish success.
-- **Isolation evidence:** staging-side denial results become the staging half of the isolation matrix that Epic 7 completes.
+Staging and production have separate data, credentials, realms, namespaces, storage binding, Gateway, OpenBao and Dapr trust domains. Staging cannot claim production names or authority or exhaust production capacity. CI holds no hosted provider credentials. Prove denials; shared hardware establishes no site resilience.
+
+Route and advertise only declared public interfaces. Every required workload must reach the intended release and readiness within ten minutes of deployment start.
+
+Required suites need owners, nonempty check sets and stable identities. Missing, stale, unsigned, failed, mismatched, skipped or incomplete evidence cannot pass; timeouts fail. Bind results to release, suite, profile and configuration. Local/CI experiments grant no hosted qualification. Backups require verified isolated restore; preparation never authorizes live mutation.
+
+The hosted broker must demonstrate durable delivery, identity, deduplication, dead-letter capture, retention and backlog recovery. Redis pub/sub is excluded. Authenticated Architecture/Platform decisions govern selection; EventStore owns requirements and result evaluation. Platform renders declared topic Subscriptions with bound components and dead-letter policy.
 
 ## Technical Decisions
 
-- **One deployment definition:** the Aspire model exports the chart.
-  - A shared helper adds Dapr annotations, restricted security contexts and HTTPRoutes that point at the environment Gateway.
-  - The chart contains no Gateway and no Secret. Images are digest-pinned, renders are deterministic, and render modes are chart values.
-  - If export needs hand-modelling, patches or a duplicate topology, the maintained-chart fallback applies.
-- **Publication:**
-  - SHA-pinned Builds workflows run on disposable hosted runners and verify the intake-pinned module attestations.
-  - The signed release record binds every release-invariant value.
-  - Executors run `helm upgrade` on the retained package by digest and never regenerate it.
-  - Create-only writers and an off-site replica retain artifacts for the backup period or the rollback-target lifetime, whichever is longer.
-- **Records:** a record is accepted only when signed by its named writer. Terminal attempts are immutable. A compare-and-set store outside the cluster and executor hosts holds one lock per environment with a monotonic epoch, and every mutation checks it.
-- **Tiers:** every object belongs to exactly one tier.
-  - Shared infrastructure covers namespaces, environment-identity RBAC, StorageClasses, PriorityClasses, control planes, Keycloak and Rancher.
-  - The environment layer covers data services, broker, OpenBao, the tenant-key store, volumes, Gateway and Certificates, Dapr Components/HTTPEndpoints/MCPServers, NetworkPolicies, quotas, limits and bootstrap Secrets. It is rendered from the union of baseline and candidate and applied forward-only by its own attempt before the release attempt.
-  - The application package holds workloads, services, HTTPRoutes, Dapr Configurations, WorkflowAccessPolicies, Subscriptions and Resiliency.
-  - Dapr activation restarts consuming sidecars on a resource change.
-  - The per-job deploy identity cannot write environment-layer objects.
-- **Staging runtime:**
-  - Pod Security is `restricted`, with default-deny networking and quotas.
-  - Volumes are encrypted and data services use native TLS.
-  - Dapr is deny-by-default, with HotReload off and all sidecar capabilities dropped.
-  - Each app gets its own OpenBao token, and a rotation restarts the pod.
-  - The Traefik Gateway API serves exact FQDNs only, with HTTP-01 certificates.
-  - A staging-only management client generates the realm.
-- **Executor:** a dedicated host accepts only allowlisted jobs. Its credentials are per-job, issued through OIDC and bound to the epoch. Module test and fence code runs sandboxed.
-- **Broker:** it must be durable, so Redis pub/sub is excluded. Bounded local or CI experiments never select or qualify it. The five historical rejected guarantees stay REJECTED; bounded experiments do not change their dated dispositions.
-- **Management:** Rancher runs privately on a separate management VM. Native administration and recovery stay independent. Fleet never reconciles releases.
+Use one Aspire composition and retained chart. Shared export helpers supply Dapr annotations, restricted security contexts and HTTPRoutes referencing the environment Gateway. The chart contains no Gateway or Secret; use nonsecret endpoints and digest-pinned images. Duplicate topology or recurring patches trigger the maintained-chart fallback.
+
+Publication verifies intake-pinned attestations through pinned Builds workflows on disposable runners. Signed records bind release invariants and writers. Deploy retained artifacts without regeneration. Create-only off-site retention lasts through the backup period or rollback-target lifetime, whichever is longer.
+
+A compare-and-set store outside the target cluster and every executor host holds each environment's lock and monotonic epoch. Every mutation checks its epoch; terminal attempts are immutable.
+
+Application workloads, services, HTTPRoutes, Dapr Configurations, WorkflowAccessPolicies, Subscriptions and Resiliency belong to the release. Data services, broker, OpenBao, tenant-key store, volumes, Gateway, Certificates, Dapr Components/HTTPEndpoints/MCPServers, network policies, quotas, limits and bootstrap Secrets are environment resources. Namespaces, environment-identity RBAC, storage/priority classes, control planes, Keycloak and Rancher are shared infrastructure. The environment layer is rendered from the baseline/candidate union and applied forward-only in its own attempt before application deployment. The application deploy identity cannot write it. Each tier has its own writer.
+
+Enforce restricted Pod Security, proven default-deny networking, quotas and encrypted storage. Dapr denies by default, disables HotReload and drops sidecar capabilities. Per-app secret-token rotation restarts pods; consuming sidecars restart after policy/resource activation. Use native data-service TLS where supported.
+
+Dedicated private executors enforce job allowlists and receive revocable, epoch-bound per-job credentials through OIDC claim checks. Each executor uses a separate host, sharing with neither a CI runner nor another executor. Module code runs sandboxed without deploy authority. Rancher stays private on a separate management VM; native administration/recovery remains independent, and Fleet never owns application releases.
+
+## UX & Interaction Patterns
+
+McpCli profiles bind one gateway, issuer and audience. Short-lived tokens reach only that gateway; refresh material stays in the OS credential store without `offline_access`. Reauthorize every call and refuse disabled, ineligible or unauthorized operations. Staging membership grants no management or production authority.
 
 ## Cross-Story Dependencies
 
-- **Urgent track:**
-  - 4.0, 4.2, 4.3, 4.4 and read-only 4.26 proceed independently.
-  - 4.27 needs 4.26 and current 4.0 proofs.
-  - 4.1 also needs 4.27 and every per-hop gate.
-  - 4.28 follows them.
-  - Staging foundations (4.14) wait for 4.1–4.3, 4.27 and 4.28.
-  - Rancher procurement or availability does not block native retirement or upgrade; public closure remains independently urgent.
-- **Before the first publication:** 4.6, 4.7, 4.10 and 4.11 come first, because the release record binds their versions. Publication also runs from 4.8's intake manifest. Chart export qualification (4.5) can precede publication.
-- **Staging order:**
-  - 4.9's capture-lag bound precedes 4.19.
-  - 4.22 needs 4.14–4.21.
-  - 4.23 follows on synthetic data, before Epic 5 accepts evidence.
-- **External:**
-  - Epic 3 supplies the composed host, catalog and local realm. Only 4.24 also waits for McpCli connected mode.
-  - EventStore supplies the profile split, composed-host ratification, admission predicate and broker matrix. EventStore and Memories supply image attestations.
+Backups, public closure, runner relocation, repository controls and read-only management qualification proceed independently. Retirement requires ownership/recovery proof; the supported Kubernetes hop follows retirement, then private Rancher precedes staging foundations. Management procurement never blocks native retirement or upgrade.
+
+Chart qualification can precede publication. Record, lock, recovery-hook and check-suite contracts precede bound release records. Intake provenance and EventStore host/profile ratification are prerequisites. Story 4.9's capture-lag decision precedes Story 4.19's identity-event export. Epic 3 supplies composition/catalog; hosted McpCli requires connected mode. Staging deployment follows its environment/security/routing/identity/executor/telemetry foundations; synthetic-data restore precedes promotion evidence.
