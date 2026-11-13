@@ -7,6 +7,10 @@ technical success: four vectors fail for code-level or broker reasons that no ad
 reaches. What it can produce is the first independently verified packet for Platform's
 configuration input.
 
+**Executed (2026-11-13).** The owner approved this route, and
+[hosted attempt 1](story-4-17-broker-candidate-02-hosted-attempt-1.md) ran it: run 43386723091,
+integrity verified, technical FAIL 20/24, every prediction held.
+
 [`candidate-02-proposal.json`](../../_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-packet-diagnosis/candidate-02-proposal.json)
 is authoritative. The evidence behind it is in the
 [packet diagnosis](story-4-17-broker-candidate-01-packet-diagnosis.md).

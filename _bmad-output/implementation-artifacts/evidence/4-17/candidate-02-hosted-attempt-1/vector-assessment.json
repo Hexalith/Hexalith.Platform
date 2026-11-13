@@ -1,0 +1,308 @@
+{
+  "packetJsonSha256": "24f1977f2b4d8f52f398752a2eb8a13e92eaf15b88f7e2845ac022984d869830",
+  "integrityVerified": true,
+  "technicalQualification": "FAIL",
+  "counts": {
+    "observed": 24,
+    "producerPass": 20,
+    "verifiedPass": 20,
+    "verifiedFail": 4
+  },
+  "predictionMisses": [],
+  "vectors": [
+    {
+      "vector": "kafka/app-topic-scopes",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "28e1fd081e57e3a4e5f9767ded02ff0b55cbb3a3e0e56b80ec8012c14f3704ac",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/broker-restart",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "517b337043d8365e481b3cf983f5e1d5abfa7ae79e70b4c7a58af210bc3879a5",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/cancellation-backpressure",
+      "producerResult": "FAIL",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": true,
+      "prediction": "FAIL (certain: negativeConfirmRejected)",
+      "verified": true,
+      "verifierResult": "FAIL",
+      "observationSha256": "944d41f6d0d2a67ca2d83a70ab7ffbac93d7fe227ee137bc82a432135cbd1280",
+      "failureDetail": {
+        "acknowledgedLoss": 0,
+        "negativeConfirmRejected": false
+      },
+      "pressure": {
+        "acknowledgedLoss": 0,
+        "negativeConfirmRejected": false,
+        "cancelled": true,
+        "cancelledEffects": 1,
+        "boundedSeconds": 1.0015764899999908
+      },
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/crash-redelivery",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "b402a6552bf329354427160fb9324c7072445a6d2e9f414ecc82094e7a9f2007",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/durable-quarantine",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "35c31dd59c7fda4de9e5107626772bacb6aba3e2b80dc3e11f14430f363b9c92",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/failed-diversion",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "a8ee6f6e871334cf5cf5c52f66b13b85e555ae6e8eecb30913bf611d2736c4be",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/missing-bindings",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "034e448a3b8ee20d0946281818d36b02d9189527ce48093beef9c735ef8a9b89",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/missing-secret",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "6b8b907dc0ca44dfd4ca86865b3bacd501dfbb12a265706410a90e6c8a36e847",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/retention-expiry",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "fc6fe9a8d48ae0a2d9bffed683cae9120b4639e625ed0745f309b8c0f4f3f7c2",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/secret-rotation",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": true,
+      "prediction": "unknown",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "0bbc46a66864b94ef2027a14081472d23cd943431b7aaaed5d69e0c4282e5ca1",
+      "matchesPrediction": null
+    },
+    {
+      "vector": "kafka/stable-id-deduplication",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "a18a49003ac7b7097c76b248c664f5cc2e5f4d33ff9eeba0b42b7b2956023340",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "kafka/tls-negative",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "9f2d4d2665ffe10d4ac92acffcbdb0cd12f5db705cb39daddc0508c94e64b5b8",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/app-topic-scopes",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "ed23bc28048298e6850eb83066cccfd85c30f5bb97fb8d4ad6024fb476dc7cbb",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/broker-restart",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "fe82c4715a3181b21a0d365a0671afa64ce09c254f76d939774a96ac15806d22",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/cancellation-backpressure",
+      "producerResult": "FAIL",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": true,
+      "prediction": "FAIL (certain)",
+      "verified": true,
+      "verifierResult": "FAIL",
+      "observationSha256": "eec25bff09af150c0de8adf2a5499d7749205eabe3ae55ead07008bffd0472fe",
+      "failureDetail": {
+        "acknowledgedLoss": 3,
+        "negativeConfirmRejected": false
+      },
+      "pressure": {
+        "acknowledgedLoss": 3,
+        "negativeConfirmRejected": false,
+        "cancelled": true,
+        "cancelledEffects": 1,
+        "boundedSeconds": 1.0015985900000146
+      },
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/crash-redelivery",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "904a2723d067f16a36f490d55b019521b62ec77222cb23940d2594d428c519cf",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/durable-quarantine",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": false,
+      "prediction": "PASS (predicted)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "437cb53479eac53dc1e62d971bfac2b2cf72df09a5e878374626a86969a20342",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/failed-diversion",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "d39a12af468ba85a37bae8aef38fcf7ec0a9cd8e8e7b114358d716c73234e7d9",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/missing-bindings",
+      "producerResult": "FAIL",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": true,
+      "prediction": "FAIL (certain)",
+      "verified": true,
+      "verifierResult": "FAIL",
+      "observationSha256": "b52b90b12ffd7bd6d589779ef2521553c8120e2afe6386bb945e07a4dc5c595e",
+      "failureDetail": {
+        "unboundPublishStatus": 204,
+        "bindingAbsent": true
+      },
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/missing-secret",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "ed551476a6ee37297043878b82f4622f745b87d0a0efa4ae0ed64fbd4dee3900",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/retention-expiry",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": false,
+      "prediction": "PASS (predicted)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "b7814230a1809260cc16455d2ef364765c5d33d13864c4e1d4e2ca2c9f074db1",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/secret-rotation",
+      "producerResult": "FAIL",
+      "attempt2ProducerResult": "FAIL",
+      "historicallyRejected": true,
+      "prediction": "FAIL (certain)",
+      "verified": true,
+      "verifierResult": "FAIL",
+      "observationSha256": "91eab15c616da8c73bf52b5a7c3c8f510da9c99db8e1066dc264a38413dd2ee4",
+      "failureDetail": {
+        "oldGenerationDenied": false,
+        "stalePublishStatus": 599
+      },
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/stable-id-deduplication",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "113bce5f65ae85da146a8dcf919d7ba742a014b9795e672981b3270020e11e5e",
+      "matchesPrediction": true
+    },
+    {
+      "vector": "rabbitmq/tls-negative",
+      "producerResult": "PASS",
+      "attempt2ProducerResult": "PASS",
+      "historicallyRejected": false,
+      "prediction": "PASS (unchanged)",
+      "verified": true,
+      "verifierResult": "PASS",
+      "observationSha256": "5407b2deb70d7b5fcaa1bb3983af884788469c119ac4f534a1883954adb1c0cd",
+      "matchesPrediction": true
+    }
+  ]
+}

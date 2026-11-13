@@ -1,0 +1,25 @@
+{
+  "allocation": {
+    "exclusive": true,
+    "endpoint": "unix:///run/docker.sock",
+    "daemonId": "8fcd00e2-c8ec-49fc-a584-a2113079d563",
+    "workerId": "43386723091-candidate-02-1"
+  },
+  "socketIdentity": [
+    28,
+    1493
+  ],
+  "daemonCommand": [
+    "docker",
+    "--host",
+    "unix:///run/docker.sock",
+    "info",
+    "--format",
+    "{{.ID}}"
+  ],
+  "platformRevision": "4d66ff5584e4f62239551bb02311649334171a84",
+  "eventStoreRevision": "495dd24943031ec75e2822c6168ada3c8b9fdb82",
+  "profile": "deploy/dapr/qualification/runtime-lock-1.19.1-platform-config-v1.json",
+  "configurationSha256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+  "pythonVersion": "3.12.3"
+}

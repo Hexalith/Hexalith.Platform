@@ -1,0 +1,113 @@
+{
+  "observedUtc": "2026-11-13T07:41:43Z",
+  "tagResolvesToSource": true,
+  "rulesetsUnchanged": {
+    "24657570": true,
+    "24657217": true
+  },
+  "workflowRuns": 3,
+  "runIds": [
+    43386723091,
+    43333995506,
+    43097161643
+  ],
+  "run": {
+    "id": 43386723091,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "failure",
+    "head_branch": "qualification/broker-candidate-02/attempt-1-4d66ff55",
+    "head_sha": "4d66ff5584e4f62239551bb02311649334171a84",
+    "created_at": "2026-11-13T07:34:31Z",
+    "run_started_at": "2026-11-13T07:34:31Z",
+    "updated_at": "2026-11-13T07:40:49Z"
+  },
+  "jobs": [
+    {
+      "id": 131756824340,
+      "name": "candidate-02",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-13T07:34:35Z",
+      "completedAt": "2026-11-13T07:40:48Z",
+      "runnerName": "GitHub Actions 1000081957",
+      "runnerGroup": "GitHub Actions",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Bootstrap evidence before checkout and setup",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Guard exact sources and bind this hosted worker",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Install verified isolated tools",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Capture both brokers and all 24 vectors",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Independently verify capture integrity",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Independently evaluate technical qualification",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Independently evaluate production authority",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Summarize actual outcomes and project sanitized evidence",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Enforce bounded result after independent artifact attempt",
+          "conclusion": "failure"
+        },
+        {
+          "number": 24,
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "observedUtc": "2026-11-13T07:41:22.381897+00:00",
+  "runId": 43386723091,
+  "packetPresent": true,
+  "originalConfigurationSha256": "b8601e3a6d4e8460d039573ca2f7e1728e52aa67e61fc0710d74cab5d072580b",
+  "retainedArtifactSummaries": {
+    "outcomes.json": "15bb47129b031a14352ce964aaeca5966fff62b50892a2bd2389fde7b3e34efd",
+    "bootstrap.json": "487890bb7620d25d6ea5653b50d21d25bd1ecbf61918b069ff6c61b17b57254f",
+    "worker.json": "1b460f58d5a4d6a90d833e14f0ada1350fd9bc0bb4e990171b8ee389612a7f44",
+    "transcripts.json": "fb36ee10d0c7bb14ceaac2a34b2e8769d3f6d3cc5380e6092798fb554a6d6a97"
+  },
+  "verifiers": {
+    "integrity": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-02.json",
+        "--allow-failures"
+      ],
+      "cwd": "isolated git archive of EventStore 495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "exitCode": 0,
+      "stdoutSha256": "4b06484311d1d3b966fe433ae4ccb3febcd45a4c40f2e40559e41805401a6cb5",
+      "stderrBytes": 0
+    },
+    "technical": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-02.json"
+      ],
+      "cwd": "isolated git archive of EventStore 495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "exitCode": 1,
+      "stdoutSha256": "28d406e7532d67e4005f4f9f2fc4838ad05b69d06bf4780c45782c179fa4d217",
+      "stderrBytes": 0
+    },
+    "authority": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/validate-dapr-broker-qualification.py",
+        "EXTRACT/packet",
+        "--platform-config",
+        "docs/implementation/story-4-17-broker-candidate-02.json",
+        "--require-production-authority"
+      ],
+      "cwd": "isolated git archive of EventStore 495dd24943031ec75e2822c6168ada3c8b9fdb82",
+      "exitCode": 1,
+      "stdoutSha256": "ac9b7dfc4016a3fda975ceb2e503f75c2071a8af5d7e94ceca2a7072384b5803",
+      "stderrBytes": 0
+    }
+  }
+}
