@@ -164,11 +164,21 @@ def sdk_suite(suite, version):
     return "eng/tuple-ci-suites.json", [] if version is None else ["-p:HexalithEventStoreVersion=4.1.0"]
 
 
-def verify_extension_catalog_pin(catalog):
-    """Require the validated owning catalog to carry the one measured SDK pin for the new suite."""
-    pins = ET.parse(catalog).findall("./PropertyGroup/HexalithEventStoreVersion")
+def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
+    """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
+    from current_catalog_view import require_catalog_body, verify_named_platform_catalog
+    raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
+    if authenticated_body is not None:
+        require_catalog_body(raw, expected_sha256)
+    document = ET.fromstring(raw)
+    if document.findall(".//HexalithPlatformSdk42CatalogView"):
+        if authenticated_body is None:
+            raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
+        return verify_named_platform_catalog(raw, expected_sha256)
+    pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
     if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
         raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
+    return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}
 
 
 def verify_historical_catalog_pin(catalog):
@@ -263,7 +273,12 @@ def main():
         builds_root = resolve_builds_root(ROOT)
         catalog = verify_catalog(binding, builds_root)
         if args.suite in ("extensions", "base42", "current42"):
-            verify_extension_catalog_pin(catalog)
+            catalog_identity = binding["producer"]["catalog"]
+            catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
+                                                   cwd=builds_root, timeout=30)
+            result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
+                                                                           expected_sha256=catalog_identity["sha256"])
+            (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
         else:
             verify_historical_catalog_pin(catalog)
         profile = json.loads((ROOT / profile_path).read_bytes())
@@ -327,14 +342,22 @@ def main():
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         file_catalog = catalog
+        file_catalog_sha256 = None
+        if args.suite in ("extensions", "base42", "current42"):
+            file_catalog = evidence / "authenticated-catalog.props"
+            file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
         current_source = os.environ.get("CURRENT_PLATFORM_SHA")
         if current_source and current_source != revision:
             from file_host_catalog import prepare as prepare_file_host_catalog
             file_catalog, result["fileAppHostCatalog"] = prepare_file_host_catalog(
                 ROOT, builds_root, current_source, evidence / "current-file-host-catalog")
+            file_catalog_sha256 = result["fileAppHostCatalog"]["catalogSha256"]
         run("file-host-catalog-controls", [sys.executable, "-B", "eng/test_file_host_catalog.py"])
         run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
-        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)])
+        pin_arguments = [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)]
+        if file_catalog_sha256 is not None:
+            pin_arguments.extend(["--catalog-sha256", file_catalog_sha256])
+        run("pin-alignment", pin_arguments)
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         run("source-sdk-propagation-controls", [sys.executable, "-B", "eng/test_source_sdk_propagation.py", "--evidence", str(evidence / "source-sdk-metadata"), "--published-tool-root", str(tool)])
         assets = evidence / "assets"

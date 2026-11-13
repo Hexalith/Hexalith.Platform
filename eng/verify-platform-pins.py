@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 parser = argparse.ArgumentParser()
 parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
 parser.add_argument("--catalog", type=pathlib.Path)
+parser.add_argument("--catalog-sha256")
 parser.add_argument("--hosting-helper")
 parser.add_argument("--spine", type=pathlib.Path)
 arguments = parser.parse_args()
@@ -16,8 +17,17 @@ catalog = arguments.catalog
 if catalog is None:
     sibling = arguments.root.parent / "Hexalith.Builds/Props/Directory.Packages.props"
     catalog = sibling if sibling.is_file() else arguments.root / "references/Hexalith.Builds/Props/Directory.Packages.props"
-properties = ET.parse(catalog).getroot()
+catalog_body = catalog.read_bytes()
+properties = ET.fromstring(catalog_body)
 values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
+if properties.findall(".//HexalithPlatformSdk42CatalogView"):
+    from current_catalog_view import verify_named_platform_catalog
+    try:
+        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256)
+    except ValueError as failure:
+        raise SystemExit(str(failure)) from failure
+    composition_view = next(item for item in view["evaluations"] if item["Identity"] == "Hexalith.Platform.Composition")
+    values["HexalithEventStoreVersion"] = composition_view["Sdk"]
 selected = {
     "Aspire.AppHost.Sdk": values["HexalithAspireAppHostSdkVersion"],
     "Hexalith.EventStore.Aspire": values["HexalithEventStoreVersion"],

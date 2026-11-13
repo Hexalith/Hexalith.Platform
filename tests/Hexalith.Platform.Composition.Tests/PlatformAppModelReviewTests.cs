@@ -324,7 +324,11 @@ public sealed partial class PlatformAppModelTests
         {
             string catalogPath = Path.Combine(options.PlatformRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
             System.Xml.Linq.XDocument catalog = System.Xml.Linq.XDocument.Load(catalogPath);
-            catalog.Descendants("HexalithEventStoreVersion").Single().Value = "99.0.0";
+            // Mutate every assignment so unconditional historical pins and conditional current views both drift.
+            foreach (System.Xml.Linq.XElement sdkVersion in catalog.Descendants("HexalithEventStoreVersion"))
+            {
+                sdkVersion.Value = "99.0.0";
+            }
             catalog.Save(catalogPath);
         }
 

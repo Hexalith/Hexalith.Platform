@@ -4,6 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
+from test_current_catalog_view import CurrentCatalogViewTests
 from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, validate_profile, verify_extension_catalog_pin, verify_historical_catalog_pin, verify_test_sdk
 
 

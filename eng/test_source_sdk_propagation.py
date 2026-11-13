@@ -10,6 +10,8 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
+from current_catalog_view import PLATFORM_CONSUMERS
+
 ROOT = Path(__file__).resolve().parents[1]
 OPTIONS = None
 
@@ -19,7 +21,9 @@ class SourceSdkPropagationTests(unittest.TestCase):
     def setUpClass(cls):
         cls.temporary = tempfile.TemporaryDirectory(prefix="platform-source-sdk-metadata-")
         cls.addClassCleanup(cls.temporary.cleanup)
-        cls.fixture = Path(cls.temporary.name) / "Selection.csproj"
+        cls.fixture = Path(cls.temporary.name) / "Hexalith.Platform.Composition.csproj"
+        if cls.fixture.stem not in PLATFORM_CONSUMERS or not (ROOT / "src" / cls.fixture.stem / cls.fixture.name).is_file():
+            raise AssertionError("Metadata parents must use the exact existing Composition consumer context.")
         cls.explicit = "ControlContext=keep;hexalithEventStoreVersion=4.1.0"
         project = ET.Element("Project", Sdk="Microsoft.NET.Sdk")
         group = ET.SubElement(project, "ItemGroup")
@@ -118,7 +122,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
 
 
     def child_selection(self, assignments="", global_properties=None):
-        directory = Path(self.temporary.name)
+        directory = Path(self.temporary.name) / ("child-selection-" + str(len(self.evaluations)))
+        directory.mkdir()
         leaf = directory / "observe-child.targets"
         leaf.write_text("<Project><Target Name='ObserveSourceModeLeaf' Returns='@(_ObservedSourceMode)'><ItemGroup><_ObservedSourceMode Include='$(MSBuildProjectName)'><Mode>$(UseHexalithProjectReferences)</Mode><Sdk>$(HexalithEventStoreVersion)</Sdk><EventStoreFromSource>$(HexalithEventStoreFromSource)</EventStoreFromSource></_ObservedSourceMode></ItemGroup></Target></Project>")
         project = ET.Element("Project", Sdk="Microsoft.NET.Sdk")
@@ -131,7 +136,7 @@ class SourceSdkPropagationTests(unittest.TestCase):
                              Properties="%(ProjectReference.AdditionalProperties)",
                              RemoveProperties="DirectoryBuildPropsPath;DirectoryBuildTargetsPath;DirectoryPackagesPropsPath")
         ET.SubElement(task, "Output", TaskParameter="TargetOutputs", ItemName="_ObservedChildSourceMode")
-        fixture = directory / ("ChildSelection-" + str(len(self.evaluations)) + ".csproj")
+        fixture = directory / "Hexalith.Platform.Composition.csproj"
         fixture.write_bytes(ET.tostring(project, encoding="utf-8"))
         document = self.invoke(fixture, ["-p:CustomAfterMicrosoftCommonTargets=" + str(leaf),
                               "-getTargetResult:ObserveChildSourceMode", *(global_properties or [])],
@@ -212,12 +217,12 @@ class SourceSdkPropagationTests(unittest.TestCase):
         if assignments:
             ET.SubElement(reference, "AdditionalProperties").text = assignments
         ET.SubElement(project, "Import", Project=str(ROOT / "Directory.Build.targets"))
-        parent = directory / "RestoreParent.csproj"
+        parent = directory / "Hexalith.Platform.Composition.csproj"
         parent.write_bytes(ET.tostring(project, encoding="utf-8"))
         entry = parent
         if solution:
             entry = directory / "RestoreControl.slnx"
-            entry.write_text('<Solution><Project Path="RestoreParent.csproj" /></Solution>')
+            entry.write_text('<Solution><Project Path="' + parent.name + '" /></Solution>')
             solution_props = ET.Element("Project")
             ET.SubElement(solution_props, "Import", Project=str(ROOT / "Directory.Solution.props"))
             (directory / "Directory.Solution.props").write_bytes(ET.tostring(solution_props, encoding="utf-8"))
