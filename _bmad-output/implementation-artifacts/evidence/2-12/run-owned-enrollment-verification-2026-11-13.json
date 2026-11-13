@@ -1,0 +1,198 @@
+{
+  "schema": "hexalith.run-owned-enrollment-verification/v1",
+  "qualification": "run-owned enrollment",
+  "capturedUtc": "2026-11-13T10:20:10.102452+00:00",
+  "platformRevision": "375231e1552c98a4238482c67b6e69d92ea43d1a",
+  "foldersRevision": "583d3d492f94217809a8efe00424b80ce3fdfa61",
+  "serverVersion": "26.6.4",
+  "image": "quay.io/keycloak/keycloak:26.6.4",
+  "imageId": "sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4",
+  "providerSha256": "2DE2C8069B9EC7F7023170C5AF90E551A67986F9A9F32D6E21C0C93822D75E1D",
+  "sourceSha256": {
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "DB9723F2E9FF3A584E8AC73C054689B580F3F0FE22DED6B1C9BDAC5152931B60",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "CA80383604311EA62F886E863412C8C5DE92A6D8D5790DF0FDE4157896C9E887",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "CBEEBC0A8438E420E57FE31D20548484AF451D5C6174294CF68C33D96EF0E28B",
+    "infrastructure/keycloak-workload-binding/run_owned.py": "F30FB47AD593861E1479A1EA4C992DC3435EC0E28BABC01F1CB6B854242A6593",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "DA20415F652708CC2C48A955EB3D305A6743508324C1CE6B5F4163E26EB6350B",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "0022C36D39B52756AE733765CF5166FBE956C52963AF23DC87BF1F764C2D1DE1",
+    "infrastructure/keycloak-workload-binding/verify_component.py": "9E87506A16E5845D97305A45BAED99F606F8B3A08ED093E00530B81D14B6EDB8",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "CCB627CAD1F8D6FF3A2867F788C05AD989726B50925624443669339D4B22993B",
+    "references/Hexalith.Folders/src/Hexalith.Folders.AppHost/Hexalith.Folders.AppHost.csproj": "92351BC4871526751E78FD0864E9AB26599E361E8870F5424FB518BE44B77B9B",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs": "33ED7E08429960CE14F012F799A77948BB11DDBFE9304A98573208325EFA4590",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "2372277B6B2C66307D072EEEDEBF6F40A56A37FEF48A6126FB32D8E28DE2C881",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "176A55FB1E604069A31BD0E43B7788C8007E82C7A79224E8E5197B740618506B",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs": "C74D57525DCB9ED951AC060CC53D2CB295307BB6157B097B26E25858B9C4C364",
+    "docs/security/workload-binding-enrollment.md": "9D8B97E44BD507DF3580CE133B91B3528460C870A7DFD18C2679E4EF5FF46520"
+  },
+  "commands": [
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "mvn -B -ntp package",
+      "result": "passed",
+      "tests": 23
+    },
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B -m unittest test_run_owned",
+      "result": "passed",
+      "tests": 8,
+      "kind": "focused ownership/lifecycle controls; container deletion/foreign-container preservation are mocked; exit/failure/signal/expiry launcher cleanup uses real child processes"
+    },
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned",
+      "result": "passed",
+      "freshIndependentRsaProbes": 19,
+      "resources": 8,
+      "workloads": 6
+    },
+    {
+      "cwd": ".",
+      "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -m:1 -v:q",
+      "result": "passed",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "cwd": ".",
+      "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+      "result": "passed",
+      "passed": 12,
+      "explicitNotRun": 1
+    },
+    {
+      "cwd": "infrastructure/keycloak-workload-binding",
+      "command": "python3 -B verify_component.py --run-owned --platform-assembly /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+      "result": "passed",
+      "explicitTests": 1,
+      "unchangedConsumer": true
+    },
+    {
+      "cwd": "references/Hexalith.Folders",
+      "command": "dotnet build tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj -c Debug -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -p:DirectoryBuildTargetsPath=/tmp/story-2-12-uniform-targets.xml -p:RestoreEnablePackagePruning=false -p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform -p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds -p:HexalithCommonsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Commons -p:HexalithEventStoreRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.EventStore -p:HexalithTenantsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Tenants -p:HexalithMemoriesRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Memories -p:HexalithMcpCliRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.McpCli -m:1 -v:q",
+      "result": "blocked",
+      "reason": "Unchanged FrontComposer.Contracts/Schema/SchemaFingerprintContracts.cs:71 raises CA2263 under the consistent net11.0 graph; gate was not suppressed."
+    },
+    {
+      "cwd": ".",
+      "command": "dotnet build /tmp/story-2-12-folders-typecheck/Typecheck.csproj -c Debug -m:1 -p:RunAnalyzers=false -v:q",
+      "result": "passed",
+      "kind": "compile-only fallback of the two affected Folders enrollment test classes against current Platform outputs and existing generated Aspire project metadata; no Folders runtime tests or analyzer qualification"
+    },
+    {
+      "cwd": ".",
+      "command": "git diff --check; git -C references/Hexalith.Folders diff --check",
+      "result": "passed"
+    }
+  ],
+  "validationOnlyOverrides": {
+    "props": "<Project>\n  <Import Project=\"$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))\" />\n  <PropertyGroup><TargetFramework>net11.0</TargetFramework></PropertyGroup>\n</Project>\n",
+    "targets": "<Project>\n  <PropertyGroup><_Story212OriginalTargets>$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildProjectDirectory)'))</_Story212OriginalTargets></PropertyGroup>\n  <Import Project=\"$(_Story212OriginalTargets)\" Condition=\"'$(_Story212OriginalTargets)' != ''\" />\n  <PropertyGroup Condition=\"'$(TargetFramework)' == 'net10.0'\">\n    <TargetFramework>net11.0</TargetFramework><TargetFrameworkVersion>v11.0</TargetFrameworkVersion><TargetFrameworkMoniker>.NETCoreApp,Version=v11.0</TargetFrameworkMoniker><NuGetTargetMoniker>.NETCoreApp,Version=v11.0</NuGetTargetMoniker>\n  </PropertyGroup>\n  <PropertyGroup Condition=\"'$(TargetFrameworks)' != ''\"><TargetFrameworks>$([System.String]::Copy('$(TargetFrameworks)').Replace('net10.0', 'net11.0'))</TargetFrameworks></PropertyGroup>\n</Project>\n",
+    "trackedBuildOrDependencyFilesChanged": false
+  },
+  "negativeControls": [
+    "missing-prelaunch-trust",
+    "foreign-launcher-receipt",
+    "foreign-run-request",
+    "changed-child-process",
+    "changed-directory",
+    "fixed-deadline-expiry",
+    "mixed-owner-contexts",
+    "production-model",
+    "changed-selected-tenant",
+    "changed-normalized-Tenants-storage",
+    "changed-cohort",
+    "incomplete-source-callback-bootstrap-query-inventory",
+    "live-probe-revision",
+    "signer-pin",
+    "TLS-hostname",
+    "query-tenant",
+    "query-domain",
+    "partial-provisioning-cleanup",
+    "foreign-container-preservation",
+    "unrelated-directory-preservation",
+    "child-exit",
+    "child-failure",
+    "SIGTERM",
+    "receipt-fixed-deadline-expiry",
+    "host-trust-must-merge-launch-trust",
+    "cleanup-publish-retry",
+    "cleanup-timeout-retry"
+  ],
+  "cleanup": {
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0,
+    "ownedContainersRemovedAfterLiveSuccess": true,
+    "privateMaterialRetained": false
+  },
+  "observedStartupFailures": {
+    "count": 2,
+    "stage": "docker-run",
+    "result": "failed closed and reported zero owned containers/private paths; later default component and C# consumer runs passed",
+    "cause": "not established; protected command output withheld"
+  },
+  "limits": [
+    "Folders AppHost test-project build is blocked by unchanged FrontComposer CA2263 after local framework normalization. Its affected xUnit classes and strict real-provider acceptance were not executed.",
+    "This evidence supplies no Platform lifecycle qualification or Folders 12.2 completion.",
+    "No credentials, tokens, grants, certificate material or keys are retained."
+  ],
+  "acceptanceAuditFollowup": {
+    "commands": [
+      {
+        "cwd": ".",
+        "command": "dotnet build src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -m:1 -v:q",
+        "result": "passed",
+        "warnings": 0,
+        "errors": 0
+      },
+      {
+        "cwd": ".",
+        "command": "dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug --no-restore -p:BuildProjectReferences=false -p:UseHexalithProjectReferences=true -p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml -m:1 -v:q",
+        "result": "passed",
+        "warnings": 0,
+        "errors": 0
+      },
+      {
+        "cwd": ".",
+        "command": "dotnet tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+        "result": "passed",
+        "passed": 12,
+        "explicitNotRun": 1
+      },
+      {
+        "cwd": "infrastructure/keycloak-workload-binding",
+        "command": "python3 -B verify_component.py --run-owned --platform-assembly /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+        "result": "passed",
+        "explicitTests": 1,
+        "unchangedConsumer": true,
+        "resources": 8,
+        "workloads": 6
+      }
+    ],
+    "cleanupRetryRegression": {
+      "publicationFailure": "repeated refusal while the directory exists, then retry publication succeeds after obstruction removal",
+      "timeout": "repeated refusal reuses the exact owner release request without extending the original deadline",
+      "absence": "repeated disposal succeeds only after the owned directory is absent"
+    },
+    "liveReceiptControls": [
+      "missing-prelaunch-trust",
+      "foreign-launcher-receipt",
+      "receipt-fixed-deadline-expiry",
+      "changed-child-process",
+      "changed-directory",
+      "host-trust-must-merge-launch-trust"
+    ],
+    "liveHostAssertions": [
+      "all eight physical hosts receive the merged launch/provider trust bundle before activation",
+      "profile remains disabled after adoption and every refused consumer control",
+      "profile is enabled on all hosts only after complete successful live verification",
+      "human authentication and unrelated host environment remain unchanged",
+      "replicas retain their actual shared workload identity",
+      "the two proof Workers and ordinary Worker use three independent actual RSA proof pairs",
+      "private source proofs and gateway public proofs remain unchanged",
+      "enrolled client secrets remain secret ParameterResources"
+    ],
+    "noBroadBuilds": true,
+    "foldersBuildBlockerUnchanged": true
+  }
+}

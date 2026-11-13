@@ -1,0 +1,53 @@
+{
+  "qualification": "run-owned enrollment",
+  "verification": "review-pass-1-final-verification.json",
+  "rows": [
+    {
+      "row": "Final cohort and tenant",
+      "passed": true,
+      "tests": [
+        "CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants",
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls",
+        "19 independent live RSA probes"
+      ],
+      "proof": "eight physical resources, six workloads, full consumer probes before catalog capture"
+    },
+    {
+      "row": "Missing launch trust",
+      "passed": true,
+      "tests": [
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls",
+        "fresh running ASP.NET host child"
+      ],
+      "proof": "named missing trust refusal; actual default TLS discovery/JWKS/exchange under propagated trust"
+    },
+    {
+      "row": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "passed": true,
+      "tests": [
+        "ChangedInventoryRefuses (six cases)",
+        "ProductionModelRefusesGeneratedContext",
+        "MixedOwnerContextRefusesBeforeReadingArtifacts",
+        "test_foreign_request_refuses_before_container_creation",
+        "test_docker_allocated_binding_is_owned_https_loopback_only",
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ],
+      "proof": "receipt, selected tenant, final cohort, signer, TLS and binding controls refuse; second adopter leaves first intact"
+    },
+    {
+      "row": "Exit, cancellation, expiry, partial startup",
+      "passed": true,
+      "tests": [
+        "test_real_post_creation_terminal_paths_preserve_unrelated_live_control",
+        "test_exited_group_leader_cannot_leave_a_surviving_descendant",
+        "CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent (two cases)",
+        "test_failed_container_removal_keeps_private_acknowledgement_incomplete_until_retry"
+      ],
+      "proof": "five production real-container terminal cases; independently observed exact ID/directory removal and unrelated live control preservation"
+    }
+  ],
+  "allRowsPassed": true,
+  "unexecutedBroaderGates": [
+    "Folders AppHost test-project build is blocked by unchanged FrontComposer CA2263 after local framework normalization. Its affected xUnit classes and strict real-provider acceptance were not executed."
+  ]
+}

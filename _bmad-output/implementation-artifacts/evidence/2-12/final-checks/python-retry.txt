@@ -1,0 +1,17 @@
+............E{"qualification": "run-owned enrollment", "non1000Caller": 1001, "runtimeGroup": 0, "hostSecretPermissions": "0600", "realProviderAndCleanup": true}
+..
+======================================================================
+ERROR: test_real_post_creation_terminal_paths_preserve_unrelated_live_control (test_run_owned.RunOwnedTests.test_real_post_creation_terminal_paths_preserve_unrelated_live_control)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding/test_run_owned.py", line 192, in test_real_post_creation_terminal_paths_preserve_unrelated_live_control
+    lifecycle_controls()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding/run_owned_component.py", line 171, in lifecycle_controls
+    raise RuntimeError("Real lifecycle control failed before owned creation: " + scenario + "; " + reason)
+RuntimeError: Real lifecycle control failed before owned creation: cancellation; Run-owned workload enrollment refused: owned-command-failed:docker-run:unavailable
+
+----------------------------------------------------------------------
+Ran 15 tests in 20.256s
+
+FAILED (errors=1)

@@ -1,0 +1,175 @@
+[
+  {
+    "check": "provider",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "mvn",
+      "-B",
+      "-ntp",
+      "package"
+    ],
+    "exitCode": 0,
+    "seconds": 2.521,
+    "output": "provider.txt"
+  },
+  {
+    "check": "python",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "test_run_owned"
+    ],
+    "exitCode": 1,
+    "seconds": 18.968,
+    "output": "python.txt"
+  },
+  {
+    "check": "python-retry",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "test_run_owned"
+    ],
+    "exitCode": 1,
+    "seconds": 20.326,
+    "output": "python-retry.txt"
+  },
+  {
+    "check": "python-after-allocation",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "test_run_owned"
+    ],
+    "exitCode": 0,
+    "seconds": 32.861,
+    "output": "python-after-allocation.txt"
+  },
+  {
+    "check": "python-live",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "python3",
+      "-B",
+      "verify_component.py",
+      "--run-owned"
+    ],
+    "exitCode": 0,
+    "seconds": 45.895,
+    "output": "python-live.txt"
+  },
+  {
+    "check": "composition-build",
+    "cwd": ".",
+    "argv": [
+      "dotnet",
+      "build",
+      "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+      "-c",
+      "Debug",
+      "--no-restore",
+      "-p:BuildProjectReferences=false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+      "-m:1",
+      "-v:q"
+    ],
+    "exitCode": 0,
+    "seconds": 4.075,
+    "output": "composition-build.txt"
+  },
+  {
+    "check": "tests-build",
+    "cwd": ".",
+    "argv": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "--no-restore",
+      "-p:BuildProjectReferences=false",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:DirectoryBuildPropsPath=/tmp/story-2-12-uniform-props.xml",
+      "-m:1",
+      "-v:q"
+    ],
+    "exitCode": 0,
+    "seconds": 4.827,
+    "output": "tests-build.txt"
+  },
+  {
+    "check": "csharp",
+    "cwd": ".",
+    "argv": [
+      "dotnet",
+      "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-12/final-checks/csharp.xml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.465,
+    "output": "csharp.txt"
+  },
+  {
+    "check": "consumer-host-live",
+    "cwd": "infrastructure/keycloak-workload-binding",
+    "argv": [
+      "python3",
+      "-B",
+      "verify_component.py",
+      "--run-owned",
+      "--platform-assembly",
+      "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+    ],
+    "exitCode": 0,
+    "seconds": 16.916,
+    "output": "consumer-host-live.txt"
+  },
+  {
+    "check": "folders-workflow",
+    "cwd": "references/Hexalith.Folders",
+    "argv": [
+      "actionlint",
+      ".github/workflows/ci.yml"
+    ],
+    "exitCode": 0,
+    "seconds": 0.415,
+    "output": "folders-workflow.txt"
+  },
+  {
+    "check": "root-whitespace",
+    "cwd": ".",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "seconds": 0.115,
+    "output": "root-whitespace.txt"
+  },
+  {
+    "check": "folders-whitespace",
+    "cwd": "references/Hexalith.Folders",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "seconds": 0.008,
+    "output": "folders-whitespace.txt"
+  }
+]

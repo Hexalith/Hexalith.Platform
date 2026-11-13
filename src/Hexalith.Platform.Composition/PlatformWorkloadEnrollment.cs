@@ -22,7 +22,7 @@ public static class PlatformWorkloadEnrollment
     public static void Disable(IDistributedApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        foreach (ProjectResource resource in Cohort(builder))
+        foreach (ProjectResource resource in PlatformWorkloadEnrollmentInventory.Cohort(builder))
             builder.CreateResourceBuilder(resource).WithEnvironment("Authentication__WorkloadIssuer__EnableResourceBindingRequests", "false");
     }
 
@@ -34,7 +34,7 @@ public static class PlatformWorkloadEnrollment
     public static async Task<bool> ConfigureAsync(IDistributedApplicationBuilder builder, CancellationToken cancellationToken = default, string? selectedTenant = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        ProjectResource[] cohort = Cohort(builder);
+        ProjectResource[] cohort = PlatformWorkloadEnrollmentInventory.Cohort(builder);
         Disable(builder);
         string? path = builder.Configuration[ConfigurationPrefix + "ManifestPath"];
         string? digest = builder.Configuration[ConfigurationPrefix + "ManifestSha256"];
@@ -67,9 +67,9 @@ public static class PlatformWorkloadEnrollment
             ProjectResource[] callers = cohort;
             if (clients.Length != callers.Length || clients.Select(item => Text(item, "resource")).Distinct(StringComparer.Ordinal).Count() != callers.Length
                 || !clients.Select(item => Text(item, "resource")).Order(StringComparer.Ordinal).SequenceEqual(callers.Select(item => item.Name).Order(StringComparer.Ordinal), StringComparer.Ordinal)) throw Refused();
-            ValidateInventory(cohort, clients, selectedTenant);
+            PlatformWorkloadEnrollmentInventory.Validate(cohort, clients, selectedTenant);
 
-            // Default HttpClient TLS validation is mandatory. No certificate bypass or generated trust.
+            // Default HttpClient TLS validation is mandatory, including prelaunch run-owned trust.
             using var handler = new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false };
             using HttpClient http = new(handler) { Timeout = TimeSpan.FromSeconds(30) };
             using JsonDocument metadata = await GetAsync(http, authority + "/.well-known/openid-configuration", cancellationToken).ConfigureAwait(false);
@@ -156,59 +156,6 @@ public static class PlatformWorkloadEnrollment
         {
             throw Refused();
         }
-    }
-
-    private static ProjectResource[] Cohort(IDistributedApplicationBuilder builder) => [.. builder.Resources.OfType<ProjectResource>().Where(project =>
-        project.Name is "eventstore" or "tenants" or "folders" or "folders-replica"
-        || project.Name.StartsWith("folders-workers", StringComparison.Ordinal))];
-
-    private static void ValidateInventory(ProjectResource[] cohort, JsonElement[] clients, string? selectedTenant)
-    {
-        JsonElement Client(string resource) => clients.Single(client => Text(client, "resource") == resource);
-        static string AppId(ProjectResource resource) => resource.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar
-            .Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.AppId ?? throw Refused();
-        static bool Pair(JsonElement probe, string audience, string operation) => Text(probe, "audience") == audience && Text(probe, "operation") == operation;
-        static bool Unbound(JsonElement probe) => probe.GetProperty("bindings").ValueKind == JsonValueKind.Object && !probe.GetProperty("bindings").EnumerateObject().Any();
-        static bool Query(JsonElement probe, string domain, string? tenant = null)
-        {
-            JsonElement binding = probe.GetProperty("bindings");
-            if (binding.ValueKind != JsonValueKind.Object || binding.EnumerateObject().Count() != 3
-                || Text(binding, BindingPrefix + "domain") != domain || !binding.TryGetProperty(BindingPrefix + "tenant", out JsonElement boundTenant)
-                || !binding.TryGetProperty(BindingPrefix + "query-authority-v1", out JsonElement digest) || !Hex(digest.GetString())) return false;
-            return !string.IsNullOrWhiteSpace(boundTenant.GetString()) && !boundTenant.GetString()!.Contains('*') && (tenant is null || boundTenant.GetString() == tenant);
-        }
-        string SourceTenant(JsonElement probe)
-        {
-            JsonElement bindings = probe.GetProperty("bindings");
-            if (!Pair(probe, "eventstore", "eventstore:stream-read") || bindings.ValueKind != JsonValueKind.Object
-                || bindings.EnumerateObject().Count() != 2 || Text(bindings, BindingPrefix + "domain") != "folders") throw Refused();
-            string tenant = Text(bindings, BindingPrefix + "tenant");
-            if (string.IsNullOrWhiteSpace(tenant) || tenant.Contains('*') || tenant != tenant.Trim()) throw Refused();
-            return tenant;
-        }
-        string[] tenants = [.. Client("folders").GetProperty("probes").EnumerateArray().Select(SourceTenant).Order(StringComparer.Ordinal)];
-        if (tenants.Length == 0 || tenants.Distinct(StringComparer.Ordinal).Count() != tenants.Length
-            || selectedTenant is not null && !tenants.Contains(selectedTenant, StringComparer.Ordinal)) throw Refused();
-        foreach (ProjectResource source in cohort.Where(resource => resource.Name is "folders" or "folders-replica"
-            || resource.Name.StartsWith("folders-workers", StringComparison.Ordinal)))
-            if (!Client(source.Name).GetProperty("probes").EnumerateArray().Select(SourceTenant).Order(StringComparer.Ordinal).SequenceEqual(tenants, StringComparer.Ordinal)) throw Refused();
-        JsonElement[] bootstrap = [.. Client("tenants").GetProperty("probes").EnumerateArray()];
-        if (bootstrap.Length != 2 || bootstrap.Count(probe => Pair(probe, "eventstore", "eventstore:command-submit") && Unbound(probe)) != 1
-            || bootstrap.Count(probe => Pair(probe, "eventstore", "eventstore:stream-read") && Unbound(probe)) != 1) throw Refused();
-        JsonElement[] gateway = [.. Client("eventstore").GetProperty("probes").EnumerateArray()];
-        string folders = AppId(cohort.Single(resource => resource.Name == "folders")), owner = AppId(cohort.Single(resource => resource.Name == "tenants"));
-        string[] callbacks = ["domain-service:process", "domain-service:project", "domain-service:metadata", "domain-service:replay-state"];
-        foreach (string audience in new[] { folders, owner })
-            foreach (string operation in callbacks)
-                if (gateway.Count(probe => Pair(probe, audience, operation) && Unbound(probe)) != 1) throw Refused();
-        foreach (string tenant in tenants)
-            if (gateway.Count(probe => Pair(probe, folders, "domain-service:query") && Query(probe, "folders", tenant)) != 1) throw Refused();
-        foreach (string domain in new[] { "tenants", "global-administrators" })
-            if (!gateway.Any(probe => Pair(probe, owner, "domain-service:query") && Query(probe, domain))) throw Refused();
-        if (gateway.Any(probe => !((Text(probe, "audience") == folders || Text(probe, "audience") == owner)
-            && callbacks.Contains(Text(probe, "operation"), StringComparer.Ordinal) && Unbound(probe))
-            && !(Pair(probe, folders, "domain-service:query") && tenants.Any(tenant => Query(probe, "folders", tenant)))
-            && !(Pair(probe, owner, "domain-service:query") && (Query(probe, "tenants") || Query(probe, "global-administrators"))))) throw Refused();
     }
 
     private static void VerifyToken(string token, RSA signer, string kid, string issuer, string workload, JsonElement probe, long maximumExpiry)

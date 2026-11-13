@@ -1,0 +1,166 @@
+{
+  "schema": "hexalith.run-owned-enrollment-review-verification/v1",
+  "qualification": "run-owned enrollment",
+  "capturedUtc": "2026-11-13T11:05:44.860628+00:00",
+  "sourceState": "modified worktrees bound by sourceSha256; verification precedes local commits",
+  "platformBaseRevision": "375231e1552c98a4238482c67b6e69d92ea43d1a",
+  "foldersBaseRevision": "583d3d492f94217809a8efe00424b80ce3fdfa61",
+  "sourceSha256": {
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "DB9723F2E9FF3A584E8AC73C054689B580F3F0FE22DED6B1C9BDAC5152931B60",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "CA80383604311EA62F886E863412C8C5DE92A6D8D5790DF0FDE4157896C9E887",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "2359DBFD15E5568BC74083B5FD0A256E827672EA2B7305F1DD75930EBD39067B",
+    "infrastructure/keycloak-workload-binding/run_owned.py": "6D5AEA44C8B183D4224CBBFD44979EA01E91B941BACDFCE6922B17919AEE8C72",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "59B6F1EBABA7BF94E8437A41CDDC2C0FDEB65283ECA7B3BEDFAFCA9A017383F4",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "326A0D507103CB51B906B8D81C9385D29B9F86B6B215B9C46305761ABAEE472C",
+    "infrastructure/keycloak-workload-binding/verify_component.py": "7BC6B97880D1D934F08DFDB471EBEA3C208A7C86284860CD5E64C0C86F75AC46",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "AE3928B60F506FE78F6771822D322EF482767FABB5D34095C3609813D6922430",
+    "references/Hexalith.Folders/src/Hexalith.Folders.AppHost/Hexalith.Folders.AppHost.csproj": "92351BC4871526751E78FD0864E9AB26599E361E8870F5424FB518BE44B77B9B",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs": "33ED7E08429960CE14F012F799A77948BB11DDBFE9304A98573208325EFA4590",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "2372277B6B2C66307D072EEEDEBF6F40A56A37FEF48A6126FB32D8E28DE2C881",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "176A55FB1E604069A31BD0E43B7788C8007E82C7A79224E8E5197B740618506B",
+    "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs": "C74D57525DCB9ED951AC060CC53D2CB295307BB6157B097B26E25858B9C4C364",
+    "docs/security/workload-binding-enrollment.md": "9AB04F2B86FD2354DCCC60671EE4FEE0BE46DC66203BB58F8987DD501B63DBCD",
+    "references/Hexalith.Folders/.github/workflows/ci.yml": "69E11B65A0F7C2B36F2C561C2F564DA8F5BF397F45CC0A8B579C4106EFE45655",
+    "_bmad-output/implementation-artifacts/epic-2-context.md": "43031E2FCC5BE9BC37D550EAD89D86004DF13B1795D99B0139996943BBCE7056"
+  },
+  "providerSha256": "2DE2C8069B9EC7F7023170C5AF90E551A67986F9A9F32D6E21C0C93822D75E1D",
+  "providerTests": 23,
+  "pythonTests": 17,
+  "csharpPassedTests": [
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.MixedOwnerContextRefusesBeforeReadingArtifacts",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"source\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"callback\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"bootstrap\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"query\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"storage-tenant\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\\"selected-tenant\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ExternalOwnerContextIsPreservedWhenLauncherIsAbsent",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent(fault: \\\"publish\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent(fault: \\\"timeout\\\")",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ProductionModelRefusesGeneratedContext"
+  ],
+  "explicitConsumerTests": 1,
+  "independentRsaProbes": 19,
+  "realContainerTerminalCases": [
+    "post-creation-failure",
+    "cancellation",
+    "expiry",
+    "child-exit",
+    "child-failure"
+  ],
+  "non1000Caller": 1001,
+  "freshRunningHostDefaultTlsDiscoveryAndExchange": true,
+  "firstAdopterSurvivesCompetingAdoption": true,
+  "commands": "final-checks/commands.json",
+  "finalSuccessfulChecks": [
+    "provider",
+    "python-after-allocation",
+    "python-live",
+    "composition-build",
+    "tests-build",
+    "csharp",
+    "consumer-host-live",
+    "folders-workflow",
+    "root-whitespace",
+    "folders-whitespace"
+  ],
+  "buildValidationOnlyOverrides": {
+    "props": "<Project>\n  <Import Project=\"$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))\" />\n  <PropertyGroup><TargetFramework>net11.0</TargetFramework></PropertyGroup>\n</Project>\n",
+    "targets": "<Project>\n  <PropertyGroup><_Story212OriginalTargets>$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildProjectDirectory)'))</_Story212OriginalTargets></PropertyGroup>\n  <Import Project=\"$(_Story212OriginalTargets)\" Condition=\"'$(_Story212OriginalTargets)' != ''\" />\n  <PropertyGroup Condition=\"'$(TargetFramework)' == 'net10.0'\">\n    <TargetFramework>net11.0</TargetFramework><TargetFrameworkVersion>v11.0</TargetFrameworkVersion><TargetFrameworkMoniker>.NETCoreApp,Version=v11.0</TargetFrameworkMoniker><NuGetTargetMoniker>.NETCoreApp,Version=v11.0</NuGetTargetMoniker>\n  </PropertyGroup>\n  <PropertyGroup Condition=\"'$(TargetFrameworks)' != ''\"><TargetFrameworks>$([System.String]::Copy('$(TargetFrameworks)').Replace('net10.0', 'net11.0'))</TargetFrameworks></PropertyGroup>\n</Project>\n",
+    "trackedBuildOrDependencyFilesChanged": false
+  },
+  "observations": [
+    {
+      "qualification": "run-owned enrollment",
+      "freshRsaProbes": 19,
+      "exactVersion": "26.6.4",
+      "replicas": true,
+      "independentProofCallers": 2,
+      "dynamicQueryDigest": true,
+      "negativeControls": [
+        "untrusted-tls",
+        "changed-tenant",
+        "changed-domain"
+      ],
+      "administrativeIdentity": false
+    },
+    {
+      "qualification": "run-owned enrollment",
+      "provisioned": true,
+      "serverVersion": "26.6.4",
+      "imageId": "sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4",
+      "providerSha256": "2DE2C8069B9EC7F7023170C5AF90E551A67986F9A9F32D6E21C0C93822D75E1D",
+      "resourceCount": 8,
+      "workloadCount": 6,
+      "administrativeIdentity": false,
+      "startupImport": true,
+      "observedRemainingContainers": 0,
+      "observedRemainingTemporaryPaths": 0
+    },
+    {
+      "qualification": "run-owned enrollment",
+      "realContainerTerminalControls": 5,
+      "postCreationFailure": true,
+      "cancellation": true,
+      "expiry": true,
+      "childExitAndFailure": true,
+      "unrelatedLiveControlPreserved": true,
+      "observedRemainingContainers": 0,
+      "observedRemainingTemporaryPaths": 0
+    },
+    {
+      "qualification": "run-owned enrollment",
+      "non1000Caller": 1001,
+      "runtimeGroup": 0,
+      "hostSecretPermissions": "0600",
+      "realProviderAndCleanup": true
+    }
+  ],
+  "cleanup": {
+    "observedRemainingContainers": 0,
+    "observedRemainingTemporaryPaths": 0,
+    "unrelatedLiveControlPreserved": true
+  },
+  "review": {
+    "independentLayers": 3,
+    "initialReports": 16,
+    "acceptedReports": 15,
+    "patchGroups": 13,
+    "additionalVerificationFinding": "Docker allocation replaces workspace free-port probing",
+    "rejectedLowReports": 1,
+    "deferredReports": 0,
+    "correctedGroups": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "G9",
+      "G10",
+      "G11",
+      "G12",
+      "G13"
+    ]
+  },
+  "nonqualifyingPreAllocationAttempts": {
+    "completePythonFailures": 2,
+    "diagnosticPythonFailures": 1,
+    "cause": "Docker host forwarder refused a workspace-selected port: ports are not available; /forwards/expose HTTP 500",
+    "failedLogs": [
+      "final-checks/python.txt",
+      "final-checks/python-retry.txt"
+    ],
+    "allFailedStartupCleanupObserved": true,
+    "resolution": "Docker assigns loopback port; owned immutable ID and exact binding validated before HTTPS origin use",
+    "cleanupObservationScope": "Independent final container/private-directory inventory includes all prior failed attempts"
+  },
+  "limitations": [
+    "Folders AppHost test-project build is blocked by unchanged FrontComposer CA2263 after local framework normalization. Its affected xUnit classes and strict real-provider acceptance were not executed.",
+    "This evidence supplies no Platform lifecycle qualification or Folders 12.2 completion.",
+    "No credentials, tokens, grants, certificate material or keys are retained."
+  ]
+}

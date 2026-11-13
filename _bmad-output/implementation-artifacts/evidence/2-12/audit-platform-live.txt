@@ -1,0 +1,11 @@
+xUnit.net v3 In-Process Runner v4.0.3+384aa7f0b4 (64-bit .NET 11.0.0)
+  Discovering: Hexalith.Platform.Composition.Tests
+  Discovered:  Hexalith.Platform.Composition.Tests
+  Starting:    Hexalith.Platform.Composition.Tests
+WORKLOAD_ENROLLMENT_CONTEXT qualification=run-owned enrollment resources=8
+WORKLOAD_ENROLLMENT_VERIFIED manifestSha256=111B3C67BF73B52FFBCD80E5B559AB0D6B99568E24DC40A7D1972072A08763C4 receivers=8 clients=8
+RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2 controls=missing-trust,foreign-receipt,receipt-expiry,child,directory,host-trust-merge,probe,signer,tls,permissions,expiry,cohort,tenant assertions=host-trust,profile-before-and-after,human-authentication,independent-rsa-proofs
+  Finished:    Hexalith.Platform.Composition.Tests (ID = '2ddda01ee7294015bacad938e86bda97f6b00c49c169eac7f1833bf50239e8d9')
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 1, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 17.450s
+{"qualification": "run-owned enrollment", "provisioned": true, "serverVersion": "26.6.4", "imageId": "sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4", "providerSha256": "2DE2C8069B9EC7F7023170C5AF90E551A67986F9A9F32D6E21C0C93822D75E1D", "resourceCount": 8, "workloadCount": 6, "administrativeIdentity": false, "startupImport": true, "observedRemainingContainers": 0, "observedRemainingTemporaryPaths": 0}

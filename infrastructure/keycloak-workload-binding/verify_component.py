@@ -206,7 +206,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
                             for operation in ("process", "project", "metadata", "replay-state"):
                                 probe(audience, "domain-service:" + operation, {})
                         for audience, domain in (("folders", "folders"), ("tenants", "tenants"), ("tenants", "global-administrators")):
-                            probe(audience, "domain-service:query", {"eventstore:bound-tenant": "tenant-a", "eventstore:bound-domain": domain,
+                            probe(audience, "domain-service:query", {"eventstore:bound-tenant": "tenant-a" if domain == "folders" else "system", "eventstore:bound-domain": domain,
                                                                   "eventstore:bound-query-authority-v1": "A" * 64})
                     elif resource == "tenants":
                         for operation in ("eventstore:command-submit", "eventstore:stream-read"):
@@ -236,8 +236,8 @@ def run(sdk_assembly=None, apphost_assembly=None):
                 manifest_file.write_text(json.dumps(consumer_manifest))
                 os.chmod(manifest_file, 0o600)
                 environment = dict(os.environ, HEXALITH_WORKLOAD_CONSUMER_COMPONENT_MANIFEST=str(manifest_file), SSL_CERT_FILE=str(cert))
-                completed = subprocess.run(["dotnet", str(Path(apphost_assembly).resolve()), "-explicit", "on", "-class",
-                    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests"], env=environment, capture_output=True, text=True)
+                completed = subprocess.run(["dotnet", str(Path(apphost_assembly).resolve()), "-explicit", "on", "-method",
+                    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation"], env=environment, capture_output=True, text=True)
                 print(completed.stdout, end="")
                 if completed.returncode != 0:
                     raise RuntimeError("Explicit consumer component tests failed; see test output.")
@@ -292,5 +292,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sdk-assembly", help="Run explicit source-boundary tests from this Debug assembly against the owned real issuer.")
     parser.add_argument("--apphost-assembly", help="Run explicit consumer controls against the owned component issuer and TLS fixture.")
+    parser.add_argument("--run-owned", action="store_true", help="Select disposable run-owned startup import and owner/consumer controls; never uses the component administration path.")
+    parser.add_argument("--platform-assembly", help="Run the focused run-owned bridge/consumer controls from this Debug Platform assembly.")
     arguments = parser.parse_args()
-    run(arguments.sdk_assembly, arguments.apphost_assembly)
+    if arguments.run_owned:
+        import run_owned_component
+        if arguments.sdk_assembly or arguments.apphost_assembly and arguments.platform_assembly:
+            parser.error("--run-owned selects one consumer assembly and cannot select the component-only SDK mutation path.")
+        run_owned_component.run(arguments.apphost_assembly, arguments.platform_assembly)
+    else:
+        if arguments.platform_assembly:
+            parser.error("--platform-assembly requires --run-owned.")
+        run(arguments.sdk_assembly, arguments.apphost_assembly)

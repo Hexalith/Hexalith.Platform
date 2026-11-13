@@ -1,0 +1,55 @@
+{
+  "qualification": "run-owned enrollment",
+  "sourceHashesMatch": true,
+  "providerTests": 23,
+  "focusedPythonTests": 8,
+  "focusedCSharpTests": 12,
+  "explicitLiveConsumerTests": 1,
+  "matrix": [
+    {
+      "row": "Final cohort and tenant",
+      "tests": [
+        "CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants",
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls"
+      ],
+      "passed": true
+    },
+    {
+      "row": "Missing launch trust",
+      "tests": [
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls: missing-prelaunch-trust, TLS hostname"
+      ],
+      "passed": true
+    },
+    {
+      "row": "Foreign context/manifest, changed cohort/tenant, hosted target",
+      "tests": [
+        "ChangedInventoryRefuses (six cases)",
+        "ProductionModelRefusesGeneratedContext",
+        "MixedOwnerContextRefusesBeforeReadingArtifacts",
+        "test_foreign_request_refuses_before_container_creation",
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls: receipt, cohort, tenant controls"
+      ],
+      "passed": true
+    },
+    {
+      "row": "Exit, cancellation, expiry, partial startup",
+      "tests": [
+        "test_exit_failure_expiry_and_signal_clean_launcher_material",
+        "test_partial_provisioning_cleans_only_journaled_container_and_private_material",
+        "test_foreign_container_is_preserved_and_cleanup_failure_reported",
+        "RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls: real cleanup",
+        "CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent"
+      ],
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Folders AppHost test-project build is blocked by unchanged FrontComposer CA2263 after local framework normalization. Its affected xUnit classes and strict real-provider acceptance were not executed.",
+    "This evidence supplies no Platform lifecycle qualification or Folders 12.2 completion.",
+    "No credentials, tokens, grants, certificate material or keys are retained."
+  ],
+  "cleanupRegressionMethods": [
+    "CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent"
+  ]
+}

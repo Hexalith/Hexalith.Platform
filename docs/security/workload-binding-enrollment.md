@@ -136,17 +136,121 @@ pins the current JWKS RSA SPKI and independently verifies a fresh signed token
 for every probe, including exact audience/caller/operation/bindings and grant
 identity/revision. Only then may it configure the complete cohort and enable the
 SDK profile before catalog capture. SDKs and receivers still independently
-validate every runtime assertion. No custom TLS bypass, generated signer trust,
-borrowed workload or generated grant is an activation path. Missing references
+validate every runtime assertion. No custom TLS bypass or borrowed workload is an activation path. Generated
+trust and grants are allowed only through the explicit disposable run-owned
+launcher below; persistent enrollment retains independent owner approval. Missing references
 leave the profile disabled and name those missing inputs; invalid references fail
 closed before catalog capture.
 
 Resource coverage alone is insufficient. The consumer requires the complete exact
 source tenant/domain set for every source resource, all existing unbound callback
 operations for both actual domain-service audiences, separately bound query
-digest probes for Folders and both Tenants domains, and separate Tenants unbound
+digest probes for Folders and both Tenants domains (the latter use the SDK
+normalized reserved storage tenant `system`), and separate Tenants unbound
 bootstrap/source probes. The disposable fixture also checks its selected tenant
-is included. Missing or unrelated probes refuse before any profile is enabled.
+is included. Run-owned enrollment binds exactly one selected canonical tenant. Missing or unrelated probes refuse before any profile is enabled.
+
+## Disposable run-owned enrollment
+
+For the Folders acceptance fixture's random tenant and final Dapr callers, use
+`infrastructure/keycloak-workload-binding/run_owned.py`. This is an explicit
+**run-owned enrollment** authority. It supplies no Platform lifecycle qualification
+or Folders 12.2 completion by itself. Persistent/shared/staging/production
+installations still require the realm-owner process described above.
+
+Prerequisites: Linux, Python 3, OpenSSL, Docker access, the exact
+`quay.io/keycloak/keycloak:26.6.4` image and the built provider JAR. Build with
+`mvn -B -ntp package` in the provider directory. Build the Platform Composition
+and Folders AppHost test projects individually in Debug/source mode, including
+the selected Tenants host and the existing observer prerequisites for strict
+acceptance. Keep the selected source graph's target frameworks consistent;
+resolve a mixed net10/net11 restore before interpreting any runtime result.
+The launcher never builds, upgrades, publishes or mutates another authority.
+The component verification's non-1000 portability control additionally requires
+passwordless `sudo` and `setpriv` when the validation caller is UID 1000, with
+permission to switch its private validation fixture to UID/GID 1001:1001 and
+supply Docker socket group access. Root or an existing non-1000 Docker caller
+can run that control directly. This requirement belongs only to component
+validation; ordinary launcher use requires no UID switch or sudo authorization.
+
+Launch a built test assembly directly so the test process retains the launcher's
+recorded child identity. Supply the existing Folders integration opt-in as usual:
+
+```bash
+python3 -B infrastructure/keycloak-workload-binding/run_owned.py \
+  --owner disposable-folders-acceptance --lifetime-seconds 900 -- \
+  dotnet /absolute/path/to/Hexalith.Folders.AppHost.Tests.dll \
+  -class Hexalith.Folders.AppHost.Tests.OperationalStatusDurabilityAcceptanceTests
+```
+
+Choose the fixed finite lifetime before launch (1–86,400 seconds). It is an upper
+bound, never extended by adoption or retries. The fixture's existing four-minute
+startup deadline and all strict acceptance budgets remain unchanged. Use one
+launcher for one final cohort; a second adoption refuses. Do not combine generated
+context with external `ManifestPath` or `ManifestSha256` configuration.
+
+Before starting the child, the launcher creates a private 0700 run directory,
+0600 files, a private CA and localhost certificate, and a process-scoped
+`SSL_CERT_FILE` bundle that preserves inherited or system trust. It installs no
+global trust. The child receives a one-use capability and private receipt bound
+to the owner and child PIDs plus Linux boot/start identities, directory and fixed
+deadline. Missing prelaunch trust refuses with `missing-prelaunch-trust`;
+changing trust after xUnit starts is unsupported. A receipt copied to another
+process/run, a changed tenant/cohort, or a hosted target refuses before activation.
+
+After the fixture selects all physical hosts, replicas, proof Workers and its
+tenant, the shared inventory produces the exact source, bootstrap, callback and
+query permissions. Tenants queries use `TenantCanonicalizer.ReservedStorageTenant`
+(`system`) after SDK normalization. Query digest permission remains dynamic;
+the tenant and domain remain exact. Resource entries are never deduplicated.
+Only replicas with the same actual workload and identical permissions share a
+client/secret. Distinct proof callers keep separate credentials and the fixture's
+existing independent RSA source proofs.
+
+The launcher imports the complete realm at startup into a fresh container,
+asks Docker to allocate a loopback port with `127.0.0.1::8443`, validates the
+actual publication by owned container ID, and derives the HTTPS localhost
+origin from that binding. Keycloak's [hostname-only setting](https://www.keycloak.org/server/hostname)
+fixes `localhost` while resolving scheme and port from the HTTPS request.
+The launcher pins the exact server version and existing provider digest, and
+discovers the RSA signer through normally validated HTTPS metadata/JWKS. It creates no workload administrative identity and makes no
+administrative API calls. The unchanged consumer manifest schema contains only
+owner-only secret references, and its validity, grants and signer approval are
+bounded by the original deadline. Ownership metadata remains in the separate
+receipt/result files. The existing consumer still verifies every TLS, inventory,
+signer and fresh signed probe before enabling any host or capturing the catalog.
+
+Each enrolled host receives prelaunch trust before startup. The operational
+provider fixture merges this bundle with its Forgejo CA and existing system
+roots; the workload helper propagates that merged bundle to all enrolled hosts.
+Human authentication remains on its original authority and configuration.
+
+Fixture disposal requests producer cleanup. Child success/failure, cancellation,
+launcher signals, expiry and partial provisioning also remove the exact owned
+container, manifest, credentials, realm import and certificates. Cleanup checks
+the container's run label before removal and removes only the private owned
+directory; unrelated resources survive. The launcher reports cleanup failures as
+`owned-container-cleanup-incomplete` or `owned-private-material-cleanup-incomplete`
+and exits unsuccessfully. A failed cleanup must be resolved before claiming a
+clean run. Evidence output is labeled `run-owned enrollment` and contains only
+counts, version/digests, control names and observed leftovers; retain no private
+run directory, credentials, tokens, grants, certificates or keys.
+
+Run the focused controls from the provider directory:
+
+```bash
+python3 -B -m unittest test_run_owned
+python3 -B verify_component.py --run-owned
+python3 -B verify_component.py --run-owned --apphost-assembly /absolute/path/to/Hexalith.Folders.AppHost.Tests.dll
+python3 -B verify_component.py --run-owned --platform-assembly /absolute/path/to/Hexalith.Platform.Composition.Tests.dll
+```
+
+The assembly commands launch explicit real-provider/consumer controls through
+the same prelaunch receipt path. The Platform assembly offers a focused bridge
+and unchanged-consumer lane when the larger Folders source graph is blocked;
+record that blocker separately from the focused result. The ordinary `verify_component.py` path retains its
+component-only administrative mutation controls and must never be interpreted as
+run-owned enrollment or persistent authority approval.
 
 ## Verification, disable and cleanup
 
@@ -166,9 +270,10 @@ inventory controls establish consumer behavior only. The SDK's mismatched scope
 and expiry controls use genuine Keycloak signatures from the same client; the
 expiry token naturally expires under a two-second temporary component grant.
 
-Actual enrollment qualification requires the protected owner references,
-independent TLS and signer approval, fresh successful probes for the final
-cohort, a coherent Debug/source build and runtime identity audit. Then run the
+Actual enrollment qualification requires protected external owner references or
+the explicit disposable run-owned path above, normally validated TLS and pinned
+signer approval, fresh successful probes for the final cohort, a coherent
+Debug/source build and runtime identity audit. Then run the
 unchanged strict `OperationalStatusDurabilityAcceptanceTests`, including its
 original 403 control and current source/Workers evidence. Preserve all original
 deadlines, budgets, retries and bodies. Privacy, governance and performance gates
