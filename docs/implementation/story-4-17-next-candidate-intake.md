@@ -10,6 +10,9 @@ complete; [EventStore dependency tracking is reconciled and published](#eventsto
 Supported remedies and exact successor admission/execution remain outstanding. Earlier preparation
 statuses below retain their dated context; approved acceptance criteria remain binding.
 
+**Accepted priority:** [RabbitMQ error propagation first, then mandatory returns](#accepted-remediation-priority--2026-11-14).
+Kafka work retains its concrete re-entry conditions; this decision supplies no new candidate.
+
 The owner selected the three recommended routes: preserve the Kafka pressure guarantee and
 investigate a genuine rejecting fault; analyze Kafka rotation causality offline; and prepare
 the RabbitMQ supported-delivery intake while retaining its requirements. These decisions
@@ -531,3 +534,46 @@ The reviewed parent/contract text and ledger disposition were preserved, and the
 EventStore revision in its gitlink. The preceding local-only statements describe preparation
 before this separate publication request. Publication supplies no supported fix, new execution,
 guarantee closure, input admission or broker selection; all parent and qualification states remain.
+
+## Accepted remediation priority — 2026-11-14
+
+The owner's **“apply recommended”** following the detailed tradeoff assessment accepts
+RabbitMQ-first engineering priority. Use the existing EventStore supported-delivery work
+and the two already submitted issues; their requirements and original submission bytes
+remain unchanged. This records priority, not upstream acceptance or implementation.
+
+| Order | Work | Required outcome |
+| --- | --- | --- |
+| First | [Package A / #4764](https://github.com/dapr/components-contrib/issues/4764) | Preserve broker NACK and revoked-credential errors through confirmation, retry, reconnect and cancellation. Bound blocking paths and propagate the real outcome through Dapr under existing acceptance criteria. |
+| Next | [Package B / #4765](https://github.com/dapr/components-contrib/issues/4765) | Opt-in mandatory publishing with returns associated with the actual attempt/channel and resolved before success, including concurrency and reconnect controls. |
+
+The [owning EventStore priority and re-entry contract](../../references/Hexalith.EventStore/docs/implementation/story-3-21-broker-remediation-evidence-contract.md#accepted-remediation-priority--2026-11-14)
+carries the implementation requirements. A focused upstream contribution is a possible
+future acceleration route with its own concrete implementation scope; this priority
+decision starts no contribution or new external communication.
+
+Kafka pressure remains paused until a supported Produce-pressure mechanism satisfies
+the unchanged rejection predicate. If Kafka is strategically necessary, resolve the
+pressure-contract question before more speculative work; no contract change is approved
+here. Rotation remains paused until a concrete supported completion/discrimination
+witness or separately accepted correlation design establishes the missing evidence joins.
+Do not add logging-only retries, fixed waits or correlation infrastructure. Historical
+causality remains unadjudicable on existing evidence. Kafka may re-enter independently
+when its own input and EventStore admission are concrete.
+
+When the existing broker item is discussed in normal sprint planning, the EventStore 3.21
+maintainer checks the existing issues and official release records manually, recording
+material changes in the existing reopened broker item and owning evidence contract
+linked above. No monitoring service, scheduler or automatic retry is added.
+For RabbitMQ, a component merge, partial package delivery or closed issue is insufficient:
+identify an official supported Dapr release embedding the required fixes, then obtain
+EventStore exact runtime/component/source/binary/image/lock admission and Builds tool
+alignment. Platform then prepares a separately accepted exact configuration/worker/tool
+full-matrix proposal. No new execution is admitted by this priority decision.
+
+RabbitMQ remediation alone does not make the current 24-vector aggregate pass. Retain
+Kafka failures and historical open guarantees, AD-26/profile selection, staging 4.14–4.16,
+shared-host/restore prerequisites and existing Subscription rendering. Both parents remain
+**in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**, selection
+**null** and production eligibility **FAIL**. Packet custody and its December 13 manual
+review obligation continue unchanged. This local decision is not publication or delivery.
