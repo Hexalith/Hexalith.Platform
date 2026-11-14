@@ -708,3 +708,33 @@ SDK source, and requires atomic create-only branch publication. It distinguishes
 compiled versus executed integration coverage and explains that A's squash merge
 alone may not remove A from the comparison before B is rebased and reapproved.
 No source behavior changed and nothing new was deferred.
+
+## RabbitMQ Package B submitted upstream — 2026-11-14
+
+The owner approved the exact A+B publication proposal with **“yes”**. Platform
+created `jpiquot/components-contrib:fix/rabbitmq-mandatory-returns-4765` and opened
+[upstream PR #4768](https://github.com/dapr/components-contrib/pull/4768), observed
+OPEN and non-draft. Its new DCO-signed B commit is
+`c6ba13793f181461afb3c74c9300f5876879861f`, sole parent Package A
+`96c3259b7c12a476edd208848153d3cf72a8c4f0`, reviewed tree
+`50f8ef2d3d3a240595d6088917f9d51afe04ec3c`. The remote raw commit and
+incremental diff match exactly, as do the approved PR title/body and identities.
+The upstream comparison contains two commits, eight files, 2786 insertions and
+72 deletions. The [submission record](story-4-17-upstream/package-b-submission-2026-11-14/SUBMISSION.md)
+retains the receipt, preflights, public bundle and exact readbacks.
+
+The GitHub connector's PR creation was denied with an integration 403; after
+confirming no PR existed, the authenticated GitHub CLI created the same approved
+PR. The branch used an atomic absence lease. All child jobs finished and temporary
+workspaces were removed. The original 17-artifact approval packet is unchanged.
+No existing issue/PR/comment/label or Package A branch was edited. Platform and
+EventStore were not committed or pushed.
+
+Submission is not upstream acceptance or delivery. A/#4767 still precedes B;
+any rebase needs a fresh checked diff and owner approval. Both parents remain
+**in-progress**, technical qualification **FAIL (20/24)**, five guarantees
+**REJECTED/open**, selection **null** and production eligibility **FAIL**.
+No new tests, broker, Dapr runtime or qualification ran. Official supported Dapr
+delivery, EventStore exact admission, Builds alignment and a separate accepted
+full-matrix proposal still gate execution. Kafka stop rules, packet custody and
+the December 13 review remain unchanged.

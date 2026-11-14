@@ -1,0 +1,497 @@
+{
+  "approval": {
+    "response": "yes",
+    "interpretation": "Submit the exact dependent A+B upstream pull request now, as offered in the preceding final response",
+    "recordedUtc": "2026-11-14 18:10:38 UTC",
+    "approvedProposalSha256": "5c4c26908c5e54180cdd6fd8e718dcc64bb86980c48df26da4b3ee9b1dee6259"
+  },
+  "preflights": {
+    "primary": [
+      {
+        "id": 0,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "id": "6775094",
+              "name": "Jérôme Piquot",
+              "email": "jpiquot@itaneo.com",
+              "nickname": "jpiquot",
+              "picture": "https://avatars.githubusercontent.com/u/6775094?v=4",
+              "workspace_id": null,
+              "workspace_name": null,
+              "workspace_picture": null
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 1,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "id": "1457697787",
+              "name": "components-contrib",
+              "owner": {
+                "login": "jpiquot",
+                "id": 6775094,
+                "type": "User",
+                "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+                "url": "https://api.github.com/users/jpiquot"
+              },
+              "repository_full_name": "jpiquot/components-contrib",
+              "permissions": {
+                "admin": true,
+                "maintain": true,
+                "pull": true,
+                "push": true,
+                "triage": true
+              },
+              "allow_auto_merge": null,
+              "allow_merge_commit": null,
+              "allow_rebase_merge": null,
+              "allow_squash_merge": null,
+              "allow_update_branch": null,
+              "clone_url": "https://github.com/jpiquot/components-contrib.git",
+              "size": 45132,
+              "default_branch": "main",
+              "git_commits_url": "https://api.github.com/repos/jpiquot/components-contrib/git/commits{/sha}",
+              "git_refs_url": "https://api.github.com/repos/jpiquot/components-contrib/git/refs{/sha}",
+              "git_url": "git://github.com/jpiquot/components-contrib.git",
+              "master_branch": null,
+              "visibility": "public",
+              "archived": false,
+              "is_code_search_indexed": null
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 2,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "url": "https://github.com/dapr/components-contrib/pull/4767",
+              "number": 4767,
+              "state": "open",
+              "merged": false,
+              "mergeable": true,
+              "draft": false,
+              "body": "# Description\n\nWhen a RabbitMQ publish failed and the caller's context was canceled during the retry or reconnect wait, `Publish` returned `nil`, so a failed publish was reported as a success. The result of `reconnect` was discarded. Waits for publisher confirmations, the channel lock and connection setup did not observe the caller's context.\n\nThis PR changes the RabbitMQ pub/sub component as follows:\n\n- **Failures are returned instead of `nil`.** Cancellation during a retry or reconnect wait now returns a retriable error, as exhausted retries already did. A broker NACK (`did not receive confirmation of publishing`) or a server-sent AMQP exception seen on an attempt is returned in preference to a cancellation or transport error. A retry that is actually confirmed still returns `nil`.\n- **Reconnect errors are kept.** `ACCESS_REFUSED` (403) and stopped/closed-component errors are returned as terminal errors without further retries.\n- **NACK versus shutdown.** Confirmations are read from the channel's `NotifyPublish` listener and matched by delivery tag. A real NACK is therefore distinguished from pending confirmations that `amqp091-go` completes with `ack=false` when the channel or connection shuts down. The native channel/connection close reason, for example a 403 `ACCESS_REFUSED` after publication, is retained and returned instead of a generic closed-channel error.\n- **Cancellation is bounded.** The channel lock is now a `dapr/kit` `lock.Context`, acquired with the caller's context when publishing and reconnecting, and confirmations are awaited with that context. `Init` and `reconnect` pass the context to dial. Dial, the TLS and AMQP handshakes, channel open, confirm setup, exchange declaration and blocked socket writes are interrupted by closing the transport of that connection generation. The URI/default handshake timeout is kept. Cancellation during exchange declaration, write or confirmation closes the connection's transport. The cancellation callback is stopped or joined before the lock is released, so a canceled waiter cannot abort the lock holder or a newer connection. A new connection is installed only after its setup completes.\n\nThe component uses the same connection for publishing and subscriptions. When cancellation during exchange declaration, write or confirmation closes its transport, its subscriptions reconnect and unacknowledged deliveries are redelivered. The confirmation-phase abort is retained because `amqp091-go` v1.14.0 can deadlock a connection when a `NotifyPublish` listener has less capacity than the outstanding publishings; the adapter's capacity-1 listener relies on the abort to bound them. A dedicated publisher connection or a drained listener is offered as a follow-up.\n\nIf cancellation interrupts a publication that was already written, its outcome is uncertain: the returned error does not mean the message was not delivered. The retry count, retry/reconnect delays and metadata are unchanged. There is no new metadata option, dependency or `go.mod` change.\n\n### Tests\n\n- `rabbitmq_publish_test.go` drives the public `Publish` method with a controllable channel fake. It covers confirmation outcomes, cancellation before start and during exchange declaration, confirmation, blocked writes and reconnect. It captures `dapr/kit` logger output to verify warnings for each failed publish/reconnect attempt and reconnect wait, and an error at retry exhaustion. It also covers NACKs preserved across retry cancellation and later transport failures, `ACCESS_REFUSED` termination, reconnect-failure exhaustion, concurrent waiters that must not abort the lock holder, error isolation between concurrent callers, stale connection generations and a publish queued behind `Close`.\n- `rabbitmq_publish_transport_test.go` runs the real `amqp091-go` client against an in-process AMQP 0-9-1 peer over `net.Pipe`. It covers transport cancellation at dial, TLS, AMQP and authentication handshakes, channel open, confirm setup, exchange declaration, write and confirmation. It also covers native ack/nack, a NACK followed by disconnect, asynchronous `channel.close`/`connection.close` 403 after publication, publishing without confirms, close and recovery, and `Init` cancellation with the `connection_timeout` URI handshake timeout.\n- `rabbitmq_test.go` adds `Init` cancellation before and during dial. Existing unit and integration tests are adapted to the context-aware lock and dial signature. The `TestMustReconnectOnAMQPError` fixture now starts with an explicitly open channel and also asserts the closed-channel case.\n\nRun locally with Go 1.26.10:\n\n- `go test -count=1 ./pubsub/rabbitmq`: 62 top-level tests, no skips\n- `go test -race -count=10 -run '^(TestPublishPublic|TestInit)' ./pubsub/rabbitmq`\n- `go test -race -count=10 -run '^TestMustReconnectOnAMQPError$' ./pubsub/rabbitmq`\n- `go vet ./pubsub/rabbitmq`, `gofmt -s -l`, `go mod tidy -diff`\n- `golangci-lint run --new-from-rev=<base> ./pubsub/rabbitmq/...` with v2.10.1: no new issues\n- `go test -tags=integration_test -run '^$' ./pubsub/rabbitmq`: compile only\n\nThe integration, certification and conformance suites were not run. The integration-tag command above compiled tests without executing them.\n\n### Known limits of `amqp091-go`\n\n- If the transport fails during the authentication step, `amqp091-go` returns its generic `ErrCredentials` (`Exception (403) Reason: \"username or password not allowed\"`) whatever the actual cause, without the broker's `ACCESS_REFUSED` reply text. It is passed through as is rather than rewritten into an `ACCESS_REFUSED` reply; because its code is 403, it ends retries. When the caller's context is canceled, the cancellation error is returned instead, since the abort itself can produce `ErrCredentials`.\n- `amqp091-go` writes `close-ok` before it delivers the close reason to `NotifyClose` listeners. If that write blocks, a canceled `Publish` can return the cancellation error before the broker's close reason becomes observable.\n\n### Not included\n\n- Integration, certification or conformance suite execution against a real RabbitMQ broker, for example NACKs under `reject-publish` overflow, revoked credentials, and subscription recovery and redelivery after a transport abort.\n- Mapping of these errors through the Dapr runtime publish API (HTTP/gRPC status and `ErrorInfo`).\n- Mandatory publishing and correlated unroutable returns (#4765).\n\n### Relation to #4766\n\n#4766 changes the two retry waits so that cancellation no longer returns `nil`, which is one part of this PR. Thanks for that fix. Both PRs change the same lines in `Publish`, so they conflict. This PR selects the error differently: a NACK or server exception from an attempt is returned in preference to the cancellation error. It also covers the other paths listed in #4764. I'm happy to rebase onto #4766 if it merges first, or to split this PR into smaller ones (for example retry/reconnect error handling, confirmation handling and transport cancellation) if that is easier to review.\n\n## Issue reference\n\nPartially addresses #4764. The items under \"Not included\" remain open there.\n\n## Checklist\n\n* [x] Code compiles correctly\n* [x] Created/updated tests\n* [ ] Extended the documentation\n    * [ ] Created the dapr/docs PR: N/A, no metadata or configuration changes; cancellation and subscription effects are disclosed above\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+              "title": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation",
+              "base": "main",
+              "base_sha": "440b15349565bb15f7a88636477864e5a9f8cc72",
+              "head": "fix/rabbitmq-publish-errors-4764",
+              "head_sha": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+              "head_repo_id": 1457697787,
+              "head_repo_full_name": "jpiquot/components-contrib",
+              "merge_commit_sha": "0c3fb327c0481c4c86b1dd13f43e5b2b54949249",
+              "user": {
+                "login": "jpiquot",
+                "name": "jpiquot",
+                "email": null,
+                "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+                "id": 6775094
+              },
+              "requested_reviewers": null,
+              "requested_team_reviewers": null,
+              "diff": null,
+              "comments": null,
+              "created_at": "2026-11-14T11:46:42Z",
+              "updated_at": "2026-11-14T11:46:43Z",
+              "closed_at": null,
+              "merged_at": null,
+              "commits": 1,
+              "changed_files": 5,
+              "additions": 1780,
+              "deletions": 71,
+              "display_url": "https://github.com/dapr/components-contrib/pull/4767",
+              "display_title": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 3,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "issue": {
+                "url": "https://github.com/dapr/components-contrib/issues/4765",
+                "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+                "issue_number": 4765,
+                "body": "## Describe the feature\n\nPlease support opt-in mandatory RabbitMQ publishing with correctly correlated unroutable returns.\nThis follows the unresolved mandatory/return part of\n[#4697](https://github.com/dapr/components-contrib/issues/4697), which is closed/completed.\nThe NACK backport [#4748](https://github.com/dapr/components-contrib/pull/4748) addresses a different\nfailure mechanism. A publisher confirm alone can acknowledge an unroutable message.\n\nThe [inspected release-1.19 publish path](https://github.com/dapr/components-contrib/blob/46cf4f95b0c84ecb4014b6f79103a1b1ca9c5fbc/pubsub/rabbitmq/rabbitmq.go#L282-L345)\nstill passes `mandatory=false` and has no return handler. The\n[inspected main revision](https://github.com/dapr/components-contrib/blob/440b15349565bb15f7a88636477864e5a9f8cc72/pubsub/rabbitmq/rabbitmq.go)\nhas the same relevant behavior. Read-only checks on November 14, 2026 found the latest Dapr\nand component releases still v1.19.1 and v1.19.0, respectively.\n\nOur retained qualification measured physical absence of the missing-binding topic's binding\nboth before and after its publication. Dapr returned 204, beside a passing routed control.\nThat is a historical observation, not a new reproduction during issue preparation. An opt-in\nfailure mode lets callers distinguish unroutable publication from accepted delivery.\n\n## Proposed behavior\n\nKeep the existing default. An opt-in metadata setting could be named `publishMandatory`;\nthe actual API name belongs to upstream. Require publisher confirms for that mode or reject\nan incompatible configuration. Bind each `basic.return` to its exact attempt and channel\ngeneration, and resolve return/confirmation ordering before reporting success.\n\nRabbitMQ documents [returns preceding positive confirms](https://www.rabbitmq.com/docs/confirms).\nA later ACK must not overwrite the returned failure. Carry the conclusive unroutable error through\nthe public `Publish`/Dapr path within the current HTTP budget. Use final classification or bounded\nretry handling that preserves the error; retry exhaustion into a generic timeout is insufficient.\n\nKeep correlation bounded within the existing publisher machinery, including concurrent callers,\nretries, duplicate application IDs, cancellation and replacement channels. No alternate exchange,\nrouting service or application-side provider access is proposed: routing an otherwise unbound\nmessage would not demonstrate rejection.\n\n## Reproduction and verification\n\nThe [published work package](https://github.com/Hexalith/Hexalith.EventStore/blob/51dd68b86a690ffe9e11c565dccec49b2d401a94/docs/implementation/story-3-21-rabbitmq-upstream-work-packages.md#concrete-reproduction-inputs-and-request-steps)\ncontains immutable component/Subscription inputs and complete unexecuted fixture recipes.\nUse a fresh owned TLS fixture with local credentials and distinct bound-control/unbound IDs.\n\n1. Preserve a bound `qualification.events` positive control and physically remove/inspect the\n   binding for `qualification.missing-binding`.\n2. Once the proposed mode exists in a supported component, enable it with publisher confirms and publish a unique unbound\n   ID through Dapr. Retain `basic.return` / `312 NO_ROUTE`, subsequent confirmation and the Dapr\n   response, then inspect bindings again and retain ID-based readback.\n3. Verify concurrent/retried calls, reused application IDs, cancellation and channel replacement;\n   an old return must not fail a later unrelated call. Verify opt-out compatibility too.\n\nGiven the unbound mandatory publication, when return precedes ACK, then the exact call must fail\nwithin its existing budget. Given the routed control, when published, then success and exactly\none persisted effect must remain. Our qualification requires HTTP 400–598, physical binding\nabsence before/after and `allowedEffects == 1` for this vector; an error type name alone does\nnot establish that Dapr response. Transport uncertainty must stay explicit.\n\nThese recipes have not been executed during issue preparation. Extend existing metadata,\ncomponent and integration/certification tests; native AMQP success or a source merge alone\nwould not supply supported-runtime Dapr-path qualification.\n\n## Release Note\n\nRELEASE NOTE: **ADD** Optional mandatory RabbitMQ publishing with correlated unroutable-return failures while retaining the existing default.\n",
+                "state": "open",
+                "user": {
+                  "login": "jpiquot",
+                  "name": "jpiquot",
+                  "email": null,
+                  "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+                  "id": 6775094
+                },
+                "assignees": null,
+                "labels": null,
+                "milestone": null,
+                "state_reason": null,
+                "comments": 0,
+                "created_at": "2026-11-14T03:22:57Z",
+                "updated_at": "2026-11-14T03:22:57Z",
+                "closed_at": null,
+                "display_url": "https://github.com/dapr/components-contrib/issues/4765",
+                "display_title": "Follow up #4697: support mandatory publishing and correlated unroutable returns"
+              },
+              "url": "https://github.com/dapr/components-contrib/issues/4765",
+              "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+              "display_url": "https://github.com/dapr/components-contrib/issues/4765",
+              "display_title": "Follow up #4697: support mandatory publishing and correlated unroutable returns"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 4,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "chunk_id": "35b8d7",
+            "wall_time_seconds": 1.3964259700000001,
+            "exit_code": 0,
+            "original_token_count": 88,
+            "output": "GH_CONFIG_DIR: (default)\nToken variable names set: []\ngithub.com\n  ✓ Logged in to github.com account jpiquot (/home/administrator/.config/gh/hosts.yml)\n  - Active account: true\n  - Git operations protocol: https\nauth_status_exit 0\n440b15349565bb15f7a88636477864e5a9f8cc72\trefs/heads/main\n96c3259b7c12a476edd208848153d3cf72a8c4f0\trefs/pull/4767/head\n"
+          }
+        }
+      }
+    ],
+    "secondary": [
+      {
+        "id": 0,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "issues": []
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 1,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "issues": [
+                {
+                  "url": "https://github.com/dapr/components-contrib/pull/4767",
+                  "title": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation",
+                  "issue_number": 4767,
+                  "body": "# Description\n\nWhen a RabbitMQ publish failed and the caller's context was canceled during the retry or reconnect wait, `Publish` returned `nil`, so a failed publish was reported as a success. The result of `reconnect` was discarded. Waits for publisher confirmations, the channel lock and connection setup did not observe the caller's context.\n\nThis PR changes the RabbitMQ pub/sub component as follows:\n\n- **Failures are returned instead of `nil`.** Cancellation during a retry or reconnect wait now returns a retriable error, as exhausted retries already did. A broker NACK (`did not receive confirmation of publishing`) or a server-sent AMQP exception seen on an attempt is returned in preference to a cancellation or transport error. A retry that is actually confirmed still returns `nil`.\n- **Reconnect errors are kept.** `ACCESS_REFUSED` (403) and stopped/closed-component errors are returned as terminal errors without further retries.\n- **NACK versus shutdown.** Confirmations are read from the channel's `NotifyPublish` listener and matched by delivery tag. A real NACK is therefore distinguished from pending confirmations that `amqp091-go` completes with `ack=false` when the channel or connection shuts down. The native channel/connection close reason, for example a 403 `ACCESS_REFUSED` after publication, is retained and returned instead of a generic closed-channel error.\n- **Cancellation is bounded.** The channel lock is now a `dapr/kit` `lock.Context`, acquired with the caller's context when publishing and reconnecting, and confirmations are awaited with that context. `Init` and `reconnect` pass the context to dial. Dial, the TLS and AMQP handshakes, channel open, confirm setup, exchange declaration and blocked socket writes are interrupted by closing the transport of that connection generation. The URI/default handshake timeout is kept. Cancellation during exchange declaration, write or confirmation closes the connection's transport. The cancellation callback is stopped or joined before the lock is released, so a canceled waiter cannot abort the lock holder or a newer connection. A new connection is installed only after its setup completes.\n\nThe component uses the same connection for publishing and subscriptions. When cancellation during exchange declaration, write or confirmation closes its transport, its subscriptions reconnect and unacknowledged deliveries are redelivered. The confirmation-phase abort is retained because `amqp091-go` v1.14.0 can deadlock a connection when a `NotifyPublish` listener has less capacity than the outstanding publishings; the adapter's capacity-1 listener relies on the abort to bound them. A dedicated publisher connection or a drained listener is offered as a follow-up.\n\nIf cancellation interrupts a publication that was already written, its outcome is uncertain: the returned error does not mean the message was not delivered. The retry count, retry/reconnect delays and metadata are unchanged. There is no new metadata option, dependency or `go.mod` change.\n\n### Tests\n\n- `rabbitmq_publish_test.go` drives the public `Publish` method with a controllable channel fake. It covers confirmation outcomes, cancellation before start and during exchange declaration, confirmation, blocked writes and reconnect. It captures `dapr/kit` logger output to verify warnings for each failed publish/reconnect attempt and reconnect wait, and an error at retry exhaustion. It also covers NACKs preserved across retry cancellation and later transport failures, `ACCESS_REFUSED` termination, reconnect-failure exhaustion, concurrent waiters that must not abort the lock holder, error isolation between concurrent callers, stale connection generations and a publish queued behind `Close`.\n- `rabbitmq_publish_transport_test.go` runs the real `amqp091-go` client against an in-process AMQP 0-9-1 peer over `net.Pipe`. It covers transport cancellation at dial, TLS, AMQP and authentication handshakes, channel open, confirm setup, exchange declaration, write and confirmation. It also covers native ack/nack, a NACK followed by disconnect, asynchronous `channel.close`/`connection.close` 403 after publication, publishing without confirms, close and recovery, and `Init` cancellation with the `connection_timeout` URI handshake timeout.\n- `rabbitmq_test.go` adds `Init` cancellation before and during dial. Existing unit and integration tests are adapted to the context-aware lock and dial signature. The `TestMustReconnectOnAMQPError` fixture now starts with an explicitly open channel and also asserts the closed-channel case.\n\nRun locally with Go 1.26.10:\n\n- `go test -count=1 ./pubsub/rabbitmq`: 62 top-level tests, no skips\n- `go test -race -count=10 -run '^(TestPublishPublic|TestInit)' ./pubsub/rabbitmq`\n- `go test -race -count=10 -run '^TestMustReconnectOnAMQPError$' ./pubsub/rabbitmq`\n- `go vet ./pubsub/rabbitmq`, `gofmt -s -l`, `go mod tidy -diff`\n- `golangci-lint run --new-from-rev=<base> ./pubsub/rabbitmq/...` with v2.10.1: no new issues\n- `go test -tags=integration_test -run '^$' ./pubsub/rabbitmq`: compile only\n\nThe integration, certification and conformance suites were not run. The integration-tag command above compiled tests without executing them.\n\n### Known limits of `amqp091-go`\n\n- If the transport fails during the authentication step, `amqp091-go` returns its generic `ErrCredentials` (`Exception (403) Reason: \"username or password not allowed\"`) whatever the actual cause, without the broker's `ACCESS_REFUSED` reply text. It is passed through as is rather than rewritten into an `ACCESS_REFUSED` reply; because its code is 403, it ends retries. When the caller's context is canceled, the cancellation error is returned instead, since the abort itself can produce `ErrCredentials`.\n- `amqp091-go` writes `close-ok` before it delivers the close reason to `NotifyClose` listeners. If that write blocks, a canceled `Publish` can return the cancellation error before the broker's close reason becomes observable.\n\n### Not included\n\n- Integration, certification or conformance suite execution against a real RabbitMQ broker, for example NACKs under `reject-publish` overflow, revoked credentials, and subscription recovery and redelivery after a transport abort.\n- Mapping of these errors through the Dapr runtime publish API (HTTP/gRPC status and `ErrorInfo`).\n- Mandatory publishing and correlated unroutable returns (#4765).\n\n### Relation to #4766\n\n#4766 changes the two retry waits so that cancellation no longer returns `nil`, which is one part of this PR. Thanks for that fix. Both PRs change the same lines in `Publish`, so they conflict. This PR selects the error differently: a NACK or server exception from an attempt is returned in preference to the cancellation error. It also covers the other paths listed in #4764. I'm happy to rebase onto #4766 if it merges first, or to split this PR into smaller ones (for example retry/reconnect error handling, confirmation handling and transport cancellation) if that is easier to review.\n\n## Issue reference\n\nPartially addresses #4764. The items under \"Not included\" remain open there.\n\n## Checklist\n\n* [x] Code compiles correctly\n* [x] Created/updated tests\n* [ ] Extended the documentation\n    * [ ] Created the dapr/docs PR: N/A, no metadata or configuration changes; cancellation and subscription effects are disclosed above\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+                  "state": null,
+                  "user": null,
+                  "assignees": null,
+                  "labels": null,
+                  "milestone": null,
+                  "state_reason": null,
+                  "comments": null,
+                  "created_at": null,
+                  "updated_at": null,
+                  "closed_at": null,
+                  "display_url": "https://github.com/dapr/components-contrib/pull/4767",
+                  "display_title": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation"
+                }
+              ]
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 2,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Action completed."
+              }
+            ],
+            "structuredContent": {
+              "url": "https://github.com/dapr/components-contrib/pull/4766",
+              "number": 4766,
+              "state": "open",
+              "merged": false,
+              "mergeable": true,
+              "draft": false,
+              "body": "# Description\n\nWhen a publish attempt failed and the caller's context was canceled while `Publish` was waiting to retry (either the reconnect wait or the normal retry wait), `Publish` returned `nil`. The caller and the Dapr API then treated a failed publish as successful.\n\nBoth waits now return the last publish error joined with `ctx.Err()`, so the caller sees the failure and the original broker error is kept.\n\nA unit test covers both waits using the in-memory broker.\n\n## Issue reference\n\nPartially addresses #4764 (the retry waits returning `nil` on cancellation). The other points in the issue are not changed here.\n\n## Checklist\n\nPlease make sure you've completed the relevant tasks for this PR, out of the following list:\n\n* [x] Code compiles correctly\n* [x] Created/updated tests\n* [ ] Extended the documentation\n    * [ ] Created the dapr/docs PR: N/A, no user-facing configuration or behavior to document",
+              "title": "fix(pubsub/rabbitmq): return error when publish is canceled during retry",
+              "base": "main",
+              "base_sha": "440b15349565bb15f7a88636477864e5a9f8cc72",
+              "head": "rabbitmq-publish-cancel-error",
+              "head_sha": "14bf2f783dff41ef2c927fe1aeb6999c113ffff3",
+              "head_repo_id": 1457551410,
+              "head_repo_full_name": "raus7n/components-contrib",
+              "merge_commit_sha": "6d535c55f094eb1375ea7a809f98c39b104bd508",
+              "user": {
+                "login": "raus7n",
+                "name": "raus7n",
+                "email": null,
+                "avatar_url": "https://avatars.githubusercontent.com/u/232551617?v=4",
+                "id": 232551617
+              },
+              "requested_reviewers": null,
+              "requested_team_reviewers": null,
+              "diff": null,
+              "comments": null,
+              "created_at": "2026-11-14T08:38:46Z",
+              "updated_at": "2026-11-14T08:38:47Z",
+              "closed_at": null,
+              "merged_at": null,
+              "commits": 1,
+              "changed_files": 2,
+              "additions": 28,
+              "deletions": 2,
+              "display_url": "https://github.com/dapr/components-contrib/pull/4766",
+              "display_title": "fix(pubsub/rabbitmq): return error when publish is canceled during retry"
+            },
+            "isError": false
+          }
+        }
+      },
+      {
+        "id": 3,
+        "result": {
+          "status": "fulfilled",
+          "value": {
+            "chunk_id": "54ac2d",
+            "wall_time_seconds": 0.18794735,
+            "exit_code": 0,
+            "original_token_count": 869,
+            "output": "PASS: all 17 approved artifact bindings unchanged.\nproposalSha256 5c4c26908c5e54180cdd6fd8e718dcc64bb86980c48df26da4b3ee9b1dee6259\n\n/home/administrator/.nvm/versions/node/v26.4.0/bin/node\n/home/administrator/.nvm/versions/node/v26.4.0/bin/npx\ndocs/implementation/ext-protection-1-parent-merged-2026-10-30/loop7/platform-commitlint.json\ndocs/implementation/ext-protection-1-parent-merged-2026-10-30/loop7/eventstore-commitlint.json\n_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/platform-commitlint.log\ncommitlint.config.mjs\ndocs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/platform-commitlint.json\ndocs/implementation/ext-protection-1-parent-merged-2026-10-30/loop6/eventstore-commitlint.json\n_bmad-output/implementation-artifacts/evidence/2-5/local-lifecycle-20261024/builds-commitlint.log\n_bmad-output/implementation-artifacts/evidence/2-5/review-fixes-20261025/final-parent/platform-commitlint.log\n_bmad-output/implementation-artifacts/evidence/2-5/review-fixes-20261025/final-parent/builds-commitlint.log\n_bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/builds-commitlint.command.json\n_bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/commitlint-pins.json\n_bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/platform-commitlint.log\n_bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/builds-commitlint.log\n_bmad-output/implementation-artifacts/evidence/2-5/full-story-patches-20261025/platform-commitlint.command.json\n_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/builds-commitlint.command.json\n_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/platform-commitlint.log.gz\n_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/builds-commitlint.log.gz\n_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/commitlint-pins.json\n_bmad-output/implementation-artifacts/evidence/2-5/source-review-fixes-20261028/platform-commitlint.log\ndocs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/eventstore-record-commitlint.log\ndocs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/platform-record-commitlint.log\npackage.json\ndocs/implementation/ext-protection-1-loop7/verification/paired-checkout-commitlint-04.log\n_bmad-output/implementation-artifacts/evidence/1-13/pass-5/commitlint-validation.json\n_bmad-output/implementation-artifacts/evidence/1-13/pass-3/post-review-builds-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-13/pass-3/post-review-platform-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/commitlint-version.txt\n_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/pr-message-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/approved-history-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/4-17/candidate-01-hosted/pr-title-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-10/eventstore-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-10/memories-review3-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-10/platform-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-10/eventstore-review3-commitlint.txt\n_bmad-output/implementation-artifacts/evidence/1-10/memories-commitlint.txt\n"
+          }
+        }
+      }
+    ]
+  },
+  "status": "SUBMITTED_AND_VERIFIED",
+  "stages": [
+    {
+      "stage": "source-workspace-started",
+      "recordedUtc": "2026-11-14T18:11:31.290898+00:00",
+      "workspace": "/tmp/hexalith-job.4wXACFod/upstream-source"
+    },
+    {
+      "stage": "public-commit-prepared",
+      "recordedUtc": "2026-11-14T18:11:33.582940+00:00",
+      "head": "c6ba13793f181461afb3c74c9300f5876879861f",
+      "tree": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c",
+      "parents": [
+        "96c3259b7c12a476edd208848153d3cf72a8c4f0"
+      ],
+      "author": {
+        "name": "Jérôme Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "Jérôme Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "messageSha256": "01df1994f5e703fcc8dc61ff2cb4d95322dd24d0ad6b1927162780c64ba36632",
+      "bPatchSha256": "7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392",
+      "upstreamDiffSha256": "4866323f01a31cf815a7c6f9e91aadba561caf341c6aa6fed7f2adb51e331f5e",
+      "exactMessageAndDiffsVerified": true,
+      "newCommitCount": 1,
+      "bundleSha256": "9d66a17adb813c55593ed12be66bcdfcdc71ecf7ee5a3b972ebacd019366e528"
+    },
+    {
+      "stage": "branch-push-started",
+      "recordedUtc": "2026-11-14T18:11:34.884636+00:00",
+      "head": "c6ba13793f181461afb3c74c9300f5876879861f",
+      "ref": "refs/heads/fix/rabbitmq-mandatory-returns-4765",
+      "mode": "create-only: empty expected old OID lease; existing refs cannot be updated"
+    },
+    {
+      "stage": "branch-pushed",
+      "recordedUtc": "2026-11-14T18:11:37.766843+00:00",
+      "head": "c6ba13793f181461afb3c74c9300f5876879861f",
+      "ref": "refs/heads/fix/rabbitmq-mandatory-returns-4765",
+      "output": "To https://github.com/jpiquot/components-contrib.git\n*\tHEAD:refs/heads/fix/rabbitmq-mandatory-returns-4765\t[new branch]\nDone\n"
+    },
+    {
+      "stage": "branch-head-readback-verified",
+      "recordedUtc": "2026-11-14T18:11:38.166763+00:00",
+      "head": "c6ba13793f181461afb3c74c9300f5876879861f"
+    },
+    {
+      "stage": "connector-pr-create-denied",
+      "recordedUtc": "2026-11-14T18:12:46.734368+00:00",
+      "responseFile": "pr-create-response.json",
+      "reason": "GitHub integration 403 Resource not accessible by integration; no PR created by this attempt",
+      "fallback": "same approved request through authenticated gh CLI"
+    },
+    {
+      "stage": "cli-pr-create-started",
+      "recordedUtc": "2026-11-14T18:12:47.211793+00:00",
+      "argv": [
+        "gh",
+        "pr",
+        "create",
+        "--repo",
+        "dapr/components-contrib",
+        "--base",
+        "main",
+        "--head",
+        "jpiquot:fix/rabbitmq-mandatory-returns-4765",
+        "--title",
+        "feat(pubsub/rabbitmq): opt-in mandatory publishing with correlated returns",
+        "--body-file",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-b-submission-2026-11-14/pr-body.md"
+      ]
+    },
+    {
+      "stage": "pull-request-created",
+      "recordedUtc": "2026-11-14T18:12:51.777821+00:00",
+      "argv": [
+        "gh",
+        "pr",
+        "create",
+        "--repo",
+        "dapr/components-contrib",
+        "--base",
+        "main",
+        "--head",
+        "jpiquot:fix/rabbitmq-mandatory-returns-4765",
+        "--title",
+        "feat(pubsub/rabbitmq): opt-in mandatory publishing with correlated returns",
+        "--body-file",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-b-submission-2026-11-14/pr-body.md"
+      ],
+      "exitCode": 0,
+      "stdout": "https://github.com/dapr/components-contrib/pull/4768\n",
+      "stderr": "Warning: 4 uncommitted changes\n",
+      "number": 4768,
+      "url": "https://github.com/dapr/components-contrib/pull/4768"
+    },
+    {
+      "stage": "readback-verified",
+      "recordedUtc": "2026-11-14T18:14:19.588343+00:00",
+      "checks": {
+        "title": true,
+        "body": true,
+        "head": true,
+        "base": true,
+        "headRepository": true,
+        "open": true,
+        "draft": true,
+        "sourceScope": true
+      },
+      "exactRawCommit": true,
+      "remoteReadbackWorkspaceRemoved": true,
+      "evidence": [
+        "pr-readback.json",
+        "remote-commit-verification.json"
+      ]
+    }
+  ],
+  "branchWorkspaceCleanup": {
+    "jobExitCode": 0,
+    "workspace": "/tmp/hexalith-job.4wXACFod/upstream-source",
+    "removed": true
+  },
+  "pullRequest": {
+    "number": 4768,
+    "url": "https://github.com/dapr/components-contrib/pull/4768",
+    "head": "c6ba13793f181461afb3c74c9300f5876879861f",
+    "tree": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c"
+  },
+  "publicationArtifacts": {
+    "branch-commands.json": {
+      "sha256": "a77fa049657dcff9272bb755d8fd497a6ee60d646ee10cf6c7cf048e5c00511e",
+      "bytes": 195805
+    },
+    "commitlint.txt": {
+      "sha256": "e81c4c06064ab6374cef47da8736e4795cf300ccdd92025e0a65afd5d30128ce",
+      "bytes": 1077
+    },
+    "package-b-public.bundle": {
+      "sha256": "9d66a17adb813c55593ed12be66bcdfcdc71ecf7ee5a3b972ebacd019366e528",
+      "bytes": 12522
+    },
+    "pr-cli-submit.json": {
+      "sha256": "45e1125e1bc1d6b488654447cfccc5161023ce97db7fbfe21676989880308503",
+      "bytes": 630
+    },
+    "pr-create-response.json": {
+      "sha256": "209fffbf4b9b7a90fe07bf04673077443bfc6fda2d42bb82e4534b5f85451596",
+      "bytes": 743
+    },
+    "pr-creation-preflight.json": {
+      "sha256": "e1a3d2d94e853b123de803e12ff27747234a9da357369cdda2aaf1d1883c17bf",
+      "bytes": 298
+    },
+    "pr-readback.json": {
+      "sha256": "9fb68818944cedb5f549dc2d9295aabac63e61bfed9beaa6ba1f9652a1df9d71",
+      "bytes": 10309
+    },
+    "public-commit.json": {
+      "sha256": "b74abdf2884f930d51decc0e8950afee72a1bb48310256a556275811aaab12db",
+      "bytes": 730
+    },
+    "public-commit.txt": {
+      "sha256": "a5dcb3511050d41c369524ad57fb03d98d14721c5ecb198642677400e16de58f",
+      "bytes": 1242
+    },
+    "push.txt": {
+      "sha256": "a9e71f0d12d6e507cdb60dfa473e95c0480377b416c0763d126c498456972793",
+      "bytes": 125
+    },
+    "remote-commit-verification.json": {
+      "sha256": "64a5a40371c11ef333eaaf089db2f17b99e7a017c83e5ba84ca58f6eabe78cc9",
+      "bytes": 549
+    }
+  }
+}

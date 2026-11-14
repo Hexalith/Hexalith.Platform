@@ -1,0 +1,139 @@
+{
+  "status": "PREPARED_NOT_APPROVED",
+  "scope": "Local publication proposal only; no remote writes authorized",
+  "destination": {
+    "repository": "dapr/components-contrib",
+    "baseBranch": "main",
+    "baseSha": "440b15349565bb15f7a88636477864e5a9f8cc72",
+    "headRepository": "jpiquot/components-contrib",
+    "headBranch": "fix/rabbitmq-mandatory-returns-4765",
+    "draft": false
+  },
+  "dependency": {
+    "pullRequest": 4767,
+    "head": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "mustPreserveCommit": true,
+    "unmergedUpstreamDiffIncludes": "Package A and Package B",
+    "newCommitCount": 1,
+    "newCommitParent": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "newCommitTree": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c",
+    "newCommitSha": null
+  },
+  "exactText": {
+    "title": "pr-title.txt",
+    "titleNormalization": "remove one final LF only",
+    "body": "pr-body.md",
+    "bodyNormalization": "none",
+    "commitMessage": "commit-message.txt",
+    "commitNormalization": "none"
+  },
+  "proposedWrites": [
+    "create one new branch in the existing fork containing the unchanged A commit and one new signed-off B commit",
+    "open one upstream pull request targeting main"
+  ],
+  "forbiddenWrites": [
+    "update existing issue/PR/comment/labels",
+    "change Package A branch",
+    "push Platform or EventStore",
+    "force-push",
+    "merge"
+  ],
+  "ownerDecisionPending": [
+    "publish the exact dependent A+B proposal",
+    "wait for A and prepare a fresh proposal when the base changes"
+  ],
+  "preflight": "HALT for any base/A/source/text drift, existing head branch or existing matching PR; recheck authenticated account and fork permission before writing",
+  "evidence": {
+    "historicalTestSubject": "25bc4c802593389726c090ab282451b65b2e295a",
+    "treeEqualityVerified": true,
+    "newTestExecution": false,
+    "requiredReceipts": 15,
+    "negativeControls": 18
+  },
+  "artifacts": {
+    "README.md": {
+      "sha256": "ca2327f622ae13d99d0092079cb4499b83bb77e639c5f0d93fd29c52ff25e13e",
+      "bytes": 5952
+    },
+    "commit-message.txt": {
+      "sha256": "01df1994f5e703fcc8dc61ff2cb4d95322dd24d0ad6b1927162780c64ba36632",
+      "bytes": 1022
+    },
+    "package-b.patch": {
+      "sha256": "7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392",
+      "bytes": 50637
+    },
+    "package-b.stat.txt": {
+      "sha256": "ebe9d62991b586f39bffe1c8e6b4e7a170a6df18f5ed0b40870f1794b4b0eeaa",
+      "bytes": 511
+    },
+    "pr-body.md": {
+      "sha256": "54a1ca09191768530a3325f0bfda512db5a6fbcf9c722c8e536789d9d8da9c8e",
+      "bytes": 8709
+    },
+    "pr-title.txt": {
+      "sha256": "afb74b55ffcaf00deea10e9ed99475315def6704d9d03c72807a9d88f62e827f",
+      "bytes": 75
+    },
+    "preservation-baseline.json": {
+      "sha256": "f73fdd146b172078d054cdf2c843c4b9199617b93a7f9b46d647fe974a586347",
+      "bytes": 70320
+    },
+    "receipt-revalidation.txt": {
+      "sha256": "454f622d7367c95536f5f20ebf594166d66896dd15591e86e8498306f985621e",
+      "bytes": 1079
+    },
+    "reverification/receipt-revalidation.txt": {
+      "sha256": "454f622d7367c95536f5f20ebf594166d66896dd15591e86e8498306f985621e",
+      "bytes": 1079
+    },
+    "reverification/verification.json": {
+      "sha256": "79c77c5ed02f7506fca3753e8645de9fa63cf034fa8c22071bf2152e9a0a598b",
+      "bytes": 8284
+    },
+    "source-verification.json": {
+      "sha256": "521413786ef727fa5d95a167ffb454418c37b1f8f1081a591b6541437834c2b9",
+      "bytes": 3998
+    },
+    "upstream-main.diff": {
+      "sha256": "4866323f01a31cf815a7c6f9e91aadba561caf341c6aa6fed7f2adb51e331f5e",
+      "bytes": 119863
+    },
+    "upstream-main.stat.txt": {
+      "sha256": "8e7ba2fec0217efa018f072c94696d8a36d2c51f254a9b5f312985b8be2998db",
+      "bytes": 589
+    },
+    "upstream-observation.json": {
+      "sha256": "b3b1b757a4a9e0fb42db7fe2351d27e15a2f81442a8638d7631b050dbc9fc909",
+      "bytes": 19070
+    },
+    "verify.py": {
+      "sha256": "4d1c28b0cbced42f0108a2a1bd50b3209741a1966479e0e6d0539a0bf4f7f327",
+      "bytes": 5196
+    },
+    "workflow-head-readback.json": {
+      "sha256": "b896d7ab1a7adabfd165a6f8fa16dfb2ed697b24112999c35f170f8b3694a4d2",
+      "bytes": 2185
+    },
+    "workspace-cleanup.json": {
+      "sha256": "e18e5b8f66a2d5ef08246d09f682114ff8411dcca449eb06d34c06c2ed2f926f",
+      "bytes": 549
+    }
+  },
+  "commitIdentities": {
+    "author": {
+      "name": "Jérôme Piquot",
+      "email": "jpiquot@itaneo.com"
+    },
+    "committer": {
+      "name": "Jérôme Piquot",
+      "email": "jpiquot@itaneo.com"
+    },
+    "verification": "Verify both identities on the created commit and again on remote readback, alongside the exact signoff/coauthor message"
+  },
+  "branchCreation": {
+    "mode": "create-only",
+    "required": "atomic GitHub create-ref or Git push lease requiring destination absence",
+    "onCollision": "HALT without changing any existing branch"
+  }
+}

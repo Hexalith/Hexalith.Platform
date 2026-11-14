@@ -1,0 +1,26 @@
+tree 50f8ef2d3d3a240595d6088917f9d51afe04ec3c
+parent 96c3259b7c12a476edd208848153d3cf72a8c4f0
+author Jérôme Piquot <jpiquot@itaneo.com> 1794679893 +0100
+committer Jérôme Piquot <jpiquot@itaneo.com> 1794679893 +0100
+
+feat(pubsub/rabbitmq): opt-in mandatory publishing with correlated returns
+
+Add publishMandatory, default false, requiring publisherConfirm. Reject
+the incompatible configuration before opening a connection.
+
+In mandatory mode register one bounded return listener per channel
+generation and resolve a return after the publication's own ACK. Return
+the reply code and text as a terminal FailedPrecondition error without
+component retries. Match the exchange and routing key, serialize callers
+through confirmation, and refuse reuse of an unresolved generation.
+Application message IDs are not used for correlation.
+
+Preserve opt-out behavior and Package A's error handling, logging, retry
+limits and transport-abort ordering. Add metadata, fake-channel and native
+protocol-peer coverage, plus a real-broker integration test that was
+compiled but not executed locally.
+
+Depends on #4767. Partially addresses #4765.
+
+Signed-off-by: Jérôme Piquot <jpiquot@itaneo.com>
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
