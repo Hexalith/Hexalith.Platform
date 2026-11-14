@@ -2,7 +2,7 @@
 title: 'Story 4.17: RabbitMQ Package B local upstream contribution'
 type: 'feature'
 created: '2026-11-14'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'f5f30e150f1c5ec72acac97054d69cd1e42f5da5'
@@ -60,15 +60,64 @@ Upstream paths are under `pubsub/rabbitmq/` at `96c3259b7c12a476edd208848153d3cf
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `metadata.go`, `metadata.yaml`, `metadata_test.go` -- add the option and its cross-field rule -- opt-in API.
-- [ ] `rabbitmq.go` -- listener, drain, post-ACK return check, sentinel, classification and forced reconnect -- exact correlation within existing machinery.
-- [ ] `rabbitmq_publish_test.go`, `rabbitmq_publish_transport_test.go`, `rabbitmq_integration_test.go` -- cover every matrix row at public `Publish`, including the native return-then-ACK peer, a concurrent routed caller beside an unroutable one, duplicate MessageIds, cancellation and channel replacement -- deterministic, race-clean proof.
-- [ ] Platform `package-b-local-2026-11-14/` -- `contribution.patch` relative to `96c3259b`, source/toolchain identities, receipts, `coverage-map.json`, `integration-proposal.md` (the work-package recipe, unexecuted) and `README.md` -- reviewable record.
-- [ ] Records (parent) -- a dated section in `docs/implementation/story-4-17-next-candidate-intake.md`; a dated 4.17 comment in `sprint-status.yaml`; a dated section in the EventStore `story-3-21-broker-remediation-evidence-contract.md` as a local commit only.
+- [x] `metadata.go`, `metadata.yaml`, `metadata_test.go` -- add the option and its cross-field rule -- opt-in API.
+- [x] `rabbitmq.go` -- listener, drain, post-ACK return check, sentinel, classification and forced reconnect -- exact correlation within existing machinery.
+- [x] `rabbitmq_publish_test.go`, `rabbitmq_publish_transport_test.go`, `rabbitmq_integration_test.go` -- cover every matrix row at public `Publish`, including the native return-then-ACK peer, a concurrent routed caller beside an unroutable one, duplicate MessageIds, cancellation and channel replacement -- deterministic, race-clean proof.
+- [x] Platform `package-b-local-2026-11-14/` -- `contribution.patch` relative to `96c3259b`, source/toolchain identities, receipts, `coverage-map.json`, `integration-proposal.md` (the work-package recipe, unexecuted) and `README.md` -- reviewable record.
+- [x] Records (parent) -- a dated section in `docs/implementation/story-4-17-next-candidate-intake.md`; a dated 4.17 comment in `sprint-status.yaml`; a dated section in the EventStore `story-3-21-broker-remediation-evidence-contract.md` as a local commit only.
 
 **Acceptance Criteria:**
 - Given `96c3259b` plus `contribution.patch`, when the Package A check set runs (14 receipts, with `--new-from-rev` and `diff --stat` set to `96c3259b`) plus `make check-component-metadata`, then all pass with no skips. Unit and focused-race counts are at least Package A's 62/196 and 230/720, and there are 0 new lint issues.
 - Given the completed slice, when the records are read, then the gates remain: an official supported Dapr release, EventStore admission, Builds alignment and a separate Platform full-matrix proposal. No remote write occurred.
+
+## Implementation Notes
+
+- Contribution: [contribution.patch](../../docs/implementation/story-4-17-upstream/package-b-local-2026-11-14/contribution.patch), SHA-256 `422dda73031e0bcbcf7a5e39329581f00a70486c2f7d23e9314041c4aaf3a29f`, seven `pubsub/rabbitmq` files relative to `96c3259b`. Its tree is `a7bc605f9388bbb0308f7a08d2cff9b2fa6123b3`. All 15 receipts PASS: unit 73/230, focused race 330/980, legacy 10/10, 0 new lint issues, component metadata. 15/15 negative controls are detected.
+- Two departures from the Code Map:
+  - The return listener is registered lazily by `rabbitMQAMQPChannel` before its first mandatory publish, not in `dialWithConfig`. This keeps existing dial call sites and tests unchanged.
+  - The forced reconnect returns a nil channel through the new `unresolvedChannel()`, so `mustReconnect` itself is unchanged. A later caller that meets a marked generation spends one attempt and `ReconnectWait` before reconnecting.
+- Parent matrix audit: every mapped test has pass events in `focused-race.log.gz`/`full-unit.log.gz`, with no skip or fail events, across all nine coverage rows.
+- Concurrent sessions:
+  - During this slice another session committed and pushed the draft spec with submodule gitlinks (`70a016a98c97c19656a4c279a93b88e255d41b07`). It also rewrote the baseline `f5f30e150f1c5ec72acac97054d69cd1e42f5da5` as content-equivalent `e58f4fc67c428494c6903f3d87c537c06aeb4ab5` on `origin/main`.
+  - The EventStore record is local commit `d869fb858c0c639824595dc61db382ec8b5ed79c`, which is not pushed.
+
+## Spec Change Log
+
+## Review Triage Log
+
+Round 1 (diff: Platform records, package directory including ignored logs, `contribution.patch` and the EventStore commit `d869fb858c0c639824595dc61db382ec8b5ed79c`; Blind Hunter BH, Edge Case Hunter ECH, Verification Gap VG). All three layers reported before triage. Each finding was graded before grouping.
+
+| ID | Verdict | Evidence and route |
+|---|---|---|
+| VG1/BH2 | medium | Pre-verified. Removing `returned.Exchange != c.exchange` passes the full suite. The only native mismatch changes just the routing key, and the negative control removes the whole condition. Most publishes have key `""`, so the exchange is the real discriminator → **patch**: add a native mismatched-exchange stage and an exchange-only negative control. |
+| VG2 | medium | Pre-verified. Dropping `key: key` from the confirmation literal passes the full suite, because no mandatory test publishes with `routingKey` → **patch**: add a native unroutable-with-routing-key stage and a negative control. |
+| BH1/ECH3/VG-o1 | low | `stale := nativeReturns(t, r)` runs before the lazy registration, so it is always nil and `NotEqual(stale, fresh)` is vacuous. Reuse would still be caught indirectly → **patch**: capture after the first publish starts, require it non-nil, then compare. |
+| BH3 | low | The concurrent test uses different exchanges, so a misattribution would be caught by the mismatch guard. Ordering alone, which protects same-exchange and same-key callers, has no concurrent test → **patch**: share the exchange and key and let the peer return by body. |
+| ECH4/ECH10a | low | The 20 ms `WithTimeout` starts at subtest start under `t.Parallel()`. Under load it can expire before the publish, and Publish then returns DeadlineExceeded, not the unroutable error → **patch**: a deadline long enough that only the confirmation wait reaches it. |
+| BH5 | low | `withCode` returns an error with a status unchanged, so the second `NewTerminalError` is a no-op. The extra assignment still enlarges the upstream diff → **patch**: fold `errors.Is(err, errPublishUnroutable)` into the existing terminal condition. |
+| BH7 | low | The `metadata.yaml` wording "non-retriable" overstates it: the upstream `NewRetriableError` comment says the runtime retries every error without a resiliency `matching`. The text also omits that publishing before any subscriber binds a queue now fails → **patch**: reword. |
+| BH4 | low | A mismatched return fails that attempt as non-conclusive, then retries on a fresh channel, which matches the frozen "non-conclusive" row (the unroutable row alone is terminal). The broker had ACKed the first attempt, so a retry can duplicate it; that is at-least-once, as in Package A, but undisclosed → **patch**: one README sentence. |
+| BH8 | low | A new metadata field normally needs a dapr/docs reference update, and none is recorded → **patch**: add it to the README's not-included list. |
+| BH10a | low | `publishMandatory_value=true/TRUE` are compatible cases listed under "Incompatible config" → **patch**: move them to the opt-in row. |
+| BH11 | low | The scripts write into their own directory, so a rerun overwrites the retained receipts → **patch**: README note to copy them first. |
+| BH12/BH14a | low | `remoteWrites: []` and `remoteReads` are declared literals. `make check-component-metadata` also resolves `github.com/dapr/components-contrib@main`, which is unlisted → **patch**: label them as declared and add that read. |
+| BH18 | low | The README cites the SDK ordering but not RabbitMQ's return-before-ACK guarantee, and the proposal does not record wire order → **patch**: cite rabbitmq.com/docs/confirms and add a proposal step. |
+| ECH11 | low | The records say Platform was not pushed, but another session's `70a016a98c97c19656a4c279a93b88e255d41b07` published the draft spec → **patch**: one sentence in the README and intake. |
+| BH15 | low | The EventStore record omits the forced-reconnect consequence and will need the review outcome → **patch**: update it with the final records. |
+| BH16/ECH6 | medium | The EventStore checkout `d869fb858c0c` is ahead of every remote, and a concurrent `/pushall` already published `70a016a9` with unpushed gitlink `3c3a8c70f`. The hazard predates this slice, and the fix is shared submodule state outside the diff → **defer**, surfaced at presentation. |
+| BH6 | low | A return buffered alongside a NACK is discarded silently by the next drain. RabbitMQ does not return a routed, NACKed message, and logging needs logger plumbing in the adapter → rejected. |
+| BH9 | low | A later caller pays one attempt plus `ReconnectWait` after a mark. The common cause, a cancellation, already aborted the transport under Package A, so that cost exists. Inline reconnect adds branches → rejected (already disclosed). |
+| ECH1 | low | A caller can see repeated `errPublishUnresolved` only if other callers' cancellations keep marking each new generation inside its window. It is bounded by 3 attempts and returns a retriable error → rejected (the fix adds guards). |
+| BH10b | low | `TestCreateMetadata` and `TestMandatoryReturnListenerClosed` run only in the non-race suite. They have no concurrency → rejected. |
+| BH13 | false | `analyzerRan` is a weak heuristic, but exit 0 plus the negative control (yaml entry removed → exit 2) prove the analyzer checks the entry. |
+| BH14b | low | git, make and python3 versions are unrecorded. They do not affect Go test outcomes → rejected. |
+| BH17 | low | `baseline_commit` was rewritten by another session's rebase; the fix edits this spec, and the Implementation Notes record the equivalent → rejected. |
+| ECH2 | false | A nil confirmation in mandatory mode is unreachable: `createMetadata` rejects mandatory without confirms before any connection, metadata is immutable afterward, and `reconnect` calls `Confirm` whenever `PublisherConfirm` is set. |
+| ECH5 | low | A fixed three-generation slice would panic if `publishMaxRetries` grew. The failure is loud and hypothetical → rejected. |
+| ECH7 | low | `urlopen` has no timeout, so a hang would be visible (Package A ECH11 precedent) → rejected. |
+| ECH8 | low | A crashed `checks.py` makes `run-checks.py` raise loudly; `run-with-temp` cleanup still applies → rejected. |
+| ECH9 | low | GO* variables are not scrubbed. The host has none (Package A ECH12 precedent) → rejected. |
+| ECH10b | low | Other windows wait inside the 2 s retry delay and fail only if the test stalls about 2 s (disclosed) → rejected. |
 
 ## Design Notes
 

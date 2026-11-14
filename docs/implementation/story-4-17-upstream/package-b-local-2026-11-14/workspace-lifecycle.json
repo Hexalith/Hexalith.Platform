@@ -1,0 +1,26 @@
+{
+  "startedUtc": "2026-11-14T13:16:11.105064+00:00",
+  "completedUtc": "2026-11-14T13:22:54.751939+00:00",
+  "jobs": [
+    {
+      "role": "source",
+      "directory": "/tmp/hexalith-job.jtEXvfwl",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    },
+    {
+      "role": "tools-and-caches",
+      "directory": "/tmp/hexalith-job.Qa5Hmfwl",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    }
+  ],
+  "remoteWrites": [],
+  "remoteReads": [
+    "git ls-remote of refs/pull/4767/head and refs/heads/main",
+    "git fetch of the official base by SHA",
+    "go.dev and golangci-lint release downloads",
+    "Go module proxy downloads"
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,42 @@
+WORKSPACE_READY /tmp/hexalith-job.mcmJ2hxC/components-contrib
+CHECKS_READY /tmp/hexalith-job.GGLYZLvq
+{"log": "diff-stat.log", "exitCode": 0}
+{"log": "gofmt.log", "exitCode": 0}
+{"log": "diff-check.log", "exitCode": 0}
+{"log": "golangci-lint.log", "exitCode": 0}
+{"log": "golangci-lint-all-issues.log", "exitCode": 0}
+{"log": "vet.log", "exitCode": 0}
+{"log": "full-unit.log.gz", "exitCode": 0}
+{"log": "focused-race.log.gz", "exitCode": 0}
+{"log": "legacy-fixture-race.log", "exitCode": 0}
+{"log": "integration-compile-only.log", "exitCode": 0}
+{"log": "mod-tidy-diff.log", "exitCode": 0}
+{"log": "mod-tidy-compat-diff.log", "exitCode": 0}
+{"log": "certification-mod-tidy-diff.log", "exitCode": 0}
+{"log": "certification-mod-tidy-compat-diff.log", "exitCode": 0}
+{"log": "component-metadata.log", "exitCode": 0}
+{"log": "negative-controls.log", "exitCode": 0}
+CHECKS_RELEASED
+WORKSPACE_RELEASED
+{"startedUtc": "2026-11-14T12:41:03.835925+00:00", "completedUtc": "2026-11-14T12:47:19.070633+00:00", "jobs": [{"role": "source", "directory": "/tmp/hexalith-job.mcmJ2hxC", "wrapperExitCode": 0, "directoryRemoved": true}, {"role": "tools-and-caches", "directory": "/tmp/hexalith-job.GGLYZLvq", "wrapperExitCode": 0, "directoryRemoved": true}], "remoteWrites": [], "remoteReads": ["git ls-remote of refs/pull/4767/head and refs/heads/main", "git fetch of the official base by SHA", "go.dev and golangci-lint release downloads", "Go module proxy downloads"], "status": "PASS"}
+{
+  "status": "PASS",
+  "requiredStatus": "PASS"
+}
+diff-stat PASS {'onlyRabbitMQFiles': True}
+gofmt PASS {'outputEmpty': True}
+diff-check PASS {'outputEmpty': True}
+golangci-lint PASS {'lintSummary': '0 issues.'}
+golangci-lint-all-issues PASS {'lintSummary': '0 issues.'}
+vet PASS {'outputEmpty': True}
+full-unit PASS {'passedTopLevelEvents': 73, 'passedTestAndSubtestEvents': 230, 'uniquePassedTestAndSubtestNames': 230, 'uniquePassedTopLevelNames': 73}
+focused-race PASS {'passedTopLevelEvents': 330, 'passedTestAndSubtestEvents': 980, 'uniquePassedTestAndSubtestNames': 98, 'uniquePassedTopLevelNames': 33}
+legacy-fixture-race PASS {'passedTopLevelEvents': 10, 'passedTestAndSubtestEvents': 10, 'uniquePassedTestAndSubtestNames': 1, 'uniquePassedTopLevelNames': 1}
+integration-compile-only PASS {}
+mod-tidy-diff PASS {'outputEmpty': True}
+mod-tidy-compat-diff PASS {'outputEmpty': True}
+certification-mod-tidy-diff PASS {'outputEmpty': True}
+certification-mod-tidy-compat-diff PASS {'outputEmpty': True}
+component-metadata PASS {}
+negative-controls PASS {}
+coverage PASS []

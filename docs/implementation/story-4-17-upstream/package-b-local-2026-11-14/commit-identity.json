@@ -1,0 +1,34 @@
+{
+  "recordedUtc": "2026-11-14T13:16:13.690854+00:00",
+  "purpose": "disposable local test subject; not pushed and not an approved submission",
+  "branch": "local/rabbitmq-mandatory-returns-4765",
+  "base": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "officialBase": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "head": "25bc4c802593389726c090ab282451b65b2e295a",
+  "tree": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c",
+  "expectedTreeBasePlusPatch": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c",
+  "treeEqualsBasePlusPatch": true,
+  "deltaEqualsContributionPatch": true,
+  "parents": [
+    "96c3259b7c12a476edd208848153d3cf72a8c4f0"
+  ],
+  "author": "Jérôme Piquot <jpiquot@itaneo.com>",
+  "commitCount": 1,
+  "messageSha256": "c74aa66984d9f36ec0111b029ee5845c4602aa874b20ec09aed128189c7d2069",
+  "subject": "feat(pubsub/rabbitmq): opt-in mandatory publishing with correlated returns",
+  "signedOffByPresent": true,
+  "endsWithAttribution": true,
+  "patchSha256": "7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392",
+  "patchBytes": 50637,
+  "diffStat": " pubsub/rabbitmq/metadata.go                        |   8 +\n pubsub/rabbitmq/metadata.yaml                      |  10 +\n pubsub/rabbitmq/metadata_test.go                   |  41 ++\n pubsub/rabbitmq/rabbitmq.go                        | 102 +++-\n pubsub/rabbitmq/rabbitmq_integration_test.go       |  52 +++\n pubsub/rabbitmq/rabbitmq_publish_test.go           | 292 +++++++++++-\n pubsub/rabbitmq/rabbitmq_publish_transport_test.go | 520 +++++++++++++++++++++\n 7 files changed, 1015 insertions(+), 10 deletions(-)\n",
+  "changedFiles": [
+    "pubsub/rabbitmq/metadata.go",
+    "pubsub/rabbitmq/metadata.yaml",
+    "pubsub/rabbitmq/metadata_test.go",
+    "pubsub/rabbitmq/rabbitmq.go",
+    "pubsub/rabbitmq/rabbitmq_integration_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_transport_test.go"
+  ],
+  "statusAfterCommit": ""
+}

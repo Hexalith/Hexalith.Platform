@@ -1,0 +1,17 @@
+feat(pubsub/rabbitmq): opt-in mandatory publishing with correlated returns
+
+Add the publishMandatory metadata option (default false). It requires
+publisherConfirm; Init rejects the combination otherwise. In mandatory mode
+the component publishes with mandatory=true (never immediate) and registers
+one bounded basic.return listener per channel generation.
+
+Each publication resolves its own return after its own ACK: RabbitMQ sends
+the return first and the SDK delivers it before the next frame, while
+channelMutex keeps one publication outstanding per channel. A returned
+publication fails at once with a FailedPrecondition error, carrying the
+reply code and text, that the component does not retry. A return naming another exchange or routing key fails the
+attempt without a conclusive claim. A generation whose mandatory
+publication ended without an observed confirmation is never published on
+again; the next attempt reconnects. The default behavior is unchanged.
+
+Stacked on #4767 for #4765. Local test subject only; not submitted.

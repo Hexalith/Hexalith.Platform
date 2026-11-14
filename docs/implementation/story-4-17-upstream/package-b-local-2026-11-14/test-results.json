@@ -1,0 +1,609 @@
+{
+  "status": "PASS",
+  "requiredStatus": "PASS",
+  "subject": {
+    "base": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "officialBase": "440b15349565bb15f7a88636477864e5a9f8cc72",
+    "head": "25bc4c802593389726c090ab282451b65b2e295a",
+    "tree": "50f8ef2d3d3a240595d6088917f9d51afe04ec3c",
+    "patchSha256": "7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392",
+    "patchFileMatchesSubject": true
+  },
+  "toolchain": {
+    "go": {
+      "indexUrl": "https://go.dev/dl/?mode=json&include=all",
+      "archiveUrl": "https://go.dev/dl/go1.26.10.linux-amd64.tar.gz",
+      "archive": {
+        "filename": "go1.26.10.linux-amd64.tar.gz",
+        "os": "linux",
+        "arch": "amd64",
+        "version": "go1.26.10",
+        "sha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+        "size": 66936659,
+        "kind": "archive"
+      },
+      "verifiedSha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+      "version": "go version go1.26.10 linux/amd64"
+    },
+    "golangciLint": {
+      "archiveUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-linux-amd64.tar.gz",
+      "checksumsUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-checksums.txt",
+      "checksumsSha256": "6fe5e74f65546a089f3ba04bd840e5abcd87a07930615445cf08311a9b71f5a2",
+      "expectedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+      "verifiedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+      "version": "golangci-lint has version 2.10.1 built with go1.26.0 from 5d1e709b on 2026-02-17T15:27:33Z"
+    },
+    "environment": {
+      "GOTOOLCHAIN": "local",
+      "GOMAXPROCS": "4"
+    }
+  },
+  "checks": [
+    {
+      "id": "diff-stat",
+      "argv": [
+        "git",
+        "diff",
+        "--stat",
+        "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+        "HEAD"
+      ],
+      "startedUtc": "2026-11-14T13:16:17.754859+00:00",
+      "endedUtc": "2026-11-14T13:16:17.758240+00:00",
+      "exitCode": 0,
+      "log": "diff-stat.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "changedFiles": [
+        "pubsub/rabbitmq/metadata.go",
+        "pubsub/rabbitmq/metadata.yaml",
+        "pubsub/rabbitmq/metadata_test.go",
+        "pubsub/rabbitmq/rabbitmq.go",
+        "pubsub/rabbitmq/rabbitmq_integration_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_transport_test.go"
+      ],
+      "onlyRabbitMQFiles": true,
+      "result": "PASS"
+    },
+    {
+      "id": "gofmt",
+      "argv": [
+        "gofmt",
+        "-s",
+        "-l",
+        "pubsub/rabbitmq/metadata.go",
+        "pubsub/rabbitmq/metadata_test.go",
+        "pubsub/rabbitmq/rabbitmq.go",
+        "pubsub/rabbitmq/rabbitmq_integration_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+        "pubsub/rabbitmq/rabbitmq_test.go"
+      ],
+      "startedUtc": "2026-11-14T13:16:17.776859+00:00",
+      "endedUtc": "2026-11-14T13:16:17.785019+00:00",
+      "exitCode": 0,
+      "log": "gofmt.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+        "HEAD"
+      ],
+      "startedUtc": "2026-11-14T13:16:17.802418+00:00",
+      "endedUtc": "2026-11-14T13:16:17.805419+00:00",
+      "exitCode": 0,
+      "log": "diff-check.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "golangci-lint",
+      "argv": [
+        "golangci-lint",
+        "run",
+        "--timeout=10m",
+        "--new-from-rev=96c3259b7c12a476edd208848153d3cf72a8c4f0",
+        "./pubsub/rabbitmq/..."
+      ],
+      "startedUtc": "2026-11-14T13:16:17.822776+00:00",
+      "endedUtc": "2026-11-14T13:16:29.230527+00:00",
+      "exitCode": 0,
+      "log": "golangci-lint.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "lintSummary": "0 issues.",
+      "result": "PASS"
+    },
+    {
+      "id": "golangci-lint-all-issues",
+      "argv": [
+        "golangci-lint",
+        "run",
+        "--timeout=10m",
+        "--new-from-rev=96c3259b7c12a476edd208848153d3cf72a8c4f0",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "./pubsub/rabbitmq/..."
+      ],
+      "startedUtc": "2026-11-14T13:16:29.249384+00:00",
+      "endedUtc": "2026-11-14T13:16:29.706452+00:00",
+      "exitCode": 0,
+      "log": "golangci-lint-all-issues.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "lintSummary": "0 issues.",
+      "result": "PASS"
+    },
+    {
+      "id": "vet",
+      "argv": [
+        "go",
+        "vet",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T13:16:29.724671+00:00",
+      "endedUtc": "2026-11-14T13:16:31.224517+00:00",
+      "exitCode": 0,
+      "log": "vet.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "full-unit",
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=120s",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T13:16:31.243539+00:00",
+      "endedUtc": "2026-11-14T13:16:47.966462+00:00",
+      "exitCode": 0,
+      "log": "full-unit.log.gz",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "passedTopLevelEvents": 73,
+      "passedTestAndSubtestEvents": 232,
+      "uniquePassedTestAndSubtestNames": 232,
+      "uniquePassedTopLevelNames": 73,
+      "skipped": [],
+      "failed": [],
+      "baselineFloors": {
+        "passedTopLevelEvents": 62,
+        "passedTestAndSubtestEvents": 196,
+        "uniquePassedTestAndSubtestNames": 196
+      },
+      "meetsBaselineFloors": true,
+      "result": "PASS"
+    },
+    {
+      "id": "focused-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-timeout=180s",
+        "-run",
+        "^(TestPublishPublic|TestInit)",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T13:16:47.996265+00:00",
+      "endedUtc": "2026-11-14T13:18:26.495843+00:00",
+      "exitCode": 0,
+      "log": "focused-race.log.gz",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "passedTopLevelEvents": 330,
+      "passedTestAndSubtestEvents": 1000,
+      "uniquePassedTestAndSubtestNames": 100,
+      "uniquePassedTopLevelNames": 33,
+      "skipped": [],
+      "failed": [],
+      "baselineFloors": {
+        "passedTopLevelEvents": 230,
+        "passedTestAndSubtestEvents": 720,
+        "uniquePassedTestAndSubtestNames": 72
+      },
+      "meetsBaselineFloors": true,
+      "result": "PASS"
+    },
+    {
+      "id": "legacy-fixture-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-run",
+        "^TestMustReconnectOnAMQPError$",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T13:18:26.581657+00:00",
+      "endedUtc": "2026-11-14T13:18:28.579810+00:00",
+      "exitCode": 0,
+      "log": "legacy-fixture-race.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "passedTopLevelEvents": 10,
+      "passedTestAndSubtestEvents": 10,
+      "uniquePassedTestAndSubtestNames": 1,
+      "uniquePassedTopLevelNames": 1,
+      "skipped": [],
+      "failed": [],
+      "baselineFloors": {
+        "passedTopLevelEvents": 10,
+        "passedTestAndSubtestEvents": 10,
+        "uniquePassedTestAndSubtestNames": 1
+      },
+      "meetsBaselineFloors": true,
+      "result": "PASS"
+    },
+    {
+      "id": "integration-compile-only",
+      "argv": [
+        "go",
+        "test",
+        "-tags=integration_test",
+        "-run",
+        "^$",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T13:18:28.605166+00:00",
+      "endedUtc": "2026-11-14T13:18:30.151686+00:00",
+      "exitCode": 0,
+      "log": "integration-compile-only.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "result": "PASS"
+    },
+    {
+      "id": "mod-tidy-diff",
+      "argv": [
+        "go",
+        "mod",
+        "tidy",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T13:18:30.200146+00:00",
+      "endedUtc": "2026-11-14T13:19:05.632902+00:00",
+      "exitCode": 0,
+      "log": "mod-tidy-diff.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "mod-tidy-compat-diff",
+      "argv": [
+        "go",
+        "mod",
+        "tidy",
+        "-compat=1.20",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T13:19:05.654714+00:00",
+      "endedUtc": "2026-11-14T13:19:05.905432+00:00",
+      "exitCode": 0,
+      "log": "mod-tidy-compat-diff.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "certification-mod-tidy-diff",
+      "argv": [
+        "go",
+        "-C",
+        "tests/certification",
+        "mod",
+        "tidy",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T13:19:05.926515+00:00",
+      "endedUtc": "2026-11-14T13:19:14.384670+00:00",
+      "exitCode": 0,
+      "log": "certification-mod-tidy-diff.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "certification-mod-tidy-compat-diff",
+      "argv": [
+        "go",
+        "-C",
+        "tests/certification",
+        "mod",
+        "tidy",
+        "-compat=1.20",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T13:19:14.407082+00:00",
+      "endedUtc": "2026-11-14T13:19:14.604593+00:00",
+      "exitCode": 0,
+      "log": "certification-mod-tidy-compat-diff.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "component-metadata",
+      "argv": [
+        "make",
+        "check-component-metadata"
+      ],
+      "startedUtc": "2026-11-14T13:19:14.625094+00:00",
+      "endedUtc": "2026-11-14T13:20:39.945793+00:00",
+      "exitCode": 0,
+      "log": "component-metadata.log",
+      "logHashVerified": true,
+      "storedLogHashVerified": true,
+      "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "commandMatchesRequired": true,
+      "analyzerRan": true,
+      "missingMetadataReported": false,
+      "result": "PASS"
+    }
+  ],
+  "requiredReceiptCount": 15,
+  "presentReceiptCount": 15,
+  "negativeControls": {
+    "id": "negative-controls",
+    "argv": [
+      "negative-controls"
+    ],
+    "startedUtc": "2026-11-14T13:20:39.966574+00:00",
+    "endedUtc": "2026-11-14T13:21:31.670782+00:00",
+    "exitCode": 0,
+    "log": "negative-controls.log",
+    "logHashVerified": true,
+    "storedLogHashVerified": true,
+    "subjectHead": "25bc4c802593389726c090ab282451b65b2e295a",
+    "subjectIsCommit": true,
+    "cleanTree": true,
+    "controls": [
+      {
+        "control": "post-ACK return check removed",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestMandatoryReturnListenerClosed",
+          "TestPublishPublicNativeMandatoryConcurrentCallers",
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "return drain removed",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryStaleReturnDrained"
+        ]
+      },
+      {
+        "control": "return listener not registered",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+          "TestPublishPublicNativeMandatoryConcurrentCallers",
+          "TestPublishPublicNativeMandatoryOutcomes",
+          "TestPublishPublicNativeMandatoryStaleReturnDrained"
+        ]
+      },
+      {
+        "control": "unresolved generation not marked",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryMismatchedReturnExhaustion",
+          "TestPublishPublicMandatoryOutcomes",
+          "TestPublishPublicMandatoryUnresolvedForcesReconnect",
+          "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "unresolved generation published on",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryUnresolvedForcesReconnect"
+        ]
+      },
+      {
+        "control": "opt-out marks generations",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryOptOut"
+        ]
+      },
+      {
+        "control": "mark not cleared with the generation",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryMismatchedReturnExhaustion",
+          "TestPublishPublicMandatoryOutcomes",
+          "TestPublishPublicMandatoryUnresolvedForcesReconnect",
+          "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "unroutable not terminal",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryLogging",
+          "TestPublishPublicMandatoryOutcomes",
+          "TestPublishPublicNativeMandatoryConcurrentCallers",
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "mismatched return accepted",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "exchange mismatch accepted",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "routing key mismatch accepted",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "attempt routing key not recorded",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryConcurrentCallers",
+          "TestPublishPublicNativeMandatoryOutcomes"
+        ]
+      },
+      {
+        "control": "mandatory flag not sent",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryOutcomes",
+          "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+          "TestPublishPublicNativeMandatoryConcurrentCallers",
+          "TestPublishPublicNativeMandatoryOutcomes",
+          "TestPublishPublicNativeMandatoryStaleReturnDrained"
+        ]
+      },
+      {
+        "control": "NACK treated as unresolved",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicNativeMandatoryStaleReturnDrained"
+        ]
+      },
+      {
+        "control": "return treated as unresolved",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestPublishPublicMandatoryOutcomes",
+          "TestPublishPublicNativeMandatoryConcurrentCallers"
+        ]
+      },
+      {
+        "control": "closed listener after ACK fails the publication",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestMandatoryReturnListenerClosed"
+        ]
+      },
+      {
+        "control": "publisherConfirm requirement removed",
+        "detected": true,
+        "failedTopLevelTests": [
+          "TestCreateMetadata",
+          "TestInitMandatoryRequiresPublisherConfirm"
+        ]
+      },
+      {
+        "control": "metadata.yaml entry removed",
+        "detected": true,
+        "failedTopLevelTests": []
+      }
+    ],
+    "summary": {
+      "controls": 18,
+      "detected": 18,
+      "statusBefore": "",
+      "statusAfter": "",
+      "restored": true,
+      "result": "PASS"
+    },
+    "result": "PASS"
+  },
+  "coverage": {
+    "rows": 9,
+    "missingOrUnpassed": [],
+    "result": "PASS"
+  },
+  "scope": "RabbitMQ component unit/protocol-peer tests, static analysis, compile-only, module tidy and component metadata checks, plus source negative controls. No broker, Dapr runtime, conformance/certification suite or qualification execution."
+}

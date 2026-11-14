@@ -1,0 +1,15 @@
+{"log":"diff-stat","argv":["git","diff","--stat","96c3259b7c12a476edd208848153d3cf72a8c4f0","HEAD"]}
+{"log":"gofmt","argv":["gofmt","-s","-l","pubsub/rabbitmq/metadata.go","pubsub/rabbitmq/metadata_test.go","pubsub/rabbitmq/rabbitmq.go","pubsub/rabbitmq/rabbitmq_integration_test.go","pubsub/rabbitmq/rabbitmq_publish_test.go","pubsub/rabbitmq/rabbitmq_publish_transport_test.go","pubsub/rabbitmq/rabbitmq_test.go"]}
+{"log":"diff-check","argv":["git","diff","--check","96c3259b7c12a476edd208848153d3cf72a8c4f0","HEAD"]}
+{"log":"golangci-lint","argv":["golangci-lint","run","--timeout=10m","--new-from-rev=96c3259b7c12a476edd208848153d3cf72a8c4f0","./pubsub/rabbitmq/..."]}
+{"log":"golangci-lint-all-issues","argv":["golangci-lint","run","--timeout=10m","--new-from-rev=96c3259b7c12a476edd208848153d3cf72a8c4f0","--max-issues-per-linter=0","--max-same-issues=0","./pubsub/rabbitmq/..."]}
+{"log":"vet","argv":["go","vet","./pubsub/rabbitmq"]}
+{"log":"full-unit","argv":["go","test","-json","-count=1","-timeout=120s","./pubsub/rabbitmq"]}
+{"log":"focused-race","argv":["go","test","-race","-json","-count=10","-timeout=180s","-run","^(TestPublishPublic|TestInit)","./pubsub/rabbitmq"]}
+{"log":"legacy-fixture-race","argv":["go","test","-race","-json","-count=10","-run","^TestMustReconnectOnAMQPError$","./pubsub/rabbitmq"]}
+{"log":"integration-compile-only","argv":["go","test","-tags=integration_test","-run","^$","./pubsub/rabbitmq"]}
+{"log":"mod-tidy-diff","argv":["go","mod","tidy","-diff"]}
+{"log":"mod-tidy-compat-diff","argv":["go","mod","tidy","-compat=1.20","-diff"]}
+{"log":"certification-mod-tidy-diff","argv":["go","-C","tests/certification","mod","tidy","-diff"]}
+{"log":"certification-mod-tidy-compat-diff","argv":["go","-C","tests/certification","mod","tidy","-compat=1.20","-diff"]}
+{"log":"component-metadata","argv":["make","check-component-metadata"]}

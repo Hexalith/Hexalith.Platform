@@ -1,0 +1,8 @@
+ pubsub/rabbitmq/metadata.go                        |   8 +
+ pubsub/rabbitmq/metadata.yaml                      |  10 +
+ pubsub/rabbitmq/metadata_test.go                   |  41 ++
+ pubsub/rabbitmq/rabbitmq.go                        | 102 +++-
+ pubsub/rabbitmq/rabbitmq_integration_test.go       |  52 +++
+ pubsub/rabbitmq/rabbitmq_publish_test.go           | 292 +++++++++++-
+ pubsub/rabbitmq/rabbitmq_publish_transport_test.go | 520 +++++++++++++++++++++
+ 7 files changed, 1015 insertions(+), 10 deletions(-)

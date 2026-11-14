@@ -611,3 +611,57 @@ technical qualification **FAIL (20/24)**, five historical guarantees **REJECTED/
 selection **null** and production eligibility **FAIL** are unchanged. Kafka re-entry,
 packet custody and the December 13 Administrator review remain unchanged. Platform and
 EventStore have not been pushed as part of this submission.
+
+## RabbitMQ Package B local contribution prepared — 2026-11-14
+
+Package A [PR #4767](https://github.com/dapr/components-contrib/pull/4767) remained OPEN. All
+six upstream workflows awaited maintainer approval (`action_required`), with no reviews or
+comments as of 2026-11-14T11:54Z, so nothing on it was actionable. The owner's **"Adopt all"**
+fixed three decisions. The base is Package A's head `96c3259b7c12a476edd208848153d3cf72a8c4f0`.
+An unroutable return is terminal (`pubsub.NewTerminalError`, FailedPrecondition, no retry).
+`publishMandatory=true` without `publisherConfirm` fails `Init`.
+
+The [local package record](story-4-17-upstream/package-b-local-2026-11-14/README.md) retains
+[contribution.patch](story-4-17-upstream/package-b-local-2026-11-14/contribution.patch)
+(SHA-256 `7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392`), relative to
+`96c3259b`. It changes only seven `pubsub/rabbitmq` files. Opt-in `publishMandatory` publishes
+with `mandatory=true`, never `immediate`, and registers one capacity-one return listener per
+channel generation. Each attempt resolves a buffered return only after its own ACK, using Package
+A's one-outstanding-publication invariant. A return then fails that call at once with
+`312 NO_ROUTE`, never replaced by cancellation, timeout or retry exhaustion. A mismatched return
+fails closed as non-conclusive. A generation with an unresolved mandatory attempt is never
+published on again; the next attempt reconnects. The default is unchanged, and correlation
+ignores application message IDs.
+
+Fresh disposable jobs fetched the official base by SHA and Package A's head from its retained
+bundle. A read-only `ls-remote` found `refs/pull/4767/head` still at `96c3259b`. The jobs
+applied the patch unchanged to a local signed-off test commit. Its tree
+`50f8ef2d3d3a240595d6088917f9d51afe04ec3c` equals base plus patch. The
+[test results](story-4-17-upstream/package-b-local-2026-11-14/test-results.json) are **PASS**
+for all 15 required receipts: Package A's 14-check set rebased to `96c3259b`, plus
+`make check-component-metadata`. Both lint runs report `0 issues.` The full unit suite passed
+73/232 (floor 62/196), the focused race run 330/1000 (floor 230/720) and the legacy fixture 10/10.
+gofmt, vet and `diff --check` are empty, and no tidy diffs remain. Eighteen negative controls each
+failed the tests when one Package B behavior was removed. All eight I/O-matrix rows, plus the
+concurrent duplicate-ID case, map to passing tests. Both jobs finished and were removed, and no
+remote write occurred.
+
+Nothing was pushed, forked, opened, commented on or labeled (#4764–#4767). No broker, Dapr
+runtime, conformance/certification suite or qualification ran. The
+[integration proposal](story-4-17-upstream/package-b-local-2026-11-14/integration-proposal.md)
+is unexecuted, and no Dapr HTTP mapping, upstream acceptance or delivery gate is claimed. A forced
+reconnect resets the shared connection, as Package A's cancellation abort does; this remains an
+implementation consequence awaiting broker evidence. Submission waits for Package A, or ships as
+a stacked PR, in a later separately approved slice. Review round 1 ran three independent layers
+and applied 15 test, wording and record fixes, including exchange-only and routing-key mismatch
+controls. Its only production edit folds the unroutable check into the existing terminal condition.
+One shared-submodule hazard was deferred to the ledger. Another session's Platform commit
+`70a016a98c97c19656a4c279a93b88e255d41b07` published the draft spec; this slice pushed nothing.
+
+The gate remains an **official supported Dapr release embedding the required fixes**, then
+EventStore exact runtime/component/source/binary/image/lock admission, Builds alignment and a
+separately accepted Platform full-matrix proposal. Both parent stories remain **in-progress**;
+technical qualification **FAIL (20/24)**, five historical guarantees **REJECTED/open**,
+selection **null** and production eligibility **FAIL** are unchanged. Kafka stop rules, packet
+custody and the December 13 Administrator review remain unchanged. Platform and EventStore have
+not been pushed.

@@ -1,0 +1,96 @@
+{
+  "method": "Every I/O and edge-case matrix row of the Package B spec maps to tests that summarize-checks.py requires to pass in the named receipt log (focused-race: ten race-enabled repetitions; full-unit: one complete suite run). Native tests drive the pinned amqp091-go client over net.Pipe against an in-process protocol peer that sends basic.return, content header and body before the ACK; fake-broker tests exercise public Publish classification. negative-controls.receipt.json shows that each Package B behavior's removal fails these tests.",
+  "rows": {
+    "Opt-out: publishMandatory absent/false keeps existing publish args, no listener, unchanged tests": {
+      "focused-race": [
+        "TestPublishPublicMandatoryOptOut",
+        "TestPublishPublicNativeMandatoryOutcomes/opt-out"
+      ],
+      "full-unit": [
+        "TestCreateMetadata/metadata_is_correct",
+        "TestCreateMetadata/publishMandatory_value=false",
+        "TestCreateMetadata/publishMandatory_value=FALSE"
+      ]
+    },
+    "Incompatible config: mandatory without publisher confirms fails Init naming both fields, no component created": {
+      "focused-race": [
+        "TestInitMandatoryRequiresPublisherConfirm/publisherConfirm=",
+        "TestInitMandatoryRequiresPublisherConfirm/publisherConfirm=false"
+      ],
+      "full-unit": [
+        "TestCreateMetadata/publishMandatory_requires_publisherConfirm_value=",
+        "TestCreateMetadata/publishMandatory_requires_publisherConfirm_value=false",
+        "TestCreateMetadata/publishMandatory_requires_publisherConfirm_value=FALSE"
+      ]
+    },
+    "Opt-in and routed: publishMandatory with publisherConfirm parses, and a mandatory ACK without a return succeeds": {
+      "focused-race": [
+        "TestPublishPublicMandatoryOutcomes/routed",
+        "TestPublishPublicNativeMandatoryOutcomes/routed",
+        "TestPublishPublicNativeMandatoryConcurrentCallers"
+      ],
+      "full-unit": [
+        "TestCreateMetadata/publishMandatory_value=true",
+        "TestCreateMetadata/publishMandatory_value=TRUE"
+      ]
+    },
+    "Unroutable: return (312 NO_ROUTE) then ACK fails that call at once with the terminal error carrying reply code and text; never replaced by retry exhaustion, cancellation or timeout; no retry": {
+      "focused-race": [
+        "TestPublishPublicNativeMandatoryOutcomes/unroutable",
+        "TestPublishPublicNativeMandatoryOutcomes/unroutable_with_routing_key",
+        "TestPublishPublicNativeMandatoryOutcomes/return_before_delayed_ACK",
+        "TestPublishPublicMandatoryOutcomes/unroutable",
+        "TestPublishPublicMandatoryOutcomes/unroutable_while_canceled",
+        "TestPublishPublicMandatoryOutcomes/unroutable_at_deadline",
+        "TestPublishPublicMandatoryOutcomes/unroutable_after_reconnect",
+        "TestPublishPublicMandatoryLogging",
+        "TestPublishPublicNativeMandatoryConcurrentCallers"
+      ],
+      "full-unit": [
+        "TestMandatoryReturnListenerClosed"
+      ]
+    },
+    "Stale return: an unresolved earlier attempt on a live channel never publishes again on that generation and is never attributed to a later call; forced reconnect": {
+      "focused-race": [
+        "TestPublishPublicMandatoryUnresolvedForcesReconnect/uncertain_confirmation",
+        "TestPublishPublicMandatoryUnresolvedForcesReconnect/write_error",
+        "TestPublishPublicMandatoryUnresolvedForcesReconnect/canceled_confirmation_then_later_caller",
+        "TestPublishPublicNativeMandatoryStaleReturnDrained",
+        "TestPublishPublicNativeMandatoryCanceledBeforeACK"
+      ]
+    },
+    "Replacement channel: a reconnect between attempts gets a fresh per-generation listener; old returns unreachable": {
+      "focused-race": [
+        "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+        "TestPublishPublicNativeMandatoryOutcomes/mismatched_routing_key",
+        "TestPublishPublicNativeMandatoryOutcomes/mismatched_exchange",
+        "TestPublishPublicMandatoryMismatchedReturnExhaustion"
+      ]
+    },
+    "Canceled before ACK: return possibly pending yields non-success, uncertain outcome, Package A transport abort, no inferred rejection": {
+      "focused-race": [
+        "TestPublishPublicNativeMandatoryCanceledBeforeACK",
+        "TestPublishPublicMandatoryUnresolvedForcesReconnect/canceled_confirmation_then_later_caller"
+      ]
+    },
+    "Mismatched return: exchange/routing key differ from the attempt; fail closed, non-conclusive, channel reset, no success": {
+      "focused-race": [
+        "TestPublishPublicNativeMandatoryOutcomes/mismatched_routing_key",
+        "TestPublishPublicNativeMandatoryOutcomes/mismatched_exchange",
+        "TestPublishPublicMandatoryMismatchedReturnExhaustion",
+        "TestPublishPublicMandatoryUnresolvedForcesReconnect/mismatched_return"
+      ]
+    },
+    "Concurrent routed and unroutable callers sharing one exchange, routing key and duplicate MessageId": {
+      "focused-race": [
+        "TestPublishPublicNativeMandatoryConcurrentCallers"
+      ]
+    }
+  },
+  "compileOnly": {
+    "integration-compile-only": [
+      "TestMandatoryUnroutablePublish (integration_test tag; compiled, never executed)"
+    ]
+  },
+  "actualBrokerAndDaprQualification": false
+}

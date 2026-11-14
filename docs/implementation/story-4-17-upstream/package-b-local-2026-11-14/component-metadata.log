@@ -1,0 +1,25 @@
+mkdir -p metadataanalyzer
+cd .build-tools; go run . generate-metadata-analyzer-app --outputfile ./metadataanalyzer/main.go
+go: downloading github.com/invopop/jsonschema v0.6.0
+go: downloading github.com/spf13/cobra v1.6.1
+go: downloading github.com/xeipuuv/gojsonschema v1.2.1-0.20201027075954-b076d39a02e5
+go: downloading github.com/iancoleman/orderedmap v0.0.0-20190318233801-ac98e3ecb4b0
+cd metadataanalyzer && \
+go mod init metadataanalyzer && \
+go get "github.com/dapr/components-contrib@main" && \
+go mod edit -replace "github.com/dapr/components-contrib"="../" && \
+go mod tidy && \
+go build -tags metadata . && \
+rm ./go.mod && rm ./go.sum && rm ./main.go && \
+        ./metadataanalyzer ../
+go: creating new go.mod: module metadataanalyzer
+go: to add module requirements and sums:
+	go mod tidy
+go: downloading github.com/dapr/components-contrib v1.19.1-0.20261111155703-440b15349565
+go: added github.com/dapr/components-contrib v1.19.1-0.20261111155703-440b15349565
+go: downloading github.com/apache/thrift v0.19.0
+go: downloading github.com/nats-io/jwt v0.3.2
+go: downloading github.com/google/btree v1.0.1
+go: downloading github.com/spf13/viper v1.15.0
+go: downloading github.com/subosito/gotenv v1.4.1
+go: downloading github.com/spf13/jwalterweatherman v1.1.0
