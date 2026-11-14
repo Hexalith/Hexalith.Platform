@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import signal
 import subprocess
+import tempfile
 import xml.etree.ElementTree as ET
 
 
@@ -73,10 +74,7 @@ def verify(evidence, builds_root=None):
     if evidence.exists():
         raise ValueError("Choose a fresh evidence file.")
     catalog_root = builds_root or ROOT / "references/Hexalith.Builds"
-    catalog_default = ET.parse(catalog_root / "Props/Directory.Packages.props").findtext(
-        ".//HexalithEventStoreVersion")
-    if not catalog_default:
-        raise ValueError("The selected Builds catalog has no default EventStore version.")
+    catalog_path = (catalog_root / "Props/Directory.Packages.props").resolve(strict=True)
 
     def checkpoint():
         temporary = evidence.with_name(evidence.name + ".tmp")
@@ -90,6 +88,24 @@ def verify(evidence, builds_root=None):
     try:
         checkpoint()
         for project, relative in PROJECTS.items():
+            # Evaluate the catalog independently for this exact consumer name. The first
+            # declaration can be a conditional compatibility view rather than its default.
+            with tempfile.TemporaryDirectory(prefix="platform-sdk-catalog-") as directory:
+                probe = Path(directory) / (Path(relative).stem + ".proj")
+                document = ET.Element("Project")
+                ET.SubElement(document, "Import", Project=str(catalog_path))
+                ET.ElementTree(document).write(probe, encoding="unicode")
+                probe_command = ["dotnet", "msbuild", str(probe), "-nologo",
+                                 "-getProperty:HexalithEventStoreVersion"]
+                result = subprocess.run(probe_command, cwd=ROOT, text=True, capture_output=True,
+                                        check=True, timeout=60)
+                catalog_default = result.stdout.strip()
+                if not catalog_default:
+                    raise ValueError("The selected Builds catalog has no default EventStore version.")
+                report.setdefault("catalogDefaults", {})[project] = {
+                    "version": catalog_default, "command": probe_command,
+                    "probe": ET.tostring(document, encoding="unicode"), "exitCode": result.returncode}
+                checkpoint()
             # Both valid and invalid package inputs must retain explicit source-mode semantics.
             cases = [(version, False) for version in VERSIONS] + [("3.132.1", True), ("3.132.2", True), (None, False)]
             for version, source in cases:
