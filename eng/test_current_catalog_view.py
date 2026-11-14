@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
+from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, GENERATION603_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, TENANTS_PACKAGES, UNKNOWN_CONSUMERS,
                                   verify_named_platform_catalog)
 
 BUILDS6_SOURCE = "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5"
@@ -43,6 +43,12 @@ def builds602_catalog_body() -> bytes:
     """Read the exact committed producer fix; publication authority remains a separate binding."""
     return catalog_fixture("builds-60ce7967-Directory.Packages.props", GENERATION602_CATALOG["sourceRevision"],
         GENERATION602_CATALOG["blob"], GENERATION602_CATALOG["sha256"])
+
+
+def builds603_catalog_body() -> bytes:
+    """Read the genuine6.0.3 source catalog with its exact committed LF identity."""
+    return catalog_fixture("builds-6.0.3-Directory.Packages.props", GENERATION603_CATALOG["sourceRevision"],
+        GENERATION603_CATALOG["blob"], GENERATION603_CATALOG["sha256"])
 
 
 def observe_producer_projects(raw: bytes, names: tuple[str, ...], sdk_version: str | None = None) -> list[dict]:
@@ -303,6 +309,99 @@ class CurrentCatalogViewTests(unittest.TestCase):
             with self.subTest(collecting=collecting, field=field, index=index), patch("current_catalog_view.evaluate_views", side_effect=[defaults, retained]):
                 with self.assertRaisesRegex(ValueError, "unqualified"):
                     self.verify(builds602_catalog_body(), binding)
+
+    def _assert_tenants_family_refusals(self, raw, binding, receipt):
+        contexts = ("defaultEvaluations", "collectingEvaluations", "currentOwnerEvaluations")
+        for context in contexts:
+            for index in (0, -1):
+                for package in TENANTS_PACKAGES:
+                    for fault in ("property", "missing", "duplicate", "pin"):
+                        changed = {name: copy.deepcopy(receipt[name]) for name in contexts}
+                        item = changed[context][index]
+                        pins = item["TenantsPins"].split("|")
+                        selected = next(pin for pin in pins if pin.startswith(package + "="))
+                        if fault == "property": item["CatalogTenantsDefault"] = "99.0.0"
+                        elif fault == "missing": pins.remove(selected)
+                        elif fault == "duplicate": pins.append(selected)
+                        else: pins[pins.index(selected)] = package + "=99.0.0"
+                        item["TenantsPins"] = "|".join(pins)
+                        with self.subTest(context=context, index=index, package=package, fault=fault), \
+                                patch("current_catalog_view.evaluate_views", side_effect=[changed[name] for name in contexts]), \
+                                self.assertRaisesRegex(ValueError, "unqualified Tenants|unqualified current-owner"):
+                            self.verify(raw, binding)
+
+    def test_builds602_verifies_the_complete_tenants_family_and_refuses_each_pin_fault(self):
+        raw, binding = builds602_catalog_body(), generation6_binding("6.0.2")
+        receipt = self.verify(raw, binding)
+        for context in ("defaultEvaluations", "collectingEvaluations", "currentOwnerEvaluations"):
+            for item in receipt[context]:
+                self.assertEqual(item["CatalogTenantsDefault"], "7.0.7")
+                self.assertEqual(dict(pin.split("=", 1) for pin in item["TenantsPins"].split("|")),
+                    {name: "7.0.7" for name in TENANTS_PACKAGES})
+        self._assert_tenants_family_refusals(raw, binding, receipt)
+
+    def test_builds603_retains_named_tenants707_and_observes_generic_tenants8(self):
+        from current_catalog_view import evaluate_views, verify_current_owner_observations
+        binding = generation6_binding("6.0.3")
+        receipt = self.verify(builds603_catalog_body(), binding)
+        self.assertEqual(receipt["catalogSha256"], GENERATION603_CATALOG["sha256"])
+        self.assertEqual(len(receipt["defaultEvaluations"]), 36)
+        self.assertEqual(len(receipt["collectingEvaluations"]), 36)
+        self.assertEqual(len(receipt["currentOwnerEvaluations"]), 7)
+        for context in ("defaultEvaluations", "collectingEvaluations", "currentOwnerEvaluations"):
+            for item in receipt[context]:
+                named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS)
+                with self.subTest(context=context, project=item["Identity"]):
+                    self.assertEqual(item["Sdk"], "4.2.0" if named or context == "collectingEvaluations" else "5.1.0")
+                    self.assertEqual(item["CatalogTenantsDefault"], "7.0.7" if named else "8.0.0")
+                    self.assertEqual(dict(pin.split("=", 1) for pin in item["TenantsPins"].split("|")),
+                        {name: "7.0.7" if named else "8.0.0" for name in TENANTS_PACKAGES})
+                    self.assertEqual(item["CatalogMemoriesDefault"], "3.0.27" if named else "4.0.0")
+                    self.assertEqual(item["CatalogPartiesDefault"], "3.1.1")
+                    self.assertEqual(item["CatalogMcpDefault"], "2.0.1")
+        for index, version in ((0, "8.0.0"), (-1, "7.0.7")):
+            observed = copy.deepcopy(receipt["currentOwnerEvaluations"])
+            observed[index]["CatalogTenantsDefault"] = version
+            with self.subTest(index=index), self.assertRaisesRegex(ValueError, "unqualified current-owner"):
+                verify_current_owner_observations(observed, generic_tenants="8.0.0")
+        self._assert_tenants_family_refusals(builds603_catalog_body(), binding, receipt)
+        sdk51 = evaluate_views(builds603_catalog_body(), "5.1.0",
+            consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
+        for item in sdk51:
+            self.assertEqual(item["Sdk"], "5.1.0")
+            self.assertEqual(item["CatalogTenantsDefault"], "8.0.0")
+            self.assertEqual(dict(pin.split("=", 1) for pin in item["TenantsPins"].split("|")),
+                {name: "8.0.0" for name in TENANTS_PACKAGES})
+            self.assertEqual(item["CatalogMemoriesDefault"], "4.0.0")
+        self.assertFalse(receipt["candidateAcceptance"])
+        self.assertFalse(receipt["runtimeAcceptance"])
+
+    def test_builds603_requires_its_own_exact_source_catalog_and_publication(self):
+        from current_catalog_view import catalog_profile
+        for fault in ("previous", "foreign-source", "foreign-blob", "foreign-hash", "next-patch", "future"):
+            binding = generation6_binding("6.0.3")
+            if fault in ("previous", "foreign-source"):
+                source = GENERATION602_CATALOG["sourceRevision"] if fault == "previous" else "e" * 40
+                binding["producer"]["sourceRevision"] = binding["publication"]["sourceRevision"] = source
+            elif fault == "foreign-blob": binding["producer"]["catalog"]["blob"] = "e" * 40
+            elif fault == "foreign-hash": binding["producer"]["catalog"]["sha256"] = binding["publication"]["catalogSha256"] = "e" * 64
+            else:
+                version = "6.0.4" if fault == "next-patch" else "7.0.0"
+                binding["publication"].update(version=version, releaseTag="v" + version)
+            manifest = json.loads(binding["publication"]["manifestJson"])
+            manifest.update(sha=binding["publication"]["sourceRevision"], version=binding["publication"]["version"])
+            for item in manifest["packages"]:
+                item["path"] = "packages/" + item["id"] + "." + manifest["version"] + ".nupkg"
+            encoded = json.dumps(manifest)
+            binding["publication"].update(manifestJson=encoded, manifestSha256=hashlib.sha256(encoded.encode()).hexdigest())
+            with self.subTest(fault=fault), patch("current_catalog_view.evaluate_views") as evaluate:
+                with self.assertRaisesRegex(ValueError, "exact qualified Builds6|exact supported"):
+                    catalog_profile(binding)
+                evaluate.assert_not_called()
+        with self.assertRaisesRegex(ValueError, "exact producer binding"):
+            self.verify(builds602_catalog_body(), generation6_binding("6.0.3"))
+        with self.assertRaisesRegex(ValueError, "exact producer binding"):
+            self.verify(builds603_catalog_body(), generation6_binding("6.0.2"))
 
     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
         root = Path(__file__).resolve().parents[1]

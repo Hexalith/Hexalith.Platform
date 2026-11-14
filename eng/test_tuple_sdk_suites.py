@@ -36,7 +36,7 @@ class SdkSuiteTests(unittest.TestCase):
 
     def test_exact_successors_use_the_same_measured_cohort_without_qualifying_other_generations(self):
         from test_current_catalog_view import generation6_binding
-        for version in ("6.0.1", "6.0.2"):
+        for version in ("6.0.1", "6.0.2", "6.0.3"):
             for suite in ("current42", "base42", "extensions"):
                 with self.subTest(version=version, suite=suite):
                     self.assertEqual(sdk42_collecting_cohort(generation6_binding(version), suite),

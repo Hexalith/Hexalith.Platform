@@ -40,6 +40,8 @@ SDK_PACKAGES = tuple("Hexalith.EventStore." + name for name in (
 OPENAPI_PACKAGES = ("Microsoft.AspNetCore.OpenApi", "Microsoft.OpenApi")
 MEMORIES_PACKAGES = tuple("Hexalith.Memories." + name for name in (
     "Aspire", "Client.Rest", "Contracts", "EventStore", "EventStoreExtensions"))
+TENANTS_PACKAGES = tuple("Hexalith.Tenants." + name for name in (
+    "Aspire", "Client", "Contracts", "Server", "Testing"))
 GENERATION6_CATALOG = {
     "version": "6.0.0",
     "sourceRevision": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
@@ -64,6 +66,14 @@ GENERATION602_CATALOG = {
 }
 
 
+GENERATION603_CATALOG = {
+    "version": "6.0.3",
+    "sourceRevision": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+    "blob": "1968f12adb9151062915ab32cb76c5b9dbbc2a36",
+    "sha256": "01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41",
+}
+
+
 def catalog_profile(binding=None) -> str:
     """A new producer generation cannot inherit an earlier consumer qualification."""
     if binding is None:
@@ -73,7 +83,7 @@ def catalog_profile(binding=None) -> str:
     if binding["publication"]["version"].startswith("6."):
         producer = binding["producer"]
         selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
-                    "6.0.2": GENERATION602_CATALOG}.get(binding["publication"]["version"])
+                    "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG}.get(binding["publication"]["version"])
         if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
                 or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
             raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
@@ -122,6 +132,8 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
                           + " or $([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.EventStore.'))")
             ET.SubElement(items, "_MemoriesPins", Include="@(PackageVersion)", Condition=" or ".join(
                 "'%(PackageVersion.Identity)' == '" + package + "'" for package in MEMORIES_PACKAGES))
+            ET.SubElement(items, "_TenantsPins", Include="@(PackageVersion)",
+                Condition="$([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.Tenants.'))")
             observation = ET.SubElement(items, "_Observed", Include="$(MSBuildProjectName)")
             for key, value in (("Sdk", "$(HexalithEventStoreVersion)"),
                                ("CatalogMemoriesDefault", "$(HexalithMemoriesVersion)"),
@@ -131,6 +143,7 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
                                ("PlatformView", "$(HexalithPlatformSdk42CatalogView)"),
                                ("PartiesView", "$(HexalithPartiesSdk42CatalogView)"),
                                ("MemoriesPins", "@(_MemoriesPins->'%(Identity)=%(Version)', '|')"),
+                               ("TenantsPins", "@(_TenantsPins->'%(Identity)=%(Version)', '|')"),
                                ("Pins", "@(_Pins->'%(Identity)=%(Version)', '|')")):
                 ET.SubElement(observation, key).text = value
             path = root / (name + ".proj")
@@ -185,7 +198,18 @@ def verify_memories_observations(observed: list[dict]) -> None:
             raise ValueError("The authenticated catalog selects an unqualified SDK4.2/Memories consumer view: " + item["Identity"])
 
 
-def verify_current_owner_observations(observed: list[dict]) -> None:
+def verify_tenants_observations(observed: list[dict], *, generic_tenants: str) -> None:
+    """Require the exact property and all five Tenants pins for each actual consumer role."""
+    for item in observed:
+        named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS) and item.get("Sdk") == "4.2.0"
+        expected = "7.0.7" if named else generic_tenants
+        pins = [pin.split("=", 1) for pin in item.get("TenantsPins", "").split("|") if pin]
+        if item.get("CatalogTenantsDefault") != expected or len(pins) != len(TENANTS_PACKAGES) \
+                or dict(pins) != {package: expected for package in TENANTS_PACKAGES}:
+            raise ValueError("The authenticated catalog selects an unqualified Tenants consumer view: " + item["Identity"])
+
+
+def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7") -> None:
     """Require each actual source-owner context's complete family and an unknown sibling refusal."""
     names = [item["Identity"] for item in observed]
     if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
@@ -201,12 +225,13 @@ def verify_current_owner_observations(observed: list[dict]) -> None:
         if (item.get("Sdk") != sdk or item.get("PlatformView") != "false" \
                 or item.get("PartiesView") != str(named).lower() \
                 or item.get("CatalogMemoriesDefault") != ("3.0.27" if named else "4.0.0") \
-                or any(item.get(key) != value for key, value in (("CatalogTenantsDefault", "7.0.7"),
+                or any(item.get(key) != value for key, value in (("CatalogTenantsDefault", "7.0.7" if named else generic_tenants),
                     ("CatalogPartiesDefault", "3.1.1"), ("CatalogMcpDefault", "2.0.1"))) \
                 or len(memories) != len(MEMORIES_PACKAGES)
                 or dict(memories) != {package: "3.0.27" if named else "4.0.0" for package in MEMORIES_PACKAGES}
                 or len(pins) != len(expected) or dict(pins) != expected):
             raise ValueError("The authenticated catalog selects an unqualified current-owner package view: " + item["Identity"])
+    verify_tenants_observations(observed, generic_tenants=generic_tenants)
 
 
 def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=None) -> dict:
@@ -227,9 +252,12 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
         verify_memories_observations(observed)
         verify_memories_observations(collecting)
     owner_observed = []
-    if binding is not None and binding["publication"]["version"] == "6.0.2":
+    if binding is not None and binding["publication"]["version"] in ("6.0.2", "6.0.3"):
+        generic_tenants = "8.0.0" if binding["publication"]["version"] == "6.0.3" else "7.0.7"
+        verify_tenants_observations(observed, generic_tenants=generic_tenants)
+        verify_tenants_observations(collecting, generic_tenants=generic_tenants)
         owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
-        verify_current_owner_observations(owner_observed)
+        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants)
     return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,

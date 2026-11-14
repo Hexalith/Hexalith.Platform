@@ -1,6 +1,29 @@
 # Hexalith.Platform
 
-## Current signed Builds5.2.2 consumer-context preparation
+## Current signed Builds6.0.3 tuple
+
+The current producer is genuine [Builds v6.0.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.0.3)
+at `99f7c86072ca7b35e3fbbaee4606a559a847805a`, published by successful normal
+[release43628367692](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43628367692).
+The exact tool pin and range floor are `6.0.3`, with upper bound `7.0.0-0`,
+roll-forward disabled and `candidateAcceptance` false. Catalog Git blob
+`1968f12adb9151062915ab32cb76c5b9dbbc2a36` has raw LF SHA-256
+`01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41`.
+
+Only this exact producer source/catalog/publication admits the new binding.
+The finite named SDK4.2 Platform and Parties contexts retain Tenants7.0.7,
+Memories3.0.27, Parties3.1.1 and McpCli2.0.1. Unknown generic contexts observe
+Tenants8.0.0 with the existing SDK5.1/Memories4 defaults. The explicit current
+SDK4.2 collector still selects the complete 4.2/7.0.7/3.0.27/3.1.1/2.0.1 family.
+Public package/declaration/image provenance and exact6.0.0/1/2 controls retain
+their own identities. Crossed producer sources and ranges remain refused.
+
+Fresh immutable historical companions and exact-source tuple/catalog qualification
+remain required. The current 478/97/9 and historical 412/349 execution profiles,
+all six catalog rows and the normal source publisher retain their existing gates.
+Publication and these component observations grant no candidate or native acceptance.
+
+## Previous signed Builds5.2.2 consumer-context preparation
 
 The current producer is genuine [Builds v5.2.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.2)
 at `02ed624aa19781cac75d2c9112940e9bd830441a`, from successful normal
@@ -267,8 +290,8 @@ from L's old public package/image qualification. Fresh exact-source hosted
 qualification is required; publication and positive counts alone establish no
 runtime or deployment acceptance.
 
-The configured range permits later 5.x versions from `5.2.2`, including prereleases
-within that range, and excludes `6.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
+The configured range permits later 6.x versions from `6.0.3`, including prereleases
+within that range, and excludes `7.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
 alone does not establish integration qualification. The exact tool pin and Builds
 gitlink must identify the same published release before acceptance.
 See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)

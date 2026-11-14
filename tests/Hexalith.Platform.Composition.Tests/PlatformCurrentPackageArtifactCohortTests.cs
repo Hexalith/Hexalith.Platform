@@ -241,8 +241,10 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         string expectedDefault = producerRange.MinVersion!.Major switch
         {
             5 => "5.0.0",
-            6 when mapping.PlatformIdentity.CatalogCommit == "60ce7967607dc8b703fff11f4fc13cabb09c090a"
-                && producerRange.MinVersion.ToFullString() == "6.0.2" && producerRange.MaxVersion?.ToFullString() == "7.0.0-0"
+            6 when (producerRange.MinVersion.ToFullString(), mapping.PlatformIdentity.CatalogCommit) is
+                    ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") or
+                    ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a")
+                && producerRange.MaxVersion?.ToFullString() == "7.0.0-0"
                 && producerRange.IsMinInclusive && !producerRange.IsMaxInclusive => "5.1.0",
             _ => throw new InvalidDataException("Unknown current consumer catalog producer."),
         };
@@ -309,8 +311,9 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
             };
             Refuses(options with { Mapping = changedSource });
             foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[6.0.0,7.0.0)",
-                "6.*", "[6.0.2,7.0.0)", "[6.0.0,7.0.0-0)", "[6.0.1,7.0.0-0)", "[6.0.3,7.0.0-0)", "(6.0.2,7.0.0-0)", "[6.0.2,7.0.0-0]", "[6.0.2,8.0.0-0)",
-                "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
+                "6.*", "[6.0.2,7.0.0)", "[6.0.0,7.0.0-0)", "[6.0.1,7.0.0-0)", "[6.0.4,7.0.0-0)", "(6.0.2,7.0.0-0)", "[6.0.2,7.0.0-0]", "[6.0.2,8.0.0-0)",
+                "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[6.0.3,7.0.0)", "(6.0.3,7.0.0-0)",
+                "[6.0.3,7.0.0-0]", "[6.0.3,8.0.0-0)", "[6.0.3-preview,7.0.0-0)", "[6.0.3+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
             {
                 PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
                 Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));
@@ -319,11 +322,30 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
 
             if (producerRange.MinVersion.Major == 6)
             {
-                foreach (string? source in new string?[] { null, new string('0', 40), "12475add3f14b06709a5ffe74f413d27d4111d75", "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89", "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5", "02ed624aa19781cac75d2c9112940e9bd830441a" })
+                foreach (string? source in new string?[] { null, new string('0', 40), "12475add3f14b06709a5ffe74f413d27d4111d75", "6de5ce0a7194321828a1ede119a98c5d31d05914", "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89", "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5", "02ed624aa19781cac75d2c9112940e9bd830441a" })
                 {
                     PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { CatalogCommit = source } } };
                     Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));
                     Refuses(changed);
+                }
+                // Exact historical and current admissions never admit a crossed source/range pair.
+                foreach (var producer in new[]
+                {
+                    (Version: "6.0.2", Source: "60ce7967607dc8b703fff11f4fc13cabb09c090a"),
+                    (Version: "6.0.3", Source: "99f7c86072ca7b35e3fbbaee4606a559a847805a"),
+                })
+                {
+                    PlatformCompositionOptions selected = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with
+                    {
+                        ToolVersionRange = $"[{producer.Version},7.0.0-0)", CatalogCommit = producer.Source,
+                    } } };
+                    PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
+                    PlatformCompositionOptions crossed = selected with { Mapping = selected.Mapping with { PlatformIdentity = selected.Mapping.PlatformIdentity! with
+                    {
+                        CatalogCommit = producer.Version == "6.0.2" ? "99f7c86072ca7b35e3fbbaee4606a559a847805a" : "60ce7967607dc8b703fff11f4fc13cabb09c090a",
+                    } } };
+                    Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(crossed));
+                    Refuses(crossed);
                 }
                 // The retained producer5 branch still selects its named consumer without acquiring producer6 authority.
                 PlatformCompositionOptions retained = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with

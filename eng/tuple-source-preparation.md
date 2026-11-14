@@ -219,3 +219,16 @@ preserved. Fresh immutable349/412/package-reader companions must contain this
 same source, including the audience feature, with only their authenticated frozen
 metadata and owner selections substituted. Prepared source alignment grants no
 execution credit; fresh hosted tuple and catalog gates remain required.
+
+
+The current 6.0.3 renewal binds official source `99f7c86072ca7b35e3fbbaee4606a559a847805a`,
+raw LF catalog SHA256 `01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41` and
+blob `1968f12adb9151062915ab32cb76c5b9dbbc2a36`. Its genuine publication metadata is
+recorded in `eng/builds-tuple.json`; the Builds gitlink, exact local tool pin and
+supported range floor select that publication atomically. Exact 6.0.2/source60ce
+admission remains explicit. Neither binding admits crossed source/range pairs
+or neighboring 6.0.4. Current owner observations retain Tenants7.0.7 for each
+named SDK4.2 Parties context and independently require generic Tenants8.0.0.
+The current SDK4.2 collector and all frozen public provenance remain unchanged.
+Fresh source binding and three new immutable companions are required for this source;
+prior immutable refs remain historical evidence only.

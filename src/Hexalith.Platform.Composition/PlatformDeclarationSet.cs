@@ -42,9 +42,10 @@ public static class PlatformDeclarationSet
             || !range.IsMinInclusive || minimum.IsPrerelease
             || minimum.Major is not (4 or 5 or 6) || !range.Satisfies(minimum))
             throw new InvalidDataException("The selected Platform identity has no supported Builds generation for its catalog consumer context.");
-        if (minimum.Major == 6 && (minimum.ToFullString() != "6.0.2"
-            || range.MaxVersion.ToFullString() != "7.0.0-0" || range.IsMaxInclusive
-            || identity.CatalogCommit != "60ce7967607dc8b703fff11f4fc13cabb09c090a"))
+        if (minimum.Major == 6 && (range.MaxVersion.ToFullString() != "7.0.0-0" || range.IsMaxInclusive
+            || (minimum.ToFullString(), identity.CatalogCommit) is not
+                ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") and not
+                ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a")))
             throw new InvalidDataException("The Builds6 consumer context requires its exact qualified producer source and range.");
         // Retained 4.x component inputs keep their original default view. Real frozen 4.x tools also
         // compile as net10.0, where the successor's typed consumer API is deliberately absent.

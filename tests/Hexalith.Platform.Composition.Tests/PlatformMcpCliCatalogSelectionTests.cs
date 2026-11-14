@@ -120,8 +120,8 @@ public sealed class PlatformMcpCliCatalogSelectionTests
             {
                 Mapping = options.Mapping with { PlatformIdentity = options.Mapping.PlatformIdentity! with
                 {
-                    ToolVersionRange = generation == 6 ? "[6.0.2,7.0.0-0)" : $"[{generation}.0.0,{generation + 1}.0.0-0)",
-                    CatalogCommit = generation == 6 ? "60ce7967607dc8b703fff11f4fc13cabb09c090a" : options.Mapping.PlatformIdentity!.CatalogCommit,
+                    ToolVersionRange = generation == 6 ? "[6.0.3,7.0.0-0)" : $"[{generation}.0.0,{generation + 1}.0.0-0)",
+                    CatalogCommit = generation == 6 ? "99f7c86072ca7b35e3fbbaee4606a559a847805a" : options.Mapping.PlatformIdentity!.CatalogCommit,
                 } },
             };
             PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(generation == 4
