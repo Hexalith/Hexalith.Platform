@@ -42,6 +42,18 @@ SPINE = """### AD-9 — Dapr runtime boundary [ADOPTED, AMENDED]
 
 
 class VerifyPlatformPinsTests(unittest.TestCase):
+    def test_actual_builds6_catalog_aligns_current_file_host_with_explicit_sdk42_view(self):
+        from test_current_catalog_view import builds6_catalog_body
+        raw = builds6_catalog_body()
+        root = SCRIPT.resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            catalog = pathlib.Path(directory) / "published-builds6.props"
+            catalog.write_bytes(raw)
+            result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(catalog),
+                "--catalog-sha256", hashlib.sha256(raw).hexdigest()], capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.", result.stdout)
+
     def test_named_composition_view_keeps_sdk42_instead_of_the_sdk5_default(self):
         from test_current_catalog_view import catalog_body
         for mapped in (False, True):
