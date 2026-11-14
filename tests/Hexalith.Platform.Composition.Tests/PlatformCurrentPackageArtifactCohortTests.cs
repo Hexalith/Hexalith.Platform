@@ -310,7 +310,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
             Refuses(options with { Mapping = changedSource });
             foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[6.0.0,7.0.0)",
                 "6.*", "[6.0.2,7.0.0)", "[6.0.0,7.0.0-0)", "[6.0.1,7.0.0-0)", "[6.0.3,7.0.0-0)", "(6.0.2,7.0.0-0)", "[6.0.2,7.0.0-0]", "[6.0.2,8.0.0-0)",
-                "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)" })
+                "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
             {
                 PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
                 Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));

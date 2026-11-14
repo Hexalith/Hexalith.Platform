@@ -67,19 +67,20 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                     if not supplied:
                         self.assertIn('unqualified SDK/OpenAPI', result.stderr)
 
-    def test_actual_builds6_catalog_aligns_current_file_host_with_explicit_sdk42_view(self):
-        from test_current_catalog_view import builds6_catalog_body, generation6_binding
-        raw = builds6_catalog_body()
+    def test_actual_builds6_catalogs_align_current_file_host_with_each_bound_named_view(self):
+        from test_current_catalog_view import builds6_catalog_body, current_platform_catalog_body, builds602_catalog_body, generation6_binding
         root = SCRIPT.resolve().parents[1]
-        with tempfile.TemporaryDirectory() as directory:
-            catalog = pathlib.Path(directory) / "published-builds6.props"
-            catalog.write_bytes(raw)
-            binding = pathlib.Path(directory) / "producer.json"
-            binding.write_text(json.dumps(generation6_binding()))
-            result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(catalog),
-                "--catalog-sha256", hashlib.sha256(raw).hexdigest(), "--producer-binding", str(binding)], capture_output=True, text=True, timeout=90)
-            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertIn("Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.", result.stdout)
+        for version, raw in (("6.0.0", builds6_catalog_body()), ("6.0.1", current_platform_catalog_body()),
+                ("6.0.2", builds602_catalog_body())):
+            with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
+                catalog = pathlib.Path(directory) / "published-builds6.props"
+                catalog.write_bytes(raw)
+                binding = pathlib.Path(directory) / "producer.json"
+                binding.write_text(json.dumps(generation6_binding(version)))
+                result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(catalog),
+                    "--catalog-sha256", hashlib.sha256(raw).hexdigest(), "--producer-binding", str(binding)], capture_output=True, text=True, timeout=90)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.", result.stdout)
 
     def test_named_composition_view_keeps_sdk42_instead_of_the_sdk5_default(self):
         from test_current_catalog_view import catalog_body

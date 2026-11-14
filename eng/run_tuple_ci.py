@@ -223,7 +223,7 @@ def verify_historical_catalog_pin(catalog):
         raise ValueError("Historical controls require the single real SDK4.1 catalog pin; overrides cannot substitute.")
 
 
-def verify_test_sdk(assembly, version):
+def verify_test_sdk(assembly, version, memories_version=None):
     """Require real package dependencies for the selected isolated test build before invoking any cases."""
     if version is None:
         return
@@ -234,6 +234,13 @@ def verify_test_sdk(assembly, version):
         identity = name.removesuffix(".dll") + "/" + version
         if dependencies.get(identity, {}).get("type") != "package":
             raise ValueError("The actual test binary does not resolve the selected SDK package: " + identity)
+    if memories_version is not None:
+        if version != "4.2.0" or memories_version != "3.0.27":
+            raise ValueError("Only the exact current SDK4.2 collection Memories companion is qualified.")
+        for name in ("Contracts", "EventStore", "EventStoreExtensions"):
+            identity = "Hexalith.Memories." + name + "/" + memories_version
+            if dependencies.get(identity, {}).get("type") != "package":
+                raise ValueError("The actual test binary does not resolve the selected collection companion: " + identity)
 
 
 def _subprocess_environment(name, environment=None, *, metadata_token=None):
@@ -422,6 +429,10 @@ def _run_tuple_ci(metadata_token):
             pin_arguments.extend(["--catalog-sha256", file_catalog_sha256])
             pin_arguments.extend(["--producer-binding", str(file_catalog_binding)])
         run("pin-alignment", pin_arguments)
+        if args.suite in ("current42", "base42", "extensions"):
+            run("collector-package-cohort-controls", [sys.executable, "-B", "eng/test_tuple_collection_graph.py",
+                "--catalog", str(file_catalog), "--catalog-sha256", file_catalog_sha256,
+                "--producer-binding", str(file_catalog_binding), "--evidence", str(evidence / "collector-package-cohort")])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         if collecting_cohort is not None:
             collecting_assets = ROOT / "tests/Hexalith.Platform.Composition.Tests/obj/project.assets.json"
@@ -455,7 +466,8 @@ def _run_tuple_ci(metadata_token):
             assembly = Path(measured["TargetPath"]).resolve(strict=True)
             asset_path = Path(measured["ProjectAssetsFile"]).resolve(strict=True)
             require_collector_framework(json.loads(asset_path.read_bytes()), framework)
-            verify_test_sdk(assembly, args.eventstore_sdk)
+            verify_test_sdk(assembly, args.eventstore_sdk,
+                collecting_cohort["HexalithMemoriesVersion"] if name == "current" and collecting_cohort is not None else None)
             return {"source": source, "root": str(root), "project": str(project), "assembly": str(assembly),
                 "properties": selected_properties, "targetFramework": framework, "toolRoot": str(selected_tool),
                 "toolVersion": selected_binding["publication"]["version"],
