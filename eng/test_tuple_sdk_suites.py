@@ -9,6 +9,13 @@ from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, sdk42_collect
 
 
 class SdkSuiteTests(unittest.TestCase):
+    def test_exact_builds602_current_collection_retains_the_same_measured_family(self):
+        from test_current_catalog_view import generation6_binding
+        previous = sdk42_collecting_cohort(generation6_binding(), "current42")
+        for suite in ("current42", "base42", "extensions"):
+            with self.subTest(suite=suite):
+                self.assertEqual(sdk42_collecting_cohort(generation6_binding("6.0.2"), suite), previous)
+
     def test_exact_generation6_current42_collection_keeps_its_measured_public_family(self):
         from test_current_catalog_view import generation6_binding
         binding = generation6_binding()

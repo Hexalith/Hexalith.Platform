@@ -186,7 +186,7 @@ def sdk42_collecting_cohort(binding, suite):
     if suite not in ("current42", "base42", "extensions"):
         return None
     from current_catalog_view import catalog_profile
-    if catalog_profile(binding) != "current-sdk51":
+    if catalog_profile(binding) not in ("current-sdk51", "current-sdk42"):
         return None
     return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
             "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}

@@ -72,9 +72,9 @@ archives and current Parties source; the independent production closure test
 exports the real current producer catalog and proves genuine Server707 output.
 No retained image identity is relabeled as current native acceptance.
 
-## Current producer renewal on 2026-11-14
+## Initial producer renewal on 2026-11-14
 
-The current tuple selects the official signed Builds6.0.0 publication from
+The initial renewal selected the official signed Builds6.0.0 publication from
 `1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5`. Its original successful release
 run43591439615, release445269620 and artifact14113221849 bind the two published
 CLI packages and an empty container inventory. The handoff, NuGet signatures,
@@ -154,3 +154,69 @@ verifies every original file against the signed archive, records both closure
 hashes and checks the private copy before and after execution. The original
 archive, dependency documents and checkout stay unchanged; this check grants no
 image or native runtime acceptance.
+
+## Initial named-view correction attempt on 2026-11-14
+
+A subsequent private candidate selected the official signed Builds6.0.1 publication
+from `c91beec60ce5eaa8cd62bf055d07fa6ca3890e89`: release445339242,
+run43602532457 and authenticated artifact14117540783. Both listed NuGet archives
+passed exact repository-source, catalog SHA512 and repository-signature checks;
+the actual CLI reports6.0.1+c91beec60ce5eaa8cd62bf055d07fa6ca3890e89.
+Every unsigned payload entry matches the original authenticated handoff.
+The full archive, Tooling, manifest and publication hashes are recorded in
+`eng/builds-tuple.json`; no container publication or native acceptance is implied.
+
+Actual2119 qualification retained349/412 passing historical cases but failed the
+current17-case artifact group: the consumer context rejected generation6.
+After the bounded generation guard, a private diagnostic reached the independent
+cohort refusal: the signed6.0.0 materializer's named view really selected SDK5.1
+and Memories4. Its no-override evaluation cannot establish the SDK4.2/M327
+current-reader authority. That failure and the original6.0.0 catalog/profile
+remain historical; no snapshot is fabricated and no positive reader assertion
+is converted to expected refusal.
+
+The genuine6.0.1 catalog blob `e17e81e703da4cd1805644134e62ec1122cafb47`,
+SHA256 `ef691a7a3caa7a92e524f766a770574cd21ef5e32fccd996d1d2899b9d7bddd7`,
+selects SDK4.2/Memories3.0.27 for exactly33 named Platform consumers; generic
+and unknown consumers retain SDK5.1/Memories4. All36 default observations and
+all36 explicit collecting observations are independently evaluated. Source,
+blob, hash, neighboring version, future generation and mixed-view controls
+refuse. The candidate consumer context was limited to exact6.0.1,
+range `[6.0.1, 7.0.0-0)` and sourcec91; existing4/5 semantics remained unchanged.
+The original17 positive artifact cases, every catalog-tamper refusal and all
+frozen349/412/705-25-310 identities remain required. Fresh committed-source
+hosted qualification remains separate from package authentication and local probes.
+
+## Coherent current-owner producer on 2026-11-14
+
+The6.0.1 private reader probe then refused the actual Parties runtime's
+Memories.Client.Rest and Contracts4.0.0 assets: the selected current-owner
+purpose requires3.0.27. An experimental explicit3.0.27 build input also refused
+with HXW012 because the genuine c91 per-project catalog required4.0.0.
+The experiment was removed; no catalog snapshot or asset/body guard was weakened.
+Its failed command inputs and reports retain their own historical identities.
+
+The current tuple instead selects genuine signed Builds6.0.2 from
+`60ce7967607dc8b703fff11f4fc13cabb09c090a`: release445387362,
+run43608949482 and authenticated artifact14119845550. Both official listed
+NuGet archives passed catalog SHA512, repository-source and signature checks;
+the exact6.0.2+60ce CLI and all unsigned package payload bytes match the original
+API-authenticated release artifact. Full identities are in `eng/builds-tuple.json`.
+The later source `12475add3f14b06709a5ffe74f413d27d4111d75` adds two test files;
+it is a distinct checkout identity and cannot substitute for the signed producer.
+
+The exact catalog blob `86e9b0d6fd49551d80047d92f3aaed93b91ca5a3`, SHA256
+`1291e32272127e2409e337fb6a974bc4c5f76a2907da0ba0d5528cc5016fe44e`,
+retains the finite Platform, Parties and three existing producer-host SDK4.2
+roles on Memories3.0.27. Generic SDK5.1/Memories4 and explicit selections remain
+unchanged. Platform independently evaluates36 default and36 collecting views,
+plus its six actual Parties source-owner project names and an unknown sibling.
+Every observed SDK/OpenAPI/owner-family member must match its exact role.
+Source, blob, hash, neighboring or future version, newer-checkout substitution
+and changed family/unknown-context controls refuse. The generation6 production
+consumer context requires exact6.0.2, range `[6.0.2, 7.0.0-0)` and source60ce;
+prior4/5 semantics and the committed6.0.0 observations remain unchanged.
+
+The full17 positive artifact cases and all snapshot/range refusal controls remain
+required, together with fresh349/412/current hosted qualification. Package and
+source-view receipts grant no candidate, image, native or OCI acceptance.
