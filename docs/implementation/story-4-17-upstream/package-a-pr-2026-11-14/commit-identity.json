@@ -1,0 +1,36 @@
+{
+  "recordedUtc": "2026-11-14T11:16:09.492744+00:00",
+  "branch": "fix/rabbitmq-publish-errors-4764",
+  "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "head": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "tree": "055ab8a8a908eacb09828847232c94ed1c74b07f",
+  "reviewedTreeBasePlusPatch": "b56fc35c8afcd6aa8468c8b4f01013e2ddca44e6",
+  "expectedTreeBasePlusPatchPlusPrDelta": "055ab8a8a908eacb09828847232c94ed1c74b07f",
+  "treeEqualsBasePlusPatchPlusPrDelta": true,
+  "deltaEqualsPrDeltaPatch": true,
+  "parents": [
+    "440b15349565bb15f7a88636477864e5a9f8cc72"
+  ],
+  "author": "Jérôme Piquot <jpiquot@itaneo.com>",
+  "committer": "Jérôme Piquot <jpiquot@itaneo.com>",
+  "commitCount": 1,
+  "messageFile": "commit-message.txt",
+  "messageSha256": "9ab7d05a5bc6c9fc8e214ac1b6437747c4b90c084361fd035c076ece8143fc55",
+  "subject": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation",
+  "signedOffBy": "Signed-off-by: Jérôme Piquot <jpiquot@itaneo.com>",
+  "signedOffByPresent": true,
+  "finalLine": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+  "endsWithAttribution": true,
+  "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "lintFixPatchSha256": "fbc29c4f645fb5f7d23e7144f2d261b3e158f0d3d9b2815063b341617231c32f",
+  "prDeltaPatchSha256": "bcc083c9e55c66d1e1994674443b1ad5cbfb09bbe2b68eae31e5f80c8c7c92ab",
+  "diffStat": " pubsub/rabbitmq/rabbitmq.go                        | 485 ++++++++++++--\n pubsub/rabbitmq/rabbitmq_integration_test.go       |   4 +-\n pubsub/rabbitmq/rabbitmq_publish_test.go           | 705 +++++++++++++++++++++\n pubsub/rabbitmq/rabbitmq_publish_transport_test.go | 572 +++++++++++++++++\n pubsub/rabbitmq/rabbitmq_test.go                   |  85 ++-\n 5 files changed, 1780 insertions(+), 71 deletions(-)\n",
+  "changedFiles": [
+    "pubsub/rabbitmq/rabbitmq.go",
+    "pubsub/rabbitmq/rabbitmq_integration_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+    "pubsub/rabbitmq/rabbitmq_test.go"
+  ],
+  "statusAfterCommit": ""
+}

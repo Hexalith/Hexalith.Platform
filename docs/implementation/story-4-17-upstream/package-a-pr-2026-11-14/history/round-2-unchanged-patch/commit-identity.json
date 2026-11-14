@@ -1,0 +1,35 @@
+{
+  "recordedUtc": "2026-11-14T10:31:57.054712+00:00",
+  "branch": "fix/rabbitmq-publish-errors-4764",
+  "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "head": "a8c884bc298d076a08dac03cf56805971c239cb8",
+  "tree": "5db36a5e9a200719a0b98058899025794fc29bfc",
+  "reviewedTreeBasePlusPatch": "b56fc35c8afcd6aa8468c8b4f01013e2ddca44e6",
+  "expectedTreeBasePlusPatchPlusLintFix": "5db36a5e9a200719a0b98058899025794fc29bfc",
+  "treeEqualsBasePlusPatchPlusLintFix": true,
+  "lintDeltaEqualsLintFixPatch": true,
+  "parents": [
+    "440b15349565bb15f7a88636477864e5a9f8cc72"
+  ],
+  "author": "Jérôme Piquot <jpiquot@itaneo.com>",
+  "committer": "Jérôme Piquot <jpiquot@itaneo.com>",
+  "commitCount": 1,
+  "messageFile": "commit-message.txt",
+  "messageSha256": "3c6d4c1c3030c810dd829539dfeaaddef628b695ecb6dd64e4e0b53e90f1a34d",
+  "subject": "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation",
+  "signedOffBy": "Signed-off-by: Jérôme Piquot <jpiquot@itaneo.com>",
+  "signedOffByPresent": true,
+  "finalLine": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+  "endsWithAttribution": true,
+  "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "lintFixPatchSha256": "fbc29c4f645fb5f7d23e7144f2d261b3e158f0d3d9b2815063b341617231c32f",
+  "diffStat": " pubsub/rabbitmq/rabbitmq.go                        | 481 ++++++++++++++--\n pubsub/rabbitmq/rabbitmq_integration_test.go       |   4 +-\n pubsub/rabbitmq/rabbitmq_publish_test.go           | 627 +++++++++++++++++++++\n pubsub/rabbitmq/rabbitmq_publish_transport_test.go | 572 +++++++++++++++++++\n pubsub/rabbitmq/rabbitmq_test.go                   |  85 ++-\n 5 files changed, 1698 insertions(+), 71 deletions(-)\n",
+  "changedFiles": [
+    "pubsub/rabbitmq/rabbitmq.go",
+    "pubsub/rabbitmq/rabbitmq_integration_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_test.go",
+    "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+    "pubsub/rabbitmq/rabbitmq_test.go"
+  ],
+  "statusAfterCommit": ""
+}

@@ -1,0 +1,5 @@
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:233:3: Consider preallocating args with capacity 3 + len(reason) + 4 (prealloc)
+		args := []byte{1, 147, byte(len(reason))} //nolint:gosec // constant reason is shorter than 256 bytes
+		^
+1 issues:
+* prealloc: 1

@@ -1,0 +1,59 @@
+{
+  "checkedUtc": "2026-11-14T10:35:48.888338+00:00",
+  "status": "PASS",
+  "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "head": "a8c884bc298d076a08dac03cf56805971c239cb8",
+  "tree": "5db36a5e9a200719a0b98058899025794fc29bfc",
+  "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "lintFixPatchSha256": "fbc29c4f645fb5f7d23e7144f2d261b3e158f0d3d9b2815063b341617231c32f",
+  "reviewedTree": "b56fc35c8afcd6aa8468c8b4f01013e2ddca44e6",
+  "texts": {
+    "pr-title.txt": {
+      "sha256": "abfdb386c22e168de2145d1ced5a5c11c284d9d7bb32db115480c8e0ab1426d8",
+      "bytes": 70
+    },
+    "pr-body.md": {
+      "sha256": "18d7eb607cbdefc1b41199ae99e25b2daab1b010c76d95f877a2b26881d54f37",
+      "bytes": 6485
+    },
+    "commit-message.txt": {
+      "sha256": "3c6d4c1c3030c810dd829539dfeaaddef628b695ecb6dd64e4e0b53e90f1a34d",
+      "bytes": 1362
+    }
+  },
+  "checks": {
+    "officialMainObserved": "440b15349565bb15f7a88636477864e5a9f8cc72",
+    "officialMainEqualsBase": true,
+    "bundleSha256Matches": true,
+    "bundleVerifiesAgainstFreshClone": true,
+    "headMatches": true,
+    "treeMatches": true,
+    "singleParentIsBase": true,
+    "reviewedTreeMatchesWorkspace": true,
+    "treeEqualsFreshBasePlusPatchPlusLintFix": true,
+    "headMinusReviewedEqualsLintFixPatch": true,
+    "changedFiles": [
+      "pubsub/rabbitmq/rabbitmq.go",
+      "pubsub/rabbitmq/rabbitmq_integration_test.go",
+      "pubsub/rabbitmq/rabbitmq_publish_test.go",
+      "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+      "pubsub/rabbitmq/rabbitmq_test.go"
+    ],
+    "onlyFivePatchedFiles": true,
+    "commitMessageEqualsFile": true,
+    "signedOffByAuthor": true,
+    "endsWithCoAuthoredBy": true,
+    "titleSingleLine": true,
+    "bodyEndsWithAttribution": true,
+    "bodyPartiallyAddresses4764": true,
+    "commitPartiallyAddresses4764": true,
+    "noClosingKeyword": true,
+    "noAtMention": true,
+    "references4766ByNumber": true,
+    "listsExclusions": true,
+    "mentionsSdkLimits": true,
+    "offersRebaseOrSplit": true,
+    "noPrivateMarkers": true
+  },
+  "method": "fresh read-only official clone, bundle fetch, scratch-index tree rebuild and static text rules"
+}

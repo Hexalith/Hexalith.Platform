@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "golangci-lint",
+    "run",
+    "--new-from-rev=440b15349565bb15f7a88636477864e5a9f8cc72",
+    "--max-issues-per-linter=0",
+    "--max-same-issues=0",
+    "./pubsub/rabbitmq/..."
+  ],
+  "resolvedArgv0": "/tmp/hexalith-job.3UrUDBqZ/golangci-lint-2.10.1-linux-amd64/golangci-lint",
+  "cwdSubject": "official main plus the Package A commit",
+  "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+  "subjectHeadAfter": "a8c884bc298d076a08dac03cf56805971c239cb8",
+  "cleanTreeBefore": true,
+  "cleanTreeAfter": true,
+  "startedUtc": "2026-11-14T10:32:23.766687+00:00",
+  "endedUtc": "2026-11-14T10:32:24.285731+00:00",
+  "exitCode": 0,
+  "log": "golangci-lint-all-issues.log",
+  "logBytes": 10,
+  "logSha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+}

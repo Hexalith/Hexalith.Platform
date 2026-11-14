@@ -1,0 +1,171 @@
+diff --git a/pubsub/rabbitmq/rabbitmq.go b/pubsub/rabbitmq/rabbitmq.go
+index 73613299341f21c80c0f3af3cfd4358cc6700ea0..923b03f6dcf2a511da0f03dd10c4049ab1bc8949 100644
+--- a/pubsub/rabbitmq/rabbitmq.go
++++ b/pubsub/rabbitmq/rabbitmq.go
+@@ -562,7 +562,7 @@ func (r *rabbitMQ) publishSync(ctx context.Context, req *pubsub.PublishRequest)
+ 	}
+ 
+ 	common.ApplyMetadataToPublishing(req.Metadata, &p)
+-	if err := ctx.Err(); err != nil {
++	if err = ctx.Err(); err != nil {
+ 		return r.channel, r.connectionCount, err
+ 	}
+ 
+@@ -658,7 +658,7 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 			conclusive = err
+ 		}
+ 	}
+-	for attempt := 0; attempt < publishMaxRetries; attempt++ {
++	for attempt := range publishMaxRetries {
+ 		if ctx.Err() != nil {
+ 			return result()
+ 		}
+diff --git a/pubsub/rabbitmq/rabbitmq_publish_test.go b/pubsub/rabbitmq/rabbitmq_publish_test.go
+index 7dbcc699c08c428e754fed35e7b2af724d0f2f40..34fd431157c43d825d1c599188b0ce2e8fd5d48f 100644
+--- a/pubsub/rabbitmq/rabbitmq_publish_test.go
++++ b/pubsub/rabbitmq/rabbitmq_publish_test.go
+@@ -304,14 +304,15 @@ func TestPublishPublicAccessRefused(t *testing.T) {
+ 			b := newPublishTestBroker()
+ 			r := newPublicPublisher(b)
+ 			var dials atomic.Int32
+-			if stage == "active declaration" || stage == "passive declaration" {
++			switch stage {
++			case "active declaration", "passive declaration":
+ 				if stage == "passive declaration" {
+ 					r.metadata.ExchangeDeclareMode = exchangeDeclareModePassive
+ 				}
+ 				b.declare = func(bool) error { return denied }
+-			} else if stage == "publish" {
++			case "publish":
+ 				b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) { return nil, denied }
+-			} else {
++			default:
+ 				b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
+ 					return nil, errors.New(errorChannelConnection)
+ 				}
+diff --git a/pubsub/rabbitmq/rabbitmq_publish_transport_test.go b/pubsub/rabbitmq/rabbitmq_publish_transport_test.go
+index 14846c6e186138e5f181985fb71e10c6b7f76ebf..0281d0df25f6b4d237c32df34def5fbb9328790e 100644
+--- a/pubsub/rabbitmq/rabbitmq_publish_transport_test.go
++++ b/pubsub/rabbitmq/rabbitmq_publish_transport_test.go
+@@ -17,9 +17,11 @@ import (
+ 	"context"
+ 	"crypto/tls"
+ 	"encoding/binary"
++	"errors"
+ 	"fmt"
+ 	"io"
+ 	"net"
++	"slices"
+ 	"strings"
+ 	"sync"
+ 	"sync/atomic"
+@@ -78,7 +80,7 @@ func (p publishProtocolPeer) frame() (byte, []byte, error) {
+ 		return 0, nil, err
+ 	}
+ 	if body[len(body)-1] != 0xce {
+-		return 0, nil, fmt.Errorf("invalid AMQP frame end")
++		return 0, nil, errors.New("invalid AMQP frame end")
+ 	}
+ 	return header[0], body[:len(body)-1], nil
+ }
+@@ -98,7 +100,7 @@ func (p publishProtocolPeer) send(channel, class, method uint16, args []byte) er
+ 	frame := make([]byte, 7+4+len(args)+1)
+ 	frame[0] = 1
+ 	binary.BigEndian.PutUint16(frame[1:], channel)
+-	binary.BigEndian.PutUint32(frame[3:], uint32(4+len(args)))
++	binary.BigEndian.PutUint32(frame[3:], uint32(4+len(args))) //nolint:gosec // test frames are far below 4 GiB
+ 	binary.BigEndian.PutUint16(frame[7:], class)
+ 	binary.BigEndian.PutUint16(frame[9:], method)
+ 	copy(frame[11:], args)
+@@ -109,7 +111,7 @@ func (p publishProtocolPeer) send(channel, class, method uint16, args []byte) er
+ 
+ func amqpLongString(s string) []byte {
+ 	value := make([]byte, 4+len(s))
+-	binary.BigEndian.PutUint32(value, uint32(len(s)))
++	binary.BigEndian.PutUint32(value, uint32(len(s))) //nolint:gosec // test strings are far below 4 GiB
+ 	copy(value[4:], s)
+ 	return value
+ }
+@@ -140,9 +142,7 @@ func (p publishProtocolPeer) run(stage string, passive bool, entered chan<- stru
+ 	if stage == "AMQP handshake" {
+ 		return p.stall(entered)
+ 	}
+-	start := []byte{0, 9, 0, 0, 0, 0}
+-	start = append(start, amqpLongString("PLAIN")...)
+-	start = append(start, amqpLongString("en_US")...)
++	start := slices.Concat([]byte{0, 9, 0, 0, 0, 0}, amqpLongString("PLAIN"), amqpLongString("en_US"))
+ 	if err := p.send(0, 10, 10, start); err != nil {
+ 		return err
+ 	}
+@@ -189,26 +189,26 @@ func (p publishProtocolPeer) run(stage string, passive bool, entered chan<- stru
+ 		return err
+ 	}
+ 	if len(declaration) < 3 {
+-		return fmt.Errorf("short exchange.declare")
++		return errors.New("short exchange.declare")
+ 	}
+ 	kindOffset := 3 + int(declaration[2])
+ 	if len(declaration) <= kindOffset {
+-		return fmt.Errorf("short exchange kind")
++		return errors.New("short exchange kind")
+ 	}
+ 	flagsOffset := kindOffset + 1 + int(declaration[kindOffset])
+ 	if len(declaration) <= flagsOffset {
+-		return fmt.Errorf("missing exchange flags")
++		return errors.New("missing exchange flags")
+ 	}
+ 	if (declaration[flagsOffset]&1 != 0) != passive {
+-		return fmt.Errorf("incorrect passive declaration flag")
++		return errors.New("incorrect passive declaration flag")
+ 	}
+ 	if stage == "active declaration" || stage == "passive declaration" {
+ 		return p.stall(entered)
+ 	}
+-	if err := p.send(1, 40, 11, nil); err != nil {
++	if err = p.send(1, 40, 11, nil); err != nil {
+ 		return err
+ 	}
+-	if _, err := p.method(60, 40); err != nil {
++	if _, err = p.method(60, 40); err != nil {
+ 		return err
+ 	}
+ 	if stage == "write" || stage == "unconfirmed write" {
+@@ -230,9 +230,7 @@ func (p publishProtocolPeer) run(stage string, passive bool, entered chan<- stru
+ 	}
+ 	if stage == "channel access refused" || stage == "connection access refused" {
+ 		reason := "ACCESS_REFUSED - write permission denied"
+-		args := []byte{1, 147, byte(len(reason))}
+-		args = append(args, []byte(reason)...)
+-		args = append(args, 0, 60, 0, 40)
++		args := slices.Concat([]byte{1, 147, byte(len(reason))}, []byte(reason), []byte{0, 60, 0, 40}) //nolint:gosec // constant reason is shorter than 256 bytes
+ 		channel, class, closeMethod := uint16(1), uint16(20), uint16(40)
+ 		if stage == "connection access refused" {
+ 			channel, class, closeMethod = 0, 10, 50
+@@ -277,7 +275,7 @@ func (p publishProtocolPeer) content() error {
+ 		return err
+ 	}
+ 	if kind != 2 || len(content) < 12 {
+-		return fmt.Errorf("expected content header")
++		return errors.New("expected content header")
+ 	}
+ 	remaining := binary.BigEndian.Uint64(content[4:])
+ 	for remaining > 0 {
+@@ -286,7 +284,7 @@ func (p publishProtocolPeer) content() error {
+ 			return readErr
+ 		}
+ 		if kind != 3 || uint64(len(body)) > remaining {
+-			return fmt.Errorf("invalid content body")
++			return errors.New("invalid content body")
+ 		}
+ 		remaining -= uint64(len(body))
+ 	}
+@@ -323,7 +321,8 @@ func TestPublishPublicNativeTransportCancellation(t *testing.T) {
+ 				if stage == "TLS handshake" {
+ 					uri = "amqps://guest:guest@localhost/?heartbeat=0"
+ 				}
+-				return dialWithConfig(ctx, uri, amqp.Config{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}, func(ctx context.Context, _, _ string) (net.Conn, error) {
++				tlsConfig := &tls.Config{InsecureSkipVerify: true} //nolint:gosec // loopback test peer without a certificate
++				return dialWithConfig(ctx, uri, amqp.Config{TLSClientConfig: tlsConfig}, func(ctx context.Context, _, _ string) (net.Conn, error) {
+ 					if stage == "dial" {
+ 						close(entered)
+ 						<-ctx.Done()

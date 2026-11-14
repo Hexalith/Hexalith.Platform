@@ -1,0 +1,29 @@
+{
+  "go": {
+    "indexUrl": "https://go.dev/dl/?mode=json&include=all",
+    "archiveUrl": "https://go.dev/dl/go1.26.10.linux-amd64.tar.gz",
+    "archive": {
+      "filename": "go1.26.10.linux-amd64.tar.gz",
+      "os": "linux",
+      "arch": "amd64",
+      "version": "go1.26.10",
+      "sha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+      "size": 66936659,
+      "kind": "archive"
+    },
+    "verifiedSha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+    "version": "go version go1.26.10 linux/amd64"
+  },
+  "golangciLint": {
+    "archiveUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-linux-amd64.tar.gz",
+    "checksumsUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-checksums.txt",
+    "checksumsSha256": "6fe5e74f65546a089f3ba04bd840e5abcd87a07930615445cf08311a9b71f5a2",
+    "expectedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+    "verifiedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+    "version": "golangci-lint has version 2.10.1 built with go1.26.0 from 5d1e709b on 2026-02-17T15:27:33Z"
+  },
+  "environment": {
+    "GOTOOLCHAIN": "local",
+    "GOMAXPROCS": "4"
+  }
+}

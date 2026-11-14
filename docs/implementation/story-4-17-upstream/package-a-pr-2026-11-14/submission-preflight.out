@@ -1,0 +1,35 @@
+{
+  "checkedUtc": "2026-11-14T11:20:14.723924+00:00",
+  "status": "PASS",
+  "reviewedBase": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "officialMain": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "mainEqualsReviewedBase": true,
+  "guardPaths": [
+    "pubsub/rabbitmq",
+    "common/component/rabbitmq",
+    "go.mod",
+    "go.sum",
+    ".golangci.yml"
+  ],
+  "guardedChangesSinceReviewedBase": [],
+  "baseFetchedBySha": true,
+  "overlappingPullRequest": {
+    "headRefOid": "14bf2f783dff41ef2c927fe1aeb6999c113ffff3",
+    "isDraft": false,
+    "mergedAt": null,
+    "number": 4766,
+    "state": "OPEN",
+    "title": "fix(pubsub/rabbitmq): return error when publish is canceled during retry"
+  },
+  "overlappingHeadUnchanged": true,
+  "haltReasons": [],
+  "method": "read-only official fetch and gh pr view; no remote write",
+  "bundleVerification": {
+    "exitCode": 0,
+    "output": "The bundle contains this ref:\n96c3259b7c12a476edd208848153d3cf72a8c4f0 refs/heads/fix/rabbitmq-publish-errors-4764\nThe bundle requires this ref:\n440b15349565bb15f7a88636477864e5a9f8cc72 \nThe bundle uses this hash algorithm: sha1\n/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/package-a-pr.bundle is okay\n",
+    "hashMatches": true,
+    "identityMatches": true
+  },
+  "localGatesPass": true,
+  "bundleMatches": true
+}

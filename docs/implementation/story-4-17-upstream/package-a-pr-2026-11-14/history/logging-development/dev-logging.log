@@ -1,0 +1,61 @@
+go: downloading github.com/google/uuid v1.6.0
+go: downloading google.golang.org/grpc v1.83.2
+go: downloading github.com/rabbitmq/amqp091-go v1.14.0
+go: downloading github.com/stretchr/testify v1.11.1
+go: downloading github.com/mitchellh/mapstructure v1.5.1-0.20220423185008-bf980b35cac4
+go: downloading github.com/spf13/cast v1.8.0
+go: downloading k8s.io/apimachinery v0.33.0
+go: downloading github.com/sirupsen/logrus v1.9.4
+go: downloading gopkg.in/natefinch/lumberjack.v2 v2.2.1
+go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+go: downloading github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
+go: downloading github.com/cloudevents/sdk-go/binding/format/protobuf/v2 v2.15.2
+go: downloading github.com/cloudevents/sdk-go/v2 v2.15.2
+go: downloading golang.org/x/sys v0.49.0
+go: downloading gopkg.in/yaml.v3 v3.0.1
+go: downloading google.golang.org/protobuf v1.36.12
+go: downloading github.com/gogo/protobuf v1.3.2
+go: downloading gopkg.in/inf.v0 v0.9.1
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20260727163830-6c54dddc4772
+go: downloading github.com/json-iterator/go v1.1.12
+go: downloading google.golang.org/genproto v0.0.0-20260128011058-8636f8732409
+go: downloading github.com/fxamacker/cbor/v2 v2.7.0
+go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+go: downloading github.com/modern-go/reflect2 v1.0.2
+go: downloading github.com/x448/float16 v0.8.4
+{"Time":"2026-11-14T12:13:39.375987167+01:00","Action":"start","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq"}
+{"Time":"2026-11-14T12:13:39.384679015+01:00","Action":"run","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging"}
+{"Time":"2026-11-14T12:13:39.384721929+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging","Output":"=== RUN   TestPublishPublicFailureLogging\n"}
+{"Time":"2026-11-14T12:13:39.384759482+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging","Output":"=== PAUSE TestPublishPublicFailureLogging\n"}
+{"Time":"2026-11-14T12:13:39.384761085+01:00","Action":"pause","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging"}
+{"Time":"2026-11-14T12:13:39.384887392+01:00","Action":"cont","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging"}
+{"Time":"2026-11-14T12:13:39.384897322+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging","Output":"=== CONT  TestPublishPublicFailureLogging\n"}
+{"Time":"2026-11-14T12:13:39.384903163+01:00","Action":"run","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion"}
+{"Time":"2026-11-14T12:13:39.384918202+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion","Output":"=== RUN   TestPublishPublicFailureLogging/retry_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.385010523+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion","Output":"=== PAUSE TestPublishPublicFailureLogging/retry_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.385020162+01:00","Action":"pause","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385097844+01:00","Action":"run","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385105248+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion","Output":"=== RUN   TestPublishPublicFailureLogging/reconnect_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.38515767+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion","Output":"=== PAUSE TestPublishPublicFailureLogging/reconnect_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.385165025+01:00","Action":"pause","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385222968+01:00","Action":"run","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385246414+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion","Output":"=== RUN   TestPublishPublicFailureLogging/reconnect_failure_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.38529551+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion","Output":"=== PAUSE TestPublishPublicFailureLogging/reconnect_failure_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.385302754+01:00","Action":"pause","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385393441+01:00","Action":"cont","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion"}
+{"Time":"2026-11-14T12:13:39.38540288+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion","Output":"=== CONT  TestPublishPublicFailureLogging/reconnect_failure_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.385486593+01:00","Action":"cont","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion"}
+{"Time":"2026-11-14T12:13:39.385493817+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion","Output":"=== CONT  TestPublishPublicFailureLogging/reconnect_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.38557208+01:00","Action":"cont","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion"}
+{"Time":"2026-11-14T12:13:39.38557718+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion","Output":"=== CONT  TestPublishPublicFailureLogging/retry_exhaustion\n"}
+{"Time":"2026-11-14T12:13:39.386502759+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion","Output":"--- PASS: TestPublishPublicFailureLogging/reconnect_failure_exhaustion (0.00s)\n"}
+{"Time":"2026-11-14T12:13:39.386689373+01:00","Action":"pass","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_failure_exhaustion","Elapsed":0}
+{"Time":"2026-11-14T12:13:39.386699754+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion","Output":"--- PASS: TestPublishPublicFailureLogging/reconnect_exhaustion (0.00s)\n"}
+{"Time":"2026-11-14T12:13:43.388517784+01:00","Action":"pass","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/reconnect_exhaustion","Elapsed":0}
+{"Time":"2026-11-14T12:13:43.388690522+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion","Output":"--- PASS: TestPublishPublicFailureLogging/retry_exhaustion (4.00s)\n"}
+{"Time":"2026-11-14T12:13:43.388702806+01:00","Action":"pass","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging/retry_exhaustion","Elapsed":4}
+{"Time":"2026-11-14T12:13:43.388716022+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging","Output":"--- PASS: TestPublishPublicFailureLogging (0.00s)\n"}
+{"Time":"2026-11-14T12:13:43.388718767+01:00","Action":"pass","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Test":"TestPublishPublicFailureLogging","Elapsed":0}
+{"Time":"2026-11-14T12:13:43.388720861+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Output":"PASS\n"}
+{"Time":"2026-11-14T12:13:44.391871241+01:00","Action":"output","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Output":"ok  \tgithub.com/dapr/components-contrib/pubsub/rabbitmq\t5.015s\n"}
+{"Time":"2026-11-14T12:13:44.391973391+01:00","Action":"pass","Package":"github.com/dapr/components-contrib/pubsub/rabbitmq","Elapsed":5.016}

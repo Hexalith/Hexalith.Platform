@@ -1,0 +1,146 @@
+diff --git a/pubsub/rabbitmq/rabbitmq.go b/pubsub/rabbitmq/rabbitmq.go
+index 923b03f6dcf2a511da0f03dd10c4049ab1bc8949..04d80a9cc5fc37f3ffcec6ae0d535911aa43e404 100644
+--- a/pubsub/rabbitmq/rabbitmq.go
++++ b/pubsub/rabbitmq/rabbitmq.go
+@@ -651,7 +651,8 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 		}
+ 		return pubsub.NewRetriableError(errors.New("publishing failed without a confirmation"))
+ 	}
+-	remember := func(err error) {
++	remember := func(err error, attempt int) {
++		r.logger.Warnf("%s publishing attempt (%d/%d) failed: %v", logMessagePrefix, attempt+1, publishMaxRetries, err)
+ 		failure = err
+ 		var brokerError *amqp.Error
+ 		if errors.Is(err, errPublishConfirmation) || (errors.As(err, &brokerError) && brokerError.Server) {
+@@ -665,6 +666,7 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 		if attempt > 0 {
+ 			delay := publishRetryWaitSeconds * time.Second
+ 			if reconnect {
++				r.logger.Warnf("%s publisher is reconnecting in %s ...", logMessagePrefix, r.metadata.ReconnectWait.String())
+ 				delay = r.metadata.ReconnectWait
+ 			}
+ 			timer := time.NewTimer(delay)
+@@ -680,7 +682,7 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 		}
+ 		if reconnect {
+ 			if err := r.reconnect(ctx, connectionCount); err != nil {
+-				remember(err)
++				remember(err, attempt)
+ 				if authorizationError(err) || status.Code(err) == codes.FailedPrecondition {
+ 					return pubsub.NewTerminalError(err)
+ 				}
+@@ -692,13 +694,15 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 		if err == nil {
+ 			return nil
+ 		}
+-		remember(err)
++		remember(err, attempt)
+ 		if authorizationError(err) || status.Code(err) == codes.FailedPrecondition {
+ 			return pubsub.NewTerminalError(err)
+ 		}
+ 		reconnect = mustReconnect(channel, err)
+ 	}
+-	return result()
++	err := result()
++	r.logger.Errorf("%s publishing failed: %v", logMessagePrefix, err)
++	return err
+ }
+ 
+ func (r *rabbitMQ) Subscribe(ctx context.Context, req pubsub.SubscribeRequest, handler pubsub.Handler) error {
+diff --git a/pubsub/rabbitmq/rabbitmq_publish_test.go b/pubsub/rabbitmq/rabbitmq_publish_test.go
+index 34fd431157c43d825d1c599188b0ce2e8fd5d48f..0590bf87c264af55ec6f0cdd007c8ae7f0214768 100644
+--- a/pubsub/rabbitmq/rabbitmq_publish_test.go
++++ b/pubsub/rabbitmq/rabbitmq_publish_test.go
+@@ -14,10 +14,14 @@ limitations under the License.
+ package rabbitmq
+ 
+ import (
++	"bytes"
+ 	"context"
+ 	"crypto/tls"
++	"encoding/json"
+ 	"errors"
++	"fmt"
+ 	"io"
++	"strings"
+ 	"sync"
+ 	"sync/atomic"
+ 	"testing"
+@@ -625,3 +629,77 @@ func TestPublishPublicQueuedBeforeCloseIsTerminal(t *testing.T) {
+ 	require.EqualError(t, err, "component is closed")
+ 	require.Zero(t, b.publishes.Load())
+ }
++
++func TestPublishPublicFailureLogging(t *testing.T) {
++	t.Parallel()
++	for _, tc := range []struct {
++		name             string
++		publishError     string
++		reconnectFailure bool
++	}{
++		{name: "retry exhaustion", publishError: "publish failed"},
++		{name: "reconnect exhaustion", publishError: errorChannelConnection},
++		{name: "reconnect failure exhaustion", publishError: errorChannelConnection, reconnectFailure: true},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			publishErr := errors.New(tc.publishError)
++			b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++				return nil, publishErr
++			}
++			r := newPublicPublisher(b)
++			var output bytes.Buffer
++			r.logger = logger.NewLogger(t.Name())
++			r.logger.EnableJSONOutput(true)
++			r.logger.SetOutput(&output)
++			t.Cleanup(func() { r.logger.SetOutput(io.Discard) })
++			dialErr := errors.New("reconnect failed")
++			if tc.reconnectFailure {
++				r.connectionDial = func(context.Context, string, string, string, time.Duration, *tls.Config, bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++					return nil, nil, dialErr
++				}
++			}
++
++			expectedErr := publishErr
++			if tc.reconnectFailure {
++				expectedErr = dialErr
++			}
++			require.ErrorIs(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}), expectedErr)
++
++			var attempts, reconnects, exhausted int
++			for line := range bytes.SplitSeq(bytes.TrimSpace(output.Bytes()), []byte("\n")) {
++				var entry struct {
++					Level   string `json:"level"`
++					Message string `json:"msg"`
++				}
++				require.NoError(t, json.Unmarshal(line, &entry))
++				switch {
++				case strings.HasPrefix(entry.Message, logMessagePrefix+" publishing attempt ("):
++					attempts++
++					attemptErr := publishErr
++					if tc.reconnectFailure && attempts > 1 {
++						attemptErr = dialErr
++					}
++					require.Equal(t, "warning", entry.Level)
++					require.Equal(t, fmt.Sprintf("%s publishing attempt (%d/%d) failed: %v", logMessagePrefix, attempts, publishMaxRetries, attemptErr), entry.Message)
++				case strings.HasPrefix(entry.Message, logMessagePrefix+" publisher is reconnecting in "):
++					reconnects++
++					require.Equal(t, "warning", entry.Level)
++					require.Equal(t, logMessagePrefix+" publisher is reconnecting in 0s ...", entry.Message)
++				case strings.HasPrefix(entry.Message, logMessagePrefix+" publishing failed:"):
++					exhausted++
++					require.Equal(t, "error", entry.Level)
++					require.Equal(t, logMessagePrefix+" publishing failed: "+expectedErr.Error(), entry.Message)
++				}
++			}
++			require.Equal(t, publishMaxRetries, attempts)
++			expectedReconnects := 0
++			if tc.publishError == errorChannelConnection {
++				expectedReconnects = publishMaxRetries - 1
++			}
++			require.Equal(t, expectedReconnects, reconnects)
++			require.Equal(t, 1, exhausted)
++		})
++	}
++}

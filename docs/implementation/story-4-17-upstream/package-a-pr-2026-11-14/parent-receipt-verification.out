@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "requiredStatus": "PASS"
+}
+diff-stat PASS {}
+gofmt PASS {'outputEmpty': True}
+diff-check PASS {'outputEmpty': True}
+golangci-lint PASS {'lintSummary': '0 issues.'}
+golangci-lint-all-issues PASS {'lintSummary': '0 issues.'}
+vet PASS {'outputEmpty': True}
+full-unit PASS {'passedTopLevelEvents': 62, 'passedTestAndSubtestEvents': 196, 'uniquePassedTestAndSubtestNames': 196, 'uniquePassedTopLevelNames': 62}
+focused-race PASS {'passedTopLevelEvents': 230, 'passedTestAndSubtestEvents': 720, 'uniquePassedTestAndSubtestNames': 72, 'uniquePassedTopLevelNames': 23}
+legacy-fixture-race PASS {'passedTopLevelEvents': 10, 'passedTestAndSubtestEvents': 10, 'uniquePassedTestAndSubtestNames': 1, 'uniquePassedTopLevelNames': 1}
+integration-compile-only PASS {}
+mod-tidy-diff PASS {'outputEmpty': True}
+mod-tidy-compat-diff PASS {'outputEmpty': True}
+certification-mod-tidy-diff PASS {'outputEmpty': True}
+certification-mod-tidy-compat-diff PASS {'outputEmpty': True}

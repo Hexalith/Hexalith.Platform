@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=10",
+    "-run",
+    "^TestMustReconnectOnAMQPError$",
+    "./pubsub/rabbitmq"
+  ],
+  "resolvedArgv0": "/tmp/hexalith-job.28LOKAuK/go/bin/go",
+  "cwdSubject": "official main plus the Package A commit",
+  "subjectHead": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "subjectHeadAfter": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "cleanTreeBefore": true,
+  "cleanTreeAfter": true,
+  "startedUtc": "2026-11-14T11:19:11.225418+00:00",
+  "endedUtc": "2026-11-14T11:19:12.714583+00:00",
+  "exitCode": 0,
+  "log": "legacy-fixture-race.log",
+  "logBytes": 8443,
+  "logSha256": "255c51f25fde5179a058c09fb4bb28105cac8b51e6db97f97fa4526024bcbf04"
+}

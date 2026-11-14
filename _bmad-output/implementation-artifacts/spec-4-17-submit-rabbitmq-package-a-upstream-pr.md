@@ -2,7 +2,7 @@
 title: 'Story 4.17: submit RabbitMQ Package A as an upstream pull request'
 type: 'chore'
 created: '2026-11-14'
-status: 'ready-for-dev'
+status: 'in-review'
 route: 'dispatch'
 review_loop_iteration: 1
 baseline_commit: 'a215204225396ee695756f934c2e8a172ba7f311'
@@ -53,10 +53,10 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] Source delta -- Restore the three log calls, and add a focused unit test that captures logger output (dapr/kit `logger.SetOutput`) to assert them. Keep `lint-fix.patch`. Write `pr-delta.patch`.
-- [ ] Checks -- In held run-with-temp jobs: clone official main and record its identity, apply `contribution.patch` plus `pr-delta.patch`, and commit on `fix/rabbitmq-publish-errors-4764`. Run the recorded checks plus `go mod tidy -diff`, golangci-lint `--new-from-rev=<base>` and `gofmt -s -l`. `summarize-checks.py` must FAIL on a missing required receipt or on counts below the local baseline. Save a thin bundle with the head SHA and tree.
-- [ ] Submission procedure -- `README.md` steps and a preflight script. The preflight HALTs unless main is the base, or no change since the base touches `pubsub/rabbitmq`, `common/component/rabbitmq`, `go.mod`, `go.sum` or `.golangci.yml`, and unless #4766 is OPEN at head `14bf2f783dff41ef2c927fe1aeb6999c113ffff3`. It fetches the base by SHA before using the bundle. Readback parses the `gh` JSON and compares the UTF-8 bytes exactly.
-- [ ] PR texts -- Add the abort disclosure and follow-up offer. Name the conformance suite as not run. Keep the existing rules and limits.
+- [x] Source delta -- Restore the three log calls, and add a focused unit test that captures logger output (dapr/kit `logger.SetOutput`) to assert them. Keep `lint-fix.patch`. Write `pr-delta.patch`.
+- [x] Checks -- In held run-with-temp jobs: clone official main and record its identity, apply `contribution.patch` plus `pr-delta.patch`, and commit on `fix/rabbitmq-publish-errors-4764`. Run the recorded checks plus `go mod tidy -diff`, golangci-lint `--new-from-rev=<base>` and `gofmt -s -l`. `summarize-checks.py` must FAIL on a missing required receipt or on counts below the local baseline. Save a thin bundle with the head SHA and tree.
+- [x] Submission procedure -- `README.md` steps and a preflight script. The preflight HALTs unless main is the base, or no change since the base touches `pubsub/rabbitmq`, `common/component/rabbitmq`, `go.mod`, `go.sum` or `.golangci.yml`, and unless #4766 is OPEN at head `14bf2f783dff41ef2c927fe1aeb6999c113ffff3`. It fetches the base by SHA before using the bundle. Readback parses the `gh` JSON and compares the UTF-8 bytes exactly.
+- [x] PR texts -- Add the abort disclosure and follow-up offer. Name the conformance suite as not run. Keep the existing rules and limits.
 - [ ] Approval gate (parent) -- Present the texts, delta and check results, then HALT.
 - [ ] Submit (parent, after the yes) -- Run the preflight, fork, push the bundled commit, `gh pr create`, read back, write `submission-receipt.json`.
 - [ ] Records (parent) -- PR identity, remaining gates and unchanged dispositions.
@@ -104,6 +104,27 @@ Round 1 (diff: Platform artifacts plus upstream subject `a8c884bc298d076a08dac03
 | ECH15 | low | The unexported `rabbitMQ` is built only via `NewRabbitMQ` and test helpers, which initialize `channelMutex` → rejected. |
 | VG2 | low | `verify-subject.py` requires #4765 in the body; this matters only if the owner drops that reference at approval, and then the rule must change → rejected (handle at the gate). |
 
+### Preparation review round 2
+
+All three layers reported before triage. Subject: `96c3259b7c12a476edd208848153d3cf72a8c4f0`; diff includes the restored logging and preserved historical evidence. Individual verdicts precede grouping.
+
+| ID | Verdict | Evidence and route |
+|---|---|---|
+| B2-1 | medium | The summarizer records argv without comparing it to the required command manifest. A mislabeled successful command can satisfy a required gate; the reviewer reproduced vet replaced by true. **patch**, grouped with E2-1: require exact command arrays. |
+| B2-2 | low | Removing the new logging test events while recomputing log hashes still clears the deliberately retained baseline floors. Actual full-unit and focused-race logs contain the new test and all three subtests, and bind the immutable subject containing them. Reject: a further test-name guard addresses manipulated evidence outside ordinary use and adds guard complexity. |
+| B2-3 | medium | Submission preflight trusts saved summary PASS values, so deleting a required receipt afterward is not detected there. **patch**: recompute the offline receipt gates in disposable storage before accepting them, without overwriting original evidence. |
+| B2-4 | false | The helper compares current file bytes, but its documented caller must first confirm the approved text/delta hashes (README submission step 3); altered local text would halt before creation. The pending receipt intentionally has approvedTexts null until the explicit yes. No approval is inferred now; preserve the caller check. |
+| B2-5 | low | A deliberately supplied different PR with the same head/text could pass the helper. The documented caller uses the just-created PR identity, fixes the target repository, and saves its returned identity. Reject additional identity guards for this unlikely caller misuse. |
+| B2-6 | low | The GitHub login observation is from preparation and may become stale before fork. **patch**: directly document a fresh jpiquot identity check immediately before writes. |
+| B2-7 | low | The overlapping PR may change between the first preflight and PR creation. **patch**: rerun the same upstream guard immediately before creation and retain the result; reduce this unavoidable external-state race without claiming atomicity. |
+| B2-8 | medium | Readback records nothing when the gh command or JSON parsing fails. Those failures can occur after successful creation and must leave durable evidence. **patch**: retain attempted identity, raw output/error and failure status; exercise the failure paths with disposable mocked responses. |
+| B2-9 | low | The PR checklist rationale says no documented behavior change although the body describes changed cancellation and subscription effects. **patch**: replace that rationale with the concrete lack of metadata/configuration changes and reference the disclosed effects. |
+| B2-10 | low | The logger test uses repeated failures; mixed conclusive/transport error selection already has passing component tests, and the error log formats the exact same local err returned at exhaustion. Reject an additional low-value fixture: it adds setup for unchanged selection behavior. |
+| E2-1 | medium | Same demonstrated command-label gap as B2-1: required receipt names do not establish that the required command ran. **patch**, grouped with B2-1; no separate fix. |
+| VG2-1 | medium | Pre-verified broken verification: removing go.mod from GUARD_PATHS also removes its generated fixture case, leaving verification green. **patch**: independently specify all five paths and exercise check_upstream against disposable Git changes, including moved shallow-main base retrieval. |
+
+All surviving fixes concern local preparation guards, tests or wording. No change to the approved upstream source behavior, commit, bundle, qualification dispositions or remote-write boundary is required.
+
 ## Design Notes
 
 "Partially addresses" keeps #4764 open for the work this PR omits. The #4766 number reference already cross-links, so the PR needs no @mention.
@@ -114,3 +135,15 @@ Round 1 (diff: Platform artifacts plus upstream subject `a8c884bc298d076a08dac03
 - Held-job checks -- expected: all exit 0; full unit at least 61/192 and focused race at least 680 pass events, with no skips; 0 new lint issues; empty `gofmt -s -l`; no tidy diff.
 - `git diff --stat <base> HEAD` -- expected: only `pubsub/rabbitmq` files.
 - The preflight, then `gh pr view <n> --json title,body,headRefOid` parsed as JSON -- expected: the approved bytes and the pushed SHA.
+
+## Current preparation verification
+
+The first four tasks are complete on signed-off upstream subject `96c3259b7c12a476edd208848153d3cf72a8c4f0`. All 14 receipts pass (unit 62/196, focused race 230/720, legacy race 10/10); fresh-clone tree/message verification and disposable preflight/readback/receipt-failure fixtures pass. All implementation jobs exited and cleaned up. See [prepared package](../../docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/README.md).
+
+The clean-base, lint, restored-logging, overlapping-PR and readback matrix paths have passing checks. Owner decline and partial remote failure remain parent procedures at the explicit approval boundary: the receipt says prepared, not submitted with no remote writes; submission has not occurred. The submission acceptance criterion and final cross-repository records remain pending. The preparation review precedes that required checkpoint.
+
+### Preparation review outcome
+
+All seven surviving review corrections (grouping B2-1/E2-1) are complete: exact command matching; fresh disposable receipt recomputation; durable command/parse failure receipts; fresh identity and pre-create upstream observations in the submission procedure; accurate PR checklist wording; and independent five-path shallow-Git tests. Parent verification passed all 14 receipt checks, 89 procedure assertions and fresh official-clone source/message/text verification. No new finding was deferred. Existing round-1 deferrals and unchanged delivery gates remain.
+
+Approval checkpoint: the exact prepared title, body, commit message and delta are presented for an explicit owner yes. No fork, push or PR has occurred. Submission and final Platform/EventStore records remain incomplete; this spec remains in-review and the parent sprint story remains in-progress until those tasks are fulfilled. The workflow completion/status step does not apply before this explicit human checkpoint.

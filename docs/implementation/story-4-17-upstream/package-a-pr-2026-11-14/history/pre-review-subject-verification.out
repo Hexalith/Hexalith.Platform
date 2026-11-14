@@ -1,0 +1,64 @@
+{
+  "checkedUtc": "2026-11-14T11:20:48.277014+00:00",
+  "status": "PASS",
+  "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "head": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "tree": "055ab8a8a908eacb09828847232c94ed1c74b07f",
+  "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "prDeltaPatchSha256": "bcc083c9e55c66d1e1994674443b1ad5cbfb09bbe2b68eae31e5f80c8c7c92ab",
+  "reviewedTree": "b56fc35c8afcd6aa8468c8b4f01013e2ddca44e6",
+  "texts": {
+    "pr-title.txt": {
+      "sha256": "abfdb386c22e168de2145d1ced5a5c11c284d9d7bb32db115480c8e0ab1426d8",
+      "bytes": 70
+    },
+    "pr-body.md": {
+      "sha256": "5f7cb07b26f54a7b4479a3a13ceb1cdb750b5562e400b8ffc27bd95da09eb99b",
+      "bytes": 7394
+    },
+    "commit-message.txt": {
+      "sha256": "9ab7d05a5bc6c9fc8e214ac1b6437747c4b90c084361fd035c076ece8143fc55",
+      "bytes": 1517
+    }
+  },
+  "checks": {
+    "officialMainObserved": "440b15349565bb15f7a88636477864e5a9f8cc72",
+    "upstreamPreflightPasses": true,
+    "bundleSha256Matches": true,
+    "bundleVerifiesAgainstFreshClone": true,
+    "headMatches": true,
+    "treeMatches": true,
+    "singleParentIsBase": true,
+    "reviewedTreeMatchesWorkspace": true,
+    "treeEqualsFreshBasePlusPatchPlusPrDelta": true,
+    "headMinusReviewedEqualsPrDeltaPatch": true,
+    "retainedLintThenLoggingEqualsHead": true,
+    "headMinusLintedEqualsLoggingRestoration": true,
+    "lintFixUnchangedSincePriorRound": true,
+    "changedFiles": [
+      "pubsub/rabbitmq/rabbitmq.go",
+      "pubsub/rabbitmq/rabbitmq_integration_test.go",
+      "pubsub/rabbitmq/rabbitmq_publish_test.go",
+      "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+      "pubsub/rabbitmq/rabbitmq_test.go"
+    ],
+    "onlyFivePatchedFiles": true,
+    "commitMessageEqualsFile": true,
+    "signedOffByAuthor": true,
+    "endsWithCoAuthoredBy": true,
+    "titleSingleLine": true,
+    "bodyEndsWithAttribution": true,
+    "bodyPartiallyAddresses4764": true,
+    "commitPartiallyAddresses4764": true,
+    "noClosingKeyword": true,
+    "noAtMention": true,
+    "references4766ByNumber": true,
+    "listsExclusions": true,
+    "mentionsSdkLimits": true,
+    "disclosesTransportAbort": true,
+    "noPrivatePaths": true,
+    "offersRebaseOrSplit": true,
+    "noPrivateMarkers": true
+  },
+  "method": "fresh read-only official clone, bundle fetch, scratch-index tree rebuild and static text rules"
+}

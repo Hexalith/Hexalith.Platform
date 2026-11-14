@@ -1,0 +1,36 @@
+{
+  "completedUtc": "2026-11-14T11:22:24.860779+00:00",
+  "status": "PASS",
+  "jobs": [
+    {
+      "role": "draft-source",
+      "directory": "/tmp/hexalith-job.TcteSU2v",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    },
+    {
+      "role": "draft-tools-and-caches",
+      "directory": "/tmp/hexalith-job.taqk51e0",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    },
+    {
+      "role": "final-source",
+      "directory": "/tmp/hexalith-job.YADhssry",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    },
+    {
+      "role": "final-tools-and-caches",
+      "directory": "/tmp/hexalith-job.28LOKAuK",
+      "wrapperExitCode": 0,
+      "directoryRemoved": true
+    }
+  ],
+  "independentJobs": {
+    "freshCloneSubjectVerification": "completed exit 0; run-with-temp removed its disposable clone",
+    "guardFixtureVerification": "completed exit 0; run-with-temp removed its fixtures"
+  },
+  "remoteWrites": [],
+  "note": "Useful logs, scripts, patches, identities and thin bundle were saved outside disposable storage. All held jobs were released and awaited."
+}

@@ -1,0 +1,6 @@
+ pubsub/rabbitmq/rabbitmq.go                        | 485 ++++++++++++--
+ pubsub/rabbitmq/rabbitmq_integration_test.go       |   4 +-
+ pubsub/rabbitmq/rabbitmq_publish_test.go           | 705 +++++++++++++++++++++
+ pubsub/rabbitmq/rabbitmq_publish_transport_test.go | 572 +++++++++++++++++
+ pubsub/rabbitmq/rabbitmq_test.go                   |  85 ++-
+ 5 files changed, 1780 insertions(+), 71 deletions(-)

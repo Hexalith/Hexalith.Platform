@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=10",
+    "-timeout=180s",
+    "-run",
+    "^(TestPublishPublic|TestInit)",
+    "./pubsub/rabbitmq"
+  ],
+  "resolvedArgv0": "/tmp/hexalith-job.28LOKAuK/go/bin/go",
+  "cwdSubject": "official main plus the Package A commit",
+  "subjectHead": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "subjectHeadAfter": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "cleanTreeBefore": true,
+  "cleanTreeAfter": true,
+  "startedUtc": "2026-11-14T11:17:36.389830+00:00",
+  "endedUtc": "2026-11-14T11:19:11.180871+00:00",
+  "exitCode": 0,
+  "log": "focused-race.log.gz",
+  "logBytes": 3040619,
+  "originalLog": "focused-race.log",
+  "logEncoding": "gzip",
+  "uncompressedLogSha256": "8467c45385aa81e0f9c21f410c560daa9c7c837df2f5f4c37c313b255b4a966c",
+  "storedLogSha256": "b4096dddcf6ad8f7a0724628a1165357f2f251382ce8f8e735a229f95d380810"
+}

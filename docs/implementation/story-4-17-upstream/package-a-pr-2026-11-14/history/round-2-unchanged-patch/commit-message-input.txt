@@ -1,0 +1,23 @@
+fix(pubsub/rabbitmq): preserve publish failures and bound cancellation
+
+Publish could return nil when the caller's context was canceled during a
+retry or reconnect wait, discarded the reconnect error, and waited for
+publisher confirmations, the channel lock and connection setup without
+observing the caller's context.
+
+- Return an error when Publish is canceled or exhausts its retries. A
+  broker NACK or a server-sent AMQP exception from an attempt is returned
+  in preference to a later cancellation or transport error. A retry that
+  is actually confirmed still succeeds.
+- Keep reconnect errors. ACCESS_REFUSED and stopped or closed component
+  errors end the retries as terminal errors.
+- Match publisher confirmations by delivery tag and tell a real NACK apart
+  from pending confirmations completed by channel shutdown. Retain native
+  channel and connection close reasons for the Publish caller.
+- Acquire the channel lock with the caller's context and pass it to dial.
+  Dial, TLS and AMQP handshakes, channel open, confirm setup, exchange
+  declaration and blocked writes are interrupted by closing the transport
+  of the current connection generation. A new connection is installed only
+  after setup completes.
+
+Partially addresses #4764.

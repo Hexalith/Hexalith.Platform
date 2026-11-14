@@ -1,0 +1,46 @@
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:101:46: G115: integer overflow conversion int -> uint32 (gosec)
+	binary.BigEndian.PutUint32(frame[3:], uint32(4+len(args)))
+	                                            ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:112:42: G115: integer overflow conversion int -> uint32 (gosec)
+	binary.BigEndian.PutUint32(value, uint32(len(s)))
+	                                        ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:233:30: G115: integer overflow conversion int -> byte (gosec)
+		args := []byte{1, 147, byte(len(reason))}
+		                           ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:326:98: G402: TLS InsecureSkipVerify set to true. (gosec)
+				return dialWithConfig(ctx, uri, amqp.Config{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}, func(ctx context.Context, _, _ string) (net.Conn, error) {
+				                                                                                             ^
+pubsub/rabbitmq/rabbitmq.go:565:5: shadow: declaration of "err" shadows declaration at line 536 (govet)
+	if err := ctx.Err(); err != nil {
+	   ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:208:5: shadow: declaration of "err" shadows declaration at line 187 (govet)
+	if err := p.send(1, 40, 11, nil); err != nil {
+	   ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:211:8: shadow: declaration of "err" shadows declaration at line 187 (govet)
+	if _, err := p.method(60, 40); err != nil {
+	      ^
+pubsub/rabbitmq/rabbitmq.go:661:2: for loop can be changed to use an integer range (Go 1.22+) (intrange)
+	for attempt := 0; attempt < publishMaxRetries; attempt++ {
+	^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:81:18: error-format: fmt.Errorf can be replaced with errors.New (perfsprint)
+		return 0, nil, fmt.Errorf("invalid AMQP frame end")
+		               ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:192:10: error-format: fmt.Errorf can be replaced with errors.New (perfsprint)
+		return fmt.Errorf("short exchange.declare")
+		       ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:196:10: error-format: fmt.Errorf can be replaced with errors.New (perfsprint)
+		return fmt.Errorf("short exchange kind")
+		       ^
+pubsub/rabbitmq/rabbitmq_publish_transport_test.go:143:2: Consider preallocating start (prealloc)
+	start := []byte{0, 9, 0, 0, 0, 0}
+	^
+pubsub/rabbitmq/rabbitmq_publish_test.go:307:4: QF1003: could use tagged switch on stage (staticcheck)
+			if stage == "active declaration" || stage == "passive declaration" {
+			^
+13 issues:
+* gosec: 4
+* govet: 3
+* intrange: 1
+* perfsprint: 3
+* prealloc: 1
+* staticcheck: 1

@@ -1,0 +1,362 @@
+{
+  "status": "PASS",
+  "requiredStatus": "PASS",
+  "subject": {
+    "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
+    "head": "a8c884bc298d076a08dac03cf56805971c239cb8",
+    "tree": "5db36a5e9a200719a0b98058899025794fc29bfc",
+    "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+    "lintFixPatchSha256": "fbc29c4f645fb5f7d23e7144f2d261b3e158f0d3d9b2815063b341617231c32f"
+  },
+  "toolchain": {
+    "go": {
+      "indexUrl": "https://go.dev/dl/?mode=json&include=all",
+      "archiveUrl": "https://go.dev/dl/go1.26.10.linux-amd64.tar.gz",
+      "archive": {
+        "filename": "go1.26.10.linux-amd64.tar.gz",
+        "os": "linux",
+        "arch": "amd64",
+        "version": "go1.26.10",
+        "sha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+        "size": 66936659,
+        "kind": "archive"
+      },
+      "verifiedSha256": "ccfe7ae822d2c2f41f4fe7c956199967a4dac22d0ee0d2b2bfdb440aab3b20c5",
+      "version": "go version go1.26.10 linux/amd64"
+    },
+    "golangciLint": {
+      "archiveUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-linux-amd64.tar.gz",
+      "checksumsUrl": "https://github.com/golangci/golangci-lint/releases/download/v2.10.1/golangci-lint-2.10.1-checksums.txt",
+      "checksumsSha256": "6fe5e74f65546a089f3ba04bd840e5abcd87a07930615445cf08311a9b71f5a2",
+      "expectedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+      "verifiedSha256": "dfa775874cf0561b404a02a8f4481fc69b28091da95aa697259820d429b09c99",
+      "version": "golangci-lint has version 2.10.1 built with go1.26.0 from 5d1e709b on 2026-02-17T15:27:33Z"
+    },
+    "environment": {
+      "GOTOOLCHAIN": "local",
+      "GOMAXPROCS": "4"
+    }
+  },
+  "checks": [
+    {
+      "id": "diff-stat",
+      "argv": [
+        "git",
+        "diff",
+        "--stat",
+        "440b15349565bb15f7a88636477864e5a9f8cc72",
+        "HEAD"
+      ],
+      "startedUtc": "2026-11-14T10:32:11.835112+00:00",
+      "endedUtc": "2026-11-14T10:32:11.838346+00:00",
+      "exitCode": 0,
+      "log": "diff-stat.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "result": "PASS"
+    },
+    {
+      "id": "gofmt",
+      "argv": [
+        "gofmt",
+        "-l",
+        "pubsub/rabbitmq/rabbitmq.go",
+        "pubsub/rabbitmq/rabbitmq_integration_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_test.go",
+        "pubsub/rabbitmq/rabbitmq_publish_transport_test.go",
+        "pubsub/rabbitmq/rabbitmq_test.go"
+      ],
+      "startedUtc": "2026-11-14T10:32:11.860446+00:00",
+      "endedUtc": "2026-11-14T10:32:11.871839+00:00",
+      "exitCode": 0,
+      "log": "gofmt.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "440b15349565bb15f7a88636477864e5a9f8cc72",
+        "HEAD"
+      ],
+      "startedUtc": "2026-11-14T10:32:11.893173+00:00",
+      "endedUtc": "2026-11-14T10:32:11.897127+00:00",
+      "exitCode": 0,
+      "log": "diff-check.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "golangci-lint",
+      "argv": [
+        "golangci-lint",
+        "run",
+        "--new-from-rev=440b15349565bb15f7a88636477864e5a9f8cc72",
+        "./pubsub/rabbitmq/..."
+      ],
+      "startedUtc": "2026-11-14T10:32:11.917613+00:00",
+      "endedUtc": "2026-11-14T10:32:23.746656+00:00",
+      "exitCode": 0,
+      "log": "golangci-lint.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "lintSummary": "0 issues.",
+      "result": "PASS"
+    },
+    {
+      "id": "golangci-lint-all-issues",
+      "argv": [
+        "golangci-lint",
+        "run",
+        "--new-from-rev=440b15349565bb15f7a88636477864e5a9f8cc72",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "./pubsub/rabbitmq/..."
+      ],
+      "startedUtc": "2026-11-14T10:32:23.766687+00:00",
+      "endedUtc": "2026-11-14T10:32:24.285731+00:00",
+      "exitCode": 0,
+      "log": "golangci-lint-all-issues.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": true,
+      "lintSummary": "0 issues.",
+      "result": "PASS"
+    },
+    {
+      "id": "vet",
+      "argv": [
+        "go",
+        "vet",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T10:32:24.305387+00:00",
+      "endedUtc": "2026-11-14T10:32:25.846675+00:00",
+      "exitCode": 0,
+      "log": "vet.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "full-unit",
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=120s",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T10:32:25.868356+00:00",
+      "endedUtc": "2026-11-14T10:32:42.572931+00:00",
+      "exitCode": 0,
+      "log": "full-unit.log.gz",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "passedTopLevelEvents": 61,
+      "passedTestAndSubtestEvents": 192,
+      "uniquePassedTestAndSubtestNames": 192,
+      "uniquePassedTopLevelNames": 61,
+      "skipped": [],
+      "failed": [],
+      "result": "PASS"
+    },
+    {
+      "id": "focused-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-timeout=180s",
+        "-run",
+        "^(TestPublishPublic|TestInit)",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T10:32:42.605877+00:00",
+      "endedUtc": "2026-11-14T10:34:16.505883+00:00",
+      "exitCode": 0,
+      "log": "focused-race.log.gz",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "passedTopLevelEvents": 220,
+      "passedTestAndSubtestEvents": 680,
+      "uniquePassedTestAndSubtestNames": 68,
+      "uniquePassedTopLevelNames": 22,
+      "skipped": [],
+      "failed": [],
+      "result": "PASS"
+    },
+    {
+      "id": "legacy-fixture-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-run",
+        "^TestMustReconnectOnAMQPError$",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T10:34:16.545501+00:00",
+      "endedUtc": "2026-11-14T10:34:18.059392+00:00",
+      "exitCode": 0,
+      "log": "legacy-fixture-race.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "passedTopLevelEvents": 10,
+      "passedTestAndSubtestEvents": 10,
+      "uniquePassedTestAndSubtestNames": 1,
+      "uniquePassedTopLevelNames": 1,
+      "skipped": [],
+      "failed": [],
+      "result": "PASS"
+    },
+    {
+      "id": "integration-compile-only",
+      "argv": [
+        "go",
+        "test",
+        "-tags=integration_test",
+        "-run",
+        "^$",
+        "./pubsub/rabbitmq"
+      ],
+      "startedUtc": "2026-11-14T10:34:18.076872+00:00",
+      "endedUtc": "2026-11-14T10:34:18.732398+00:00",
+      "exitCode": 0,
+      "log": "integration-compile-only.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "result": "PASS"
+    },
+    {
+      "id": "mod-tidy-diff",
+      "argv": [
+        "go",
+        "mod",
+        "tidy",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T10:34:18.749923+00:00",
+      "endedUtc": "2026-11-14T10:34:53.285740+00:00",
+      "exitCode": 0,
+      "log": "mod-tidy-diff.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": false,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "mod-tidy-compat-diff",
+      "argv": [
+        "go",
+        "mod",
+        "tidy",
+        "-compat=1.20",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T10:34:53.303800+00:00",
+      "endedUtc": "2026-11-14T10:34:53.523567+00:00",
+      "exitCode": 0,
+      "log": "mod-tidy-compat-diff.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "certification-mod-tidy-diff",
+      "argv": [
+        "go",
+        "-C",
+        "tests/certification",
+        "mod",
+        "tidy",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T10:35:02.051074+00:00",
+      "endedUtc": "2026-11-14T10:35:10.993166+00:00",
+      "exitCode": 0,
+      "log": "certification-mod-tidy-diff.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    },
+    {
+      "id": "certification-mod-tidy-compat-diff",
+      "argv": [
+        "go",
+        "-C",
+        "tests/certification",
+        "mod",
+        "tidy",
+        "-compat=1.20",
+        "-diff"
+      ],
+      "startedUtc": "2026-11-14T10:35:11.011030+00:00",
+      "endedUtc": "2026-11-14T10:35:11.202208+00:00",
+      "exitCode": 0,
+      "log": "certification-mod-tidy-compat-diff.log",
+      "logHashVerified": true,
+      "subjectHead": "a8c884bc298d076a08dac03cf56805971c239cb8",
+      "subjectIsCommit": true,
+      "cleanTree": true,
+      "supplementary": true,
+      "outputEmpty": true,
+      "result": "PASS"
+    }
+  ],
+  "round1": "round-1-reviewed-patch/ holds the same checks on base plus the unchanged reviewed patch: all passed except golangci-lint (17 new issues with unlimited counts), which lint-fix.patch resolves.",
+  "scope": "RabbitMQ component unit/protocol-peer tests, static analysis, compile-only and module tidy checks. No broker, Dapr runtime or qualification execution."
+}
