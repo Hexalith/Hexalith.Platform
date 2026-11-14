@@ -172,9 +172,9 @@ def validate_inventory(inventory):
         if client["resource"] == "eventstore":
             expected = expected_gateway
         elif client["resource"] == "tenants":
-            expected = [(workloads["eventstore"], operation, {}) for operation in ("eventstore:command-submit", "eventstore:stream-read")]
+            expected = [("eventstore", operation, {}) for operation in ("eventstore:command-submit", "eventstore:stream-read")]
         else:
-            expected = [(workloads["eventstore"], "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})]
+            expected = [("eventstore", "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})]
         remaining = list(expected)
         for probe in client["probes"]:
             bindings = probe["bindings"]

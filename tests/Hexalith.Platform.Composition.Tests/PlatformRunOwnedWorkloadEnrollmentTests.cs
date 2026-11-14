@@ -9,10 +9,12 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 
+using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Hexalith.Platform.Composition;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Shouldly;
@@ -31,6 +33,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(builder, "selected-run-tenant");
         JsonElement[] clients = [.. inventory.GetProperty("clients").EnumerateArray()];
         clients.Length.ShouldBe(8);
+        clients.Sum(client => client.GetProperty("probes").GetArrayLength()).ShouldBe(19);
         clients.Select(client => client.GetProperty("workload").GetString()).Distinct().Count().ShouldBe(6);
         string Caller(string name) => clients.Single(client => client.GetProperty("resource").GetString() == name).GetProperty("workload").GetString()!;
         Caller("folders").ShouldBe(Caller("folders-replica"));
@@ -41,7 +44,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
             {
                 string operation = probe.GetProperty("operation").GetString()!;
                 string audience = probe.GetProperty("audience").GetString()!;
-                if (operation.StartsWith("eventstore:", StringComparison.Ordinal)) audience.ShouldBe(Caller("eventstore"));
+                if (operation.StartsWith("eventstore:", StringComparison.Ordinal)) audience.ShouldBe("eventstore");
                 else if (probe.GetProperty("bindings").TryGetProperty("eventstore:bound-domain", out JsonElement domain))
                     audience.ShouldBe(Caller(domain.GetString() == "folders" ? "folders" : "tenants"));
                 else new[] { Caller("folders"), Caller("tenants") }.ShouldContain(audience);
@@ -68,12 +71,18 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     [InlineData("global-administrators-storage-tenant")]
     [InlineData("selected-tenant")]
     [InlineData("audience")]
+    [InlineData("physical-source-audience")]
+    [InlineData("physical-bootstrap-audience")]
     public void ChangedInventoryRefuses(string fault)
     {
         IDistributedApplicationBuilder builder = Builder();
         JsonObject inventory = JsonNode.Parse(PlatformWorkloadEnrollmentInventory.Create(builder, "selected-run-tenant").GetRawText())!.AsObject();
         JsonArray clients = inventory["clients"]!.AsArray();
         JsonArray Probes(string name) => clients.Single(client => client!["resource"]!.GetValue<string>() == name)!["probes"]!.AsArray();
+        if (fault == "physical-source-audience")
+            foreach (JsonNode? client in clients.Where(client => client!["resource"]!.GetValue<string>().StartsWith("folders", StringComparison.Ordinal)))
+                client!["probes"]![0]!["audience"] = "eventstore-actual-run";
+        if (fault == "physical-bootstrap-audience") Probes("tenants")[0]!["audience"] = "eventstore-actual-run";
         if (fault == "source") Probes("folders-workers-proof-a").Clear();
         if (fault == "callback") Probes("eventstore").RemoveAt(0);
         if (fault == "bootstrap") Probes("tenants").RemoveAt(0);
@@ -271,7 +280,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     private static async Task WritePrivateAsync(string path, byte[] bytes)
     {
         string temporary = path + ".writing";
-        await File.WriteAllBytesAsync(temporary, bytes, TestContext.Current.CancellationToken);
+        await File.WriteAllBytesAsync(temporary, bytes, TestContext.Current.CancellationToken).ConfigureAwait(true);
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(temporary, UnixFileMode.UserRead | UnixFileMode.UserWrite);
         File.Move(temporary, path);
     }
@@ -465,14 +474,15 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         (await Should.ThrowAsync<InvalidOperationException>(() => PlatformRunOwnedWorkloadEnrollment.AdoptAsync(Builder(), tenant, TestContext.Current.CancellationToken, hostTrust)))
             .Message.ShouldContain("owner-request-already-adopted");
         File.Exists(Path.Combine(Path.GetDirectoryName(receiptPath)!, "release.json")).ShouldBeFalse("The refused competitor cannot release the first adoption.");
-        await using PlatformRunOwnedWorkloadEnrollment? enrollment = await firstAdoption;
+        PlatformRunOwnedWorkloadEnrollment? enrollment = await firstAdoption.ConfigureAwait(true);
         enrollment.ShouldNotBeNull();
+        await using var enrollmentCleanup = enrollment.ConfigureAwait(true);
         async Task AssertHostsAsync(bool enabled)
         {
             foreach (ProjectResource resource in PlatformWorkloadEnrollmentInventory.Cohort(builder))
             {
                 string workload = PlatformWorkloadEnrollmentInventory.Workload(resource);
-                Dictionary<string, object> environment = await EnvironmentAsync(builder, resource);
+                Dictionary<string, object> environment = await EnvironmentAsync(builder, resource).ConfigureAwait(true);
                 environment["SSL_CERT_FILE"].ShouldBe(hostTrust);
                 environment["Authentication__WorkloadIssuer__EnableResourceBindingRequests"].ShouldBe(enabled ? "true" : "false");
                 environment["Authentication__JwtBearer__Authority"].ShouldBe("https://unchanged-human.example.invalid");
@@ -486,7 +496,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
                             .ShouldBeTrue("Public source proof remains unchanged.");
                 if (enabled)
                 {
-                    environment["Authentication__WorkloadJwtBearer__Audience"].ShouldBe(workload);
+                    environment["Authentication__WorkloadJwtBearer__Audience"].ShouldBe(resource.Name == "eventstore" ? "eventstore" : workload);
                     environment["Authentication__WorkloadJwtBearer__RequireHttpsMetadata"].ShouldBe("true");
                     environment["Authentication__WorkloadIssuer__ClientSecret"].ShouldBeOfType<ParameterResource>().Secret.ShouldBeTrue();
                 }
@@ -499,10 +509,13 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         mergedTrust.Contains(providerTrust, StringComparison.Ordinal).ShouldBeTrue();
         string manifestPath = builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"]!;
         byte[] original = await File.ReadAllBytesAsync(manifestPath, TestContext.Current.CancellationToken);
-        foreach (string fault in new[] { "probe", "signer", "tls", "permissions", "expiry", "cohort", "tenant" })
+        foreach (string fault in new[] { "probe", "signer", "tls", "permissions", "expiry", "cohort", "tenant", "physical-audience" })
         {
             JsonObject manifest = JsonNode.Parse(original)!.AsObject();
             if (fault == "probe") manifest["clients"]![0]!["probes"]![0]!["revision"] = 2;
+            if (fault == "physical-audience")
+                foreach (JsonNode? client in manifest["clients"]!.AsArray().Where(client => client!["resource"]!.GetValue<string>() != "eventstore"))
+                    foreach (JsonNode? probe in client!["probes"]!.AsArray()) probe!["audience"] = "eventstore-actual-run";
             if (fault == "signer") manifest["signingPublicKeySha256"] = new string('0', 64);
             if (fault == "permissions") manifest["clients"]![0]!["probes"]!.AsArray().RemoveAt(0);
             if (fault == "expiry") manifest["expiresAt"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1;
@@ -521,45 +534,49 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         (await PlatformWorkloadEnrollment.ConfigureAsync(builder, TestContext.Current.CancellationToken, tenant)).ShouldBeTrue();
         await AssertHostsAsync(enabled: true);
         using JsonDocument finalManifest = JsonDocument.Parse(original);
-        ProjectResource runningHost = PlatformWorkloadEnrollmentInventory.Cohort(builder).Single(resource => resource.Name == "folders-workers-proof-a");
-        JsonElement runningClient = finalManifest.RootElement.GetProperty("clients").EnumerateArray().Single(client => client.GetProperty("resource").GetString() == runningHost.Name);
-        await VerifyFreshHostAsync(await EnvironmentAsync(builder, runningHost), runningClient.GetProperty("probes")[0], finalManifest.RootElement);
-        Console.WriteLine("RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2 controls=missing-trust,foreign-receipt,receipt-expiry,child,directory,host-trust-merge,probe,signer,tls,permissions,expiry,cohort,tenant assertions=host-trust,profile-before-and-after,human-authentication,independent-rsa-proofs,first-adopter-survives-competitor,fresh-running-host-tls-and-exchange");
+        foreach (string name in new[] { "tenants", "folders", "folders-workers-proof-a" })
+        {
+            ProjectResource runningHost = PlatformWorkloadEnrollmentInventory.Cohort(builder).Single(resource => resource.Name == name);
+            JsonElement runningClient = finalManifest.RootElement.GetProperty("clients").EnumerateArray().Single(client => client.GetProperty("resource").GetString() == name);
+            await VerifyFreshHostAsync(await EnvironmentAsync(builder, runningHost), runningClient.GetProperty("probes"), finalManifest.RootElement,
+                PlatformWorkloadEnrollmentInventory.Workload(gateway));
+        }
+        Console.WriteLine("RUN_OWNED_CONSUMER_CONTROLS resources=8 workloads=6 proofCallers=2 controls=missing-trust,foreign-receipt,receipt-expiry,child,directory,host-trust-merge,probe,signer,tls,permissions,expiry,cohort,tenant,physical-audience,sdk-physical-audience,sdk-altered-bindings assertions=host-trust,profile-before-and-after,human-authentication,independent-rsa-proofs,first-adopter-survives-competitor,fresh-running-host-tls-and-exchange,real-sdk-tenants-command-and-source,real-sdk-folders-bound-source");
     }
 
     private static async Task CancelBridgeAfterRequestAsync()
     {
         string receiptPath = Environment.GetEnvironmentVariable(PlatformRunOwnedWorkloadEnrollment.ReceiptEnvironmentVariable)!;
         string directory = Path.GetDirectoryName(receiptPath)!;
-        using JsonDocument receipt = JsonDocument.Parse(await File.ReadAllBytesAsync(receiptPath, TestContext.Current.CancellationToken));
+        using JsonDocument receipt = JsonDocument.Parse(await File.ReadAllBytesAsync(receiptPath, TestContext.Current.CancellationToken).ConfigureAwait(true));
         IDistributedApplicationBuilder builder = Builder();
         using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         Task<PlatformRunOwnedWorkloadEnrollment?> adoption = PlatformRunOwnedWorkloadEnrollment.AdoptAsync(builder, "selected-cancellation-tenant", cancellation.Token);
         using CancellationTokenSource observation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         observation.CancelAfter(TimeSpan.FromSeconds(30));
         string requestPath = Path.Combine(directory, "request.json");
-        while (!File.Exists(requestPath)) await Task.Delay(10, observation.Token);
-        while (!File.Exists(Path.Combine(directory, "bridge-ready.json"))) await Task.Delay(20, observation.Token);
+        while (!File.Exists(requestPath)) await Task.Delay(10, observation.Token).ConfigureAwait(true);
+        while (!File.Exists(Path.Combine(directory, "bridge-ready.json"))) await Task.Delay(20, observation.Token).ConfigureAwait(true);
         cancellation.Cancel();
         string releasePath = Path.Combine(directory, "release.json");
-        while (!File.Exists(releasePath) && Directory.Exists(directory)) await Task.Delay(10, observation.Token);
+        while (!File.Exists(releasePath) && Directory.Exists(directory)) await Task.Delay(10, observation.Token).ConfigureAwait(true);
         File.Exists(releasePath).ShouldBeTrue("Cancellation after exclusive publication must release the producer before returning.");
-        using (JsonDocument release = JsonDocument.Parse(await File.ReadAllBytesAsync(releasePath, observation.Token)))
+        using (JsonDocument release = JsonDocument.Parse(await File.ReadAllBytesAsync(releasePath, observation.Token).ConfigureAwait(true)))
         {
             (release.RootElement.GetProperty("runId").GetString() == receipt.RootElement.GetProperty("runId").GetString()).ShouldBeTrue("Cancellation releases this run.");
             (release.RootElement.GetProperty("capability").GetString() == receipt.RootElement.GetProperty("capability").GetString()).ShouldBeTrue("Cancellation uses this owner's private capability.");
         }
         string observedPath = Path.Combine(directory, "cancellation-observed.json");
-        await File.WriteAllTextAsync(observedPath, "{}", observation.Token);
+        await File.WriteAllTextAsync(observedPath, "{}", observation.Token).ConfigureAwait(true);
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(observedPath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
-        await Should.ThrowAsync<OperationCanceledException>(async () => await adoption.WaitAsync(TimeSpan.FromSeconds(10), observation.Token));
+        await Should.ThrowAsync<OperationCanceledException>(async () => await adoption.WaitAsync(TimeSpan.FromSeconds(10), observation.Token).ConfigureAwait(true)).ConfigureAwait(true);
         Directory.Exists(directory).ShouldBeFalse("The cancelled adopter waits for actual authority and private-material cleanup.");
         builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBeNull();
-        await Task.Delay(150, observation.Token);
+        await Task.Delay(150, observation.Token).ConfigureAwait(true);
         Console.WriteLine("RUN_OWNED_BRIDGE_CANCELLATION requestPublished=true cancellationObserved=true releasePublished=true childAliveAfterCleanup=true");
     }
 
-    private static async Task VerifyFreshHostAsync(Dictionary<string, object> environment, JsonElement probe, JsonElement manifest)
+    private static async Task VerifyFreshHostAsync(Dictionary<string, object> environment, JsonElement probes, JsonElement manifest, string physicalGateway)
     {
         long deadline = manifest.GetProperty("expiresAt").GetInt64();
         ProcessStartInfo start = new("dotnet") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
@@ -569,9 +586,10 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         start.Environment.Remove(PlatformRunOwnedWorkloadEnrollment.ReceiptEnvironmentVariable);
         start.Environment.Remove(PlatformRunOwnedWorkloadEnrollment.CapabilityEnvironmentVariable);
         foreach ((string name, object value) in environment)
-            start.Environment[name] = value is IValueProvider provider ? await provider.GetValueAsync(TestContext.Current.CancellationToken) : value.ToString();
+            start.Environment[name] = value is IValueProvider provider ? await provider.GetValueAsync(TestContext.Current.CancellationToken).ConfigureAwait(true) : value.ToString();
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE"] = "true";
-        start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE_JSON"] = probe.GetRawText();
+        start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE_JSON"] = probes.GetRawText();
+        start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_PHYSICAL_GATEWAY"] = physicalGateway;
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_DEADLINE"] = deadline.ToString(System.Globalization.CultureInfo.InvariantCulture);
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_KID"] = manifest.GetProperty("signingKeyId").GetString();
         start.Environment["HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_SHA256"] = manifest.GetProperty("signingPublicKeySha256").GetString();
@@ -581,9 +599,9 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         Task<string> output = child.StandardOutput.ReadToEndAsync(bounded.Token), errors = child.StandardError.ReadToEndAsync(bounded.Token);
         try
         {
-            await child.WaitForExitAsync(bounded.Token);
-            _ = await output;
-            _ = await errors;
+            await child.WaitForExitAsync(bounded.Token).ConfigureAwait(true);
+            _ = await output.ConfigureAwait(true);
+            _ = await errors.ConfigureAwait(true);
             child.ExitCode.ShouldBe(0, "Fresh running-host TLS/discovery/exchange failed; protected child output is withheld.");
         }
         finally { if (!child.HasExited) child.Kill(entireProcessTree: true); }
@@ -596,36 +614,26 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         bounded.CancelAfter(TimeSpan.FromSeconds(Math.Max(0, Math.Min(30, deadline - DateTimeOffset.UtcNow.ToUnixTimeSeconds()))));
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
         builder.Logging.ClearProviders();
-        await using WebApplication app = builder.Build();
+        builder.Services.AddEventStoreWorkloadAssertionIssuer();
+        WebApplication app = builder.Build();
+        await using var appCleanup = app.ConfigureAwait(true);
         app.Urls.Clear();
         app.Urls.Add("http://127.0.0.1:0");
         app.MapGet("/health", () => "ready");
-        await app.StartAsync(bounded.Token);
+        await app.StartAsync(bounded.Token).ConfigureAwait(true);
         try
         {
             using HttpClient http = new(new HttpClientHandler { AllowAutoRedirect = false });
-            if (await http.GetStringAsync(app.Urls.Single() + "/health", bounded.Token) != "ready") throw new InvalidOperationException("Running host readiness refused.");
+            if (await http.GetStringAsync(app.Urls.Single() + "/health", bounded.Token).ConfigureAwait(true) != "ready") throw new InvalidOperationException("Running host readiness refused.");
             string authority = app.Configuration["Authentication:WorkloadJwtBearer:Authority"]!;
             string endpoint = app.Configuration["Authentication:WorkloadIssuer:TokenEndpoint"]!;
-            using JsonDocument metadata = JsonDocument.Parse(await http.GetStringAsync(authority + "/.well-known/openid-configuration", bounded.Token));
+            using JsonDocument metadata = JsonDocument.Parse(await http.GetStringAsync(authority + "/.well-known/openid-configuration", bounded.Token).ConfigureAwait(true));
             if (metadata.RootElement.GetProperty("issuer").GetString() != authority || metadata.RootElement.GetProperty("token_endpoint").GetString() != endpoint)
                 throw new InvalidOperationException("Running host discovery refused.");
             string jwksUri = metadata.RootElement.GetProperty("jwks_uri").GetString()!;
             if (new Uri(jwksUri).GetLeftPart(UriPartial.Authority) != new Uri(authority).GetLeftPart(UriPartial.Authority)) throw new InvalidOperationException("Running host discovery origin refused.");
-            using JsonDocument jwks = JsonDocument.Parse(await http.GetStringAsync(jwksUri, bounded.Token));
+            using JsonDocument jwks = JsonDocument.Parse(await http.GetStringAsync(jwksUri, bounded.Token).ConfigureAwait(true));
             using JsonDocument requested = JsonDocument.Parse(Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_HOST_PROBE_JSON")!);
-            JsonElement probe = requested.RootElement;
-            string audience = probe.GetProperty("audience").GetString()!, operation = probe.GetProperty("operation").GetString()!;
-            using FormUrlEncodedContent form = new(new Dictionary<string, string>
-            {
-                ["grant_type"] = "client_credentials", ["client_id"] = app.Configuration["Authentication:WorkloadIssuer:ClientId"]!,
-                ["client_secret"] = app.Configuration["Authentication:WorkloadIssuer:ClientSecret"]!,
-                ["scope"] = "eventstore-audience." + audience + " eventstore-operation." + operation.Replace(':', '.'),
-                ["authorization_details"] = JsonSerializer.Serialize(new[] { new { type = "https://hexalith.com/security/workload-binding/v1", audience, operation, bindings = probe.GetProperty("bindings") } }),
-            });
-            using HttpResponseMessage response = await http.PostAsync(endpoint, form, bounded.Token);
-            if (!response.IsSuccessStatusCode) throw new InvalidOperationException("Running host workload exchange refused.");
-            using JsonDocument issued = JsonDocument.Parse(await response.Content.ReadAsStringAsync(bounded.Token));
             static byte[] Decode(string value) => Convert.FromBase64String(value.Replace('-', '+').Replace('_', '/') + new string('=', (4 - value.Length % 4) % 4));
             string kid = Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_HOST_SIGNER_KID")!;
             JsonElement signer = jwks.RootElement.GetProperty("keys").EnumerateArray().Single(key => key.GetProperty("kid").GetString() == kid);
@@ -640,11 +648,35 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
             if (certificate.NotBefore.ToUniversalTime() > DateTime.UtcNow || certificate.NotAfter.ToUniversalTime() <= DateTime.UtcNow
                 || certifiedSigner is null || !certifiedSigner.ExportSubjectPublicKeyInfo().AsSpan().SequenceEqual(rsa.ExportSubjectPublicKeyInfo()))
                 throw new InvalidOperationException("Running host signer certificate refused.");
-            VerifyHostToken(issued.RootElement.GetProperty("access_token").GetString()!, rsa, kid, authority,
-                app.Configuration["Authentication:WorkloadIssuer:Workload"]!, probe,
-                Math.Min(deadline, new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ToUnixTimeSeconds()));
+            IWorkloadAssertionIssuer sdk = app.Services.GetRequiredService<IWorkloadAssertionIssuer>();
+            sdk.CanBindResources.ShouldBeTrue();
+            string workload = app.Configuration["Authentication:WorkloadIssuer:Workload"]!;
+            string physicalGateway = Environment.GetEnvironmentVariable("HEXALITH_RUN_OWNED_WORKLOAD_PHYSICAL_GATEWAY")!;
+            foreach (JsonElement probe in requested.RootElement.EnumerateArray())
+            {
+                string audience = probe.GetProperty("audience").GetString()!, operation = probe.GetProperty("operation").GetString()!;
+                audience.ShouldBe("eventstore");
+                audience.ShouldNotBe(physicalGateway);
+                Dictionary<string, string> bindings = probe.GetProperty("bindings").EnumerateObject()
+                    .ToDictionary(binding => binding.Name, binding => binding.Value.GetString()!, StringComparer.Ordinal);
+                string? token = await sdk.IssueAsync(new(audience, operation, bindings), bounded.Token).ConfigureAwait(true);
+                if (token is null) throw new InvalidOperationException("Native SDK refused canonical enrolled assertion.");
+                VerifyHostToken(token, rsa, kid, authority, workload, probe,
+                    Math.Min(deadline, new DateTimeOffset(certificate.NotAfter.ToUniversalTime()).ToUnixTimeSeconds()));
+                (await sdk.IssueAsync(new(physicalGateway, operation, bindings), bounded.Token).ConfigureAwait(true) is null)
+                    .ShouldBeTrue("Physical Dapr identity is not an enrolled gateway audience.");
+                Dictionary<string, string> altered = new(bindings, StringComparer.Ordinal) { ["eventstore:bound-tenant"] = "foreign-tenant" };
+                (await sdk.IssueAsync(new(audience, operation, altered), bounded.Token).ConfigureAwait(true) is null)
+                    .ShouldBeTrue("The SDK refuses altered bindings without a fallback.");
+                if (bindings.Count > 0)
+                {
+                    altered = new(bindings, StringComparer.Ordinal) { ["eventstore:bound-domain"] = "other" };
+                    (await sdk.IssueAsync(new(audience, operation, altered), bounded.Token).ConfigureAwait(true) is null).ShouldBeTrue("The SDK refuses another domain.");
+                    (await sdk.IssueAsync(new(audience, operation), bounded.Token).ConfigureAwait(true) is null).ShouldBeTrue("A bound source grant never becomes unbound.");
+                }
+            }
         }
-        finally { await app.StopAsync(CancellationToken.None); }
+        finally { await app.StopAsync(CancellationToken.None).ConfigureAwait(true); }
     }
 
     private static void VerifyHostToken(string token, RSA signer, string kid, string issuer, string workload, JsonElement probe, long maximumExpiry)
@@ -655,7 +687,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     {
         Dictionary<string, object> environment = new(StringComparer.Ordinal);
         foreach (EnvironmentCallbackAnnotation annotation in resource.Annotations.OfType<EnvironmentCallbackAnnotation>())
-            await annotation.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken));
+            await annotation.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, resource, environment, TestContext.Current.CancellationToken)).ConfigureAwait(true);
         return environment;
     }
 

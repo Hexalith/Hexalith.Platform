@@ -130,7 +130,7 @@ public static class PlatformWorkloadEnrollment
             foreach (ProjectResource receiver in cohort)
                 builder.CreateResourceBuilder(receiver).WithEnvironment("Authentication__WorkloadJwtBearer__Authority", authority)
                     .WithEnvironment("Authentication__WorkloadJwtBearer__Issuer", issuer)
-                    .WithEnvironment("Authentication__WorkloadJwtBearer__Audience", receiver.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar
+                    .WithEnvironment("Authentication__WorkloadJwtBearer__Audience", receiver.Name == "eventstore" ? "eventstore" : receiver.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar
                         .Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options.AppId!)
                     .WithEnvironment("Authentication__WorkloadJwtBearer__RequireHttpsMetadata", "true")
                     .WithEnvironment("Authentication__WorkloadJwtBearer__SigningKey", string.Empty)

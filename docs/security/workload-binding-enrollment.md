@@ -50,7 +50,7 @@ actual server-owned caller. The request never selects that caller. Its protected
     "revision": 1,
     "clientId": "actual-own-client",
     "workload": "actual-own-caller",
-    "audience": "actual-receiver",
+    "audience": "eventstore",
     "operations": ["eventstore:stream-read"],
     "bindings": {
       "eventstore:bound-tenant": ["owner-approved-exact-tenant"],
@@ -94,6 +94,13 @@ Memories is outside this profile and is not enrolled or reconfigured by this cha
 The run suffix is part of each actual AppId. Never reuse canonical credentials
 under another run's caller, substitute another workload or infer grants from
 `EnableResourceBindingRequests`.
+
+The gateway JWT audience is exactly the SDK logical audience `eventstore` for
+Folders bound source and Tenants command-submit/unbound source grants. Configure
+that same exact audience on the EventStore workload receiver. Actual caller and
+client IDs, the physical EventStore Dapr target, and domain-service callback/query
+audiences retain their run-specific AppIds. Replacing the gateway audience does
+not add another grant or accept the physical gateway AppId as an audience.
 
 | Caller | Receiver / operation | Separate permission |
 | --- | --- | --- |
@@ -266,6 +273,14 @@ python3 -B verify_component.py --run-owned
 python3 -B verify_component.py --run-owned --apphost-assembly /absolute/path/to/Hexalith.Folders.AppHost.Tests.dll
 python3 -B verify_component.py --run-owned --platform-assembly /absolute/path/to/Hexalith.Platform.Composition.Tests.dll
 ```
+
+The assembly commands also acquire real SDK assertions for Tenants command-submit,
+unbound Tenants source and exact bound Folders source. They independently verify
+canonical audience, caller, operation, bindings, grant identity/revision, signature
+and lifetime; physical gateway audience substitution and altered bindings refuse.
+Folders native source controls retain the physical Dapr target and independent RSA
+proof and observe zero source transport on either refusal. C# and Python inventory
+controls reject physical-audience substitution before enrollment.
 
 The assembly commands launch explicit real-provider/consumer controls through
 the same prelaunch receipt path and require the selected test to pass, with

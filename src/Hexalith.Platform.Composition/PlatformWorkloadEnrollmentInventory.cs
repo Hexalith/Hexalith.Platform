@@ -49,11 +49,11 @@ public static class PlatformWorkloadEnrollmentInventory
             }
             else if (resource.Name == "tenants")
             {
-                Probe(AppId("eventstore"), "eventstore:command-submit", []);
-                Probe(AppId("eventstore"), "eventstore:stream-read", []);
+                Probe("eventstore", "eventstore:command-submit", []);
+                Probe("eventstore", "eventstore:stream-read", []);
             }
             else
-                Probe(AppId("eventstore"), "eventstore:stream-read", new() { [BindingPrefix + "tenant"] = tenant, [BindingPrefix + "domain"] = "folders" });
+                Probe("eventstore", "eventstore:stream-read", new() { [BindingPrefix + "tenant"] = tenant, [BindingPrefix + "domain"] = "folders" });
             clients.Add(new { resource = resource.Name, clientId = workload, workload, probes });
         }
         JsonElement inventory = JsonSerializer.SerializeToElement(new { tenant, receivers = cohort.Select(item => item.Name).Order(StringComparer.Ordinal), clients });
@@ -101,7 +101,7 @@ public static class PlatformWorkloadEnrollmentInventory
                 || !binding.TryGetProperty(BindingPrefix + "query-authority-v1", out JsonElement digest) || !Hex(digest.GetString())) return false;
             return !string.IsNullOrWhiteSpace(boundTenant.GetString()) && !boundTenant.GetString()!.Contains('*') && (tenant is null || boundTenant.GetString() == tenant);
         }
-        string gatewayAudience = AppId(cohort.Single(resource => resource.Name == "eventstore"));
+        const string gatewayAudience = "eventstore";
         string SourceTenant(JsonElement probe)
         {
             JsonElement bindings = probe.GetProperty("bindings");

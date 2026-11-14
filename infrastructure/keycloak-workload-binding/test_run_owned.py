@@ -281,7 +281,7 @@ class RunOwnedTests(unittest.TestCase):
 
     def test_assembly_harness_refuses_exit_zero_with_no_executed_test(self):
         def zero_test(arguments, **kwargs):
-            Path(arguments[arguments.index("-xml") + 1]).write_text('<assemblies><assembly total="0" passed="0" failed="0" errors="0" skipped="0" not-run="0" /></assemblies>')
+            Path(arguments[arguments.index("-result-xml") + 1]).write_text('<assemblies><assembly total="0" passed="0" failed="0" errors="0" skipped="0" not-run="0" /></assemblies>')
             return SimpleNamespace(returncode=0, stdout="Total: 0", stderr="")
         with patch.object(component.subprocess, "run", side_effect=zero_test):
             with self.assertRaisesRegex(RuntimeError, "lack executed-test"):
@@ -405,7 +405,8 @@ class RunOwnedTests(unittest.TestCase):
         expected = {"tenant": "exact-permission-inventory", "tenants-storage": "exact-permission-inventory",
             "global-administrators-storage": "exact-permission-inventory", "missing": "incomplete-permission-inventory",
             "callback": "exact-permission-inventory", "proof": "distinct-proof-identities", "primary": "distinct-primary-identities",
-            "replica-permissions": "replica-permissions-changed", "foreign": "cohort", "extra": "exact-permission-inventory"}
+            "replica-permissions": "replica-permissions-changed", "foreign": "cohort", "extra": "exact-permission-inventory",
+            "physical-source-audience": "exact-permission-inventory", "physical-bootstrap-audience": "exact-permission-inventory"}
         def share(clients, target, source):
             # Identical probes, as the bridge derives them for one actual AppId, isolate the identity rule.
             clients[target]["workload"] = clients[target]["clientId"] = clients[source]["workload"]
@@ -414,6 +415,11 @@ class RunOwnedTests(unittest.TestCase):
             with self.subTest(fault=fault):
                 changed = copy.deepcopy(original)
                 clients = {client["resource"]: client for client in changed["clients"]}
+                if fault == "physical-source-audience":
+                    for client in clients.values():
+                        if client["resource"].startswith("folders"):
+                            client["probes"][0]["audience"] = clients["eventstore"]["workload"]
+                if fault == "physical-bootstrap-audience": clients["tenants"]["probes"][0]["audience"] = clients["eventstore"]["workload"]
                 if fault == "tenant": changed["tenant"] = "other"
                 if fault in ("tenants-storage", "global-administrators-storage"):
                     domain = "tenants" if fault == "tenants-storage" else "global-administrators"

@@ -48,9 +48,9 @@ def inventory():
                 probe(workloads[receiver], "domain-service:query", {"eventstore:bound-tenant": selected, "eventstore:bound-domain": domain, "eventstore:bound-query-authority-v1": "A" * 64})
         elif name == "tenants":
             for operation in ("eventstore:command-submit", "eventstore:stream-read"):
-                probe(workloads["eventstore"], operation, {})
+                probe("eventstore", operation, {})
         else:
-            probe(workloads["eventstore"], "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
+            probe("eventstore", "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
         clients.append(dict(resource=name, clientId=workloads[name], workload=workloads[name], probes=probes))
     return dict(tenant=tenant, receivers=names, clients=clients)
 
@@ -317,7 +317,7 @@ def run_assembly(assembly, method, cancellation=False):
         environment.pop("HEXALITH_RUN_OWNED_WORKLOAD_BRIDGE_CANCELLATION", None)
     with tempfile.TemporaryDirectory(prefix="run-owned-component-result-") as name:
         result_path = Path(name) / "test.xml"
-        arguments = ["dotnet", str(Path(assembly).resolve()), "-explicit", "on", "-method", method, "-xml", str(result_path)]
+        arguments = ["dotnet", str(Path(assembly).resolve()), "-explicit", "on", "-method", method, "-result-xml", str(result_path)]
         launcher = [str(Path(__file__).resolve()), "_bridge-cancellation-launcher"] if cancellation else \
             [str(owned.ROOT / "run_owned.py"), "--owner", owned.OWNER, "--lifetime-seconds", "180", "--"]
         result = subprocess.run([sys.executable, "-B", *launcher, *arguments], env=environment, capture_output=True, text=True)
