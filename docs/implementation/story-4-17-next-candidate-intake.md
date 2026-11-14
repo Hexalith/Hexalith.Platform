@@ -219,3 +219,155 @@ not duplicated. This offline slice supplies none of those later acceptance resul
   primary immutable Kafka/RabbitMQ sources. Residual causal uncertainty remains explicit.
 - Checked local links and changed-file whitespace. No new broker run or qualification packet
   was produced; this report is an intake, not a verifier result.
+
+## Successor proposal — offline assessment continuation (2026-11-13)
+
+**Offline scope and evidence criteria approved by the owner; exact implementation inputs and
+execution remain conditional.** The published
+reconciliation baselines were checked before editing: Platform local/remote main
+`44756d1db8a38ac305cbb5247ae9cd52985b1d76` and its root-declared EventStore checkout
+local/remote main `5f4db84502c7c54b316dd9429dccd12ae881e759`, both clean. The separate
+EventStore sibling checkout has divergent history and concurrent tenant-boundary edits;
+this continuation uses the baseline-matching checkout and leaves that sibling untouched.
+These documentation identities do not replace the run identities above.
+
+EventStore's proposed [remediation evidence contract](../../references/Hexalith.EventStore/docs/implementation/story-3-21-broker-remediation-evidence-contract.md)
+owns the detailed source findings, minimum rotation observations and Given/When/Then acceptance
+criteria. This is a local cross-repository proposal, with publication/adoption still outstanding.
+
+### Workstreams and acceptance dependencies
+
+These workstreams can advance independently. A supported-input diagnostic may address a bounded
+rotation question while explicitly predicting unresolved pressure/RabbitMQ failures; delivery of
+every remedy is required for qualification claims, not for proposing that diagnostic. Every run
+still needs its own exact acceptance and the complete matrix. The numbered rows describe local
+dependencies, not a requirement to finish all remediation before useful analysis can proceed.
+
+| Order / owner | Concrete successor work | Proposed acceptance before moving on |
+| --- | --- | --- |
+| 1 — EventStore 3.21, Kafka pressure | Identify a supported Produce-pressure path yielding the unchanged exact Dapr quota rejection. Current byte-rate and request quotas throttle. A strict controller-mutation quota is administrative, not proof of the pressure publication. No such alternative was identified. | Given an exact supported tuple, when its source path is inspected, then the genuine Produce rejection and Dapr error mapping are identified. Without that mechanism, report unresolved feasibility and retain FAIL; no configuration-only retry is a remedy. |
+| 2 — EventStore 3.21, pressure producer/verifier | Only after feasibility, specify fault application/removal receipts and independent verification. The current `validate_observations` also requires the literal `producer_byte_rate=1024` command; Platform's bounded schema has no replacement-fault field. | Given an accepted mechanism, when a future contract is reviewed, then producer and verifier bind that exact fault without changing `pressure_rejection`, the cancellation/readback bounds, retention, zero acknowledged loss or the full matrix. Implementation requires its own accepted scope; no code/profile changes occur here. |
+| 3 — EventStore 3.21, Kafka rotation | Audit historical failures and candidate-02 using a joined publisher/process/generation → actual broker principal → installed and applied ACL → stale request → persisted readback record. Keep the new-generation positive control and unproved cold-generation question. | Given the original captures, when a cause is asserted, then the necessary joined observations support it. Missing principal/applied-state evidence yields an explicit unadjudicable historical cause. A future instrumented capture tests hypotheses; it cannot fill absent historical observations. The single verified PASS grants no closure. |
+| 4 — EventStore/upstream, RabbitMQ | Obtain NACK propagation through retries/cancellation, revoked-credential/reconnect error propagation, and mandatory publishing with correlated returns completed before success. | Given the real Dapr publish path, when each existing fault is applied, then its unchanged attributable-error/effect predicate passes with bounded cancellation and persisted readback. A lower-level fix or native client test alone is insufficient. |
+| 5 — EventStore, Builds, then Platform | Identify a supported official runtime embedding the required fixes, independently admit exact locks, and obtain Builds catalog/CLI/runner acceptance. Then prepare exact Platform source/configuration/worker identities, predictions and verifier calls. | Given accepted supported inputs and a separately accepted diagnostic question, when the execution proposal is reviewed, then all 24 vectors and separate capture/integrity/technical/cleanup/authority outcomes remain. A later exact execution decision is required. No attempt is dispatched by this proposal. |
+
+Current upstream delivery was rechecked read-only on November 13. Dapr v1.19.1 resolves to
+`cfb5ee090dda7cfc26145c7703605d831350aa2a`; its
+[go.mod](https://github.com/dapr/dapr/blob/cfb5ee090dda7cfc26145c7703605d831350aa2a/go.mod)
+embeds components v1.19.0, `1d331c389f11baaa1d664022b6b6c2f59811ce11`.
+The latest runtime/component releases still predate the NACK backport. The exact main and
+release-1.19 heads and remaining publish-path defects listed above were reconfirmed; the
+EventStore contract links every inspected source. **No supported complete remedy is available
+from those checked releases.** Source defects are demonstrated; proposed error propagation and
+return handling are required delivery, not demonstrated end-to-end remedies. The particular
+path causing the historical RabbitMQ 599 remains a hypothesis.
+
+### Packet custody: decision and completion before expiry
+
+The read-only [artifact listing for run 43386723091](https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43386723091/artifacts)
+still reports artifact `14018214306` unexpired, 1,650,434 bytes, digest
+`a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a`, with expiry
+**2026-12-13T07:40:43Z**. The retained assessment records 544 entries and `bytesCommitted=false`.
+A temporary verified download and retained assessment links do not establish durable custody.
+
+**Required Platform owner decision:** name the accepted durable destination/failure domain,
+retention period, access/deletion rules, transfer operator and independent verifier. Decide
+preservation of the two historical Kafka failure packets as well as candidate-02; retain
+candidate-01 only with its diagnostic-only label if it remains part of the comparison. Their
+identities/digests are in the recovered-artifact table above. Read-only artifact APIs confirmed
+the following separate deadlines; **the earliest preservation deadline is December 8**:
+
+| Archive / evidence authority retained | Artifact | Recorded expiry (UTC) |
+| --- | --- | --- |
+| [Historical standalone failure](https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/42532773702/artifacts) | `13638347236` | `2026-12-08T23:05:01Z` |
+| [Historical fixture failure](https://api.github.com/repos/Hexalith/Hexalith.EventStore/actions/runs/42532776864/artifacts) | `13638293057` | `2026-12-08T23:08:16Z` |
+| [Candidate-01, diagnostic-only](https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/43333995506/artifacts) | `13995674927` | `2026-12-13T00:11:32Z` |
+| Candidate-02, independently verified packet with technical FAIL | `14018214306` | `2026-12-13T07:40:43Z` |
+
+All four were reported unexpired with the retained digests. Candidate-02's deadline does not
+extend the others. No destination or transfer is authorized here.
+
+**Proposed custody acceptance:** Given that decision, when the separately authorized operator
+preserves each selected archive, then retain its exact original sanitized ZIP without repacking,
+API identity/run/source metadata, own archive digest, complete per-entry inventory, manifest/schema
+identity and original evidence-authority label. Independently retrieve each archive from the chosen
+destination, verify its own digest and every entry against its complete custody inventory, also
+validate its packet manifest using its original schema, inspect extraction safety/private-material
+exclusion, and record any original validation failure without upgrading evidence authority.
+Candidate-02 specifically has 544 archive entries and 520 manifest artifacts; those counts do not
+apply to other packets. Record a durable custody receipt per archive with destination, retention,
+operator/verifier and completion time **before that archive's expiry**. Retain original commands,
+loaded configuration, publisher/ACL diagnostics and persisted
+readback needed for adjudication, plus original verifier/configuration identities. A reduced
+summary is not the full packet. No custody receipt or transfer result is claimed by this assessment.
+
+### Scope submitted for owner decision
+
+1. **EventStore:** accept pressure feasibility investigation and the conditional producer/evidence
+   contract scope, retaining FAIL if no supported mechanism meets the current predicate.
+2. **EventStore / Platform:** accept the rotation minimum-evidence contract and decide whether
+   historical causality is unadjudicable; approve exact supported observation/cold-generation
+   scope before implementation. No historical principal or applied-state observation is invented.
+3. **EventStore / upstream / Builds:** accept the three RabbitMQ delivery requirements and
+   end-to-end criteria; identify an official supported tuple before any pin-adoption proposal.
+4. **Platform custody owner:** choose custody terms, operator and verifier, then authorize and
+   complete independently verified preservation before each recorded expiry, starting
+   **2026-12-08T23:05:01Z** for the relied-on historical packets and no later than
+   **2026-12-13T07:40:43Z** for candidate-02.
+
+After those decisions, any exact execution proposal still requires separate acceptance. Both
+parent statuses remain **in-progress**, all five historical guarantees **REJECTED/open**,
+technical qualification **FAIL (20/24)**, selection **null** and production eligibility **FAIL**.
+AD-26, profile inventory and staging/shared-host/restore prerequisites remain unchanged.
+
+### Owner approval and active next steps — 2026-11-13
+
+The owner's subsequent **“approve”** accepts this offline proposal: pressure-feasibility
+investigation and conditional producer/evidence-contract scope, the minimum rotation evidence
+criteria, the three RabbitMQ delivery requirements and the per-archive custody acceptance
+criteria. This is the owner's acceptance of the requirements, not an upstream delivery receipt,
+Builds catalog adoption, guarantee closure or approval of an unspecified execution.
+
+Proceed with the independent offline workstreams under the existing predicates. Pressure
+implementation remains conditional on an identified supported rejecting mechanism. Rotation
+instrumentation must still establish a supported request/principal/applied-state join and exact
+capture/admission changes. The approved treatment of missing historical observations is to
+retain an unadjudicable cause and the open guarantee; later evidence cannot manufacture those
+observations. No available remedy or qualified broker is inferred from approval.
+
+An additional read-only recheck matched the recorded ZIP digests of both historical failure
+packets and candidate-02. Searches of retained non-source JSON/log/text outputs found none of
+the stock principal/request audit markers needed for that join; the EventStore contract records
+the bounded search and its limits. No new qualification credit was produced.
+
+**Still required for custody:** the actual destination/failure domain, retention/access/deletion
+terms, transfer operator and independent verifier. Story 4.13 remains backlog and supplies no
+accepted destination for these packets. Approval accepts preservation criteria but supplies none
+of those missing values; the information request is pending. No transfer has started.
+
+**Still required for execution:** an exact source/lock/configuration/worker/tool proposal and
+its separate execution decision. No run, runtime-pin change, broker selection, commit or push
+is authorized by this recorded offline acceptance. Both parent stories and all qualification
+dispositions above remain unchanged.
+
+## Applied recommendations — 2026-11-14
+
+The owner's **“apply recommended”** direction is applied through the following concrete offline
+deliverables. Existing qualification/runtime inputs and both main revisions remain unchanged.
+
+| Recommendation | Completed action | Remaining dependency |
+| --- | --- | --- |
+| Preserve packets first, using an existing archive | [Preservation preparation](story-4-17-packet-custody-preparation-2026-11-14.md): all four untouched ZIPs staged locally with one complete inventory/manifest; independent verification passed for 2,215 entries and 2,059 packet artifacts. | No accepted off-site archive/allocation/access was identified in the inspected handoffs. Destination/access and real operator/verifier bindings are needed for transfer. Local staging uses hard links to the original cached files after disk-space recovery; it is not independent custody. |
+| Bound Kafka pressure investigation | [Kafka work package](../../references/Hexalith.EventStore/docs/implementation/story-3-21-kafka-bounded-investigation.md): bounded source review complete, precise upstream question prepared, and stop condition applied. | No supported Produce-pressure rejection path was identified. Do not implement a replacement fault or tune the current quota without that path; unchanged predicate remains FAIL. |
+| Prepare minimal Kafka rotation observations | The same package identifies supported dynamic broker logger controls, exact source capabilities, targeted full-log retention and prospective producer/verifier/admission changes. | Process/socket ownership, stale-ID/request correlation and audit/request association are still unresolved. Logging is a supported candidate input, not demonstrated causality or an implementation-ready remedy. |
+| Prepare two RabbitMQ upstream packages | [Local issue-ready drafts](../../references/Hexalith.EventStore/docs/implementation/story-3-21-rabbitmq-upstream-work-packages.md): A combines pressure/rotation publish-error propagation; B covers optional mandatory publishing and correlated returns. Existing issue #4697's closed-but-unresolved mandatory half is referenced. | No issue posted, upstream acceptance or supported release delivery. EventStore/Builds alignment and Platform exact full-matrix execution remain later steps. |
+
+The retained-packet hold is now concrete: keep the originals while the guarantees remain open,
+then review deletion against applicable retention/backup/rollback requirements; no automatic
+expiry is introduced. Prefer an already approved off-site archive over provisioning a new service.
+The search result is limited to inspected handoffs, not a claim that no archive exists anywhere.
+
+A future full-matrix diagnostic must answer a specific observation question with explicit expected
+remaining failures, exact supported inputs and separate execution acceptance. No retry was run.
+Both parent statuses remain **in-progress**, all five historical guarantees **REJECTED/open**,
+technical qualification **FAIL (20/24)**, broker selection **null**, production eligibility **FAIL**.
