@@ -78,7 +78,7 @@ def verify_tuple_metadata(root: Path, current: str, historical: str, *, binding_
         if not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None:
             raise ValueError('Tuple identity requires an exact SHA256.')
     version = publication['version']
-    if not isinstance(version, str) or re.fullmatch(r'(?:4|5)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version) is None \
+    if not isinstance(version, str) or re.fullmatch(r'(?:4|5|6)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version) is None \
             or publication['releaseTag'] != 'v' + version or publication['sourceRevision'] != producer['sourceRevision'] \
             or publication['catalogSha256'] != producer['catalog']['sha256'] \
             or git(root, 'rev-parse', current + ':references/Hexalith.Builds').decode().strip() != producer['sourceRevision']:

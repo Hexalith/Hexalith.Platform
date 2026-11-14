@@ -15,7 +15,7 @@ import prepare_builds_artifacts
 import run_tuple_ci
 from unittest.mock import patch
 
-from builds_tuple import BINDING, ROOT, load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import BINDING, ROOT, load_binding, resolve_builds_root, validate_binding, validate_owner_pins, validate_recorded_source, verify_catalog
 
 
 class BuildsTupleTests(unittest.TestCase):
@@ -42,6 +42,20 @@ class BuildsTupleTests(unittest.TestCase):
         self.path.write_text(json.dumps(self.binding))
         return load_binding(self.path)
 
+    def shared_binding(self, version):
+        """Create structurally valid synthetic shared metadata, never official publication evidence."""
+        binding = copy.deepcopy(self.binding)
+        publication = binding["publication"]
+        binding["publication"] = {key: publication[key] for key in (
+            "version", "sourceRevision", "releaseTag", "catalogSha256", "archiveSha256", "toolingSha256")}
+        manifest = json.dumps({"sha": binding["producer"]["sourceRevision"], "version": version, "packages": [
+            {"id": identity, "path": "packages/" + identity + "." + version + ".nupkg"}
+            for identity in ("Hexalith.Builds.Evidence.Cli", "Hexalith.Builds.Module.Cli")], "containers": []})
+        binding["publication"].update(version=version, releaseTag="v" + version, kind="shared-release-handoff/v1",
+            releaseId=11, runId=12, artifactId=13, artifactSha256="a" * 64, releaseBodySha256="b" * 64,
+            manifestJson=manifest, manifestSha256=hashlib.sha256(manifest.encode()).hexdigest())
+        return validate_binding(binding)
+
     def test_complete_historical_binding_is_readable(self):
         self.assertEqual(self.load(), self.binding)
 
@@ -56,7 +70,7 @@ class BuildsTupleTests(unittest.TestCase):
 
     def test_supported_nuget_version_boundaries(self):
         valid = ("4.0.0", "4.38.3", "4.38.3-0", "4.38.3-beta--x", "4.38.3-alpha.0", "4.2147483647.2147483647")
-        invalid = ("6.0.0", "3.9.9", "4.0", "04.0.0", "4.01.0", "4.0.01", "4.38.3-01", "4.38.3-beta.01", "4.38.3-alpha..x", "4.38.3-beta_x", "4.38.3+build", "4.2147483648.0", "5.01.0", "5.2147483648.0")
+        invalid = ("7.0.0", "3.9.9", "4.0", "04.0.0", "4.01.0", "4.0.01", "4.38.3-01", "4.38.3-beta.01", "4.38.3-alpha..x", "4.38.3-beta_x", "4.38.3+build", "4.2147483648.0", "5.01.0", "5.2147483648.0", "6.01.0", "6.0.01", "6.2147483648.0", "6.0.0-beta.01")
         for version in (*valid, *invalid):
             with self.subTest(version=version):
                 self.binding["publication"].update(version=version, releaseTag="v" + version,
@@ -79,10 +93,11 @@ class BuildsTupleTests(unittest.TestCase):
                 self.binding["publication"][key] = original
 
     def test_net11_major_cannot_inherit_legacy_inventory_authority(self):
-        self.binding["publication"].update(version="5.0.0", releaseTag="v5.0.0",
-            inventoryUrl="https://github.com/Hexalith/Hexalith.Builds/releases/download/v5.0.0/g4-tool-package-inventory.json")
-        with self.assertRaisesRegex(ValueError, "NET11 Builds 5 requires the shared release"):
-            self.load()
+        for version in ("5.0.0", "6.0.0", "6.0.0-beta.1"):
+            self.binding["publication"].update(version=version, releaseTag="v" + version,
+                inventoryUrl="https://github.com/Hexalith/Hexalith.Builds/releases/download/v" + version + "/g4-tool-package-inventory.json")
+            with self.subTest(version=version), self.assertRaisesRegex(ValueError, "NET11 Builds [56] requires the shared release"):
+                self.load()
 
     def test_source_tag_and_catalog_mismatches_refuse(self):
         for key, value in (("sourceRevision", load_binding(require_publication=False)["producer"]["sourceRevision"]),
@@ -323,28 +338,149 @@ class BuildsTupleTests(unittest.TestCase):
                 else:
                     catalog_check.assert_not_called()
 
+    def test_major6_artifact_reuse_reaches_graph_only_with_the_exact_unchanged_net11_closure(self):
+        owner = self.root / "reuse-workspace/references/Hexalith.Platform"
+        sibling = owner.parent / "Hexalith.Builds"
+        catalog = sibling / "Props/Directory.Packages.props"
+        catalog.parent.mkdir(parents=True)
+        catalog_body = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>"
+        catalog.write_bytes(catalog_body)
+        (owner / "eng").mkdir(parents=True)
+        (owner / "eng/tuple-ci-extension-suites.json").write_text(json.dumps({"groups": [{
+            "requiredCount": 9, "filter": "-class", "selectors": ["Synthetic.Control"]}]}))
+        (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
+        (owner / "Owned.csproj").write_text('<Project />')
+        (owner / ".config").mkdir()
+        (owner / ".config/dotnet-tools.json").write_text(json.dumps({
+            "tools": {"hexalith.builds.module.cli": {"version": "6.0.0"}}}))
+        (owner / "hexalith-platform.json").write_text(json.dumps({"toolVersionRange": "[6.0.0, 7.0.0-0)"}))
+        host = "tools/net11.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
+        for fault in (None, "net10-root", "different-binding", "changed-extracted-host"):
+            with self.subTest(fault=fault), contextlib.ExitStack() as stack:
+                artifacts = self.root / ("reuse-artifacts-" + str(fault))
+                artifacts.mkdir()
+                archive = artifacts / "hexalith.builds.module.cli.6.0.0.nupkg"
+                with zipfile.ZipFile(archive, "w") as package:
+                    package.writestr("tools/net11.0/any/Hexalith.Builds.Tooling.dll", b"synthetic tooling")
+                    package.writestr("tools/net11.0/any/Hexalith.Builds.Module.Cli.dll", b"synthetic CLI")
+                    package.writestr(host, b"synthetic retained host")
+                    package.extractall(artifacts / "published")
+                binding = self.shared_binding("6.0.0")
+                binding["producer"]["catalog"]["sha256"] = hashlib.sha256(catalog_body).hexdigest()
+                binding["publication"].update(catalogSha256=binding["producer"]["catalog"]["sha256"],
+                    archiveSha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+                    toolingSha256=hashlib.sha256(b"synthetic tooling").hexdigest())
+                validate_binding(binding)
+                source = binding["producer"]["sourceRevision"]
+                tool = artifacts / "published/tools/net11.0/any"
+                identity = {"toolRoot": str(tool), "version": "6.0.0", "buildsRevision": source,
+                    "tupleBinding": copy.deepcopy(binding), "qualification": "artifact identity only", "candidateAcceptance": False}
+                if fault == "net10-root":
+                    identity["toolRoot"] = str(artifacts / "published/tools/net10.0/any")
+                elif fault == "different-binding":
+                    identity["tupleBinding"]["producer"]["sourceRevision"] = "e" * 40
+                elif fault == "changed-extracted-host":
+                    (artifacts / "published" / host).write_bytes(b"changed extracted host")
+                (artifacts / "artifact-identity.json").write_text(json.dumps(identity))
+                evidence = self.root / ("reuse-evidence-" + str(fault))
+                commands = []
+
+                def git_read(argv, **kwargs):
+                    self.assertEqual(kwargs["cwd"], sibling)
+                    if argv[1] == "show":
+                        return catalog_body
+                    return (source if argv[-1] == "HEAD" else binding["producer"]["catalog"]["blob"]).encode()
+
+                def command(argv, **kwargs):
+                    commands.append(argv)
+                    if argv[:2] == ["git", "diff"]:
+                        return subprocess.CompletedProcess(argv, 0, "", "")
+                    if argv[0] == "git":
+                        output = "3" * 40 if argv[-1] == "HEAD" else source
+                    elif argv[:2] == ["dotnet", "--info"]:
+                        output = "synthetic dotnet info"
+                    else:
+                        self.assertEqual(argv[:2], ["dotnet", "msbuild"])
+                        self.assertIn("-p:HexalithBuildsPublishedToolRoot=" + str(tool), argv)
+                        output = json.dumps({"Items": {"ProjectReference": [], "Reference": [
+                            {"Identity": "Hexalith.Builds.Tooling", "HintPath": str(tool / "Hexalith.Builds.Tooling.dll")} ]}})
+                    kwargs["stdout"].write(output)
+                    return subprocess.CompletedProcess(argv, 0)
+
+                stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only",
+                    "--artifacts", str(artifacts), "--suite", "extensions", "--eventstore-sdk", "4.2.0"]))
+                stack.enter_context(patch.object(run_tuple_ci, "ROOT", owner))
+                stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding))
+                stack.enter_context(patch.object(run_tuple_ci, "source_state", return_value={"dirty": False}))
+                stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
+                stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic platform"))
+                stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", side_effect=git_read))
+                stack.enter_context(patch.object(run_tuple_ci.subprocess, "run", side_effect=command))
+                if fault:
+                    message = "Extracted artifact changed" if fault == "changed-extracted-host" else "another tool root or tuple"
+                    with self.assertRaisesRegex(ValueError, message):
+                        run_tuple_ci.main()
+                else:
+                    run_tuple_ci.main()
+                result = json.loads((evidence / "tuple-ci-result.json").read_bytes())
+                graphs = [argv for argv in commands if argv[:2] == ["dotnet", "msbuild"]]
+                self.assertEqual(result["status"], "failed" if fault else "graph-verified")
+                self.assertIs(result["candidateAcceptance"], False)
+                self.assertEqual(result["tests"], [])
+                self.assertNotIn("runtimeBuildContext", result)
+                if fault:
+                    self.assertEqual(graphs, [])
+                else:
+                    self.assertEqual(result["toolRoot"], str(tool))
+                    self.assertEqual(len(graphs), 1)
+                    self.assertEqual(result["projectGraphPaths"], ["Owned.csproj"])
+
     def test_archive_control_checks_executable_source_and_keeps_package_version(self):
         # Synthetic bytes exercise extraction/receipt mechanics; they are never publication evidence.
-        archive = self.root / "control.nupkg"
-        payload = b"synthetic unit-test tooling"
-        with zipfile.ZipFile(archive, "w") as package:
-            package.writestr("tools/net10.0/any/Hexalith.Builds.Tooling.dll", payload)
-            package.writestr("tools/net10.0/any/Hexalith.Builds.Module.Cli.dll", b"synthetic CLI")
-        self.binding["publication"]["archiveSha256"] = hashlib.sha256(archive.read_bytes()).hexdigest()
-        self.binding["publication"]["toolingSha256"] = hashlib.sha256(payload).hexdigest()
-        source = self.binding["producer"]["sourceRevision"]
-        for index, executable in enumerate(("4.38.3+" + source, "4.38.3+wrong-source")):
-            output = self.root / ("archive-control-" + str(index))
-            with patch.object(sys, "argv", ["prepare", "--archive", str(archive), "--output", str(output)]), patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding), patch.object(prepare_builds_artifacts, "validate_owner_pins"), patch.object(prepare_builds_artifacts, "source_state", return_value={"dirty": False}), patch.object(prepare_builds_artifacts.subprocess, "check_output", side_effect=[source, executable]), patch.object(prepare_builds_artifacts.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "verified control", "")), contextlib.redirect_stdout(io.StringIO()):
-                if index:
-                    with self.assertRaisesRegex(ValueError, "executable source/version"):
+        for version, framework in (("4.38.3", "net10.0"), ("5.0.0", "net11.0"), ("6.0.0", "net11.0")):
+            binding = copy.deepcopy(self.binding) if version.startswith("4.") else self.shared_binding(version)
+            archive = self.root / (version + ".nupkg")
+            payload = b"synthetic unit-test tooling"
+            prefix = "tools/" + framework + "/any/"
+            host = prefix + "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
+            with zipfile.ZipFile(archive, "w") as package:
+                package.writestr(prefix + "Hexalith.Builds.Tooling.dll", payload)
+                package.writestr(prefix + "Hexalith.Builds.Module.Cli.dll", b"synthetic CLI")
+                package.writestr(host, b"synthetic retained host")
+            binding["publication"].update(version=version, archiveSha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+                toolingSha256=hashlib.sha256(payload).hexdigest())
+            validate_binding(binding)
+            source = binding["producer"]["sourceRevision"]
+            for index, executable in enumerate((version + "+" + source, version + "+wrong-source")):
+                output = self.root / ("archive-control-" + version + "-" + str(index))
+                with self.subTest(version=version, executable=executable), contextlib.ExitStack() as stack:
+                    stack.enter_context(patch.object(sys, "argv", ["prepare", "--archive", str(archive), "--output", str(output)]))
+                    stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=binding))
+                    handoff = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff", return_value={"qualificationCredit": False}))
+                    stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+                    stack.enter_context(patch.object(prepare_builds_artifacts, "source_state", return_value={"dirty": False}))
+                    reads = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output", side_effect=[source, executable]))
+                    signature = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "verified control", "")))
+                    stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+                    if index:
+                        with self.assertRaisesRegex(ValueError, "executable source/version"):
+                            prepare_builds_artifacts.main()
+                    else:
                         prepare_builds_artifacts.main()
-                else:
-                    prepare_builds_artifacts.main()
-                    receipt = json.loads((output / "artifact-identity.json").read_bytes())
-                    self.assertEqual(receipt["version"], "4.38.3")
-                    self.assertEqual(receipt["buildsRevision"], source)
-                    self.assertIs(receipt["candidateAcceptance"], False)
+                        receipt = json.loads((output / "artifact-identity.json").read_bytes())
+                        tool = output / "published" / prefix
+                        self.assertEqual(receipt["version"], version)
+                        self.assertEqual(receipt["buildsRevision"], source)
+                        self.assertEqual(receipt["toolRoot"], str(tool))
+                        self.assertEqual(Path(receipt["toolingAssembly"]).read_bytes(), payload)
+                        self.assertEqual(set(receipt["files"]), {prefix + "Hexalith.Builds.Tooling.dll", prefix + "Hexalith.Builds.Module.Cli.dll", host})
+                        self.assertEqual(Path(receipt["eventStoreHostAssembly"]).read_bytes(), b"synthetic retained host")
+                        self.assertEqual(receipt["tupleBinding"], binding)
+                        self.assertEqual(receipt["qualification"], "artifact identity only")
+                        self.assertEqual(reads.call_args.args[0], ["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"])
+                        self.assertIs(receipt["candidateAcceptance"], False)
+                    self.assertEqual(handoff.call_args.args[0], binding)
+                    self.assertEqual(signature.call_args.args[0], ["dotnet", "nuget", "verify", str(output / ("hexalith.builds.module.cli." + version + ".nupkg")), "--all"])
 
     def test_preparation_blocks_artifact_download_and_retains_terminal_preflight(self):
         self.binding["publication"]["version"] = None
