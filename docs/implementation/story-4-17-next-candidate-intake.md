@@ -5,6 +5,11 @@ Platform 4.17 and EventStore 3.21 remain **in-progress**. Technical qualificatio
 **FAIL, 20/24**; all five historical guarantees remain **REJECTED/open**. Broker selection
 is **null** and production eligibility **FAIL**.
 
+**Current handoff (2026-11-14):** packet preservation and both public RabbitMQ submissions are
+complete; [EventStore dependency tracking is reconciled and published](#eventstore-reconciliation-publication--2026-11-14).
+Supported remedies and exact successor admission/execution remain outstanding. Earlier preparation
+statuses below retain their dated context; approved acceptance criteria remain binding.
+
 The owner selected the three recommended routes: preserve the Kafka pressure guarantee and
 investigate a genuine rejecting fault; analyze Kafka rotation causality offline; and prepare
 the RabbitMQ supported-delivery intake while retaining its requirements. These decisions
@@ -496,3 +501,33 @@ upstream implementation plus an official supported Dapr runtime release embeddin
 fixes; EventStore must then admit the exact supported inputs. Builds alignment and a separate
 exact Platform full-matrix execution proposal/decision remain required. Publication supplies no
 technical acceptance, broker selection or production eligibility.
+
+## EventStore dependency tracking reconciled locally — 2026-11-14
+
+The root-declared EventStore checkout's
+[current parent tracking](../../references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-21-production-dapr-runtime-pin-and-durable-broker-qualification.md#completed-platform-dependency-handoff--2026-11-14),
+[owning evidence contract](../../references/Hexalith.EventStore/docs/implementation/story-3-21-broker-remediation-evidence-contract.md#completed-platform-handoff-reconciliation--2026-11-14)
+and existing deferred entry now consume the published Platform receipts at
+`bad341e575ffc936ab8d36705e9bbd142f74604d`. They distinguish completed off-site custody and
+actual issues #4764/#4765 from outstanding supported delivery, and retain the Kafka source
+stop rules and concrete re-entry dependencies. Their earlier dated pending-custody/unposted
+statements remain history; the original RabbitMQ/Kafka work packages and submission commitments
+are unchanged.
+
+This reconciliation is local documentation on EventStore
+`51dd68b86a690ffe9e11c565dccec49b2d401a94`, not a published/adopted successor input. Neither
+checkout revision, index nor gitlink was changed. No storage operation, upstream message,
+source/profile/pin change or execution occurred. Both parents stay **in-progress**, five
+guarantees **REJECTED/open**, technical **FAIL (20/24)**, selection **null**, production **FAIL**.
+
+## EventStore reconciliation publication — 2026-11-14
+
+Following the completed local review, the owner requested publication of all changes. The
+EventStore documentation reconciliation is now published on main at
+[`cf803659c8bdb965d26b479fc6547a6be08801c7`](https://github.com/Hexalith/Hexalith.EventStore/commit/cf803659c8bdb965d26b479fc6547a6be08801c7),
+after a clean rebase onto `889d42845e048567663ba6b373bff881cdd3021b`.
+The reviewed parent/contract text and ledger disposition were preserved, and the retained
+94-input/24-vector offline audit passed again. Platform records this verified published
+EventStore revision in its gitlink. The preceding local-only statements describe preparation
+before this separate publication request. Publication supplies no supported fix, new execution,
+guarantee closure, input admission or broker selection; all parent and qualification states remain.
