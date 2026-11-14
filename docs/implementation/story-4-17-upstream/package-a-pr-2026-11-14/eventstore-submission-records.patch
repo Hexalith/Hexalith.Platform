@@ -1,0 +1,67 @@
+diff --git a/_bmad-output/implementation-artifacts/deferred-work.md b/_bmad-output/implementation-artifacts/deferred-work.md
+index 7957d8b2414887d86f9f66b19753dc4ea98d208d..156d6c2c27f10c7c7a95e57e917d736314a23b57 100644
+--- a/_bmad-output/implementation-artifacts/deferred-work.md
++++ b/_bmad-output/implementation-artifacts/deferred-work.md
+@@ -6588,6 +6588,8 @@ followup_2026_11_01: The release-maintenance task repairs both owner defects: so
+   completed_handoff: 2026-11-14 — The current reconciliation in docs/implementation/story-3-21-broker-remediation-evidence-contract.md consumes Platform bad341e575ffc936ab8d36705e9bbd142f74604d receipts. Off-site custody of four original ZIPs plus manifest completed before all original expiries with five accepted versions and separate automated readback; retain the shared-host accountability limit, original authority labels and Administrator hold. The manual review is due by December 13, 2026 (Europe/Paris), under the [existing Administrator checkpoint](https://github.com/Hexalith/Hexalith.Platform/blob/bad341e575ffc936ab8d36705e9bbd142f74604d/docs/implementation/story-4-17-custody/post-review-verification.md#administrator-checkpoint-and-deletion-review); completed transfer does not close this ongoing obligation. RabbitMQ packages are submitted as dapr/components-contrib issues 4764 and 4765; do not file again. Implementation, upstream acceptance and supported runtime delivery remain open. Kafka pressure remains stopped without a supported rejecting mechanism; subsequent rotation feasibility/controlled-association stop rules need a supported completion/discrimination witness or separately accepted alternative design, with principal/applied-ACL/cold-generation gaps separate. Earlier pending-custody/unposted statements are history. EventStore admission, Builds alignment and exact Platform full-matrix execution acceptance remain required; both parents in-progress, five guarantees REJECTED/open, technical FAIL20/24, selection null and production FAIL are unchanged.
+   remediation_priority: 2026-11-14 — Owner “apply recommended” selects RabbitMQ Package A (#4764 publish-error/cancellation/reconnect propagation) first, then Package B (#4765 opt-in mandatory publishing with correlated returns), under the existing supported-delivery work. Kafka pressure remains stopped without a concrete supported Produce-rejection mechanism; rotation remains stopped without a supported completion/discrimination witness or accepted alternative correlation design, retaining principal/applied-ACL and cold-generation gaps. A strategic Kafka pressure-contract discussion is a separate decision, not a predicate change. Kafka re-entry stays independent. The EventStore 3.21 maintainer checks existing issues/official releases when this reopened item is discussed in normal sprint planning; record material changes here and in the owning evidence contract with date, URLs, exact release/source identities and remaining gates; retain the waiting disposition if unchanged. No new scheduler or retry. RabbitMQ needs an official supported Dapr release embedding the required fixes, then EventStore exact admission, Builds alignment and a separately accepted Platform full-matrix proposal. A future upstream contribution needs its own concrete scope; none starts here. Original work packages, submitted bodies, full 24-vector comparison, time bounds, custody/December 13 review obligation and qualification/parent states remain unchanged. This records local priority only, not implementation, supported delivery or publication.
+ 
++  update: 2026-11-14 — Owner-approved RabbitMQ Package A code contribution submitted as [dapr/components-contrib PR #4767](https://github.com/dapr/components-contrib/pull/4767), OPEN at head `96c3259b7c12a476edd208848153d3cf72a8c4f0`, base `440b15349565bb15f7a88636477864e5a9f8cc72`, tree `055ab8a8a908eacb09828847232c94ed1c74b07f`. Exact title/body/head/tree/parent and DCO-signed commit readbacks match the approved Platform package. See the dated code-contribution section in docs/implementation/story-3-21-broker-remediation-evidence-contract.md and Platform's package-a-pr-2026-11-14/submission-receipt.json. This partially addresses #4764; Package B/#4765, real broker/Dapr mapping evidence and supported runtime delivery remain open. Require an official supported Dapr release embedding the required fixes, then EventStore exact admission, Builds alignment and a separate Platform full-matrix proposal. Both parents in-progress, five guarantees REJECTED/open, technical FAIL20/24, selection null and production FAIL remain unchanged; Kafka stop rules, custody and the December 13 review are retained. This is a submission record, not upstream acceptance or runtime adoption.
++
+ ## Deferred from: build of spec-8-12-dapr-kubernetes-cryptography.md (2026-11-10)
+ 
+ - source_spec: `_bmad-output/implementation-artifacts/spec-8-12-dapr-kubernetes-cryptography.md`
+diff --git a/docs/implementation/story-3-21-broker-remediation-evidence-contract.md b/docs/implementation/story-3-21-broker-remediation-evidence-contract.md
+index 6865b5ff87552c93ed9dbc9cd62bc5f7bec84408..f7d7a1ccc6dde8aae915aaebf3ffc8e3043cf934 100644
+--- a/docs/implementation/story-3-21-broker-remediation-evidence-contract.md
++++ b/docs/implementation/story-3-21-broker-remediation-evidence-contract.md
+@@ -5,7 +5,9 @@ below supersedes the earlier pending-custody/unposted-issue statements. Those da
+ statuses remain historical; the approved acceptance criteria remain binding. No successor is admitted.
+ 
+ **Accepted next priority:** [RabbitMQ Package A, then Package B](#accepted-remediation-priority--2026-11-14),
+-with Kafka stop conditions and independent re-entry retained.
++with Kafka stop conditions and independent re-entry retained. The subsequent
++[Package A code contribution](#rabbitmq-package-a-code-contribution-submitted--2026-11-14)
++is submitted as upstream PR #4767; no supported release is admitted.
+ 
+ 2026-11-13. **Owner approved the offline investigation, evidence criteria and delivery requirements;
+ exact implementation inputs remain conditional and execution is not admitted.**
+@@ -387,3 +389,38 @@ the five historical REJECTED/open guarantees, technical FAIL (20/24), selection
+ eligibility FAIL and both in-progress parents. AD-26/profile, staging and shared-host/restore
+ prerequisites, completed packet custody and its December 13 Administrator checkpoint remain.
+ This local decision supplies no release, input adoption, runtime change or new qualification.
++
++## RabbitMQ Package A code contribution submitted — 2026-11-14
++
++After the owner approved the exact prepared code and texts with “do”, Platform forked
++`dapr/components-contrib` to `jpiquot/components-contrib`, pushed the tested branch
++`fix/rabbitmq-publish-errors-4764`, and opened
++[PR #4767](https://github.com/dapr/components-contrib/pull/4767). The PR was observed
++**OPEN**, with one DCO-signed commit `96c3259b7c12a476edd208848153d3cf72a8c4f0`,
++base `440b15349565bb15f7a88636477864e5a9f8cc72` and tree
++`055ab8a8a908eacb09828847232c94ed1c74b07f`. Exact UTF-8 title/body, commit message,
++head, tree and parent readbacks matched the approved package.
++
++The local Platform submission receipt at
++`docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/submission-receipt.json`
++retains stage-by-stage writes, fresh account observations and upstream preflights before
++the first write and PR creation. Main remained at the approved base and #4766 remained
++OPEN at its reviewed head. The local Platform package README in the same directory
++retains all 14 component/static checks, 89 procedure assertions, the unchanged reviewed
++contribution plus logging/lint delta, and source/text identities. All disposable jobs
++finished and were removed.
++
++This partially addresses #4764. Integration, certification and conformance suites, real
++broker recovery/redelivery, Dapr runtime mapping and Package B/#4765 are not delivered
++by this PR. Its shared-transport cancellation consequence and SDK observation limits
++remain disclosed. Earlier statements that no code contribution started describe the
++prior priority/preparation stages; this section records the subsequent approved submission.
++
++Submission is not upstream acceptance, merge or supported-runtime delivery. The gate remains
++an **official supported Dapr release embedding the required fixes**, then EventStore exact
++runtime/component/source/binary/image/lock admission, Builds alignment and a separately
++accepted Platform full-matrix proposal. Both parent stories remain **in-progress**;
++technical qualification **FAIL (20/24)**, five historical guarantees **REJECTED/open**,
++selection **null** and production eligibility **FAIL** are unchanged. Kafka re-entry,
++packet custody and the December 13 Administrator review remain unchanged. Platform and
++EventStore have not been pushed as part of this submission.

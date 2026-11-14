@@ -7,7 +7,7 @@ is **null** and production eligibility **FAIL**.
 
 **Current handoff (2026-11-14):** packet preservation and both public RabbitMQ submissions are
 complete; [EventStore dependency tracking is reconciled and published](#eventstore-reconciliation-publication--2026-11-14).
-Supported remedies and exact successor admission/execution remain outstanding. Earlier preparation
+The [Package A code contribution](#rabbitmq-package-a-code-contribution-submitted--2026-11-14) is now submitted as PR #4767; supported remedies and exact successor admission/execution remain outstanding. Earlier preparation
 statuses below retain their dated context; approved acceptance criteria remain binding.
 
 **Accepted priority:** [RabbitMQ error propagation first, then mandatory returns](#accepted-remediation-priority--2026-11-14).
@@ -577,3 +577,37 @@ shared-host/restore prerequisites and existing Subscription rendering. Both pare
 **in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**, selection
 **null** and production eligibility **FAIL**. Packet custody and its December 13 manual
 review obligation continue unchanged. This local decision is not publication or delivery.
+
+## RabbitMQ Package A code contribution submitted — 2026-11-14
+
+After the owner approved the exact prepared code and texts with “do”, Platform forked
+`dapr/components-contrib` to `jpiquot/components-contrib`, pushed the tested branch
+`fix/rabbitmq-publish-errors-4764`, and opened
+[PR #4767](https://github.com/dapr/components-contrib/pull/4767). The PR was observed
+**OPEN**, with one DCO-signed commit `96c3259b7c12a476edd208848153d3cf72a8c4f0`,
+base `440b15349565bb15f7a88636477864e5a9f8cc72` and tree
+`055ab8a8a908eacb09828847232c94ed1c74b07f`. Exact UTF-8 title/body, commit message,
+head, tree and parent readbacks matched the approved package.
+
+The [submission receipt](story-4-17-upstream/package-a-pr-2026-11-14/submission-receipt.json)
+retains stage-by-stage writes, fresh account observations and upstream preflights before
+the first write and PR creation. Main remained at the approved base and #4766 remained
+OPEN at its reviewed head. The [package record](story-4-17-upstream/package-a-pr-2026-11-14/README.md)
+retains all 14 component/static checks, 89 procedure assertions, the unchanged reviewed
+contribution plus logging/lint delta, and source/text identities. All disposable jobs
+finished and were removed.
+
+This partially addresses #4764. Integration, certification and conformance suites, real
+broker recovery/redelivery, Dapr runtime mapping and Package B/#4765 are not delivered
+by this PR. Its shared-transport cancellation consequence and SDK observation limits
+remain disclosed. Earlier statements that no code contribution started describe the
+prior priority/preparation stages; this section records the subsequent approved submission.
+
+Submission is not upstream acceptance, merge or supported-runtime delivery. The gate remains
+an **official supported Dapr release embedding the required fixes**, then EventStore exact
+runtime/component/source/binary/image/lock admission, Builds alignment and a separately
+accepted Platform full-matrix proposal. Both parent stories remain **in-progress**;
+technical qualification **FAIL (20/24)**, five historical guarantees **REJECTED/open**,
+selection **null** and production eligibility **FAIL** are unchanged. Kafka re-entry,
+packet custody and the December 13 Administrator review remain unchanged. Platform and
+EventStore have not been pushed as part of this submission.

@@ -2,7 +2,7 @@
 title: 'Story 4.17: submit RabbitMQ Package A as an upstream pull request'
 type: 'chore'
 created: '2026-11-14'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 1
 baseline_commit: 'a215204225396ee695756f934c2e8a172ba7f311'
@@ -57,9 +57,9 @@ context: []
 - [x] Checks -- In held run-with-temp jobs: clone official main and record its identity, apply `contribution.patch` plus `pr-delta.patch`, and commit on `fix/rabbitmq-publish-errors-4764`. Run the recorded checks plus `go mod tidy -diff`, golangci-lint `--new-from-rev=<base>` and `gofmt -s -l`. `summarize-checks.py` must FAIL on a missing required receipt or on counts below the local baseline. Save a thin bundle with the head SHA and tree.
 - [x] Submission procedure -- `README.md` steps and a preflight script. The preflight HALTs unless main is the base, or no change since the base touches `pubsub/rabbitmq`, `common/component/rabbitmq`, `go.mod`, `go.sum` or `.golangci.yml`, and unless #4766 is OPEN at head `14bf2f783dff41ef2c927fe1aeb6999c113ffff3`. It fetches the base by SHA before using the bundle. Readback parses the `gh` JSON and compares the UTF-8 bytes exactly.
 - [x] PR texts -- Add the abort disclosure and follow-up offer. Name the conformance suite as not run. Keep the existing rules and limits.
-- [ ] Approval gate (parent) -- Present the texts, delta and check results, then HALT.
-- [ ] Submit (parent, after the yes) -- Run the preflight, fork, push the bundled commit, `gh pr create`, read back, write `submission-receipt.json`.
-- [ ] Records (parent) -- PR identity, remaining gates and unchanged dispositions.
+- [x] Approval gate (parent) -- Present the texts, delta and check results, then HALT.
+- [x] Submit (parent, after the yes) -- Run the preflight, fork, push the bundled commit, `gh pr create`, read back, write `submission-receipt.json`.
+- [x] Records (parent) -- PR identity, remaining gates and unchanged dispositions.
 
 **Acceptance Criteria:**
 - Given the submitted PR, when it is read back, then its head tree equals base plus `contribution.patch` plus `pr-delta.patch`. Its title and body bytes equal the approved files, and the commit carries a Signed-off-by line.
@@ -136,7 +136,7 @@ All surviving fixes concern local preparation guards, tests or wording. No chang
 - `git diff --stat <base> HEAD` -- expected: only `pubsub/rabbitmq` files.
 - The preflight, then `gh pr view <n> --json title,body,headRefOid` parsed as JSON -- expected: the approved bytes and the pushed SHA.
 
-## Current preparation verification
+## Preparation verification before owner approval
 
 The first four tasks are complete on signed-off upstream subject `96c3259b7c12a476edd208848153d3cf72a8c4f0`. All 14 receipts pass (unit 62/196, focused race 230/720, legacy race 10/10); fresh-clone tree/message verification and disposable preflight/readback/receipt-failure fixtures pass. All implementation jobs exited and cleaned up. See [prepared package](../../docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/README.md).
 
@@ -146,4 +146,10 @@ The clean-base, lint, restored-logging, overlapping-PR and readback matrix paths
 
 All seven surviving review corrections (grouping B2-1/E2-1) are complete: exact command matching; fresh disposable receipt recomputation; durable command/parse failure receipts; fresh identity and pre-create upstream observations in the submission procedure; accurate PR checklist wording; and independent five-path shallow-Git tests. Parent verification passed all 14 receipt checks, 89 procedure assertions and fresh official-clone source/message/text verification. No new finding was deferred. Existing round-1 deferrals and unchanged delivery gates remain.
 
-Approval checkpoint: the exact prepared title, body, commit message and delta are presented for an explicit owner yes. No fork, push or PR has occurred. Submission and final Platform/EventStore records remain incomplete; this spec remains in-review and the parent sprint story remains in-progress until those tasks are fulfilled. The workflow completion/status step does not apply before this explicit human checkpoint.
+Approval checkpoint passed: after presentation and explanation, the owner replied “do”. The exact tested commit and texts were submitted without alteration; fork, push and PR creation succeeded, and independent remote readback matched. The bounded submission slice is complete. Both parent stories remain in-progress under the frozen instructions.
+
+## Submitted result
+
+[Upstream PR #4767](https://github.com/dapr/components-contrib/pull/4767) is OPEN at the exact approved head `96c3259b7c12a476edd208848153d3cf72a8c4f0`, tree `055ab8a8a908eacb09828847232c94ed1c74b07f` and sole parent `440b15349565bb15f7a88636477864e5a9f8cc72`. Exact UTF-8 title/body and the signed-off commit message match the approved files. The [submission receipt](../../docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/submission-receipt.json) retains each successful remote write, fresh jpiquot checks, upstream guards before the first write and PR creation, and actual readback results. The disposable submission job exited 0 and its directory is removed.
+
+Platform intake and sprint comments record the PR and unchanged delivery gates. EventStore contract and existing broker ledger were updated in local commit `dcd373bf382cc5cd88308364a323f29d8194af22`; it is not pushed, and Platform's EventStore gitlink is preserved. A retained exact patch accompanies the receipt so those unpublished record changes remain recoverable. Platform is not pushed. Both parent stories remain in-progress; technical FAIL (20/24), five REJECTED/open guarantees, selection null, production FAIL, Kafka stop rules, custody and the December 13 review remain unchanged. Submission does not establish upstream acceptance, a supported Dapr release, EventStore admission, Builds alignment or Platform qualification.

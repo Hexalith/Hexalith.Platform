@@ -1,17 +1,135 @@
 {
-  "status": "prepared, not submitted",
+  "status": "submitted; exact readback verified",
   "preparedUtc": "2026-11-14T11:22:02.246097+00:00",
-  "approval": "pending parent presentation and explicit owner yes",
+  "approval": "Owner replied \"do\" after presentation and explanation of the fork/code contribution.",
   "repository": "dapr/components-contrib",
   "intendedFork": "jpiquot/components-contrib",
   "branch": "fix/rabbitmq-publish-errors-4764",
   "base": "440b15349565bb15f7a88636477864e5a9f8cc72",
   "head": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
   "tree": "055ab8a8a908eacb09828847232c94ed1c74b07f",
-  "pullRequest": null,
-  "remoteWrites": [],
-  "readback": null,
-  "approvedTexts": null,
+  "pullRequest": {
+    "baseRefName": "main",
+    "headRefName": "fix/rabbitmq-publish-errors-4764",
+    "headRefOid": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "headRepository": {
+      "id": "R_kgDOVuKz-w",
+      "name": "components-contrib"
+    },
+    "headRepositoryOwner": {
+      "id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "name": "Jérôme Piquot",
+      "login": "jpiquot"
+    },
+    "isCrossRepository": true,
+    "isDraft": false,
+    "number": 4767,
+    "state": "OPEN",
+    "url": "https://github.com/dapr/components-contrib/pull/4767"
+  },
+  "remoteWrites": [
+    {
+      "stage": "fork",
+      "argv": [
+        "gh",
+        "repo",
+        "fork",
+        "dapr/components-contrib",
+        "--clone=false"
+      ],
+      "startedUtc": "2026-11-14T11:46:34.472142+00:00",
+      "status": "SUCCEEDED",
+      "endedUtc": "2026-11-14T11:46:36.256589+00:00",
+      "exitCode": 0,
+      "stdout": "fork.stdout.log",
+      "stderr": "fork.stderr.log"
+    },
+    {
+      "stage": "push",
+      "argv": [
+        "git",
+        "-c",
+        "credential.helper=",
+        "-c",
+        "credential.helper=!gh auth git-credential",
+        "push",
+        "https://github.com/jpiquot/components-contrib.git",
+        "refs/heads/fix/rabbitmq-publish-errors-4764:refs/heads/fix/rabbitmq-publish-errors-4764"
+      ],
+      "startedUtc": "2026-11-14T11:46:36.925073+00:00",
+      "status": "SUCCEEDED",
+      "endedUtc": "2026-11-14T11:46:38.929880+00:00",
+      "exitCode": 0,
+      "stdout": "push.stdout.log",
+      "stderr": "push.stderr.log"
+    },
+    {
+      "stage": "create-pr",
+      "argv": [
+        "gh",
+        "pr",
+        "create",
+        "-R",
+        "dapr/components-contrib",
+        "--base",
+        "main",
+        "--head",
+        "jpiquot:fix/rabbitmq-publish-errors-4764",
+        "--title",
+        "fix(pubsub/rabbitmq): preserve publish failures and bound cancellation",
+        "--body-file",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-pr-2026-11-14/pr-body.md"
+      ],
+      "startedUtc": "2026-11-14T11:46:41.315542+00:00",
+      "status": "SUCCEEDED",
+      "endedUtc": "2026-11-14T11:46:44.235560+00:00",
+      "exitCode": 0,
+      "stdout": "create-pr.stdout.log",
+      "stderr": "create-pr.stderr.log"
+    }
+  ],
+  "readback": {
+    "checkedUtc": "2026-11-14T11:46:44.266388+00:00",
+    "pullRequest": "https://github.com/dapr/components-contrib/pull/4767",
+    "status": "PASS",
+    "command": [
+      "gh",
+      "pr",
+      "view",
+      "https://github.com/dapr/components-contrib/pull/4767",
+      "-R",
+      "dapr/components-contrib",
+      "--json",
+      "title,body,headRefOid"
+    ],
+    "input": null,
+    "rawResponse": "pr-readback-raw.json",
+    "rawStderr": "pr-readback-stderr.log",
+    "method": "parse gh JSON, then compare the decoded strings encoded as UTF-8; no --jq newline",
+    "exitCode": 0,
+    "checks": {
+      "titleBytesMatch": true,
+      "bodyBytesMatch": true,
+      "headMatches": true
+    },
+    "headRefOid": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "titleSha256": "abfdb386c22e168de2145d1ced5a5c11c284d9d7bb32db115480c8e0ab1426d8",
+    "bodySha256": "5bfe6aa62faee98dfc501eea99553602f580d4a40470719721d93378c3b80581"
+  },
+  "approvedTexts": {
+    "pr-title.txt": {
+      "sha256": "abfdb386c22e168de2145d1ced5a5c11c284d9d7bb32db115480c8e0ab1426d8",
+      "bytes": 70
+    },
+    "pr-body.md": {
+      "sha256": "5bfe6aa62faee98dfc501eea99553602f580d4a40470719721d93378c3b80581",
+      "bytes": 7433
+    },
+    "commit-message.txt": {
+      "sha256": "9ab7d05a5bc6c9fc8e214ac1b6437747c4b90c084361fd035c076ece8143fc55",
+      "bytes": 1517
+    }
+  },
   "preparedTexts": {
     "pr-title.txt": {
       "sha256": "abfdb386c22e168de2145d1ced5a5c11c284d9d7bb32db115480c8e0ab1426d8",
@@ -26,5 +144,34 @@
       "bytes": 1517
     }
   },
-  "preparedTextUpdatedUtc": "2026-11-14T11:33:55.470689+00:00"
+  "preparedTextUpdatedUtc": "2026-11-14T11:33:55.470689+00:00",
+  "approvedUtc": "2026-11-14T11:45:16.982985+00:00",
+  "approvedSource": {
+    "head": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+    "tree": "055ab8a8a908eacb09828847232c94ed1c74b07f",
+    "prDeltaSha256": "bcc083c9e55c66d1e1994674443b1ad5cbfb09bbe2b68eae31e5f80c8c7c92ab",
+    "bundleSha256": "2b76da6c491da467e3f1ac714cbb9de2f8e0d6e773e0ffe3f0dfa3efaddb9c51"
+  },
+  "submissionStartedUtc": "2026-11-14T11:46:31.179299+00:00",
+  "disposableWorkspace": "/tmp/hexalith-job.VUD51SWc",
+  "fork": {
+    "repository": "jpiquot/components-contrib",
+    "url": "https://github.com/jpiquot/components-contrib",
+    "id": 1457697787,
+    "parent": "dapr/components-contrib"
+  },
+  "pushedHead": "96c3259b7c12a476edd208848153d3cf72a8c4f0",
+  "remoteTreeVerified": true,
+  "submittedUtc": "2026-11-14T11:46:45.440532+00:00",
+  "submissionWorkspaceCleaned": true,
+  "localRecords": {
+    "eventStoreCommit": "dcd373bf382cc5cd88308364a323f29d8194af22",
+    "eventStoreParent": "49084f66f8d6545cae442875355a7066d5f5e73d",
+    "eventStorePushed": false,
+    "platformPushed": false,
+    "platformEventStoreGitlinkPreserved": "49084f66f8d6545cae442875355a7066d5f5e73d",
+    "eventStorePatch": "eventstore-submission-records.patch",
+    "eventStorePatchSha256": "bbd274642c2b496a8731f9d1d690069e6bdf9b326dd99e85700331467f84b329",
+    "recordedUtc": "2026-11-14T11:49:46.229641+00:00"
+  }
 }

@@ -1,8 +1,8 @@
-# RabbitMQ Package A — prepared upstream pull request
+# RabbitMQ Package A — submitted upstream pull request
 
 Prepared November 14, 2026 for [dapr/components-contrib #4764](https://github.com/dapr/components-contrib/issues/4764).
 
-**Status: prepared, not submitted.** The exact title, body, signed-off commit message and source delta await the owner's explicit yes in the parent session. No fork, push, pull request, comment, label or issue edit has been made. Platform and EventStore were not pushed. No broker, Dapr runtime or qualification ran.
+**Status: submitted, exact readback verified.** The owner approved the presented artifacts with “do”. [PR #4767](https://github.com/dapr/components-contrib/pull/4767) is OPEN from the verified `jpiquot/components-contrib` fork at the exact tested commit below. [submission-receipt.json](submission-receipt.json) retains the fork/push/create stages and exact title/body/head/tree/parent verification. No existing issue or PR was commented on, labeled or edited. Platform and EventStore were not pushed; no broker, Dapr runtime or qualification ran.
 
 ## Subject
 
@@ -18,7 +18,7 @@ Prepared November 14, 2026 for [dapr/components-contrib #4764](https://github.co
 
 [commit-identity.json](commit-identity.json) records the author, local git identity sign-off, final Co-Authored-By line, clean tree and exact five changed `pubsub/rabbitmq` files. [bundle.json](bundle.json) records its head, tree and base prerequisite. [source-identity.json](source-identity.json) records the read-only official clone. [submission-identity.json](submission-identity.json) records the preparation-time observation of `gh` authenticated as `jpiquot` with `repo` scope and no existing `jpiquot/components-contrib` fork.
 
-## Source delta for approval
+## Approved source delta
 
 The reviewed contribution is unchanged. [pr-delta.patch](pr-delta.patch) contains the retained [lint-fix.patch](lint-fix.patch) plus [logging-restoration.patch](logging-restoration.patch):
 
@@ -53,7 +53,7 @@ The body explicitly discloses that cancellation during exchange declaration, wri
 
 [preflight.py](preflight.py) only reads upstream. It HALTs unless main equals the reviewed base or its diff touches none of `pubsub/rabbitmq`, `common/component/rabbitmq`, `go.mod`, `go.sum` or `.golangci.yml`. It requires #4766 to be OPEN, unmerged and at `14bf2f783dff41ef2c927fe1aeb6999c113ffff3`. It always fetches the reviewed base SHA before using the bundle. The bundle gate recomputes the offline receipt summary in private disposable storage, preserving the original receipts, logs and saved summary; a stale saved PASS cannot bypass a missing receipt. The preparation observation in [submission-preflight.json](submission-preflight.json) is PASS; the parent must rerun it immediately before any submission after approval.
 
-## Texts for approval
+## Approved texts
 
 | File | SHA-256 | Bytes |
 |---|---|---|
@@ -69,7 +69,7 @@ All disposable sources, tools, caches and build outputs live beneath `run-with-t
 
 Large logs are stored as deterministic gzip with uncompressed and stored hashes in their receipts. The root .gitignore excludes `.log` files, so the parent must explicitly include the useful logs with `git add -f` when recording this directory. [workspace-lifecycle.json](workspace-lifecycle.json) records completed jobs and removal of their temporary directories.
 
-## Parent submission procedure — only after the explicit yes
+## Parent submission procedure — completed after explicit approval
 
 1. Present the exact [title](pr-title.txt), [body](pr-body.md), [commit message](commit-message.txt), source delta and checks above; HALT for the owner's explicit yes. A decline remains **prepared, not submitted**.
 2. In a new held `run-with-temp` job, clone official main read-only beneath TMPDIR. Before **each** remote write (fork, push and PR creation), run a fresh read-only `gh api user`, parse the response as JSON and require `login` to equal `jpiquot`; otherwise HALT. Retain the raw response and UTC observation time separately for each stage (for example `auth-before-fork.json`, `auth-before-push.json` and `auth-before-pr.json`). The preparation-time identity receipt is historical evidence and cannot satisfy these checks. Run `python3 -B <this-directory>/preflight.py --source <clone> --bundle` immediately before the first remote write. It fetches the base by SHA even if main has moved, then verifies the bundle and local result gates. Retain this result as `submission-preflight-before-write.json` before another run overwrites the working receipt. Any failed guard means HALT.
