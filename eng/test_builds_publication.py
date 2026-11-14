@@ -63,13 +63,16 @@ class SharedPublicationTests(unittest.TestCase):
         for version, upper in (("5.0.0", "6.0.0-0"), ("6.0.0", "7.0.0-0")):
             with self.subTest(version=version):
                 publication = self.binding["publication"]
+                old_tag = publication["releaseTag"]
                 publication.update(version=version, releaseTag="v" + version)
                 manifest = json.loads(publication["manifestJson"])
                 manifest["version"] = version
                 for item in manifest["packages"]:
                     item["path"] = "packages/" + item["id"] + "." + version + ".nupkg"
                 self.manifest(manifest)
-                validate_binding(self.binding)
+                self.responses["releases/11"]["tag_name"] = publication["releaseTag"]
+                self.responses["git/ref/tags/" + publication["releaseTag"]] = self.responses.pop("git/ref/tags/" + old_tag)
+                self.assertFalse(self.verify()["qualificationCredit"])
                 with tempfile.TemporaryDirectory() as directory:
                     root = Path(directory)
                     (root / ".config").mkdir()

@@ -36,7 +36,11 @@ class TupleRuntimeContextTests(unittest.TestCase):
             binding["publication"]["version"] = version
             for suite in ("current42", "base42", "extensions"):
                 with self.subTest(version=version, suite=suite):
-                    self.assertEqual(tuple_runtime_context(binding, suite, "2" * 64)["targetFramework"], "net11.0")
+                    result = tuple_runtime_context(binding, suite, "2" * 64)
+                    self.assertEqual(result["targetFramework"], "net11.0")
+                    self.assertEqual(result["toolVersion"], version)
+                    self.assertEqual(result["purpose"], "current-net11-with-retained-public-sdk42")
+                    self.assertIs(result["nativeAcceptance"], False)
             for suite in ("current", "unknown"):
                 with self.subTest(version=version, suite=suite), self.assertRaises(ValueError):
                     tuple_runtime_context(binding, suite, "2" * 64)

@@ -1,5 +1,6 @@
 """Exercise real isolated Git histories for the exact 412-case historical source lane."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -170,24 +171,41 @@ class PreExtensionSourceTests(unittest.TestCase):
 
     def test_private_tuple_identity_transformation_changes_only_bound_version_fields(self):
         # These deliberately synthetic private Git/package identities prove only the metadata comparison.
-        self.git('checkout', '-q', self.current)
-        document = json.loads((self.root / 'eng/builds-tuple.json').read_bytes())
-        document['producer']['sourceRevision'] = 'e' * 40
-        document['publication'].update(version='4.999.0', sourceRevision='e' * 40, releaseTag='v4.999.0',
-            inventoryUrl='https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.999.0/g4-tool-package-inventory.json')
-        self.write('eng/builds-tuple.json', json.dumps(document).encode())
-        self.gitlink('references/Hexalith.Builds', 'e' * 40)
-        tools = json.loads((self.root / '.config/dotnet-tools.json').read_bytes())
-        tools['tools']['hexalith.builds.module.cli']['version'] = '4.999.0'
-        self.write('.config/dotnet-tools.json', json.dumps(tools).encode())
-        identity = json.loads((self.root / 'hexalith-platform.json').read_bytes())
-        identity['toolVersionRange'] = '[4.999.0, 5.0.0-0)'
-        self.write('hexalith-platform.json', json.dumps(identity).encode())
-        changed = self.commit()
-        self.git('checkout', '-q', self.old)
-        result = history.verify(self.root, changed, self.old)
-        self.assertFalse(result['qualificationCredit'])
-        self.assertEqual(result['sourceEquivalence'], 'verified')
+        for version, supported in (("4.999.0", True), ("5.0.0", True), ("6.0.0", True), ("7.0.0", False)):
+            with self.subTest(version=version):
+                self.git('checkout', '-q', self.current)
+                document = json.loads((self.root / 'eng/builds-tuple.json').read_bytes())
+                document['producer']['sourceRevision'] = 'e' * 40
+                publication = document['publication']
+                publication.update(version=version, sourceRevision='e' * 40, releaseTag='v' + version)
+                if version.startswith('4.'):
+                    publication['inventoryUrl'] = 'https://github.com/Hexalith/Hexalith.Builds/releases/download/v' + version + '/g4-tool-package-inventory.json'
+                else:
+                    del publication['inventoryUrl'], publication['inventorySha256']
+                    manifest = json.dumps({'sha': 'e' * 40, 'version': version, 'packages': [
+                        {'id': identity, 'path': 'packages/' + identity + '.' + version + '.nupkg'}
+                        for identity in ('Hexalith.Builds.Evidence.Cli', 'Hexalith.Builds.Module.Cli')], 'containers': []})
+                    publication.update(kind='shared-release-handoff/v1', releaseId=1, runId=2, artifactId=3,
+                        artifactSha256='a' * 64, releaseBodySha256='b' * 64,
+                        manifestJson=manifest, manifestSha256=hashlib.sha256(manifest.encode()).hexdigest())
+                self.write('eng/builds-tuple.json', json.dumps(document).encode())
+                self.gitlink('references/Hexalith.Builds', 'e' * 40)
+                tools = json.loads((self.root / '.config/dotnet-tools.json').read_bytes())
+                tools['tools']['hexalith.builds.module.cli']['version'] = version
+                self.write('.config/dotnet-tools.json', json.dumps(tools).encode())
+                identity = json.loads((self.root / 'hexalith-platform.json').read_bytes())
+                upper = str(int(version.split('.')[0]) + 1) + '.0.0-0'
+                identity['toolVersionRange'] = '[' + version + ', ' + upper + ')'
+                self.write('hexalith-platform.json', json.dumps(identity).encode())
+                changed = self.commit()
+                self.git('checkout', '-q', self.old)
+                if supported:
+                    result = history.verify(self.root, changed, self.old)
+                    self.assertFalse(result['qualificationCredit'])
+                    self.assertEqual(result['sourceEquivalence'], 'verified')
+                else:
+                    with self.assertRaisesRegex(ValueError, 'exact supported'):
+                        history.verify(self.root, changed, self.old)
 
     def test_net11_generations_require_the_exact_shared_publication_and_range(self):
         import hashlib

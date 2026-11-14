@@ -22,13 +22,26 @@ from qualify import Qualification
 BUILDS = next(root for root in (lifecycle.ROOT.parent / 'Hexalith.Builds', lifecycle.ROOT / 'references/Hexalith.Builds')
               if (root / 'Props/Directory.Packages.props').is_file())
 TOOL_VERSION = json.loads((lifecycle.ROOT / '.config/dotnet-tools.json').read_bytes())['tools']['hexalith.builds.module.cli']['version']
-if TOOL_VERSION.split('.')[0] not in ('4', '5'):
-    raise ValueError('An explicitly supported Builds source generation is required')
-TOOL_FRAMEWORK = 'net11.0' if TOOL_VERSION.startswith('5.') else 'net10.0'
+
+
+def tool_framework(version):
+    if version.split('.')[0] not in ('4', '5', '6'):
+        raise ValueError('An explicitly supported Builds source generation is required')
+    return 'net11.0' if version.startswith(('5.', '6.')) else 'net10.0'
+
+
+TOOL_FRAMEWORK = tool_framework(TOOL_VERSION)
 CLI = BUILDS / ('src/libraries/Hexalith.Builds.Module.Cli/bin/Debug/' + TOOL_FRAMEWORK + '/Hexalith.Builds.Module.Cli.dll')
 
 
 class CampaignLifecycleTests(unittest.TestCase):
+    def test_source_tool_generation_selects_only_the_supported_frameworks(self):
+        for version, expected in (('4.47.0', 'net10.0'), ('5.2.2', 'net11.0'), ('6.0.0', 'net11.0')):
+            with self.subTest(version=version):
+                self.assertEqual(tool_framework(version), expected)
+        with self.assertRaisesRegex(ValueError, 'explicitly supported Builds'):
+            tool_framework('7.0.0')
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix='campaign-offline-')
         self.addCleanup(self.tmp.cleanup)
