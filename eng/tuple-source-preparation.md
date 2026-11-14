@@ -201,3 +201,21 @@ the generic SDK5.1/Memories4 view. These observations grant no runtime authority
 The earlier private explicit3.0.27 input experiment against c91 failed HXW012
 because its actual Parties project view required4.0.0; that experiment was
 removed without changing the snapshot or asset/body guards.
+
+## Synchronized owner source renewal on 2026-11-14
+
+Upstream Platform50fb selected the newer Builds12475 tests-only source while its
+authenticated producer remained the signed6.0.2/source60ce publication. The strict
+producer check refused that mismatch before dependency initialization. Restore
+only the governed Builds gitlink to60ce; the umbrella's latest Builds12475 source
+remains a separate selection. The publication, archive, Tooling and catalog1291
+bindings are unchanged.
+
+The synchronized EventStore749d and Tenantsd89f gitlinks retain their exact public
+Git manifest identities in the renewed current-source binding. Their manifest
+hashes and all package-release provenance remain unchanged. All upstream audience
+feature code, contribution evidence and six other synchronized gitlinks are
+preserved. Fresh immutable349/412/package-reader companions must contain this
+same source, including the audience feature, with only their authenticated frozen
+metadata and owner selections substituted. Prepared source alignment grants no
+execution credit; fresh hosted tuple and catalog gates remain required.
