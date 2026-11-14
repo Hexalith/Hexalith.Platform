@@ -665,3 +665,46 @@ technical qualification **FAIL (20/24)**, five historical guarantees **REJECTED/
 selection **null** and production eligibility **FAIL** are unchanged. Kafka stop rules, packet
 custody and the December 13 Administrator review remain unchanged. Platform and EventStore have
 not been pushed.
+
+## RabbitMQ Package B exact submission proposal prepared — 2026-11-14
+
+The reviewed Package B source is complete. A new [local submission proposal](story-4-17-upstream/package-b-submission-2026-11-14/README.md)
+now supplies the exact proposed PR title/body, signed-off commit message, destination,
+source diffs and hash manifest for an explicit publication decision. It proposes a new
+`fix/rabbitmq-mandatory-returns-4765` branch in the existing `jpiquot/components-contrib`
+fork and one PR to `dapr/components-contrib:main`, preserving the unchanged A commit
+then adding one B commit. It is **prepared, not approved or submitted**.
+
+Read-only observations at 2026-11-14T17:41:04Z found A/#4767 still OPEN at
+`96c3259b7c12a476edd208848153d3cf72a8c4f0`, main still
+`440b15349565bb15f7a88636477864e5a9f8cc72`, no discussion comments and six
+`action_required` workflows; #4765 remains OPEN. An upstream PR against main currently
+includes A+B: eight files, 2786 insertions and 72 deletions. The separately retained
+B-only patch remains the reviewed seven-file change (1015 insertions, 10 deletions),
+SHA-256 `7d55faea09b30fe31228566601e72e04b2158bc64a65d9d45fb086c16a31e392`.
+The proposal discloses the dependency and requires A to be resolved first, followed
+by a fresh B rebase. Waiting for A is the alternative; changed bases or text require
+a fresh exact proposal and owner decision. A PR targeting the fork's A branch would
+not be an upstream submission.
+
+One `run-with-temp` job reconstructed both diffs to reviewed tree
+`50f8ef2d3d3a240595d6088917f9d51afe04ec3c` and revalidated the existing 15 check
+receipts and 18 negative controls in a private copy. The recomputed summary was
+byte-identical. Both private directories were removed. This was source/integrity
+verification, with no source change, new tests, broker or Dapr runtime execution.
+
+No branch, commit, fork, PR, comment, issue edit, push or qualification was created
+by this preparation slice. Both parent stories remain **in-progress**, technical
+qualification **FAIL (20/24)**, five guarantees **REJECTED/open**, selection **null**
+and production eligibility **FAIL**. Supported Dapr delivery, EventStore admission,
+Builds alignment and a separate full-matrix proposal still gate execution. Kafka
+stop rules, packet custody and the December 13 review remain unchanged.
+
+The independent blind review identified ten publication/audit wording gaps, all
+resolved within this preparation. The packet now retains its verification procedure
+and command/tree outputs, binds workflow records and commit identities, identifies
+append-only preservation explicitly, links public immutable check evidence and
+SDK source, and requires atomic create-only branch publication. It distinguishes
+compiled versus executed integration coverage and explains that A's squash merge
+alone may not remove A from the comparison before B is rebased and reapproved.
+No source behavior changed and nothing new was deferred.
