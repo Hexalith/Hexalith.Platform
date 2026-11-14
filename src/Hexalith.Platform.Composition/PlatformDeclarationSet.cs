@@ -40,11 +40,11 @@ public static class PlatformDeclarationSet
             || !NuGet.Versioning.VersionRange.TryParse(identity.ToolVersionRange, out var range)
             || range.MinVersion is not { } minimum || range.MaxVersion is null || range.Float is not null
             || !range.IsMinInclusive || minimum.IsPrerelease
-            || minimum.Major is not (4 or 5) || !range.Satisfies(minimum))
+            || minimum.Major is not (4 or 5 or 6) || !range.Satisfies(minimum))
             throw new InvalidDataException("The selected Platform identity has no supported Builds generation for its catalog consumer context.");
         // Retained 4.x component inputs keep their original default view. Real frozen 4.x tools also
         // compile as net10.0, where the successor's typed consumer API is deliberately absent.
-        return minimum.Major == 5 ? CompositionDeclarationOptions.PlatformCompositionProjectName : null;
+        return minimum.Major is 5 or 6 ? CompositionDeclarationOptions.PlatformCompositionProjectName : null;
     }
 #endif
 

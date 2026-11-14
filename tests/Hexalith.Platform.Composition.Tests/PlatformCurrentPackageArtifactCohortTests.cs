@@ -237,7 +237,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         byte[] original = File.ReadAllBytes(path);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(original)!;
         var defaults = new CompositionDeclarationOptions(mapping, options.DeclarationPaths) { PlatformRoot = options.PlatformRoot, Workspace = fixture.Workspace };
-        defaults.CatalogVersion("eventstore", "current default control").ShouldBe("5.0.0");
+        defaults.CatalogVersion("eventstore", "current default control").ShouldBe("5.1.0");
         PlatformDeclarationSet.DeclarationOptions(options).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
         foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
             PlatformServerBindings.Version(options, module, "current named control")
@@ -299,7 +299,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
                 Entries = mapping.Entries.Select(entry => entry.Identity == "Hexalith.Parties" ? entry with { Path = Path.Combine(fixture.Workspace, "foreign-owner") } : entry).ToArray(),
             };
             Refuses(options with { Mapping = changedSource });
-            foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[6.0.0,7.0.0)" })
+            foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[7.0.0,8.0.0)" })
             {
                 PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
                 Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));

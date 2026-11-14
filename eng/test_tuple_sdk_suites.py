@@ -27,6 +27,18 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 sdk42_collecting_cohort(changed, 'current42')
 
+    def test_exact_generation601_uses_the_same_measured_cohort_without_qualifying_other_generations(self):
+        from test_current_catalog_view import generation6_binding
+        for suite in ("current42", "base42", "extensions"):
+            with self.subTest(suite=suite):
+                self.assertEqual(sdk42_collecting_cohort(generation6_binding("6.0.1"), suite),
+                    sdk42_collecting_cohort(generation6_binding(), suite))
+        self.assertIsNone(sdk42_collecting_cohort(None, "current42"))
+        changed = generation6_binding("6.0.1")
+        changed["producer"]["catalog"]["blob"] = "e" * 40
+        with self.assertRaisesRegex(ValueError, "exact qualified Builds6"):
+            sdk42_collecting_cohort(changed, "current42")
+
     def test_current42_restored_graph_refuses_missing_project_or_neighbor_family_packages(self):
         from test_current_catalog_view import generation6_binding
         cohort = sdk42_collecting_cohort(generation6_binding(), 'current42')
@@ -90,6 +102,13 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
                 sdk_suite(suite, version)
 
+    def test_sdk42_suite_selection_does_not_override_historical_companions(self):
+        for suite in ("current42", "base42", "extensions"):
+            with self.subTest(suite=suite):
+                self.assertEqual(sdk_suite(suite, "4.2.0")[1], ["-p:HexalithEventStoreVersion=4.2.0"])
+        self.assertEqual(sdk_suite("current", None)[1], [])
+        self.assertEqual(sdk_suite("current", "4.1.0")[1], ["-p:HexalithEventStoreVersion=4.1.0"])
+
     def test_extension_suite_requires_the_single_real_catalog_pin(self):
         with tempfile.TemporaryDirectory() as root:
             path = Path(root) / "catalog.props"
@@ -134,6 +153,26 @@ class SdkSuiteTests(unittest.TestCase):
                 path.write_text(json.dumps({"libraries": changed}))
                 with self.subTest(fault=fault), self.assertRaises(ValueError):
                     verify_test_sdk(assembly, "4.2.0")
+
+    def test_current_collector_rejects_missing_source_or_crossed_memories_packages(self):
+        with tempfile.TemporaryDirectory() as root:
+            assembly = Path(root) / "Tests.dll"
+            dependencies = {name.removesuffix(".dll") + "/4.2.0": {"type": "package"}
+                for name in COMPOSITION_TEST_DEPENDENCIES if name.startswith("Hexalith.EventStore.")}
+            memories = {"Hexalith.Memories." + name + "/3.0.27": {"type": "package"}
+                for name in ("Contracts", "EventStore", "EventStoreExtensions")}
+            dependencies.update(memories)
+            assembly.with_suffix(".deps.json").write_text(json.dumps({"libraries": dependencies}))
+            verify_test_sdk(assembly, "4.2.0", "3.0.27")
+            for name in memories:
+                for fault in ("missing", "project", "4.0.0", "3.0.25"):
+                    changed = json.loads(json.dumps(dependencies))
+                    if fault == "missing": del changed[name]
+                    elif fault == "project": changed[name]["type"] = "project"
+                    else: changed[name.replace("3.0.27", fault)] = changed.pop(name)
+                    assembly.with_suffix(".deps.json").write_text(json.dumps({"libraries": changed}))
+                    with self.subTest(package=name, fault=fault), self.assertRaisesRegex(ValueError, "collection companion"):
+                        verify_test_sdk(assembly, "4.2.0", "3.0.27")
 
 
 if __name__ == "__main__":

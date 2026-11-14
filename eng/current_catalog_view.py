@@ -33,11 +33,21 @@ SDK_PACKAGES = tuple("Hexalith.EventStore." + name for name in (
     "Admin.Abstractions", "Admin.Server", "Aspire", "Client", "Contracts", "DomainService", "Gateway",
     "RestApi.Generators", "Server", "ServiceDefaults", "SignalR", "Testing", "Testing.Integration"))
 OPENAPI_PACKAGES = ("Microsoft.AspNetCore.OpenApi", "Microsoft.OpenApi")
+MEMORIES_PACKAGES = tuple("Hexalith.Memories." + name for name in (
+    "Aspire", "Client.Rest", "Contracts", "EventStore", "EventStoreExtensions"))
 GENERATION6_CATALOG = {
     "version": "6.0.0",
     "sourceRevision": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
     "blob": "cbfc6a888f269010600103a33c73d0cfc0af93a2",
     "sha256": "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7",
+}
+
+
+GENERATION601_CATALOG = {
+    "version": "6.0.1",
+    "sourceRevision": "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89",
+    "blob": "e17e81e703da4cd1805644134e62ec1122cafb47",
+    "sha256": "ef691a7a3caa7a92e524f766a770574cd21ef5e32fccd996d1d2899b9d7bddd7",
 }
 
 
@@ -49,11 +59,11 @@ def catalog_profile(binding=None) -> str:
     validate_binding(binding)
     if binding["publication"]["version"].startswith("6."):
         producer = binding["producer"]
-        if binding["publication"]["version"] != GENERATION6_CATALOG["version"] \
-                or producer["sourceRevision"] != GENERATION6_CATALOG["sourceRevision"] \
-                or any(producer["catalog"][key] != GENERATION6_CATALOG[key] for key in ("blob", "sha256")):
-            raise ValueError("The current SDK5.1 view requires the exact qualified Builds6 producer and catalog.")
-        return "current-sdk51"
+        selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG}.get(binding["publication"]["version"])
+        if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
+                or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
+            raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
+        return "current-sdk51" if selected["version"] == "6.0.0" else "current-sdk42"
     return "retained-sdk42"
 
 
@@ -95,11 +105,14 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None) -> list[dict]:
             condition = " or ".join("'%(PackageVersion.Identity)' == '" + package + "'" for package in OPENAPI_PACKAGES)
             ET.SubElement(items, "_Pins", Include="@(PackageVersion)", Condition=condition
                           + " or $([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.EventStore.'))")
+            ET.SubElement(items, "_MemoriesPins", Include="@(PackageVersion)", Condition=" or ".join(
+                "'%(PackageVersion.Identity)' == '" + package + "'" for package in MEMORIES_PACKAGES))
             observation = ET.SubElement(items, "_Observed", Include="$(MSBuildProjectName)")
             for key, value in (("Sdk", "$(HexalithEventStoreVersion)"),
                                ("CatalogMemoriesDefault", "$(HexalithMemoriesVersion)"),
                                ("PlatformView", "$(HexalithPlatformSdk42CatalogView)"),
                                ("PartiesView", "$(HexalithPartiesSdk42CatalogView)"),
+                               ("MemoriesPins", "@(_MemoriesPins->'%(Identity)=%(Version)', '|')"),
                                ("Pins", "@(_Pins->'%(Identity)=%(Version)', '|')")):
                 ET.SubElement(observation, key).text = value
             path = root / (name + ".proj")
@@ -144,6 +157,16 @@ def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) ->
             raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
 
 
+def verify_memories_observations(observed: list[dict]) -> None:
+    """Keep all five current Memories pins with the exact named SDK4.2 companion."""
+    for item in observed:
+        expected = "3.0.27" if item["Identity"] in PLATFORM_CONSUMERS else "4.0.0"
+        pins = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
+        if item.get("CatalogMemoriesDefault") != expected or len(pins) != len(MEMORIES_PACKAGES) \
+                or dict(pins) != {package: expected for package in MEMORIES_PACKAGES}:
+            raise ValueError("The authenticated catalog selects an unqualified SDK4.2/Memories consumer view: " + item["Identity"])
+
+
 def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=None) -> dict:
     require_catalog_body(raw, expected_sha256)
     profile = catalog_profile(binding)
@@ -153,13 +176,16 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
     observed = evaluate_views(raw)
     names = [item["Identity"] for item in observed]
     verify_observations(observed, "5.1.0" if profile == "current-sdk51" else "4.2.0",
-                        "5.1.0" if profile == "current-sdk51" else "5.0.0")
+                        "5.1.0" if profile in ("current-sdk51", "current-sdk42") else "5.0.0")
     collecting = evaluate_views(raw, "4.2.0")
     if [item["Identity"] for item in collecting] != names:
         raise ValueError("The retained collecting view changed its exact consumer set.")
     verify_observations(collecting, "4.2.0", "4.2.0")
+    if profile == "current-sdk42":
+        verify_memories_observations(observed)
+        verify_memories_observations(collecting)
     return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting,
-            "scope": "Exact Builds6 current SDK5.1 view and explicit retained SDK4.2 collecting view" if profile == "current-sdk51" else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+            "scope": "Exact Builds6 SDK5.1 default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}

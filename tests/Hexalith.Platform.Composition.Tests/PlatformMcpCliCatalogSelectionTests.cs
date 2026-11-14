@@ -113,6 +113,23 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
         PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection").ShouldBeNull();
+#if NET11_0_OR_GREATER
+        foreach (int generation in new[] { 4, 5, 6 })
+        {
+            PlatformCompositionOptions selected = options with
+            {
+                Mapping = options.Mapping with { PlatformIdentity = options.Mapping.PlatformIdentity! with
+                { ToolVersionRange = $"[{generation}.0.0,{generation + 1}.0.0-0)" } },
+            };
+            PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(generation == 4
+                ? null : Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
+        }
+        PlatformCompositionOptions future = options with
+        {
+            Mapping = options.Mapping with { PlatformIdentity = options.Mapping.PlatformIdentity! with { ToolVersionRange = "[7.0.0,8.0.0-0)" } },
+        };
+        Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(future));
+#endif
 #if NET11_0_OR_GREATER && !HEXALITH_PLATFORM_EXTENSION_SDK
         // NET11's package API selects the named view even when the loaded SDK has no extension API.
         // These deliberately unpinned component values establish selection only, never artifact authority.

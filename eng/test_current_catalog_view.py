@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from current_catalog_view import (GENERATION6_CATALOG, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
+from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
                                   verify_named_platform_catalog)
 
 BUILDS6_SOURCE = "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5"
@@ -17,30 +17,31 @@ BUILDS6_CATALOG_BLOB = "cbfc6a888f269010600103a33c73d0cfc0af93a2"
 BUILDS6_CATALOG_SHA256 = "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7"
 
 
-def builds6_catalog_body() -> bytes:
-    """Read the exact published Git body offline, independently of selected/shallow producer checkouts."""
-    raw = (Path(__file__).with_name("fixtures") / "builds-6.0.0-Directory.Packages.props").read_bytes()
+def catalog_fixture(name: str, source: str, expected_blob: str, expected_sha256: str) -> bytes:
+    """Read exact committed catalog bytes offline, independently of producer checkout depth."""
+    raw = (Path(__file__).with_name("fixtures") / name).read_bytes()
     blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
-    if blob != BUILDS6_CATALOG_BLOB or hashlib.sha256(raw).hexdigest() != BUILDS6_CATALOG_SHA256:
-        raise ValueError("Published Builds6 catalog fixture differs from its exact source " + BUILDS6_SOURCE)
+    if blob != expected_blob or hashlib.sha256(raw).hexdigest() != expected_sha256:
+        raise ValueError("Catalog regression fixture differs from its exact source " + source)
     return raw
 
 
-def generation6_binding():
-    """Synthetic publication metadata tests catalog admission only, never publication authority."""
-    source = GENERATION6_CATALOG['sourceRevision']
-    manifest = json.dumps({'sha': source, 'version': '6.0.0', 'packages': [
-        {'id': identity, 'path': 'packages/' + identity + '.6.0.0.nupkg'}
-        for identity in ('Hexalith.Builds.Evidence.Cli', 'Hexalith.Builds.Module.Cli')], 'containers': []})
-    return {'schemaVersion': 1, 'candidateAcceptance': False,
-        'producer': {'repository': 'https://github.com/Hexalith/Hexalith.Builds.git', 'sourceRevision': source,
-            'catalog': {'path': 'Props/Directory.Packages.props', 'blob': GENERATION6_CATALOG['blob'],
-                        'sha256': GENERATION6_CATALOG['sha256']}},
-        'publication': {'kind': 'shared-release-handoff/v1', 'version': '6.0.0', 'sourceRevision': source,
-            'releaseTag': 'v6.0.0', 'catalogSha256': GENERATION6_CATALOG['sha256'],
-            'archiveSha256': 'a' * 64, 'toolingSha256': 'b' * 64, 'releaseId': 11, 'runId': 12, 'artifactId': 13,
-            'artifactSha256': 'c' * 64, 'releaseBodySha256': 'd' * 64, 'manifestJson': manifest,
-            'manifestSha256': hashlib.sha256(manifest.encode()).hexdigest()}}
+def builds6_catalog_body() -> bytes:
+    """Read the unchanged published6.0.0 catalog control."""
+    return catalog_fixture("builds-6.0.0-Directory.Packages.props", BUILDS6_SOURCE,
+        BUILDS6_CATALOG_BLOB, BUILDS6_CATALOG_SHA256)
+
+
+def current_platform_catalog_body() -> bytes:
+    """Read committed finite Platform catalog policy; component evidence grants no publication or runtime acceptance."""
+    return catalog_fixture("builds-c91beec6-Directory.Packages.props", "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89",
+        "e17e81e703da4cd1805644134e62ec1122cafb47", "ef691a7a3caa7a92e524f766a770574cd21ef5e32fccd996d1d2899b9d7bddd7")
+
+
+
+def generation6_binding(version="6.0.0"):
+    """Recorded official metadata is component input, never an online publication acceptance claim."""
+    return json.loads((Path(__file__).with_name("fixtures") / ("builds-" + version + "-binding.json")).read_bytes())
 
 
 def generation6_catalog():
@@ -120,6 +121,65 @@ class CurrentCatalogViewTests(unittest.TestCase):
                 verify_observations(evaluate_views(changed), "5.1.0", "5.1.0")
                 verify_observations(evaluate_views(changed, "4.2.0"), "4.2.0", "4.2.0")
 
+    def test_finite_automatic_sdk42_successor_preserves_current_default_and_memories_companion(self):
+        document = ET.fromstring(catalog_body())
+        properties = document.find("PropertyGroup")
+        properties.findall("HexalithEventStoreVersion")[-1].text = "5.1.0"
+        ET.SubElement(properties, "HexalithMemoriesVersion").text = "4.0.0"
+        companion = ET.SubElement(properties, "HexalithMemoriesVersion",
+            Condition="'$(HexalithPlatformSdk42CatalogView)' == 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'")
+        companion.text = "3.0.27"
+        for name in MEMORIES_PACKAGES:
+            ET.SubElement(document.find("ItemGroup"), "PackageVersion", Include=name, Version="$(HexalithMemoriesVersion)")
+        from current_catalog_view import evaluate_views, verify_memories_observations, verify_observations
+        defaults = evaluate_views(ET.tostring(document))
+        collecting = evaluate_views(ET.tostring(document), "4.2.0")
+        verify_observations(defaults, "4.2.0", "5.1.0")
+        verify_observations(collecting, "4.2.0", "4.2.0")
+        verify_memories_observations(defaults)
+        verify_memories_observations(collecting)
+        receipt = {"defaultEvaluations": defaults}
+        for item in receipt["defaultEvaluations"]:
+            named = item["Identity"] in PLATFORM_CONSUMERS
+            self.assertEqual(item["Sdk"], "4.2.0" if named else "5.1.0")
+            self.assertEqual(item["CatalogMemoriesDefault"], "3.0.27" if named else "4.0.0")
+        for incompatible in ("4.0.0", "3.0.25", "3.0.28"):
+            companion.text = incompatible
+            with self.subTest(memories=incompatible), self.assertRaisesRegex(ValueError, "SDK4.2/Memories consumer view"):
+                verify_memories_observations(evaluate_views(ET.tostring(document)))
+        companion.text = "3.0.27"
+        document.find(".//PackageVersion[@Include='Hexalith.Memories.EventStoreExtensions']").set("Version", "4.0.0")
+        with self.assertRaisesRegex(ValueError, "SDK4.2/Memories consumer view"):
+            verify_memories_observations(evaluate_views(ET.tostring(document)))
+
+    def test_committed_current_catalog_verifies_all_five_memories_pins_and_refuses_split_families(self):
+        raw = current_platform_catalog_body()
+        receipt = self.verify(raw, generation6_binding("6.0.1"))
+        for context in ("defaultEvaluations", "collectingEvaluations"):
+            for item in receipt[context]:
+                named = item["Identity"] in PLATFORM_CONSUMERS
+                pins = dict(pin.split("=", 1) for pin in item["MemoriesPins"].split("|"))
+                self.assertEqual(pins, {name: "3.0.27" if named else "4.0.0" for name in MEMORIES_PACKAGES})
+                if context == "defaultEvaluations":
+                    self.assertEqual(item["Sdk"], "4.2.0" if named else "5.1.0")
+        from current_catalog_view import evaluate_views, verify_observations
+        sdk51 = evaluate_views(raw, "5.1.0")
+        verify_observations(sdk51, "5.1.0", "5.1.0")
+        for item in sdk51:
+            self.assertEqual(item["CatalogMemoriesDefault"], "4.0.0")
+            self.assertEqual(dict(pin.split("=", 1) for pin in item["MemoriesPins"].split("|")),
+                {name: "4.0.0" for name in MEMORIES_PACKAGES})
+        for name in MEMORIES_PACKAGES:
+            document = ET.fromstring(raw)
+            document.find(".//PackageVersion[@Include='" + name + "']").set("Version", "4.0.0")
+            from current_catalog_view import evaluate_views
+            defaults = evaluate_views(ET.tostring(document))
+            collecting = evaluate_views(ET.tostring(document), "4.2.0")
+            with self.subTest(package=name), patch("current_catalog_view.evaluate_views", side_effect=[defaults, collecting]), \
+                    self.assertRaisesRegex(ValueError, "SDK4.2/Memories consumer view"):
+                self.verify(raw, generation6_binding("6.0.1"))
+
+
     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
         root = Path(__file__).resolve().parents[1]
         names = {path.stem for directory in ("src", "tests") for path in (root / directory).rglob("*.csproj")}
@@ -176,7 +236,7 @@ class CurrentCatalogViewTests(unittest.TestCase):
             from current_catalog_view import evaluate_views, verify_observations
             changed = ET.tostring(document)
             with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, "unqualified SDK/OpenAPI consumer view"):
-                verify_observations(evaluate_views(changed), "5.1.0", "5.1.0")
+                verify_observations(evaluate_views(changed), "4.2.0", "5.0.0")
                 verify_observations(evaluate_views(changed, "4.2.0"), "4.2.0", "4.2.0")
 
     def test_current_evaluation_cannot_inherit_a_callers_sdk_or_build_import(self):
@@ -227,6 +287,28 @@ class CurrentCatalogViewTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'exact qualified Builds6|exact supported'):
                         verify_named_platform_catalog(raw, GENERATION6_CATALOG['sha256'], binding=binding)
                     evaluate.assert_not_called()
+
+    def test_generation601_requires_its_own_exact_source_catalog_and_binding(self):
+        raw = current_platform_catalog_body()
+        receipt = self.verify(raw, generation6_binding("6.0.1"))
+        self.assertEqual({item["Sdk"] for item in receipt["evaluations"] if item["Identity"] in PLATFORM_CONSUMERS}, {"4.2.0"})
+        self.assertEqual({item["Sdk"] for item in receipt["evaluations"] if item["Identity"] in UNKNOWN_CONSUMERS}, {"5.1.0"})
+        for fault in ("missing", "previous-source", "foreign-blob", "foreign-hash", "future-patch"):
+            binding = generation6_binding("6.0.1")
+            if fault == "missing": binding = None
+            elif fault == "previous-source": binding = generation6_binding()
+            elif fault == "foreign-blob": binding["producer"]["catalog"]["blob"] = "e" * 40
+            elif fault == "foreign-hash": binding["producer"]["catalog"]["sha256"] = binding["publication"]["catalogSha256"] = "e" * 64
+            else:
+                binding["publication"]["version"] = "6.0.2"
+                binding["publication"]["releaseTag"] = "v6.0.2"
+                manifest = json.loads(binding["publication"]["manifestJson"])
+                manifest["version"] = "6.0.2"
+                for item in manifest["packages"]: item["path"] = item["path"].replace("6.0.1", "6.0.2")
+                encoded = json.dumps(manifest)
+                binding["publication"].update(manifestJson=encoded, manifestSha256=hashlib.sha256(encoded.encode()).hexdigest())
+            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, "exact qualified Builds6|exact producer binding|unqualified SDK/OpenAPI"):
+                self.verify(raw, binding)
 
     def test_generation6_default_and_retained_collecting_drift_both_refuse(self):
         raw, binding = generation6_catalog(), generation6_binding()

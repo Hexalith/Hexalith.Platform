@@ -118,8 +118,8 @@ native acceptance. Full fresh349/412/current qualification remains required.
 
 The current build in all three explicit SDK4.2 suites (current42/base42/extensions)
 declares its existing complete public family:
-SDK4.2.0, Tenants7.0.7, Memories3.0.27, Parties3.1.1 and Mcp2.0.1. Builds6
-defaults remain SDK5.1/Memories4.0.0; selecting only SDK4.2 against Memories4
+SDK4.2.0, Tenants7.0.7, Memories3.0.27, Parties3.1.1 and Mcp2.0.1. The published Builds6.0.0
+defaults are SDK5.1/Memories4.0.0; selecting only SDK4.2 against Memories4
 produced the actual NU1109 downgrade through
 `Hexalith.Memories.EventStoreExtensions4.0.0` requiring DomainService5.0.0.
 The collector records these explicit properties and verifies its restored public
@@ -154,3 +154,16 @@ verifies every original file against the signed archive, records both closure
 hashes and checks the private copy before and after execution. The original
 archive, dependency documents and checkout stay unchanged; this check grants no
 image or native runtime acceptance.
+
+Published Builds6.0.1 closes the finite Platform default view at source
+`c91beec60ce5eaa8cd62bf055d07fa6ca3890e89`, catalog blob
+`e17e81e703da4cd1805644134e62ec1122cafb47` and SHA256
+`ef691a7a3caa7a92e524f766a770574cd21ef5e32fccd996d1d2899b9d7bddd7`.
+Only its exact authenticated publication binding admits the automatic SDK4.2.0
+and Memories3.0.27 view for the same33 named Platform consumers. All five
+Memories package pins are verified independently. Unknown and general consumers
+retain SDK5.1.0/Memories4.0.0; an explicit SDK5.1 selection also retains
+Memories4.0.0. The SDK4.2 collector still records and verifies its complete
+measured public cohort. The earlier NU1109 control retains the unmodified6.0.0
+catalog. Both exact6 profiles and the historical4/5 rules remain distinct;
+these catalog and collection receipts grant no candidate or runtime acceptance.
