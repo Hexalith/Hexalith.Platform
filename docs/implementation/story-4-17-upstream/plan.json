@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "status": "submitted-and-verified",
+  "platformBaseline": "3ebb3ac3ff9da06afa4ceb43ec85a5388d6326bc",
+  "eventStoreSource": "51dd68b86a690ffe9e11c565dccec49b2d401a94",
+  "sourceWorkPackage": "references/Hexalith.EventStore/docs/implementation/story-3-21-rabbitmq-upstream-work-packages.md",
+  "sourceWorkPackageSha256": "8f34e21a085fb7d63d8c63b7a8a3fe88a6897b6127224523d2d728229e563bbd",
+  "preflight": "preflight.json",
+  "approval": {
+    "decision": "yes",
+    "decisionDate": "2026-11-14",
+    "acknowledgedUtc": "2026-11-14T03:15:55Z",
+    "recordedUtc": "2026-11-14 03:19:28 UTC",
+    "evidence": "../../../_bmad-output/implementation-artifacts/spec-4-17-select-and-qualify-the-durable-production-broker-5.md",
+    "scope": "Exactly the two existing create_issue operations, approved titles/destinations/body hashes; verification and review. No other remote mutation."
+  },
+  "actions": [
+    {
+      "operation": "create_issue",
+      "repository": "dapr/components-contrib",
+      "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+      "bodyPath": "docs/implementation/story-4-17-upstream/rabbitmq-publish-errors.md",
+      "bodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+      "approved": true,
+      "submitted": true,
+      "result": {
+        "url": "https://github.com/dapr/components-contrib/issues/4764",
+        "number": 4764,
+        "createdUtc": "2026-11-14T03:22:27Z",
+        "receipt": "receipts.json",
+        "status": "verified"
+      }
+    },
+    {
+      "operation": "create_issue",
+      "repository": "dapr/components-contrib",
+      "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+      "bodyPath": "docs/implementation/story-4-17-upstream/rabbitmq-mandatory-returns.md",
+      "bodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+      "approved": true,
+      "submitted": true,
+      "result": {
+        "url": "https://github.com/dapr/components-contrib/issues/4765",
+        "number": 4765,
+        "createdUtc": "2026-11-14T03:22:57Z",
+        "receipt": "receipts.json",
+        "status": "verified"
+      }
+    }
+  ],
+  "limits": {
+    "newIssues": 2,
+    "comments": 0,
+    "labels": 0,
+    "assignees": 0,
+    "reopenExistingIssues": false,
+    "attachments": false,
+    "executeRecipes": false
+  },
+  "stopRules": [
+    "No issue writes before explicit user decision.",
+    "Recheck source facts, body hashes and duplicates before submission.",
+    "An exact duplicate or body drift blocks the affected operation; request a new decision.",
+    "After ambiguous write failure, inspect remote state before any retry.",
+    "Retain each result before the next write; never claim unobserved completion."
+  ],
+  "qualification": {
+    "platformStory": "in-progress",
+    "eventStoreStory": "in-progress",
+    "historicalGuarantees": "REJECTED/open",
+    "technical": "FAIL (20/24)",
+    "brokerSelection": null,
+    "productionEligibility": "FAIL"
+  },
+  "completedUtc": "2026-11-14T03:23:28.698273+00:00"
+}

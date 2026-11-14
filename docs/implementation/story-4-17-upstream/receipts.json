@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "status": "submitted-and-verified",
+  "repository": "dapr/components-contrib",
+  "plan": "plan.json",
+  "preflight": "preflight.json",
+  "approval": {
+    "decision": "yes",
+    "decisionDate": "2026-11-14",
+    "acknowledgedUtc": "2026-11-14T03:15:55Z",
+    "recordedUtc": "2026-11-14 03:19:28 UTC",
+    "evidence": "../../../_bmad-output/implementation-artifacts/spec-4-17-select-and-qualify-the-durable-production-broker-5.md",
+    "scope": "Exactly the two existing create_issue operations, approved titles/destinations/body hashes; verification and review. No other remote mutation."
+  },
+  "operations": [
+    {
+      "actionIndex": 0,
+      "operation": "create_issue",
+      "repository": "dapr/components-contrib",
+      "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+      "bodyPath": "docs/implementation/story-4-17-upstream/rabbitmq-publish-errors.md",
+      "bodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+      "status": "verified",
+      "attempts": [
+        {
+          "attemptStartedUtc": "2026-11-14T03:20:15.944847+00:00",
+          "duplicateCheck": {
+            "checkedUtc": "2026-11-14T03:20:15.944847+00:00",
+            "query": "repo:dapr/components-contrib is:issue \"RabbitMQ publish errors are lost during retry cancellation and reconnect\" in:title",
+            "requestedMaximum": 100,
+            "returned": 0
+          },
+          "responseRecordedUtc": "2026-11-14T03:20:16.459355+00:00",
+          "failure": {
+            "content": [
+              {
+                "type": "text",
+                "text": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/issues/issues#create-an-issue\",\"status\":\"403\"}"
+              }
+            ],
+            "structuredContent": {
+              "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/issues/issues#create-an-issue\",\"status\":\"403\"}",
+              "error_code": "FORBIDDEN",
+              "error_data": {
+                "message": "Resource not accessible by integration",
+                "documentation_url": "https://docs.github.com/rest/issues/issues#create-an-issue",
+                "status": "403"
+              }
+            },
+            "isError": true
+          },
+          "transport": "connected-github",
+          "status": "refused",
+          "responseClassification": "definitive HTTP 403: Resource not accessible by integration; no created issue identity returned"
+        },
+        {
+          "transport": "existing-authenticated-gh",
+          "status": "submitted",
+          "attemptStartedUtc": "2026-11-14T03:22:27.351698+00:00",
+          "duplicateCheck": {
+            "checkedUtc": "2026-11-14T03:22:27.351714+00:00",
+            "query": "repo:dapr/components-contrib is:issue \"RabbitMQ publish errors are lost during retry cancellation and reconnect\" in:title",
+            "requestedMaximum": 100,
+            "returned": 0
+          },
+          "requestFields": [
+            "title",
+            "body"
+          ],
+          "bodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+          "responseRecordedUtc": "2026-11-14T03:22:28.053693+00:00",
+          "exitCode": 0,
+          "url": "https://github.com/dapr/components-contrib/issues/4764",
+          "number": 4764,
+          "createdUtc": "2026-11-14T03:22:27Z",
+          "returnedTitle": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+          "returnedBodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930"
+        }
+      ],
+      "refusalReconciliation": {
+        "checkedUtc": "2026-11-14 03:20:43 UTC",
+        "transport": "connected-github",
+        "queries": [
+          {
+            "query": "repo:dapr/components-contrib is:issue \"RabbitMQ publish errors are lost during retry cancellation and reconnect\" in:title",
+            "requestedMaximum": 100,
+            "returned": 0
+          },
+          {
+            "query": "repo:dapr/components-contrib is:issue \"Follow up #4697: support mandatory publishing and correlated unroutable returns\" in:title",
+            "requestedMaximum": 100,
+            "returned": 0
+          }
+        ],
+        "decision": "Definitive permission refusal and empty post-refusal exact-title queries permit the same approved operation through existing authenticated gh, as recorded in the amended non-frozen spec task."
+      },
+      "url": "https://github.com/dapr/components-contrib/issues/4764",
+      "number": 4764,
+      "createdUtc": "2026-11-14T03:22:27Z",
+      "returnedTitle": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+      "returnedBodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+      "verification": {
+        "transport": "connected-github-readback",
+        "checkedUtc": "2026-11-14T03:22:46.928598+00:00",
+        "url": "https://github.com/dapr/components-contrib/issues/4764",
+        "number": 4764,
+        "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+        "bodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+        "checks": {
+          "urlMatches": true,
+          "numberMatches": true,
+          "titleMatches": true,
+          "bodyMatches": true,
+          "bodySha256Matches": true
+        }
+      }
+    },
+    {
+      "actionIndex": 1,
+      "operation": "create_issue",
+      "repository": "dapr/components-contrib",
+      "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+      "bodyPath": "docs/implementation/story-4-17-upstream/rabbitmq-mandatory-returns.md",
+      "bodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+      "attempts": [
+        {
+          "transport": "existing-authenticated-gh",
+          "status": "submitted",
+          "attemptStartedUtc": "2026-11-14T03:22:57.059418+00:00",
+          "duplicateCheck": {
+            "checkedUtc": "2026-11-14T03:22:57.059441+00:00",
+            "query": "repo:dapr/components-contrib is:issue \"Follow up #4697: support mandatory publishing and correlated unroutable returns\" in:title",
+            "requestedMaximum": 100,
+            "returned": 0
+          },
+          "requestFields": [
+            "title",
+            "body"
+          ],
+          "bodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+          "responseRecordedUtc": "2026-11-14T03:22:57.816550+00:00",
+          "exitCode": 0,
+          "url": "https://github.com/dapr/components-contrib/issues/4765",
+          "number": 4765,
+          "createdUtc": "2026-11-14T03:22:57Z",
+          "returnedTitle": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+          "returnedBodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db"
+        }
+      ],
+      "status": "verified",
+      "url": "https://github.com/dapr/components-contrib/issues/4765",
+      "number": 4765,
+      "createdUtc": "2026-11-14T03:22:57Z",
+      "returnedTitle": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+      "returnedBodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+      "verification": {
+        "transport": "connected-github-readback",
+        "checkedUtc": "2026-11-14T03:23:28.614224+00:00",
+        "url": "https://github.com/dapr/components-contrib/issues/4765",
+        "number": 4765,
+        "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+        "bodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+        "checks": {
+          "urlMatches": true,
+          "numberMatches": true,
+          "titleMatches": true,
+          "bodyMatches": true,
+          "bodySha256Matches": true
+        }
+      }
+    }
+  ],
+  "qualification": {
+    "platformStory": "in-progress",
+    "eventStoreStory": "in-progress",
+    "historicalGuarantees": "REJECTED/open",
+    "technical": "FAIL (20/24)",
+    "brokerSelection": null,
+    "productionEligibility": "FAIL"
+  },
+  "completedUtc": "2026-11-14T03:23:28.698273+00:00",
+  "issuesCreated": 2,
+  "successfulSubmissionTransport": "existing-authenticated-gh",
+  "remoteMutationScope": {
+    "createdIssues": 2,
+    "comments": 0,
+    "labels": 0,
+    "assignees": 0,
+    "issueUpdates": 0,
+    "attachments": 0
+  },
+  "qualificationChanged": false,
+  "postReviewVerification": {
+    "recordedUtc": "2026-11-14T03:35:17.014358+00:00",
+    "readOnly": true,
+    "transport": "existing-authenticated-gh",
+    "method": "GET",
+    "selection": "Selected current API identity/metadata fields and exact approved title/body checks; original submission and readback records are unchanged.",
+    "issues": [
+      {
+        "checkedUtc": "2026-11-14T03:34:21.254461+00:00",
+        "api": "https://api.github.com/repos/dapr/components-contrib/issues/4764",
+        "repository": "dapr/components-contrib",
+        "id": 6384489744,
+        "nodeId": "I_kwDODJYi4s8AAAABfIuVEA",
+        "number": 4764,
+        "url": "https://github.com/dapr/components-contrib/issues/4764",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "nodeId": "MDQ6VXNlcjY3NzUwOTQ="
+        },
+        "labels": [],
+        "assignees": [],
+        "milestone": null,
+        "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+        "bodySha256": "70ac37aabff20e77af0432c1783e99ad673f22da9c9a317daa47f98044295930",
+        "checks": {
+          "repositoryMatches": true,
+          "urlMatches": true,
+          "numberMatches": true,
+          "stableNodeIdentityPresent": true,
+          "titleMatches": true,
+          "bodyMatches": true,
+          "bodySha256Matches": true,
+          "authorMatchesExpectedAccount": true,
+          "labelsAbsent": true,
+          "assigneesAbsent": true,
+          "milestoneAbsent": true
+        }
+      },
+      {
+        "checkedUtc": "2026-11-14T03:34:21.703950+00:00",
+        "api": "https://api.github.com/repos/dapr/components-contrib/issues/4765",
+        "repository": "dapr/components-contrib",
+        "id": 6384494109,
+        "nodeId": "I_kwDODJYi4s8AAAABfIumHQ",
+        "number": 4765,
+        "url": "https://github.com/dapr/components-contrib/issues/4765",
+        "author": {
+          "login": "jpiquot",
+          "id": 6775094,
+          "nodeId": "MDQ6VXNlcjY3NzUwOTQ="
+        },
+        "labels": [],
+        "assignees": [],
+        "milestone": null,
+        "title": "Follow up #4697: support mandatory publishing and correlated unroutable returns",
+        "bodySha256": "61161d30a986f5176a49a49c7d87a379b34a0ee38e839643d425012d103d06db",
+        "checks": {
+          "repositoryMatches": true,
+          "urlMatches": true,
+          "numberMatches": true,
+          "stableNodeIdentityPresent": true,
+          "titleMatches": true,
+          "bodyMatches": true,
+          "bodySha256Matches": true,
+          "authorMatchesExpectedAccount": true,
+          "labelsAbsent": true,
+          "assigneesAbsent": true,
+          "milestoneAbsent": true
+        }
+      }
+    ]
+  }
+}

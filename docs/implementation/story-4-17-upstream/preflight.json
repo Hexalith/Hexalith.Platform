@@ -1,0 +1,613 @@
+{
+  "checkedUtc": "2026-11-14 03:11:59 UTC",
+  "releaseChecks": [
+    {
+      "repository": "dapr/dapr",
+      "tag": "v1.19.1",
+      "publishedUtc": "2026-10-31T13:03:35Z",
+      "url": "https://github.com/dapr/dapr/releases/tag/v1.19.1"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "tag": "v1.19.0",
+      "publishedUtc": "2026-10-22T09:23:58Z",
+      "url": "https://github.com/dapr/components-contrib/releases/tag/v1.19.0"
+    }
+  ],
+  "branchChecks": [
+    {
+      "repository": "dapr/components-contrib",
+      "name": "release-1.19",
+      "revision": "46cf4f95b0c84ecb4014b6f79103a1b1ca9c5fbc"
+    },
+    {
+      "repository": "dapr/components-contrib",
+      "name": "main",
+      "revision": "440b15349565bb15f7a88636477864e5a9f8cc72"
+    }
+  ],
+  "existingIssue": {
+    "repository": "dapr/components-contrib",
+    "number": 4697,
+    "state": "closed",
+    "stateReason": "completed",
+    "url": "https://github.com/dapr/components-contrib/issues/4697"
+  },
+  "searches": [
+    {
+      "query": "repo:dapr/components-contrib is:issue rabbitmq mandatory",
+      "total": 1,
+      "incomplete": false,
+      "returned": 1,
+      "items": [
+        {
+          "number": 4697,
+          "title": "RabbitMQ pubsub: Publish returns nil when the broker NACKs a confirmed message, and unroutable messages are dropped silently",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/4697"
+        }
+      ]
+    },
+    {
+      "query": "repo:dapr/components-contrib is:issue rabbitmq ACCESS_REFUSED",
+      "total": 0,
+      "incomplete": false,
+      "returned": 0,
+      "items": []
+    },
+    {
+      "query": "repo:dapr/components-contrib is:issue rabbitmq cancellation",
+      "total": 5,
+      "incomplete": false,
+      "returned": 5,
+      "items": [
+        {
+          "number": 4561,
+          "title": "pubsub.azure.eventhubs: checkpoint advances regardless of app response, breaking the documented at-least-once guarantee",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/4561"
+        },
+        {
+          "number": 4449,
+          "title": "RabbitMQ: `handleMessage` still NACKs messages on `context.Canceled` during graceful shutdown in v1.18.1",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/4449"
+        },
+        {
+          "number": 4281,
+          "title": "RabbitMQ: `handleMessage` NACKs messages on `context.Canceled` during graceful shutdown, routing them to the dead-letter queue",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/4281"
+        },
+        {
+          "number": 4328,
+          "title": "RabbitMQ pubsub: consumer tag reuse causes NOT_ALLOWED channel errors on every app health flap",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/4328"
+        },
+        {
+          "number": 3343,
+          "title": "Issue with Dapr 1.12.4 PubSub and KubeMQ",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/issues/3343"
+        }
+      ]
+    },
+    {
+      "query": "repo:dapr/components-contrib is:pull-request rabbitmq",
+      "total": 249,
+      "incomplete": false,
+      "returned": 20,
+      "items": [
+        {
+          "number": 4759,
+          "title": "feat(pubsub/rabbitmq): add deadLetterQueueType subscription metadata",
+          "state": "open",
+          "url": "https://github.com/dapr/components-contrib/pull/4759"
+        },
+        {
+          "number": 4756,
+          "title": "fix(pubsub/rabbitmq): serialize Consume with other channel commands",
+          "state": "open",
+          "url": "https://github.com/dapr/components-contrib/pull/4756"
+        },
+        {
+          "number": 4711,
+          "title": "fix(pubsub/rabbitmq): reject failed deliveries so quorum queue delivery-limit applies on RabbitMQ 4.3+",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4711"
+        },
+        {
+          "number": 4754,
+          "title": "test(kafka): wait for the group coordinator before the certification tests start",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4754"
+        },
+        {
+          "number": 4630,
+          "title": "pubsub.rabbitmq: add component-level `queueType` metadata (classic/quorum)",
+          "state": "open",
+          "url": "https://github.com/dapr/components-contrib/pull/4630"
+        },
+        {
+          "number": 4673,
+          "title": "Fixing binary store conformance tests",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4673"
+        },
+        {
+          "number": 4748,
+          "title": "[Backport release-1.19] pubsub.rabbitmq: return error when broker NACKs a confirmed publish",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4748"
+        },
+        {
+          "number": 4616,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.14.0 to 1.15.0 in /tests/certification",
+          "state": "open",
+          "url": "https://github.com/dapr/components-contrib/pull/4616"
+        },
+        {
+          "number": 4615,
+          "title": "fix(bindings/rabbitmq): preserve 64-bit queue TTL",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4615"
+        },
+        {
+          "number": 4573,
+          "title": "fix(rabbitmq): cancel the consumer on every exit from the subscribe loop",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4573"
+        },
+        {
+          "number": 4552,
+          "title": "[1.19] feat(pubsub/rabbitmq): support externally managed and consistent hash exchanges",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4552"
+        },
+        {
+          "number": 4560,
+          "title": "[Backport release-1.18] fix(pubsub/rabbitmq): skip NACK on context cancellation in handleMessage",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4560"
+        },
+        {
+          "number": 4567,
+          "title": "[Backport release-1.18] fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4567"
+        },
+        {
+          "number": 4566,
+          "title": "[Backport release-1.17] fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4566"
+        },
+        {
+          "number": 4522,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.12.0 to 1.13.0 in /tests/certification",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4522"
+        },
+        {
+          "number": 4565,
+          "title": "fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4565"
+        },
+        {
+          "number": 4450,
+          "title": "fix(pubsub/rabbitmq): skip NACK on context cancellation in handleMessage",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4450"
+        },
+        {
+          "number": 4428,
+          "title": "(rabbitmq): list all supported exchangeKind values in metadata",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4428"
+        },
+        {
+          "number": 4436,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.12.0 in /tests/certification",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4436"
+        },
+        {
+          "number": 4426,
+          "title": "docs(rabbitmq): list all supported exchangeKind values in metadata",
+          "state": "closed",
+          "url": "https://github.com/dapr/components-contrib/pull/4426"
+        }
+      ]
+    }
+  ],
+  "limitations": "Bounded text searches and one 20-result pull-request page do not prove absence of duplicates. Recheck before any authorized submission. Source/branch/release reads do not attest executed binaries or qualification.",
+  "submissionPreflight": {
+    "checkedUtc": "2026-11-14 03:19:28 UTC",
+    "releases": [
+      {
+        "repository": "dapr/dapr",
+        "tag": "v1.19.1",
+        "publishedUtc": "2026-10-31T13:03:35Z",
+        "url": "https://github.com/dapr/dapr/releases/tag/v1.19.1"
+      },
+      {
+        "repository": "dapr/components-contrib",
+        "tag": "v1.19.0",
+        "publishedUtc": "2026-10-22T09:23:58Z",
+        "url": "https://github.com/dapr/components-contrib/releases/tag/v1.19.0"
+      }
+    ],
+    "refs": {
+      "checkedUtc": null,
+      "branches": [
+        {
+          "repository": "dapr/components-contrib",
+          "name": "release-1.19",
+          "revision": "46cf4f95b0c84ecb4014b6f79103a1b1ca9c5fbc",
+          "objectType": "commit",
+          "api": "https://api.github.com/repos/dapr/components-contrib/git/ref/heads/release-1.19"
+        },
+        {
+          "repository": "dapr/components-contrib",
+          "name": "main",
+          "revision": "440b15349565bb15f7a88636477864e5a9f8cc72",
+          "objectType": "commit",
+          "api": "https://api.github.com/repos/dapr/components-contrib/git/ref/heads/main"
+        }
+      ],
+      "tags": [
+        {
+          "repository": "dapr/components-contrib",
+          "name": "v1.19.0",
+          "revision": "1d331c389f11baaa1d664022b6b6c2f59811ce11",
+          "objectType": "commit",
+          "api": "https://api.github.com/repos/dapr/components-contrib/git/ref/tags/v1.19.0"
+        }
+      ]
+    },
+    "existingIssue": {
+      "url": "https://github.com/dapr/components-contrib/issues/4697",
+      "title": "RabbitMQ pubsub: Publish returns nil when the broker NACKs a confirmed message, and unroutable messages are dropped silently",
+      "issue_number": 4697,
+      "state": "closed",
+      "user": {
+        "login": "jaybrto",
+        "name": "jaybrto",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/19597595?v=4",
+        "id": 19597595
+      },
+      "assignees": null,
+      "labels": null,
+      "milestone": null,
+      "state_reason": "completed",
+      "comments": 0,
+      "created_at": "2026-10-22T23:50:24Z",
+      "updated_at": "2026-10-30T11:54:04Z",
+      "closed_at": "2026-10-30T11:54:04Z",
+      "display_url": "https://github.com/dapr/components-contrib/issues/4697",
+      "display_title": "RabbitMQ pubsub: Publish returns nil when the broker NACKs a confirmed message, and unroutable messages are dropped silently",
+      "bodySha256": "ed115886f4c49a1d41313f63b4a7cc5e1242528b3ab1cb8a71937b37d4617303"
+    },
+    "searches": [
+      {
+        "query": "repo:dapr/components-contrib is:issue \"RabbitMQ publish errors are lost during retry cancellation and reconnect\" in:title",
+        "requestedMaximum": 100,
+        "returned": 0,
+        "total": null,
+        "incomplete": null,
+        "items": []
+      },
+      {
+        "query": "repo:dapr/components-contrib is:issue \"Follow up #4697: support mandatory publishing and correlated unroutable returns\" in:title",
+        "requestedMaximum": 100,
+        "returned": 0,
+        "total": null,
+        "incomplete": null,
+        "items": []
+      },
+      {
+        "query": "repo:dapr/components-contrib is:issue rabbitmq mandatory",
+        "requestedMaximum": 100,
+        "returned": 1,
+        "total": null,
+        "incomplete": null,
+        "items": [
+          {
+            "number": 4697,
+            "title": "RabbitMQ pubsub: Publish returns nil when the broker NACKs a confirmed message, and unroutable messages are dropped silently",
+            "url": "https://github.com/dapr/components-contrib/issues/4697"
+          }
+        ]
+      },
+      {
+        "query": "repo:dapr/components-contrib is:issue rabbitmq ACCESS_REFUSED",
+        "requestedMaximum": 100,
+        "returned": 0,
+        "total": null,
+        "incomplete": null,
+        "items": []
+      },
+      {
+        "query": "repo:dapr/components-contrib is:issue rabbitmq cancellation",
+        "requestedMaximum": 100,
+        "returned": 5,
+        "total": null,
+        "incomplete": null,
+        "items": [
+          {
+            "number": 4449,
+            "title": "RabbitMQ: `handleMessage` still NACKs messages on `context.Canceled` during graceful shutdown in v1.18.1",
+            "url": "https://github.com/dapr/components-contrib/issues/4449"
+          },
+          {
+            "number": 4561,
+            "title": "pubsub.azure.eventhubs: checkpoint advances regardless of app response, breaking the documented at-least-once guarantee",
+            "url": "https://github.com/dapr/components-contrib/issues/4561"
+          },
+          {
+            "number": 4281,
+            "title": "RabbitMQ: `handleMessage` NACKs messages on `context.Canceled` during graceful shutdown, routing them to the dead-letter queue",
+            "url": "https://github.com/dapr/components-contrib/issues/4281"
+          },
+          {
+            "number": 4328,
+            "title": "RabbitMQ pubsub: consumer tag reuse causes NOT_ALLOWED channel errors on every app health flap",
+            "url": "https://github.com/dapr/components-contrib/issues/4328"
+          },
+          {
+            "number": 3343,
+            "title": "Issue with Dapr 1.12.4 PubSub and KubeMQ",
+            "url": "https://github.com/dapr/components-contrib/issues/3343"
+          }
+        ]
+      }
+    ],
+    "prs": {
+      "query": "repo:dapr/components-contrib rabbitmq",
+      "requestedMaximum": 20,
+      "returned": 20,
+      "items": [
+        {
+          "number": 4759,
+          "title": "feat(pubsub/rabbitmq): add deadLetterQueueType subscription metadata",
+          "url": "https://github.com/dapr/components-contrib/pull/4759"
+        },
+        {
+          "number": 4756,
+          "title": "fix(pubsub/rabbitmq): serialize Consume with other channel commands",
+          "url": "https://github.com/dapr/components-contrib/pull/4756"
+        },
+        {
+          "number": 4711,
+          "title": "fix(pubsub/rabbitmq): reject failed deliveries so quorum queue delivery-limit applies on RabbitMQ 4.3+",
+          "url": "https://github.com/dapr/components-contrib/pull/4711"
+        },
+        {
+          "number": 4754,
+          "title": "test(kafka): wait for the group coordinator before the certification tests start",
+          "url": "https://github.com/dapr/components-contrib/pull/4754"
+        },
+        {
+          "number": 4630,
+          "title": "pubsub.rabbitmq: add component-level `queueType` metadata (classic/quorum)",
+          "url": "https://github.com/dapr/components-contrib/pull/4630"
+        },
+        {
+          "number": 4673,
+          "title": "Fixing binary store conformance tests",
+          "url": "https://github.com/dapr/components-contrib/pull/4673"
+        },
+        {
+          "number": 4748,
+          "title": "[Backport release-1.19] pubsub.rabbitmq: return error when broker NACKs a confirmed publish",
+          "url": "https://github.com/dapr/components-contrib/pull/4748"
+        },
+        {
+          "number": 4616,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.14.0 to 1.15.0 in /tests/certification",
+          "url": "https://github.com/dapr/components-contrib/pull/4616"
+        },
+        {
+          "number": 4615,
+          "title": "fix(bindings/rabbitmq): preserve 64-bit queue TTL",
+          "url": "https://github.com/dapr/components-contrib/pull/4615"
+        },
+        {
+          "number": 4573,
+          "title": "fix(rabbitmq): cancel the consumer on every exit from the subscribe loop",
+          "url": "https://github.com/dapr/components-contrib/pull/4573"
+        },
+        {
+          "number": 4552,
+          "title": "[1.19] feat(pubsub/rabbitmq): support externally managed and consistent hash exchanges",
+          "url": "https://github.com/dapr/components-contrib/pull/4552"
+        },
+        {
+          "number": 4560,
+          "title": "[Backport release-1.18] fix(pubsub/rabbitmq): skip NACK on context cancellation in handleMessage",
+          "url": "https://github.com/dapr/components-contrib/pull/4560"
+        },
+        {
+          "number": 4567,
+          "title": "[Backport release-1.18] fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "url": "https://github.com/dapr/components-contrib/pull/4567"
+        },
+        {
+          "number": 4566,
+          "title": "[Backport release-1.17] fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "url": "https://github.com/dapr/components-contrib/pull/4566"
+        },
+        {
+          "number": 4522,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.12.0 to 1.13.0 in /tests/certification",
+          "url": "https://github.com/dapr/components-contrib/pull/4522"
+        },
+        {
+          "number": 4565,
+          "title": "fix(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.14.0",
+          "url": "https://github.com/dapr/components-contrib/pull/4565"
+        },
+        {
+          "number": 4450,
+          "title": "fix(pubsub/rabbitmq): skip NACK on context cancellation in handleMessage",
+          "url": "https://github.com/dapr/components-contrib/pull/4450"
+        },
+        {
+          "number": 4428,
+          "title": "(rabbitmq): list all supported exchangeKind values in metadata",
+          "url": "https://github.com/dapr/components-contrib/pull/4428"
+        },
+        {
+          "number": 4436,
+          "title": "chore(deps): bump github.com/rabbitmq/amqp091-go from 1.10.0 to 1.12.0 in /tests/certification",
+          "url": "https://github.com/dapr/components-contrib/pull/4436"
+        },
+        {
+          "number": 4426,
+          "title": "docs(rabbitmq): list all supported exchangeKind values in metadata",
+          "url": "https://github.com/dapr/components-contrib/pull/4426"
+        }
+      ]
+    },
+    "sourceFiles": [
+      {
+        "url": "https://github.com/dapr/components-contrib/blob/46cf4f95b0c84ecb4014b6f79103a1b1ca9c5fbc/pubsub/rabbitmq/rabbitmq.go",
+        "gitBlob": "b10f04ba8a8971514cb77dbe6e3179b5f3337b94"
+      },
+      {
+        "url": "https://github.com/dapr/components-contrib/blob/440b15349565bb15f7a88636477864e5a9f8cc72/pubsub/rabbitmq/rabbitmq.go",
+        "gitBlob": "4e5530acc40f16cf9a9fb480166c7a6e87e8aae6"
+      },
+      {
+        "url": "https://github.com/dapr/dapr/blob/cfb5ee090dda7cfc26145c7703605d831350aa2a/go.mod",
+        "gitBlob": "f5b29762d9d09ff6ef8c93c0b8005c035cf004d1"
+      }
+    ],
+    "backport": {
+      "url": "https://github.com/dapr/components-contrib/pull/4748",
+      "number": 4748,
+      "state": "closed",
+      "merged": true,
+      "mergeable": false,
+      "draft": false,
+      "body": "Backport 78808be217cc4aea768acbedd0161ab9db04a0b4 from #4698.",
+      "title": "[Backport release-1.19] pubsub.rabbitmq: return error when broker NACKs a confirmed publish",
+      "base": "release-1.19",
+      "base_sha": "3096d3c768d9977285f63fd216a54f00e6eb67d6",
+      "head": "backport-4698-to-release-1.19",
+      "head_sha": "b3a54596dde1944f99483a7f5eb3f14846391f39",
+      "head_repo_id": 211165922,
+      "head_repo_full_name": "dapr/components-contrib",
+      "merge_commit_sha": "ac89e0966ca5d9ff4dce4ae2ef0045c33e2660ee",
+      "user": {
+        "login": "dapr-bot",
+        "name": "dapr-bot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/56698301?v=4",
+        "id": 56698301
+      },
+      "requested_reviewers": null,
+      "requested_team_reviewers": null,
+      "diff": "@@ -289,16 +289,25 @@ func (r *rabbitMQ) publishSync(ctx context.Context, req *pubsub.PublishRequest)\n \t// confirm will be nil if are not requesting publish confirmations\n \tif confirm != nil {\n \t\t// Blocks until the server confirms\n-\t\tok := confirm.Wait()\n-\t\tif !ok {\n-\t\t\terr = errors.New(\"did not receive confirmation of publishing\")\n+\t\tif err = confirmationError(confirm); err != nil {\n \t\t\tr.logger.Errorf(\"%s publishing to %s failed: %v\", logMessagePrefix, req.Topic, err)\n+\n+\t\t\treturn r.channel, r.connectionCount, err\n \t\t}\n \t}\n \n \treturn r.channel, r.connectionCount, nil\n }\n \n+// confirmationError waits for the broker's confirmation and returns an error if the broker did not ack the message.\n+func confirmationError(confirm interface{ Wait() bool }) error {\n+\tif !confirm.Wait() {\n+\t\treturn errors.New(\"did not receive confirmation of publishing\")\n+\t}\n+\n+\treturn nil\n+}\n+\n func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) error {\n \tif r.closed.Load() {\n \t\treturn pubsub.NewTerminalError(errors.New(\"component is closed\"))\n@@ -1412,3 +1412,12 @@ func TestSubscribeForeverCancelsConsumerWhenConsumeFails(t *testing.T) {\n \t\trequire.Containsf(t, cancelled, tag, \"consumer %s was registered but never cancelled\", tag)\n \t}\n }\n+\n+type fakeConfirmation struct{ acked bool }\n+\n+func (f fakeConfirmation) Wait() bool { return f.acked }\n+\n+func TestConfirmationError(t *testing.T) {\n+\trequire.NoError(t, confirmationError(fakeConfirmation{acked: true}))\n+\trequire.Error(t, confirmationError(fakeConfirmation{acked: false}))\n+}",
+      "comments": [
+        {
+          "url": "https://github.com/dapr/components-contrib/pull/4748#pullrequestreview-5798818370",
+          "body": "",
+          "user": {
+            "login": "nelson-parente",
+            "name": "nelson-parente",
+            "email": null,
+            "avatar_url": "https://avatars.githubusercontent.com/u/20144601?u=9bd88d52b9628f45f37da52a9b5546bb045df0db&v=4",
+            "id": 20144601
+          },
+          "id": 5798818370,
+          "pull_request_review_id": null,
+          "in_reply_to_id": null,
+          "created_at": "2026-11-06T10:25:40Z",
+          "updated_at": null,
+          "review": "APPROVED",
+          "side": null,
+          "line": null,
+          "start_line": null,
+          "path": null,
+          "body_html": ""
+        }
+      ],
+      "created_at": "2026-11-06T10:22:27Z",
+      "updated_at": "2026-11-06T10:46:51Z",
+      "closed_at": "2026-11-06T10:46:42Z",
+      "merged_at": "2026-11-06T10:46:42Z",
+      "commits": 1,
+      "changed_files": 2,
+      "additions": 21,
+      "deletions": 3,
+      "display_url": "https://github.com/dapr/components-contrib/pull/4748",
+      "display_title": "[Backport release-1.19] pubsub.rabbitmq: return error when broker NACKs a confirmed publish"
+    },
+    "publishedWorkPackage": {
+      "url": "https://github.com/Hexalith/Hexalith.EventStore/blob/51dd68b86a690ffe9e11c565dccec49b2d401a94/docs/implementation/story-3-21-rabbitmq-upstream-work-packages.md",
+      "gitBlob": "adb1b0955c994548fc988cdd9bd6b988b9d5dbb2",
+      "sha256": "8f34e21a085fb7d63d8c63b7a8a3fe88a6897b6127224523d2d728229e563bbd"
+    },
+    "sourceFacts": {
+      "contextFreeConfirmationWait": true,
+      "retryCancellationReturnsNil": 2,
+      "reconnectErrorDiscarded": true,
+      "mandatoryFalse": true,
+      "returnHandlerPresent": false,
+      "mainRelevantPublishPathMatchesRelease119": true,
+      "dapr1191RequiresComponents1190": true,
+      "rabbitmqReturnPrecedesPositiveConfirm": "https://www.rabbitmq.com/docs/confirms#when-will-published-messages-be-confirmed-by-the-broker"
+    },
+    "decision": "Both prepared operations admitted; no exact duplicate or approved content/source drift found in these bounded checks.",
+    "limitations": "Connected search returns normalized matching issues without total/incomplete metadata; null means unavailable. Five text queries and one 20-result PR page do not establish global absence. Releases and exact branch heads used unauthenticated read-only public GitHub API because the connected tools expose no latest-release API or branch-head SHA. Source inspection does not attest executed binaries or qualification."
+  },
+  "postReviewSupplement": {
+    "recordedUtc": "2026-11-14T03:35:17.014358+00:00",
+    "readOnly": true,
+    "transport": "existing-authenticated-gh",
+    "method": "GET",
+    "daprTagResolution": {
+      "checkedUtc": "2026-11-14T03:34:20.848733+00:00",
+      "repository": "dapr/dapr",
+      "tag": "v1.19.1",
+      "refApi": "https://api.github.com/repos/dapr/dapr/git/ref/tags/v1.19.1",
+      "tagReference": {
+        "ref": "refs/tags/v1.19.1",
+        "nodeId": "MDM6UmVmMTkyNjMyMDAwOnJlZnMvdGFncy92MS4xOS4x",
+        "objectType": "commit",
+        "objectSha": "cfb5ee090dda7cfc26145c7703605d831350aa2a",
+        "objectApi": "https://api.github.com/repos/dapr/dapr/git/commits/cfb5ee090dda7cfc26145c7703605d831350aa2a"
+      },
+      "commitApi": "https://api.github.com/repos/dapr/dapr/commits/v1.19.1",
+      "resolvedCommit": "cfb5ee090dda7cfc26145c7703605d831350aa2a",
+      "commitUrl": "https://github.com/dapr/dapr/commit/cfb5ee090dda7cfc26145c7703605d831350aa2a",
+      "goMod": {
+        "url": "https://github.com/dapr/dapr/blob/cfb5ee090dda7cfc26145c7703605d831350aa2a/go.mod",
+        "gitBlob": "f5b29762d9d09ff6ef8c93c0b8005c035cf004d1",
+        "sha256": "744705f8e937fc1ceffd3b3710f3bc0ce7084c018e29d59943f0d5c255977df5",
+        "declaredComponentsVersion": "v1.19.0"
+      }
+    },
+    "inspectedSourceBinding": {
+      "existingField": "submissionPreflight.sourceFiles",
+      "url": "https://github.com/dapr/dapr/blob/cfb5ee090dda7cfc26145c7703605d831350aa2a/go.mod",
+      "gitBlob": "f5b29762d9d09ff6ef8c93c0b8005c035cf004d1",
+      "tagResolvesToInspectedCommit": true,
+      "goModBlobMatchesExistingInspection": true
+    },
+    "localCompaction": {
+      "changedUtc": "2026-11-14T03:35:17.014358+00:00",
+      "field": "submissionPreflight.existingIssue.body",
+      "replacementField": "submissionPreflight.existingIssue.bodySha256",
+      "encoding": "UTF-8",
+      "sha256": "ed115886f4c49a1d41313f63b4a7cc5e1242528b3ab1cb8a71937b37d4617303",
+      "originalUtf8Bytes": 4811,
+      "description": "Replaced the predecessor issue complete third-party body with its exact UTF-8 SHA-256. All predecessor identity/observation fields, historical preflight times and approved outgoing content commitments are retained."
+    },
+    "scope": "Post-review read-only source binding and local compaction only; no remote mutation, execution or new runtime attestation."
+  }
+}

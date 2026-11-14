@@ -440,3 +440,59 @@ and RabbitMQ delivery remain open. No new implementation, candidate, run or upst
 was produced. Packet custody remains complete; Platform 4.17/EventStore 3.21 remain
 **in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**, selection
 **null**, production eligibility **FAIL**.
+
+## RabbitMQ upstream handoff submitted — 2026-11-14
+
+The owner's **“yes”** approved exactly the two prepared public issue titles, bodies and
+`dapr/components-contrib` destination bound by the [publication plan](story-4-17-upstream/plan.json).
+Fresh [preflight checks](story-4-17-upstream/preflight.json) matched the approved body/source
+hashes and inspected public source/release identities. Bounded duplicate searches found no exact
+new duplicate; the known closed/completed #4697 remains the linked predecessor for Package B.
+These searches do not prove global absence.
+
+| Prepared dependency | Actual public submission | Created (UTC) |
+| --- | --- | --- |
+| Package A: preserve publish errors through cancellation and reconnect | [dapr/components-contrib #4764](https://github.com/dapr/components-contrib/issues/4764) | 2026-11-14T03:22:27Z |
+| Package B: opt-in mandatory publishing and correlated unroutable returns | [dapr/components-contrib #4765](https://github.com/dapr/components-contrib/issues/4765) | 2026-11-14T03:22:57Z |
+
+The [submission receipts](story-4-17-upstream/receipts.json) retain each exact content commitment,
+request/result time, repository, issue identity and separate remote readback. Both retrieved
+titles and full bodies match the approved files byte for byte. The connected GitHub write first
+returned a definitive 403, “Resource not accessible by integration,” with no issue identity;
+post-refusal exact-title searches were empty. The same approved submissions then succeeded
+sequentially through the existing authenticated `gh` CLI under the spec's recorded transport
+fallback. The refusal, reconciliation and partial first success were retained before proceeding.
+No comment, label, assignment, existing-issue update, attachment or credential change was made.
+
+**The public submission handoff is complete; upstream acceptance, implementation and supported
+release delivery remain outstanding.** The issues are dependency requests, with source findings,
+historical observations and unexecuted recipes kept distinct. No reproduction, broker run or
+diagnostic was executed. Kafka pressure and controlled-association stop rules remain binding;
+principal, applied-ACL and cold-old-generation gaps remain separate, and packet custody stays
+complete.
+
+EventStore 3.21 still owns assertions and admission of the exact supported runtime/component/lock
+identities after upstream delivery; Builds still owns catalog/CLI/runner alignment. Platform still
+needs a separately accepted exact source/configuration/worker/tool execution proposal and all 24
+vectors. AD-26 and Story 4.9 profile inventory, staging 4.14–4.16, shared-host rehearsal/restore
+evidence and reuse of the existing declaration-derived Subscription renderer remain required.
+No input, predicate, timeout, historical evidence or authority outcome changes through publication.
+Platform 4.17 and EventStore 3.21 remain **in-progress**; five guarantees **REJECTED/open**,
+technical **FAIL (20/24)**, broker selection **null**, production eligibility **FAIL**.
+
+### Handoff clarification after review — 2026-11-14
+
+The public recipes assume an existing owned TLS fixture with setup, controlled restart,
+credential-generation and ID-based persisted-readback facilities. They are not a self-contained
+fixture and do not admit execution. Historical measurements summarized in the issues are indirect
+reports of candidate-02 evidence: the [immutable public summary](https://github.com/Hexalith/Hexalith.Platform/blob/3ebb3ac3ff9da06afa4ceb43ec85a5388d6326bc/docs/implementation/story-4-17-broker-candidate-02-hosted-attempt-1.md)
+identifies [run 43386723091, attempt 1](https://github.com/Hexalith/Hexalith.Platform/actions/runs/43386723091),
+executed from Platform `4d66ff5584e4f62239551bb02311649334171a84` and EventStore
+`495dd24943031ec75e2822c6168ada3c8b9fdb82`. These summaries do not replace the retained packet
+or supply a fresh reproduction.
+
+Follow-up remains with the existing EventStore 3.21 supported-delivery work. Re-entry requires
+upstream implementation plus an official supported Dapr runtime release embedding the required
+fixes; EventStore must then admit the exact supported inputs. Builds alignment and a separate
+exact Platform full-matrix execution proposal/decision remain required. Publication supplies no
+technical acceptance, broker selection or production eligibility.
