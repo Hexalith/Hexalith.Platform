@@ -99,6 +99,23 @@ content and the Builds1ebc selection are retained. This metadata repair does not
 attribute test results to the unavailable source or replace any nested working
 checkout. The umbrella's newer EventStore source remains a separate selection.
 
+The later upstream source `966df4205994e60b1d0eb31e3c717df719e8c254` explicitly
+selects public EventStore `f712c08e5cfacd0e340fe7ec571385e72fc0177f`; that selection
+and its declaration binding are preserved. It does not change the published
+EventStore5.1.0 source identity, which remains49084f66.
+
+Actual Builds6 qualification refused the earlier consumer-view assumption:
+the signed1ebc catalog selects SDK5.1.0/OpenAPI11.0.0/3.11.0 for current Platform
+projects. Only the exact6.0.0/source1ebc/catalogSHA25645b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7
+binding admits this current view. Independent MSBuild evaluations separately
+require all33 named current consumers and three unknown controls, then verify
+the explicit SDK4.2 collecting view retains OpenAPI10.0.15/2.13.0 for only the
+named consumers. Producer5 and historical4 views retain their previous rules.
+The historical file-AppHost check uses the authenticated current producer binding
+exported alongside its catalog; its model build keeps the frozen catalog.
+These view receipts describe the actual selected SDKs and grant no runtime or
+native acceptance. Full fresh349/412/current qualification remains required.
+
 Historical root builds retain the catalog objects while applying the current
 source's four bounded security dependency patches: Aspire.Hosting13.6.4→13.6.5,
 SignalR.Redis10.0.14→10.0.15, and its Options/DI.Abstractions10.0.15 dependency

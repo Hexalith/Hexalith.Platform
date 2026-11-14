@@ -1,4 +1,4 @@
-"""Evaluate only the finite current Platform SDK4.2 view of an authenticated catalog."""
+"""Evaluate the finite current and retained Platform views of an authenticated catalog."""
 from __future__ import annotations
 
 import hashlib
@@ -33,6 +33,28 @@ SDK_PACKAGES = tuple("Hexalith.EventStore." + name for name in (
     "Admin.Abstractions", "Admin.Server", "Aspire", "Client", "Contracts", "DomainService", "Gateway",
     "RestApi.Generators", "Server", "ServiceDefaults", "SignalR", "Testing", "Testing.Integration"))
 OPENAPI_PACKAGES = ("Microsoft.AspNetCore.OpenApi", "Microsoft.OpenApi")
+GENERATION6_CATALOG = {
+    "version": "6.0.0",
+    "sourceRevision": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
+    "blob": "cbfc6a888f269010600103a33c73d0cfc0af93a2",
+    "sha256": "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7",
+}
+
+
+def catalog_profile(binding=None) -> str:
+    """A new producer generation cannot inherit an earlier consumer qualification."""
+    if binding is None:
+        return "retained-sdk42"
+    from builds_tuple import validate_binding
+    validate_binding(binding)
+    if binding["publication"]["version"].startswith("6."):
+        producer = binding["producer"]
+        if binding["publication"]["version"] != GENERATION6_CATALOG["version"] \
+                or producer["sourceRevision"] != GENERATION6_CATALOG["sourceRevision"] \
+                or any(producer["catalog"][key] != GENERATION6_CATALOG[key] for key in ("blob", "sha256")):
+            raise ValueError("The current SDK5.1 view requires the exact qualified Builds6 producer and catalog.")
+        return "current-sdk51"
+    return "retained-sdk42"
 
 
 def require_catalog_body(raw: bytes, expected_sha256: str) -> None:
@@ -55,7 +77,7 @@ def require_finite_selector(document: ET.Element) -> None:
         raise ValueError("The current Platform catalog view must contain exactly the 33 approved consumer names.")
 
 
-def evaluate_views(raw: bytes) -> list[dict]:
+def evaluate_views(raw: bytes, selected_sdk=None) -> list[dict]:
     """Use real project identities and a fresh process without inherited catalog or SDK overrides."""
     with tempfile.TemporaryDirectory(prefix="platform-catalog-view-") as temporary:
         root = Path(temporary)
@@ -94,15 +116,19 @@ def evaluate_views(raw: bytes) -> list[dict]:
                    "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH", "LANG", "LC_ALL", "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"}
         environment = {key: value for key, value in os.environ.items() if key in allowed}
         result = subprocess.run(["dotnet", "msbuild", str(driver_path), "-nologo", "-nodeReuse:false",
-                                 "-target:ObserveAll", "-getTargetResult:ObserveAll"], cwd=root,
+                                 "-target:ObserveAll", "-getTargetResult:ObserveAll",
+                                 *([] if selected_sdk is None else ["-p:HexalithEventStoreVersion=" + selected_sdk])], cwd=root,
                                 env=environment, capture_output=True, text=True, timeout=90)
         if result.returncode:
             raise ValueError("Independent current catalog evaluation failed: " + result.stdout + result.stderr)
         return json.loads(result.stdout)["TargetResults"]["ObserveAll"]["Items"]
 
 
-def verify_named_platform_catalog(raw: bytes, expected_sha256: str) -> dict:
+def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=None) -> dict:
     require_catalog_body(raw, expected_sha256)
+    profile = catalog_profile(binding)
+    if binding is not None and binding["producer"]["catalog"]["sha256"] != expected_sha256:
+        raise ValueError("The current catalog view differs from its exact producer binding.")
     require_finite_selector(ET.fromstring(raw))
     observed = evaluate_views(raw)
     names = [item["Identity"] for item in observed]
@@ -111,14 +137,28 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str) -> dict:
         raise ValueError("Independent catalog evaluation did not return the exact Platform and negative consumer set.")
     for item in observed:
         current = item["Identity"] in PLATFORM_CONSUMERS
-        expected_sdk = "4.2.0" if current else "5.0.0"
+        expected_sdk = "5.1.0" if profile == "current-sdk51" else "4.2.0" if current else "5.0.0"
         expected = {package: expected_sdk for package in SDK_PACKAGES}
-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if current else ("11.0.0", "3.11.0"))))
+        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if current and profile == "retained-sdk42" else ("11.0.0", "3.11.0"))))
         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
         if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
                 or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
             raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
-    return {"kind": "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
+    collecting = []
+    if profile == "current-sdk51":
+        collecting = evaluate_views(raw, "4.2.0")
+        if [item["Identity"] for item in collecting] != names:
+            raise ValueError("The retained collecting view changed its exact consumer set.")
+        for item in collecting:
+            current = item["Identity"] in PLATFORM_CONSUMERS
+            expected = {package: "4.2.0" for package in SDK_PACKAGES}
+            expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if current else ("11.0.0", "3.11.0"))))
+            pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
+            if item.get("Sdk") != "4.2.0" or item.get("PlatformView") != str(current).lower() \
+                    or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
+                raise ValueError("The authenticated catalog changed its retained SDK4.2 collecting view: " + item["Identity"])
+    return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if collecting else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed,
-            "scope": "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+            "collectingEvaluations": collecting,
+            "scope": "Exact Builds6 current SDK5.1 view and explicit retained SDK4.2 collecting view" if collecting else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}

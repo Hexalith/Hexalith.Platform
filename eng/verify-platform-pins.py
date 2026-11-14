@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
 parser.add_argument("--catalog", type=pathlib.Path)
 parser.add_argument("--catalog-sha256")
+parser.add_argument("--producer-binding", type=pathlib.Path)
 parser.add_argument("--hosting-helper")
 parser.add_argument("--spine", type=pathlib.Path)
 arguments = parser.parse_args()
@@ -22,8 +23,10 @@ properties = ET.fromstring(catalog_body)
 values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
 if properties.findall(".//HexalithPlatformSdk42CatalogView"):
     from current_catalog_view import verify_named_platform_catalog
+    from builds_tuple import load_binding
     try:
-        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256)
+        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256,
+            binding=load_binding(arguments.producer_binding) if arguments.producer_binding is not None else None)
     except ValueError as failure:
         raise SystemExit(str(failure)) from failure
     composition_view = next(item for item in view["evaluations"] if item["Identity"] == "Hexalith.Platform.Composition")

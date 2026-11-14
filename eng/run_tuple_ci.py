@@ -164,7 +164,7 @@ def sdk_suite(suite, version):
     return "eng/tuple-ci-suites.json", [] if version is None else ["-p:HexalithEventStoreVersion=4.1.0"]
 
 
-def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
+def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None, binding=None):
     """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
     from current_catalog_view import require_catalog_body, verify_named_platform_catalog
     raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
@@ -174,7 +174,7 @@ def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_s
     if document.findall(".//HexalithPlatformSdk42CatalogView"):
         if authenticated_body is None:
             raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
-        return verify_named_platform_catalog(raw, expected_sha256)
+        return verify_named_platform_catalog(raw, expected_sha256, binding=binding)
     pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
     if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
         raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
@@ -296,7 +296,7 @@ def _run_tuple_ci(metadata_token):
             catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
                                                    cwd=builds_root, timeout=30)
             result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
-                                                                           expected_sha256=catalog_identity["sha256"])
+                                                                           expected_sha256=catalog_identity["sha256"], binding=binding)
             (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
         else:
             verify_historical_catalog_pin(catalog)
@@ -362,6 +362,7 @@ def _run_tuple_ci(metadata_token):
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         file_catalog = catalog
         file_catalog_sha256 = None
+        file_catalog_binding = ROOT / "eng/builds-tuple.json"
         if args.suite in ("extensions", "base42", "current42"):
             file_catalog = evidence / "authenticated-catalog.props"
             file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
@@ -371,11 +372,13 @@ def _run_tuple_ci(metadata_token):
             file_catalog, result["fileAppHostCatalog"] = prepare_file_host_catalog(
                 ROOT, builds_root, current_source, evidence / "current-file-host-catalog")
             file_catalog_sha256 = result["fileAppHostCatalog"]["catalogSha256"]
+            file_catalog_binding = file_catalog.parent / "builds-tuple.json"
         run("file-host-catalog-controls", [sys.executable, "-B", "eng/test_file_host_catalog.py"])
         run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
         pin_arguments = [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)]
         if file_catalog_sha256 is not None:
             pin_arguments.extend(["--catalog-sha256", file_catalog_sha256])
+            pin_arguments.extend(["--producer-binding", str(file_catalog_binding)])
         run("pin-alignment", pin_arguments)
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         run("source-sdk-propagation-controls", [sys.executable, "-B", "eng/test_source_sdk_propagation.py", "--evidence", str(evidence / "source-sdk-metadata"), "--published-tool-root", str(tool)])

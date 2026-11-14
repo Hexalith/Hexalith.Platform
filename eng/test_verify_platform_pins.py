@@ -1,5 +1,6 @@
 import pathlib
 import hashlib
+import json
 import xml.etree.ElementTree as ET
 import subprocess
 import sys
@@ -42,6 +43,30 @@ SPINE = """### AD-9 — Dapr runtime boundary [ADOPTED, AMENDED]
 
 
 class VerifyPlatformPinsTests(unittest.TestCase):
+    def test_generation6_file_host_requires_its_bound_current_catalog_view(self):
+        from test_current_catalog_view import generation6_binding, generation6_catalog
+        owner = SCRIPT.parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            raw = generation6_catalog()
+            (root / 'catalog.props').write_bytes(raw)
+            (root / 'apphost.cs').write_bytes((owner / 'apphost.cs').read_bytes())
+            (root / 'spine.md').write_text(SPINE)
+            project = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+            project.parent.mkdir(parents=True)
+            project.write_bytes((owner / project.relative_to(root)).read_bytes())
+            binding = generation6_binding()
+            (root / 'producer.json').write_text(json.dumps(binding))
+            for supplied in (False, True):
+                result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(root),
+                    '--catalog', str(root / 'catalog.props'), '--catalog-sha256', hashlib.sha256(raw).hexdigest(),
+                    '--spine', str(root / 'spine.md'),
+                    *(['--producer-binding', str(root / 'producer.json')] if supplied else [])], capture_output=True, text=True)
+                with self.subTest(supplied=supplied):
+                    self.assertEqual(result.returncode, 0 if supplied else 1, result.stderr)
+                    if not supplied:
+                        self.assertIn('unqualified SDK/OpenAPI', result.stderr)
+
     def test_named_composition_view_keeps_sdk42_instead_of_the_sdk5_default(self):
         from test_current_catalog_view import catalog_body
         for mapped in (False, True):

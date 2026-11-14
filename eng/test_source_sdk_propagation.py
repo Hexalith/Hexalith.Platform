@@ -36,7 +36,10 @@ class SourceSdkPropagationTests(unittest.TestCase):
         cls.fixture.write_bytes(ET.tostring(project, encoding="utf-8"))
         cls.evaluations = []
         cls.default_sdk = cls.invoke(cls.fixture, ["-p:UseHexalithProjectReferences=true"])["Properties"]["HexalithEventStoreVersion"]
-        if cls.default_sdk not in ("4.1.0", "4.2.0"):
+        from builds_tuple import load_binding
+        from current_catalog_view import catalog_profile
+        if cls.default_sdk not in ("4.1.0", "4.2.0") and not (
+                cls.default_sdk == "5.1.0" and catalog_profile(load_binding()) == "current-sdk51"):
             raise AssertionError("The focused controls require one of the recorded current/historical catalog SDKs.")
 
     @classmethod

@@ -1,14 +1,40 @@
 """Real MSBuild controls for the finite current catalog, independent of source publication."""
+import copy
 import hashlib
+import json
 import os
 from pathlib import Path
 import tempfile
+import subprocess
 import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from current_catalog_view import (OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
+from current_catalog_view import (GENERATION6_CATALOG, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
                                   verify_named_platform_catalog)
+
+
+def generation6_binding():
+    """Synthetic publication metadata tests catalog admission only, never publication authority."""
+    source = GENERATION6_CATALOG['sourceRevision']
+    manifest = json.dumps({'sha': source, 'version': '6.0.0', 'packages': [
+        {'id': identity, 'path': 'packages/' + identity + '.6.0.0.nupkg'}
+        for identity in ('Hexalith.Builds.Evidence.Cli', 'Hexalith.Builds.Module.Cli')], 'containers': []})
+    return {'schemaVersion': 1, 'candidateAcceptance': False,
+        'producer': {'repository': 'https://github.com/Hexalith/Hexalith.Builds.git', 'sourceRevision': source,
+            'catalog': {'path': 'Props/Directory.Packages.props', 'blob': GENERATION6_CATALOG['blob'],
+                        'sha256': GENERATION6_CATALOG['sha256']}},
+        'publication': {'kind': 'shared-release-handoff/v1', 'version': '6.0.0', 'sourceRevision': source,
+            'releaseTag': 'v6.0.0', 'catalogSha256': GENERATION6_CATALOG['sha256'],
+            'archiveSha256': 'a' * 64, 'toolingSha256': 'b' * 64, 'releaseId': 11, 'runId': 12, 'artifactId': 13,
+            'artifactSha256': 'c' * 64, 'releaseBodySha256': 'd' * 64, 'manifestJson': manifest,
+            'manifestSha256': hashlib.sha256(manifest.encode()).hexdigest()}}
+
+
+def generation6_catalog():
+    from builds_tuple import resolve_builds_root
+    owner = resolve_builds_root(Path(__file__).resolve().parents[1])
+    return subprocess.check_output(['git', 'show', GENERATION6_CATALOG['sourceRevision'] + ':Props/Directory.Packages.props'], cwd=owner)
 
 
 def catalog_body() -> bytes:
@@ -107,6 +133,60 @@ class CurrentCatalogViewTests(unittest.TestCase):
                                          "CustomAfterMicrosoftCommonProps": str(poison), "DirectoryPackagesPropsPath": str(poison)}):
                 receipt = self.verify(catalog_body())
             self.assertEqual(len(receipt["evaluations"]), 36)
+
+    def test_exact_published_generation6_catalog_keeps_current_and_collecting_views_separate(self):
+        receipt = verify_named_platform_catalog(generation6_catalog(), GENERATION6_CATALOG['sha256'], binding=generation6_binding())
+        self.assertEqual({item['Sdk'] for item in receipt['evaluations']}, {'5.1.0'})
+        self.assertEqual({item['Sdk'] for item in receipt['collectingEvaluations']}, {'4.2.0'})
+        self.assertEqual(len(receipt['evaluations']), 36)
+        self.assertEqual(len(receipt['collectingEvaluations']), 36)
+        self.assertFalse(receipt['candidateAcceptance'])
+        self.assertFalse(receipt['runtimeAcceptance'])
+
+    def test_generation6_view_cannot_inherit_missing_or_foreign_producer_authority(self):
+        raw = generation6_catalog()
+        for fault in ('missing', 'source', 'blob', 'hash', 'neighbor', 'future'):
+            binding = generation6_binding()
+            if fault == 'missing': binding = None
+            elif fault == 'source':
+                binding['producer']['sourceRevision'] = binding['publication']['sourceRevision'] = 'e' * 40
+                manifest = json.loads(binding['publication']['manifestJson'])
+                manifest['sha'] = 'e' * 40
+                binding['publication']['manifestJson'] = json.dumps(manifest)
+                binding['publication']['manifestSha256'] = hashlib.sha256(json.dumps(manifest).encode()).hexdigest()
+            elif fault == 'blob': binding['producer']['catalog']['blob'] = 'e' * 40
+            elif fault == 'hash': binding['producer']['catalog']['sha256'] = binding['publication']['catalogSha256'] = 'e' * 64
+            else:
+                version = '6.0.1' if fault == 'neighbor' else '7.0.0'
+                binding['publication'].update(version=version, releaseTag='v' + version)
+                manifest = json.loads(binding['publication']['manifestJson'])
+                manifest['version'] = version
+                for item in manifest['packages']:
+                    item['path'] = 'packages/' + item['id'] + '.' + version + '.nupkg'
+                raw_manifest = json.dumps(manifest)
+                binding['publication'].update(manifestJson=raw_manifest, manifestSha256=hashlib.sha256(raw_manifest.encode()).hexdigest())
+            if fault == 'missing':
+                with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, 'unqualified SDK/OpenAPI'):
+                    verify_named_platform_catalog(raw, GENERATION6_CATALOG['sha256'], binding=binding)
+            else:
+                with self.subTest(fault=fault), patch('current_catalog_view.evaluate_views') as evaluate:
+                    with self.assertRaisesRegex(ValueError, 'exact qualified Builds6|exact supported'):
+                        verify_named_platform_catalog(raw, GENERATION6_CATALOG['sha256'], binding=binding)
+                    evaluate.assert_not_called()
+
+    def test_generation6_default_and_retained_collecting_drift_both_refuse(self):
+        raw, binding = generation6_catalog(), generation6_binding()
+        accepted = verify_named_platform_catalog(raw, GENERATION6_CATALOG['sha256'], binding=binding)
+        for collecting, field in ((False, 'Sdk'), (False, 'Pins'), (True, 'Sdk'), (True, 'Pins'), (True, 'unknown-openapi')):
+            defaults = copy.deepcopy(accepted['evaluations'])
+            retained = copy.deepcopy(accepted['collectingEvaluations'])
+            selected = retained if collecting else defaults
+            if field == 'unknown-openapi':
+                selected[len(PLATFORM_CONSUMERS)]['Pins'] = selected[len(PLATFORM_CONSUMERS)]['Pins'].replace('Microsoft.OpenApi=3.11.0', 'Microsoft.OpenApi=2.13.0')
+            else:
+                selected[0][field] = '5.1.1' if field == 'Sdk' else selected[0][field].replace('Microsoft.OpenApi=', 'Foreign.OpenApi=')
+            with self.subTest(collecting=collecting, field=field), patch('current_catalog_view.evaluate_views', side_effect=[defaults, retained]), self.assertRaisesRegex(ValueError, 'unqualified SDK/OpenAPI|retained SDK4.2'):
+                verify_named_platform_catalog(raw, GENERATION6_CATALOG['sha256'], binding=binding)
 
 
 if __name__ == "__main__":
