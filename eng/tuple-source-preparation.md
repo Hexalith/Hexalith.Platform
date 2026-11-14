@@ -116,6 +116,23 @@ exported alongside its catalog; its model build keeps the frozen catalog.
 These view receipts describe the actual selected SDKs and grant no runtime or
 native acceptance. Full fresh349/412/current qualification remains required.
 
+The current build in all three explicit SDK4.2 suites (current42/base42/extensions)
+declares its existing complete public family:
+SDK4.2.0, Tenants7.0.7, Memories3.0.27, Parties3.1.1 and Mcp2.0.1. Builds6
+defaults remain SDK5.1/Memories4.0.0; selecting only SDK4.2 against Memories4
+produced the actual NU1109 downgrade through
+`Hexalith.Memories.EventStoreExtensions4.0.0` requiring DomainService5.0.0.
+The collector records these explicit properties and verifies its restored public
+package identities before building. Missing, source, mixed and neighboring
+package inputs refuse. Frozen349/412 and705/25/310 reader inputs are unchanged.
+
+The isolated production-model test replays the admitted SDK4.2/T707/M27/P311/Mcp201
+cohort and measures its assets and original signed Server707 hash. Its output
+identifies that replay explicitly and grants no default SDK5.1/native acceptance.
+Independent catalog observations retain the actual SDK5.1 and Memories4 defaults;
+no signed catalog bytes or production admission rules are changed by this test
+and CI repair.
+
 Historical root builds retain the catalog objects while applying the current
 source's four bounded security dependency patches: Aspire.Hosting13.6.4→13.6.5,
 SignalR.Redis10.0.14→10.0.15, and its Options/DI.Abstractions10.0.15 dependency

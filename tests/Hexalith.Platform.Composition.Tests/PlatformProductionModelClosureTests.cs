@@ -9,13 +9,13 @@ using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
-/// <summary>Builds the actual production model independently of the test dependency closure; starts no services or image probes.</summary>
+/// <summary>Replays the admitted production package cohort independently of the test dependency closure; starts no services or image probes.</summary>
 /// <param name="output">Retains the actual isolated production build output.</param>
 public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output)
 {
     /// <summary>The exact admitted package model supplies its signed Server body before the production verifier loads it.</summary>
     [Fact]
-    public async Task CurrentProductionModelSuppliesTheSignedServerOutsideTheTestClosureAsync()
+    public async Task AdmittedProductionCohortSuppliesTheSignedServerOutsideTheTestClosureAsync()
     {
         string root = PlatformTestRepository.Root;
         string builds = PlatformTestRepository.ReferenceRoot(root, "Hexalith.Builds");
@@ -51,12 +51,18 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             string model = Path.Combine(workspace, "hosts", "platform-model");
             string artifacts = Path.Combine(workspace, "build", "platform-model");
             string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
+            // The existing Server707 authority is an SDK4.2 cohort. New catalog defaults remain observed separately.
+            string[] admittedProperties = tenantsVersion == "7.0.7"
+                ? ["-p:HexalithEventStoreVersion=4.2.0", "-p:HexalithTenantsVersion=7.0.7",
+                   "-p:HexalithMemoriesVersion=3.0.27", "-p:HexalithPartiesVersion=3.1.1", "-p:HexalithMcpCliVersion=2.0.1"]
+                : [];
             var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
                 ["build", project, "--configuration", "Release", "--output", model, "--artifacts-path", artifacts,
                  "-p:UseHexalithProjectReferences=false", "-p:HexalithBuildsRoot=" + builds, "-p:BuildsToolingAssemblyPath=" + tooling,
                  "-p:CustomBeforeDirectoryBuildProps=" + catalog, "-p:CustomAfterMicrosoftCommonProps=" + security, "-p:ImportDirectoryPackagesProps=false",
                  "-p:CentralPackageVersionsFileImported=true", "-p:CentralPackageTransitivePinningEnabled=true",
                  "-p:NuGetAudit=true", "-p:NuGetAuditMode=all", "-p:NuGetAuditLevel=low", "-p:DirectoryPackagesPropsPath=" + catalog,
+                 .. admittedProperties,
                  "-p:CopyLocalLockFileAssemblies=true", "-p:UseSharedCompilation=false", "-nodeReuse:false", "-m:1",
                  "-p:BuildInParallel=false", "-p:RestoreBuildInParallel=false"], root, null),
                 TimeSpan.FromMinutes(5), TestContext.Current.CancellationToken).ConfigureAwait(true);
@@ -74,6 +80,14 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             audit.GetProperty("auditMode").GetString().ShouldBe("all");
             audit.GetProperty("auditLevel").GetString().ShouldBe("low");
             assets.RootElement.GetProperty("libraries").GetProperty("Hexalith.Tenants.Server/" + tenantsVersion).GetProperty("type").GetString().ShouldBe("package");
+            if (tenantsVersion == "7.0.7")
+            {
+                foreach (string identity in new[] { "Hexalith.EventStore.DomainService/4.2.0", "Hexalith.Memories.Contracts/3.0.27", "Hexalith.Parties.Contracts/3.1.1" })
+                    assets.RootElement.GetProperty("libraries").GetProperty(identity).GetProperty("type").GetString().ShouldBe("package");
+                output.WriteLine(JsonSerializer.Serialize(new { Scope = "Admitted SDK4.2 production-model replay; no default SDK5.1 native qualification",
+                    CatalogSha256 = catalogHash, AssetsSha256 = Hash(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")),
+                    ServerSha256 = Hash(server), Properties = admittedProperties, CandidateAcceptance = false, RuntimeAcceptance = false }));
+            }
             assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
                 .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();
             var context = new AssemblyLoadContext("production-model-only-" + Guid.NewGuid().ToString("N"), isCollectible: true);

@@ -181,6 +181,41 @@ def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_s
     return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}
 
 
+def sdk42_collecting_cohort(binding, suite):
+    """Keep the measured SDK4.2 collector separate from the producer's newer defaults."""
+    if suite not in ("current42", "base42", "extensions"):
+        return None
+    from current_catalog_view import catalog_profile
+    if catalog_profile(binding) != "current-sdk51":
+        return None
+    return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
+            "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}
+
+
+def verify_collecting_cohort(assets, cohort):
+    """Require the actual public package graph, including every collected Memories body."""
+    packages = {"Hexalith.EventStore.DomainService": cohort["HexalithEventStoreVersion"],
+                "Hexalith.Tenants.Contracts": cohort["HexalithTenantsVersion"],
+                "Hexalith.Tenants.Server": cohort["HexalithTenantsVersion"],
+                "Hexalith.Memories.Contracts": cohort["HexalithMemoriesVersion"],
+                "Hexalith.Memories.EventStore": cohort["HexalithMemoriesVersion"],
+                "Hexalith.Memories.EventStoreExtensions": cohort["HexalithMemoriesVersion"],
+                "Hexalith.Parties.Contracts": cohort["HexalithPartiesVersion"],
+                "Hexalith.Parties.EventStoreExtensions": cohort["HexalithPartiesVersion"],
+                "Hexalith.McpCli.Abstractions": cohort["HexalithMcpCliVersion"]}
+    libraries = assets["libraries"]
+    for name, version in packages.items():
+        identities = [key for key in libraries if key.startswith(name + "/")]
+        if identities != [name + "/" + version] or libraries[identities[0]].get("type") != "package":
+            raise ValueError("The SDK4.2 collecting graph differs from its exact public cohort: " + name)
+    sdk_packages = {name: item for name, item in libraries.items() if name.startswith("Hexalith.EventStore.")}
+    if any(name.rpartition("/")[2] != cohort["HexalithEventStoreVersion"] or item.get("type") != "package"
+           for name, item in sdk_packages.items()):
+        raise ValueError("Every restored EventStore package must match the exact SDK4.2 collecting cohort.")
+    return {"packages": packages, "eventStorePackages": sorted(sdk_packages), "scope": "Measured SDK4.2 collector only; no default SDK5.1 or native acceptance",
+            "candidateAcceptance": False, "runtimeAcceptance": False}
+
+
 def verify_historical_catalog_pin(catalog):
     """The 412/349 history must retain its actual owning SDK4.1 catalog, even if a build override is supplied."""
     pins = ET.parse(catalog).findall("./PropertyGroup/HexalithEventStoreVersion")
@@ -337,6 +372,13 @@ def _run_tuple_ci(metadata_token):
         result["toolRoot"] = str(tool)
         properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
                       "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool), *sdk_properties]
+        collecting_cohort = sdk42_collecting_cohort(binding, args.suite)
+        if collecting_cohort is not None:
+            properties.extend("-p:" + name + "=" + value for name, value in collecting_cohort.items()
+                              if name != "HexalithEventStoreVersion")
+            result["collectingPackageSelection"] = {"properties": collecting_cohort,
+                "scope": "Explicit SDK4.2 regression collector; authenticated producer defaults remain unchanged",
+                "candidateAcceptance": False, "runtimeAcceptance": False}
         projects = [ROOT / x.attrib["Path"] for x in ET.parse(ROOT / "Hexalith.Platform.slnx").iter("Project")]
         seen = {project.resolve() for project in projects}
         for number, project in enumerate(projects):
@@ -381,6 +423,9 @@ def _run_tuple_ci(metadata_token):
             pin_arguments.extend(["--producer-binding", str(file_catalog_binding)])
         run("pin-alignment", pin_arguments)
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
+        if collecting_cohort is not None:
+            collecting_assets = ROOT / "tests/Hexalith.Platform.Composition.Tests/obj/project.assets.json"
+            result["collectingPackageCohort"] = verify_collecting_cohort(json.loads(collecting_assets.read_bytes()), collecting_cohort)
         run("source-sdk-propagation-controls", [sys.executable, "-B", "eng/test_source_sdk_propagation.py", "--evidence", str(evidence / "source-sdk-metadata"), "--published-tool-root", str(tool)])
         assets = evidence / "assets"
         assets.mkdir()

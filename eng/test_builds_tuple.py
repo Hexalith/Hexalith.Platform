@@ -413,6 +413,8 @@ class BuildsTupleTests(unittest.TestCase):
                 stack.enter_context(patch.object(run_tuple_ci, "ROOT", owner))
                 stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding))
                 stack.enter_context(patch.object(run_tuple_ci, "source_state", return_value={"dirty": False}))
+                # This fixture measures artifact reuse; cohort policy has separate positive and refusal controls.
+                stack.enter_context(patch.object(run_tuple_ci, "sdk42_collecting_cohort", return_value=None))
                 stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
                 stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic platform"))
                 stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", side_effect=git_read))

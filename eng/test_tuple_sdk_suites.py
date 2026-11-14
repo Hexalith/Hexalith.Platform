@@ -5,10 +5,52 @@ import tempfile
 import unittest
 
 from test_current_catalog_view import CurrentCatalogViewTests
-from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, validate_profile, verify_extension_catalog_pin, verify_historical_catalog_pin, verify_test_sdk
+from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, sdk42_collecting_cohort, validate_profile, verify_collecting_cohort, verify_extension_catalog_pin, verify_historical_catalog_pin, verify_test_sdk
 
 
 class SdkSuiteTests(unittest.TestCase):
+    def test_exact_generation6_current42_collection_keeps_its_measured_public_family(self):
+        from test_current_catalog_view import generation6_binding
+        binding = generation6_binding()
+        cohort = sdk42_collecting_cohort(binding, 'current42')
+        self.assertEqual(cohort, {'HexalithEventStoreVersion': '4.2.0', 'HexalithTenantsVersion': '7.0.7',
+            'HexalithMemoriesVersion': '3.0.27', 'HexalithPartiesVersion': '3.1.1', 'HexalithMcpCliVersion': '2.0.1'})
+        for suite in ('base42', 'extensions'):
+            with self.subTest(suite=suite):
+                self.assertEqual(sdk42_collecting_cohort(binding, suite), cohort)
+        for suite in ('current', 'unknown'):
+            with self.subTest(suite=suite):
+                self.assertIsNone(sdk42_collecting_cohort(binding, suite))
+        for field, value in (('version', '6.0.1'), ('sourceRevision', 'e' * 40)):
+            changed = generation6_binding()
+            changed['publication'][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                sdk42_collecting_cohort(changed, 'current42')
+
+    def test_current42_restored_graph_refuses_missing_project_or_neighbor_family_packages(self):
+        from test_current_catalog_view import generation6_binding
+        cohort = sdk42_collecting_cohort(generation6_binding(), 'current42')
+        packages = {'Hexalith.EventStore.DomainService': '4.2.0', 'Hexalith.Tenants.Contracts': '7.0.7',
+            'Hexalith.Tenants.Server': '7.0.7', 'Hexalith.Memories.Contracts': '3.0.27',
+            'Hexalith.Memories.EventStore': '3.0.27', 'Hexalith.Memories.EventStoreExtensions': '3.0.27',
+            'Hexalith.Parties.Contracts': '3.1.1', 'Hexalith.Parties.EventStoreExtensions': '3.1.1',
+            'Hexalith.McpCli.Abstractions': '2.0.1'}
+        assets = {'libraries': {name + '/' + version: {'type': 'package'} for name, version in packages.items()}}
+        receipt = verify_collecting_cohort(assets, cohort)
+        self.assertFalse(receipt['runtimeAcceptance'])
+        self.assertFalse(receipt['candidateAcceptance'])
+        for fault in ('missing', 'project', 'memories4', 'neighbor', 'duplicate', 'extra-sdk'):
+            changed = json.loads(json.dumps(assets))
+            name = 'Hexalith.Memories.EventStoreExtensions/3.0.27'
+            if fault == 'missing': del changed['libraries'][name]
+            elif fault == 'project': changed['libraries'][name]['type'] = 'project'
+            elif fault == 'extra-sdk': changed['libraries']['Hexalith.EventStore.Contracts/5.1.0'] = {'type': 'package'}
+            else:
+                changed['libraries']['Hexalith.Memories.EventStoreExtensions/' + ('4.0.0' if fault == 'memories4' else '3.0.28')] = {'type': 'package'}
+                if fault != 'duplicate': del changed['libraries'][name]
+            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, 'exact public cohort|Every restored EventStore'):
+                verify_collecting_cohort(changed, cohort)
+
     def test_legacy_profile_retains_its_recorded_default(self):
         self.assertEqual(sdk_suite("current", None), ("eng/tuple-ci-suites.json", []))
         self.assertEqual(sdk_suite("current", "4.1.0")[1], ["-p:HexalithEventStoreVersion=4.1.0"])

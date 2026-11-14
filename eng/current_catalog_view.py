@@ -97,6 +97,7 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None) -> list[dict]:
                           + " or $([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.EventStore.'))")
             observation = ET.SubElement(items, "_Observed", Include="$(MSBuildProjectName)")
             for key, value in (("Sdk", "$(HexalithEventStoreVersion)"),
+                               ("CatalogMemoriesDefault", "$(HexalithMemoriesVersion)"),
                                ("PlatformView", "$(HexalithPlatformSdk42CatalogView)"),
                                ("PartiesView", "$(HexalithPartiesSdk42CatalogView)"),
                                ("Pins", "@(_Pins->'%(Identity)=%(Version)', '|')")):

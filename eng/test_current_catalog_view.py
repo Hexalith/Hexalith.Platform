@@ -84,6 +84,7 @@ class CurrentCatalogViewTests(unittest.TestCase):
         receipt = self.verify(builds6_catalog_body(), generation6_binding())
         self.assertEqual(len(receipt["defaultEvaluations"]), 36)
         self.assertEqual({item["Sdk"] for item in receipt["defaultEvaluations"]}, {"5.1.0"})
+        self.assertEqual({item["CatalogMemoriesDefault"] for item in receipt["defaultEvaluations"]}, {"4.0.0"})
         self.assertEqual(len(receipt["collectingEvaluations"]), 36)
         for item in receipt["collectingEvaluations"]:
             with self.subTest(consumer=item["Identity"]):
