@@ -88,7 +88,7 @@ internal static class PlatformPublishedValidationRuntime
             if (metadata.Elements().Single(element => element.Name.LocalName == "id").Value != "Hexalith.Builds.Module.Cli"
                 || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Builds") throw Refusal();
             string version = metadata.Elements().Single(element => element.Name.LocalName == "version").Value;
-            string framework = version.StartsWith("5.", StringComparison.Ordinal) ? "net11.0"
+            string framework = version.StartsWith("5.", StringComparison.Ordinal) || version.StartsWith("6.", StringComparison.Ordinal) ? "net11.0"
                 : version.StartsWith("4.", StringComparison.Ordinal) ? "net10.0" : throw Refusal();
             string prefix = "tools/" + framework + "/any/g4-host/";
             foreach (ZipArchiveEntry entry in package.Entries.Where(entry => entry.FullName.StartsWith(prefix, StringComparison.Ordinal) && !entry.FullName.EndsWith('/')))

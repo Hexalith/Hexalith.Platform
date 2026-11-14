@@ -80,7 +80,7 @@ def _prepare_artifacts(metadata_token):
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(payload)
             hashes[entry.filename] = hashlib.sha256(payload).hexdigest()
-    framework = "net11.0" if version.startswith("5.") else "net10.0"
+    framework = "net11.0" if version.startswith(("5.", "6.")) else "net10.0"
     tool_prefix = "tools/" + framework + "/any/"
     tool = extracted / tool_prefix
     if hashes[tool_prefix + "Hexalith.Builds.Tooling.dll"] != tooling_sha256:

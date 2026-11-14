@@ -189,6 +189,36 @@ class PreExtensionSourceTests(unittest.TestCase):
         self.assertFalse(result['qualificationCredit'])
         self.assertEqual(result['sourceEquivalence'], 'verified')
 
+    def test_net11_generations_require_the_exact_shared_publication_and_range(self):
+        import hashlib
+        from builds_tuple import load_binding
+        for version, upper in [('5.0.0', '6.0.0-0'), ('6.0.0', '7.0.0-0'), ('7.0.0', '8.0.0-0')]:
+            self.git('checkout', '-q', self.current)
+            document = copy.deepcopy(load_binding())
+            publication = document['publication']
+            publication.update(version=version, releaseTag='v' + version)
+            manifest = json.loads(publication['manifestJson'])
+            manifest['version'] = version
+            for item in manifest['packages']:
+                item['path'] = 'packages/' + item['id'] + '.' + version + '.nupkg'
+            raw = json.dumps(manifest)
+            publication.update(manifestJson=raw, manifestSha256=hashlib.sha256(raw.encode()).hexdigest())
+            self.write('eng/builds-tuple.json', json.dumps(document).encode())
+            self.gitlink('references/Hexalith.Builds', document['producer']['sourceRevision'])
+            tools = json.loads((self.root / '.config/dotnet-tools.json').read_bytes())
+            tools['tools']['hexalith.builds.module.cli']['version'] = version
+            self.write('.config/dotnet-tools.json', json.dumps(tools).encode())
+            identity = json.loads((self.root / 'hexalith-platform.json').read_bytes())
+            identity['toolVersionRange'] = '[' + version + ', ' + upper + ')'
+            self.write('hexalith-platform.json', json.dumps(identity).encode())
+            changed = self.commit()
+            with self.subTest(version=version):
+                if version.startswith('7.'):
+                    with self.assertRaisesRegex(ValueError, 'exact supported'):
+                        history.verify_tuple_metadata(self.root, changed, self.old)
+                else:
+                    history.verify_tuple_metadata(self.root, changed, self.old)
+
     def test_optional_reader_source_is_an_explicit_available_full_commit(self):
         from package_reader_source import selected_source
         self.descriptor['packageReaderSourceRevision'] = self.old

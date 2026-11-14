@@ -59,28 +59,39 @@ class SharedPublicationTests(unittest.TestCase):
         self.assertNotIn("inventoryUrl", self.binding["publication"])
 
     def test_net11_shared_publication_requires_its_own_closed_manifest_and_owner_major_range(self):
-        import tempfile
-        from pathlib import Path
         from builds_tuple import validate_owner_pins
+        for version, upper in (("5.0.0", "6.0.0-0"), ("6.0.0", "7.0.0-0")):
+            with self.subTest(version=version):
+                publication = self.binding["publication"]
+                publication.update(version=version, releaseTag="v" + version)
+                manifest = json.loads(publication["manifestJson"])
+                manifest["version"] = version
+                for item in manifest["packages"]:
+                    item["path"] = "packages/" + item["id"] + "." + version + ".nupkg"
+                self.manifest(manifest)
+                validate_binding(self.binding)
+                with tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    (root / ".config").mkdir()
+                    (root / ".config/dotnet-tools.json").write_text(json.dumps({
+                        "tools": {"hexalith.builds.module.cli": {"version": version}}}))
+                    floor = root / "hexalith-platform.json"
+                    floor.write_text(json.dumps({"toolVersionRange": "[" + version + ", " + upper + ")"}))
+                    validate_owner_pins(self.binding, root)
+                    floor.write_text(json.dumps({"toolVersionRange": "[" + version + ", " + version + "-0)"}))
+                    with self.assertRaisesRegex(ValueError, "owner tool pin and range floor"):
+                        validate_owner_pins(self.binding, root)
+
+    def test_future_generation_refuses_even_with_a_complete_shared_manifest(self):
         publication = self.binding["publication"]
-        publication.update(version="5.0.0", releaseTag="v5.0.0")
+        publication.update(version="7.0.0", releaseTag="v7.0.0")
         manifest = json.loads(publication["manifestJson"])
-        manifest["version"] = "5.0.0"
+        manifest["version"] = "7.0.0"
         for item in manifest["packages"]:
-            item["path"] = "packages/" + item["id"] + ".5.0.0.nupkg"
+            item["path"] = "packages/" + item["id"] + ".7.0.0.nupkg"
         self.manifest(manifest)
-        validate_binding(self.binding)
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / ".config").mkdir()
-            (root / ".config/dotnet-tools.json").write_text(json.dumps({
-                "tools": {"hexalith.builds.module.cli": {"version": "5.0.0"}}}))
-            floor = root / "hexalith-platform.json"
-            floor.write_text(json.dumps({"toolVersionRange": "[5.0.0, 6.0.0-0)"}))
-            validate_owner_pins(self.binding, root)
-            floor.write_text(json.dumps({"toolVersionRange": "[5.0.0, 5.0.0-0)"}))
-            with self.assertRaisesRegex(ValueError, "owner tool pin and range floor"):
-                validate_owner_pins(self.binding, root)
+        with self.assertRaisesRegex(ValueError, "exact supported"):
+            validate_binding(self.binding)
 
     def test_unknown_missing_mixed_or_non_numeric_publication_fields_refuse(self):
         for key, value in (("kind", "other/v1"), ("inventoryUrl", "invented"), ("releaseId", True),
@@ -312,7 +323,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
         binding = copy.deepcopy(load_binding(require_publication=False))
         version = binding["publication"]["version"]
         source = binding["producer"]["sourceRevision"]
-        framework = "net11.0" if version.startswith("5.") else "net10.0"
+        framework = "net11.0" if version.startswith(("5.", "6.")) else "net10.0"
         with tempfile.TemporaryDirectory() as directory, contextlib.ExitStack() as stack:
             root = Path(directory)
             archive = root / "synthetic.nupkg"

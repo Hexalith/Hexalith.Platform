@@ -72,6 +72,33 @@ archives and current Parties source; the independent production closure test
 exports the real current producer catalog and proves genuine Server707 output.
 No retained image identity is relabeled as current native acceptance.
 
+## Current producer renewal on 2026-11-14
+
+The current tuple selects the official signed Builds6.0.0 publication from
+`1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5`. Its original successful release
+run43591439615, release445269620 and artifact14113221849 bind the two published
+CLI packages and an empty container inventory. The handoff, NuGet signatures,
+archive and Tooling hashes are recorded in `eng/builds-tuple.json`. This supplies
+publication identity; fresh 349/412/current qualification remains independently
+required. Generation4/5 bindings and immutable companion refs retain their
+historical meaning. Unknown future generations remain refused.
+
+Upstream Platform `70a016a98c97c19656a4c279a93b88e255d41b07` selected EventStore
+`3c3a8c70f83cc8e0ddde9f5d8eb0a1ff860eea6f`. The official commit API
+`GET /repos/Hexalith/Hexalith.EventStore/commits/3c3a8c70f83cc8e0ddde9f5d8eb0a1ff860eea6f`
+returned HTTP422, `No commit found for SHA: 3c3a8c70f83cc8e0ddde9f5d8eb0a1ff860eea6f`.
+An authenticated `git fetch --no-recurse-submodules
+https://github.com/Hexalith/Hexalith.EventStore.git
+3c3a8c70f83cc8e0ddde9f5d8eb0a1ff860eea6f` into a private bare object store
+exited128: `fatal: remote error: upload-pack: not our ref
+3c3a8c70f83cc8e0ddde9f5d8eb0a1ff860eea6f`.
+
+Only that unavailable gitlink is reconciled to Platform's previously explicit
+public source `49084f66f8d6545cae442875355a7066d5f5e73d`; all other upstream
+content and the Builds1ebc selection are retained. This metadata repair does not
+attribute test results to the unavailable source or replace any nested working
+checkout. The umbrella's newer EventStore source remains a separate selection.
+
 Historical root builds retain the catalog objects while applying the current
 source's four bounded security dependency patches: Aspire.Hosting13.6.4→13.6.5,
 SignalR.Redis10.0.14→10.0.15, and its Options/DI.Abstractions10.0.15 dependency

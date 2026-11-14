@@ -91,7 +91,7 @@ def tuple_runtime_context(binding, suite, profile_sha256):
                         "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
                         "currentRuntimeQualification": False}
         raise ValueError("A retained runtime requires its exact frozen source, tool version and profile.")
-    if suite not in ("current42", "base42", "extensions") or not version.startswith("5."):
+    if suite not in ("current42", "base42", "extensions") or not version.startswith(("5.", "6.")):
         raise ValueError("Current runtime qualification requires the bound NET11 Builds generation.")
     return {"purpose": "current-net11-with-retained-public-sdk42", "targetFramework": "net11.0",
             "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
@@ -318,7 +318,7 @@ def _run_tuple_ci(metadata_token):
                 raise ValueError("Tracked source is dirty.")
         if args.artifacts:
             identity = json.loads((args.artifacts.resolve() / "artifact-identity.json").read_bytes())
-            framework = "net11.0" if version.startswith("5.") else "net10.0"
+            framework = "net11.0" if version.startswith(("5.", "6.")) else "net10.0"
             tool = args.artifacts.resolve() / ("published/tools/" + framework + "/any")
             if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != version or identity["buildsRevision"] != source or identity.get("tupleBinding") != binding:
                 raise ValueError("Artifact receipt names another tool root or tuple.")
