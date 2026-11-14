@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-tags=integration_test",
+    "-run",
+    "^$",
+    "./pubsub/rabbitmq"
+  ],
+  "cwdSubject": "official checkout plus local patch",
+  "startedUtc": "2026-11-14T09:09:54.349531+00:00",
+  "endedUtc": "2026-11-14T09:09:55.081485+00:00",
+  "exitCode": 0,
+  "log": "integration-compile-only.log"
+}

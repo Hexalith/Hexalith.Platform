@@ -1,0 +1,56 @@
+{
+  "method": "Names verified in ten-repeat focused race output; all matrix rows covered by executed passing public boundary tests.",
+  "coverage": {
+    "ACK and successful retry": [
+      "TestPublishPublicConfirmationOutcomes",
+      "TestPublishPublicNativeConfirmationOutcomes"
+    ],
+    "NACK final failure and retry/exhaustion retention": [
+      "TestPublishPublicNACKPreservedOnRetryCancellation",
+      "TestPublishPublicNACKSurvivesTransportUncertainty",
+      "TestPublishPublicNativeConfirmationOutcomes"
+    ],
+    "native authorization and reconnect errors": [
+      "TestPublishPublicAccessRefused",
+      "TestPublishPublicNativeAccessRefused",
+      "TestPublishPublicReconnectFailureExhaustion"
+    ],
+    "cancellation before work and all waits": [
+      "TestPublishPublicCanceledBeforeStart",
+      "TestPublishPublicCanceledDeclaration",
+      "TestPublishPublicCanceledConfirmationAndWrite",
+      "TestPublishPublicCanceledReconnect",
+      "TestPublishPublicNativeTransportCancellation"
+    ],
+    "concurrent lock waiters and error isolation": [
+      "TestPublishPublicConcurrentWaitersDoNotAbortHolder",
+      "TestPublishPublicConcurrentErrorIsolation"
+    ],
+    "in-flight uncertainty and shutdown distinction": [
+      "TestPublishPublicClosedConfirmationRemainsUncertain",
+      "TestPublishPublicNACKSurvivesTransportUncertainty",
+      "TestPublishPublicNativeConfirmationOutcomes"
+    ],
+    "stale generation and finished cancellation": [
+      "TestPublishPublicStaleGenerationAndFinishedCancellation"
+    ],
+    "native no-confirm compatibility": [
+      "TestPublishPublicNativeUnconfirmed"
+    ],
+    "native cleanup and recovery": [
+      "TestPublishPublicNativeCloseAndRecovery"
+    ],
+    "live-context failure and terminal shutdown": [
+      "TestPublishPublicLiveContextFailureExhaustion",
+      "TestPublishPublicQueuedBeforeCloseIsTerminal"
+    ],
+    "initialization cancellation and independent URI timeout": [
+      "TestInitCancellation",
+      "TestInitNativeCancellationAndURITimeout"
+    ]
+  },
+  "fullSuiteLog": "verified-full-unit.log.gz",
+  "focusedRaceLog": "final-focused-race.log.gz",
+  "testsIncludeParentAndSubtestEvents": true,
+  "actualBrokerAndDaprQualification": false
+}

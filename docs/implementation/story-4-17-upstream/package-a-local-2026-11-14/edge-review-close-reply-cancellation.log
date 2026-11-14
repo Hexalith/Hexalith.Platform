@@ -1,0 +1,86 @@
+go version go1.26.10 linux/amd64
+Test command: /tmp/hexalith-job.DzTCBVAw/go/bin/go test ./pubsub/rabbitmq -run ^(TestReviewNativeDeniedReplyCancellation|TestPublishPublicNativeAccessRefused|TestPublishPublicNativeConfirmationOutcomes|TestPublishPublicNACKSurvivesTransportUncertainty)$ -count=1 -v
+=== RUN   TestPublishPublicNACKSurvivesTransportUncertainty
+=== PAUSE TestPublishPublicNACKSurvivesTransportUncertainty
+=== RUN   TestPublishPublicNativeConfirmationOutcomes
+=== PAUSE TestPublishPublicNativeConfirmationOutcomes
+=== RUN   TestPublishPublicNativeAccessRefused
+=== PAUSE TestPublishPublicNativeAccessRefused
+=== RUN   TestReviewNativeDeniedReplyCancellation
+=== RUN   TestReviewNativeDeniedReplyCancellation/channel_refused_stalled_reply
+time="2026-11-14T10:33:47.105845623+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.106100719+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.106276936+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: context canceled" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+    rabbitmq_publish_transport_test.go:640: result after native decoded broker 403 and tried close-ok: context canceled
+=== RUN   TestReviewNativeDeniedReplyCancellation/connection_refused_stalled_reply
+time="2026-11-14T10:33:47.106493156+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.106736113+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.106900362+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: context canceled" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+    rabbitmq_publish_transport_test.go:640: result after native decoded broker 403 and tried close-ok: context canceled
+--- PASS: TestReviewNativeDeniedReplyCancellation (0.00s)
+    --- PASS: TestReviewNativeDeniedReplyCancellation/channel_refused_stalled_reply (0.00s)
+    --- PASS: TestReviewNativeDeniedReplyCancellation/connection_refused_stalled_reply (0.00s)
+=== CONT  TestPublishPublicNACKSurvivesTransportUncertainty
+=== RUN   TestPublishPublicNACKSurvivesTransportUncertainty/generic_exhaustion
+=== PAUSE TestPublishPublicNACKSurvivesTransportUncertainty/generic_exhaustion
+=== RUN   TestPublishPublicNACKSurvivesTransportUncertainty/pipe_error_then_canceled_confirmation
+=== PAUSE TestPublishPublicNACKSurvivesTransportUncertainty/pipe_error_then_canceled_confirmation
+=== CONT  TestPublishPublicNACKSurvivesTransportUncertainty/generic_exhaustion
+time="2026-11-14T10:33:47.107149466+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: did not receive confirmation of publishing" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+=== CONT  TestPublishPublicNativeAccessRefused
+=== RUN   TestPublishPublicNativeAccessRefused/channel_access_refused
+=== PAUSE TestPublishPublicNativeAccessRefused/channel_access_refused
+=== RUN   TestPublishPublicNativeAccessRefused/connection_access_refused
+=== PAUSE TestPublishPublicNativeAccessRefused/connection_access_refused
+=== CONT  TestPublishPublicNativeAccessRefused/channel_access_refused
+=== CONT  TestPublishPublicNativeConfirmationOutcomes
+=== RUN   TestPublishPublicNativeConfirmationOutcomes/ack
+=== CONT  TestPublishPublicNACKSurvivesTransportUncertainty/pipe_error_then_canceled_confirmation
+time="2026-11-14T10:33:47.107221606+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107301125+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: did not receive confirmation of publishing" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+=== PAUSE TestPublishPublicNativeConfirmationOutcomes/ack
+=== RUN   TestPublishPublicNativeConfirmationOutcomes/nack
+=== PAUSE TestPublishPublicNativeConfirmationOutcomes/nack
+=== CONT  TestPublishPublicNativeAccessRefused/connection_access_refused
+time="2026-11-14T10:33:47.107404686+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107425678+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+=== RUN   TestPublishPublicNativeConfirmationOutcomes/nack_then_disconnect
+=== PAUSE TestPublishPublicNativeConfirmationOutcomes/nack_then_disconnect
+=== RUN   TestPublishPublicNativeConfirmationOutcomes/shutdown_during_confirmation
+=== PAUSE TestPublishPublicNativeConfirmationOutcomes/shutdown_during_confirmation
+time="2026-11-14T10:33:47.10744263+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (403) Reason: \"ACCESS_REFUSED - write permission denied\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+=== CONT  TestPublishPublicNativeConfirmationOutcomes/ack
+=== CONT  TestPublishPublicNativeConfirmationOutcomes/nack_then_disconnect
+time="2026-11-14T10:33:47.107516695+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+=== CONT  TestPublishPublicNativeConfirmationOutcomes/nack
+=== CONT  TestPublishPublicNativeConfirmationOutcomes/shutdown_during_confirmation
+time="2026-11-14T10:33:47.107662162+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107674791+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107721331+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (403) Reason: \"ACCESS_REFUSED - write permission denied\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- PASS: TestPublishPublicNativeAccessRefused (0.00s)
+    --- PASS: TestPublishPublicNativeAccessRefused/channel_access_refused (0.00s)
+    --- PASS: TestPublishPublicNativeAccessRefused/connection_access_refused (0.00s)
+time="2026-11-14T10:33:47.107585698+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107612716+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107849131+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107906441+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107923064+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.107977901+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (501) Reason: \"EOF\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.108012338+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: did not receive confirmation of publishing" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.10801581+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:47.108135447+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: did not receive confirmation of publishing" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- PASS: TestPublishPublicNativeConfirmationOutcomes (0.00s)
+    --- PASS: TestPublishPublicNativeConfirmationOutcomes/ack (0.00s)
+    --- PASS: TestPublishPublicNativeConfirmationOutcomes/shutdown_during_confirmation (0.00s)
+    --- PASS: TestPublishPublicNativeConfirmationOutcomes/nack (0.00s)
+    --- PASS: TestPublishPublicNativeConfirmationOutcomes/nack_then_disconnect (0.00s)
+time="2026-11-14T10:33:49.108134583+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:49.108186589+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:51.109364128+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: uncertain transport failure" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:33:51.109451397+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: context canceled" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- PASS: TestPublishPublicNACKSurvivesTransportUncertainty (0.00s)
+    --- PASS: TestPublishPublicNACKSurvivesTransportUncertainty/generic_exhaustion (4.00s)
+    --- PASS: TestPublishPublicNACKSurvivesTransportUncertainty/pipe_error_then_canceled_confirmation (4.00s)
+PASS
+ok  	github.com/dapr/components-contrib/pubsub/rabbitmq	4.010s
+Test exit code: 0

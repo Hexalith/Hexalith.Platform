@@ -1,0 +1,195 @@
+{
+  "status": "PASS",
+  "finalPatchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "officialCommit": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "checks": [
+    {
+      "id": "verified-full-unit",
+      "argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=120s",
+        "./pubsub/rabbitmq"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:01.106943+00:00",
+      "endedUtc": "2026-11-14T09:34:16.841291+00:00",
+      "exitCode": 0,
+      "log": "verified-full-unit.log.gz",
+      "originalLog": "verified-full-unit.log",
+      "logEncoding": "gzip",
+      "uncompressedLogSha256": "21c910908825d6b9ca449d248ad491b0f31a63449358c80f8c5ce7a9bdb8f66c",
+      "passedTopLevelEvents": 61,
+      "passedTestAndSubtestEvents": 192,
+      "uniquePassedTestAndSubtestNames": 192,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "55798ab380f3e102cc40eb7a4e49bdd7661be01e665b5df9bcc6f4b9bc456d65"
+    },
+    {
+      "id": "final-focused-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-timeout=180s",
+        "-run",
+        "^(TestPublishPublic|TestInit)",
+        "./pubsub/rabbitmq"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:29:28.807785+00:00",
+      "endedUtc": "2026-11-14T09:30:51.346958+00:00",
+      "exitCode": 0,
+      "log": "final-focused-race.log.gz",
+      "originalLog": "final-focused-race.log",
+      "logEncoding": "gzip",
+      "uncompressedLogSha256": "328407b929e554bc0d10d04902be1a0a213e874cb73a4cfd4a504b10233ed45a",
+      "passedTopLevelEvents": 220,
+      "passedTestAndSubtestEvents": 680,
+      "uniquePassedTestAndSubtestNames": 68,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "dca7886aa71039ec951a945d099dae983288e82a556fe301a021693c5450a3cd"
+    },
+    {
+      "id": "verified-legacy-fixture-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=10",
+        "-run",
+        "^TestMustReconnectOnAMQPError$",
+        "./pubsub/rabbitmq"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:16.841658+00:00",
+      "endedUtc": "2026-11-14T09:34:18.962537+00:00",
+      "exitCode": 0,
+      "log": "verified-legacy-fixture-race.log",
+      "passedTopLevelEvents": 10,
+      "passedTestAndSubtestEvents": 10,
+      "uniquePassedTestAndSubtestNames": 1,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "08d64c27695b2bad05fc2ac0846abba36f4c612d909a38957b5516ef1f46d244"
+    },
+    {
+      "id": "verified-vet",
+      "argv": [
+        "go",
+        "vet",
+        "./pubsub/rabbitmq"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:18.962875+00:00",
+      "endedUtc": "2026-11-14T09:34:19.125304+00:00",
+      "exitCode": 0,
+      "log": "verified-vet.log",
+      "passedTopLevelEvents": 0,
+      "passedTestAndSubtestEvents": 0,
+      "uniquePassedTestAndSubtestNames": 0,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "final-integration-compile-only",
+      "argv": [
+        "go",
+        "test",
+        "-tags=integration_test",
+        "-run",
+        "^$",
+        "./pubsub/rabbitmq"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:30:51.507922+00:00",
+      "endedUtc": "2026-11-14T09:30:52.346457+00:00",
+      "exitCode": 0,
+      "log": "final-integration-compile-only.log",
+      "passedTopLevelEvents": 0,
+      "passedTestAndSubtestEvents": 0,
+      "uniquePassedTestAndSubtestNames": 0,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "72733f6c0912ce81423e2f1c0825da882adc39e8fa1e5b803ffc657ff234bc46"
+    },
+    {
+      "id": "verified-gofmt",
+      "argv": [
+        "gofmt",
+        "-l",
+        "pubsub/rabbitmq/rabbitmq_test.go"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:01.101217+00:00",
+      "endedUtc": "2026-11-14T09:34:01.106698+00:00",
+      "exitCode": 0,
+      "log": "verified-gofmt.log",
+      "passedTopLevelEvents": 0,
+      "passedTestAndSubtestEvents": 0,
+      "uniquePassedTestAndSubtestNames": 0,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "verified-upstream-diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:19.125567+00:00",
+      "endedUtc": "2026-11-14T09:34:19.130027+00:00",
+      "exitCode": 0,
+      "log": "verified-upstream-diff-check.log",
+      "passedTopLevelEvents": 0,
+      "passedTestAndSubtestEvents": 0,
+      "uniquePassedTestAndSubtestNames": 0,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "completed-artifact-verification",
+      "argv": [
+        "python3",
+        "/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-local-2026-11-14/verify-artifacts.py",
+        "--source",
+        "/tmp/hexalith-job.ZK82D9vZ/components-contrib"
+      ],
+      "cwdSubject": "official checkout plus local patch",
+      "startedUtc": "2026-11-14T09:34:57.985396+00:00",
+      "endedUtc": "2026-11-14T09:34:58.550223+00:00",
+      "exitCode": 0,
+      "log": "completed-artifact-verification.log",
+      "passedTopLevelEvents": 0,
+      "passedTestAndSubtestEvents": 0,
+      "uniquePassedTestAndSubtestNames": 0,
+      "skipped": [],
+      "failed": [],
+      "storedLogSha256": "65b32e1edbe6ac82b1b4d8010025e64b237bef214070c8e6fdd22f4e38d5aa5d"
+    }
+  ],
+  "raceSubject": {
+    "patchSha256": "b49529292b89e8fc64222a4e955c9deb96b2c7039f42b788981e88814ecf19bb",
+    "note": "Only TestMustReconnectOnAMQPError fixture setup and explicit closed-state assertions changed after the ten-repeat focused race pass. Production and every selected focused test/helper are unchanged.",
+    "finalFixtureRetestedUnderRaceCount": 10
+  },
+  "scope": "RabbitMQ component unit/protocol-peer tests, static analysis, compile-only and offline patch/source checks. No broker, Dapr runtime or Platform qualification execution.",
+  "historicalFailures": {
+    "reviewRound1": "Three reviewers found and reproduced source defects; red logs and review-round-1.patch retained. Corrected counterparts and reviewer followups pass.",
+    "implementation-review-fixes-focused-initial.log": "Native test-peer connection.close method ID corrected from 40 to 50; final focused tests pass.",
+    "final-full-unit.log.gz": "One legacy reconnect-test fixture had zero connects/zero closes and was actually closed. Fixture corrected to explicitly open; existing false assertions retained and closed assertions added. verified-full-unit is authoritative.",
+    "verified-artifact-verification.log": "Verifier scratch child directory name collided on reuse. Helper now uses a unique TemporaryDirectory; completed-artifact-verification is authoritative."
+  }
+}

@@ -1,0 +1,40 @@
+package rabbitmq
+import (
+ "context"
+ "crypto/tls"
+ "net"
+ "testing"
+ "time"
+ amqp "github.com/rabbitmq/amqp091-go"
+ "github.com/stretchr/testify/require"
+ "google.golang.org/grpc/codes"
+ "google.golang.org/grpc/status"
+)
+func TestReviewNativePublishAccessRefused(t *testing.T) {
+ clientPipe, server := net.Pipe()
+ client := &publishObservedConn{Conn: clientPipe, closed: make(chan struct{})}
+ defer client.Close()
+ defer server.Close()
+ entered := make(chan struct{})
+ peerDone := make(chan error, 1)
+ go func() { defer server.Close(); peerDone <- (publishProtocolPeer{Conn:server,clientClosed:client.closed}).run("access refused",false,entered) }()
+ r := newPublicPublisher(newPublishTestBroker())
+ r.connection, r.channel, r.connectionCount = nil, nil, 0
+ r.metadata.PublisherConfirm = true
+ r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
+   r.metadata.ReconnectWait = time.Hour
+   return dialWithConfig(ctx,"amqp://guest:guest@localhost/?heartbeat=0",amqp.Config{},func(context.Context,string,string)(net.Conn,error){return client,nil})
+ }
+ ctx,cancel := context.WithCancel(t.Context())
+ defer cancel()
+ done:=startPublicPublish(r,ctx,"topic")
+ awaitPublishGate(t,entered)
+ require.NoError(t,r.channelMutex.Lock(t.Context()))
+ r.channelMutex.Unlock()
+ cancel()
+ err:=awaitPublish(t,done)
+ client.Close()
+ require.NoError(t,<-peerDone)
+ require.Equal(t,codes.FailedPrecondition,status.Code(err),"native access refusal became: %v",err)
+ require.Contains(t,err.Error(),"ACCESS_REFUSED")
+}

@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "issue": {
+      "url": "https://github.com/dapr/components-contrib/issues/4764",
+      "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+      "issue_number": 4764,
+      "body": "## Expected Behavior\n\nRabbitMQ publish failures should reach the public `Publish` caller and Dapr API within the\ncaller's existing deadline. Broker NACK and revoked-credential errors must remain attributable\nwhen the final outcome is failure; cancellation must not be returned as success. A successful\nretry should retain its actual outcome. An uncertain in-flight effect requires separate readback.\n\nThis follows the NACK part of [#4697](https://github.com/dapr/components-contrib/issues/4697)\nand [the 1.19 backport #4748](https://github.com/dapr/components-contrib/pull/4748). It concerns\nthe surrounding publish/reconnect/cancellation path, rather than re-reporting the fixed helper.\n\n## Actual Behavior\n\nRead-only checks on November 14, 2026 found Dapr v1.19.1 still declaring components-contrib\nv1.19.0 in its [immutable go.mod](https://github.com/dapr/dapr/blob/cfb5ee090dda7cfc26145c7703605d831350aa2a/go.mod).\nThe backport is present in release-1.19 source but is not in that component release.\n\nIn the [inspected release-1.19 source](https://github.com/dapr/components-contrib/blob/46cf4f95b0c84ecb4014b6f79103a1b1ca9c5fbc/pubsub/rabbitmq/rabbitmq.go#L224-L345):\n\n- `confirmationError` uses a context-free `Wait()`.\n- Both retry waits return `nil` when `ctx.Done()` fires.\n- The reconnect return value is discarded.\n- `publishSync` acquires `channelMutex` and declares the exchange before publishing. Lock,\n  exchange and connection waits need inclusion in the deadline analysis too.\n\nThe inspected [main revision](https://github.com/dapr/components-contrib/blob/440b15349565bb15f7a88636477864e5a9f8cc72/pubsub/rabbitmq/rabbitmq.go)\nhas the same relevant paths. A lower-level NACK fix does not establish their end-to-end outcome.\n\nOur retained Dapr-path qualification observed no accepted pressure rejection and three\nacknowledged IDs absent at its bounded readback. The stale-credential publication timed out;\nits producer recorded synthetic status 599, rather than a native broker error. The new-generation\ncontrol worked. These are historical observations, not a fresh reproduction or proof that one\nspecific source path caused the timeout or that the missing effects were permanently lost.\n\n## Steps to Reproduce the Problem\n\nThe [published work package and complete, unexecuted fixture recipes](https://github.com/Hexalith/Hexalith.EventStore/blob/51dd68b86a690ffe9e11c565dccec49b2d401a94/docs/implementation/story-3-21-rabbitmq-upstream-work-packages.md#concrete-reproduction-inputs-and-request-steps)\nprovide the immutable component/Subscription inputs and request commands. Use fresh fixture-local\nTLS credentials; no private qualification packet or credential material is required.\n\n1. Enable publisher confirms, durable delivery and the existing quorum queue. Stop its consumer,\n   apply/inspect `overflow=reject-publish,max-length=4` on the exact backpressure queue, and publish\n   eight distinct IDs through Dapr. Retain native NACKs, Dapr responses and elapsed time; restart\n   the consumer and reconcile every ID in the existing ten-second readback window.\n2. Exercise cancellation separately during confirmation, retry, reconnect, mutex acquisition,\n   exchange declaration and connection establishment. Check at the public `Publish` boundary;\n   timer-only tests or a mock returning no confirmation cannot cover those paths.\n3. Keep the old publisher alive, create the new credential generation and restart the consumer/new\n   publisher. Retain the new-generation positive control, revoke the old credential, and publish\n   through the identified old endpoint. Capture reconnect errors, Dapr response and persisted effects.\n\nThese recipes have not been executed as part of preparing this issue. The pinned released\nruntime and inspected backport source are distinct inputs; source inspection is not attestation\nthat the historical runtime embedded the backport.\n\n## Requested behavior and verification\n\n- Given a NACK and final publish failure, when it reaches Dapr, then the attributable\n  `did not receive confirmation of publishing` error survives; a real successful retry remains success.\n- Given cancellation at any listed wait, when the budget expires, then termination is bounded,\n  returns non-success and starts no delayed publication/retry after observing cancellation.\n- Given revoked-credential reconnect returning `Exception (403)` / `ACCESS_REFUSED`, when the\n  operation fails, then that error is preserved instead of being discarded or replaced by success.\n  A generic timeout is not a fabricated broker denial.\n- Given our existing qualification faults, when independently evaluated through Dapr, then\n  the separate paused-broker cancellation request returns synthetic 599 within ten seconds, acknowledged loss\n  is zero within ten-second recovery/readback, the new-generation effect occurs exactly once,\n  and no stale effect appears within the three-second window. Preserve existing request timeouts.\n  A separate cold-old-generation control cannot replace the live old-session observation.\n\nPlease extend the existing component and integration/certification tests at `Publish`, including\nstalled concurrent callers. No new retry service or private Dapr runtime is proposed. Supported\nrelease delivery and independent Dapr-path qualification would still be needed after a source fix.\n\n## Release Note\n\nRELEASE NOTE: **FIX** Preserve RabbitMQ publish failures through cancellation and reconnect, and bound publish waits by the caller's deadline.\n",
+      "state": "open",
+      "user": {
+        "login": "jpiquot",
+        "name": "jpiquot",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+        "id": 6775094
+      },
+      "assignees": null,
+      "labels": null,
+      "milestone": null,
+      "state_reason": null,
+      "comments": 0,
+      "created_at": "2026-11-14T03:22:27Z",
+      "updated_at": "2026-11-14T03:22:27Z",
+      "closed_at": null,
+      "display_url": "https://github.com/dapr/components-contrib/issues/4764",
+      "display_title": "RabbitMQ publish errors are lost during retry cancellation and reconnect"
+    },
+    "url": "https://github.com/dapr/components-contrib/issues/4764",
+    "title": "RabbitMQ publish errors are lost during retry cancellation and reconnect",
+    "display_url": "https://github.com/dapr/components-contrib/issues/4764",
+    "display_title": "RabbitMQ publish errors are lost during retry cancellation and reconnect"
+  },
+  "isError": false
+}

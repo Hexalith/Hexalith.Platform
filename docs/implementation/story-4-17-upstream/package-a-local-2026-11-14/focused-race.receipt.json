@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=10",
+    "-timeout=180s",
+    "-run",
+    "^TestPublishPublic",
+    "./pubsub/rabbitmq"
+  ],
+  "cwdSubject": "official checkout plus local patch",
+  "startedUtc": "2026-11-14T09:08:56.854107+00:00",
+  "endedUtc": "2026-11-14T09:09:52.737122+00:00",
+  "exitCode": 0,
+  "log": "focused-race.log.gz",
+  "originalLog": "focused-race.log",
+  "logEncoding": "gzip",
+  "uncompressedLogSha256": "ff06c9d9a7032449465309ae13fb422ef19f61c765667c12c6f5212056663079"
+}

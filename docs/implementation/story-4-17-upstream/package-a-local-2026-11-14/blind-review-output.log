@@ -1,0 +1,219 @@
+time="2026-11-14T10:15:17.380202423+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: context deadline exceeded" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:19.380465096+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: context deadline exceeded" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:21.381664967+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: context deadline exceeded" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- FAIL: TestBlindReviewLiveContextDeadlineError (4.00s)
+    blind_review_overlay_test.go:25: Publish returned nil after three DeadlineExceeded failures with live caller context
+time="2026-11-14T10:15:21.381886447+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: did not receive confirmation of publishing" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:23.383221831+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed in channel.Publish: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.384518578+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: context canceled" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- FAIL: TestBlindReviewNACKThenUncertainWrite (4.00s)
+    blind_review_overlay_test.go:52: earlier NACK replaced by uncertain failure: io: read/write on closed pipe
+--- FAIL: TestBlindReviewQueuedClosedPublish (0.00s)
+    blind_review_overlay_test.go:81: closed queued publish classified Unavailable: cannot connect after component is stopped
+time="2026-11-14T10:15:25.385183679+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.385510223+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.385553206+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.385748986+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.385779075+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.385864846+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38590295+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386014492+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386040933+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386162799+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386190293+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386260068+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386291108+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386432433+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386462932+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386640827+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386677699+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38685867+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.386886104+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387014738+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387044015+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387147085+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38718572+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38728341+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38731431+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387426247+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38745331+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387764739+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.387845125+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388139692+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388167496+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388255902+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388284428+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388398148+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388427665+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388540444+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388575718+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388695631+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388723896+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388801687+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388835312+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388937871+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.388974702+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389106708+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389132308+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389373772+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389401015+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389515362+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.38954777+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389623306+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389654707+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389856032+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389888265+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.389989347+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390020407+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390111288+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390141166+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390218106+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390242733+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390328249+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390357416+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390434525+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390491591+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390605286+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39063308+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390753104+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.3907822+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390947596+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.390982013+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391115236+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391151106+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391242914+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391272451+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391368713+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391400285+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391488957+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391513564+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391601044+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391628367+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391722089+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391746476+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391848144+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.391883352+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392004142+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392033449+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392110814+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392138858+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392228763+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39225835+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392465506+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392495244+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392624665+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392653601+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392743882+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392771866+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392939021+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.392966424+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393101832+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393135658+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393285417+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393331887+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393430308+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393459775+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393585676+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393620764+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393714326+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393739344+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393836513+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393867723+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393942408+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.393967788+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394047863+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394072832+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394163442+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394202258+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394293234+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394325938+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394475423+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394511863+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394580607+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394604533+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394750211+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394788696+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394910407+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.394939443+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395117444+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39514635+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395237817+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395261694+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395400909+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395434995+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395512325+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395539127+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395666409+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395701838+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395796377+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395825183+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39592696+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.395955576+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396062458+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396101685+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396215455+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396268308+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396540306+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396592898+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396691259+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396730749+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396876312+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396907974+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.396999355+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397034603+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39711544+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397152974+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397261685+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397291252+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397384644+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397412207+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397489017+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.397527431+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39804726+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398155325+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398613364+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398676661+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398813537+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398842613+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398941966+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.398975201+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399081747+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399112818+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399217481+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399246798+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399309179+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399339507+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399558141+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399585414+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.39968834+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399731463+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399799976+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399835726+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399910486+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.399940684+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400002975+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400027583+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400100424+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400128218+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400357689+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400380253+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400547081+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400578702+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400668141+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.40069824+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400780835+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400809691+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400906589+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400932319+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.400997125+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.401019859+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.401127819+01:00" level=error msg="rabbitmq pub/sub: reset: channel.Close() failed: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:25.401157256+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- FAIL: TestBlindReviewNativeReset (0.02s)
+    blind_review_overlay_test.go:120: reset returned errors from its own forced transport closure on 99/100 otherwise healthy connections
+time="2026-11-14T10:15:25.401366833+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- FAIL: TestBlindReviewNativeAccessRefused (0.00s)
+    blind_review_overlay_test.go:164: real broker ACCESS_REFUSED replaced by Unavailable: context canceled
+FAIL
+FAIL	github.com/dapr/components-contrib/pubsub/rabbitmq	8.026s
+FAIL

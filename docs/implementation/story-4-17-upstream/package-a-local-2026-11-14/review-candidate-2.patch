@@ -1,0 +1,2086 @@
+diff --git a/pubsub/rabbitmq/rabbitmq.go b/pubsub/rabbitmq/rabbitmq.go
+index 4e5530acc40f16cf9a9fb480166c7a6e87e8aae6..73613299341f21c80c0f3af3cfd4358cc6700ea0 100644
+--- a/pubsub/rabbitmq/rabbitmq.go
++++ b/pubsub/rabbitmq/rabbitmq.go
+@@ -19,6 +19,7 @@ import (
+ 	"errors"
+ 	"fmt"
+ 	"math"
++	"net"
+ 	"reflect"
+ 	"strconv"
+ 	"strings"
+@@ -27,12 +28,15 @@ import (
+ 	"time"
+ 
+ 	"github.com/google/uuid"
++	"google.golang.org/grpc/codes"
++	"google.golang.org/grpc/status"
+ 
+ 	amqp "github.com/rabbitmq/amqp091-go"
+ 
+ 	common "github.com/dapr/components-contrib/common/component/rabbitmq"
+ 	"github.com/dapr/components-contrib/metadata"
+ 	"github.com/dapr/components-contrib/pubsub"
++	"github.com/dapr/kit/concurrency/lock"
+ 	"github.com/dapr/kit/logger"
+ 	kitstrings "github.com/dapr/kit/strings"
+ )
+@@ -75,16 +79,18 @@ const (
+ // publisher on this component.
+ var errTerminalSubscription = errors.New("subscription configuration is not valid")
+ 
++var errPublishConfirmation = errors.New("did not receive confirmation of publishing")
++
+ // RabbitMQ allows sending/receiving messages in pub/sub format.
+ type rabbitMQ struct {
+ 	connection        rabbitMQConnectionBroker
+ 	channel           rabbitMQChannelBroker
+-	channelMutex      sync.RWMutex
++	channelMutex      *lock.Context
+ 	connectionCount   int
+ 	metadata          *rabbitmqMetadata
+ 	declaredExchanges map[string]bool
+ 
+-	connectionDial func(protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error)
++	connectionDial func(ctx context.Context, protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error)
+ 	closeCh        chan struct{}
+ 	closed         atomic.Bool
+ 	wg             sync.WaitGroup
+@@ -97,7 +103,7 @@ type rabbitMQ struct {
+ //nolint:interfacebloat
+ type rabbitMQChannelBroker interface {
+ 	PublishWithContext(ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing) error
+-	PublishWithDeferredConfirmWithContext(ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing) (*amqp.DeferredConfirmation, error)
++	PublishWithDeferredConfirmWithContext(ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing) (rabbitMQConfirmation, error)
+ 	QueueDeclare(name string, durable bool, autoDelete bool, exclusive bool, noWait bool, args amqp.Table) (amqp.Queue, error)
+ 	QueueDeclarePassive(name string, durable bool, autoDelete bool, exclusive bool, noWait bool, args amqp.Table) (amqp.Queue, error)
+ 	QueueBind(name string, key string, exchange string, noWait bool, args amqp.Table) error
+@@ -116,25 +122,200 @@ type rabbitMQChannelBroker interface {
+ // interface used to allow unit testing.
+ type rabbitMQConnectionBroker interface {
+ 	Close() error
++	Abort() error
++}
++
++type rabbitMQConfirmation interface {
++	WaitContext(context.Context) (bool, error)
++}
++
++// The adapters retain the native AMQP API while exposing a confirmation seam and
++// the exact transport belonging to this connection generation. AMQP Close is a
++// protocol handshake and cannot interrupt a blocked network operation.
++type rabbitMQAMQPChannel struct {
++	*amqp.Channel
++	confirmations   <-chan amqp.Confirmation
++	channelClose    <-chan *amqp.Error
++	connectionClose <-chan *amqp.Error
++	closeCause      *amqp.Error
++}
++
++func (c *rabbitMQAMQPChannel) PublishWithDeferredConfirmWithContext(ctx context.Context, exchange, key string, mandatory, immediate bool, msg amqp.Publishing) (rabbitMQConfirmation, error) {
++	// One notification listener per channel, with at most one outstanding
++	// publication under channelMutex. Clear any notification from a failed write
++	// before starting the next serialized attempt.
++	for c.confirmations != nil {
++		select {
++		case _, ok := <-c.confirmations:
++			if !ok {
++				return nil, c.closedError(ctx)
++			}
++		default:
++			goto publish
++		}
++	}
++publish:
++	confirmation, err := c.Channel.PublishWithDeferredConfirmWithContext(ctx, exchange, key, mandatory, immediate, msg)
++	if err != nil && c.IsClosed() {
++		return nil, c.closedError(ctx)
++	}
++	if confirmation == nil {
++		return nil, err
++	}
++	return &rabbitMQAMQPConfirmation{channel: c, tag: confirmation.DeliveryTag}, err
++}
++
++func (c *rabbitMQAMQPChannel) Confirm(noWait bool) error {
++	err := c.Channel.Confirm(noWait)
++	if err != nil {
++		c.pollClose()
++		if c.closeCause != nil {
++			return c.closeCause
++		}
++	}
++	return err
++}
++
++// NotifyClose retains the original channel/connection exception before shutdown
++// completes pending deferred confirmations with ack=false. No notification
++// goroutines or per-publish listener registrations are needed.
++func (c *rabbitMQAMQPChannel) retainClose(cause *amqp.Error) {
++	if cause != nil && (c.closeCause == nil || (cause.Server && !c.closeCause.Server)) {
++		c.closeCause = cause
++	}
++}
++
++func (c *rabbitMQAMQPChannel) pollClose() {
++	select {
++	case cause, ok := <-c.channelClose:
++		if !ok {
++			c.channelClose = nil
++		} else {
++			c.retainClose(cause)
++		}
++	default:
++	}
++	select {
++	case cause, ok := <-c.connectionClose:
++		if !ok {
++			c.connectionClose = nil
++		} else {
++			c.retainClose(cause)
++		}
++	default:
++	}
++}
++
++func (c *rabbitMQAMQPChannel) closedError(ctx context.Context) error {
++	for {
++		c.pollClose()
++		if c.closeCause != nil {
++			return operationError(ctx, c.closeCause)
++		}
++		if c.channelClose == nil {
++			return operationError(ctx, amqp.ErrClosed)
++		}
++		select {
++		case cause, ok := <-c.channelClose:
++			if !ok {
++				c.channelClose = nil
++			} else {
++				c.retainClose(cause)
++			}
++		case cause, ok := <-c.connectionClose:
++			if !ok {
++				c.connectionClose = nil
++			} else {
++				c.retainClose(cause)
++			}
++		case <-ctx.Done():
++			c.pollClose()
++			if c.closeCause != nil {
++				return operationError(ctx, c.closeCause)
++			}
++			return ctx.Err()
++		}
++	}
++}
++
++type rabbitMQAMQPConfirmation struct {
++	channel *rabbitMQAMQPChannel
++	tag     uint64
++}
++
++func (c *rabbitMQAMQPConfirmation) outcome(confirmation amqp.Confirmation) (bool, error) {
++	if !confirmation.Ack {
++		// This notification proves a real broker NACK, even if a disconnect
++		// follows immediately. Shutdown never emits one.
++		return false, errPublishConfirmation
++	}
++	return true, nil
++}
++
++func (c *rabbitMQAMQPConfirmation) WaitContext(ctx context.Context) (bool, error) {
++	for {
++		select {
++		case confirmation, ok := <-c.channel.confirmations:
++			if !ok {
++				return false, c.channel.closedError(ctx)
++			}
++			if confirmation.DeliveryTag == c.tag {
++				return c.outcome(confirmation)
++			}
++		case <-ctx.Done():
++			// Preserve a definitive notification that arrived before cancellation.
++			select {
++			case confirmation, ok := <-c.channel.confirmations:
++				if ok && confirmation.DeliveryTag == c.tag {
++					return c.outcome(confirmation)
++				}
++			default:
++			}
++			return false, c.channel.closedError(ctx)
++		}
++	}
++}
++
++type rabbitMQAMQPConnection struct {
++	*amqp.Connection
++	transport net.Conn
++}
++
++func (c *rabbitMQAMQPConnection) Abort() error { return c.transport.Close() }
++
++// stopAbort joins an already-running callback before its caller releases the
++// channel lock or hands a newly established connection to another caller.
++func abortOnCancel(ctx context.Context, connection rabbitMQConnectionBroker) (stopAbort func()) {
++	done := make(chan struct{})
++	stop := context.AfterFunc(ctx, func() {
++		defer close(done)
++		if connection != nil {
++			_ = connection.Abort()
++		}
++	})
++	var once sync.Once
++	return func() {
++		once.Do(func() {
++			if !stop() {
++				<-done
++			}
++		})
++	}
+ }
+ 
+ // NewRabbitMQ creates a new RabbitMQ pub/sub.
+ func NewRabbitMQ(logger logger.Logger) pubsub.PubSub {
+ 	return &rabbitMQ{
+ 		declaredExchanges: make(map[string]bool),
++		channelMutex:      lock.NewContext(),
+ 		logger:            logger,
+ 		connectionDial:    dial,
+ 		closeCh:           make(chan struct{}),
+ 	}
+ }
+ 
+-func dial(protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
+-	var (
+-		conn *amqp.Connection
+-		ch   *amqp.Channel
+-		err  error
+-		cfg  = amqp.Config{Heartbeat: heartBeat, Locale: defaultLocale} // use default locale of amqp091-go
+-	)
++func dial(ctx context.Context, protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++	cfg := amqp.Config{Heartbeat: heartBeat, Locale: defaultLocale}
+ 	if len(clientName) > 0 {
+ 		cfg.Properties = map[string]interface{}{
+ 			propertyClientName: clientName,
+@@ -147,22 +328,94 @@ func dial(protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls
+ 			cfg.SASL = []amqp.Authentication{&amqp.ExternalAuth{}}
+ 		}
+ 	}
+-	conn, err = amqp.DialConfig(uri, cfg)
++	return dialWithConfig(ctx, uri, cfg, nil)
++}
++
++func dialWithConfig(ctx context.Context, uri string, cfg amqp.Config, networkDial func(context.Context, string, string) (net.Conn, error)) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++	var (
++		conn *amqp.Connection
++		ch   *amqp.Channel
++		err  error
++	)
++	if err = ctx.Err(); err != nil {
++		return nil, nil, err
++	}
++	// Preserve the library's default/URI handshake timeout in addition to the
++	// caller's cancellation budget. Its custom Dial hook otherwise loses this.
++	parsed, err := amqp.ParseURI(uri)
+ 	if err != nil {
+ 		return nil, nil, err
+ 	}
++	timeout := 30 * time.Second
++	if parsed.ConnectionTimeout != 0 {
++		timeout = time.Duration(parsed.ConnectionTimeout) * time.Millisecond
++	}
++	if networkDial == nil {
++		networkDial = (&net.Dialer{Timeout: timeout}).DialContext
++	}
++	var transport net.Conn
++	stopAbort := func() {}
++	defer func() { stopAbort() }()
++	cfg.Dial = func(network, address string) (net.Conn, error) {
++		transport, err = networkDial(ctx, network, address)
++		if err != nil {
++			return nil, err
++		}
++		if err = transport.SetDeadline(time.Now().Add(timeout)); err != nil {
++			_ = transport.Close()
++			return nil, err
++		}
++		// Capture the raw transport, including during TLS and AMQP handshakes.
++		raw := transport
++		done := make(chan struct{})
++		stop := context.AfterFunc(ctx, func() {
++			defer close(done)
++			_ = raw.Close()
++		})
++		var once sync.Once
++		stopAbort = func() {
++			once.Do(func() {
++				if !stop() {
++					<-done
++				}
++			})
++		}
++		return transport, nil
++	}
++	conn, err = amqp.DialConfig(uri, cfg)
++	if err != nil {
++		if transport != nil {
++			_ = transport.Close()
++		}
++		return nil, nil, operationError(ctx, err)
++	}
+ 
++	if err = ctx.Err(); err != nil {
++		_ = transport.Close()
++		return nil, nil, err
++	}
++	connectionClose := conn.NotifyClose(make(chan *amqp.Error, 1))
+ 	ch, err = conn.Channel()
+ 	if err != nil {
+-		_ = conn.Close()
+-		return nil, nil, err
++		_ = transport.Close()
++		return nil, nil, operationError(ctx, err)
+ 	}
+ 
+-	return conn, ch, nil
++	stopAbort()
++	if err = ctx.Err(); err != nil {
++		_ = transport.Close()
++		return nil, nil, err
++	}
++	return &rabbitMQAMQPConnection{Connection: conn, transport: transport}, &rabbitMQAMQPChannel{
++		Channel:         ch,
++		confirmations:   ch.NotifyPublish(make(chan amqp.Confirmation, 1)),
++		channelClose:    ch.NotifyClose(make(chan *amqp.Error, 1)),
++		connectionClose: connectionClose,
++	}, nil
+ }
+ 
+ // Init does metadata parsing and connection creation.
+-func (r *rabbitMQ) Init(_ context.Context, metadata pubsub.Metadata) error {
++func (r *rabbitMQ) Init(ctx context.Context, metadata pubsub.Metadata) error {
+ 	meta, err := createMetadata(metadata, r.logger)
+ 	if err != nil {
+ 		return err
+@@ -174,20 +427,25 @@ func (r *rabbitMQ) Init(_ context.Context, metadata pubsub.Metadata) error {
+ 		r.logger.Infof("%s exchange kind is %s: publishers must set the '%s' publish metadata to the partition key, and subscribers must set it to the queue's bucket weight", logMessagePrefix, exchangeKindConsistentHash, reqMetadataRoutingKey)
+ 	}
+ 
+-	if err := r.reconnect(0); err != nil {
++	if err := r.reconnect(ctx, 0); err != nil {
+ 		return err
+ 	}
+ 
+ 	return nil
+ }
+ 
+-func (r *rabbitMQ) reconnect(connectionCount int) error {
+-	r.channelMutex.Lock()
++func (r *rabbitMQ) reconnect(ctx context.Context, connectionCount int) error {
++	if err := r.channelMutex.Lock(ctx); err != nil {
++		return err
++	}
+ 	defer r.channelMutex.Unlock()
++	if err := ctx.Err(); err != nil {
++		return err
++	}
+ 
+ 	if r.isStopped() {
+ 		// Do not reconnect on stopped service.
+-		return errors.New("cannot connect after component is stopped")
++		return pubsub.NewTerminalError(errors.New("cannot connect after component is stopped"))
+ 	}
+ 
+ 	r.logger.Infof("%s connectionCount: current=%d reference=%d", logMessagePrefix, r.connectionCount, connectionCount)
+@@ -208,21 +466,34 @@ func (r *rabbitMQ) reconnect(connectionCount int) error {
+ 		return err
+ 	}
+ 
+-	r.connection, r.channel, err = r.connectionDial(r.metadata.internalProtocol, r.metadata.connectionURI(), r.metadata.ClientName, r.metadata.HeartBeat, tlsCfg, r.metadata.SaslExternal)
++	connection, channel, err := r.connectionDial(ctx, r.metadata.internalProtocol, r.metadata.connectionURI(), r.metadata.ClientName, r.metadata.HeartBeat, tlsCfg, r.metadata.SaslExternal)
+ 	if err != nil {
+-		_ = r.reset()
+-
++		return operationError(ctx, err)
++	}
++	stopAbort := abortOnCancel(ctx, connection)
++	defer stopAbort()
++	installed := false
++	defer func() {
++		if !installed {
++			_ = connection.Abort()
++		}
++	}()
++	if err = ctx.Err(); err != nil {
+ 		return err
+ 	}
+ 
+ 	if r.metadata.PublisherConfirm {
+-		err = r.channel.Confirm(false)
++		err = channel.Confirm(false)
+ 		if err != nil {
+-			_ = r.reset()
+-
+-			return err
++			return operationError(ctx, err)
+ 		}
+ 	}
++	stopAbort()
++	if err = ctx.Err(); err != nil {
++		return err
++	}
++	r.connection, r.channel = connection, channel
++	installed = true
+ 
+ 	r.connectionCount++
+ 
+@@ -232,16 +503,29 @@ func (r *rabbitMQ) reconnect(connectionCount int) error {
+ }
+ 
+ func (r *rabbitMQ) publishSync(ctx context.Context, req *pubsub.PublishRequest) (rabbitMQChannelBroker, int, error) {
+-	r.channelMutex.Lock()
++	if err := r.channelMutex.Lock(ctx); err != nil {
++		return nil, 0, err
++	}
+ 	defer r.channelMutex.Unlock()
++	if err := ctx.Err(); err != nil {
++		return r.channel, r.connectionCount, err
++	}
++	if r.closed.Load() {
++		return r.channel, r.connectionCount, pubsub.NewTerminalError(errors.New("component is closed"))
++	}
+ 
+ 	if r.channel == nil {
+ 		return r.channel, r.connectionCount, errors.New(errorChannelNotInitialized)
+ 	}
++	stopAbort := abortOnCancel(ctx, r.connection)
++	defer stopAbort()
+ 
+ 	if err := r.ensureExchangeDeclared(r.channel, req.Topic, r.metadata.ExchangeKind, r.metadata.Durable, r.metadata.DeleteWhenUnused, r.metadata.isPassiveExchangeDeclare()); err != nil {
+ 		r.logger.Errorf("%s publishing to %s failed in ensureExchangeDeclared: %v", logMessagePrefix, req.Topic, err)
+ 
++		return r.channel, r.connectionCount, operationError(ctx, err)
++	}
++	if err := ctx.Err(); err != nil {
+ 		return r.channel, r.connectionCount, err
+ 	}
+ 	routingKey := ""
+@@ -278,20 +562,28 @@ func (r *rabbitMQ) publishSync(ctx context.Context, req *pubsub.PublishRequest)
+ 	}
+ 
+ 	common.ApplyMetadataToPublishing(req.Metadata, &p)
++	if err := ctx.Err(); err != nil {
++		return r.channel, r.connectionCount, err
++	}
+ 
+ 	confirm, err := r.channel.PublishWithDeferredConfirmWithContext(ctx, req.Topic, routingKey, false, false, p)
+ 	if err != nil {
+ 		r.logger.Errorf("%s publishing to %s failed in channel.Publish: %v", logMessagePrefix, req.Topic, err)
+ 
+-		return r.channel, r.connectionCount, err
++		return r.channel, r.connectionCount, operationError(ctx, err)
+ 	}
+ 
+ 	// confirm will be nil if are not requesting publish confirmations
+ 	if confirm != nil {
+ 		// Blocks until the server confirms
+-		if err = confirmationError(confirm); err != nil {
++		if err = confirmationError(ctx, confirm); err != nil {
+ 			r.logger.Errorf("%s publishing to %s failed: %v", logMessagePrefix, req.Topic, err)
+ 
++			return r.channel, r.connectionCount, err
++		}
++	} else {
++		stopAbort()
++		if err = ctx.Err(); err != nil {
+ 			return r.channel, r.connectionCount, err
+ 		}
+ 	}
+@@ -300,14 +592,40 @@ func (r *rabbitMQ) publishSync(ctx context.Context, req *pubsub.PublishRequest)
+ }
+ 
+ // confirmationError waits for the broker's confirmation and returns an error if the broker did not ack the message.
+-func confirmationError(confirm interface{ Wait() bool }) error {
+-	if !confirm.Wait() {
+-		return errors.New("did not receive confirmation of publishing")
++func confirmationError(ctx context.Context, confirm rabbitMQConfirmation) error {
++	acked, err := confirm.WaitContext(ctx)
++	if err != nil {
++		return err
++	}
++	if !acked {
++		// Closing a transport also completes native deferred confirmations with
++		// ack=false. A cancellation-induced completion is not a broker NACK.
++		if err = ctx.Err(); err != nil {
++			return err
++		}
++		return errPublishConfirmation
+ 	}
+ 
+ 	return nil
+ }
+ 
++// Cancellation can make the AMQP handshake return the library's generic
++// ErrCredentials. Only an actual server exception remains conclusive here.
++func operationError(ctx context.Context, err error) error {
++	if ctx.Err() != nil {
++		var brokerError *amqp.Error
++		if !errors.As(err, &brokerError) || !brokerError.Server {
++			return ctx.Err()
++		}
++	}
++	return err
++}
++
++func authorizationError(err error) bool {
++	var brokerError *amqp.Error
++	return errors.As(err, &brokerError) && brokerError.Code == amqp.AccessRefused
++}
++
+ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) error {
+ 	if r.closed.Load() {
+ 		return pubsub.NewTerminalError(errors.New("component is closed"))
+@@ -315,35 +633,72 @@ func (r *rabbitMQ) Publish(ctx context.Context, req *pubsub.PublishRequest) erro
+ 
+ 	r.logger.Debugf("%s publishing message to %s", logMessagePrefix, req.Topic)
+ 
+-	attempt := 0
+-	for {
+-		attempt++
+-		channel, connectionCount, err := r.publishSync(ctx, req)
+-		if err == nil {
+-			return nil
++	var (
++		failure         error
++		conclusive      error
++		connectionCount int
++		reconnect       bool
++	)
++	result := func() error {
++		if conclusive != nil {
++			return pubsub.NewRetriableError(conclusive)
+ 		}
+-		if attempt >= publishMaxRetries {
+-			r.logger.Errorf("%s publishing failed: %v", logMessagePrefix, err)
+-			return pubsub.NewRetriableError(err)
++		if ctx.Err() != nil {
++			return pubsub.NewRetriableError(ctx.Err())
+ 		}
+-		if mustReconnect(channel, err) {
+-			r.logger.Warnf("%s publisher is reconnecting in %s ...", logMessagePrefix, r.metadata.ReconnectWait.String())
+-			select {
+-			case <-time.After(r.metadata.ReconnectWait):
+-			case <-ctx.Done():
+-				return nil
++		if failure != nil {
++			return pubsub.NewRetriableError(failure)
++		}
++		return pubsub.NewRetriableError(errors.New("publishing failed without a confirmation"))
++	}
++	remember := func(err error) {
++		failure = err
++		var brokerError *amqp.Error
++		if errors.Is(err, errPublishConfirmation) || (errors.As(err, &brokerError) && brokerError.Server) {
++			conclusive = err
++		}
++	}
++	for attempt := 0; attempt < publishMaxRetries; attempt++ {
++		if ctx.Err() != nil {
++			return result()
++		}
++		if attempt > 0 {
++			delay := publishRetryWaitSeconds * time.Second
++			if reconnect {
++				delay = r.metadata.ReconnectWait
+ 			}
+-
+-			_ = r.reconnect(connectionCount) //nolint:errcheck // legacy behavior preserved
+-		} else {
+-			r.logger.Warnf("%s publishing attempt (%d/%d) failed: %v", logMessagePrefix, attempt, publishMaxRetries, err)
++			timer := time.NewTimer(delay)
+ 			select {
+-			case <-time.After(publishRetryWaitSeconds * time.Second):
++			case <-timer.C:
+ 			case <-ctx.Done():
+-				return nil
++				timer.Stop()
++				return result()
++			}
++		}
++		if ctx.Err() != nil {
++			return result()
++		}
++		if reconnect {
++			if err := r.reconnect(ctx, connectionCount); err != nil {
++				remember(err)
++				if authorizationError(err) || status.Code(err) == codes.FailedPrecondition {
++					return pubsub.NewTerminalError(err)
++				}
++				continue
+ 			}
+ 		}
++		channel, count, err := r.publishSync(ctx, req)
++		connectionCount = count
++		if err == nil {
++			return nil
++		}
++		remember(err)
++		if authorizationError(err) || status.Code(err) == codes.FailedPrecondition {
++			return pubsub.NewTerminalError(err)
++		}
++		reconnect = mustReconnect(channel, err)
+ 	}
++	return result()
+ }
+ 
+ func (r *rabbitMQ) Subscribe(ctx context.Context, req pubsub.SubscribeRequest, handler pubsub.Handler) error {
+@@ -650,7 +1005,7 @@ func (r *rabbitMQ) validateBindingRoutingKeys(topic, queueName string, routingKe
+ }
+ 
+ func (r *rabbitMQ) ensureSubscription(req pubsub.SubscribeRequest, queueName string) (rabbitMQChannelBroker, int, *amqp.Queue, error) {
+-	r.channelMutex.Lock()
++	_ = r.channelMutex.Lock(context.Background())
+ 	defer r.channelMutex.Unlock()
+ 
+ 	if r.channel == nil {
+@@ -763,7 +1118,7 @@ func (r *rabbitMQ) subscribeForever(ctx context.Context, req pubsub.SubscribeReq
+ 				r.logger.Infof("%s subscription for %s has context canceled", logMessagePrefix, queueName)
+ 				return
+ 			}
+-			_ = r.reconnect(connectionCount) //nolint:errcheck // legacy behavior preserved
++			_ = r.reconnect(ctx, connectionCount) //nolint:errcheck // legacy behavior preserved
+ 		}
+ 	}
+ }
+@@ -924,10 +1279,21 @@ func (r *rabbitMQ) reset() (err error) {
+ 	if len(r.declaredExchanges) > 0 {
+ 		r.declaredExchanges = make(map[string]bool)
+ 	}
++	// Abort before graceful closes: a protocol Close itself can wait for a
++	// blocked writer or an unresponsive broker. The transport belongs to the
++	// generation protected by channelMutex.
++	if r.connection != nil {
++		_ = r.connection.Abort()
++	}
+ 
+ 	if r.channel != nil {
+ 		if err = r.channel.Close(); err != nil {
+ 			r.logger.Errorf("%s reset: channel.Close() failed: %v", logMessagePrefix, err)
++			if r.connection != nil {
++				// Abort deliberately invalidated every pending Close RPC.
++				// Its transport errors are cleanup results, not reset failures.
++				err = nil
++			}
+ 		}
+ 		r.channel = nil
+ 	}
+@@ -951,7 +1317,7 @@ func (r *rabbitMQ) isStopped() bool {
+ 
+ // Close closes the rabbitMQ connection. Blocks until all go routines are done.
+ func (r *rabbitMQ) Close() error {
+-	r.channelMutex.Lock()
++	_ = r.channelMutex.Lock(context.Background())
+ 	defer r.channelMutex.Unlock()
+ 
+ 	if r.closed.CompareAndSwap(false, true) {
+@@ -971,6 +1337,9 @@ func mustReconnect(channel rabbitMQChannelBroker, err error) bool {
+ 	if channel == nil {
+ 		return true
+ 	}
++	if channel.IsClosed() {
++		return true
++	}
+ 
+ 	if err == nil {
+ 		return false
+diff --git a/pubsub/rabbitmq/rabbitmq_integration_test.go b/pubsub/rabbitmq/rabbitmq_integration_test.go
+index b3982f88f31cefa633d7d6f4dc4684e7cbd35df1..88483ce16156fe6919a822f3e153a7d6074101e1 100644
+--- a/pubsub/rabbitmq/rabbitmq_integration_test.go
++++ b/pubsub/rabbitmq/rabbitmq_integration_test.go
+@@ -526,7 +526,7 @@ func TestPassiveMissingObjectDoesNotKeepEvictingHealthySubscriptions(t *testing.
+ 	// everyone on it reconnects. What must NOT happen is that cycle repeating:
+ 	// the failing subscription has given up, so the count has to settle.
+ 	time.Sleep(3 * time.Second)
+-	r.channelMutex.RLock()
++	require.NoError(t, r.channelMutex.RLock(t.Context()))
+ 	settled := r.connectionCount
+ 	r.channelMutex.RUnlock()
+ 
+@@ -538,7 +538,7 @@ func TestPassiveMissingObjectDoesNotKeepEvictingHealthySubscriptions(t *testing.
+ 	assert.Eventually(t, func() bool { return got.Load() >= before+8 }, 20*time.Second, 100*time.Millisecond,
+ 		"the healthy subscription stopped delivering")
+ 
+-	r.channelMutex.RLock()
++	require.NoError(t, r.channelMutex.RLock(t.Context()))
+ 	final := r.connectionCount
+ 	r.channelMutex.RUnlock()
+ 	t.Logf("delivered=%d  connectionCount settled=%d final=%d (over ~10s and 8 publishes)", got.Load(), settled, final)
+diff --git a/pubsub/rabbitmq/rabbitmq_test.go b/pubsub/rabbitmq/rabbitmq_test.go
+index 0589a7578d9045925505b8887f2a38e0b175095e..6890a1beba1928033fede60e7b54def86d3c6b8c 100644
+--- a/pubsub/rabbitmq/rabbitmq_test.go
++++ b/pubsub/rabbitmq/rabbitmq_test.go
+@@ -32,6 +32,7 @@ import (
+ 
+ 	mdata "github.com/dapr/components-contrib/metadata"
+ 	"github.com/dapr/components-contrib/pubsub"
++	"github.com/dapr/kit/concurrency/lock"
+ 	"github.com/dapr/kit/logger"
+ )
+ 
+@@ -40,8 +41,9 @@ import (
+ // does not retry it.
+ func TestPublishWhenClosedIsTerminal(t *testing.T) {
+ 	r := &rabbitMQ{
+-		logger:  logger.NewLogger("test"),
+-		closeCh: make(chan struct{}),
++		channelMutex: lock.NewContext(),
++		logger:       logger.NewLogger("test"),
++		closeCh:      make(chan struct{}),
+ 	}
+ 	r.closed.Store(true)
+ 
+@@ -60,9 +62,10 @@ func newBroker() *rabbitMQInMemoryBroker {
+ 
+ func newRabbitMQTest(broker *rabbitMQInMemoryBroker) *rabbitMQ {
+ 	return &rabbitMQ{
++		channelMutex:      lock.NewContext(),
+ 		declaredExchanges: make(map[string]bool),
+ 		logger:            logger.NewLogger("test"),
+-		connectionDial: func(protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++		connectionDial: func(ctx context.Context, protocol, uri, clientName string, heartBeat time.Duration, tlsCfg *tls.Config, externalSasl bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
+ 			broker.connectCount.Add(1)
+ 			return broker, broker, nil
+ 		},
+@@ -512,8 +515,9 @@ func (m *mockAcknowledger) Reject(_ uint64, requeue bool) error {
+ // Regression test for https://github.com/dapr/components-contrib/issues/4449
+ func TestHandleMessageSkipsNACKOnContextCanceled(t *testing.T) {
+ 	r := &rabbitMQ{
+-		logger:   logger.NewLogger("test"),
+-		metadata: &rabbitmqMetadata{AutoAck: false},
++		channelMutex: lock.NewContext(),
++		logger:       logger.NewLogger("test"),
++		metadata:     &rabbitmqMetadata{AutoAck: false},
+ 	}
+ 
+ 	t.Run("context canceled: no NACK, no ACK, context error returned", func(t *testing.T) {
+@@ -573,8 +577,9 @@ func TestHandleMessageRequeueInFailureUsesReject(t *testing.T) {
+ 
+ 	t.Run("requeueInFailure=true: Reject with requeue, no Nack", func(t *testing.T) {
+ 		r := &rabbitMQ{
+-			logger:   logger.NewLogger("test"),
+-			metadata: &rabbitmqMetadata{RequeueInFailure: true},
++			channelMutex: lock.NewContext(),
++			logger:       logger.NewLogger("test"),
++			metadata:     &rabbitmqMetadata{RequeueInFailure: true},
+ 		}
+ 		ack := &mockAcknowledger{}
+ 		d := amqp.Delivery{Acknowledger: ack, Body: []byte("test payload")}
+@@ -588,8 +593,9 @@ func TestHandleMessageRequeueInFailureUsesReject(t *testing.T) {
+ 
+ 	t.Run("requeueInFailure=false: Nack without requeue, no Reject", func(t *testing.T) {
+ 		r := &rabbitMQ{
+-			logger:   logger.NewLogger("test"),
+-			metadata: &rabbitmqMetadata{RequeueInFailure: false},
++			channelMutex: lock.NewContext(),
++			logger:       logger.NewLogger("test"),
++			metadata:     &rabbitmqMetadata{RequeueInFailure: false},
+ 		}
+ 		ack := &mockAcknowledger{}
+ 		d := amqp.Delivery{Acknowledger: ack, Body: []byte("test payload")}
+@@ -646,7 +652,7 @@ func (r *rabbitMQInMemoryBroker) PublishWithContext(ctx context.Context, exchang
+ 	return err
+ }
+ 
+-func (r *rabbitMQInMemoryBroker) PublishWithDeferredConfirmWithContext(ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing) (*amqp.DeferredConfirmation, error) {
++func (r *rabbitMQInMemoryBroker) PublishWithDeferredConfirmWithContext(ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing) (rabbitMQConfirmation, error) {
+ 	if string(msg.Body) == errorChannelConnection {
+ 		return nil, errors.New(errorChannelConnection)
+ 	}
+@@ -730,6 +736,8 @@ func (r *rabbitMQInMemoryBroker) Close() error {
+ 	return nil
+ }
+ 
++func (r *rabbitMQInMemoryBroker) Abort() error { return nil }
++
+ func (r *rabbitMQInMemoryBroker) IsClosed() bool {
+ 	return r.connectCount.Load() <= r.closeCount.Load()
+ }
+@@ -933,6 +941,7 @@ func TestPublishMessagePropertiesToMetadataFlag(t *testing.T) {
+ 
+ func newRabbitMQForExchangeTest(broker *rabbitMQInMemoryBroker, meta *rabbitmqMetadata) *rabbitMQ {
+ 	return &rabbitMQ{
++		channelMutex:      lock.NewContext(),
+ 		declaredExchanges: make(map[string]bool),
+ 		logger:            logger.NewLogger("test"),
+ 		metadata:          meta,
+@@ -1459,9 +1468,54 @@ func TestSubscribeForeverCancelsConsumerWhenConsumeFails(t *testing.T) {
+ 
+ type fakeConfirmation struct{ acked bool }
+ 
+-func (f fakeConfirmation) Wait() bool { return f.acked }
++func (f fakeConfirmation) WaitContext(context.Context) (bool, error) { return f.acked, nil }
+ 
+ func TestConfirmationError(t *testing.T) {
+-	require.NoError(t, confirmationError(fakeConfirmation{acked: true}))
+-	require.Error(t, confirmationError(fakeConfirmation{acked: false}))
++	require.NoError(t, confirmationError(t.Context(), fakeConfirmation{acked: true}))
++	require.Error(t, confirmationError(t.Context(), fakeConfirmation{acked: false}))
++}
++
++func TestInitCancellation(t *testing.T) {
++	t.Parallel()
++	for _, beforeStart := range []bool{true, false} {
++		name := "during dial"
++		if beforeStart {
++			name = "before start"
++		}
++		t.Run(name, func(t *testing.T) {
++			t.Parallel()
++			broker := newBroker()
++			r := newRabbitMQTest(broker)
++			entered := make(chan struct{})
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				broker.connectCount.Add(1)
++				close(entered)
++				<-ctx.Done()
++				return nil, nil, ctx.Err()
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			if beforeStart {
++				cancel()
++			}
++			done := make(chan error, 1)
++			go func() {
++				done <- r.Init(ctx, pubsub.Metadata{Base: mdata.Base{Properties: map[string]string{metadataHostnameKey: "anyhost"}}})
++			}()
++			if !beforeStart {
++				awaitPublishGate(t, entered)
++				cancel()
++			}
++			require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			require.Nil(t, r.connection)
++			require.Nil(t, r.channel)
++			require.Zero(t, r.connectionCount)
++			if beforeStart {
++				require.Zero(t, broker.connectCount.Load())
++			} else {
++				require.Equal(t, int32(1), broker.connectCount.Load())
++			}
++			require.NoError(t, r.Close())
++		})
++	}
+ }
+diff --git a/pubsub/rabbitmq/rabbitmq_publish_test.go b/pubsub/rabbitmq/rabbitmq_publish_test.go
+new file mode 100644
+index 0000000000000000000000000000000000000000..7dbcc699c08c428e754fed35e7b2af724d0f2f40
+--- /dev/null
++++ b/pubsub/rabbitmq/rabbitmq_publish_test.go
+@@ -0,0 +1,626 @@
++/*
++Copyright 2026 The Dapr Authors
++Licensed under the Apache License, Version 2.0 (the "License");
++you may not use this file except in compliance with the License.
++You may obtain a copy of the License at
++    http://www.apache.org/licenses/LICENSE-2.0
++Unless required by applicable law or agreed to in writing, software
++distributed under the License is distributed on an "AS IS" BASIS,
++WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++See the License for the specific language governing permissions and
++limitations under the License.
++*/
++
++package rabbitmq
++
++import (
++	"context"
++	"crypto/tls"
++	"errors"
++	"io"
++	"sync"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	amqp "github.com/rabbitmq/amqp091-go"
++	"github.com/stretchr/testify/require"
++	"google.golang.org/grpc/codes"
++	"google.golang.org/grpc/status"
++
++	"github.com/dapr/components-contrib/pubsub"
++	"github.com/dapr/kit/logger"
++)
++
++type publishConfirmationFunc func(context.Context) (bool, error)
++
++func (f publishConfirmationFunc) WaitContext(ctx context.Context) (bool, error) { return f(ctx) }
++
++type publishTestBroker struct {
++	*rabbitMQInMemoryBroker
++	publish      func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error)
++	declare      func(bool) error
++	confirm      func() error
++	abort        func()
++	publishes    atomic.Int32
++	declarations atomic.Int32
++	aborts       atomic.Int32
++	closed       atomic.Bool
++}
++
++func (b *publishTestBroker) IsClosed() bool { return b.closed.Load() }
++
++func newPublishTestBroker() *publishTestBroker {
++	return &publishTestBroker{rabbitMQInMemoryBroker: newBroker()}
++}
++
++func (b *publishTestBroker) PublishWithDeferredConfirmWithContext(ctx context.Context, _, _ string, _, _ bool, msg amqp.Publishing) (rabbitMQConfirmation, error) {
++	b.publishes.Add(1)
++	if b.publish != nil {
++		return b.publish(ctx, msg)
++	}
++	return nil, nil
++}
++
++func (b *publishTestBroker) ExchangeDeclare(_ string, _ string, _, _, _, _ bool, _ amqp.Table) error {
++	b.declarations.Add(1)
++	if b.declare != nil {
++		return b.declare(false)
++	}
++	return nil
++}
++
++func (b *publishTestBroker) ExchangeDeclarePassive(_ string, _ string, _, _, _, _ bool, _ amqp.Table) error {
++	b.declarations.Add(1)
++	if b.declare != nil {
++		return b.declare(true)
++	}
++	return nil
++}
++
++func (b *publishTestBroker) Confirm(bool) error {
++	if b.confirm != nil {
++		return b.confirm()
++	}
++	return nil
++}
++
++func (b *publishTestBroker) Abort() error {
++	b.aborts.Add(1)
++	if b.abort != nil {
++		b.abort()
++	}
++	return nil
++}
++
++func newPublicPublisher(b *publishTestBroker) *rabbitMQ {
++	r := NewRabbitMQ(logger.NewLogger("test")).(*rabbitMQ)
++	r.metadata = &rabbitmqMetadata{ExchangeKind: fanoutExchangeKind, ReconnectWait: 0}
++	r.connection, r.channel, r.connectionCount = b, b, 1
++	r.connectionDial = func(context.Context, string, string, string, time.Duration, *tls.Config, bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++		return b, b, nil
++	}
++	return r
++}
++
++func startPublicPublish(r *rabbitMQ, ctx context.Context, topic string) <-chan error {
++	done := make(chan error, 1)
++	go func() { done <- r.Publish(ctx, &pubsub.PublishRequest{Topic: topic}) }()
++	return done
++}
++
++func awaitPublish(t *testing.T, done <-chan error) error {
++	t.Helper()
++	select {
++	case err := <-done:
++		return err
++	case <-time.After(time.Second):
++		t.Fatal("Publish exceeded the cancellation budget")
++		return nil
++	}
++}
++
++func awaitPublishGate(t *testing.T, gate <-chan struct{}) {
++	t.Helper()
++	select {
++	case <-gate:
++	case <-time.After(5 * time.Second):
++		t.Fatal("Publish did not reach the synchronized operation")
++	}
++}
++
++func TestPublishPublicConfirmationOutcomes(t *testing.T) {
++	t.Parallel()
++	for _, tc := range []struct {
++		name     string
++		firstACK bool
++		finalACK bool
++	}{
++		{"ack", true, true}, {"successful retry", false, true}, {"nack exhaustion", false, false},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++				ack := tc.finalACK
++				if b.publishes.Load() == 1 {
++					ack = tc.firstACK
++				}
++				return fakeConfirmation{acked: ack}, nil
++			}
++			r := newPublicPublisher(b)
++			err := r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"})
++			if tc.finalACK {
++				require.NoError(t, err)
++				expected := int32(1)
++				if !tc.firstACK {
++					expected = 2
++				}
++				require.Equal(t, expected, b.publishes.Load())
++			} else {
++				require.EqualError(t, err, "did not receive confirmation of publishing")
++				require.Equal(t, int32(publishMaxRetries), b.publishes.Load())
++			}
++		})
++	}
++}
++
++func TestPublishPublicCanceledBeforeStart(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	ctx, cancel := context.WithCancel(t.Context())
++	cancel()
++	require.ErrorIs(t, r.Publish(ctx, &pubsub.PublishRequest{Topic: "topic"}), context.Canceled)
++	require.Zero(t, b.publishes.Load())
++	require.Zero(t, b.declarations.Load())
++	require.Zero(t, b.aborts.Load())
++}
++
++func TestPublishPublicCanceledDeclaration(t *testing.T) {
++	t.Parallel()
++	for _, passive := range []bool{false, true} {
++		name := "active"
++		if passive {
++			name = "passive"
++		}
++		t.Run(name, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			if passive {
++				r.metadata.ExchangeDeclareMode = exchangeDeclareModePassive
++			}
++			entered, aborted := make(chan struct{}), make(chan struct{})
++			var once sync.Once
++			b.abort = func() { once.Do(func() { close(aborted) }) }
++			b.declare = func(gotPassive bool) error {
++				require.Equal(t, passive, gotPassive)
++				close(entered)
++				<-aborted
++				return errors.New("transport interrupted during declaration")
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := startPublicPublish(r, ctx, "topic")
++			awaitPublishGate(t, entered)
++			cancel()
++			require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			require.Equal(t, int32(1), b.declarations.Load())
++			require.Zero(t, b.publishes.Load())
++		})
++	}
++}
++
++func TestPublishPublicCanceledConfirmationAndWrite(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"confirmation", "confirmation closed by cancellation", "write", "write returns nil"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			entered, aborted := make(chan struct{}), make(chan struct{})
++			var once sync.Once
++			b.abort = func() { once.Do(func() { close(aborted) }) }
++			b.publish = func(ctx context.Context, _ amqp.Publishing) (rabbitMQConfirmation, error) {
++				if stage == "write" || stage == "write returns nil" {
++					close(entered)
++					<-aborted
++					if stage == "write returns nil" {
++						return nil, nil
++					}
++					return nil, errors.New("transport interrupted during write")
++				}
++				return publishConfirmationFunc(func(ctx context.Context) (bool, error) {
++					close(entered)
++					if stage == "confirmation closed by cancellation" {
++						<-aborted
++						return false, nil
++					}
++					<-ctx.Done()
++					return false, ctx.Err()
++				}), nil
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := startPublicPublish(r, ctx, "topic")
++			awaitPublishGate(t, entered)
++			cancel()
++			require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			require.Equal(t, int32(1), b.publishes.Load())
++			require.Equal(t, int32(1), b.aborts.Load())
++		})
++	}
++}
++
++func TestPublishPublicNACKPreservedOnRetryCancellation(t *testing.T) {
++	t.Parallel()
++	for _, duringRetry := range []bool{false, true} {
++		name := "retry delay"
++		if duringRetry {
++			name = "later in-flight attempt remains uncertain"
++		}
++		t.Run(name, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			first, second := make(chan struct{}), make(chan struct{})
++			b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++				if b.publishes.Load() == 1 {
++					return publishConfirmationFunc(func(context.Context) (bool, error) { close(first); return false, nil }), nil
++				}
++				return publishConfirmationFunc(func(ctx context.Context) (bool, error) { close(second); <-ctx.Done(); return false, ctx.Err() }), nil
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := startPublicPublish(r, ctx, "topic")
++			awaitPublishGate(t, first)
++			if duringRetry {
++				awaitPublishGate(t, second)
++			} else {
++				// Acquiring the same lock establishes that the first confirmation returned.
++				require.NoError(t, r.channelMutex.Lock(t.Context()))
++				r.channelMutex.Unlock()
++			}
++			cancel()
++			require.EqualError(t, awaitPublish(t, done), "did not receive confirmation of publishing")
++			expected := int32(1)
++			if duringRetry {
++				expected = 2
++			}
++			require.Equal(t, expected, b.publishes.Load())
++			// The returned text preserves the first attempt's NACK. When expected is
++			// two, the second publication was sent and its effect is still uncertain.
++		})
++	}
++}
++
++func TestPublishPublicAccessRefused(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"active declaration", "passive declaration", "publish", "reconnect"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			denied := &amqp.Error{Code: amqp.AccessRefused, Reason: "ACCESS_REFUSED - write permission denied", Server: true}
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			var dials atomic.Int32
++			if stage == "active declaration" || stage == "passive declaration" {
++				if stage == "passive declaration" {
++					r.metadata.ExchangeDeclareMode = exchangeDeclareModePassive
++				}
++				b.declare = func(bool) error { return denied }
++			} else if stage == "publish" {
++				b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) { return nil, denied }
++			} else {
++				b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++					return nil, errors.New(errorChannelConnection)
++				}
++			}
++			r.connectionDial = func(context.Context, string, string, string, time.Duration, *tls.Config, bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				dials.Add(1)
++				return nil, nil, denied
++			}
++			err := r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"})
++			require.ErrorIs(t, err, denied)
++			require.Equal(t, denied.Error(), err.Error())
++			require.Equal(t, codes.FailedPrecondition, status.Code(err))
++			expectedDials := int32(0)
++			if stage == "reconnect" {
++				expectedDials = 1
++			}
++			require.Equal(t, expectedDials, dials.Load())
++			require.LessOrEqual(t, b.publishes.Load(), int32(1))
++		})
++	}
++}
++
++func TestPublishPublicReconnectFailureExhaustion(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++		return nil, errors.New(errorChannelConnection)
++	}
++	failure := errors.New("dial: connection refused")
++	var calls atomic.Int32
++	r.connectionDial = func(context.Context, string, string, string, time.Duration, *tls.Config, bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++		calls.Add(1)
++		return nil, nil, failure
++	}
++	require.ErrorIs(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}), failure)
++	require.Equal(t, int32(2), calls.Load())
++	require.Equal(t, int32(1), b.publishes.Load())
++}
++
++func TestPublishPublicCanceledReconnect(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"delay", "dial", "confirm setup", "before installing state"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			old, next := newPublishTestBroker(), newPublishTestBroker()
++			r := newPublicPublisher(old)
++			entered, aborted := make(chan struct{}), make(chan struct{})
++			var abortOnce sync.Once
++			next.abort = func() { abortOnce.Do(func() { close(aborted) }) }
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			var calls atomic.Int32
++			old.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++				if stage == "delay" {
++					close(entered)
++				}
++				return nil, errors.New(errorChannelConnection)
++			}
++			if stage == "delay" {
++				r.metadata.ReconnectWait = time.Hour
++			}
++			if stage == "confirm setup" {
++				r.metadata.PublisherConfirm = true
++				next.confirm = func() error { close(entered); <-aborted; return amqp.ErrClosed }
++			}
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				calls.Add(1)
++				switch stage {
++				case "dial":
++					close(entered)
++					<-ctx.Done()
++					return nil, nil, amqp.ErrCredentials
++				case "before installing state":
++					cancel()
++					return next, next, nil
++				default:
++					return next, next, nil
++				}
++			}
++			done := startPublicPublish(r, ctx, "topic")
++			if stage != "before installing state" {
++				awaitPublishGate(t, entered)
++				cancel()
++			}
++			require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			require.Equal(t, int32(1), old.publishes.Load())
++			require.Zero(t, next.publishes.Load())
++			if stage == "delay" {
++				require.Zero(t, calls.Load())
++			} else {
++				require.Equal(t, int32(1), calls.Load())
++				require.Nil(t, r.channel)
++				require.Nil(t, r.connection)
++				require.Equal(t, 1, r.connectionCount)
++			}
++		})
++	}
++}
++
++func TestPublishPublicConcurrentWaitersDoNotAbortHolder(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	entered, release := make(chan struct{}), make(chan struct{})
++	b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++		close(entered)
++		<-release
++		return fakeConfirmation{acked: true}, nil
++	}
++	holder := startPublicPublish(r, t.Context(), "holder")
++	awaitPublishGate(t, entered)
++	const callers = 8
++	waiters := make([]<-chan error, callers)
++	for i := range waiters {
++		ctx, cancel := context.WithTimeout(t.Context(), 20*time.Millisecond)
++		defer cancel()
++		waiters[i] = startPublicPublish(r, ctx, "waiter")
++	}
++	for _, done := range waiters {
++		require.ErrorIs(t, awaitPublish(t, done), context.DeadlineExceeded)
++	}
++	require.Zero(t, b.aborts.Load())
++	require.Equal(t, int32(1), b.publishes.Load())
++	close(release)
++	require.NoError(t, awaitPublish(t, holder))
++}
++
++func TestPublishPublicConcurrentErrorIsolation(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	denied := &amqp.Error{Code: amqp.AccessRefused, Reason: "ACCESS_REFUSED - one caller", Server: true}
++	b.publish = func(_ context.Context, msg amqp.Publishing) (rabbitMQConfirmation, error) {
++		if string(msg.Body) == "denied" {
++			return nil, denied
++		}
++		return fakeConfirmation{acked: true}, nil
++	}
++	const callers = 16
++	results := make([]chan error, callers)
++	for i := range results {
++		results[i] = make(chan error, 1)
++		go func(i int) {
++			data := []byte("ack")
++			if i%2 == 0 {
++				data = []byte("denied")
++			}
++			results[i] <- r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic", Data: data})
++		}(i)
++	}
++	for i, done := range results {
++		err := awaitPublish(t, done)
++		if i%2 == 0 {
++			require.ErrorIs(t, err, denied)
++		} else {
++			require.NoError(t, err)
++		}
++	}
++	require.Equal(t, int32(callers), b.publishes.Load())
++	require.Zero(t, b.aborts.Load())
++}
++
++func TestPublishPublicStaleGenerationAndFinishedCancellation(t *testing.T) {
++	t.Parallel()
++	old, next := newPublishTestBroker(), newPublishTestBroker()
++	r := newPublicPublisher(old)
++	failed := make(chan struct{})
++	old.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++		close(failed)
++		return nil, errors.New(errorChannelConnection)
++	}
++	r.metadata.ReconnectWait = 100 * time.Millisecond
++	var dials atomic.Int32
++	r.connectionDial = func(context.Context, string, string, string, time.Duration, *tls.Config, bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++		dials.Add(1)
++		return nil, nil, errors.New("stale reconnect must not dial")
++	}
++	ctx, cancel := context.WithCancel(t.Context())
++	defer cancel()
++	done := startPublicPublish(r, ctx, "topic")
++	awaitPublishGate(t, failed)
++	require.NoError(t, r.channelMutex.Lock(t.Context()))
++	r.connection, r.channel, r.connectionCount = next, next, 2
++	r.declaredExchanges = make(map[string]bool)
++	r.channelMutex.Unlock()
++	require.NoError(t, awaitPublish(t, done))
++	cancel()
++	require.NoError(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "next caller"}))
++	require.Zero(t, dials.Load())
++	require.Zero(t, old.aborts.Load())
++	require.Zero(t, next.aborts.Load())
++	require.Equal(t, int32(2), next.publishes.Load())
++}
++
++func TestPublishPublicClosedConfirmationRemainsUncertain(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	r.metadata.ReconnectWait = time.Hour
++	completed := make(chan struct{})
++	b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++		return publishConfirmationFunc(func(context.Context) (bool, error) {
++			b.closed.Store(true)
++			close(completed)
++			return false, amqp.ErrClosed
++		}), nil
++	}
++	ctx, cancel := context.WithCancel(t.Context())
++	defer cancel()
++	done := startPublicPublish(r, ctx, "topic")
++	awaitPublishGate(t, completed)
++	require.NoError(t, r.channelMutex.Lock(t.Context()))
++	r.channelMutex.Unlock()
++	cancel()
++	err := awaitPublish(t, done)
++	require.ErrorIs(t, err, context.Canceled)
++	require.NotContains(t, err.Error(), "did not receive confirmation of publishing")
++	require.Equal(t, int32(1), b.publishes.Load())
++}
++
++func TestPublishPublicLiveContextFailureExhaustion(t *testing.T) {
++	t.Parallel()
++	for _, failure := range []error{context.DeadlineExceeded, context.Canceled} {
++		t.Run(failure.Error(), func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) { return nil, failure }
++			require.ErrorIs(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}), failure)
++			require.NoError(t, t.Context().Err())
++			require.Equal(t, int32(publishMaxRetries), b.publishes.Load())
++		})
++	}
++}
++
++func TestPublishPublicNACKSurvivesTransportUncertainty(t *testing.T) {
++	t.Parallel()
++	for _, cancelLast := range []bool{false, true} {
++		name := "generic exhaustion"
++		if cancelLast {
++			name = "pipe error then canceled confirmation"
++		}
++		t.Run(name, func(t *testing.T) {
++			t.Parallel()
++			b := newPublishTestBroker()
++			r := newPublicPublisher(b)
++			entered := make(chan struct{})
++			b.publish = func(context.Context, amqp.Publishing) (rabbitMQConfirmation, error) {
++				switch b.publishes.Load() {
++				case 1:
++					return fakeConfirmation{acked: false}, nil
++				case 2:
++					return nil, io.ErrClosedPipe
++				default:
++					if !cancelLast {
++						return nil, errors.New("uncertain transport failure")
++					}
++					return publishConfirmationFunc(func(ctx context.Context) (bool, error) { close(entered); <-ctx.Done(); return false, ctx.Err() }), nil
++				}
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := startPublicPublish(r, ctx, "topic")
++			if cancelLast {
++				awaitPublishGate(t, entered)
++				cancel()
++			}
++			// Preserve the first broker NACK while later sent attempts remain uncertain.
++			// That text cannot establish rejection or zero effect for the later attempts.
++			if !cancelLast {
++				select {
++				case err := <-done:
++					require.EqualError(t, err, "did not receive confirmation of publishing")
++				case <-time.After(5 * time.Second):
++					t.Fatal("publish did not exhaust its existing retry budget")
++				}
++			} else {
++				require.EqualError(t, awaitPublish(t, done), "did not receive confirmation of publishing")
++			}
++			require.Equal(t, int32(publishMaxRetries), b.publishes.Load())
++		})
++	}
++}
++
++type publishObservedContext struct {
++	context.Context
++	entered chan struct{}
++	once    sync.Once
++}
++
++func (c *publishObservedContext) Err() error {
++	c.once.Do(func() { close(c.entered) })
++	return c.Context.Err()
++}
++
++func TestPublishPublicQueuedBeforeCloseIsTerminal(t *testing.T) {
++	t.Parallel()
++	b := newPublishTestBroker()
++	r := newPublicPublisher(b)
++	require.NoError(t, r.channelMutex.Lock(t.Context()))
++	ctx := &publishObservedContext{Context: t.Context(), entered: make(chan struct{})}
++	done := startPublicPublish(r, ctx, "topic")
++	awaitPublishGate(t, ctx.entered)
++	r.closed.Store(true)
++	require.NoError(t, r.reset())
++	r.channelMutex.Unlock()
++	err := awaitPublish(t, done)
++	require.Equal(t, codes.FailedPrecondition, status.Code(err))
++	require.EqualError(t, err, "component is closed")
++	require.Zero(t, b.publishes.Load())
++}
+diff --git a/pubsub/rabbitmq/rabbitmq_publish_transport_test.go b/pubsub/rabbitmq/rabbitmq_publish_transport_test.go
+new file mode 100644
+index 0000000000000000000000000000000000000000..14846c6e186138e5f181985fb71e10c6b7f76ebf
+--- /dev/null
++++ b/pubsub/rabbitmq/rabbitmq_publish_transport_test.go
+@@ -0,0 +1,573 @@
++/*
++Copyright 2026 The Dapr Authors
++Licensed under the Apache License, Version 2.0 (the "License");
++you may not use this file except in compliance with the License.
++You may obtain a copy of the License at
++    http://www.apache.org/licenses/LICENSE-2.0
++Unless required by applicable law or agreed to in writing, software
++distributed under the License is distributed on an "AS IS" BASIS,
++WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++See the License for the specific language governing permissions and
++limitations under the License.
++*/
++
++package rabbitmq
++
++import (
++	"context"
++	"crypto/tls"
++	"encoding/binary"
++	"fmt"
++	"io"
++	"net"
++	"strings"
++	"sync"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	amqp "github.com/rabbitmq/amqp091-go"
++	"github.com/stretchr/testify/require"
++	"google.golang.org/grpc/codes"
++	"google.golang.org/grpc/status"
++
++	mdata "github.com/dapr/components-contrib/metadata"
++	"github.com/dapr/components-contrib/pubsub"
++	"github.com/dapr/kit/logger"
++)
++
++// This is a minimal in-process AMQP protocol peer, not a RabbitMQ broker. It
++// exercises the pinned client's real handshake, writes and confirmations over
++// net.Pipe without inspecting or modifying any AMQP private fields.
++type publishObservedConn struct {
++	net.Conn
++	closed   chan struct{}
++	once     sync.Once
++	deadline atomic.Int64
++}
++
++func (c *publishObservedConn) SetDeadline(deadline time.Time) error {
++	if !deadline.IsZero() {
++		c.deadline.CompareAndSwap(0, deadline.UnixNano())
++	}
++	return c.Conn.SetDeadline(deadline)
++}
++
++func (c *publishObservedConn) Close() error {
++	err := c.Conn.Close()
++	c.once.Do(func() { close(c.closed) })
++	return err
++}
++
++type publishProtocolPeer struct {
++	net.Conn
++	clientClosed <-chan struct{}
++}
++
++func (p publishProtocolPeer) frame() (byte, []byte, error) {
++	header := make([]byte, 7)
++	if _, err := io.ReadFull(p.Conn, header); err != nil {
++		return 0, nil, err
++	}
++	size := binary.BigEndian.Uint32(header[3:])
++	if size > 1<<20 {
++		return 0, nil, fmt.Errorf("unexpected AMQP frame size %d", size)
++	}
++	body := make([]byte, int(size)+1)
++	if _, err := io.ReadFull(p.Conn, body); err != nil {
++		return 0, nil, err
++	}
++	if body[len(body)-1] != 0xce {
++		return 0, nil, fmt.Errorf("invalid AMQP frame end")
++	}
++	return header[0], body[:len(body)-1], nil
++}
++
++func (p publishProtocolPeer) method(class, method uint16) ([]byte, error) {
++	kind, body, err := p.frame()
++	if err != nil {
++		return nil, err
++	}
++	if kind != 1 || len(body) < 4 || binary.BigEndian.Uint16(body) != class || binary.BigEndian.Uint16(body[2:]) != method {
++		return nil, fmt.Errorf("expected AMQP method %d.%d, got type=%d body=%x", class, method, kind, body)
++	}
++	return body[4:], nil
++}
++
++func (p publishProtocolPeer) send(channel, class, method uint16, args []byte) error {
++	frame := make([]byte, 7+4+len(args)+1)
++	frame[0] = 1
++	binary.BigEndian.PutUint16(frame[1:], channel)
++	binary.BigEndian.PutUint32(frame[3:], uint32(4+len(args)))
++	binary.BigEndian.PutUint16(frame[7:], class)
++	binary.BigEndian.PutUint16(frame[9:], method)
++	copy(frame[11:], args)
++	frame[len(frame)-1] = 0xce
++	_, err := p.Write(frame)
++	return err
++}
++
++func amqpLongString(s string) []byte {
++	value := make([]byte, 4+len(s))
++	binary.BigEndian.PutUint32(value, uint32(len(s)))
++	copy(value[4:], s)
++	return value
++}
++
++func (p publishProtocolPeer) stall(entered chan<- struct{}) error {
++	close(entered)
++	// Cancellation must close the client's exact raw transport and release this
++	// read as well as the client operation. The caller joins both workers.
++	<-p.clientClosed
++	return nil
++}
++
++func (p publishProtocolPeer) run(stage string, passive bool, entered chan<- struct{}) error {
++	if stage == "TLS handshake" {
++		first := make([]byte, 1)
++		if _, err := io.ReadFull(p.Conn, first); err != nil {
++			return err
++		}
++		return p.stall(entered)
++	}
++	header := make([]byte, 8)
++	if _, err := io.ReadFull(p.Conn, header); err != nil {
++		return err
++	}
++	if string(header) != "AMQP\x00\x00\x09\x01" {
++		return fmt.Errorf("invalid AMQP protocol header %x", header)
++	}
++	if stage == "AMQP handshake" {
++		return p.stall(entered)
++	}
++	start := []byte{0, 9, 0, 0, 0, 0}
++	start = append(start, amqpLongString("PLAIN")...)
++	start = append(start, amqpLongString("en_US")...)
++	if err := p.send(0, 10, 10, start); err != nil {
++		return err
++	}
++	if _, err := p.method(10, 11); err != nil {
++		return err
++	}
++	if stage == "authentication handshake" {
++		return p.stall(entered)
++	}
++	if err := p.send(0, 10, 30, []byte{0, 0, 0, 2, 0, 0, 0, 0}); err != nil {
++		return err
++	}
++	if _, err := p.method(10, 31); err != nil {
++		return err
++	}
++	if _, err := p.method(10, 40); err != nil {
++		return err
++	}
++	if err := p.send(0, 10, 41, []byte{0}); err != nil {
++		return err
++	}
++	if _, err := p.method(20, 10); err != nil {
++		return err
++	}
++	if stage == "channel open" {
++		return p.stall(entered)
++	}
++	if err := p.send(1, 20, 11, []byte{0, 0, 0, 0}); err != nil {
++		return err
++	}
++	if !strings.HasPrefix(stage, "unconfirmed") {
++		if _, err := p.method(85, 10); err != nil {
++			return err
++		}
++		if stage == "confirm setup" {
++			return p.stall(entered)
++		}
++		if err := p.send(1, 85, 11, nil); err != nil {
++			return err
++		}
++	}
++	declaration, err := p.method(40, 10)
++	if err != nil {
++		return err
++	}
++	if len(declaration) < 3 {
++		return fmt.Errorf("short exchange.declare")
++	}
++	kindOffset := 3 + int(declaration[2])
++	if len(declaration) <= kindOffset {
++		return fmt.Errorf("short exchange kind")
++	}
++	flagsOffset := kindOffset + 1 + int(declaration[kindOffset])
++	if len(declaration) <= flagsOffset {
++		return fmt.Errorf("missing exchange flags")
++	}
++	if (declaration[flagsOffset]&1 != 0) != passive {
++		return fmt.Errorf("incorrect passive declaration flag")
++	}
++	if stage == "active declaration" || stage == "passive declaration" {
++		return p.stall(entered)
++	}
++	if err := p.send(1, 40, 11, nil); err != nil {
++		return err
++	}
++	if _, err := p.method(60, 40); err != nil {
++		return err
++	}
++	if stage == "write" || stage == "unconfirmed write" {
++		return p.stall(entered)
++	}
++	if err = p.content(); err != nil {
++		return err
++	}
++	if stage == "unconfirmed success" {
++		close(entered)
++		if _, err = p.method(60, 40); err != nil {
++			return err
++		}
++		if err = p.content(); err != nil {
++			return err
++		}
++		<-p.clientClosed
++		return nil
++	}
++	if stage == "channel access refused" || stage == "connection access refused" {
++		reason := "ACCESS_REFUSED - write permission denied"
++		args := []byte{1, 147, byte(len(reason))}
++		args = append(args, []byte(reason)...)
++		args = append(args, 0, 60, 0, 40)
++		channel, class, closeMethod := uint16(1), uint16(20), uint16(40)
++		if stage == "connection access refused" {
++			channel, class, closeMethod = 0, 10, 50
++		}
++		if err = p.send(channel, class, closeMethod, args); err != nil {
++			return err
++		}
++		if _, err = p.method(class, closeMethod+1); err != nil {
++			return err
++		}
++		close(entered)
++		<-p.clientClosed
++		return nil
++	}
++	if stage == "confirmation" {
++		return p.stall(entered)
++	}
++	if stage == "shutdown during confirmation" {
++		close(entered)
++		return nil
++	}
++	confirmation := make([]byte, 9)
++	binary.BigEndian.PutUint64(confirmation, 1)
++	method := uint16(80)
++	if stage == "nack" || stage == "nack then disconnect" {
++		method = 120
++	}
++	if err = p.send(1, 60, method, confirmation); err != nil {
++		return err
++	}
++	close(entered)
++	if stage == "nack then disconnect" {
++		return nil
++	}
++	<-p.clientClosed
++	return nil
++}
++
++func (p publishProtocolPeer) content() error {
++	kind, content, err := p.frame()
++	if err != nil {
++		return err
++	}
++	if kind != 2 || len(content) < 12 {
++		return fmt.Errorf("expected content header")
++	}
++	remaining := binary.BigEndian.Uint64(content[4:])
++	for remaining > 0 {
++		kind, body, readErr := p.frame()
++		if readErr != nil {
++			return readErr
++		}
++		if kind != 3 || uint64(len(body)) > remaining {
++			return fmt.Errorf("invalid content body")
++		}
++		remaining -= uint64(len(body))
++	}
++	return nil
++}
++
++func TestPublishPublicNativeTransportCancellation(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"dial", "TLS handshake", "AMQP handshake", "authentication handshake", "channel open", "confirm setup", "active declaration", "passive declaration", "write", "confirmation"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			clientPipe, server := net.Pipe()
++			client := &publishObservedConn{Conn: clientPipe, closed: make(chan struct{})}
++			defer client.Close()
++			defer server.Close()
++			entered := make(chan struct{})
++			peerDone := make(chan error, 1)
++			if stage == "dial" {
++				peerDone <- nil
++			} else {
++				go func() {
++					defer server.Close()
++					peerDone <- (publishProtocolPeer{Conn: server, clientClosed: client.closed}).run(stage, stage == "passive declaration", entered)
++				}()
++			}
++			r := newPublicPublisher(newPublishTestBroker())
++			r.connection, r.channel, r.connectionCount = nil, nil, 0
++			r.metadata.PublisherConfirm = true
++			if stage == "passive declaration" {
++				r.metadata.ExchangeDeclareMode = exchangeDeclareModePassive
++			}
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				uri := "amqp://guest:guest@localhost/?heartbeat=0"
++				if stage == "TLS handshake" {
++					uri = "amqps://guest:guest@localhost/?heartbeat=0"
++				}
++				return dialWithConfig(ctx, uri, amqp.Config{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}, func(ctx context.Context, _, _ string) (net.Conn, error) {
++					if stage == "dial" {
++						close(entered)
++						<-ctx.Done()
++						return nil, ctx.Err()
++					}
++					return client, nil
++				})
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := make(chan error, 1)
++			go func() { done <- r.Publish(ctx, &pubsub.PublishRequest{Topic: "topic", Data: make([]byte, 16*1024)}) }()
++			awaitPublishGate(t, entered)
++			cancel()
++			err := awaitPublish(t, done)
++			require.ErrorIs(t, err, context.Canceled)
++			require.NotContains(t, err.Error(), "ACCESS_REFUSED")
++			require.NotContains(t, err.Error(), "username or password not allowed")
++			select {
++			case peerErr := <-peerDone:
++				require.NoError(t, peerErr)
++			case <-time.After(time.Second):
++				t.Fatal("protocol peer did not terminate after cancellation")
++			}
++		})
++	}
++}
++
++func TestPublishPublicNativeConfirmationOutcomes(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"ack", "nack", "nack then disconnect", "shutdown during confirmation"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			clientPipe, server := net.Pipe()
++			client := &publishObservedConn{Conn: clientPipe, closed: make(chan struct{})}
++			defer client.Close()
++			defer server.Close()
++			entered := make(chan struct{})
++			peerDone := make(chan error, 1)
++			go func() {
++				defer server.Close()
++				peerDone <- (publishProtocolPeer{Conn: server, clientClosed: client.closed}).run(stage, false, entered)
++			}()
++			r := newPublicPublisher(newPublishTestBroker())
++			r.connection, r.channel, r.connectionCount = nil, nil, 0
++			r.metadata.PublisherConfirm = true
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				r.metadata.ReconnectWait = time.Hour
++				return dialWithConfig(ctx, "amqp://guest:guest@localhost/?heartbeat=0", amqp.Config{}, func(context.Context, string, string) (net.Conn, error) { return client, nil })
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := startPublicPublish(r, ctx, "topic")
++			awaitPublishGate(t, entered)
++			// The native confirmation has to leave publishSync before cancellation.
++			require.NoError(t, r.channelMutex.Lock(t.Context()))
++			r.channelMutex.Unlock()
++			if stage == "ack" {
++				require.NoError(t, awaitPublish(t, done))
++			} else {
++				cancel()
++				err := awaitPublish(t, done)
++				if stage == "nack" || stage == "nack then disconnect" {
++					require.EqualError(t, err, "did not receive confirmation of publishing")
++				} else {
++					require.Error(t, err)
++					require.NotContains(t, err.Error(), "did not receive confirmation of publishing")
++				}
++			}
++			// A finished ACK/NACK no longer owns a cancellation callback. Explicitly
++			// close the raw transport to join the protocol peer, without a Close RPC.
++			require.NoError(t, r.channelMutex.Lock(t.Context()))
++			if r.connection != nil {
++				_ = r.connection.Abort()
++			}
++			r.channelMutex.Unlock()
++			select {
++			case peerErr := <-peerDone:
++				require.NoError(t, peerErr)
++			case <-time.After(time.Second):
++				t.Fatal("protocol peer did not terminate")
++			}
++		})
++	}
++}
++
++func nativePublishPeer(t *testing.T, stage string) (*publishObservedConn, <-chan struct{}, <-chan error) {
++	t.Helper()
++	clientPipe, server := net.Pipe()
++	client := &publishObservedConn{Conn: clientPipe, closed: make(chan struct{})}
++	t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
++	entered, done := make(chan struct{}), make(chan error, 1)
++	go func() {
++		defer server.Close()
++		done <- (publishProtocolPeer{Conn: server, clientClosed: client.closed}).run(stage, false, entered)
++	}()
++	return client, entered, done
++}
++
++func awaitNativePeer(t *testing.T, done <-chan error) {
++	t.Helper()
++	select {
++	case err := <-done:
++		require.NoError(t, err)
++	case <-time.After(time.Second):
++		t.Fatal("native protocol peer did not terminate")
++	}
++}
++
++func TestPublishPublicNativeAccessRefused(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"channel access refused", "connection access refused"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			client, entered, peerDone := nativePublishPeer(t, stage)
++			r := newPublicPublisher(newPublishTestBroker())
++			r.connection, r.channel, r.connectionCount = nil, nil, 0
++			r.metadata.PublisherConfirm = true
++			var dials atomic.Int32
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				dials.Add(1)
++				r.metadata.ReconnectWait = time.Hour
++				return dialWithConfig(ctx, "amqp://guest:guest@localhost/?heartbeat=0", amqp.Config{}, func(context.Context, string, string) (net.Conn, error) { return client, nil })
++			}
++			done := startPublicPublish(r, t.Context(), "topic")
++			awaitPublishGate(t, entered)
++			err := awaitPublish(t, done)
++			var denied *amqp.Error
++			require.ErrorAs(t, err, &denied)
++			require.Equal(t, amqp.AccessRefused, denied.Code)
++			require.True(t, denied.Server)
++			require.Equal(t, codes.FailedPrecondition, status.Code(err))
++			require.Equal(t, "ACCESS_REFUSED - write permission denied", denied.Reason)
++			require.Equal(t, int32(1), dials.Load())
++			_ = client.Close()
++			awaitNativePeer(t, peerDone)
++		})
++	}
++}
++
++func TestPublishPublicNativeUnconfirmed(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"unconfirmed success", "unconfirmed write"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			client, entered, peerDone := nativePublishPeer(t, stage)
++			r := newPublicPublisher(newPublishTestBroker())
++			r.connection, r.channel, r.connectionCount = nil, nil, 0
++			r.metadata.PublisherConfirm = false
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				return dialWithConfig(ctx, "amqp://guest:guest@localhost/?heartbeat=0", amqp.Config{}, func(context.Context, string, string) (net.Conn, error) { return client, nil })
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := make(chan error, 1)
++			go func() { done <- r.Publish(ctx, &pubsub.PublishRequest{Topic: "topic", Data: make([]byte, 16*1024)}) }()
++			awaitPublishGate(t, entered)
++			if stage == "unconfirmed write" {
++				cancel()
++				require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			} else {
++				require.NoError(t, awaitPublish(t, done))
++				cancel()
++				select {
++				case <-client.closed:
++					t.Fatal("completed publication retained a cancellation callback")
++				default:
++				}
++				require.NoError(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}))
++				require.NoError(t, r.Close())
++			}
++			awaitNativePeer(t, peerDone)
++		})
++	}
++}
++
++func TestPublishPublicNativeCloseAndRecovery(t *testing.T) {
++	t.Parallel()
++	for range 20 {
++		r := newPublicPublisher(newPublishTestBroker())
++		r.connection, r.channel, r.connectionCount = nil, nil, 0
++		r.metadata.PublisherConfirm = true
++		peers := make([]<-chan error, 0, 2)
++		r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++			client, _, done := nativePublishPeer(t, "ack")
++			peers = append(peers, done)
++			return dialWithConfig(ctx, "amqp://guest:guest@localhost/?heartbeat=0", amqp.Config{}, func(context.Context, string, string) (net.Conn, error) { return client, nil })
++		}
++		require.NoError(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}))
++		require.NoError(t, r.reconnect(t.Context(), r.connectionCount))
++		awaitNativePeer(t, peers[0])
++		require.NoError(t, r.Publish(t.Context(), &pubsub.PublishRequest{Topic: "topic"}))
++		require.Equal(t, 2, r.connectionCount)
++		require.NoError(t, r.Close())
++		awaitNativePeer(t, peers[1])
++	}
++}
++
++func TestInitNativeCancellationAndURITimeout(t *testing.T) {
++	t.Parallel()
++	for _, stage := range []string{"AMQP handshake", "confirm setup", "URI timeout"} {
++		t.Run(stage, func(t *testing.T) {
++			t.Parallel()
++			peerStage := stage
++			if stage == "URI timeout" {
++				peerStage = "AMQP handshake"
++			}
++			client, entered, peerDone := nativePublishPeer(t, peerStage)
++			r := NewRabbitMQ(logger.NewLogger("test")).(*rabbitMQ)
++			r.connectionDial = func(ctx context.Context, _ string, _ string, _ string, _ time.Duration, _ *tls.Config, _ bool) (rabbitMQConnectionBroker, rabbitMQChannelBroker, error) {
++				uri := "amqp://guest:guest@localhost/?heartbeat=0"
++				if stage == "URI timeout" {
++					uri += "&connection_timeout=20"
++				}
++				return dialWithConfig(ctx, uri, amqp.Config{}, func(context.Context, string, string) (net.Conn, error) { return client, nil })
++			}
++			ctx, cancel := context.WithCancel(t.Context())
++			defer cancel()
++			done := make(chan error, 1)
++			started := time.Now()
++			go func() {
++				done <- r.Init(ctx, pubsub.Metadata{Base: mdata.Base{Properties: map[string]string{metadataHostnameKey: "anyhost", metadataPublisherConfirmKey: "true"}}})
++			}()
++			awaitPublishGate(t, entered)
++			if stage != "URI timeout" {
++				if stage == "AMQP handshake" {
++					remaining := time.Until(time.Unix(0, client.deadline.Load()))
++					require.Greater(t, remaining, 25*time.Second)
++					require.LessOrEqual(t, remaining, 30*time.Second)
++				}
++				cancel()
++				require.ErrorIs(t, awaitPublish(t, done), context.Canceled)
++			} else {
++				require.Error(t, awaitPublish(t, done))
++				require.NoError(t, ctx.Err(), "URI timeout must bound handshake independently of the caller")
++				require.Less(t, time.Since(started), time.Second)
++				deadline := time.Unix(0, client.deadline.Load())
++				require.LessOrEqual(t, deadline.Sub(started), 100*time.Millisecond)
++			}
++			require.Nil(t, r.connection)
++			require.Nil(t, r.channel)
++			require.Zero(t, r.connectionCount)
++			awaitPublishGate(t, client.closed)
++			awaitNativePeer(t, peerDone)
++		})
++	}
++}

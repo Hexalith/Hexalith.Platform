@@ -1,0 +1,19 @@
+go version go1.26.10 linux/amd64
+Test command: /tmp/hexalith-job.DzTCBVAw/go/bin/go test ./pubsub/rabbitmq -run ^TestReviewNativeAccessRefused$ -count=1 -v
+=== RUN   TestReviewNativeAccessRefused
+time="2026-11-14T10:15:13.633412228+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:13.633736404+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:13.633951512+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:13.634012471+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=1 reference=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:15:13.634072728+01:00" level=warning msg="rabbitmq pub/sub: reset: connection.Close() returned: io: read/write on closed pipe" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+    rabbitmq_publish_transport_test.go:390: public result after actual server channel.close(403): io: read/write on closed pipe
+    rabbitmq_publish_transport_test.go:394: 
+        	Error Trace:	/tmp/hexalith-job.jqrbA5t6/components-contrib/pubsub/rabbitmq/rabbitmq_publish_transport_test.go:394
+        	Error:      	"io: read/write on closed pipe" does not contain "ACCESS_REFUSED"
+        	Test:       	TestReviewNativeAccessRefused
+        	Messages:   	the native broker rejection must survive the public Publish path
+--- FAIL: TestReviewNativeAccessRefused (0.00s)
+FAIL
+FAIL	github.com/dapr/components-contrib/pubsub/rabbitmq	0.005s
+FAIL
+Test exit code: 1

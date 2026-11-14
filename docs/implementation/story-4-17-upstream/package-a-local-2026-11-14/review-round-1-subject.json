@@ -1,0 +1,20 @@
+{
+  "commit": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "patchSha256": "b207d5780597e5ee806410adfd1786480d215ff6bd74f3e9cca00a4c2356ea27",
+  "upstreamFiles": {
+    "pubsub/rabbitmq/rabbitmq.go": "97e42c8b4ba237b3452bcebd5ee9958112c77de439d7efa8e35442cdf1d32ec7",
+    "pubsub/rabbitmq/rabbitmq_test.go": "a9f0580c438a1c901f222d5a261a12b93ce56d1a966df7f86d220b33f1a40765",
+    "pubsub/rabbitmq/rabbitmq_integration_test.go": "cb2ae0458e017171d002a3b2dc4464042ca6ddd18f43653253ef077c3f31c518",
+    "pubsub/rabbitmq/rabbitmq_publish_test.go": "653996867d4ddda3ddb514727459b050d542c4c581f72e649a6288eee6bfceb9",
+    "pubsub/rabbitmq/rabbitmq_publish_transport_test.go": "16c81cff0e483db44a75cc4ebd88d0a70e3f09a21cf8baf2a9e245ef0143ca82"
+  },
+  "checks": [
+    "focused-unit-2",
+    "full-unit",
+    "focused-race",
+    "vet",
+    "integration-compile-only",
+    "upstream-diff-check"
+  ],
+  "note": "Initial implementation snapshot; reviewer defects are not yet corrected. Final contribution.patch will supersede this subject."
+}

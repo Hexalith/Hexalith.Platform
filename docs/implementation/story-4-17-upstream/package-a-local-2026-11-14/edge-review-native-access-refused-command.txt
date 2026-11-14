@@ -1,0 +1,4 @@
+run-with-temp python3 /home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-local-2026-11-14/edge-review-native-access-refused.py --source /tmp/hexalith-job.ZK82D9vZ/components-contrib --go /tmp/hexalith-job.DzTCBVAw/go/bin/go --mod-cache /tmp/hexalith-job.DzTCBVAw/go-mod
+
+Expected test exit code: 1 (assertion demonstrates that the real AMQP channel.close(403) reason is lost).
+The injected protocol peer uses the pinned AMQP client's actual public APIs. The temporary copy, build cache, and build output are removed by run-with-temp. All peer and publisher workers finish before the assertion.

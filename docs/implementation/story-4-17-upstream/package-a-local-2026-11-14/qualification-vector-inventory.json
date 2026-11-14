@@ -1,0 +1,120 @@
+{
+  "SCENARIOS": [
+    "crash-redelivery",
+    "broker-restart",
+    "durable-quarantine",
+    "failed-diversion",
+    "retention-expiry",
+    "stable-id-deduplication",
+    "app-topic-scopes",
+    "tls-negative",
+    "missing-secret",
+    "secret-rotation",
+    "cancellation-backpressure",
+    "missing-bindings"
+  ],
+  "BROKERS": [
+    "rabbitmq",
+    "kafka"
+  ],
+  "vectors": [
+    {
+      "broker": "rabbitmq",
+      "scenario": "crash-redelivery"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "broker-restart"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "durable-quarantine"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "failed-diversion"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "retention-expiry"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "stable-id-deduplication"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "app-topic-scopes"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "tls-negative"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "missing-secret"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "secret-rotation"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "cancellation-backpressure"
+    },
+    {
+      "broker": "rabbitmq",
+      "scenario": "missing-bindings"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "crash-redelivery"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "broker-restart"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "durable-quarantine"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "failed-diversion"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "retention-expiry"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "stable-id-deduplication"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "app-topic-scopes"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "tls-negative"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "missing-secret"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "secret-rotation"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "cancellation-backpressure"
+    },
+    {
+      "broker": "kafka",
+      "scenario": "missing-bindings"
+    }
+  ],
+  "count": 24,
+  "method": "Static AST inspection of unchanged vector declarations; no qualification execution"
+}

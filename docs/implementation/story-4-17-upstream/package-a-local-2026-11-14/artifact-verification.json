@@ -1,0 +1,22 @@
+{
+  "checkedUtc": "2026-11-14T09:34:58.532696+00:00",
+  "officialCommit": "440b15349565bb15f7a88636477864e5a9f8cc72",
+  "officialTree": "df45880e318a5851879793b42607c7c0b923512a",
+  "patchSha256": "ad71546ef66169c02b6b61f926b313c48d5f251e1a52e99c4129a44059dfa3b7",
+  "upstreamFileSha256": {
+    "pubsub/rabbitmq/rabbitmq.go": "ffbe3a5a471ccd1591d6e250a621d53a301602b7144596c69b20d66d69e2cfec",
+    "pubsub/rabbitmq/rabbitmq_integration_test.go": "cb2ae0458e017171d002a3b2dc4464042ca6ddd18f43653253ef077c3f31c518",
+    "pubsub/rabbitmq/rabbitmq_publish_test.go": "301f99bf3fa7249b39ed60e65ac80472dadb93d42ae2eb4769fd394976d4c579",
+    "pubsub/rabbitmq/rabbitmq_publish_transport_test.go": "9a567821009d3a1b9ab915877a5ebc05e66a67bcee10c44e8262355ebb0a6be9",
+    "pubsub/rabbitmq/rabbitmq_test.go": "8b52ded3d1fa31e7df810839b94e963b1571b585eeb47a836e2dfbad84e48d60"
+  },
+  "reverseApplyCheck": "PASS",
+  "cleanOfficialArchiveForwardApply": "PASS",
+  "appliedFilesMatchTestedCheckout": true,
+  "unchangedGoModuleFiles": true,
+  "preservedInputCount": 114,
+  "preservedInputsMatch": true,
+  "parentStatuses": "both in-progress",
+  "qualificationVectorCount": 24,
+  "method": "static source/hash/status and patch checks only; no Platform qualification"
+}

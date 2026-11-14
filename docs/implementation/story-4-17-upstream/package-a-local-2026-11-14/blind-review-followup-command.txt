@@ -1,0 +1,7 @@
+run-with-temp python3 - <<'PY'
+from pathlib import Path
+runner = Path('/home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-local-2026-11-14/blind-review-run.py')
+code = runner.read_text().replace('blind-review-output.log', 'blind-review-followup-output.log')
+__file__ = str(runner)
+exec(compile(code, str(runner), 'exec'))
+PY

@@ -1,0 +1,9 @@
+run-with-temp python3 /home/administrator/projects/hexalith/platform/docs/implementation/story-4-17-upstream/package-a-local-2026-11-14/edge-review-close-reply-cancellation.py
+
+Expected test exit code: 0.
+
+The source diff reviewed initially had SHA-256 b49529292b89e8fc64222a4e955c9deb96b2c7039f42b788981e88814ecf19bb. This script copies the held checkout and adds test-only protocol scheduling gates. It runs the corrected native channel/connection ACCESS_REFUSED cases, native ACK/NACK including immediate disconnect, NACK retention on generic exhaustion/cancellation, and a diagnostic cancellation boundary.
+
+Diagnostic interpretation: the pinned AMQP client sends close-ok before making the broker exception available through NotifyClose. A peer that stops reading that reply leaves the exception unavailable to the component. The test pauses the raw Close callback until the component has chosen its canceled result, then releases and joins all workers. This is deliberate scheduling control, not a claim that real TCP Close pauses in this way. No sleeps or production timing bounds are changed. Under the parent-defined contract, unobservable SDK causes remain uncertain on cancellation; this is an SDK-observation/integration gap, not a remaining component source defect.
+
+Only the final PASS result is a regression check. The earlier exploratory diagnostic expected an unavailable SDK exception and failed; that expectation was stronger than the component contract and was corrected before this retained run.

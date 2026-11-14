@@ -1,0 +1,14 @@
+time="2026-11-14T10:13:58.048334879+01:00" level=info msg="rabbitmq pub/sub: connectionCount: current=0 reference=0" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:13:58.048581397+01:00" level=info msg="rabbitmq pub/sub: connected with connectionCount=1" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+time="2026-11-14T10:13:58.048703213+01:00" level=error msg="rabbitmq pub/sub: publishing to topic failed: Exception (504) Reason: \"channel/connection is not open\"" instance=DESKTOP-VIOG240 scope=test type=log ver=unknown
+--- FAIL: TestReviewNativePublishAccessRefused (0.00s)
+    review_native_denial_test.go:38: 
+        	Error Trace:	/tmp/hexalith-job.ANgCAEJp/components-contrib/pubsub/rabbitmq/review_native_denial_test.go:38
+        	Error:      	Not equal: 
+        	            	expected: 0x9
+        	            	actual  : 0xe
+        	Test:       	TestReviewNativePublishAccessRefused
+        	Messages:   	native access refusal became: context canceled
+FAIL
+FAIL	github.com/dapr/components-contrib/pubsub/rabbitmq	0.004s
+FAIL
