@@ -5,13 +5,25 @@ import json
 import os
 from pathlib import Path
 import tempfile
-import subprocess
 import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 from current_catalog_view import (GENERATION6_CATALOG, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, UNKNOWN_CONSUMERS,
                                   verify_named_platform_catalog)
+
+BUILDS6_SOURCE = "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5"
+BUILDS6_CATALOG_BLOB = "cbfc6a888f269010600103a33c73d0cfc0af93a2"
+BUILDS6_CATALOG_SHA256 = "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7"
+
+
+def builds6_catalog_body() -> bytes:
+    """Read the exact published Git body offline, independently of selected/shallow producer checkouts."""
+    raw = (Path(__file__).with_name("fixtures") / "builds-6.0.0-Directory.Packages.props").read_bytes()
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+    if blob != BUILDS6_CATALOG_BLOB or hashlib.sha256(raw).hexdigest() != BUILDS6_CATALOG_SHA256:
+        raise ValueError("Published Builds6 catalog fixture differs from its exact source " + BUILDS6_SOURCE)
+    return raw
 
 
 def generation6_binding():
@@ -32,9 +44,7 @@ def generation6_binding():
 
 
 def generation6_catalog():
-    from builds_tuple import resolve_builds_root
-    owner = resolve_builds_root(Path(__file__).resolve().parents[1])
-    return subprocess.check_output(['git', 'show', GENERATION6_CATALOG['sourceRevision'] + ':Props/Directory.Packages.props'], cwd=owner)
+    return builds6_catalog_body()
 
 
 def catalog_body() -> bytes:
@@ -58,16 +68,56 @@ def catalog_body() -> bytes:
 
 
 class CurrentCatalogViewTests(unittest.TestCase):
-    def verify(self, raw):
-        return verify_named_platform_catalog(raw, hashlib.sha256(raw).hexdigest())
+    def verify(self, raw, binding=None):
+        return verify_named_platform_catalog(raw, hashlib.sha256(raw).hexdigest(), binding=binding)
 
     def test_exact_named_views_and_unknown_defaults_are_independently_evaluated(self):
         receipt = self.verify(catalog_body())
         self.assertEqual(list(PLATFORM_CONSUMERS), receipt["consumers"])
         self.assertEqual(len(receipt["evaluations"]), 36)
-        self.assertEqual({item["Identity"] for item in receipt["evaluations"] if item["Sdk"] == "5.0.0"}, set(UNKNOWN_CONSUMERS))
+        self.assertEqual({item["Identity"] for item in receipt["defaultEvaluations"] if item["Sdk"] == "5.0.0"}, set(UNKNOWN_CONSUMERS))
+        self.assertEqual({item["Sdk"] for item in receipt["collectingEvaluations"]}, {"4.2.0"})
         self.assertFalse(receipt["runtimeAcceptance"])
         self.assertFalse(receipt["candidateAcceptance"])
+
+    def test_actual_builds6_default_and_explicit_sdk42_views_preserve_exact_negative_consumers(self):
+        receipt = self.verify(builds6_catalog_body(), generation6_binding())
+        self.assertEqual(len(receipt["defaultEvaluations"]), 36)
+        self.assertEqual({item["Sdk"] for item in receipt["defaultEvaluations"]}, {"5.1.0"})
+        self.assertEqual(len(receipt["collectingEvaluations"]), 36)
+        for item in receipt["collectingEvaluations"]:
+            with self.subTest(consumer=item["Identity"]):
+                self.assertEqual(item["Sdk"], "4.2.0")
+                pins = dict(pin.split("=", 1) for pin in item["Pins"].split("|"))
+                named = item["Identity"] in PLATFORM_CONSUMERS
+                self.assertEqual(item["PlatformView"], str(named).lower())
+                self.assertEqual([pins[name] for name in OPENAPI_PACKAGES],
+                    ["10.0.15", "2.13.0"] if named else ["11.0.0", "3.11.0"])
+        self.assertFalse(receipt["runtimeAcceptance"])
+        self.assertFalse(receipt["candidateAcceptance"])
+
+    def test_actual_builds6_future_default_and_openapi_leaks_refuse(self):
+        for mutation in ("future-default", "missing-named-pair", "unknown-openapi-leak", "wrong-sdk-package"):
+            document = ET.fromstring(builds6_catalog_body())
+            if mutation == "future-default":
+                document.findall(".//HexalithEventStoreVersion")[-1].text = "5.2.0"
+            elif mutation == "wrong-sdk-package":
+                document.find(".//PackageVersion[@Include='Hexalith.EventStore.Contracts']").set("Version", "4.2.0")
+            else:
+                for name in ("HexalithAspNetCoreOpenApiVersion", "HexalithOpenApiVersion"):
+                    compatible = document.findall(".//" + name)[-1]
+                    condition = compatible.get("Condition")
+                    if mutation == "missing-named-pair":
+                        condition = condition.replace("or '$(HexalithPlatformSdk42CatalogView)' == 'true'", "")
+                    else:
+                        condition = condition.replace("'$(HexalithPlatformSdk42CatalogView)' == 'true'",
+                            "'$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(MSBuildProjectName)' == 'Unqualified.Consumer'")
+                    compatible.set("Condition", condition)
+            from current_catalog_view import evaluate_views, verify_observations
+            changed = ET.tostring(document)
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, "unqualified SDK/OpenAPI consumer view"):
+                verify_observations(evaluate_views(changed), "5.1.0", "5.1.0")
+                verify_observations(evaluate_views(changed, "4.2.0"), "4.2.0", "4.2.0")
 
     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
         root = Path(__file__).resolve().parents[1]
@@ -122,8 +172,11 @@ class CurrentCatalogViewTests(unittest.TestCase):
             elif mutation == "default-sdk": properties.findall("HexalithEventStoreVersion")[1].text = "4.2.0"
             elif mutation == "default-api": properties.findall("OpenApi")[0].text = "2.13.0"
             else: ET.SubElement(document.find("ItemGroup"), "PackageVersion", Include="Microsoft.OpenApi", Version="2.13.0")
+            from current_catalog_view import evaluate_views, verify_observations
+            changed = ET.tostring(document)
             with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, "unqualified SDK/OpenAPI consumer view"):
-                self.verify(ET.tostring(document))
+                verify_observations(evaluate_views(changed), "5.1.0", "5.1.0")
+                verify_observations(evaluate_views(changed, "4.2.0"), "4.2.0", "4.2.0")
 
     def test_current_evaluation_cannot_inherit_a_callers_sdk_or_build_import(self):
         with tempfile.TemporaryDirectory() as directory:

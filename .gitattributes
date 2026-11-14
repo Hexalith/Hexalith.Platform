@@ -186,3 +186,6 @@ _bmad-output/implementation-artifacts/evidence/2-12/final-checks/provider.txt -t
 src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/PlatformMcpCliCatalogVersion.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformMcpCliCatalogSelectionTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the exact published Builds6 catalog used by offline current-view regression controls.
+eng/fixtures/builds-6.0.0-Directory.Packages.props text eol=lf

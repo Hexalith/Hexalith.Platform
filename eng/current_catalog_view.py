@@ -77,7 +77,7 @@ def require_finite_selector(document: ET.Element) -> None:
         raise ValueError("The current Platform catalog view must contain exactly the 33 approved consumer names.")
 
 
-def evaluate_views(raw: bytes, selected_sdk=None) -> list[dict]:
+def evaluate_views(raw: bytes, sdk_version: str | None = None) -> list[dict]:
     """Use real project identities and a fresh process without inherited catalog or SDK overrides."""
     with tempfile.TemporaryDirectory(prefix="platform-catalog-view-") as temporary:
         root = Path(temporary)
@@ -107,6 +107,8 @@ def evaluate_views(raw: bytes, selected_sdk=None) -> list[dict]:
         driver = ET.Element("Project")
         target = ET.SubElement(driver, "Target", Name="ObserveAll", Returns="@(_Collected)")
         task = ET.SubElement(target, "MSBuild", Projects=";".join(paths), Targets="Observe", BuildInParallel="false")
+        if sdk_version is not None:
+            task.set("Properties", "HexalithEventStoreVersion=" + sdk_version)
         ET.SubElement(task, "Output", TaskParameter="TargetOutputs", ItemName="_Collected")
         driver_path = root / "Observe.proj"
         ET.ElementTree(driver).write(driver_path, encoding="utf-8", xml_declaration=True)
@@ -116,12 +118,29 @@ def evaluate_views(raw: bytes, selected_sdk=None) -> list[dict]:
                    "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH", "LANG", "LC_ALL", "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"}
         environment = {key: value for key, value in os.environ.items() if key in allowed}
         result = subprocess.run(["dotnet", "msbuild", str(driver_path), "-nologo", "-nodeReuse:false",
-                                 "-target:ObserveAll", "-getTargetResult:ObserveAll",
-                                 *([] if selected_sdk is None else ["-p:HexalithEventStoreVersion=" + selected_sdk])], cwd=root,
+                                 "-target:ObserveAll", "-getTargetResult:ObserveAll"], cwd=root,
                                 env=environment, capture_output=True, text=True, timeout=90)
         if result.returncode:
             raise ValueError("Independent current catalog evaluation failed: " + result.stdout + result.stderr)
         return json.loads(result.stdout)["TargetResults"]["ObserveAll"]["Items"]
+
+
+def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) -> None:
+    """Check every package and both OpenAPI members in one exact independent evaluation context."""
+    names = [item["Identity"] for item in observed]
+    if len(names) != len(PLATFORM_CONSUMERS) + len(UNKNOWN_CONSUMERS) \
+            or len(set(names)) != len(names) or set(names) != set(PLATFORM_CONSUMERS) | set(UNKNOWN_CONSUMERS):
+        raise ValueError("Independent catalog evaluation did not return the exact Platform and negative consumer set.")
+    for item in observed:
+        current = item["Identity"] in PLATFORM_CONSUMERS
+        expected_sdk = named_sdk if current else other_sdk
+        expected = {package: expected_sdk for package in SDK_PACKAGES}
+        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0")
+            if current and expected_sdk == "4.2.0" else ("11.0.0", "3.11.0"))))
+        pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
+        if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
+                or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
+            raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
 
 
 def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=None) -> dict:
@@ -132,33 +151,14 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
     require_finite_selector(ET.fromstring(raw))
     observed = evaluate_views(raw)
     names = [item["Identity"] for item in observed]
-    if len(names) != len(PLATFORM_CONSUMERS) + len(UNKNOWN_CONSUMERS) \
-            or len(set(names)) != len(names) or set(names) != set(PLATFORM_CONSUMERS) | set(UNKNOWN_CONSUMERS):
-        raise ValueError("Independent catalog evaluation did not return the exact Platform and negative consumer set.")
-    for item in observed:
-        current = item["Identity"] in PLATFORM_CONSUMERS
-        expected_sdk = "5.1.0" if profile == "current-sdk51" else "4.2.0" if current else "5.0.0"
-        expected = {package: expected_sdk for package in SDK_PACKAGES}
-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if current and profile == "retained-sdk42" else ("11.0.0", "3.11.0"))))
-        pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
-        if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
-                or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
-            raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
-    collecting = []
-    if profile == "current-sdk51":
-        collecting = evaluate_views(raw, "4.2.0")
-        if [item["Identity"] for item in collecting] != names:
-            raise ValueError("The retained collecting view changed its exact consumer set.")
-        for item in collecting:
-            current = item["Identity"] in PLATFORM_CONSUMERS
-            expected = {package: "4.2.0" for package in SDK_PACKAGES}
-            expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if current else ("11.0.0", "3.11.0"))))
-            pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
-            if item.get("Sdk") != "4.2.0" or item.get("PlatformView") != str(current).lower() \
-                    or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
-                raise ValueError("The authenticated catalog changed its retained SDK4.2 collecting view: " + item["Identity"])
-    return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if collecting else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
-            "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed,
+    verify_observations(observed, "5.1.0" if profile == "current-sdk51" else "4.2.0",
+                        "5.1.0" if profile == "current-sdk51" else "5.0.0")
+    collecting = evaluate_views(raw, "4.2.0")
+    if [item["Identity"] for item in collecting] != names:
+        raise ValueError("The retained collecting view changed its exact consumer set.")
+    verify_observations(collecting, "4.2.0", "4.2.0")
+    return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
+            "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting,
-            "scope": "Exact Builds6 current SDK5.1 view and explicit retained SDK4.2 collecting view" if collecting else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+            "scope": "Exact Builds6 current SDK5.1 view and explicit retained SDK4.2 collecting view" if profile == "current-sdk51" else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}
