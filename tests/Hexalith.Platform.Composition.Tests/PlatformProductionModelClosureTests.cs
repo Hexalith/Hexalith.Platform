@@ -39,7 +39,19 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             string catalog = Path.Combine(workspace, "Directory.Packages.props");
             await ExportCatalogBlobAsync(builds, source, catalog).ConfigureAwait(true);
             Hash(catalog).ShouldBe(catalogHash);
-            string tenantsVersion = System.Xml.Linq.XDocument.Load(catalog).Descendants("HexalithTenantsVersion").Single().Value;
+            string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
+            // Observe this real model's named view; the authenticated catalog can also declare a generic Tenants default.
+            var selection = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+                ["msbuild", project, "-nologo", "-nodeReuse:false", "-getProperty:HexalithTenantsVersion",
+                 "-p:Configuration=Release", "-p:UseHexalithProjectReferences=false", "-p:HexalithBuildsRoot=" + builds,
+                 "-p:BuildsToolingAssemblyPath=" + tooling, "-p:CustomBeforeDirectoryBuildProps=" + catalog,
+                 "-p:DirectoryPackagesPropsPath=" + catalog], root, null),
+                TimeSpan.FromSeconds(30), TestContext.Current.CancellationToken).ConfigureAwait(true);
+            output.WriteLine(selection.Output + selection.ErrorOutput);
+            selection.ExitCode.ShouldBe(0, selection.ErrorOutput);
+            selection.TimedOut.ShouldBeFalse();
+            selection.OutputTruncated.ShouldBeFalse();
+            string tenantsVersion = selection.Output.Trim();
             (string ExpectedHash, string Cohort) selected = tenantsVersion switch
             {
                 "7.0.5" => ("e84f4b22485c5db4866636558488e387132369583483b0334839c1bcf66b95ad", PlatformPartiesPackageFixture.EventStoreTestCohort),
@@ -50,7 +62,6 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             File.Exists(security).ShouldBeTrue("The isolated build must use the same bounded security patches as the owning Platform build.");
             string model = Path.Combine(workspace, "hosts", "platform-model");
             string artifacts = Path.Combine(workspace, "build", "platform-model");
-            string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
             // The existing Server707 authority is an SDK4.2 cohort. New catalog defaults remain observed separately.
             string[] admittedProperties = tenantsVersion == "7.0.7"
                 ? ["-p:HexalithEventStoreVersion=4.2.0", "-p:HexalithTenantsVersion=7.0.7",
