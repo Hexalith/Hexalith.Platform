@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "Exactly five fixed source commitments; complete source inventory and bounded private-material/safety exclusion",
+    "Source descriptors/snapshots and drift checks; original hard links are read only",
+    "Fresh version-empty destination prefix; fixed HTTPS endpoint/region and verified TLS",
+    "Pinned boto3/botocore 1.44.3; total_max_attempts=1; per-object IfNoneMatch=* and ContentMD5",
+    "Only PutObject mutates remotely; no policy, lifecycle, IAM, legal-hold, deletion or qualification operation",
+    "Exclusive start/intent markers, retained returned versions, stop on uncertainty and no automatic retry",
+    "Current preflight matches approved 30-day COMPLIANCE/no-expiry evidence scope; actual IAM observations are explicitly limited",
+    "Separate validator-only agent must download exact returned versions and exercise readback failures before acceptance"
+  ],
+  "focusedTestsIndependentlyRun": 17,
+  "focusedTestsOutcome": "PASS",
+  "inspectedAtUtc": "2026-11-14T01:08:05.461075+00:00",
+  "inspectedFiles": {
+    "offline-checks.json": "bee39da63d3a68fee792f65812ae48b12664cfae4e2399a54610fba774b3011a",
+    "plan.md": "cdfda9af305da57514c99cc6e5dfeb0662a054e6adcdd479fd967fb7760b2d80",
+    "preflight.json": "64abb20dc24220771c483a25fe42b4b2670b61d9e19ec89b4ff567f13f1bfe32",
+    "test_transfer_once.py": "ea229cb6fc9d120723f9ffbddfc876e8bab3a7faa153baf93da67db113e66fd5",
+    "transfer_once.py": "19cb51fdf00db95a1d25080c7d88cc0997a1640e6ca693e2b9b6697f22be0c11"
+  },
+  "inspector": "/root",
+  "offSiteCustodyAccepted": false,
+  "outcome": "PASS",
+  "planSha256": "cdfda9af305da57514c99cc6e5dfeb0662a054e6adcdd479fd967fb7760b2d80",
+  "schemaVersion": 1,
+  "scope": "Technical inspection of the owner-approved one-off transfer; not custody acceptance or another user approval",
+  "scriptSha256": "19cb51fdf00db95a1d25080c7d88cc0997a1640e6ca693e2b9b6697f22be0c11"
+}

@@ -1,0 +1,69 @@
+{
+  "capturedAtUtc": "2026-11-14T01:07:11.723686+00:00",
+  "outcome": "PASS",
+  "testsRun": 17,
+  "failures": 0,
+  "errors": 0,
+  "networkRequests": 0,
+  "remoteMutations": 0,
+  "scriptSha256": "19cb51fdf00db95a1d25080c7d88cc0997a1640e6ca693e2b9b6697f22be0c11",
+  "testSha256": "ea229cb6fc9d120723f9ffbddfc876e8bab3a7faa153baf93da67db113e66fd5",
+  "testNames": [
+    "test_collision_blocks_all_puts (test_transfer_once.OfflineMatrix.test_collision_blocks_all_puts)",
+    "test_current_protection_replay_rejects_drift (test_transfer_once.OfflineMatrix.test_current_protection_replay_rejects_drift)",
+    "test_descriptor_mutation_is_detected (test_transfer_once.OfflineMatrix.test_descriptor_mutation_is_detected)",
+    "test_evidence_writes_are_exclusive (test_transfer_once.OfflineMatrix.test_evidence_writes_are_exclusive)",
+    "test_exactly_five_conditional_single_puts (test_transfer_once.OfflineMatrix.test_exactly_five_conditional_single_puts)",
+    "test_exception_text_is_never_serialized (test_transfer_once.OfflineMatrix.test_exception_text_is_never_serialized)",
+    "test_missing_returned_version_stops (test_transfer_once.OfflineMatrix.test_missing_returned_version_stops)",
+    "test_original_sources_full_inventory_and_private_exclusions (test_transfer_once.OfflineMatrix.test_original_sources_full_inventory_and_private_exclusions)",
+    "test_prefix_versions_delete_markers_or_truncation_block (test_transfer_once.OfflineMatrix.test_prefix_versions_delete_markers_or_truncation_block)",
+    "test_private_and_unsafe_paths_block (test_transfer_once.OfflineMatrix.test_private_and_unsafe_paths_block)",
+    "test_private_signatures_block_without_exposing_values (test_transfer_once.OfflineMatrix.test_private_signatures_block_without_exposing_values)",
+    "test_source_byte_drift_blocks (test_transfer_once.OfflineMatrix.test_source_byte_drift_blocks)",
+    "test_source_symlink_blocks (test_transfer_once.OfflineMatrix.test_source_symlink_blocks)",
+    "test_started_attempt_cannot_restart (test_transfer_once.OfflineMatrix.test_started_attempt_cannot_restart)",
+    "test_uncertain_put_never_retries_or_continues (test_transfer_once.OfflineMatrix.test_uncertain_put_never_retries_or_continues)",
+    "test_uninspected_bytes_block_all_puts (test_transfer_once.OfflineMatrix.test_uninspected_bytes_block_all_puts)",
+    "test_zip_schema_hash_and_symlink_failures (test_transfer_once.OfflineMatrix.test_zip_schema_hash_and_symlink_failures)"
+  ],
+  "scope": "Real five-file descriptor inventory/private admission; synthetic malformed archives, seven protection drifts, collisions, single conditional PUTs, uncertainty/no-retry, missing version, exclusive intents/restart guard and review digest gate",
+  "specMatrix": [
+    {
+      "row": "Five admitted exact files -> conditional writes; independent exact-version retrieval",
+      "beforePut": "PASS: test_original_sources_full_inventory_and_private_exclusions; test_exactly_five_conditional_single_puts",
+      "afterPut": "Separate validator agent must independently retrieve exact returned versions before acceptance"
+    },
+    {
+      "row": "Source/private-material/scope failure -> no affected upload",
+      "result": "PASS",
+      "tests": [
+        "test_source_byte_drift_blocks",
+        "test_source_symlink_blocks",
+        "test_descriptor_mutation_is_detected",
+        "test_private_and_unsafe_paths_block",
+        "test_private_signatures_block_without_exposing_values",
+        "test_zip_schema_hash_and_symlink_failures",
+        "test_uninspected_bytes_block_all_puts",
+        "test_current_protection_replay_rejects_drift"
+      ]
+    },
+    {
+      "row": "Collision/uncertain PUT -> no overwrite or automatic retry; read-only reconciliation",
+      "result": "PASS",
+      "tests": [
+        "test_prefix_versions_delete_markers_or_truncation_block",
+        "test_collision_blocks_all_puts",
+        "test_uncertain_put_never_retries_or_continues",
+        "test_missing_returned_version_stops",
+        "test_started_attempt_cannot_restart",
+        "test_evidence_writes_are_exclusive"
+      ]
+    },
+    {
+      "row": "Incomplete/wrong readback or protection -> custody incomplete; no credit from other files",
+      "result": "REQUIRED_AFTER_UPLOAD",
+      "verification": "Separate verifier will exercise missing/tampered download and protection failure refusal before final acceptance; current-protection drift rejection is already covered offline"
+    }
+  ]
+}

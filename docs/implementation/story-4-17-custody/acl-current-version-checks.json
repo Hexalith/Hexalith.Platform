@@ -1,0 +1,289 @@
+{
+  "afterInventory": {
+    "accepted": true,
+    "bucket": "hexalith-recovery-points",
+    "completedAtUtc": "2026-11-14T01:34:09.083997+00:00",
+    "deleteMarkerCount": 0,
+    "deleteMarkers": [],
+    "isTruncated": false,
+    "outcome": "PASS",
+    "phase": "after-current-acl-reads",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "requestedBucket": "hexalith-recovery-points",
+    "requestedMaxKeys": 1000,
+    "requestedPrefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "versionCount": 5,
+    "versions": [
+      {
+        "bytes": 1946018,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13638293057.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:49+00:00",
+        "versionId": "1794618529862627"
+      },
+      {
+        "bytes": 1515070,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13638347236.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:47+00:00",
+        "versionId": "1794618527313018"
+      },
+      {
+        "bytes": 2666335,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13995674927.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:51+00:00",
+        "versionId": "1794618531524216"
+      },
+      {
+        "bytes": 1650434,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/14018214306.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:52+00:00",
+        "versionId": "1794618532016377"
+      },
+      {
+        "bytes": 574728,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/manifest.json",
+        "lastModifiedUtc": "2026-11-14T01:08:52+00:00",
+        "versionId": "1794618532817741"
+      }
+    ]
+  },
+  "beforeInventory": {
+    "accepted": true,
+    "bucket": "hexalith-recovery-points",
+    "completedAtUtc": "2026-11-14T01:34:08.832008+00:00",
+    "deleteMarkerCount": 0,
+    "deleteMarkers": [],
+    "isTruncated": false,
+    "outcome": "PASS",
+    "phase": "before-current-acl-reads",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "requestedBucket": "hexalith-recovery-points",
+    "requestedMaxKeys": 1000,
+    "requestedPrefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "versionCount": 5,
+    "versions": [
+      {
+        "bytes": 1946018,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13638293057.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:49+00:00",
+        "versionId": "1794618529862627"
+      },
+      {
+        "bytes": 1515070,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13638347236.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:47+00:00",
+        "versionId": "1794618527313018"
+      },
+      {
+        "bytes": 2666335,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/13995674927.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:51+00:00",
+        "versionId": "1794618531524216"
+      },
+      {
+        "bytes": 1650434,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/14018214306.zip",
+        "lastModifiedUtc": "2026-11-14T01:08:52+00:00",
+        "versionId": "1794618532016377"
+      },
+      {
+        "bytes": 574728,
+        "isLatest": true,
+        "key": "evidence/4-17/20261114t010116z-5574db84/manifest.json",
+        "lastModifiedUtc": "2026-11-14T01:08:52+00:00",
+        "versionId": "1794618532817741"
+      }
+    ]
+  },
+  "completedAtUtc": "2026-11-14T01:34:09.084163+00:00",
+  "currentObjectAcls": [
+    {
+      "accepted": true,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:34:08.842197+00:00",
+      "expectedCurrentVersionId": "1794618527313018",
+      "file": "13638347236.zip",
+      "grantCount": 1,
+      "grants": [
+        {
+          "granteeId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "granteeType": "CanonicalUser",
+          "hasEmailAddress": false,
+          "hasGroupUri": false,
+          "isExpectedOwner": true,
+          "permission": "FULL_CONTROL"
+        }
+      ],
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638347236.zip",
+      "onlyOwnerFullControl": true,
+      "outcome": "PASS",
+      "ownerId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "ownerMatchesExpected": true,
+      "publicOrExtraGrants": false,
+      "requestUsedVersionId": false,
+      "returnedVersionId": null,
+      "scope": "Current-object ACL observation; version association depends on stable surrounding inventories"
+    },
+    {
+      "accepted": true,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:34:08.925942+00:00",
+      "expectedCurrentVersionId": "1794618529862627",
+      "file": "13638293057.zip",
+      "grantCount": 1,
+      "grants": [
+        {
+          "granteeId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "granteeType": "CanonicalUser",
+          "hasEmailAddress": false,
+          "hasGroupUri": false,
+          "isExpectedOwner": true,
+          "permission": "FULL_CONTROL"
+        }
+      ],
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638293057.zip",
+      "onlyOwnerFullControl": true,
+      "outcome": "PASS",
+      "ownerId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "ownerMatchesExpected": true,
+      "publicOrExtraGrants": false,
+      "requestUsedVersionId": false,
+      "returnedVersionId": null,
+      "scope": "Current-object ACL observation; version association depends on stable surrounding inventories"
+    },
+    {
+      "accepted": true,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:34:08.993092+00:00",
+      "expectedCurrentVersionId": "1794618531524216",
+      "file": "13995674927.zip",
+      "grantCount": 1,
+      "grants": [
+        {
+          "granteeId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "granteeType": "CanonicalUser",
+          "hasEmailAddress": false,
+          "hasGroupUri": false,
+          "isExpectedOwner": true,
+          "permission": "FULL_CONTROL"
+        }
+      ],
+      "key": "evidence/4-17/20261114t010116z-5574db84/13995674927.zip",
+      "onlyOwnerFullControl": true,
+      "outcome": "PASS",
+      "ownerId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "ownerMatchesExpected": true,
+      "publicOrExtraGrants": false,
+      "requestUsedVersionId": false,
+      "returnedVersionId": null,
+      "scope": "Current-object ACL observation; version association depends on stable surrounding inventories"
+    },
+    {
+      "accepted": true,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:34:09.003828+00:00",
+      "expectedCurrentVersionId": "1794618532016377",
+      "file": "14018214306.zip",
+      "grantCount": 1,
+      "grants": [
+        {
+          "granteeId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "granteeType": "CanonicalUser",
+          "hasEmailAddress": false,
+          "hasGroupUri": false,
+          "isExpectedOwner": true,
+          "permission": "FULL_CONTROL"
+        }
+      ],
+      "key": "evidence/4-17/20261114t010116z-5574db84/14018214306.zip",
+      "onlyOwnerFullControl": true,
+      "outcome": "PASS",
+      "ownerId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "ownerMatchesExpected": true,
+      "publicOrExtraGrants": false,
+      "requestUsedVersionId": false,
+      "returnedVersionId": null,
+      "scope": "Current-object ACL observation; version association depends on stable surrounding inventories"
+    },
+    {
+      "accepted": true,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:34:09.029841+00:00",
+      "expectedCurrentVersionId": "1794618532817741",
+      "file": "manifest.json",
+      "grantCount": 1,
+      "grants": [
+        {
+          "granteeId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "granteeType": "CanonicalUser",
+          "hasEmailAddress": false,
+          "hasGroupUri": false,
+          "isExpectedOwner": true,
+          "permission": "FULL_CONTROL"
+        }
+      ],
+      "key": "evidence/4-17/20261114t010116z-5574db84/manifest.json",
+      "onlyOwnerFullControl": true,
+      "outcome": "PASS",
+      "ownerId": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+      "ownerMatchesExpected": true,
+      "publicOrExtraGrants": false,
+      "requestUsedVersionId": false,
+      "returnedVersionId": null,
+      "scope": "Current-object ACL observation; version association depends on stable surrounding inventories"
+    }
+  ],
+  "currentPrivacyEstablishedByStableInventoryInference": true,
+  "destination": {
+    "bucket": "hexalith-recovery-points",
+    "endpoint": "https://s3.fr-par.scw.cloud",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "region": "fr-par"
+  },
+  "exactVersionAclApiResultEstablished": false,
+  "inference": "Each of the five owner-only current-object ACL observations is associated with its accepted version because the surrounding prefix inventories contain exactly those five key/version pairs, all latest, without extra versions, delete markers or truncation, and remain identical",
+  "limitations": [
+    "Current privacy is inferred from stable surrounding inventories and current-object ACLs; this is not a successful exact-version ACL API response",
+    "Listings bracket observations rather than providing an atomic snapshot; no continuous monitoring or future privacy guarantee is asserted",
+    "The earlier failed exact-version ACL evidence is preserved, and denied calls were not retried",
+    "Shared-host automated verification is not security isolation or independent human accountability; API-key-to-application binding was not newly enumerated"
+  ],
+  "outcome": "PASS_CURRENT_PRIVACY_INFERENCE",
+  "protectedEvidenceSha256": {
+    "additional-admission-checks.json": "fc94c10143db6b4a9a042c465d753ef20382fabda4981ab633fae31b3e094163",
+    "receipt.json": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+    "test_verify_readback.py": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+    "verifier-negative-checks.json": "5f5fcc845a7ef4c9e9dade10d654da4f431b12f435484e98b399afc6cff7cb96",
+    "verify_readback.py": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c"
+  },
+  "protectedEvidenceUnchanged": true,
+  "remoteOperations": {
+    "additionalDownloads": 0,
+    "get_object_acl_current": 5,
+    "get_object_acl_version_bound": 0,
+    "list_object_versions": 2,
+    "otherRemoteOperations": 0,
+    "remoteMutations": 0
+  },
+  "schemaVersion": 1,
+  "sdk": {
+    "boto3": "1.44.3",
+    "botocore": "1.44.3",
+    "tlsVerification": true,
+    "totalMaximumAttempts": 1
+  },
+  "surroundingVersionInventoriesStable": true,
+  "totalRemoteRequests": 7,
+  "verifier": {
+    "credentialReference": "~/.config/hexalith-recovery/validator.env",
+    "executor": "/root/custody_verifier"
+  }
+}

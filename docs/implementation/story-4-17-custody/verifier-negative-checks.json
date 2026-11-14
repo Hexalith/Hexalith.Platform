@@ -1,0 +1,128 @@
+{
+  "completedAtUtc": "2026-11-14T01:14:16.873823+00:00",
+  "outcome": "PASS",
+  "passed": 25,
+  "results": [
+    {
+      "outcome": "PASS",
+      "test": "complete-version-bound-protection-positive-control"
+    },
+    {
+      "expectedRefusalCode": "response-version-mismatch",
+      "outcome": "PASS",
+      "test": "wrong-head-version"
+    },
+    {
+      "expectedRefusalCode": "response-version-mismatch",
+      "outcome": "PASS",
+      "test": "wrong-get-version"
+    },
+    {
+      "expectedRefusalCode": "response-length-mismatch",
+      "outcome": "PASS",
+      "test": "wrong-head-content-length"
+    },
+    {
+      "expectedRefusalCode": "object-encryption-inadequate",
+      "outcome": "PASS",
+      "test": "missing-aes256"
+    },
+    {
+      "expectedRefusalCode": "object-retention-mode-inadequate",
+      "outcome": "PASS",
+      "test": "governance-instead-of-compliance"
+    },
+    {
+      "expectedRefusalCode": "object-retention-duration-inadequate",
+      "outcome": "PASS",
+      "test": "retention-less-than-thirty-days"
+    },
+    {
+      "expectedRefusalCode": "object-retention-duration-inadequate",
+      "outcome": "PASS",
+      "test": "retention-no-longer-valid"
+    },
+    {
+      "expectedRefusalCode": "retention-api-mismatch",
+      "outcome": "PASS",
+      "test": "retention-api-date-mismatch"
+    },
+    {
+      "expectedRefusalCode": "retention-response-version-mismatch",
+      "outcome": "PASS",
+      "test": "retention-response-version-mismatch"
+    },
+    {
+      "expectedRefusalCode": "download-missing-or-unsafe",
+      "outcome": "PASS",
+      "test": "missing-downloaded-file"
+    },
+    {
+      "expectedRefusalCode": "downloaded-commitment-mismatch",
+      "outcome": "PASS",
+      "test": "tampered-downloaded-13638347236.zip"
+    },
+    {
+      "expectedRefusalCode": "downloaded-commitment-mismatch",
+      "outcome": "PASS",
+      "test": "tampered-downloaded-manifest.json"
+    },
+    {
+      "expectedRefusalCode": "downloaded-commitment-mismatch",
+      "outcome": "PASS",
+      "test": "tampered-manifest-content-gate"
+    },
+    {
+      "outcome": "PASS",
+      "test": "four-approved-archive-inventory-safety-positive-controls"
+    },
+    {
+      "outcome": "PASS",
+      "test": "approved-current-protection-positive-control"
+    },
+    {
+      "expectedRefusalCode": "current-lifecycle-drift-or-evidence-expiry",
+      "outcome": "PASS",
+      "test": "evidence-expiry-rule-blocks-custody"
+    },
+    {
+      "expectedRefusalCode": "private-material-path",
+      "outcome": "PASS",
+      "test": "private-material-path"
+    },
+    {
+      "expectedRefusalCode": "private-material-signature",
+      "outcome": "PASS",
+      "test": "private-key-signature"
+    },
+    {
+      "expectedRefusalCode": "unsafe-entry-path",
+      "outcome": "PASS",
+      "test": "zip-traversal-path"
+    },
+    {
+      "outcome": "PASS",
+      "test": "one-failed-archive-preserved-despite-four-successes"
+    },
+    {
+      "outcome": "PASS",
+      "test": "missing-object-blocks-overall-custody"
+    },
+    {
+      "outcome": "PASS",
+      "test": "failed-current-protection-blocks-five-successes"
+    },
+    {
+      "outcome": "PASS",
+      "test": "failed-literal-inventory-blocks-five-successes"
+    },
+    {
+      "outcome": "PASS",
+      "test": "failed-negative-checks-block-five-successes"
+    }
+  ],
+  "scope": "Local refusal/positive controls; no network, remote mutation, or custody assertion",
+  "scriptSha256": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c",
+  "testScriptSha256": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+  "tests": 25
+}

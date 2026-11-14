@@ -1,0 +1,59 @@
+{
+  "capturedAtUtc": "2026-11-14T01:12:11.587352+00:00",
+  "outcome": "PASS",
+  "checks": [
+    {
+      "file": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sha256": "d1f95cd19920e81b0a66c02df3643fb61d3b92885e8bb6859ff8d241e0486737",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "_bmad-output/planning-artifacts/epics.md",
+      "sha256": "e3b4aa8876658d9462306f1a2a8913703db848d57ad8d0924612d1d3f34505f7",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "_bmad-output/implementation-artifacts/spec-4-17-select-and-qualify-the-durable-production-broker.md",
+      "sha256": "4eb4da351a005f96be24e7f507dfd99f10b9f39e9db65492d9126dd35a8e402d",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "_bmad-output/implementation-artifacts/spec-4-17-select-and-qualify-the-durable-production-broker-2.md",
+      "sha256": "1839cbd1c74c6ff103e1e2aa5323090d9639a8f8e89292712216bc4c66750e09",
+      "unchangedFromHead": true
+    },
+    {
+      "file": ".github/workflows/broker-candidate-qualification.yml",
+      "sha256": "13ebcd5a80b5419d522f268415d911de134fb71e8d8d345e30d6e9b7716007cb",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "eng/kubernetes-upgrade/native-node-recovery/publication.py",
+      "sha256": "918bcfd9a9d4ae0227399a9430e9ceddaf2c04ab63397c97926b47d7c5ef2fca",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "_bmad-output/implementation-artifacts/evidence/4-17/candidate-02-hosted-attempt-1/attempt-assessment.json",
+      "sha256": "70ac2d0cae8519d5ed499e3e2e7e96bee07e0b5432e43d5725b185076afdc14b",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "_bmad-output/implementation-artifacts/evidence/4-17/candidate-02-hosted-attempt-1/vector-assessment.json",
+      "sha256": "519a43fe85168d6a3e60798d428cfe71750ca7193d65e4a44839a8a6fadc691f",
+      "unchangedFromHead": true
+    },
+    {
+      "file": "references/Hexalith.EventStore/_bmad-output/implementation-artifacts/sprint-status.yaml",
+      "sha256": "d2056677fb06a05a176150d863381d1f1a2d7701890d1470201a83c68bf3bc9e",
+      "unchangedFromSubmoduleHead": true
+    }
+  ],
+  "qualificationUnchanged": {
+    "Platform4.17": "in-progress",
+    "EventStore3.21": "in-progress",
+    "historicalGuarantees": "five REJECTED/open",
+    "technical": "FAIL (20/24)",
+    "selectedBroker": null,
+    "productionEligible": "FAIL"
+  }
+}

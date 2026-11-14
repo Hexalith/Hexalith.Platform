@@ -1,0 +1,289 @@
+{
+  "actualIamIdentityBinding": "Existing Administrator-selected credential references; bucket policy observed; no IAM enumeration or denial mutation probes",
+  "archives": [
+    {
+      "archiveSafety": "PASS",
+      "authority": "historical failure; no new qualification verification",
+      "entryCount": 495,
+      "file": "13638347236.zip",
+      "inventory": "PASS",
+      "packetArtifactCount": 494,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 2,
+      "privateMaterialExclusions": "PASS"
+    },
+    {
+      "archiveSafety": "PASS",
+      "authority": "historical failure; no new qualification verification",
+      "entryCount": 601,
+      "file": "13638293057.zip",
+      "inventory": "PASS",
+      "packetArtifactCount": 494,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 2,
+      "privateMaterialExclusions": "PASS"
+    },
+    {
+      "archiveSafety": "PASS",
+      "authority": "diagnostic-only; original qualification integrity rejected",
+      "entryCount": 575,
+      "file": "13995674927.zip",
+      "inventory": "PASS",
+      "packetArtifactCount": 551,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 3,
+      "privateMaterialExclusions": "PASS"
+    },
+    {
+      "archiveSafety": "PASS",
+      "authority": "original independently verified packet; technical FAIL 20/24",
+      "entryCount": 544,
+      "file": "14018214306.zip",
+      "inventory": "PASS",
+      "packetArtifactCount": 520,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 3,
+      "privateMaterialExclusions": "PASS"
+    }
+  ],
+  "capturedAtUtc": "2026-11-14T01:06:36.046043+00:00",
+  "credentialFilesOwnerOnly": true,
+  "credentialRolesDistinct": true,
+  "destination": {
+    "bucket": "hexalith-recovery-points",
+    "endpoint": "https://s3.fr-par.scw.cloud",
+    "failureDomain": "off-site Scaleway object storage",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "provider": "Scaleway",
+    "region": "fr-par"
+  },
+  "manifestSha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f",
+  "operator": {
+    "accountableOwner": "Administrator",
+    "credentialReference": "~/.config/hexalith-recovery/writer.env",
+    "executor": "/root/preserve_packets_impl",
+    "expectedApplication": "9a7cff8d-cffc-4554-93fe-01ed8e0d0d04"
+  },
+  "originalAuthorityLabelsUnchanged": true,
+  "originalLocalOnlyFieldsUnchanged": true,
+  "originalManifestUnchanged": true,
+  "outcome": "PASS",
+  "privateMaterialCheck": {
+    "limitations": "Bounded exclusion checks are not a general secret-detection proof",
+    "outcome": "PASS",
+    "scope": "All ZIP entries and nested public Helm chart members; forbidden private paths, key/token/environment-secret signatures; original sanitized packet admission remains byte-bound"
+  },
+  "protection": {
+    "administrativeHold": "Administrator-owned no-deletion hold while guarantees remain open; then deletion review against applicable policy",
+    "bucketPolicy": {
+      "Id": "hexalith-recovery-points-story-4-0",
+      "Statement": [
+        {
+          "Action": "s3:*",
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": "user_id:31877e57-5937-4688-b018-a741852bf03f"
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "OwnerAdministration"
+        },
+        {
+          "Action": [
+            "s3:AbortMultipartUpload",
+            "s3:GetBucketLocation",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:ListBucketMultipartUploads",
+            "s3:ListMultipartUploadParts",
+            "s3:PutObject"
+          ],
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": "application_id:9a7cff8d-cffc-4554-93fe-01ed8e0d0d04"
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "BackupWriterNoDelete"
+        },
+        {
+          "Action": [
+            "s3:GetBucketAcl",
+            "s3:GetBucketLocation",
+            "s3:GetBucketObjectLockConfiguration",
+            "s3:GetBucketTagging",
+            "s3:GetBucketVersioning",
+            "s3:GetEncryptionConfiguration",
+            "s3:GetLifecycleConfiguration",
+            "s3:GetObject",
+            "s3:GetObjectAcl",
+            "s3:GetObjectLegalHold",
+            "s3:GetObjectRetention",
+            "s3:GetObjectTagging",
+            "s3:GetObjectVersion",
+            "s3:GetObjectVersionTagging",
+            "s3:ListBucket",
+            "s3:ListBucketVersions"
+          ],
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": [
+              "application_id:406da2fa-5d02-4a49-bcbc-de0218c6460d",
+              "user_id:97a06b64-82d5-47bc-8642-06f84b86db99"
+            ]
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "IndependentValidatorReadOnly"
+        }
+      ],
+      "Version": "2023-04-17"
+    },
+    "bucketPolicyRawSha256": "7f650dc576ba74c94f4c1a22a433a950b8777af03f5bc2b72593eed490ba2b2f",
+    "checks": {
+      "get_bucket_acl": {
+        "Grants": [
+          {
+            "Grantee": {
+              "DisplayName": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+              "ID": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ],
+        "Owner": {
+          "DisplayName": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "ID": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd"
+        }
+      },
+      "get_bucket_encryption": {
+        "ServerSideEncryptionConfiguration": {
+          "Rules": [
+            {
+              "ApplyServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              },
+              "BucketKeyEnabled": false
+            }
+          ]
+        }
+      },
+      "get_bucket_lifecycle_configuration": {
+        "Rules": [
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "keycloak/"
+            },
+            "ID": "expire-keycloak",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          },
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "openbao/"
+            },
+            "ID": "expire-openbao",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          },
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "memories/"
+            },
+            "ID": "expire-memories",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          }
+        ]
+      },
+      "get_bucket_location": {
+        "LocationConstraint": "fr-par"
+      },
+      "get_bucket_versioning": {
+        "Status": "Enabled"
+      },
+      "get_object_lock_configuration": {
+        "ObjectLockConfiguration": {
+          "ObjectLockEnabled": "Enabled",
+          "Rule": {
+            "DefaultRetention": {
+              "Days": 30,
+              "Mode": "COMPLIANCE"
+            }
+          }
+        }
+      }
+    },
+    "effectiveIamGrants": "NOT_REQUERIED; historical identity references and observed bucket policy only",
+    "evidenceLifecycleExpiry": false,
+    "scope": "Owner admitted these exact sanitized bytes under evidence/4-17/; no object legal hold or control change"
+  },
+  "qualification": {
+    "guarantees": "five REJECTED/open",
+    "parentStatuses": "in-progress",
+    "production": "FAIL",
+    "selection": null,
+    "technical": "FAIL (20/24)"
+  },
+  "schemaVersion": 1,
+  "sdk": {
+    "boto3Version": "1.44.3",
+    "botocoreVersion": "1.44.3",
+    "tlsVerification": true,
+    "totalMaximumAttempts": 1
+  },
+  "sourceCommitments": {
+    "13638293057.zip": {
+      "bytes": 1946018,
+      "sha256": "20643dbd7d3702f3f504b0a4ce5fd3fe627ff32493d00624d37dca40e81b8a27"
+    },
+    "13638347236.zip": {
+      "bytes": 1515070,
+      "sha256": "20a1719b753c7379207bbeb92cc73f70af99b7fa7e71734fd4a58ec7427cf223"
+    },
+    "13995674927.zip": {
+      "bytes": 2666335,
+      "sha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7"
+    },
+    "14018214306.zip": {
+      "bytes": 1650434,
+      "sha256": "a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a"
+    },
+    "manifest.json": {
+      "bytes": 574728,
+      "sha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f"
+    }
+  },
+  "transferId": "20261114t010116z-5574db84"
+}

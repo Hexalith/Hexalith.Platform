@@ -1,0 +1,588 @@
+{
+  "administrativeHold": {
+    "automaticDeletionDate": null,
+    "enforcedInitialMinimum": "30 days COMPLIANCE; not permission to delete afterward",
+    "objectLegalHoldOrControlChange": false,
+    "owner": "Administrator",
+    "until": "guarantees close, then deletion review against policy"
+  },
+  "completedAtUtc": "2026-11-14T01:14:47.503827+00:00",
+  "currentProtection": {
+    "apiKeyToApplicationBinding": "Historical/reference binding; not independently enumerated",
+    "bucketPolicy": {
+      "Id": "hexalith-recovery-points-story-4-0",
+      "Statement": [
+        {
+          "Action": "s3:*",
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": "user_id:31877e57-5937-4688-b018-a741852bf03f"
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "OwnerAdministration"
+        },
+        {
+          "Action": [
+            "s3:AbortMultipartUpload",
+            "s3:GetBucketLocation",
+            "s3:GetObject",
+            "s3:ListBucket",
+            "s3:ListBucketMultipartUploads",
+            "s3:ListMultipartUploadParts",
+            "s3:PutObject"
+          ],
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": "application_id:9a7cff8d-cffc-4554-93fe-01ed8e0d0d04"
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "BackupWriterNoDelete"
+        },
+        {
+          "Action": [
+            "s3:GetBucketAcl",
+            "s3:GetBucketLocation",
+            "s3:GetBucketObjectLockConfiguration",
+            "s3:GetBucketTagging",
+            "s3:GetBucketVersioning",
+            "s3:GetEncryptionConfiguration",
+            "s3:GetLifecycleConfiguration",
+            "s3:GetObject",
+            "s3:GetObjectAcl",
+            "s3:GetObjectLegalHold",
+            "s3:GetObjectRetention",
+            "s3:GetObjectTagging",
+            "s3:GetObjectVersion",
+            "s3:GetObjectVersionTagging",
+            "s3:ListBucket",
+            "s3:ListBucketVersions"
+          ],
+          "Effect": "Allow",
+          "Principal": {
+            "SCW": [
+              "application_id:406da2fa-5d02-4a49-bcbc-de0218c6460d",
+              "user_id:97a06b64-82d5-47bc-8642-06f84b86db99"
+            ]
+          },
+          "Resource": [
+            "hexalith-recovery-points",
+            "hexalith-recovery-points/*"
+          ],
+          "Sid": "IndependentValidatorReadOnly"
+        }
+      ],
+      "Version": "2023-04-17"
+    },
+    "bucketPolicyMatchesApprovedRoles": true,
+    "bucketPolicyRawSha256": "7f650dc576ba74c94f4c1a22a433a950b8777af03f5bc2b72593eed490ba2b2f",
+    "capturedAtUtc": "2026-11-14T01:14:38.013129+00:00",
+    "checks": {
+      "get_bucket_acl": {
+        "Grants": [
+          {
+            "Grantee": {
+              "DisplayName": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+              "ID": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ],
+        "Owner": {
+          "DisplayName": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd",
+          "ID": "bed84924-0e48-4275-8b7c-5d9a1f57a8dd:bed84924-0e48-4275-8b7c-5d9a1f57a8dd"
+        }
+      },
+      "get_bucket_encryption": {
+        "ServerSideEncryptionConfiguration": {
+          "Rules": [
+            {
+              "ApplyServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              },
+              "BucketKeyEnabled": false
+            }
+          ]
+        }
+      },
+      "get_bucket_lifecycle_configuration": {
+        "Rules": [
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "keycloak/"
+            },
+            "ID": "expire-keycloak",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          },
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "openbao/"
+            },
+            "ID": "expire-openbao",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          },
+          {
+            "AbortIncompleteMultipartUpload": {
+              "DaysAfterInitiation": 1
+            },
+            "Expiration": {
+              "Days": 31
+            },
+            "Filter": {
+              "Prefix": "memories/"
+            },
+            "ID": "expire-memories",
+            "NoncurrentVersionExpiration": {
+              "NoncurrentDays": 1
+            },
+            "Status": "Enabled"
+          }
+        ]
+      },
+      "get_bucket_location": {
+        "LocationConstraint": "fr-par"
+      },
+      "get_bucket_versioning": {
+        "Status": "Enabled"
+      },
+      "get_object_lock_configuration": {
+        "ObjectLockConfiguration": {
+          "ObjectLockEnabled": "Enabled",
+          "Rule": {
+            "DefaultRetention": {
+              "Days": 30,
+              "Mode": "COMPLIANCE"
+            }
+          }
+        }
+      }
+    },
+    "effectiveIamGrants": "Not re-enumerated; Administrator-selected reference and observed bucket policy",
+    "evidenceLifecycleExpiry": false,
+    "outcome": "PASS"
+  },
+  "destination": {
+    "bucket": "hexalith-recovery-points",
+    "endpoint": "https://s3.fr-par.scw.cloud",
+    "failureDomain": "off-site object storage, separate from local host and GitHub artifacts",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "provider": "Scaleway",
+    "region": "fr-par"
+  },
+  "downloadDirectory": "artifacts/story-4-17-independent-readback-ed043dv3",
+  "downloadDirectoryMode": "0700",
+  "downloadFileModes": "0600",
+  "files": [
+    {
+      "accepted": true,
+      "archiveSafety": "PASS",
+      "artifactId": 13638347236,
+      "completedAtUtc": "2026-11-14T01:14:45.321262+00:00",
+      "completedBeforeOriginalExpiry": true,
+      "downloadPath": "artifacts/story-4-17-independent-readback-ed043dv3/13638347236.zip",
+      "downloadedBytes": 1515070,
+      "downloadedSha256": "20a1719b753c7379207bbeb92cc73f70af99b7fa7e71734fd4a58ec7427cf223",
+      "entryCount": 495,
+      "expectedBytes": 1515070,
+      "expectedSha256": "20a1719b753c7379207bbeb92cc73f70af99b7fa7e71734fd4a58ec7427cf223",
+      "file": "13638347236.zip",
+      "inventory": "PASS",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638347236.zip",
+      "label": "nov9-standalone",
+      "nestedPublicChartArchives": 1,
+      "nestedPublicChartMembers": 67,
+      "originalAuthority": "historical failure; no new qualification verification",
+      "originalExpiryUtc": "2026-12-08T23:05:01Z",
+      "outcome": "PASS",
+      "packetArtifactCount": 494,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 2,
+      "privateMaterialExclusions": "PASS",
+      "protection": {
+        "createdAtUtc": "2026-11-14T01:08:47+00:00",
+        "encryption": "AES256",
+        "getContentLength": 1515070,
+        "getVersionId": "1794618527313018",
+        "headContentLength": 1515070,
+        "headVersionId": "1794618527313018",
+        "minimumDaysFromCreation": 30,
+        "mode": "COMPLIANCE",
+        "outcome": "PASS",
+        "retainUntilUtc": "2026-12-14T01:08:47.313000+00:00",
+        "retentionApiUntilUtc": "2026-12-14T01:08:47.313000+00:00",
+        "retentionRequestedVersionId": "1794618527313018",
+        "retentionReturnedVersionId": null,
+        "validAtVerification": true
+      },
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 42532773702,
+      "versionId": "1794618527313018",
+      "wholeFileCommitment": "PASS"
+    },
+    {
+      "accepted": true,
+      "archiveSafety": "PASS",
+      "artifactId": 13638293057,
+      "completedAtUtc": "2026-11-14T01:14:45.776668+00:00",
+      "completedBeforeOriginalExpiry": true,
+      "downloadPath": "artifacts/story-4-17-independent-readback-ed043dv3/13638293057.zip",
+      "downloadedBytes": 1946018,
+      "downloadedSha256": "20643dbd7d3702f3f504b0a4ce5fd3fe627ff32493d00624d37dca40e81b8a27",
+      "entryCount": 601,
+      "expectedBytes": 1946018,
+      "expectedSha256": "20643dbd7d3702f3f504b0a4ce5fd3fe627ff32493d00624d37dca40e81b8a27",
+      "file": "13638293057.zip",
+      "inventory": "PASS",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638293057.zip",
+      "label": "nov9-fixture",
+      "nestedPublicChartArchives": 2,
+      "nestedPublicChartMembers": 134,
+      "originalAuthority": "historical failure; no new qualification verification",
+      "originalExpiryUtc": "2026-12-08T23:08:16Z",
+      "outcome": "PASS",
+      "packetArtifactCount": 494,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 2,
+      "privateMaterialExclusions": "PASS",
+      "protection": {
+        "createdAtUtc": "2026-11-14T01:08:49+00:00",
+        "encryption": "AES256",
+        "getContentLength": 1946018,
+        "getVersionId": "1794618529862627",
+        "headContentLength": 1946018,
+        "headVersionId": "1794618529862627",
+        "minimumDaysFromCreation": 30,
+        "mode": "COMPLIANCE",
+        "outcome": "PASS",
+        "retainUntilUtc": "2026-12-14T01:08:49.862000+00:00",
+        "retentionApiUntilUtc": "2026-12-14T01:08:49.862000+00:00",
+        "retentionRequestedVersionId": "1794618529862627",
+        "retentionReturnedVersionId": null,
+        "validAtVerification": true
+      },
+      "repository": "Hexalith/Hexalith.EventStore",
+      "runId": 42532776864,
+      "versionId": "1794618529862627",
+      "wholeFileCommitment": "PASS"
+    },
+    {
+      "accepted": true,
+      "archiveSafety": "PASS",
+      "artifactId": 13995674927,
+      "completedAtUtc": "2026-11-14T01:14:46.660335+00:00",
+      "completedBeforeOriginalExpiry": true,
+      "downloadPath": "artifacts/story-4-17-independent-readback-ed043dv3/13995674927.zip",
+      "downloadedBytes": 2666335,
+      "downloadedSha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+      "entryCount": 575,
+      "expectedBytes": 2666335,
+      "expectedSha256": "906c0d943e7a0ee8393bb83b96c4c917477fe18820afe37fe6ba7274afe7aeb7",
+      "file": "13995674927.zip",
+      "inventory": "PASS",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13995674927.zip",
+      "label": "candidate-01",
+      "nestedPublicChartArchives": 1,
+      "nestedPublicChartMembers": 67,
+      "originalAuthority": "diagnostic-only; original qualification integrity rejected",
+      "originalExpiryUtc": "2026-12-13T00:11:32Z",
+      "outcome": "PASS",
+      "packetArtifactCount": 551,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 3,
+      "privateMaterialExclusions": "PASS",
+      "protection": {
+        "createdAtUtc": "2026-11-14T01:08:51+00:00",
+        "encryption": "AES256",
+        "getContentLength": 2666335,
+        "getVersionId": "1794618531524216",
+        "headContentLength": 2666335,
+        "headVersionId": "1794618531524216",
+        "minimumDaysFromCreation": 30,
+        "mode": "COMPLIANCE",
+        "outcome": "PASS",
+        "retainUntilUtc": "2026-12-14T01:08:51.524000+00:00",
+        "retentionApiUntilUtc": "2026-12-14T01:08:51.524000+00:00",
+        "retentionRequestedVersionId": "1794618531524216",
+        "retentionReturnedVersionId": null,
+        "validAtVerification": true
+      },
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43333995506,
+      "versionId": "1794618531524216",
+      "wholeFileCommitment": "PASS"
+    },
+    {
+      "accepted": true,
+      "archiveSafety": "PASS",
+      "artifactId": 14018214306,
+      "completedAtUtc": "2026-11-14T01:14:47.064010+00:00",
+      "completedBeforeOriginalExpiry": true,
+      "downloadPath": "artifacts/story-4-17-independent-readback-ed043dv3/14018214306.zip",
+      "downloadedBytes": 1650434,
+      "downloadedSha256": "a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a",
+      "entryCount": 544,
+      "expectedBytes": 1650434,
+      "expectedSha256": "a26b848840ca8061a00d8ea7598b52b6a91b5331822645c23bc527278e40949a",
+      "file": "14018214306.zip",
+      "inventory": "PASS",
+      "key": "evidence/4-17/20261114t010116z-5574db84/14018214306.zip",
+      "label": "candidate-02",
+      "nestedPublicChartArchives": 1,
+      "nestedPublicChartMembers": 67,
+      "originalAuthority": "original independently verified packet; technical FAIL 20/24",
+      "originalExpiryUtc": "2026-12-13T07:40:43Z",
+      "outcome": "PASS",
+      "packetArtifactCount": 520,
+      "packetArtifactHashes": "PASS",
+      "packetSchemaVersion": 3,
+      "privateMaterialExclusions": "PASS",
+      "protection": {
+        "createdAtUtc": "2026-11-14T01:08:52+00:00",
+        "encryption": "AES256",
+        "getContentLength": 1650434,
+        "getVersionId": "1794618532016377",
+        "headContentLength": 1650434,
+        "headVersionId": "1794618532016377",
+        "minimumDaysFromCreation": 30,
+        "mode": "COMPLIANCE",
+        "outcome": "PASS",
+        "retainUntilUtc": "2026-12-14T01:08:52.016000+00:00",
+        "retentionApiUntilUtc": "2026-12-14T01:08:52.016000+00:00",
+        "retentionRequestedVersionId": "1794618532016377",
+        "retentionReturnedVersionId": null,
+        "validAtVerification": true
+      },
+      "repository": "Hexalith/Hexalith.Platform",
+      "runId": 43386723091,
+      "versionId": "1794618532016377",
+      "wholeFileCommitment": "PASS"
+    },
+    {
+      "accepted": true,
+      "completedAtUtc": "2026-11-14T01:14:44.892749+00:00",
+      "downloadPath": "artifacts/story-4-17-independent-readback-ed043dv3/manifest.json",
+      "downloadedBytes": 574728,
+      "downloadedSha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f",
+      "expectedBytes": 574728,
+      "expectedSha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f",
+      "file": "manifest.json",
+      "key": "evidence/4-17/20261114t010116z-5574db84/manifest.json",
+      "originalAuthorityLabelsUnchanged": true,
+      "originalLocalOnlyFieldsUnchanged": true,
+      "outcome": "PASS",
+      "protection": {
+        "createdAtUtc": "2026-11-14T01:08:52+00:00",
+        "encryption": "AES256",
+        "getContentLength": 574728,
+        "getVersionId": "1794618532817741",
+        "headContentLength": 574728,
+        "headVersionId": "1794618532817741",
+        "minimumDaysFromCreation": 30,
+        "mode": "COMPLIANCE",
+        "outcome": "PASS",
+        "retainUntilUtc": "2026-12-14T01:08:52.817000+00:00",
+        "retentionApiUntilUtc": "2026-12-14T01:08:52.817000+00:00",
+        "retentionRequestedVersionId": "1794618532817741",
+        "retentionReturnedVersionId": null,
+        "validAtVerification": true
+      },
+      "versionId": "1794618532817741",
+      "wholeFileCommitment": "PASS"
+    }
+  ],
+  "focusedNegativeChecks": {
+    "completedAtUtc": "2026-11-14T01:14:16.873823+00:00",
+    "outcome": "PASS",
+    "passed": 25,
+    "results": [
+      {
+        "outcome": "PASS",
+        "test": "complete-version-bound-protection-positive-control"
+      },
+      {
+        "expectedRefusalCode": "response-version-mismatch",
+        "outcome": "PASS",
+        "test": "wrong-head-version"
+      },
+      {
+        "expectedRefusalCode": "response-version-mismatch",
+        "outcome": "PASS",
+        "test": "wrong-get-version"
+      },
+      {
+        "expectedRefusalCode": "response-length-mismatch",
+        "outcome": "PASS",
+        "test": "wrong-head-content-length"
+      },
+      {
+        "expectedRefusalCode": "object-encryption-inadequate",
+        "outcome": "PASS",
+        "test": "missing-aes256"
+      },
+      {
+        "expectedRefusalCode": "object-retention-mode-inadequate",
+        "outcome": "PASS",
+        "test": "governance-instead-of-compliance"
+      },
+      {
+        "expectedRefusalCode": "object-retention-duration-inadequate",
+        "outcome": "PASS",
+        "test": "retention-less-than-thirty-days"
+      },
+      {
+        "expectedRefusalCode": "object-retention-duration-inadequate",
+        "outcome": "PASS",
+        "test": "retention-no-longer-valid"
+      },
+      {
+        "expectedRefusalCode": "retention-api-mismatch",
+        "outcome": "PASS",
+        "test": "retention-api-date-mismatch"
+      },
+      {
+        "expectedRefusalCode": "retention-response-version-mismatch",
+        "outcome": "PASS",
+        "test": "retention-response-version-mismatch"
+      },
+      {
+        "expectedRefusalCode": "download-missing-or-unsafe",
+        "outcome": "PASS",
+        "test": "missing-downloaded-file"
+      },
+      {
+        "expectedRefusalCode": "downloaded-commitment-mismatch",
+        "outcome": "PASS",
+        "test": "tampered-downloaded-13638347236.zip"
+      },
+      {
+        "expectedRefusalCode": "downloaded-commitment-mismatch",
+        "outcome": "PASS",
+        "test": "tampered-downloaded-manifest.json"
+      },
+      {
+        "expectedRefusalCode": "downloaded-commitment-mismatch",
+        "outcome": "PASS",
+        "test": "tampered-manifest-content-gate"
+      },
+      {
+        "outcome": "PASS",
+        "test": "four-approved-archive-inventory-safety-positive-controls"
+      },
+      {
+        "outcome": "PASS",
+        "test": "approved-current-protection-positive-control"
+      },
+      {
+        "expectedRefusalCode": "current-lifecycle-drift-or-evidence-expiry",
+        "outcome": "PASS",
+        "test": "evidence-expiry-rule-blocks-custody"
+      },
+      {
+        "expectedRefusalCode": "private-material-path",
+        "outcome": "PASS",
+        "test": "private-material-path"
+      },
+      {
+        "expectedRefusalCode": "private-material-signature",
+        "outcome": "PASS",
+        "test": "private-key-signature"
+      },
+      {
+        "expectedRefusalCode": "unsafe-entry-path",
+        "outcome": "PASS",
+        "test": "zip-traversal-path"
+      },
+      {
+        "outcome": "PASS",
+        "test": "one-failed-archive-preserved-despite-four-successes"
+      },
+      {
+        "outcome": "PASS",
+        "test": "missing-object-blocks-overall-custody"
+      },
+      {
+        "outcome": "PASS",
+        "test": "failed-current-protection-blocks-five-successes"
+      },
+      {
+        "outcome": "PASS",
+        "test": "failed-literal-inventory-blocks-five-successes"
+      },
+      {
+        "outcome": "PASS",
+        "test": "failed-negative-checks-block-five-successes"
+      }
+    ],
+    "scope": "Local refusal/positive controls; no network, remote mutation, or custody assertion",
+    "scriptSha256": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c",
+    "testScriptSha256": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+    "tests": 25
+  },
+  "literalStdlibInventoryProcedure": {
+    "entries": 2215,
+    "exitCode": 0,
+    "outcome": "PASS",
+    "packetArtifactHashes": 2059,
+    "procedureSha256": "0d444913215d564f93ee10e981f3dda8fc50bb1dad0890730b13b65427f46f7d",
+    "scope": "Literal historical stdlib procedure executed on independently downloaded directory; its local-staging wording describes unchanged manifest fields",
+    "zipBytes": 7777857
+  },
+  "offSiteCustodyAccepted": true,
+  "operator": {
+    "accountableOwner": "Administrator",
+    "executor": "/root/preserve_packets_impl"
+  },
+  "originalManifestChanged": false,
+  "originalManifestSha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f",
+  "outcome": "PASS",
+  "privateMaterialVerification": {
+    "limitation": "Not a general proof of detecting every conceivable secret; admission remains bound to five exact owner-approved commitments",
+    "scope": "Approved bounded path and key/token/environment signatures across all ZIP entries and nested public chart members"
+  },
+  "qualification": {
+    "guarantees": "five REJECTED/open",
+    "parentStatuses": "in-progress",
+    "production": "FAIL",
+    "selection": null,
+    "technical": "FAIL (20/24)"
+  },
+  "schemaVersion": 1,
+  "sdk": {
+    "boto3": "1.44.3",
+    "botocore": "1.44.3",
+    "tlsVerification": true,
+    "totalMaximumAttempts": 1
+  },
+  "verificationScriptSha256": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c",
+  "verifier": {
+    "credentialReference": "~/.config/hexalith-recovery/validator.env",
+    "executor": "/root/custody_verifier",
+    "expectedApplication": "406da2fa-5d02-4a49-bcbc-de0218c6460d",
+    "limitation": "Shared host; not security isolation or independent human accountability",
+    "separatelyExecutedAutomatedVerification": true
+  }
+}

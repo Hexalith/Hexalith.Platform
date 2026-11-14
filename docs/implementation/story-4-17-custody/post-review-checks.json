@@ -1,0 +1,89 @@
+{
+  "additionalRemoteMutations": 0,
+  "capturedAtUtc": "2026-11-14T01:40:16.959311+00:00",
+  "executedSourcePreserved": true,
+  "hardenedTransferSourceExecuted": false,
+  "independentDownloadedInventory": {
+    "entryCount": 2215,
+    "outcome": "PASS",
+    "packetArtifactCount": 2059,
+    "procedureSha256": "0d444913215d564f93ee10e981f3dda8fc50bb1dad0890730b13b65427f46f7d",
+    "stdout": "PASS: four ZIP commitments; 2215 entries; 2059 packet artifacts; local staging only"
+  },
+  "liveCustodyReceiptSha256": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+  "localChecks": {
+    "networkRequestsDuringTests": 0,
+    "supplementalTests": 7,
+    "totalPassed": 49,
+    "transferTests": 17,
+    "verifierControls": 25
+  },
+  "manifestAdmission": "PASS",
+  "objectAclEvidence": {
+    "basis": "Stable surrounding version inventories plus owner-only current-object ACL observations",
+    "exactVersionAclApiSucceeded": false,
+    "outcome": "PASS_CURRENT_PRIVACY_INFERENCE"
+  },
+  "originalVerifierRerun": {
+    "historicalFilesUnchanged": {
+      "inspection.json": "1630601fce26e4116f72796840b5ef734d9386b14bd89950dc9bea65c577ece3",
+      "offline-checks.json": "bee39da63d3a68fee792f65812ae48b12664cfae4e2399a54610fba774b3011a",
+      "plan.md": "cdfda9af305da57514c99cc6e5dfeb0662a054e6adcdd479fd967fb7760b2d80",
+      "preflight-initial.json": "ec730dd91160f0ad0b18e1dbc3136907baed8bdfe38dc78a0026291f98424fb7",
+      "preflight.json": "64abb20dc24220771c483a25fe42b4b2670b61d9e19ec89b4ff567f13f1bfe32",
+      "receipt.json": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+      "test_transfer_once.py": "ea229cb6fc9d120723f9ffbddfc876e8bab3a7faa153baf93da67db113e66fd5",
+      "test_verify_readback.py": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+      "transfer_once.executed.py": "19cb51fdf00db95a1d25080c7d88cc0997a1640e6ca693e2b9b6697f22be0c11",
+      "upload-results.json": "aa8a4153208a0d2e1d1cc42552adac19e3a73df6e81eccb17eb9d22645a703b5",
+      "upload-started.json": "6602ccc29604b0fac297cdc15b51f3a4bab4921b91d4b42bc1fcf0b1e2094ffd",
+      "verifier-negative-checks.json": "5f5fcc845a7ef4c9e9dade10d654da4f431b12f435484e98b399afc6cff7cb96",
+      "verify_readback.py": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c"
+    },
+    "outcome": "PASS",
+    "realNetworkRequests": 0,
+    "reportDirectory": "/tmp/story-4-17-post-review-ajwqajt_",
+    "scope": "LOCAL ONLY; fake transport/receipts are not live custody evidence",
+    "supplementalRunnerSha256": "17ab101a4e4f61ff7877629c895d1c211eee902441aaca098d520809f8b60234",
+    "tests": 25,
+    "transferCodeSha256": "38edba59667edbccaebe76236e6b3c69d765dce67820cf2b1034507dacc2ef30"
+  },
+  "outcome": "PASS",
+  "qualificationUnchanged": {
+    "guarantees": "five REJECTED/open",
+    "parents": "in-progress",
+    "production": "FAIL",
+    "selection": null,
+    "technical": "FAIL (20/24)"
+  },
+  "review": {
+    "deferred": 0,
+    "findingsTriaged": 13,
+    "layers": 3,
+    "routes": "10 finding rows patched (B1/E2 share a root cause); 2 low improvements rejected; 1 caller-unreachable claim refuted"
+  },
+  "supplementalRun": {
+    "historicalFilesUnchanged": {
+      "inspection.json": "1630601fce26e4116f72796840b5ef734d9386b14bd89950dc9bea65c577ece3",
+      "offline-checks.json": "bee39da63d3a68fee792f65812ae48b12664cfae4e2399a54610fba774b3011a",
+      "plan.md": "cdfda9af305da57514c99cc6e5dfeb0662a054e6adcdd479fd967fb7760b2d80",
+      "preflight-initial.json": "ec730dd91160f0ad0b18e1dbc3136907baed8bdfe38dc78a0026291f98424fb7",
+      "preflight.json": "64abb20dc24220771c483a25fe42b4b2670b61d9e19ec89b4ff567f13f1bfe32",
+      "receipt.json": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+      "test_transfer_once.py": "ea229cb6fc9d120723f9ffbddfc876e8bab3a7faa153baf93da67db113e66fd5",
+      "test_verify_readback.py": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+      "transfer_once.executed.py": "19cb51fdf00db95a1d25080c7d88cc0997a1640e6ca693e2b9b6697f22be0c11",
+      "upload-results.json": "aa8a4153208a0d2e1d1cc42552adac19e3a73df6e81eccb17eb9d22645a703b5",
+      "upload-started.json": "6602ccc29604b0fac297cdc15b51f3a4bab4921b91d4b42bc1fcf0b1e2094ffd",
+      "verifier-negative-checks.json": "5f5fcc845a7ef4c9e9dade10d654da4f431b12f435484e98b399afc6cff7cb96",
+      "verify_readback.py": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c"
+    },
+    "outcome": "PASS",
+    "realNetworkRequests": 0,
+    "reportDirectory": "/tmp/story-4-17-post-review-flj4toob",
+    "scope": "LOCAL ONLY; fake transport/receipts are not live custody evidence",
+    "supplementalRunnerSha256": "17ab101a4e4f61ff7877629c895d1c211eee902441aaca098d520809f8b60234",
+    "tests": 7,
+    "transferCodeSha256": "38edba59667edbccaebe76236e6b3c69d765dce67820cf2b1034507dacc2ef30"
+  }
+}

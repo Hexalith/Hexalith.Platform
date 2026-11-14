@@ -371,3 +371,36 @@ A future full-matrix diagnostic must answer a specific observation question with
 remaining failures, exact supported inputs and separate execution acceptance. No retry was run.
 Both parent statuses remain **in-progress**, all five historical guarantees **REJECTED/open**,
 technical qualification **FAIL (20/24)**, broker selection **null**, production eligibility **FAIL**.
+
+## Packet preservation completed — 2026-11-14
+
+The owner subsequently admitted all four exact sanitized ZIPs and the unchanged inventory
+manifest to the existing Scaleway archive. The [custody receipt](story-4-17-custody/receipt.json)
+accepts all five exact versions under `hexalith-recovery-points`, `fr-par`, prefix
+`evidence/4-17/20261114t010116z-5574db84/`, completed at
+**2026-11-14T01:14:47.503827Z**, before every respective GitHub expiry. The
+[completed preservation record](story-4-17-packet-custody-preparation-2026-11-14.md#off-site-custody-completed--2026-11-14)
+retains object versions, protection and the links to the inspected plan, current preflight,
+conditional upload intents/results and separate validator-only download evidence.
+
+The independent automated readback matched all five digests, **2,215 entry inventories**,
+**2,059 packet artifact hashes**, original schemas, safety and bounded private-material
+exclusions. All original identities and authority labels remain, including candidate-01's
+diagnostic-only/original integrity rejection. This is separate agent execution on a shared
+host; it supplies no independent human accountability or security boundary. Existing AES256,
+thirty-day COMPLIANCE minimum and no-expiry `evidence/` lifecycle were verified. The
+Administrator owns the no-deletion hold until guarantees close, followed by policy review.
+Original cache/staging bytes and the manifest's historical local-only/null fields are unchanged.
+
+**The destination decision and packet-preservation dependency above are now resolved.**
+Kafka pressure feasibility, historical rotation adjudication/instrumentation, RabbitMQ delivery,
+EventStore/Builds alignment, exact future execution acceptance, staging and Subscription
+prerequisites remain open. No new qualification was dispatched. Platform 4.17 and EventStore
+3.21 remain **in-progress**; five guarantees **REJECTED/open**, technical **FAIL (20/24)**,
+selection **null**, production **FAIL**.
+
+The [post-review record](story-4-17-custody/post-review-verification.md) documents local tooling
+corrections, the historical transport-count limit, a passing manifest scan and current ACL
+privacy established by stable-inventory inference. [Final local checks](story-4-17-custody/post-review-checks.json)
+pass 49 controls while preserving original transfer/verification evidence. No transfer was
+replayed and no qualification outcome changed.

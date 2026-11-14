@@ -148,3 +148,66 @@ exactly two hard links. The manifest and original evidence labels remained uncha
 This byte-check procedure does not perform the separate private-material/destination-admission
 check or prove off-site storage, retention, authority or qualification. Its recorded result covers
 only the stated local preparation scope.
+
+## Off-site custody completed — 2026-11-14
+
+**All four original ZIPs and the unchanged inventory manifest now have accepted off-site
+custody**, completed at **2026-11-14T01:14:47.503827Z**, before every recorded artifact expiry.
+This later result supersedes the earlier preparation-only custody state above; that historical
+record and the original local manifest remain unchanged.
+
+The owner's accepted destination is existing Scaleway `hexalith-recovery-points`, `fr-par`,
+endpoint `https://s3.fr-par.scw.cloud`, under fresh prefix
+`evidence/4-17/20261114t010116z-5574db84/`. The off-site failure domain is separate from this
+host and the expiring GitHub artifact copies. The [plan](story-4-17-custody/plan.md),
+[current preflight](story-4-17-custody/preflight.json),
+[independent pre-write inspection](story-4-17-custody/inspection.json),
+[single-upload results](story-4-17-custody/upload-results.json) and
+[per-file custody receipt](story-4-17-custody/receipt.json) retain the actual evidence.
+
+| Original file | Accepted exact object version | Initial COMPLIANCE retain-until UTC |
+| --- | --- | --- |
+| `13638347236.zip` | `1794618527313018` | `2026-12-14T01:08:47.313Z` |
+| `13638293057.zip` | `1794618529862627` | `2026-12-14T01:08:49.862Z` |
+| `13995674927.zip` | `1794618531524216` | `2026-12-14T01:08:51.524Z` |
+| `14018214306.zip` | `1794618532016377` | `2026-12-14T01:08:52.016Z` |
+| `manifest.json` | `1794618532817741` | `2026-12-14T01:08:52.817Z` |
+
+`/root/preserve_packets_impl` acted for the Administrator through the existing writer
+reference. After exactly five conditional creations, `/root/custody_verifier` separately used
+only the validator reference to retrieve those returned versions into an owner-only fresh
+download directory. This is separately executed automated verification on a shared host,
+not independent human accountability or a security boundary. Bucket-policy controls were
+observed currently; effective IAM grants and credential-to-application identities were not
+re-enumerated, and remain the accepted historical/reference bindings.
+
+All five whole-file commitments, **2,215 ZIP entries** and **2,059 packet artifact hashes**
+passed. The verifier repeated original schema/inventory, archive-safety and bounded
+private-material exclusion checks, including nested public chart members, and ran the literal
+stdlib inventory procedure on its downloads. Version-bound HEAD/GET/retention evidence
+confirms AES256 and at least thirty days COMPLIANCE for every object. The focused matrices
+passed [17 transfer checks](story-4-17-custody/offline-checks.json) and
+[25 verifier checks](story-4-17-custody/verifier-negative-checks.json), including refusal of
+missing/tampered downloads, wrong versions/protection and incomplete overall custody.
+The exclusion checks are bounded, not a general proof of detecting every conceivable secret;
+admission remains bound to the exact owner-approved sanitized bytes.
+
+Current `evidence/` lifecycle has no expiry rule. The Administrator's no-deletion hold remains
+until guarantees close, followed by deletion review against applicable policy; the thirty-day
+enforced minimum is not permission to delete afterward. No object legal hold or control was
+changed. Original cached/staged hard links and manifest bytes remain intact; the manifest's
+local-only/null fields describe its original creation, and this separate receipt records custody.
+
+Only preservation is complete. Candidate-01 retains its diagnostic-only/original integrity
+rejection label. Platform 4.17 and EventStore 3.21 remain **in-progress**; all five guarantees
+**REJECTED/open**, technical qualification **FAIL (20/24)**, broker selection **null** and
+production eligibility **FAIL**. Engineering, staging and Subscription dependencies remain open.
+
+Post-review closure: [review notes](story-4-17-custody/post-review-verification.md) and
+[final checks](story-4-17-custody/post-review-checks.json) retain 49 passing local controls,
+the exact executed-source alias and unexecuted local hardening. Historical records establish
+five PutObject API invocations/returned versions, not measured HTTP resend counts. The
+manifest exclusion scan passed. Current owner-only object ACLs are supported by stable
+surrounding version inventories; denied exact-version ACL probes remain recorded separately.
+The Administrator's manual review checkpoint is December 13; no automated task or new
+cloud mutation was created. Original custody receipt and qualification results are unchanged.

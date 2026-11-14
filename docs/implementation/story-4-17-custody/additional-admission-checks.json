@@ -1,0 +1,107 @@
+{
+  "additionalAdmissionAccepted": false,
+  "completedAtUtc": "2026-11-14T01:31:14.743660+00:00",
+  "custodyReceiptSha256": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+  "destination": {
+    "bucket": "hexalith-recovery-points",
+    "endpoint": "https://s3.fr-par.scw.cloud",
+    "prefix": "evidence/4-17/20261114t010116z-5574db84/",
+    "region": "fr-par"
+  },
+  "limitations": [
+    "Separately executed automated verification on a shared host; not security isolation or independent human accountability",
+    "Credential application binding is the existing Administrator-selected reference; IAM identity was not newly enumerated",
+    "ACL requests bind exact versions; a provider response may omit an echoed VersionId",
+    "No full-object download or requalification was performed in this follow-up"
+  ],
+  "manifestAdmission": {
+    "accepted": true,
+    "boundedPrivateMaterialScan": "PASS",
+    "completedAtUtc": "2026-11-14T01:31:14.301162+00:00",
+    "downloadedBytes": 574728,
+    "downloadedSha256": "ea4b7666ae5b77b3f00b24b6ee32c35c98da6bbe5004ebc24fb5f9c1bfdd183f",
+    "file": "manifest.json",
+    "limitation": "Bounded exclusions are not a proof of detecting every conceivable secret",
+    "outcome": "PASS",
+    "scope": "Exact retained downloaded manifest bytes; approved bounded private path and key/token/environment-secret signatures",
+    "wholeFileCommitment": "PASS"
+  },
+  "objectAcls": [
+    {
+      "accepted": false,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:31:14.586987+00:00",
+      "failureCode": "operation-failed-details-withheld",
+      "file": "13638347236.zip",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638347236.zip",
+      "outcome": "FAIL",
+      "requestedVersionId": "1794618527313018"
+    },
+    {
+      "accepted": false,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:31:14.598842+00:00",
+      "failureCode": "operation-failed-details-withheld",
+      "file": "13638293057.zip",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13638293057.zip",
+      "outcome": "FAIL",
+      "requestedVersionId": "1794618529862627"
+    },
+    {
+      "accepted": false,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:31:14.679040+00:00",
+      "failureCode": "operation-failed-details-withheld",
+      "file": "13995674927.zip",
+      "key": "evidence/4-17/20261114t010116z-5574db84/13995674927.zip",
+      "outcome": "FAIL",
+      "requestedVersionId": "1794618531524216"
+    },
+    {
+      "accepted": false,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:31:14.701188+00:00",
+      "failureCode": "operation-failed-details-withheld",
+      "file": "14018214306.zip",
+      "key": "evidence/4-17/20261114t010116z-5574db84/14018214306.zip",
+      "outcome": "FAIL",
+      "requestedVersionId": "1794618532016377"
+    },
+    {
+      "accepted": false,
+      "bucket": "hexalith-recovery-points",
+      "completedAtUtc": "2026-11-14T01:31:14.743501+00:00",
+      "failureCode": "operation-failed-details-withheld",
+      "file": "manifest.json",
+      "key": "evidence/4-17/20261114t010116z-5574db84/manifest.json",
+      "outcome": "FAIL",
+      "requestedVersionId": "1794618532817741"
+    }
+  ],
+  "originalEvidenceUnchanged": true,
+  "outcome": "FAIL_ADDITIONAL_ADMISSION_INCOMPLETE",
+  "protectedEvidenceSha256": {
+    "receipt.json": "2b4bf54a7220c13b1b602b0a995b768f53dbfa37d405326e0725a308fec9c54d",
+    "test_verify_readback.py": "b7d8ed9b68b83b4717bc198c7d4c5e1c011dc515a55561df64f270b85a336159",
+    "verifier-negative-checks.json": "5f5fcc845a7ef4c9e9dade10d654da4f431b12f435484e98b399afc6cff7cb96",
+    "verify_readback.py": "280b84280ab64d17f93ba9553959fe08a9d54cad07f5ae56a32a6dce2b7a733c"
+  },
+  "remoteOperations": {
+    "additionalDownloads": 0,
+    "get_object_acl": 5,
+    "otherRemoteOperations": 0,
+    "remoteMutations": 0
+  },
+  "schemaVersion": 1,
+  "scope": "Five exact-version ACL reads plus bounded admission scan of existing downloaded manifest; supplements unchanged custody receipt",
+  "sdk": {
+    "boto3": "1.44.3",
+    "botocore": "1.44.3",
+    "tlsVerification": true,
+    "totalMaximumAttempts": 1
+  },
+  "verifier": {
+    "credentialReference": "~/.config/hexalith-recovery/validator.env",
+    "executor": "/root/custody_verifier"
+  }
+}
