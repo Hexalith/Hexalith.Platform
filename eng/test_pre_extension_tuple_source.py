@@ -191,16 +191,18 @@ class PreExtensionSourceTests(unittest.TestCase):
 
     def test_net11_generations_require_the_exact_shared_publication_and_range(self):
         import hashlib
-        from builds_tuple import load_binding
         for version, upper in [('5.0.0', '6.0.0-0'), ('6.0.0', '7.0.0-0'), ('7.0.0', '8.0.0-0')]:
             self.git('checkout', '-q', self.current)
-            document = copy.deepcopy(load_binding())
-            publication = document['publication']
+            document = json.loads((self.root / 'eng/builds-tuple.json').read_bytes())
+            publication = {key: document['publication'][key] for key in
+                ['version', 'sourceRevision', 'releaseTag', 'catalogSha256', 'archiveSha256', 'toolingSha256']}
+            document['publication'] = publication
             publication.update(version=version, releaseTag='v' + version)
-            manifest = json.loads(publication['manifestJson'])
-            manifest['version'] = version
-            for item in manifest['packages']:
-                item['path'] = 'packages/' + item['id'] + '.' + version + '.nupkg'
+            publication.update(kind='shared-release-handoff/v1', releaseId=11, runId=12, artifactId=13,
+                artifactSha256='a' * 64, releaseBodySha256='b' * 64)
+            manifest = {'sha': document['producer']['sourceRevision'], 'version': version, 'packages': [
+                {'id': identity, 'path': 'packages/' + identity + '.' + version + '.nupkg'}
+                for identity in ['Hexalith.Builds.Evidence.Cli', 'Hexalith.Builds.Module.Cli']], 'containers': []}
             raw = json.dumps(manifest)
             publication.update(manifestJson=raw, manifestSha256=hashlib.sha256(raw.encode()).hexdigest())
             self.write('eng/builds-tuple.json', json.dumps(document).encode())
