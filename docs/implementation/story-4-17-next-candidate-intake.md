@@ -404,3 +404,19 @@ corrections, the historical transport-count limit, a passing manifest scan and c
 privacy established by stable-inventory inference. [Final local checks](story-4-17-custody/post-review-checks.json)
 pass 49 controls while preserving original transfer/verification evidence. No transfer was
 replayed and no qualification outcome changed.
+
+## Rotation observation feasibility — 2026-11-14
+
+The next approved offline investigation is recorded in the
+[rotation feasibility decision](story-4-17-kafka-rotation-observation-feasibility.md).
+The existing TCP forwarder emits no socket-pair association; Kafka's default Log4j pattern
+omits thread identity while request/authorizer records use separate appenders. A handler
+TRACE entry is a useful source lead, but levels alone do not establish an audit/request join.
+The stock Produce request-log path still omits the stale HTTP message ID.
+
+**No complete supported correlation method is demonstrated; instrumentation is not ready.**
+The report maps conditional producer/forwarder/verifier/admission changes and refusal controls,
+preserving the separate cold-generation question. No causal verifier, source/profile change,
+upstream message or diagnostic run was implemented or authorized. Packet custody stays complete.
+Both parents remain **in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**,
+selection **null**, production eligibility **FAIL**.
