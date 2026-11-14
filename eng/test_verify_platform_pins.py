@@ -68,9 +68,10 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                         self.assertIn('unqualified SDK/OpenAPI', result.stderr)
 
     def test_actual_builds6_catalogs_align_current_file_host_with_each_bound_named_view(self):
-        from test_current_catalog_view import builds6_catalog_body, current_platform_catalog_body, generation6_binding
+        from test_current_catalog_view import builds6_catalog_body, current_platform_catalog_body, builds602_catalog_body, generation6_binding
         root = SCRIPT.resolve().parents[1]
-        for version, raw in (("6.0.0", builds6_catalog_body()), ("6.0.1", current_platform_catalog_body())):
+        for version, raw in (("6.0.0", builds6_catalog_body()), ("6.0.1", current_platform_catalog_body()),
+                ("6.0.2", builds602_catalog_body())):
             with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
                 catalog = pathlib.Path(directory) / "published-builds6.props"
                 catalog.write_bytes(raw)

@@ -51,6 +51,14 @@ GENERATION601_CATALOG = {
 }
 
 
+GENERATION602_CATALOG = {
+    "version": "6.0.2",
+    "sourceRevision": "60ce7967607dc8b703fff11f4fc13cabb09c090a",
+    "blob": "86e9b0d6fd49551d80047d92f3aaed93b91ca5a3",
+    "sha256": "1291e32272127e2409e337fb6a974bc4c5f76a2907da0ba0d5528cc5016fe44e",
+}
+
+
 def catalog_profile(binding=None) -> str:
     """A new producer generation cannot inherit an earlier consumer qualification."""
     if binding is None:
@@ -59,7 +67,8 @@ def catalog_profile(binding=None) -> str:
     validate_binding(binding)
     if binding["publication"]["version"].startswith("6."):
         producer = binding["producer"]
-        selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG}.get(binding["publication"]["version"])
+        selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
+                    "6.0.2": GENERATION602_CATALOG}.get(binding["publication"]["version"])
         if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
                 or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
             raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")

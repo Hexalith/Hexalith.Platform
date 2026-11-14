@@ -167,3 +167,19 @@ Memories4.0.0. The SDK4.2 collector still records and verifies its complete
 measured public cohort. The earlier NU1109 control retains the unmodified6.0.0
 catalog. Both exact6 profiles and the historical4/5 rules remain distinct;
 these catalog and collection receipts grant no candidate or runtime acceptance.
+
+The complete 6.0.1 current collector measured 27 passes and one refusal: the
+private Parties producer selected Memories.Client.Rest/Contracts 4.0.0 under
+SDK 4.2.0, while the admitted Platform snapshot required 3.0.27. Its exact public
+package guard refused those actual assets. Published Builds6.0.2 corrects the producer view at source
+`60ce7967607dc8b703fff11f4fc13cabb09c090a`, catalog blob
+`86e9b0d6fd49551d80047d92f3aaed93b91ca5a3` and SHA256
+`1291e32272127e2409e337fb6a974bc4c5f76a2907da0ba0d5528cc5016fe44e`
+selects Memories3.0.27 for the existing finite Parties, Platform and packaged
+Builds host roles only when SDK4.2 is selected and no Memories override exists.
+Unknown/general SDK5.1 consumers and explicit selections retain their previous
+behavior. Exact 6.0.0/6.0.1 catalog fixtures and failure evidence remain unchanged.
+Only the genuine6.0.2 publication binding authenticates this exact source and
+catalog for selection; catalog component observations grant no candidate or
+runtime acceptance. The private owner package guard and fresh qualification requirements
+remain in force.

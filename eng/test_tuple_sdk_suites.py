@@ -27,17 +27,18 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 sdk42_collecting_cohort(changed, 'current42')
 
-    def test_exact_generation601_uses_the_same_measured_cohort_without_qualifying_other_generations(self):
+    def test_exact_successors_use_the_same_measured_cohort_without_qualifying_other_generations(self):
         from test_current_catalog_view import generation6_binding
-        for suite in ("current42", "base42", "extensions"):
-            with self.subTest(suite=suite):
-                self.assertEqual(sdk42_collecting_cohort(generation6_binding("6.0.1"), suite),
-                    sdk42_collecting_cohort(generation6_binding(), suite))
+        for version in ("6.0.1", "6.0.2"):
+            for suite in ("current42", "base42", "extensions"):
+                with self.subTest(version=version, suite=suite):
+                    self.assertEqual(sdk42_collecting_cohort(generation6_binding(version), suite),
+                        sdk42_collecting_cohort(generation6_binding(), suite))
+            changed = generation6_binding(version)
+            changed["producer"]["catalog"]["blob"] = "e" * 40
+            with self.subTest(version=version), self.assertRaisesRegex(ValueError, "exact qualified Builds6"):
+                sdk42_collecting_cohort(changed, "current42")
         self.assertIsNone(sdk42_collecting_cohort(None, "current42"))
-        changed = generation6_binding("6.0.1")
-        changed["producer"]["catalog"]["blob"] = "e" * 40
-        with self.assertRaisesRegex(ValueError, "exact qualified Builds6"):
-            sdk42_collecting_cohort(changed, "current42")
 
     def test_current42_restored_graph_refuses_missing_project_or_neighbor_family_packages(self):
         from test_current_catalog_view import generation6_binding
