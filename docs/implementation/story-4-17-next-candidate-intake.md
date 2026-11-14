@@ -420,3 +420,23 @@ preserving the separate cold-generation question. No causal verifier, source/pro
 upstream message or diagnostic run was implemented or authorized. Packet custody stays complete.
 Both parents remain **in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**,
 selection **null**, production eligibility **FAIL**.
+
+## Controlled publication association — 2026-11-14
+
+The next bounded source-only task is complete in the
+[controlled-association decision](story-4-17-kafka-controlled-association.md).
+Dapr's outbound timeout can return without joining the component invocation; the pinned Kafka
+component ignores that context. Sarama's synchronous result establishes completion for one
+message, while its exposed drain path closes the producer. No nonclosing witness covering all
+earlier Dapr invocations and their Produce attempts was established for the same live publisher.
+A later HTTP success, a sentinel, readback or a calculated wait therefore cannot establish the
+empty-other-work invariant. These are source conclusions, not a demonstrated historical cause.
+
+**The source-path stop criterion applies: no causal instrumentation or logging-only retry is
+ready from this construction.** Reopening needs a concrete supported completion/discrimination
+witness, or a separately accepted alternative correlation design. Forwarding/principal,
+serving-ACL/audit and cold-old-generation evidence remain separate dependencies; Kafka pressure
+and RabbitMQ delivery remain open. No new implementation, candidate, run or upstream message
+was produced. Packet custody remains complete; Platform 4.17/EventStore 3.21 remain
+**in-progress**, five guarantees **REJECTED/open**, technical **FAIL (20/24)**, selection
+**null**, production eligibility **FAIL**.
