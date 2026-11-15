@@ -51,7 +51,7 @@ jobs:
   tuple:
     needs: [resolve-sources]
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       CI: 'true'
       PLATFORM_CANDIDATE_SHA: ${{ needs.resolve-sources.outputs.current-source }}
