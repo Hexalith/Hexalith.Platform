@@ -1,0 +1,32 @@
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+index 9d2d6a9c..4c4f46bc 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+@@ -106,18 +106,22 @@ public sealed class PlatformPartiesCatalogHandoffTests
+             {
+                 string project = Path.Combine(directory, consumer + ".proj");
+                 string catalog = Path.Combine(Path.GetDirectoryName(snapshotPath)!, "pinned-tree", "Props", "Directory.Packages.props");
+-                new XDocument(new XElement("Project", new XElement("Import", new XAttribute("Project", catalog)))).Save(project);
++                string selected = Path.Combine(directory, "versions.txt");
++                new XDocument(new XElement("Project", new XElement("Import", new XAttribute("Project", catalog)),
++                    new XElement("Target", new XAttribute("Name", "RecordConsumerVersions"),
++                        new XElement("WriteLinesToFile", new XAttribute("File", selected),
++                            new XAttribute("Lines", "@(PackageVersion->'%(Identity)=%(Version)')"), new XAttribute("Overwrite", "true"))))).Save(project);
+                 var evaluated = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+-                    ["msbuild", project, "-nologo", "-noAutoResponse", "-getItem:PackageVersion"], directory,
++                    ["msbuild", project, "-nologo", "-noAutoResponse", "-target:RecordConsumerVersions", "-verbosity:quiet"], directory,
+                     new Dictionary<string, string> { ["DOTNET_CLI_USE_MSBUILD_SERVER"] = "false", ["MSBUILDUSESERVER"] = "0" }),
+                     TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken).ConfigureAwait(true);
+                 evaluated.Started.ShouldBeTrue();
+                 evaluated.ExitCode.ShouldBe(0, evaluated.Output + evaluated.ErrorOutput);
+                 evaluated.TimedOut.ShouldBeFalse();
+                 evaluated.OutputTruncated.ShouldBeFalse();
+-                using JsonDocument result = JsonDocument.Parse(evaluated.Output);
+-                var expected = result.RootElement.GetProperty("Items").GetProperty("PackageVersion").EnumerateArray()
+-                    .ToDictionary(package => package.GetProperty("Identity").GetString()!, package => package.GetProperty("Version").GetString()!);
++                string[] lines = File.ReadAllLines(selected);
++                lines.Length.ShouldBeGreaterThan(0);
++                var expected = lines.Select(line => line.Split('=', 2)).ToDictionary(pair => pair[0], pair => pair[1]);
+                 JsonNode.DeepEquals(versions[consumer], JsonSerializer.SerializeToNode(expected)).ShouldBeTrue(
+                     "The consumer cache must equal an independent evaluation of the unchanged pinned catalog: " + consumer);
+             }

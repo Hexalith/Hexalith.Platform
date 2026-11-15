@@ -15,10 +15,10 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         using var fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         PlatformCompositionOptions options = fixture.Options with { RunPlan = null };
         string sdk = PlatformPartiesPackageFixture.SelectedSdkVersion;
-        string privateCohort = sdk == "4.2.0" ? PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name : PublishedCatalogArtifactCohort.CurrentOwnerName;
-        string publicCohort = sdk == "4.2.0" ? PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name : PublishedCatalogArtifactCohort.PublishedPartiesName;
+        string privateCohort = PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name;
+        string publicCohort = PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name;
         string catalog = Catalog(fixture.Root);
-        string original = File.ReadAllText(catalog).Replace("</PropertyGroup>", "<HexalithPartiesVersion>3.1.0</HexalithPartiesVersion></PropertyGroup>", StringComparison.Ordinal);
+        string original = File.ReadAllText(catalog).Replace("</PropertyGroup>", "<HexalithPartiesVersion>3.1.1</HexalithPartiesVersion></PropertyGroup>", StringComparison.Ordinal);
         File.WriteAllText(catalog, original);
         PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBe(privateCohort);
         PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBe(publicCohort);

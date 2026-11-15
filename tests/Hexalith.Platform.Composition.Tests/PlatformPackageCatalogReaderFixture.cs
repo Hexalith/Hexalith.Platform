@@ -18,9 +18,8 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
     internal PlatformPackageCatalogReaderFixture(bool currentTest = false, bool sdk42 = false)
     {
         _owner = sdk42 ? PlatformQualificationPackageFixture.ExtensionSdkTest() : currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
-        string platform = PlatformPartiesPackageFixture.PreparedFixtureRoot();
-        string root = Metadata("PlatformTestReaderWorkspaceRoot");
-        if (string.IsNullOrWhiteSpace(root)) root = platform;
+        string platform = PlatformTestRepository.Root;
+        string root = platform;
         (Directory.Exists(Path.Combine(root, ".git")) || File.Exists(Path.Combine(root, ".git"))).ShouldBeTrue("The fixture needs a genuine existing Git root; it never creates Git metadata.");
         string builds = Path.Combine(root, "references", "Hexalith.Builds");
         string tool = Metadata("PlatformTestPublishedToolRoot");
@@ -60,13 +59,12 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
             Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
         });
         PlatformCompositionOptions? captured = null;
-        int probes = 0;
         Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeRun(builder, Plan, _key, Seed, options =>
         {
             captured = options;
-            return options with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("Expected private reader fixture boundary."); } };
-        })).Message.ShouldBe("Expected private reader fixture boundary.");
-        probes.ShouldBe(1);
+            options.QualificationOwnerProof!.Matches(options).ShouldBeTrue();
+            throw new InvalidOperationException("Expected authenticated private reader fixture boundary before image admission.");
+        })).Message.ShouldBe("Expected authenticated private reader fixture boundary before image admission.");
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(Path.Combine(Plan.Workspace, "platform-components")).ShouldBeFalse();
         Options = captured!;
@@ -86,7 +84,26 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
     internal string Reader => Path.Combine(Plan.Workspace, "platform-components", "catalog-reader");
 
     /// <summary>Calls the production reader generator with the unchanged authoritative closure.</summary>
-    internal PlatformRoutingCatalog Generate() => PlatformRoutingCatalog.Generate(Options, PlatformAppModel.Prepare(Options), Path.Combine(Plan.Workspace, "platform-components"));
+    internal PlatformRoutingCatalog Generate(IReadOnlyList<PlatformServerBinding>? servers = null)
+    {
+        try { return PlatformRoutingCatalog.Generate(Options, servers ?? PlatformAppModel.Prepare(Options), Path.Combine(Plan.Workspace, "platform-components")); }
+        catch
+        {
+            WriteReaderDiagnostics(Reader);
+            throw;
+        }
+    }
+
+    internal static void WriteReaderDiagnostics(string reader)
+    {
+        foreach (string name in new[] { "build.log", "generation.log" })
+        {
+            string path = Path.Combine(reader, name);
+            if (!File.Exists(path)) continue;
+            string text = File.ReadAllText(path);
+            TestContext.Current.TestOutputHelper?.WriteLine(name + ":\n" + text[^Math.Min(text.Length, 32768)..]);
+        }
+    }
 
     /// <summary>Reads one exact build-provided fixture path, avoiding ambient environment overrides.</summary>
     private static string Metadata(string key) => typeof(PlatformPackageCatalogReaderFixture).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()

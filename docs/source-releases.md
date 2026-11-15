@@ -2,15 +2,19 @@
 
 `source-release.yml` responds to completed main-push runs of **Platform tuple CI
 preflight** and **Catalog builder consumer binding**. Its read-only job requires
-both latest exact-source runs, latest attempts and all five tuple
-orchestration/execution jobs and six SDK jobs to pass. Source resolution fans out
-to the current SDK4.2 lane and genuine same-code 412/349-case historical lanes;
-the aggregate verdict requires all three. The current lane executes the complete
-457 retained upstream cases, nine current artifact controls, 97 finite default-cohort
-cases and nine extension component cases: 572 executions, 569 unique identities and three explicitly
-repeated regressions. Every profile retains exact execution counts with zero
-skips. Missing or pending counterparts defer. Failures, cancellations, unknown
-jobs, foreign/PR inputs, stale callbacks and changed main refuse.
+both latest exact-source runs, latest attempts, all three tuple jobs
+(`resolve-sources`, `tuple`, `tuple-verdict`) and all six SDK jobs to pass.
+Resolution and current execution use only the candidate's shallow Platform
+checkout. The verdict requires both prerequisites to succeed; failure,
+cancellation, skip or an absent result refuses release qualification.
+
+The continuing candidate inventories measure **463 current42, 93 base42 and
+9 extension cases: 565 executions**, with explicit positive counts and zero
+skips. All execute through the current NET11 collector. No historical Platform
+checkout, replay profile or companion ref is required. Missing or pending
+counterpart workflows defer; foreign/PR inputs, stale callbacks and changed main
+refuse. See [current tuple preparation](current-tuple-preparation.md) for the
+selected binding and execution boundaries.
 
 Only the tuple execution steps receive the existing read-only GitHub job token.
 The runner removes it from ambient and ordinary command environments, passing it
@@ -18,22 +22,25 @@ only to published-artifact verification. That verifier retains it privately for
 fixed official Builds API metadata requests; its Git, signature and tool subprocesses
 do not inherit it. Signature, publication, source and execution-count checks remain independent.
 
-The SDK4.2.0 row binds the genuine Sample source and public Tenants7.0.5;
-the SDK4.1.0 row retains its existing public Parties owner regression. A separate
-SDK4.2.0 check authenticates the twelve signed public reader bodies and executes
-the complete Parties3.1/Tenants7.0.5/Memories3.0.25 catalog, with closed-owner and
-changed-body refusals. It retains the original public Parties3.1 image digest
-and that image's SDK4.1 provenance. The private current-owner purpose separately
-binds exact SDK4.1 or SDK4.2 reference bodies to its measured Release source,
-reader receipt and mapped process files. Neither reader qualification nor model
-controls grant native runtime acceptance. The current 466-case profile retains
-its six SDK4.2 extension controls and 38 artifact boundary controls; the additional
-97/9 profiles do not replace them. The additional current reader authenticates
-Tenants7.0.7, Memories3.0.26 and Parties3.1.1 package bodies. It does not grant
-their image tuples native admission. The historical
-Historical Works behavior evidence remains bound to Dapr1.18.7. The current
-Works toolchain records independently verified official Dapr1.19.1 executable
-identities; its complete parity suite remains the behavioral qualification gate.
+The catalog-builder SDK matrix retains its independent published owner and
+extension controls. The continuing Platform profiles retain genuine old public
+packages as explicit fixture data and verify actual package bodies, private
+purpose/key/snapshot boundaries, signed-host handoff, reader integrity,
+readiness and generated model transport. Current private reader preparation
+uses the candidate binding's SDK4.2.0, Tenants7.0.7, Memories3.0.27 and
+Parties3.1.1 inputs. Reader authenticity and component checks grant no image or
+native runtime admission.
+
+Historically, source resolution also selected 412/349-case Platform replay lanes.
+Those jobs and profiles have been retired. An earlier release preparation
+recorded 466 current cases (457 retained plus nine artifact controls), 97 default
+cases and nine extension cases, totaling 572 executions with 569 unique
+identities and three repeated regressions. Its public Parties3.1/Tenants7.0.5/
+Memories3.0.25 and private SDK4.1/4.2 observations retain their original subjects;
+they are not current orchestration requirements or acceptance for today's image
+tuples. Historical Works behavior evidence remains bound to Dapr1.18.7. The
+current Works toolchain records independently verified official Dapr1.19.1
+executable identities; its complete parity suite remains the behavioral gate.
 
 The read-only verifier runs the reviewed default-branch workflow SHA, so an old
 callback cannot hide behind the absence of newer helper files. Exact workflow ref,

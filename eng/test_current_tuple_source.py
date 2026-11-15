@@ -1,7 +1,6 @@
-"""Real isolated Git controls for current sources, released packages and companion preparation."""
+"""Real isolated Git controls for current sources, released packages and candidate preparation."""
 from __future__ import annotations
 
-import copy
 import hashlib
 import json
 from pathlib import Path
@@ -10,8 +9,7 @@ import tempfile
 import unittest
 
 import current_tuple_source as current
-from legacy_tuple_source import PROVENANCE
-from prepare_tuple_sources import FROZEN, prepare_tree
+from current_tuple_source import PROVENANCE
 
 
 class CurrentTupleSourceTests(unittest.TestCase):
@@ -72,6 +70,40 @@ class CurrentTupleSourceTests(unittest.TestCase):
         for name, item in self.provenance.items():
             self.assertNotEqual(item["commit"], self.binding["ownerSources"][name]["sourceRevision"])
         current.verify_package_release_identities(self.root, self.source)
+
+    def test_depth_one_platform_checkout_authenticates_independent_owner_releases(self):
+        prior = self.git(self.root, "rev-parse", self.source + "^")
+        with tempfile.TemporaryDirectory(prefix="shallow-current-platform-") as directory:
+            checkout = Path(directory) / "platform"
+            self.git(self.root, "clone", "--depth=1", "--no-tags", self.root.as_uri(), str(checkout))
+            self.assertEqual(self.git(checkout, "rev-parse", "--is-shallow-repository"), "true")
+            self.assertEqual(self.git(checkout, "rev-list", "--count", "--all"), "1")
+            self.assertEqual(self.git(checkout, "rev-list", "--all"), self.source)
+            self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", prior + "^{commit}"],
+                                               cwd=checkout, capture_output=True).returncode, 0)
+            for name, repository in current.OWNERS.items():
+                owner = checkout / "references" / repository
+                self.git(checkout, "clone", (self.root / "references" / repository).as_uri(), str(owner))
+                self.git(owner, "checkout", "--detach", self.binding["ownerSources"][name]["sourceRevision"])
+                self.assertFalse((owner / ".git/objects/info/alternates").exists())
+            self.assertEqual(current.read_selection(checkout, self.source), (self.binding, self.provenance))
+            self.assertEqual(current.create_binding(checkout, self.source), self.binding)
+            self.assertFalse(current.verify_checkout(checkout, self.source)["qualificationCredit"])
+            self.assertEqual(current.verify_package_release_identities(checkout, self.source)["packages"], self.provenance)
+            owner = checkout / "references/Hexalith.Tenants"
+            self.git(owner, "tag", "-f", "v1.0.0", self.binding["ownerSources"]["tenants"]["sourceRevision"])
+            with self.assertRaisesRegex(ValueError, "actual release tag or declaration blob"):
+                current.verify_checkout(checkout, self.source)
+            self.git(owner, "tag", "-f", "v1.0.0", self.provenance["tenants"]["commit"])
+            manifest = (owner / current.MANIFEST).read_bytes()
+            self.write(owner, current.MANIFEST, manifest + b"tampered\n")
+            with self.assertRaisesRegex(ValueError, "checkout or declaration differs"):
+                current.verify_checkout(checkout, self.source)
+            self.write(owner, current.MANIFEST, manifest)
+            current.verify_checkout(checkout, self.source)
+            self.assertEqual(self.git(checkout, "rev-list", "--count", "--all"), "1")
+            self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", prior + "^{commit}"],
+                                               cwd=checkout, capture_output=True).returncode, 0)
 
     def test_current_gitlink_change_requires_a_matching_committed_binding(self):
         self.gitlink("Hexalith.Parties", "e" * 40)
@@ -174,90 +206,24 @@ class CurrentTupleSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unsupported current package release provenance"):
             current.read_selection(self.root, changed)
 
-    def frozen_anchor(self, name):
-        frozen = copy.deepcopy(FROZEN[name])
-        production_root = Path(__file__).resolve().parents[1]
-        for path in frozen["hashes"]:
-            raw = subprocess.check_output(["git", "show", frozen["anchor"] + ":" + path], cwd=production_root)
-            self.write(self.root, path, raw)
-        for path, source in frozen["gitlinks"].items():
-            (self.root / path).mkdir(parents=True, exist_ok=True)
-            self.git(self.root, "update-index", "--add", "--cacheinfo", "160000," + source + "," + path)
-        frozen["anchor"] = self.commit(self.root)
-        self.git(self.root, "checkout", "-q", self.source)
-        return frozen
+    def test_documentation_change_needs_no_companion_or_binding_refresh(self):
+        self.write(self.root, "docs/guide.md", b"candidate-only instructions\n")
+        changed = self.commit(self.root)
+        self.assertEqual(current.create_binding(self.root, changed), self.binding)
+        current.verify_checkout(self.root, changed)
+        self.assertEqual(self.git(self.root, "for-each-ref", "refs/heads/qualification/"), "")
 
-    def test_companion_preparation_changes_only_frozen_metadata_and_preserves_index(self):
-        for name in FROZEN:
-            with self.subTest(cohort=name):
-                frozen = self.frozen_anchor(name)
-                before = (self.git(self.root, "write-tree"), self.git(self.root, "rev-parse", "HEAD"), self.git(self.root, "status", "--porcelain"))
-                tree = prepare_tree(self.root, self.source, frozen)
-                after = (self.git(self.root, "write-tree"), self.git(self.root, "rev-parse", "HEAD"), self.git(self.root, "status", "--porcelain"))
-                self.assertEqual(before, after)
-                self.assertEqual(self.git(self.root, "show", tree + ":src/production.txt"), "same current production")
-                self.assertEqual(self.git(self.root, "show", tree + ":" + current.BINDING), self.git(self.root, "show", self.source + ":" + current.BINDING))
-                for path, expected in frozen["hashes"].items():
-                    raw = subprocess.check_output(["git", "show", tree + ":" + path], cwd=self.root)
-                    self.assertEqual(hashlib.sha256(raw).hexdigest(), expected)
-
-    def test_refreshed_companions_keep_exact_production_equality_and_frozen_owner_tuples(self):
-        import legacy_tuple_source as legacy
-        import pre_extension_tuple_source as pre_extension
-        production_root = Path(__file__).resolve().parents[1]
-        frozen = {name: self.frozen_anchor(name) for name in FROZEN}
-        for path in ["eng/builds-tuple.json", ".config/dotnet-tools.json", "hexalith-platform.json", "eng/tuple-ci-suites.json"]:
-            raw = subprocess.check_output(["git", "show", frozen["pre-extension"]["anchor"] + ":" + path], cwd=self.root)
-            self.write(self.root, path, raw)
-        binding = json.loads((self.root / "eng/builds-tuple.json").read_bytes())
-        binding["producer"]["sourceRevision"] = "e" * 40
-        binding["publication"].update(version="4.999.0", sourceRevision="e" * 40, releaseTag="v4.999.0",
-            inventoryUrl="https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.999.0/g4-tool-package-inventory.json")
-        self.write(self.root, "eng/builds-tuple.json", json.dumps(binding).encode())
-        tools = json.loads((self.root / ".config/dotnet-tools.json").read_bytes())
-        tools["tools"]["hexalith.builds.module.cli"]["version"] = "4.999.0"
-        self.write(self.root, ".config/dotnet-tools.json", json.dumps(tools).encode())
-        self.write(self.root, "hexalith-platform.json", b'{"schemaVersion":1,"toolVersionRange":"[4.999.0, 5.0.0-0)"}')
-        (self.root / "references/Hexalith.Builds").mkdir(exist_ok=True)
-        self.gitlink("Hexalith.Builds", "e" * 40)
-        descriptors = {}
-        for name, descriptor in [("legacy", legacy.DESCRIPTOR), ("pre-extension", pre_extension.DESCRIPTOR)]:
-            descriptors[name] = json.loads((production_root / descriptor).read_bytes())
-            descriptors[name]["sourceRevision"] = frozen[name]["anchor"]
-            if name == "pre-extension":
-                # Production selectors are unavailable in this private fixture history.
-                descriptors[name]["packageReaderSourceRevision"] = frozen["package-reader"]["anchor"]
-            self.write(self.root, descriptor, json.dumps(descriptors[name]).encode())
-        selected = self.commit(self.root)
-        companions = {}
-        for name, configuration in frozen.items():
-            tree = prepare_tree(self.root, selected, configuration)
-            companions[name] = self.git(self.root, "commit-tree", tree, "-p", selected,
-                                        "-m", "test(tuple): record private companion control")
-        for name, descriptor in [("legacy", legacy.DESCRIPTOR), ("pre-extension", pre_extension.DESCRIPTOR)]:
-            descriptors[name]["sourceRevision"] = companions[name]
-            if name == "pre-extension":
-                descriptors[name]["packageReaderSourceRevision"] = companions["package-reader"]
-            self.write(self.root, descriptor, json.dumps(descriptors[name]).encode())
-        selected = self.commit(self.root)
-        for name, verifier in [("legacy", legacy.verify), ("pre-extension", pre_extension.verify)]:
-            self.git(self.root, "checkout", "-q", companions[name])
-            result = verifier(self.root, selected, companions[name])
-            self.assertEqual(result["sourceEquivalence"], "verified")
-            self.assertFalse(result["qualificationCredit"])
-            self.git(self.root, "checkout", "-q", selected)
-            self.write(self.root, "src/production.txt", b"changed after companion generation\n")
-            changed = self.commit(self.root)
-            self.git(self.root, "checkout", "-q", companions[name])
-            with self.assertRaisesRegex(ValueError, "Production"):
-                verifier(self.root, changed, companions[name])
-            self.git(self.root, "checkout", "-q", selected)
-
-    def test_corrupted_frozen_metadata_cannot_create_a_companion_tree(self):
-        frozen = self.frozen_anchor("legacy")
-        frozen["hashes"]["eng/builds-tuple.json"] = "0" * 64
-        with self.assertRaisesRegex(ValueError, "frozen body"):
-            prepare_tree(self.root, self.source, frozen)
+    def test_owner_gitlink_update_only_needs_its_current_binding(self):
+        owner = self.root / "references/Hexalith.Parties"
+        self.write(owner, "updated-source.txt", b"new source with the same released package\n")
+        source = self.commit(owner)
+        self.gitlink("Hexalith.Parties", source)
+        changed = self.commit(self.root)
+        binding = current.create_binding(self.root, changed)
+        self.write(self.root, current.BINDING, json.dumps(binding).encode())
+        changed = self.commit(self.root)
+        current.verify_checkout(self.root, changed)
+        self.assertEqual(self.git(self.root, "for-each-ref", "refs/heads/qualification/"), "")
 
 
 if __name__ == "__main__":

@@ -4,68 +4,62 @@ import test from 'node:test';
 import { spawnSync } from 'node:child_process';
 import * as yaml from 'js-yaml';
 
-const workflow = yaml.load(readFileSync('.github/workflows/tuple-ci.yml', 'utf8'));
+const raw = readFileSync('.github/workflows/tuple-ci.yml', 'utf8');
+const workflow = yaml.load(raw);
 
-test('current and both genuine historical executions fan out from source resolution', () => {
-  const jobs = workflow.jobs;
-  assert.deepEqual(jobs.tuple.needs, ['resolve-sources']);
-  assert.deepEqual(jobs['legacy-public-cohort'].needs, ['resolve-sources']);
-  assert.deepEqual(jobs['pre-extension-public-cohort'].needs, ['resolve-sources']);
-  const resolution = jobs['resolve-sources'];
-  assert.ok(resolution.steps.some(step => step.run?.includes('eng/legacy_tuple_source.py --current')));
-  assert.ok(resolution.steps.some(step => step.run?.includes('eng/pre_extension_tuple_source.py --current')));
+test('all triggers execute candidate-only resolution, current execution and verdict', () => {
+  assert.deepEqual(workflow.on.push.branches, ['main']);
+  assert.deepEqual(workflow.on.pull_request.branches, ['main']);
+  assert.deepEqual(Object.keys(workflow.on.workflow_dispatch.inputs), ['candidate-sha']);
+  assert.equal(workflow.on.workflow_dispatch.inputs['candidate-sha'].required, true);
+  assert.deepEqual(Object.keys(workflow.jobs), ['resolve-sources', 'tuple', 'tuple-verdict']);
+  assert.deepEqual(workflow.jobs.tuple.needs, ['resolve-sources']);
+  const resolution = workflow.jobs['resolve-sources'];
+  assert.deepEqual(resolution.outputs, { 'current-source': '${{ steps.sources.outputs.current-source }}' });
+  assert.ok(resolution.steps.some(step => step.run?.includes("read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])")));
   assert.ok(!JSON.stringify(resolution).includes('submodule update'));
-  for (const lane of ['tuple', 'legacy-public-cohort', 'pre-extension-public-cohort']) {
-    assert.equal(jobs[lane]['continue-on-error'], undefined);
-    assert.ok(jobs[lane].steps.some(step => step.run?.includes('eng/run_tuple_ci.py')));
+  assert.equal(workflow.jobs.tuple['continue-on-error'], undefined);
+  assert.ok(workflow.jobs.tuple.steps.some(step => step.run?.includes('eng/run_tuple_ci.py')));
+  assert.equal(workflow.jobs.tuple.env.PLATFORM_CANDIDATE_SHA, '${{ needs.resolve-sources.outputs.current-source }}');
+});
+
+test('every Platform checkout is shallow and selects only the candidate', () => {
+  const checkouts = Object.values(workflow.jobs).flatMap(job => job.steps).filter(step => step.uses?.startsWith('actions/checkout@'));
+  assert.equal(checkouts.length, 2);
+  for (const checkout of checkouts) {
+    assert.equal(checkout.with.ref, '${{ inputs.candidate-sha || github.sha }}');
+    assert.equal(checkout.with['fetch-depth'], 1);
+    assert.equal(checkout.with.submodules, false);
+    assert.equal(checkout.with['persist-credentials'], false);
   }
-  assert.equal(jobs.tuple.env.PLATFORM_CANDIDATE_SHA, '${{ needs.resolve-sources.outputs.current-source }}');
-  assert.equal(jobs['legacy-public-cohort'].steps[0].with.ref, '${{ needs.resolve-sources.outputs.legacy-source }}');
-  assert.equal(jobs['legacy-public-cohort'].name, 'Same changed source against the legacy public tuple');
-  assert.equal(jobs['pre-extension-public-cohort'].steps[0].with.ref, '${{ needs.resolve-sources.outputs.pre-extension-source }}');
-  assert.equal(jobs['pre-extension-public-cohort'].name, 'Same changed source against the pre-extension public tuple');
+  assert.doesNotMatch(raw, /git .*fetch|legacy-source|pre-extension|reader-workspace|CURRENT_PLATFORM_SHA|qualification\//);
 });
 
-test('overall tuple verdict refuses failed cancelled skipped or missing lanes', () => {
+test('overall verdict requires both actual prerequisites even when they fail or skip', () => {
   const verdict = workflow.jobs['tuple-verdict'];
-  assert.deepEqual(verdict.needs, ['resolve-sources', 'tuple', 'legacy-public-cohort', 'pre-extension-public-cohort']);
+  assert.deepEqual(verdict.needs, ['resolve-sources', 'tuple']);
   assert.equal(verdict.if, 'always()');
-  const step = verdict.steps[0];
-  assert.equal(step.env.SOURCE_RESULT, '${{ needs.resolve-sources.result }}');
-  assert.equal(step.env.CURRENT_RESULT, '${{ needs.tuple.result }}');
-  assert.equal(step.env.LEGACY_RESULT, '${{ needs.legacy-public-cohort.result }}');
-  assert.equal(step.env.PRE_EXTENSION_RESULT, '${{ needs.pre-extension-public-cohort.result }}');
-  assert.ok(step.run.includes('test "$SOURCE_RESULT" = success'));
-  assert.ok(step.run.includes('test "$CURRENT_RESULT" = success'));
-  assert.ok(step.run.includes('test "$LEGACY_RESULT" = success'));
-  assert.ok(step.run.includes('test "$PRE_EXTENSION_RESULT" = success'));
+  assert.deepEqual(verdict.steps[0].env, {
+    SOURCE_RESULT: '${{ needs.resolve-sources.result }}',
+    CURRENT_RESULT: '${{ needs.tuple.result }}',
+  });
 });
 
-test('actual aggregate step exits nonzero for every unsuccessful or absent lane result', () => {
+test('executable aggregate refuses every failed cancelled skipped or absent result', () => {
   const script = workflow.jobs['tuple-verdict'].steps[0].run;
   const statuses = ['success', 'failure', 'cancelled', 'skipped', ''];
-  for (const source of statuses) for (const current of statuses) for (const legacy of statuses) for (const preExtension of statuses) {
-    const result = spawnSync('bash', ['-e', '-c', script], { env: { SOURCE_RESULT: source, CURRENT_RESULT: current, LEGACY_RESULT: legacy, PRE_EXTENSION_RESULT: preExtension } });
-    assert.equal(result.status === 0, [source, current, legacy, preExtension].every(value => value === 'success'));
+  for (const source of statuses) for (const current of statuses) {
+    const result = spawnSync('bash', ['-c', script], { env: { SOURCE_RESULT: source, CURRENT_RESULT: current } });
+    assert.equal(result.status === 0, source === 'success' && current === 'success');
   }
+  assert.notEqual(spawnSync('bash', ['-c', script], { env: {} }).status, 0);
 });
 
-
-test('all three actual lanes authenticate initialized owners and package identities before execution', () => {
-  const checks = [
-    ['tuple', "verify_checkout(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])"],
-    ['legacy-public-cohort', 'verify_parties_checkout(Path.cwd(), historical=True)'],
-    ['pre-extension-public-cohort', 'verify_parties_checkout(Path.cwd(), historical=False, pre_extension=True)'],
-  ];
-  for (const [lane, invocation] of checks) {
-    const steps = workflow.jobs[lane].steps;
-    const check = steps.findIndex(step => step.name === 'Recheck the exact initialized Parties source and declaration');
-    assert.ok(check > 0);
-    assert.ok(steps.slice(0, check).some(step => step.run?.includes('submodule update --init')));
-    assert.ok(steps[check].run.includes(invocation));
-    if (lane !== 'tuple') {
-      assert.ok(steps[check].run.includes("verify_package_release_identities(Path.cwd(), os.environ['CURRENT_PLATFORM_SHA'])"));
-    }
-    assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
-  }
+test('candidate execution authenticates initialized owners and package identities first', () => {
+  const steps = workflow.jobs.tuple.steps;
+  const check = steps.findIndex(step => step.name === 'Recheck the exact initialized Parties source and declaration');
+  assert.ok(check > 0);
+  assert.ok(steps.slice(0, check).some(step => step.run?.includes('submodule update --init')));
+  assert.ok(steps[check].run.includes("verify_checkout(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])"));
+  assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
 });

@@ -1,0 +1,41 @@
+{
+  "recordedUtc": "2026-11-15T18:50:15.869060+00:00",
+  "archiveMembersIndependentlyVerified": 1179,
+  "runtimeAndTestSourceFilesMatched": 186,
+  "xmlGroupsIndependentlyChecked": 36,
+  "passingExecutions": 565,
+  "skipped": 0,
+  "pinsGitlinksTagsUnchanged": true,
+  "hostedMainAcceptance": false,
+  "postSnapshotParentChanges": [
+    "One additional CRLF whitespace attribute for PlatformReaderMutationControls.cs",
+    "Explicit measured-total TSV disposition labels",
+    "Spec task completion and parent audit notes"
+  ],
+  "matrixCoverage": {
+    "candidateTriggers": [
+      "all triggers execute candidate-only resolution, current execution and verdict",
+      "every Platform checkout is shallow and selects only the candidate"
+    ],
+    "failureVerdict": [
+      "executable aggregate refuses every failed cancelled skipped or absent result"
+    ],
+    "docGitlinkNoCompanions": [
+      "CurrentTupleSourceTests.test_documentation_change_needs_no_companion_or_binding_refresh",
+      "CurrentTupleSourceTests.test_owner_gitlink_update_only_needs_its_current_binding"
+    ],
+    "identityRuntimeRefusals": [
+      "CurrentTupleSourceTests",
+      "TupleCollectorTests",
+      "PlatformCurrentOwnerHandoffTests",
+      "PlatformEventStorePackageTestCohortTests",
+      "PlatformSdk42EventStorePackageTestCohortTests"
+    ],
+    "retiredReplayNoNewImageAdmission": [
+      "TupleCollectorTests.test_runner_has_no_alternate_platform_checkout_or_fetch_path",
+      "PlatformCurrentOwnerPackageTests",
+      "PlatformMemoriesContainerTransportTests"
+    ]
+  },
+  "nodeTriggerVerdictAndCurrentSourceMatrixExecutionsIndependentlyChecked": true
+}

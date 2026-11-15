@@ -9,11 +9,12 @@ using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
-/// <summary>Uses the coherent real Platform-owned direct Parties checkout and its actual accepted published tuple; never changes source pins or creates Git metadata.</summary>
+/// <summary>Uses candidate/tool inputs for measured private preparation and local fixture histories for ordinary proof-only controls.</summary>
 internal sealed class PlatformPartiesPackageFixture : IDisposable
 {
     private readonly string _key = CompositionSigningKey.Create();
     private Action? _validationRuntimeVerify;
+    private IDisposable? _proofFixture;
 
     private PlatformPartiesPackageFixture(string workspace, CompositionRunPlan plan, string seed)
     {
@@ -75,30 +76,21 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         : throw new InvalidDataException("The package fixture requires one complete authenticated SDK cohort.");
 
     internal static string PublishedCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name : PublishedCatalogArtifactCohort.PublishedPartiesName;
-    internal static string CurrentCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name : PublishedCatalogArtifactCohort.CurrentOwnerName;
-    internal static string EventStoreTestCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name : PublishedCatalogArtifactCohort.EventStorePackageTestName;
+    internal static string CurrentCohort => PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name;
+    internal static string EventStoreTestCohort => PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName;
 
-    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package", bool sdk42 = false, bool currentArtifacts = false)
+    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package", bool sdk42 = false)
     {
-        if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0", "The explicit SDK4.2 case must load its real package cohort.");
-        bool current = profile == PlatformCurrentOwnerProof.Profile;
-        if (currentArtifacts && !current) throw new ArgumentException("Current artifact preparation requires the explicit private current-owner profile.", nameof(profile));
-        bool published = !current && PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
-        string cohort = currentArtifacts ? PublishedCatalogArtifactCohort.CurrentOwnerCurrentName : current ? CurrentCohort
-            : published ? PublishedCohort : PublishedCatalogArtifactCohort.CurrentFullPartiesName;
-        if (!currentArtifacts)
+        if (profile != PlatformCurrentOwnerProof.Profile)
         {
-            PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
-                .ShouldBeTrue(current || published
-                    ? "Current Parties preparation requires its exact genuine public M25/SDK tuple and loaded public Contracts body."
-                    : "Full Parties qualification requires the genuine published M23 tuple and loaded public Contracts body; the accepted M18 output must not be substituted.");
-            PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort).ShouldBeTrue();
-            if (!current) PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort).ShouldBeTrue();
+            // These local histories prove parent scope only. They are never a Platform release checkout.
+            var proof = new PlatformPartiesProofFixture(platformOwned: true, profile: profile);
+            return new(proof.Options.RunPlan!.Workspace, proof.Options.RunPlan, PublishedSeed()) { _proofFixture = proof };
         }
-        // The current private producer builds its own fresh707/26 or707/27 package closure. The collecting
-        // test assembly deliberately retains historical bodies and cannot establish those identities.
+        if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0");
+        string cohort = PublishedCatalogArtifactCohort.CurrentOwnerCurrentName;
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
-        string root = currentArtifacts ? PlatformTestRepository.Root : PreparedFixtureRoot();
+        string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
         {
@@ -106,15 +98,14 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             (File.Exists(marker) || Directory.Exists(marker)).ShouldBeTrue("Direct dependencies must already be prepared; this test must not initialize them.");
         }
         string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
-        Hash(manifest).ShouldBe(current ? PlatformCurrentOwnerProof.DeclarationHashForCohort(cohort)
-            : published ? PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
+        Hash(manifest).ShouldBe(PlatformCurrentOwnerProof.CurrentDeclarationHash);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
         mapping.Root.ShouldBe(root);
         mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
         mapping.ActiveModule.ShouldBe("Hexalith.Parties");
         PlatformIdentity identity = mapping.PlatformIdentity.ShouldNotBeNull();
         identity.IsPlatformRepository.ShouldBeTrue("This is the real Platform-owned qualification path; it does not invent a consumer release tag.");
-        identity.CheckoutCommit.ShouldBe(Git(root, "rev-parse", "HEAD"), "The actual historical-input fixture source must equal its authenticated checkout.");
+        identity.CheckoutCommit.ShouldBe(Git(root, "rev-parse", "HEAD"), "The actual candidate source must equal its authenticated checkout.");
         using JsonDocument tuple = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(root, "eng", "builds-tuple.json")));
         identity.CatalogCommit.ShouldBe(tuple.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString());
         string seed = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "projects", "EventStore", "Host.csproj");
@@ -139,15 +130,13 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
                 PlatformDeclarationHash = Hash(manifest), SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
-            if (currentArtifacts)
-            {
-                cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
-                    ?? throw new InvalidDataException("The current artifact fixture requires an independently authenticated complete tuple.");
-                (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
-                PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
-            }
+            cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
+                ?? throw new InvalidDataException("The current artifact fixture requires an independently authenticated complete tuple.");
+            (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
+            PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", currentArtifacts ? "4.2.0" : SelectedSdkVersion), ("tenants", currentArtifacts ? "7.0.7" : current || published ? "7.0.5" : "7.0.2"), ("memories", currentArtifacts ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort) : current || published ? "3.0.25" : "3.0.23"), ("parties", currentArtifacts ? "3.1.1" : published || current && PlatformServerBindings.Version(options, "parties", manifest) == "3.1.0" ? "3.1.0" : "3.0.0") })
+            foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"),
+                ("memories", PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort)), ("parties", "3.1.1") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
@@ -166,29 +155,25 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         }
     }
 
-    /// <summary>Uses an explicitly prepared historical input tree while requiring every non-tuple source file to equal the collecting source.</summary>
-    internal static string PreparedFixtureRoot()
+    private static string PublishedSeed()
     {
-        string? prepared = typeof(PlatformPartiesPackageFixture).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
-            .SingleOrDefault(attribute => attribute.Key == "PlatformTestReaderWorkspaceRoot")?.Value;
-        string root = string.IsNullOrWhiteSpace(prepared) ? PlatformTestRepository.Root : Path.GetFullPath(prepared);
-        if (root == PlatformTestRepository.Root) return root;
-        string collecting = Git(PlatformTestRepository.Root, "rev-parse", "HEAD");
-        string selected = Git(root, "rev-parse", "HEAD");
-        string[] changed = Git(root, "diff", "--name-only", collecting, selected).Split('\n', StringSplitOptions.RemoveEmptyEntries);
-        string[] tupleInputs = ["eng/builds-tuple.json", "hexalith-platform.json", ".config/dotnet-tools.json",
-            "src/Hexalith.Platform.Composition/Declarations/provenance.json", "references/Hexalith.Builds", "references/Hexalith.Parties", "references/Hexalith.EventStore",
-            "eng/legacy-tuple-source.json", "eng/pre-extension-tuple-source.json"];
-        changed.All(path => tupleInputs.Contains(path, StringComparer.Ordinal)).ShouldBeTrue("Historical fixture inputs must retain the exact current production, controls, workflows and helper source.");
-        const string verify = "import pathlib, sys; root = pathlib.Path(sys.argv[1]); sys.path.insert(0, str(root / 'eng')); from package_reader_source import verify_source; verify_source(root, sys.argv[2], sys.argv[3])";
-        var validation = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("python3",
-            ["-B", "-c", verify, PlatformTestRepository.Root, collecting, selected], PlatformTestRepository.Root, null),
-            TimeSpan.FromSeconds(30), TestContext.Current.CancellationToken).GetAwaiter().GetResult();
-        validation.TimedOut.ShouldBeFalse();
-        validation.OutputTruncated.ShouldBeFalse();
-        validation.ExitCode.ShouldBe(0, "The production source verifier must authenticate all permitted tuple and descriptor differences: " + validation.ErrorOutput);
-        Git(root, "status", "--porcelain", "--untracked-files=normal").ShouldBeEmpty("The explicitly prepared historical input checkout must be immutable and clean.");
-        return root;
+        string seed = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "projects", "EventStore", "Host.csproj");
+        File.Exists(seed).ShouldBeTrue("The candidate's authenticated published seed is required.");
+        return seed;
+    }
+
+    /// <summary>Captures ordinary scope proof from fixture-owned histories without image admission.</summary>
+    internal PlatformCompositionOptions CaptureOrdinary()
+    {
+        var builder = Builder();
+        Should.Throw<InvalidOperationException>(() => Compose(builder, options =>
+        {
+            Options = options;
+            options.PartiesRunProof!.Matches(options).ShouldBeTrue();
+            throw new InvalidOperationException("Expected ordinary parent proof before image admission.");
+        })).Message.ShouldBe("Expected ordinary parent proof before image admission.");
+        AssertNoEffects(builder);
+        return Options;
     }
 
     /// <summary>Persists the original parent claim binding before the published host reads and projects it.</summary>
@@ -282,48 +267,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         verify();
     }
 
-    /// <summary>Checks the real published transport reached every authenticated image identity without rendering or resource claims.</summary>
-    internal void AssertPublishedValidationBoundary(CompositionProcessResult result)
-    {
-        result.ExitCode.ShouldBe(3); // Deliberate final image refusal, not service or native acceptance.
-        result.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
-        result.ErrorOutput.ShouldContain("is unavailable from its released registry");
-        File.ReadAllLines(Path.Combine(Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
-            .ShouldBe(SelectedImages.Order(StringComparer.Ordinal));
-        Directory.Exists(Path.Combine(Workspace, "platform-components")).ShouldBeFalse();
-        if (Plan.ResourceClaimStateDirectory is not null) Directory.Exists(Plan.ResourceClaimStateDirectory).ShouldBeFalse();
-    }
-
-    /// <summary>Reaches all seven exact image-probe identities in the actual trusted entry, then stops before rendering or allocation.</summary>
-    internal void AssertPositiveEntry()
-    {
-        var builder = Builder();
-        HashSet<string> seen = new(StringComparer.Ordinal);
-        Should.Throw<InvalidOperationException>(() => Compose(builder, options =>
-        {
-            Options = options;
-            return options with { ImageProbeRunner = (start, timeout, _) =>
-            {
-                start.FileName.ShouldBe("docker");
-                timeout.ShouldBe(TimeSpan.FromSeconds(20));
-                start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
-                start.ArgumentList.Count.ShouldBe(3);
-                Images.ShouldContain(start.ArgumentList[2]);
-                seen.Add(start.ArgumentList[2]).ShouldBeTrue();
-                if (seen.Count == Images.Count) throw new InvalidOperationException("Expected all seven full-Parties image identities; stop before rendering.");
-                return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-            } };
-        })).Message.ShouldBe("Expected all seven full-Parties image identities; stop before rendering.");
-        seen.Order(StringComparer.Ordinal).ShouldBe(Images.Order(StringComparer.Ordinal));
-        Options.PartiesRunProof!.Matches(Options).ShouldBeTrue();
-        Options.QualificationOwners.ShouldBeEmpty();
-        Plan.QualificationOwners.ShouldBeNull();
-        Plan.QualificationOwnersBinding.ShouldBeNull();
-        PlatformAppModel.Prepare(Options).Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId)
-            .Order(StringComparer.Ordinal).ShouldBe(["eventstore/gateway", "memories/clock", "memories/domain", "memories/server", "memories/telemetry", "parties/domain", "tenants/api", "tenants/domain"]);
-        AssertNoEffects(builder);
-    }
-
     /// <summary>Invokes the actual key-bearing entry with its opaque ordinary initial key.</summary>
     internal void Compose(IDistributedApplicationBuilder builder, Func<PlatformCompositionOptions, PlatformCompositionOptions> configure, CompositionRunPlan? suppliedPlan = null, string? signingKey = null)
         => PlatformAppModel.ComposeRun(builder, suppliedPlan ?? Plan, signingKey ?? _key, Seed, configure);
@@ -387,5 +330,9 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => Directory.Delete(Workspace, true);
+    public void Dispose()
+    {
+        if (_proofFixture is not null) _proofFixture.Dispose();
+        else Directory.Delete(Workspace, true);
+    }
 }

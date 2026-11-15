@@ -215,7 +215,7 @@ class BuildsTupleTests(unittest.TestCase):
         sibling = owner.parent / "Hexalith.Builds"
         catalog = sibling / "Props/Directory.Packages.props"
         catalog.parent.mkdir(parents=True)
-        catalog_bytes = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
+        catalog_bytes = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
         catalog.write_bytes(catalog_bytes)
         self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(catalog_bytes).hexdigest()
         self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
@@ -225,8 +225,8 @@ class BuildsTupleTests(unittest.TestCase):
         (owner / "hexalith-platform.json").write_text(json.dumps({
             "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
         (owner / "eng").mkdir()
-        (owner / "eng/tuple-ci-suites.json").write_text(json.dumps({"groups": [{
-            "requiredCount": 1, "filter": "-class", "selectors": ["Synthetic.Control"]}]}))
+        (owner / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [{
+            "requiredCount": 463, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
         (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
         source = self.binding["producer"]["sourceRevision"]
         for name, observed_source in (("matching", source), ("stale", "4" * 40)):
@@ -250,7 +250,7 @@ class BuildsTupleTests(unittest.TestCase):
                     kwargs["stdout"].write(output)
                     return subprocess.CompletedProcess(argv, 0)
 
-                stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only"]))
+                stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"]))
                 stack.enter_context(patch.object(run_tuple_ci, "ROOT", owner))
                 stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=self.binding))
                 stack.enter_context(patch.object(run_tuple_ci, "source_state", return_value={"dirty": False}))
@@ -258,7 +258,7 @@ class BuildsTupleTests(unittest.TestCase):
                 stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic-platform"))
                 stack.enter_context(patch.dict(run_tuple_ci.os.environ, {"HexalithBuildsRoot": str(self.root / "unverified-root")}))
                 reads = stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", side_effect=[
-                    observed_source.encode(), self.binding["producer"]["catalog"]["blob"].encode(), catalog_bytes]))
+                    observed_source.encode(), self.binding["producer"]["catalog"]["blob"].encode(), catalog_bytes, catalog_bytes]))
                 stack.enter_context(patch.object(run_tuple_ci.subprocess, "run", side_effect=command))
                 if name == "stale":
                     with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
@@ -348,7 +348,7 @@ class BuildsTupleTests(unittest.TestCase):
         catalog.write_bytes(catalog_body)
         (owner / "eng").mkdir(parents=True)
         (owner / "eng/tuple-ci-extension-suites.json").write_text(json.dumps({"groups": [{
-            "requiredCount": 9, "filter": "-class", "selectors": ["Synthetic.Control"]}]}))
+            "requiredCount": 9, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
         (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
         (owner / "Owned.csproj").write_text('<Project />')
         (owner / ".config").mkdir()
@@ -494,7 +494,7 @@ class BuildsTupleTests(unittest.TestCase):
             prepare_builds_artifacts.main()
         self.assertFalse(output.exists())
         evidence = self.root / "preflight"
-        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only"]), patch.object(run_tuple_ci.signal, "signal"), patch.object(run_tuple_ci, "load_binding", incomplete), self.assertRaisesRegex(ValueError, "publication binding is unavailable"):
+        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"]), patch.object(run_tuple_ci.signal, "signal"), patch.object(run_tuple_ci, "load_binding", incomplete), self.assertRaisesRegex(ValueError, "publication binding is unavailable"):
             run_tuple_ci.main()
         receipt = json.loads((evidence / "tuple-ci-result.json").read_bytes())
         self.assertEqual(receipt["status"], "failed")

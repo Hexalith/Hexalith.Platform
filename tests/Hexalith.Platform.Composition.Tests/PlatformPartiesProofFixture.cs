@@ -12,7 +12,7 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
     /// <summary>Creates clean local histories and private parent handoff files without invoking a service or granting cohort authority.</summary>
     /// <param name="platformOwned">Whether the actual owner is a direct Git child of the outer Platform root, with a package-mode Builds entry.</param>
     /// <param name="publishedDeclaration">Selects exact released3.1 declaration bytes while retaining explicitly synthetic local source history.</param>
-    internal PlatformPartiesProofFixture(bool platformOwned = false, bool publishedDeclaration = false)
+    internal PlatformPartiesProofFixture(bool platformOwned = false, bool publishedDeclaration = false, string profile = "platform-package")
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-parties-proof-" + Guid.NewGuid().ToString("N"));
         string active = platformOwned ? Path.Combine(Root, "platform", "references", "Hexalith.Parties") : Path.Combine(Root, "parties");
@@ -28,7 +28,7 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
         Hash(declaration).ShouldBe(publishedDeclaration ? PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
         JsonElement suite = document.RootElement.GetProperty("modules")[0].GetProperty("tests")
-            .EnumerateArray().Single(test => test.GetProperty("name").GetString() == "platform-package");
+            .EnumerateArray().Single(test => test.GetProperty("name").GetString() == profile);
         string entry = suite.GetProperty("entry").GetString()!;
         string project = Path.Combine(active, entry);
         Directory.CreateDirectory(Path.GetDirectoryName(project)!);
@@ -58,13 +58,13 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
         string seed = Path.Combine(Root, "seed.csproj");
         File.WriteAllText(seed, "<Project />");
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        ModuleTestSelection selected = new("parties", "platform-package", suite.GetProperty("executor").GetString()!, entry,
+        ModuleTestSelection selected = new("parties", profile, suite.GetProperty("executor").GetString()!, entry,
             Hash(declaration), Hash(project), 300, 90, now, now.AddSeconds(300), now.AddSeconds(300), "package");
         CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, Path.Combine(Root, "dapr"),
             new CompositionRunPorts(20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, [20014], 20015, 20016, 20017, [new(20018, 20019, 20020, 20021)]), [new CompositionRunModule("parties", "parties", "parties", project)], []) with
         {
             SourceMapping = mapping, PlatformActiveModule = "parties", PlatformDeclarationPaths = [declaration], PlatformDeclarationHash = Hash(declaration),
-            PlatformModelAssemblyPath = typeof(PlatformAppModel).Assembly.Location, SelectedTest = selected, SelectedTests = [selected],
+            PlatformModelAssemblyPath = typeof(PlatformAppModel).Assembly.Location, SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
         };
         CompositionDocumentStore.WriteAsync(Path.Combine(workspace, "plan.json"), plan, CancellationToken.None).GetAwaiter().GetResult();
         Key = CompositionSigningKey.Create();

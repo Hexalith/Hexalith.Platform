@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -10,6 +11,22 @@ using Shouldly;
 /// <summary>Executes the signed entry/Tooling transport with its bounded test-only security overlay and a fresh reader before application resources start.</summary>
 public sealed class PlatformCurrentOwnerHandoffTests
 {
+    /// <summary>The genuine current pair is exact; crossed historical/current members and changed bytes refuse.</summary>
+    [Fact]
+    public void CurrentSignedHostAndToolingPairCannotBeCrossed()
+    {
+        string tool = typeof(PlatformCurrentOwnerHandoffTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+            .Single(attribute => attribute.Key == "PlatformTestPublishedToolRoot").Value!;
+        string host = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Module.AppHost.dll"));
+        string tooling = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Tooling.dll"));
+        host.ShouldBe("b9c80faba94356860ac73b9e91f1c3721ccc90371726c8b8e33e8774ddbd61b1");
+        tooling.ShouldBe("9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e");
+        PlatformPartiesValidationContext.IsPublishedPair(host, tooling).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(host, "1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec").ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair("e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709", tooling).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(new string('0', 64), tooling).ShouldBeFalse();
+    }
+
     /// <summary>Preflight can enrich only derived consumer cache; a fresh ordinary proof and reader preserve the same signed command inputs.</summary>
     [Fact]
     public async Task PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync()
@@ -67,20 +84,21 @@ public sealed class PlatformCurrentOwnerHandoffTests
         string snapshot = Path.Combine(mapping, "catalog-versions.json");
         string[] authority = [Path.Combine(fixture.Workspace, "plan.json"), .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
         var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
-        byte[] cold = File.ReadAllBytes(snapshot);
+        byte[] originalSnapshot = File.ReadAllBytes(snapshot);
         var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
-        validation.ExitCode.ShouldBe(0);
+        validation.ExitCode.ShouldNotBe(0);
+        validation.ErrorOutput.ShouldContain("requires its exact qualified full owner/public/image cohort");
+        validation.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
+        byte[] validationSnapshot = File.ReadAllBytes(snapshot);
+        await PlatformPartiesCatalogHandoffTests.AssertDerivedConsumerEnrichmentAsync(originalSnapshot, validationSnapshot, snapshot, fixture.Seed);
         fixture.AssertValidationRuntimeIntegrity();
-        fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
-        byte[] warm = File.ReadAllBytes(snapshot);
-        AssertDerivedEnrichment(cold, warm, Path.GetFileNameWithoutExtension(fixture.Seed));
-        File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).Order(StringComparer.Ordinal)
-            .ShouldBe(PlatformPartiesPackageFixture.CurrentImages.Order(StringComparer.Ordinal));
-        string catalogPath = Path.Combine(fixture.Workspace, "platform-components", fixture.Plan.EnvironmentId + "-catalog", "catalog.json");
-        byte[] validatedCatalog = File.ReadAllBytes(catalogPath);
-        string originalReceiptPath = Path.Combine(Path.GetDirectoryName(catalogPath)!, "receipt.json");
-        byte[] originalReceipt = File.ReadAllBytes(originalReceiptPath);
+        Directory.Exists(Path.Combine(fixture.Workspace, "current-owner")).ShouldBeTrue(
+            "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner before image refusal.");
+        File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).ShouldBeFalse();
+        Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
+        foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
+        fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         var builder = PlatformPartiesPackageFixture.Builder();
         Should.Throw<InvalidOperationException>(() => fixture.Compose(builder, options =>
         {
@@ -89,10 +107,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
             options.PartiesRunProof.ShouldBeNull();
             options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
             PlatformAppModel.MaterializeSourceMapping(options, fixture.Workspace);
-            File.ReadAllBytes(snapshot).ShouldBe(warm);
             var catalog = PlatformRoutingCatalog.Generate(options, PlatformAppModel.Prepare(options), Path.Combine(fixture.Workspace, "platform-components"));
-            File.ReadAllBytes(catalog.CatalogPath).ShouldBe(validatedCatalog);
-            File.ReadAllBytes(originalReceiptPath).ShouldBe(originalReceipt, "Retain the initial catalog receipt separately from the fresh current execution receipt.");
             using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
             proof.VerifyReader(receipt.RootElement);
             TestContext.Current.TestOutputHelper!.WriteLine(JsonSerializer.Serialize(new
@@ -105,38 +120,13 @@ public sealed class PlatformCurrentOwnerHandoffTests
             }));
             proof.Matches(options).ShouldBeTrue();
             foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
-            File.ReadAllBytes(snapshot).ShouldBe(warm);
             throw new InvalidOperationException("Expected real signed current validation and ordinary catalog; stop before resources.");
         }, signingKey: initialSigningKey)).Message.ShouldBe("Expected real signed current validation and ordinary catalog; stop before resources.");
+        await PlatformPartiesCatalogHandoffTests.AssertDerivedConsumerEnrichmentAsync(validationSnapshot, File.ReadAllBytes(snapshot), snapshot, fixture.Seed);
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
-    }
-
-    private static void AssertDerivedEnrichment(byte[] cold, byte[] warm, string seedConsumer)
-    {
-        string[] consumers = ["Hexalith.Platform.CatalogBuilder", seedConsumer];
-        consumers.Distinct(StringComparer.Ordinal).Count().ShouldBe(2);
-        JsonNode original = JsonNode.Parse(cold)!;
-        JsonNode derived = JsonNode.Parse(warm)!;
-        JsonObject versions = derived["ProjectVersions"]!.AsObject();
-        versions.Count.ShouldBe(original["ProjectVersions"]!.AsObject().Count + consumers.Length);
-        foreach (string consumer in consumers)
-        {
-            original["ProjectVersions"]!.AsObject().ContainsKey(consumer).ShouldBeFalse();
-            versions[consumer]!["Hexalith.EventStore.Server"]!.GetValue<string>().ShouldBe(PlatformPartiesPackageFixture.SelectedSdkVersion);
-            versions[consumer]!["Hexalith.Tenants.Contracts"]!.GetValue<string>().ShouldBe("7.0.5");
-            versions[consumer]!["Hexalith.Memories.Contracts"]!.GetValue<string>().ShouldBe("3.0.25");
-            JsonNode.DeepEquals(versions[consumer], original["Versions"]).ShouldBeTrue(
-                "Both known consumers use the exact default public catalog versions without extra or changed package entries.");
-        }
-        CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(warm)!;
-        snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,
-            snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
-        foreach (string consumer in consumers) versions.Remove(consumer).ShouldBeTrue();
-        derived["Hash"] = original["Hash"]!.DeepClone();
-        JsonNode.DeepEquals(original, derived).ShouldBeTrue();
     }
 
     private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));

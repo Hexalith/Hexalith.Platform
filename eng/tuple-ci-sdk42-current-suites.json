@@ -1,16 +1,16 @@
 {
-  "purpose": "Current-model exact-source package boundaries and measured active-owner preflight; no candidate or public-consumer acceptance",
+  "purpose": "Candidate current-model package, source, parent-handoff and reader boundaries; image/runtime acceptance remains separate.",
   "remainingQualification": "Other Platform suites, explicitly enabled live cases, authenticated candidate-decision evidence and generated/direct runtime integration remain mandatory before acceptance.",
   "groups": [
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
       "filter": "-class",
       "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests"
+        "Hexalith.Platform.Composition.Tests.PlatformMemoriesContainerTransportTests"
       ],
       "requiredCount": 1,
-      "purpose": "current-owner-package",
-      "collector": "retained"
+      "purpose": "generated-container-sidecar-transport-component-no-image-admission",
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -24,7 +24,7 @@
       ],
       "requiredCount": 83,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -35,7 +35,7 @@
       ],
       "requiredCount": 2,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -46,7 +46,7 @@
       ],
       "requiredCount": 24,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -57,7 +57,7 @@
       ],
       "requiredCount": 44,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -66,12 +66,11 @@
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources",
-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded"
+        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
       ],
-      "requiredCount": 8,
+      "requiredCount": 7,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -82,7 +81,7 @@
       ],
       "requiredCount": 28,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -94,7 +93,7 @@
       ],
       "requiredCount": 4,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -104,7 +103,7 @@
       ],
       "requiredCount": 40,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -114,7 +113,7 @@
       ],
       "requiredCount": 2,
       "purpose": "current-model-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -124,7 +123,7 @@
       ],
       "requiredCount": 9,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -134,7 +133,7 @@
       ],
       "requiredCount": 2,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -144,7 +143,7 @@
       ],
       "requiredCount": 2,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -154,7 +153,7 @@
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -164,7 +163,7 @@
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -174,7 +173,7 @@
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -184,7 +183,7 @@
       ],
       "requiredCount": 4,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -192,9 +191,9 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests"
       ],
-      "requiredCount": 7,
+      "requiredCount": 8,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -204,7 +203,7 @@
       ],
       "requiredCount": 1,
       "purpose": "current-owner-package",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -214,7 +213,7 @@
       ],
       "requiredCount": 1,
       "purpose": "private-eventstore-package-test",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -222,9 +221,9 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests"
       ],
-      "requiredCount": 41,
+      "requiredCount": 40,
       "purpose": "private-eventstore-package-test",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -244,7 +243,7 @@
       ],
       "requiredCount": 51,
       "purpose": "measured-public-parties-static-boundary",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -252,19 +251,9 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
       ],
-      "requiredCount": 21,
-      "purpose": "measured-public-parties-ordinary-entry-boundary",
-      "collector": "retained"
-    },
-    {
-      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
-      "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests"
-      ],
-      "requiredCount": 1,
-      "purpose": "measured-public-parties-model-boundary",
-      "collector": "retained"
+      "requiredCount": 11,
+      "purpose": "ordinary-parent-proof-refusals-with-fixture-owned-local-histories",
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -272,9 +261,9 @@
       "selectors": [
         "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
       ],
-      "requiredCount": 22,
-      "purpose": "measured-public-parties-signed-validation-boundary",
-      "collector": "retained"
+      "requiredCount": 19,
+      "purpose": "ordinary-parent-claim-and-validation-projection-boundary",
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -283,8 +272,8 @@
         "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests"
       ],
       "requiredCount": 2,
-      "purpose": "measured-public-parties-signed-catalog-boundary",
-      "collector": "retained"
+      "purpose": "current-private-reader-snapshot-derivation-and-rematerialization-refusal",
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -316,7 +305,7 @@
       ],
       "requiredCount": 38,
       "purpose": "measured-sdk420-public-and-private-artifact-boundaries",
-      "collector": "retained"
+      "collector": "current"
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -347,15 +336,5 @@
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
       "collector": "current"
     }
-  ],
-  "historicalPublicControls": {
-    "purpose": "same-changed-source-legacy-tuple-regression-not-current-cohort-acceptance",
-    "sourceInput": "legacy-source-sha",
-    "buildsSource": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
-    "toolVersion": "4.44.3",
-    "profileSha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
-    "requiredCount": 349,
-    "workflowJob": "legacy-public-cohort",
-    "qualificationCredit": false
-  }
+  ]
 }

@@ -1,0 +1,110 @@
+[
+  {
+    "control": "test_builds_tuple",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_builds_tuple.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_builds_publication",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_builds_publication.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_current_tuple_source",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_current_tuple_source.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_file_host_catalog",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_file_host_catalog.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_tuple_collectors",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_collectors.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_tuple_runtime_context",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_runtime_context.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_tuple_sdk_suites",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_sdk_suites.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_tuple_output_identity",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_output_identity.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_current_catalog_view",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_current_catalog_view.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_host_builds_resolution",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_host_builds_resolution.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_historical_security_packages",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_historical_security_packages.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "control": "test_verify_platform_pins",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_verify_platform_pins.py"
+    ],
+    "exitCode": 0
+  }
+]

@@ -10,6 +10,7 @@ using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.EventStore.Contracts.Routing;
+using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
 /// <summary>Tests finite package admission with real released declarations; these controls do not claim a live package run.</summary>
@@ -25,13 +26,15 @@ public sealed class PlatformPackageCatalogQualificationTests
         using PlatformQualificationPackageFixture current = PlatformQualificationPackageFixture.CurrentTest();
         string currentProvenance = Path.Combine(current.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
         Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(currentProvenance)))
-            .ShouldBe("3931a6ff47adf0edd4b6d19430294f6ebed2c334b50655528e751eee049fc846");
-        PlatformServerBindings.Version(current.Options, "eventstore", "retained private fixture").ShouldBe("4.1.0");
-        PlatformServerBindings.Version(current.Options, "tenants", "retained private fixture").ShouldBe("7.0.5");
-        PlatformServerBindings.Version(current.Options, "memories", "retained private fixture").ShouldBe("3.0.25");
+            .ShouldBe(Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json")))));
+        PlatformServerBindings.Version(current.Options, "eventstore", "current private fixture").ShouldBe("4.2.0");
+        PlatformServerBindings.Version(current.Options, "tenants", "current private fixture").ShouldBe("7.0.7");
+        PlatformServerBindings.Version(current.Options, "memories", "current private fixture").ShouldBe("3.0.27");
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);
+        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
+            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName, "The genuine historical declared graph retains its source/purpose/topology behavior independently from loaded current bodies.");
         bool actualPublicBytes = Hash(typeof(RouteCatalogEnvelope).Assembly) == "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739"
             && Hash(Assembly.Load("Hexalith.EventStore.ServiceDefaults")) == "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d";
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBe(actualPublicBytes);
@@ -78,6 +81,8 @@ public sealed class PlatformPackageCatalogQualificationTests
         PlatformCompositionOptions options = fixture.Options;
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
+        PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true)
+            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
         switch (fault)
         {
             case "no-proof": options = options with { QualificationOwnerProof = null }; break;
@@ -106,7 +111,7 @@ public sealed class PlatformPackageCatalogQualificationTests
             case "production": break;
             default: throw new ArgumentOutOfRangeException(nameof(fault));
         }
-        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: fault != "production"));
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: fault != "production"));
         Directory.Exists(Path.Combine(fixture.Root, "run")).ShouldBeFalse();
     }
 
@@ -118,6 +123,10 @@ public sealed class PlatformPackageCatalogQualificationTests
     public void OrdinaryComposeCannotUseSerializedRequestOrProofFields(bool stripped)
     {
         using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        var declarations = PlatformDeclarationSet.Load(fixture.Options);
+        var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
+        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
+            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
         int probes = 0;
         string serialized = JsonSerializer.Serialize(fixture.Options);
         serialized.Contains("QualificationOwnerProof", StringComparison.Ordinal).ShouldBeFalse();
@@ -129,6 +138,7 @@ public sealed class PlatformPackageCatalogQualificationTests
             RunPlan = stripped ? fixture.Plan with { QualificationOwnersBinding = null } : fixture.Plan,
             ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("No image probe is permitted before admission."); },
         };
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true));
         var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
         probes.ShouldBe(0);
@@ -149,8 +159,10 @@ public sealed class PlatformPackageCatalogQualificationTests
         PlatformCompositionOptions options = fixture.Options with { QualificationOwners = [owner], RunPlan = plan, QualificationOwnerProof = PlatformQualificationOwnerProof.Create(plan, key) };
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
+        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
+            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
         options.QualificationOwnerProof.Matches(options).ShouldBeTrue();
-        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true));
         Directory.Exists(Path.Combine(fixture.Root, "run")).ShouldBeFalse();
     }
 

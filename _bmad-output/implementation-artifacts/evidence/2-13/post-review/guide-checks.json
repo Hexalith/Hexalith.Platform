@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "path": "docs/source-releases.md",
+      "sha256": "3e6db9140b52c2fb74ac9a3130a6e0a1dcfe1cddf226de593c5ba943b45b127c",
+      "relativeLinksExist": true,
+      "relativeLinks": [
+        "current-tuple-preparation.md"
+      ]
+    },
+    {
+      "path": "docs/package-catalog-qualification.md",
+      "sha256": "5aaa420bd232cbe3e8699eb8d6907675df4810348982e499e53991e8b2c0fce1",
+      "relativeLinksExist": true,
+      "relativeLinks": [
+        "current-tuple-preparation.md",
+        "current-tuple-preparation.md#previous-published-builds-4446-tuple",
+        "../eng/builds-tuple.json",
+        "../eng/builds-tuple.json"
+      ]
+    }
+  ],
+  "currentOrchestrationJobs": 3,
+  "continuingCases": [
+    463,
+    93,
+    9
+  ],
+  "historicalReplayReferencesLabeled": true
+}

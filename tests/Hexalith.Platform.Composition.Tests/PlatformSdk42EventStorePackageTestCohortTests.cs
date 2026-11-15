@@ -10,6 +10,7 @@ using Aspire.Hosting;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
+using Microsoft.Extensions.Hosting;
 using Shouldly;
 
 /// <summary>Private EventStore package-test component guards; no services or native acceptance are simulated.</summary>
@@ -20,14 +21,17 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
     public void ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities()
     {
         const string Cohort = PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName;
-        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults", "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server" })
+        var actual = new AssemblyLoadContext("sdk42-fixture-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
+        string[] names = ["Hexalith.EventStore.Contracts", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults", "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server"];
+        string root = typeof(PlatformSdk42EventStorePackageTestCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+            .Single(attribute => attribute.Key == "PlatformHistoricalPackageRoot").Value!;
+        string[] paths;
+        try
         {
-            Assembly body = Assembly.Load(name);
-            Record.Exception(() => PublishedCatalogArtifactCohort.Verify(body, Cohort)).ShouldBeNull(name + " at " + body.Location + " hash " + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body.Location))));
+            paths = names.Select(name => Path.Combine(root, name.ToLowerInvariant(), name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) ? "4.2.0" : "7.0.5", "lib", "net10.0", name + ".dll")).ToArray();
+            foreach (string path in paths) PublishedCatalogArtifactCohort.Verify(actual.LoadFromAssemblyPath(path), Cohort).ShouldBe(path);
         }
-        string[] paths = [.. PublishedCatalogArtifactCohort.VerifySdk(Cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Contracts"), Cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Server"), Cohort)];
+        finally { actual.Unload(); }
         paths.Length.ShouldBe(6);
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5").ShouldBeNull();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5", fullParties: true).ShouldBeNull();
@@ -68,34 +72,6 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
             }
             finally { context.Unload(); Directory.Delete(directory, recursive: true); }
         }
-    }
-
-    /// <summary>The actual parent-key entry reaches only the two measured index-digest probes, before any workspace or resources.</summary>
-    [Fact]
-    public void ValidBoundRequestReachesOnlyTheTwoMeasuredImageProbes()
-    {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.ExtensionSdkTest();
-        string key = CompositionSigningKey.Create();
-        CompositionRunPlan plan = Sign(fixture.Plan, key);
-        var builder = Builder();
-        List<string> probes = [];
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
-        {
-            ReleaseCommits = fixture.Options.ReleaseCommits, ReleaseSnapshotHashes = fixture.Options.ReleaseSnapshotHashes,
-            ImageProbeRunner = (start, timeout, _) =>
-            {
-                timeout.ShouldBe(TimeSpan.FromSeconds(20));
-                start.FileName.ShouldBe("docker");
-                start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
-                probes.Add(start.ArgumentList[2]);
-                if (probes.Count == 1) return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-                throw new InvalidOperationException("Expected private EventStore second image boundary.");
-            },
-        })).Message.ShouldBe("Expected private EventStore second image boundary.");
-        probes.ShouldBe([
-            "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
-            "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"]);
-        AssertNoEffects(builder, plan);
     }
 
     /// <summary>Even a correctly authenticated parent cannot select another purpose, graph, mode or catalog.</summary>
@@ -168,10 +144,10 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
         if (fault == "missing-binding") plan = plan with { QualificationOwnersBinding = null };
         if (fault == "missing-proof") plan = plan with { QualificationOwners = null, QualificationOwnersBinding = null };
         string catalog = Path.Combine(fixture.Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
-        if (fault == "catalog") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.4", StringComparison.Ordinal));
+        if (fault == "catalog") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.4", StringComparison.Ordinal));
         if (fault == "sdk") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("4.2.0", "4.0.4", StringComparison.Ordinal));
-        if (fault == "near-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.50", StringComparison.Ordinal));
-        if (fault == "metadata-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.5", "7.0.5+foreign", StringComparison.Ordinal));
+        if (fault == "near-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.70", StringComparison.Ordinal));
+        if (fault == "metadata-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.7+foreign", StringComparison.Ordinal));
         if (fault == "snapshot") File.AppendAllText(Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"), " ");
         if (fault == "declaration") File.AppendAllText(plan.PlatformDeclarationPaths.Single(), " ");
         if (fault == "entry-bytes") File.AppendAllText(Path.Combine(fixture.Root, test.Entry), " ");
@@ -181,10 +157,15 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
             File.WriteAllText(Path.Combine(plan.Workspace, "source-mapping", "catalog-versions.json"), "{}");
         }
         var builder = Builder(fault == "development" ? "Production" : "Development");
-        int probes = 0;
         Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject,
-            options => options with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("An invalid request reached an image probe."); } }));
-        probes.ShouldBe(0);
+            options =>
+            {
+                var declarations = PlatformDeclarationSet.Load(options);
+                var servers = PlatformServerBindings.Resolve(options, declarations);
+                PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers,
+                    builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
+                throw new InvalidOperationException("Changed authority passed authenticated input validation before the image gate.");
+            }));
         if (fault == "catalog-snapshot")
         {
             builder.Resources.ShouldBeEmpty();
@@ -209,12 +190,13 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
         using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.ExtensionSdkTest();
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var original = PlatformServerBindings.Resolve(fixture.Options, declarations);
-        PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, original, true).Count.ShouldBe(3);
+        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, original, true)
+            .ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
         IReadOnlyList<PlatformServerBinding> servers = fault switch
         {
             "missing-server" => original.Where(server => server.ServerId != "api").ToArray(),
             "extra-server" => [.. original, original[0] with { ServerId = "foreign" }],
-            "old-image" => original.Select(server => server.Image is null ? server : server with { Image = server.Image.Replace("7.0.5", "7.0.4", StringComparison.Ordinal) }).ToArray(),
+            "old-image" => original.Select(server => server.Image is null ? server : server with { Image = server.Image.Replace("7.0.7", "7.0.4", StringComparison.Ordinal) }).ToArray(),
             "foreign-image" => original.Select(server => server.Image is null ? server : server with { Image = "registry.invalid/foreign:7.0.5" }).ToArray(),
             "digest" => original.Select(server => server.Image is null ? server : server with { ImageDigest = new string('0', 64) }).ToArray(),
             "seed" => original.Select(server => server.ServerId == "gateway" ? server with { ProjectPath = "foreign.csproj" } : server).ToArray(),
@@ -226,6 +208,7 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
             changed["foreign"] = true;
             declarations = [declarations[0] with { Declaration = JsonSerializer.SerializeToElement(changed) }, .. declarations.Skip(1)];
         }
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, true));
         Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true));
         fixture.Options.QualificationOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
         Directory.Exists(fixture.Plan.Workspace).ShouldBeFalse();
@@ -252,10 +235,13 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
 
     private static void RequireBaseline(PlatformQualificationPackageFixture fixture)
     {
-        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PublishedCatalogArtifactCohort.Sdk42EventStorePackageTestName);
+        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
-        PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true).Count.ShouldBe(3);
+        fixture.Options.QualificationOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
+        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, true)
+            .ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true));
     }
 
     private static CompositionRunPlan Sign(CompositionRunPlan plan, string key) => CompositionQualificationOwners.Bind(plan with { QualificationOwnersBinding = null }, key);

@@ -58,7 +58,10 @@ public sealed partial class PlatformAppModelTests : IDisposable
         Directory.CreateDirectory(catalog);
         foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
             File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
-        File.Copy(Path.Combine(PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Builds"), "Props", "Directory.Packages.props"), Path.Combine(catalog, "Directory.Packages.props"));
+        // Fixture-owned version declarations agree with genuine candidate release provenance.
+        using (JsonDocument provenance = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(snapshots, "provenance.json"))))
+            File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup>" + string.Concat(
+                provenance.RootElement.EnumerateObject().Select(owner => "<Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>" + owner.Value.GetProperty("version").GetString() + "</Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>")) + "</PropertyGroup></Project>");
         try
         {
             SourceMapping mapping = Options().Mapping;
@@ -114,54 +117,6 @@ public sealed partial class PlatformAppModelTests : IDisposable
         servers.Where(s => s.ResourceId != "eventstore").ShouldAllBe(s => s.ProjectPath == null);
         options.Mapping.Entries.ShouldAllBe(e => e.Path == null);
     }
-
-    /// <summary>The composed package run binds the catalog participants before any resource and hands them to exactly one native preparation.</summary>
-    [Fact]
-    public async Task PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded()
-    {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync().ConfigureAwait(true);
-        await fixture.PersistClaimStateAsync().ConfigureAwait(true);
-        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken).ConfigureAwait(true);
-        CompositionProcessResult preflight = await fixture.RunPublishedValidationAsync(completeCatalog: true).ConfigureAwait(true);
-        preflight.ExitCode.ShouldBe(0);
-        CompositionWorkspace.CreatePrivateDirectory(Path.GetDirectoryName(fixture.Plan.DaprConfigPath)!);
-        await File.WriteAllTextAsync(fixture.Plan.DaprConfigPath, CompositionDaprComponentRenderer.RenderConfiguration(fixture.Plan),
-            TestContext.Current.CancellationToken).ConfigureAwait(true);
-        var builder = PlatformPartiesPackageFixture.Builder();
-        builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(fixture.Workspace, "never-start-dcp");
-        builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(fixture.Workspace, "never-start-dashboard");
-        string runtime = Path.Combine(fixture.Plan.DaprHome, ".dapr", "bin");
-        Directory.CreateDirectory(runtime);
-        File.WriteAllText(Path.Combine(runtime, "daprd"), "model-only runtime marker; never executed");
-        int? resourcesAtFirstProbe = null;
-        fixture.Compose(builder, options =>
-        {
-            options.Mapping.Mode.ShouldBe(WorkspaceMode.Package);
-            return options with
-            {
-                ImageProbeRunner = (start, _, _) =>
-                {
-                    // Image probes run after binding and before the first container, sidecar or project is added. Each probed
-                    // reference is a bound published catalog image, so binding has already happened at the first probe.
-                    PlatformPartiesPackageFixture.PublishedImages.ShouldContain(start.ArgumentList[2]);
-                    resourcesAtFirstProbe ??= builder.Resources.Count;
-                    return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-                },
-            };
-        });
-        resourcesAtFirstProbe.ShouldBe(0);
-        using ServiceProvider provider = builder.Services.BuildServiceProvider();
-        // Observe what the composition actually produced, rather than recomputing the binding here.
-        PlatformNativeTestPreparation preparation = provider.GetServices<ICompositionRunPreparation>().OfType<PlatformNativeTestPreparation>().ShouldHaveSingleItem();
-        preparation.RoutingCatalogObservationsRequired.ShouldBeTrue();
-        string[] cohort = ["eventstore", "memories", "memories-domain-service", "parties", "tenants", "tenants-api"];
-        preparation.ExpectedCatalogHosts.Keys.Order(StringComparer.Ordinal).ShouldBe(cohort);
-        foreach (string participant in cohort)
-        {
-            builder.Resources.Select(resource => resource.Name).ShouldContain(participant);
-        }
-    }
-
 
     /// <summary>Unauthenticated package graphs refuse before image probes, containers or sidecars.</summary>
     [Fact]

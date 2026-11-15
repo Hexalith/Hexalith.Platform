@@ -1,6 +1,37 @@
 # Enroll a domain module
 
-## Current signed Builds4.45.0 and public Parties3.1.0 tuple
+## Candidate-only tuple preparation
+
+The selected producer is signed Builds **6.0.5**, source
+`e2bbbd0893f586e4d447ef8358ff747ea3d34435`, with exact tool pin and range
+`[6.0.5, 7.0.0-0)` and disabled roll-forward. The catalog blob is
+`42441eb4cefcff2f9c582fcda630d9ad15887df2`, SHA-256
+`d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
+The authoritative publication binding remains `eng/builds-tuple.json`.
+
+PRs, main pushes and explicit candidate dispatches resolve and execute only that
+candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+plus the unchanged catalog gates. Both prerequisites must succeed, including when
+another prerequisite fails, cancels or skips. Prepare the current source binding
+only when owner gitlinks or package provenance change; documentation-only changes
+need no additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
+
+The continuing inventories declare 463 current42, 93 base42 and nine extension
+executions, with exact positive group counts and zero skips.
+
+The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
+Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
+data with their original provenance. Reader authenticity supplies no image or
+runtime permission. Signed-host plan/key checks, reader integrity, readiness,
+model transport and exact positive counts with zero skips remain required.
+Hosted main tuple success still requires an authorized landing and actual run;
+local audits provide no hosted or native acceptance.
+
+Historical preparation records below describe their original subjects and past
+requirements. Their L/M, 349/412 and reader-companion obligations are retired by
+Story 2.13; archived qualification and broker tags remain evidence.
+
+## Historical signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal
@@ -49,10 +80,10 @@ retains catalog-origin ancestor `8984471f75657cd24236cf2d04f470f8e2545ace`.
 
 SDK4.1.0, public Parties3.1.0 and the measured public package/image/declaration
 identities remain unchanged. Private source preparation and public reader,
-image and runtime roles remain separate. The current profile still requires412
-cases and the historical profile all349 original controls. Fresh genuine same-code
-current/legacy source qualification, all five SDK gates, native execution and
-verified cleanup remain required. This prerequisite source preparation grants
+image and runtime roles remain separate. The then-current profile required412
+cases and its historical profile contained349 original controls. That preparation
+required genuine same-code current/legacy qualification, five SDK gates, native
+execution and verified cleanup. This prerequisite source preparation grants
 no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
@@ -85,9 +116,9 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
 `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
 `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
 
-The source inventories register 315 current cases and preserve all 349 original
-legacy controls. Fresh final same-code L/M source proof, exact-source hosted
-validation, native effects and complete cleanup remain separately required.
+Those source inventories registered315 then-current cases and349 legacy
+controls. That preparation required final same-code L/M proof, exact-source hosted
+validation, native effects and complete cleanup.
 Package measurement and component checks grant no public-consumer or candidate
 acceptance. The prior producer preparation below retains its own original facts.
 
@@ -105,7 +136,7 @@ this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
 alone grants no M25 runtime acceptance.
-This publication does not replace fresh same-code current/legacy CI, unchanged
+At that time, publication did not replace fresh same-code current/legacy CI,
 native runtime execution, persisted effects or exact cleanup. Public artifact
 measurement and source equivalence alone grant no current runtime qualification.
 
@@ -119,19 +150,19 @@ records its public package and source identities. The original
 remains historical. Source/component checks and published tooling leave the
 owner's live SM-2 demonstration separately unverified.
 
-The same-code legacy source L preserves Builds `4.44.3`/fc212224, Tenants `7.0.2`
-and its original 349 controls. Current model M prepares a distinct private
+The historical same-code source L preserved Builds `4.44.3`/fc212224, Tenants `7.0.2`
+and its original 349 controls. The historical model M prepared a distinct private
 source-owned Parties/SDK `4.1.0`/Tenants `7.0.4`/Memories `3.0.25` purpose with 271 primary cases;
-M selects genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
+M selected genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
 at `f4e908206f2d6481c0ced6b7d4e62e28dcf3b330`, from successful normal
 [release 42223647770](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42223647770)
 after exact-source [CI 42221243284](https://github.com/Hexalith/Hexalith.Builds/actions/runs/42221243284).
-Its exact pin/floor are `4.44.10`; the selected tuple supplies its authenticated
-catalog, signed validation pair and archive/inventory identities. Shared code,
-tests, helpers, workflows and docs must match between committed sources.
-Their eight bounded metadata differences grant no binary-equivalence or current
-runtime acceptance claim. Do not substitute L's historical public reader/image
-receipts for M's private artifact observations and live native qualification.
+Its pin/floor was `4.44.10`; that tuple supplied the authenticated catalog, signed
+validation pair and archive/inventory identities. Shared code, tests, helpers,
+workflows and documentation had to match between those commits. Their eight
+bounded metadata differences granted no binary-equivalence or current runtime
+claim. L's observations described its old public reader/images; they did not
+qualify M's private artifacts or native execution.
 
 The previous Builds `4.44.6` producer and its complete signed pair remain
 historical evidence in [the retained tuple record](current-tuple-preparation.md#previous-published-builds-4446-tuple).

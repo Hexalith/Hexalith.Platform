@@ -1,0 +1,51 @@
+[
+  {
+    "label": "python-controls",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/run-python-controls.py",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/parent-post-review/python"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "log": "python-controls.log",
+    "sha256": "6ff79a6a10f884f66855df661d6aa555376db4c013e224d5aa4c8d78aa2577f2"
+  },
+  {
+    "label": "source-release",
+    "command": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "log": "source-release.log",
+    "sha256": "a8d7e8d074a04356326f69dbe65ee589412fae4fc2950cdc3adefe9f1ca09291"
+  },
+  {
+    "label": "extension-node",
+    "command": [
+      "node",
+      "--test",
+      "eng/test-extension-release/gate.test.mjs"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "log": "extension-node.log",
+    "sha256": "0da2a0cf9f69db41a31b054bef11af8916aa45ed59384699369439e1d8256eb0"
+  },
+  {
+    "label": "extension-python",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test-extension-release/run-controls.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "log": "extension-python.log",
+    "sha256": "7a95a32216e2a40c3b8beb47c0578b749ab7071706e481531f49a034aa2bf822"
+  }
+]

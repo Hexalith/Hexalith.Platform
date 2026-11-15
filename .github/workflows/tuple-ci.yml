@@ -11,10 +11,6 @@ on:
         description: Full recorded Platform candidate SHA
         required: true
         type: string
-      legacy-source-sha:
-        description: Optional assertion of the committed legacy qualification SHA
-        required: false
-        type: string
 
 permissions:
   contents: read
@@ -25,33 +21,32 @@ jobs:
     timeout-minutes: 5
     outputs:
       current-source: ${{ steps.sources.outputs.current-source }}
-      legacy-source: ${{ steps.sources.outputs.legacy-source }}
-      pre-extension-source: ${{ steps.sources.outputs.pre-extension-source }}
     env:
       PLATFORM_CANDIDATE_SHA: ${{ inputs.candidate-sha || github.sha }}
-      REQUESTED_LEGACY_SOURCE: ${{ inputs.legacy-source-sha }}
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ inputs.candidate-sha || github.sha }}
-          fetch-depth: 0
+          fetch-depth: 1
           submodules: false
           persist-credentials: false
-      - name: Resolve committed current and both historical sources before execution
+      - name: Resolve the exact candidate before execution
         id: sources
         shell: bash
         run: |
           set -euo pipefail
           [[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
-          python3 -B eng/test_legacy_tuple_source.py
-          python3 -B eng/test_pre_extension_tuple_source.py
           python3 -B eng/test_current_tuple_source.py
-          python3 -B eng/test_package_reader_source.py
-          legacy_source=$(python3 -B eng/legacy_tuple_source.py --current "$PLATFORM_CANDIDATE_SHA" --requested "$REQUESTED_LEGACY_SOURCE")
-          pre_extension_source=$(python3 -B eng/pre_extension_tuple_source.py --current "$PLATFORM_CANDIDATE_SHA")
-          printf 'current-source=%s\nlegacy-source=%s\npre-extension-source=%s\n' "$PLATFORM_CANDIDATE_SHA" "$legacy_source" "$pre_extension_source" >> "$GITHUB_OUTPUT"
+          python3 -B - <<'PYCODE'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'eng')
+          from current_tuple_source import read_selection
+          read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])
+          PYCODE
+          printf 'current-source=%s\n' "$PLATFORM_CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
 
   tuple:
     needs: [resolve-sources]
@@ -77,7 +72,7 @@ jobs:
         id: checkout
         with:
           ref: ${{ inputs.candidate-sha || github.sha }}
-          fetch-depth: 0
+          fetch-depth: 1
           submodules: false
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
@@ -90,7 +85,6 @@ jobs:
           node --test eng/test-extension-release/gate.test.mjs
           python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
-          python3 -B eng/test_pre_extension_tuple_source.py
           python3 -B eng/test_builds_publication.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies
         id: dependencies
@@ -161,151 +155,17 @@ jobs:
             artifacts/tuple-ci-extensions
           if-no-files-found: error
 
-  legacy-public-cohort:
-    needs: [resolve-sources]
-    name: Same changed source against the legacy public tuple
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      CI: 'true'
-      PLATFORM_CANDIDATE_SHA: ${{ needs.resolve-sources.outputs.legacy-source }}
-      CURRENT_PLATFORM_SHA: ${{ needs.resolve-sources.outputs.current-source }}
-      PYTHONDONTWRITEBYTECODE: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          ref: ${{ needs.resolve-sources.outputs.legacy-source }}
-          fetch-depth: 0
-          submodules: false
-          persist-credentials: false
-      - name: Require honest same-source legacy identity before running controls
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$CURRENT_PLATFORM_SHA" =~ ^[0-9a-f]{40}$ ]]
-          test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
-          if ! git cat-file -e "$CURRENT_PLATFORM_SHA^{commit}"; then
-            git -c submodule.recurse=false fetch --no-recurse-submodules --no-tags https://github.com/Hexalith/Hexalith.Platform.git "$CURRENT_PLATFORM_SHA"
-          fi
-          mkdir -p artifacts/legacy-source
-          python3 -B eng/legacy_tuple_source.py --current "$CURRENT_PLATFORM_SHA" --requested "$PLATFORM_CANDIDATE_SHA" --verify > artifacts/legacy-source/source-comparison.json
-          test "$(git rev-parse HEAD:references/Hexalith.Builds)" = fc2122240a39f03628c04fa8433e5eece90b8b4c
-          test "$(sha256sum eng/tuple-ci-suites.json | cut -d ' ' -f 1)" = 61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0
-          python3 - <<'PYCODE'
-          import json
-          from pathlib import Path
-          profile = json.loads(Path('eng/tuple-ci-suites.json').read_bytes())
-          assert sum(group['requiredCount'] for group in profile['groups']) == 349
-          tool = json.loads(Path('.config/dotnet-tools.json').read_bytes())['tools']['hexalith.builds.module.cli']
-          assert tool['version'] == '4.44.3' and tool['rollForward'] is False
-          PYCODE
-          git -c submodule.recurse=false submodule update --init
-          test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = fc2122240a39f03628c04fa8433e5eece90b8b4c
-      - name: Recheck the exact initialized Parties source and declaration
-        run: |
-          python3 -B - <<'PY'
-          import sys
-          from pathlib import Path
-          sys.path.insert(0, 'eng')
-          from legacy_tuple_source import verify_parties_checkout
-          verify_parties_checkout(Path.cwd(), historical=True)
-          from current_tuple_source import verify_package_release_identities
-          import os
-          verify_package_release_identities(Path.cwd(), os.environ['CURRENT_PLATFORM_SHA'])
-          PY
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
-        with:
-          global-json-file: global.json
-          dotnet-version: '10.0.x'
-      - name: Run all original 349 controls using the real committed legacy tuple
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 eng/run_tuple_ci.py --evidence artifacts/legacy-public-cohort
-      - name: Retain legacy regression evidence separately from current-owner evidence
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: platform-legacy-public-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            artifacts/legacy-public-cohort
-            artifacts/legacy-source
-          if-no-files-found: error
-
-  pre-extension-public-cohort:
-    needs: [resolve-sources]
-    name: Same changed source against the pre-extension public tuple
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      CI: 'true'
-      PLATFORM_CANDIDATE_SHA: ${{ needs.resolve-sources.outputs.pre-extension-source }}
-      CURRENT_PLATFORM_SHA: ${{ needs.resolve-sources.outputs.current-source }}
-      PYTHONDONTWRITEBYTECODE: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          ref: ${{ needs.resolve-sources.outputs.pre-extension-source }}
-          fetch-depth: 0
-          submodules: false
-          persist-credentials: false
-      - name: Verify the exact same-source pre-extension tuple before initialization
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
-          if ! git cat-file -e "$CURRENT_PLATFORM_SHA^{commit}"; then
-            git -c submodule.recurse=false fetch --no-recurse-submodules --no-tags https://github.com/Hexalith/Hexalith.Platform.git "$CURRENT_PLATFORM_SHA"
-          fi
-          mkdir -p artifacts/pre-extension-source
-          python3 -B eng/pre_extension_tuple_source.py --current "$CURRENT_PLATFORM_SHA" --requested "$PLATFORM_CANDIDATE_SHA" --verify > artifacts/pre-extension-source/source-comparison.json
-          git -c submodule.recurse=false submodule update --init
-          test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = 27145e52ffab5623198ba5efdab5cdb71aa42d28
-          test "$(git -C references/Hexalith.EventStore rev-parse HEAD)" = cab8363c2b6e2c0588efc8ca9c2e09fab0006841
-      - name: Recheck the exact initialized Parties source and declaration
-        run: |
-          python3 -B - <<'PY'
-          import sys
-          from pathlib import Path
-          sys.path.insert(0, 'eng')
-          from legacy_tuple_source import verify_parties_checkout
-          verify_parties_checkout(Path.cwd(), historical=False, pre_extension=True)
-          from current_tuple_source import verify_package_release_identities
-          import os
-          verify_package_release_identities(Path.cwd(), os.environ['CURRENT_PLATFORM_SHA'])
-          PY
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
-        with:
-          global-json-file: global.json
-          dotnet-version: '10.0.x'
-      - name: Run all original 412 controls using the real committed pre-extension tuple
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 eng/run_tuple_ci.py --evidence artifacts/pre-extension-public-cohort --eventstore-sdk 4.1.0
-      - name: Retain the historical tuple evidence separately from SDK4.2 admission
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: platform-pre-extension-public-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            artifacts/pre-extension-public-cohort
-            artifacts/pre-extension-source
-          if-no-files-found: error
-
   tuple-verdict:
     if: always()
-    needs: [resolve-sources, tuple, legacy-public-cohort, pre-extension-public-cohort]
+    needs: [resolve-sources, tuple]
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - name: Require all three actual execution lanes
+      - name: Require source resolution and current execution
         env:
           SOURCE_RESULT: ${{ needs.resolve-sources.result }}
           CURRENT_RESULT: ${{ needs.tuple.result }}
-          LEGACY_RESULT: ${{ needs.legacy-public-cohort.result }}
-          PRE_EXTENSION_RESULT: ${{ needs.pre-extension-public-cohort.result }}
         run: |
+          set -euo pipefail
           test "$SOURCE_RESULT" = success
           test "$CURRENT_RESULT" = success
-          test "$LEGACY_RESULT" = success
-          test "$PRE_EXTENSION_RESULT" = success

@@ -2,21 +2,40 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from pathlib import Path
 import subprocess
 
-from legacy_tuple_source import PROVENANCE, commit, decode, git
+PROVENANCE = "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+
+
+def decode(raw):
+    """Reject duplicate fields in every committed source/provenance document."""
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Duplicate current tuple metadata field.")
+            result[key] = value
+        return result
+    return json.loads(raw, object_pairs_hook=unique)
+
+
+def commit(value):
+    if not isinstance(value, str) or re.fullmatch(r"[a-f0-9]{40}", value, re.ASCII) is None:
+        raise ValueError("Require an exact committed current source SHA; pending data grants no authority.")
+    return value
+
+
+def git(root, *arguments):
+    return subprocess.run(["git", *arguments], cwd=root, check=True, capture_output=True, timeout=30).stdout
 
 BINDING = "eng/current-tuple-source.json"
 MANIFEST = "module/hexalith.module-manifest.v2.json"
 OWNERS = {"eventstore": "Hexalith.EventStore", "parties": "Hexalith.Parties",
           "tenants": "Hexalith.Tenants", "memories": "Hexalith.Memories"}
 PACKAGES = {name: repository for name, repository in OWNERS.items() if name != "parties"}
-
-
-def exists(root: Path, revision: str) -> bool:
-    return bool(git(root, "ls-tree", revision, "--", BINDING).strip())
 
 
 def digest(raw: bytes) -> str:
@@ -63,16 +82,6 @@ def read_selection(root: Path, revision: str) -> tuple[dict, dict]:
         if digest(git(root, "show", revision + ":" + snapshot)) != item["sha256"]:
             raise ValueError("Package declaration snapshot differs from its recorded release provenance: " + repository)
     return binding, provenance
-
-
-def verify_companion_descriptors(root: Path, current: str, historical: str):
-    """Both descriptor surfaces remain finite source selectors, never unchecked exemptions."""
-    from legacy_tuple_source import resolve as resolve_legacy
-    from pre_extension_tuple_source import resolve as resolve_pre_extension
-    for revision in [current, historical]:
-        for resolve in [resolve_legacy, resolve_pre_extension]:
-            recorded = resolve(root, revision)
-            git(root, "cat-file", "-e", recorded + "^{commit}")
 
 
 def verify_package_release_identities(root: Path, revision: str) -> dict:

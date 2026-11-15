@@ -6,29 +6,7 @@ using Shouldly;
 /// <summary>Exercises the published AppHost's persisted parent-plan, private-key and validation-projection transport before effects.</summary>
 public sealed class PlatformPartiesValidationHandoffTests
 {
-    /// <summary>The same signed validation transport without a parent claim directory retains its existing image-boundary behavior.</summary>
-    [Fact]
-    public async Task PublishedValidationWithoutClaimProjectionReachesBoundaryAsync()
-    {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
-        var result = await fixture.RunPublishedValidationAsync();
-        fixture.AssertPublishedValidationBoundary(result);
-    }
-
-    /// <summary>The actual signed host must project only claim allocation during validation and reach the immutable image boundary.</summary>
-    /// <param name="profile">The actual declared suite.</param>
-    [Theory]
-    [InlineData("platform-package")]
-    [InlineData("lifecycle-package")]
-    public async Task PublishedValidationRoundTripPreservesCanonicalClaimBindingAsync(string profile)
-    {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(profile);
-        await fixture.PersistClaimStateAsync();
-        var result = await fixture.RunPublishedValidationAsync();
-        fixture.AssertPublishedValidationBoundary(result);
-    }
-
-    /// <summary>Ordinary execution retains its original non-null directory through the same trusted entry and full image boundary.</summary>
+    /// <summary>Ordinary execution retains its original non-null directory through the same trusted entry before image admission.</summary>
     /// <param name="profile">The actual declared suite.</param>
     [Theory]
     [InlineData("platform-package")]
@@ -37,7 +15,7 @@ public sealed class PlatformPartiesValidationHandoffTests
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(profile);
         await fixture.PersistClaimStateAsync();
-        fixture.AssertPositiveEntry();
+        fixture.CaptureOrdinary();
         fixture.Options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
         PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Plan).ShouldBeFalse();
     }
@@ -52,7 +30,7 @@ public sealed class PlatformPartiesValidationHandoffTests
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
         await fixture.PersistClaimStateAsync();
-        fixture.AssertPositiveEntry();
+        fixture.CaptureOrdinary();
         var builder = PlatformPartiesPackageFixture.Builder();
         int configured = 0;
         string? replacement = fault switch { "removed" => null, "different" => Path.Combine(fixture.Workspace, "foreign"), "empty" => "", _ => throw new ArgumentOutOfRangeException(nameof(fault)) };
@@ -114,7 +92,7 @@ public sealed class PlatformPartiesValidationHandoffTests
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
         await fixture.PersistClaimStateAsync();
-        fixture.AssertPositiveEntry();
+        fixture.CaptureOrdinary();
         await CompositionDocumentStore.WriteAsync(Path.Combine(fixture.Workspace, "plan.json"), fixture.Plan with { ResourceClaimStateDirectory = null }, TestContext.Current.CancellationToken);
         fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeFalse();
         fixture.AssertNoEffects(PlatformPartiesPackageFixture.Builder());

@@ -1,0 +1,49 @@
+{
+  "scope": "post-review focused controls only",
+  "candidateRevision": "9b27493ed62183dd37c31894f2ac712da33bfed4",
+  "candidateTree": "7bcf050c12f28d2cc8ae4ac8f01ce56009045c31",
+  "passed": true,
+  "executed": 19,
+  "required": 19,
+  "skipped": 0,
+  "sourceAndOutputUnchanged": true,
+  "originalArchiveUnchanged": true,
+  "candidateAcceptance": false,
+  "hostedMainAcceptance": false,
+  "recordedUtc": "2026-11-15T19:45:14.060346+00:00",
+  "python": {
+    "executed": 14,
+    "passed": 14,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0,
+    "command": [
+      "run-with-temp",
+      "python3",
+      "-B",
+      "eng/test_current_tuple_source.py",
+      "-v"
+    ],
+    "sourceSha256": "2e67d6cffeeb830379ebbdec1ec4ba70145e2054f5fefc2ad010adeb08b4665a",
+    "logSha256": "d764af7de3dd950ad1cf94588bc7a9a9e2b912709e9d68599361652baafa5824",
+    "includesActualFileTransportDepthOneClone": true
+  },
+  "build": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "log": "composition-build.log",
+    "command": "build-command.json"
+  },
+  "testAssemblySha256": "c432b68fe6b332100ce00041a07f95498d9725d944a1e35ee974d7a0a8dd01c8",
+  "productionAssemblySha256": "80e7db9b0895e5e4c1d79dc0191cd3e15b9129d8cc8eb71eee33d8ee144f6768",
+  "originalArchiveSha256": "9a94144fba0085cde6f542c9407f7a306c1ac167c5a3de84ec1854e157667105",
+  "rawObservationIndex": "raw-observations-index.tsv",
+  "broaderVerificationPerformed": false,
+  "postTestWorkspaceDelta": {
+    "path": ".gitattributes",
+    "scope": "Evidence-only post-review/*.patch byte/whitespace policy added by parent after the focused run",
+    "runtimeSourceChanged": false,
+    "rerunRequired": false
+  }
+}

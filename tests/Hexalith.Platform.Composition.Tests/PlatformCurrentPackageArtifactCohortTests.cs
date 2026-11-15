@@ -179,7 +179,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMcpCliVersion(PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion("unknown"));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion("unknown"));
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true, currentArtifacts: true).ConfigureAwait(true);
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true).ConfigureAwait(true);
 #if NET11_0_OR_GREATER
         AssertCurrentConsumerCatalog(fixture);
 #endif

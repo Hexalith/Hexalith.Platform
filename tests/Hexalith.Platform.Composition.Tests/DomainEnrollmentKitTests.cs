@@ -162,9 +162,7 @@ public sealed class DomainEnrollmentKitTests
 
     private static string Root()
     {
-        DirectoryInfo? directory = new(AppContext.BaseDirectory);
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "hexalith-platform.json"))) directory = directory.Parent;
-        return directory!.FullName;
+        return PlatformTestRepository.Root;
     }
 
     private static async Task<string> GitAsync(string directory, params string[] arguments)

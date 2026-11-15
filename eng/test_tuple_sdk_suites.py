@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 from test_current_catalog_view import CurrentCatalogViewTests
-from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, sdk42_collecting_cohort, validate_profile, verify_collecting_cohort, verify_extension_catalog_pin, verify_historical_catalog_pin, verify_test_sdk
+from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, sdk42_collecting_cohort, validate_profile, verify_collecting_cohort, verify_extension_catalog_pin, verify_test_sdk
 
 
 class SdkSuiteTests(unittest.TestCase):
@@ -71,22 +71,20 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, 'exact public cohort|Every restored EventStore'):
                 verify_collecting_cohort(changed, cohort)
 
-    def test_legacy_profile_retains_its_recorded_default(self):
-        self.assertEqual(sdk_suite("current", None), ("eng/tuple-ci-suites.json", []))
-        self.assertEqual(sdk_suite("current", "4.1.0")[1], ["-p:HexalithEventStoreVersion=4.1.0"])
+    def test_historical_profile_and_sdk_selections_are_retired(self):
+        for suite, version in (("current", None), ("current", "4.1.0"), ("current42", None), ("current42", "4.1.0")):
+            with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
+                sdk_suite(suite, version)
 
     def test_extension_suite_has_one_exact_sdk_and_nine_mandatory_cases(self):
         self.assertEqual(sdk_suite("extensions", "4.2.0"), ("eng/tuple-ci-extension-suites.json", ["-p:HexalithEventStoreVersion=4.2.0"]))
         profile = json.loads((Path(__file__).parent / "tuple-ci-extension-suites.json").read_text())
         self.assertEqual(validate_profile(profile), 9)
-        retained = json.loads((Path(__file__).parent / "tuple-ci-suites.json").read_text())
-        self.assertEqual(validate_profile(retained), 412)
 
     def test_default_sdk42_base_requires_all_controls_and_actual_entry_cases(self):
         self.assertEqual(sdk_suite("base42", "4.2.0")[0], "eng/tuple-ci-sdk42-base-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-base-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 97)
-        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [41, 51, 3, 2])
+        self.assertEqual(validate_profile(profile), 93)
         for version in [None, "4.1.0", "4.2.1"]:
             with self.subTest(version=version), self.assertRaises(ValueError):
                 sdk_suite("base42", version)
@@ -94,12 +92,12 @@ class SdkSuiteTests(unittest.TestCase):
     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 478)
-        binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageCatalogParticipantsBindBeforeContainersOrSidecarsAreAdded"
+        self.assertEqual(validate_profile(profile), 463)
+        binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
         binding_groups = [group for group in profile["groups"] if binding_test in group["selectors"]]
         self.assertEqual(len(binding_groups), 1)
         self.assertEqual(binding_groups[0]["filter"], "-method")
-        self.assertEqual(binding_groups[0]["requiredCount"], 8)
+        self.assertEqual(binding_groups[0]["requiredCount"], 7)
         for version in [None, "4.1.0", "4.2.1"]:
             with self.subTest(version=version), self.assertRaises(ValueError):
                 sdk_suite("current42", version)
@@ -110,12 +108,10 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
                 sdk_suite(suite, version)
 
-    def test_sdk42_suite_selection_does_not_override_historical_companions(self):
+    def test_sdk42_suite_selection_keeps_explicit_sdk_properties(self):
         for suite in ("current42", "base42", "extensions"):
             with self.subTest(suite=suite):
                 self.assertEqual(sdk_suite(suite, "4.2.0")[1], ["-p:HexalithEventStoreVersion=4.2.0"])
-        self.assertEqual(sdk_suite("current", None)[1], [])
-        self.assertEqual(sdk_suite("current", "4.1.0")[1], ["-p:HexalithEventStoreVersion=4.1.0"])
 
     def test_extension_suite_requires_the_single_real_catalog_pin(self):
         with tempfile.TemporaryDirectory() as root:
@@ -129,17 +125,6 @@ class SdkSuiteTests(unittest.TestCase):
                 else:
                     with self.assertRaises(ValueError):
                         verify_extension_catalog_pin(path)
-
-    def test_historical_controls_require_the_actual_old_catalog(self):
-        with tempfile.TemporaryDirectory() as root:
-            path = Path(root) / "catalog.props"
-            for version, valid in [("4.1.0", True), ("4.2.0", False), ("4.1.1", False)]:
-                path.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>" + version + "</HexalithEventStoreVersion></PropertyGroup></Project>")
-                if valid:
-                    verify_historical_catalog_pin(path)
-                else:
-                    with self.assertRaises(ValueError):
-                        verify_historical_catalog_pin(path)
 
     def test_actual_test_dependency_identity_rejects_missing_source_or_other_sdk(self):
         with tempfile.TemporaryDirectory() as root:

@@ -58,6 +58,8 @@ internal static class PlatformPackageCatalogReader
         root.SetAttributeValue("InitialTargets", "ValidatePrivateReaderCatalogBeforeRestore" + (string.IsNullOrEmpty(initial) ? "" : ";" + initial));
         return ["-p:AlternateCommonProps=" + common, "-p:ImportDirectoryPackagesProps=false", "-p:DirectoryPackagesPropsPath=" + catalog,
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
+            // ImportDirectoryPackagesProps is disabled above; preserve the owning Platform's transitive pin policy.
+            "-p:CentralPackageTransitivePinningEnabled=true",
             .. options.CurrentOwnerProof is { } current ? new[] { "-p:RestoreConfigFile=" + current.ReaderConfig, "-p:RestorePackagesPath=" + current.Cache } : Array.Empty<string>()];
     }
 

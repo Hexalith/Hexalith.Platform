@@ -1,86 +1,61 @@
-# Refreshing historical tuple sources
+# Preparing candidate tuple sources
 
-Current source gitlinks and package release provenance have separate identities.
-`eng/current-tuple-source.json` records synchronized owner Git revisions and their
-committed declaration hashes. Its package-provenance hash binds the selected
-release metadata. CI separately checks every selected package against its actual
-owner release tag, declaration Git blob and Platform declaration snapshot. A
-self-authored hash does not establish publication.
+`eng/current-tuple-source.json` records exact owner gitlinks and canonical
+committed declaration SHA-256 identities separately from released package
+provenance. CI verifies each selected package against its owner release tag,
+declaration Git blob and Platform snapshot. Duplicate fields and crossed source,
+owner, provenance or declaration identities refuse.
 
-Historical companions carry the current production, tests, workflows, helpers,
-and current-source binding unchanged. Only the five frozen tuple metadata files
-and three frozen owner gitlinks differ. The original 349/412 profiles, published
-tool identities, provenance bodies and owner revisions remain authenticated.
-
-After staging the final current source, obtain `git write-tree` and run:
+After staging an intentional owner-source or package-provenance change, obtain
+`git write-tree` and generate the current binding from that exact Git tree:
 
 ```bash
-python3 -B eng/prepare_tuple_sources.py binding --source <full-tree-sha> --output /tmp/current-tuple-source.json
+run-with-temp bash -c 'python3 -B eng/prepare_tuple_sources.py binding --source "$1" --output "$TMPDIR/current-tuple-source.json" && cp "$TMPDIR/current-tuple-source.json" eng/current-tuple-source.json' -- <full-tree-sha>
 ```
 
-Copy that JSON to `eng/current-tuple-source.json`, stage it, and create the current
-source commit after the repository's commit-message validation. Then prepare:
+Review and stage the resulting binding with the candidate. Preparation reads
+Git objects, never owner worktree bytes, and creates no commits or refs. A
+regular documentation change requires no binding refresh. A gitlink change needs
+only its matching current binding; no companion commit, branch, descriptor or
+reader checkout is required.
+
+The workflow resolves that candidate with a shallow checkout, authenticates its
+initialized direct owners and release identities, then runs current42, base42
+and extensions on the same candidate and current NET11 collector. Explicit
+`--suite` and `--eventstore-sdk 4.2.0` arguments are required. Exact positive group
+counts, real runtime and output identities, package-only restore and zero skips
+remain enforced. The aggregate verdict requires both source resolution and
+current execution to succeed. The source publisher requires those three jobs.
+
+For local graph verification, use a new evidence directory:
 
 ```bash
-python3 -B eng/prepare_tuple_sources.py trees --source <full-current-commit-sha> --output /tmp/tuple-companion-trees.json
+run-with-temp python3 -B eng/run_tuple_ci.py --audit-only --suite current42 --eventstore-sdk 4.2.0 --evidence <new-evidence-directory>
 ```
 
-The tool reads committed objects only and uses a temporary Git index. It creates
-no commits, refs or remote writes and does not replace an existing output file.
-The third `package-reader` tree preserves the qualified SDK4.2/Builds4.47,
-Tenants705/Memories25 and PartiesEBE reference inputs. Record that companion SHA
-in the optional bounded `packageReaderSourceRevision` field of
-`eng/pre-extension-tuple-source.json`; current reader execution requires it
-explicitly and never substitutes another source.
+This audit authenticates archive/catalog/output inputs but grants no hosted,
+image, runtime or candidate acceptance. Actual hosted success on main remains
+required after landing. Genuine old package archives and declaration documents
+may be fixture data; no synthetic local history grants publication provenance.
+The current private reader is exercised separately from the unchanged refusal of
+unqualified current image cohorts. Archived qualification and broker tags remain
+unchanged. Local `qualification/*` branches may be removed after recording targets.
 
-For each returned tree, validate the exact companion commit message with the
-owning repository's pinned commitlint, then create a commit with the current
-source as parent. Publish those immutable companion commits on new qualification
-refs before recording their full SHAs in the two `*-tuple-source.json` descriptor
-files. Commit and publish the descriptor change. Never update existing companion
-refs or claim a prepared tree ran tests.
+## Historical preparation observations
 
-Every later production, test, workflow, helper, build, documentation or other
-non-tuple change requires fresh companion trees and descriptor SHAs. The strict
-source comparison deliberately refuses stale companions.
+The records below retain the identities and findings of their original subjects.
+References to replay/reader companions and 349/412 execution are past obligations,
+retired by Story 2.13. They do not prescribe current candidate preparation.
 
-
-For a clean committed current source with all three published companion refs,
-prepare the retained reader workspace with:
-
-```bash
-python3 -B eng/prepare_tuple_sources.py reader-workspace --source <full-current-commit-sha> --workspace /tmp/new-isolated-reader --output /tmp/new-reader-receipt.json
-```
-
-This clones the actual committed root and only its declared direct owner
-repositories into a new directory using shared object stores, then detaches each
-clone at its exact recorded revision. It does not update submodules, initialize
-nested owners, create synthetic commits, or change any source checkout. Source
-comparison permits only authenticated frozen tuple metadata/gitlinks and bounded
-source descriptors; stale production or test code refuses.
-
-`eng/run_tuple_ci.py --suite current42 --eventstore-sdk 4.2.0` and the `base42`
-lane prepare this workspace automatically. They first build current production
-with its actual current catalog. They build the collecting test closure using
-that same current catalog and explicit frozen Tenants705/Memories25/Parties310
-family selections, keeping patched build dependencies and vulnerability checks.
-The real prepared reader workspace retains its exact historical catalog. Both
-catalog hashes and the collecting package assets are recorded, and
-`PlatformPackageReaderWorkspaceRoot` selects the authenticated historical inputs.
-The nine additive artifact controls still authenticate actual707/26/311 public
-archives and current Parties source; the independent production closure test
-exports the real current producer catalog and proves genuine Server707 output.
-No retained image identity is relabeled as current native acceptance.
-
-## Current producer renewal on 2026-11-14
+## Historical producer renewal on 2026-11-14
 
 The current tuple selects the official signed Builds6.0.0 publication from
 `1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5`. Its original successful release
 run43591439615, release445269620 and artifact14113221849 bind the two published
 CLI packages and an empty container inventory. The handoff, NuGet signatures,
 archive and Tooling hashes are recorded in `eng/builds-tuple.json`. This supplies
-publication identity; fresh 349/412/current qualification remains independently
-required. Generation4/5 bindings and immutable companion refs retain their
+publication identity; that preparation still required349/412 and then-current
+qualification. Generation4/5 bindings and archived companion refs retain their
 historical meaning. Unknown future generations remain refused.
 
 Upstream Platform `70a016a98c97c19656a4c279a93b88e255d41b07` selected EventStore
@@ -114,7 +89,7 @@ named consumers. Producer5 and historical4 views retain their previous rules.
 The historical file-AppHost check uses the authenticated current producer binding
 exported alongside its catalog; its model build keeps the frozen catalog.
 These view receipts describe the actual selected SDKs and grant no runtime or
-native acceptance. Full fresh349/412/current qualification remains required.
+native acceptance. That preparation required fresh349/412 and then-current qualification.
 
 The current build in all three explicit SDK4.2 suites (current42/base42/extensions)
 declares its existing complete public family:
@@ -124,7 +99,7 @@ produced the actual NU1109 downgrade through
 `Hexalith.Memories.EventStoreExtensions4.0.0` requiring DomainService5.0.0.
 The collector records these explicit properties and verifies its restored public
 package identities before building. Missing, source, mixed and neighboring
-package inputs refuse. Frozen349/412 and705/25/310 reader inputs are unchanged.
+package inputs refuse. Those frozen349/412 and705/25/310 reader inputs belonged to that historical preparation.
 
 The isolated production-model test replays the admitted SDK4.2/T707/M27/P311/Mcp201
 cohort and measures its assets and original signed Server707 hash. Its output
@@ -140,11 +115,10 @@ closure. The overlay changes only those exact old entries and keeps package
 auditing enabled. CI evaluates every frozen catalog to verify that owner
 versions, unrelated packages and newer patch versions remain unchanged.
 
-The file AppHost is current source shared by every companion. Its SDK and direct
-integration directives are checked against the current main tuple's authenticated
-Builds catalog. Historical CI exports that exact catalog Git blob into evidence
-without changing its frozen model catalog or checkout. Every direct vendor pin
-must match exactly; this does not introduce a version exception.
+That file AppHost source was shared by the companions. Its SDK and direct
+integration directives were checked against that main tuple's authenticated
+Builds catalog. Historical CI exported the exact Git blob without changing the
+frozen model catalog or checkout; direct vendor pins had to match exactly.
 
 Historical validation transports use the original signed AppHost and Tooling
 bodies. When their Aspire13.6.4 dependency cannot load the patched model, the
@@ -215,9 +189,9 @@ The synchronized EventStore749d and Tenantsd89f gitlinks retain their exact publ
 Git manifest identities in the renewed current-source binding. Their manifest
 hashes and all package-release provenance remain unchanged. All upstream audience
 feature code, contribution evidence and six other synchronized gitlinks are
-preserved. Fresh immutable349/412/package-reader companions must contain this
-same source, including the audience feature, with only their authenticated frozen
-metadata and owner selections substituted. Prepared source alignment grants no
+preserved. That preparation required immutable349/412/package-reader companions containing
+the same source and audience feature, with only authenticated frozen metadata and
+owner selections substituted. Prepared source alignment grants no
 execution credit; fresh hosted tuple and catalog gates remain required.
 
 
@@ -230,7 +204,7 @@ admission remains explicit. Neither binding admits crossed source/range pairs
 or neighboring 6.0.4. Current owner observations retain Tenants7.0.7 for each
 named SDK4.2 Parties context and independently require generic Tenants8.0.0.
 The current SDK4.2 collector and all frozen public provenance remain unchanged.
-Fresh source binding and three new immutable companions are required for this source;
+That historical source required a fresh binding and three new immutable companions;
 prior immutable refs remain historical evidence only.
 
 ## Source and package context renewal on 2026-11-15
@@ -257,6 +231,6 @@ existing semantics.
 Only this exact6.0.5 source/catalog/range is added. Earlier exact6 profiles and
 all4/5 rules remain unchanged; the unreleased reviewed/audit commits,6.0.4,
 neighbors and crossed sources do not acquire authority. MCP3 remains outside
-the qualified SDK4.2 runtime cohorts. Fresh identical-code349/412/reader
-companions and complete current qualification are required before landing;
+the qualified SDK4.2 runtime cohorts. At that preparation stage, identical-code349/412/reader companions and complete
+then-current qualification were required before landing;
 component measurements grant no signed-fixture or native acceptance.

@@ -1,0 +1,39 @@
+{
+  "recordedUtc": "2026-11-15T20:00:45.981202+00:00",
+  "passed": true,
+  "baselineRevision": "ddb1c0b141372a66d4a9d9c231d0041afbb7cd0c",
+  "upstreamRevision": "5b44f2d058f9221d8b54782c377e09fec5786b65",
+  "candidateRevision": "03b791b5ec2c9369df6088023d9290ca4166d863",
+  "mergedRevision": "ef81f17c21f3593de4c16fa3e0ceef0ba1e6acf5",
+  "mergedTree": "b18e32be80304c17d93a321bf8b89493d2866d95",
+  "resolvedModifyDeleteConflicts": [
+    "eng/legacy-tuple-source.json",
+    "eng/pre-extension-tuple-source.json"
+  ],
+  "resolution": "Retire the two descriptors; preserve upstream release tooling, lockfile and new assertions.",
+  "productionAndReviewSourcesMatch": 85,
+  "allOriginalPinsGitlinksTagsPreserved": true,
+  "originalTags": 152,
+  "currentTags": 153,
+  "sourceReleaseNode": {
+    "tests": 83,
+    "pass": 83,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "rawLogsArchive": {
+    "file": "raw-logs.tar.gz",
+    "sha256": "c06637e52f8fd2533b4bbfd73fec6ddef2c4eca26bb66ed42e56d1bc39506e8b",
+    "members": {
+      "source-release.log": "c92fcad999356d95e2f276a8ae3f0dcbb8c8e45539f749d56cb0d77f31e5e325",
+      "npm-ci.log": "d3c7a2eb2c2688975bc3b9b6220ff5e0a4ac1429750cac31fb54891eecd830c1",
+      "merge.log": "561567cfd262a4c40038f886a18e2c3dc944b3a010f45570b498740c285bc041"
+    }
+  },
+  "patchScope": "Merged code/spec only; evidence remains in the primary worktree.",
+  "remoteMutations": [],
+  "sharedWorktreeRebased": false,
+  "hostedMainAcceptance": false
+}

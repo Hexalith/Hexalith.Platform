@@ -9,7 +9,6 @@ import sys
 import datetime
 import platform
 import signal
-import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
 
@@ -17,30 +16,12 @@ from prepare_builds_artifacts import source_state
 from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_COLLECTOR_SELECTORS = frozenset("Hexalith.Platform.Composition.Tests." + name for name in (
-    "PlatformCurrentPackageArtifactCohortTests", "PlatformMcpCliCatalogSelectionTests",
-    "PlatformCurrentOwnerTargetFrameworkTests", "PlatformProductionModelClosureTests",
-    "GatewayExtensionRegistrationTests",
-    "EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
-    "EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
-    "EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
-))
-
-
+REQUIRED_TOTALS = {"current42": 463, "base42": 93, "extensions": 9}
 def collector_for(group, suite):
-    """Keep current production/artifact controls on the actual current collector."""
-    if suite == "current42":
-        selections = [selector in CURRENT_COLLECTOR_SELECTORS for selector in group["selectors"]]
-        if any(selections) != all(selections):
-            raise ValueError("Current and retained collector selectors must be separate explicit groups.")
-        expected = "current" if all(selections) else "retained"
-        if group.get("collector") != expected:
-            raise ValueError("Every current profile group requires its exact declared collector context.")
-        return expected
-    expected = "retained" if suite == "base42" else "current"
-    if group.get("collector") not in (None, expected):
-        raise ValueError("The selected suite cannot substitute another collector context.")
-    return expected
+    """Every remaining control executes on the candidate's current collector."""
+    if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
+        raise ValueError("Every candidate profile requires its explicit current collector context.")
+    return "current"
 
 
 def require_collector_framework(document, expected):
@@ -59,16 +40,6 @@ def require_collector_execution(counts, expected):
         raise ValueError("Executed tests do not match their collector target and actual managed runtime.")
 
 
-def require_retained_collector_binding(binding, raw):
-    """Only the genuine frozen signed4.47 producer may collect retained SDK4.2 tests."""
-    from prepare_tuple_sources import FROZEN
-    frozen = FROZEN["package-reader"]
-    if hashlib.sha256(raw).hexdigest() != frozen["hashes"]["eng/builds-tuple.json"] or json.loads(raw) != binding \
-            or binding["publication"]["version"] != "4.47.0" \
-            or binding["producer"]["sourceRevision"] != frozen["gitlinks"]["references/Hexalith.Builds"]:
-        raise ValueError("The retained collector requires the exact authenticated signed4.47 tuple.")
-
-
 def require_collector_source(root, source):
     """A receipt cannot substitute for the actual unchanged source and direct checkouts."""
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -78,22 +49,12 @@ def require_collector_source(root, source):
 
 
 def tuple_runtime_context(binding, suite, profile_sha256):
-    """Select exact historical regression targets without changing current NET11 authority."""
-    from prepare_tuple_sources import FROZEN
+    """Select the bound current NET11 runtime; old package data grants no execution authority."""
     publication = binding["publication"]
     source, version = binding["producer"]["sourceRevision"], publication["version"]
-    if suite == "current":
-        for name, tool_version in (("legacy", "4.44.3"), ("pre-extension", "4.45.0")):
-            frozen = FROZEN[name]
-            if source == frozen["gitlinks"]["references/Hexalith.Builds"] and version == tool_version \
-                    and profile_sha256 == frozen["hashes"]["eng/tuple-ci-suites.json"]:
-                return {"purpose": name + "-same-code-net10-regression", "targetFramework": "net10.0",
-                        "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
-                        "currentRuntimeQualification": False}
-        raise ValueError("A retained runtime requires its exact frozen source, tool version and profile.")
     if suite not in ("current42", "base42", "extensions") or not version.startswith(("5.", "6.")):
         raise ValueError("Current runtime qualification requires the bound NET11 Builds generation.")
-    return {"purpose": "current-net11-with-retained-public-sdk42", "targetFramework": "net11.0",
+    return {"purpose": "current-net11-with-explicit-public-sdk42", "targetFramework": "net11.0",
             "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
             "nativeAcceptance": False}
 
@@ -154,14 +115,10 @@ def verify_composition_test_outputs_unchanged(record):
 
 
 def sdk_suite(suite, version):
-    """Select only the measured new SDK suite or the retained exact historical SDK controls."""
-    if suite in ("extensions", "base42", "current42"):
-        if version != "4.2.0":
-            raise ValueError("The extension suite requires the measured EventStore 4.2.0 SDK.")
-        return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
-    if suite != "current" or version not in (None, "4.1.0"):
-        raise ValueError("The retained suite accepts only its exact historical SDK or the recorded catalog default.")
-    return "eng/tuple-ci-suites.json", [] if version is None else ["-p:HexalithEventStoreVersion=4.1.0"]
+    """Select an explicit current SDK4.2 inventory; historical CLI selections are retired."""
+    if suite not in ("extensions", "base42", "current42") or version != "4.2.0":
+        raise ValueError("Current tuple suites require the measured EventStore 4.2.0 SDK.")
+    return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
 
 
 def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None, binding=None):
@@ -216,13 +173,6 @@ def verify_collecting_cohort(assets, cohort):
             "candidateAcceptance": False, "runtimeAcceptance": False}
 
 
-def verify_historical_catalog_pin(catalog):
-    """The 412/349 history must retain its actual owning SDK4.1 catalog, even if a build override is supplied."""
-    pins = ET.parse(catalog).findall("./PropertyGroup/HexalithEventStoreVersion")
-    if len(pins) != 1 or (pins[0].text or "").strip() != "4.1.0":
-        raise ValueError("Historical controls require the single real SDK4.1 catalog pin; overrides cannot substitute.")
-
-
 def verify_test_sdk(assembly, version, memories_version=None):
     """Require real package dependencies for the selected isolated test build before invoking any cases."""
     if version is None:
@@ -247,7 +197,7 @@ def _subprocess_environment(name, environment=None, *, metadata_token=None):
     """Keep the job token out of ordinary commands, including explicit environments."""
     child = dict(os.environ if environment is None else environment)
     child.pop("GH_TOKEN", None)
-    if name in ("published-artifacts", "retained-published-artifacts") and metadata_token is not None:
+    if name == "published-artifacts" and metadata_token is not None:
         child["GH_TOKEN"] = metadata_token
     return child
 
@@ -266,15 +216,15 @@ def _run_tuple_ci(metadata_token):
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path)
     parser.add_argument("--audit-only", action="store_true")
-    parser.add_argument("--suite", choices=["current", "extensions", "base42", "current42"], default="current")
-    parser.add_argument("--eventstore-sdk", choices=["4.1.0", "4.2.0"])
+    parser.add_argument("--suite", choices=["extensions", "base42", "current42"], required=True)
+    parser.add_argument("--eventstore-sdk", choices=["4.2.0"], required=True)
     args = parser.parse_args()
     profile_path, sdk_properties = sdk_suite(args.suite, args.eventstore_sdk)
     evidence = args.evidence.resolve()
     if evidence.exists():
         raise ValueError("Choose a new evidence directory.")
     evidence.mkdir(parents=True)
-    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": [], "suite": args.suite, "eventStoreSdk": args.eventstore_sdk, "historicalSdkRegression": args.suite == "current" and args.eventstore_sdk == "4.1.0"}
+    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": [], "suite": args.suite, "eventStoreSdk": args.eventstore_sdk}
 
     def checkpoint():
         (evidence / "tuple-ci-result.json").write_text(json.dumps(result, indent=2) + "\n")
@@ -309,7 +259,6 @@ def _run_tuple_ci(metadata_token):
             raise RuntimeError(name + " failed; retained command output is authoritative.")
         return (evidence / (name + ".stdout")).read_text()
 
-    retained_workspace = None
     try:
         revision = run("revision", ["git", "rev-parse", "HEAD"]).strip()
         result["platformRevision"] = revision
@@ -340,17 +289,14 @@ def _run_tuple_ci(metadata_token):
             result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
                                                                            expected_sha256=catalog_identity["sha256"], binding=binding)
             (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
-        else:
-            verify_historical_catalog_pin(catalog)
         profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
         selected_collectors = {collector_for(group, args.suite) for group in profile["groups"]}
-        if args.suite == "base42" and required_total != 97:
-            raise ValueError("The SDK4.2 base suite must retain 92 finite controls, three actual entry cases and both owner model transport cases.")
-        if args.suite == "current42" and required_total != 478:
-            raise ValueError("The SDK4.2 current suite requires all 457 retained cases, seventeen current artifact controls, three explicit MCP selection controls and one private target-framework control (478 total).")
-        if args.suite == "extensions" and required_total != 9:
-            raise ValueError("The extension SDK suite must retain all nine required package cases.")
+        if required_total != REQUIRED_TOTALS[args.suite]:
+            raise ValueError("The candidate suite differs from its measured required inventory.")
+        # Profiles carry measured positive per-group counts; all execute on this candidate.
+        if selected_collectors != {"current"}:
+            raise ValueError("Candidate inventories cannot select an alternate collector.")
         if not args.audit_only:
             if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("CI") != "true":
                 raise ValueError("Release execution belongs to GitHub CI; local use supports --audit-only.")
@@ -415,13 +361,6 @@ def _run_tuple_ci(metadata_token):
         if args.suite in ("extensions", "base42", "current42"):
             file_catalog = evidence / "authenticated-catalog.props"
             file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
-        current_source = os.environ.get("CURRENT_PLATFORM_SHA")
-        if current_source and current_source != revision:
-            from file_host_catalog import prepare as prepare_file_host_catalog
-            file_catalog, result["fileAppHostCatalog"] = prepare_file_host_catalog(
-                ROOT, builds_root, current_source, evidence / "current-file-host-catalog")
-            file_catalog_sha256 = result["fileAppHostCatalog"]["catalogSha256"]
-            file_catalog_binding = file_catalog.parent / "builds-tuple.json"
         run("file-host-catalog-controls", [sys.executable, "-B", "eng/test_file_host_catalog.py"])
         run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
         pin_arguments = [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)]
@@ -445,7 +384,7 @@ def _run_tuple_ci(metadata_token):
             payload = path.read_bytes()
             document = json.loads(payload)
             if runtime_context is not None and set(document["project"]["frameworks"]) != {runtime_context["targetFramework"]}:
-                raise ValueError("Restored graph does not match its exact current or historical runtime context.")
+                raise ValueError("Restored graph does not match the exact current runtime context.")
             for name, library in document["libraries"].items():
                 if library["type"] == "project":
                     source = (project.parent / library["msbuildProject"]).resolve()
@@ -477,55 +416,10 @@ def _run_tuple_ci(metadata_token):
 
         collectors = {"current": measure_collector("current", ROOT, composition_project, properties, tool, binding,
             runtime_context["targetFramework"] if runtime_context else None, revision)}
-        if "retained" in selected_collectors:
-            # The old controls must load the actual signed old producer in their own same-code NET10 workspace.
-            retained_workspace = tempfile.TemporaryDirectory(prefix="platform-retained-reader-", dir=os.environ.get("RUNNER_TEMP"))
-            isolated = Path(retained_workspace.name) / "workspace"
-            receipt_path = evidence / "historical-reader-workspace.json"
-            run("prepare-historical-reader", [sys.executable, "-B", "eng/prepare_tuple_sources.py", "reader-workspace",
-                "--source", revision, "--workspace", str(isolated), "--output", str(receipt_path)])
-            reader_receipt = json.loads(receipt_path.read_bytes())
-            require_collector_source(isolated, reader_receipt["packageReaderSourceRevision"])
-            retained_binding = load_binding(isolated / "eng/builds-tuple.json")
-            committed_binding = subprocess.check_output(["git", "show", "HEAD:eng/builds-tuple.json"], cwd=isolated)
-            require_retained_collector_binding(retained_binding, committed_binding)
-            retained_tool = Path(run("retained-published-artifacts", [sys.executable,
-                str(isolated / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds-retained"),
-                "--require-recorded"], cwd=isolated).strip())
-            retained_project = isolated / composition_project.relative_to(ROOT)
-            retained_properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
-                "-p:HexalithBuildsRoot=" + str(isolated / "references/Hexalith.Builds"),
-                "-p:HexalithBuildsPublishedToolRoot=" + str(retained_tool),
-                "-p:PlatformPackageReaderWorkspaceRoot=" + str(isolated),
-                "-p:HexalithEventStoreVersion=4.2.0", "-p:HexalithTenantsVersion=7.0.5",
-                "-p:HexalithMemoriesVersion=3.0.25", "-p:HexalithPartiesVersion=3.1.0",
-                "-p:ArtifactsPath=" + str(evidence / "retained-collector")]
-            run("build-retained-collector", ["dotnet", "build", str(retained_project), "-c", "Release", "-m:1",
-                *retained_properties], cwd=isolated)
-            retained_assets = evidence / "retained-collector/obj/Hexalith.Platform.Composition.Tests/project.assets.json"
-            selected = json.loads(retained_assets.read_bytes())["libraries"]
-            for identity in ("Hexalith.Tenants.Contracts/7.0.5", "Hexalith.Tenants.Server/7.0.5", "Hexalith.Memories.Contracts/3.0.25", "Hexalith.Parties.Contracts/3.1.0"):
-                if selected.get(identity, {}).get("type") != "package":
-                    raise ValueError("The retained collector did not resolve its exact published package input: " + identity)
-            retained_graphs = sorted((evidence / "retained-collector/obj").rglob("project.assets.json"))
-            if not retained_graphs:
-                raise ValueError("The retained collector has no measured restored graphs.")
-            for path in retained_graphs:
-                require_collector_framework(json.loads(path.read_bytes()), "net10.0")
-            collectors["retained"] = measure_collector("retained", isolated, retained_project, retained_properties,
-                retained_tool, retained_binding, "net10.0", reader_receipt["packageReaderSourceRevision"])
-            retained_catalog = isolated / "references/Hexalith.Builds/Props/Directory.Packages.props"
-            result["historicalReferenceCollector"] = {"workspace": reader_receipt,
-                "readerInputCatalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(),
-                "collectingBuildCatalogSha256": hashlib.sha256(retained_catalog.read_bytes()).hexdigest(),
-                "packageAssets": str(retained_assets), "artifactIdentity": str(evidence / "builds-retained/artifact-identity.json"),
-                "restoredGraphs": {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in retained_graphs},
-                "scope": "Same-code signed4.47/NET10 regression with authenticated retained705/25/310 inputs; no current NET11 or native acceptance"}
         result["collectors"] = collectors
         snapshots = {}
         for name, collector in collectors.items():
-            key = "compositionTestOutputs" if name == "current" else "retainedCompositionTestOutputs"
-            snapshots[name] = result[key] = {"beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            snapshots[name] = result["compositionTestOutputs"] = {"beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "before": snapshot_composition_test_outputs(collector["assembly"])}
         checkpoint()
         test_failure = False
@@ -537,8 +431,6 @@ def _run_tuple_ci(metadata_token):
                 role = collector_for(group, args.suite)
                 collector = collectors[role]
                 if project != composition_project:
-                    if role != "current":
-                        raise ValueError("Only the declared composition project may use the retained collector.")
                     assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties,
                         "-getProperty:TargetPath"]).strip()
                 else:
@@ -584,19 +476,8 @@ def _run_tuple_ci(metadata_token):
         result["blocker"] = str(error)
         raise
     finally:
-        try:
-            if retained_workspace is not None:
-                retained_workspace.cleanup()
-                result["historicalReaderWorkspaceRemoved"] = True
-        except OSError as error:
-            result["historicalReaderWorkspaceRemoved"] = False
-            if result["status"] == "passed":
-                result["status"] = "failed"
-                result["blocker"] = "Historical reader workspace cleanup failed: " + str(error)
-            raise
-        finally:
-            result["limitation"] = "CI build/test preflight only. Fresh authenticated candidate-decision and live generated/direct-host runtime evidence remain separate mandatory gates."
-            checkpoint()
+        result["limitation"] = "CI build/test preflight only. Fresh authenticated candidate-decision and live generated/direct-host runtime evidence remain separate mandatory gates."
+        checkpoint()
 
 
 if __name__ == "__main__":

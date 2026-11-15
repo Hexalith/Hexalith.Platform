@@ -1,6 +1,37 @@
 # Hexalith.Platform
 
-## Current signed Builds6.0.3 tuple
+## Candidate-only tuple preparation
+
+The selected producer is signed Builds **6.0.5**, source
+`e2bbbd0893f586e4d447ef8358ff747ea3d34435`, with exact tool pin and range
+`[6.0.5, 7.0.0-0)` and disabled roll-forward. The catalog blob is
+`42441eb4cefcff2f9c582fcda630d9ad15887df2`, SHA-256
+`d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
+The authoritative publication binding remains `eng/builds-tuple.json`.
+
+PRs, main pushes and explicit candidate dispatches resolve and execute only that
+candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+plus the unchanged catalog gates. Both prerequisites must succeed, including when
+another prerequisite fails, cancels or skips. Prepare the current source binding
+only when owner gitlinks or package provenance change; documentation-only changes
+need no additional ref. See [candidate preparation](eng/tuple-source-preparation.md).
+
+The continuing inventories declare 463 current42, 93 base42 and nine extension
+executions, with exact positive group counts and zero skips.
+
+The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
+Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
+data with their original provenance. Reader authenticity supplies no image or
+runtime permission. Signed-host plan/key checks, reader integrity, readiness,
+model transport and exact positive counts with zero skips remain required.
+Hosted main tuple success still requires an authorized landing and actual run;
+local audits provide no hosted or native acceptance.
+
+Historical preparation records below describe their original subjects and past
+requirements. Their L/M, 349/412 and reader-companion obligations are retired by
+Story 2.13; archived qualification and broker tags remain evidence.
+
+## Historical signed Builds6.0.3 tuple
 
 The current producer is genuine [Builds v6.0.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.0.3)
 at `99f7c86072ca7b35e3fbbaee4606a559a847805a`, published by successful normal
@@ -18,9 +49,10 @@ SDK4.2 collector still selects the complete 4.2/7.0.7/3.0.27/3.1.1/2.0.1 family.
 Public package/declaration/image provenance and exact6.0.0/1/2 controls retain
 their own identities. Crossed producer sources and ranges remain refused.
 
-Fresh immutable historical companions and exact-source tuple/catalog qualification
-remain required. The current 478/97/9 and historical 412/349 execution profiles,
-all six catalog rows and the normal source publisher retain their existing gates.
+That historical preparation required immutable companions and exact-source tuple/catalog
+qualification. Its 478/97/9 and 412/349 execution profiles, six catalog rows and
+normal source publisher formed the gates for that source; companion execution was
+retired by Story 2.13.
 Publication and these component observations grant no candidate or native acceptance.
 
 ## Previous signed Builds5.2.2 consumer-context preparation
@@ -127,10 +159,10 @@ retains catalog-origin ancestor `8984471f75657cd24236cf2d04f470f8e2545ace`.
 
 SDK4.1.0, public Parties3.1.0 and the measured public package/image/declaration
 identities remain unchanged. Private source preparation and public reader,
-image and runtime roles remain separate. The current profile still requires412
-cases and the historical profile all349 original controls. Fresh genuine same-code
-current/legacy source qualification, all five SDK gates, native execution and
-verified cleanup remain required. This prerequisite source preparation grants
+image and runtime roles remain separate. The then-current profile required412
+cases and its historical profile contained349 original controls. That preparation
+required genuine same-code current/legacy qualification, five SDK gates, native
+execution and verified cleanup. This prerequisite source preparation grants
 no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
@@ -163,10 +195,10 @@ The M25 model uses its actual sidecar endpoint provider. Historical public cohor
 source/key/receipt/sealing checks remain; a private owner accepts only exact3.0.0 or3.1.0 catalog versions.
 The generic SDK/Tenants pair selector still refuses7.0.5, and private purposes grant no public or candidate authority.
 
-The current required union is412 cases, retaining all315 incoming cases and adding the measured public
-reader/version/ordinary-entry/signed-validation/catalog/model controls. The original349-case historical
-profile remains unchanged. Fresh same-code current/legacy qualification, five SDK gates, hosted source CI,
-real native execution and cleanup remain required; source preparation alone grants no acceptance.
+The historical required union was412 cases, retaining315 incoming cases and adding the measured public
+reader/version/ordinary-entry/signed-validation/catalog/model controls. Its legacy profile contained349
+cases. That source required same-code qualification, five SDK gates, hosted source CI, native execution
+and cleanup; source preparation alone granted no acceptance.
 
 ## Previous signed Builds4.44.11 and Tenants7.0.5 tuple
 
@@ -197,9 +229,9 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
 `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
 `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
 
-The source inventories register 315 current cases and preserve all 349 original
-legacy controls. Fresh final same-code L/M source proof, exact-source hosted
-validation, native effects and complete cleanup remain separately required.
+Those source inventories registered315 then-current cases and349 legacy
+controls. That preparation required final same-code L/M proof, exact-source hosted
+validation, native effects and complete cleanup.
 Package measurement and component checks grant no public-consumer or candidate
 acceptance. The prior producer preparation below retains its own original facts.
 
@@ -217,7 +249,7 @@ this reference selection and its measured paired validation bodies. The issuer
 retains legacy grant aggregates and supplies the exact canonical tenant, domain
 and permission sets requested by each caller; it adds no authority. Publication
 alone grants no M25 runtime acceptance.
-This publication does not replace fresh same-code current/legacy CI, unchanged
+At that time, publication did not replace fresh same-code current/legacy CI,
 native runtime execution, persisted effects or exact cleanup. Public artifact
 measurement and source equivalence alone grant no current runtime qualification.
 
@@ -262,10 +294,10 @@ this selected checkout's `.config/dotnet-tools.json`, `hexalith-platform.json`
 and [`eng/builds-tuple.json`](eng/builds-tuple.json). A main-branch head or a
 compatible version range alone supplies no publication or acceptance authority.
 
-The historical same-code lane L retains genuine Builds `4.44.3` at
+The historical same-code lane L used genuine Builds `4.44.3` at
 `fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
 [release 41998213500](https://github.com/Hexalith/Hexalith.Builds/actions/runs/41998213500).
-Its original 349 controls use SDK `4.1.0`, Tenants `7.0.2` and released Parties
+Its original349 controls used SDK `4.1.0`, Tenants `7.0.2` and released Parties
 `3.0.0`. The historical model M preparation used a separate measured source-owned Parties
 purpose with released SDK `4.1.0`, Tenants `7.0.4` and Memories `3.0.25` and
 271 primary cases. That preparation selected genuine [Builds v4.44.10](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.10)
@@ -281,16 +313,13 @@ inventory; this publication does not establish current model/native acceptance.
 The previous Builds `4.44.6` producer and its complete signed pair remain
 historical evidence in [the retained tuple record](docs/current-tuple-preparation.md#previous-published-builds-4446-tuple).
 
-Current qualification uses all three immutable historical companions and the
-actual final current source. Shared code, tests, helpers, workflows and
-documentation must match under the bounded tuple-source rules. L is historical
-regression evidence, with no current qualification credit or binary-equivalence claim. The current private
-reader/reference cases, native execution and cleanup remain separate obligations
-from L's old public package/image qualification. Fresh exact-source hosted
-qualification is required; publication and positive counts alone establish no
-runtime or deployment acceptance.
+Current qualification executes the final candidate alone. Historical L/M
+observations retain their original subjects. Private reader/reference cases,
+native execution and cleanup remain separate obligations. Fresh exact-source
+hosted qualification is required; publication and positive counts alone establish
+no runtime or deployment acceptance.
 
-The configured range permits later 6.x versions from `6.0.3`, including prereleases
+The configured range permits later 6.x versions from `6.0.5`, including prereleases
 within that range, and excludes `7.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
 alone does not establish integration qualification. The exact tool pin and Builds
 gitlink must identify the same published release before acceptance.

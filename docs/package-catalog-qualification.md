@@ -1,6 +1,21 @@
 # Package catalog qualification
 
-## Current signed producer and Tenants 7.0.5 tuple
+Current preparation and CI are documented in [current tuple preparation](current-tuple-preparation.md).
+Only the candidate Platform checkout is selected. Continuing inventories contain
+463 current42, 93 base42 and nine extension cases. Current-owner reader controls
+in `PlatformCurrentOwnerPackageTests` exercise genuine measured packages,
+production reader generation, immutable catalog/receipt reuse and changed-body/
+request/version/assets refusals through `PlatformReaderMutationControls`.
+`PlatformPartiesCatalogHandoffTests` and `PlatformCurrentOwnerHandoffTests`
+retain snapshot derivation and authenticated handoff controls. These observations
+grant no image or native runtime admission.
+
+## Historical signed producer and Tenants 7.0.5 tuple
+
+The remainder records earlier tuple-specific preparation and measurements. Its
+old pins, replay requirements and positive-control accounts are historical,
+including the retired `PlatformPartiesPackageReaderTests` and
+`eng/tuple-ci-suites.json`; they are not current preparation instructions.
 
 The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
 at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
@@ -29,9 +44,10 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
 `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
 `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
 
-The source inventories register 315 current cases and preserve all 349 original
-legacy controls. Fresh final same-code L/M source proof, exact-source hosted
-validation, native effects and complete cleanup remain separately required.
+The source inventories at that stage registered 315 current cases and 349 legacy
+controls. Same-code L/M proof and exact-source hosted validation were requirements
+of that historical replay workflow. The replay requirements have since been
+retired; the recorded observations grant no current native or cleanup acceptance.
 Package measurement and component checks grant no public-consumer or candidate
 acceptance. The prior producer preparation below retains its own original facts.
 
@@ -301,9 +317,10 @@ No service, native, lifecycle, parity, candidate or Story acceptance follows fro
 source/component preparation.
 
 
-The remaining full-entry and production-generated reader controls are prepared in
-`PlatformPartiesPackageEntryTests` and `PlatformPartiesPackageReaderTests`. They
-are unconditional positive controls. Their fixture first requires the actual
+At that historical stage, full-entry and production-generated reader controls
+were prepared in `PlatformPartiesPackageEntryTests` and the since-deleted
+`PlatformPartiesPackageReaderTests`. They were unconditional positives for that
+recorded tuple. Their fixture first required the actual
 loaded public M23 Contracts body, then the collecting
 Platform repository with its actual clean root-declared Parties and Builds
 checkouts. Normal Platform-owned workspace resolution and catalog materialization
@@ -313,8 +330,8 @@ no invented consumer release tag or synthetic/legacy mapping fallback. The fixtu
 no service. Its probe responses are deterministic component doubles; they do not
 claim fresh registry/image inspection.
 
-These cases are now registered in `eng/tuple-ci-suites.json` with their actual
-observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
+Those cases were registered in the now-retired `eng/tuple-ci-suites.json` with
+these historical observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
 all 238 previous cases. The original M18 prerequisite failures and the first
 three reader-fixture failures remain historical evidence. Version/assets refusal
 now mutates the reader's actual direct Memories.EventStore reference; all twelve
@@ -323,8 +340,9 @@ verified. The ordinary duplicate control reintroduces a genuine Parties package
 after normal source reconciliation and requires the unchanged HXW005 guard to
 refuse it before unrelated active-source restore. No assertion or guard is waived.
 Reader output retains the actual public-body, catalog and mapping identities.
-The full required source profile still needs exact-head hosted execution; native,
-attachment, lifecycle and wire compatibility remain unqualified by these controls.
+At that stage the full source profile still awaited exact-head hosted execution.
+Those component observations did not qualify native, attachment, lifecycle or
+wire compatibility; current reader controls are linked at the top of this guide.
 
 The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
 selects the released backend declaration `86002eeb...`. This isolated draft now

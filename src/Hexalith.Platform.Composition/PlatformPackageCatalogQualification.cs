@@ -18,21 +18,8 @@ internal static class PlatformPackageCatalogQualification
     {
         if (options.ActiveModule == "parties")
             return PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
-        CompositionRunPlan? plan = options.RunPlan;
-        string? cohort = null;
-        if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
-            || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
-            || options.ActiveModule != "eventstore" || plan?.PlatformActiveModule != "eventstore"
-            || plan.SelectedTest is not { ModuleId: "eventstore", Mode: "package" }
-            || plan.SelectedTests.Count == 0 || plan.SelectedTests.Any(test => test.ModuleId != "eventstore" || test.Mode != "package")
-            || !CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
-            || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).SequenceEqual(["eventstore", "tenants"], StringComparer.Ordinal)
-            || !servers.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId).Order(StringComparer.Ordinal).SequenceEqual(["eventstore/gateway", "tenants/api", "tenants/domain"], StringComparer.Ordinal)
-            || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
-            || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
-            || (cohort = SelectTestCohort(options)) is null
-            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && servers.Any(server => server.ImageDigest is not null)
-            || !HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
+        string cohort = ValidateTestInputs(options, declarations, servers, developmentRun);
+        if (!HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
             throw new InvalidDataException(_refusal);
 
@@ -47,6 +34,38 @@ internal static class PlatformPackageCatalogQualification
             (_, "gateway", null) when server.ProjectPath == options.EventStoreSeedProject => server,
             _ => throw new InvalidDataException(_refusal),
         }).ToArray();
+    }
+
+    /// <summary>Validates the authenticated declared graph before package-body or image admission; grants no execution authority.</summary>
+    internal static string ValidateTestInputs(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
+        IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
+    {
+        CompositionRunPlan? plan = options.RunPlan;
+        string? cohort = null;
+        if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+            || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
+            || options.ActiveModule != "eventstore" || plan?.PlatformActiveModule != "eventstore"
+            || plan.SelectedTest is not { ModuleId: "eventstore", Mode: "package" }
+            || plan.SelectedTests.Count == 0 || plan.SelectedTests.Any(test => test.ModuleId != "eventstore" || test.Mode != "package")
+            || !CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
+            || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).SequenceEqual(["eventstore", "tenants"], StringComparer.Ordinal)
+            || !servers.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId).Order(StringComparer.Ordinal).SequenceEqual(["eventstore/gateway", "tenants/api", "tenants/domain"], StringComparer.Ordinal)
+            || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
+            || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
+            || (cohort = SelectTestCohort(options)) is null
+            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && servers.Any(server => server.ImageDigest is not null)
+            || !MatchesDeclaredTestServers(options, declarations, servers))
+            throw new InvalidDataException(_refusal);
+        return cohort;
+    }
+
+    private static bool MatchesDeclaredTestServers(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
+        IReadOnlyList<PlatformServerBinding> servers)
+    {
+        var expected = PlatformServerBindings.Resolve(options, declarations).ToDictionary(server =>
+            PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId, StringComparer.Ordinal);
+        return servers.All(server => expected.TryGetValue(PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId, out var declared)
+            && server.Image == declared.Image && server.ProjectPath == declared.ProjectPath);
     }
 
     /// <summary>The loaded SDK must be the finite signed public producer, including its technical receiver API.</summary>

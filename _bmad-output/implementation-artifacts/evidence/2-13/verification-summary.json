@@ -1,0 +1,84 @@
+{
+  "recordedUtc": "2026-11-15T18:39:02.254389+00:00",
+  "localImplementationVerified": true,
+  "candidateRevision": "0552304d8fb2975da65de15ed56c17fea2ed78d1",
+  "candidateTree": "b66bf4e7f839b9b596c9729f74bfd2e3c38d6816",
+  "continuingInventories": {
+    "passed": true,
+    "totals": {
+      "current42": 463,
+      "base42": 93,
+      "extensions": 9
+    },
+    "executions": 565,
+    "skipped": 0,
+    "reusedUnchanged": 457,
+    "receipt": "continuing-inventories-summary.json",
+    "freshCodeSnapshot": 108,
+    "freshDeliverySnapshot": 0
+  },
+  "standalonePython": {
+    "executed": 173,
+    "passed": 173,
+    "skipped": 0,
+    "receipt": "python-verified-summary.json",
+    "sourceBinding": "non-xunit-source-binding.json"
+  },
+  "sourceReleaseNode": {
+    "executed": 83,
+    "passed": 83,
+    "skipped": 0
+  },
+  "extensionRelease": {
+    "nodePassed": 14,
+    "pythonPassed": 30,
+    "skipped": 0
+  },
+  "terminalDocumentedEntrypoints": {
+    "collectionGraphPassed": 1,
+    "sourceSdkPassed": 28,
+    "skipped": 0,
+    "receipt": "non-xunit-execution-counts.json"
+  },
+  "terminalSourceIdentity": "verified at delivery revision 0552304d8fb2975da65de15ed56c17fea2ed78d1",
+  "terminalAudit": "graph-verified at delivery revision; no candidate/native acceptance",
+  "terminalSolutionBuild": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "projectOutputs": 31,
+    "rawCommand": "terminal-controls.json",
+    "rawLog": "terminal-control-4.log",
+    "builtFromRevision": "3b42a4daa394592d7ef6f65a6024506c5886300d"
+  },
+  "outputBinding": "canonical-revisions.json",
+  "matrixCorrection": "matrix-correction-summary.json",
+  "transportCorrection": "transport-correction-summary.json",
+  "isolatedMerge": "isolated-merge-summary.json",
+  "pinsAndTags": {
+    "unchanged": true,
+    "archivedQualificationTags": 105,
+    "brokerTags": 2,
+    "localQualificationBranches": [],
+    "before": "before-inventory.json",
+    "after": "after-inventory.json"
+  },
+  "diagnostics": "All earlier dirty-run, compiler, restore and transport failures are retained as diagnostic observations in the indexed archive; none is labeled final passing evidence.",
+  "remoteMutations": [],
+  "pushallInvoked": false,
+  "candidateAcceptance": false,
+  "hostedMainAcceptance": false,
+  "remainingAcceptance": "Authorized landing and actual hosted main resolution/current execution/verdict remain outstanding.",
+  "codeVerificationRevision": "3b42a4daa394592d7ef6f65a6024506c5886300d",
+  "postCodeVerificationDelta": [
+    ".gitattributes whitespace policy only"
+  ],
+  "ordinaryWhitespaceGate": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0
+  }
+}

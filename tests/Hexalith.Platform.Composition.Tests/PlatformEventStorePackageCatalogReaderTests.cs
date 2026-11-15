@@ -19,7 +19,7 @@ public sealed class PlatformEventStorePackageCatalogReaderTests
         var servers = PlatformAppModel.Prepare(fixture.Options).Select(server => server.ResourceId == "eventstore"
             ? server with { AppId = gatewayAppId } : server).ToArray();
         servers.Where(server => server.ResourceId != "eventstore").ShouldAllBe(server => server.AppId != gatewayAppId);
-        PlatformRoutingCatalog catalog = PlatformRoutingCatalog.Generate(fixture.Options, servers, Path.Combine(fixture.Plan.Workspace, "platform-components"));
+        PlatformRoutingCatalog catalog = fixture.Generate(servers);
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
         request.RootElement.GetProperty("gatewayAppId").GetString().ShouldBe(gatewayAppId);
         request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PlatformPartiesPackageFixture.EventStoreTestCohort);

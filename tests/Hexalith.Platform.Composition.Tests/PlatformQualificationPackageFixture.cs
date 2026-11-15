@@ -11,19 +11,18 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
     /// <summary>Selects the authenticated historical public SDK 4.1.0/Tenants 7.0.2 inputs for existing controls.</summary>
     internal static PlatformQualificationPackageFixture HistoricalPublic() => new(currentTest: false);
 
-    /// <summary>Selects the exact retained SDK4.1/Tenants705/Memories25 private-test reference provenance; grants no public or runtime acceptance.</summary>
+    /// <summary>Selects genuine candidate package provenance for private component controls; grants no public or runtime acceptance.</summary>
     internal static PlatformQualificationPackageFixture CurrentTest() => new(currentTest: true);
 
     /// <summary>Selects the independently authenticated loaded SDK for generic private component controls; grants no runtime acceptance.</summary>
-    internal static PlatformQualificationPackageFixture SelectedSdkTest() => PlatformPartiesPackageFixture.SelectedSdkVersion == "4.2.0"
-        ? ExtensionSdkTest() : CurrentTest();
+    internal static PlatformQualificationPackageFixture SelectedSdkTest() => CurrentTest();
 
-    /// <summary>Uses the independently released SDK4.2 source binding in an isolated component fixture.</summary>
-    internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true, sdk42: true);
+    /// <summary>Uses the same genuine current provenance for the separately selected SDK4.2 component controls.</summary>
+    internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true);
 
     /// <summary>Copies genuine declaration/policy bytes and creates explicitly synthetic owned entry prerequisites.</summary>
-    /// <param name="currentTest">Whether to copy the immutable private705/25 provenance instead of the historical public702 bytes.</param>
-    private PlatformQualificationPackageFixture(bool currentTest, bool sdk42 = false)
+    /// <param name="currentTest">Whether to copy genuine candidate package provenance instead of the authenticated historical public702 bytes.</param>
+    private PlatformQualificationPackageFixture(bool currentTest)
     {
         Root = Path.Combine(Path.GetTempPath(), "platform-qualified-cohort-" + Guid.NewGuid().ToString("N"));
         string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
@@ -31,25 +30,23 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         foreach (string file in new[] { "eventstore.json", "tenants.json", "memories.json", "local-profile.json" })
             File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", file), Path.Combine(declarations, file));
         string provenancePath = Path.Combine(declarations, "provenance.json");
+        if (currentTest)
         {
-            string fixture = currentTest ? "private-70525-provenance.json" : "public-702-provenance.json";
+            // Genuine candidate package provenance; local entry files below confer no publication authority.
+            File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json"), provenancePath);
+        }
+        else
+        {
+            const string fixture = "public-702-provenance.json";
             using Stream historical = typeof(PlatformQualificationPackageFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures." + fixture)
                 ?? throw new InvalidDataException("The authenticated retained provenance fixture is missing.");
             using MemoryStream buffer = new();
             historical.CopyTo(buffer);
             byte[] bytes = buffer.ToArray();
-            string expected = currentTest ? "3931a6ff47adf0edd4b6d19430294f6ebed2c334b50655528e751eee049fc846"
-                : "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61";
+            const string expected = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61";
             if (Convert.ToHexStringLower(SHA256.HashData(bytes)) != expected)
                 throw new InvalidDataException("The historical public provenance fixture differs from its authenticated Git body.");
             File.WriteAllBytes(provenancePath, bytes);
-        }
-        if (sdk42)
-        {
-            JsonNode sdkProvenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
-            sdkProvenance["eventstore"]!["version"] = "4.2.0";
-            sdkProvenance["eventstore"]!["commit"] = "aa16227bd07f0564a3026d619a5abd973e02656f";
-            File.WriteAllText(provenancePath, sdkProvenance.ToJsonString());
         }
         string components = Path.Combine(PlatformTestRepository.Root, "DaprComponents", "reference");
         foreach (string file in Directory.GetFiles(components, "*", SearchOption.AllDirectories))

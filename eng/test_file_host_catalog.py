@@ -1,4 +1,4 @@
-"""Real Git controls for current file AppHost authority during historical model replay."""
+"""Real Git controls for current file AppHost authority for the candidate."""
 import copy
 import hashlib
 import json
@@ -39,9 +39,6 @@ class FileHostCatalogTests(unittest.TestCase):
         self.write(self.root, "eng/builds-tuple.json", json.dumps(self.binding).encode())
         self.gitlink(self.source)
         self.current = self.commit(self.root)
-        self.gitlink(self.old)
-        self.historical = self.commit(self.root)
-        self.git(self.builds, "checkout", "-q", self.old)
 
     def git(self, root, *args):
         return subprocess.check_output(["git", *args], cwd=root, stderr=subprocess.PIPE).decode().strip()
@@ -65,7 +62,7 @@ class FileHostCatalogTests(unittest.TestCase):
     def output(self):
         return Path(self.temp.name) / "prepared"
 
-    def test_exact_current_catalog_is_exported_without_changing_historical_checkout(self):
+    def test_exact_candidate_catalog_is_exported_without_changing_checkout(self):
         before = (self.git(self.root, "rev-parse", "HEAD"), self.git(self.builds, "rev-parse", "HEAD"))
         catalog, receipt = prepare(self.root, self.builds, self.current, self.output())
         self.assertEqual(catalog.read_bytes(), self.raw)
@@ -77,7 +74,7 @@ class FileHostCatalogTests(unittest.TestCase):
     def test_changed_apphost_cannot_use_another_current_sources_catalog(self):
         self.write(self.root, "apphost.cs", b"// Different source\n")
         self.commit(self.root)
-        with self.assertRaisesRegex(ValueError, "AppHost source"):
+        with self.assertRaisesRegex(ValueError, "actual candidate checkout"):
             prepare(self.root, self.builds, self.current, self.output())
 
     def test_self_consistent_but_false_catalog_digest_refuses(self):
@@ -91,7 +88,9 @@ class FileHostCatalogTests(unittest.TestCase):
 
     def test_producer_gitlink_must_equal_the_current_binding(self):
         with self.assertRaisesRegex(ValueError, "producer gitlink"):
-            prepare(self.root, self.builds, self.historical, self.output())
+            self.gitlink(self.old)
+            changed = self.commit(self.root)
+            prepare(self.root, self.builds, changed, self.output())
 
     def test_annotated_tag_object_cannot_alias_a_current_source_commit(self):
         self.git(self.root, "tag", "-a", "alias", self.current, "-m", "Private tag control")

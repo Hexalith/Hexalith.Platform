@@ -1,0 +1,13 @@
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+index c3f65052..9d2d6a9c 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+@@ -110,7 +110,7 @@ public sealed class PlatformPartiesCatalogHandoffTests
+                 var evaluated = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
+                     ["msbuild", project, "-nologo", "-noAutoResponse", "-getItem:PackageVersion"], directory,
+                     new Dictionary<string, string> { ["DOTNET_CLI_USE_MSBUILD_SERVER"] = "false", ["MSBUILDUSESERVER"] = "0" }),
+-                    TimeSpan.FromMinutes(2), 1_048_576, TestContext.Current.CancellationToken).ConfigureAwait(true);
++                    TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken).ConfigureAwait(true);
+                 evaluated.Started.ShouldBeTrue();
+                 evaluated.ExitCode.ShouldBe(0, evaluated.Output + evaluated.ErrorOutput);
+                 evaluated.TimedOut.ShouldBeFalse();

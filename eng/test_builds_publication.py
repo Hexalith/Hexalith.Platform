@@ -251,7 +251,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
                     with self.subTest(name=name, override=environment is not None):
                         child = _subprocess_environment(name, environment, metadata_token=token)
                         observed = json.loads(subprocess.check_output([sys.executable, "-c", script], env=child, text=True))
-                        expected = token if name in ("published-artifacts", "retained-published-artifacts") else None
+                        expected = token if name == "published-artifacts" else None
                         self.assertEqual(observed, {"GH_TOKEN": expected, "CONTROL": original["CONTROL"],
                                                     "DOTNET_ROLL_FORWARD": original["DOTNET_ROLL_FORWARD"]})
                         self.assertEqual(dict(ambient if environment is None else environment), original)
@@ -267,11 +267,11 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "eng").mkdir()
-            (root / "eng/tuple-ci-suites.json").write_text(json.dumps({"groups": [
-                {"requiredCount": 1, "filter": "-class", "selectors": ["Synthetic.Control"]}]}))
+            (root / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [
+                {"requiredCount": 463, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
             (root / "Hexalith.Platform.slnx").write_text("<Solution />")
             catalog = root / "catalog.props"
-            catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion></PropertyGroup></Project>")
+            catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>")
             for fail in (False, True):
                 evidence = root / ("failed" if fail else "passed")
                 commands = []
@@ -296,13 +296,16 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
 
                 with self.subTest(failure=fail), contextlib.ExitStack() as stack:
                     stack.enter_context(patch.dict(os.environ, {"GH_TOKEN": token, "CONTROL": "preserved"}))
-                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only"]))
+                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"]))
                     stack.enter_context(patch.object(run_tuple_ci, "ROOT", root))
                     stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding))
                     stack.enter_context(patch.object(run_tuple_ci, "source_state", side_effect=source_state))
                     stack.enter_context(patch.object(run_tuple_ci, "validate_owner_pins"))
                     stack.enter_context(patch.object(run_tuple_ci, "resolve_builds_root", return_value=root))
                     stack.enter_context(patch.object(run_tuple_ci, "verify_catalog", side_effect=catalog_check))
+                    stack.enter_context(patch.object(run_tuple_ci, "verify_extension_catalog_pin", return_value={"scope": "token inheritance control"}))
+                    stack.enter_context(patch.object(run_tuple_ci, "sdk42_collecting_cohort", return_value=None))
+                    stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", return_value=catalog.read_bytes()))
                     stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
                     stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic platform"))
                     stack.enter_context(patch.object(run_tuple_ci.subprocess, "run", side_effect=command))

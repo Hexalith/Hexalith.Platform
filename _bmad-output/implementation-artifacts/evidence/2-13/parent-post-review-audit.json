@@ -1,0 +1,70 @@
+{
+  "recordedUtc": "2026-11-15T19:54:40.506813+00:00",
+  "candidateRevision": "9b27493ed62183dd37c31894f2ac712da33bfed4",
+  "candidateTree": "7bcf050c12f28d2cc8ae4ac8f01ce56009045c31",
+  "independentlyCheckedXmlGroups": [
+    {
+      "control": "fixture-factories",
+      "passed": 3,
+      "xmlSha256": "995aa1d5559c0ccf1fe514a8128924ac5c44adbc851690a3a26b6fbbea5d7a46"
+    },
+    {
+      "control": "entry",
+      "passed": 11,
+      "xmlSha256": "3b75c6f912d74d118bdf55858ebe3b5c93a37f3844f0e534c977da9d0c02f3d6"
+    },
+    {
+      "control": "reader-reuse",
+      "passed": 1,
+      "xmlSha256": "f50f4ba902abbeeae1214f1cb3ed409b45c28698189a828679259b9202edd489"
+    },
+    {
+      "control": "catalog-handoff",
+      "passed": 2,
+      "xmlSha256": "8eb6e965559af4ba05d6708f40ed50c64392d45bd2b3972429701d9930247bb4"
+    },
+    {
+      "control": "signed-handoff",
+      "passed": 2,
+      "xmlSha256": "4752fb6a89c572b07fca6b58ed23ca2b22066cae7851f77eed3c48e6cf581cd0"
+    }
+  ],
+  "passingFocusedExecutions": 19,
+  "skipped": 0,
+  "reviewedSourceFilesMatch": 8,
+  "productionSourceFilesMatch": 77,
+  "actualBeforeAfterOutputsEqual": true,
+  "originalArchiveUnchangedSha256": "9a94144fba0085cde6f542c9407f7a306c1ac167c5a3de84ec1854e157667105",
+  "compressedPublicationObservationIndependentlyVerified": true,
+  "pinsGitlinksAndAllOriginalTagsPreserved": true,
+  "gitlinks": 17,
+  "originalTags": 152,
+  "currentTags": 153,
+  "externallyObservedAddedTags": [
+    "5b44f2d058f9221d8b54782c377e09fec5786b65 refs/tags/v2.1.6"
+  ],
+  "externalOriginMainAtAudit": "5b44f2d058f9221d8b54782c377e09fec5786b65",
+  "externalOriginMainReflog": [
+    "5b44f2d058f9221d8b54782c377e09fec5786b65 origin/main@{2026-11-15 19:42:56 +0100} fetch --all --no-write-fetch-head: fast-forward",
+    "d386e36005214f925b391a34684748e6c56728e6 origin/main@{2026-11-15 18:53:57 +0100} fetch --all --no-write-fetch-head: fast-forward",
+    "217889d7830553c9a8c5340f02f9ec5fe87c8001 origin/main@{2026-11-15 18:49:57 +0100} fetch --all --no-write-fetch-head: fast-forward"
+  ],
+  "diagnosticLogArchive": {
+    "file": "diagnostic-logs.tar.gz",
+    "bytes": 2230,
+    "sha256": "fe94531e2414fa88a01ab3220566cd6565a23fbe13163328b819678d43a7b026",
+    "members": {
+      "catalog-handoff.log": "d2fb98c9273ab47859d7bc9025f57d5f879b151623507583c7c212d5ad914a99",
+      "composition-build-first.log": "e5aec3e9134e3a682064e21cd62af8be0da79f9ddf923a2ca62dc42fadae6bb6",
+      "composition-build-intermediate.log": "d267b35403a227a6b94ab907e0d6661259d3a972fadb75ca3e7ad3ea615eb41f",
+      "composition-build.log": "3874370aad1269365efd0d895b82d6902a5f9c831f2029349e81a9b9b7f5208d",
+      "current-source-tests.log": "d764af7de3dd950ad1cf94588bc7a9a9e2b912709e9d68599361652baafa5824",
+      "entry.log": "93edc11651ec1ea7737c5eedd6e5034e8d360e273ec06c2e5a54869e0e37bd95",
+      "fixture-factories.log": "e922dad3a699557c726b893fcfbd56bc0113b34007c163451f5837876b2a98ec",
+      "published-tool.log": "4a43f3dc6e696a0439606cad631cb76a621627a93ec8e544f7f0390706587f36",
+      "reader-reuse.log": "e7ae89f6849e35a3042660a4f83284103c119af77883e7b3024d2860c63eec09",
+      "signed-handoff.log": "6cf9115e5fba950362b95387365edfce17eb195078d6afc37287ca09f4579f33"
+    }
+  },
+  "hostedMainAcceptance": false
+}

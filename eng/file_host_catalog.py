@@ -1,4 +1,4 @@
-"""Authenticate the current file AppHost catalog separately from historical model inputs."""
+"""Authenticate the current file AppHost catalog from the selected candidate."""
 from __future__ import annotations
 
 import hashlib
@@ -6,15 +6,15 @@ import json
 from pathlib import Path
 
 from builds_tuple import load_binding
-from legacy_tuple_source import commit, git
+from current_tuple_source import commit, git
 
 
 def prepare(root: Path, builds_root: Path, revision: str, output: Path) -> tuple[Path, dict]:
     revision = commit(revision)
     if git(root, "rev-parse", revision + "^{commit}").decode().strip() != revision:
         raise ValueError("The file AppHost catalog requires a canonical current source commit.")
-    if git(root, "show", revision + ":apphost.cs") != git(root, "show", "HEAD:apphost.cs"):
-        raise ValueError("Historical replay changed the current file AppHost source.")
+    if git(root, "rev-parse", "HEAD").decode().strip() != revision:
+        raise ValueError("File AppHost catalog requires the actual candidate checkout.")
     output.mkdir(parents=True, exist_ok=False)
     binding_path = output / "builds-tuple.json"
     binding_path.write_bytes(git(root, "show", revision + ":eng/builds-tuple.json"))
@@ -34,7 +34,7 @@ def prepare(root: Path, builds_root: Path, revision: str, output: Path) -> tuple
     catalog.write_bytes(raw)
     receipt = {"currentSourceRevision": revision, "buildsSourceRevision": source,
                "catalogBlob": actual_blob, "catalogSha256": actual_hash,
-               "scope": "Current file AppHost pin alignment only; historical model catalog remains unchanged",
+               "scope": "Candidate file AppHost pin alignment only",
                "candidateAcceptance": False, "runtimeAcceptance": False}
     (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     return catalog, receipt

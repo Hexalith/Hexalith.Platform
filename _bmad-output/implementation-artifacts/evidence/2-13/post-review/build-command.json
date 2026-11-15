@@ -1,0 +1,23 @@
+{
+  "candidateRevision": "9b27493ed62183dd37c31894f2ac712da33bfed4",
+  "cwd": "/tmp/hexalith-job.k8xZcN5N/candidate",
+  "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "--artifacts-path",
+    "/tmp/hexalith-job.k8xZcN5N/build",
+    "-p:UseHexalithProjectReferences=false",
+    "-p:HexalithBuildsRoot=/tmp/hexalith-job.k8xZcN5N/candidate/references/Hexalith.Builds",
+    "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.k8xZcN5N/tool/published/tools/net11.0/any",
+    "-p:HexalithEventStoreVersion=4.2.0",
+    "-p:HexalithTenantsVersion=7.0.7",
+    "-p:HexalithMemoriesVersion=3.0.27",
+    "-p:HexalithPartiesVersion=3.1.1",
+    "-p:HexalithMcpCliVersion=2.0.1"
+  ],
+  "exitCode": 0
+}

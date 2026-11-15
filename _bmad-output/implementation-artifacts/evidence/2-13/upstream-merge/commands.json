@@ -1,0 +1,26 @@
+[
+  {
+    "label": "npm-ci",
+    "command": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--cache",
+      "/tmp/hexalith-job.WilVLMxy/npm-cache"
+    ],
+    "cwd": "/tmp/hexalith-job.WilVLMxy/merged-platform",
+    "exitCode": 0
+  },
+  {
+    "label": "source-release",
+    "command": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "cwd": "/tmp/hexalith-job.WilVLMxy/merged-platform",
+    "exitCode": 0
+  }
+]

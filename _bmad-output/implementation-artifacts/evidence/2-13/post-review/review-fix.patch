@@ -1,0 +1,410 @@
+diff --git a/docs/package-catalog-qualification.md b/docs/package-catalog-qualification.md
+index ca2b4739..f93aa1cc 100644
+--- a/docs/package-catalog-qualification.md
++++ b/docs/package-catalog-qualification.md
+@@ -1,6 +1,21 @@
+ # Package catalog qualification
+ 
+-## Current signed producer and Tenants 7.0.5 tuple
++Current preparation and CI are documented in [current tuple preparation](current-tuple-preparation.md).
++Only the candidate Platform checkout is selected. Continuing inventories contain
++463 current42, 93 base42 and nine extension cases. Current-owner reader controls
++in `PlatformCurrentOwnerPackageTests` exercise genuine measured packages,
++production reader generation, immutable catalog/receipt reuse and changed-body/
++request/version/assets refusals through `PlatformReaderMutationControls`.
++`PlatformPartiesCatalogHandoffTests` and `PlatformCurrentOwnerHandoffTests`
++retain snapshot derivation and authenticated handoff controls. These observations
++grant no image or native runtime admission.
++
++## Historical signed producer and Tenants 7.0.5 tuple
++
++The remainder records earlier tuple-specific preparation and measurements. Its
++old pins, replay requirements and positive-control accounts are historical,
++including the retired `PlatformPartiesPackageReaderTests` and
++`eng/tuple-ci-suites.json`; they are not current preparation instructions.
+ 
+ The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
+ at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
+@@ -29,9 +44,10 @@ AppHost `f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d` and T
+ `4b65841e1a3152707edcb4c98f368462084ebdcfcf8bbc1af44dc12483f88bf8`; inventory SHA-256
+ `a55b4fdd755125589092ec0f8f04f8ba19d2f0281d3d7a5b8215ba701d79ebf2`.
+ 
+-The source inventories register 315 current cases and preserve all 349 original
+-legacy controls. Fresh final same-code L/M source proof, exact-source hosted
+-validation, native effects and complete cleanup remain separately required.
++The source inventories at that stage registered 315 current cases and 349 legacy
++controls. Same-code L/M proof and exact-source hosted validation were requirements
++of that historical replay workflow. The replay requirements have since been
++retired; the recorded observations grant no current native or cleanup acceptance.
+ Package measurement and component checks grant no public-consumer or candidate
+ acceptance. The prior producer preparation below retains its own original facts.
+ 
+@@ -301,9 +317,10 @@ No service, native, lifecycle, parity, candidate or Story acceptance follows fro
+ source/component preparation.
+ 
+ 
+-The remaining full-entry and production-generated reader controls are prepared in
+-`PlatformPartiesPackageEntryTests` and `PlatformPartiesPackageReaderTests`. They
+-are unconditional positive controls. Their fixture first requires the actual
++At that historical stage, full-entry and production-generated reader controls
++were prepared in `PlatformPartiesPackageEntryTests` and the since-deleted
++`PlatformPartiesPackageReaderTests`. They were unconditional positives for that
++recorded tuple. Their fixture first required the actual
+ loaded public M23 Contracts body, then the collecting
+ Platform repository with its actual clean root-declared Parties and Builds
+ checkouts. Normal Platform-owned workspace resolution and catalog materialization
+@@ -313,8 +330,8 @@ no invented consumer release tag or synthetic/legacy mapping fallback. The fixtu
+ no service. Its probe responses are deterministic component doubles; they do not
+ claim fresh registry/image inspection.
+ 
+-These cases are now registered in `eng/tuple-ci-suites.json` with their actual
+-observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
++Those cases were registered in the now-retired `eng/tuple-ci-suites.json` with
++these historical observed counts: 21 entry, nine reader and three mapped-owner cases, retaining
+ all 238 previous cases. The original M18 prerequisite failures and the first
+ three reader-fixture failures remain historical evidence. Version/assets refusal
+ now mutates the reader's actual direct Memories.EventStore reference; all twelve
+@@ -323,8 +340,9 @@ verified. The ordinary duplicate control reintroduces a genuine Parties package
+ after normal source reconciliation and requires the unchanged HXW005 guard to
+ refuse it before unrelated active-source restore. No assertion or guard is waived.
+ Reader output retains the actual public-body, catalog and mapping identities.
+-The full required source profile still needs exact-head hosted execution; native,
+-attachment, lifecycle and wire compatibility remain unqualified by these controls.
++At that stage the full source profile still awaited exact-head hosted execution.
++Those component observations did not qualify native, attachment, lifecycle or
++wire compatibility; current reader controls are linked at the top of this guide.
+ 
+ The prior direct Parties source `f1bf359383b225df14ac2b98bcc6f8a8479c9437`
+ selects the released backend declaration `86002eeb...`. This isolated draft now
+diff --git a/docs/source-releases.md b/docs/source-releases.md
+index e6fd6ce5..625027a8 100644
+--- a/docs/source-releases.md
++++ b/docs/source-releases.md
+@@ -2,15 +2,19 @@
+ 
+ `source-release.yml` responds to completed main-push runs of **Platform tuple CI
+ preflight** and **Catalog builder consumer binding**. Its read-only job requires
+-both latest exact-source runs, latest attempts and all five tuple
+-orchestration/execution jobs and six SDK jobs to pass. Source resolution fans out
+-to the current SDK4.2 lane and genuine same-code 412/349-case historical lanes;
+-the aggregate verdict requires all three. The current lane executes the complete
+-457 retained upstream cases, nine current artifact controls, 97 finite default-cohort
+-cases and nine extension component cases: 572 executions, 569 unique identities and three explicitly
+-repeated regressions. Every profile retains exact execution counts with zero
+-skips. Missing or pending counterparts defer. Failures, cancellations, unknown
+-jobs, foreign/PR inputs, stale callbacks and changed main refuse.
++both latest exact-source runs, latest attempts, all three tuple jobs
++(`resolve-sources`, `tuple`, `tuple-verdict`) and all six SDK jobs to pass.
++Resolution and current execution use only the candidate's shallow Platform
++checkout. The verdict requires both prerequisites to succeed; failure,
++cancellation, skip or an absent result refuses release qualification.
++
++The continuing candidate inventories measure **463 current42, 93 base42 and
++9 extension cases: 565 executions**, with explicit positive counts and zero
++skips. All execute through the current NET11 collector. No historical Platform
++checkout, replay profile or companion ref is required. Missing or pending
++counterpart workflows defer; foreign/PR inputs, stale callbacks and changed main
++refuse. See [current tuple preparation](current-tuple-preparation.md) for the
++selected binding and execution boundaries.
+ 
+ Only the tuple execution steps receive the existing read-only GitHub job token.
+ The runner removes it from ambient and ordinary command environments, passing it
+@@ -18,22 +22,25 @@ only to published-artifact verification. That verifier retains it privately for
+ fixed official Builds API metadata requests; its Git, signature and tool subprocesses
+ do not inherit it. Signature, publication, source and execution-count checks remain independent.
+ 
+-The SDK4.2.0 row binds the genuine Sample source and public Tenants7.0.5;
+-the SDK4.1.0 row retains its existing public Parties owner regression. A separate
+-SDK4.2.0 check authenticates the twelve signed public reader bodies and executes
+-the complete Parties3.1/Tenants7.0.5/Memories3.0.25 catalog, with closed-owner and
+-changed-body refusals. It retains the original public Parties3.1 image digest
+-and that image's SDK4.1 provenance. The private current-owner purpose separately
+-binds exact SDK4.1 or SDK4.2 reference bodies to its measured Release source,
+-reader receipt and mapped process files. Neither reader qualification nor model
+-controls grant native runtime acceptance. The current 466-case profile retains
+-its six SDK4.2 extension controls and 38 artifact boundary controls; the additional
+-97/9 profiles do not replace them. The additional current reader authenticates
+-Tenants7.0.7, Memories3.0.26 and Parties3.1.1 package bodies. It does not grant
+-their image tuples native admission. The historical
+-Historical Works behavior evidence remains bound to Dapr1.18.7. The current
+-Works toolchain records independently verified official Dapr1.19.1 executable
+-identities; its complete parity suite remains the behavioral qualification gate.
++The catalog-builder SDK matrix retains its independent published owner and
++extension controls. The continuing Platform profiles retain genuine old public
++packages as explicit fixture data and verify actual package bodies, private
++purpose/key/snapshot boundaries, signed-host handoff, reader integrity,
++readiness and generated model transport. Current private reader preparation
++uses the candidate binding's SDK4.2.0, Tenants7.0.7, Memories3.0.27 and
++Parties3.1.1 inputs. Reader authenticity and component checks grant no image or
++native runtime admission.
++
++Historically, source resolution also selected 412/349-case Platform replay lanes.
++Those jobs and profiles have been retired. An earlier release preparation
++recorded 466 current cases (457 retained plus nine artifact controls), 97 default
++cases and nine extension cases, totaling 572 executions with 569 unique
++identities and three repeated regressions. Its public Parties3.1/Tenants7.0.5/
++Memories3.0.25 and private SDK4.1/4.2 observations retain their original subjects;
++they are not current orchestration requirements or acceptance for today's image
++tuples. Historical Works behavior evidence remains bound to Dapr1.18.7. The
++current Works toolchain records independently verified official Dapr1.19.1
++executable identities; its complete parity suite remains the behavioral gate.
+ 
+ The read-only verifier runs the reviewed default-branch workflow SHA, so an old
+ callback cannot hide behind the absence of newer helper files. Exact workflow ref,
+diff --git a/eng/test_current_tuple_source.py b/eng/test_current_tuple_source.py
+index e4f322f6..69de9eae 100644
+--- a/eng/test_current_tuple_source.py
++++ b/eng/test_current_tuple_source.py
+@@ -71,6 +71,40 @@ class CurrentTupleSourceTests(unittest.TestCase):
+             self.assertNotEqual(item["commit"], self.binding["ownerSources"][name]["sourceRevision"])
+         current.verify_package_release_identities(self.root, self.source)
+ 
++    def test_depth_one_platform_checkout_authenticates_independent_owner_releases(self):
++        prior = self.git(self.root, "rev-parse", self.source + "^")
++        with tempfile.TemporaryDirectory(prefix="shallow-current-platform-") as directory:
++            checkout = Path(directory) / "platform"
++            self.git(self.root, "clone", "--depth=1", "--no-tags", self.root.as_uri(), str(checkout))
++            self.assertEqual(self.git(checkout, "rev-parse", "--is-shallow-repository"), "true")
++            self.assertEqual(self.git(checkout, "rev-list", "--count", "--all"), "1")
++            self.assertEqual(self.git(checkout, "rev-list", "--all"), self.source)
++            self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", prior + "^{commit}"],
++                                               cwd=checkout, capture_output=True).returncode, 0)
++            for name, repository in current.OWNERS.items():
++                owner = checkout / "references" / repository
++                self.git(checkout, "clone", (self.root / "references" / repository).as_uri(), str(owner))
++                self.git(owner, "checkout", "--detach", self.binding["ownerSources"][name]["sourceRevision"])
++                self.assertFalse((owner / ".git/objects/info/alternates").exists())
++            self.assertEqual(current.read_selection(checkout, self.source), (self.binding, self.provenance))
++            self.assertEqual(current.create_binding(checkout, self.source), self.binding)
++            self.assertFalse(current.verify_checkout(checkout, self.source)["qualificationCredit"])
++            self.assertEqual(current.verify_package_release_identities(checkout, self.source)["packages"], self.provenance)
++            owner = checkout / "references/Hexalith.Tenants"
++            self.git(owner, "tag", "-f", "v1.0.0", self.binding["ownerSources"]["tenants"]["sourceRevision"])
++            with self.assertRaisesRegex(ValueError, "actual release tag or declaration blob"):
++                current.verify_checkout(checkout, self.source)
++            self.git(owner, "tag", "-f", "v1.0.0", self.provenance["tenants"]["commit"])
++            manifest = (owner / current.MANIFEST).read_bytes()
++            self.write(owner, current.MANIFEST, manifest + b"tampered\n")
++            with self.assertRaisesRegex(ValueError, "checkout or declaration differs"):
++                current.verify_checkout(checkout, self.source)
++            self.write(owner, current.MANIFEST, manifest)
++            current.verify_checkout(checkout, self.source)
++            self.assertEqual(self.git(checkout, "rev-list", "--count", "--all"), "1")
++            self.assertNotEqual(subprocess.run(["git", "cat-file", "-e", prior + "^{commit}"],
++                                               cwd=checkout, capture_output=True).returncode, 0)
++
+     def test_current_gitlink_change_requires_a_matching_committed_binding(self):
+         self.gitlink("Hexalith.Parties", "e" * 40)
+         changed = self.commit(self.root)
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs
+index 14593a4a..17d8997f 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerHandoffTests.cs
+@@ -84,10 +84,13 @@ public sealed class PlatformCurrentOwnerHandoffTests
+         string snapshot = Path.Combine(mapping, "catalog-versions.json");
+         string[] authority = [Path.Combine(fixture.Workspace, "plan.json"), .. Directory.GetFiles(mapping, "*", SearchOption.AllDirectories)];
+         var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
++        byte[] originalSnapshot = File.ReadAllBytes(snapshot);
+         var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
+         validation.ExitCode.ShouldNotBe(0);
+         validation.ErrorOutput.ShouldContain("requires its exact qualified full owner/public/image cohort");
+         validation.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
++        byte[] validationSnapshot = File.ReadAllBytes(snapshot);
++        await PlatformPartiesCatalogHandoffTests.AssertDerivedConsumerEnrichmentAsync(originalSnapshot, validationSnapshot, snapshot, fixture.Seed);
+         fixture.AssertValidationRuntimeIntegrity();
+         Directory.Exists(Path.Combine(fixture.Workspace, "current-owner")).ShouldBeTrue(
+             "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner before image refusal.");
+@@ -119,6 +122,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
+             foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
+             throw new InvalidOperationException("Expected real signed current validation and ordinary catalog; stop before resources.");
+         }, signingKey: initialSigningKey)).Message.ShouldBe("Expected real signed current validation and ordinary catalog; stop before resources.");
++        await PlatformPartiesCatalogHandoffTests.AssertDerivedConsumerEnrichmentAsync(validationSnapshot, File.ReadAllBytes(snapshot), snapshot, fixture.Seed);
+         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
+         builder.Resources.ShouldBeEmpty();
+         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs
+index 7463b62b..cc46d1ea 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs
+@@ -97,6 +97,7 @@ public sealed class PlatformCurrentOwnerPackageTests
+             changed["loadedArtifacts"]![0]!["sha256"] = new string('0', 64);
+             using JsonDocument changedReceipt = JsonDocument.Parse(changed.ToJsonString());
+             Should.Throw<InvalidDataException>(() => replacementProof.VerifyReader(changedReceipt.RootElement));
++            Should.Throw<InvalidDataException>(() => proof.VerifyReader(changedReceipt.RootElement));
+         }
+         replacementProof.Matches(replacement).ShouldBeTrue("Repeated generation preserves the second measured proof without repair or reissuance.");
+         string snapshot = Path.Combine(fixture.Workspace, "source-mapping", "catalog-versions.json");
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+index 26464a94..4c4f46bc 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs
+@@ -3,15 +3,16 @@ namespace Hexalith.Platform.Composition.Tests;
+ using System.Security.Cryptography;
+ using System.Text.Json;
+ using System.Text.Json.Nodes;
++using System.Xml.Linq;
+ using Hexalith.Builds.Tooling.Runtime;
+ using Hexalith.Builds.Tooling.Workspace;
+ using Shouldly;
+ 
+-/// <summary>Exercises the actual signed validation and ordinary catalog phases without building or running resources.</summary>
++/// <summary>Exercises measured current preparation and ordinary catalog phases without composing resources.</summary>
+ public sealed class PlatformPartiesCatalogHandoffTests
+ {
+     /// <summary>Only genuine derived consumer cache enrichment is permitted; ordinary execution preserves it and old rematerialization refuses.</summary>
+-    /// <param name="releasedMaterialization">Whether to also exercise the released 1.4.0 unconditional materialization call.</param>
++    /// <param name="releasedMaterialization">Whether to exercise unconditional rematerialization instead of sealed-snapshot reuse.</param>
+     [Theory]
+     [InlineData(false)]
+     [InlineData(true)]
+@@ -29,11 +30,11 @@ public sealed class PlatformPartiesCatalogHandoffTests
+         string[] pinnedFiles = Directory.GetFiles(tree, "*", SearchOption.AllDirectories).Order(StringComparer.Ordinal).ToArray();
+         Observe("command-cold", snapshot, null);
+ 
+-        // The genuine AppHost's --validate-platform path returns before builder.Build/Run.
+-        // Its only image executable is the existing exact, registry-free fixture probe.
++        // The genuine current entry and production reader prepare the consumer cache before ordinary entry.
+         var measured = fixture.CaptureCurrent();
+         var preflight = fixture.Generate();
+         byte[] warm = File.ReadAllBytes(snapshot);
++        await AssertDerivedConsumerEnrichmentAsync(cold, warm, snapshot, fixture.Seed);
+         string preflightCatalog = preflight.CatalogPath;
+         byte[] preflightBytes = File.ReadAllBytes(preflightCatalog);
+         measured.CurrentOwnerProof!.Matches(measured).ShouldBeTrue();
+@@ -83,6 +84,58 @@ public sealed class PlatformPartiesCatalogHandoffTests
+         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
+     }
+ 
++    /// <summary>Only genuine consumer-cache additions and their derived hash may change; warm entries and all other JSON remain immutable.</summary>
++    internal static async Task AssertDerivedConsumerEnrichmentAsync(byte[] before, byte[] after, string snapshotPath, string seed)
++    {
++        JsonNode original = JsonNode.Parse(before)!;
++        JsonNode derived = JsonNode.Parse(after)!;
++        foreach (byte[] bytes in new[] { before, after })
++        {
++            CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(bytes)!;
++            snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit,
++                snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
++        }
++        JsonObject originalVersions = original["ProjectVersions"]!.AsObject();
++        JsonObject versions = derived["ProjectVersions"]!.AsObject();
++        var allowed = new HashSet<string>(["Hexalith.Platform.CatalogBuilder", Path.GetFileNameWithoutExtension(seed)], StringComparer.Ordinal);
++        foreach (string consumer in allowed.Where(versions.ContainsKey))
++        {
++            string directory = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(snapshotPath))!, "cache-assertion-" + Guid.NewGuid().ToString("N"));
++            CompositionWorkspace.CreatePrivateDirectory(directory);
++            try
++            {
++                string project = Path.Combine(directory, consumer + ".proj");
++                string catalog = Path.Combine(Path.GetDirectoryName(snapshotPath)!, "pinned-tree", "Props", "Directory.Packages.props");
++                string selected = Path.Combine(directory, "versions.txt");
++                new XDocument(new XElement("Project", new XElement("Import", new XAttribute("Project", catalog)),
++                    new XElement("Target", new XAttribute("Name", "RecordConsumerVersions"),
++                        new XElement("WriteLinesToFile", new XAttribute("File", selected),
++                            new XAttribute("Lines", "@(PackageVersion->'%(Identity)=%(Version)')"), new XAttribute("Overwrite", "true"))))).Save(project);
++                var evaluated = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
++                    ["msbuild", project, "-nologo", "-noAutoResponse", "-target:RecordConsumerVersions", "-verbosity:quiet"], directory,
++                    new Dictionary<string, string> { ["DOTNET_CLI_USE_MSBUILD_SERVER"] = "false", ["MSBUILDUSESERVER"] = "0" }),
++                    TimeSpan.FromMinutes(2), TestContext.Current.CancellationToken).ConfigureAwait(true);
++                evaluated.Started.ShouldBeTrue();
++                evaluated.ExitCode.ShouldBe(0, evaluated.Output + evaluated.ErrorOutput);
++                evaluated.TimedOut.ShouldBeFalse();
++                evaluated.OutputTruncated.ShouldBeFalse();
++                string[] lines = File.ReadAllLines(selected);
++                lines.Length.ShouldBeGreaterThan(0);
++                var expected = lines.Select(line => line.Split('=', 2)).ToDictionary(pair => pair[0], pair => pair[1]);
++                JsonNode.DeepEquals(versions[consumer], JsonSerializer.SerializeToNode(expected)).ShouldBeTrue(
++                    "The consumer cache must equal an independent evaluation of the unchanged pinned catalog: " + consumer);
++            }
++            finally { Directory.Delete(directory, recursive: true); }
++        }
++        foreach (string added in versions.Select(pair => pair.Key).Where(key => !originalVersions.ContainsKey(key)).ToArray())
++        {
++            allowed.ShouldContain(added);
++            versions.Remove(added).ShouldBeTrue();
++        }
++        derived["Hash"] = original["Hash"]!.DeepClone();
++        JsonNode.DeepEquals(original, derived).ShouldBeTrue("Only genuine added consumer entries and the correctly recomputed hash may change; existing warm entries remain unchanged.");
++    }
++
+     private static void Observe(string phase, string snapshot, bool? proofMatches)
+     {
+         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(snapshot));
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs
+index d56fa0f2..d4518fcb 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs
+@@ -7,10 +7,10 @@ using Hexalith.Builds.Tooling.Manifest;
+ using Hexalith.Builds.Tooling.Runtime;
+ using Shouldly;
+ 
+-/// <summary>Unconditional full-profile component cases; publication and a coherent real owner checkout are mandatory prerequisites.</summary>
++/// <summary>Authenticated parent/runner entry refusals before composition effects; grants no image admission.</summary>
+ public sealed class PlatformPartiesPackageEntryTests
+ {
+-    /// <summary>Each replay/serialization/scope mutation starts from an actually admitted full closure and refuses before probes or effects.</summary>
++    /// <summary>Each mutation starts from a genuine parent proof or measured Development entry and refuses before composition effects.</summary>
+     /// <param name="fault">The altered authority input.</param>
+     [Theory]
+     [InlineData("run")]
+@@ -31,8 +31,11 @@ public sealed class PlatformPartiesPackageEntryTests
+             using var measured = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
+             PlatformCompositionOptions actual = measured.CaptureCurrent();
+             actual.CurrentOwnerProof!.Matches(actual).ShouldBeTrue();
+-            Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.Create(actual, CompositionSigningKey.Create(), developmentRun: false));
+-            measured.AssertNoEffects(PlatformPartiesPackageFixture.Builder("Production"));
++            var production = PlatformPartiesPackageFixture.Builder("Production");
++            int configured = 0;
++            Should.Throw<InvalidDataException>(() => measured.Compose(production, options => { configured++; return options; }));
++            configured.ShouldBe(0, "Production must refuse at the real runner entry before the configuration callback.");
++            measured.AssertNoEffects(production);
+             return;
+         }
+         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+index 6a338afc..95fbd216 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs
+@@ -11,19 +11,18 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
+     /// <summary>Selects the authenticated historical public SDK 4.1.0/Tenants 7.0.2 inputs for existing controls.</summary>
+     internal static PlatformQualificationPackageFixture HistoricalPublic() => new(currentTest: false);
+ 
+-    /// <summary>Selects the exact retained SDK4.1/Tenants705/Memories25 private-test reference provenance; grants no public or runtime acceptance.</summary>
++    /// <summary>Selects genuine candidate package provenance for private component controls; grants no public or runtime acceptance.</summary>
+     internal static PlatformQualificationPackageFixture CurrentTest() => new(currentTest: true);
+ 
+     /// <summary>Selects the independently authenticated loaded SDK for generic private component controls; grants no runtime acceptance.</summary>
+-    internal static PlatformQualificationPackageFixture SelectedSdkTest() => PlatformPartiesPackageFixture.SelectedSdkVersion == "4.2.0"
+-        ? ExtensionSdkTest() : CurrentTest();
++    internal static PlatformQualificationPackageFixture SelectedSdkTest() => CurrentTest();
+ 
+-    /// <summary>Uses the independently released SDK4.2 source binding in an isolated component fixture.</summary>
+-    internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true, sdk42: true);
++    /// <summary>Uses the same genuine current provenance for the separately selected SDK4.2 component controls.</summary>
++    internal static PlatformQualificationPackageFixture ExtensionSdkTest() => new(currentTest: true);
+ 
+     /// <summary>Copies genuine declaration/policy bytes and creates explicitly synthetic owned entry prerequisites.</summary>
+-    /// <param name="currentTest">Whether to copy the immutable private705/25 provenance instead of the historical public702 bytes.</param>
+-    private PlatformQualificationPackageFixture(bool currentTest, bool sdk42 = false)
++    /// <param name="currentTest">Whether to copy genuine candidate package provenance instead of the authenticated historical public702 bytes.</param>
++    private PlatformQualificationPackageFixture(bool currentTest)
+     {
+         Root = Path.Combine(Path.GetTempPath(), "platform-qualified-cohort-" + Guid.NewGuid().ToString("N"));
+         string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
+@@ -38,14 +37,13 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
+         }
+         else
+         {
+-            string fixture = currentTest ? "private-70525-provenance.json" : "public-702-provenance.json";
++            const string fixture = "public-702-provenance.json";
+             using Stream historical = typeof(PlatformQualificationPackageFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures." + fixture)
+                 ?? throw new InvalidDataException("The authenticated retained provenance fixture is missing.");
+             using MemoryStream buffer = new();
+             historical.CopyTo(buffer);
+             byte[] bytes = buffer.ToArray();
+-            string expected = currentTest ? "3931a6ff47adf0edd4b6d19430294f6ebed2c334b50655528e751eee049fc846"
+-                : "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61";
++            const string expected = "3e9b04109c5ddb34a0ac6801f5cdb36e1cbc102c65bfccb54b77c4d408091a61";
+             if (Convert.ToHexStringLower(SHA256.HashData(bytes)) != expected)
+                 throw new InvalidDataException("The historical public provenance fixture differs from its authenticated Git body.");
+             File.WriteAllBytes(provenancePath, bytes);

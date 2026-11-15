@@ -1,0 +1,15 @@
+{
+  "file": "setup-diagnostics.tar.gz",
+  "sha256": "6552ce2b5abebfdbf72ce97582a5dfa04af0d4522b297c7d45cb4e59d4a14992",
+  "members": {
+    "upstream-merge-incomplete-checkout/commands.json": "9b114c98ac7e4a15a27ff5873a3e0a0b81f5c40ddaf995277986efb0f95cb304",
+    "upstream-merge-incomplete-checkout/merge.log": "ba70250b9e0d1f32c35c30c6bfdfe05a3840fd3d0f7d1e97b2c8884c4ed63fc1",
+    "upstream-merge-incomplete-checkout/npm-ci.log": "d3c7a2eb2c2688975bc3b9b6220ff5e0a4ac1429750cac31fb54891eecd830c1",
+    "upstream-merge-incomplete-checkout/source-release.log": "21f927c30b9db3a41ab4405b2e6b7089fe6fff4a63114e33853773e4d55ec413",
+    "upstream-merge-incomplete-checkout-2/commands.json": "364645197cdf93ab6e5f1b0fdf7766c7176e4e20ff1be9a88005af6d821a5307",
+    "upstream-merge-incomplete-checkout-2/merge.log": "0f979f4897c59537f6cf2649690b3f5ad6ed5a92fc94318c49ccc9bba05dc7e9",
+    "upstream-merge-incomplete-checkout-2/npm-ci.log": "d3c7a2eb2c2688975bc3b9b6220ff5e0a4ac1429750cac31fb54891eecd830c1",
+    "upstream-merge-incomplete-checkout-2/source-release.log": "d88d15631f7daabfa7d8b8801dd7250bc54aec45548156e224b3c5dabb9fd964"
+  },
+  "disposition": "Diagnostic only: first sparse checkout omitted two required fixtures; second retained an absent unchanged release config. The final checkout resets its private worktree, asserts both fixtures and clean status, then passes all83 source-release tests."
+}

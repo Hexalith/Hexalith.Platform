@@ -202,3 +202,14 @@ eng/fixtures/builds-6.0.3-binding.json text eol=lf
 # Preserve independently measured6.0.5 source catalog and publication fixture bytes.
 eng/fixtures/builds-6.0.5-Directory.Packages.props text eol=lf
 eng/fixtures/builds-6.0.5-binding.json text eol=lf
+
+# Recognize existing CRLF in the tuple retirement controls while checking whitespace.
+src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformPartiesProofFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformPartiesValidationHandoffTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformReaderMutationControls.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Retain post-review patch observations verbatim, including diff context and CRLF.
+_bmad-output/implementation-artifacts/evidence/2-13/post-review/*.patch -text -whitespace
