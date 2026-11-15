@@ -1,0 +1,259 @@
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index 3e3f4459..f1107688 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -149,11 +149,13 @@
+     <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">5.1.0</HexalithEventStoreVersion>
+     <HexalithAspNetCoreOpenApiVersion>11.0.0</HexalithAspNetCoreOpenApiVersion>
+     <HexalithOpenApiVersion>3.11.0</HexalithOpenApiVersion>
+-    <!-- The public SDK4.2 gateway calls the OpenApi2 ABI; keep both exact audited members together. -->
+-    <HexalithAspNetCoreOpenApiVersion Condition="'$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">10.0.15</HexalithAspNetCoreOpenApiVersion>
+-    <HexalithOpenApiVersion Condition="'$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">2.13.0</HexalithOpenApiVersion>
++    <!-- Packaged SDK4.2 uses OpenApi2; current source projects consume the .NET11 OpenAPI ABI. -->
++    <HexalithAspNetCoreOpenApiVersion Condition="('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithEventStoreFromSource)' == 'false') and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">10.0.15</HexalithAspNetCoreOpenApiVersion>
++    <HexalithOpenApiVersion Condition="('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithEventStoreFromSource)' == 'false') and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">2.13.0</HexalithOpenApiVersion>
+     <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">6.0.0</HexalithFrontComposerVersion>
+     <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">1.4.0</HexalithFoldersVersion>
++    <!-- Retain the qualified MCP2 package ABI only for the finite SDK4.2 roles; source MCP keeps its current catalog. -->
++    <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == '' and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithMcpCliFromSource)' == 'false') and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">2.0.1</HexalithMcpCliVersion>
+     <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == ''">3.0.0</HexalithMcpCliVersion>
+     <!-- Every finite SDK4.2 role uses the admitted Memories cohort, including private Parties producers; explicit selections remain authoritative. -->
+     <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == '' and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true')">3.0.27</HexalithMemoriesVersion>
+diff --git a/Tools/evaluated_catalog.py b/Tools/evaluated_catalog.py
+index 21f03d8f..b9724e13 100644
+--- a/Tools/evaluated_catalog.py
++++ b/Tools/evaluated_catalog.py
+@@ -55,7 +55,7 @@ def evaluate_catalog(path: Path, configuration: str = "Debug",
+             ET.SubElement(project, "Import", {"Project": str(path)})
+             ET.ElementTree(project).write(evaluation_path, encoding="utf-8")
+         preprocessed = Path(temporary) / "catalog.xml"
+-        _run(evaluation_path, ["-preprocess:" + str(preprocessed)], neutral=True,
++        _run(evaluation_path, ["-p:UseHexalithProjectReferences=false", "-preprocess:" + str(preprocessed)], neutral=True,
+              configuration=configuration, target_framework=target_framework, working_directory=path.parent)
+         document = ET.parse(preprocessed).getroot()
+         event_store_defaults = []
+@@ -76,7 +76,8 @@ def evaluate_catalog(path: Path, configuration: str = "Debug",
+             raise ValueError("Ambiguous controlled EventStore catalog default: HexalithEventStoreVersion")
+         names = sorted({_local_name(item.tag) for group in document.iter()
+                         if _local_name(group.tag) == "PropertyGroup" for item in group} | {"HexalithAspireAppHostSdkVersion"})
+-        arguments = ["-getItem:PackageVersion"]
++        # Catalog snapshots describe package consumers; source project inspection keeps its own context.
++        arguments = ["-p:UseHexalithProjectReferences=false", "-getItem:PackageVersion"]
+         if names:
+             arguments.append("-getProperty:" + ",".join(names))
+         evaluation = json.loads(_run(evaluation_path, arguments, neutral=True, configuration=configuration,
+diff --git a/Tools/package-version-audit.json b/Tools/package-version-audit.json
+index 0b2e474d..7c7507f7 100644
+--- a/Tools/package-version-audit.json
++++ b/Tools/package-version-audit.json
+@@ -1,28 +1,25 @@
+ {
+   "schemaVersion": 2,
+-  "generatedFromRevision": "6508014ba449856289f06b40d4b806cc8c8d2ff5",
++  "generatedFromRevision": "15fc21c569a88a567460bad785ae0a88dcbbe343",
+   "catalogPath": "Props/Directory.Packages.props",
+-  "catalogSha256": "253c5d1d7530ee9f6b17ecdfa0f4e49c1f30356e075e1111c2c3c803623ef683",
+-  "catalogRawSha256": "2b21bbac8b295c95dce60739d205adbb9937da5a78867841ef9763724bf920bd",
++  "catalogSha256": "712c7986d86fecc48ddcc6dff31c49a2c0667e0f1fd7587eacfc4e42ceca8f3f",
++  "catalogRawSha256": "8feb4e979ab65ba30aadf08fb57df5a857b243fada15d0d373225e156c9e18ae",
+   "snapshot": {
+     "mode": "incremental",
+-    "auditedAtUtc": "2026-11-15T08:34:18.2094164+00:00",
++    "auditedAtUtc": "2026-11-15T11:05:15.5618259+00:00",
+     "refreshedFamilies": [
+-      "bunit-html",
+-      "hexalith-conversations",
+-      "hexalith-mcpcli",
+-      "package:radzen.blazor",
+-      "roslyn",
+-      "verify"
++      "hexalith-mcpcli"
+     ],
+     "preservedFamilies": [
+       "aspire",
++      "bunit-html",
+       "dapr",
+       "dotnet-10",
+       "fluent-ui",
+       "hexalith-applications",
+       "hexalith-chatbot",
+       "hexalith-commons",
++      "hexalith-conversations",
+       "hexalith-documents",
+       "hexalith-domains",
+       "hexalith-eventstore",
+@@ -137,6 +134,7 @@
+       "package:octokit",
+       "package:orchardcore.localization.core",
+       "package:pactnet",
++      "package:radzen.blazor",
+       "package:roslynator.analyzers",
+       "package:roslynator.formatting.analyzers",
+       "package:scriban",
+@@ -166,6 +164,8 @@
+       "package:testcontainers",
+       "package:threenine.data",
+       "package:yamldotnet",
++      "roslyn",
++      "verify",
+       "xunit"
+     ]
+   },
+@@ -182,7 +182,7 @@
+     "fixture": null,
+     "fixtureSha256": null,
+     "fixtureMode": null,
+-    "repositoryRevision": "6508014ba449856289f06b40d4b806cc8c8d2ff5",
++    "repositoryRevision": "15fc21c569a88a567460bad785ae0a88dcbbe343",
+     "sha256": "aff9f6a2f937cd22eb59a0e3ad5ac6dd02b4b2a1116f0eb91fdfdfb256f0e54a",
+     "entries": [
+       {
+@@ -13962,8 +13962,8 @@
+       "removalTrigger": "Accept only after current family compatibility, consumer evidence, and owner review pass against this exact audit provenance.",
+       "representativeConsumers": [],
+       "origin": {
+-        "auditedAtUtc": "2026-11-15T08:34:18.2094164+00:00",
+-        "generatedFromRevision": "6508014ba449856289f06b40d4b806cc8c8d2ff5",
++        "auditedAtUtc": "2026-11-15T11:05:15.5618259+00:00",
++        "generatedFromRevision": "15fc21c569a88a567460bad785ae0a88dcbbe343",
+         "familySelectionSha256": "3721bd476d712d397c2c8f40adae50f43374bfd59357b65857536d17d8f75a3f",
+         "sourceScopeSha256": "d4e87499724317c21e19499bcc6b057462117b9ed33b34b84c8dc5a1fa1321f2",
+         "packageMetadataSha256": "85c9062d86d63cd1fead1581319b4761e6cfb2339e2e16e721f05223d05403ab",
+diff --git a/Tools/test-authoritative-package-catalog.ps1 b/Tools/test-authoritative-package-catalog.ps1
+index f2960e65..a0768cf5 100644
+--- a/Tools/test-authoritative-package-catalog.ps1
++++ b/Tools/test-authoritative-package-catalog.ps1
+@@ -255,21 +255,25 @@ function Test-OwnedCatalogView {
+           [string] $SelectedSdk = '', [string] $ExpectedBuildsHostView = 'false',
+           [string] $ExpectedOpenIdConnect = '11.0.0', [string] $ExpectedFrontComposerView = 'false',
+           [string] $ExpectedImmutable = '11.0.0', [string] $ExpectedImmutableView = 'false',
+-          [string] $SelectedMemories = '', [string] $SelectedTenants = '')
++          [string] $SelectedMemories = '', [string] $SelectedTenants = '', [string] $UseProjectReferences = '', [string] $EventStoreFromSource = '', [string] $McpCliFromSource = '', [string] $SelectedMcpCli = '')
+     $probe = Join-Path $viewProbeRoot "$ProjectName.proj"
+     $escapedCatalog = [Security.SecurityElement]::Escape([IO.Path]::GetFullPath($catalogPath))
+     [IO.File]::WriteAllText($probe, "<Project><Import Project=`"$escapedCatalog`" /></Project>")
+     $stdout = Join-Path $viewProbeRoot 'evaluation.stdout'
+     $stderr = Join-Path $viewProbeRoot 'evaluation.stderr'
+-    $properties = @(if ($SelectedSdk) { "-p:HexalithEventStoreVersion=$SelectedSdk" }; if ($SelectedMemories) { "-p:HexalithMemoriesVersion=$SelectedMemories" }; if ($SelectedTenants) { "-p:HexalithTenantsVersion=$SelectedTenants" })
++    $properties = @(if ($SelectedSdk) { "-p:HexalithEventStoreVersion=$SelectedSdk" }; if ($SelectedMemories) { "-p:HexalithMemoriesVersion=$SelectedMemories" }; if ($SelectedTenants) { "-p:HexalithTenantsVersion=$SelectedTenants" }; if ($UseProjectReferences) { "-p:UseHexalithProjectReferences=$UseProjectReferences" }; if ($EventStoreFromSource) { "-p:HexalithEventStoreFromSource=$EventStoreFromSource" }; if ($McpCliFromSource) { "-p:HexalithMcpCliFromSource=$McpCliFromSource" }; if ($SelectedMcpCli) { "-p:HexalithMcpCliVersion=$SelectedMcpCli" })
+     $expectedMemories = if ($SelectedMemories) { $SelectedMemories } elseif ($ExpectedSdk -ceq '4.2.0' -and ($ExpectedPartiesView -ceq 'true' -or $ExpectedPlatformView -ceq 'true' -or $ExpectedBuildsHostView -ceq 'true')) { '3.0.27' } else { '4.0.0' }
+     $expectedTenants = if ($SelectedTenants) { $SelectedTenants } elseif ($ExpectedSdk -ceq '4.2.0' -and ($ExpectedPartiesView -ceq 'true' -or $ExpectedPlatformView -ceq 'true' -or $ExpectedBuildsHostView -ceq 'true')) { '7.0.7' } else { '8.0.0' }
++    $expectedMcpCli = if ($SelectedMcpCli) { $SelectedMcpCli } elseif ($ExpectedSdk -ceq '4.2.0' -and ($UseProjectReferences -cne 'true' -or $McpCliFromSource -ceq 'false') -and ($ExpectedPartiesView -ceq 'true' -or $ExpectedPlatformView -ceq 'true' -or $ExpectedBuildsHostView -ceq 'true')) { '2.0.1' } else { '3.0.0' }
+     & dotnet msbuild $probe -nologo -noAutoResponse -nr:false @properties `
+         -getProperty:HexalithEventStoreVersion,HexalithMemoriesVersion,HexalithTenantsVersion,HexalithPartiesSdk42CatalogView,HexalithPlatformSdk42CatalogView,HexalithBuildsPackagedHostSdk42CatalogView,HexalithFrontComposerNet10CatalogView,HexalithFrontComposerImmutable10CatalogView,HexalithImmutableVersion `
+         -getItem:PackageVersion 1> $stdout 2> $stderr
+     if ($LASTEXITCODE -ne 0) { throw "Clean catalog view '$ProjectName' failed: $([IO.File]::ReadAllText($stderr))" }
+     $observed = [IO.File]::ReadAllText($stdout) | ConvertFrom-Json
+     $pins = @{}
++    foreach ($member in @($observed.Items.PackageVersion | Where-Object { $_.Identity.StartsWith('Hexalith.McpCli.', [StringComparison]::Ordinal) })) {
++        if ($member.Version -cne $expectedMcpCli) { $failures.Add("Clean catalog view '$ProjectName' split its canonical MCP family or changed its source/package selection.") }
++    }
+     foreach ($row in @($observed.Items.PackageVersion)) { $pins[$row.Identity] = $row.Version }
+     $immutableRows = @($observed.Items.PackageVersion | Where-Object { $_.Identity -ceq 'System.Collections.Immutable' })
+     if ($observed.Properties.HexalithEventStoreVersion -cne $ExpectedSdk -or
+@@ -300,6 +304,7 @@ function Test-OwnedCatalogView {
+         if (-not $row.Identity.StartsWith('Hexalith.EventStore.', [StringComparison]::Ordinal) -and
+             -not $row.Identity.StartsWith('Hexalith.Memories.', [StringComparison]::Ordinal) -and
+             -not $row.Identity.StartsWith('Hexalith.Tenants.', [StringComparison]::Ordinal) -and
++            -not $row.Identity.StartsWith('Hexalith.McpCli.', [StringComparison]::Ordinal) -and
+             $row.Identity -notin @('Microsoft.AspNetCore.OpenApi', 'Microsoft.OpenApi', 'Microsoft.AspNetCore.Authentication.OpenIdConnect', 'System.Collections.Immutable') -and
+             $row.Version -cne $evaluatedPackages[$row.Identity]) {
+             $failures.Add("Clean catalog view '$ProjectName' changes unrelated package '$($row.Identity)'.")
+@@ -342,6 +347,27 @@ try {
+             Test-OwnedCatalogView $name $sdk '11.0.0' '3.11.0' $partiesView $platformView $sdk -ExpectedBuildsHostView $buildsHostView
+         }
+     }
++    # The current source graph uses the .NET11 ABI without changing any packaged SDK4.2 pin.
++    foreach ($name in ($partiesSdk42Consumers + $platformSdk42Consumers + $buildsHostSdk42Consumers)) {
++        $partiesView = if ($name -cin $partiesSdk42Consumers) { 'true' } else { 'false' }
++        $platformView = if ($name -cin $platformSdk42Consumers) { 'true' } else { 'false' }
++        $buildsHostView = if ($name -cin $buildsHostSdk42Consumers) { 'true' } else { 'false' }
++        Test-OwnedCatalogView $name '4.2.0' '11.0.0' '3.11.0' $partiesView $platformView -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'true'
++    }
++    foreach ($name in @('Hexalith.Parties', 'Hexalith.Platform.EventStoreHost', 'Hexalith.Builds.Module.EventStoreHost')) {
++        $partiesView = if ($name -ceq 'Hexalith.Parties') { 'true' } else { 'false' }
++        $platformView = if ($name -ceq 'Hexalith.Platform.EventStoreHost') { 'true' } else { 'false' }
++        $buildsHostView = if ($name -ceq 'Hexalith.Builds.Module.EventStoreHost') { 'true' } else { 'false' }
++        Test-OwnedCatalogView $name '4.2.0' '11.0.0' '3.11.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'true'
++        Test-OwnedCatalogView $name '4.2.0' '10.0.15' '2.13.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'false'
++        Test-OwnedCatalogView $name '4.2.0' '10.0.15' '2.13.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'true' -EventStoreFromSource 'false'
++        Test-OwnedCatalogView $name '4.2.0' '11.0.0' '3.11.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'true' -EventStoreFromSource 'true'
++        Test-OwnedCatalogView $name '4.2.0' '11.0.0' '3.11.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -UseProjectReferences 'true' -McpCliFromSource 'false'
++        Test-OwnedCatalogView $name '4.2.0' '10.0.15' '2.13.0' $partiesView $platformView -SelectedSdk '4.2.0' -ExpectedBuildsHostView $buildsHostView -SelectedMcpCli '3.0.0'
++    }
++    foreach ($name in @('Unrelated.Consumer', 'Hexalith.Platform.EventStoreHost.Future', 'hexalith.Platform.EventStoreHost')) {
++        Test-OwnedCatalogView $name '5.1.0' '11.0.0' '3.11.0' 'false' 'false' -UseProjectReferences 'true'
++    }
+     # Include the supported source samples: their central transitive pins consume Shell too.
+     foreach ($name in @('Counter.Domain', 'Counter.Specimens', 'Counter.Specimens.Domain', 'Counter.Web', 'IdeParityCounter',
+                         'Hexalith.FrontComposer.AppHost', 'Hexalith.FrontComposer.Shell', 'Hexalith.FrontComposer.Shell.Tests',
+diff --git a/Tools/test_evaluated_catalog_modes.py b/Tools/test_evaluated_catalog_modes.py
+new file mode 100644
+index 00000000..be3200ea
+--- /dev/null
++++ b/Tools/test_evaluated_catalog_modes.py
+@@ -0,0 +1,64 @@
++"""Keep packaged catalog snapshots independent from actual source-project inspection."""
++from pathlib import Path
++import json
++import os
++import subprocess
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from evaluated_catalog import evaluate_catalog, project_sdk_selections
++
++ROOT = Path(__file__).resolve().parents[1]
++CATALOG = ROOT / "Props/Directory.Packages.props"
++
++
++class EvaluatedCatalogModeTests(unittest.TestCase):
++    def test_named_package_snapshots_ignore_inherited_source_mode(self):
++        with patch.dict(os.environ, {"UseHexalithProjectReferences": "true"}):
++            for name in ("Hexalith.Parties", "Hexalith.Platform.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost"):
++                with self.subTest(name=name):
++                    properties, versions = evaluate_catalog(CATALOG, consumer_project_name=name)
++                    self.assertEqual("4.2.0", properties["HexalithEventStoreVersion"])
++                    self.assertEqual("10.0.15", versions["Microsoft.AspNetCore.OpenApi"])
++                    self.assertEqual("2.13.0", versions["Microsoft.OpenApi"])
++                    self.assertEqual("2.0.1", versions["Hexalith.McpCli.Abstractions"])
++
++    def test_unknown_snapshot_retains_the_unqualified_current_catalog(self):
++        _, versions = evaluate_catalog(CATALOG, consumer_project_name="Hexalith.Platform.EventStoreHost.Future")
++        self.assertEqual("5.1.0", versions["Hexalith.EventStore.Gateway"])
++        self.assertEqual("3.0.0", versions["Hexalith.McpCli.Abstractions"])
++        self.assertEqual("11.0.0", versions["Microsoft.AspNetCore.OpenApi"])
++        self.assertEqual("3.11.0", versions["Microsoft.OpenApi"])
++
++    def test_actual_named_source_project_evaluation_uses_the_source_abi(self):
++        with tempfile.TemporaryDirectory(prefix="catalog-source-project-") as directory:
++            project = Path(directory) / "Hexalith.Platform.EventStoreHost.proj"
++            import xml.etree.ElementTree as ET
++            document = ET.Element("Project")
++            ET.SubElement(document, "Import", Project=str(CATALOG))
++            ET.ElementTree(document).write(project, encoding="utf-8")
++            result = subprocess.run(["dotnet", "msbuild", str(project), "-nologo", "-noAutoResponse", "-nr:false",
++                                     "-p:UseHexalithProjectReferences=true", "-getItem:PackageVersion"],
++                                    check=True, capture_output=True, text=True, timeout=60)
++            versions = {item["Identity"]: item["Version"] for item in json.loads(result.stdout)["Items"]["PackageVersion"]}
++            self.assertEqual("11.0.0", versions["Microsoft.AspNetCore.OpenApi"])
++            self.assertEqual("3.11.0", versions["Microsoft.OpenApi"])
++            self.assertEqual("4.2.0", versions["Hexalith.EventStore.Gateway"])
++            self.assertEqual("3.0.0", versions["Hexalith.McpCli.Abstractions"])
++
++    def test_project_sdk_inspection_preserves_its_source_context(self):
++        with tempfile.TemporaryDirectory(prefix="catalog-source-inspection-") as directory:
++            root = Path(directory)
++            (root / "Directory.Build.props").write_text("""<Project><PropertyGroup>
++<HexalithAspireAppHostSdkVersion Condition="'$(UseHexalithProjectReferences)' == 'true'">13.6.5</HexalithAspireAppHostSdkVersion>
++<HexalithAspireAppHostSdkVersion Condition="'$(UseHexalithProjectReferences)' != 'true'">1.0.0</HexalithAspireAppHostSdkVersion>
++</PropertyGroup></Project>""")
++            project = root / "Source.AppHost.csproj"
++            project.write_text('<Project Sdk="Aspire.AppHost.Sdk/$(HexalithAspireAppHostSdkVersion)" />')
++            selections = project_sdk_selections(project)
++            self.assertEqual([{"Id": "Aspire.AppHost.Sdk", "Version": "13.6.5", "CatalogSelected": True}], selections)
++
++
++if __name__ == "__main__":
++    unittest.main()

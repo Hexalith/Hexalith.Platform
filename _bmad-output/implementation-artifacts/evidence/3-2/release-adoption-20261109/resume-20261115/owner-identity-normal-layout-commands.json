@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Release",
+      "-m:1",
+      "-nodeReuse:false",
+      "--disable-build-servers",
+      "--nologo"
+    ],
+    "exitCode": 0,
+    "log": "owner-identity-normal-layout-build.log",
+    "elapsedSeconds": 49.992
+  },
+  {
+    "command": [
+      "dotnet",
+      "exec",
+      "/tmp/hexalith-job.yzcjxIE9/owner-identity-normal-layout/test/Hexalith.Builds.Module.Tests/bin/Release/net11.0/Hexalith.Builds.Module.Tests.dll",
+      "-method",
+      "Hexalith.Builds.ModuleTool.Tests.Workspace.PlatformIdentityTests.ExecutableCliVersionControlsToolRangeAsync",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/owner-identity-normal-layout.xml"
+    ],
+    "exitCode": 0,
+    "log": "owner-identity-normal-layout.log",
+    "elapsedSeconds": 3.341
+  }
+]

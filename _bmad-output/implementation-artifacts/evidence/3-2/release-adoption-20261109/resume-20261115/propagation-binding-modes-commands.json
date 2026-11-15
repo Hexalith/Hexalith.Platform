@@ -1,0 +1,68 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/prepare_builds_artifacts.py",
+      "--output",
+      "/tmp/hexalith-job.BiiTiRDA/tool"
+    ],
+    "exitCode": 0,
+    "log": "propagation-binding-verified-tool.log"
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-p:Configuration=Debug",
+      "--artifacts-path",
+      "/tmp/hexalith-job.BiiTiRDA/metadata-local",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0,
+    "log": "propagation-binding-local-restore.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_source_sdk_propagation.py",
+      "--evidence",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/propagation-binding-local",
+      "--artifacts",
+      "/tmp/hexalith-job.BiiTiRDA/metadata-local"
+    ],
+    "exitCode": 0,
+    "log": "propagation-binding-local-controls.log"
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-p:Configuration=Debug",
+      "--artifacts-path",
+      "/tmp/hexalith-job.BiiTiRDA/metadata-published",
+      "-nodeReuse:false",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.BiiTiRDA/tool/published/tools/net11.0/any"
+    ],
+    "exitCode": 0,
+    "log": "propagation-binding-published-restore.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_source_sdk_propagation.py",
+      "--evidence",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/propagation-binding-published",
+      "--artifacts",
+      "/tmp/hexalith-job.BiiTiRDA/metadata-published",
+      "--published-tool-root",
+      "/tmp/hexalith-job.BiiTiRDA/tool/published/tools/net11.0/any"
+    ],
+    "exitCode": 0,
+    "log": "propagation-binding-published-controls.log"
+  }
+]

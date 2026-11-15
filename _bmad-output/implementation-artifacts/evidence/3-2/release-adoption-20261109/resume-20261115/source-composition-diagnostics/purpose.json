@@ -1,0 +1,14 @@
+{
+  "purpose": "Retain child compiler output only; wrapper delegates unchanged arguments to the real dotnet executable.",
+  "qualifying": false,
+  "command": [
+    "dotnet",
+    "exec",
+    "/tmp/hexalith-job.UvYLLVPK/diagnostic-artifacts/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+    "-method",
+    "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+    "-xml",
+    "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/source-composition-diagnostics/test.xml"
+  ],
+  "exitCode": 1
+}

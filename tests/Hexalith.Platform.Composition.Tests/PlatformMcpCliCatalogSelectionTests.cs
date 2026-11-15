@@ -8,7 +8,7 @@ using Shouldly;
 /// <summary>Checks package-version selection using component catalogs and snapshots; grants no artifact or runtime authority.</summary>
 public sealed class PlatformMcpCliCatalogSelectionTests
 {
-    /// <summary>Both purposes require the actual catalog's exact measured abstraction pin, including refusal of unreleased major three.</summary>
+    /// <summary>Both purposes require the actual catalog's exact measured abstraction pin, including refusal of unqualified major three.</summary>
     [Fact]
     public void ActualCatalogPinSelectsOnlyExistingMeasuredPurposes()
     {
@@ -126,6 +126,19 @@ public sealed class PlatformMcpCliCatalogSelectionTests
             };
             PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(generation == 4
                 ? null : Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
+            if (generation == 6)
+            {
+                PlatformCompositionOptions released = selected with { Mapping = selected.Mapping with { PlatformIdentity = selected.Mapping.PlatformIdentity! with
+                {
+                    ToolVersionRange = "[6.0.5,7.0.0-0)", CatalogCommit = "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+                } } };
+                PlatformDeclarationSet.DeclarationOptions(released).ConsumerProjectName.ShouldBe(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
+                PlatformCompositionOptions unreleased = released with { Mapping = released.Mapping with { PlatformIdentity = released.Mapping.PlatformIdentity! with
+                {
+                    CatalogCommit = "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+                } } };
+                Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(unreleased));
+            }
         }
         PlatformCompositionOptions future = options with
         {

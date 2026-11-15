@@ -1,0 +1,15 @@
+{
+  "purpose": "Diagnostic only: durable child compiler output via wrapper with exact real dotnet and trace paths; no environment variables needed by the wrapper. Unchanged build arguments and assertions.",
+  "qualifying": false,
+  "command": [
+    "dotnet",
+    "exec",
+    "/tmp/hexalith-job.kHweS7EQ/diagnostic-artifacts/bin/Hexalith.Platform.Composition.Tests/debug/Hexalith.Platform.Composition.Tests.dll",
+    "-method",
+    "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SourceCompositionAssemblesOneEventStoreHostFromTheServerAndTheMappedExtensionAsync",
+    "-xml",
+    "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/source-composition-diagnostics-v2/test.xml"
+  ],
+  "exitCode": 1,
+  "invalidPreviousProbe": "v1 wrapper depended on variables correctly removed by CompositionProcess allowlist; v1 supplies no cause attribution."
+}

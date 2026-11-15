@@ -47,7 +47,8 @@
     <PackageReference Include="Hexalith.Parties.Contracts" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
-    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
+    <!-- Tooling embeds its own neutral catalog; the caller SDK belongs to owner-service references. -->
+    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" GlobalPropertiesToRemove="HexalithEventStoreVersion" />
   </ItemGroup>
   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />

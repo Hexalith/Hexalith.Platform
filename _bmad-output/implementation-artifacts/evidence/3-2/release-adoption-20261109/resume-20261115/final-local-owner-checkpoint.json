@@ -1,0 +1,175 @@
+{
+  "recordedAtUtc": "2026-11-15T12:06:41.741007+00:00",
+  "status": "local-preparation-complete; hosted-owner-qualification-in-progress; story-in-progress",
+  "platform": {
+    "baseRevision": "695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+    "branch": "build/story-3-2-resume-20261115",
+    "implementationRoot": "/home/administrator/projects/hexalith/platform-story-3-2-20261115",
+    "tupleAdopted": false,
+    "sourceReleased": false,
+    "mainCheckoutUntouched": true
+  },
+  "owner": {
+    "repository": "Hexalith/Hexalith.Builds",
+    "baseRevision": "73e60af8a1fcdf3f06726d5d1b6e1199cce778ee",
+    "sourceRevision": "f49a2021d757a0fe8d7344d7baa67e721155afa6",
+    "headRevision": "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+    "branch": "fix/story-3-2-source-consumer-context-20261115",
+    "clean": true,
+    "auditGeneratedFromRevision": "f49a2021d757a0fe8d7344d7baa67e721155afa6",
+    "preserveSourceAuditAncestry": true,
+    "pullRequest": "https://github.com/Hexalith/Hexalith.Builds/pull/186",
+    "draft": true,
+    "merged": false,
+    "published": false
+  },
+  "patches": [
+    {
+      "file": "final-reviewed-builds-source-and-audit.patch",
+      "sha256": "7b26a8fc4a542c33a87459580ffc7bccf290ccf70803242d6d429ed740087332",
+      "bytes": 30991
+    },
+    {
+      "file": "final-reviewed-platform-propagation.patch",
+      "sha256": "43b6e81268f85159ac6ecd4f77992e829ef52203f7418184b9a2dcdf5ae4b4c5",
+      "bytes": 12922
+    },
+    {
+      "file": "draft-platform-restored-tuple-inputs.patch",
+      "sha256": "237a3c4ad241f20b644bd1ca9c57ac2f34bde4dd254134a1b18190e7683f5307",
+      "bytes": 18744
+    }
+  ],
+  "verification": {
+    "ownerModels": {
+      "total": 99,
+      "passed": 99,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 736.792,
+      "xml": "owner-complete-model.xml"
+    },
+    "ownerTestInputReceipt": "owner-complete-model-commands.json",
+    "ownerRecordedSourcePatchEqualsCommittedSource": true,
+    "ownerCatalog": {
+      "exactMsBuildProbes": 352,
+      "independentFrozenProducerControls": 17,
+      "log": "owner-source51-catalog-controls.log"
+    },
+    "ownerReader": {
+      "passed": 4,
+      "log": "owner-source51-reader-controls.log"
+    },
+    "platformSource": {
+      "total": 43,
+      "passed": 43,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 95.264,
+      "xml": "source51-focused.xml"
+    },
+    "platformSourceBuild": {
+      "configuration": "Debug",
+      "warnings": 0,
+      "errors": 0,
+      "sdkOrDependencyOverrides": false,
+      "receipt": "source51-candidate-verification.json"
+    },
+    "platformSourceMetadata": {
+      "expected": 28,
+      "executed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "qualificationCredit": false,
+      "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."
+    },
+    "packageComponents": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 12.313,
+      "xml": "package-final-extension-components.xml",
+      "publishedTool": "6.0.3",
+      "newOwnerQualification": false,
+      "receipt": "package-final-verification.json"
+    },
+    "tupleHistoryPython": {
+      "passed": 127,
+      "scripts": [
+        {
+          "script": "eng/test_builds_tuple.py",
+          "passed": 21,
+          "log": "committed-owner-test-builds-tuple.log"
+        },
+        {
+          "script": "eng/test_legacy_tuple_source.py",
+          "passed": 20,
+          "log": "final-test_legacy_tuple_source.py.log"
+        },
+        {
+          "script": "eng/test_pre_extension_tuple_source.py",
+          "passed": 13,
+          "log": "final-test_pre_extension_tuple_source.py.log"
+        },
+        {
+          "script": "eng/test_current_tuple_source.py",
+          "passed": 14,
+          "log": "final-test_current_tuple_source.py.log"
+        },
+        {
+          "script": "eng/test_package_reader_source.py",
+          "passed": 5,
+          "log": "final-test_package_reader_source.py.log"
+        },
+        {
+          "script": "eng/test_builds_publication.py",
+          "passed": 16,
+          "log": "final-test_builds_publication.py.log"
+        },
+        {
+          "script": "eng/test_tuple_sdk_suites.py",
+          "passed": 38,
+          "log": "final-test_tuple_sdk_suites.py.log"
+        }
+      ],
+      "earlierUncommittedOwnerRefusalRetained": true
+    },
+    "audit": "owner-final-audit-commands.json",
+    "pinnedCommitlint": [
+      "owner-commitlint-v2.json",
+      "owner-final-source-commitlint.json",
+      "owner-audit-commitlint.json"
+    ],
+    "scratch": "run-with-temp; temporary owner copy and all build outputs under its private TMPDIR; all local child work completed before wrapper cleanup; useful logs retained here"
+  },
+  "hostedSnapshot": "owner-hosted-at-handoff.json",
+  "retainedRedEvidence": [
+    "initial-inputs.json",
+    "owner-model-catalog-tests.xml",
+    "owner-early-mode-red-v2.xml",
+    "owner-pinned-model-timeout.json",
+    "owner-pinned-model-timeout-cleanup.json",
+    "source-composition-observation/purpose.json",
+    "final-python-controls.json"
+  ],
+  "remainingAcceptance": [
+    "Finish every mandatory hosted owner gate, preserve authenticated source/audit history in the normal merge, and publish the owner through its normal release workflow.",
+    "Independently measure the actual signed owner release and adopt the complete new Platform tuple atomically; current restored 6.0.3 metadata is a local preparation input.",
+    "Refresh and execute real same-code historical L/N/M sources and every required current tuple/catalog gate; qualify, land and normally release exact Platform source.",
+    "Verify the dedicated fixture NuGet publisher policy without altering the existing release policy; publish and independently verify the signed TestExtension package.",
+    "Materialize its real owning catalog pin and qualify finite producer/root/native entry and reader/host admission, then run actual signed-package host/native startup.",
+    "Preserve frozen intent and original broad-inventory/Story2.8 refusal attribution; local component evidence grants no signed-fixture or full qualification credit."
+  ],
+  "noNewRuntimeAdmission": true,
+  "qualified": false,
+  "storyComplete": false
+}

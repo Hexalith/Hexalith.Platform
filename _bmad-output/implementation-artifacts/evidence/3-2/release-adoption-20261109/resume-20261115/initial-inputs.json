@@ -1,0 +1,762 @@
+{
+  "observedUtc": "2026-11-15T10:38:20.766846+00:00",
+  "sourceRevision": "695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+  "candidateAcceptance": false,
+  "qualificationCredit": false,
+  "inputs": {
+    ".config/dotnet-tools.json": {
+      "sha256": "f11d2b9583071655167b3f98eaf5cd2a1b59de8f120544d244c4729ae91ca149",
+      "body": {
+        "version": 1,
+        "isRoot": true,
+        "tools": {
+          "hexalith.builds.module.cli": {
+            "version": "4.44.3",
+            "commands": [
+              "hexalith-module"
+            ],
+            "rollForward": false
+          }
+        }
+      }
+    },
+    "eng/builds-tuple.json": {
+      "sha256": "554359e26442ff2a039d927236e9d126d55c1b752c2c0edf632062f767f3ed8a",
+      "body": {
+        "schemaVersion": 1,
+        "candidateAcceptance": false,
+        "producer": {
+          "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+          "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+          "catalog": {
+            "path": "Props/Directory.Packages.props",
+            "blob": "2b590597dcb7924194ee5dfdc5eb5e55fa4e0dde",
+            "sha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145"
+          }
+        },
+        "publication": {
+          "version": "4.44.3",
+          "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+          "releaseTag": "v4.44.3",
+          "catalogSha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145",
+          "archiveSha256": "32c2f517791bfce975bf775e73bbbf626cc710da83c68b89c5e305ef55acea32",
+          "toolingSha256": "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000",
+          "inventorySha256": "aaaa9de0ba9add0095ea63b2ac6813c8e558929e6e359216b3a99eb998b49de4",
+          "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.3/g4-tool-package-inventory.json"
+        }
+      }
+    },
+    "hexalith-platform.json": {
+      "sha256": "4b324533e9d3bbcc40532b1e161f0b134ce4eea7fe93d6dffe893007cabc2a27",
+      "body": {
+        "schemaVersion": 1,
+        "toolVersionRange": "[4.44.3, 5.0.0-0)"
+      }
+    },
+    "eng/tuple-ci-suites.json": {
+      "sha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
+      "body": {
+        "purpose": "Tuple binding, released declarations and analyzer regression preflight only",
+        "remainingQualification": "Other Platform suites, explicitly enabled live cases, authenticated candidate-decision evidence and generated/direct runtime integration remain mandatory before acceptance.",
+        "groups": [
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.GatewaySeedSubscriptionTests",
+              "Hexalith.Platform.Composition.Tests.AgentsAdmissionCurrentBoundaryTests",
+              "Hexalith.Platform.Composition.Tests.AgentsHostStartupBoundaryTests",
+              "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+              "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests"
+            ],
+            "requiredCount": 83
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-method",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+              "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+            ],
+            "requiredCount": 2
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
+              "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
+            ],
+            "requiredCount": 24
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
+              "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests"
+            ],
+            "requiredCount": 44
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-method",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeUsesSnapshotsCatalogImagesAndTheSingleSeed",
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsChangedBytesAndRepositoryBeforeResources",
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
+            ],
+            "requiredCount": 7
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+              "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests"
+            ],
+            "requiredCount": 28
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests"
+            ],
+            "requiredCount": 9
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-method",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
+            ],
+            "requiredCount": 4
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
+            ],
+            "requiredCount": 40
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
+            ],
+            "requiredCount": 3
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
+            ],
+            "requiredCount": 21
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
+            ],
+            "requiredCount": 11
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
+            ],
+            "requiredCount": 22
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests"
+            ],
+            "requiredCount": 47
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-method",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources"
+            ],
+            "requiredCount": 2
+          },
+          {
+            "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+            "filter": "-class",
+            "selectors": [
+              "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests"
+            ],
+            "requiredCount": 2
+          }
+        ]
+      }
+    },
+    "eng/current-tuple-source.json": {
+      "sha256": "8eabea1aa66cadeae01af4a2548086c07ebf5eaf75f69581601568b5f0d3be15",
+      "body": {
+        "schema": "hexalith.platform.current-tuple-source.v1",
+        "ownerSources": {
+          "eventstore": {
+            "sourceRevision": "749d162538b321e80401a4b69a7f706ba656c9e0",
+            "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+          },
+          "parties": {
+            "sourceRevision": "785f8164d51579a191405a15a917232795f93449",
+            "declarationSha256": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee"
+          },
+          "tenants": {
+            "sourceRevision": "d89f234c4f020373aaabe0e3699ecdb5097b1079",
+            "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+          },
+          "memories": {
+            "sourceRevision": "2c2e9b58990638ededf22e8e67ff5c12de75b434",
+            "declarationSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+          }
+        },
+        "packageProvenanceSha256": "bbfcd7d73f6a92467360fd56dfead6c574cb48ca08bb961c7a949356a4d72b39"
+      }
+    }
+  },
+  "gitlinks": "160000 commit 17a37d83db193f0b7494c1b931fd1e82a67c1424\treferences/Hexalith.AI.Tools\n160000 commit 4a65f67d040bec4d646a830ed72b65c0e8951048\treferences/Hexalith.Agents\n160000 commit 73e60af8a1fcdf3f06726d5d1b6e1199cce778ee\treferences/Hexalith.Builds\n160000 commit 6a4ca07b18e9b58500dc79dfede1f308da36c828\treferences/Hexalith.ChatBot\n160000 commit fbf4e94233821f6ca336af91a06feaaeb7a16855\treferences/Hexalith.Commons\n160000 commit c34dc3c1e0469765c75ea608f2960381f649579c\treferences/Hexalith.Conversations\n160000 commit df976e0051b9e2eaa9d3592b3054a0317d83d0cb\treferences/Hexalith.EventStore\n160000 commit 89e2fbb6bd965eae2008db4501e7b79cc6e1c8e1\treferences/Hexalith.Folders\n160000 commit 7063810a3eb940a8d803fcb977bde5a0a8a2ab59\treferences/Hexalith.FrontComposer\n160000 commit 23072f04f423eea3f30456fe5af13d2d382624fe\treferences/Hexalith.McpCli\n160000 commit f20e8b8145a6c00310a2aed3d0c8758844b65fdc\treferences/Hexalith.Memories\n160000 commit a494093da3e2656c49e539392284cd1b10f799b3\treferences/Hexalith.Parties\n160000 commit e97b56930e213f674b64c157551f499b0473ec43\treferences/Hexalith.PolymorphicSerializations\n160000 commit fc58cefde69d72d7d3daa574b5022f73f830a85e\treferences/Hexalith.Projects\n160000 commit 2ec938397c5b330cf1e694e8cc442cb4ad022f2b\treferences/Hexalith.Tenants\n160000 commit aafdae771e81f152671d18c506a0470ce0deee7f\treferences/Hexalith.Timesheets\n160000 commit b2985d22b3bfbc6d86bcde28a5da722ae7f930c3\treferences/Hexalith.Works\n",
+  "builds603-release": {
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/445516831",
+    "assets_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/445516831/assets",
+    "upload_url": "https://uploads.github.com/repos/Hexalith/Hexalith.Builds/releases/445516831/assets{?name,label}",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.0.3",
+    "id": 445516831,
+    "author": {
+      "login": "github-actions[bot]",
+      "id": 41898282,
+      "node_id": "MDM6Qm90NDE4OTgyODI=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-actions",
+      "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "node_id": "RE_kwDOOMzNRc4ajgwf",
+    "tag_name": "v6.0.3",
+    "target_commitish": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+    "name": "v6.0.3",
+    "draft": false,
+    "immutable": true,
+    "prerelease": false,
+    "created_at": "2026-11-14T18:15:58Z",
+    "updated_at": "2026-11-14T18:53:53Z",
+    "published_at": "2026-11-14T18:53:53Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tarball/v6.0.3",
+    "zipball_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/zipball/v6.0.3",
+    "body": "## [6.0.3](https://github.com/Hexalith/Hexalith.Builds/compare/v6.0.2...v6.0.3) (2026-11-14)\n\n\n### Bug Fixes\n\n* **catalog:** record the current Tenants package audit ([6de5ce0](https://github.com/Hexalith/Hexalith.Builds/commit/6de5ce0a7194321828a1ede119a98c5d31d05914))\n* **catalog:** select the current Tenants package cohort ([b8f67c3](https://github.com/Hexalith/Hexalith.Builds/commit/b8f67c392a165887119543113e1f0aa0b0218f0d))\n\nhexalith-release: 99f7c86072ca7b35e3fbbaee4606a559a847805a\nhexalith-release-run: 43628367692\nhexalith-release-artifact: 14127172569 sha256:bd0d5cd4d2ef6a5ae5f17a8169d31d5a0c43f5985670f924a56f2f3a16a5f4ff\nhexalith-release-packages: Hexalith.Builds.Evidence.Cli,Hexalith.Builds.Module.Cli\nhexalith-release-containers: \n"
+  },
+  "builds603-publisher": {
+    "id": 43628367692,
+    "name": "Release",
+    "node_id": "WFR_kwLOOMzNRc8AAAAKKHQPTA",
+    "head_branch": "main",
+    "head_sha": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+    "path": ".github/workflows/builds-release.yml",
+    "display_title": "Release",
+    "run_number": 23,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "workflow_id": 411848293,
+    "check_suite_id": 118128547351,
+    "check_suite_node_id": "CS_kwDOOMzNRc8AAAAbgQKWFw",
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692",
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43628367692",
+    "pull_requests": [],
+    "created_at": "2026-11-14T18:45:26Z",
+    "updated_at": "2026-11-14T18:53:57Z",
+    "actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [
+      {
+        "path": "Hexalith/Hexalith.Builds/.github/workflows/release.yml@99f7c86072ca7b35e3fbbaee4606a559a847805a",
+        "sha": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+        "ref": "refs/heads/main"
+      }
+    ],
+    "run_started_at": "2026-11-14T18:45:26Z",
+    "triggering_actor": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692/jobs",
+    "logs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692/logs",
+    "check_suite_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-suites/118128547351",
+    "artifacts_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692/artifacts",
+    "cancel_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692/cancel",
+    "rerun_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/43628367692/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/workflows/411848293",
+    "head_commit": {
+      "id": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+      "tree_id": "23bd10cf98773c0d17fc157ee18184e3b585aea6",
+      "message": "test(catalog): pin the retained declaration test cohort\n\nSelect Tenants 7.0.7 explicitly alongside the existing historical SDK\nand Memories selections in the cold-start fixture. Preserve its released\ndeclaration bytes and every provenance/version refusal assertion while\ncurrent catalog consumers advance to Tenants 8.0.0.",
+      "timestamp": "2026-11-14T18:15:58Z",
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      },
+      "committer": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com"
+      }
+    },
+    "repository": {
+      "id": 952945989,
+      "node_id": "R_kgDOOMzNRQ",
+      "name": "Hexalith.Builds",
+      "full_name": "Hexalith/Hexalith.Builds",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds",
+      "description": "Common project for building Hexalith applications, modules and libraries",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/deployments"
+    },
+    "head_repository": {
+      "id": 952945989,
+      "node_id": "R_kgDOOMzNRQ",
+      "name": "Hexalith.Builds",
+      "full_name": "Hexalith/Hexalith.Builds",
+      "private": false,
+      "owner": {
+        "login": "Hexalith",
+        "id": 80614290,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjgwNjE0Mjkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/80614290?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Hexalith",
+        "html_url": "https://github.com/Hexalith",
+        "followers_url": "https://api.github.com/users/Hexalith/followers",
+        "following_url": "https://api.github.com/users/Hexalith/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Hexalith/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Hexalith/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Hexalith/subscriptions",
+        "organizations_url": "https://api.github.com/users/Hexalith/orgs",
+        "repos_url": "https://api.github.com/users/Hexalith/repos",
+        "events_url": "https://api.github.com/users/Hexalith/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Hexalith/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds",
+      "description": "Common project for building Hexalith applications, modules and libraries",
+      "fork": false,
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds",
+      "forks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/forks",
+      "keys_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/teams",
+      "hooks_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/hooks",
+      "issue_events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/events",
+      "assignees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/tags",
+      "blobs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/languages",
+      "stargazers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/stargazers",
+      "contributors_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contributors",
+      "subscribers_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscribers",
+      "subscription_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/subscription",
+      "commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/merges",
+      "archive_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/downloads",
+      "issues_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/deployments"
+    }
+  },
+  "platform-main": {
+    "sha": "695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+    "node_id": "C_kwDOTzCqitoAKDY5NTQ2M2M1ZWVkODAxZTk2ZGJkOWVmYzZhOGNlZjRiNzBlOTAwZjk",
+    "commit": {
+      "author": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-15T10:29:58Z"
+      },
+      "committer": {
+        "name": "J\u00e9r\u00f4me Piquot",
+        "email": "jpiquot@itaneo.com",
+        "date": "2026-11-15T10:29:58Z"
+      },
+      "message": "fix(enrollment): close the run-owned authority delta review\n\nDocument the required eventstore:stream-scan-native grant and its\nseparate NativeSourceScan RSA proof in the exact Folders inventory, and\nnote that persistent manifests with only read grants now refuse. Scope\nthe preserved leftover record to container and private-material cleanup\nfailures.\n\nAdd a default-run test that runs the C# inventory request bytes through\nthe launcher's own Python digest and exact-inventory validator, so\nproducer/launcher drift fails without the Docker lanes.\n\nRecord the delta review of the post-review range, the re-verification at\nHEAD, and the Folders net11 tooling-fixture fix (Folders cb5de783), and\nmove story 2.12 to done. The default Platform package build at HEAD\nfails outside this story: the tool manifest from 466c6dd1 selects\nnet10.0; the T lanes were verified with a manifest-property override.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "tree": {
+        "sha": "34cb8451bb003f994a1ca8df1a153f0e967e741b",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/trees/34cb8451bb003f994a1ca8df1a153f0e967e741b"
+      },
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/git/commits/695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits/695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+    "html_url": "https://github.com/Hexalith/Hexalith.Platform/commit/695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+    "comments_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits/695463c5eed801e96dbd9efc6a8cef4b70e900f9/comments",
+    "author": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jpiquot",
+      "id": 6775094,
+      "node_id": "MDQ6VXNlcjY3NzUwOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6775094?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jpiquot",
+      "html_url": "https://github.com/jpiquot",
+      "followers_url": "https://api.github.com/users/jpiquot/followers",
+      "following_url": "https://api.github.com/users/jpiquot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jpiquot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jpiquot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jpiquot/subscriptions",
+      "organizations_url": "https://api.github.com/users/jpiquot/orgs",
+      "repos_url": "https://api.github.com/users/jpiquot/repos",
+      "events_url": "https://api.github.com/users/jpiquot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jpiquot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f6f85032598865b9123f16364448bfd02c0ff5b0",
+        "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/commits/f6f85032598865b9123f16364448bfd02c0ff5b0",
+        "html_url": "https://github.com/Hexalith/Hexalith.Platform/commit/f6f85032598865b9123f16364448bfd02c0ff5b0"
+      }
+    ],
+    "stats": {
+      "total": 421,
+      "additions": 412,
+      "deletions": 9
+    },
+    "files": [
+      {
+        "sha": "4058913b0dc80e25c36eebec9786e1375d681843",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/assembly-sha256.txt",
+        "status": "added",
+        "additions": 4,
+        "deletions": 0,
+        "changes": 4,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fassembly-sha256.txt",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fassembly-sha256.txt",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fassembly-sha256.txt?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,4 @@\n+16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143  /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\n+859bfe94dba0e19b46d475f2c8bb1675d6152fbd09cb66ef24c836f89827347a  /home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll\n+16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143  /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\n+06d73c199994962e8df927de940389c1b54ac78adea3d9b817578f79e62ce81e  /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      },
+      {
+        "sha": "ac094a9ef1c60290fb76862794bd8e852f162f3a",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/folders-net11-scripts.patch",
+        "status": "added",
+        "additions": 44,
+        "deletions": 0,
+        "changes": 44,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Ffolders-net11-scripts.patch",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Ffolders-net11-scripts.patch",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Ffolders-net11-scripts.patch?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,44 @@\n+diff --git a/scripts/tests/test_ci_cd_tooling.py b/scripts/tests/test_ci_cd_tooling.py\n+index 909c0c57..e6b4b773 100644\n+--- a/scripts/tests/test_ci_cd_tooling.py\n++++ b/scripts/tests/test_ci_cd_tooling.py\n+@@ -562,7 +562,7 @@ class NightlyDriftGateTests(unittest.TestCase):\n+ \n+             assembly = root / (\n+                 \"tests/Hexalith.Folders.Tests/bin/\"\n+-                f\"{assembly_configuration or configuration}/net10.0/Hexalith.Folders.Tests.dll\"\n++                f\"{assembly_configuration or configuration}/net11.0/Hexalith.Folders.Tests.dll\"\n+             )\n+             assembly.parent.mkdir(parents=True)\n+             assembly.touch()\n+@@ -643,7 +643,7 @@ raise SystemExit(int(os.environ['NIGHTLY_TEST_EXIT']))\n+                 self.assertIn(f\"-p:UseNuGetDeps={package_mode}\", calls[1])\n+                 self.assertEqual(configuration, calls[1][calls[1].index(\"--configuration\") + 1])\n+                 for call in calls[2:]:\n+-                    self.assertIn(f\"/bin/{configuration}/net10.0/\", call[0])\n++                    self.assertIn(f\"/bin/{configuration}/net11.0/\", call[0])\n+                     self.assertIn(\"-class\", call)\n+                 self.assertEqual(4, len(calls))\n+                 self.assertEqual([\"passed\", \"passed\"], [row[\"hermetic_status\"] for row in report[\"provider_status\"]])\n+@@ -730,7 +730,7 @@ class ScheduledPolicyGateTests(unittest.TestCase):\n+                 shutil.copyfile(ROOT / relative, destination)\n+             assembly = root / (\n+                 \"tests/Hexalith.Folders.Contracts.Tests/bin/\"\n+-                f\"{assembly_configuration or configuration}/net10.0/Hexalith.Folders.Contracts.Tests.dll\"\n++                f\"{assembly_configuration or configuration}/net11.0/Hexalith.Folders.Contracts.Tests.dll\"\n+             )\n+             assembly.parent.mkdir(parents=True)\n+             assembly.touch()\n+diff --git a/scripts/validate-consumer-package-references.py b/scripts/validate-consumer-package-references.py\n+index 8a5fedb3..2af593c2 100644\n+--- a/scripts/validate-consumer-package-references.py\n++++ b/scripts/validate-consumer-package-references.py\n+@@ -22,7 +22,7 @@ def write_consumer(root: pathlib.Path, name: str, packages: list[str], version:\n+     project = directory / f\"{name}.csproj\"\n+     root_element = element_tree.Element(\"Project\", {\"Sdk\": \"Microsoft.NET.Sdk\"})\n+     properties = element_tree.SubElement(root_element, \"PropertyGroup\")\n+-    element_tree.SubElement(properties, \"TargetFramework\").text = \"net10.0\"\n++    element_tree.SubElement(properties, \"TargetFramework\").text = \"net11.0\"\n+     element_tree.SubElement(properties, \"Nullable\").text = \"enable\"\n+     element_tree.SubElement(properties, \"ImplicitUsings\").text = \"enable\"\n+     references = element_tree.SubElement(root_element, \"ItemGroup\")"
+      },
+      {
+        "sha": "9cd1c7b4432a57f997866931832c70703d3dc0c5",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/mutation-python3-shim.sh",
+        "status": "added",
+        "additions": 4,
+        "deletions": 0,
+        "changes": 4,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fmutation-python3-shim.sh",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fmutation-python3-shim.sh",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fmutation-python3-shim.sh?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,4 @@\n+#!/usr/bin/env bash\n+# Mutation shim: redirect the launcher module directory (argument after the -c code) to MUTANT_DIR.\n+args=(\"$@\"); for i in \"${!args[@]}\"; do if [[ \"${args[$i]}\" == */infrastructure/keycloak-workload-binding ]]; then args[$i]=\"$MUTANT_DIR\"; fi; done\n+exec /usr/bin/python3 \"${args[@]}\""
+      },
+      {
+        "sha": "72a30cc0635d30d5e0cba95af1d8441fd1dbaed8",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/run-t.sh",
+        "status": "added",
+        "additions": 17,
+        "deletions": 0,
+        "changes": 17,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun-t.sh",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun-t.sh",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun-t.sh?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,17 @@\n+#!/usr/bin/env bash\n+# Supplementary T lanes: HEAD's .config/dotnet-tools.json (466c6dd1, Builds CLI 4.44.3) selects net10.0 in\n+# Directory.Build.props:7, so the default package build fails NU1201/NU1202; override only the manifest text that selects it (Directory.Build.props:5,7).\n+set -u\n+P=/home/administrator/projects/hexalith/platform\n+K=$P/infrastructure/keycloak-workload-binding\n+O=/tmp/claude-1000/-home-administrator-projects-hexalith-platform/453dcd32-4ce2-4c99-9857-a753ff8ccb96/scratchpad/delta-verify\n+export PATH=\"$HOME/.dotnet/tools:$PATH\"\n+T_DLL=$P/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\n+step() { local name=$1 cwd=$2; shift 2; local start=$(date -u +%FT%TZ); ( cd \"$cwd\" && \"$@\" ) > \"$O/logs/$name.log\" 2>&1; local rc=$?\n+  echo \"$name exit=$rc start=$start end=$(date -u +%FT%TZ)\" >> \"$O/summary.txt\"; return $rc; }\n+step supplementary-t-package-net11-build \"$P\" dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -p:UseHexalithProjectReferences=false -p:_PlatformRuntimeToolManifest=manifest-net11-override -m:1 -nodeReuse:false -v:q \\\n+  && step supplementary-t-package-net11-enrollment-default \"$P\" dotnet exec \"$T_DLL\" -noColor -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests -result-xml \"$O/xml/supplementary-t-package-net11-enrollment-default.xml\" \\\n+  && step supplementary-t-package-net11-live-lanes \"$K\" env -u NO_COLOR TERM=xterm-256color python3 -B verify_component.py --run-owned --platform-assembly \"$T_DLL\"\n+step leftovers-after-t \"$P\" bash -c 'docker ps -a --filter label=com.hexalith.run-owned-workload --format \"{{.ID}}\" | wc -l; ls -d /tmp/hexalith-run-owned-workload-* 2>/dev/null | wc -l'\n+sha256sum \"$T_DLL\" >> \"$O/assembly-sha256.txt\"\n+echo DONE-T >> \"$O/summary.txt\""
+      },
+      {
+        "sha": "f840054c7ec6e07eb6385d1d9c1acdab5ab41204",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/run.sh",
+        "status": "added",
+        "additions": 55,
+        "deletions": 0,
+        "changes": 55,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun.sh",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun.sh",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Frun.sh?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,55 @@\n+#!/usr/bin/env bash\n+# Parent re-verification of the story 2.12 delta-review patches (2026-11-15).\n+set -u\n+P=/home/administrator/projects/hexalith/platform\n+F=$P/references/Hexalith.Folders\n+W=/tmp/claude-1000/-home-administrator-projects-hexalith-platform/453dcd32-4ce2-4c99-9857-a753ff8ccb96/scratchpad/folders-2-12-delta\n+K=$P/infrastructure/keycloak-workload-binding\n+O=/tmp/claude-1000/-home-administrator-projects-hexalith-platform/453dcd32-4ce2-4c99-9857-a753ff8ccb96/scratchpad/delta-verify\n+export PATH=\"$HOME/.dotnet/tools:$PATH\"\n+mkdir -p \"$O/xml\" \"$O/logs\"\n+: > \"$O/summary.txt\"\n+SRC=\"-p:UseHexalithProjectReferences=true -m:1 -nodeReuse:false -v:q -p:HexalithPlatformRoot=$P -p:HexalithBuildsRoot=$P/references/Hexalith.Builds\"\n+T_DLL=$P/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\n+A_DLL=$F/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll\n+\n+step() { # name cwd command...\n+  local name=$1 cwd=$2; shift 2\n+  local start=$(date -u +%FT%TZ)\n+  ( cd \"$cwd\" && \"$@\" ) > \"$O/logs/$name.log\" 2>&1\n+  local rc=$?\n+  echo \"$name exit=$rc start=$start end=$(date -u +%FT%TZ)\" >> \"$O/summary.txt\"\n+  return $rc\n+}\n+\n+step k-maven \"$K\" mvn -B -ntp package\n+step k-unittest \"$K\" python3 -B -m unittest test_run_owned\n+step k-live-run-owned \"$K\" python3 -B verify_component.py --run-owned\n+\n+step t-package-build \"$P\" dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj -c Debug -p:UseHexalithProjectReferences=false -m:1 -nodeReuse:false -v:q \\\n+  && step t-package-enrollment-default \"$P\" dotnet exec \"$T_DLL\" -noColor -class Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests -result-xml \"$O/xml/t-package-enrollment-default.xml\" \\\n+  && step t-package-live-lanes \"$K\" env -u NO_COLOR TERM=xterm-256color python3 -B verify_component.py --run-owned --platform-assembly \"$T_DLL\"\n+\n+step a-source-build \"$F\" dotnet build tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj -c Debug $SRC \\\n+  && step a-source-enrollment-default \"$P\" dotnet exec \"$A_DLL\" -noColor -class Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests -class Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests -result-xml \"$O/xml/a-source-enrollment-default.xml\" \\\n+  && step a-source-live-run-owned \"$K\" env -u NO_COLOR TERM=xterm-256color python3 -B verify_component.py --run-owned --apphost-assembly \"$A_DLL\"\n+\n+# Folders CI step \"Run CI/CD tooling unit tests\", on the patched worktree (Builds props copied from the pinned 7cd0c17a).\n+step folders-tooling-unittest \"$W\" python3 -m unittest discover -s scripts/tests -p 'test_*.py'\n+step folders-consumer-generator-compile \"$W\" python3 -B -m py_compile scripts/validate-consumer-package-references.py\n+\n+step leftovers \"$P\" bash -c 'docker ps -a --filter label=com.hexalith.run-owned-workload --format \"{{.ID}}\" | wc -l; ls -d /tmp/hexalith-run-owned-workload-* 2>/dev/null | wc -l'\n+\n+( cd \"$P\" && sha256sum docs/security/workload-binding-enrollment.md \\\n+    tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs \\\n+    src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs \\\n+    src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs \\\n+    src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs \\\n+    infrastructure/keycloak-workload-binding/run_owned.py infrastructure/keycloak-workload-binding/run_owned_component.py \\\n+    infrastructure/keycloak-workload-binding/test_run_owned.py infrastructure/keycloak-workload-binding/verify_component.py ) > \"$O/source-sha256.txt\"\n+( cd \"$F\" && sha256sum tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs \\\n+    tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs ) >> \"$O/source-sha256.txt\"\n+( cd \"$W\" && sha256sum scripts/tests/test_ci_cd_tooling.py scripts/validate-consumer-package-references.py ) | sed 's#  #  worktree:#' >> \"$O/source-sha256.txt\"\n+sha256sum \"$T_DLL\" \"$A_DLL\" > \"$O/assembly-sha256.txt\" 2>&1\n+( cd \"$W\" && git diff ) > \"$O/folders-net11-scripts.patch\"\n+echo DONE >> \"$O/summary.txt\""
+      },
+      {
+        "sha": "5c04d5fee3a10088735c71b1bac1c72d3542c251",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/source-sha256.txt",
+        "status": "added",
+        "additions": 15,
+        "deletions": 0,
+        "changes": 15,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsource-sha256.txt",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsource-sha256.txt",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsource-sha256.txt?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,15 @@\n+825b3e50e3d0c5257dee98a9acbbb2489ef927faa83c7411dbf30e4b0290a518  docs/security/workload-binding-enrollment.md\n+790231d201ffd9c2e1702f57a013908a66dd6b09de7c0bef2bd03687d67dfccb  tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\n+088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39  src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs\n+da4e12c45723e4ec10102a1c224708f1dd16a7934bbaed5190b99b3c2648ad36  src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs\n+61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5  src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs\n+3d0255b6d0262a2420a3cbd42e8f35fda04c09e3560fc886f912922c49e95320  infrastructure/keycloak-workload-binding/run_owned.py\n+2cc539f17b59641eb1a648d754549e8f6850561774c6de49b4e85e2485fe20a9  infrastructure/keycloak-workload-binding/run_owned_component.py\n+d5e20d6acd8180356ef62a9e751c48571562d66fe77a646d950df27d638a2790  infrastructure/keycloak-workload-binding/test_run_owned.py\n+15e9e8a08005b97d5493081064350c5b2796808b16c9dbaa6e93a42e22047ab4  infrastructure/keycloak-workload-binding/verify_component.py\n+cdb6953af3e1f02f3498ecd3528410eec71fb6f0b8fec7ddb42cd7a359d8392f  tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\n+c74d57525dcb9ed951ac060cc53d2cb295307bb6157b097b26e25858b9c4c364  tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\n+7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a  tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs\n+c124579b957707b81a294333a60f77fac85a229c27a959add90647815bea6331  tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs\n+3a27a1ad8d29ec434b2636e27685ed5f9597e8dbe07e6e768ed321ec6bd18941  worktree:scripts/tests/test_ci_cd_tooling.py\n+c09ae7f6e4b16c1c465e28027068034393335c9996b0349ab58184f6cb7be8a1  worktree:scripts/validate-consumer-package-references.py"
+      },
+      {
+        "sha": "f5b465c283a1810b8671b067546f8b72f03a9a4a",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/summary.txt",
+        "status": "added",
+        "additions": 17,
+        "deletions": 0,
+        "changes": 17,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsummary.txt",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsummary.txt",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fsummary.txt?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,17 @@\n+k-maven exit=0 start=2026-11-15T10:20:02Z end=2026-11-15T10:20:05Z\n+k-unittest exit=0 start=2026-11-15T10:20:05Z end=2026-11-15T10:20:56Z\n+k-live-run-owned exit=0 start=2026-11-15T10:20:56Z end=2026-11-15T10:21:44Z\n+t-package-build exit=1 start=2026-11-15T10:21:44Z end=2026-11-15T10:21:46Z\n+a-source-build exit=0 start=2026-11-15T10:21:46Z end=2026-11-15T10:22:20Z\n+a-source-enrollment-default exit=0 start=2026-11-15T10:22:20Z end=2026-11-15T10:22:22Z\n+a-source-live-run-owned exit=0 start=2026-11-15T10:22:22Z end=2026-11-15T10:22:42Z\n+folders-tooling-unittest exit=0 start=2026-11-15T10:22:42Z end=2026-11-15T10:23:16Z\n+folders-consumer-generator-compile exit=0 start=2026-11-15T10:23:16Z end=2026-11-15T10:23:16Z\n+leftovers exit=0 start=2026-11-15T10:23:16Z end=2026-11-15T10:23:17Z\n+DONE\n+supplementary-t-global-tfm-attempt exit=1 start=2026-11-15T10:24:10Z end=2026-11-15T10:24:12Z note=NuGet restore ignores a global TargetFramework; still NU1201/NU1202 net10.0\n+supplementary-t-package-net11-build exit=0 start=2026-11-15T10:24:51Z end=2026-11-15T10:25:01Z\n+supplementary-t-package-net11-enrollment-default exit=0 start=2026-11-15T10:25:01Z end=2026-11-15T10:25:04Z\n+supplementary-t-package-net11-live-lanes exit=0 start=2026-11-15T10:25:04Z end=2026-11-15T10:25:27Z\n+leftovers-after-t exit=0 start=2026-11-15T10:25:27Z end=2026-11-15T10:25:27Z\n+DONE-T"
+      },
+      {
+        "sha": "83e7296efc3966abf8a2b829a390170471b0352b",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/verification.json",
+        "status": "added",
+        "additions": 151,
+        "deletions": 0,
+        "changes": 151,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fverification.json",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fverification.json",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fverification.json?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1,151 @@\n+{\n+  \"qualification\": \"run-owned enrollment\",\n+  \"story\": \"2-12-provision-a-run-owned-workload-binding-authority-for-dispos\",\n+  \"review\": \"delta review 2026-11-15 (Platform 0cf01331..f6f85032, Folders c01f3833..89e2fbb6)\",\n+  \"revisions\": {\n+    \"platform\": \"f6f85032 + uncommitted delta-review patches\",\n+    \"folders\": \"89e2fbb6 (checkout, unchanged)\",\n+    \"foldersWorktree\": \"fix/2-12-delta-review-net11-scripts at 89e2fbb6 + uncommitted net11 scripts patch\",\n+    \"builds\": \"73e60af8 (v6.0.4)\",\n+    \"foldersPushed\": \"cb5de783 on Folders main (net11 scripts patch rebased onto f538bb77); Platform gitlink unchanged at 89e2fbb6\"\n+  },\n+  \"patches\": {\n+    \"P1 doc native-scan permission\": \"docs/security/workload-binding-enrollment.md\",\n+    \"P2 Folders scripts net11\": \"worktree scripts/tests/test_ci_cd_tooling.py, scripts/validate-consumer-package-references.py (folders-net11-scripts.patch)\",\n+    \"P3 re-verification at HEAD\": \"this record\",\n+    \"P4 cross-language default test\": \"PlatformRunOwnedWorkloadEnrollmentTests.CreatedInventoryPassesTheLauncherDigestAndValidator\",\n+    \"P5 doc child-tree cleanup record\": \"docs/security/workload-binding-enrollment.md\"\n+  },\n+  \"steps\": {\n+    \"k-maven\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:20:02Z\",\n+      \"end\": \"2026-11-15T10:20:05Z\"\n+    },\n+    \"k-unittest\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:20:05Z\",\n+      \"end\": \"2026-11-15T10:20:56Z\"\n+    },\n+    \"k-live-run-owned\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:20:56Z\",\n+      \"end\": \"2026-11-15T10:21:44Z\"\n+    },\n+    \"t-package-build\": {\n+      \"exit\": \"1\",\n+      \"start\": \"2026-11-15T10:21:44Z\",\n+      \"end\": \"2026-11-15T10:21:46Z\"\n+    },\n+    \"a-source-build\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:21:46Z\",\n+      \"end\": \"2026-11-15T10:22:20Z\"\n+    },\n+    \"a-source-enrollment-default\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:22:20Z\",\n+      \"end\": \"2026-11-15T10:22:22Z\"\n+    },\n+    \"a-source-live-run-owned\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:22:22Z\",\n+      \"end\": \"2026-11-15T10:22:42Z\"\n+    },\n+    \"folders-tooling-unittest\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:22:42Z\",\n+      \"end\": \"2026-11-15T10:23:16Z\"\n+    },\n+    \"folders-consumer-generator-compile\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:23:16Z\",\n+      \"end\": \"2026-11-15T10:23:16Z\"\n+    },\n+    \"leftovers\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:23:16Z\",\n+      \"end\": \"2026-11-15T10:23:17Z\"\n+    },\n+    \"supplementary-t-global-tfm-attempt\": {\n+      \"exit\": \"1\",\n+      \"start\": \"2026-11-15T10:24:10Z\",\n+      \"end\": \"2026-11-15T10:24:12Z\",\n+      \"note\": \"NuGet restore ignores a global TargetFramework; still NU1201/NU1202 net10.0\"\n+    },\n+    \"supplementary-t-package-net11-build\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:24:51Z\",\n+      \"end\": \"2026-11-15T10:25:01Z\"\n+    },\n+    \"supplementary-t-package-net11-enrollment-default\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:25:01Z\",\n+      \"end\": \"2026-11-15T10:25:04Z\"\n+    },\n+    \"supplementary-t-package-net11-live-lanes\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:25:04Z\",\n+      \"end\": \"2026-11-15T10:25:27Z\"\n+    },\n+    \"leftovers-after-t\": {\n+      \"exit\": \"0\",\n+      \"start\": \"2026-11-15T10:25:27Z\",\n+      \"end\": \"2026-11-15T10:25:27Z\"\n+    }\n+  },\n+  \"results\": {\n+    \"k-unittest\": \"46/46\",\n+    \"k-live-run-owned\": \"25 fresh RSA probes, 5 real-container terminal controls, UID 1001 caller\",\n+    \"t-package-default-build\": \"FAIL outside story files: HEAD .config/dotnet-tools.json (466c6dd1, Builds CLI 4.44.3) selects net10.0 at Directory.Build.props:7; NU1201/NU1202 against net11-only dependencies\",\n+    \"supplementary-t-package-net11\": \"build 0 errors with -p:_PlatformRuntimeToolManifest override; enrollment class 48 pass + 1 explicit not run (49 = 42 prior + 6 scan-* + 1 new); explicit lanes provisioned=true and adoptionCancelled=true\",\n+    \"a-source\": \"build 0 errors; enrollment classes 8 pass + 6 explicit not run; run-owned live lane 1/1 provisioned=true\",\n+    \"folders-tooling-unittest\": \"69/69 on the patched worktree; ScheduledPolicy+NightlyDrift classes 26 failures unpatched -> 14/14 patched\",\n+    \"mutation-P4\": \"operation drift -> exact-permission-inventory FAIL; digest drift -> cohort-binding-changed FAIL; unmutated shim copy PASS\",\n+    \"leftovers\": \"0 labeled containers, 0 private run directories (after both runs)\"\n+  },\n+  \"sourceSha256\": {\n+    \"docs/security/workload-binding-enrollment.md\": \"825b3e50e3d0c5257dee98a9acbbb2489ef927faa83c7411dbf30e4b0290a518\",\n+    \"tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\": \"790231d201ffd9c2e1702f57a013908a66dd6b09de7c0bef2bd03687d67dfccb\",\n+    \"src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs\": \"088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39\",\n+    \"src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs\": \"da4e12c45723e4ec10102a1c224708f1dd16a7934bbaed5190b99b3c2648ad36\",\n+    \"src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs\": \"61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5\",\n+    \"infrastructure/keycloak-workload-binding/run_owned.py\": \"3d0255b6d0262a2420a3cbd42e8f35fda04c09e3560fc886f912922c49e95320\",\n+    \"infrastructure/keycloak-workload-binding/run_owned_component.py\": \"2cc539f17b59641eb1a648d754549e8f6850561774c6de49b4e85e2485fe20a9\",\n+    \"infrastructure/keycloak-workload-binding/test_run_owned.py\": \"d5e20d6acd8180356ef62a9e751c48571562d66fe77a646d950df27d638a2790\",\n+    \"infrastructure/keycloak-workload-binding/verify_component.py\": \"15e9e8a08005b97d5493081064350c5b2796808b16c9dbaa6e93a42e22047ab4\",\n+    \"tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\": \"cdb6953af3e1f02f3498ecd3528410eec71fb6f0b8fec7ddb42cd7a359d8392f\",\n+    \"tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\": \"c74d57525dcb9ed951ac060cc53d2cb295307bb6157b097b26e25858b9c4c364\",\n+    \"tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs\": \"7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a\",\n+    \"tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs\": \"c124579b957707b81a294333a60f77fac85a229c27a959add90647815bea6331\",\n+    \"worktree:scripts/tests/test_ci_cd_tooling.py\": \"3a27a1ad8d29ec434b2636e27685ed5f9597e8dbe07e6e768ed321ec6bd18941\",\n+    \"worktree:scripts/validate-consumer-package-references.py\": \"c09ae7f6e4b16c1c465e28027068034393335c9996b0349ab58184f6cb7be8a1\"\n+  },\n+  \"assemblySha256\": {\n+    \"note\": \"first T line is the stale 02:07 DLL left by the failed default build; the fresh supplementary DLL is the last line\",\n+    \"entries\": [\n+      [\n+        \"16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143\",\n+        \"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\"\n+      ],\n+      [\n+        \"859bfe94dba0e19b46d475f2c8bb1675d6152fbd09cb66ef24c836f89827347a\",\n+        \"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll\"\n+      ],\n+      [\n+        \"16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143\",\n+        \"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\"\n+      ],\n+      [\n+        \"06d73c199994962e8df927de940389c1b54ac78adea3d9b817578f79e62ce81e\",\n+        \"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\"\n+      ]\n+    ]\n+  },\n+  \"limitations\": [\n+    \"Default Platform T Debug/package build fails at HEAD from 466c6dd1 (outside story); verified only with the manifest-property override.\",\n+    \"Default Platform C/T Debug/source build remains deferred to the Builds catalog owner.\",\n+    \"Folders net11 scripts patch pushed as cb5de783; a Folders CI run must confirm the tooling step is green.\",\n+    \"No strict Folders acceptance, Folders 12.2 completion, Platform lifecycle or SDK qualification is claimed.\"\n+  ]\n+}"
+      },
+      {
+        "sha": "189e4c00823ca47e2b436e987c0a3451762abbd9",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/xml/a-source-enrollment-default.xml",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fa-source-enrollment-default.xml",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fa-source-enrollment-default.xml",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fa-source-enrollment-default.xml?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1 @@\n+<assemblies schema-version=\"3\" id=\"1f689c1f-1cf0-464b-97c5-380af78e1bb1\" user=\"administrator\" start-rtf=\"2026-11-15T10:22:20.9960147+00:00\" finish-rtf=\"2026-11-15T10:22:22.1858504+00:00\" timestamp=\"11/15/2026 11:22:22\"><assembly environment=\"64-bit (x64) .NET 11.0.0 [collection-per-class, parallel (collections, 14 threads)]\" id=\"32bd2450-31f3-4c78-bf29-342bd6f390e3\" name=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll\" run-date=\"2026-11-15\" run-time=\"10:22:20\" start-rtf=\"2026-11-15T10:22:20.9960147+00:00\" test-framework=\"xUnit.net v3 4.0.3+384aa7f0b4\" target-framework=\".NETCoreApp,Version=v11.0\" errors=\"0\" failed=\"0\" finish-rtf=\"2026-11-15T10:22:22.1858504+00:00\" not-run=\"6\" passed=\"8\" skipped=\"0\" time=\"1.190\" time-rtf=\"00:00:01.1900000\" total=\"14\"><collection name=\"Test collection for Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests (id: 2a2341b412ece0b82256e3937a8a31e60fa3ffcb015d5b3e3b8e36d6e85a706b)\" id=\"5950647b-e1ae-4f69-b361-af5063c90d67\" failed=\"0\" not-run=\"6\" passed=\"0\" skipped=\"0\" time=\"0.000\" time-rtf=\"00:00:00\" total=\"6\"><test id=\"5e99aad5-83ee-4b7e-95ec-f4a6d5ec9e4f\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation(fault: \\&quot;none\\&quot;)\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.0975352+00:00\" finish-rtf=\"2026-11-15T10:22:21.1013697+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"35\" /><test id=\"bbcc71e3-c02d-4e64-b25e-10151fca0a5e\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation(fault: \\&quot;probe\\&quot;)\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.1042359+00:00\" finish-rtf=\"2026-11-15T10:22:21.1042708+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"35\" /><test id=\"ba488b6b-84c1-423c-ba1f-13ff9b311653\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation(fault: \\&quot;tls\\&quot;)\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.1042898+00:00\" finish-rtf=\"2026-11-15T10:22:21.1042922+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"35\" /><test id=\"7320d714-ccaa-4f3e-891f-f485763f81ab\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation(fault: \\&quot;signer\\&quot;)\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.1042945+00:00\" finish-rtf=\"2026-11-15T10:22:21.1042958+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"35\" /><test id=\"f530d586-2e6b-4c1f-8905-bc67de009044\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation(fault: \\&quot;permissions\\&quot;)\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.1043011+00:00\" finish-rtf=\"2026-11-15T10:22:21.1043024+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"35\" /><test id=\"f6b57fde-fad0-4271-8a05-20d5db51162e\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.RunOwnedAuthorityVerifiesFinalCohortAndAllRefusals\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:22:21.1080823+00:00\" finish-rtf=\"2026-11-15T10:22:21.1081157+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests\" method=\"RunOwnedAuthorityVerifiesFinalCohortAndAllRefusals\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs\" source-line=\"99\" /></collection><collection name=\"Test collection for Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests (id: 7a66788048707cb1ea9d72ae0c92df09d514607b006f3bd6fcb57a91280945cc)\" id=\"d8376d9c-14f2-4c1f-91f4-c058fdc43182\" failed=\"0\" not-run=\"0\" passed=\"8\" skipped=\"0\" time=\"1.065\" time-rtf=\"00:00:01.0650000\" total=\"8\"><test id=\"06480f95-ac28-4c32-8ecb-0940836e2d08\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.FinalInventoryRefusesChangedTenantBeforeIssuerExchange(fault: \\&quot;selected-tenant\\&quot;)\" result=\"Pass\" time=\"0.322\" time-rtf=\"00:00:00.3220000\" start-rtf=\"2026-11-15T10:22:21.0975274+00:00\" finish-rtf=\"2026-11-15T10:22:21.4301145+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"FinalInventoryRefusesChangedTenantBeforeIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"68\" /><test id=\"a414ae5c-d39d-412d-99b5-5e619184f02a\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.FinalInventoryRefusesChangedTenantBeforeIssuerExchange(fault: \\&quot;tenants-storage\\&quot;)\" result=\"Pass\" time=\"0.14\" time-rtf=\"00:00:00.1400000\" start-rtf=\"2026-11-15T10:22:21.4309001+00:00\" finish-rtf=\"2026-11-15T10:22:21.5712089+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"FinalInventoryRefusesChangedTenantBeforeIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"68\" /><test id=\"e60c8819-02af-44d6-b524-713fb437feca\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.PartialOwnerReferencesRefuseBeforeCatalogCapture\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:22:21.5742931+00:00\" finish-rtf=\"2026-11-15T10:22:21.6818550+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"PartialOwnerReferencesRefuseBeforeCatalogCapture\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"115\" /><test id=\"debe6c3f-c80a-42b1-bd0b-eead7433e4e3\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.MissingProtectedEnrollmentDisablesEveryActualCaller\" result=\"Pass\" time=\"0.1\" time-rtf=\"00:00:00.1000000\" start-rtf=\"2026-11-15T10:22:21.6823945+00:00\" finish-rtf=\"2026-11-15T10:22:21.7831045+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"MissingProtectedEnrollmentDisablesEveryActualCaller\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"90\" /><test id=\"39b24373-b0d6-4e14-ade5-1bb7f1e94eae\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange(fault: \\&quot;digest\\&quot;)\" result=\"Pass\" time=\"0.053\" time-rtf=\"00:00:00.0530000\" start-rtf=\"2026-11-15T10:22:21.7837562+00:00\" finish-rtf=\"2026-11-15T10:22:21.8370301+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"24\" /><test id=\"ec04240b-243d-407b-bac7-1315f5f8f68b\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange(fault: \\&quot;duplicate\\&quot;)\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:22:21.8371018+00:00\" finish-rtf=\"2026-11-15T10:22:21.9447236+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"24\" /><test id=\"f922db9f-7566-402d-8168-539993ed8e72\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange(fault: \\&quot;expired\\&quot;)\" result=\"Pass\" time=\"0.11\" time-rtf=\"00:00:00.1100000\" start-rtf=\"2026-11-15T10:22:21.9448007+00:00\" finish-rtf=\"2026-11-15T10:22:22.0557704+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"24\" /><test id=\"9a9f03d7-1336-4ed3-a7fe-939bd3bdda38\" name=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests.InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange(fault: \\&quot;cohort\\&quot;)\" result=\"Pass\" time=\"0.126\" time-rtf=\"00:00:00.1260000\" start-rtf=\"2026-11-15T10:22:22.0558267+00:00\" finish-rtf=\"2026-11-15T10:22:22.1821090+00:00\" type=\"Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests\" method=\"InvalidOwnerArtifactRefusesBeforeAnyIssuerExchange\" source-file=\"/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs\" source-line=\"24\" /></collection></assembly></assemblies>\n\\ No newline at end of file"
+      },
+      {
+        "sha": "780612e7350f1cc5cee95491a873215d339fe202",
+        "filename": "_bmad-output/implementation-artifacts/evidence/2-12/delta-review-20261115/xml/supplementary-t-package-net11-enrollment-default.xml",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fsupplementary-t-package-net11-enrollment-default.xml",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fsupplementary-t-package-net11-enrollment-default.xml",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fevidence%2F2-12%2Fdelta-review-20261115%2Fxml%2Fsupplementary-t-package-net11-enrollment-default.xml?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -0,0 +1 @@\n+<assemblies schema-version=\"3\" id=\"f880061c-667f-44c6-a446-919a5a6b7564\" user=\"administrator\" start-rtf=\"2026-11-15T10:25:02.1043131+00:00\" finish-rtf=\"2026-11-15T10:25:04.1636613+00:00\" timestamp=\"11/15/2026 11:25:04\"><assembly environment=\"64-bit (x64) .NET 11.0.0 [collection-per-class, parallel (collections, 14 threads)]\" id=\"9165e352-29da-4aec-9367-122e2f341fb2\" name=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll\" run-date=\"2026-11-15\" run-time=\"10:25:02\" start-rtf=\"2026-11-15T10:25:02.1043131+00:00\" test-framework=\"xUnit.net v3 4.0.3+384aa7f0b4\" target-framework=\".NETCoreApp,Version=v11.0\" errors=\"0\" failed=\"0\" finish-rtf=\"2026-11-15T10:25:04.1636613+00:00\" not-run=\"1\" passed=\"48\" skipped=\"0\" time=\"2.060\" time-rtf=\"00:00:02.0600000\" total=\"49\"><collection name=\"Platform file entry\" id=\"11cc8c5d-6f58-4f0f-8a47-f7bd07e5bcc6\" failed=\"0\" not-run=\"1\" passed=\"48\" skipped=\"0\" time=\"1.930\" time-rtf=\"00:00:01.9300000\" total=\"49\"><test id=\"ca4504e0-06e4-4024-84e3-240e47526918\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.MixedOwnerContextRefusesBeforeReadingArtifacts\" result=\"Pass\" time=\"0.082\" time-rtf=\"00:00:00.0820000\" start-rtf=\"2026-11-15T10:25:02.1672644+00:00\" finish-rtf=\"2026-11-15T10:25:02.2595676+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"MixedOwnerContextRefusesBeforeReadingArtifacts\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"168\" /><test id=\"2c6055e7-8d77-4309-8e54-eb8a996725f4\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants\" result=\"Pass\" time=\"0.034\" time-rtf=\"00:00:00.0340000\" start-rtf=\"2026-11-15T10:25:02.2671707+00:00\" finish-rtf=\"2026-11-15T10:25:02.3013804+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"29\" /><test id=\"5cd7ecaf-e5a9-4090-b99e-a128b331ca33\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;source\\&quot;)\" result=\"Pass\" time=\"0.003\" time-rtf=\"00:00:00.0030000\" start-rtf=\"2026-11-15T10:25:02.3073092+00:00\" finish-rtf=\"2026-11-15T10:25:02.3112942+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"76b0afaf-7116-4afb-9134-f0a62df2ee25\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-operation\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3113500+00:00\" finish-rtf=\"2026-11-15T10:25:02.3131030+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"eb9c2ffc-b95f-4952-be0f-2554afadbc40\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-domain\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3131567+00:00\" finish-rtf=\"2026-11-15T10:25:02.3142186+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"e245a128-8a37-43d8-b3f4-051f8b81f8ff\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-tenant\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3142609+00:00\" finish-rtf=\"2026-11-15T10:25:02.3152428+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"700cafa6-784f-4f9e-8127-d23e9706ebfd\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-missing\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3152963+00:00\" finish-rtf=\"2026-11-15T10:25:02.3162374+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"bcac7e4e-f4c7-4787-950b-b8a7bbcc5bd5\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;duplicate-global-administrators-query\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3162836+00:00\" finish-rtf=\"2026-11-15T10:25:02.3175299+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"980d9735-5572-4708-b49a-a584187e6b92\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;duplicate-tenants-query\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3175753+00:00\" finish-rtf=\"2026-11-15T10:25:02.3186116+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"10bfcdb0-9558-4c01-9fea-3cf7ac0730fa\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;physical-bootstrap-audience\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3186489+00:00\" finish-rtf=\"2026-11-15T10:25:02.3196538+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"bc5cada7-2203-4ef1-9bd8-6e887ca40502\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;physical-source-audience\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3197014+00:00\" finish-rtf=\"2026-11-15T10:25:02.3208467+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"2b479a50-e387-4545-ae79-83e113a25818\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;audience\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3208858+00:00\" finish-rtf=\"2026-11-15T10:25:02.3218807+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"7bbf9c1b-c07b-428d-9156-ac1c32ce57a0\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;selected-tenant\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3219245+00:00\" finish-rtf=\"2026-11-15T10:25:02.3229236+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"9dc800d6-3138-4e0d-82b2-cc0318f9149c\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;global-administrators-storage-tenant\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3229641+00:00\" finish-rtf=\"2026-11-15T10:25:02.3239805+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"cd76ce7d-06bb-4eb0-8557-1aeb8c4bc0e6\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;storage-tenant\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3240193+00:00\" finish-rtf=\"2026-11-15T10:25:02.3255952+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"e8520670-f932-4cca-a431-c9e4f0fac5a1\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;query\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3256547+00:00\" finish-rtf=\"2026-11-15T10:25:02.3270730+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"2472c49b-eae1-47ec-afb6-5d1c6ecd416f\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;bootstrap\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3271362+00:00\" finish-rtf=\"2026-11-15T10:25:02.3282711+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"1704a885-5a15-4984-9df5-38d4efa7f18e\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;callback\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3283150+00:00\" finish-rtf=\"2026-11-15T10:25:02.3293420+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"4928e86f-4cc7-47ad-8424-f75f0091d3e9\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-extra-binding\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.3293822+00:00\" finish-rtf=\"2026-11-15T10:25:02.3304717+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"8b810272-99f5-4fe1-b4be-1d3e98cca5cb\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ChangedInventoryRefuses(fault: \\&quot;scan-duplicate\\&quot;)\" result=\"Pass\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:02.3305201+00:00\" finish-rtf=\"2026-11-15T10:25:02.3315353+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ChangedInventoryRefuses\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"97\" /><test id=\"53ba9ccd-65eb-42f8-9e35-ca89c3b54b02\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CreatedInventoryPassesTheLauncherDigestAndValidator\" result=\"Pass\" time=\"0.056\" time-rtf=\"00:00:00.0560000\" start-rtf=\"2026-11-15T10:25:02.3318740+00:00\" finish-rtf=\"2026-11-15T10:25:02.3881183+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"CreatedInventoryPassesTheLauncherDigestAndValidator\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"64\" /><test id=\"f8f446d0-2ee9-4d29-90cd-24a0e1f933be\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.LaunchTrustReadFailuresHaveNamedPrecondition(fault: \\&quot;missing\\&quot;)\" result=\"Pass\" time=\"0.005\" time-rtf=\"00:00:00.0050000\" start-rtf=\"2026-11-15T10:25:02.3887625+00:00\" finish-rtf=\"2026-11-15T10:25:02.3943654+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"LaunchTrustReadFailuresHaveNamedPrecondition\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"199\" /><test id=\"d957a319-31b4-434c-b130-53616cfba376\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.LaunchTrustReadFailuresHaveNamedPrecondition(fault: \\&quot;unreadable\\&quot;)\" result=\"Pass\" time=\"0.002\" time-rtf=\"00:00:00.0020000\" start-rtf=\"2026-11-15T10:25:02.3944175+00:00\" finish-rtf=\"2026-11-15T10:25:02.3965605+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"LaunchTrustReadFailuresHaveNamedPrecondition\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"199\" /><test id=\"1a9ae152-934d-4d35-8b45-12efc67633dc\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;none\\&quot;, code: null)\" result=\"Pass\" time=\"0.116\" time-rtf=\"00:00:00.1160000\" start-rtf=\"2026-11-15T10:25:02.3971396+00:00\" finish-rtf=\"2026-11-15T10:25:02.5136003+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"8386fae0-b42d-4260-9c62-2c0814ca7e3a\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;host-trust-merged\\&quot;, code: null)\" result=\"Pass\" time=\"0.108\" time-rtf=\"00:00:00.1080000\" start-rtf=\"2026-11-15T10:25:02.5136938+00:00\" finish-rtf=\"2026-11-15T10:25:02.6220600+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"7b9a619a-6577-437c-aaec-341314b55073\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;cancellation\\&quot;, code: \\&quot;cancelled\\&quot;)\" result=\"Pass\" time=\"0.068\" time-rtf=\"00:00:00.0680000\" start-rtf=\"2026-11-15T10:25:02.6221491+00:00\" finish-rtf=\"2026-11-15T10:25:02.6904529+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"9d79e625-174c-44cb-a8fa-8317a858d463\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;trust-digest\\&quot;, code: \\&quot;missing-prelaunch-trust\\&quot;)\" result=\"Pass\" time=\"0.002\" time-rtf=\"00:00:00.0020000\" start-rtf=\"2026-11-15T10:25:02.6905406+00:00\" finish-rtf=\"2026-11-15T10:25:02.6931944+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"77255481-861c-4e91-88ae-21fbd9ba5e58\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;host-trust\\&quot;, code: \\&quot;host-trust-must-merge-launch-trust\\&quot;)\" result=\"Pass\" time=\"0.001\" time-rtf=\"00:00:00.0010000\" start-rtf=\"2026-11-15T10:25:02.6932581+00:00\" finish-rtf=\"2026-11-15T10:25:02.6951772+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"c740d422-4ecc-4a75-8556-e2bb855c7689\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;result\\&quot;, code: \\&quot;foreign-result-or-changed-cohort\\&quot;)\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:25:02.6952213+00:00\" finish-rtf=\"2026-11-15T10:25:02.8026913+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"874d132b-d5c3-4b07-b439-17b8e9b7feb1\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;manifest-digest\\&quot;, code: \\&quot;manifest-binding\\&quot;)\" result=\"Pass\" time=\"0.106\" time-rtf=\"00:00:00.1060000\" start-rtf=\"2026-11-15T10:25:02.8028203+00:00\" finish-rtf=\"2026-11-15T10:25:02.9093606+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"58ff68cb-4477-417c-86e8-20a9904d7398\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;issuer\\&quot;, code: \\&quot;disposable-loopback-authority-required\\&quot;)\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:25:02.9094738+00:00\" finish-rtf=\"2026-11-15T10:25:03.0175064+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"a927c69c-d0c1-4a38-b5f4-c5afe7f0c200\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;cohort\\&quot;, code: \\&quot;changed-cohort\\&quot;)\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:25:03.0176242+00:00\" finish-rtf=\"2026-11-15T10:25:03.1257779+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"444f4d39-44e7-4a43-9760-c071bb6a400e\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;probes\\&quot;, code: \\&quot;changed-cohort-or-tenant\\&quot;)\" result=\"Pass\" time=\"0.106\" time-rtf=\"00:00:00.1060000\" start-rtf=\"2026-11-15T10:25:03.1258793+00:00\" finish-rtf=\"2026-11-15T10:25:03.2328976+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"18ec4682-cab8-4445-b5bc-9d21d1983632\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;secret\\&quot;, code: \\&quot;foreign-secret-reference\\&quot;)\" result=\"Pass\" time=\"0.104\" time-rtf=\"00:00:00.1040000\" start-rtf=\"2026-11-15T10:25:03.2330190+00:00\" finish-rtf=\"2026-11-15T10:25:03.3376630+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"02a33f4b-3f1b-4abb-9966-f4fa292c547a\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ForeignProducerArtifactsRefuseBeforeActivation(fault: \\&quot;final-cohort\\&quot;, code: \\&quot;changed-final-cohort\\&quot;)\" result=\"Pass\" time=\"0.107\" time-rtf=\"00:00:00.1070000\" start-rtf=\"2026-11-15T10:25:03.3377735+00:00\" finish-rtf=\"2026-11-15T10:25:03.4449523+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ForeignProducerArtifactsRefuseBeforeActivation\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"245\" /><test id=\"9b674897-0d5f-4719-95c4-ab004ef2e012\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls\" result=\"NotRun\" time=\"0\" time-rtf=\"00:00:00.0000000\" start-rtf=\"2026-11-15T10:25:03.4456222+00:00\" finish-rtf=\"2026-11-15T10:25:03.4461420+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"RunOwnedAuthorityPassesUnchangedConsumerAndNegativeControls\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"483\" /><test id=\"b1419045-136a-42c8-9031-45fd8bae96d3\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;none\\&quot;)\" result=\"Pass\" time=\"0.031\" time-rtf=\"00:00:00.0310000\" start-rtf=\"2026-11-15T10:25:03.4467667+00:00\" finish-rtf=\"2026-11-15T10:25:03.4787711+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"36b95753-27d4-429c-b986-67313515c693\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;grant\\&quot;)\" result=\"Pass\" time=\"0.038\" time-rtf=\"00:00:00.0380000\" start-rtf=\"2026-11-15T10:25:03.4788795+00:00\" finish-rtf=\"2026-11-15T10:25:03.5172807+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"4f9c2b53-c4c9-4656-b9b2-526a0a4c1e83\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;revision\\&quot;)\" result=\"Pass\" time=\"0.027\" time-rtf=\"00:00:00.0270000\" start-rtf=\"2026-11-15T10:25:03.5173922+00:00\" finish-rtf=\"2026-11-15T10:25:03.5452499+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"cf110177-d721-43c7-8746-76cf23c43b47\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;surface\\&quot;)\" result=\"Pass\" time=\"0.024\" time-rtf=\"00:00:00.0240000\" start-rtf=\"2026-11-15T10:25:03.5453613+00:00\" finish-rtf=\"2026-11-15T10:25:03.5695247+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"7e6ad8f1-cacf-4a5b-b84c-4a86ea12e7f8\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;binding\\&quot;)\" result=\"Pass\" time=\"0.025\" time-rtf=\"00:00:00.0250000\" start-rtf=\"2026-11-15T10:25:03.5696321+00:00\" finish-rtf=\"2026-11-15T10:25:03.5956814+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"074ebfe9-4867-4156-beb7-a2460b609f4e\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;extra-binding\\&quot;)\" result=\"Pass\" time=\"0.061\" time-rtf=\"00:00:00.0610000\" start-rtf=\"2026-11-15T10:25:03.5957763+00:00\" finish-rtf=\"2026-11-15T10:25:03.6571175+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"e5689d34-8b03-43e5-9e17-33dea437df6b\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;issued\\&quot;)\" result=\"Pass\" time=\"0.02\" time-rtf=\"00:00:00.0200000\" start-rtf=\"2026-11-15T10:25:03.6572164+00:00\" finish-rtf=\"2026-11-15T10:25:03.6778174+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"8e581c12-b1ac-4bbe-9200-9c9e65306b30\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;not-before\\&quot;)\" result=\"Pass\" time=\"0.029\" time-rtf=\"00:00:00.0290000\" start-rtf=\"2026-11-15T10:25:03.6779334+00:00\" finish-rtf=\"2026-11-15T10:25:03.7073007+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"333ee1a1-b06b-4740-92b6-0845a48525b7\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.FreshHostUsesCompleteConsumerTokenVerification(fault: \\&quot;lifetime\\&quot;)\" result=\"Pass\" time=\"0.014\" time-rtf=\"00:00:00.0140000\" start-rtf=\"2026-11-15T10:25:03.7074120+00:00\" finish-rtf=\"2026-11-15T10:25:03.7215745+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"FreshHostUsesCompleteConsumerTokenVerification\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"439\" /><test id=\"ae1a8b35-a9e5-4240-84f4-0b1353e10c90\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ExternalOwnerContextIsPreservedWhenLauncherIsAbsent\" result=\"Pass\" time=\"0.002\" time-rtf=\"00:00:00.0020000\" start-rtf=\"2026-11-15T10:25:03.7220185+00:00\" finish-rtf=\"2026-11-15T10:25:03.7244686+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ExternalOwnerContextIsPreservedWhenLauncherIsAbsent\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"153\" /><test id=\"aee9f144-0071-45ee-a7da-455ce4b3db25\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent(fault: \\&quot;publish\\&quot;)\" result=\"Pass\" time=\"0.208\" time-rtf=\"00:00:00.2080000\" start-rtf=\"2026-11-15T10:25:03.7248616+00:00\" finish-rtf=\"2026-11-15T10:25:03.9335150+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"392\" /><test id=\"0a7c4fe9-17fc-4802-8a5e-a4c64163d29a\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent(fault: \\&quot;foreign-release\\&quot;)\" result=\"Pass\" time=\"0.206\" time-rtf=\"00:00:00.2060000\" start-rtf=\"2026-11-15T10:25:03.9336300+00:00\" finish-rtf=\"2026-11-15T10:25:04.1407642+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"CleanupRetriesRemainIncompleteUntilOwnedDirectoryIsAbsent\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"392\" /><test id=\"262da7f3-a5b7-438b-8914-175a567962f9\" name=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests.ProductionModelRefusesGeneratedContext\" result=\"Pass\" time=\"0.015\" time-rtf=\"00:00:00.0150000\" start-rtf=\"2026-11-15T10:25:04.1415363+00:00\" finish-rtf=\"2026-11-15T10:25:04.1567781+00:00\" type=\"Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests\" method=\"ProductionModelRefusesGeneratedContext\" source-file=\"/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs\" source-line=\"183\" /></collection></assembly></assemblies>\n\\ No newline at end of file"
+      },
+      {
+        "sha": "7db51cad4a5892e9032b3fdbce55e1396f5da55c",
+        "filename": "_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md",
+        "status": "modified",
+        "additions": 53,
+        "deletions": 0,
+        "changes": 53,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fspec-2-12-provision-a-run-owned-workload-binding-authority.md",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fspec-2-12-provision-a-run-owned-workload-binding-authority.md",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fspec-2-12-provision-a-run-owned-workload-binding-authority.md?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -520,3 +520,56 @@ Retained failures:\n Package mode for Platform resolves the finite SDK4.2 view chosen by the catalog owner: EventStore 4.2.0, Memories 3.0.27 and Tenants 7.0.7. Folders resolves EventStore 5.1.0, Memories 4.0.0 and Tenants 8.0.0. This pass makes no claim of strict Folders acceptance, Folders 12.2 completion, or Platform lifecycle or SDK qualification. No commit, push or submodule-pointer change was made.\n \n Parent audit: the parent reproduced the Composition Debug/source catalog failure independently at `0cf01331` and corrected the default-lane counts against the xUnit XML (`T` 36 pass and 1 explicit test not run; `A` 8 pass and 6 explicit tests not run, which the live lanes run). By user decision on 2026-11-15, the default Debug/source gate is deferred to the Builds catalog owner and the story proceeds to review.\n+\n+### Review Findings \u2014 delta review, 2026-11-15\n+\n+Scope: the code not yet reviewed. Platform story files `0cf01331..f6f85032`: the G31\u2013G38 application and the story 12.2 commit `5a58ba20`, which added `eventstore:stream-scan-native`. Folders story files `c01f3833..89e2fbb6`: commit `54ab7e02` (G31) and the story 12.2 commit `6ac67074` in `WorkloadEnrollmentComponentTests`. Four layers reported: blind, edge-case, verification-gap and acceptance. Triage normalized 29 findings: 13 merge into 5 patch groups and 16 are rejected. There are no decision-needed or defer items. Parent check at HEAD: `python3 -B -m unittest test_run_owned` passes 46/46.\n+\n+- [x] [Review][Patch] The doc omits the `eventstore:stream-scan-native` permission and its separate `NativeSourceScan` RSA proof, which the shared inventory now requires of every Folders source caller. Persistent manifests built from the doc's exact-inventory table are refused by `PlatformWorkloadEnrollment.ConfigureAsync` \u2192 `PlatformWorkloadEnrollmentInventory.Validate`. Add the row, update the source-set, RSA-proof and SDK-assertion passages, and note that persistent manifests must add the grant [docs/security/workload-binding-enrollment.md:107]\n+- [x] [Review][Patch] The G31 net11 sweep missed `scripts/`. The tooling fixtures still create `bin/<cfg>/net10.0` assemblies, so `NightlyDriftGateTests` and `ScheduledPolicyGateTests` fail with `missing-test-assembly`. Folders CI \"Run CI/CD tooling unit tests\" passed at `c01f3833` and has been red from `54ab7e02` onwards. The release-package consumer generator also writes `net10.0` against net11-only packages [references/Hexalith.Folders/scripts/tests/test_ci_cd_tooling.py:565]\n+- [x] [Review][Patch] The story 12.2 scan-native edits to 2.12 files have no execution record. Nothing records a run of the six `scan-*` C# refusal cases (48 enrollment cases now, against 42 recorded), the updated Folders component test, or the 25-probe live lanes. Six source hashes in `review-patches-20261115/verification.json` no longer match HEAD. Re-run T (package mode), the A enrollment classes and `verify_component.py --run-owned` with both assembly lanes, then bind fresh hashes [infrastructure/keycloak-workload-binding/run_owned.py:179]\n+- [x] [Review][Patch] No default-run test feeds the C# `PlatformWorkloadEnrollmentInventory.Create` output into Python `run_owned.validate_inventory`, so producer/launcher drift only surfaces in explicit Docker lanes. The commit's \"cross-language digest\" coverage is C#-only. Add a default-run Composition test that pipes `Create(...)` JSON to the Python validator [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:33]\n+- [x] [Review][Patch] The G33 doc sentence says the component harness preserves sanitized leftover records for all three cleanup codes. `owned-child-tree-cleanup-incomplete` emits no `cleanupIncomplete` record, and `report_cleanup_incomplete` accepts only the container and private-material codes. Scope the sentence to those two [docs/security/workload-binding-enrollment.md:262]\n+\n+**Rejected**\n+\n+- B3 false: the `command()` comment says \"its cleanup\", and cleanup commands run after `terminating=True`, so the first signal during provisioning cancels by design.\n+- B4 low: the session test fails without `start_new_session`. A behavioral signal test would need a shim and process-group signalling.\n+- B5 low: the scan client scope exists in the realm's `clientScopes`, so the refusal is the grant check. Positive scan issuance runs in the run-owned and assembly lanes.\n+- B6 low: test-only gaps. C# `SourceTenant` pins the gateway audience for both operations, the Python exact `remaining` match refuses duplicates, and the `folders` client is inside the per-source loop.\n+- B7 false: `build_realm` derives one grant and scope per probe generically (`run_owned.py:209-217`).\n+- B8 low: the operation literals predate this change, and replacing them is a refactor beyond a direct correction. Cross-language drift is covered by the fourth patch.\n+- B9 low: the existing-bundle host-trust negative already runs in the explicit lane (`PlatformRunOwnedWorkloadEnrollmentTests.cs:536`). The rename is cosmetic.\n+- B10 low: an extra proof header on the wrong request adds no authority, and checking for it means new assertions.\n+- B11 low: G34 now sets the opt-in, and the doc states that component results grant no qualification.\n+- B12 false: `Hexalith.Folders.Client.Generation` is deliberately `net10.0`, and its test path matches that project. Deriving the TFM is the carried B2 reject. The real `scripts/` leftovers are the second patch.\n+- B13 false: no rendered effect, and the file already has many lines over 100 characters.\n+- E4 carried reject: A5 (a double cleanup failure masks the child-tree code).\n+- E5 low: cancellation between fork and `Popen` return is a sub-second window, and tracking spawned PIDs adds machinery. It belongs to the carried D4 delayed-creation family.\n+- E6 low: the commit-message overstatement is pushed history. The code comment and doc correctly limit protection to cleanup.\n+- A1 rejected: the fix is a spec edit. The scan-native change tightens verification rather than relaxing it.\n+- A4 low: a process-only binding gap for an identical one-token edit. Folders contract-spine CI already failed at Build before G31.\n+- Merged into the patches above: B1, E2, VO1 and A3 (first); E1, V1 and E8 (second); A2 (third); V2 and E7 (fourth); B2, E3 and VO2 (fifth).\n+\n+#### Delta-review patch application and re-verification, 2026-11-15\n+\n+The parent applied all five patches. There was no commit, push or gitlink change.\n+\n+- **Doc (first and fifth patches):** the exact-inventory table now has a separate `eventstore:stream-scan-native` row with its own `Authentication:NativeSourceScan` RSA proof. A note says that persistent manifests with only read grants now refuse and must add the scan grant, then approve a new digest. The source-set, RSA-proof and SDK-assertion passages name both operations. The cleanup sentence says that only the container and private-material failures print a preserved leftover record; a child-tree failure appears only as its stderr code.\n+- **Folders net11 scripts (second patch):** three `net10.0` fixture and assertion paths in `scripts/tests/test_ci_cd_tooling.py` and the consumer generator's TFM now use `net11.0`. The change is in an isolated scratch worktree on branch `fix/2-12-delta-review-net11-scripts` at `89e2fbb6`, uncommitted, so a concurrent `/pushall` cannot pick it up. The diff is retained as `evidence/2-12/delta-review-20261115/folders-net11-scripts.patch`. On user request it was committed and pushed to Folders main as `cb5de783` (rebased onto `f538bb77`; the two affected classes still pass 14/14 after the rebase). The Platform Folders gitlink stays at `89e2fbb6`. Without the patch, `ScheduledPolicyGateTests` and `NightlyDriftGateTests` show 26 failures; with it they pass 14/14, and the CI-equivalent `scripts/tests` discovery passes 69/69.\n+- **Cross-language test (fourth patch):** `CreatedInventoryPassesTheLauncherDigestAndValidator` serializes the C# inventory in the same request shape as the bridge. It runs the launcher's own Python `request_inventory_bytes`, `cohort_digest` and `validate_inventory` on those bytes. A PATH-shim mutation control, which leaves the checkout untouched, confirms the test detects both kinds of drift. Operation drift fails with `exact-permission-inventory` and digest drift with `cohort-binding-changed`, while the unmutated copy passes.\n+- **Re-verification at HEAD (third patch):**\n+  - K: Python `test_run_owned` passes 46/46. The `--run-owned` lane runs 25 fresh RSA probes and five real-container terminal controls, plus the UID 1001 caller.\n+  - A (Debug/source): the enrollment classes pass 8 with 6 explicit tests not run, and the run-owned live lane passes 1/1.\n+  - T: the default Debug/package build now **fails outside the story files**. Commit `466c6dd1` (\"preserve legacy tuple for synchronized Platform source\", merged into main by `66685c5f`) set `.config/dotnet-tools.json` to Builds CLI `4.44.3`. `Directory.Build.props:7` then selects `net10.0`, which fails NU1201/NU1202 against net11-only dependencies. A global `-p:TargetFramework=net11.0` does not help, because NuGet restore ignores it.\n+  - Supplementary T: rebuilt with only `-p:_PlatformRuntimeToolManifest` overridden. The enrollment class has 48 passes and 1 explicit test not run (42 prior cases, the six `scan-*` cases and the new test). Both explicit lanes pass: `provisioned=true` and `adoptionCancelled=true`.\n+  - Zero labeled containers and zero private run directories remain.\n+\n+The [verification record](evidence/2-12/delta-review-20261115/verification.json) binds source and assembly hashes, step timings, logs and xUnit XML.\n+\n+These items remain open outside this story:\n+- the `466c6dd1` legacy-tuple merge on Platform main;\n+- the deferred default Platform Debug/source catalog gate;\n+- a Folders CI run at `cb5de783` to confirm the tooling step is green.\n+\n+This pass grants no strict Folders acceptance, Folders 12.2 completion, or Platform lifecycle or SDK qualification."
+      },
+      {
+        "sha": "60b3d7f2a0ac2117f9d30c2add16da8e36fb57ba",
+        "filename": "_bmad-output/implementation-artifacts/sprint-status.yaml",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1,
+        "changes": 2,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fsprint-status.yaml",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/_bmad-output%2Fimplementation-artifacts%2Fsprint-status.yaml",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/_bmad-output%2Fimplementation-artifacts%2Fsprint-status.yaml?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -98,7 +98,7 @@ development_status:\n   # 2026-11-13: source implementation and three-layer review complete; final targeted/live checks pass.\n   #   Full Folders runtime suites remain blocked by unchanged FrontComposer CA2263; no 12.2/lifecycle qualification claimed.\n   # 2026-11-13: code review pass 2 left 16 patches as action items, deferred 1, rejected 19 (including launcher-owned cleanup).\n-  2-12-provision-a-run-owned-workload-binding-authority-for-dispos: review\n+  2-12-provision-a-run-owned-workload-binding-authority-for-dispos: done\n   epic-2-retrospective: optional\n \n   epic-3: in-progress"
+      },
+      {
+        "sha": "0f31f0c29c128942418456f6a5aa8f3c93c58316",
+        "filename": "docs/security/workload-binding-enrollment.md",
+        "status": "modified",
+        "additions": 17,
+        "deletions": 8,
+        "changes": 25,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/docs%2Fsecurity%2Fworkload-binding-enrollment.md",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/docs%2Fsecurity%2Fworkload-binding-enrollment.md",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/docs%2Fsecurity%2Fworkload-binding-enrollment.md?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -104,12 +104,18 @@ not add another grant or accept the physical gateway AppId as an audience.\n \n | Caller | Receiver / operation | Separate permission |\n | --- | --- | --- |\n-| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-read` | Exact tenant + `folders` bindings, metadata-only source authorization and independent RSA proof |\n+| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-read` | Exact tenant + `folders` bindings, metadata-only source authorization and independent `Authentication:BoundStreamRead` RSA proof |\n+| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-scan-native` | Separate grant with the same exact tenant + `folders` bindings and its own independent `Authentication:NativeSourceScan` RSA proof; a read grant never authorizes a scan |\n | EventStore | Actual Folders and Tenants receivers / process, project, metadata, replay where already required | Separate explicitly `allowUnbound` callback grants; preserve each approved operation |\n | EventStore | Actual Folders and Tenants receivers / `domain-service:query` | Exact tenant + domain plus `eventstore:bound-query-authority-v1`, with `allowQueryAuthorityDigest` only for this grant |\n | Tenants | EventStore / `eventstore:command-submit` | Separate existing bootstrap permission, independent command proof and catalog generation |\n | Tenants | EventStore / `eventstore:stream-read` | Separate existing bootstrap/source permission and independent RSA proof |\n \n+The native-scan permission is required. A persistent manifest approved with\n+read-only source grants now refuses with the generic exact-inventory error. Add\n+the separate scan grant and probe for every Folders source caller, then approve\n+the new manifest digest.\n+\n Do not infer extra operations from this inventory. Reconcile it against the\n actual approved cohort and include any additional existing workload sender or\n receiver before activation. Human Keycloak authentication remains on\n@@ -150,7 +156,8 @@ leave the profile disabled and name those missing inputs; invalid references fai\n closed before catalog capture.\n \n Resource coverage alone is insufficient. The consumer requires the complete exact\n-source tenant/domain set for every source resource, all existing unbound callback\n+source tenant/domain set for every source resource, once for\n+`eventstore:stream-read` and once for `eventstore:stream-scan-native`, all existing unbound callback\n operations for both actual domain-service audiences, separately bound query\n digest probes for Folders and both Tenants domains (the latter use the SDK\n normalized reserved storage tenant `system`), and separate Tenants unbound\n@@ -225,7 +232,7 @@ query permissions. Tenants queries use `TenantCanonicalizer.ReservedStorageTenan\n the tenant and domain remain exact. Resource entries are never deduplicated.\n Only replicas with the same actual workload and identical permissions share a\n client/secret. Distinct proof callers keep separate credentials and the fixture's\n-existing independent RSA source proofs.\n+existing independent read and native-scan RSA source proofs.\n \n The launcher imports the complete realm at startup into a fresh container,\n asks Docker to allocate a loopback port with `127.0.0.1::8443`, validates the\n@@ -260,9 +267,11 @@ signals do not interrupt it. The bridge allows up to 30 seconds for cleanup\n acknowledgement after expiry without extending enrollment validity.\n The launcher reports cleanup failures as\n `owned-child-tree-cleanup-incomplete`, `owned-container-cleanup-incomplete` or\n-`owned-private-material-cleanup-incomplete` and exits unsuccessfully. The component harness preserves these sanitized\n-leftover records even when a captured test fails. A failed cleanup must be resolved before claiming a\n-clean run. Evidence output is labeled `run-owned enrollment` and contains only\n+`owned-private-material-cleanup-incomplete` and exits unsuccessfully. The container\n+and private-material failures also print a sanitized leftover record. The\n+component harness preserves that record even when a captured test fails. A\n+child-tree failure appears only as its stderr refusal code. A failed cleanup must\n+be resolved before claiming a clean run. Evidence output is labeled `run-owned enrollment` and contains only\n counts, version/digests, control names and observed leftovers; retain no private\n run directory, credentials, tokens, grants, certificates or keys.\n \n@@ -276,10 +285,10 @@ python3 -B verify_component.py --run-owned --platform-assembly /absolute/path/to\n ```\n \n The assembly commands also acquire real SDK assertions for Tenants command-submit,\n-unbound Tenants source and exact bound Folders source. They independently verify\n+unbound Tenants source and exact bound Folders source read and native scan. They independently verify\n canonical audience, caller, operation, bindings, grant identity/revision, signature\n and lifetime; physical gateway audience substitution and altered bindings refuse.\n-Folders native source controls retain the physical Dapr target and independent RSA\n+Folders native source read and scan controls retain the physical Dapr target and independent RSA\n proof and observe zero source transport on either refusal. C# and Python inventory\n controls reject physical-audience substitution before enrollment.\n "
+      },
+      {
+        "sha": "9613200f6d7a07b0b431d6a12b8721ef043e52bc",
+        "filename": "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs",
+        "status": "modified",
+        "additions": 32,
+        "deletions": 0,
+        "changes": 32,
+        "blob_url": "https://github.com/Hexalith/Hexalith.Platform/blob/695463c5eed801e96dbd9efc6a8cef4b70e900f9/tests%2FHexalith.Platform.Composition.Tests%2FPlatformRunOwnedWorkloadEnrollmentTests.cs",
+        "raw_url": "https://github.com/Hexalith/Hexalith.Platform/raw/695463c5eed801e96dbd9efc6a8cef4b70e900f9/tests%2FHexalith.Platform.Composition.Tests%2FPlatformRunOwnedWorkloadEnrollmentTests.cs",
+        "contents_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/contents/tests%2FHexalith.Platform.Composition.Tests%2FPlatformRunOwnedWorkloadEnrollmentTests.cs?ref=695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+        "patch": "@@ -60,6 +60,38 @@ public void CompleteInventoryUsesActualIdentitiesAndNormalizedStorageTenants()\n         }\n     }\n \n+    /// <summary>The launcher's own Python digest and exact-inventory validator accept the C# producer's request bytes.</summary>\n+    [Fact]\n+    public async Task CreatedInventoryPassesTheLauncherDigestAndValidator()\n+    {\n+        JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(Builder(), \"selected-run-tenant\");\n+        // Mirror the bridge request: same anonymous shape and encoder, digest over the exact inventory value bytes.\n+        string inventorySha256 = Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(inventory.GetRawText())));\n+        byte[] request = JsonSerializer.SerializeToUtf8Bytes(new { runId = \"control\", capability = \"control\", childPid = 1, childIdentity = \"control\", deadline = 1L, inventory, inventorySha256 });\n+        string requestPath = Path.Combine(Path.GetTempPath(), \"run-owned-inventory-control-\" + Path.GetRandomFileName() + \".json\");\n+        await File.WriteAllBytesAsync(requestPath, request, TestContext.Current.CancellationToken);\n+        try\n+        {\n+            const string validator = \"import json, sys\\n\"\n+                + \"sys.path.insert(0, sys.argv[1])\\n\"\n+                + \"import run_owned\\n\"\n+                + \"raw = open(sys.argv[2], 'rb').read()\\n\"\n+                + \"request = json.loads(raw)\\n\"\n+                + \"if request['inventorySha256'] != run_owned.cohort_digest(run_owned.request_inventory_bytes(raw)): sys.exit('cohort-binding-changed')\\n\"\n+                + \"print(len(run_owned.validate_inventory(request['inventory'])))\\n\";\n+            ProcessStartInfo start = new(\"python3\") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };\n+            foreach (string argument in new[] { \"-B\", \"-I\", \"-c\", validator, Path.Combine(PlatformTestRepository.Root, \"infrastructure\", \"keycloak-workload-binding\"), requestPath })\n+                start.ArgumentList.Add(argument);\n+            using Process python = Process.Start(start) ?? throw new InvalidOperationException(\"The launcher validator did not start.\");\n+            Task<string> output = python.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);\n+            Task<string> error = python.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);\n+            await python.WaitForExitAsync(TestContext.Current.CancellationToken);\n+            // Six distinct actual workloads: replicas share, proof Workers stay independent.\n+            (python.ExitCode, (await output).Trim(), (await error).Trim()).ShouldBe((0, \"6\", string.Empty));\n+        }\n+        finally { File.Delete(requestPath); }\n+    }\n+\n     /// <summary>Missing or changed source, bootstrap, callback, query and tenant entries refuse.</summary>\n     /// <param name=\"fault\">The isolated inventory change.</param>\n     [Theory]"
+      }
+    ]
+  }
+}

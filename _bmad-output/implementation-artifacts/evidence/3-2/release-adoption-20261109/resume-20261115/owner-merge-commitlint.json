@@ -1,0 +1,29 @@
+{
+  "message": "fix(catalog): preserve mapped source context before model evaluation\n\nMerge reviewed owner source and its authenticated audit from PR #186.\n",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "exitCode": 0,
+      "log": "owner-merge-commitlint-install.log"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.JZBeY7Y3/owner-merge-lint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.JZBeY7Y3/owner-merge-lint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.JZBeY7Y3/owner-merge-lint/merge-message.txt"
+      ],
+      "exitCode": 0,
+      "log": "owner-merge-commitlint.log"
+    }
+  ],
+  "pinnedVersion": "21.2.4"
+}

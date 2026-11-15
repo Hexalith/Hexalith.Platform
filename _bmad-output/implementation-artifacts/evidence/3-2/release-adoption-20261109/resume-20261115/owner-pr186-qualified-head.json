@@ -1,0 +1,113 @@
+{
+  "run": {
+    "id": 43711614703,
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43711614703",
+    "head_sha": "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 2
+  },
+  "jobs": [
+    {
+      "id": 132813578951,
+      "name": ".NET tests / Build and tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813579810,
+      "name": "Workflow lint and public API",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813579958,
+      "name": "Sample module / Restore owned CI/CD content",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 132813580289,
+      "name": "Sample module / Build and tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813580461,
+      "name": "Sample Windows tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813608124,
+      "name": "Python contract tests (3.12)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813609255,
+      "name": "Python contract tests (runner)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132813615877,
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820105064,
+      "name": ".NET tests / Restore owned CI/CD content",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "testProjects": [
+    {
+      "project": "Evidence.Tests",
+      "total": 191,
+      "passed": 191,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "project": "Module.Tests",
+      "total": 3115,
+      "passed": 3111,
+      "failed": 0,
+      "skipped": 4,
+      "duration": "22m42.098s"
+    },
+    {
+      "project": "Tooling.IntegrationTests",
+      "total": 13,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 12
+    }
+  ],
+  "skipObservations": [
+    "2026-11-15T12:40:36.1959153Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync",
+    "2026-11-15T12:40:38.3265706Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+    "2026-11-15T12:44:02.4540075Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+    "2026-11-15T13:00:29.9649341Z skipped Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+    "2026-11-15T13:01:44.4933849Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full\", platform: \"vstest\")",
+    "2026-11-15T13:01:44.4943192Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full-mtp\", platform: \"mtp\")",
+    "2026-11-15T13:01:44.4984465Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.RunStartsHealthyCarriesRunIdentityAndStopsAsync",
+    "2026-11-15T13:01:44.4996478Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.DownLeavesNothingTaggedAndIsIdempotentAsync",
+    "2026-11-15T13:01:44.5069553Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.EventStoreInvokesModulesThroughDaprSidecarsAsync",
+    "2026-11-15T13:01:44.5091022Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.IdentityRejectsAnonymousForeignKeyAndForeignTenantAsync",
+    "2026-11-15T13:01:44.5103152Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.FrontComposerHostShowsBothBoundedContextsAsync",
+    "2026-11-15T13:01:44.5124192Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-orders\", commandType: \"PlaceOrder\", eventType: \"Hexalith.Builds.P0Fixture.Orders.OrderPlaced\")",
+    "2026-11-15T13:01:44.5130469Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-inventory\", commandType: \"ReserveStock\", eventType: \"Hexalith.Builds.P0Fixture.Inventory.StockReserved\")",
+    "2026-11-15T13:01:44.5169660Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveRunIsolationTests.ConcurrentRunsAreIsolatedAndDownOfOneLeavesTheOtherHealthyAsync",
+    "2026-11-15T13:01:44.5193633Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePublicCommandTests.RunDownAndTestUseRunScopedLiveCompositionAsync",
+    "2026-11-15T13:01:44.5212569Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveCancellationTests.CancellingMidStartupLeavesNoProcessOrContainerAsync"
+  ],
+  "rawLog": "owner-pr186-dotnet-retry-pass.log",
+  "rawLogSha256": "92bd8d79133bcfa1385ad1f2e9559ee3249081a3bc0703db5598e27ef30b18ef",
+  "firstAttempt": "owner-pr186-dotnet-timeout.json",
+  "sourceOrGateChangesBetweenAttempts": false,
+  "nativeQualificationCredit": false
+}

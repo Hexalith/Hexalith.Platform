@@ -1,0 +1,35 @@
+{
+  "priorCheckpoint": "final-local-owner-checkpoint.json",
+  "reason": "Published Tooling binding removes its project edge; assert the exact real assembly binding in that mode while retaining local direct/promoted neutral-edge controls.",
+  "local": {
+    "expected": 28,
+    "executed": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true,
+    "qualificationCredit": false,
+    "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."
+  },
+  "published": {
+    "expected": 28,
+    "executed": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true,
+    "qualificationCredit": false,
+    "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."
+  },
+  "commands": "propagation-binding-modes-commands.json",
+  "publishedIdentity": "propagation-binding-tool-artifact-identity.json",
+  "signature": [
+    "propagation-binding-tool-signature.stdout",
+    "propagation-binding-tool-signature.stderr"
+  ],
+  "sourceCompiled": false,
+  "productionBindingsChanged": false,
+  "patchSha256": "6f722a0da3ff2742b0e47585b2c4f1d76ed62a496bce7f9a56cee65b910646d7",
+  "scratchCleanupComplete": true,
+  "qualificationCredit": false
+}

@@ -1,0 +1,146 @@
+{
+  "platformBaseRevision": "695463c5eed801e96dbd9efc6a8cef4b70e900f9",
+  "ownerReleaseVersion": "6.0.5",
+  "ownerSourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+  "ownerSourceQualified": "owner-qualified-main.json",
+  "ownerPublication": "owner605-published-release.json",
+  "signedArchives": "owner605-signed-package-measurement.json",
+  "binding": "measured-builds605-binding.json",
+  "patch": "platform605-complete-local-review.patch",
+  "patchSha256": "430edf5fcceedde0044d88d8e8c78868b7ff17b742563b4d4a9f8a77f5b0360f",
+  "newFixtureFilesIncludedInPatch": true,
+  "source": {
+    "total": 43,
+    "passed": 43,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 77.406,
+    "xml": "adoption605-source-focused.xml"
+  },
+  "packageExtensions": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 10.814,
+    "xml": "adoption605-package-v2-extension.xml"
+  },
+  "packageConsumerSelections": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not-run": 0,
+    "seconds": 0.217,
+    "xml": "adoption605-package-v2-selection.xml"
+  },
+  "metadataModes": [
+    {
+      "expected": 28,
+      "executed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "qualificationCredit": false,
+      "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."
+    },
+    {
+      "expected": 28,
+      "executed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "qualificationCredit": false,
+      "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."
+    }
+  ],
+  "pythonControls": [
+    {
+      "script": "eng/test_current_catalog_view.py",
+      "passed": 27,
+      "log": "adoption605-test_current_catalog_view.py.log"
+    },
+    {
+      "script": "eng/test_builds_tuple.py",
+      "passed": 21,
+      "log": "adoption605-test_builds_tuple.py.log"
+    },
+    {
+      "script": "eng/test_legacy_tuple_source.py",
+      "passed": 20,
+      "log": "adoption605-test_legacy_tuple_source.py.log"
+    },
+    {
+      "script": "eng/test_pre_extension_tuple_source.py",
+      "passed": 13,
+      "log": "adoption605-test_pre_extension_tuple_source.py.log"
+    },
+    {
+      "script": "eng/test_current_tuple_source.py",
+      "passed": 14,
+      "log": "adoption605-test_current_tuple_source.py.log"
+    },
+    {
+      "script": "eng/test_package_reader_source.py",
+      "passed": 5,
+      "log": "adoption605-test_package_reader_source.py.log"
+    },
+    {
+      "script": "eng/test_builds_publication.py",
+      "passed": 16,
+      "log": "adoption605-test_builds_publication.py.log"
+    },
+    {
+      "script": "eng/test_tuple_sdk_suites.py",
+      "passed": 41,
+      "log": "adoption605-final-sdk-suite-controls.log"
+    }
+  ],
+  "tupleHistoryCases": 130,
+  "standaloneCatalogCasesRepeatedInsideTupleSdkSuite": 27,
+  "originalHistorical127CasesPreserved": true,
+  "newCatalogCases": 3,
+  "buildWarningsAndErrors": 0,
+  "sourceAndDefaultPackageBuildsHaveNoSdkOrFamilyOverrides": true,
+  "commands": [
+    "adoption605-focused-commands.json",
+    "adoption605-package-v2-commands.json"
+  ],
+  "emptyFilterRun": {
+    "result": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "not-run": 0,
+      "seconds": 0.014,
+      "xml": "adoption605-package-components.xml"
+    },
+    "credit": false,
+    "reason": "Class and method filters intersected; corrected separate9+3 runs enforce XML counts."
+  },
+  "scratchJobRoots": [
+    "/tmp/hexalith-job.2zcMx1Cp/",
+    "/tmp/hexalith-job.Mw5vBZXc/"
+  ],
+  "allChildWorkFinishedAndScratchCleaned": true,
+  "finiteNewContextOnly": true,
+  "newRuntimeOrExtensionAdmission": false,
+  "platformCommittedOrLanded": false,
+  "qualifiedPlatformSource": false,
+  "remaining": [
+    "Parent review before freezing Platform source.",
+    "Commit the exact coherent current source and refresh all three immutable identical-code historical companions.",
+    "Run full current/retained actual inventories and required hosted tuple/catalog gates, then normal Platform landing and exact-source release.",
+    "Verify fixture publisher policy, publish and independently measure the signed fixture, add the owning real catalog pin and finite admission, then execute actual signed-package native-host acceptance."
+  ],
+  "storyComplete": false
+}

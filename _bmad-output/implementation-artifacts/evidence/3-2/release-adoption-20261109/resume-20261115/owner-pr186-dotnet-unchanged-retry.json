@@ -1,0 +1,16 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "POST",
+    "repos/Hexalith/Hexalith.Builds/actions/jobs/132804195610/rerun"
+  ],
+  "exitCode": 0,
+  "stdout": "{}",
+  "stderr": "",
+  "reason": "Single unchanged retry of the existing30-minute .NET job after a cancellation without a failed assertion. Other passed jobs are retained.",
+  "connectorFallback": "Connected rerun_workflow_job returned403 Resource not accessible by integration.",
+  "sourceRevision": "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+  "limitsAndChecksChanged": false
+}

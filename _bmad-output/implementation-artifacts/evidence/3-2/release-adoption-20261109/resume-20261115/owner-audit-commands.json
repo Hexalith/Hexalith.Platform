@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/audit-central-package-versions.ps1",
+      "-ChangedFamily",
+      "hexalith-mcpcli"
+    ],
+    "exitCode": 0,
+    "log": "owner-audit-refresh.log"
+  },
+  {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "Tools/validate-package-version-audit.ps1"
+    ],
+    "exitCode": 0,
+    "log": "owner-audit-validation.log"
+  }
+]

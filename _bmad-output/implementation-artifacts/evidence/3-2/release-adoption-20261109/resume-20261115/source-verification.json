@@ -1,0 +1,20 @@
+{
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Debug",
+      "--artifacts-path",
+      "/tmp/hexalith-job.u6wwqRSw/source-artifacts",
+      "-m:1",
+      "-nodeReuse:false",
+      "--disable-build-servers",
+      "--nologo"
+    ],
+    "exitCode": 1
+  },
+  "candidateAcceptance": false,
+  "qualificationCredit": false
+}

@@ -232,3 +232,31 @@ named SDK4.2 Parties context and independently require generic Tenants8.0.0.
 The current SDK4.2 collector and all frozen public provenance remain unchanged.
 Fresh source binding and three new immutable companions are required for this source;
 prior immutable refs remain historical evidence only.
+
+## Source and package context renewal on 2026-11-15
+
+The normal Builds6.0.5 publication binds source
+`e2bbbd0893f586e4d447ef8358ff747ea3d34435`, catalog blob
+`42441eb4cefcff2f9c582fcda630d9ad15887df2` and raw LF SHA256
+`d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
+Its exact-main CI43717004492 and release43719900160 passed. Both actual public
+NuGet archives pass repository-signature verification and preserve every
+authenticated original payload body; the executable names that exact version
+and source. The complete measured handoff is in `eng/builds-tuple.json`.
+
+This exact publication preserves the finite SDK4.2 package view and its
+Tenants7.0.7/Memories3.0.27/Parties3.1.1/Mcp2.0.1 family. The existing33 named
+Platform and six Parties contexts retain those package inputs; unknown contexts
+keep SDK5.1/Tenants8/Memories4/Mcp3, including unknown contexts explicitly choosing
+SDK4.2. Independent observations require the actual MCP package pin as well as
+its property. Current source contexts select the owning SDK5.1/OpenAPI11 view;
+verified model common props establish mapping-derived mode and owner origins
+before the first pinned-catalog import. Package-purpose snapshots retain their
+existing semantics.
+
+Only this exact6.0.5 source/catalog/range is added. Earlier exact6 profiles and
+all4/5 rules remain unchanged; the unreleased reviewed/audit commits,6.0.4,
+neighbors and crossed sources do not acquire authority. MCP3 remains outside
+the qualified SDK4.2 runtime cohorts. Fresh identical-code349/412/reader
+companions and complete current qualification are required before landing;
+component measurements grant no signed-fixture or native acceptance.

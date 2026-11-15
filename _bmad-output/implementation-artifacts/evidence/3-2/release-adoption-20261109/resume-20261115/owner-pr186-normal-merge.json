@@ -1,0 +1,24 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "--method",
+    "PUT",
+    "repos/Hexalith/Hexalith.Builds/pulls/186/merge",
+    "--input",
+    "/tmp/hexalith-job.gvoEHcQ4/owner-normal-merge.json"
+  ],
+  "request": {
+    "sha": "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+    "merge_method": "merge",
+    "commit_title": "fix(catalog): preserve mapped source context before model evaluation",
+    "commit_message": "Merge reviewed owner source and its authenticated audit from PR #186."
+  },
+  "exitCode": 0,
+  "stdout": "{\"sha\":\"e2bbbd0893f586e4d447ef8358ff747ea3d34435\",\"merged\":true,\"message\":\"Pull Request successfully merged\"}",
+  "stderr": "",
+  "connectorFallback": "Connected merge_pull_request returned403 Resource not accessible by integration.",
+  "adminOrBypassRequest": false,
+  "sourceAndAuditHistoryPreservedByMethod": true,
+  "validatedMessage": "owner-merge-commitlint.json"
+}

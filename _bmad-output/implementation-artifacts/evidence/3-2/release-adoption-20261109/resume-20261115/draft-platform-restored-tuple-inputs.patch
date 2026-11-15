@@ -1,0 +1,424 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index 8643b33a..6b2d30ab 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "4.44.3",
++      "version": "6.0.3",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/eng/builds-tuple.json b/eng/builds-tuple.json
+index 5f9d9074..ee6330ca 100644
+--- a/eng/builds-tuple.json
++++ b/eng/builds-tuple.json
+@@ -3,21 +3,27 @@
+   "candidateAcceptance": false,
+   "producer": {
+     "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+-    "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
++    "sourceRevision": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+     "catalog": {
+       "path": "Props/Directory.Packages.props",
+-      "blob": "2b590597dcb7924194ee5dfdc5eb5e55fa4e0dde",
+-      "sha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145"
++      "blob": "1968f12adb9151062915ab32cb76c5b9dbbc2a36",
++      "sha256": "01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41"
+     }
+   },
+   "publication": {
+-    "version": "4.44.3",
+-    "sourceRevision": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
+-    "releaseTag": "v4.44.3",
+-    "catalogSha256": "6f59b25451553af6ff7c5a1bef7833b1ea5e92f65d7daa9d460be4c57834f145",
+-    "archiveSha256": "32c2f517791bfce975bf775e73bbbf626cc710da83c68b89c5e305ef55acea32",
+-    "toolingSha256": "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000",
+-    "inventorySha256": "aaaa9de0ba9add0095ea63b2ac6813c8e558929e6e359216b3a99eb998b49de4",
+-    "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.3/g4-tool-package-inventory.json"
++    "kind": "shared-release-handoff/v1",
++    "version": "6.0.3",
++    "sourceRevision": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
++    "releaseTag": "v6.0.3",
++    "catalogSha256": "01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41",
++    "archiveSha256": "1bd575a0b8aeeceeabc47db98520b70fdf0287abd5ad58db78adc76ade36bc72",
++    "toolingSha256": "d6900cdcb816a4356987a8f2866ac328dcf479ff018ce50a56b6d0bf7fe21864",
++    "releaseId": 445516831,
++    "runId": 43628367692,
++    "artifactId": 14127172569,
++    "artifactSha256": "bd0d5cd4d2ef6a5ae5f17a8169d31d5a0c43f5985670f924a56f2f3a16a5f4ff",
++    "releaseBodySha256": "06857dff89db884e45cd0999aebb7174e257df94128e6cf58681fd94b98ff160",
++    "manifestJson": "{\n  \"sha\": \"99f7c86072ca7b35e3fbbaee4606a559a847805a\",\n  \"version\": \"6.0.3\",\n  \"packages\": [\n    {\n      \"id\": \"Hexalith.Builds.Evidence.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Evidence.Cli.6.0.3.nupkg\"\n    },\n    {\n      \"id\": \"Hexalith.Builds.Module.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Module.Cli.6.0.3.nupkg\"\n    }\n  ],\n  \"containers\": []\n}\n",
++    "manifestSha256": "86ff21886b8c65ecf092f83aae9b47e02b8294fed0aa901617e44949268d2ec7"
+   }
+ }
+diff --git a/eng/current-tuple-source.json b/eng/current-tuple-source.json
+index ab6c22f6..4fa32e47 100644
+--- a/eng/current-tuple-source.json
++++ b/eng/current-tuple-source.json
+@@ -2,19 +2,19 @@
+   "schema": "hexalith.platform.current-tuple-source.v1",
+   "ownerSources": {
+     "eventstore": {
+-      "sourceRevision": "749d162538b321e80401a4b69a7f706ba656c9e0",
++      "sourceRevision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+       "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+     },
+     "parties": {
+-      "sourceRevision": "785f8164d51579a191405a15a917232795f93449",
++      "sourceRevision": "a494093da3e2656c49e539392284cd1b10f799b3",
+       "declarationSha256": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee"
+     },
+     "tenants": {
+-      "sourceRevision": "d89f234c4f020373aaabe0e3699ecdb5097b1079",
++      "sourceRevision": "2ec938397c5b330cf1e694e8cc442cb4ad022f2b",
+       "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+     },
+     "memories": {
+-      "sourceRevision": "2c2e9b58990638ededf22e8e67ff5c12de75b434",
++      "sourceRevision": "f20e8b8145a6c00310a2aed3d0c8758844b65fdc",
+       "declarationSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+     }
+   },
+diff --git a/eng/tuple-ci-suites.json b/eng/tuple-ci-suites.json
+index 5d5f5beb..5aa0cc2b 100644
+--- a/eng/tuple-ci-suites.json
++++ b/eng/tuple-ci-suites.json
+@@ -1,7 +1,16 @@
+ {
+-  "purpose": "Tuple binding, released declarations and analyzer regression preflight only",
++  "purpose": "Current-model exact-source package boundaries and measured active-owner preflight; no candidate or public-consumer acceptance",
+   "remainingQualification": "Other Platform suites, explicitly enabled live cases, authenticated candidate-decision evidence and generated/direct runtime integration remain mandatory before acceptance.",
+   "groups": [
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerMemoriesTransportTests"
++      ],
++      "requiredCount": 1,
++      "purpose": "current-owner-package"
++    },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+@@ -12,7 +21,8 @@
+         "Hexalith.Platform.Composition.Tests.PortableDevelopmentCompositionTests",
+         "Hexalith.Platform.Composition.Tests.AcceptedLaunchBoundaryTests"
+       ],
+-      "requiredCount": 83
++      "requiredCount": 83,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -21,7 +31,8 @@
+         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.AcceptedToolPinEqualsSupportedRangeFloorAsync",
+         "Hexalith.Platform.Composition.Tests.DomainEnrollmentKitTests.InventoryAndHumanChecklistKeepUnobservedEvidencePending"
+       ],
+-      "requiredCount": 2
++      "requiredCount": 2,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -30,7 +41,8 @@
+         "Hexalith.Platform.Composition.Tests.PlatformCatalogContractBindingTests",
+         "Hexalith.Platform.Composition.Tests.PlatformRoutingCatalogMetadataTests"
+       ],
+-      "requiredCount": 24
++      "requiredCount": 24,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -39,7 +51,8 @@
+         "Hexalith.Platform.Composition.Tests.PlatformCommittedCatalogProofTests",
+         "Hexalith.Platform.Composition.Tests.PlatformNativeTestPreparationTests"
+       ],
+-      "requiredCount": 44
++      "requiredCount": 44,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -50,7 +63,8 @@
+         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageSnapshotRejectsMismatchedTrustedReleaseValuesBeforeResources",
+         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
+       ],
+-      "requiredCount": 7
++      "requiredCount": 7,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -59,81 +73,181 @@
+         "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogQualificationTests",
+         "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogEntryPointTests"
+       ],
+-      "requiredCount": 28
++      "requiredCount": 28,
++      "purpose": "current-model-boundary"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-method",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
++      ],
++      "requiredCount": 4,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPackageCatalogReaderTests"
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
+       ],
+-      "requiredCount": 9
++      "requiredCount": 40,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-method",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources"
+       ],
+-      "requiredCount": 4
++      "requiredCount": 2,
++      "purpose": "current-model-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPartiesRunProofTests"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPurposeTests"
+       ],
+-      "requiredCount": 40
++      "requiredCount": 9,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentReferenceCohortTests"
+       ],
+-      "requiredCount": 3
++      "requiredCount": 2,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests"
+       ],
+-      "requiredCount": 21
++      "requiredCount": 2,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageReaderTests"
++        "Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests"
+       ],
+-      "requiredCount": 11
++      "requiredCount": 4,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerObservationTests"
+       ],
+-      "requiredCount": 22
++      "requiredCount": 4,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceInventoryTests"
+       ],
+-      "requiredCount": 47
++      "requiredCount": 4,
++      "purpose": "current-owner-package"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+-      "filter": "-method",
++      "filter": "-class",
+       "selectors": [
+-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources"
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerSourceSealTests"
++      ],
++      "requiredCount": 4,
++      "purpose": "current-owner-package"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests"
++      ],
++      "requiredCount": 7,
++      "purpose": "current-owner-package"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPreparationTests"
++      ],
++      "requiredCount": 1,
++      "purpose": "current-owner-package"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageCatalogReaderTests"
++      ],
++      "requiredCount": 1,
++      "purpose": "private-eventstore-package-test"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformEventStorePackageTestCohortTests"
++      ],
++      "requiredCount": 41,
++      "purpose": "private-eventstore-package-test"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformProductionModelClosureTests"
++      ],
++      "requiredCount": 1,
++      "purpose": "private-eventstore-production-model"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesCohortTests"
++      ],
++      "requiredCount": 51,
++      "purpose": "measured-public-parties-static-boundary"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesPackageEntryTests"
++      ],
++      "requiredCount": 21,
++      "purpose": "measured-public-parties-ordinary-entry-boundary"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPublishedPartiesMemoriesTransportTests"
++      ],
++      "requiredCount": 1,
++      "purpose": "measured-public-parties-model-boundary"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesValidationHandoffTests"
+       ],
+-      "requiredCount": 2
++      "requiredCount": 22,
++      "purpose": "measured-public-parties-signed-validation-boundary"
+     },
+     {
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+@@ -141,7 +255,18 @@
+       "selectors": [
+         "Hexalith.Platform.Composition.Tests.PlatformPartiesCatalogHandoffTests"
+       ],
+-      "requiredCount": 2
++      "requiredCount": 2,
++      "purpose": "measured-public-parties-signed-catalog-boundary"
+     }
+-  ]
++  ],
++  "historicalPublicControls": {
++    "purpose": "same-changed-source-legacy-tuple-regression-not-current-cohort-acceptance",
++    "sourceInput": "legacy-source-sha",
++    "buildsSource": "fc2122240a39f03628c04fa8433e5eece90b8b4c",
++    "toolVersion": "4.44.3",
++    "profileSha256": "61689f1598dac43a9fa28dcf5319008059e0fea0f1018209b1a8e79e4f63d7b0",
++    "requiredCount": 349,
++    "workflowJob": "legacy-public-cohort",
++    "qualificationCredit": false
++  }
+ }
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index 5d9f7115..25581b20 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[4.44.3, 5.0.0-0)"
++  "toolVersionRange": "[6.0.3, 7.0.0-0)"
+ }
+diff --git a/src/Hexalith.Platform.Composition/Declarations/provenance.json b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+index e7249dae..6bfe1c51 100644
+--- a/src/Hexalith.Platform.Composition/Declarations/provenance.json
++++ b/src/Hexalith.Platform.Composition/Declarations/provenance.json
+@@ -1,22 +1,22 @@
+ {
+   "eventstore": {
+     "repository": "Hexalith.EventStore",
+-    "version": "4.1.0",
+-    "commit": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
++    "version": "4.2.0",
++    "commit": "aa16227bd07f0564a3026d619a5abd973e02656f",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+   },
+   "tenants": {
+     "repository": "Hexalith.Tenants",
+-    "version": "7.0.2",
+-    "commit": "143cec60a3f5bb1831fa57f35c510880ceb788d8",
++    "version": "7.0.7",
++    "commit": "bcee4b4dbd886b7b718843cfb80419a92d33de15",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+   },
+   "memories": {
+     "repository": "Hexalith.Memories",
+-    "version": "3.0.23",
+-    "commit": "82c0aa0a7046d7bd91569ac1c9a38a3ed0386d0f",
++    "version": "3.0.27",
++    "commit": "535ee97b694c79e6c7608e90a5a725f092ad982c",
+     "source": "module/hexalith.module-manifest.v2.json",
+     "sha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+   }

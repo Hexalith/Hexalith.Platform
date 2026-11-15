@@ -1,0 +1,27 @@
+{
+  "sourceRevision": "f49a2021d757a0fe8d7344d7baa67e721155afa6",
+  "commands": [
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/audit-central-package-versions.ps1",
+        "-ChangedFamily",
+        "hexalith-mcpcli"
+      ],
+      "exitCode": 0,
+      "log": "owner-final-audit-refresh.log"
+    },
+    {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "Tools/validate-package-version-audit.ps1"
+      ],
+      "exitCode": 0,
+      "log": "owner-final-audit-validation.log"
+    }
+  ]
+}
