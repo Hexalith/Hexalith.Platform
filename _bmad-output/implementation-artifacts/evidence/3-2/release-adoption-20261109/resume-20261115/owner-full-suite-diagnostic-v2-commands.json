@@ -1,0 +1,41 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Release",
+      "--artifacts-path",
+      "/tmp/hexalith-job.HTCWVT7L/owner-full-suite-diagnostic-v2/artifacts/ci-diagnostic",
+      "-m:1",
+      "-nodeReuse:false",
+      "--disable-build-servers",
+      "--nologo"
+    ],
+    "exitCode": 0,
+    "log": "owner-full-suite-diagnostic-v2-build.log",
+    "timeoutSeconds": 600,
+    "timedOut": false,
+    "elapsedSeconds": 43.099
+  },
+  {
+    "command": [
+      "dotnet",
+      "exec",
+      "/tmp/hexalith-job.HTCWVT7L/owner-full-suite-diagnostic-v2/artifacts/ci-diagnostic/bin/Hexalith.Builds.Module.Tests/release/Hexalith.Builds.Module.Tests.dll",
+      "-reporter",
+      "verbose",
+      "-noAutoReporters",
+      "-longRunning",
+      "30",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/owner-full-suite-diagnostic-v2.xml"
+    ],
+    "exitCode": 1,
+    "log": "owner-full-suite-diagnostic-v2.log",
+    "timeoutSeconds": 1800,
+    "timedOut": false,
+    "elapsedSeconds": 888.141
+  }
+]

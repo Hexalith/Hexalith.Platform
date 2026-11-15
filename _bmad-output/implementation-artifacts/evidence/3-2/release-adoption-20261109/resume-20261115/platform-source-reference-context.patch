@@ -1,0 +1,137 @@
+diff --git a/Directory.Build.targets b/Directory.Build.targets
+index d7eb997a..1cdcda81 100644
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@ -9,7 +9,7 @@
+        Authenticated source mappings keep their existing version authority. -->
+   <ItemGroup Condition="'$(UseHexalithProjectReferences)' == 'true' and '$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">
+     <ProjectReference Update="@(ProjectReference)">
+-      <AdditionalProperties Condition="'$(HexalithEventStoreVersion)' != '' and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*='))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
++      <AdditionalProperties Condition="'$(HexalithEventStoreVersion)' != '' and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*=')) and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.GlobalPropertiesToRemove)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*(;|$)'))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
+     </ProjectReference>
+     <ProjectReference Update="@(ProjectReference)">
+       <AdditionalProperties Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*UseHexalithProjectReferences\s*='))">%(ProjectReference.AdditionalProperties);UseHexalithProjectReferences=$(UseHexalithProjectReferences)</AdditionalProperties>
+@@ -18,9 +18,19 @@
+   <!-- The SDK adds transitive project references after evaluation, without the caller's edge metadata. -->
+   <Target Name="PreservePlatformSourceCatalogSelection" AfterTargets="IncludeTransitiveProjectReferences"
+           Condition="'$(UseHexalithProjectReferences)' == 'true' and '$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">
++    <!-- SDK-promoted edges omit the direct reference's removal metadata. Restore this
++         exact producer-tool edge before applying caller selections to owner services. -->
++    <PropertyGroup>
++      <_PlatformSourceToolingProject>$([MSBuild]::NormalizePath('$(HexalithBuildsResolvedRoot)', 'src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj'))</_PlatformSourceToolingProject>
++    </PropertyGroup>
++    <ItemGroup>
++      <ProjectReference Update="@(ProjectReference)" Condition="'%(ProjectReference.FullPath)' == '$(_PlatformSourceToolingProject)'">
++        <GlobalPropertiesToRemove Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.GlobalPropertiesToRemove)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*(;|$)'))">%(ProjectReference.GlobalPropertiesToRemove);HexalithEventStoreVersion</GlobalPropertiesToRemove>
++      </ProjectReference>
++    </ItemGroup>
+     <ItemGroup>
+       <ProjectReference Update="@(ProjectReference)">
+-        <AdditionalProperties Condition="'$(HexalithEventStoreVersion)' != '' and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*='))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
++        <AdditionalProperties Condition="'$(HexalithEventStoreVersion)' != '' and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.AdditionalProperties)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*=')) and !$([System.Text.RegularExpressions.Regex]::IsMatch('%(ProjectReference.GlobalPropertiesToRemove)', '(?i)(^|;)\s*HexalithEventStoreVersion\s*(;|$)'))">%(ProjectReference.AdditionalProperties);HexalithEventStoreVersion=$(HexalithEventStoreVersion)</AdditionalProperties>
+       </ProjectReference>
+     </ItemGroup>
+     <ItemGroup>
+diff --git a/eng/test_source_sdk_propagation.py b/eng/test_source_sdk_propagation.py
+index abf58ede..4048750d 100644
+--- a/eng/test_source_sdk_propagation.py
++++ b/eng/test_source_sdk_propagation.py
+@@ -86,6 +86,48 @@ class SourceSdkPropagationTests(unittest.TestCase):
+         contracts = next(item for item in document["Items"]["ProjectReference"] if item["Filename"] == "Hexalith.EventStore.Contracts")
+         self.assertEqual(self.explicit + ";UseHexalithProjectReferences=true", contracts["AdditionalProperties"])
+ 
++    def removal_edge(self, removal, assignment=""):
++        project = ET.parse(self.fixture)
++        edge = project.getroot().find("ItemGroup/ProjectReference")
++        edge.set("GlobalPropertiesToRemove", removal)
++        if assignment:
++            ET.SubElement(edge, "AdditionalProperties").text = assignment
++        path = Path(self.temporary.name) / ("removed-edge-" + str(len(self.evaluations))) / self.fixture.name
++        path.parent.mkdir()
++        project.write(path, encoding="utf-8")
++        result = self.invoke(path, ["-p:UseHexalithProjectReferences=true"])
++        return next(item for item in result["Items"]["ProjectReference"]
++                    if item["Filename"] == "Hexalith.EventStore.DomainService")
++
++    def test_removed_sdk_property_is_not_reintroduced_case_insensitively(self):
++        for removal in ["HexalithEventStoreVersion", "Other; hexalithEVENTSTOREversion ;Keep"]:
++            with self.subTest(removal=removal):
++                edge = self.removal_edge(removal)
++                self.assertEqual(";UseHexalithProjectReferences=true", edge["AdditionalProperties"])
++                self.assertEqual(removal, edge["GlobalPropertiesToRemove"])
++        edge = self.removal_edge("HexalithEventStoreVersionFuture")
++        self.assertIn("HexalithEventStoreVersion=" + self.default_sdk, edge["AdditionalProperties"])
++
++    def test_explicit_sdk_assignment_on_a_removed_edge_keeps_its_precedence(self):
++        assignment = "ControlContext=keep;hexalithEventStoreVersion=4.1.0"
++        edge = self.removal_edge("HexalithEventStoreVersion", assignment)
++        self.assertEqual(assignment + ";UseHexalithProjectReferences=true", edge["AdditionalProperties"])
++
++    def test_real_direct_and_sdk_promoted_tooling_edges_retain_the_neutral_catalog(self):
++        composition = ROOT / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
++        tests = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
++        for properties in [[], ["-p:UseHexalithProjectReferences=true"]]:
++            for project, target in [(composition, None), (tests, "IncludeTransitiveProjectReferences")]:
++                with self.subTest(project=project, properties=properties):
++                    result = self.invoke(project, properties, target, configuration="Debug")
++                    edges = [item for item in result["Items"]["ProjectReference"]
++                             if item["Filename"] == "Hexalith.Builds.Tooling"]
++                    self.assertEqual(1, len(edges))
++                    self.assertRegex(edges[0].get("GlobalPropertiesToRemove", ""),
++                                     r"(?i)(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)")
++                    self.assertNotRegex(edges[0].get("AdditionalProperties", ""),
++                                        r"(?i)(?:^|;)\s*HexalithEventStoreVersion\s*=")
++
+     def test_package_mode_does_not_add_source_edge_metadata(self):
+         document, metadata = self.selection(["-p:UseHexalithProjectReferences=false"])
+         self.assertEqual("", metadata)
+@@ -119,7 +161,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
+         self.assertTrue(promoted, "The actual restored SDK graph must promote at least one reference.")
+         for item in promoted:
+             values = re.findall(r"(?:^|;)\s*HexalithEventStoreVersion\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
+-            self.assertEqual([self.default_sdk], values)
++            removes_sdk = re.search(r"(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)", item.get("GlobalPropertiesToRemove", ""), re.IGNORECASE)
++            self.assertEqual([] if removes_sdk else [self.default_sdk], values)
+             modes = re.findall(r"(?:^|;)\s*UseHexalithProjectReferences\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
+             self.assertEqual(["true"], modes)
+ 
+@@ -192,7 +235,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
+         self.assertTrue(promoted)
+         for item in promoted:
+             values = re.findall(r"(?:^|;)\s*HexalithEventStoreVersion\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
+-            self.assertEqual([self.default_sdk], values)
++            removes_sdk = re.search(r"(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)", item.get("GlobalPropertiesToRemove", ""), re.IGNORECASE)
++            self.assertEqual([] if removes_sdk else [self.default_sdk], values)
+             modes = re.findall(r"(?:^|;)\s*UseHexalithProjectReferences\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
+             self.assertEqual(["true"], modes)
+ 
+@@ -303,11 +347,11 @@ def main():
+         raise ValueError("Choose a fresh metadata-control evidence directory.")
+     OPTIONS.evidence.mkdir(parents=True)
+     suite = unittest.defaultTestLoader.loadTestsFromTestCase(SourceSdkPropagationTests)
+-    if suite.countTestCases() != 25:
+-        raise ValueError("The source SDK metadata contract requires exactly twenty-five controls.")
++    if suite.countTestCases() != 28:
++        raise ValueError("The source SDK metadata contract requires exactly twenty-eight controls.")
+     result = unittest.TextTestRunner(verbosity=2).run(suite)
+-    passed = result.testsRun == 25 and not result.skipped and result.wasSuccessful()
+-    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 25, "executed": result.testsRun,
++    passed = result.testsRun == 28 and not result.skipped and result.wasSuccessful()
++    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 28, "executed": result.testsRun,
+         "failures": len(result.failures), "errors": len(result.errors), "skipped": len(result.skipped),
+         "passed": passed, "qualificationCredit": False,
+         "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."}, indent=2) + "\n")
+diff --git a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+index ae5d7947..d4e83857 100644
+--- a/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
++++ b/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+@@ -47,7 +47,8 @@
+     <PackageReference Include="Hexalith.Parties.Contracts" />
+   </ItemGroup>
+   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
+-    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" />
++    <!-- Tooling embeds its own neutral catalog; the caller SDK belongs to owner-service references. -->
++    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj" GlobalPropertiesToRemove="HexalithEventStoreVersion" />
+   </ItemGroup>
+   <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
+     <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />

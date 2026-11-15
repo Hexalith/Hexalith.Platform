@@ -1,0 +1,51 @@
+{
+  "sourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+  "runId": 43717004492,
+  "jobId": 132820590485,
+  "conclusion": "success",
+  "counts": {
+    "total": [
+      191,
+      3115,
+      13
+    ],
+    "succeeded": [
+      191,
+      3111,
+      1
+    ],
+    "failed": [
+      0,
+      0,
+      0
+    ],
+    "skipped": [
+      0,
+      4,
+      12
+    ]
+  },
+  "moduleDuration": "23m59.049s",
+  "skipObservations": [
+    "2026-11-15T13:10:51.5107887Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync",
+    "2026-11-15T13:10:54.0923510Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+    "2026-11-15T13:14:41.4392778Z skipped Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+    "2026-11-15T13:31:40.9450690Z skipped Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+    "2026-11-15T13:32:54.9038811Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full\", platform: \"vstest\")",
+    "2026-11-15T13:32:54.9045057Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.PackagedPersistedProfileTests.InstalledToolPassesPersistedProfileWithNativeReportAsync(profile: \"full-mtp\", platform: \"mtp\")",
+    "2026-11-15T13:32:54.9097402Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.RunStartsHealthyCarriesRunIdentityAndStopsAsync",
+    "2026-11-15T13:32:54.9107578Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveLifecycleTests.DownLeavesNothingTaggedAndIsIdempotentAsync",
+    "2026-11-15T13:32:54.9176326Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.EventStoreInvokesModulesThroughDaprSidecarsAsync",
+    "2026-11-15T13:32:54.9199580Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.IdentityRejectsAnonymousForeignKeyAndForeignTenantAsync",
+    "2026-11-15T13:32:54.9214776Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.FrontComposerHostShowsBothBoundedContextsAsync",
+    "2026-11-15T13:32:54.9235043Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-orders\", commandType: \"PlaceOrder\", eventType: \"Hexalith.Builds.P0Fixture.Orders.OrderPlaced\")",
+    "2026-11-15T13:32:54.9242413Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePersistedRunTests.AuthenticatedCommandsPersistEventsAtExpectedSequenceAsync(domain: \"p0-inventory\", commandType: \"ReserveStock\", eventType: \"Hexalith.Builds.P0Fixture.Inventory.StockReserved\")",
+    "2026-11-15T13:32:54.9284001Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveRunIsolationTests.ConcurrentRunsAreIsolatedAndDownOfOneLeavesTheOtherHealthyAsync",
+    "2026-11-15T13:32:54.9308135Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LivePublicCommandTests.RunDownAndTestUseRunScopedLiveCompositionAsync",
+    "2026-11-15T13:32:54.9329663Z skipped Hexalith.Builds.Tooling.IntegrationTests.Live.LiveCancellationTests.CancellingMidStartupLeavesNoProcessOrContainerAsync"
+  ],
+  "rawLog": "owner-main-dotnet-pass.log",
+  "rawLogSha256": "5e4355e0dbd34990e4f7a54af090a24298a727374c78523386f6871b0fb6b063",
+  "nativeQualificationCredit": false,
+  "catalogGateStillPending": true
+}

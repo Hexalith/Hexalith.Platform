@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "test/Hexalith.Builds.Module.Tests/Hexalith.Builds.Module.Tests.csproj",
+      "-c",
+      "Debug",
+      "--artifacts-path",
+      "/tmp/hexalith-job.39uSrbO7/owner-tests-artifacts",
+      "-m:1",
+      "-nodeReuse:false",
+      "--disable-build-servers",
+      "--nologo"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "exec",
+      "/tmp/hexalith-job.39uSrbO7/owner-tests-artifacts/bin/Hexalith.Builds.Module.Tests/debug/Hexalith.Builds.Module.Tests.dll",
+      "-class",
+      "Hexalith.Builds.ModuleTool.Tests.Workspace.PlatformModelCatalogTests",
+      "-class",
+      "Hexalith.Builds.ModuleTool.Tests.Workspace.CatalogVersionTests",
+      "-class",
+      "Hexalith.Builds.ModuleTool.Tests.Workspace.CompositionCatalogPackageViewTests",
+      "-xml",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/owner-model-catalog-tests.xml"
+    ],
+    "exitCode": 1
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_builds_tuple.py"
+    ],
+    "exitCode": 1,
+    "log": "final-test_builds_tuple.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_legacy_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_legacy_tuple_source.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_pre_extension_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_pre_extension_tuple_source.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_current_tuple_source.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_current_tuple_source.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_package_reader_source.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_package_reader_source.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_builds_publication.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_builds_publication.py.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/test_tuple_sdk_suites.py"
+    ],
+    "exitCode": 0,
+    "log": "final-test_tuple_sdk_suites.py.log"
+  }
+]

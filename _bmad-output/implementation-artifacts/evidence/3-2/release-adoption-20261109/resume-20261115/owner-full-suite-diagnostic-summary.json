@@ -1,0 +1,43 @@
+{
+  "ownerRevision": "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+  "fullDiagnostic": {
+    "total": 3115,
+    "passed": 3110,
+    "failed": 1,
+    "skipped": 4,
+    "errors": 0,
+    "not-run": 0,
+    "seconds": 887.902,
+    "xml": "owner-full-suite-diagnostic-v2.xml"
+  },
+  "fullCommands": "owner-full-suite-diagnostic-v2-commands.json",
+  "attributedFailure": {
+    "name": "Hexalith.Builds.ModuleTool.Tests.Workspace.PlatformIdentityTests.ExecutableCliVersionControlsToolRangeAsync",
+    "condition": "NETSDK1004: standard CLI obj/project.assets.json absent because the diagnostic build used --artifacts-path; the test internally builds with --no-restore.",
+    "testChanged": false,
+    "normalLayoutClosure": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "not-run": 0,
+      "seconds": 3.097,
+      "xml": "owner-identity-normal-layout.xml"
+    },
+    "normalLayoutCommands": "owner-identity-normal-layout-commands.json"
+  },
+  "standaloneSkipIdentities": [
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceAppHostTests.PlatformPlanDelegatesToThePinnedModelAsync",
+    "Hexalith.Builds.ModuleTool.Tests.CompositionSdkProcessTests.QualificationCatalogProbeInterceptionIsEstablishedAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredCommonsLibraryCandidateSelectsSourceAsync",
+    "Hexalith.Builds.ModuleTool.Tests.Workspace.WorkspaceMsBuildTests.RootDeclaredEventStoreCandidatesExcludeArchivedEvidenceAsync"
+  ],
+  "observedSkipSetEqualsPrecedingOfficialCi": true,
+  "additionalNewTests": 3,
+  "noUnattributedFailedAssertion": true,
+  "allLocalWorkspacesCleaned": true,
+  "allLocalChildrenFinished": true,
+  "hostedQualificationStillRequired": true,
+  "qualificationCredit": false
+}

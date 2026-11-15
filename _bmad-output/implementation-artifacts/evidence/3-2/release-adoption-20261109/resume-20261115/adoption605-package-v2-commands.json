@@ -1,0 +1,76 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "eng/prepare_builds_artifacts.py",
+      "--output",
+      "/tmp/hexalith-job.2zcMx1Cp/tool"
+    ],
+    "exitCode": 0,
+    "log": "adoption605-package-v2-tool.log",
+    "elapsedSeconds": 3.473
+  },
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-c",
+      "Release",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.2zcMx1Cp/tool/published/tools/net11.0/any",
+      "--artifacts-path",
+      "/tmp/hexalith-job.2zcMx1Cp/package",
+      "-m:1",
+      "-nodeReuse:false",
+      "--disable-build-servers",
+      "--nologo"
+    ],
+    "exitCode": 0,
+    "log": "adoption605-package-v2-build.log",
+    "elapsedSeconds": 17.286
+  },
+  {
+    "command": [
+      "dotnet",
+      "exec",
+      "/tmp/hexalith-job.2zcMx1Cp/package/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.UnpinnedPackageIsRefusedBeforeAnyResourceIsAdded",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostRegistersExtensionsBeforeTheServerStartsItsCatalogBootstrapAsync",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.DeclarationDriftStopsTheHostNamingDeclaredAndActualValuesAsync",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.PackageCompositionWithoutExtensionsKeepsTheOriginalGatewaySeed",
+      "-method",
+      "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.MeasuredReleasedExtensionSdkBodiesConferNoOwnerOrHostAdmission",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/adoption605-package-v2-extension.xml"
+    ],
+    "exitCode": 0,
+    "log": "adoption605-package-v2-extension.log",
+    "elapsedSeconds": 11.043
+  },
+  {
+    "command": [
+      "dotnet",
+      "exec",
+      "/tmp/hexalith-job.2zcMx1Cp/package/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll",
+      "-class",
+      "Hexalith.Platform.Composition.Tests.PlatformMcpCliCatalogSelectionTests",
+      "-result-xml",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/adoption605-package-v2-selection.xml"
+    ],
+    "exitCode": 0,
+    "log": "adoption605-package-v2-selection.log",
+    "elapsedSeconds": 0.415
+  }
+]

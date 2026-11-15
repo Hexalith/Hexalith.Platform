@@ -1,0 +1,74 @@
+{
+  "run": {
+    "id": 43717004492,
+    "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/43717004492",
+    "head_sha": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+    "path": ".github/workflows/builds-ci.yml",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "push",
+    "run_attempt": 1,
+    "created_at": "2026-11-15T13:03:37Z",
+    "updated_at": "2026-11-15T13:35:41Z"
+  },
+  "jobs": [
+    {
+      "id": 132820590203,
+      "name": "Workflow lint and public API",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820590372,
+      "name": "Python contract tests (runner)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820590407,
+      "name": "Package catalog contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820590435,
+      "name": "Python contract tests (3.12)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820590485,
+      "name": ".NET tests / Build and tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132820590549,
+      "name": "Sample module / Build and tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132821596739,
+      "name": "Sample Windows tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 132821597794,
+      "name": "Sample module / Restore owned CI/CD content",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 132828401687,
+      "name": ".NET tests / Restore owned CI/CD content",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "testResults": "owner-main-dotnet-test-results.json",
+  "catalogLog": "owner-main-catalog-pass.log",
+  "reviewedTree": "452b1e9e9673fa7760c14479cfc2678a1dd9fa0b",
+  "nativeQualificationCredit": false
+}

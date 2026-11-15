@@ -1,0 +1,95 @@
+{
+  "version": "@commitlint/cli@21.2.4",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-source-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-source-message.txt"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-legacy-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-legacy-message.txt"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-sdk41-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-sdk41-message.txt"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-reader-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-reader-message.txt"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-descriptors-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-descriptors-message.txt"
+    },
+    {
+      "command": [
+        "node",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/node_modules/@commitlint/cli/cli.js",
+        "--config",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/commitlint.config.mjs",
+        "--edit",
+        "/tmp/hexalith-job.eaaG98hG/platform-commitlint/platform605-merge-message.txt"
+      ],
+      "exitCode": 0,
+      "message": "platform605-merge-message.txt"
+    }
+  ],
+  "messages": {
+    "platform605-source-message.txt": "fix(tuple): adopt the qualified Builds 6.0.5 source context\n\nRestore the sealed historical profile and package provenance, preserve source SDK propagation, and bind the measured producer without extending runtime admission.\n\nKeep finite SDK 4.2 package selections and generic MCP 3 defaults distinct.\n",
+    "platform605-legacy-message.txt": "test(tuple): freeze current code with the original 349-case tuple\n\nKeep the implementation and controls identical while substituting only authenticated historical tuple metadata and owner gitlinks.\n",
+    "platform605-sdk41-message.txt": "test(tuple): freeze current code with the original 412-case tuple\n\nKeep the implementation and controls identical while substituting only authenticated historical tuple metadata and owner gitlinks.\n",
+    "platform605-reader-message.txt": "test(tuple): freeze current code with retained SDK 4.2 reader inputs\n\nPreserve authenticated Builds 4.47.0 and SDK 4.2 reader inputs while keeping the current implementation and controls identical.\n",
+    "platform605-descriptors-message.txt": "build(tuple): bind the refreshed immutable qualification sources\n\nRecord the three prepared source revisions with the measured Builds 6.0.5 tuple. Preserve the original 349 and 412 controls and retained SDK 4.2 reader metadata.\n",
+    "platform605-merge-message.txt": "fix(tuple): adopt the qualified Builds 6.0.5 source context\n\nMerge the reviewed tuple, source-context corrections and refreshed immutable qualification sources.\n"
+  }
+}

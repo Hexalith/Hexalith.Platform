@@ -1,0 +1,22 @@
+{
+  "command": [
+    "gh",
+    "pr",
+    "create",
+    "--repo",
+    "Hexalith/Hexalith.Builds",
+    "--base",
+    "main",
+    "--head",
+    "fix/story-3-2-source-consumer-context-20261115",
+    "--draft",
+    "--title",
+    "fix(catalog): preserve mapped source context before model evaluation",
+    "--body-file",
+    "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/owner-pr-body.md"
+  ],
+  "exitCode": 0,
+  "stdout": "https://github.com/Hexalith/Hexalith.Builds/pull/186\n",
+  "stderr": "",
+  "connectorFallback": "Connected GitHub create_pull_request returned403 Resource not accessible by integration; git object transport and authorized CLI use the maintainer connection."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "timeout-no-final-summary",
+  "timeoutSeconds": 600,
+  "noPassingCredit": true,
+  "rawLog": "owner-pinned-model-final.log",
+  "xmlProduced": false,
+  "remainingNamedProcesses": [
+    "2964023 2649757 dotnet          dotnet build /tmp/hexalith-job.tRGeN7N0/hexalith-workspace-tests/73cec86e4aa34166940f875dbcd6c519/checkout/references/Hexalith.Platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj --configuration Release --output /tmp/hexalith-job.tRGeN7N0/hexalith-workspace-tests/73cec86e4aa34166940f875dbcd6c519/model-run/hosts/platform-model --artifacts-path /tmp/hexalith-job.tRGeN7N0/hexalith-workspace-tests/73cec86e4aa34166940f875dbcd6c519/model-run/build/platform-model -p:BuildsToolingAssemblyPath=/tmp/hexalith-job.tRGeN7N0/owner-mode-verification/artifacts/bin/Hexalith.Builds.Module.Tests/debug/Hexalith.Builds.Tooling.dll -p:CopyLocalLockFileAssemblies=true -p:CentralPackageTransitivePinningEnabled=true -p:NuGetAudit=true -p:NuGetAuditMode=all -p:NuGetAuditLevel=low -p:MinVerVersionOverride=1.0.0 -nodeReuse:false -p:UseSharedCompilation=false -m:1 -p:BuildInParallel=false -p:RestoreBuildInParallel=false -p:AlternateCommonProps=/tmp/hexalith-job.tRGeN7N0/hexalith-workspace-tests/73cec86e4aa34166940f875dbcd6c519/model-run/source-mapping/SourceMapping.model-common.props -p:ImportDirectoryPackagesProps=false -p:CentralPackageVersionsFileImported=true -p:DirectoryPackagesPropsPath=/tmp/hexalith-job.tRGeN7N0/hexalith-workspace-tests/73cec86e4aa34166940f875dbcd6c519/model-run/source-mapping/pinned-tree/Props/Directory.Packages.props"
+  ],
+  "workspaceRemoved": false,
+  "nextBoundSeconds": 1800
+}

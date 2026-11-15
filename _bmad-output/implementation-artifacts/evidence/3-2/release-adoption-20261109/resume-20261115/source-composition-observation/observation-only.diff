@@ -1,0 +1,22 @@
+diff --git a/tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs b/tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs
+index 54228545..c17c3fec 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/EventStoreExtensionCompositionTests.cs
+@@ -54,7 +54,16 @@ public sealed class EventStoreExtensionCompositionTests
+     {
+         using PlatformOwnerFixture owner = Owner(Extension());
+         IDistributedApplicationBuilder builder = Builder();
+-        PlatformAppModel.Compose(builder, SourceOptions(owner));
++        try
++        {
++            PlatformAppModel.Compose(builder, SourceOptions(owner));
++        }
++        catch (InvalidDataException failure) when (failure.Message.StartsWith("Mapped routing catalog owner build failed; see ", StringComparison.Ordinal))
++        {
++            string logPath = failure.Message["Mapped routing catalog owner build failed; see ".Length..].TrimEnd('.');
++            if (File.Exists(logPath)) TestContext.Current.TestOutputHelper?.WriteLine(File.ReadAllText(logPath));
++            throw;
++        }
+         using ServiceProvider cleanup = builder.Services.BuildServiceProvider();
+         _ = cleanup.GetRequiredService<PlatformCompositionWorkspace>();
+ 

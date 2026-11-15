@@ -42,6 +42,7 @@ MEMORIES_PACKAGES = tuple("Hexalith.Memories." + name for name in (
     "Aspire", "Client.Rest", "Contracts", "EventStore", "EventStoreExtensions"))
 TENANTS_PACKAGES = tuple("Hexalith.Tenants." + name for name in (
     "Aspire", "Client", "Contracts", "Server", "Testing"))
+MCP_PACKAGES = ("Hexalith.McpCli.Abstractions",)
 GENERATION6_CATALOG = {
     "version": "6.0.0",
     "sourceRevision": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
@@ -74,6 +75,14 @@ GENERATION603_CATALOG = {
 }
 
 
+GENERATION605_CATALOG = {
+    "version": "6.0.5",
+    "sourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+    "blob": "42441eb4cefcff2f9c582fcda630d9ad15887df2",
+    "sha256": "d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637",
+}
+
+
 def catalog_profile(binding=None) -> str:
     """A new producer generation cannot inherit an earlier consumer qualification."""
     if binding is None:
@@ -83,7 +92,8 @@ def catalog_profile(binding=None) -> str:
     if binding["publication"]["version"].startswith("6."):
         producer = binding["producer"]
         selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
-                    "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG}.get(binding["publication"]["version"])
+                    "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG,
+                    "6.0.5": GENERATION605_CATALOG}.get(binding["publication"]["version"])
         if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
                 or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
             raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
@@ -134,6 +144,8 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
                 "'%(PackageVersion.Identity)' == '" + package + "'" for package in MEMORIES_PACKAGES))
             ET.SubElement(items, "_TenantsPins", Include="@(PackageVersion)",
                 Condition="$([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.Tenants.'))")
+            ET.SubElement(items, "_McpPins", Include="@(PackageVersion)", Condition=" or ".join(
+                "'%(PackageVersion.Identity)' == '" + package + "'" for package in MCP_PACKAGES))
             observation = ET.SubElement(items, "_Observed", Include="$(MSBuildProjectName)")
             for key, value in (("Sdk", "$(HexalithEventStoreVersion)"),
                                ("CatalogMemoriesDefault", "$(HexalithMemoriesVersion)"),
@@ -144,6 +156,7 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
                                ("PartiesView", "$(HexalithPartiesSdk42CatalogView)"),
                                ("MemoriesPins", "@(_MemoriesPins->'%(Identity)=%(Version)', '|')"),
                                ("TenantsPins", "@(_TenantsPins->'%(Identity)=%(Version)', '|')"),
+                               ("McpPins", "@(_McpPins->'%(Identity)=%(Version)', '|')"),
                                ("Pins", "@(_Pins->'%(Identity)=%(Version)', '|')")):
                 ET.SubElement(observation, key).text = value
             path = root / (name + ".proj")
@@ -209,7 +222,18 @@ def verify_tenants_observations(observed: list[dict], *, generic_tenants: str) -
             raise ValueError("The authenticated catalog selects an unqualified Tenants consumer view: " + item["Identity"])
 
 
-def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7") -> None:
+def verify_mcp_observations(observed: list[dict], *, generic_mcp: str) -> None:
+    """Keep the finite SDK4.2 MCP package view distinct from generic consumer defaults."""
+    for item in observed:
+        named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS) and item.get("Sdk") == "4.2.0"
+        expected = "2.0.1" if named else generic_mcp
+        pins = [pin.split("=", 1) for pin in item.get("McpPins", "").split("|") if pin]
+        if item.get("CatalogMcpDefault") != expected or len(pins) != len(MCP_PACKAGES) \
+                or dict(pins) != {package: expected for package in MCP_PACKAGES}:
+            raise ValueError("The authenticated catalog selects an unqualified MCP consumer view: " + item["Identity"])
+
+
+def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7", generic_mcp: str = "2.0.1") -> None:
     """Require each actual source-owner context's complete family and an unknown sibling refusal."""
     names = [item["Identity"] for item in observed]
     if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
@@ -226,7 +250,7 @@ def verify_current_owner_observations(observed: list[dict], *, generic_tenants: 
                 or item.get("PartiesView") != str(named).lower() \
                 or item.get("CatalogMemoriesDefault") != ("3.0.27" if named else "4.0.0") \
                 or any(item.get(key) != value for key, value in (("CatalogTenantsDefault", "7.0.7" if named else generic_tenants),
-                    ("CatalogPartiesDefault", "3.1.1"), ("CatalogMcpDefault", "2.0.1"))) \
+                    ("CatalogPartiesDefault", "3.1.1"), ("CatalogMcpDefault", "2.0.1" if named else generic_mcp))) \
                 or len(memories) != len(MEMORIES_PACKAGES)
                 or dict(memories) != {package: "3.0.27" if named else "4.0.0" for package in MEMORIES_PACKAGES}
                 or len(pins) != len(expected) or dict(pins) != expected):
@@ -252,12 +276,16 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
         verify_memories_observations(observed)
         verify_memories_observations(collecting)
     owner_observed = []
-    if binding is not None and binding["publication"]["version"] in ("6.0.2", "6.0.3"):
-        generic_tenants = "8.0.0" if binding["publication"]["version"] == "6.0.3" else "7.0.7"
+    if binding is not None and binding["publication"]["version"] in ("6.0.2", "6.0.3", "6.0.5"):
+        generic_tenants = "7.0.7" if binding["publication"]["version"] == "6.0.2" else "8.0.0"
         verify_tenants_observations(observed, generic_tenants=generic_tenants)
         verify_tenants_observations(collecting, generic_tenants=generic_tenants)
         owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
-        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants)
+        generic_mcp = "3.0.0" if binding["publication"]["version"] == "6.0.5" else "2.0.1"
+        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp)
+        if binding["publication"]["version"] == "6.0.5":
+            for observations in (observed, collecting, owner_observed):
+                verify_mcp_observations(observations, generic_mcp=generic_mcp)
     return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,

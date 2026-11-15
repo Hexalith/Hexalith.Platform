@@ -36,11 +36,10 @@ class SourceSdkPropagationTests(unittest.TestCase):
         cls.fixture.write_bytes(ET.tostring(project, encoding="utf-8"))
         cls.evaluations = []
         cls.default_sdk = cls.invoke(cls.fixture, ["-p:UseHexalithProjectReferences=true"])["Properties"]["HexalithEventStoreVersion"]
-        from builds_tuple import load_binding
-        from current_catalog_view import catalog_profile
-        if cls.default_sdk not in ("4.1.0", "4.2.0") and not (
-                cls.default_sdk == "5.1.0" and catalog_profile(load_binding()) == "current-sdk51"):
-            raise AssertionError("The focused controls require one of the recorded current/historical catalog SDKs.")
+        # Source consumers follow the owning catalog's current SDK; package cohort qualification
+        # stays separate and cannot be inferred from this metadata-only source check.
+        if cls.default_sdk not in ("4.1.0", "4.2.0", "5.1.0"):
+            raise AssertionError("The focused controls require one of the recorded current/historical source SDKs.")
 
     @classmethod
     def invoke(cls, project, properties, target=None, configuration="Release"):
@@ -48,7 +47,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
                 "-p:DirectoryBuildPropsPath=" + str(ROOT / "Directory.Build.props"),
                 "-p:DirectoryBuildTargetsPath=" + str(ROOT / "Directory.Build.targets"),
                 "-p:DirectoryPackagesPropsPath=" + str(ROOT / "Directory.Packages.props"),
-                *properties, "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation", "-getItem:ProjectReference"]
+                *properties, "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+                "-getItem:ProjectReference,Reference"]
         if OPTIONS.artifacts:
             args.append("-p:ArtifactsPath=" + str(OPTIONS.artifacts.resolve()))
         if OPTIONS.published_tool_root:
@@ -86,6 +86,61 @@ class SourceSdkPropagationTests(unittest.TestCase):
         contracts = next(item for item in document["Items"]["ProjectReference"] if item["Filename"] == "Hexalith.EventStore.Contracts")
         self.assertEqual(self.explicit + ";UseHexalithProjectReferences=true", contracts["AdditionalProperties"])
 
+    def removal_edge(self, removal, assignment=""):
+        project = ET.parse(self.fixture)
+        edge = project.getroot().find("ItemGroup/ProjectReference")
+        edge.set("GlobalPropertiesToRemove", removal)
+        if assignment:
+            ET.SubElement(edge, "AdditionalProperties").text = assignment
+        path = Path(self.temporary.name) / ("removed-edge-" + str(len(self.evaluations))) / self.fixture.name
+        path.parent.mkdir()
+        project.write(path, encoding="utf-8")
+        result = self.invoke(path, ["-p:UseHexalithProjectReferences=true"])
+        return next(item for item in result["Items"]["ProjectReference"]
+                    if item["Filename"] == "Hexalith.EventStore.DomainService")
+
+    def test_removed_sdk_property_is_not_reintroduced_case_insensitively(self):
+        for removal in ["HexalithEventStoreVersion", "Other; hexalithEVENTSTOREversion ;Keep"]:
+            with self.subTest(removal=removal):
+                edge = self.removal_edge(removal)
+                self.assertEqual(";UseHexalithProjectReferences=true", edge["AdditionalProperties"])
+                self.assertEqual(removal, edge["GlobalPropertiesToRemove"])
+        edge = self.removal_edge("HexalithEventStoreVersionFuture")
+        self.assertIn("HexalithEventStoreVersion=" + self.default_sdk, edge["AdditionalProperties"])
+
+    def test_explicit_sdk_assignment_on_a_removed_edge_keeps_its_precedence(self):
+        assignment = "ControlContext=keep;hexalithEventStoreVersion=4.1.0"
+        edge = self.removal_edge("HexalithEventStoreVersion", assignment)
+        self.assertEqual(assignment + ";UseHexalithProjectReferences=true", edge["AdditionalProperties"])
+
+    def test_real_direct_and_sdk_promoted_tooling_edges_retain_the_neutral_catalog(self):
+        composition = ROOT / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
+        tests = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
+        published = OPTIONS.published_tool_root
+        for properties in [[], ["-p:UseHexalithProjectReferences=true"]]:
+            for project, target in [(composition, None), (tests, "IncludeTransitiveProjectReferences")]:
+                with self.subTest(project=project, properties=properties, binding="published" if published else "project"):
+                    result = self.invoke(project, properties, target, configuration="Debug")
+                    edges = [item for item in result["Items"]["ProjectReference"]
+                             if item["Filename"] == "Hexalith.Builds.Tooling"]
+                    references = [item for item in result["Items"]["Reference"]
+                                  if item["Identity"] == "Hexalith.Builds.Tooling"]
+                    if published:
+                        expected = (published / "Hexalith.Builds.Tooling.dll").resolve()
+                        self.assertTrue(expected.is_file())
+                        self.assertEqual([], edges)
+                        self.assertEqual(1, len(references))
+                        self.assertEqual(expected, Path(result["Properties"]["BuildsToolingAssemblyPath"]).resolve())
+                        self.assertEqual(expected, Path(references[0]["HintPath"]).resolve())
+                        continue
+                    self.assertEqual("", result["Properties"]["BuildsToolingAssemblyPath"])
+                    self.assertEqual([], references)
+                    self.assertEqual(1, len(edges))
+                    self.assertRegex(edges[0].get("GlobalPropertiesToRemove", ""),
+                                     r"(?i)(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)")
+                    self.assertNotRegex(edges[0].get("AdditionalProperties", ""),
+                                        r"(?i)(?:^|;)\s*HexalithEventStoreVersion\s*=")
+
     def test_package_mode_does_not_add_source_edge_metadata(self):
         document, metadata = self.selection(["-p:UseHexalithProjectReferences=false"])
         self.assertEqual("", metadata)
@@ -119,7 +174,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
         self.assertTrue(promoted, "The actual restored SDK graph must promote at least one reference.")
         for item in promoted:
             values = re.findall(r"(?:^|;)\s*HexalithEventStoreVersion\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
-            self.assertEqual([self.default_sdk], values)
+            removes_sdk = re.search(r"(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)", item.get("GlobalPropertiesToRemove", ""), re.IGNORECASE)
+            self.assertEqual([] if removes_sdk else [self.default_sdk], values)
             modes = re.findall(r"(?:^|;)\s*UseHexalithProjectReferences\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
             self.assertEqual(["true"], modes)
 
@@ -192,7 +248,8 @@ class SourceSdkPropagationTests(unittest.TestCase):
         self.assertTrue(promoted)
         for item in promoted:
             values = re.findall(r"(?:^|;)\s*HexalithEventStoreVersion\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
-            self.assertEqual([self.default_sdk], values)
+            removes_sdk = re.search(r"(?:^|;)\s*HexalithEventStoreVersion\s*(?:;|$)", item.get("GlobalPropertiesToRemove", ""), re.IGNORECASE)
+            self.assertEqual([] if removes_sdk else [self.default_sdk], values)
             modes = re.findall(r"(?:^|;)\s*UseHexalithProjectReferences\s*=([^;]+)", item.get("AdditionalProperties", ""), re.IGNORECASE)
             self.assertEqual(["true"], modes)
 
@@ -303,11 +360,11 @@ def main():
         raise ValueError("Choose a fresh metadata-control evidence directory.")
     OPTIONS.evidence.mkdir(parents=True)
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(SourceSdkPropagationTests)
-    if suite.countTestCases() != 25:
-        raise ValueError("The source SDK metadata contract requires exactly twenty-five controls.")
+    if suite.countTestCases() != 28:
+        raise ValueError("The source SDK metadata contract requires exactly twenty-eight controls.")
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    passed = result.testsRun == 25 and not result.skipped and result.wasSuccessful()
-    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 25, "executed": result.testsRun,
+    passed = result.testsRun == 28 and not result.skipped and result.wasSuccessful()
+    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 28, "executed": result.testsRun,
         "failures": len(result.failures), "errors": len(result.errors), "skipped": len(result.skipped),
         "passed": passed, "qualificationCredit": False,
         "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."}, indent=2) + "\n")

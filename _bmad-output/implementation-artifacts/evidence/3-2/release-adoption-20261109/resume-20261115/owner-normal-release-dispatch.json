@@ -1,0 +1,23 @@
+{
+  "command": [
+    "gh",
+    "workflow",
+    "run",
+    "builds-release.yml",
+    "--repo",
+    "Hexalith/Hexalith.Builds",
+    "--ref",
+    "main"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "stderr": "",
+  "qualifiedMain": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+  "qualificationReceipt": "owner-qualified-main.json",
+  "preDispatchFetch": {
+    "stdout": "",
+    "stderr": "From https://github.com/Hexalith/Hexalith.Builds\n * branch              main       -> FETCH_HEAD\n"
+  },
+  "connectorFallback": "Connected GitHub tools provide workflow reads and retries but no workflow-dispatch capability.",
+  "normalWorkflowUnchanged": true
+}

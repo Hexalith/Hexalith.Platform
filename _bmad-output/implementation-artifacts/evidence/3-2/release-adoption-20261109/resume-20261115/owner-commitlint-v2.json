@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "/tmp/hexalith-job.i7OqY4F0/commitlint",
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "node",
+      "/tmp/hexalith-job.i7OqY4F0/commitlint/node_modules/@commitlint/cli/cli.js",
+      "--config",
+      "/tmp/hexalith-job.i7OqY4F0/commitlint/commitlint.config.mjs",
+      "--edit",
+      "/home/administrator/projects/hexalith/platform-story-3-2-20261115/_bmad-output/implementation-artifacts/evidence/3-2/release-adoption-20261109/resume-20261115/builds-source-view-message.txt"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform-story-3-2-20261115/references/Hexalith.Builds",
+    "exitCode": 0
+  }
+]
