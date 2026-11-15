@@ -1663,6 +1663,85 @@ So that real-provider acceptance exercises bound workload tokens without a manua
 **Then** it documents this path as the only generated-trust activation, limited to disposable run-owned environments
 **And** its Folders Story 12.2 paragraph points to this path
 
+### Story 2.13: Retire the historical tuple-replay lanes from Platform CI
+
+As a Platform maintainer,
+I want Platform tuple CI to run only the current-tuple lane on the candidate commit,
+So that a Platform change needs no frozen companion commits or qualification branches, and `/pushall` can no longer merge historical pins into main.
+
+**Repo:** Hexalith.Platform · **Covers:** AR-12 (Platform's own CI integration)
+
+**Origin (2026-11-15):** [sprint-change-proposal-2026-11-15.md](sprint-change-proposal-2026-11-15.md). The legacy (Builds 4.44.3, 349 cases), pre-extension (Builds 4.45.0 + SDK 4.1, 412 cases) and package-reader lanes need three sibling commits and three pushed branches per change. They grant no qualification credit, and no module uses those Builds versions. `/pushall` merged such siblings into main and reverted its pins (origin/main `0c3f55d1`; the last tree with current pins is `3bda4d79`).
+
+**Acceptance Criteria:**
+
+**Given** a pull request or a push to main
+**When** tuple CI runs
+**Then** only source resolution and the current-tuple lane execute, and the combined verdict fails closed unless both succeed
+**And** no job checks out or fetches any Platform commit other than the candidate
+
+**Given** any Platform change, including documentation-only and gitlink-only changes
+**When** it is prepared and lands
+**Then** it needs no companion commit, no historical source descriptor update and no extra branch or tag
+
+**Given** the retired lanes
+**When** this story lands
+**Then** the legacy, pre-extension and package-reader source modules, their tests, their descriptors and the frozen suite profiles used only by them are removed
+**And** helpers still used by the remaining tuple code live in the remaining modules, and every remaining tuple, source-release and Composition control passes without skips
+
+**Given** main's tree when this story starts
+**When** it still carries historical pins merged from qualification branches
+**Then** the first change restores the current pins, with no other content change
+**And** tuple CI on main is green after this story lands
+
+**Given** the Platform documentation
+**When** this story lands
+**Then** `docs/current-tuple-preparation.md`, `docs/domain-module-enrollment.md`, `eng/tuple-source-preparation.md` and the README tuple sections no longer require same-code legacy/current (L/M) proof
+
+**Given** leftover qualification refs
+**When** this story lands
+**Then** remaining local `qualification/*` branches in the Platform checkout are deleted
+**And** the `archive/qualification*` tags and the Story 4.17 broker-candidate tags are left unchanged (deleting archived tags is a separate owner decision)
+
+**Given** a `/pushall` run after this story lands
+**When** it merges and pushes Platform main
+**Then** main's tuple pins are unchanged
+
+### Story 2.14: Pin Builds and owner modules by released version
+
+As a Platform maintainer,
+I want Builds and owner modules pinned by released version, with package integrity taken from NuGet lock files,
+So that adopting a Builds or module release is a version bump rather than an edit to Platform source, tests and docs.
+
+**Repo:** Hexalith.Platform · **Covers:** AR-12 (expected and loaded content identities) · **Depends on:** Story 2.13
+
+**Origin (2026-11-15):** [sprint-change-proposal-2026-11-15.md](sprint-change-proposal-2026-11-15.md). `eng/builds-tuple.json` binds about 12 identities of one Builds release. Composition source compiles in release identities, such as `IsPublishedPair`'s AppHost and Tooling DLL hashes. 180 of 706 Platform commits since 2026-11-01 touched `builds-tuple.json`.
+
+**Acceptance Criteria:**
+
+**Given** the Builds binding
+**When** inspected
+**Then** it records the Builds version and release tag only, matching `.config/dotnet-tools.json`
+**And** no release, run or artifact ID or hand-maintained artifact hash remains in it
+
+**Given** restore in CI
+**When** packages are restored
+**Then** lock files record the content hashes of Builds and owner packages, and CI restores in locked mode
+**And** a package whose content differs from its lock-file hash fails restore
+
+**Given** Composition source
+**When** inspected
+**Then** it contains no Builds or owner-module release-identity literal
+**And** Builds tool admission uses a version compatibility rule against the pinned version, and its tests cover accepted, older and newer versions
+
+**Given** a new Builds or owner-module release
+**When** Platform adopts it
+**Then** the change consists of the version bump and regenerated lock files, with no edit to C#, Python verifiers or documentation
+
+**Given** AR-12 run descriptors and results
+**When** a run records its evidence
+**Then** they still bind the candidate revision and the expected and actually loaded content identities, with expected identities taken from the lock files
+
 ## Epic 3: Run the complete Hexalith system locally with agent access
 
 A developer starts all seven MVP modules together with one command. They run through the Platform-composed `eventstore` host with extension packages, a run-scoped catalog, a local realm generated from the realm contract and the synthetic tenant. The local McpCli CLI and stdio MCP discover and execute agent-eligible operations and refuse everything else. CI candidate evidence proves exactly which artifacts were loaded. The epic closes with the SM-1, SM-2 and SM-3 evidence stories across all seven modules.

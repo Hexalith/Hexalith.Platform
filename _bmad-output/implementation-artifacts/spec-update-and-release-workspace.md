@@ -45,7 +45,7 @@ context:
 - [ ] Full user-approved runtime expansion: migrate active TFMs and containers, use the genuine signed Builds5 tool/model libraries, qualify the SDK's actual net11 framework dependency resolution, and publish dependent net11 package majors in dependency order.
 - [ ] Owning package manifests/catalogs: update compatible stable dependencies and lockfiles, document necessary compatibility holds, run affected controls.
 - [ ] Owning CI tooling/tests: fix root causes shown by current CI logs, preserving assertions and source provenance requirements. Include supported shared-workflow pins, release runtime retention, exact npm inventory assertions and current production closure expectations.
-- [ ] Builds publication and Platform tuple files: bind a real current published producer, then repair historical same-code companions and current owner verification. Independently measure finite707/326 owner artifacts, retain historical cohorts, authenticate current declaration bytes, and protect Git commit/blob/checkout checks with behavioral controls.
+- [ ] Builds publication and Platform tuple files: bind a real current published producer and repair current owner verification. (Historical same-code companions: superseded by Story 2.13, [2026-11-15 correction](../planning-artifacts/sprint-change-proposal-2026-11-15.md).) Independently measure finite707/326 owner artifacts, retain historical cohorts, authenticate current declaration bytes, and protect Git commit/blob/checkout checks with behavioral controls.
 - [ ] Owning repositories: validate commits, push changes and verify remote availability; commit parent pointers only after dependent pushes.
 - [ ] Release workflows: create the qualified root release, pass authorized human gates, publish packages, and verify exact versions from public NuGet metadata/archive.
 
@@ -115,3 +115,7 @@ Automated review identified remaining dependency-order finalization and stale fi
 - Run affected repository build/test commands with package references and Release settings for CI parity; execute test projects individually.
 - Run `python3 -B eng/test_builds_tuple.py`, `python3 -B eng/test_legacy_tuple_source.py`, `python3 -B eng/test_pre_extension_tuple_source.py`, `python3 -B eng/test_tuple_sdk_suites.py` and `npm run test:source-release` after root qualification changes.
 - Inspect latest exact-source GitHub Actions jobs and failed logs after every pushed fix. Check NuGet flat-container indexes and release archive identities after publication.
+
+## Course correction — 2026-11-15
+
+The [2026-11-15 sprint correction](../planning-artifacts/sprint-change-proposal-2026-11-15.md) retires the historical same-code companions through Story 2.13. After 2.13 lands, the `eng/test_legacy_tuple_source.py` and `eng/test_pre_extension_tuple_source.py` verification commands above no longer exist. Run the remaining tuple, SDK-profile and source-release controls instead.

@@ -630,3 +630,7 @@ merge and record its qualification violation. The reviewed repair remains
 unused and uncommitted; no main repair has been pushed. Full lifecycle
 qualification remains open and accepted-tool authority remains false.
 See [the separate observation](evidence/2-10/source-release-20261113/post-handoff-remote-observation/README.md).
+
+## Course correction — 2026-11-15
+
+The [2026-11-15 sprint correction](../planning-artifacts/sprint-change-proposal-2026-11-15.md) retires the legacy (349), pre-extension (412) and package-reader tuple-replay lanes through Story 2.13. Once 2.13 lands, this story's final qualification records only the current-tuple lane, and the `legacy-public-cohort` check context no longer exists. The 349- and 412-case results recorded above remain historical evidence. The scope, the lifecycle matrix and the accepted-tool gate are unchanged.
