@@ -2,7 +2,7 @@
 title: '2.13 Retire the historical tuple-replay lanes from Platform CI'
 type: 'refactor'
 created: '2026-11-15'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci'
@@ -63,6 +63,57 @@ Aliases: E = `eng`; T = `tests/Hexalith.Platform.Composition.Tests`; S = `tests/
 - Given a candidate, when preparation and CI execute, then no other Platform revision or qualification ref is required.
 - Given retired replay machinery, when repository controls run, then remaining tuple, source-release and Composition controls pass with positive totals and no skips.
 - Given landing on main, when hosted tuple CI completes, then resolution, current execution and their verdict are green; local audit alone cannot satisfy this criterion.
+
+### Review Findings
+
+Code review 2026-11-15 of `f55a641f` (parent `5b44f2d0`, code/docs only, evidence excluded). Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor — all completed.
+
+- [ ] [Review][Patch] Delete orphaned legacy-only Composition test classes and record them (medium; decision resolved 2026-11-15: delete all three) [tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs:1] — `PlatformPartiesMappedOwnerProofTests` (3; asserts stale Parties gitlink `bb2783120c0e…` and would fail if executed), `PublishedCatalogArtifactCohortTests` (47; old 4.1.0/7.0.2/3.0.23 bodies) and `PlatformPackageCatalogReaderTests` (9; `RequirePublicContext` returns early under the current cohort) were selected only by the deleted `tuple-ci-legacy-suites.json`. Delete them and record each, with its reason, as a retired replay-only selector in `evidence/2-13/coverage-map.md` and `selector-count-mapping.tsv`. The reader-refusal patch below preserves the reader class's real value.
+- [ ] [Review][Patch] Hosted tuple CI fails at the landed commit: transport test relies on a machine-installed Dapr CLI (high; AC2/AC3) [tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesContainerTransportTests.cs:55] — run 43757208901 `tuple` failed on current42 `test-0` with `Unable to locate the Dapr CLI`, so `tuple-verdict` failed. The hand-built graph never calls `builder.AddDapr(o => o.DaprPath = …)` as `PlatformAppModel.cs:278` does; local `/usr/local/bin/dapr` masked it. Because the runner stops at the first failing group, the remaining current42, base42 and extensions groups have never run on a hosted runner.
+- [ ] [Review][Patch] Reader pre-restore refusals lost all CI coverage (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformReaderMutationControls.cs:20] — `LoadVerified` and the `validate-catalog.proj` exit/`HXW012` refusal in `PlatformPackageCatalogReader.Prepare` are exercised only by unselected `PlatformPackageCatalogReaderTests`. Add changed-snapshot, changed-pinned-catalog, missing-snapshot and changed-mapping variants to `AssertAsync`.
+- [ ] [Review][Patch] Duplicate-key refusal in current `decode` has no test (medium) [eng/test_current_tuple_source.py:1] — the only control was in deleted `test_legacy_tuple_source.py`; dropping `object_pairs_hook` keeps all 14 tests green. Add direct and real-Git `read_selection` duplicate-field refusals.
+- [ ] [Review][Patch] Retired fixture inputs and attributes left behind (low) [tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj:30] — `Fixtures/private-70525-provenance.json` is still embedded and in `.gitattributes:166`; `Fixtures/pre-extension-*.json` (`.gitattributes:118-119`) lost their only reader; `.gitattributes:106` names the renamed `PlatformSdk42CurrentOwnerMemoriesTransportTests.cs`.
+- [ ] [Review][Patch] `file_host_catalog.prepare` lost its only production caller but still runs as a CI control (low) [eng/run_tuple_ci.py:364] — the `CURRENT_PLATFORM_SHA` branch was its caller; `test_changed_apphost_cannot_use_another_current_sources_catalog` now only checks HEAD equality. Remove the module, its test and the control step.
+- [ ] [Review][Patch] Unreachable production branches in `ChangedFullEntryRefusesBeforeEffectsAsync` (low) [tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageEntryTests.cs:43]
+- [ ] [Review][Patch] Ambiguous verdict sentence "Both prerequisites must succeed, including when another prerequisite fails, cancels or skips" (low) [README.md:13] — also in `docs/current-tuple-preparation.md` and `docs/domain-module-enrollment.md`.
+- [ ] [Review][Patch] Public preparation guide requires the personal `run-with-temp` wrapper (low) [eng/tuple-source-preparation.md:13]
+- [ ] [Review][Patch] Stale test title "exact five/six jobs" while asserting `[3, 6]` (low) [tests/source-release/source-release.test.mjs:45]
+- [ ] [Review][Patch] Stale "Copy and verify real release bytes" comment above the synthesized catalog (low) [tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:53]
+- [ ] [Review][Patch] base42 per-group count assertion dropped instead of updated to `[40, 51, 2]` (low) [eng/test_tuple_sdk_suites.py:84]
+- [ ] [Review][Patch] Vacuous `for-each-ref refs/heads/qualification/` assertions in fresh repos; compare full ref inventories before/after instead (low) [eng/test_current_tuple_source.py:214]
+- [ ] [Review][Patch] Reader `-p:CentralPackageTransitivePinningEnabled=true` argument has no test (low) [src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs:62]
+- [ ] [Review][Patch] New Builds 6.0.5 AppHost/Tooling validation pair is not named in README/current-tuple-preparation like earlier pairs (low) [src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs:36]
+- [ ] [Review][Patch] Always-true suite conditions and dead `file_catalog_sha256 is None` path in `run_tuple_ci.py` (low) [eng/run_tuple_ci.py:361]
+- [x] [Review][Defer] `epic-2-context.md` rewrite drops Epic 2 constraints (hold 1,800 s/1–14,400 s, candidate policy v1, unsupported-version naming, Keycloak 26.6.4/realm import, cross-repository completion) [_bmad-output/implementation-artifacts/epic-2-context.md:22] — deferred: agent-context file; regenerate or restore from epics/architecture.
+- [x] [Review][Defer] Companion branches `origin/fix/tuple-legacy-{ddb1c0b1,d386e360}-20261115` and `origin/fix/tuple-pre-extension-{ddb1c0b1,d386e360}-20261115` remain on origin [.github/workflows/tuple-ci.yml:1] — deferred: pre-existing remote refs; still the merge hazard this story targets; deletion is an owner remote decision.
+
+Rejected:
+- false — Historical README/guide sections say "The current producer": the intro labels them historical records with original subjects, as the spec requires.
+- low — Candidate-only block repeated in three docs: maintenance only; consolidation is restructuring and 2.14 rewrites these sections.
+- low — 565 executions vs 562 unique cases unstated: the figure is correctly labelled executions.
+- low — `paths.Length.ShouldBe(6)` tautology and setup inside `assertRaisesRegex`: harmless.
+- low — `AssertDerivedConsumerEnrichmentAsync` does not require enrichment: it is a bound by design; the catalog handoff theory independently needs warm ≠ cold through its proof-mismatch branch.
+- low — Test names/summaries describing earlier positives: naming only.
+- low — Nine reader mutations in one helper case: coverage kept, only granularity changed.
+- low/maybe-false — Synthesized `PlatformAppModelTests` catalog: needed because the genuine catalog's generic default differs by design; single-word owners only; stale comment kept as a patch.
+- low — Reader diagnostics may mask an exception: needs an I/O failure on the failure path; the guard is more than a direct correction.
+- low — `source-releases.md` no longer says "unknown jobs": the doc names the exact three jobs; the gate is unchanged.
+- false — `cr-at-eol` attributes instead of renormalizing: deliberate preservation of verified source bytes.
+- low — `ExtensionSdkTest`/`SelectedSdkTest` identical, `sdk42` ignored: previously triaged (Blind-7).
+- false — Single-choice `mode` in `prepare_tuple_sources.py`: keeps the documented `binding` CLI.
+- false — `MatchesDeclaredTestServers` checks only Image/ProjectPath: it is a new additional refusal; the cohort/server/image switch still admits only exact tuples.
+- false — Hard-coded transitive pinning overrides the owner: Platform `Directory.Packages.props`, Builds and Builds Tooling all set it true.
+- low/maybe-false — Version/assets mutation re-run lacks pinning args: the asserted refusal is the explicit version/assets check.
+- false — Cross-proof refusal never runs: the changed receipt now refuses unconditionally for both proofs.
+- low/maybe-false — Guard build leaves new files under `source-mapping`: the subsequent proof `Matches` passes; not demonstrated.
+- low — `PublishedSeed()` failure leaks the proof fixture: failure-path temp leak; the fix adds a guard.
+- false — Absent SHA gives a traceback in `prepare_tuple_sources.py`: it still fails loudly and non-zero.
+- false — Removed image-probe positives: spec I/O row retires old replay-only positives; current image cohorts refuse by design.
+- low — Transport test bypasses production composition: Bind refuses current images first; `ActualDaprCliListenersAndTokensRemainServerScopedAsync` still composes the production path (prior Blind-3). The concrete defect is the Dapr CLI patch.
+- low — Parties topology/runtime refusal theory deleted: its positive baseline was replay-only; restoring it needs new admission-layer factoring (prior Blind-11).
+- false — Production authority changed outside the Code Map: the 6.0.5 pair matches `eng/builds-tuple.json` `toolingSha256` and 3-2 adoption605 evidence, and `MatchesDeclaredTestServers` only tightens admission. The documentation gap is kept as a patch.
+- low — No end-to-end signed validation success: success needs image admission the spec retires; handoff consumption and five negative mutations remain.
+- rejected — Spec `done` while AC3 is unmet: the fix would edit the spec; sprint status stays non-done.
 - Given unchanged archived tags and current pins, when cleanup and merge verification finish, then both inventories are preserved.
 
 ## Implementation Notes

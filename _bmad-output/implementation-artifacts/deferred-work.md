@@ -2074,3 +2074,12 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: Pin the EventStore gateway receiver audience (`eventstore`) with a default-run test; today only explicit live lanes assert it.
   evidence: 2026-11-15 final-verification review B13/V5. `PlatformWorkloadEnrollment.cs:133` (from 20a7d635) assigns `Authentication__WorkloadJwtBearer__Audience` = `eventstore` only after live TLS metadata and token probes succeed, so default-run `ConfigureAsync` tests end before it. Reverting it to the physical AppId keeps every default test green, while the gateway would reject every SDK assertion. A hermetic test needs the receiver-environment assignment split out of the live probe path.
+
+## Deferred from: code review of spec-2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci.md (2026-11-15)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci.md`
+  summary: Restore Epic 2 constraints dropped by the 2.13 rewrite of `epic-2-context.md` (medium).
+  evidence: Commit f55a641f rewrote the compiled epic context. It no longer carries the hold rules (1,800 s default; whole seconds 1–14,400, unclamped; absolute UTC expiry), candidate policy v1 binding to the exact head/base pair, failure that names supported contract versions, Keycloak 26.6.4 startup realm import with no admin user or API, launch-supplied trust, the cross-repository merge/release/pin completion rule, or the Folders 10.1 and enrollment-runbook boundaries. Stories 2.10 and 2.14 still read this file. Regenerate it, or restore those lines from epics.md and the architecture.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci.md`
+  summary: Four historical companion branches remain on origin and can still restore obsolete pins if merged (medium, owner decision).
+  evidence: The branches are origin/fix/tuple-legacy-{ddb1c0b1,d386e360}-20261115 and origin/fix/tuple-pre-extension-{ddb1c0b1,d386e360}-20261115 (f0336579, 55ddbc6e, da6b34e7, cff26b72). They predate f55a641f, and 2.13 only required removing local qualification/* branches, so this is not a violation. They are still the merge hazard the story targets. Deleting them is an irreversible remote operation, so record their targets first. Archived qualification and broker tags must stay untouched.
