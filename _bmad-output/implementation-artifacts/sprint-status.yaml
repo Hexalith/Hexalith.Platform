@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-14
+last_updated: 2026-11-15
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -98,7 +98,7 @@ development_status:
   # 2026-11-13: source implementation and three-layer review complete; final targeted/live checks pass.
   #   Full Folders runtime suites remain blocked by unchanged FrontComposer CA2263; no 12.2/lifecycle qualification claimed.
   # 2026-11-13: code review pass 2 left 16 patches as action items, deferred 1, rejected 19 (including launcher-owned cleanup).
-  2-12-provision-a-run-owned-workload-binding-authority-for-dispos: in-progress
+  2-12-provision-a-run-owned-workload-binding-authority-for-dispos: review
   epic-2-retrospective: optional
 
   epic-3: in-progress

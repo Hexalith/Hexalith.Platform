@@ -73,6 +73,8 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     [InlineData("audience")]
     [InlineData("physical-source-audience")]
     [InlineData("physical-bootstrap-audience")]
+    [InlineData("duplicate-tenants-query")]
+    [InlineData("duplicate-global-administrators-query")]
     public void ChangedInventoryRefuses(string fault)
     {
         IDistributedApplicationBuilder builder = Builder();
@@ -90,6 +92,14 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         if (fault == "audience") Probes("eventstore")[0]!["audience"] = "folders";
         if (fault == "storage-tenant") Probes("eventstore")[9]!["bindings"]!["eventstore:bound-tenant"] = "selected-run-tenant";
         if (fault == "global-administrators-storage-tenant") Probes("eventstore")[10]!["bindings"]!["eventstore:bound-tenant"] = "selected-run-tenant";
+        if (fault.StartsWith("duplicate-", StringComparison.Ordinal))
+        {
+            // Each Tenants-domain query permission is exact: a second copy is not an allowed extra grant.
+            string domain = fault == "duplicate-tenants-query" ? "tenants" : "global-administrators";
+            JsonNode query = Probes("eventstore").Single(probe => probe!["operation"]!.GetValue<string>() == "domain-service:query"
+                && probe["bindings"]!["eventstore:bound-domain"]?.GetValue<string>() == domain)!;
+            Probes("eventstore").Add(query.DeepClone());
+        }
         using JsonDocument document = JsonDocument.Parse(inventory.ToJsonString());
         Should.Throw<InvalidOperationException>(() => PlatformWorkloadEnrollmentInventory.Validate(PlatformWorkloadEnrollmentInventory.Cohort(builder),
             [.. document.RootElement.GetProperty("clients").EnumerateArray()], fault == "selected-tenant" ? "other" : "selected-run-tenant"));
@@ -184,10 +194,14 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         finally { Directory.Delete(directory, recursive: true); }
     }
 
-    /// <summary>Producer artifacts that differ from the receipt, the final cohort or the private run directory refuse before activation.</summary>
-    /// <param name="fault">The isolated trust or producer fault.</param>
-    /// <param name="code">The named refusal.</param>
+    /// <summary>Producer artifacts that differ from the receipt, the final cohort or the private run directory refuse before activation;
+    /// exact artifacts activate, and cancellation after publication releases the producer.</summary>
+    /// <param name="fault">The isolated trust or producer fault, or a successful or cancelled adoption.</param>
+    /// <param name="code">The named refusal, or null for successful adoption.</param>
     [Theory]
+    [InlineData("none", null)]
+    [InlineData("host-trust-merged", null)]
+    [InlineData("cancellation", "cancelled")]
     [InlineData("trust-digest", "missing-prelaunch-trust")]
     [InlineData("host-trust", "host-trust-must-merge-launch-trust")]
     [InlineData("result", "foreign-result-or-changed-cohort")]
@@ -197,7 +211,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     [InlineData("probes", "changed-cohort-or-tenant")]
     [InlineData("secret", "foreign-secret-reference")]
     [InlineData("final-cohort", "changed-final-cohort")]
-    public async Task ForeignProducerArtifactsRefuseBeforeActivation(string fault, string code)
+    public async Task ForeignProducerArtifactsRefuseBeforeActivation(string fault, string? code)
     {
         string directory = Path.Combine(Path.GetTempPath(), "run-owned-producer-control-" + Path.GetRandomFileName());
         Directory.CreateDirectory(directory);
@@ -227,14 +241,48 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
             IDistributedApplicationBuilder builder = Builder();
             using CancellationTokenSource limit = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
             limit.CancelAfter(TimeSpan.FromSeconds(30));
-            Task<PlatformRunOwnedWorkloadEnrollment?> adoption = PlatformRunOwnedWorkloadEnrollment.AdoptAsync(builder, "selected-run-tenant", limit.Token,
-                fault == "host-trust" ? Path.Combine(directory, "missing-host-trust.pem") : null);
-            string requestPath = Path.Combine(directory, "request.json");
+            using CancellationTokenSource adoptionCancellation = CancellationTokenSource.CreateLinkedTokenSource(limit.Token);
+            string? hostTrustFile = fault == "host-trust" ? Path.Combine(directory, "missing-host-trust.pem")
+                : fault == "host-trust-merged" ? Path.Combine(directory, "host-trust.pem") : null;
+            if (fault == "host-trust-merged")
+                await WritePrivateAsync(hostTrustFile!, [.. trust, .. "-----BEGIN CERTIFICATE-----\nprovider-control\n-----END CERTIFICATE-----\n"u8.ToArray()]);
+            Task<PlatformRunOwnedWorkloadEnrollment?> adoption = PlatformRunOwnedWorkloadEnrollment.AdoptAsync(builder, "selected-run-tenant", adoptionCancellation.Token,
+                hostTrustFile);
+            string requestPath = Path.Combine(directory, "request.json"), releasePath = Path.Combine(directory, "release.json");
+            string manifestPath = Path.Combine(directory, "manifest.json");
+            byte[] manifest = [];
+            async Task AcknowledgeReleaseAsync(Task pending)
+            {
+                // Act as the launcher: accept only this run's release, then remove the private material.
+                while (!File.Exists(releasePath) && !pending.IsCompleted) await Task.Delay(10, limit.Token);
+                File.Exists(releasePath).ShouldBeTrue("A released adopter publishes its owned release.");
+                using (JsonDocument release = JsonDocument.Parse(await File.ReadAllBytesAsync(releasePath, limit.Token)))
+                {
+                    release.RootElement.GetProperty("runId").GetString().ShouldBe(runId);
+                    release.RootElement.GetProperty("capability").GetString().ShouldBe(capability);
+                }
+                Directory.Delete(directory, recursive: true);
+            }
             if (fault is not ("trust-digest" or "host-trust"))
             {
                 // Act as the launcher: answer the published request with one faulty producer artifact.
                 while (!File.Exists(requestPath) && !adoption.IsCompleted) await Task.Delay(10, limit.Token);
-                JsonObject request = JsonNode.Parse(await File.ReadAllBytesAsync(requestPath, limit.Token))!.AsObject();
+                byte[] requestBytes = await File.ReadAllBytesAsync(requestPath, limit.Token);
+                using (JsonDocument raw = JsonDocument.Parse(requestBytes))
+                {
+                    // The launcher digests the exact published inventory value, never a re-encoding.
+                    Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(raw.RootElement.GetProperty("inventory").GetRawText())))
+                        .ShouldBe(raw.RootElement.GetProperty("inventorySha256").GetString());
+                }
+                JsonObject request = JsonNode.Parse(requestBytes)!.AsObject();
+                if (fault == "cancellation")
+                {
+                    adoptionCancellation.Cancel();
+                    await AcknowledgeReleaseAsync(adoption);
+                    await Should.ThrowAsync<OperationCanceledException>(() => adoption);
+                    builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBeNull();
+                    return;
+                }
                 string secretFile = Path.Combine(directory, "client-control.secret");
                 await WritePrivateAsync(secretFile, "control-secret"u8.ToArray());
                 var clients = new JsonArray();
@@ -253,8 +301,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
                     ["notBefore"] = deadline - 60, ["expiresAt"] = deadline, ["signingKeyId"] = "control", ["signingPublicKeySha256"] = new string('C', 64),
                     ["receivers"] = request["inventory"]!["receivers"]!.DeepClone(), ["clients"] = clients,
                 };
-                byte[] manifest = System.Text.Encoding.UTF8.GetBytes(manifestDocument.ToJsonString());
-                string manifestPath = Path.Combine(directory, "manifest.json");
+                manifest = System.Text.Encoding.UTF8.GetBytes(manifestDocument.ToJsonString());
                 await WritePrivateAsync(manifestPath, manifest);
                 if (fault == "final-cohort")
                     builder.AddProject("folders-workers-late", Path.Combine(PlatformTestRepository.Root, "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj"))
@@ -265,10 +312,21 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
                     manifestSha256 = fault == "manifest-digest" ? new string('0', 64) : Convert.ToHexString(SHA256.HashData(manifest)),
                 }));
                 // A refused adopter releases its lease; acknowledge it as the launcher does, by removing private material.
-                string releasePath = Path.Combine(directory, "release.json");
-                while (!File.Exists(releasePath) && !adoption.IsCompleted) await Task.Delay(10, limit.Token);
-                File.Exists(releasePath).ShouldBeTrue("A refused adopter publishes its owned release.");
-                Directory.Delete(directory, recursive: true);
+                if (code is not null) await AcknowledgeReleaseAsync(adoption);
+            }
+            if (code is null)
+            {
+                PlatformRunOwnedWorkloadEnrollment? lease = await adoption;
+                lease.ShouldNotBeNull();
+                builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBe(manifestPath);
+                builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestSha256"].ShouldBe(Convert.ToHexString(SHA256.HashData(manifest)));
+                foreach (ProjectResource resource in PlatformWorkloadEnrollmentInventory.Cohort(builder))
+                    (await EnvironmentAsync(builder, resource))["SSL_CERT_FILE"].ShouldBe(hostTrustFile ?? trustFile);
+                File.Exists(releasePath).ShouldBeFalse("A successful adoption keeps its producer until disposal.");
+                Task cleanup = lease.DisposeAsync().AsTask();
+                await AcknowledgeReleaseAsync(cleanup);
+                await cleanup.WaitAsync(TimeSpan.FromSeconds(5), limit.Token);
+                return;
             }
             (await Should.ThrowAsync<InvalidOperationException>(() => adoption)).Message.ShouldContain(code);
             builder.Configuration[PlatformWorkloadEnrollment.ConfigurationPrefix + "ManifestPath"].ShouldBeNull();

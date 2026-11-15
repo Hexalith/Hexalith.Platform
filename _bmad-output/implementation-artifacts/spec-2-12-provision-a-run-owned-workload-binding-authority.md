@@ -2,7 +2,7 @@
 title: '2.12 Provision a run-owned workload-binding authority'
 type: 'feature'
 created: '2026-11-13'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '375231e1552c98a4238482c67b6e69d92ea43d1a'
@@ -60,6 +60,7 @@ Aliases: C = `src/Hexalith.Platform.Composition`; K = `infrastructure/keycloak-w
 - [x] `K/run_owned.py`, `K/run_owned_component.py`, `K/test_run_owned.py`, `A/OperationalProviderFixture.cs`: apply G21–G25 ownership, immutable named-context, cleanup-diagnostic and PEM-separator corrections; preserve child Docker configuration and the replica identity repair.
 - [x] `K/run_owned.py`, `K/test_run_owned.py`: apply G26–G30 provider snapshot, replacement-directory preservation, absolute metadata deadline, repeatable named-context cleanup and child-allocation cancellation corrections; verify all five red-to-green controls.
 - [x] `C/Hexalith.Platform.Composition.csproj`, `T/Hexalith.Platform.Composition.Tests.csproj`: rerun fresh Debug/source builds after the existing catalog owners resolve inherited EventStore `4.2.0` versus authoritative `5.0.0`. Existing test-assembly execution does not close this build gate.
+  - 2026-11-15: this gate passed after the latest-package migration, then regressed at HEAD through the external Builds `v6.0.3` change `58e1a5f4`. It is deferred to the Builds catalog owner by user decision. See "Final verification — 2026-11-15".
 
 **Acceptance Criteria:**
 
@@ -87,6 +88,9 @@ Platform Debug/source validation required temporary net11 props under /tmp. Fold
 - [x] `references/Hexalith.Builds/Props/Directory.Packages.props`, `Directory.Packages.props`, and affected `.csproj` consumers: adopt latest stable published Hexalith dependencies through the owning central catalog and appropriate package-reference configuration. Resolve old SDK4.2/OpenAPI2 selection conflicts for the new current package build without falsifying pinned release metadata, rewriting historical evidence/fixtures or disabling catalog validation. User authorization above permits dependency-owner changes where necessary. Preserve existing in-progress enrollment work and concurrent Epic 4 artifacts.
 - [x] `src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj`, `tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj`, and affected consumer sources: make the selected published package set compile, adding compatibility changes only when required by actual APIs. Verify consumed versions in restored assets, keep explicit historical cohort gates honest, and retain exact build/test failures if migration needs additional unpublished producer work.
 - [x] `references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests` and Platform enrollment tests: rerun affected enrollment tests against fresh package builds, including explicit real consumer/fresh-host/cancellation verification where buildable. Keep package-mode evidence distinct from the two original source-mode tasks and strict acceptance; retain sanitized commands, version observations and cleanup evidence under `evidence/2-12/`.
+- [x] Final verification of the committed current bytes (2026-11-15 resume). The checked tasks above rest on runs that predate the last mechanical net11 output-path edits, the added `SafeCopyIdTests`, and later concurrent commits (Builds now `v6.0.3`, Folders `c01f3833`). The interrupted `folders-current-framework-conformance` run is not a pass. Rerun at current HEAD and bind results to canonical revisions and final assembly hashes in a new `evidence/2-12/final-verification-20261115/`: fresh Debug/source and Debug/package builds of `C`, `T` and `A`; `T` enrollment classes (default plus both explicit consumer/fresh-host and cancellation lanes); affected `A` enrollment classes in both modes; Folders UI regressions (`SafeCopyIdTests`, `CorrelationCopyButtonTests`, `UserContextAccessorRegistrationTests`); the Folders Contracts deployment/OpenApi conformance classes changed for net11 paths; `K` `python3 -B -m unittest test_run_owned` and `verify_component.py --run-owned` (with `--platform-assembly` lanes); and an independent zero-leftover observation. Fix defects in story-owned files. A failure caused by files outside this story gets its exact diagnostics retained and reported, not an edit. Environment: build with `-nodeReuse:false`; `pwsh` is in `~/.dotnet/tools` (add it to `PATH`); run xUnit test DLLs directly with `dotnet exec`, because the slnx `dotnet test` selects zero tests and combining `-class` with `-method` ANDs to zero; never count a zero-test run.
+  - 2026-11-15 result: executed and bound in [final verification](evidence/2-12/final-verification-20261115/verification.json). Every listed check passes except the canonical Platform `C`/`T` Debug/source builds, which fail outside story-owned files (see "Final verification — 2026-11-15" below). No story-owned defect was found.
+  - 2026-11-15 user decision: defer the default Debug/source Platform build gate to the Builds catalog owner (new deferred-work entry, superseding D5) and continue to review. The task is closed on the passing package-mode results plus the separately labeled explicit-SDK-5.1 source results. It does not claim that the default Platform Debug/source build passes.
 
 ## Review Triage Log
 
@@ -201,6 +205,91 @@ Final verification passes 23 provider tests, all 37 Python tests, 19 live RSA pr
 Fresh Composition and Composition.Tests builds still fail in the unchanged Builds catalog gate: inherited EventStore 4.2.0 conflicts with authoritative 5.0.0. The direct catalog command confirms that diagnostic. The Folders Debug/source build still fails unchanged FrontComposer CA2263 at SchemaFingerprintContracts.cs:71. The two validation tasks above remain open; affected Folders runtime suites and strict acceptance remain unexecuted. Previously deferred trust-composition and delayed-daemon claims remain open.
 
 The rendered bmad-build review step requires “if verification fails and the failure cannot be fixed, HALT and escalate to the human.” Those dependency-owner build gates are outside these enrollment corrections, so this continuation halts with status in-review. It makes no completion, Platform lifecycle qualification or Folders 12.2 claim. Changes remain local and unstaged; no commit, push, submodule pointer advance, or dependency/framework/release/CI change occurred.
+
+### Final-verification review — 2026-11-15
+
+Three layers reported before triage: B = blind, E = edge-case, V = verification-gap (VO = its other findings). Scope: Platform enrollment sources `375231e1..0cf01331`, Folders enrollment sources `583d3d49..c01f3833` and the Folders latest-package migration `938c6ad7..c01f3833`. Each report is recorded individually before grouping. Rows marked carried match a logged row: same location and claim, with the code unchanged.
+
+| Finding | Verdict | Route | Verified evidence |
+| --- | --- | --- | --- |
+| B1 | medium | patch G31 | Folders `Directory.Build.props` targets `net11.0`, but `ScaffoldContractTests.cs:324` still asserts `net10.0`, so it fails in `ci.yml`. Eight current gate scripts (`run-adr-runbook-docs`, `run-consumer-docs`, `run-production-observability`, `run-provider-error-docs`, `run-dapr-policy-conformance`, `run-operations-audit-docs`, `run-scheduled-policy-conformance`, `run-nightly-drift`) still resolve `bin/<cfg>/net10.0` and are wired into the contract-spine, nightly-drift and policy-conformance workflows. `docs/contract/contract-spine-ci-gates.md:13` documents the old path. No hash binds these files. The `10.0-alpine` fallback in `Directory.Build.targets` is harmless and is not part of the patch. |
+| B2 | low | reject | Hard-coded `net11.0` fixture paths are a maintenance preference. Deriving them from the running assembly adds code for a failure that is loud. |
+| B3 | low | carried reject | Carried: pass-2 "dead launcher" and post-publication B4/E10. SIGKILL is uncatchable and container self-expiry would be a new mechanism. The raw exception when the launcher is dead before adoption is the carried B14/E16 case. |
+| B4 | low | carried reject | Carried post-publication B5: `kc.sh` enforces the exact version, and retagging needs daemon access. |
+| B5 | low | carried reject | Carried post-publication B3/E7: a Keycloak exit during readiness ends at the bridge timeout or lease, with cleanup. |
+| B6 | low | carried reject | Carried post-publication B2/E3: the `rm` versus `--rm` race. |
+| B7 | low | carried reject | Carried post-publication "dispose masking": needs exception aggregation. |
+| B8 | low | patch G33 | The doc lists two cleanup failure codes, but `stop_child` also refuses with `owned-child-tree-cleanup-incomplete` (`run_owned.py:574`), which reaches stderr as a constant refusal. Document it. Losing that code to a double cleanup failure is the carried A5 reject. |
+| B9 | low | reject | Cancellation exits 1 with the generic refusal. The user who pressed Ctrl-C knows the cause, and a distinct exit path would add a branch. |
+| B10 | low | carried reject | Carried post-publication B12/E12 and the pass-2 empty `x5c` reject: malformed inputs only. |
+| B11 | low | carried reject | Carried post-publication E18: the authority is already serving when the untrusted-TLS control runs. |
+| B12 | false | carried reject / carried defer D6 | `VerifyFreshHostAsync` selects the method currently executing, so this is the carried resumed-review B3 false. The ordinary `verify_component.py` exit-code-only path is the carried D6 deferral. |
+| B13 | medium | defer | The `eventstore` receiver audience (`PlatformWorkloadEnrollment.cs:133`, from `20a7d635`) is asserted only in explicit live lanes, because it is assigned after live TLS metadata and token probes. Same root as V5. |
+| B14 | false | reject | `system` and exactly-once only refuse earlier a persistent manifest whose Tenants grant cannot match the SDK's normalized `system` request at runtime. No working manifest is broken. |
+| B15 | false | carried reject | Carried continuation B8: it asks for a broader SDK path test without showing a failing SDK path. |
+| B16 | low | reject | The inventory is produced by `SerializeToElement` and re-written by the same default encoder, so its bytes are stable. Current Python/C# compared values are ASCII identifiers or hex that need no escaping, and a divergence would refuse loudly. |
+| B17 | false | carried reject | Carried post-publication B17/E21: the docs list sudo/setpriv as component prerequisites. |
+| B18 | low | carried reject | Carried post-publication B18/E20. |
+| B19 | low | reject | The copy buttons have no success indicator either. The catch replaces a circuit crash with a no-op, and a failure status would be new UI state. |
+| B20 | low | patch G34 | The doc says to supply the Folders opt-in, but its command omits `HEXALITH_FOLDERS_RUN_ASPIRE_INTEGRATION=true`. Direct doc correction. |
+| E1 | low | carried reject | Carried post-publication B3/E7. |
+| E2 | low | reject | `http.client.HTTPException` from a local Quarkus readiness response is not an everyday outcome, and catching it adds a guard. |
+| E3 | low | carried reject | Carried post-publication B12/E12. |
+| E4 | low | carried reject | Carried post-publication B11/E13: grant IDs are unique by construction. |
+| E5 | low | carried reject | Carried post-publication E6 and "dispose masking". |
+| E6 | maybe-false (medium, unverified) | carried defer D4 | Carried: the delayed-daemon creation race. |
+| E7 | low | carried reject | Carried post-publication B2/E3. |
+| E8 | medium | patch G32 | `command()` (`run_owned.py:45`) starts Docker and OpenSSL in the launcher's process group, so a terminal Ctrl-C during provisioning or cleanup kills them while the launcher ignores later signals. A parent-side reproduction with a handler that ignores SIGINT showed the group signal killing the subprocess (`returncode -2`); `start_new_session=True` kept it running (`0`). This contradicts the documented "subsequent signals do not interrupt it". |
+| E9 | low | reject | PID recycling of a reaped session leader within one lease is improbable; signalled identities already require a matching start time. |
+| E10 | maybe-false (medium, unverified) | carried defer E9 | Carried: the five-second SIGTERM grace. |
+| E11 | low | carried reject | Carried post-publication E18. |
+| E12 | low | carried reject | Carried post-publication B18/E20. |
+| E13 | low | reject | Component-only non-1000 control on the developer host; a timeout fails loudly. |
+| E14 | low | carried reject | Carried post-publication E19. |
+| E15 | low | reject | Harness-only bridge-cancellation helper; a failure is already loud. |
+| E16 | medium | carried defer D6 | Carried: ordinary component exit-code proof. |
+| E17 | low | carried reject | Carried post-publication "dispose masking". |
+| E18 | low | carried reject | Carried post-publication B15/E17: same-user substitution. |
+| E19 | low | carried reject | Carried post-publication E22 and the pass-2 empty inherited trust reject. |
+| E20 | low | reject | Story 12.2 code (`f242820d`), not this story's. The lease is 900 s, and an extra validity guard is new complexity. |
+| E21 | low | reject | JS interop cancellation was already unhandled before this change, and clipboard writes resolve promptly. |
+| E22 | low | reject | Linux-only bridge tests on Linux-only CI and development hosts; skip guards are extra. |
+| E23 | low | carried reject | Carried post-publication A4. |
+| E24 | low | carried reject | Carried pass-2 "dead launcher" and post-publication B4/E10. |
+| E25 | maybe-false (low) | reject | The removed `retryBudget` guard is story 12.2's deliberate change (`f242820d`, with a documented budget comment). Settling it means checking 12.2's strict-lane request flow, and the most it could be is low. |
+| V1 | medium | patch G35 | Pre-verified: no default-run test reaches a successful `AdoptAsync`, so dropping host trust (`hostTrustFile ?? trustFile`) or the manifest configuration keeps every default test green. |
+| V2 | medium | patch G36 | Pre-verified: cancellation-to-release is exercised only in the explicit lane. Narrowing the catch keeps default tests green. |
+| V3 | medium | patch G37 | Pre-verified: the C# simulated launcher echoes `inventorySha256` without recomputing it over the inventory value bytes in `request.json`. |
+| V4 | medium | patch G38 | Pre-verified: no case duplicates a Tenants-domain query, so reverting `Count(...) != 1` to `Any` keeps tests green. |
+| V5 | medium | defer | Same as B13: the gateway receiver audience is pinned only by explicit live tests. |
+| V6 | false | carried reject | Carried pass-2, continuation and resumed V1 rejects: default-CI registration is not the story contract. |
+| VO1 | medium | patch G31 | Same `ScaffoldContractTests` `net10.0` assertion as B1. |
+| VO2 | medium | patch G31 | Same eight `net10.0` gate scripts as B1. |
+
+Eight internal patch groups (G31–G38) correct demonstrated defects with no public surface or frozen-intent change. One new deferral covers the receiver-audience gap. Every other finding is carried or rejected.
+
+#### Patch application and re-verification, 2026-11-15
+
+The step-03 implementation agent applied all eight groups. Changes:
+
+- **G31:** the ten listed `net10.0` occurrences became `net11.0`: `ScaffoldContractTests.cs:324`, the eight gate scripts and `contract-spine-ci-gates.md:13`. `Hexalith.Folders.Client.Generation` (explicitly `net10.0`), the alpine fallback and historical evidence are unchanged.
+- **G32:** `command()` starts its children with `start_new_session=True`. `test_command_children_run_outside_the_launcher_session` fails without the change and passes with it.
+- **G33, G34:** the doc lists `owned-child-tree-cleanup-incomplete`, and the launcher example sets the Folders opt-in.
+- **G35–G38:** the simulated launcher now covers two successful adoptions (with and without merged host trust), a default-run cancellation that releases the producer, a recomputed inventory digest, and two duplicate Tenants-domain query refusals.
+
+The parent read each new assertion against its finding. Dropping the host-trust fallback or the manifest configuration fails G35, narrowing the catch fails G36's release assertion, and reverting to `Any` fails G38. Only G32 was mutation-run.
+
+Parent re-verification on the patched tree, at Platform `0cf01331`, Builds `v6.0.3` and Folders `c01f3833` plus the uncommitted patches:
+
+- `K`: Maven 23 pass. `test_run_owned` 45/45. `verify_component.py --run-owned`: 19 fresh RSA probes, five real-container terminal controls and the UID 1001 caller.
+- `T`, Debug/package: 0 warnings, 0 errors. The enrollment class has 42 cases: 41 pass and one explicit test is not run. Both explicit lanes pass: consumer/fresh-host `provisioned=true` and cancellation `adoptionCancelled=true`.
+- `A`, Debug/source: 0 warnings, 0 errors. The enrollment classes pass 8 with six explicit tests not run, and the run-owned live lane passes 1/1.
+- Folders `ScaffoldContractTests`: 16/16.
+- Nine script-referencing Contracts conformance classes: 115/115.
+- `run-consumer-docs-gates.ps1` and `run-scheduled-policy-conformance-gates.ps1` (static-only) resolve their `net11.0` runners and pass 22/22 and 8/8.
+- Zero labeled containers and zero private run directories remain.
+
+[Verification](evidence/2-12/review-patches-20261115/verification.json), [summary](evidence/2-12/review-patches-20261115/summary.txt) and the retained logs and xUnit results record the exact commands, source and assembly hashes, and limitations. The default Platform Debug/source build stays deferred to the Builds catalog owner. No commit, push or gitlink change was made.
 
 ## Design Notes
 
@@ -394,3 +483,40 @@ Fresh Debug/source validation remains blocked. Composition fails the unchanged B
 [Exact commands, source hashes, cleanup observations and limitations](evidence/2-12/resume-verification-20261113T1716Z/verification.json) and [retained outputs](evidence/2-12/resume-verification-20261113T1716Z/outputs.json) include the red-to-green evidence and an initial incorrect root-directory Python invocation whose subprocess imports failed. The complete documented provider-directory invocation passed without code or budget changes. Dependency, framework, catalog, release and CI inputs remain unchanged. Concurrent Epic 4 artifacts are preserved; the implementation handoff performed no staging, commit, remote operation or submodule pointer update.
 
 Parent inspection confirms the recorded source hashes and executed component matrix evidence; [the parent audit](evidence/2-12/resume-verification-20261113T1716Z/parent-audit.json) leaves both required build/runtime tasks open. Temporary build scripts and framework-normalization inputs are retained with the verification record. The resolved color-output entry is marked resolved in deferred work. Only this story's changes and evidence are staged locally. The workflow stops at implementation verification: “finish the missing work before proceeding” prevents advancing to review while these dependency-owner gates fail. No commit, remote operation or submodule pointer change occurred.
+
+### Final verification — 2026-11-15
+
+This pass ran at Platform `0cf01331`, Builds `99f7c860` (`v6.0.3`) and Folders `c01f3833`. Every submodule checkout matched its gitlink. Story-owned source hashes and revisions were identical before and after the run. Builds used `-c Debug -m:1 -nodeReuse:false` with `pwsh` on `PATH`. Tests ran from the `net11.0` DLLs through `dotnet exec`, and no zero-test run was counted. [Verification](evidence/2-12/final-verification-20261115/verification.json) holds the exact commands, final assembly hashes, restored package versions, per-class counts and the leftover observation. [Outputs](evidence/2-12/final-verification-20261115/outputs.json) holds the logs, including failures.
+
+Passing, each from a fresh build at current HEAD:
+
+- `K`:
+  - `mvn -B -ntp package`: 23 provider tests pass. The JAR digest is `2de2c806…`.
+  - `python3 -B -m unittest test_run_owned`: 44/44 pass.
+  - `verify_component.py --run-owned`: 19 fresh RSA probes, five real-container terminal controls and the UID 1001 caller all pass.
+- `C`, `T` and `A`, Debug/package: all three builds report 0 warnings and 0 errors.
+  - The `T` enrollment class has 37 cases: 36 pass and one explicit test is not run by the default lane.
+  - The two explicit `T` lanes both execute. The consumer/fresh-host lane reports `provisioned=true`, and the cancellation lane reports `adoptionCancelled=true`.
+- `A`, Debug/source and Debug/package: both builds report 0 warnings and 0 errors. In each mode:
+  - The enrollment classes have 14 cases: 8 pass and six explicit tests are not run by the default lane. The two live lanes below run those six.
+  - The ordinary live consumer lane passes 5/5.
+  - The run-owned live consumer lane passes 1/1.
+- Folders UI regressions pass 13/13 in both modes: `SafeCopyIdTests` 2, `CorrelationCopyButtonTests` 6, `UserContextAccessorRegistrationTests` 5.
+- The Contracts deployment/OpenApi conformance classes changed for net11 paths pass 303/303 in both modes. This count includes `PackedContractsClosureTests`.
+- Independent leftover observation: Docker events show 24 authority, component and unrelated-control containers created during the window, and all 24 were destroyed. No labeled container and no private run directory remains.
+
+Retained failures:
+
+- **Platform `C`/`T` Debug/source builds (blocks this task).** Fresh builds fail with the D5 class of error:
+  - `C` fails because Builds Tooling `GeneratePlatformVersionCatalog` reports: "Catalog field Hexalith.EventStore.Aspire has inconsistent build selection '4.2.0'; authoritative catalog selects '5.1.0'."
+  - `T` fails restore with `NU1109`: `Microsoft.AspNetCore.OpenApi` 11.0.0, required by source Tenants and EventStore.Gateway, versus the central 10.0.15.
+  - Cause: Builds `58e1a5f4` ("restore the qualified Platform package view", in `v6.0.3`) put both projects back in the finite `HexalithPlatformSdk42CatalogView`. Platform `Directory.Build.targets` then propagates the resulting `HexalithEventStoreVersion=4.2.0` to every source project reference, including Tooling.
+  - Neither file belongs to this story, so the diagnostics are retained and nothing was edited.
+  - At current HEAD, this regresses the checked source-build task above.
+  - A supplementary run with the explicit caller selection `-p:HexalithEventStoreVersion=5.1.0` passes: both builds report 0 warnings and 0 errors, 36 default cases pass, and both explicit lanes pass. That run does not close this gate.
+- **Ordinary Folders live lane, source mode, attempt 1.** It failed at the component `docker run` within 0.54 s. Docker shows its container created and destroyed within 0.1 s. This matches the R1 class of manual host-port refusal in the pre-existing ordinary path, but the cause is unverified because the harness withholds the daemon reason. Attempt 2 on the same assembly passed unchanged.
+- **Stale-assembly runs (not counted).** After the failed source builds, the source-mode `T` default and live runs executed the 2026-11-13 assemblies. The current launcher correctly refused the stale inventory with `exact-permission-inventory`.
+
+Package mode for Platform resolves the finite SDK4.2 view chosen by the catalog owner: EventStore 4.2.0, Memories 3.0.27 and Tenants 7.0.7. Folders resolves EventStore 5.1.0, Memories 4.0.0 and Tenants 8.0.0. This pass makes no claim of strict Folders acceptance, Folders 12.2 completion, or Platform lifecycle or SDK qualification. No commit, push or submodule-pointer change was made.
+
+Parent audit: the parent reproduced the Composition Debug/source catalog failure independently at `0cf01331` and corrected the default-lane counts against the xUnit XML (`T` 36 pass and 1 explicit test not run; `A` 8 pass and 6 explicit tests not run, which the live lanes run). By user decision on 2026-11-15, the default Debug/source gate is deferred to the Builds catalog owner and the story proceeds to review.

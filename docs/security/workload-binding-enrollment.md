@@ -194,6 +194,7 @@ Launch a built test assembly directly so the test process retains the launcher's
 recorded child identity. Supply the existing Folders integration opt-in as usual:
 
 ```bash
+HEXALITH_FOLDERS_RUN_ASPIRE_INTEGRATION=true \
 python3 -B infrastructure/keycloak-workload-binding/run_owned.py \
   --owner disposable-folders-acceptance --lifetime-seconds 900 -- \
   dotnet /absolute/path/to/Hexalith.Folders.AppHost.Tests.dll \
@@ -258,8 +259,8 @@ start another session. TERM, INT, HUP, QUIT and ABRT initiate cleanup; subsequen
 signals do not interrupt it. The bridge allows up to 30 seconds for cleanup
 acknowledgement after expiry without extending enrollment validity.
 The launcher reports cleanup failures as
-`owned-container-cleanup-incomplete` or `owned-private-material-cleanup-incomplete`
-and exits unsuccessfully. The component harness preserves these sanitized
+`owned-child-tree-cleanup-incomplete`, `owned-container-cleanup-incomplete` or
+`owned-private-material-cleanup-incomplete` and exits unsuccessfully. The component harness preserves these sanitized
 leftover records even when a captured test fails. A failed cleanup must be resolved before claiming a
 clean run. Evidence output is labeled `run-owned enrollment` and contains only
 counts, version/digests, control names and observed leftovers; retain no private

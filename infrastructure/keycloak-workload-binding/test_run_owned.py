@@ -327,6 +327,14 @@ class RunOwnedTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "permissions"):
             owned.command(sys.executable, "-c", "import sys; print('permission denied', file=sys.stderr); sys.exit(1)")
 
+    def test_command_children_run_outside_the_launcher_session(self):
+        # A terminal Ctrl-C reaches the launcher session only; owned Docker/OpenSSL commands keep running through cleanup.
+        child = owned.command(sys.executable, "-c", "import os; print(os.getsid(0), os.getpgid(0), os.getpid())")
+        session, group, pid = map(int, child.split())
+        self.assertNotEqual(os.getsid(0), session)
+        self.assertEqual(pid, session)
+        self.assertEqual(pid, group)
+
     def test_revision_requires_an_integer_one(self):
         for revision in (True, False, 1.0, "1", 2, None):
             with self.subTest(revision=repr(revision)):

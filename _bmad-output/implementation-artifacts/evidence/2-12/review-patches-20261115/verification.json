@@ -1,0 +1,52 @@
+{
+ "qualification": "run-owned enrollment",
+ "recordedBy": "parent re-verification after review patches G31-G38",
+ "recordedAt": "2026-11-15",
+ "repositories": {
+  "Platform": "0cf013313666ee9f83552be2ab4f220d223825f6",
+  "Builds": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+  "Folders": "c01f3833844164a7eb2e3af4016123dbb96f3737"
+ },
+ "workingTree": "uncommitted review patches on top of these revisions",
+ "sourceSha256": {
+  "infrastructure/keycloak-workload-binding/run_owned.py": "33b0a33b4d63237100eceff3ec4c4a2cdabb9f7742ef912258ed8e56143e1029",
+  "infrastructure/keycloak-workload-binding/test_run_owned.py": "dd1c8ba0d86d9e35934e7015fc4df199206b4eadf1fbd04a8e549a62bd144a16",
+  "infrastructure/keycloak-workload-binding/run_owned_component.py": "435591d4b76e6342050191e71bb5e8343ddedfe6e0b06496c9188cc0e090ae5c",
+  "infrastructure/keycloak-workload-binding/verify_component.py": "7bc6b97880d1d934f08dfdb471ebea3c208a7c86284860cd5e64c0c86f75ac46",
+  "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5",
+  "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "cc71a5f042ec163f64e3ba7bf5c34f29345b7e639d0ae125b03a934281370126",
+  "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39",
+  "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "96306a476f6d184e2fe379701c85b53e10bcc0bf70bc5eee521176a6b0bae233",
+  "docs/security/workload-binding-enrollment.md": "90091ebc8e58070d0db849eaad421575117193ada507f8b5f4b7bd703cddc5fd",
+  "references/Hexalith.Folders/tests/Hexalith.Folders.Testing.Tests/ScaffoldContractTests.cs": "c714672bf8ed29df352fd3fbef94899896944bfc95a417b6000ab2b6e3c250ae",
+  "references/Hexalith.Folders/docs/contract/contract-spine-ci-gates.md": "169d9500fb78f603d6d585978650032cd548331758da45f49598932778fb7b24"
+ },
+ "assemblySha256": {
+  "tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": "16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143",
+  "references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": "55f70f2e03869474eaa46f8faa3401aa6918f4951839f654ec9c8d8f926c9ad9",
+  "references/Hexalith.Folders/tests/Hexalith.Folders.Testing.Tests/bin/Debug/net11.0/Hexalith.Folders.Testing.Tests.dll": "c21aa3d3e34ddadf7e4345716a48320ba73106d54cfe19154ea2c01bd3d158d0",
+  "references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e"
+ },
+ "commands": "run.sh (exact sequence); per-step exit codes in summary.txt; logs/ and xunit/ hold outputs",
+ "results": {
+  "k-maven": "23 provider tests pass",
+  "k-unittest": "45/45",
+  "k-live-run-owned": "19 fresh RSA probes, 5 real-container terminal controls, UID 1001 caller",
+  "t-package-build": "0 warnings, 0 errors",
+  "t-package-enrollment-default": "42 cases: 41 pass, 1 explicit not run (run by the live lanes)",
+  "t-package-live-lanes": "consumer/fresh-host provisioned=true; cancellation adoptionCancelled=true",
+  "a-source-build": "0 warnings, 0 errors",
+  "a-source-enrollment-default": "14 cases: 8 pass, 6 explicit not run",
+  "a-source-live-run-owned": "1/1, provisioned=true",
+  "testing-scaffold": "16/16",
+  "contracts-script-conformance": "115/115 across nine script-referencing classes",
+  "script-consumer-docs": "runner resolved at net11.0; 22/22",
+  "script-scheduled-policy": "runner resolved at net11.0; 8/8 (static-only)",
+  "leftovers": "0 labeled containers, 0 private run directories"
+ },
+ "limitations": [
+  "Platform Composition/Composition.Tests default Debug/source build remains deferred to the Builds catalog owner (v6.0.3, 58e1a5f4); Platform C# ran in package mode.",
+  "Mutations for G35/G36/G38 were not executed; coverage was confirmed by reading the assertions. G32 was red-to-green checked by the implementation agent.",
+  "Strict Folders acceptance, Folders 12.2 completion and Platform lifecycle qualification remain unclaimed."
+ ]
+}

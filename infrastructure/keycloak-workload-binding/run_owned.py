@@ -42,7 +42,9 @@ def refuse(code):
 
 def command(*args, timeout=30, binary=False, environment=None):
     try:
-        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=True, env=environment)
+        # A separate session keeps terminal signals for the launcher; its cleanup must not lose Docker/OpenSSL mid-command.
+        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=True, env=environment,
+            start_new_session=True)
         return result.stdout if binary else result.stdout.decode().strip()
     except (subprocess.SubprocessError, OSError) as error:
         output = (getattr(error, "output", b"") or b"") + (getattr(error, "stderr", b"") or b"")

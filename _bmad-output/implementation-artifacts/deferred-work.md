@@ -2017,6 +2017,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: D3: Resolve unchanged FrontComposer CA2263 and execute the affected Folders runtime and strict acceptance suites.
   evidence: B9: full Debug/source build stops at SchemaFingerprintContracts.cs:71; changed enrollment sources compile separately, but runtime/strict acceptance remains unverified.
+  status: partially resolved (2026-11-15)
+  resolution: The build gate is cleared. Folders AppHost.Tests builds with 0 warnings and 0 errors in both Debug/source and Debug/package at Folders c01f3833. The affected enrollment classes pass in both modes: 8 default cases plus the ordinary 5/5 and run-owned 1/1 live lanes. Strict acceptance is still unexecuted. Evidence: evidence/2-12/final-verification-20261115/verification.json.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: D4: Verify the possible late Docker creation race after a client timeout (medium, unverified).
@@ -2025,9 +2027,11 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: Align the current Platform source build with the authoritative Builds SDK catalog before fresh enrollment validation.
   evidence: The resumed Composition and Composition.Tests Debug/source builds fail in Builds Tooling catalog generation; the direct write-platform-version-catalog command reports inherited EventStore 4.2.0 versus authoritative 5.0.0. Exact commands and retained diagnostics are in evidence/2-12/review-resume-20261113/verification.json and outputs.json. Existing test assembly execution does not close this fresh-build gate; no dependency or release selections changed in this continuation.
+  status: superseded (2026-11-15) by the Builds v6.0.3 entry below. The 2026-11-13 latest-package migration cleared this conflict, and Builds 58e1a5f4 reintroduced it as 4.2.0 versus 5.1.0.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: Reconcile the pre-existing Debug/source EventStore selection with the authoritative Builds catalog before closing fresh Platform build validation.
   evidence: Story 2.12 resumed review B4; fresh Composition and Composition.Tests builds fail catalog generation, and direct write-platform-version-catalog.ps1 reports inherited Hexalith.EventStore.Aspire 4.2.0 against authoritative 5.0.0. Existing assembly execution cannot close this gate.
+  status: superseded (2026-11-15) by the Builds v6.0.3 entry below. The 2026-11-13 latest-package migration cleared this conflict, and Builds 58e1a5f4 reintroduced it as 4.2.0 versus 5.1.0.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
   summary: Require exact executed-test evidence before ordinary component verification claims consumer live controls.
@@ -2061,3 +2065,12 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-17-rabbitmq-package-b-local-contribution.md`
   summary: The shared EventStore checkout carries local broker-record commits that are ahead of every remote, so a concurrent Platform /pushall can publish a submodule pointer that does not resolve.
   evidence: On 2026-11-14 another session's Platform commit 70a016a98c97c19656a4c279a93b88e255d41b07 reached origin/main with EventStore gitlink 3c3a8c70f, which was not pushed. The checkout is now at d869fb858c0c639824595dc61db382ec8b5ed79c, two commits ahead of origin/main. The fix needs an owner decision: either push the EventStore record commits before any Platform pointer to them, or keep the records on a local branch with the checkout parked at the published gitlink. Either changes shared submodule state outside this slice's diff.
+
+## Deferred from: final verification of spec-2-12-provision-a-run-owned-workload-binding-authority.md (2026-11-15)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Make Platform's default Debug/source build coherent again under Builds v6.0.3. Plain Debug builds of Composition and Composition.Tests fail. Owner: Builds catalog.
+  evidence: Builds 58e1a5f4 ("restore the qualified Platform package view", released in v6.0.3 on 2026-11-14) puts Hexalith.Platform.Composition and Composition.Tests in HexalithPlatformSdk42CatalogView (EventStore 4.2.0, OpenApi 10.0.15). Debug defaults to UseHexalithProjectReferences=true, and Platform Directory.Build.targets propagates HexalithEventStoreVersion=4.2.0 to every source reference. Builds Tooling GeneratePlatformVersionCatalog then fails with "Hexalith.EventStore.Aspire has inconsistent build selection '4.2.0'; authoritative catalog selects '5.1.0'". Composition.Tests restore fails NU1109, because source Tenants 8 and EventStore.Gateway require Microsoft.AspNetCore.OpenApi 11.0.0 against the central 10.0.15. The parent reproduced the Composition failure independently at Platform 0cf01331. Package mode passes. Debug/source with an explicit -p:HexalithEventStoreVersion=5.1.0 also passes: 0 warnings and 0 errors, 36 enrollment cases and both explicit lanes. A likely fix is to apply the Platform SDK 4.2 view only in package mode, which needs a Builds release and a Platform repin. The user chose on 2026-11-15 to defer this gate and continue 2.12 to review. Evidence: evidence/2-12/final-verification-20261115/verification.json (sourceGateBlocker).
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md`
+  summary: Pin the EventStore gateway receiver audience (`eventstore`) with a default-run test; today only explicit live lanes assert it.
+  evidence: 2026-11-15 final-verification review B13/V5. `PlatformWorkloadEnrollment.cs:133` (from 20a7d635) assigns `Authentication__WorkloadJwtBearer__Audience` = `eventstore` only after live TLS metadata and token probes succeed, so default-run `ConfigureAsync` tests end before it. Reverting it to the physical AppId keeps every default test green, while the gateway would reject every SDK assertion. A hermetic test needs the receiver-environment assignment split out of the live probe path.

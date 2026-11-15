@@ -1,0 +1,2320 @@
+{
+ "schema": "hexalith.run-owned-enrollment-final-verification/v1",
+ "qualification": "run-owned enrollment",
+ "recordedAt": "2026-11-15T00:13:44.960553+00:00",
+ "task": "spec-2-12 'Final verification of the committed current bytes (2026-11-15 resume)'",
+ "environment": {
+  "dotnetSdk": "11.0.100",
+  "pwsh": "7.6.2 via ~/.dotnet/tools on PATH",
+  "docker": "29.8.2 (Docker Desktop WSL2)",
+  "keycloakImage": "quay.io/keycloak/keycloak:26.6.4 sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4",
+  "buildFlags": "-c Debug -m:1 -nodeReuse:false -v:q",
+  "testRunner": "dotnet exec <net11.0 DLL> (xUnit v3 in-process runner); zero-test runs never counted"
+ },
+ "repositories": {
+  "Platform": {
+   "head": "0cf013313666ee9f83552be2ab4f220d223825f6",
+   "tags": [],
+   "trackedChanges": [
+    "M _bmad-output/implementation-artifacts/spec-2-12-provision-a-run-owned-workload-binding-authority.md"
+   ]
+  },
+  "Builds": {
+   "head": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
+   "tags": [
+    "v6.0.3"
+   ],
+   "trackedChanges": [],
+   "platformGitlink": "99f7c86072ca7b35e3fbbaee4606a559a847805a"
+  },
+  "Folders": {
+   "head": "c01f3833844164a7eb2e3af4016123dbb96f3737",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "c01f3833844164a7eb2e3af4016123dbb96f3737"
+  },
+  "EventStore": {
+   "head": "749d162538b321e80401a4b69a7f706ba656c9e0",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "749d162538b321e80401a4b69a7f706ba656c9e0"
+  },
+  "Tenants": {
+   "head": "d89f234c4f020373aaabe0e3699ecdb5097b1079",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "d89f234c4f020373aaabe0e3699ecdb5097b1079"
+  },
+  "FrontComposer": {
+   "head": "f07879851f0b2345f087eb8da50b78a7046f30d5",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "f07879851f0b2345f087eb8da50b78a7046f30d5"
+  },
+  "Memories": {
+   "head": "2c2e9b58990638ededf22e8e67ff5c12de75b434",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "2c2e9b58990638ededf22e8e67ff5c12de75b434"
+  },
+  "Commons": {
+   "head": "fbf4e94233821f6ca336af91a06feaaeb7a16855",
+   "tags": [
+    "v3.0.0"
+   ],
+   "trackedChanges": [],
+   "platformGitlink": "fbf4e94233821f6ca336af91a06feaaeb7a16855"
+  },
+  "Parties": {
+   "head": "785f8164d51579a191405a15a917232795f93449",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "785f8164d51579a191405a15a917232795f93449"
+  },
+  "McpCli": {
+   "head": "4ffb33e84fd12a2642deb19b3492ce67ae670cee",
+   "tags": [],
+   "trackedChanges": [],
+   "platformGitlink": "4ffb33e84fd12a2642deb19b3492ce67ae670cee"
+  }
+ },
+ "sourceSha256": {
+  "Platform": {
+   "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39",
+   "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "cc71a5f042ec163f64e3ba7bf5c34f29345b7e639d0ae125b03a934281370126",
+   "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5",
+   "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj": "eaca9740bec4daa5d275ecbce94024adb328cb01f352f590c46bdd2333181341",
+   "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "ef3d747b40236e5bb48c44c9b35435761079dc7fd4827fd20410af14b9275bb3",
+   "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj": "65ae08cddb3e9245f1f496a39667feac80444f851862c304962246579aaab794",
+   "infrastructure/keycloak-workload-binding/run_owned.py": "df6824607e75ff2cf004b7d58946d9e1643dfedf63c6ecc4d144324129265d2d",
+   "infrastructure/keycloak-workload-binding/run_owned_component.py": "435591d4b76e6342050191e71bb5e8343ddedfe6e0b06496c9188cc0e090ae5c",
+   "infrastructure/keycloak-workload-binding/test_run_owned.py": "af2af7914b5a3d2305e732b6acaa75ef53514ff5359947020cd2b50b481ec2d6",
+   "infrastructure/keycloak-workload-binding/verify_component.py": "7bc6b97880d1d934f08dfdb471ebea3c208a7c86284860cd5e64c0c86f75ac46",
+   "infrastructure/keycloak-workload-binding/target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+   "docs/security/workload-binding-enrollment.md": "b8bd0fdef261f69d1d81d2f6532e2a65eebc90ecd0c5c2b653db4cafef6d5e5c",
+   "Directory.Packages.props": "6ce2c6efcca3b4e4297db9e22bd262524d14d9a4801c8627bd41c247b8a0b56a",
+   "Directory.Build.targets": "3b5f138ed080e38afc0b901193accb52387aac90f06733644af029932c9efcd0"
+  },
+  "Folders": {
+   "src/Hexalith.Folders.AppHost/Hexalith.Folders.AppHost.csproj": "92351bc4871526751e78fd0864e9ab26599e361e8870f5424fb518be44b77b9b",
+   "tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs": "34f718ee2458e5e068def104e0a2de830be87b37804b313dfe31778686d5aaf6",
+   "tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+   "tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "367d1759a97e01a98cf16b8a10069d1e76fb63ed247c962c022feddade471a8a",
+   "tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs": "c74d57525dcb9ed951ac060cc53d2cb295307bb6157b097b26e25858b9c4c364",
+   "Directory.Build.props": "52eecf43508ec72c08411e08525c34dd2f57159c0bf1ce5ef1589791e7cce375",
+   "Directory.Build.targets": "197012a348c880d6d771f92ad2e5462d096be28e43589ed6d05eac6377904b72",
+   "src/Hexalith.Folders.UI/Components/CorrelationCopyButton.razor": "eaf3d21acf12c82b0d07e5eaf3087c9288d375c9a72eef5ef74fe929b0de7489",
+   "src/Hexalith.Folders.UI/Components/SafeCopyId.razor": "9c031300632f401b3e507da11dea5ea6eb4aa9312b6f3714435a5bddbee2d9ed",
+   "src/Hexalith.Folders.UI/Services/FoldersUserContextAccessor.cs": "3a047a1cdd23b4475d27fb35e3b6145bb371209c312eb7b70f6ff69cead96ed6",
+   "tests/Hexalith.Folders.UI.Tests/SafeCopyIdTests.cs": "639b49f20cd85fcfff9a896c69d99bff39577226e74a6665f397642bb499201c",
+   "tests/Hexalith.Folders.UI.Tests/CorrelationCopyButtonTests.cs": "21ae8277b4c27e31cf28a383485d9c6519c11d992b5f51ea3dd0f8c516786f1c",
+   "tests/Hexalith.Folders.UI.Tests/UserContextAccessorRegistrationTests.cs": "f7273e9df8159e23402558e8fc64779a7fce4a1ce45bbcf9647ae90e841bd803",
+   "tests/Hexalith.Folders.Contracts.Tests/Deployment/AccessibilityCiWorkflowConformanceTests.cs": "9e3ec77a51b7da58776692704f65ab7aa972c1cbe1d8f99ff42e1da4b68c852a",
+   "tests/Hexalith.Folders.Contracts.Tests/Deployment/ContractParityCiWorkflowConformanceTests.cs": "24face44766b67b3f5790493b2460282e771fab747acb8a99465a3242edfa28a",
+   "tests/Hexalith.Folders.Contracts.Tests/Deployment/E2eCiWorkflowConformanceTests.cs": "f4260e1e034f13ecba85ea02acfcb3826f535d559f4fcf402d1ba01c3e35ac89",
+   "tests/Hexalith.Folders.Contracts.Tests/Deployment/NfrTraceabilityConformanceTests.cs": "704855d01dbc51f52815ef038c653b67b4fe98180279cd3258ef3c4ec290ec02",
+   "tests/Hexalith.Folders.Contracts.Tests/Deployment/SecurityRedactionCiWorkflowConformanceTests.cs": "1d85cd29e63373eff98bf44ed5f0621a90fe8caad9985864fc80cda1701d3118",
+   "tests/Hexalith.Folders.Contracts.Tests/OpenApi/ContractSpineCiGateTests.cs": "a723408a751ba7cdaad1b74181ec2a15cca99054f06b5b43b397f41783d01078",
+   "tests/Hexalith.Folders.Contracts.Tests/OpenApi/GovernanceCompletenessGateTests.cs": "a2f39499316a5dfeb0669c2543cd03aed91200f509837a2a296e2b75151ae8d2",
+   "tests/Hexalith.Folders.Contracts.Tests/OpenApi/GovernanceCompletenessGateTests.ReportTests.cs": "7df5c061a865c8230d2ba8b6af2ce82c8d958ca3e9fcee45312e08bb3c707c03",
+   "tests/Hexalith.Folders.Contracts.Tests/OpenApi/SafetyInvariantGateTests.cs": "fc21824c76187dc1a01ce5dcd077766aa40a487986ff7fcef5bb03c0ed617199",
+   "tests/Hexalith.Folders.Contracts.Tests/McpCli/PackedContractsClosureTests.cs": "2ff7758c7f931c2707a590ad0e5007a6dffa7bf1360d390f3387e302cf3fc03e"
+  },
+  "Builds": {
+   "Props/Directory.Packages.props": "329b62e09abb7766132e801926190b29eb3ee36cf592060ac166f381dfda5808",
+   "Tools/write-platform-version-catalog.ps1": "56c4f97009a5c4988ed3a6e59e01bd4aa93e166285e95363f0dbc4b28d538b02",
+   "src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj": "e25a5264d2e4a850eb949f8f1a2956230a95fb44dec7d3d6f001ba589903639c"
+  }
+ },
+ "providerJarSha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+ "requirements": [
+  {
+   "requirement": "fresh Debug/source build: Composition (C)",
+   "result": "FAILED - blocked outside story (sourceGateBlocker); supplementary explicit-SDK build passes"
+  },
+  {
+   "requirement": "fresh Debug/source build: Composition.Tests (T)",
+   "result": "FAILED - blocked outside story (sourceGateBlocker); supplementary explicit-SDK build passes"
+  },
+  {
+   "requirement": "fresh Debug/source build: Folders AppHost.Tests (A)",
+   "result": "PASS 0 warnings/0 errors"
+  },
+  {
+   "requirement": "fresh Debug/package builds: C, T, A",
+   "result": "PASS 0 warnings/0 errors each"
+  },
+  {
+   "requirement": "T enrollment class default, package",
+   "result": "PASS 37 total, 0 failed, 1 explicit not run"
+  },
+  {
+   "requirement": "T explicit consumer/fresh-host and cancellation lanes, package",
+   "result": "PASS 1+1 executed; provisioned=true; adoptionCancelled=true; 0 leftovers"
+  },
+  {
+   "requirement": "T enrollment class default + explicit lanes, source",
+   "result": "NOT EXECUTED on a canonical source build (build blocked); supplementary explicit-SDK source: PASS 37 + 1 + 1"
+  },
+  {
+   "requirement": "A enrollment classes default, source and package",
+   "result": "PASS 14 total, 0 failed, 6 explicit not run, each mode"
+  },
+  {
+   "requirement": "A ordinary live consumer lane, source and package",
+   "result": "PASS 5/5 each mode (source attempt 1 failed at docker run; retained)"
+  },
+  {
+   "requirement": "A run-owned live consumer lane, source and package",
+   "result": "PASS 1/1 each mode; provisioned=true; 0 leftovers"
+  },
+  {
+   "requirement": "Folders UI regressions (SafeCopyIdTests, CorrelationCopyButtonTests, UserContextAccessorRegistrationTests), source and package",
+   "result": "PASS 13/13 each mode (2+6+5)"
+  },
+  {
+   "requirement": "Folders Contracts deployment/OpenApi conformance classes changed for net11 paths (+McpCli PackedContractsClosureTests), source and package",
+   "result": "PASS 303/303 each mode"
+  },
+  {
+   "requirement": "K mvn -B -ntp package",
+   "result": "PASS 23 provider tests; JAR sha256 2de2c806..."
+  },
+  {
+   "requirement": "K python3 -B -m unittest test_run_owned",
+   "result": "PASS 44/44"
+  },
+  {
+   "requirement": "K verify_component.py --run-owned",
+   "result": "PASS 19 fresh RSA probes, 5 real-container terminal controls, UID 1001 caller"
+  },
+  {
+   "requirement": "independent zero-leftover observation",
+   "result": "PASS 0 labeled containers, 0 private run directories"
+  }
+ ],
+ "sourceGateBlocker": {
+  "status": "blocked outside story-owned files",
+  "composition": {
+   "check": "c-source-build",
+   "target": "references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj(54,5) GeneratePlatformVersionCatalog",
+   "message": "Platform version catalog validation failed: Catalog field Hexalith.EventStore.Aspire has inconsistent build selection '4.2.0'; authoritative catalog selects '5.1.0'. Change the catalog instead of overriding controlled selections."
+  },
+  "compositionTests": {
+   "check": "t-source-build",
+   "code": "NU1109",
+   "message": "Detected package downgrade: Microsoft.AspNetCore.OpenApi from 11.0.0 to centrally defined 10.0.15 (Hexalith.Platform.Composition.Tests -> Hexalith.Tenants -> Microsoft.AspNetCore.OpenApi >= 11.0.0; Hexalith.Platform.Identity -> Hexalith.EventStore.Gateway -> Microsoft.AspNetCore.OpenApi >= 11.0.0)."
+  },
+  "cause": "Builds v6.0.3 (commit 58e1a5f4, 'fix(catalog): restore the qualified Platform package view', 2026-11-14) places Hexalith.Platform.Composition and Hexalith.Platform.Composition.Tests in the finite HexalithPlatformSdk42CatalogView (EventStore 4.2.0, Microsoft.AspNetCore.OpenApi 10.0.15, Memories 3.0.27, Tenants 7.0.7). In plain source mode Platform Directory.Build.targets (7a127bf3/c234e76b, 2026-11-09) propagates the computed HexalithEventStoreVersion=4.2.0 to every project reference, including Builds Tooling, whose catalog gate accepts only the authoritative 5.1.0; source Tenants 8 and EventStore 5.1 Gateway also require OpenApi 11. Package mode is coherent with that view and passes.",
+  "ownership": "Builds catalog/tuple owner (pinned release tag v6.0.3, bound by Platform 266f643f) and Platform build propagation; neither is a story 2.12 file. Per the final-verification task, diagnostics are retained and no edit was made.",
+  "supplementary": "With the explicit caller selection -p:HexalithEventStoreVersion=5.1.0 both Platform source builds pass with 0 warnings/0 errors, 37 default enrollment cases pass and both explicit lanes pass (supplementary-* checks)."
+ },
+ "testClasses": {
+  "a-package-enrollment-default": {
+   "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests": {
+    "NotRun": 6
+   },
+   "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests": {
+    "Pass": 8
+   }
+  },
+  "a-source-enrollment-default": {
+   "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests": {
+    "NotRun": 6
+   },
+   "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests": {
+    "Pass": 8
+   }
+  },
+  "contracts-package-conformance": {
+   "Hexalith.Folders.Contracts.Tests.Deployment.AccessibilityCiWorkflowConformanceTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.ContractParityCiWorkflowConformanceTests": {
+    "Pass": 7
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.E2eCiWorkflowConformanceTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.NfrTraceabilityConformanceTests": {
+    "Pass": 17
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.SecurityRedactionCiWorkflowConformanceTests": {
+    "Pass": 5
+   },
+   "Hexalith.Folders.Contracts.Tests.McpCli.PackedContractsClosureTests": {
+    "Pass": 1
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.ContractSpineCiGateTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.GovernanceCompletenessGateTests": {
+    "Pass": 217
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.SafetyInvariantGateTests": {
+    "Pass": 38
+   }
+  },
+  "contracts-source-conformance": {
+   "Hexalith.Folders.Contracts.Tests.Deployment.AccessibilityCiWorkflowConformanceTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.ContractParityCiWorkflowConformanceTests": {
+    "Pass": 7
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.E2eCiWorkflowConformanceTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.NfrTraceabilityConformanceTests": {
+    "Pass": 17
+   },
+   "Hexalith.Folders.Contracts.Tests.Deployment.SecurityRedactionCiWorkflowConformanceTests": {
+    "Pass": 5
+   },
+   "Hexalith.Folders.Contracts.Tests.McpCli.PackedContractsClosureTests": {
+    "Pass": 1
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.ContractSpineCiGateTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.GovernanceCompletenessGateTests": {
+    "Pass": 217
+   },
+   "Hexalith.Folders.Contracts.Tests.OpenApi.SafetyInvariantGateTests": {
+    "Pass": 38
+   }
+  },
+  "supplementary-t-source-explicit-sdk-enrollment-default": {
+   "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests": {
+    "Pass": 36,
+    "NotRun": 1
+   }
+  },
+  "t-package-enrollment-default": {
+   "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests": {
+    "Pass": 36,
+    "NotRun": 1
+   }
+  },
+  "ui-package-regressions": {
+   "Hexalith.Folders.UI.Tests.CorrelationCopyButtonTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.UI.Tests.SafeCopyIdTests": {
+    "Pass": 2
+   },
+   "Hexalith.Folders.UI.Tests.UserContextAccessorRegistrationTests": {
+    "Pass": 5
+   }
+  },
+  "ui-source-regressions": {
+   "Hexalith.Folders.UI.Tests.CorrelationCopyButtonTests": {
+    "Pass": 6
+   },
+   "Hexalith.Folders.UI.Tests.SafeCopyIdTests": {
+    "Pass": 2
+   },
+   "Hexalith.Folders.UI.Tests.UserContextAccessorRegistrationTests": {
+    "Pass": 5
+   }
+  },
+  "notCounted": {
+   "t-source-enrollment-default": {
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests": {
+     "Pass": 34,
+     "NotRun": 1
+    }
+   }
+  }
+ },
+ "finalAssemblies": {
+  "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding/target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar": {
+   "k-provider-maven-package": {
+    "sha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+    "mtime": "2026-11-13T09:51:16.682669+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+   "c-source-build": {
+    "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+    "mtime": "2026-11-13T17:54:15.764600+00:00"
+   },
+   "c-package-build": {
+    "sha256": "656d81c952ecde12f1000c755132b7ccc86f0da3a803afd6b631bbf90cd27efc",
+    "mtime": "2026-11-15T00:06:55.046440+00:00"
+   },
+   "supplementary-c-source-build-explicit-sdk-5.1.0": {
+    "sha256": "ed55cb56153974281c9b048d20bf98d5330340cdb7d58f52a108f56b5ab01b3f",
+    "mtime": "2026-11-15T00:09:54.773413+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+   "t-source-build": {
+    "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+    "mtime": "2026-11-13T17:54:18.660705+00:00"
+   },
+   "t-source-enrollment-default": {
+    "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+    "mtime": "2026-11-13T17:54:18.660705+00:00"
+   },
+   "t-source-live-consumer-and-cancellation": {
+    "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+    "mtime": "2026-11-13T17:54:18.660705+00:00"
+   },
+   "t-package-build": {
+    "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+    "mtime": "2026-11-15T00:07:07.718311+00:00"
+   },
+   "t-package-enrollment-default": {
+    "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+    "mtime": "2026-11-15T00:07:07.718311+00:00"
+   },
+   "t-package-live-consumer-and-cancellation": {
+    "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+    "mtime": "2026-11-15T00:07:07.718311+00:00"
+   },
+   "supplementary-t-source-build-explicit-sdk-5.1.0": {
+    "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+    "mtime": "2026-11-15T00:10:19.032891+00:00"
+   },
+   "supplementary-t-source-explicit-sdk-enrollment-default": {
+    "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+    "mtime": "2026-11-15T00:10:19.032891+00:00"
+   },
+   "supplementary-t-source-explicit-sdk-live-consumer-and-cancellation": {
+    "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+    "mtime": "2026-11-15T00:10:19.032891+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+   "t-source-build": {
+    "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+    "mtime": "2026-11-13T17:54:15.764600+00:00"
+   },
+   "t-source-enrollment-default": {
+    "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+    "mtime": "2026-11-13T17:54:15.764600+00:00"
+   },
+   "t-source-live-consumer-and-cancellation": {
+    "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+    "mtime": "2026-11-13T17:54:15.764600+00:00"
+   },
+   "t-package-build": {
+    "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+    "mtime": "2026-11-15T00:07:04.258150+00:00"
+   },
+   "t-package-enrollment-default": {
+    "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+    "mtime": "2026-11-15T00:07:04.258150+00:00"
+   },
+   "t-package-live-consumer-and-cancellation": {
+    "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+    "mtime": "2026-11-15T00:07:04.258150+00:00"
+   },
+   "supplementary-t-source-build-explicit-sdk-5.1.0": {
+    "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+    "mtime": "2026-11-15T00:10:08.104391+00:00"
+   },
+   "supplementary-t-source-explicit-sdk-enrollment-default": {
+    "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+    "mtime": "2026-11-15T00:10:08.104391+00:00"
+   },
+   "supplementary-t-source-explicit-sdk-live-consumer-and-cancellation": {
+    "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+    "mtime": "2026-11-15T00:10:08.104391+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+   "a-source-build": {
+    "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+    "mtime": "2026-11-15T00:03:29.910413+00:00"
+   },
+   "a-source-enrollment-default": {
+    "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+    "mtime": "2026-11-15T00:03:29.910413+00:00"
+   },
+   "a-source-live-ordinary": {
+    "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+    "mtime": "2026-11-15T00:03:29.910413+00:00"
+   },
+   "a-source-live-run-owned": {
+    "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+    "mtime": "2026-11-15T00:03:29.910413+00:00"
+   },
+   "a-source-live-ordinary-attempt-2": {
+    "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+    "mtime": "2026-11-15T00:03:29.910413+00:00"
+   },
+   "a-package-build": {
+    "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+    "mtime": "2026-11-15T00:07:53.239688+00:00"
+   },
+   "a-package-enrollment-default": {
+    "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+    "mtime": "2026-11-15T00:07:53.239688+00:00"
+   },
+   "a-package-live-ordinary": {
+    "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+    "mtime": "2026-11-15T00:07:53.239688+00:00"
+   },
+   "a-package-live-run-owned": {
+    "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+    "mtime": "2026-11-15T00:07:53.239688+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+   "ui-source-build": {
+    "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+    "mtime": "2026-11-15T00:05:45.756809+00:00"
+   },
+   "ui-source-regressions": {
+    "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+    "mtime": "2026-11-15T00:05:45.756809+00:00"
+   },
+   "ui-package-build": {
+    "sha256": "4ec345d02f554f8ba8da9563fcae7d8f70a44a8b5bc1b7e967aa0ebd85599b37",
+    "mtime": "2026-11-15T00:08:53.081691+00:00"
+   },
+   "ui-package-regressions": {
+    "sha256": "4ec345d02f554f8ba8da9563fcae7d8f70a44a8b5bc1b7e967aa0ebd85599b37",
+    "mtime": "2026-11-15T00:08:53.081691+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+   "ui-source-build": {
+    "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+    "mtime": "2026-11-15T00:03:21.914027+00:00"
+   },
+   "ui-source-regressions": {
+    "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+    "mtime": "2026-11-15T00:03:21.914027+00:00"
+   },
+   "ui-package-build": {
+    "sha256": "e9569137387087cdc15babc442f64744af76f6ad30ff8c4ed30ecd0e3b60dd4d",
+    "mtime": "2026-11-15T00:07:46.039346+00:00"
+   },
+   "ui-package-regressions": {
+    "sha256": "e9569137387087cdc15babc442f64744af76f6ad30ff8c4ed30ecd0e3b60dd4d",
+    "mtime": "2026-11-15T00:07:46.039346+00:00"
+   }
+  },
+  "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+   "contracts-source-build": {
+    "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+    "mtime": "2026-11-15T00:05:49.624998+00:00"
+   },
+   "contracts-source-conformance": {
+    "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+    "mtime": "2026-11-15T00:05:49.624998+00:00"
+   },
+   "contracts-package-build": {
+    "sha256": "7647acb5b4d824705d23d81a16a221747341ac368c817f166508d623530ce6c7",
+    "mtime": "2026-11-15T00:08:56.737858+00:00"
+   },
+   "contracts-package-conformance": {
+    "sha256": "7647acb5b4d824705d23d81a16a221747341ac368c817f166508d623530ce6c7",
+    "mtime": "2026-11-15T00:08:56.737858+00:00"
+   }
+  }
+ },
+ "restoredAssets": {
+  "package": {
+   "Composition": {
+    "frameworks": [
+     "net11.0"
+    ],
+    "packages": [
+     "Hexalith.Commons.UniqueIds/3.0.0",
+     "Hexalith.EventStore.Aspire/4.2.0",
+     "Hexalith.EventStore.Client/4.2.0",
+     "Hexalith.EventStore.Contracts/4.2.0",
+     "Hexalith.EventStore.DomainService/4.2.0",
+     "Hexalith.EventStore.Server/4.2.0",
+     "Hexalith.EventStore.ServiceDefaults/4.2.0",
+     "Hexalith.McpCli.Abstractions/2.0.1",
+     "Hexalith.Memories.Contracts/3.0.27",
+     "Hexalith.Parties.Contracts/3.1.1",
+     "Hexalith.Tenants.Contracts/7.0.7",
+     "Hexalith.Tenants.Server/7.0.7"
+    ],
+    "projects": [
+     "Hexalith.Builds.Tooling/1.0.0-20261115000655",
+     "Hexalith.Platform.Custody.Component/1.0.0",
+     "Hexalith.Platform.Custody/1.0.0",
+     "Hexalith.Platform.Secrets.Runtime/1.0.0",
+     "Hexalith.Platform.Works.Runtime/1.0.0"
+    ]
+   },
+   "Composition.Tests": {
+    "frameworks": [
+     "net11.0"
+    ],
+    "packages": [
+     "Hexalith.Commons.UniqueIds/3.0.0",
+     "Hexalith.EventStore.Admin.Abstractions/4.2.0",
+     "Hexalith.EventStore.Aspire/4.2.0",
+     "Hexalith.EventStore.Client/4.2.0",
+     "Hexalith.EventStore.Contracts/4.2.0",
+     "Hexalith.EventStore.DomainService/4.2.0",
+     "Hexalith.EventStore.Gateway/4.2.0",
+     "Hexalith.EventStore.Server/4.2.0",
+     "Hexalith.EventStore.ServiceDefaults/4.2.0",
+     "Hexalith.McpCli.Abstractions/2.0.1",
+     "Hexalith.Memories.Contracts/3.0.27",
+     "Hexalith.Memories.EventStore/3.0.27",
+     "Hexalith.Memories.EventStoreExtensions/3.0.27",
+     "Hexalith.Parties.Contracts/3.1.1",
+     "Hexalith.Parties.EventStoreExtensions/3.1.1",
+     "Hexalith.Tenants.Contracts/7.0.7",
+     "Hexalith.Tenants.Server/7.0.7",
+     "Microsoft.AspNetCore.OpenApi/10.0.15",
+     "Microsoft.OpenApi/2.13.0"
+    ],
+    "projects": [
+     "Hexalith.Builds.Module.EventStoreHost/1.0.0",
+     "Hexalith.Builds.Tooling/1.0.0-20261115000655",
+     "Hexalith.Platform.Composition/1.0.0",
+     "Hexalith.Platform.Custody.Component/1.0.0",
+     "Hexalith.Platform.Custody/1.0.0",
+     "Hexalith.Platform.EventStoreHost/1.0.0",
+     "Hexalith.Platform.Identity/1.0.0",
+     "Hexalith.Platform.Protection/1.0.0",
+     "Hexalith.Platform.Secrets.Runtime/1.0.0",
+     "Hexalith.Platform.TestExtension/1.0.0",
+     "Hexalith.Platform.Works.Runtime/1.0.0"
+    ]
+   },
+   "Folders.AppHost.Tests": {
+    "frameworks": [
+     "net11.0"
+    ],
+    "packages": [
+     "Hexalith.Commons.UniqueIds/3.0.0",
+     "Hexalith.EventStore.Aspire/5.1.0",
+     "Hexalith.EventStore.Client/5.1.0",
+     "Hexalith.EventStore.Contracts/5.1.0",
+     "Hexalith.EventStore.DomainService/5.1.0",
+     "Hexalith.EventStore.ServiceDefaults/5.1.0",
+     "Hexalith.McpCli.Abstractions/2.0.1",
+     "Hexalith.Memories.Aspire/4.0.0",
+     "Hexalith.Memories.Contracts/4.0.0",
+     "Hexalith.Tenants.Aspire/8.0.0",
+     "Hexalith.Tenants.Client/8.0.0",
+     "Hexalith.Tenants.Contracts/8.0.0"
+    ],
+    "projects": [
+     "Hexalith.Builds.Tooling/1.0.0-20261115000738",
+     "Hexalith.Folders.AppHost/1.0.0",
+     "Hexalith.Folders.Aspire/1.0.0",
+     "Hexalith.Folders.Client/1.0.0",
+     "Hexalith.Folders.Contracts/1.0.0",
+     "Hexalith.Folders.ServiceDefaults/1.0.0",
+     "Hexalith.Folders.Workers/1.0.0",
+     "Hexalith.Folders/1.0.0"
+    ]
+   },
+   "Folders.UI.Tests": {
+    "frameworks": [
+     "net11.0"
+    ],
+    "packages": [
+     "Hexalith.Commons.UniqueIds/3.0.0",
+     "Hexalith.EventStore.Client/5.1.0",
+     "Hexalith.EventStore.Contracts/5.1.0",
+     "Hexalith.EventStore.ServiceDefaults/5.1.0",
+     "Hexalith.FrontComposer.Contracts.UI/6.0.0",
+     "Hexalith.FrontComposer.Contracts/6.0.0",
+     "Hexalith.FrontComposer.Shell/6.0.0",
+     "Hexalith.FrontComposer.Testing/6.0.0",
+     "Hexalith.McpCli.Abstractions/2.0.1"
+    ],
+    "projects": [
+     "Hexalith.Folders.Client/1.0.0",
+     "Hexalith.Folders.Contracts/1.0.0",
+     "Hexalith.Folders.Testing/1.0.0",
+     "Hexalith.Folders.UI/1.0.0",
+     "Hexalith.Folders/1.0.0"
+    ]
+   },
+   "Folders.Contracts.Tests": {
+    "frameworks": [
+     "net11.0"
+    ],
+    "packages": [
+     "Hexalith.McpCli.Abstractions/2.0.1"
+    ],
+    "projects": [
+     "Hexalith.Folders.Aspire/1.0.0",
+     "Hexalith.Folders.Contracts/1.0.0"
+    ]
+   }
+  },
+  "sourceObservation": {
+   "note": "Folders entries are the canonical source graph used by a-/ui-/contracts-source checks (re-restored afterwards for this observation, then restored back to package mode). Platform entries are the supplementary explicit-SDK 5.1.0 source graph.",
+   "assets": {
+    "Composition": {
+     "frameworks": [
+      "net11.0"
+     ],
+     "packages": [],
+     "projects": [
+      "Hexalith.Builds.Tooling/1.0.0-20261115000956",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Aspire/5.1.0",
+      "Hexalith.EventStore.Client/5.1.0",
+      "Hexalith.EventStore.Contracts/5.1.0",
+      "Hexalith.EventStore.DomainService/5.1.0",
+      "Hexalith.EventStore.ServiceDefaults/5.1.0",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Platform.Custody.Component/1.0.0",
+      "Hexalith.Platform.Custody/1.0.0",
+      "Hexalith.Platform.Secrets.Runtime/1.0.0",
+      "Hexalith.Platform.Works.Runtime/1.0.0",
+      "Hexalith.Tenants.Contracts/8.0.0"
+     ]
+    },
+    "Composition.Tests": {
+     "frameworks": [
+      "net11.0"
+     ],
+     "packages": [
+      "Hexalith.Commons.Http/3.0.0",
+      "Hexalith.Commons/3.0.0",
+      "Hexalith.Memories.Client.Rest/4.0.0",
+      "Hexalith.Tenants.Client/8.0.0",
+      "Microsoft.AspNetCore.OpenApi/11.0.0",
+      "Microsoft.OpenApi/3.11.0"
+     ],
+     "projects": [
+      "Hexalith.Builds.Module.EventStoreHost/1.0.0",
+      "Hexalith.Builds.Tooling/1.0.0-20261115000956",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Admin.Abstractions/5.1.0",
+      "Hexalith.EventStore.Aspire/5.1.0",
+      "Hexalith.EventStore.Client/5.1.0",
+      "Hexalith.EventStore.Contracts/5.1.0",
+      "Hexalith.EventStore.DomainService/5.1.0",
+      "Hexalith.EventStore.Gateway/5.1.0",
+      "Hexalith.EventStore.Server/5.1.0",
+      "Hexalith.EventStore.ServiceDefaults/5.1.0",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Memories.DomainService/1.0.0",
+      "Hexalith.Memories.EventStore/1.0.0",
+      "Hexalith.Memories.EventStoreExtensions/1.0.0",
+      "Hexalith.Parties.Authentication/1.0.0",
+      "Hexalith.Parties.Contracts/1.0.0",
+      "Hexalith.Parties.EventStoreExtensions/1.0.0",
+      "Hexalith.Parties.Projections/1.0.0",
+      "Hexalith.Parties.Security/1.0.0",
+      "Hexalith.Parties/1.0.0",
+      "Hexalith.Platform.Composition/1.0.0",
+      "Hexalith.Platform.Custody.Component/1.0.0",
+      "Hexalith.Platform.Custody/1.0.0",
+      "Hexalith.Platform.EventStoreHost/1.0.0",
+      "Hexalith.Platform.Identity/1.0.0",
+      "Hexalith.Platform.Protection/1.0.0",
+      "Hexalith.Platform.Secrets.Runtime/1.0.0",
+      "Hexalith.Platform.TestExtension/1.0.0",
+      "Hexalith.Platform.Works.Runtime/1.0.0",
+      "Hexalith.Tenants.Contracts/8.0.0",
+      "Hexalith.Tenants.Server/8.0.0",
+      "Hexalith.Tenants/8.0.0"
+     ]
+    },
+    "Folders.AppHost.Tests": {
+     "frameworks": [
+      "net11.0"
+     ],
+     "packages": [],
+     "projects": [
+      "Hexalith.Builds.Tooling/1.0.0-20261115001117",
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Aspire/5.1.0",
+      "Hexalith.EventStore.Client/5.1.0",
+      "Hexalith.EventStore.Contracts/5.1.0",
+      "Hexalith.EventStore.DomainService/5.1.0",
+      "Hexalith.EventStore.ServiceDefaults/5.1.0",
+      "Hexalith.Folders.AppHost/1.0.0",
+      "Hexalith.Folders.Aspire/1.0.0",
+      "Hexalith.Folders.Client/1.0.0",
+      "Hexalith.Folders.Contracts/1.0.0",
+      "Hexalith.Folders.ServiceDefaults/1.0.0",
+      "Hexalith.Folders.Workers/1.0.0",
+      "Hexalith.Folders/1.0.0",
+      "Hexalith.McpCli.Abstractions/2.0.1",
+      "Hexalith.Memories.Aspire/1.0.0",
+      "Hexalith.Memories.Contracts/1.0.0",
+      "Hexalith.Tenants.Aspire/8.0.0",
+      "Hexalith.Tenants.Client/8.0.0",
+      "Hexalith.Tenants.Contracts/8.0.0"
+     ]
+    },
+    "Folders.UI.Tests": {
+     "frameworks": [
+      "net11.0"
+     ],
+     "packages": [],
+     "projects": [
+      "Hexalith.Commons.UniqueIds/1.0.0",
+      "Hexalith.EventStore.Client/5.1.0",
+      "Hexalith.EventStore.Contracts/5.1.0",
+      "Hexalith.EventStore.ServiceDefaults/5.1.0",
+      "Hexalith.Folders.Client/1.0.0",
+      "Hexalith.Folders.Contracts/1.0.0",
+      "Hexalith.Folders.Testing/1.0.0",
+      "Hexalith.Folders.UI/1.0.0",
+      "Hexalith.Folders/1.0.0",
+      "Hexalith.FrontComposer.Contracts.UI/1.0.0",
+      "Hexalith.FrontComposer.Contracts/1.0.0",
+      "Hexalith.FrontComposer.Shell/1.0.0",
+      "Hexalith.FrontComposer.Testing/1.0.0",
+      "Hexalith.McpCli.Abstractions/2.0.1"
+     ]
+    },
+    "Folders.Contracts.Tests": {
+     "frameworks": [
+      "net11.0"
+     ],
+     "packages": [],
+     "projects": [
+      "Hexalith.Folders.Aspire/1.0.0",
+      "Hexalith.Folders.Contracts/1.0.0",
+      "Hexalith.McpCli.Abstractions/2.0.1"
+     ]
+    }
+   }
+  }
+ },
+ "leftovers": {
+  "method": "docker events (container create/destroy) for the whole verification window, plus labeled container and private-path snapshots before and after.",
+  "preSnapshot": [
+   "2026-11-14T23:59:28.879558629Z"
+  ],
+  "postSnapshot": [
+   "2026-11-15T00:11:39.567227781Z"
+  ],
+  "observedContainers": 24,
+  "byKind": {
+   "unrelated live control": 2,
+   "run-owned authority": 19,
+   "ordinary component authority": 3
+  },
+  "createdWithoutDestroy": [],
+  "privateDirectoriesStillPresent": [],
+  "remainingLabeledContainers": 0,
+  "note": "The window overlapped another session's run-owned controls (story 12.2 in a separate Folders checkout); every observed authority, component and unrelated-control container was destroyed and no private directory remains, so no attribution split is needed for a zero result."
+ },
+ "checks": [
+  {
+   "name": "k-provider-maven-package",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "mvn",
+    "-B",
+    "-ntp",
+    "package"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-14T23:59:43.644477+00:00",
+   "elapsedSeconds": 4.58,
+   "exitCode": 0,
+   "outputSha256": "38acbc8af6df937022b01c31461bce3f82e6ffeaac535692e3a12fbfb5227fe7",
+   "xunitSummaries": [],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding/target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar": {
+     "sha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+     "mtime": "2026-11-13T09:51:16.682669+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding/target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar": {
+     "sha256": "2de2c8069b9ec7f7023170c5af90e551a67986f9a9f32d6e21c0c93822d75e1d",
+     "mtime": "2026-11-13T09:51:16.682669+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "k-python-unittest",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "test_run_owned"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-14T23:59:53.592290+00:00",
+   "elapsedSeconds": 77.93,
+   "exitCode": 0,
+   "outputSha256": "0123e0afac584c5331110fb0e2a7799a534b264ff420770c31fd5daa03dadfa2",
+   "xunitSummaries": [],
+   "buildSummary": [],
+   "artifactsBefore": {},
+   "artifactsAfter": {},
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "k-verify-component-run-owned",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:01:22.096952+00:00",
+   "elapsedSeconds": 72.42,
+   "exitCode": 0,
+   "outputSha256": "b83f69d027c8e157384bfcf2a8012265f0ad1e56233d1a489e15837e2ffdc899",
+   "xunitSummaries": [],
+   "buildSummary": [],
+   "artifactsBefore": {},
+   "artifactsAfter": {},
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "c-source-build",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:02:39.438321+00:00",
+   "elapsedSeconds": 13.45,
+   "exitCode": 1,
+   "outputSha256": "8a483c3c112593078a416aeec0481aa0c764d20fc175a9f569c4b5a05051a8d1",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 1
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "disposition": "FAILED (counted): canonical fresh Debug/source build. Builds Tooling GeneratePlatformVersionCatalog refuses the Platform SDK4.2 view selection propagated into Tooling; see sourceGateBlocker. Not caused by story-owned files."
+  },
+  {
+   "name": "t-source-build",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:02:52.918964+00:00",
+   "elapsedSeconds": 2.22,
+   "exitCode": 1,
+   "outputSha256": "62b0420c3d8c3196bdc6072fbf621f21dfbc3f9aec5201d0cde54a19f34591da",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 3
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "disposition": "FAILED (counted): canonical fresh Debug/source build. Restore NU1109 Microsoft.AspNetCore.OpenApi 11.0.0 (source EventStore.Gateway/Tenants) versus the Platform SDK4.2 view central 10.0.15; see sourceGateBlocker."
+  },
+  {
+   "name": "t-source-enrollment-default",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/t-source-enrollment-default.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:02:55.167909+00:00",
+   "elapsedSeconds": 2.02,
+   "exitCode": 0,
+   "outputSha256": "6f7b235f627f3726e0b7b4c7a7194a23b6f42f81f4ffd9a398688c6dc657f48e",
+   "xunitSummaries": [
+    {
+     "total": 35,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 1
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/t-source-enrollment-default.xml",
+   "resultXmlSha256": "7914fa4ad075250edb74c28099f63d36e79738e76fa430624653f963ce7f7501",
+   "disposition": "NOT COUNTED: executed the stale 2026-11-13 assemblies left after both source builds failed (artifact mtimes/hashes recorded)."
+  },
+  {
+   "name": "t-source-live-consumer-and-cancellation",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned",
+    "--platform-assembly",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "TERM": "xterm-256color"
+   },
+   "environmentUnset": [
+    "NO_COLOR"
+   ],
+   "startedAt": "2026-11-15T00:02:57.216497+00:00",
+   "elapsedSeconds": 1.17,
+   "exitCode": 1,
+   "outputSha256": "10025eb1d41a3c14f1d25e3049f34439eff0f2f5ac281495d1328d14ce40e396",
+   "xunitSummaries": [],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "disposition": "NOT COUNTED: stale 2026-11-13 assembly predates 20a7d635 audience changes; the current launcher correctly refused it with exact-permission-inventory. Cleanup reported no leftovers."
+  },
+  {
+   "name": "a-source-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:02:58.413827+00:00",
+   "elapsedSeconds": 32.61,
+   "exitCode": 0,
+   "outputSha256": "4afe1e8159c2b3c5133a0d7a2e21ec77b15291a07786658cb7ec2c515e935ced",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "db142431abb1e549d7a1495173555574c474fb8786503e1f500d576b6fadd8c6",
+     "mtime": "2026-11-13T17:56:44.465401+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-source-enrollment-default",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests",
+    "-class",
+    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/a-source-enrollment-default.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:04.268047+00:00",
+   "elapsedSeconds": 1.07,
+   "exitCode": 0,
+   "outputSha256": "f246ee81105b1dfd7087b2c232b0e91a556361084e3af139602a7994e213295f",
+   "xunitSummaries": [
+    {
+     "total": 14,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 6
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/a-source-enrollment-default.xml",
+   "resultXmlSha256": "13d745d38e4a750b047aa41459c64b12d489360c91497a75e49a82dc6584e1ce",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-source-live-ordinary",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--apphost-assembly",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "NO_COLOR": "1",
+    "TERM": "dumb"
+   },
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:05.367079+00:00",
+   "elapsedSeconds": 0.54,
+   "exitCode": 1,
+   "outputSha256": "bedcc5d30b84d734c1e15179eb504325f8a975175065ce65eb9abee7a8e978cc",
+   "xunitSummaries": [],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "disposition": "FAILED attempt 1 (retained): the pre-existing ordinary component path's `docker run` failed after 0.54 s; Docker events show its container created and destroyed within 0.1 s, consistent with the recorded R1 class of manually selected host-port refusal in this path (the harness withholds the daemon reason, so the cause is unverified). Attempt 2 on the identical assembly passed without code, budget or retry-policy changes."
+  },
+  {
+   "name": "a-source-live-run-owned",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned",
+    "--apphost-assembly",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "TERM": "xterm-256color"
+   },
+   "environmentUnset": [
+    "NO_COLOR"
+   ],
+   "startedAt": "2026-11-15T00:05:05.928962+00:00",
+   "elapsedSeconds": 28.42,
+   "exitCode": 0,
+   "outputSha256": "a48b80b30d27ecc1f9b50398b778bd4c5079fa669acce1e176ee4eedf0ae1c2a",
+   "xunitSummaries": [
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "ui-source-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.UI.Tests/Hexalith.Folders.UI.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:34.388655+00:00",
+   "elapsedSeconds": 11.6,
+   "exitCode": 0,
+   "outputSha256": "4e2d155e01c3e88fc7bbc0dce107ed32bfdc047be9da72c290e7fab870dd3375",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "1e68bc18cae8f6d0d57aefd82530c6871b1d2eb161db20f65479ac70e62321ce",
+     "mtime": "2026-11-13T17:43:17.768441+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "22436f1cc56cb69af74e6235f0a44bc7346af62f55a8ba35e6262a4156b11276",
+     "mtime": "2026-11-13T17:41:17.641850+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+     "mtime": "2026-11-15T00:05:45.756809+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+     "mtime": "2026-11-15T00:03:21.914027+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "ui-source-regressions",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.UI.Tests.SafeCopyIdTests",
+    "-class",
+    "Hexalith.Folders.UI.Tests.CorrelationCopyButtonTests",
+    "-class",
+    "Hexalith.Folders.UI.Tests.UserContextAccessorRegistrationTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/ui-source-regressions.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:46.013108+00:00",
+   "elapsedSeconds": 0.87,
+   "exitCode": 0,
+   "outputSha256": "49ee06bec3912de2850f9b19216a04af22fa07cbf4aee1007e126a97afc6185e",
+   "xunitSummaries": [
+    {
+     "total": 13,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+     "mtime": "2026-11-15T00:05:45.756809+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+     "mtime": "2026-11-15T00:03:21.914027+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+     "mtime": "2026-11-15T00:05:45.756809+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+     "mtime": "2026-11-15T00:03:21.914027+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/ui-source-regressions.xml",
+   "resultXmlSha256": "c7f5e1c0280d8cb33777fe8eade39f9df86f4c00856b75e15198f9517e3574f2",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "contracts-source-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.Contracts.Tests/Hexalith.Folders.Contracts.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:46.908563+00:00",
+   "elapsedSeconds": 2.94,
+   "exitCode": 0,
+   "outputSha256": "4a055c6afe256a93b47668b1d652944d948d04a302919f82639bbbc52911afc8",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "3d0a597fdc0d27f4d1dca95a38e35296f806c54f6f18b82d0477d4beb0b2b0b5",
+     "mtime": "2026-11-13T17:56:56.833889+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+     "mtime": "2026-11-15T00:05:49.624998+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "contracts-source-conformance",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.AccessibilityCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.ContractParityCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.E2eCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.NfrTraceabilityConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.SecurityRedactionCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.ContractSpineCiGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.GovernanceCompletenessGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.SafetyInvariantGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.McpCli.PackedContractsClosureTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/contracts-source-conformance.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:05:49.891110+00:00",
+   "elapsedSeconds": 14.28,
+   "exitCode": 0,
+   "outputSha256": "91afbb8209021cfe5d88931420097ca089732d9b64261e63993791af2c872619",
+   "xunitSummaries": [
+    {
+     "total": 303,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+     "mtime": "2026-11-15T00:05:49.624998+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+     "mtime": "2026-11-15T00:05:49.624998+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/contracts-source-conformance.xml",
+   "resultXmlSha256": "91e91f85ff77574e33a667ad9fc415387eaceadf388504dbf725560a92e162c8",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-source-live-ordinary-attempt-2",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--apphost-assembly",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "NO_COLOR": "1",
+    "TERM": "dumb"
+   },
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:06:12.234455+00:00",
+   "elapsedSeconds": 27.75,
+   "exitCode": 0,
+   "outputSha256": "9e525d895b1d678b25a8a2ab85b5cd676d2d8957fa88e192d63743269f37ad45",
+   "xunitSummaries": [
+    {
+     "total": 5,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "c-package-build",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=false",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:06:44.828202+00:00",
+   "elapsedSeconds": 10.38,
+   "exitCode": 0,
+   "outputSha256": "0e68a006b387cddd0349feccc0733cc5fb607145a292a603451ea2e1fba13942",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "656d81c952ecde12f1000c755132b7ccc86f0da3a803afd6b631bbf90cd27efc",
+     "mtime": "2026-11-15T00:06:55.046440+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "t-package-build",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=false",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:06:55.231213+00:00",
+   "elapsedSeconds": 12.66,
+   "exitCode": 0,
+   "outputSha256": "779f3d97bc101b983fc558dffbc2ee4788803a1f10bb6ab9084366d8d5ce383b",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ba5d1ce172986c31ea25e0cec72e6b1a65d863b86db0a251a44646626237ca37",
+     "mtime": "2026-11-13T17:54:18.660705+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "e44e62cf62ebd4fbb1a1b8c8eb0489e3fa385f851633b417db653a80c0017812",
+     "mtime": "2026-11-13T17:54:15.764600+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "t-package-enrollment-default",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/t-package-enrollment-default.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:07:07.916760+00:00",
+   "elapsedSeconds": 2.07,
+   "exitCode": 0,
+   "outputSha256": "2b0773b55ad1ba70bb9ac2bd641139f1dc72f7bd9c54510cca3896ed4d0a4bbe",
+   "xunitSummaries": [
+    {
+     "total": 37,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 1
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/t-package-enrollment-default.xml",
+   "resultXmlSha256": "c5be0a56fa99f1a2bf36579e3f0544e34f7dc757f16d3e4ffef0633b50269602",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "t-package-live-consumer-and-cancellation",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned",
+    "--platform-assembly",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "TERM": "xterm-256color"
+   },
+   "environmentUnset": [
+    "NO_COLOR"
+   ],
+   "startedAt": "2026-11-15T00:07:10.016212+00:00",
+   "elapsedSeconds": 27.73,
+   "exitCode": 0,
+   "outputSha256": "feb624e32704f3dbf765eb163ccd0f5ac12eeddd84eae67fb0797ad24ba3c558",
+   "xunitSummaries": [
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    },
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-package-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.AppHost.Tests/Hexalith.Folders.AppHost.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=false",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:07:37.775010+00:00",
+   "elapsedSeconds": 15.78,
+   "exitCode": 0,
+   "outputSha256": "04cb4d7e21cb43c623312d939212a04c9151b639d15206796b9eae184a3f4d68",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "8c5952cf03325cea27e32778c057d6f32511fa4326396a06b333f3dfa74db5c4",
+     "mtime": "2026-11-15T00:03:29.910413+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-package-enrollment-default",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests",
+    "-class",
+    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentConfigurationTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/a-package-enrollment-default.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:07:53.575860+00:00",
+   "elapsedSeconds": 1.07,
+   "exitCode": 0,
+   "outputSha256": "36b178bc3a0b2b05f930819bdc543ac31cc8ced0392d084ebe679f81cbf5b667",
+   "xunitSummaries": [
+    {
+     "total": 14,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 6
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/a-package-enrollment-default.xml",
+   "resultXmlSha256": "e282eac74c32766b01fb521034947aed07c531347503f98ab942ba1f53056fbc",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-package-live-ordinary",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--apphost-assembly",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "NO_COLOR": "1",
+    "TERM": "dumb"
+   },
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:07:54.669369+00:00",
+   "elapsedSeconds": 23.35,
+   "exitCode": 0,
+   "outputSha256": "62aeff1390b3afea4f8f61057217261917d00d9bae4abad3e8346cec1df3a7d2",
+   "xunitSummaries": [
+    {
+     "total": 5,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "a-package-live-run-owned",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned",
+    "--apphost-assembly",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "TERM": "xterm-256color"
+   },
+   "environmentUnset": [
+    "NO_COLOR"
+   ],
+   "startedAt": "2026-11-15T00:08:18.041355+00:00",
+   "elapsedSeconds": 31.56,
+   "exitCode": 0,
+   "outputSha256": "f73b2e6d60478e805a245ad8fd1a90e2b14afb4b77b4a9a3a24e7767da123866",
+   "xunitSummaries": [
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll": {
+     "sha256": "77af037aa4681a2880a2b0b73752c635db3b8ad80d69f74f46634e2d23a619c1",
+     "mtime": "2026-11-15T00:07:53.239688+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "ui-package-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.UI.Tests/Hexalith.Folders.UI.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=false",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:08:49.624906+00:00",
+   "elapsedSeconds": 3.65,
+   "exitCode": 0,
+   "outputSha256": "6e968c4278d18068c54ca78a75f1906be992efbbda5698072b56e9cede21108c",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "6fe4d01740212cbc673a5f52ecba38b1dc710abbd7b8b2e377d2bc26b2b8dbb8",
+     "mtime": "2026-11-15T00:05:45.756809+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "4d5b345321fa37fb8f0a14526d3b5347760decfb29363b3cb5d6b0cd7b6c400f",
+     "mtime": "2026-11-15T00:03:21.914027+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "4ec345d02f554f8ba8da9563fcae7d8f70a44a8b5bc1b7e967aa0ebd85599b37",
+     "mtime": "2026-11-15T00:08:53.081691+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "e9569137387087cdc15babc442f64744af76f6ad30ff8c4ed30ecd0e3b60dd4d",
+     "mtime": "2026-11-15T00:07:46.039346+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "ui-package-regressions",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.UI.Tests.SafeCopyIdTests",
+    "-class",
+    "Hexalith.Folders.UI.Tests.CorrelationCopyButtonTests",
+    "-class",
+    "Hexalith.Folders.UI.Tests.UserContextAccessorRegistrationTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/ui-package-regressions.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:08:53.299890+00:00",
+   "elapsedSeconds": 0.77,
+   "exitCode": 0,
+   "outputSha256": "12f211e2d7504c0e756a6929a27814ce81393b9021876f3120c90c29b3681f80",
+   "xunitSummaries": [
+    {
+     "total": 13,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "4ec345d02f554f8ba8da9563fcae7d8f70a44a8b5bc1b7e967aa0ebd85599b37",
+     "mtime": "2026-11-15T00:08:53.081691+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "e9569137387087cdc15babc442f64744af76f6ad30ff8c4ed30ecd0e3b60dd4d",
+     "mtime": "2026-11-15T00:07:46.039346+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.Tests.dll": {
+     "sha256": "4ec345d02f554f8ba8da9563fcae7d8f70a44a8b5bc1b7e967aa0ebd85599b37",
+     "mtime": "2026-11-15T00:08:53.081691+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.UI.Tests/bin/Debug/net11.0/Hexalith.Folders.UI.dll": {
+     "sha256": "e9569137387087cdc15babc442f64744af76f6ad30ff8c4ed30ecd0e3b60dd4d",
+     "mtime": "2026-11-15T00:07:46.039346+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/ui-package-regressions.xml",
+   "resultXmlSha256": "cb71473f3337fac8ce6b9ab406013456e6241e4b3be4addbf33efc63c385df7a",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "contracts-package-build",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Folders.Contracts.Tests/Hexalith.Folders.Contracts.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=false",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q",
+    "-p:HexalithPlatformRoot=/home/administrator/projects/hexalith/platform",
+    "-p:HexalithBuildsRoot=/home/administrator/projects/hexalith/platform/references/Hexalith.Builds"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:08:54.093665+00:00",
+   "elapsedSeconds": 2.85,
+   "exitCode": 0,
+   "outputSha256": "73ac4bc14523b97abcc2b7683f0eb0c86fce505504a91f926b7a0f60740c06a3",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "8d8590413ca9ffe735eed2960cdaafea4d47d36bbfaab4d3083e8ca5f8ddc57e",
+     "mtime": "2026-11-15T00:05:49.624998+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "7647acb5b4d824705d23d81a16a221747341ac368c817f166508d623530ce6c7",
+     "mtime": "2026-11-15T00:08:56.737858+00:00"
+    }
+   },
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "contracts-package-conformance",
+   "cwd": "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.AccessibilityCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.ContractParityCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.E2eCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.NfrTraceabilityConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.Deployment.SecurityRedactionCiWorkflowConformanceTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.ContractSpineCiGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.GovernanceCompletenessGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.OpenApi.SafetyInvariantGateTests",
+    "-class",
+    "Hexalith.Folders.Contracts.Tests.McpCli.PackedContractsClosureTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/contracts-package-conformance.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:08:56.977597+00:00",
+   "elapsedSeconds": 18.45,
+   "exitCode": 0,
+   "outputSha256": "e57ccda90da891d7cf95e74904e03c4a621bfcce8da3f12970c9e83c008e29e5",
+   "xunitSummaries": [
+    {
+     "total": 303,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "7647acb5b4d824705d23d81a16a221747341ac368c817f166508d623530ce6c7",
+     "mtime": "2026-11-15T00:08:56.737858+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.Contracts.Tests/bin/Debug/net11.0/Hexalith.Folders.Contracts.Tests.dll": {
+     "sha256": "7647acb5b4d824705d23d81a16a221747341ac368c817f166508d623530ce6c7",
+     "mtime": "2026-11-15T00:08:56.737858+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/contracts-package-conformance.xml",
+   "resultXmlSha256": "79f74b4378a13b9e7872bad7f84f24d3da5bb70302fdd3380989cde10de90f94",
+   "disposition": "PASS (counted)"
+  },
+  {
+   "name": "supplementary-c-source-build-explicit-sdk-5.1.0",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreVersion=5.1.0",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:09:38.509441+00:00",
+   "elapsedSeconds": 16.53,
+   "exitCode": 0,
+   "outputSha256": "7bec48b6587873c418f96d74afa9c6e0cc28ee8d4b68c7677c3bd9d76db0e1ac",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "ed55cb56153974281c9b048d20bf98d5330340cdb7d58f52a108f56b5ab01b3f",
+     "mtime": "2026-11-15T00:09:54.773413+00:00"
+    }
+   },
+   "disposition": "SUPPLEMENTARY: explicit caller selection -p:HexalithEventStoreVersion=5.1.0 (the current authoritative SDK). Shows the story sources build and pass in a coherent current source graph; does not close the canonical Debug/source gate."
+  },
+  {
+   "name": "supplementary-t-source-build-explicit-sdk-5.1.0",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-p:HexalithEventStoreVersion=5.1.0",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:q"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:09:55.063798+00:00",
+   "elapsedSeconds": 24.12,
+   "exitCode": 0,
+   "outputSha256": "8e4bedb0b6576a4d2927e9c33bccd27d6886317f2fd1220bb1ff6e349a461830",
+   "xunitSummaries": [],
+   "buildSummary": [
+    {
+     "warnings": 0,
+     "errors": 0
+    }
+   ],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "ecc2802c9909feca5cc41eb1e47adb4811522ebe53cf4ca302745b32e4dae8bb",
+     "mtime": "2026-11-15T00:07:07.718311+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "41f03ffbbb212a3d593a8e185da382512da9fc8cd14e14db0776269b62df7bc5",
+     "mtime": "2026-11-15T00:07:04.258150+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+     "mtime": "2026-11-15T00:10:19.032891+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+     "mtime": "2026-11-15T00:10:08.104391+00:00"
+    }
+   },
+   "disposition": "SUPPLEMENTARY: explicit caller selection -p:HexalithEventStoreVersion=5.1.0 (the current authoritative SDK). Shows the story sources build and pass in a coherent current source graph; does not close the canonical Debug/source gate."
+  },
+  {
+   "name": "supplementary-t-source-explicit-sdk-enrollment-default",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "exec",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll",
+    "-noColor",
+    "-class",
+    "Hexalith.Platform.Composition.Tests.PlatformRunOwnedWorkloadEnrollmentTests",
+    "-result-xml",
+    "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/supplementary-t-source-explicit-sdk-enrollment-default.xml"
+   ],
+   "environmentOverrides": {},
+   "environmentUnset": [],
+   "startedAt": "2026-11-15T00:10:27.699217+00:00",
+   "elapsedSeconds": 2.01,
+   "exitCode": 0,
+   "outputSha256": "ab8e75366a84249af6460dc64da7182f8096fd9e16f345fa06caa3025961a94d",
+   "xunitSummaries": [
+    {
+     "total": 37,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 1
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+     "mtime": "2026-11-15T00:10:19.032891+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+     "mtime": "2026-11-15T00:10:08.104391+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+     "mtime": "2026-11-15T00:10:19.032891+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+     "mtime": "2026-11-15T00:10:08.104391+00:00"
+    }
+   },
+   "resultXml": "/tmp/claude-1000/-home-administrator-projects-hexalith-platform/259f8f1a-0d27-4625-9d54-f039a2fab18d/scratchpad/fv/xml/supplementary-t-source-explicit-sdk-enrollment-default.xml",
+   "resultXmlSha256": "1ac4b666395b8f14bb996c33b4db3da81f295fbba8712e6ba958a787e8a1f8ab",
+   "disposition": "SUPPLEMENTARY: explicit caller selection -p:HexalithEventStoreVersion=5.1.0 (the current authoritative SDK). Shows the story sources build and pass in a coherent current source graph; does not close the canonical Debug/source gate."
+  },
+  {
+   "name": "supplementary-t-source-explicit-sdk-live-consumer-and-cancellation",
+   "cwd": "/home/administrator/projects/hexalith/platform/infrastructure/keycloak-workload-binding",
+   "command": [
+    "python3",
+    "-B",
+    "verify_component.py",
+    "--run-owned",
+    "--platform-assembly",
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+   ],
+   "environmentOverrides": {
+    "TERM": "xterm-256color"
+   },
+   "environmentUnset": [
+    "NO_COLOR"
+   ],
+   "startedAt": "2026-11-15T00:10:29.735567+00:00",
+   "elapsedSeconds": 33.09,
+   "exitCode": 0,
+   "outputSha256": "300153f32ea95778b6c6139726ff8e6d24570a70b9a736c1f8fc724ced68770b",
+   "xunitSummaries": [
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    },
+    {
+     "total": 1,
+     "errors": 0,
+     "failed": 0,
+     "skipped": 0,
+     "notRun": 0
+    }
+   ],
+   "buildSummary": [],
+   "artifactsBefore": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+     "mtime": "2026-11-15T00:10:19.032891+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+     "mtime": "2026-11-15T00:10:08.104391+00:00"
+    }
+   },
+   "artifactsAfter": {
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll": {
+     "sha256": "a7baa8e9ea7a2c953739c690162f442a4f76f957a29a05d2b1e14c07eafc6847",
+     "mtime": "2026-11-15T00:10:19.032891+00:00"
+    },
+    "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.dll": {
+     "sha256": "3b0f4930f4011f13b69690f7c526fadc1583b2590d645a4a34bb667d24f29e67",
+     "mtime": "2026-11-15T00:10:08.104391+00:00"
+    }
+   },
+   "disposition": "SUPPLEMENTARY: explicit caller selection -p:HexalithEventStoreVersion=5.1.0 (the current authoritative SDK). Shows the story sources build and pass in a coherent current source graph; does not close the canonical Debug/source gate."
+  },
+  {
+   "name": "diag-c-source-build-normal",
+   "cwd": "/home/administrator/projects/hexalith/platform",
+   "command": [
+    "dotnet",
+    "build",
+    "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+    "-c",
+    "Debug",
+    "-p:UseHexalithProjectReferences=true",
+    "-m:1",
+    "-nodeReuse:false",
+    "-v:n"
+   ],
+   "exitCode": 1,
+   "outputSha256": "e603e34dddc087a53b92626e48a9b4d4cd79ea95601fd9ef4f1a7893beedb7a2",
+   "disposition": "DIAGNOSTIC: normal-verbosity repeat of the canonical Composition source build, retained as an excerpt to expose the catalog refusal text hidden by -v:q."
+  }
+ ],
+ "limitations": [
+  "The canonical Platform Composition/Composition.Tests Debug/source builds fail (sourceGateBlocker); the source-mode T enrollment runs therefore exist only as supplementary explicit-SDK evidence.",
+  "Platform package mode resolves the finite SDK4.2 view (EventStore 4.2.0, Memories 3.0.27, Tenants 7.0.7) selected by the Builds 6.0.3 catalog owner, not the latest EventStore 5.1.0; Folders package mode resolves EventStore 5.1.0, Memories 4.0.0, Tenants 8.0.0.",
+  "Strict Folders acceptance, Folders 12.2 completion, Platform lifecycle qualification and new SDK cohort qualification are not claimed.",
+  "Story-owned sources, revisions and gitlinks were identical before and after the run; no tracked file was edited by this verification except the spec record."
+ ]
+}
