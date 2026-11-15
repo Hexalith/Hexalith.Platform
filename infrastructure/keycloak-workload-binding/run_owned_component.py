@@ -51,6 +51,7 @@ def inventory():
                 probe("eventstore", operation, {})
         else:
             probe("eventstore", "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
+            probe("eventstore", "eventstore:stream-scan-native", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
         clients.append(dict(resource=name, clientId=workloads[name], workload=workloads[name], probes=probes))
     return dict(tenant=tenant, receivers=names, clients=clients)
 

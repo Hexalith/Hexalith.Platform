@@ -176,7 +176,8 @@ def validate_inventory(inventory):
         elif client["resource"] == "tenants":
             expected = [("eventstore", operation, {}) for operation in ("eventstore:command-submit", "eventstore:stream-read")]
         else:
-            expected = [("eventstore", "eventstore:stream-read", {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})]
+            expected = [("eventstore", operation, {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
+                for operation in ("eventstore:stream-read", "eventstore:stream-scan-native")]
         remaining = list(expected)
         for probe in client["probes"]:
             bindings = probe["bindings"]

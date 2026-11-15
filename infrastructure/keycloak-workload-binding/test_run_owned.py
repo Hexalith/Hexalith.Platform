@@ -23,6 +23,25 @@ from run_owned_component import inventory, lifecycle_controls, nonstandard_calle
 
 
 class RunOwnedTests(unittest.TestCase):
+    def test_native_scan_requires_its_own_exact_source_grant(self):
+        model = inventory()
+        self.assertEqual(6, len(owned.validate_inventory(model)))
+        self.assertEqual(25, sum(len(client["probes"]) for client in model["clients"]))
+        selected = next(client for client in model["clients"] if client["resource"] == "folders-workers-proof-a")
+        self.assertEqual(["eventstore:stream-read", "eventstore:stream-scan-native"], [probe["operation"] for probe in selected["probes"]])
+        for fault in ("missing", "tenant", "domain", "operation", "audience", "extra-binding", "duplicate"):
+            with self.subTest(fault=fault):
+                changed = copy.deepcopy(model)
+                probes = next(client for client in changed["clients"] if client["resource"] == "folders-workers-proof-a")["probes"]
+                if fault == "missing": probes.pop()
+                elif fault in ("tenant", "domain"): probes[1]["bindings"]["eventstore:bound-" + fault] = "other"
+                elif fault == "operation": probes[1]["operation"] = "eventstore:stream-read"
+                elif fault == "audience": probes[1]["audience"] = "other"
+                elif fault == "extra-binding": probes[1]["bindings"]["eventstore:bound-resource"] = "other"
+                elif fault == "duplicate": probes.append(copy.deepcopy(probes[1]))
+                with self.assertRaisesRegex(RuntimeError, "refused: (?:incomplete|exact)-permission-inventory$"):
+                    owned.validate_inventory(changed)
+
     def test_provider_mount_uses_receipt_bound_snapshot_during_rebuild(self):
         with tempfile.TemporaryDirectory() as name:
             provider = Path(name) / "provider.jar"

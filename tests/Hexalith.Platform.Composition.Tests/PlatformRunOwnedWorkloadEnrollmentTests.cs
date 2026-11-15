@@ -33,7 +33,7 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(builder, "selected-run-tenant");
         JsonElement[] clients = [.. inventory.GetProperty("clients").EnumerateArray()];
         clients.Length.ShouldBe(8);
-        clients.Sum(client => client.GetProperty("probes").GetArrayLength()).ShouldBe(19);
+        clients.Sum(client => client.GetProperty("probes").GetArrayLength()).ShouldBe(25);
         clients.Select(client => client.GetProperty("workload").GetString()).Distinct().Count().ShouldBe(6);
         string Caller(string name) => clients.Single(client => client.GetProperty("resource").GetString() == name).GetProperty("workload").GetString()!;
         Caller("folders").ShouldBe(Caller("folders-replica"));
@@ -75,6 +75,12 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
     [InlineData("physical-bootstrap-audience")]
     [InlineData("duplicate-tenants-query")]
     [InlineData("duplicate-global-administrators-query")]
+    [InlineData("scan-missing")]
+    [InlineData("scan-tenant")]
+    [InlineData("scan-domain")]
+    [InlineData("scan-operation")]
+    [InlineData("scan-extra-binding")]
+    [InlineData("scan-duplicate")]
     public void ChangedInventoryRefuses(string fault)
     {
         IDistributedApplicationBuilder builder = Builder();
@@ -86,6 +92,12 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
                 client!["probes"]![0]!["audience"] = "eventstore-actual-run";
         if (fault == "physical-bootstrap-audience") Probes("tenants")[0]!["audience"] = "eventstore-actual-run";
         if (fault == "source") Probes("folders-workers-proof-a").Clear();
+        if (fault == "scan-missing") Probes("folders-workers-proof-a").RemoveAt(1);
+        if (fault == "scan-tenant") Probes("folders-workers-proof-a")[1]!["bindings"]!["eventstore:bound-tenant"] = "other";
+        if (fault == "scan-domain") Probes("folders-workers-proof-a")[1]!["bindings"]!["eventstore:bound-domain"] = "other";
+        if (fault == "scan-operation") Probes("folders-workers-proof-a")[1]!["operation"] = "eventstore:stream-read";
+        if (fault == "scan-extra-binding") Probes("folders-workers-proof-a")[1]!["bindings"]!["eventstore:bound-resource"] = "other";
+        if (fault == "scan-duplicate") Probes("folders-workers-proof-a").Add(Probes("folders-workers-proof-a")[1]!.DeepClone());
         if (fault == "callback") Probes("eventstore").RemoveAt(0);
         if (fault == "bootstrap") Probes("tenants").RemoveAt(0);
         if (fault == "query") Probes("eventstore").RemoveAt(8);

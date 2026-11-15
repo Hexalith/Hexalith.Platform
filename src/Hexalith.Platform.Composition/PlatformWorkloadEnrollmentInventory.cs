@@ -53,7 +53,10 @@ public static class PlatformWorkloadEnrollmentInventory
                 Probe("eventstore", "eventstore:stream-read", []);
             }
             else
+            {
                 Probe("eventstore", "eventstore:stream-read", new() { [BindingPrefix + "tenant"] = tenant, [BindingPrefix + "domain"] = "folders" });
+                Probe("eventstore", "eventstore:stream-scan-native", new() { [BindingPrefix + "tenant"] = tenant, [BindingPrefix + "domain"] = "folders" });
+            }
             clients.Add(new { resource = resource.Name, clientId = workload, workload, probes });
         }
         JsonElement inventory = JsonSerializer.SerializeToElement(new { tenant, receivers = cohort.Select(item => item.Name).Order(StringComparer.Ordinal), clients });
@@ -102,21 +105,29 @@ public static class PlatformWorkloadEnrollmentInventory
             return !string.IsNullOrWhiteSpace(boundTenant.GetString()) && !boundTenant.GetString()!.Contains('*') && (tenant is null || boundTenant.GetString() == tenant);
         }
         const string gatewayAudience = "eventstore";
-        string SourceTenant(JsonElement probe)
+        string SourceTenant(JsonElement probe, string operation)
         {
             JsonElement bindings = probe.GetProperty("bindings");
-            if (!Pair(probe, gatewayAudience, "eventstore:stream-read") || bindings.ValueKind != JsonValueKind.Object
+            if (!Pair(probe, gatewayAudience, operation) || bindings.ValueKind != JsonValueKind.Object
                 || bindings.EnumerateObject().Count() != 2 || Text(bindings, BindingPrefix + "domain") != "folders") throw Refused();
             string tenant = Text(bindings, BindingPrefix + "tenant");
             if (string.IsNullOrWhiteSpace(tenant) || tenant.Contains('*') || tenant != tenant.Trim()) throw Refused();
             return tenant;
         }
-        string[] tenants = [.. Client("folders").GetProperty("probes").EnumerateArray().Select(SourceTenant).Order(StringComparer.Ordinal)];
+        string[] tenants = [.. Client("folders").GetProperty("probes").EnumerateArray()
+            .Where(probe => Text(probe, "operation") == "eventstore:stream-read")
+            .Select(probe => SourceTenant(probe, "eventstore:stream-read")).Order(StringComparer.Ordinal)];
         if (tenants.Length == 0 || tenants.Distinct(StringComparer.Ordinal).Count() != tenants.Length
             || selectedTenant is not null && !tenants.Contains(selectedTenant, StringComparer.Ordinal)) throw Refused();
         foreach (ProjectResource source in cohort.Where(resource => resource.Name is "folders" or "folders-replica"
             || resource.Name.StartsWith("folders-workers", StringComparison.Ordinal)))
-            if (!Client(source.Name).GetProperty("probes").EnumerateArray().Select(SourceTenant).Order(StringComparer.Ordinal).SequenceEqual(tenants, StringComparer.Ordinal)) throw Refused();
+        {
+            JsonElement[] probes = [.. Client(source.Name).GetProperty("probes").EnumerateArray()];
+            if (probes.Length != tenants.Length * 2) throw Refused();
+            foreach (string operation in new[] { "eventstore:stream-read", "eventstore:stream-scan-native" })
+                if (!probes.Where(probe => Text(probe, "operation") == operation)
+                    .Select(probe => SourceTenant(probe, operation)).Order(StringComparer.Ordinal).SequenceEqual(tenants, StringComparer.Ordinal)) throw Refused();
+        }
         JsonElement[] bootstrap = [.. Client("tenants").GetProperty("probes").EnumerateArray()];
         if (bootstrap.Length != 2 || bootstrap.Count(probe => Pair(probe, gatewayAudience, "eventstore:command-submit") && Unbound(probe)) != 1
             || bootstrap.Count(probe => Pair(probe, gatewayAudience, "eventstore:stream-read") && Unbound(probe)) != 1) throw Refused();

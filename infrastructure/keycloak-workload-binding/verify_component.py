@@ -51,7 +51,8 @@ def run(sdk_assembly=None, apphost_assembly=None):
         other_scope = copy.deepcopy(grant)
         other_scope.update(grantId="component-other-scope", bindings={"eventstore:bound-tenant": ["tenant-b"], "eventstore:bound-domain": ["folders"]})
         scopes = ["eventstore-audience.eventstore", "eventstore-operation.eventstore.stream-read"]
-        optional_scopes = scopes + ["eventstore-audience.folders", "eventstore-audience.tenants", "eventstore-operation.eventstore.command-submit"]
+        optional_scopes = scopes + ["eventstore-audience.folders", "eventstore-audience.tenants", "eventstore-operation.eventstore.command-submit",
+                                   "eventstore-operation.eventstore.stream-scan-native"]
         optional_scopes += ["eventstore-operation.domain-service." + operation for operation in ("process", "query", "project", "metadata", "replay-state")]
         client = dict(clientId="folders-component", enabled=True, publicClient=False, secret=secret,
                       serviceAccountsEnabled=True, standardFlowEnabled=False, directAccessGrantsEnabled=False,
@@ -174,12 +175,15 @@ def run(sdk_assembly=None, apphost_assembly=None):
                 if completed.returncode != 0:
                     raise RuntimeError("Explicit real-issuer SDK component tests failed; see test output.")
             controls = []
-            for scenario in ["credential", "tenant", "domain", "audience", "operation", "missing", "extra", "duplicate", "oversized", "unbound"]:
+            for scenario in ["credential", "tenant", "domain", "audience", "operation", "scan-without-grant", "missing", "extra", "duplicate", "oversized", "unbound"]:
                 bad = list(form)
                 altered = copy.deepcopy(details)
                 if scenario == "credential": bad[2] = ("client_secret", secrets.token_urlsafe(32))
                 elif scenario in ("tenant", "domain"): altered[0]["bindings"]["eventstore:bound-" + scenario] = "other"
                 elif scenario in ("audience", "operation"): altered[0][scenario] = "other"
+                elif scenario == "scan-without-grant":
+                    altered[0]["operation"] = "eventstore:stream-scan-native"
+                    bad[3] = ("scope", "eventstore-audience.eventstore eventstore-operation.eventstore.stream-scan-native")
                 elif scenario == "missing": del altered[0]["bindings"]["eventstore:bound-domain"]
                 elif scenario == "extra": altered[0]["bindings"]["eventstore:bound-actor"] = "extra"
                 if scenario not in ("credential", "unbound", "duplicate", "oversized"):
@@ -213,6 +217,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
                             probe("eventstore", operation, {})
                     else:
                         probe("eventstore", "eventstore:stream-read", details[0]["bindings"])
+                        probe("eventstore", "eventstore:stream-scan-native", details[0]["bindings"])
                     own_client = copy.deepcopy(client)
                     own_client.update(clientId=resource + "-consumer-component", secret=own_secret)
                     own_client["attributes"]["hexalith.workload-binding.workload"] = resource
