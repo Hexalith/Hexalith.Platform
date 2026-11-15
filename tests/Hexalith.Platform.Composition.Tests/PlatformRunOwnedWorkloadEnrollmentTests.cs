@@ -60,6 +60,38 @@ public sealed class PlatformRunOwnedWorkloadEnrollmentTests
         }
     }
 
+    /// <summary>The launcher's own Python digest and exact-inventory validator accept the C# producer's request bytes.</summary>
+    [Fact]
+    public async Task CreatedInventoryPassesTheLauncherDigestAndValidator()
+    {
+        JsonElement inventory = PlatformWorkloadEnrollmentInventory.Create(Builder(), "selected-run-tenant");
+        // Mirror the bridge request: same anonymous shape and encoder, digest over the exact inventory value bytes.
+        string inventorySha256 = Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(inventory.GetRawText())));
+        byte[] request = JsonSerializer.SerializeToUtf8Bytes(new { runId = "control", capability = "control", childPid = 1, childIdentity = "control", deadline = 1L, inventory, inventorySha256 });
+        string requestPath = Path.Combine(Path.GetTempPath(), "run-owned-inventory-control-" + Path.GetRandomFileName() + ".json");
+        await File.WriteAllBytesAsync(requestPath, request, TestContext.Current.CancellationToken);
+        try
+        {
+            const string validator = "import json, sys\n"
+                + "sys.path.insert(0, sys.argv[1])\n"
+                + "import run_owned\n"
+                + "raw = open(sys.argv[2], 'rb').read()\n"
+                + "request = json.loads(raw)\n"
+                + "if request['inventorySha256'] != run_owned.cohort_digest(run_owned.request_inventory_bytes(raw)): sys.exit('cohort-binding-changed')\n"
+                + "print(len(run_owned.validate_inventory(request['inventory'])))\n";
+            ProcessStartInfo start = new("python3") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            foreach (string argument in new[] { "-B", "-I", "-c", validator, Path.Combine(PlatformTestRepository.Root, "infrastructure", "keycloak-workload-binding"), requestPath })
+                start.ArgumentList.Add(argument);
+            using Process python = Process.Start(start) ?? throw new InvalidOperationException("The launcher validator did not start.");
+            Task<string> output = python.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
+            Task<string> error = python.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
+            await python.WaitForExitAsync(TestContext.Current.CancellationToken);
+            // Six distinct actual workloads: replicas share, proof Workers stay independent.
+            (python.ExitCode, (await output).Trim(), (await error).Trim()).ShouldBe((0, "6", string.Empty));
+        }
+        finally { File.Delete(requestPath); }
+    }
+
     /// <summary>Missing or changed source, bootstrap, callback, query and tenant entries refuse.</summary>
     /// <param name="fault">The isolated inventory change.</param>
     [Theory]

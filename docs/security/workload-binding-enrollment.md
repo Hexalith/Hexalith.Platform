@@ -104,11 +104,17 @@ not add another grant or accept the physical gateway AppId as an audience.
 
 | Caller | Receiver / operation | Separate permission |
 | --- | --- | --- |
-| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-read` | Exact tenant + `folders` bindings, metadata-only source authorization and independent RSA proof |
+| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-read` | Exact tenant + `folders` bindings, metadata-only source authorization and independent `Authentication:BoundStreamRead` RSA proof |
+| Folders Server and each distinct Workers caller | EventStore / `eventstore:stream-scan-native` | Separate grant with the same exact tenant + `folders` bindings and its own independent `Authentication:NativeSourceScan` RSA proof; a read grant never authorizes a scan |
 | EventStore | Actual Folders and Tenants receivers / process, project, metadata, replay where already required | Separate explicitly `allowUnbound` callback grants; preserve each approved operation |
 | EventStore | Actual Folders and Tenants receivers / `domain-service:query` | Exact tenant + domain plus `eventstore:bound-query-authority-v1`, with `allowQueryAuthorityDigest` only for this grant |
 | Tenants | EventStore / `eventstore:command-submit` | Separate existing bootstrap permission, independent command proof and catalog generation |
 | Tenants | EventStore / `eventstore:stream-read` | Separate existing bootstrap/source permission and independent RSA proof |
+
+The native-scan permission is required. A persistent manifest approved with
+read-only source grants now refuses with the generic exact-inventory error. Add
+the separate scan grant and probe for every Folders source caller, then approve
+the new manifest digest.
 
 Do not infer extra operations from this inventory. Reconcile it against the
 actual approved cohort and include any additional existing workload sender or
@@ -150,7 +156,8 @@ leave the profile disabled and name those missing inputs; invalid references fai
 closed before catalog capture.
 
 Resource coverage alone is insufficient. The consumer requires the complete exact
-source tenant/domain set for every source resource, all existing unbound callback
+source tenant/domain set for every source resource, once for
+`eventstore:stream-read` and once for `eventstore:stream-scan-native`, all existing unbound callback
 operations for both actual domain-service audiences, separately bound query
 digest probes for Folders and both Tenants domains (the latter use the SDK
 normalized reserved storage tenant `system`), and separate Tenants unbound
@@ -225,7 +232,7 @@ query permissions. Tenants queries use `TenantCanonicalizer.ReservedStorageTenan
 the tenant and domain remain exact. Resource entries are never deduplicated.
 Only replicas with the same actual workload and identical permissions share a
 client/secret. Distinct proof callers keep separate credentials and the fixture's
-existing independent RSA source proofs.
+existing independent read and native-scan RSA source proofs.
 
 The launcher imports the complete realm at startup into a fresh container,
 asks Docker to allocate a loopback port with `127.0.0.1::8443`, validates the
@@ -260,9 +267,11 @@ signals do not interrupt it. The bridge allows up to 30 seconds for cleanup
 acknowledgement after expiry without extending enrollment validity.
 The launcher reports cleanup failures as
 `owned-child-tree-cleanup-incomplete`, `owned-container-cleanup-incomplete` or
-`owned-private-material-cleanup-incomplete` and exits unsuccessfully. The component harness preserves these sanitized
-leftover records even when a captured test fails. A failed cleanup must be resolved before claiming a
-clean run. Evidence output is labeled `run-owned enrollment` and contains only
+`owned-private-material-cleanup-incomplete` and exits unsuccessfully. The container
+and private-material failures also print a sanitized leftover record. The
+component harness preserves that record even when a captured test fails. A
+child-tree failure appears only as its stderr refusal code. A failed cleanup must
+be resolved before claiming a clean run. Evidence output is labeled `run-owned enrollment` and contains only
 counts, version/digests, control names and observed leftovers; retain no private
 run directory, credentials, tokens, grants, certificates or keys.
 
@@ -276,10 +285,10 @@ python3 -B verify_component.py --run-owned --platform-assembly /absolute/path/to
 ```
 
 The assembly commands also acquire real SDK assertions for Tenants command-submit,
-unbound Tenants source and exact bound Folders source. They independently verify
+unbound Tenants source and exact bound Folders source read and native scan. They independently verify
 canonical audience, caller, operation, bindings, grant identity/revision, signature
 and lifetime; physical gateway audience substitution and altered bindings refuse.
-Folders native source controls retain the physical Dapr target and independent RSA
+Folders native source read and scan controls retain the physical Dapr target and independent RSA
 proof and observe zero source transport on either refusal. C# and Python inventory
 controls reject physical-audience substitution before enrollment.
 

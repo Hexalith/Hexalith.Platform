@@ -520,3 +520,56 @@ Retained failures:
 Package mode for Platform resolves the finite SDK4.2 view chosen by the catalog owner: EventStore 4.2.0, Memories 3.0.27 and Tenants 7.0.7. Folders resolves EventStore 5.1.0, Memories 4.0.0 and Tenants 8.0.0. This pass makes no claim of strict Folders acceptance, Folders 12.2 completion, or Platform lifecycle or SDK qualification. No commit, push or submodule-pointer change was made.
 
 Parent audit: the parent reproduced the Composition Debug/source catalog failure independently at `0cf01331` and corrected the default-lane counts against the xUnit XML (`T` 36 pass and 1 explicit test not run; `A` 8 pass and 6 explicit tests not run, which the live lanes run). By user decision on 2026-11-15, the default Debug/source gate is deferred to the Builds catalog owner and the story proceeds to review.
+
+### Review Findings — delta review, 2026-11-15
+
+Scope: the code not yet reviewed. Platform story files `0cf01331..f6f85032`: the G31–G38 application and the story 12.2 commit `5a58ba20`, which added `eventstore:stream-scan-native`. Folders story files `c01f3833..89e2fbb6`: commit `54ab7e02` (G31) and the story 12.2 commit `6ac67074` in `WorkloadEnrollmentComponentTests`. Four layers reported: blind, edge-case, verification-gap and acceptance. Triage normalized 29 findings: 13 merge into 5 patch groups and 16 are rejected. There are no decision-needed or defer items. Parent check at HEAD: `python3 -B -m unittest test_run_owned` passes 46/46.
+
+- [x] [Review][Patch] The doc omits the `eventstore:stream-scan-native` permission and its separate `NativeSourceScan` RSA proof, which the shared inventory now requires of every Folders source caller. Persistent manifests built from the doc's exact-inventory table are refused by `PlatformWorkloadEnrollment.ConfigureAsync` → `PlatformWorkloadEnrollmentInventory.Validate`. Add the row, update the source-set, RSA-proof and SDK-assertion passages, and note that persistent manifests must add the grant [docs/security/workload-binding-enrollment.md:107]
+- [x] [Review][Patch] The G31 net11 sweep missed `scripts/`. The tooling fixtures still create `bin/<cfg>/net10.0` assemblies, so `NightlyDriftGateTests` and `ScheduledPolicyGateTests` fail with `missing-test-assembly`. Folders CI "Run CI/CD tooling unit tests" passed at `c01f3833` and has been red from `54ab7e02` onwards. The release-package consumer generator also writes `net10.0` against net11-only packages [references/Hexalith.Folders/scripts/tests/test_ci_cd_tooling.py:565]
+- [x] [Review][Patch] The story 12.2 scan-native edits to 2.12 files have no execution record. Nothing records a run of the six `scan-*` C# refusal cases (48 enrollment cases now, against 42 recorded), the updated Folders component test, or the 25-probe live lanes. Six source hashes in `review-patches-20261115/verification.json` no longer match HEAD. Re-run T (package mode), the A enrollment classes and `verify_component.py --run-owned` with both assembly lanes, then bind fresh hashes [infrastructure/keycloak-workload-binding/run_owned.py:179]
+- [x] [Review][Patch] No default-run test feeds the C# `PlatformWorkloadEnrollmentInventory.Create` output into Python `run_owned.validate_inventory`, so producer/launcher drift only surfaces in explicit Docker lanes. The commit's "cross-language digest" coverage is C#-only. Add a default-run Composition test that pipes `Create(...)` JSON to the Python validator [tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs:33]
+- [x] [Review][Patch] The G33 doc sentence says the component harness preserves sanitized leftover records for all three cleanup codes. `owned-child-tree-cleanup-incomplete` emits no `cleanupIncomplete` record, and `report_cleanup_incomplete` accepts only the container and private-material codes. Scope the sentence to those two [docs/security/workload-binding-enrollment.md:262]
+
+**Rejected**
+
+- B3 false: the `command()` comment says "its cleanup", and cleanup commands run after `terminating=True`, so the first signal during provisioning cancels by design.
+- B4 low: the session test fails without `start_new_session`. A behavioral signal test would need a shim and process-group signalling.
+- B5 low: the scan client scope exists in the realm's `clientScopes`, so the refusal is the grant check. Positive scan issuance runs in the run-owned and assembly lanes.
+- B6 low: test-only gaps. C# `SourceTenant` pins the gateway audience for both operations, the Python exact `remaining` match refuses duplicates, and the `folders` client is inside the per-source loop.
+- B7 false: `build_realm` derives one grant and scope per probe generically (`run_owned.py:209-217`).
+- B8 low: the operation literals predate this change, and replacing them is a refactor beyond a direct correction. Cross-language drift is covered by the fourth patch.
+- B9 low: the existing-bundle host-trust negative already runs in the explicit lane (`PlatformRunOwnedWorkloadEnrollmentTests.cs:536`). The rename is cosmetic.
+- B10 low: an extra proof header on the wrong request adds no authority, and checking for it means new assertions.
+- B11 low: G34 now sets the opt-in, and the doc states that component results grant no qualification.
+- B12 false: `Hexalith.Folders.Client.Generation` is deliberately `net10.0`, and its test path matches that project. Deriving the TFM is the carried B2 reject. The real `scripts/` leftovers are the second patch.
+- B13 false: no rendered effect, and the file already has many lines over 100 characters.
+- E4 carried reject: A5 (a double cleanup failure masks the child-tree code).
+- E5 low: cancellation between fork and `Popen` return is a sub-second window, and tracking spawned PIDs adds machinery. It belongs to the carried D4 delayed-creation family.
+- E6 low: the commit-message overstatement is pushed history. The code comment and doc correctly limit protection to cleanup.
+- A1 rejected: the fix is a spec edit. The scan-native change tightens verification rather than relaxing it.
+- A4 low: a process-only binding gap for an identical one-token edit. Folders contract-spine CI already failed at Build before G31.
+- Merged into the patches above: B1, E2, VO1 and A3 (first); E1, V1 and E8 (second); A2 (third); V2 and E7 (fourth); B2, E3 and VO2 (fifth).
+
+#### Delta-review patch application and re-verification, 2026-11-15
+
+The parent applied all five patches. There was no commit, push or gitlink change.
+
+- **Doc (first and fifth patches):** the exact-inventory table now has a separate `eventstore:stream-scan-native` row with its own `Authentication:NativeSourceScan` RSA proof. A note says that persistent manifests with only read grants now refuse and must add the scan grant, then approve a new digest. The source-set, RSA-proof and SDK-assertion passages name both operations. The cleanup sentence says that only the container and private-material failures print a preserved leftover record; a child-tree failure appears only as its stderr code.
+- **Folders net11 scripts (second patch):** three `net10.0` fixture and assertion paths in `scripts/tests/test_ci_cd_tooling.py` and the consumer generator's TFM now use `net11.0`. The change is in an isolated scratch worktree on branch `fix/2-12-delta-review-net11-scripts` at `89e2fbb6`, uncommitted, so a concurrent `/pushall` cannot pick it up. The diff is retained as `evidence/2-12/delta-review-20261115/folders-net11-scripts.patch`. On user request it was committed and pushed to Folders main as `cb5de783` (rebased onto `f538bb77`; the two affected classes still pass 14/14 after the rebase). The Platform Folders gitlink stays at `89e2fbb6`. Without the patch, `ScheduledPolicyGateTests` and `NightlyDriftGateTests` show 26 failures; with it they pass 14/14, and the CI-equivalent `scripts/tests` discovery passes 69/69.
+- **Cross-language test (fourth patch):** `CreatedInventoryPassesTheLauncherDigestAndValidator` serializes the C# inventory in the same request shape as the bridge. It runs the launcher's own Python `request_inventory_bytes`, `cohort_digest` and `validate_inventory` on those bytes. A PATH-shim mutation control, which leaves the checkout untouched, confirms the test detects both kinds of drift. Operation drift fails with `exact-permission-inventory` and digest drift with `cohort-binding-changed`, while the unmutated copy passes.
+- **Re-verification at HEAD (third patch):**
+  - K: Python `test_run_owned` passes 46/46. The `--run-owned` lane runs 25 fresh RSA probes and five real-container terminal controls, plus the UID 1001 caller.
+  - A (Debug/source): the enrollment classes pass 8 with 6 explicit tests not run, and the run-owned live lane passes 1/1.
+  - T: the default Debug/package build now **fails outside the story files**. Commit `466c6dd1` ("preserve legacy tuple for synchronized Platform source", merged into main by `66685c5f`) set `.config/dotnet-tools.json` to Builds CLI `4.44.3`. `Directory.Build.props:7` then selects `net10.0`, which fails NU1201/NU1202 against net11-only dependencies. A global `-p:TargetFramework=net11.0` does not help, because NuGet restore ignores it.
+  - Supplementary T: rebuilt with only `-p:_PlatformRuntimeToolManifest` overridden. The enrollment class has 48 passes and 1 explicit test not run (42 prior cases, the six `scan-*` cases and the new test). Both explicit lanes pass: `provisioned=true` and `adoptionCancelled=true`.
+  - Zero labeled containers and zero private run directories remain.
+
+The [verification record](evidence/2-12/delta-review-20261115/verification.json) binds source and assembly hashes, step timings, logs and xUnit XML.
+
+These items remain open outside this story:
+- the `466c6dd1` legacy-tuple merge on Platform main;
+- the deferred default Platform Debug/source catalog gate;
+- a Folders CI run at `cb5de783` to confirm the tooling step is green.
+
+This pass grants no strict Folders acceptance, Folders 12.2 completion, or Platform lifecycle or SDK qualification.

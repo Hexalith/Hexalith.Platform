@@ -1,0 +1,151 @@
+{
+  "qualification": "run-owned enrollment",
+  "story": "2-12-provision-a-run-owned-workload-binding-authority-for-dispos",
+  "review": "delta review 2026-11-15 (Platform 0cf01331..f6f85032, Folders c01f3833..89e2fbb6)",
+  "revisions": {
+    "platform": "f6f85032 + uncommitted delta-review patches",
+    "folders": "89e2fbb6 (checkout, unchanged)",
+    "foldersWorktree": "fix/2-12-delta-review-net11-scripts at 89e2fbb6 + uncommitted net11 scripts patch",
+    "builds": "73e60af8 (v6.0.4)",
+    "foldersPushed": "cb5de783 on Folders main (net11 scripts patch rebased onto f538bb77); Platform gitlink unchanged at 89e2fbb6"
+  },
+  "patches": {
+    "P1 doc native-scan permission": "docs/security/workload-binding-enrollment.md",
+    "P2 Folders scripts net11": "worktree scripts/tests/test_ci_cd_tooling.py, scripts/validate-consumer-package-references.py (folders-net11-scripts.patch)",
+    "P3 re-verification at HEAD": "this record",
+    "P4 cross-language default test": "PlatformRunOwnedWorkloadEnrollmentTests.CreatedInventoryPassesTheLauncherDigestAndValidator",
+    "P5 doc child-tree cleanup record": "docs/security/workload-binding-enrollment.md"
+  },
+  "steps": {
+    "k-maven": {
+      "exit": "0",
+      "start": "2026-11-15T10:20:02Z",
+      "end": "2026-11-15T10:20:05Z"
+    },
+    "k-unittest": {
+      "exit": "0",
+      "start": "2026-11-15T10:20:05Z",
+      "end": "2026-11-15T10:20:56Z"
+    },
+    "k-live-run-owned": {
+      "exit": "0",
+      "start": "2026-11-15T10:20:56Z",
+      "end": "2026-11-15T10:21:44Z"
+    },
+    "t-package-build": {
+      "exit": "1",
+      "start": "2026-11-15T10:21:44Z",
+      "end": "2026-11-15T10:21:46Z"
+    },
+    "a-source-build": {
+      "exit": "0",
+      "start": "2026-11-15T10:21:46Z",
+      "end": "2026-11-15T10:22:20Z"
+    },
+    "a-source-enrollment-default": {
+      "exit": "0",
+      "start": "2026-11-15T10:22:20Z",
+      "end": "2026-11-15T10:22:22Z"
+    },
+    "a-source-live-run-owned": {
+      "exit": "0",
+      "start": "2026-11-15T10:22:22Z",
+      "end": "2026-11-15T10:22:42Z"
+    },
+    "folders-tooling-unittest": {
+      "exit": "0",
+      "start": "2026-11-15T10:22:42Z",
+      "end": "2026-11-15T10:23:16Z"
+    },
+    "folders-consumer-generator-compile": {
+      "exit": "0",
+      "start": "2026-11-15T10:23:16Z",
+      "end": "2026-11-15T10:23:16Z"
+    },
+    "leftovers": {
+      "exit": "0",
+      "start": "2026-11-15T10:23:16Z",
+      "end": "2026-11-15T10:23:17Z"
+    },
+    "supplementary-t-global-tfm-attempt": {
+      "exit": "1",
+      "start": "2026-11-15T10:24:10Z",
+      "end": "2026-11-15T10:24:12Z",
+      "note": "NuGet restore ignores a global TargetFramework; still NU1201/NU1202 net10.0"
+    },
+    "supplementary-t-package-net11-build": {
+      "exit": "0",
+      "start": "2026-11-15T10:24:51Z",
+      "end": "2026-11-15T10:25:01Z"
+    },
+    "supplementary-t-package-net11-enrollment-default": {
+      "exit": "0",
+      "start": "2026-11-15T10:25:01Z",
+      "end": "2026-11-15T10:25:04Z"
+    },
+    "supplementary-t-package-net11-live-lanes": {
+      "exit": "0",
+      "start": "2026-11-15T10:25:04Z",
+      "end": "2026-11-15T10:25:27Z"
+    },
+    "leftovers-after-t": {
+      "exit": "0",
+      "start": "2026-11-15T10:25:27Z",
+      "end": "2026-11-15T10:25:27Z"
+    }
+  },
+  "results": {
+    "k-unittest": "46/46",
+    "k-live-run-owned": "25 fresh RSA probes, 5 real-container terminal controls, UID 1001 caller",
+    "t-package-default-build": "FAIL outside story files: HEAD .config/dotnet-tools.json (466c6dd1, Builds CLI 4.44.3) selects net10.0 at Directory.Build.props:7; NU1201/NU1202 against net11-only dependencies",
+    "supplementary-t-package-net11": "build 0 errors with -p:_PlatformRuntimeToolManifest override; enrollment class 48 pass + 1 explicit not run (49 = 42 prior + 6 scan-* + 1 new); explicit lanes provisioned=true and adoptionCancelled=true",
+    "a-source": "build 0 errors; enrollment classes 8 pass + 6 explicit not run; run-owned live lane 1/1 provisioned=true",
+    "folders-tooling-unittest": "69/69 on the patched worktree; ScheduledPolicy+NightlyDrift classes 26 failures unpatched -> 14/14 patched",
+    "mutation-P4": "operation drift -> exact-permission-inventory FAIL; digest drift -> cohort-binding-changed FAIL; unmutated shim copy PASS",
+    "leftovers": "0 labeled containers, 0 private run directories (after both runs)"
+  },
+  "sourceSha256": {
+    "docs/security/workload-binding-enrollment.md": "825b3e50e3d0c5257dee98a9acbbb2489ef927faa83c7411dbf30e4b0290a518",
+    "tests/Hexalith.Platform.Composition.Tests/PlatformRunOwnedWorkloadEnrollmentTests.cs": "790231d201ffd9c2e1702f57a013908a66dd6b09de7c0bef2bd03687d67dfccb",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39",
+    "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "da4e12c45723e4ec10102a1c224708f1dd16a7934bbaed5190b99b3c2648ad36",
+    "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5",
+    "infrastructure/keycloak-workload-binding/run_owned.py": "3d0255b6d0262a2420a3cbd42e8f35fda04c09e3560fc886f912922c49e95320",
+    "infrastructure/keycloak-workload-binding/run_owned_component.py": "2cc539f17b59641eb1a648d754549e8f6850561774c6de49b4e85e2485fe20a9",
+    "infrastructure/keycloak-workload-binding/test_run_owned.py": "d5e20d6acd8180356ef62a9e751c48571562d66fe77a646d950df27d638a2790",
+    "infrastructure/keycloak-workload-binding/verify_component.py": "15e9e8a08005b97d5493081064350c5b2796808b16c9dbaa6e93a42e22047ab4",
+    "tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentComponentTests.cs": "cdb6953af3e1f02f3498ecd3528410eec71fb6f0b8fec7ddb42cd7a359d8392f",
+    "tests/Hexalith.Folders.AppHost.Tests/WorkloadEnrollmentConfigurationTests.cs": "c74d57525dcb9ed951ac060cc53d2cb295307bb6157b097b26e25858b9c4c364",
+    "tests/Hexalith.Folders.AppHost.Tests/OperationalProviderFixture.cs": "7d56d9c498057bbb11b8419a3e8e05a76300f9f9ba76ddf6021010ad6abac85a",
+    "tests/Hexalith.Folders.AppHost.Tests/FolderDurabilityAcceptanceFixture.cs": "c124579b957707b81a294333a60f77fac85a229c27a959add90647815bea6331",
+    "worktree:scripts/tests/test_ci_cd_tooling.py": "3a27a1ad8d29ec434b2636e27685ed5f9597e8dbe07e6e768ed321ec6bd18941",
+    "worktree:scripts/validate-consumer-package-references.py": "c09ae7f6e4b16c1c465e28027068034393335c9996b0349ab58184f6cb7be8a1"
+  },
+  "assemblySha256": {
+    "note": "first T line is the stale 02:07 DLL left by the failed default build; the fresh supplementary DLL is the last line",
+    "entries": [
+      [
+        "16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      [
+        "859bfe94dba0e19b46d475f2c8bb1675d6152fbd09cb66ef24c836f89827347a",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Folders/tests/Hexalith.Folders.AppHost.Tests/bin/Debug/net11.0/Hexalith.Folders.AppHost.Tests.dll"
+      ],
+      [
+        "16c3fd902b7fd12098618ad11192de1926c750dcf150f86b1e2093cded288143",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ],
+      [
+        "06d73c199994962e8df927de940389c1b54ac78adea3d9b817578f79e62ce81e",
+        "/home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/bin/Debug/net11.0/Hexalith.Platform.Composition.Tests.dll"
+      ]
+    ]
+  },
+  "limitations": [
+    "Default Platform T Debug/package build fails at HEAD from 466c6dd1 (outside story); verified only with the manifest-property override.",
+    "Default Platform C/T Debug/source build remains deferred to the Builds catalog owner.",
+    "Folders net11 scripts patch pushed as cb5de783; a Folders CI run must confirm the tooling step is green.",
+    "No strict Folders acceptance, Folders 12.2 completion, Platform lifecycle or SDK qualification is claimed."
+  ]
+}
