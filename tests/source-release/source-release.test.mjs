@@ -176,6 +176,10 @@ test('explicit source-only plugins omit package publishing and source-main mutat
   assert.deepEqual(config.plugins.map(x => Array.isArray(x) ? x[0] : x), ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', './eng/source-release/release-gate.mjs', '@semantic-release/github']);
   assert.deepEqual(config.plugins[3][1].assets, []);
   const lock = JSON.parse(readFileSync('package-lock.json'));
+  const npmPlugins = Object.entries(lock.packages).filter(([path]) => path.endsWith('/@semantic-release/npm'));
+  assert.ok(npmPlugins.length > 0);
+  for (const [, plugin] of npmPlugins) assert.equal(plugin.name, '@semantic-release/error');
+  assert.equal(lock.packages['node_modules/npm'], undefined);
   for (const [name, version] of [['semantic-release', '25.0.9'], ['@semantic-release/github', '12.0.11'],
     ['@semantic-release/commit-analyzer', '13.0.1'], ['@semantic-release/release-notes-generator', '14.1.1'], ['@commitlint/cli', '21.2.4']])
     assert.equal(lock.packages[`node_modules/${name}`].version, version);
@@ -293,6 +297,6 @@ test('actual pinned notes generator renders feature fix breaking notes and repos
   assert.ok(notes.includes(`${repositoryUrl}/compare/v1.2.3...v2.0.0`));
   for (const commit of commits) assert.ok(notes.includes(`${repositoryUrl}/commit/${commit.hash}`));
   const lock = JSON.parse(readFileSync('package-lock.json'));
-  assert.equal(lock.packages['node_modules/conventional-changelog-conventionalcommits'].version, '9.3.1');
-  assert.equal(lock.packages['node_modules/conventional-changelog-writer'].version, '8.4.0');
+  assert.equal(lock.packages['node_modules/conventional-changelog-conventionalcommits'].version, '10.4.1');
+  assert.equal(lock.packages['node_modules/conventional-changelog-writer'].version, '9.3.0');
 });

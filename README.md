@@ -684,3 +684,9 @@ uses standard Conventional Commits to calculate a source tag and GitHub release.
 It publishes no packages or images and writes no version or changelog commit.
 Tag creation still requires the repository's separate automation authorization;
 this configuration does not change the existing tag rules.
+
+The explicit source release plugin list does not load `@semantic-release/npm`. Its package override
+replaces that unused default plugin with `@semantic-release/error`, removing the bundled npm
+registry publisher. The notes generator uses `conventional-changelog-writer` 9.3.0 because the
+current Conventional Commits preset 10.4.1 requires writer 9 or later; the release tests render
+real feature, fix, and breaking-change notes with these versions.
