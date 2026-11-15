@@ -1,0 +1,184 @@
+[
+  {
+    "label": "test_builds_tuple",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_builds_tuple.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 21,
+    "skipped": 0,
+    "logSha256": "d417790f5b0b921120ec71a85b824e09ca2e4499f55c95994544aa16d1c1784d"
+  },
+  {
+    "label": "test_builds_publication",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_builds_publication.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 16,
+    "skipped": 0,
+    "logSha256": "4b6c5e8dcb878feb0ad78fea7f51a7d86697e1a66d549c84f010765d85fb77f1"
+  },
+  {
+    "label": "test_current_tuple_source",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_current_tuple_source.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 16,
+    "skipped": 0,
+    "logSha256": "e77143e755d8a878b8f28f8a0d4a40fa56534749edab4168a88e3d22ae2a71bb"
+  },
+  {
+    "label": "test_tuple_collectors",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_collectors.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 4,
+    "skipped": 0,
+    "logSha256": "d094b1bd2c8318c96097f80c50da282add5b2972970a77046de8db6c8935f6ca"
+  },
+  {
+    "label": "test_tuple_runtime_context",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_runtime_context.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 2,
+    "skipped": 0,
+    "logSha256": "2e3293a343a1321ec658b88d77b3b035b1f979cd1f4d805c3a80b43ae315bddd"
+  },
+  {
+    "label": "test_tuple_sdk_suites",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_sdk_suites.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 40,
+    "skipped": 0,
+    "logSha256": "945524963488587756b7d89e7aee5c185ab52a9a3fe34faf6e0ab2032b44751e"
+  },
+  {
+    "label": "test_tuple_output_identity",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_tuple_output_identity.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 6,
+    "skipped": 0,
+    "logSha256": "a25b5619af971eae96a8c9d37ebc69133b4c28e990455e210be0507206df182c"
+  },
+  {
+    "label": "test_current_catalog_view",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_current_catalog_view.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 27,
+    "skipped": 0,
+    "logSha256": "22cb439356472a69282ce34a90bd28c66a69b4fd3ddc5b25230b42b740727acf"
+  },
+  {
+    "label": "test_host_builds_resolution",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_host_builds_resolution.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 15,
+    "skipped": 0,
+    "logSha256": "ede68580c52fb7cf470ca97d76740ecd92a447f79bcaa86a22bb8b1ffb2533e4"
+  },
+  {
+    "label": "test_historical_security_packages",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_historical_security_packages.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 4,
+    "skipped": 0,
+    "logSha256": "69291b8aa7d2253a8262bf60fedc89d112c23d3c6e0c28c632b43b91aaf3ce14"
+  },
+  {
+    "label": "test_verify_platform_pins",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/eng/test_verify_platform_pins.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 19,
+    "skipped": 0,
+    "logSha256": "fbd8fa2cf894583442856e33ad086993d05edaf15e9fff56f5be5c7e9ecfcb8b"
+  },
+  {
+    "label": "source-release",
+    "command": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 83,
+    "skipped": 0,
+    "logSha256": "d3d99af0abb3f10307c1bc462c27291dbbf8f38ebf5a1e6372565be170355576"
+  },
+  {
+    "label": "extension-node",
+    "command": [
+      "node",
+      "--test",
+      "eng/test-extension-release/gate.test.mjs"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 14,
+    "skipped": 0,
+    "logSha256": "deb71690218b726763e249530154a93a6c9c6f79542b37c894a3e846e370cad9"
+  },
+  {
+    "label": "extension-python",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test-extension-release/run-controls.py"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "executed": 30,
+    "skipped": 0,
+    "logSha256": "602cdb73e51c8e9b1a55da71d6b6afd9ee378e02162a4d529c5c9e95b841d0e1"
+  }
+]

@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "sourceRevision": "bcc638acf5ffb34b5a761168622877719c5d03b8",
+  "rawArchiveMembers": 329,
+  "compositionXmlGroups": 36,
+  "compositionExecutions": 565,
+  "suiteTotals": {
+    "current42": 463,
+    "base42": 93,
+    "extensions": 9
+  },
+  "sourceFilesCompared": 1599,
+  "permittedTestOnlySourceDelta": [
+    "eng/test_current_tuple_source.py"
+  ],
+  "outputHashesUnchanged": true,
+  "pinsAndRootRefsUnchanged": true,
+  "frozenIntentUnchanged": true,
+  "reviewPatchesComplete": 16,
+  "hostedMainAcceptance": false,
+  "remainingAcceptance": "AC3 requires authorized landing and successful hosted main resolution, tuple and verdict.",
+  "matrixAudit": [
+    {
+      "row": "PR, main push or explicit dispatch",
+      "passed": true,
+      "controls": [
+        "all triggers execute candidate-only resolution, current execution and verdict",
+        "every Platform checkout is shallow and selects only the candidate",
+        "test_depth_one_platform_checkout_authenticates_independent_owner_releases"
+      ]
+    },
+    {
+      "row": "Failed, cancelled, skipped or absent prerequisite",
+      "passed": true,
+      "controls": [
+        "executable aggregate refuses every failed cancelled skipped or absent result"
+      ]
+    },
+    {
+      "row": "Documentation-only or gitlink-only change",
+      "passed": true,
+      "controls": [
+        "test_documentation_change_needs_no_companion_or_binding_refresh",
+        "test_owner_gitlink_update_only_needs_its_current_binding"
+      ]
+    },
+    {
+      "row": "Changed owner, provenance, package body or runtime",
+      "passed": true,
+      "controls": [
+        "final current-source module: 16/16",
+        "PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync",
+        "PlatformSdk42PublishedPartiesCohortTests.AlteredPublicReaderBodyRefusesBeforeOwnerReflection",
+        "runtime context module: 2/2"
+      ]
+    },
+    {
+      "row": "Replay-only positive retired without image/runtime permission",
+      "passed": true,
+      "controls": [
+        "test_historical_profile_and_sdk_selections_are_retired",
+        "PlatformSdk42PublishedPartiesCohortTests.ActualPublishedImageOwnerBodyCannotAcquirePackageReaderAuthority"
+      ]
+    }
+  ]
+}

@@ -11,8 +11,8 @@ The authoritative publication binding remains `eng/builds-tuple.json`.
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
 candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
-plus the unchanged catalog gates. Both prerequisites must succeed, including when
-another prerequisite fails, cancels or skips. Prepare the current source binding
+plus the unchanged catalog gates. Both source resolution and current execution must succeed. A failed, cancelled,
+skipped or missing prerequisite makes the combined verdict fail. Prepare the current source binding
 only when owner gitlinks or package provenance change; documentation-only changes
 need no additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 

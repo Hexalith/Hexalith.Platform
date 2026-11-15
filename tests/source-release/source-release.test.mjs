@@ -42,7 +42,7 @@ function fixture(trigger = 0) {
   return { state, inputs: { event, eventName: 'workflow_run', ownerRepository: repository, checkout: source, source, workflowRef: `${repository}/.github/workflows/source-release.yml@refs/heads/main`, workflowSha: source, job: 'verify', api } };
 }
 
-test('either final callback requires both latest successful main lanes and exact five/six jobs', async () => {
+test('either final callback requires both latest successful main lanes and exact three tuple and six catalog jobs', async () => {
   for (const trigger of [0, 1]) {
     const { inputs } = fixture(trigger); const result = await qualify(inputs);
     assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [3, 6]);

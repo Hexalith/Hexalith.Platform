@@ -20,6 +20,9 @@ internal static class PlatformReaderMutationControls
     internal static async Task AssertAsync(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
     {
         AssertFullReader(fixture, catalog);
+        AssertPreparationPolicy(fixture);
+        foreach (string fault in new[] { "mapping", "snapshot", "catalog", "missing-snapshot" })
+            AssertRunAuthorityRefusal(fixture, catalog, fault);
         foreach (string fault in new[] { "missing-owner", "foreign-owner", "legacy-cohort", "unknown-cohort", "foreign-body" })
             await AssertRequestRefusalAsync(fixture, catalog, fault);
         string project = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
@@ -40,7 +43,63 @@ internal static class PlatformReaderMutationControls
         try { await AssertOrdinarySourceGuardAsync(fixture, catalog); }
         finally { foreach (var input in inputs) File.WriteAllBytes(input.Key, input.Value); }
         fixture.Options.CurrentOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
-        TestContext.Current.TestOutputHelper!.WriteLine("Current reader matrix: complete baseline; 5 request/body refusals; 2 version/assets refusals; 1 source/package duplicate refusal.");
+        TestContext.Current.TestOutputHelper!.WriteLine("Current reader matrix: complete baseline; transitive pinning preserved; 4 pre-restore authority refusals; 5 request/body refusals; 2 version/assets refusals; 1 source/package duplicate refusal.");
+    }
+
+    private static void AssertPreparationPolicy(PlatformPartiesPackageFixture fixture)
+    {
+        string build = Path.Combine(fixture.Workspace, "reader-preparation-policy");
+        Directory.CreateDirectory(build);
+        XDocument reader = XDocument.Load(Path.Combine(fixture.Options.PlatformRoot, "src", "Hexalith.Platform.CatalogBuilder", "Hexalith.Platform.CatalogBuilder.csproj"));
+        IReadOnlyList<string> arguments = PlatformPackageCatalogReader.Prepare(reader, fixture.Options, fixture.Workspace, build, DateTimeOffset.UtcNow.AddMinutes(5));
+        arguments.Where(argument => argument.StartsWith("-p:CentralPackageTransitivePinningEnabled=", StringComparison.Ordinal))
+            .ShouldBe(["-p:CentralPackageTransitivePinningEnabled=true"]);
+    }
+
+    private static void AssertRunAuthorityRefusal(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog, string fault)
+    {
+        string mapping = Path.Combine(fixture.Workspace, "source-mapping");
+        var inputs = Directory.GetFiles(mapping, "*", SearchOption.AllDirectories).ToDictionary(path => path, File.ReadAllBytes);
+        byte[] previous = File.ReadAllBytes(catalog.CatalogPath);
+        string build = Path.Combine(fixture.Workspace, "refused-authority-" + fault);
+        Directory.CreateDirectory(build);
+        try
+        {
+            if (fault == "mapping")
+            {
+                string file = Path.Combine(mapping, "mapping.json");
+                JsonNode changed = JsonNode.Parse(File.ReadAllBytes(file))!;
+                changed["ActiveModule"] = "Hexalith.Foreign";
+                File.WriteAllText(file, changed.ToJsonString());
+            }
+            else if (fault == "catalog") File.AppendAllText(Path.Combine(mapping, "pinned-tree", "Props", "Directory.Packages.props"), "<!-- changed pinned bytes -->");
+            else if (fault == "missing-snapshot") File.Delete(Path.Combine(mapping, "catalog-versions.json"));
+            else
+            {
+                string file = Path.Combine(mapping, "catalog-versions.json");
+                JsonNode changed = JsonNode.Parse(File.ReadAllBytes(file))!;
+                changed["MappingHash"] = new string('0', 64);
+                File.WriteAllText(file, changed.ToJsonString());
+            }
+            XDocument reader = XDocument.Load(Path.Combine(fixture.Options.PlatformRoot, "src", "Hexalith.Platform.CatalogBuilder", "Hexalith.Platform.CatalogBuilder.csproj"));
+            var refusal = Should.Throw<InvalidDataException>(() => PlatformPackageCatalogReader.Prepare(reader, fixture.Options, fixture.Workspace, build, DateTimeOffset.UtcNow.AddMinutes(5)));
+            if (fault == "mapping") refusal.Message.ShouldContain("differs from the command-resolved hash");
+            else
+            {
+                refusal.Message.ShouldContain("pinned catalog validation failed");
+                string log = File.ReadAllText(Path.Combine(build, "catalog-validation.log"));
+                log.ShouldContain("HXW012");
+                log.ShouldContain(fault == "missing-snapshot" ? "catalog-versions.json" : "snapshot differs from the command-resolved identity");
+                if (fault == "missing-snapshot") log.ShouldContain("Could not find file");
+            }
+            TestContext.Current.TestOutputHelper!.WriteLine("authority-refusal=" + fault + " " + refusal.Message);
+            Directory.Exists(Path.Combine(build, "obj")).ShouldBeFalse("Authority must refuse before package restore.");
+            Directory.Exists(Path.Combine(build, "output")).ShouldBeFalse();
+            Directory.GetFiles(build, "catalog.json", SearchOption.AllDirectories).ShouldBeEmpty();
+            File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
+        }
+        finally { foreach (var input in inputs) File.WriteAllBytes(input.Key, input.Value); }
+        fixture.Options.CurrentOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
     }
 
     private static async Task AssertRequestRefusalAsync(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog, string fault)

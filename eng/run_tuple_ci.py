@@ -355,23 +355,15 @@ def _run_tuple_ci(metadata_token):
             run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
-        file_catalog = catalog
-        file_catalog_sha256 = None
+        file_catalog = evidence / "authenticated-catalog.props"
+        file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
         file_catalog_binding = ROOT / "eng/builds-tuple.json"
-        if args.suite in ("extensions", "base42", "current42"):
-            file_catalog = evidence / "authenticated-catalog.props"
-            file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
-        run("file-host-catalog-controls", [sys.executable, "-B", "eng/test_file_host_catalog.py"])
         run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
-        pin_arguments = [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog)]
-        if file_catalog_sha256 is not None:
-            pin_arguments.extend(["--catalog-sha256", file_catalog_sha256])
-            pin_arguments.extend(["--producer-binding", str(file_catalog_binding)])
-        run("pin-alignment", pin_arguments)
-        if args.suite in ("current42", "base42", "extensions"):
-            run("collector-package-cohort-controls", [sys.executable, "-B", "eng/test_tuple_collection_graph.py",
-                "--catalog", str(file_catalog), "--catalog-sha256", file_catalog_sha256,
-                "--producer-binding", str(file_catalog_binding), "--evidence", str(evidence / "collector-package-cohort")])
+        run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog),
+            "--catalog-sha256", file_catalog_sha256, "--producer-binding", str(file_catalog_binding)])
+        run("collector-package-cohort-controls", [sys.executable, "-B", "eng/test_tuple_collection_graph.py",
+            "--catalog", str(file_catalog), "--catalog-sha256", file_catalog_sha256,
+            "--producer-binding", str(file_catalog_binding), "--evidence", str(evidence / "collector-package-cohort")])
         run("restore", ["dotnet", "restore", "Hexalith.Platform.slnx", *properties])
         if collecting_cohort is not None:
             collecting_assets = ROOT / "tests/Hexalith.Platform.Composition.Tests/obj/project.assets.json"

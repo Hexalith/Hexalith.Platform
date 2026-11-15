@@ -1,0 +1,67 @@
+[
+  {
+    "label": "prepare-candidate",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/prepare-candidate.py",
+      "/home/administrator/projects/hexalith/platform",
+      "/tmp/hexalith-job.27v3bHB5/platform",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/review-patches/sdk-recovery/candidate.json"
+    ],
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "exitCode": 0,
+    "logSha256": "508a7be9c87cd7a9912622f6766d4c8a3eec96b574a87d2e619554b0d00fb21a"
+  },
+  {
+    "label": "signature",
+    "command": [
+      "dotnet",
+      "nuget",
+      "verify",
+      "/tmp/hexalith-job.27v3bHB5/hexalith.builds.module.cli.6.0.5.nupkg",
+      "--all"
+    ],
+    "cwd": "/tmp/hexalith-job.27v3bHB5/platform",
+    "exitCode": 0,
+    "logSha256": "85e0532ecf80ea8e23e5723b82de7c95b5a7b5ff4407749eea8c76f4234ccd7a"
+  },
+  {
+    "label": "restore",
+    "command": [
+      "dotnet",
+      "restore",
+      "Hexalith.Platform.slnx",
+      "--artifacts-path",
+      "/tmp/hexalith-job.27v3bHB5/build",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:HexalithBuildsRoot=/tmp/hexalith-job.27v3bHB5/platform/references/Hexalith.Builds",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.27v3bHB5/published/tools/net11.0/any",
+      "-p:HexalithEventStoreVersion=4.2.0",
+      "-p:HexalithTenantsVersion=7.0.7",
+      "-p:HexalithMemoriesVersion=3.0.27",
+      "-p:HexalithPartiesVersion=3.1.1",
+      "-p:HexalithMcpCliVersion=2.0.1"
+    ],
+    "cwd": "/tmp/hexalith-job.27v3bHB5/platform",
+    "exitCode": 0,
+    "logSha256": "d71461613375a6d35e00ca3b0c5f2572e804557dfe8050afb0b40b6e245ea454"
+  },
+  {
+    "label": "source-sdk",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_source_sdk_propagation.py",
+      "--evidence",
+      "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/review-patches/sdk-recovery/observations",
+      "--artifacts",
+      "/tmp/hexalith-job.27v3bHB5/build",
+      "--published-tool-root",
+      "/tmp/hexalith-job.27v3bHB5/published/tools/net11.0/any"
+    ],
+    "cwd": "/tmp/hexalith-job.27v3bHB5/platform",
+    "exitCode": 0,
+    "logSha256": "3059585c11d6c803ccc48f12d2a5e550c609e45f900ab052c1bdc64032fc3464"
+  }
+]

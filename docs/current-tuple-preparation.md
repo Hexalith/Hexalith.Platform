@@ -8,11 +8,16 @@ The selected producer is signed Builds **6.0.5**, source
 `42441eb4cefcff2f9c582fcda630d9ad15887df2`, SHA-256
 `d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
 The authoritative publication binding remains `eng/builds-tuple.json`.
+The authenticated Builds 6.0.5 validation pair is AppHost SHA-256
+`b9c80faba94356860ac73b9e91f1c3721ccc90371726c8b8e33e8774ddbd61b1`
+and Tooling SHA-256
+`9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e`.
+This signed-host pairing grants no ordinary image or runtime admission.
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
 candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
-plus the unchanged catalog gates. Both prerequisites must succeed, including when
-another prerequisite fails, cancels or skips. Prepare the current source binding
+plus the unchanged catalog gates. Both source resolution and current execution must succeed. A failed, cancelled,
+skipped or missing prerequisite makes the combined verdict fail. Prepare the current source binding
 only when owner gitlinks or package provenance change; documentation-only changes
 need no additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 

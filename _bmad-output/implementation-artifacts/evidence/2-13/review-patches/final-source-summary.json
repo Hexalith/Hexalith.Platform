@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "executed": 16,
+  "skipped": 0,
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "eng/test_current_tuple_source.py"
+  ],
+  "cwd": "/home/administrator/projects/hexalith/platform",
+  "sourceSha256": "ebca3f227fbbbb17366a1eedee01bd056bd859b6fb561d80184b006c0880173a",
+  "sourceUnchangedDuringExecution": true,
+  "logSha256": "9f69261a8b71f08e09ee590eb1084a415cadeed025fd5eb4408857ed3a16a4f8",
+  "differencesFromPackageCandidate": {
+    "eng/test_current_tuple_source.py": {
+      "testedCandidateSha256": "a26e29e1ff515cd9782f3ff1a0a1f6bbd1bfcfeba9a0bff428fa08e33b9c7458",
+      "finalSha256": "ebca3f227fbbbb17366a1eedee01bd056bd859b6fb561d80184b006c0880173a"
+    }
+  },
+  "productionAndCompositionSourceUnchanged": true,
+  "metadataOnlyDelta": {
+    "path": ".gitattributes",
+    "finalSha256": "ae577597830c884eb0e9d4a086fc68e724d716744d89f6b04a0ffeef3a0d8b5c",
+    "reason": "Remove the second obsolete transport-class whitespace attribute."
+  },
+  "hostedMainAcceptance": false
+}

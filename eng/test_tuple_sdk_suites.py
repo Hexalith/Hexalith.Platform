@@ -85,6 +85,7 @@ class SdkSuiteTests(unittest.TestCase):
         self.assertEqual(sdk_suite("base42", "4.2.0")[0], "eng/tuple-ci-sdk42-base-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-base-suites.json").read_text())
         self.assertEqual(validate_profile(profile), 93)
+        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [40, 51, 2])
         for version in [None, "4.1.0", "4.2.1"]:
             with self.subTest(version=version), self.assertRaises(ValueError):
                 sdk_suite("base42", version)

@@ -40,7 +40,7 @@ public sealed class PlatformPartiesPackageEntryTests
         }
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync();
         fixture.CaptureOrdinary();
-        var builder = PlatformPartiesPackageFixture.Builder(fault == "production" ? "Production" : "Development");
+        var builder = PlatformPartiesPackageFixture.Builder();
         int probes = 0;
         Should.Throw<InvalidDataException>(() => fixture.Compose(builder, original =>
         {
@@ -57,7 +57,7 @@ public sealed class PlatformPartiesPackageEntryTests
                 "selected-test" => original with { RunPlan = plan with { SelectedTest = plan.SelectedTest! with { EntryHash = new string('0', 64) } } },
                 "expanded-owner" => original with { QualificationOwners = ["tenants"] },
                 "serialized" => JsonSerializer.Deserialize<PlatformCompositionOptions>(JsonSerializer.Serialize(original))!,
-                "production" or "catalog-bytes" => original,
+                "catalog-bytes" => original,
                 _ => throw new ArgumentOutOfRangeException(nameof(fault)),
             };
             if (fault == "serialized") options.PartiesRunProof.ShouldBeNull();

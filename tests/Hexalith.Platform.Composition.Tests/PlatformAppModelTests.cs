@@ -50,7 +50,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public void PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources(string field)
     {
         IDistributedApplicationBuilder builder = Builder();
-        // Copy and verify real release bytes with the default authority; the isolated provenance mutation below must refuse before resources are added.
+        // Use a fixture-owned catalog to isolate the provenance refusal before resources are added; this grants no release authority.
         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");

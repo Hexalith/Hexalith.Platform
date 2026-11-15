@@ -10,7 +10,12 @@ After staging an intentional owner-source or package-provenance change, obtain
 `git write-tree` and generate the current binding from that exact Git tree:
 
 ```bash
-run-with-temp bash -c 'python3 -B eng/prepare_tuple_sources.py binding --source "$1" --output "$TMPDIR/current-tuple-source.json" && cp "$TMPDIR/current-tuple-source.json" eng/current-tuple-source.json' -- <full-tree-sha>
+(
+  preparation_dir=$(mktemp -d)
+  trap 'rm -rf "$preparation_dir"' EXIT
+  python3 -B eng/prepare_tuple_sources.py binding --source <full-tree-sha> --output "$preparation_dir/current-tuple-source.json" &&
+    cp "$preparation_dir/current-tuple-source.json" eng/current-tuple-source.json
+)
 ```
 
 Review and stage the resulting binding with the candidate. Preparation reads
@@ -30,7 +35,7 @@ current execution to succeed. The source publisher requires those three jobs.
 For local graph verification, use a new evidence directory:
 
 ```bash
-run-with-temp python3 -B eng/run_tuple_ci.py --audit-only --suite current42 --eventstore-sdk 4.2.0 --evidence <new-evidence-directory>
+python3 -B eng/run_tuple_ci.py --audit-only --suite current42 --eventstore-sdk 4.2.0 --evidence <new-evidence-directory>
 ```
 
 This audit authenticates archive/catalog/output inputs but grants no hosted,

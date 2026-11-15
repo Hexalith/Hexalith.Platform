@@ -50,6 +50,10 @@ public sealed class PlatformMemoriesContainerTransportTests
         string runtime = Path.Combine(fixture.Workspace, "model-runtime");
         Directory.CreateDirectory(Path.Combine(runtime, ".dapr", "bin"));
         File.WriteAllText(Path.Combine(runtime, ".dapr", "bin", "daprd"), "unstarted model marker");
+        // Toolkit generates this model without executing a CLI; never discover a machine-installed Dapr.
+        string cli = Path.Combine(runtime, OperatingSystem.IsWindows() ? "dapr.exe" : "dapr");
+        File.WriteAllText(cli, "unstarted model marker");
+        builder.AddDapr(options => { options.EnableTelemetry = false; options.DaprPath = cli; });
         foreach (var resource in new[] { memory, tenant })
         {
             resource.WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = resource.Resource.Name, RuntimePath = runtime }));

@@ -64,6 +64,36 @@ class CurrentTupleSourceTests(unittest.TestCase):
     def gitlink(self, repository, source):
         self.git(self.root, "update-index", "--add", "--cacheinfo", "160000," + source + ",references/" + repository)
 
+    def test_decode_rejects_duplicate_fields_at_every_depth(self):
+        for raw in (b'{"schema":1,"schema":1}', b'{"owner":{"commit":"a","commit":"a"}}',
+                    b'{"owners":[{"version":"1.0.0","version":"1.0.0"}]}'):
+            with self.subTest(raw=raw), self.assertRaisesRegex(ValueError, "Duplicate current tuple metadata field"):
+                current.decode(raw)
+
+    def test_committed_binding_and_provenance_reject_duplicate_fields(self):
+        # Identical duplicate values would otherwise survive all semantic identity checks.
+        for document, depth in ((current.BINDING, "root"), (current.BINDING, "owner"),
+                                (PROVENANCE, "root"), (PROVENANCE, "owner")):
+            binding = json.loads(json.dumps(self.binding))
+            provenance = json.dumps(self.provenance)
+            raw = json.dumps(binding) if document == current.BINDING else provenance
+            if depth == "root":
+                key, value = next(iter((binding if document == current.BINDING else self.provenance).items()))
+                raw = raw[:-1] + "," + json.dumps(key) + ":" + json.dumps(value) + "}"
+            else:
+                key = "sourceRevision" if document == current.BINDING else "repository"
+                value = binding["ownerSources"]["eventstore"][key] if document == current.BINDING else self.provenance["eventstore"][key]
+                field = json.dumps(key) + ": " + json.dumps(value)
+                raw = raw.replace(field, field + ", " + field, 1)
+            if document == PROVENANCE:
+                provenance = raw
+                binding["packageProvenanceSha256"] = hashlib.sha256(raw.encode()).hexdigest()
+            self.write(self.root, PROVENANCE, provenance.encode())
+            self.write(self.root, current.BINDING, (raw if document == current.BINDING else json.dumps(binding)).encode())
+            changed = self.commit(self.root)
+            with self.subTest(document=document, depth=depth), self.assertRaisesRegex(ValueError, "Duplicate current tuple metadata field"):
+                current.read_selection(self.root, changed)
+
     def test_current_checkout_and_actual_release_are_distinct_authenticated_identities(self):
         result = current.verify_checkout(self.root, self.source)
         self.assertFalse(result["qualificationCredit"])
@@ -209,9 +239,10 @@ class CurrentTupleSourceTests(unittest.TestCase):
     def test_documentation_change_needs_no_companion_or_binding_refresh(self):
         self.write(self.root, "docs/guide.md", b"candidate-only instructions\n")
         changed = self.commit(self.root)
+        before = self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)")
         self.assertEqual(current.create_binding(self.root, changed), self.binding)
         current.verify_checkout(self.root, changed)
-        self.assertEqual(self.git(self.root, "for-each-ref", "refs/heads/qualification/"), "")
+        self.assertEqual(self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)"), before)
 
     def test_owner_gitlink_update_only_needs_its_current_binding(self):
         owner = self.root / "references/Hexalith.Parties"
@@ -219,11 +250,15 @@ class CurrentTupleSourceTests(unittest.TestCase):
         source = self.commit(owner)
         self.gitlink("Hexalith.Parties", source)
         changed = self.commit(self.root)
+        before = self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)")
         binding = current.create_binding(self.root, changed)
+        self.assertEqual(self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)"), before)
         self.write(self.root, current.BINDING, json.dumps(binding).encode())
         changed = self.commit(self.root)
+        before = self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)")
+        self.assertEqual(current.create_binding(self.root, changed), binding)
         current.verify_checkout(self.root, changed)
-        self.assertEqual(self.git(self.root, "for-each-ref", "refs/heads/qualification/"), "")
+        self.assertEqual(self.git(self.root, "for-each-ref", "--format=%(refname) %(objectname)"), before)
 
 
 if __name__ == "__main__":
