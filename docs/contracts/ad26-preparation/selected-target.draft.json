@@ -1,0 +1,92 @@
+{
+  "draftShapeVersion": 1,
+  "status": "draft",
+  "jointAgreementRecorded": false,
+  "productionEligible": false,
+  "purpose": "Review decisions and engineering dependencies; no owner selection or ratification is recorded.",
+  "selectedTarget": {
+    "broker": null,
+    "daprRuntimePin": null,
+    "qualifiedSdkRuntimeComponentTuple": null,
+    "restorePosture": null,
+    "nfr7ProtectionPath": null,
+    "qualifiedActorTransactionSemantics": null,
+    "canonicalResolvedProfileDigest": null
+  },
+  "retainedCandidate": {
+    "interpretation": "Dated repository experiment inputs, not current upstream recommendations or an accepted selection.",
+    "runtimeLock": {
+      "repository": "Hexalith.EventStore",
+      "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+      "path": "deploy/dapr/qualification/runtime-lock-1.19.1.json",
+      "gitBlob": "67bed824e3bc89e42885162e333242a97d43828c",
+      "sha256": "5bce69c02c7aee8e3ec37003186a7e602ef25adb2c2808137302b0f4a908ca58",
+      "bytes": 20326
+    },
+    "daprRuntime": "1.19.1",
+    "daprCli": "1.19.1",
+    "componentsContrib": "1.19.0",
+    "sdk": "1.19.0",
+    "brokerCandidates": [
+      {
+        "name": "RabbitMQ",
+        "version": "4.3.6-management"
+      },
+      {
+        "name": "Kafka",
+        "version": "4.3.1"
+      }
+    ]
+  },
+  "creditedBrokerObservation": {
+    "sourceRepository": "Hexalith.Platform",
+    "sourceRevision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+    "sourcePath": "docs/implementation/story-4-17-next-candidate-intake.md",
+    "runId": "43386723091",
+    "requiredVectors": 24,
+    "passed": 20,
+    "failed": 4,
+    "historicalRejectedGuaranteesStillOpen": 5,
+    "technicalQualification": "FAIL",
+    "selection": null,
+    "productionEligibility": "FAIL",
+    "actualExecutionIdentitiesRemainThoseInTheSourceAssessment": true
+  },
+  "proposedNextWork": {
+    "acceptedEngineeringPriority": "Supported RabbitMQ error propagation/cancellation/reconnect remedies, then mandatory publishing/correlated returns, under existing 4.17 intake.",
+    "ratificationDisposition": "Withhold while required selections, capability, restore and qualification are absent.",
+    "authorizesNewRunOrPrivateRuntime": false
+  },
+  "requiredInputsBeforeIssuance": [
+    {
+      "id": "broker-runtime",
+      "owner": "Platform 4.17 / EventStore 3.21 / Builds alignment owners",
+      "required": "Official supported exact inputs, owner-admitted successor, full unchanged 24-vector result and historical disposition adjudication."
+    },
+    {
+      "id": "append-protection",
+      "owner": "EventStore 4.16 with 3.17/3.21 and Platform execution",
+      "required": "Mandatory durable revision/create-once/whole-batch implementation, lawful erasure and qualification; no provider-access or optional-ETag substitute."
+    },
+    {
+      "id": "restore-posture",
+      "owner": "EventStore 7.22 semantics / Platform execution",
+      "required": "Complete posture digest, consistent coverage/order/prohibitions and required logical restore readback."
+    },
+    {
+      "id": "inventory-and-binding",
+      "owner": "Platform 4.9 / EventStore 3.19 joint contract",
+      "required": "Agreed template/binding encoding, actual pins/topology, qualified management/workload pair and complete sole-slot resolved inventory."
+    },
+    {
+      "id": "owner-authority-and-time",
+      "owner": "Registered Architecture and Platform deployment owner roles",
+      "required": "Authenticated registry and per-role approvals, exact content, latest subject-changing main push activity and 24-hour separation."
+    },
+    {
+      "id": "assurance",
+      "owner": "Consuming AD-12 guarded-transition workflow",
+      "required": "Required assurance and attestation evidence checked by the consuming sealed run; achieved level is computed there."
+    }
+  ]
+}

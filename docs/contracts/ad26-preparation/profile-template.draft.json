@@ -1,0 +1,159 @@
+{
+  "draftShapeVersion": 1,
+  "status": "draft",
+  "jointAgreementRecorded": false,
+  "productionEligible": false,
+  "purpose": "Proposed stable template and inventory requirements; not a resolved production profile.",
+  "canonicalResolvedInventorySlot": {
+    "repository": "Hexalith.EventStore",
+    "path": "deploy/dapr/production-profile.yaml",
+    "existsInPinnedCheckout": false
+  },
+  "architectureSubject": {
+    "repository": "Hexalith.EventStore",
+    "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+    "path": "_bmad-output/planning-artifacts/architecture.md",
+    "ratificationSubjectSha256": "d49f8a061eb6a0faf1d31577d571ceae497a38d67404c4901151d1dc4ea90e16",
+    "ratificationSubjectBytes": 10000,
+    "wholeFileSha256AtPreparation": "c42f49555b26364177d2ac596b3c4c81a18ac16b2640a5c750424eceebbf99c0",
+    "wholeFileSha256AtIssuance": null
+  },
+  "template": {
+    "runtime": {
+      "daprMinor": null,
+      "qualifiedRuntimeSet": null,
+      "qualifiedSdkSet": null,
+      "cliCompatibility": null,
+      "minimumRuntimeVersionFromAd26": "1.18.3"
+    },
+    "sidecar": {
+      "proposedMode": "per-application",
+      "daprApiTokenEnabled": true,
+      "controlPlaneDropAllCapabilitiesRequired": true
+    },
+    "actorState": {
+      "proposedTypeFromAd26": "state.postgresql",
+      "proposedComponentVersion": "v1",
+      "eventStoreComponentName": "statestore",
+      "perActorHostingAppIsolationRequired": true,
+      "physicalTargetFields": [
+        "host",
+        "port",
+        "database",
+        "tableName",
+        "metadataTableName"
+      ],
+      "actorKeyPrefixIsIsolation": false,
+      "qualifiedComponentSet": null
+    },
+    "separatelyScopedState": {
+      "required": true,
+      "componentContracts": null
+    },
+    "broker": {
+      "selectedProvider": null,
+      "qualifiedComponentContract": null,
+      "durableDeliveryRetentionDeadLetterAndRecoveryRequired": true
+    },
+    "appendProtection": {
+      "requiredSemantics": [
+        "revision-tied-to-read-state",
+        "conditional-durable-revision-advance",
+        "create-once-event-identity",
+        "whole-actor-batch-commit-or-reject",
+        "mandatory-raw-and-generic-path-enforcement",
+        "exact-original-batch-reconciliation-after-unknown-outcome",
+        "governed-erasure-advances-revision-and-rejects-stale-writers"
+      ],
+      "actorOwnership": "AggregateActor/IActorStateManager",
+      "qualifiedImplementationIdentity": null,
+      "qualifiedTransactionSemanticsReference": null,
+      "scopeApprovalIsRatification": false
+    },
+    "scopeAclAndResiliencyShapes": null,
+    "openBao": {
+      "secretContractDigest": null,
+      "serverFloor": null,
+      "credentialsAreReferencesOnly": true
+    },
+    "workloadAssertionIssuerContract": null,
+    "schedulerAndPlacementContract": null,
+    "replicaFreshnessPosture": null,
+    "restoreContract": {
+      "acceptedPostureDigest": null,
+      "requiredCoverage": [
+        "actor-events-revisions-erasure-completion",
+        "admission-and-fence",
+        "global-position-allocation",
+        "read-models-checkpoints-command-status",
+        "scheduler-reminders-and-jobs",
+        "placement"
+      ],
+      "consistencyPointAndRestoreOrderRequired": true,
+      "forbiddenIndependentRestoresRequired": true
+    },
+    "proposedOq8ProfileFromAd26": "oq8-postgresql-v1",
+    "oq8TargetRatified": false,
+    "excludedAd26AuthorizingProfiles": [
+      "Development/test",
+      "Redis including SignalR backplane",
+      "Cosmos template alternatives"
+    ]
+  },
+  "platformInventoryRequirements": {
+    "componentInstances": [],
+    "requiredCoverage": {
+      "shared": [
+        "workload-kubernetes-node-os-containerd-etcd",
+        "rancher-server-required-agents-and-crds",
+        "management-cluster-and-versioned-constituents",
+        "management-backup-operator-and-crds",
+        "cni",
+        "traefik-and-gateway-api-crds",
+        "cert-manager",
+        "storage-provisioner",
+        "other-shared-operators-and-versioned-crds",
+        "dapr-control-plane",
+        "keycloak-and-its-database",
+        "other-actual-versioned-shared-components"
+      ],
+      "productionEnvironmentProviders": [
+        "OpenBao",
+        "PostgreSQL",
+        "FalkorDB",
+        "Redis"
+      ]
+    },
+    "eachActualInstanceRequires": [
+      "stable-instance-id-and-environment-cluster-scope",
+      "provider-version-and-immutable-pin",
+      "topology-and-physical-target-where-applicable",
+      "authoritative-support-matrix-and-advisory-sources",
+      "currency-owner",
+      "time-bound-input-renewal-owners",
+      "loaded-identity-and-qualification-references"
+    ],
+    "managementWorkloadPairing": null,
+    "managementRequirements": [
+      "rancher-chart-image-release-identities-and-license",
+      "management-cluster-version-topology-capacity",
+      "registered-workload-cluster-identity-and-version",
+      "private-access-authentication-and-required-agent-permissions",
+      "backup-units-and-independent-native-access",
+      "deployment-writer-boundaries"
+    ],
+    "deployToolchainPins": null,
+    "deployToolchainOutsideCurrencyCheck": true,
+    "configurationOnlyObjectsOutsideCurrencyCheck": true,
+    "providerRolesDoNotImplySeparateDeployments": true
+  },
+  "requiredReleaseBindingAndResolution": "release-binding-contract.draft.md",
+  "unresolvedInputs": [
+    "joint-template-binding-agreement-and-canonical-encoding",
+    "qualified-supported-runtime-and-broker-selection",
+    "mandatory-append-protection-implementation-and-proof",
+    "accepted-restore-posture-and-proof",
+    "actual-hosted-inventory-and-qualified-management-workload-pair",
+    "authenticated-role-records-and-consuming-transition-assurance"
+  ]
+}

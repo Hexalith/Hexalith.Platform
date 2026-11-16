@@ -1,0 +1,59 @@
+{
+  "recordKind": "ad26-draft-design-approval",
+  "recordVersion": 1,
+  "userStatement": "I approve",
+  "source": "User message in this conversation, following the prepared package and the explanation of owner approval.",
+  "recordedAt": "2026-11-16T13:29:54.342321+00:00",
+  "scope": "Approval of the prepared draft profile-template and release-binding design and its two role-specific record drafts.",
+  "approvedReviewIndex": {
+    "path": "approved-review-index.json",
+    "sha256": "1852c2ca9b67ab6857d3f8961a67764127df0f8d86326aa42663c22d0769da8d",
+    "bytes": 4933
+  },
+  "approvedFiles": [
+    {
+      "path": "README.md",
+      "sha256": "6d16b4c7bf1c93ff7f569250b16f0290148fd8a3ca43665cdfea0035df82e079",
+      "bytes": 8473
+    },
+    {
+      "path": "architecture-ratification.draft.json",
+      "sha256": "a96f4ef3c3d4d62b3f74f5bbc800995176a2f18ba8bf8e0229277f2140d608a6",
+      "bytes": 2579
+    },
+    {
+      "path": "platform-deployment-ratification.draft.json",
+      "sha256": "bacd1323fb14afdc59c0a776221dac14aedfd421e40c71c33d0e2d6a0698c964",
+      "bytes": 2586
+    },
+    {
+      "path": "profile-template.draft.json",
+      "sha256": "025de1b48e0fcc7ea4b2f709f6099eca96ee2936271d812179cc602f82086135",
+      "bytes": 5752
+    },
+    {
+      "path": "release-binding-contract.draft.md",
+      "sha256": "cdb8019ba32af96cc29e2602282afc96047eaf61607f02a10d0092b020e7eaee",
+      "bytes": 8278
+    },
+    {
+      "path": "selected-target.draft.json",
+      "sha256": "c2ee53dea979a1d56c9bafb99683e5754b147969e31ea9d714ad1af0fdbcebfb",
+      "bytes": 3836
+    }
+  ],
+  "authenticatedApproverIdentity": null,
+  "repositoryRoleAssignmentsVerified": false,
+  "authenticatedAd26Ratification": false,
+  "technicalSelectionsApproved": false,
+  "qualificationOrAssuranceAttested": false,
+  "productionAuthority": false,
+  "remainingRequirements": [
+    "Qualified and explicitly selected runtime/broker and component tuple",
+    "Mandatory append-protection and authorized-erasure qualification",
+    "Accepted restore posture and required proof",
+    "Actual inventory and qualified management/workload pairing",
+    "Prescribed role authentication, issuance timing and consuming-transition assurance"
+  ],
+  "contentChangeRule": "This approval identifies the exact captured draft bytes. Changed design content requires a new scoped approval; later index refreshes do not alter this record."
+}

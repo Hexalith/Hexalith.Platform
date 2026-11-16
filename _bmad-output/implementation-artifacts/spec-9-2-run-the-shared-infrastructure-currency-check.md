@@ -20,6 +20,10 @@ context:
 
 **Decision (2026-11-16):** The user chose prerequisites first: resume approved Story 9.1, then establish Story 4.9's ratified inventory before returning to 9.2. The proposed standalone checker foundation is not selected.
 
+**Preparation authorization (2026-11-16):** The user requested and then authorized preparation of the profile template, release-binding contract, content digests and separate Architecture/Platform deployment approval-record drafts. This authorizes review preparation; it records no technical selection or authenticated ratification.
+
+**Draft design approval (2026-11-16):** The user said “I approve” after preparation and explanation of the owner-approval requirement. Approval of the presented draft design is recorded in `docs/contracts/ad26-preparation/design-approval.json`, bound to the preserved review index and exact draft bytes. Missing selections and technical proof are not attested; authenticated per-role ratification remains unissued.
+
 ## Boundaries & Constraints
 
 **Always:** Carry forward 9.1's recorded decisions: check every versioned shared component and production's environment providers; exclude configuration-only objects and deploy tools. Require exact deployed identity/pin agreement, resolved versions, upstream support and qualified management/workload pairing. Support ends at its upstream end-of-life instant. A missing advisory fix fails from its upstream release plus 30 days, using the deployed line or earliest supported line carrying the fix; ordinary updates have no lag limit while supported. Missing, duplicate, contradictory or incomplete evidence fails closed and names affected components.
@@ -43,9 +47,9 @@ Automatic eligibility requires every comparison to pass. Approved attempts requi
 
 </frozen-after-approval>
 
-## Open Questions
+## Pending prerequisite records
 
-1. Supply the ratified EventStore AD-26 template and agreed per-release binding contract (or an approved replacement), with its exact record/artifact reference. The pinned EventStore checkout has no canonical production profile; its 3.19 remains backlog. Without that owner input, Platform cannot ratify 4.9's actual inventory or safely design the live 9.2 input contract.
+The user authorized preparing the missing records rather than locating existing ones. The review package is now `docs/contracts/ad26-preparation/README.md`, with proposed template/binding/target documents, two unissued role drafts and exact source/file digests. Conversation approval of the draft design is recorded against exact bytes; prescribed role authentication and actual technical qualification remain required. Broker/runtime selection, qualified mandatory append protection, accepted restore posture, real inventory/pairing and owner-role authentication/timing/assurance cannot be populated from the available evidence.
 
 ## Code Map
 
@@ -60,6 +64,7 @@ Automatic eligibility requires every comparison to pass. Approved attempts requi
 
 **Execution (prerequisites-first sequence):**
 - [x] `docs/contracts/shared-infrastructure-currency-policy-v1.md` — complete Story 9.1 from its approved spec, with review and verification.
+- [x] `docs/contracts/ad26-preparation/README.md` and its six companion files — prepare the user-requested review package, content-bound per-role drafts and source identities without issuing authority.
 - [ ] `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md` — investigate and plan the separately owned inventory prerequisite through the build workflow before implementation.
 - [ ] This spec — replan the live checker against the ratified inventory and actual admission/drill contracts; do not implement the unselected foundation proposal.
 
@@ -73,6 +78,13 @@ Automatic eligibility requires every comparison to pass. Approved attempts requi
 - Inventory investigation: Platform 4.9 explicitly depends on EventStore's ratified profile template and binding split. Pinned EventStore revision `df976e0051b9e2eaa9d3592b3054a0317d83d0cb` has 3.19 backlog and no `deploy/dapr/production-profile.yaml`. Its 3.19 acceptance requires the agreed template/binding contract and authenticated owner ratification; `deploy/dapr/qualification/README.md` explicitly prohibits substituting candidate files for that canonical profile. No inventory or replacement owner decision was fabricated.
 
 - 2026-11-16: User selected prerequisites first. The initial foundation-only proposal is withdrawn; no checker code or live integration has been implemented. Story 9.2 remains backlog while this draft records the dependency order.
+
+- 2026-11-16: Prepared the authorized AD-26 review package. Sources are fixed at Platform `2752ef60cf821accbab1937b4ce94d584da3ea6a` and EventStore `df976e0051b9e2eaa9d3592b3054a0317d83d0cb`; the independently extracted ratification subject is SHA-256 `d49f8a061eb6a0faf1d31577d571ceae497a38d67404c4901151d1dc4ea90e16` (10,000 canonical bytes). No canonical production profile, schema/validator authority, authentication, selection or ratification was fabricated.
+- Preparation verification: six package-content hashes, eight committed-source hashes, thirteen local links/anchors, all JSON and whitespace checks pass. An independent source check recomputed the same subject and confirmed both role drafts remain unissued with unset authority fields. All disposable verification work ran under `run-with-temp`; requested draft outputs remain in the repository.
+
+- Final source-consistency corrections: kept activated catalog generations/root digest environment-current and attempt-bound, retained the explicit Dapr 1.18.3 floor separately from the unset runtime selection, and carried the proposed unratified `oq8-postgresql-v1` target. Refreshed dependent record/index hashes; final narrow verification passes all counts above, and independent source checks confirm the corrections. No source-owner repository, runtime pin or sprint acceptance changed.
+
+- 2026-11-16: Recorded the user’s “I approve” as the presented draft-design approval. Preserved `approved-review-index.json` and all six reviewed document bytes; added `design-approval.json` and refreshed only the current index. Both per-role records remain unissued and all technical, authentication, timing and assurance unknowns remain explicit.
 
 ## Spec Change Log
 

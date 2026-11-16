@@ -1,0 +1,82 @@
+{
+  "draftShapeVersion": 1,
+  "recordKind": "ad26-ratification-draft",
+  "status": "unissued",
+  "draftOnly": true,
+  "role": "Architecture",
+  "requestedReviewer": "@jpiquot",
+  "authenticatedRoleAssignment": null,
+  "architectureSubject": {
+    "repository": "Hexalith.EventStore",
+    "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+    "path": "_bmad-output/planning-artifacts/architecture.md",
+    "ratificationSubjectSha256": "d49f8a061eb6a0faf1d31577d571ceae497a38d67404c4901151d1dc4ea90e16",
+    "ratificationSubjectBytes": 10000,
+    "wholeFileSha256AtPreparation": "c42f49555b26364177d2ac596b3c4c81a18ac16b2640a5c750424eceebbf99c0",
+    "wholeFileSha256AtIssuance": null
+  },
+  "reviewedDraftInputs": [
+    {
+      "path": "README.md",
+      "sha256": "6d16b4c7bf1c93ff7f569250b16f0290148fd8a3ca43665cdfea0035df82e079",
+      "bytes": 8473
+    },
+    {
+      "path": "profile-template.draft.json",
+      "sha256": "025de1b48e0fcc7ea4b2f709f6099eca96ee2936271d812179cc602f82086135",
+      "bytes": 5752
+    },
+    {
+      "path": "release-binding-contract.draft.md",
+      "sha256": "cdb8019ba32af96cc29e2602282afc96047eaf61607f02a10d0092b020e7eaee",
+      "bytes": 8278
+    },
+    {
+      "path": "selected-target.draft.json",
+      "sha256": "c2ee53dea979a1d56c9bafb99683e5754b147969e31ea9d714ad1af0fdbcebfb",
+      "bytes": 3836
+    }
+  ],
+  "decision": null,
+  "selectedTarget": {
+    "broker": null,
+    "daprRuntimePin": null,
+    "qualifiedSdkRuntimeComponentTuple": null,
+    "restorePosture": null,
+    "nfr7ProtectionPath": null,
+    "qualifiedActorTransactionSemantics": null,
+    "canonicalResolvedProfileDigest": null
+  },
+  "issuer": {
+    "identity": null,
+    "roleRegistryEntry": null,
+    "roleRegistryRevisionOrDigest": null,
+    "authenticationEvidence": null
+  },
+  "assurance": {
+    "requiredLevel": null,
+    "attestationEvidence": null,
+    "achievedLevel": null,
+    "consumingSealedTransitionReference": null
+  },
+  "issuance": {
+    "issuedAt": null,
+    "latestSubjectChangingMainPush": null,
+    "authenticatedPushActivityReference": null,
+    "minimumSeparationSeconds": 86400,
+    "earliestPermittedAt": null,
+    "expiresAt": null,
+    "revocationReference": null,
+    "invalidationReference": null
+  },
+  "validationState": "No approved AD-26 record schema or operational validator is supplied by this draft package.",
+  "blockingInputIds": [
+    "broker-runtime",
+    "append-protection",
+    "restore-posture",
+    "inventory-and-binding",
+    "owner-authority-and-time",
+    "assurance"
+  ],
+  "productionAuthority": false
+}

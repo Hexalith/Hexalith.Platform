@@ -1,0 +1,134 @@
+{
+  "draftShapeVersion": 1,
+  "purpose": "Review-only source and file identity index; not gate evidence, authentication or a production profile.",
+  "preparedAt": "2026-11-16T12:30:25.081865+00:00",
+  "platformPreparationRevision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+  "eventStoreRevision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+  "ratificationSubject": {
+    "sha256": "d49f8a061eb6a0faf1d31577d571ceae497a38d67404c4901151d1dc4ea90e16",
+    "bytes": 10000,
+    "sourcePath": "_bmad-output/planning-artifacts/architecture.md",
+    "sourceRevision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+    "encoding": "UTF-8; each included physical line LF-terminated; no normalization except heading status-tag removal and line terminators; AD-5 Append race paragraph followed directly by AD-26 section."
+  },
+  "sources": [
+    {
+      "repository": "Hexalith.EventStore",
+      "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+      "path": "_bmad-output/planning-artifacts/architecture.md",
+      "gitBlob": "884bfdd0fea3c10265173b3385dfd90aadd6e77e",
+      "sha256": "c42f49555b26364177d2ac596b3c4c81a18ac16b2640a5c750424eceebbf99c0",
+      "bytes": 118732
+    },
+    {
+      "repository": "Hexalith.EventStore",
+      "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+      "path": "_bmad-output/planning-artifacts/epics.md",
+      "gitBlob": "f915bee9b36cb8dd7494c75c2151753461214cec",
+      "sha256": "79e28f1a75f3d4a8c6168ce4b838e37d0be42fc789273f519871fd30b3dd45cc",
+      "bytes": 814538
+    },
+    {
+      "repository": "Hexalith.EventStore",
+      "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+      "path": "_bmad-output/implementation-artifacts/spec-4-16-append-write-once-conformance-through-enforced-envelope.md",
+      "gitBlob": "e7c6013d93afe14684d94a4b67f0c6faf93098ea",
+      "sha256": "8571ae3fd0f5fee429e035b1eb665efbc65a4a821ddadd4b0448bcce6c614ee5",
+      "bytes": 53279
+    },
+    {
+      "repository": "Hexalith.EventStore",
+      "revision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
+      "path": "deploy/dapr/qualification/runtime-lock-1.19.1.json",
+      "gitBlob": "67bed824e3bc89e42885162e333242a97d43828c",
+      "sha256": "5bce69c02c7aee8e3ec37003186a7e602ef25adb2c2808137302b0f4a908ca58",
+      "bytes": 20326
+    },
+    {
+      "repository": "Hexalith.Platform",
+      "revision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+      "path": "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md",
+      "gitBlob": "8c789df20bed9b7cac808639825b08140c92db2a",
+      "sha256": "ce44f85ddc5ecb51e00d6d52c335f3d0e6febc120a9739a57581835e4208a24d",
+      "bytes": 139108
+    },
+    {
+      "repository": "Hexalith.Platform",
+      "revision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+      "path": "_bmad-output/planning-artifacts/epics.md",
+      "gitBlob": "5bb6b4176f72e7bdc746f5298639ffbaed9709f7",
+      "sha256": "7c523a01326dd26ee454ae5d71164de1ae69bd265026b5d625a92e0c656c9432",
+      "bytes": 341896
+    },
+    {
+      "repository": "Hexalith.Platform",
+      "revision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+      "path": "docs/contracts/shared-infrastructure-currency-policy-v1.md",
+      "gitBlob": "1c39efc9bddfe1b2c94731ec44b54946466315d4",
+      "sha256": "eebd46aa30c58be1879aab899bec5874bfe8cf0ff7c42bfced794c28ca7d454a",
+      "bytes": 19946
+    },
+    {
+      "repository": "Hexalith.Platform",
+      "revision": "2752ef60cf821accbab1937b4ce94d584da3ea6a",
+      "path": "docs/implementation/story-4-17-next-candidate-intake.md",
+      "gitBlob": "b1faf412d68f9d590e165964fb71bf93179772af",
+      "sha256": "9108df1c5a943e6f38034ca0280e268dc93d814e0bd1c25373d11c5e43b2b0bd",
+      "bytes": 59566
+    }
+  ],
+  "packageFiles": [
+    {
+      "path": "README.md",
+      "sha256": "6d16b4c7bf1c93ff7f569250b16f0290148fd8a3ca43665cdfea0035df82e079",
+      "bytes": 8473
+    },
+    {
+      "path": "approved-review-index.json",
+      "sha256": "1852c2ca9b67ab6857d3f8961a67764127df0f8d86326aa42663c22d0769da8d",
+      "bytes": 4933
+    },
+    {
+      "path": "architecture-ratification.draft.json",
+      "sha256": "a96f4ef3c3d4d62b3f74f5bbc800995176a2f18ba8bf8e0229277f2140d608a6",
+      "bytes": 2579
+    },
+    {
+      "path": "design-approval.json",
+      "sha256": "552bc1e93061aa788a0be8fea7f0e0312ff604e939e07c392e7142fc2773f314",
+      "bytes": 2408
+    },
+    {
+      "path": "platform-deployment-ratification.draft.json",
+      "sha256": "bacd1323fb14afdc59c0a776221dac14aedfd421e40c71c33d0e2d6a0698c964",
+      "bytes": 2586
+    },
+    {
+      "path": "profile-template.draft.json",
+      "sha256": "025de1b48e0fcc7ea4b2f709f6099eca96ee2936271d812179cc602f82086135",
+      "bytes": 5752
+    },
+    {
+      "path": "release-binding-contract.draft.md",
+      "sha256": "cdb8019ba32af96cc29e2602282afc96047eaf61607f02a10d0092b020e7eaee",
+      "bytes": 8278
+    },
+    {
+      "path": "selected-target.draft.json",
+      "sha256": "c2ee53dea979a1d56c9bafb99683e5754b147969e31ea9d714ad1af0fdbcebfb",
+      "bytes": 3836
+    }
+  ],
+  "excludedFromPackageFileHashes": [
+    "review-index.json"
+  ],
+  "ratificationIssued": false,
+  "productionEligible": false,
+  "refreshedAt": "2026-11-16T13:29:54.342518+00:00",
+  "designApproval": {
+    "path": "design-approval.json",
+    "approvedReviewIndexSnapshot": "approved-review-index.json",
+    "scope": "draft-contract-design",
+    "authenticatedRatification": false
+  }
+}
