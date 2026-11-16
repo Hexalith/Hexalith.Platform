@@ -16,7 +16,7 @@ from prepare_builds_artifacts import source_state
 from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 463, "base42": 93, "extensions": 9}
+REQUIRED_TOTALS = {"current42": 486, "base42": 93, "extensions": 9}
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
@@ -282,13 +282,12 @@ def _run_tuple_ci(metadata_token):
         validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
         builds_root = resolve_builds_root(ROOT)
         catalog = verify_catalog(binding, builds_root)
-        if args.suite in ("extensions", "base42", "current42"):
-            catalog_identity = binding["producer"]["catalog"]
-            catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
-                                                   cwd=builds_root, timeout=30)
-            result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
-                                                                           expected_sha256=catalog_identity["sha256"], binding=binding)
-            (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
+        catalog_identity = binding["producer"]["catalog"]
+        catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
+                                               cwd=builds_root, timeout=30)
+        result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
+                                                                       expected_sha256=catalog_identity["sha256"], binding=binding)
+        (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
         profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
         selected_collectors = {collector_for(group, args.suite) for group in profile["groups"]}

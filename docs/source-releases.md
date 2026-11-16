@@ -8,8 +8,8 @@ Resolution and current execution use only the candidate's shallow Platform
 checkout. The verdict requires both prerequisites to succeed; failure,
 cancellation, skip or an absent result refuses release qualification.
 
-The continuing candidate inventories measure **463 current42, 93 base42 and
-9 extension cases: 565 executions**, with explicit positive counts and zero
+The continuing candidate inventories measure **486 current42, 93 base42 and
+9 extension cases: 588 executions**, with explicit positive counts and zero
 skips. All execute through the current NET11 collector. No historical Platform
 checkout, replay profile or companion ref is required. Missing or pending
 counterpart workflows defer; foreign/PR inputs, stale callbacks and changed main

@@ -1,0 +1,386 @@
+diff --git a/.gitattributes b/.gitattributes
+index 311c57cc..876166e8 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -132,7 +132,6 @@ tests/Hexalith.Platform.Composition.Tests/PlatformEventStorePackageTestCohortTes
+ tests/Hexalith.Platform.Composition.Tests/PlatformPartiesCatalogHandoffTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ tests/Hexalith.Platform.Composition.Tests/PlatformProductionModelClosureTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+-tests/Hexalith.Platform.Composition.Tests/PlatformPublishedPartiesMemoriesTransportTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ tests/Hexalith.Platform.Composition.Tests/PlatformOrdinaryDeclarationCompatibilityTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ 
+diff --git a/.github/workflows/tuple-ci.yml b/.github/workflows/tuple-ci.yml
+index 306252af..0079ad3a 100644
+--- a/.github/workflows/tuple-ci.yml
++++ b/.github/workflows/tuple-ci.yml
+@@ -115,10 +115,6 @@ jobs:
+         with:
+           global-json-file: global.json
+           dotnet-version: '10.0.x'
+-      - name: Install the pinned Dapr CLI for Aspire model controls
+-        uses: dapr/setup-dapr@8d980918fd43a2765c143ce7f687665b2d46a6b9 # v2
+-        with:
+-          version: '1.19.1'
+       - name: Verify published tuple, reject source fallback, build and test Release
+         id: preflight
+         env:
+diff --git a/README.md b/README.md
+index dc7d5304..48e2d660 100644
+--- a/README.md
++++ b/README.md
+@@ -16,12 +16,13 @@ This signed-host pairing grants no ordinary image or runtime admission.
+ 
+ PRs, main pushes and explicit candidate dispatches resolve and execute only that
+ candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+-plus the unchanged catalog gates. Both source resolution and current execution must succeed. A failed, cancelled,
+-skipped or missing prerequisite makes the combined verdict fail. Prepare the current source binding
+-only when owner gitlinks or package provenance change; documentation-only changes
+-need no additional ref. See [candidate preparation](eng/tuple-source-preparation.md).
++plus the unchanged catalog gates. Both source resolution and current execution
++must succeed. A failed, cancelled, skipped or missing prerequisite makes the
++combined verdict fail. Prepare the current source binding only when owner
++gitlinks or package provenance change; documentation-only changes need no
++additional ref. See [candidate preparation](eng/tuple-source-preparation.md).
+ 
+-The continuing inventories declare 463 current42, 93 base42 and nine extension
++The continuing inventories declare 486 current42, 93 base42 and nine extension
+ executions, with exact positive group counts and zero skips.
+ 
+ The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
+diff --git a/docs/current-tuple-preparation.md b/docs/current-tuple-preparation.md
+index e6ab38a0..283f16e2 100644
+--- a/docs/current-tuple-preparation.md
++++ b/docs/current-tuple-preparation.md
+@@ -16,12 +16,13 @@ This signed-host pairing grants no ordinary image or runtime admission.
+ 
+ PRs, main pushes and explicit candidate dispatches resolve and execute only that
+ candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+-plus the unchanged catalog gates. Both source resolution and current execution must succeed. A failed, cancelled,
+-skipped or missing prerequisite makes the combined verdict fail. Prepare the current source binding
+-only when owner gitlinks or package provenance change; documentation-only changes
+-need no additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
++plus the unchanged catalog gates. Both source resolution and current execution
++must succeed. A failed, cancelled, skipped or missing prerequisite makes the
++combined verdict fail. Prepare the current source binding only when owner
++gitlinks or package provenance change; documentation-only changes need no
++additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
+ 
+-The continuing inventories declare 463 current42, 93 base42 and nine extension
++The continuing inventories declare 486 current42, 93 base42 and nine extension
+ executions, with exact positive group counts and zero skips.
+ 
+ The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
+diff --git a/docs/domain-module-enrollment.md b/docs/domain-module-enrollment.md
+index 37fa02f9..2a8df3c2 100644
+--- a/docs/domain-module-enrollment.md
++++ b/docs/domain-module-enrollment.md
+@@ -8,15 +8,21 @@ The selected producer is signed Builds **6.0.5**, source
+ `42441eb4cefcff2f9c582fcda630d9ad15887df2`, SHA-256
+ `d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
+ The authoritative publication binding remains `eng/builds-tuple.json`.
++The authenticated Builds 6.0.5 validation pair is AppHost SHA-256
++`b9c80faba94356860ac73b9e91f1c3721ccc90371726c8b8e33e8774ddbd61b1`
++and Tooling SHA-256
++`9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e`.
++This signed-host pairing grants no ordinary image or runtime admission.
+ 
+ PRs, main pushes and explicit candidate dispatches resolve and execute only that
+ candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+-plus the unchanged catalog gates. Both source resolution and current execution must succeed. A failed, cancelled,
+-skipped or missing prerequisite makes the combined verdict fail. Prepare the current source binding
+-only when owner gitlinks or package provenance change; documentation-only changes
+-need no additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
++plus the unchanged catalog gates. Both source resolution and current execution
++must succeed. A failed, cancelled, skipped or missing prerequisite makes the
++combined verdict fail. Prepare the current source binding only when owner
++gitlinks or package provenance change; documentation-only changes need no
++additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
+ 
+-The continuing inventories declare 463 current42, 93 base42 and nine extension
++The continuing inventories declare 486 current42, 93 base42 and nine extension
+ executions, with exact positive group counts and zero skips.
+ 
+ The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
+diff --git a/docs/package-catalog-qualification.md b/docs/package-catalog-qualification.md
+index f93aa1cc..29cd83d1 100644
+--- a/docs/package-catalog-qualification.md
++++ b/docs/package-catalog-qualification.md
+@@ -2,7 +2,7 @@
+ 
+ Current preparation and CI are documented in [current tuple preparation](current-tuple-preparation.md).
+ Only the candidate Platform checkout is selected. Continuing inventories contain
+-463 current42, 93 base42 and nine extension cases. Current-owner reader controls
++486 current42, 93 base42 and nine extension cases. Current-owner reader controls
+ in `PlatformCurrentOwnerPackageTests` exercise genuine measured packages,
+ production reader generation, immutable catalog/receipt reuse and changed-body/
+ request/version/assets refusals through `PlatformReaderMutationControls`.
+diff --git a/docs/source-releases.md b/docs/source-releases.md
+index 625027a8..0fcec6bb 100644
+--- a/docs/source-releases.md
++++ b/docs/source-releases.md
+@@ -8,8 +8,8 @@ Resolution and current execution use only the candidate's shallow Platform
+ checkout. The verdict requires both prerequisites to succeed; failure,
+ cancellation, skip or an absent result refuses release qualification.
+ 
+-The continuing candidate inventories measure **463 current42, 93 base42 and
+-9 extension cases: 565 executions**, with explicit positive counts and zero
++The continuing candidate inventories measure **486 current42, 93 base42 and
++9 extension cases: 588 executions**, with explicit positive counts and zero
+ skips. All execute through the current NET11 collector. No historical Platform
+ checkout, replay profile or companion ref is required. Missing or pending
+ counterpart workflows defer; foreign/PR inputs, stale callbacks and changed main
+diff --git a/eng/run_tuple_ci.py b/eng/run_tuple_ci.py
+index f8d6c8b3..e53fe544 100644
+--- a/eng/run_tuple_ci.py
++++ b/eng/run_tuple_ci.py
+@@ -16,7 +16,7 @@ from prepare_builds_artifacts import source_state
+ from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+-REQUIRED_TOTALS = {"current42": 463, "base42": 93, "extensions": 9}
++REQUIRED_TOTALS = {"current42": 486, "base42": 93, "extensions": 9}
+ def collector_for(group, suite):
+     """Every remaining control executes on the candidate's current collector."""
+     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
+@@ -282,13 +282,12 @@ def _run_tuple_ci(metadata_token):
+         validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
+         builds_root = resolve_builds_root(ROOT)
+         catalog = verify_catalog(binding, builds_root)
+-        if args.suite in ("extensions", "base42", "current42"):
+-            catalog_identity = binding["producer"]["catalog"]
+-            catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
+-                                                   cwd=builds_root, timeout=30)
+-            result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
+-                                                                           expected_sha256=catalog_identity["sha256"], binding=binding)
+-            (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
++        catalog_identity = binding["producer"]["catalog"]
++        catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
++                                               cwd=builds_root, timeout=30)
++        result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
++                                                                       expected_sha256=catalog_identity["sha256"], binding=binding)
++        (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
+         profile = json.loads((ROOT / profile_path).read_bytes())
+         required_total = validate_profile(profile)
+         selected_collectors = {collector_for(group, args.suite) for group in profile["groups"]}
+diff --git a/eng/test_builds_publication.py b/eng/test_builds_publication.py
+index 6f5294aa..373e2fa3 100644
+--- a/eng/test_builds_publication.py
++++ b/eng/test_builds_publication.py
+@@ -268,7 +268,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
+             root = Path(directory)
+             (root / "eng").mkdir()
+             (root / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [
+-                {"requiredCount": 463, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
++                {"requiredCount": 486, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
+             (root / "Hexalith.Platform.slnx").write_text("<Solution />")
+             catalog = root / "catalog.props"
+             catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>")
+diff --git a/eng/test_builds_tuple.py b/eng/test_builds_tuple.py
+index ee495f5e..59d04ce1 100644
+--- a/eng/test_builds_tuple.py
++++ b/eng/test_builds_tuple.py
+@@ -226,7 +226,7 @@ class BuildsTupleTests(unittest.TestCase):
+             "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
+         (owner / "eng").mkdir()
+         (owner / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [{
+-            "requiredCount": 463, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
++            "requiredCount": 486, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
+         (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
+         source = self.binding["producer"]["sourceRevision"]
+         for name, observed_source in (("matching", source), ("stale", "4" * 40)):
+diff --git a/eng/test_tuple_collectors.py b/eng/test_tuple_collectors.py
+index 77d00662..12333557 100644
+--- a/eng/test_tuple_collectors.py
++++ b/eng/test_tuple_collectors.py
+@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
+ class TupleCollectorTests(unittest.TestCase):
+     def test_every_positive_inventory_executes_only_on_the_candidate(self):
+         for filename, suite, expected in (
+-                ('tuple-ci-sdk42-current-suites.json', 'current42', 463),
++                ('tuple-ci-sdk42-current-suites.json', 'current42', 486),
+                 ('tuple-ci-sdk42-base-suites.json', 'base42', 93),
+                 ('tuple-ci-extension-suites.json', 'extensions', 9)):
+             profile = json.loads((ROOT / 'eng' / filename).read_bytes())
+diff --git a/eng/test_tuple_sdk_suites.py b/eng/test_tuple_sdk_suites.py
+index d842ae2e..b638bba6 100644
+--- a/eng/test_tuple_sdk_suites.py
++++ b/eng/test_tuple_sdk_suites.py
+@@ -93,7 +93,7 @@ class SdkSuiteTests(unittest.TestCase):
+     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
+         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
+         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
+-        self.assertEqual(validate_profile(profile), 463)
++        self.assertEqual(validate_profile(profile), 486)
+         binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
+         binding_groups = [group for group in profile["groups"] if binding_test in group["selectors"]]
+         self.assertEqual(len(binding_groups), 1)
+diff --git a/eng/tuple-ci-sdk42-current-suites.json b/eng/tuple-ci-sdk42-current-suites.json
+index a49930ec..e0cee0b9 100644
+--- a/eng/tuple-ci-sdk42-current-suites.json
++++ b/eng/tuple-ci-sdk42-current-suites.json
+@@ -89,9 +89,10 @@
+       "selectors": [
+         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ConfigurationUsesFullKeysAndServerScopedTokenMappings",
+         "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.DeclaredTenantsChannelTokenRetainsSdkAuthenticationBoundary",
+-        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases"
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.UnknownTenantsServerDoesNotAcquireDeclaredChannelAliases",
++        "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.ActualDaprCliListenersAndTokensRemainServerScopedAsync"
+       ],
+-      "requiredCount": 4,
++      "requiredCount": 5,
+       "purpose": "current-model-boundary",
+       "collector": "current"
+     },
+@@ -335,6 +336,26 @@
+       "requiredCount": 1,
+       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+       "collector": "current"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PublishedCatalogArtifactCohortTests"
++      ],
++      "requiredCount": 20,
++      "purpose": "closed-cohort-version-pair-and-foreign-body-refusals-without-historical-bodies",
++      "collector": "current"
++    },
++    {
++      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
++      "filter": "-class",
++      "selectors": [
++        "Hexalith.Platform.Composition.Tests.PlatformPartiesMappedOwnerProofTests"
++      ],
++      "requiredCount": 2,
++      "purpose": "platform-owned-direct-owner-mapping-with-fixture-owned-local-histories",
++      "collector": "current"
+     }
+   ]
+ }
+diff --git a/eng/tuple-source-preparation.md b/eng/tuple-source-preparation.md
+index ea6e4993..34c0d1ba 100644
+--- a/eng/tuple-source-preparation.md
++++ b/eng/tuple-source-preparation.md
+@@ -11,7 +11,7 @@ After staging an intentional owner-source or package-provenance change, obtain
+ 
+ ```bash
+ (
+-  preparation_dir=$(mktemp -d)
++  preparation_dir=$(mktemp -d) || exit 1
+   trap 'rm -rf "$preparation_dir"' EXIT
+   python3 -B eng/prepare_tuple_sources.py binding --source <full-tree-sha> --output "$preparation_dir/current-tuple-source.json" &&
+     cp "$preparation_dir/current-tuple-source.json" eng/current-tuple-source.json
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesContainerTransportTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesContainerTransportTests.cs
+index bb6e8bbf..dc8678cf 100644
+--- a/tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesContainerTransportTests.cs
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformMemoriesContainerTransportTests.cs
+@@ -68,6 +68,10 @@ public sealed class PlatformMemoriesContainerTransportTests
+         foreach (IDistributedApplicationEventingSubscriber subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+             await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken).ConfigureAwait(true);
+         await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken).ConfigureAwait(true);
++        // Every generated CLI must use the fixture path, so a machine-installed Dapr can never satisfy this model.
++        ExecutableResource[] clis = model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ToArray();
++        clis.Select(resource => resource.Name).Order(StringComparer.Ordinal).ShouldBe(["eventstore-dapr-cli", "memories-dapr-cli", "tenants-api-dapr-cli"]);
++        clis.ShouldAllBe(resource => resource.Command == cli);
+         const string containerHost = "allocated-container-host.invalid";
+         foreach (IResource resource in model.Resources)
+         foreach (EndpointAnnotation endpoint in resource.Annotations.OfType<EndpointAnnotation>())
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs
+new file mode 100644
+index 00000000..3ab8e607
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PlatformPartiesMappedOwnerProofTests.cs
+@@ -0,0 +1,33 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using Shouldly;
++
++/// <summary>Tests the Platform-owned outer-root/direct-owner mapping with fixture-owned local Git histories; no public cohort, publication or CI acceptance.</summary>
++/// <remarks>The retired fact that pinned an archived Parties gitlink stays retired; these facts own their complete histories.</remarks>
++public sealed class PlatformPartiesMappedOwnerProofTests
++{
++    /// <summary>The proof binds the actual direct Parties owner rather than assuming it equals the outer Platform root.</summary>
++    [Fact]
++    public void PlatformOwnedMappingBindsItsActiveOwnerAndDirectCatalog()
++    {
++        using PlatformPartiesProofFixture fixture = new(platformOwned: true);
++        var options = fixture.Options;
++        options.Mapping.Root.ShouldBe(options.PlatformRoot);
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldNotBe(options.Mapping.Root);
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Origin.ShouldBe("package");
++        options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Path.ShouldBeNull();
++        options.PartiesRunProof!.Matches(options).ShouldBeTrue();
++    }
++
++    /// <summary>A direct owner revision that no longer matches the actual outer Git tree invalidates the proof.</summary>
++    [Fact]
++    public void PlatformOwnedMappingRejectsChangedDirectOwnerGitlink()
++    {
++        using PlatformPartiesProofFixture fixture = new(platformOwned: true);
++        string active = fixture.Options.Mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path!;
++        File.AppendAllText(Path.Combine(active, "Native.cs"), "// A different real local source revision.\n");
++        PlatformPartiesProofFixture.Commit(active);
++        PlatformPartiesProofFixture.Git(active, "status", "--porcelain").ShouldBeEmpty();
++        fixture.Options.PartiesRunProof!.Matches(fixture.Options).ShouldBeFalse();
++    }
++}
+diff --git a/tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs b/tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs
+new file mode 100644
+index 00000000..36bdf3de
+--- /dev/null
++++ b/tests/Hexalith.Platform.Composition.Tests/PublishedCatalogArtifactCohortTests.cs
+@@ -0,0 +1,52 @@
++namespace Hexalith.Platform.Composition.Tests;
++
++using Hexalith.Platform.CatalogArtifacts;
++using Shouldly;
++
++/// <summary>Checks the closed production cohort selection and refusal rules without loading any historical package body.</summary>
++/// <remarks>Only the cohort-independent cases of the retired replay-only class remain; old signed-body checks stay retired.</remarks>
++public sealed class PublishedCatalogArtifactCohortTests
++{
++    private const string _sdk410Base = "eventstore-4.1.0-tenants-7.0.2";
++    private const string _sdk410Full = "parties-3.0.0-eventstore-4.1.0-tenants-7.0.2-memories-3.0.23";
++
++    /// <summary>Version selection accepts complete exact pairs and refuses unknown, aliased and cross-cohort pairs.</summary>
++    /// <param name="sdk">The selected SDK version.</param><param name="tenants">The selected Tenant version.</param>
++    /// <param name="full">Whether the full ordinary owner set is requested.</param><param name="expected">The sole expected authority or null.</param>
++    [Theory]
++    [InlineData("4.0.4", "7.0.0", false, "eventstore-4.0.4-tenants-7.0.0")]
++    [InlineData("4.0.4", "7.0.0", true, "parties-3.0.0-eventstore-4.0.4-tenants-7.0.0-memories-3.0.23")]
++    [InlineData("4.1.0", "7.0.2", false, _sdk410Base)]
++    [InlineData("4.1.0", "7.0.2", true, _sdk410Full)]
++    [InlineData("4.0.4", "7.0.2", false, null)]
++    [InlineData("4.0.4", "7.0.2", true, null)]
++    [InlineData("4.1.0", "7.0.0", false, null)]
++    [InlineData("4.1.0", "7.0.0", true, null)]
++    [InlineData("4.1.1", "7.0.2", false, null)]
++    [InlineData("4.1.1", "7.0.2", true, null)]
++    [InlineData("4.1.0+metadata", "7.0.2", false, null)]
++    [InlineData("4.1.0", "7.0.2.0", false, null)]
++    [InlineData("4.0.5", "7.0.0", false, null)]
++    [InlineData("unknown", "unknown", false, null)]
++    public void ExactVersionPairsDetermineOneClosedAuthority(string sdk, string tenants, bool full, string? expected)
++        => PublishedCatalogArtifactCohort.ForVersions(sdk, tenants, full).ShouldBe(expected);
++
++    /// <summary>Foreign assemblies and unknown authorities refuse before their attributes or factories are accessed.</summary>
++    /// <param name="cohort">The known or unknown requested authority.</param>
++    [Theory]
++    [InlineData(PublishedCatalogArtifactCohort.Name)]
++    [InlineData(PublishedCatalogArtifactCohort.FullPartiesName)]
++    [InlineData(_sdk410Base)]
++    [InlineData(_sdk410Full)]
++    [InlineData("unknown")]
++    public void ForeignBodiesAndUnknownAuthoritiesRemainRefused(string cohort)
++        => Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PublishedCatalogArtifactCohortTests).Assembly, cohort));
++
++    /// <summary>A base cohort request cannot be relabelled as a full owner verification.</summary>
++    [Fact]
++    public void FullVerificationRequiresAFullAuthority()
++    {
++        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(_sdk410Base));
++        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.Name));
++    }
++}

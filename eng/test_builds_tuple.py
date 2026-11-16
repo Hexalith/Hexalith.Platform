@@ -226,7 +226,7 @@ class BuildsTupleTests(unittest.TestCase):
             "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
         (owner / "eng").mkdir()
         (owner / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [{
-            "requiredCount": 463, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
+            "requiredCount": 486, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
         (owner / "Hexalith.Platform.slnx").write_text('<Solution><Project Path="Owned.csproj" /></Solution>')
         source = self.binding["producer"]["sourceRevision"]
         for name, observed_source in (("matching", source), ("stale", "4" * 40)):

@@ -1,0 +1,693 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-3/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-3/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-4/Hexalith.Platform.Composition.csproj",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-4/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-7/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-7/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-10/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-10/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-11/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-11/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithEventStoreVersion=4.0.4",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-13/Hexalith.Platform.Composition.csproj",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-13/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:RestoreUseStaticGraphEvaluation=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-14/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-14/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:RestoreUseStaticGraphEvaluation=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:RestoreUseStaticGraphEvaluation=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:RestoreUseStaticGraphEvaluation=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:RestoreUseStaticGraphEvaluation=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/removed-edge-19/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-20/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-20/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=false",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-22/Hexalith.Platform.Composition.csproj",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-22/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HEXALITH_SOURCE_MAPPING_HASH=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HEXALITH_SOURCE_MAPPING_PATH=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/not-an-authenticated-mapping.json",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:IncludeTransitiveProjectReferences"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/removed-edge-29/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/removed-edge-30/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/removed-edge-31/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-32/Hexalith.Platform.Composition.csproj",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-32/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=true"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-33/Hexalith.Platform.Composition.csproj",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-33/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-34/RestoreControl.slnx",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-34/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false",
+      "-p:UseHexalithProjectReferences=false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "restore",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-35/RestoreControl.slnx",
+      "--artifacts-path",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/restore-control-35/artifacts",
+      "-p:Configuration=Debug",
+      "-nodeReuse:false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithSourceMappingHash=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Release",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:UseHexalithProjectReferences=true",
+      "-p:HexalithSourceMappingMode=source",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "dotnet",
+      "msbuild",
+      "/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-38/Hexalith.Platform.Composition.csproj",
+      "-nologo",
+      "-p:Configuration=Debug",
+      "-p:DirectoryBuildPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.props",
+      "-p:DirectoryBuildTargetsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Build.targets",
+      "-p:DirectoryPackagesPropsPath=/tmp/hexalith-job.sBFEhZ8a/platform/Directory.Packages.props",
+      "-p:CustomAfterMicrosoftCommonTargets=/tmp/hexalith-job.sBFEhZ8a/platform-source-sdk-metadata-6_42bypc/child-selection-38/observe-child.targets",
+      "-getTargetResult:ObserveChildSourceMode",
+      "-p:HexalithEventStoreVersion=",
+      "-getProperty:HexalithEventStoreVersion,RestoreUseStaticGraphEvaluation,BuildsToolingAssemblyPath",
+      "-getItem:ProjectReference,Reference",
+      "-p:ArtifactsPath=/tmp/hexalith-job.sBFEhZ8a/build",
+      "-p:HexalithBuildsPublishedToolRoot=/tmp/hexalith-job.sBFEhZ8a/builds/published/tools/net11.0/any",
+      "-target:ObserveChildSourceMode"
+    ],
+    "exitCode": 0
+  }
+]

@@ -11,7 +11,7 @@ After staging an intentional owner-source or package-provenance change, obtain
 
 ```bash
 (
-  preparation_dir=$(mktemp -d)
+  preparation_dir=$(mktemp -d) || exit 1
   trap 'rm -rf "$preparation_dir"' EXIT
   python3 -B eng/prepare_tuple_sources.py binding --source <full-tree-sha> --output "$preparation_dir/current-tuple-source.json" &&
     cp "$preparation_dir/current-tuple-source.json" eng/current-tuple-source.json

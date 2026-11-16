@@ -68,6 +68,10 @@ public sealed class PlatformMemoriesContainerTransportTests
         foreach (IDistributedApplicationEventingSubscriber subscriber in app.Services.GetServices<IDistributedApplicationEventingSubscriber>())
             await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken).ConfigureAwait(true);
         await eventing.PublishAsync(new BeforeStartEvent(app.Services, model), TestContext.Current.CancellationToken).ConfigureAwait(true);
+        // Every generated CLI must use the fixture path, so a machine-installed Dapr can never satisfy this model.
+        ExecutableResource[] clis = model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)).ToArray();
+        clis.Select(resource => resource.Name).Order(StringComparer.Ordinal).ShouldBe(["eventstore-dapr-cli", "memories-dapr-cli", "tenants-api-dapr-cli"]);
+        clis.ShouldAllBe(resource => resource.Command == cli);
         const string containerHost = "allocated-container-host.invalid";
         foreach (IResource resource in model.Resources)
         foreach (EndpointAnnotation endpoint in resource.Annotations.OfType<EndpointAnnotation>())

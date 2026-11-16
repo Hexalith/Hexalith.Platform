@@ -1,0 +1,33 @@
+{
+  "catalogSha256": "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7",
+  "producerSource": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
+  "producerVersion": "6.0.0",
+  "catalogProfile": "current-sdk51",
+  "collectingProperties": {
+    "HexalithEventStoreVersion": "4.2.0",
+    "HexalithTenantsVersion": "7.0.7",
+    "HexalithMemoriesVersion": "3.0.27",
+    "HexalithPartiesVersion": "3.1.1",
+    "HexalithMcpCliVersion": "2.0.1"
+  },
+  "framework": "net11.0",
+  "configuration": "Debug",
+  "packages": {
+    "Hexalith.EventStore.Contracts": "4.2.0",
+    "Hexalith.EventStore.Client": "4.2.0",
+    "Hexalith.EventStore.Server": "4.2.0",
+    "Hexalith.EventStore.ServiceDefaults": "4.2.0",
+    "Hexalith.Tenants.Contracts": "7.0.7",
+    "Hexalith.Tenants.Server": "7.0.7",
+    "Hexalith.Memories.Contracts": "3.0.27",
+    "Hexalith.Memories.EventStore": "3.0.27",
+    "Hexalith.Memories.EventStoreExtensions": "3.0.27",
+    "Hexalith.Parties.Contracts": "3.1.1",
+    "Hexalith.Parties.EventStoreExtensions": "3.1.1",
+    "Hexalith.McpCli.Abstractions": "2.0.1",
+    "Hexalith.EventStore.DomainService": "4.2.0"
+  },
+  "scope": "Package collection regression only",
+  "runtimeAcceptance": false,
+  "candidateAcceptance": false
+}

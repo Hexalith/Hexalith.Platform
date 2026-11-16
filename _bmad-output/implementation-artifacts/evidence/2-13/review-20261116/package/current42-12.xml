@@ -1,0 +1,55 @@
+<assemblies schema-version="3" id="cdf48a70-d3f6-45c3-b420-d7e8514fdd70" user="administrator" start-rtf="2026-11-16T08:58:33.2399406+00:00" finish-rtf="2026-11-16T09:02:53.8455580+00:00" timestamp="11/16/2026 10:02:53"><assembly environment="64-bit (x64) .NET 11.0.0 [collection-per-class, parallel (collections, 14 threads)]" id="101cce72-05ac-402f-a7fd-7f0c8a6cd012" name="/tmp/hexalith-job.sBFEhZ8a/build/bin/Hexalith.Platform.Composition.Tests/release/Hexalith.Platform.Composition.Tests.dll" run-date="2026-11-16" run-time="08:58:33" start-rtf="2026-11-16T08:58:33.2399406+00:00" test-framework="xUnit.net v3 4.0.3+384aa7f0b4" target-framework=".NETCoreApp,Version=v11.0" errors="0" failed="0" finish-rtf="2026-11-16T09:02:53.8455580+00:00" not-run="0" passed="2" skipped="0" time="260.625" time-rtf="00:04:20.6250000" total="2"><collection name="Test collection for Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests (id: 28ad2f88561f92970fa85b677b73e0410af26f62bf6dce6b7c53b7e97272ea3c)" id="8778634b-35ec-41c6-9861-7c0f0ee3dc5c" failed="0" not-run="0" passed="2" skipped="0" time="260.530" time-rtf="00:04:20.5299999" total="2"><test id="64313d31-7662-469d-b60c-d431010e424a" name="Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync" result="Pass" time="172.624" time-rtf="00:02:52.6240000" start-rtf="2026-11-16T08:58:33.3078556+00:00" finish-rtf="2026-11-16T09:01:25.9274956+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests" method="CurrentOwnerBuildAndReaderUseIdenticalMeasuredReleaseContractsAsync" source-file="/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs" source-line="16"><output>full-reader catalog sha256=d63a5f4a0dec92192c3754ef20439936335a4769045c254980dc6e947df642e2 root=d63a5f4a0dec92192c3754ef20439936335a4769045c254980dc6e947df642e2 mapping=609e94e1879347d3d0404e190ab21842ce692151eefa7b2916d60f75ce269056 public-bodies=12 routes=70 policies=46
+Hexalith.EventStore.Contracts sha256=7e4c8823479a6c59456c5169c95d9082ccbb5d199f403f7cb7c3267c9cf9a44a
+Hexalith.EventStore.ServiceDefaults sha256=3b618387d1adc3b98cef9823d629edace174c2bc9a8272a501e979f972fcad12
+Hexalith.EventStore.Client sha256=5b184b6c7bc7e83251d4f48edfb6ee446a28ac4fae7c04c381c388ed8cb9cd92
+Hexalith.EventStore.DomainService sha256=d1593c5a2b93e0a6cb8d84d946a94223403bf38c02bb7e30987f1f188ff13646
+Hexalith.Tenants.Contracts sha256=680d324c2371838c40d6e9446476cbcb0b10074b860a8ee79114b054290c8624
+Hexalith.Tenants.Server sha256=1e180b869b693ab50c5522959f52b6b8f1f5637102d18fc9df1f3fa9768ca68d
+Hexalith.Memories.Contracts sha256=212eb1ee03fc4359c8fbcbe6a4199822e93cab1cc0774e3a1ca318a054cfc7b3
+Hexalith.Memories.EventStore sha256=c0f85c6d3d96f72afe9fd628727df5195cdc710cd826d7e919b4db422850ab13
+Hexalith.Memories.EventStoreExtensions sha256=76a461cc91d71dbf3b1d14874348eed1f03f196f25edef6eef9edf8dba63e42c
+Hexalith.Parties.Contracts sha256=a57427ecb1f12bead74347ebfcbb91bba35e0f2b004f6116ec4f914f0e1fb098
+Hexalith.Parties.EventStoreExtensions sha256=d1843707c9f13719f7218a8328627fd3c1c9035a1430261d94aa77bfd50f9bad
+Hexalith.McpCli.Abstractions sha256=aeb390050b08451827b147a958ba355e1e5c96de526834221645028b85c26c2e
+authority-refusal=mapping Source mapping '/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/source-mapping/mapping.json' has hash '1eaadeca3529fdf8d84579ada1a2f976fba5c1ffe855ed31e97665623d95b1ae' and differs from the command-resolved hash '609e94e1879347d3d0404e190ab21842ce692151eefa7b2916d60f75ce269056'.
+authority-refusal=snapshot The private package reader's pinned catalog validation failed; see /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/refused-authority-snapshot/catalog-validation.log.
+authority-refusal=catalog The private package reader's pinned catalog validation failed; see /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/refused-authority-catalog/catalog-validation.log.
+authority-refusal=missing-snapshot The private package reader's pinned catalog validation failed; see /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/refused-authority-missing-snapshot/catalog-validation.log.
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Program.cs:line 36
+
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Program.cs:line 36
+
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort or compiled owner set is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Program.cs:line 36
+
+Unhandled exception. System.IO.InvalidDataException: The requested package catalog cohort is not qualified.
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Program.cs:line 32
+
+Unhandled exception. System.IO.InvalidDataException: The qualified package catalog reader requires the exact signed public artifact bytes.
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(Assembly assembly, String cohort) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 314
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.&lt;&gt;c__DisplayClass52_0.&lt;VerifyCurrentReferences&gt;b__0(String name) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 305
+   at System.Linq.Enumerable.IteratorSelectIterator`2.Fill(Iterator`1 source, Span`1 results, Func`2 func)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.PreallocatingToArray(Int32 count)
+   at System.Linq.Enumerable.IteratorSelectIterator`2.ToArray()
+   at Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentReferences(String cohort) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/PublishedCatalogArtifactCohort.cs:line 305
+   at Program.&lt;Main&gt;$(String[] args) in /tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Program.cs:line 37
+
+/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.Memories.EventStore' resolves to 3.0.18; pinned Builds catalog e2bbbd0893f586e4d447ef8358ff747ea3d34435 requires 3.0.27. [/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/source-mapping/catalog-versions.json : error HXW012: Package 'Hexalith.Memories.EventStore' resolves to 3.0.18; pinned Builds catalog e2bbbd0893f586e4d447ef8358ff747ea3d34435 requires 3.0.27. [/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/platform-components/catalog-reader/Hexalith.Platform.CatalogBuilder.csproj]
+
+/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Parties' at '/tmp/hexalith-job.sBFEhZ8a/platform/references/Hexalith.Parties' duplicates direct package 'Hexalith.Parties.Contracts/3.1.1'. [/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/ordinary.csproj]
+
+Build FAILED.
+
+/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/source-mapping/mapping.json : error HXW005: Source 'Hexalith.Parties' at '/tmp/hexalith-job.sBFEhZ8a/platform/references/Hexalith.Parties' duplicates direct package 'Hexalith.Parties.Contracts/3.1.1'. [/tmp/hexalith-job.sBFEhZ8a/platform-full-parties-8f5912f0ea224223a924f17e20306767/ordinary.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:02.41
+
+Current reader matrix: complete baseline; transitive pinning preserved; 4 pre-restore authority refusals; 5 request/body refusals; 2 version/assets refusals; 1 source/package duplicate refusal.
+repeatedCurrentBodiesIdentical=True; readerMeasurementsIdentical=True
+</output></test><test id="e512feff-caf5-496e-9b49-daff9e808939" name="Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests.CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync" result="Pass" time="87.906" time-rtf="00:01:27.9060000" start-rtf="2026-11-16T09:01:25.9363125+00:00" finish-rtf="2026-11-16T09:02:53.8373459+00:00" type="Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerPackageTests" method="CurrentMeasuredAuthorityRefusesMutationsBeforeCompositionEffectsAsync" source-file="/tmp/hexalith-job.sBFEhZ8a/platform/tests/Hexalith.Platform.Composition.Tests/PlatformCurrentOwnerPackageTests.cs" source-line="115" /></collection></assembly></assemblies>

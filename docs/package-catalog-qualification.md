@@ -2,7 +2,7 @@
 
 Current preparation and CI are documented in [current tuple preparation](current-tuple-preparation.md).
 Only the candidate Platform checkout is selected. Continuing inventories contain
-463 current42, 93 base42 and nine extension cases. Current-owner reader controls
+486 current42, 93 base42 and nine extension cases. Current-owner reader controls
 in `PlatformCurrentOwnerPackageTests` exercise genuine measured packages,
 production reader generation, immutable catalog/receipt reuse and changed-body/
 request/version/assets refusals through `PlatformReaderMutationControls`.
