@@ -314,7 +314,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         artifacts = self.directory() / 'evidence'
         args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts,
                                 'prepare_only': False, 'profile': 'ci'})()
-        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {'src/Hexalith.Works/Hexalith.Works.csproj': DIGEST}, 'inventorySha256': 'i'}
         def command(arguments, **kwargs):
             name = Path(kwargs['stdout'].name).stem
             if name == 'platform-file-host-release': raise RuntimeError('stopped after profile checks')
@@ -360,6 +360,12 @@ class WorksEvidenceGateTests(unittest.TestCase):
             if not consumer.startswith('P/'):
                 (works / consumer).parent.mkdir(parents=True, exist_ok=True)
                 (works / consumer).write_text('// consumer')
+        project = works / "src/Hexalith.Works/Hexalith.Works.csproj"
+        project.parent.mkdir(parents=True, exist_ok=True)
+        project.write_text("<Project/>")
+        targets = works / verify_works_host.PROOF_TARGETS
+        targets.parent.mkdir(parents=True, exist_ok=True)
+        targets.write_text('<Project/>')
         artifacts = self.directory() / 'evidence'
         runtime = self.directory() / 'daprd'
         runtime.write_bytes(runtime_bytes)
@@ -369,7 +375,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 'catalog': str(platform / verify_works_host.CATALOG), 'catalogSha256': DIGEST}
         args = type('Args', (), {'works_root': works, 'runtime_sdk_root': runtime_sdk_root, 'artifacts_path': artifacts,
                                 'prepare_only': False, 'profile': profile})()
-        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {'src/Hexalith.Works/Hexalith.Works.csproj': DIGEST}, 'inventorySha256': 'i'}
         producers = {package: {'version': VERSION} for _, package, _, _ in ROWS.values()} | {'Hexalith.EventStore.Client': {'version': VERSION}}
 
         def command(arguments, **kwargs):
@@ -390,6 +396,10 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 output.mkdir(parents=True)
                 for suffix in ('', '.dll', '.deps.json', '.runtimeconfig.json'):
                     (output / ('Hexalith.Works.IntegrationTests' + suffix)).write_text('qualified output')
+            if name == 'runtime-release-prebuild-0':
+                output = artifacts / 'runtime/bin/Hexalith.Works/release'
+                output.mkdir(parents=True)
+                (output / 'Hexalith.Works.dll').write_bytes(b'actual post-reference Works body')
             if name == 'works-consumer-supporting':
                 consumer = json.loads((artifacts / 'ledger.json').read_text())['consumer']
                 self.assertEqual(Path(consumer['root']), Path(arguments[0]).parent)
@@ -510,6 +520,45 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     self.assertIn('-p:TargetFramework=net11.0', entry['command'])
                     self.assertIn('-p:RuntimeFrameworkVersion=11.0.0', entry['command'])
                 self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
+
+    def test_prebuilt_proof_is_frozen_only_after_consumer_build_and_selected_for_runtime_children(self):
+        ledger, _, _ = self.run_until_live_lanes(b'qualified runtime')
+        manifest = ledger['proofRuntimeManifest']
+        self.assertEqual(manifest['document']['schema'], verify_works_host.PROOF_MANIFEST_SCHEMA)
+        self.assertEqual(manifest['document']['files'], ledger['consumer']['artifacts'])
+        consumer = next(row for row in ledger['commands'] if row['name'] == 'works-consumer-release')
+        self.assertFalse(any('CustomAfterMicrosoftCommonTargets=' in value for value in consumer['command']))
+        for row in ledger['commands']:
+            if row['name'].startswith('runtime-release-prebuild-'):
+                self.assertIn('-p:CustomAfterMicrosoftCommonTargets=' + manifest['document']['targetsPath'], row['command'])
+                self.assertIn('-p:HexalithWorksProofAssembly=' + manifest['document']['assemblyPath'], row['command'])
+        self.assertEqual(ledger['runtimeEnvironment']['Platform__Works__ProofRuntimeManifest'], manifest['path'])
+
+    def test_frozen_proof_manifest_rejects_changed_import_and_original_binary(self):
+        works = self.directory()
+        project = works / "src/Hexalith.Works/Hexalith.Works.csproj"
+        project.parent.mkdir(parents=True, exist_ok=True)
+        project.write_text("<Project/>")
+        targets = works / verify_works_host.PROOF_TARGETS
+        targets.parent.mkdir(parents=True)
+        targets.write_text('<Project/>')
+        consumer = works / 'consumer'
+        consumer.mkdir()
+        for suffix in ('', '.dll', '.deps.json', '.runtimeconfig.json'):
+            (consumer / ('Hexalith.Works.IntegrationTests' + suffix)).write_text('original body')
+        binding = verify_works_host.create_proof_runtime_manifest(works, consumer, works / 'manifest.json')
+        verify_works_host.require_unchanged_proof_runtime(binding)
+        for path in (targets, consumer / 'Hexalith.Works.IntegrationTests.dll'):
+            original = path.read_bytes()
+            path.write_bytes(original + b'changed')
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'Frozen proof runtime input changed'):
+                verify_works_host.require_unchanged_proof_runtime(binding)
+            path.write_bytes(original)
+        path = Path(binding['path'])
+        path.chmod(0o600)
+        path.write_text('{}')
+        with self.assertRaisesRegex(ValueError, 'Frozen proof runtime manifest changed'):
+            verify_works_host.require_unchanged_proof_runtime(binding)
 
     def test_release_dependency_record_names_every_accepted_test_only_source_exception(self):
         ledger, _, _ = self.run_until_live_lanes(b'qualified runtime')
@@ -676,6 +725,28 @@ class WorksEvidenceGateTests(unittest.TestCase):
         path = self.result(test='<test type="RequiredClass" method="Required" result="Pass" />')
         self.assertEqual(require_passed_tests(path, required_types=["RequiredClass"])["total"], 1)
 
+    def test_release_public_sdk_preparation_class_is_mandatory(self):
+        required = verify_works_host.supporting_classes_for('Release')
+        public = 'WorksSdkProofPreparationTests'
+        self.assertIn(public, required)
+        base = [name for name in required if name != public]
+        path = self.directory() / 'supporting.xml'
+        def write(names):
+            tests = ''.join(f'<test type="Hexalith.Works.IntegrationTests.{name}" result="Pass" />' for name in names)
+            path.write_text(f'<assemblies><assembly total="{len(names)}">{tests}</assembly></assemblies>')
+        required_types = ['Hexalith.Works.IntegrationTests.' + name for name in required]
+        write(base)
+        with self.assertRaisesRegex(ValueError, 'required test classes did not execute'):
+            require_passed_tests(path, required_types=required_types)
+        write(required)
+        self.assertEqual(require_passed_tests(path, required_types=required_types)['passed'], len(required))
+
+    def test_debug_source_classes_exclude_only_public_release_preparation(self):
+        self.assertEqual(verify_works_host.supporting_classes_for('Debug'),
+                         tuple(name for name in SUPPORTING_CLASSES if name != 'WorksSdkProofPreparationTests'))
+        with self.assertRaisesRegex(ValueError, 'Unknown supporting consumer configuration'):
+            verify_works_host.supporting_classes_for('Custom')
+
     def archive(self, files):
         archive = io.BytesIO()
         with tarfile.open(fileobj=archive, mode='w') as output:
@@ -724,22 +795,38 @@ class WorksEvidenceGateTests(unittest.TestCase):
         runtime.write_bytes(b'platform runtime')
         # Path-mapped deterministic builds give Platform's host output the same bytes the hook loads.
         (root / 'bin/release/Hexalith.Platform.Works.Runtime.dll').write_bytes(b'platform runtime')
-        sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': VERSION + '.0', 'path': str(assembly), 'sha256': sha256(assembly)}]
+        sdk_body = assembly.parent / 'Hexalith.EventStore.Aspire.dll'
+        sdk_body.write_bytes(b'actual SDK body')
+        sdk = [{'name': 'Hexalith.EventStore.Aspire', 'version': VERSION + '.0', 'path': str(sdk_body), 'sha256': sha256(sdk_body)}]
+        proof = runtime.parent / 'Hexalith.Works.IntegrationTests.dll'
+        proof.write_bytes(b'controlled proof body')
+        original_proof = proof
+        proof = assembly.parent / proof.name
+        proof.write_bytes(original_proof.read_bytes())
+        dependencies = assembly.with_suffix('.deps.json')
+        dependencies.write_text(json.dumps({'targets': {'net11': {'proof': {'runtime': {proof.name: {}}}}}}))
+        targets = root / 'proof.targets'
+        targets.write_bytes(b'controlled reference declaration')
+        manifest = root / 'proof-runtime.json'
+        manifest.write_text(json.dumps({'schema': verify_works_host.PROOF_MANIFEST_SCHEMA,
+            'assemblyPath': str(original_proof), 'assemblySha256': sha256(proof), 'files': {str(original_proof): sha256(proof)},
+            'targetsPath': str(targets), 'targetsSha256': sha256(targets)}))
+        declared = {'declared': True}
+        for key, path in (('dependencies', dependencies), ('assembly', proof), ('manifest', manifest), ('targets', targets)):
+            declared[key + 'Path'], declared[key + 'Sha256'] = str(path), sha256(path)
         names = ['eventstore', 'works', 'eventstore-operations', 'eventstore-admin'] + (['works-ha'] if ha else [])
         hosting = {'hostingStartupAssemblies': ['Hexalith.Platform.Works.Runtime', 'Hexalith.Works.IntegrationTests'],
-                   'startupHooks': [str(runtime), str(root / 'consumer/Hexalith.Works.IntegrationTests.dll')],
+                   'startupHooks': [], 'declaredProofRuntime': declared,
                    'startups': [{'name': 'Hexalith.Platform.Works.Runtime', 'loaded': True, 'location': str(runtime), 'sha256': sha256(runtime),
                                  'hostingStartupTypes': [HOOK_TYPE]},
-                                {'name': 'Hexalith.Works.IntegrationTests', 'loaded': True, 'hostingStartupTypes': []}],
+                                {'name': 'Hexalith.Works.IntegrationTests', 'loaded': True, 'location': str(proof), 'sha256': sha256(proof),
+                                 'hostingStartupTypes': ['Hexalith.Works.IntegrationTests.WorksSdkProofHostingStartup']}],
                    'platformRuntimeEnabled': True, 'platformTelemetryRegisteredBeforeProof': True, 'telemetryPublisherRegistrations': 1,
                    'environment': compositions()['works']}
         composed = compositions()
         overlaps = [{'key': 'APP_API_TOKEN', 'rule': 'captured-restorable-synthetic-secret'}]
         guard = {name: {'platformComposedKeys': sorted([*values, 'APP_API_TOKEN', 'OTEL_SERVICE_NAME']), 'fixtureKeys': ['APP_API_TOKEN', 'WORKS_SDK_PROOF'],
                         'permittedOverlaps': copy.deepcopy(overlaps), 'composition': values} for name, values in composed.items()}
-        guard['works']['platformComposedKeys'] += ['DOTNET_STARTUP_HOOKS']
-        guard['works']['fixtureKeys'] += ['DOTNET_STARTUP_HOOKS']
-        guard['works']['permittedOverlaps'].append({'key': 'DOTNET_STARTUP_HOOKS', 'rule': 'extends-composed-list'})
         effective = copy.deepcopy(composed) | ({'works-ha': copy.deepcopy(composed['works'])} if ha else {})
         startups = {name: copy.deepcopy(hosting) for name in ('works', 'works-ha') if name in names}
         startups['eventstore'] = {'environment': copy.deepcopy(composed['eventstore'])}
@@ -754,9 +841,11 @@ class WorksEvidenceGateTests(unittest.TestCase):
         path = root / 'starts.jsonl'
         path.write_text(''.join(json.dumps(record) + '\n' for record in records))
         return verify_host_records(path, assembly, root, VERSION,
-                                   runtime_artifacts={str(assembly): sha256(assembly)} if runtime_artifacts is None else runtime_artifacts,
+                                   runtime_artifacts={str(path): sha256(path) for path in assembly.parent.iterdir() if path.is_file()} if runtime_artifacts is None else runtime_artifacts,
                                    host_runtime=root / 'bin/release/Hexalith.Platform.Works.Runtime.dll', composition_literals=LITERALS,
-                                   control_plane_ports=control_plane_ports, managed_inventory=managed_inventory)
+                                   control_plane_ports=control_plane_ports, managed_inventory=managed_inventory,
+                                   proof_manifest={'path': str(root / 'proof-runtime.json'), 'sha256': sha256(root / 'proof-runtime.json'),
+                                       'document': json.loads((root / 'proof-runtime.json').read_bytes())})
 
     def test_platform_and_retained_starts_require_actual_managed_runtime_evidence(self):
         root = self.directory()
@@ -885,7 +974,11 @@ class WorksEvidenceGateTests(unittest.TestCase):
             'absent record': lambda hosting: hosting.clear(),
             'proof only': lambda hosting: hosting.update(hostingStartupAssemblies=['Hexalith.Works.IntegrationTests']),
             'proof first': lambda hosting: hosting.update(hostingStartupAssemblies=['Hexalith.Works.IntegrationTests', 'Hexalith.Platform.Works.Runtime']),
-            'replaced hook': lambda hosting: hosting.update(startupHooks=[hosting['startupHooks'][1]]),
+            'injected hook': lambda hosting: hosting.update(startupHooks=['/foreign/hook.dll']),
+            'undeclared proof': lambda hosting: hosting.pop('declaredProofRuntime'),
+            'changed proof body': lambda hosting: hosting['declaredProofRuntime'].update(assemblySha256='0' * 64),
+            'misbound loaded proof': lambda hosting: hosting['startups'][1].update(location='/foreign/proof.dll'),
+            'proof not loaded': lambda hosting: hosting['startups'][1].update(loaded=False),
             'not loaded': lambda hosting: hosting['startups'][0].update(loaded=False),
             'no hosting type': lambda hosting: hosting['startups'][0].update(hostingStartupTypes=[]),
             'unbound artifact': lambda hosting: hosting['startups'][0].update(sha256='0' * 64),
@@ -899,6 +992,24 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 mutate(changed['hostingStartups'][resource])
                 with self.subTest(name=name, resource=resource), self.assertRaisesRegex(ValueError, resource):
                     self.verify(root, assembly, changed)
+
+    def test_alternate_self_consistent_proof_files_cannot_replace_the_frozen_manifest(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        changed = copy.deepcopy(record)
+        alternate = root / 'alternate-manifest.json'
+        alternate.write_bytes((root / 'proof-runtime.json').read_bytes())
+        changed['hostingStartups']['works']['declaredProofRuntime'].update(
+            manifestPath=str(alternate), manifestSha256=sha256(alternate))
+        with self.assertRaisesRegex(ValueError, 'substituted the frozen manifest'):
+            self.verify(root, assembly, changed)
+        changed = copy.deepcopy(record)
+        alternate = root / 'alternate.deps.json'
+        alternate.write_bytes(assembly.with_suffix('.deps.json').read_bytes())
+        changed['hostingStartups']['works']['declaredProofRuntime'].update(
+            dependenciesPath=str(alternate), dependenciesSha256=sha256(alternate))
+        with self.assertRaisesRegex(ValueError, 'actual prebuilt child deployment'):
+            self.verify(root, assembly, changed)
 
     def test_degraded_expected_start_records_unpassed_readiness_only(self):
         root = self.directory()
@@ -917,7 +1028,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         retained.parent.mkdir(parents=True)
         retained.write_bytes(b'retained host')
         rollback = record | {'role': 'retained-rollback', 'assembly': str(retained), 'sha256': sha256(retained),
-                             'directory': str(root / 'works'), 'hostingStartups': {}}
+                             'directory': str(root / 'works')}
         self.assertEqual(len(self.verify(root, assembly, record, rollback)), 2)
         other = root / 'runtime/bin/Other.AppHost/release/Other.AppHost.dll'
         other.parent.mkdir(parents=True)
@@ -956,7 +1067,9 @@ class WorksEvidenceGateTests(unittest.TestCase):
                     for index, module in enumerate(current['runtimeModules'])]}
             records.append(current)
         arguments = {'retained_assembly': retained, 'retained_preflight': True, 'managed_inventory': inventory,
-                     'control_plane_ports': ports, 'runtime_artifacts': {str(assembly): sha256(assembly)}}
+                     'control_plane_ports': ports, 'runtime_artifacts': {str(path): sha256(path) for path in assembly.parent.iterdir() if path.is_file()},
+                     'proof_manifest': {'path': str(root / 'proof-runtime.json'), 'sha256': sha256(root / 'proof-runtime.json'),
+                         'document': json.loads((root / 'proof-runtime.json').read_bytes())}}
         return root, assembly, records, arguments
 
     def verify_preflight_records(self, root, assembly, records, arguments):
@@ -1011,6 +1124,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
             'missing readiness': lambda value: value.pop('readinessPassed'),
             'degraded archive': lambda value: value.update(readinessPassed=False, worksReadinessExpectation='Degraded'),
             'missing SDK bodies': lambda value: value.update(sdkAssemblies=[]),
+            'unsupported proof hook': lambda value: value['hostingStartups']['works'].update(startupHooks=['/foreign/hook.dll']),
+            'undeclared proof': lambda value: value['hostingStartups']['works'].pop('declaredProofRuntime'),
             'unbound module body': lambda value: value['runtimeModules'][0].update(entrySha256='0' * 64),
             'foreign ports': lambda value: value.update(controlPlanePorts=value['controlPlanePorts'] | {'sentry': 50001}),
             'mutable dependency builds': lambda value: value.update(dependencyBuildsSuppressed=False),
@@ -1057,6 +1172,16 @@ class WorksEvidenceGateTests(unittest.TestCase):
             self.verify(root, release, record | {'runtimeModules': changed})
         with self.assertRaisesRegex(ValueError, 'Release deployment'):
             self.verify(root, debug, record | {'assembly': str(debug), 'sha256': sha256(debug)})
+
+    def test_live_module_cannot_substitute_an_independently_hashed_foreign_sdk(self):
+        root = self.directory()
+        assembly, record = self.host_record(root, ha=True)
+        foreign = root / 'foreign/Hexalith.EventStore.Aspire.dll'
+        foreign.parent.mkdir()
+        foreign.write_bytes(b'independently hashed SDK substitution')
+        record['runtimeModules'][0]['sdkAssemblies'] = [record['sdkAssemblies'][0] | {'path': str(foreign), 'sha256': sha256(foreign)}]
+        with self.assertRaisesRegex(ValueError, 'unpublished runtime SDK assembly'):
+            self.verify(root, assembly, record)
 
     def test_live_module_from_another_sdk_version_cannot_qualify(self):
         root = self.directory()
@@ -1292,7 +1417,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
             'missing resource': (lambda r: r['compositionGuard'].pop('eventstore-admin'), 'composition for eventstore-admin'),
             'equal-value overlap': (lambda r: r['compositionGuard']['works']['fixtureKeys'].append('DOTNET_ENVIRONMENT'), 'DOTNET_ENVIRONMENT'),
             'unlisted overlap': (lambda r: r['compositionGuard']['works']['platformComposedKeys'].append('WORKS_SDK_PROOF'), 'WORKS_SDK_PROOF'),
-            'wrong rule': (lambda r: r['compositionGuard']['works']['permittedOverlaps'][1].update(rule='captured-restorable-synthetic-secret'), 'DOTNET_STARTUP_HOOKS'),
+            'wrong rule': (lambda r: r['compositionGuard']['works']['permittedOverlaps'][0].update(rule='extends-composed-list'), 'APP_API_TOKEN'),
             'phantom permission': (lambda r: r['compositionGuard']['eventstore']['permittedOverlaps'].append({'key': 'OTEL_EXPORTER_OTLP_ENDPOINT', 'rule': 'redirects-otlp-export-to-owned-loopback-collector'}), 'eventstore'),
             'production environment': (lambda r: r['compositionGuard']['eventstore-operations']['composition'].update(DOTNET_ENVIRONMENT='Production'), 'Development'),
             'composed limit differs from source': (lambda r: r['compositionGuard']['eventstore']['composition'].update(EventStore__RateLimiting__PermitLimit='100000'), 'differ from its source'),
@@ -1397,7 +1522,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
             'WorksPlatformDispositionProbeTests', 'WorksPlatformSelectedSdkPathsTests', 'WorksPlatformFleetRestoreTests',
             'WorksAppHostDiscoveryIsolationTests', 'WorksPlatformHostingCompositionTests', 'WorksPlatformTelemetryCollectorTests',
             'WorksPlatformIdentityFixtureTests', 'WorksPlatformCompositionGuardTests', 'WorksAppHostSelectionTests',
-            'WorksSdkPackageContractTests'))
+            'WorksSdkPackageContractTests', 'WorksDeclaredProofRuntimeTests',
+            'WorksQualifiedRuntimeContextTests', 'WorksSdkProofPreparationTests'))
 
     def test_query_identity_must_be_a_resolved_delegated_executor(self):
         self.assertTrue(delegated_identity(identity()))
@@ -1587,7 +1713,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         works = self.directory()
         artifacts = self.directory() / 'evidence'
         args = type('Args', (), {'works_root': works, 'runtime_sdk_root': None, 'artifacts_path': artifacts, 'prepare_only': False})()
-        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {}, 'inventorySha256': 'i'}
+        snapshot = {'root': str(works), 'commit': 'c', 'sourceFiles': {'src/Hexalith.Works/Hexalith.Works.csproj': DIGEST}, 'inventorySha256': 'i'}
         fixtures = {'tests/Hexalith.Works.IntegrationTests/fixture.cs': DIGEST}
         def command(*unused, **kwargs):
             self.assertEqual(json.loads((artifacts / 'ledger.json').read_text())['fixtureSources'], fixtures)

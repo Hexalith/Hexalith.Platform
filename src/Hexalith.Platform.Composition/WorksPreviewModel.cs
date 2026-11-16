@@ -95,6 +95,7 @@ public static class WorksPreviewModel
         string workspace = Path.Combine(Path.GetTempPath(), "hexalith-works-preview", Guid.NewGuid().ToString("N"));
         // The whole Platform checkout stays excluded even when the AppHost directory is nested inside it.
         string platformRoot = LocatePlatformRoot(builder.AppHostDirectory);
+        var proofRuntime = WorksProofRuntimeContext.Load(builder.Configuration["Platform:Works:ProofRuntimeManifest"], worksRoot);
         string[] checkouts = [builder.AppHostDirectory, worksRoot, eventStoreRoot];
         // Refuse a misplaced certificate parent before this preview creates its workspace.
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, platformRoot, workspace, checkouts);
@@ -191,7 +192,6 @@ public static class WorksPreviewModel
             .WithEnvironment("Authentication__Workload__AllowedCallers__1", "eventstore-admin")
             .WithEnvironment("Authentication__WorkloadIssuer__Workload", "works")
             .WithEnvironment("WORKS_PLATFORM_RUNTIME", "1")
-            .WithEnvironment("DOTNET_STARTUP_HOOKS", typeof(WorksRecoveryHostingStartup).Assembly.Location)
             .WithEnvironment("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES", typeof(WorksRecoveryHostingStartup).Assembly.GetName().Name!)
             .AddEventStoreDomainModule(
                 eventStoreResources,
@@ -204,6 +204,22 @@ public static class WorksPreviewModel
 
         var works = AddWorks("works");
         IResourceBuilder<ProjectResource>[] worksHosts = developmentProfile.Replicas == 2 ? [works, AddWorks("works-ha")] : [works];
+
+        // This preview already requires sibling Works sources and a synthetic Platform runtime.
+        // Declare that runtime in each ordinary child build before the SDK freezes its deps graph;
+        // hosting-startup activation then uses normal dependency resolution, without runtime hooks.
+        IResourceBuilder<ProjectResource>[] declaredHosts = proofRuntime is null ? worksHosts : [.. worksHosts, eventStore, admin];
+        foreach (var host in declaredHosts)
+        {
+#pragma warning disable ASPIREEXTENSION001
+            var launch = (ProjectLaunchConfiguration)host.Resource.CreateLaunchConfigurationAsync(ExecutableLaunchMode.NoDebug)
+                .GetAwaiter().GetResult();
+            launch.BuildEnvironment = new Dictionary<string, string>(launch.BuildEnvironment ?? [], StringComparer.Ordinal);
+            if (worksHosts.Contains(host)) launch.BuildEnvironment["PlatformWorksRuntimeRoot"] = platformRoot;
+            proofRuntime?.Configure(launch);
+            host.WithDebugSupport(_ => Task.FromResult(launch), "project");
+#pragma warning restore ASPIREEXTENSION001
+        }
 
         foreach (var host in worksHosts)
         {
@@ -312,9 +328,12 @@ public static class WorksPreviewModel
         operations.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__Role", "operations-receiver");
         // Read the actual selected child through its launch/build environment. The executable owns
         // both contracts and adapters; Works retains its existing five-package publication inventory.
+        proofRuntime?.Verify();
         var preparedOwner = works.PrepareEventStoreDevelopmentOwnerAsync(TimeSpan.FromMinutes(5)).GetAwaiter().GetResult();
         try
         {
+            proofRuntime?.Verify();
+            proofRuntime?.ObserveStarts(builder, declaredHosts.Select(host => host.Resource));
             // Preparation has built and hash-verified this selected executable and its SDK.
             // Every physical replica runs that same output; concurrent dotnet-run builds of
             // one project would race the shared static-web-assets intermediates.

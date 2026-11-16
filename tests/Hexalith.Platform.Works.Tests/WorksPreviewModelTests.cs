@@ -80,9 +80,15 @@ public sealed class WorksPreviewModelTests : IDisposable
         environment["Authentication__Workload__AllowedCallers__1"].ShouldBe("eventstore-admin");
         environment.Keys.Where(key => key.StartsWith("Authentication__Workload__AllowedCallers__", StringComparison.Ordinal))
             .Order(StringComparer.Ordinal).ShouldBe(["Authentication__Workload__AllowedCallers__0", "Authentication__Workload__AllowedCallers__1"]);
-        // Platform's runtime hook and hosting startup are the target's own telemetry composition.
+        // Platform's declared runtime and hosting startup are the target's own telemetry composition.
         environment["WORKS_PLATFORM_RUNTIME"].ShouldBe("1");
-        environment["DOTNET_STARTUP_HOOKS"].ShouldBe(typeof(WorksRecoveryHostingStartup).Assembly.Location);
+        environment.ShouldNotContainKey("DOTNET_STARTUP_HOOKS");
+#pragma warning disable ASPIREEXTENSION001
+        var launch = (ProjectLaunchConfiguration)await works.CreateLaunchConfigurationAsync(ExecutableLaunchMode.NoDebug, TestContext.Current.CancellationToken).ConfigureAwait(true);
+#pragma warning restore ASPIREEXTENSION001
+        launch.BuildEnvironment.ShouldNotBeNull()["PlatformWorksRuntimeRoot"].ShouldBe(WorksProductionProfileTests.Root);
+        launch.ProjectPath.ShouldBe(Path.GetFullPath(Path.Combine(builder.Configuration["Platform:Works:SourceRoot"]
+            ?? Path.Combine(builder.AppHostDirectory, "..", "works"), "src", "Hexalith.Works", "Hexalith.Works.csproj")));
         environment["ASPNETCORE_HOSTINGSTARTUPASSEMBLIES"].ShouldBe("Hexalith.Platform.Works.Runtime");
         works.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldBe("works/ready");
         works.Annotations.OfType<WaitAnnotation>().ShouldNotContain(wait => wait.Resource.Name == "eventstore");
@@ -266,7 +272,7 @@ public sealed class WorksPreviewModelTests : IDisposable
             try
             {
                 await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, project, environment,
-                    TestContext.Current.CancellationToken));
+                    TestContext.Current.CancellationToken)).ConfigureAwait(true);
             }
             catch (InvalidOperationException failure) when (failure.Message == "The actual owner CLI has not been rendered.")
             {

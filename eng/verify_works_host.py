@@ -326,29 +326,87 @@ SUPPORTING_CLASSES = ("WorksSdkPartitionedRebuildTests", "WorksSdkProjectionQuer
                       "WorksPlatformFleetRestoreTests", "WorksAppHostDiscoveryIsolationTests",
                       "WorksPlatformHostingCompositionTests", "WorksPlatformTelemetryCollectorTests",
                       "WorksPlatformIdentityFixtureTests", "WorksPlatformCompositionGuardTests",
-                      "WorksAppHostSelectionTests", "WorksSdkPackageContractTests")
+                      "WorksAppHostSelectionTests", "WorksSdkPackageContractTests", "WorksDeclaredProofRuntimeTests",
+                      "WorksQualifiedRuntimeContextTests", "WorksSdkProofPreparationTests")
+
+
+def supporting_classes_for(configuration):
+    """Public SDK preparation belongs to Release; retain every source-compatible Debug class."""
+    if configuration not in ("Debug", "Release"):
+        raise ValueError("Unknown supporting consumer configuration: " + str(configuration))
+    return tuple(name for name in SUPPORTING_CLASSES
+                 if configuration == "Release" or name != "WorksSdkProofPreparationTests")
+
 
 PLATFORM_HOSTING_STARTUP = PLATFORM_RUNTIME + ".WorksRecoveryHostingStartup"
 PROOF_HOSTING_ASSEMBLY = "Hexalith.Works.IntegrationTests"
 
 
-def require_platform_hosting(record, resource, host_runtime=None):
-    """A Platform-composed Works host must run Platform's own hook and hosting startup before the proof.
-
-    With host_runtime, every loaded Platform runtime artifact (hosting startup and first startup hook) must be
-    byte-identical to Platform's own host-output DLL, never only to the consumer's compile."""
+def require_declared_proof(record, resource, proof_manifest, runtime_artifacts):
+    """Bind the ordinary proof dependency for both current and retained child hosts."""
     observed = (record.get("hostingStartups") or {}).get(resource)
     if not isinstance(observed, dict):
-        raise ValueError("A platform-target start did not record the hosting startups that loaded in " + resource)
-    names = observed.get("hostingStartupAssemblies") or []
+        raise ValueError("A live start did not record its declared proof in " + resource)
     hooks = observed.get("startupHooks") or []
+    startups = {entry.get("name"): entry for entry in observed.get("startups") or [] if isinstance(entry, dict)}
+    if PROOF_HOSTING_ASSEMBLY not in (observed.get("hostingStartupAssemblies") or []):
+        raise ValueError("The declared proof hosting startup is absent in " + resource)
+    if hooks:
+        raise ValueError("Unsupported runtime startup hook in " + resource)
+    declared = observed.get("declaredProofRuntime")
+    if not isinstance(declared, dict) or declared.get("declared") is not True:
+        raise ValueError("The proof is not a declared runtime dependency in " + resource)
+    for key in ("dependencies", "assembly", "manifest", "targets"):
+        path, digest = declared.get(key + "Path"), declared.get(key + "Sha256")
+        if not path or not Path(path).is_file() or Path(path).is_symlink() or sha256(path) != digest:
+            raise ValueError("Unbound declared proof " + key + " in " + resource)
+    if proof_manifest is None:
+        raise ValueError("Missing authoritative frozen proof runtime manifest for " + resource)
+    if declared["manifestPath"] != proof_manifest["path"] or declared["manifestSha256"] != proof_manifest["sha256"]:
+        raise ValueError("The running proof substituted the frozen manifest in " + resource)
+    manifest = proof_manifest["document"]
+    if json.loads(Path(declared["manifestPath"]).read_bytes()) != manifest:
+        raise ValueError("The running proof manifest bytes differ from the frozen inputs in " + resource)
+    modules = [module for module in record.get("runtimeModules", []) if module.get("resource") == resource]
+    if len(modules) != 1:
+        raise ValueError("The running proof has no unique actual child entry for " + resource)
+    entry = Path(modules[0]["entry"])
+    expected_deps = entry.with_suffix(".deps.json")
+    expected_assembly = entry.parent / (PROOF_HOSTING_ASSEMBLY + ".dll")
+    if (declared["dependenciesPath"] != str(expected_deps) or declared["assemblyPath"] != str(expected_assembly)
+            or runtime_artifacts is None or runtime_artifacts.get(str(expected_deps)) != declared["dependenciesSha256"]
+            or runtime_artifacts.get(str(expected_assembly)) != declared["assemblySha256"]):
+        raise ValueError("The declared proof is outside the actual prebuilt child deployment in " + resource)
+    proof_startup = startups.get(PROOF_HOSTING_ASSEMBLY) or {}
+    if (proof_startup.get("loaded") is not True or proof_startup.get("location") != str(expected_assembly)
+            or str(proof_startup.get("sha256", "")).lower() != declared["assemblySha256"]
+            or PROOF_HOSTING_ASSEMBLY + ".WorksSdkProofHostingStartup" not in (proof_startup.get("hostingStartupTypes") or [])):
+        raise ValueError("The loaded proof hosting startup differs from its declared dependency in " + resource)
+    if (manifest.get("schema") != PROOF_MANIFEST_SCHEMA
+            or manifest.get("assemblySha256") != declared["assemblySha256"]
+            or manifest.get("targetsPath") != declared["targetsPath"]
+            or manifest.get("targetsSha256") != declared["targetsSha256"]):
+        raise ValueError("Declared proof manifest differs from the running dependency in " + resource)
+    dependencies = json.loads(Path(declared["dependenciesPath"]).read_bytes())
+    if sum(Path(asset).name == PROOF_HOSTING_ASSEMBLY + ".dll"
+           for target in dependencies.get("targets", {}).values() for library in target.values()
+           for asset in library.get("runtime", {})) != 1:
+        raise ValueError("Proof assembly is absent from ordinary runtime dependencies in " + resource)
+    return observed
+
+
+def require_platform_hosting(record, resource, host_runtime=None, proof_manifest=None, runtime_artifacts=None):
+    """A Platform Works host runs its declared hosting startup before the declared proof dependency.
+
+    With host_runtime the loaded Platform runtime remains byte-identical to the actual host-output DLL.
+    No runtime startup hook may substitute for the child's ordinary dependency closure."""
+    observed = require_declared_proof(record, resource, proof_manifest, runtime_artifacts)
+    names = observed.get("hostingStartupAssemblies") or []
     startups = {entry.get("name"): entry for entry in observed.get("startups") or [] if isinstance(entry, dict)}
     platform = startups.get(PLATFORM_RUNTIME) or {}
     if (PLATFORM_RUNTIME not in names or PROOF_HOSTING_ASSEMBLY not in names
             or names.index(PLATFORM_RUNTIME) > names.index(PROOF_HOSTING_ASSEMBLY)):
         raise ValueError("Platform's hosting startup must load before the proof in " + resource)
-    if not hooks or Path(hooks[0]).name != PLATFORM_RUNTIME + ".dll":
-        raise ValueError("Platform's runtime startup hook must stay first in " + resource)
     if platform.get("loaded") is not True or PLATFORM_HOSTING_STARTUP not in (platform.get("hostingStartupTypes") or []):
         raise ValueError("Platform's WorksRecoveryHostingStartup did not load in " + resource)
     location = platform.get("location")
@@ -356,7 +414,7 @@ def require_platform_hosting(record, resource, host_runtime=None):
         raise ValueError("Platform's loaded hosting startup is not bound to its artifact in " + resource)
     if host_runtime is not None:
         expected = sha256(host_runtime)
-        if str(platform.get("sha256", "")).lower() != expected or not Path(hooks[0]).is_file() or sha256(hooks[0]) != expected:
+        if str(platform.get("sha256", "")).lower() != expected:
             raise ValueError("The loaded Platform runtime differs from Platform's host-output " + PLATFORM_RUNTIME + ".dll in " + resource)
     if observed.get("platformRuntimeEnabled") is not True or observed.get("platformTelemetryRegisteredBeforeProof") is not True:
         raise ValueError("Platform's WORKS_PLATFORM_RUNTIME hosting startup did not run before the proof in " + resource)
@@ -367,7 +425,6 @@ def require_platform_hosting(record, resource, host_runtime=None):
 
 # The only Platform-composed keys a fixture may write on a platform-target start, and the shape each must keep.
 PERMITTED_OVERLAPS = {
-    "DOTNET_STARTUP_HOOKS": "extends-composed-list",
     "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "extends-composed-list",
     "APP_API_TOKEN": "captured-restorable-synthetic-secret",
     "OTEL_EXPORTER_OTLP_ENDPOINT": "redirects-otlp-export-to-owned-loopback-collector",
@@ -455,7 +512,7 @@ def require_platform_composition(record, literals):
     return observed
 
 
-def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None, retained_assembly=None, retained_preflight=False, managed_inventory=None):
+def verify_host_records(path, assembly, platform, version, runtime_artifacts=None, host_runtime=None, composition_literals=None, control_plane_ports=None, retained_assembly=None, retained_preflight=False, managed_inventory=None, proof_manifest=None):
     """Bind target starts and the deliberate retained-host rollback to their exact artifacts."""
     assembly_version = version + ".0"
     records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
@@ -515,7 +572,11 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
             if runtime_artifacts is not None and runtime_artifacts.get(module["entry"]) != module["entrySha256"].lower():
                 raise ValueError("A live module entry is not one of the prebuilt runtime artifacts: " + module["entry"])
             for sdk in module["sdkAssemblies"]:
-                if sdk["version"] != assembly_version or sha256(sdk["path"]) != sdk["sha256"].lower():
+                sdk_path = Path(sdk["path"])
+                if (not sdk.get("name", "").startswith("Hexalith.EventStore.")
+                        or sdk_path != Path(module["entry"]).parent / (sdk["name"] + ".dll")
+                        or sdk["version"] != assembly_version or sha256(sdk_path) != sdk["sha256"].lower()
+                        or runtime_artifacts is None or runtime_artifacts.get(str(sdk_path)) != sdk["sha256"].lower()):
                     raise ValueError("A live module used an unbound or unpublished runtime SDK assembly")
         # The top-level list is the test runner's loaded SDK assemblies; hosts bind theirs per module above.
         sdk_assemblies = record.get("sdkAssemblies", [])
@@ -527,7 +588,7 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
         if record.get("role") == "platform-target":
             if binary.resolve() != assembly.resolve() or Path(record["directory"]).resolve() != platform.resolve():
                 raise ValueError("A target start used another host or source root")
-            record["platformHosting"] = [require_platform_hosting(record, resource, host_runtime) for resource in ("works", "works-ha")
+            record["platformHosting"] = [require_platform_hosting(record, resource, host_runtime, proof_manifest, runtime_artifacts) for resource in ("works", "works-ha")
                                          if resource in {module["resource"] for module in modules}]
             if composition_literals is not None:
                 record["platformComposition"] = require_platform_composition(record, composition_literals)
@@ -535,6 +596,9 @@ def verify_host_records(path, assembly, platform, version, runtime_artifacts=Non
             if (binary.resolve() == assembly.resolve() or "Hexalith.Works.AppHost" not in binary.name
                     or (retained_assembly is not None and binary.resolve() != Path(retained_assembly).resolve())):
                 raise ValueError("Rollback did not select the retained Works host")
+            for resource in ("works", "works-ha"):
+                if resource in {module["resource"] for module in modules}:
+                    require_declared_proof(record, resource, proof_manifest, runtime_artifacts)
         else:
             raise ValueError("An unknown host role cannot qualify parity")
     if retained_preflight:
@@ -1103,6 +1167,60 @@ def platform_consumer_sources(platform):
             if not {"obj", "bin"}.intersection(path.relative_to(platform).parts)}
 
 
+PROOF_TARGETS = "tests/Hexalith.Works.IntegrationTests/WorksPlatformProofRuntime.targets"
+PROOF_MANIFEST_SCHEMA = "hexalith.works-proof-runtime.v1"
+
+
+def create_proof_runtime_manifest(works, consumer, output):
+    """Freeze the already built proof consumer before any child imports its ordinary binary reference."""
+    targets = (Path(works) / PROOF_TARGETS).resolve(strict=True)
+    if (Path(works) / PROOF_TARGETS).is_symlink():
+        raise ValueError("Proof runtime targets must be a regular tracked fixture input")
+    consumer = Path(consumer).resolve(strict=True)
+    assembly = consumer / "Hexalith.Works.IntegrationTests.dll"
+    files = consumer_artifacts(consumer)
+    required = {str(consumer / ("Hexalith.Works.IntegrationTests" + suffix))
+                for suffix in (".dll", ".deps.json", ".runtimeconfig.json")}
+    if not required.issubset(files):
+        raise ValueError("Proof runtime preparation requires the complete prebuilt consumer closure")
+    document = {"schema": PROOF_MANIFEST_SCHEMA, "targetsPath": str(targets), "targetsSha256": sha256(targets),
+                "assemblyPath": str(assembly), "assemblySha256": files[str(assembly)], "files": files}
+    output = Path(output)
+    with output.open("x", encoding="utf-8") as target:
+        target.write(json.dumps(document, indent=2) + "\n")
+    output.chmod(0o400)
+    return {"path": str(output), "sha256": sha256(output), "document": document}
+
+
+def create_qualified_runtime_manifest(works, directory, sources, output):
+    """Freeze the real post-reference Works build separately from its original proof consumer."""
+    works, directory, output = Path(works).resolve(), Path(directory).resolve(), Path(output)
+    project, entry = works / "src/Hexalith.Works/Hexalith.Works.csproj", directory / "Hexalith.Works.dll"
+    files = {str(path): sha256(path) for path in sorted(directory.rglob("*")) if path.is_file()}
+    if (any(Path(path).is_symlink() for path in files) or str(entry) not in files
+            or sources["sourceFiles"].get("src/Hexalith.Works/Hexalith.Works.csproj") != sha256(project)):
+        raise ValueError("The qualified Works runtime requires its actual ordinary deployment and bound project source")
+    document = {"schema": "hexalith.works-qualified-runtime.v1", "projectPath": str(project),
+        "entryPath": str(entry), "entrySha256": files[str(entry)], "files": files,
+        "sourceFiles": {str(works / name): digest for name, digest in sources["sourceFiles"].items()}}
+    with output.open("x") as stream:
+        json.dump(document, stream, sort_keys=True)
+    output.chmod(0o400)
+    return {"path": str(output), "sha256": sha256(output), "document": document}
+
+
+def require_unchanged_proof_runtime(binding):
+    """Keep original proof inputs and the import declaration immutable through final acceptance."""
+    path = Path(binding["path"])
+    document = binding["document"]
+    if path.is_symlink() or sha256(path) != binding["sha256"] or json.loads(path.read_bytes()) != document:
+        raise ValueError("Frozen proof runtime manifest changed")
+    for name, digest in {document["targetsPath"]: document["targetsSha256"], **document["files"]}.items():
+        source = Path(name)
+        if source.is_symlink() or not source.is_file() or sha256(source) != digest:
+            raise ValueError("Frozen proof runtime input changed: " + name)
+
+
 def consumer_artifacts(root):
     """Bind the executed consumer, copied resources, runner configuration and compiled test dependencies."""
     root = Path(root)
@@ -1123,6 +1241,15 @@ def require_unchanged_inputs(summary, works, platform, snapshot_manifest, epheme
     if "agentsProducerContext" in summary and verify_bound_checkout(
             platform, Path(summary["agentsProducerContext"]["buildsRoot"])) != summary["agentsProducerContext"]:
         raise ValueError("The authenticated Agents producer context changed during execution")
+    if "proofRuntimeManifest" in summary:
+        require_unchanged_proof_runtime(summary["proofRuntimeManifest"])
+    if "qualifiedWorksRuntime" in summary:
+        binding = summary["qualifiedWorksRuntime"]
+        if sha256(binding["path"]) != binding["sha256"] or json.loads(Path(binding["path"]).read_bytes()) != binding["document"]:
+            raise ValueError("The independently frozen Works runtime manifest changed")
+        for path, digest in (binding["document"]["files"] | binding["document"]["sourceFiles"]).items():
+            if Path(path).is_symlink() or sha256(path) != digest:
+                raise ValueError("The independently qualified Works runtime or source changed: " + path)
     for source in summary["sourceProducers"].values():
         current = require_unchanged_runtime_source(source) if source["commit"] is None else source_snapshot(source["root"], producer=True)
         if current != source:
@@ -1305,7 +1432,7 @@ def run_verification(args):
                                "artifacts": consumer_artifacts(consumer_directory)}
         save()
         supporting_xml = artifacts / "works-consumer-supporting.xml"
-        supporting_classes = list(SUPPORTING_CLASSES)
+        supporting_classes = list(supporting_classes_for("Release"))
         supporting_command = [consumer_output / "bin/Hexalith.Works.IntegrationTests/release/Hexalith.Works.IntegrationTests", "-noLogo"]
         for name in supporting_classes:
             supporting_command += ["-class", "Hexalith.Works.IntegrationTests." + name]
@@ -1358,10 +1485,16 @@ def run_verification(args):
         runtime_projects += [retained_root / "src/Hexalith.Works.ServiceDefaults/Hexalith.Works.ServiceDefaults.csproj",
                              retained_root / "src/Hexalith.Works.AppHost/Hexalith.Works.AppHost.csproj"]
         runtime_output = artifacts / "runtime"
+        summary["proofRuntimeManifest"] = create_proof_runtime_manifest(
+            works, consumer_directory, artifacts / "proof-runtime-manifest.json")
+        proof_inputs = summary["proofRuntimeManifest"]["document"]
+        proof_properties = ["-p:CustomAfterMicrosoftCommonTargets=" + proof_inputs["targetsPath"],
+                            "-p:HexalithWorksProofAssembly=" + proof_inputs["assemblyPath"],
+                            "-p:PlatformWorksRuntimeRoot=" + str(platform)]
         runtime_properties = ["-p:Version=" + version, "-p:MinVerVersionOverride=" + version,
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
             "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version,
-            "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output)]
+            "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output), *proof_properties]
         retained_properties = ["-p:TargetFramework=net11.0", "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION]
         summary["retainedHostSource"]["compilationContext"] = {
             "targetFramework": "net11.0", "runtimeFrameworkVersion": works_managed_runtime.VERSION,
@@ -1379,6 +1512,8 @@ def run_verification(args):
         summary["retainedHostSource"]["assemblySha256"] = sha256(retained_assembly)
         summary["runtimeArtifacts"] = {str(path): sha256(path) for directory in runtime_directories
             for path in sorted(directory.rglob("*")) if path.is_file()}
+        summary["qualifiedWorksRuntime"] = create_qualified_runtime_manifest(works,
+            runtime_output / "bin/Hexalith.Works/release", summary["worksConsumerSource"], artifacts / "qualified-works-runtime.json")
         save()
         if args.prepare_only:
             summary["status"] = "preparation-passed; parity-incomplete"
@@ -1404,11 +1539,16 @@ def run_verification(args):
             summary["qualifiedToolchain"])
         runtime_environment = {"WORKS_PLATFORM_APPHOST_ASSEMBLY": str(assembly), "WORKS_PLATFORM_APPHOST_SHA256": sha256(assembly),
             "WORKS_PLATFORM_ROOT": str(platform), "WORKS_PLATFORM_WORKS_ROOT": str(works),
+            "WORKS_PLATFORM_QUALIFIED_RUNTIME_MANIFEST": summary["qualifiedWorksRuntime"]["path"],
             "WORKS_RETAINED_HOST_ROOT": str(retained_root), "WORKS_RETAINED_HOST_ASSEMBLY": str(retained_assembly),
             "WORKS_RETAINED_HOST_SHA256": sha256(retained_assembly),
             "Platform__Works__SourceRoot": str(works), "Platform__Identity__Enabled": "false",
+            "Platform__Works__ProofRuntimeManifest": summary["proofRuntimeManifest"]["path"],
+            "CustomAfterMicrosoftCommonTargets": proof_inputs["targetsPath"],
+            "HexalithWorksProofAssembly": proof_inputs["assemblyPath"], "PlatformWorksRuntimeRoot": str(platform),
             "Version": version, "MinVerVersionOverride": version,
             "ArtifactsPath": str(runtime_output), "UseArtifactsOutput": "true", "WORKS_PLATFORM_RUNTIME_ARTIFACTS": str(runtime_output),
+            "PathMap": str(runtime_output) + "=" + DETERMINISTIC_BUILD_ROOT,
             # Every dependency was built serially above. Parallel dotnet-run resource starts must not
             # rewrite those shared outputs; the final artifact hash checks remain authoritative.
             "BuildProjectReferences": "false",
@@ -1454,7 +1594,7 @@ def run_verification(args):
         summary["checks"]["retainedStartupPreflight"] = require_passed_tests(preflight_xml, ["ArchivedTopologyReachesHealthyReadiness"])
         summary["retainedPreflightStarts"] = verify_host_records(artifacts / "retained-preflight-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], control_plane_ports=control_plane_ports,
-            retained_assembly=retained_assembly, retained_preflight=True, managed_inventory=summary["managedRuntimeInventory"])
+            retained_assembly=retained_assembly, retained_preflight=True, managed_inventory=summary["managedRuntimeInventory"], proof_manifest=summary["proofRuntimeManifest"])
         summary["retainedPreflightRuntimeEvidence"] = isolated_daprd.verify(preflight_runtime,
             summary["retainedPreflightRuntime"], summary["retainedPreflightStarts"])
         save()
@@ -1478,7 +1618,7 @@ def run_verification(args):
         summary["actualStarts"] = verify_host_records(artifacts / "host-starts.jsonl", assembly, platform, version,
             runtime_artifacts=summary["runtimeArtifacts"], host_runtime=host_runtime,
             composition_literals=platform_composition_literals(platform / "src/Hexalith.Platform.Composition/WorksPreviewModel.cs"),
-            control_plane_ports=control_plane_ports, retained_assembly=retained_assembly, managed_inventory=summary["managedRuntimeInventory"])
+            control_plane_ports=control_plane_ports, retained_assembly=retained_assembly, managed_inventory=summary["managedRuntimeInventory"], proof_manifest=summary["proofRuntimeManifest"])
         summary["isolatedRuntimeEvidence"] = isolated_daprd.verify(isolated_runtime, summary["isolatedRuntime"], summary["actualStarts"])
         for row in summary["rows"].values():
             row["targetCommands"] = target_commands(summary["commands"])
