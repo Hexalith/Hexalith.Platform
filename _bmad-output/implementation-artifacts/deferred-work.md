@@ -2127,3 +2127,11 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md`
   summary: Strengthen the authentication rejection tests with dispatch exclusion or a defined asynchronous persistence completion boundary.
   evidence: B7; the concurrent Keycloak controls assert one missing event key immediately after HTTP 403. Current authorization rejects before mediator dispatch, but those observations alone do not independently prove that a future incorrectly queued write never persists.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-isolate-the-production-profile-bridge-build.md`
+  summary: Unverified medium-severity SDK workload-advertising download behavior remains part of the installed-toolchain proof prerequisite.
+  evidence: Review BH2 found no explicit advertising opt-out, also absent in the former bridge, but demonstrated no download under the filtered environment; a controlled process/network trace for the exact installed SDK and flags would settle the claim. Authenticated .NET remains refused.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-isolate-the-production-profile-bridge-build.md`
+  summary: Preserve a safe phase identifier for profile-bridge restore/build/validation failures without exposing private child diagnostics.
+  evidence: Review BH10 confirms both the former dotnet-run bridge and current helper return the same generic PROFILE_OWNER_VALIDATION_FAILED for these stages and remove scratch logs; an unavailable SDK and invalid profile are therefore not distinguishable from the refusal alone. This pre-existing developer diagnostic issue was not introduced by bridge isolation.

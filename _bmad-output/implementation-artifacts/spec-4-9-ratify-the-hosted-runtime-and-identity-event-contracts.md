@@ -88,6 +88,10 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 
 - 2026-11-16: User said “adopt v2”. Recorded Platform's v2 construction-format adoption against the exact reviewed proposal and 56 owner-source identities, completed only the format-selection prerequisite, and retained the earlier readiness observation and approved preparation bytes. No component/provider selection, accepted inventory, capture-lag bound, qualification, authenticated ratification, production publication or live currency caller was created; parent story status remains draft/backlog.
 
+- 2026-11-16 post-v2 investigation at Platform `71436c7c3dd9af88253b5cc46b9ffe3511a7f2a1` and EventStore `107e50e39cf2545cbc6546e60e02252251aca274`: actual qualified inventory, hosted catalog, secret contract, capture-lag evidence and authenticated publication remain outstanding. Proposed next engineering slice: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-isolate-the-production-profile-bridge-build.md`. This draft isolates verified application build inputs, retains the authenticated build-proof refusal and needs its own checkpoint approval. It accepts no inventory or production target and completes none of this parent's open acceptance tasks. Existing frozen decisions and approved preparation bytes are preserved.
+
+- 2026-11-17: The user approved and continued the focused bridge-isolation prerequisite; it is done at local EventStore commit `0c2c09ed4279473570d3243d5c01e48301c8e46e`. Verified private SDK-only snapshots preserve all 38 profile sources and both digest domains. Three-layer review, 15 snapshot/25 publication/43 lifecycle tests, 52 genuine bridge controls and preservation/lint checks pass; two separate SDK/diagnostic follow-ups are deferred. This engineering result accepts no inventory, establishes no full toolchain/qualification/ratification proof and creates no production profile. This parent remains draft/backlog with all actual-input and publication tasks outstanding. The owner commit is unpushed and the superproject gitlink is not committed.
+
 ## Spec Change Log
 
 ## Review Triage Log
