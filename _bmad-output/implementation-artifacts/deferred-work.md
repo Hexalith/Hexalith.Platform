@@ -2111,3 +2111,19 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-publication-authority-validator.md`
   summary: Restore the explicit sealed-input preservation and separate-reseal guardrail in EventStore's generated Epic 3 context while labelling the closed 1.19.1 refresh inputs as historical.
   evidence: Review BH10/EH3 verified that context regeneration removed these constraints; the current November 9 planning preserves sealed inputs and treats 1.19.1 as historical. The build review workflow routes agent-context corrections to deferred work.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md`
+  summary: Resolve general infrastructure kind/provider applicability against authoritative provider-category metadata before treating structural declarations as qualified inventory.
+  evidence: Medium impact, unverified semantic claim B3; generic provider/version references can be changed between declared kinds, but the current model has no trusted category registry and always leaves qualification unevaluated. An adopted category contract and real qualified inventory would settle which cross-kind declarations are contradictory.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md`
+  summary: Prevent the Story 5.3 diagnostic adapter's retained log outputs from invalidating its own source inventory when logs are inside the checkout.
+  evidence: B4; concurrently committed EventStore a40642d90bcf11dc866c0e1204d32eb78a7c238e writes logs before assert_stable, whose diagnostic inventory includes untracked files. This predates the focused v2 implementation and remains unchanged.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md`
+  summary: Retain failed Keycloak fixture cleanup handles until their release succeeds so later disposal can retry.
+  evidence: B5; concurrent authentication code in KeycloakAuthFixture.SafeShutdownAsync clears the writer lease, application and builder even after their disposal throws. The focused profile change neither introduced nor modifies that code.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md`
+  summary: Strengthen the authentication rejection tests with dispatch exclusion or a defined asynchronous persistence completion boundary.
+  evidence: B7; the concurrent Keycloak controls assert one missing event key immediately after HTTP 403. Current authorization rejects before mediator dispatch, but those observations alone do not independently prove that a future incorrectly queued write never persists.

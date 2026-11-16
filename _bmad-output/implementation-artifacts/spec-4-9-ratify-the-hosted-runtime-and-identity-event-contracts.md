@@ -51,12 +51,14 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 - `docs/contracts/hosted-profile-binding-v1.md`, `docs/implementation/hosted-profile-v1-mapping-assessment.md` — source-backed mapping against EventStore `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41` finds a node-scope gap; v1 is not adopted. The conditional decision is resolved; final adoption remains pending focused v2 implementation/review.
 - `src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs`, `src/Hexalith.Platform.CatalogBuilder/` — existing declaration-driven generator; local/source results grant no hosted acceptance.
 
+- `docs/contracts/hosted-profile-binding-v2.md`, `evidence/9-2/profile-v2-implementation-20261116.json` — current proposed construction mapping and exact reviewed owner commit/source hashes; format adoption and inventory acceptance remain outstanding.
+
 ## Tasks & Acceptance
 
 **Execution, ordered by dependency:**
 - [x] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-validation.md` — prepare the focused owner construction spec, preserving all publication/qualification gates.
 - [x] `docs/implementation/identity-event-capture-lag-measurement-proposal.md` — prepare timing, measurement cases and decision path without fabricating observations or a bound.
-- [ ] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md` — implement the approved focused owner scope revision selected by the mapping result.
+- [x] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md` — complete the approved focused owner scope revision at `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`.
 - [ ] `docs/contracts/hosted-profile-binding-v2.md` — record adopted joint schema/encoding/validator identities and digest domains after focused v2 implementation and review. The assessed v1 proposal remains unadopted.
 - [ ] `deploy/dapr/hosted-profile-inventory.json` — proposed Platform inventory path; populate actual qualified providers/topology, management/workload pairing, support sources, deploy tools and owners once available.
 - [ ] `deploy/dapr/eventstore-routing-catalog.json` — generate the hosted catalog through Story 3.3 with actual environment bindings; preserve retention entries.
@@ -79,11 +81,14 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 - 2026-11-16: The subsequent “apply recommended” selects conditional adoption after the three-case mapping check. Its containerd case establishes a representation gap, so the binding proposal now withholds v1 adoption and the next construction spec targets focused v2 scope. The frozen block adds only this authorized decision; prior decisions and approved-package bytes are unchanged. No parent acceptance is claimed.
 - 2026-11-16: User approved the focused v2 construction spec and requested a stop. Its status is `ready-for-dev` with reviewed body unchanged; implementation has not started. This parent remains draft/backlog and actual inventory/final adoption remain outstanding.
 
+- 2026-11-16 resumed prerequisite execution: approved owner v2 construction is done at local EventStore commit `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`. Three review layers completed; topology cardinality and namespace defects were fixed, regression coverage expanded, and all 235 profile cases, 25 authority tests and 48 genuine bridge controls pass. V1 golden bytes, fixed refusals and approval-bound preparation bytes remain unchanged. Four external/unverified follow-ups are recorded in the deferred-work ledger.
+- Prepared `docs/contracts/hosted-profile-binding-v2.md` and `evidence/9-2/profile-v2-implementation-20261116.json` as the concrete next format-adoption package. It is proposed, not adopted. Actual qualified inventory, runtime/broker/append/restore proof, authenticated ratification, owner publication and admission/drill callers remain outstanding; no live currency checker was implemented. This parent remains draft/backlog, and owner parent 3.19 remains in-progress. The owner commit is local; no remote operation or superproject commit was performed.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
 ## Verification
 
-- Next, resume the approved owner v2 scope spec at implementation; the earlier v1 construction specs are complete but the mapping check found a gap. Full 4.9 acceptance still requires final adopted contracts, measurements and qualified inventory; this parent is not ready for development.
+- Next, decide adoption of `docs/contracts/hosted-profile-binding-v2.md` against the completed owner v2 construction and exact committed source hashes. Full 4.9 acceptance still requires adopted contracts, measurements, qualified inventory and authority; this parent is not ready for development.
 - Validate exact approved-package hashes and preserved intent, dependency paths, JSON parsing and `git diff --check` under `run-with-temp`. These checks establish preparation consistency only.

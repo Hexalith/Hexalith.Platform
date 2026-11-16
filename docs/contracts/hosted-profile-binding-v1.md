@@ -4,8 +4,8 @@ Status: **assessed v1 proposal; adoption withheld because the complete inventory
 mapping has a concrete scope gap**. The user selected the mapping-first
 recommendation on 2026-11-16. The [three-case assessment](../implementation/hosted-profile-v1-mapping-assessment.md)
 finds that node-level containerd cannot satisfy v1's mandatory namespace and
-Dapr-style configuration fields truthfully. A focused owner v2 is the next
-construction step. This document retains the inspected v1 proposal and supplies
+Dapr-style configuration fields truthfully. The focused owner v2 now addresses this gap; its
+[Platform binding proposal](hosted-profile-binding-v2.md) awaits adoption. This document retains the inspected v1 proposal and supplies
 no inventory, qualification, ratification or publication authority.
 
 ## Exact owner implementation
@@ -112,9 +112,10 @@ demonstrates the latter: provider pins cannot replace complete instance coverage
 and synthetic namespaces/configuration are unacceptable. Keep v1 and its digests
 unchanged; do not adopt it as the complete Platform inventory format. The focused
 [owner construction spec](../../references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md)
-is approved and `ready-for-dev` after the user's “approve and stop”. Its reviewed
-body is unchanged; implementation has not started. No final format adoption is
-claimed by this construction approval.
+is now implemented and reviewed at local owner commit
+`57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`. The [v2 binding proposal](hosted-profile-binding-v2.md)
+records the concrete next adoption choice. No final format adoption is claimed
+by construction approval or implementation success.
 
 After adoption, Platform 4.9 still needs actual qualified inventory and external
 coverage, hosted catalog generation, the value-free secret contract, renewal
