@@ -2089,3 +2089,21 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
   summary: Story 2.14 owner slice — add packages.lock.json with CI `--locked-mode` restore for every restored owner-package project, remove owner release-identity literals from `src/`, and take the AR-12 expected identities from lock-verified packages.
   evidence: The user chose "Split: Builds first" at the 2026-11-16 planning gate. The full spec was about 2,300 tokens and touched about 60 files. The owner work covers story ACs 2 and 5 plus the owner halves of ACs 3 and 4. It includes 31 solution projects plus CatalogBuilder (six SDK graphs) and TestExtension, which need lock files and a fresh `NUGET_PACKAGES`. It also covers `PublishedCatalogArtifactCohort.cs` (53 DLL sha256 values) and the owner declaration, image and version literals in `PlatformPartiesPackageCatalogQualification.cs`, `PlatformPackageCatalogQualification.cs`, `PlatformCurrentOwnerProof.cs:18-20`, `PlatformCurrentOwnerObservation.cs:50` and `PlatformHostedReferenceMapping.cs`. It also covers the owner-version literals in `eng/current_catalog_view.py`. Lock-file contentHash is a SHA-512 of the `.nupkg`, while AR-12 uses per-DLL `sha256:`, so the expected DLL identity must be the hash of the file inside the lock-verified package. `PackageDownload` fixtures are not locked.
+
+## Deferred from: Story 9.1 review (2026-11-16)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Restore the mandatory new-idempotent-command rehearsal in the generated Epic 9 agent context (medium).
+  evidence: `epic-9-context.md` qualifies this with “where applicable,” while architecture spine's staging gate requires at least one idempotent command new in the candidate. Review routes agent-context edits to deferred work; governing architecture remains unchanged.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Restore deputy ingress restrictions in the generated Epic 9 agent context (medium).
+  evidence: The compiled deputy summary omits reopening only to the recorded pre-incident state and keeping user ingress closed before G2, both retained by architecture recovery rules. Agent-context correction is deferred by the review workflow.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Restore operator and provisioning time in the generated Epic 9 recovery-metric summary (medium).
+  evidence: The compiled context omitted the prior accounting requirement; architecture recovery timing includes these intervals. Agent-context correction is deferred by the review workflow.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Define the generated Epic 9 rollback-set summary using the working baseline rather than “previous application” (medium).
+  evidence: AD-15 names the working baseline's package; a previous failed/interrupted candidate can differ. Agent-context correction is deferred by the review workflow.

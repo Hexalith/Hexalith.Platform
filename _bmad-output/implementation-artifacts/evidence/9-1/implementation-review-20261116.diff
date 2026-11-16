@@ -1,0 +1,542 @@
+diff --git a/README.md b/README.md
+index 48e2d660..408d964c 100644
+--- a/README.md
++++ b/README.md
+@@ -375,6 +375,15 @@ findings and recorded Administrator exceptions lasting at most 30 days.
+ Stories 5.5 and 5.11 own implementation and promotion acceptance; publication of
+ the policy does not establish current workflow enforcement.
+ 
++## Shared-infrastructure currency policy
++
++The [shared-infrastructure currency policy v1](docs/contracts/shared-infrastructure-currency-policy-v1.md)
++fixes the checked components, production-attempt, monthly and weekly cadence,
++zero support lag, 30-day security-fix window and Administrator naming of failed
++components for approved attempts. Stories 4.9, 9.2, 9.6 and 9.8 own the inventory,
++enforcement, rehearsal and G3 evidence; publication records the decisions without
++establishing current compliance or implemented enforcement.
++
+ ## Exact tuple CI preflight
+ 
+ [`eng/builds-tuple.json`](eng/builds-tuple.json) is the single exact producer and
+diff --git a/_bmad-output/implementation-artifacts/deferred-work.md b/_bmad-output/implementation-artifacts/deferred-work.md
+index 1adea1c2..807637cb 100644
+--- a/_bmad-output/implementation-artifacts/deferred-work.md
++++ b/_bmad-output/implementation-artifacts/deferred-work.md
+@@ -2089,3 +2089,21 @@ These entries retain or refine existing follow-ups; they do not claim a working
+ - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
+   summary: Story 2.14 owner slice — add packages.lock.json with CI `--locked-mode` restore for every restored owner-package project, remove owner release-identity literals from `src/`, and take the AR-12 expected identities from lock-verified packages.
+   evidence: The user chose "Split: Builds first" at the 2026-11-16 planning gate. The full spec was about 2,300 tokens and touched about 60 files. The owner work covers story ACs 2 and 5 plus the owner halves of ACs 3 and 4. It includes 31 solution projects plus CatalogBuilder (six SDK graphs) and TestExtension, which need lock files and a fresh `NUGET_PACKAGES`. It also covers `PublishedCatalogArtifactCohort.cs` (53 DLL sha256 values) and the owner declaration, image and version literals in `PlatformPartiesPackageCatalogQualification.cs`, `PlatformPackageCatalogQualification.cs`, `PlatformCurrentOwnerProof.cs:18-20`, `PlatformCurrentOwnerObservation.cs:50` and `PlatformHostedReferenceMapping.cs`. It also covers the owner-version literals in `eng/current_catalog_view.py`. Lock-file contentHash is a SHA-512 of the `.nupkg`, while AR-12 uses per-DLL `sha256:`, so the expected DLL identity must be the hash of the file inside the lock-verified package. `PackageDownload` fixtures are not locked.
++
++## Deferred from: Story 9.1 review (2026-11-16)
++
++- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
++  summary: Restore the mandatory new-idempotent-command rehearsal in the generated Epic 9 agent context (medium).
++  evidence: `epic-9-context.md` qualifies this with “where applicable,” while architecture spine's staging gate requires at least one idempotent command new in the candidate. Review routes agent-context edits to deferred work; governing architecture remains unchanged.
++
++- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
++  summary: Restore deputy ingress restrictions in the generated Epic 9 agent context (medium).
++  evidence: The compiled deputy summary omits reopening only to the recorded pre-incident state and keeping user ingress closed before G2, both retained by architecture recovery rules. Agent-context correction is deferred by the review workflow.
++
++- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
++  summary: Restore operator and provisioning time in the generated Epic 9 recovery-metric summary (medium).
++  evidence: The compiled context omitted the prior accounting requirement; architecture recovery timing includes these intervals. Agent-context correction is deferred by the review workflow.
++
++- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
++  summary: Define the generated Epic 9 rollback-set summary using the working baseline rather than “previous application” (medium).
++  evidence: AD-15 names the working baseline's package; a previous failed/interrupted candidate can differ. Agent-context correction is deferred by the review workflow.
+diff --git a/_bmad-output/implementation-artifacts/epic-9-context.md b/_bmad-output/implementation-artifacts/epic-9-context.md
+index 6b1385fa..33ff2fb7 100644
+--- a/_bmad-output/implementation-artifacts/epic-9-context.md
++++ b/_bmad-output/implementation-artifacts/epic-9-context.md
+@@ -4,7 +4,7 @@
+ 
+ ## Goal
+ 
+-Enable automatic production promotion (gate G3) for the reference composition, and only after it is proven safe. Until G3 every production release is Administrator-approved. This epic defines what "security-current" shared infrastructure means and enforces it with a currency check. It verifies the EventStore catalog and record behaviours that automatic rollback depends on. It then runs the full SM-5 rehearsal suite: every deployment-failure trigger, the one-shot recovery, every stop and approval rule, the release-mode and retained-data rules, and shared-infrastructure success and forward revert, which become possible once Epic 8 supplies complete recovery points. Finally, any later policy change suspends automation until the affected rehearsals repeat. When the epic is done, releases with valid compatibility evidence against the current baseline reach production on their own, and no validation is ever bypassed.
++Enable automatic production promotion for the reference composition only after gate G3 proves its safety. Define and enforce shared-infrastructure currency, verify the EventStore behaviours required for recovery, and rehearse deployment failure, recovery, interruption, approval, retained-data and infrastructure paths. Administrator-approved releases remain available before G3 under the same staging, provenance, isolation and verification controls. Later policy changes suspend automation until affected rehearsals pass again.
+ 
+ ## Stories
+ 
+@@ -19,35 +19,29 @@ Enable automatic production promotion (gate G3) for the reference composition, a
+ 
+ ## Requirements & Constraints
+ 
+-- **Automatic trigger:** G3 recorded, plus complete passing compatibility evidence against the *current* production working baseline, plus a passing currency check. Evidence that is missing, failing, stale, against the wrong baseline or breaking refuses the automatic path, and so does a failed currency check. Approval remains the fallback. It never bypasses staging E2E evidence, provenance, isolation, the lock or verification. Both modes share the same staging gate, lock, provenance, verification and records.
+-- **Compatibility evidence:** module change classifications (the maximum over the chain from the baseline) plus a staging candidate-to-baseline rehearsal. The rehearsal proves the baseline reads candidate-written state and events, including a newly introduced idempotent command. Rollback preserves business data, event history, credential rotations, revocations and security authority.
+-- **Currency check:** runs at every production attempt and every monthly drill. It compares each deployed shared component, including Rancher, required agents, the management-cluster distribution and the backup operator, with the supported, security-current profile inventory. It also checks the qualified management/workload version pairing, records exact deployed identities and the result, and names the out-of-date components when it blocks. Its effect on approved attempts is a 9.1 decision.
+-- **Rehearsed thresholds:** rollout must be ready within 10 min of start. Verification lasts 5 min. It fails on 60 continuous seconds of unavailability, on two consecutive smoke failures (the retry comes 30 s after the first failure) or on a result missing at the deadline. A single probe failure or restart does not fail it. Sampling runs at least every 10 s. Recovery is exactly one attempt: 10 min to readiness plus the same verification, never cycling to older releases. Interruptions never reset deadlines or add recoveries.
+-- **Promotion stop:** durable and per-cause, with a monotonic revision. The monitor may set it but never clear it. Only a signed Administrator record clears it, by compare-and-set at the observed revision and only after the lost-window and admission reviews. A later stop always prevails. An accepted cause is not re-recorded until it resolves and recurs, and any other persisting condition is re-recorded as a new cause.
+-- **Deputy limits:** the deputy may run documented recovery, verify, reopen to the recorded pre-incident ingress state (user ingress stays closed before G2) and declare a stop. The deputy may not approve releases, clear the stop or administer production admission. Rehearsals must cover every deputy prohibition and both recurrence rules. Story 9.5 currently lists only "the deputy cannot approve", a known open gap.
+-- **Degraded and incompatible attempts:** an approval clears only the stop it observed. Approval is refused when production is neither empty nor degraded. A failed attempt removes the candidate, keeps data and sets a new stop. A failed approved incompatible release closes ingress, then runs the named data-restore recovery. That recovery must preserve an admission revocation and a Memories erasure acknowledged during the attempt.
+-- **Policy-change suspension:** a change to verification or recovery thresholds or budgets, recovery procedures or rollback-set rules suspends automatic promotion. Platform and Administrator record which rehearsals the change affects, including whether module readiness or smoke declaration changes affect any. Promotion resumes only after all affected rehearsals pass again, with a record linking the change to the evidence.
+-- **Success counters, all zero:** automatic promotions without valid compatibility evidence and G3; promotions on failed, skipped, missing, stale or mismatched E2E evidence; degraded approvals outside empty or degraded production; stop clears without an Administrator record; recoveries reported successful without readiness, smoke and data checks. Recorded recovery time always includes operator and provisioning time.
++- Automatic promotion requires recorded G3, complete passing compatibility evidence against the current production working baseline, and a passing infrastructure currency check. Missing, failed, stale, wrong-baseline or breaking evidence refuses automation. Approval never bypasses staging E2E, provenance, isolation, ownership or verification.
++- Both release modes require passing exact-release staging E2E for every enrolled module's declared critical flows. Skipped, incomplete or absent results fail the gate. Compatibility combines module change classifications with a staging candidate-to-baseline rehearsal proving the baseline reads candidate-written state and events, including a new idempotent command where applicable.
++- Currency compares deployed shared components with supported, security-current profile pins at every production attempt and monthly drill. Include Rancher, required agents, management-cluster distribution and backup operator; check the qualified management/workload pairing and record exact deployed identities, result and failing components. Story 9.1 decides inventory boundaries, allowed lag, cadence and the effect on approved attempts.
++- Rollout readiness is due within ten minutes. Verification lasts five minutes, samples at least every ten seconds and fails for sixty continuous seconds of unavailability, the same smoke check failing twice consecutively thirty seconds apart, or no completed passing result at the deadline. One probe failure or restart alone is insufficient. Results bind the intended release.
++- Compatible deployment recovery gets one attempt with ten minutes to readiness and the same verification. Preserve business data, event history, credential rotations, revocations and current security authority. Never cycle through older releases. Interruptions neither restart deadlines nor replenish recovery allowance; uncertain ownership or an observation gap stops changes or invalidates verification.
++- Promotion stops are durable and per-cause with monotonic revisions. Monitoring sets but never clears them. Only Administrator clears by signed compare-and-set at the observed revision after lost-window and admission reviews. Later stops prevail. Accepted causes recur only after resolution and recurrence; any other continuing condition is re-recorded after clearance.
++- Empty/degraded approval is refused for healthy nonempty production. Failed approved attempts remove candidate workloads while retaining data and set a new stop. Failed approved incompatible releases close user ingress and use their named recovery, preserving admission revocation and acknowledged Memories erasure during the attempt. The deputy may recover and declare stops, but cannot approve releases, clear stops or administer admission.
++- Policy changes affecting verification/recovery thresholds, budgets, procedures or rollback-set rules suspend automation. Platform and Administrator identify affected rehearsals, including whether readiness/smoke declaration changes affect them; resumption links the change to passing repeat evidence.
++- Acceptance requires zero automatic promotions without G3/valid compatibility, zero staging-gate bypasses, zero invalid degraded approvals or unauthorized stop clears, and zero reported successful recoveries without readiness, smoke and data verification.
+ 
+ ## Technical Decisions
+ 
+-- **One production workflow, two modes:** approved mode replaces only the G3 and compatibility triggers with an Administrator record. Nothing mutates until every production precondition holds, including a clear stop, the mode trigger, fresh staging evidence, equal profile digests, healthy production and, for retained data, compatibility evidence or a named restore.
+-- **Automatic recovery:** a Helm upgrade that renders the prepared rollback set. That set is the baseline package with environment-current values plus the rollback generation, and it is recorded and ready-validated before rollout. The rollback generation commits at readiness. `helm rollback`, `--rollback-on-failure` and controller-driven rollback are forbidden. Forward-only inputs (catalog, keys, secrets, realm, routing, Dapr components) stay expand-only until the candidate is working, and contraction happens in a later attempt.
+-- **Production-promoted record:** written before the Helm upgrade and bound to the profile digest. It is invalidated on a non-working outcome and renewed on any environment-layer or shared change.
+-- **Shared infrastructure:** versions come from the shared facet of the profile inventory. Every change runs under both environment locks after a complete recovery point, and is first rehearsed on a production-profile copy on prepared capacity; the only exception is an urgent security patch applied in place with an Administrator record. A failed verification sets the stop, degrades production and is recovered by Administrator-owned forward revert.
+-- **Rehearsal harness:** SM-5 reuses the Epic 6 harness and adds none of its own. Faults are injected only inside Administrator-approved rehearsal attempts, at named injection points and with no standing credential. No injection changes a release-invariant value. Attempt records mark rehearsals, and GitHub issues carry a rehearsal label, so the deputy never receives a real alert for a planned fault.
++- One production workflow supports automatic and Administrator-approved modes. Approval substitutes only for the G3/compatibility triggers; all other preconditions still hold before mutation. Attempts use environment locks and monotonic epochs; shared changes hold both locks.
++- Recovery uses Helm upgrade to render the prepared rollback set: previous application, environment-current values and the rollback generation, validated before rollout. Commit the rollback generation at readiness. Helm rollback and controller-driven rollback are forbidden. Forward-only catalog, routing, key, secret, realm and Dapr inputs remain expand-only until the candidate works; contraction is a later attempt.
++- Production-promoted records bind the active profile digest, precede upgrade, are invalidated by non-working outcomes, and are renewed after environment-layer/shared changes. Qualification must cover the current effective profile sets.
++- Shared pins belong to the profile inventory, separate from application artifacts and deploy-tool identities. Shared changes require a complete recovery point and rehearsal on prepared production-profile capacity, except an urgent in-place security patch with an Administrator record. Failed shared verification degrades production and sets its stop; Administrator owns forward revert. A failed currency check blocks automation.
++- Rancher uses a dedicated private management cluster and retains independently qualified native workload-cluster access. Its backup does not replace workload/etcd recovery. Management/workload pairing, exact images/chart and current authority are qualified separately; manager unavailability does not remove native recovery capability.
++- SM-5 extends the Epic 6 harness. Fault injection occurs only in Administrator-approved rehearsal attempts at named points without standing credentials or release-invariant changes. Records and GitHub issues identify rehearsals to avoid real incident alerts.
+ 
+ ## Cross-Story Dependencies
+ 
+-- 9.1 precedes 9.2. The 9.2 check feeds the currency-block rehearsal in 9.6 and the automatic path in 9.8.
+-- 9.3 is blocked on EventStore's G3 confirmations, an external prerequisite. G3 cannot be recorded while any confirmation is missing. Each one needs a recorded staging test.
+-- 9.4–9.6 build on Epic 6:
+-  - the fault-injection decision (6.1) and the harness (6.21);
+-  - the stop store and durable stop (6.9, 6.10), notifications (6.13) and preconditions (6.14);
+-  - rollout and verification (6.16), automatic recovery (6.17) and approved attempts (6.18);
+-  - the guarded shared-infrastructure procedure (6.22).
+-  The pre-G2 rehearsals (6.24) count as early SM-5 evidence.
+-- 9.6 also needs Epic 5's compatibility evidence (5.8) and named recovery (5.9). From Epic 8 it needs complete recovery points (8.7), prepared capacity (8.1), qualified in-place and named restore (8.16), Memories erasure continuity (8.13) and the deputy's recovery capability (8.14).
+-- Epic 8's reduced-recovery policy (8.2) decides whether automatic promotion may resume before the return to G2 conditions.
+-- 9.8 needs 9.1, 9.3 and 9.4–9.6 recorded, and 9.7 then governs suspension. Gates run strictly in the order G1, G2, G3.
+-- Epic 10's MVP acceptance closes after Epic 9. Epic 10 repeats SM-5 for all seven modules.
++- 9.1 precedes 9.2; 4.9 owns the ratified hosted profile inventory, including shared pins and identities. These are required inputs, not established evidence of implemented policy or inventory. Currency enforcement feeds 9.6 and the automatic gate in 9.8.
++- 9.3 requires EventStore confirmations of retention, catalog activation order, expected-generation commit, recovery-point forward generation and production-promoted record invalidation/renewal, each proven in staging. Missing confirmation blocks G3.
++- 9.4–9.6 reuse Epic 6 fault decisions/harness, durable stop, notification, precondition, verification, recovery, approval and guarded shared-infrastructure procedures. Pre-G2 rehearsal evidence can contribute early SM-5 proof.
++- 9.6 also depends on Epic 5 compatibility/named recovery and Epic 8 complete recovery points, prepared capacity, qualified restore, Memories continuity and deputy access. Reduced-recovery policy decides whether automation may resume before return to G2 conditions.
++- 9.8 records G3 only after the policy, EventStore confirmations and all SM-5 paths pass; 9.7 governs later suspension. Gates remain ordered G1, G2, G3. Epic 10 repeats acceptance for the complete seven-module composition.
+diff --git a/_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md b/_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md
+index 885f613f..aab3476a 100644
+--- a/_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md
++++ b/_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md
+@@ -2,9 +2,10 @@
+ title: '9.1 Decide the shared-infrastructure currency policy'
+ type: 'feature'
+ created: '2026-11-15'
+-status: 'ready-for-dev'
++status: 'done'
+ route: 'dispatch'
+ review_loop_iteration: 0
++baseline_commit: 'a69e4b4b9ad374807829338856bb149fd55a198e'
+ story_key: '9-1-decide-the-shared-infrastructure-currency-policy'
+ context:
+   - '{project-root}/_bmad-output/implementation-artifacts/epic-9-context.md'
+@@ -57,9 +58,9 @@ Confirmed by the user on 2026-11-15:
+ ## Tasks & Acceptance
+ 
+ **Execution:**
+-- [ ] `docs/contracts/shared-infrastructure-currency-policy-v1.md` -- publish the decisions, triggers, comparison and fail-closed rules, result-record fields (check ID, trigger, time, inventory digest, per-component deployed identity, pin, upstream sources and observation time, reason, pairing and overall result), approval-record naming rule, accountability, revisit conditions, downstream obligations (4.9 records per-component support/advisory sources and currency owners; 9.2, 9.6, 9.8) and an acceptance/refusal table -- gives 9.2 an enforceable contract.
+-- [ ] `README.md` -- add a short section linking the policy beside "Staging policies" -- discoverability.
+-- [ ] This spec and `sprint-status.yaml` -- record verification and status per the build workflow.
++- [x] `docs/contracts/shared-infrastructure-currency-policy-v1.md` -- publish the decisions, triggers, comparison and fail-closed rules, result-record fields (check ID, trigger, time, inventory digest, per-component deployed identity, pin, upstream sources and observation time, reason, pairing and overall result), approval-record naming rule, accountability, revisit conditions, downstream obligations (4.9 records per-component support/advisory sources and currency owners; 9.2, 9.6, 9.8) and an acceptance/refusal table -- gives 9.2 an enforceable contract.
++- [x] `README.md` -- add a short section linking the policy beside "Staging policies" -- discoverability.
++- [x] This spec and `sprint-status.yaml` -- record verification and status per the build workflow.
+ 
+ **Acceptance Criteria:**
+ - Given the profile inventory definition, when maintainers read the record, then it fixes checked components, cadence, allowed lag and the approved-attempt effect, and keeps the check at every production attempt and monthly drill.
+@@ -67,10 +68,27 @@ Confirmed by the user on 2026-11-15:
+ 
+ ## Implementation Notes
+ 
++- 2026-11-16: Resumed the approved spec after the user chose prerequisite-first sequencing for Story 9.2. Published the policy and linked it beside README's staging policies. No inventory, checker, infrastructure, pins, workflows or planning sources changed.
++- Preserved the approved intent block byte-for-byte (SHA-256 `87f576e58e63b83ed84e1f342217998b19d120372bc692080e0683e54ab92cbc`). Added explicit deadline boundaries, evidence requirements, complete-failure-set naming and downstream ownership within those decisions.
++
++- Final independent review: three direct policy corrections applied, four generated agent-context findings deferred as required by the review workflow, one spec-bookkeeping finding rejected. Edge-case review returned no findings; verification-gap review found no gaps.
++- Final verification rechecked all seven policy links/anchors, README discovery, staged/worktree whitespace and unchanged approved intent. Policy content SHA-256: `eebd46aa30c58be1879aab899bec5874bfe8cf0ff7c42bfced794c28ca7d454a`.
++
+ ## Spec Change Log
+ 
+ ## Review Triage Log
+ 
++| Finding | Verdict | Route and evidence |
++| --- | --- | --- |
++| BH1: new-idempotent-command rehearsal weakened | medium | Defer: generated Epic 9 agent context says “where applicable”; architecture staging gate requires at least one new idempotent command. Context-only correction is deferred under the review workflow's agent-context rule. |
++| BH2: deputy ingress limits omitted | medium | Defer: generated Epic 9 context omits restoration only to recorded pre-incident state and closed user ingress before G2; architecture recovery rules retain both. Context-only correction deferred. |
++| BH3: recovery timing accounting omitted | medium | Defer: context drops operator/provisioning time from recorded recovery duration; the architecture's recovery metrics retain it. Context-only correction deferred. |
++| BH4: rollback set calls baseline “previous application” | medium | Defer: context wording can select a failed/interrupted previous attempt instead of the working baseline required by AD-15. Context-only correction deferred. |
++| BH5: 9.2 draft code map records old prerequisite state | low | Reject: planning-bookkeeping finding whose correction edits a build spec, excluded by the review workflow. Current policy exists and 9.1 frontmatter is authoritative; selected-sequence progress will be recorded when completed. |
++| BH6: check consumption time unspecified | medium | Patch: “before mutation” permits a queued earlier result to cross an input/deadline change. Clarify the existing production-admission point under the attempt lock/epoch, with current inputs and deadlines; no new age window or public API. |
++| BH7: evaluator identity omitted from result fields | medium | Patch: downstream 9.2 adoption already requires evaluator identity, but the required record table omits it. Repeat that existing requirement in the record table so evidence retains the qualified evaluator. |
++| P1: coverage text assumes two database deployments | medium | Patch: policy says Keycloak's database and production PostgreSQL are separate instances despite explicitly leaving topology to 4.9. Describe coverage of actual deployment instances without assuming separate physical deployments. |
++
+ ## Verification
+ 
+ **Commands:**
+@@ -78,3 +96,9 @@ Confirmed by the user on 2026-11-15:
+ 
+ **Manual checks (if no CLI):**
+ - Every local link and anchor in the new document and README resolves; every table row matches the frozen decisions; no enforcement claim.
++
++**Executed verification (2026-11-16):**
++- `git diff --check` and an independent new-policy whitespace inspection: passed.
++- Disposable local-link/anchor audit: all seven policy links and anchors resolve; README's new policy link resolves.
++- Manual matrix audit against the published acceptance/refusal table: Current, Drift/unknown, Lag, Approved/named and Approved/unnamed all match the frozen decisions. Exact support/security boundaries, unresolved digest versions, unknown coverage and weekly notification cases are also explicit.
++- These are documentation checks. Executable evaluation and runtime enforcement are Story 9.2 obligations; no behavioral implementation test is claimed.
+diff --git a/_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md b/_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md
+new file mode 100644
+index 00000000..30024bb5
+--- /dev/null
++++ b/_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md
+@@ -0,0 +1,84 @@
++---
++title: '9.2 Run the shared-infrastructure currency check'
++type: 'feature'
++created: '2026-11-16'
++status: 'draft'
++route: 'dispatch'
++review_loop_iteration: 0
++story_key: '9-2-run-the-shared-infrastructure-currency-check'
++context:
++  - '{project-root}/_bmad-output/implementation-artifacts/epic-9-context.md'
++---
++
++<frozen-after-approval reason="human-owned intent — do not modify unless human renegotiates">
++
++## Intent
++
++**Problem:** Story 9.2 requires exact deployed infrastructure identities, support/security evaluation and qualified management/workload pairing at every production attempt and monthly drill. The repository has no currency evaluator, accepted hosted inventory or admission/drill caller.
++
++**Approach:** Complete the prerequisites before designing the live checker. Preserve the original Story 9.2 production-attempt and monthly-drill acceptance criteria.
++
++**Decision (2026-11-16):** The user chose prerequisites first: resume approved Story 9.1, then establish Story 4.9's ratified inventory before returning to 9.2. The proposed standalone checker foundation is not selected.
++
++## Boundaries & Constraints
++
++**Always:** Carry forward 9.1's recorded decisions: check every versioned shared component and production's environment providers; exclude configuration-only objects and deploy tools. Require exact deployed identity/pin agreement, resolved versions, upstream support and qualified management/workload pairing. Support ends at its upstream end-of-life instant. A missing advisory fix fails from its upstream release plus 30 days, using the deployed line or earliest supported line carrying the fix; ordinary updates have no lag limit while supported. Missing, duplicate, contradictory or incomplete evidence fails closed and names affected components.
++
++Record check/trigger identity, UTC evaluation time, inventory digest, each deployed identity/version, pin, support/advisory sources and observation times, pairing and all failure reasons. Accept production-attempt, monthly-drill and weekly triggers. Weekly results also identify end of life within 30 days for future notification.
++
++Automatic eligibility requires every comparison to pass. Approved attempts require an authenticated Administrator record naming every failing component. Preserve all existing admission preconditions. No input file, fixture, timestamp or digest authenticates evidence by itself.
++
++**Never:** Use this pending draft to install infrastructure, change pins, grant credentials or authorize production. The currency check itself must not mutate a promotion stop. Treat historical observations as current, invent inventory entries or trust local self-assertions as live authority. Replace 4.9, 6.14 or 8.17, enable G3, or mark the full story done on local tests.
++
++## I/O & Edge-Case Matrix
++
++| Scenario | Input / State | Expected Output / Behavior | Error Handling |
++|---|---|---|---|
++| Current | Complete matching identities, support, fixes and qualified pair | Comparison passes; admission remains unauthorized | Record inputs and result |
++| Drift or unknown | Changed pin, unresolved version, unavailable source or missing component | Named comparison failures | No cached fallback |
++| Deadline | Unfixed advisory at release + 30 days, or support ended | Component fails from the boundary | Preserve advisory/fix identity |
++| Pairing | Management/workload combination lacks qualification | Pair fails, naming both components | Refuse eligibility |
++| Approval coverage | Failed check with all/some failed IDs named | Coverage passes/fails respectively | Never verify an invented approval format |
++| Malformed | Duplicate IDs, wrong digest, future observations or invalid timestamps | Structured refusal | Nonzero exit; no partial pass |
++
++</frozen-after-approval>
++
++## Open Questions
++
++1. Supply the ratified EventStore AD-26 template and agreed per-release binding contract (or an approved replacement), with its exact record/artifact reference. The pinned EventStore checkout has no canonical production profile; its 3.19 remains backlog. Without that owner input, Platform cannot ratify 4.9's actual inventory or safely design the live 9.2 input contract.
++
++## Code Map
++
++- `spec-9-1-decide-the-shared-infrastructure-currency-policy.md` in this directory and `docs/contracts/shared-infrastructure-currency-policy-v1.md` — completed policy implementation and verified published decisions; consume the exact policy text identity.
++- `_bmad-output/planning-artifacts/epics.md:2305,3493,4489,4602` — 4.9 inventory, 6.14 admission, 8.17 drill and full 9.2 acceptance; all remain backlog.
++- `eng/cluster-management/qualify.py` — `Capture`, `project_resource`, `validate_pins`: identity/evidence patterns only; three-component scope and dated review rules do not implement 9.2.
++- `eng/cluster-management/evidence.py` — immutable writes/digest patterns; existing attempt categories are separately scoped.
++- `eng/staging-foundation/candidate.py`, `test_candidate.py` — stdlib Python, strict input/refusal and synthetic-test conventions; preserve existing preparation inputs.
++- `docs/contracts/staging-evidence-policy-v1.md` — admission precedent, not an implemented promotion hook. No common authenticated production approval parser exists.
++
++## Tasks & Acceptance
++
++**Execution (prerequisites-first sequence):**
++- [x] `docs/contracts/shared-infrastructure-currency-policy-v1.md` — complete Story 9.1 from its approved spec, with review and verification.
++- [ ] `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md` — investigate and plan the separately owned inventory prerequisite through the build workflow before implementation.
++- [ ] This spec — replan the live checker against the ratified inventory and actual admission/drill contracts; do not implement the unselected foundation proposal.
++
++**Acceptance Criteria (original Story 9.2, still outstanding):**
++- Given a production attempt or monthly drill, when the check runs, then every deployed shared component is compared with the supported, security-current inventory, including management/workload pairing, and exact identities and the result are recorded.
++- Given a failed check, when promotion is evaluated, then automatic promotion is blocked with named components and approved attempts follow Story 9.1.
++
++## Implementation Notes
++
++- 2026-11-16 prerequisite progress: Story 9.1 policy implementation, verification and three-layer review are complete; its spec is done and sprint status is review per the build workflow. Story 9.2 remains backlog.
++- Inventory investigation: Platform 4.9 explicitly depends on EventStore's ratified profile template and binding split. Pinned EventStore revision `df976e0051b9e2eaa9d3592b3054a0317d83d0cb` has 3.19 backlog and no `deploy/dapr/production-profile.yaml`. Its 3.19 acceptance requires the agreed template/binding contract and authenticated owner ratification; `deploy/dapr/qualification/README.md` explicitly prohibits substituting candidate files for that canonical profile. No inventory or replacement owner decision was fabricated.
++
++- 2026-11-16: User selected prerequisites first. The initial foundation-only proposal is withdrawn; no checker code or live integration has been implemented. Story 9.2 remains backlog while this draft records the dependency order.
++
++## Spec Change Log
++
++## Review Triage Log
++
++## Verification
++
++- Follow each prerequisite's approved verification plan. No local fixture result satisfies the original Story 9.2 criteria.
++- `git diff --check` — no whitespace errors.
+diff --git a/_bmad-output/implementation-artifacts/sprint-status.yaml b/_bmad-output/implementation-artifacts/sprint-status.yaml
+index f5e560be..a3ab1dc7 100644
+--- a/_bmad-output/implementation-artifacts/sprint-status.yaml
++++ b/_bmad-output/implementation-artifacts/sprint-status.yaml
+@@ -243,8 +243,8 @@ development_status:
+   8-19-open-production-to-users-g2: backlog
+   epic-8-retrospective: optional
+ 
+-  epic-9: backlog
+-  9-1-decide-the-shared-infrastructure-currency-policy: backlog
++  epic-9: in-progress
++  9-1-decide-the-shared-infrastructure-currency-policy: review
+   9-2-run-the-shared-infrastructure-currency-check: backlog
+   9-3-verify-eventstore-s-g3-confirmations: backlog
+   9-4-rehearse-deployment-verification-and-one-shot-recovery-sm-5: backlog
+diff --git a/docs/contracts/shared-infrastructure-currency-policy-v1.md b/docs/contracts/shared-infrastructure-currency-policy-v1.md
+new file mode 100644
+index 00000000..1c39efc9
+--- /dev/null
++++ b/docs/contracts/shared-infrastructure-currency-policy-v1.md
+@@ -0,0 +1,249 @@
++# Shared-infrastructure currency policy v1
++
++Policy identifier: `hexalith.platform.shared-infrastructure-currency-policy.v1`.
++Published: 2026-11-16. Version 1 records the decisions confirmed on 2026-11-15 in
++the [Story 9.1 specification](../../_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md)
++and is fixed at the Platform revision completing Story 9.1. MUST and MUST NOT
++express requirements for downstream implementation and qualification.
++
++Platform owns this policy with Administrator. The accountable policy owner is
++the Platform Maintainer, `@jpiquot`, under the
++[repository ownership policy](../../.github/CODEOWNERS). One direct recorded
++approval of the identified decision suffices; separate approvals are not needed
++when the same person holds the Platform and Administrator roles.
++
++This record governs FR-10 and AR-61 under the architecture's
++[production profile, shared-infrastructure and G3 rules](../../_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md)
++and the [release-mode sequencing](../../_bmad-output/specs/spec-platform/sequencing.md#production-entry-gates).
++It publishes the policy only. It establishes neither a ratified profile
++inventory, implemented enforcement, current infrastructure compliance nor G3.
++
++## Four policy decisions
++
++### 1. Checked inventory
++
++The check MUST cover **every versioned component in the profile inventory's
++shared facet**, including:
++
++- Workload Kubernetes, its node OS, containerd and etcd.
++- Rancher server, required agents and CRDs, the management-cluster distribution
++  and its versioned constituents, and the management backup operator and CRDs.
++- CNI, Traefik, Gateway API CRDs, cert-manager, the storage provisioner,
++  operators and other versioned shared CRDs.
++- The Dapr control plane, Keycloak server and Keycloak's database.
++- Any other versioned shared-facet component, including registry and backup
++  components such as Zot and Velero where present in that facet.
++
++It MUST also cover production's **environment-layer providers: OpenBao,
++PostgreSQL, FalkorDB and Redis**. Cover the actual database deployments serving
++Keycloak and production's environment layer, retaining both usage scopes whether
++those deployments are shared or separate. Required
++versioned constituents remain covered when supplied inside a distribution or
++bundle; a distribution version alone MUST NOT hide an unresolved constituent.
++
++The list defines coverage, not installed versions, pins or topology. Story 4.9
++owns creation and ratification of the profile inventory. Configuration-only
++objects, whose content is covered by the profile digest, and the separately
++pinned deploy toolchain are excluded from this currency check. Their existing
++qualification and configuration requirements still apply.
++
++### 2. Cadence and triggers
++
++The check MUST run and record a result:
++
++- At **every production attempt**, in both automatic and
++  Administrator-approved modes, at its existing production admission evaluation
++  under that attempt's lock and epoch, before mutation.
++- At **every monthly drill** under Story 8.17, bound to the drill's checked
++  deployment and inventory.
++- On a **weekly schedule**, independently of attempts and drills.
++
++Each invocation MUST evaluate the deployment and upstream data for that check.
++A passing weekly or drill result MUST NOT substitute for a production attempt's
++own check. Every failure, including an incomplete check or unavailable input,
++MUST have a recorded result.
++
++At production admission, `checkedAt` MUST be that admission's UTC evaluation
++time. The evaluator MUST use the current inventory, deployed identities,
++upstream data and qualified pairing, and evaluate support and security deadlines
++at that time. An earlier evaluation or queued request reserves no eligibility;
++changed inputs or a deadline reached before admission MUST NOT be accepted on
++the strength of an earlier result.
++
++The weekly check MUST notify Administrator when it fails or when any checked
++component's upstream end of life is **within 30 days**, including exactly
++30 days away. A supported component nearing end of life can therefore pass and
++still require notification. The weekly result adds no attempt block and sets no
++promotion stop; later production attempts apply their own check and decision 4.
++
++### 3. Allowed lag: zero for support; 30 days for security fixes
++
++There is **zero support lag**. A component MUST fail from its upstream
++end-of-life date, when outside its applicable upstream supported matrix, or when
++the management/workload deployment falls outside the qualified pairing. A
++future end-of-life date is not a failure before that boundary. Use the upstream
++effective instant when published; a date without a time takes effect at the
++start of that date in UTC. Unknown support status fails closed.
++
++For each published advisory applicable to the deployed component, a release
++carrying its fix on the deployed line MUST be deployed within **30 days
++(2,592,000 seconds) of that release's upstream release time**. If that line has
++no supported fixed release, use the earliest supported line carrying the fix.
++Retain the applicable advisory, fixed release, upstream release time and the
++evidence that the deployed release contains the fix. A fix's original upstream
++release time determines the deadline; a later advisory observation, inventory
++edit, repackaging or later fixed release does not restart it.
++
++Let `fixReleasedAt` be that first applicable fixed release's upstream UTC release
++time and `checkedAt` the evaluation time. An unfixed component is within the lag
++window only while `checkedAt < fixReleasedAt + 2592000 seconds`. At exactly the
++deadline or later, it MUST fail and name the advisory and fixed release.
++An advisory with no published fixed release has no release-based deadline yet;
++the result MUST record that state rather than invent a fixed release or date.
++Unknown applicability, fix status or release timing MUST fail closed. All
++applicable advisory deadlines must pass; one recently fixed advisory cannot
++hide another overdue fix.
++
++**Non-security updates have no lag limit while the deployed version remains
++supported**, within the supported matrix and qualified pairing. This currency
++window does not alter the separate
++[image and dependency vulnerability policy](image-and-dependency-vulnerability-policy-v1.md)
++or grant an exception to its scan and promotion rules.
++
++### 4. Effect on automatic and Administrator-approved attempts
++
++A failed check MUST **block automatic promotion with no waiver**, name every
++failing component and its reasons, and set **no promotion stop**. An approval
++cannot convert a failed result to a pass or authorize the automatic path.
++
++An Administrator-approved attempt MUST still run and record the check. If the
++result fails, the attempt may start only when its Administrator record
++**explicitly names every failing component**. Names MUST identify the checked
++inventory component instances, including their environment or cluster scope
++where needed to distinguish them. A generic acknowledgment such as "all
++infrastructure risks" does not name the components.
++
++One direct recorded Administrator approval of the identified record suffices,
++subject to the existing Administrator identity and record-verification rules.
++The check and its approved-attempt decision MUST retain the approval reference
++and the naming comparison. Any unnamed failing component refuses the attempt
++until a **new approval** names every failing component. If a later check finds
++another failure, the earlier approval cannot cover an unnamed component.
++The currency result remains failed even when the naming rule permits the
++approved attempt to start. All other production preconditions still apply.
++The currency check neither sets nor clears an existing promotion stop.
++
++## Comparison and fail-closed evaluation
++
++For each check, the evaluator MUST use the applicable ratified inventory and:
++
++1. Enumerate the complete checked set from decision 1 and observe each exact
++   deployed identity, including immutable image/chart/artifact identities where
++   applicable. Compare each deployed identity with its inventory pin. Any drift
++   fails, including a different supported or newer release.
++2. Resolve a version for every deployed identity and pin, then compare the pins
++   with authoritative upstream support, matrix, advisory and fixed-release data
++   **resolved at check time**. An image digest proves content identity, not a
++   supported version. A digest-only component without a resolvable version fails
++   even if its digest matches its pin.
++3. Compare the actual management/workload identities and versions with both the
++   upstream supported matrix and the recorded qualified pairing. Independently
++   supported clusters do not establish a qualified pairing.
++4. Apply all support and security deadlines and record every component's result
++   and reasons. The overall result passes only when the complete checked set,
++   all required comparisons and the pairing pass.
++
++Missing inventory entries or pins, missing deployed observations, unresolvable
++versions, missing pairing qualification, unavailable upstream data and
++incomplete or unverifiable evidence MUST fail closed. The evaluator MUST name
++the affected components and the missing or failed comparison; it MUST NOT omit
++them or substitute a previously passing result or cached upstream conclusion.
++Retained source observations document what this check resolved and do not
++provide a cached fallback for a later check. If missing inventory or observations
++prevent determination of the complete failing-component set, an approved
++attempt cannot establish the naming rule and MUST be refused.
++
++The [dated Rancher planning identities](../../eng/cluster-management/RANCHER.md#exact-dated-planning-identities-2026-10-04)
++and [2026-10-25 infrastructure observations](../implementation/story-5-4-coupled-delivery-2026-10-25/installation-evidence/infrastructure-observation.json)
++are informative historical inputs. They are neither the Story 4.9 inventory
++nor proof of support, security currency or qualification at a later check.
++
++## Required result record
++
++Every invocation MUST retain a result, including failures before all observations
++can complete. These are semantic requirements for Story 9.2, not a new schema or
++an implemented command.
++
++| Record scope | Required content |
++| --- | --- |
++| Check identity and context | Unique check ID; policy identifier and exact policy revision or content digest; exact evaluator revision or artifact digest; trigger (`production-attempt`, `monthly-drill` or `weekly-schedule`); UTC evaluation time (`checkedAt`), start and completion times; target environment/cluster identities; bound production attempt and mode, drill or scheduled run identity |
++| Checked inventory | Exact inventory revision and content digest, active profile digest, and the complete set of covered component instance IDs; explicitly record an unavailable input rather than inventing one |
++| Each component | Component instance ID and currency owner; exact deployed identity and resolved version; inventory pin and resolved version; observation time and evidence; identity-match result |
++| Upstream observations | Per-component authoritative support, matrix, advisory and fixed-release source references and retained observations; UTC observation time; supported line and end-of-life boundary; advisory applicability; applicable fixed releases, upstream release times and calculated deadlines, or an explicit no-published-fix state |
++| Component decision | Support, matrix and security-lag outcomes, pass/fail, and every failure or unknown reason; overdue fixes name the advisory and fixed release; impending end of life includes the boundary and notification reason |
++| Pairing | Actual management/workload identities and versions, upstream matrix source and observation time, exact qualified-pairing record, comparison result and reasons; attribute failure to the involved component IDs |
++| Overall decision | Complete pass/fail, every failing component and reason, missing inputs, and the resulting automatic block or approved-attempt acceptance/refusal; no promotion stop set by this check |
++| Approval and notification | Applicable Administrator record and named-component comparison, including unnamed failures; for weekly runs, notification requirement, reason and delivery outcome |
++
++A summary pass without the underlying complete component and pairing results
++is insufficient. Check records MUST preserve failed results and their reasons;
++a later check records its own outcome rather than overwriting earlier evidence.
++
++## Accountability and revisit conditions
++
++| Decision | Accountable owner and responsibility | Revisit condition |
++| --- | --- | --- |
++| Complete inventory scope and exact comparisons | Platform Maintainer `@jpiquot`; Story 4.9 names each component's currency owner and upstream sources | A new shared or production-provider component, an unresolved bundled version, or an inventory/observation gap exposes missing coverage |
++| Attempt, monthly and weekly cadence | Platform Maintainer `@jpiquot`, with Administrator; Platform implements recording and scheduled notifications | A missed check, notification failure, changed drill cadence or incident shows a detection gap |
++| Zero support lag and 30-day fixed-release window | Platform Maintainer `@jpiquot`, with Administrator and component currency owners | An upstream support/advisory or release model changes, a matrix/pairing changes, or an incident or rehearsal challenges the window |
++| Automatic refusal and approved-component naming | Platform Maintainer `@jpiquot`, with Administrator; Administrator owns each attempt approval | A rehearsal or attempted release exposes an ambiguous failure name, incomplete acknowledgment or changed release-mode behavior |
++
++A revisit requires an explicit recorded policy decision. Version 1's identifier
++and meaning MUST remain fixed at the Platform revision completing Story 9.1;
++changed rules require a new version and explicit downstream adoption. Evidence
++MUST retain the version and exact policy text identity under which it was
++evaluated. Consumers MUST NOT silently select a latest policy or reinterpret
++old results. Later changes affecting automatic-promotion safety follow Story
++9.7's suspension and affected-rehearsal requirements.
++
++## Downstream obligations
++
++| Consumer | Required implementation or evidence |
++| --- | --- |
++| Story 4.9 | Create and ratify the actual profile inventory, with exact component pins and identities, per-component authoritative support/advisory sources and named currency owners, plus the qualified management/workload pairing. Its separately pinned deploy toolchain remains outside this check |
++| Story 9.2 | Implement every trigger, complete comparison, fail-closed outcome, result field, weekly notification and approval-naming rule; bind adoption to this exact policy text and evaluator identity and qualify the acceptance/refusal cases below |
++| Story 9.6 | Rehearse current, drifted, unsupported, overdue-security, unknown-data and unqualified-pairing paths; prove automatic refusal without a waiver, approved acceptance only with all failing components named, refusal requiring new approval for any unnamed failure, retained results and no stop set by the currency check |
++| Story 9.8 | Require implemented and qualified currency enforcement, its current passing automatic-attempt result and the required Story 9.6 evidence before recording G3 and enabling automatic promotion; policy publication alone satisfies none of those enforcement or G3 proofs |
++
++Stories 6.22 and 8.17 retain their existing guarded-change and drill obligations.
++An urgent in-place security patch under Story 6.22 still requires its
++Administrator record and existing recovery and verification controls. That
++procedure neither waives automatic currency refusal nor removes the per-attempt
++check. This policy changes no infrastructure, pin, workflow, staging-evidence
++rule or vulnerability-policy rule.
++
++## Acceptance and refusal cases
++
++The attempt dispositions below apply to this currency check; every other
++production precondition remains required. No row sets a promotion stop.
++
++| Input or state at this check | Recorded currency result | Automatic promotion | Administrator-approved attempt |
++| --- | --- | --- | --- |
++| Every component equals its pin, is supported and within all security deadlines; matrix and qualified pairing match | Pass | Currency requirement met | Currency requirement met |
++| A deployed identity differs from its pin, even if newer and supported | Fail; name the component and drift | Block; no waiver | May start only if the record names every failing component |
++| Version cannot be resolved, including a digest-only component matching its pin, or required upstream data is unavailable | Fail; name each affected component and unknown input; no cached fallback | Block; no waiver | May start only if the complete failing set is known and the record names every failing component |
++| Check cannot determine the complete component/failure set because the inventory or observations are incomplete | Fail; record the missing coverage | Block; no waiver | Refuse: the complete naming rule cannot be established |
++| A component reaches its upstream end-of-life boundary, leaves the supported matrix, or management/workload pairing is unqualified | Fail; name affected components and support/matrix/pairing reason | Block immediately; no support grace | May start only if the record names every failing component |
++| Applicable fix is not deployed; check is one second before its upstream release time plus 2,592,000 seconds; all other checks pass | Pass; retain advisory, fixed release and deadline | Currency requirement met | Currency requirement met |
++| Same unfixed component at exactly that deadline or later | Fail; name component, advisory and fixed release | Block; no waiver | May start only if the record names every failing component |
++| Applicable published advisory has no published fixed release, with support and all other comparisons known and passing | Pass for this release-based lag rule; record no published fix | Currency requirement met, subject to the independent vulnerability gate | Same independent gates apply |
++| Only a non-security update is outstanding, and pin, support, matrix and qualified pairing checks pass | Pass; no non-security lag limit | Currency requirement met | Currency requirement met |
++| Failed result and the Administrator record names every failing component | Fail remains recorded; retain approval and naming comparison | Block; approval supplies no automatic waiver | May start subject to every other precondition |
++| Failed result includes any unnamed component, including a newly observed failure after approval | Fail; name the omissions and retain refusal | Block | Refuse until a new approval names every failing component |
++| Weekly check passes, but upstream end of life is exactly 30 days away or nearer | Pass; record and notify Administrator | No weekly block; own attempt check required | No weekly block; own attempt check required |
++| Weekly check fails | Fail; retain reasons and notify Administrator | Weekly run adds no block; own attempt check controls promotion | Weekly run adds no block; own attempt check and naming rule control admission |
++| Earlier weekly, drill or production check passed, but this production attempt has no completed check result | Missing check; record failure rather than reuse the earlier pass | Block | Refuse until this attempt's check is run and recorded and its applicable naming rule is met |
++
++These cases are downstream qualification obligations. Documentation verification
++establishes consistency and discoverability only; enforcement, rehearsal,
++inventory ratification and current compliance remain separate work.
