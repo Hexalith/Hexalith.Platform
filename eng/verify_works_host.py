@@ -20,6 +20,7 @@ import works_host_snapshot
 import works_toolchain
 import works_managed_runtime
 from current_catalog_view import evaluate_views
+from bound_builds import materialize as materialize_bound_builds, verify_bound_checkout
 from works_verifier_command import run_owned
 
 from verify_works_producer import (builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
@@ -37,6 +38,7 @@ VERIFIER_HELPERS = (
     "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
     "works_managed_runtime.py", "test_works_managed_runtime.py",
     "current_catalog_view.py",
+    "bound_builds.py", "test_bound_builds.py", "builds_tuple.py", "builds-tuple.json",
 )
 
 ROWS = {
@@ -149,6 +151,24 @@ def published_producers(assets_path, consumer_directory, version):
             "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
         producer_evidence[package].update(require_archive_assembly(artifact, consumer_directory / (package + ".dll")))
     return producer_evidence
+
+
+def file_host_sdk_identity(output, version):
+    """Bind the file host's actual restored SDK and deployed DLLs to public archives."""
+    output = Path(output)
+    candidates = [path for path in (output / "obj/project.assets.json", output / "obj/apphost.cs/project.assets.json")
+                  if path.is_file()]
+    if len(candidates) != 1:
+        raise ValueError("The fresh file host requires exactly one restored assets graph.")
+    libraries = json.loads(candidates[0].read_text())["libraries"]
+    sdk = {name: library for name, library in libraries.items() if name.startswith("Hexalith.EventStore.")}
+    if not sdk or any(name.rsplit("/", 1)[-1] != version or library["type"] != "package"
+                      for name, library in sdk.items()):
+        raise ValueError("The Platform file host did not restore the selected public SDK " + version)
+    observed = published_producers(candidates[0], file_host_directory(output), version)
+    if not {"Hexalith.EventStore.Aspire", "Hexalith.EventStore.ServiceDefaults"}.issubset(observed):
+        raise ValueError("The Platform file host has no complete public hosting SDK identity.")
+    return observed
 
 
 def selected_sdk_version(catalog):
@@ -1100,6 +1120,9 @@ def consumer_artifacts(root):
 
 def require_unchanged_inputs(summary, works, platform, snapshot_manifest, ephemeral_range, reserved_ranges):
     """Recheck every qualified input and artifact before accepting live evidence."""
+    if "agentsProducerContext" in summary and verify_bound_checkout(
+            platform, Path(summary["agentsProducerContext"]["buildsRoot"])) != summary["agentsProducerContext"]:
+        raise ValueError("The authenticated Agents producer context changed during execution")
     for source in summary["sourceProducers"].values():
         current = require_unchanged_runtime_source(source) if source["commit"] is None else source_snapshot(source["root"], producer=True)
         if current != source:
@@ -1117,6 +1140,10 @@ def require_unchanged_inputs(summary, works, platform, snapshot_manifest, epheme
     for binary, digest in summary["platformAdapterAssemblies"].items():
         if sha256(binary) != digest:
             raise ValueError("A qualified Platform adapter assembly changed during execution: " + binary)
+    for package, identity in summary.get("platformHostSdk", {}).items():
+        assembly = Path(summary["host"]["assembly"]).parent / (package + ".dll")
+        if sha256(assembly) != identity["consumerAssemblySha256"]:
+            raise ValueError("A qualified file-host SDK assembly changed during execution: " + str(assembly))
     if sha256(Path(__file__)) != summary["verifierSha256"]:
         raise ValueError("The verifier changed during execution")
     for name, digest in summary["verifierHelpers"].items():
@@ -1221,13 +1248,18 @@ def run_verification(args):
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
         summary["managedRuntimeInventory"] = works_managed_runtime.inventory()
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs", "test_works_managed_runtime"], platform / "eng")
+        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs", "test_works_managed_runtime", "test_bound_builds"], platform / "eng")
         run("component-evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_full", "test_prepare_acceptance"], platform / "eng/ext-host-1")
-        agents_configuration = ["--configuration", profile["agentsConfiguration"]]
+        summary["agentsProducerContext"] = materialize_bound_builds(platform, artifacts / "agents-bound-builds")
+        summary["catalogContexts"] = {"works": summary["selectedSdk"], "agents": summary["agentsProducerContext"]}
+        agents_configuration = ["--configuration", profile["agentsConfiguration"],
+                                "--builds-root", summary["agentsProducerContext"]["buildsRoot"]]
+        agents_environment = os.environ.copy() | {"HexalithBuildsRoot": summary["agentsProducerContext"]["buildsRoot"]}
         run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", *agents_configuration, "--artifacts-path", str(artifacts / "agents-full")],
-            expected_refusal="DependencyNotAvailable: EXT-HOST-1")
+            environment=agents_environment, expected_refusal="DependencyNotAvailable: EXT-HOST-1")
         summary["checks"]["agentsFull"] = "expected-unavailable; not a Works prerequisite"
-        run("agents-local-scaffold", ["bash", "eng/verify-agents-host.sh", "--mode", "LocalScaffold", *agents_configuration, "--artifacts-path", str(artifacts / "agents-local")])
+        run("agents-local-scaffold", ["bash", "eng/verify-agents-host.sh", "--mode", "LocalScaffold", *agents_configuration, "--artifacts-path", str(artifacts / "agents-local")],
+            environment=agents_environment)
         # These tests locate their checkout through artifact ancestors. Keep their private
         # outputs under Platform while avoiding shared default bin/obj deployment directories.
         (platform / "artifacts").mkdir(exist_ok=True)
@@ -1247,7 +1279,8 @@ def run_verification(args):
                 summary["platformDebugSdkAssemblies"] = {path.name: sha256(path) for path in
                     sorted(executable.parent.glob("Hexalith.EventStore.*.dll"))}
         host_output, consumer_output = artifacts / "host", artifacts / "consumer"
-        build("platform-file-host-release", "./apphost.cs", "Release", platform, host_output, extra=[path_map(host_output)])
+        build("platform-file-host-release", "./apphost.cs", "Release", platform, host_output,
+              extra=[path_map(host_output), "-p:HexalithEventStoreVersion=" + version])
         # Qualify against the target's adapter in an isolated output. The retained Works graph keeps its own pin.
         catalog = ET.parse(platform / CATALOG).getroot()
         adapter = next(item.text for item in catalog.findall(".//HexalithAspireHostingDaprVersion") if not item.get("Condition"))
@@ -1263,6 +1296,7 @@ def run_verification(args):
               ["-p:HexalithAspireHostingDaprVersion=" + adapter, "-p:PlatformWorksRuntimeRoot=" + str(platform),
                "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version, *consumer_sources, path_map(consumer_output)])
         host_directory = file_host_directory(host_output)
+        summary["platformHostSdk"] = file_host_sdk_identity(host_output, version)
         host_runtime = host_directory / (PLATFORM_RUNTIME + ".dll")
         summary["platformRuntimeIdentity"] = require_identical_runtime(
             host_runtime, consumer_output / "bin/Hexalith.Works.IntegrationTests/release" / (PLATFORM_RUNTIME + ".dll"))
@@ -1328,10 +1362,16 @@ def run_verification(args):
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
             "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version,
             "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output)]
+        retained_properties = ["-p:TargetFramework=net11.0", "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION]
+        summary["retainedHostSource"]["compilationContext"] = {
+            "targetFramework": "net11.0", "runtimeFrameworkVersion": works_managed_runtime.VERSION,
+            "eventStoreVersion": version, "scope": "immutable historical topology sources rebuilt for current qualification; not original historical binaries"}
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
             # The immutable rollback source is rebuilt only for this qualification's managed-runtime context.
-            properties = runtime_properties + (["-p:BuildProjectReferences=false", "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION] if "Hexalith.Works.AppHost" in project.stem else [])
+            properties = runtime_properties + (retained_properties if project.is_relative_to(retained_root) else [])
+            if "Hexalith.Works.AppHost" in project.stem:
+                properties += ["-p:BuildProjectReferences=false"]
             build("runtime-release-prebuild-" + str(index), str(project), "Release", works, runtime_output, extra=properties)
             runtime_directories.append(runtime_output / "bin" / project.stem / "release")
         retained_assembly = runtime_output / "bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll"

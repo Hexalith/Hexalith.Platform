@@ -196,6 +196,10 @@ eng/fixtures/builds-6.0.3-binding.json text eol=lf
 eng/fixtures/builds-6.0.5-Directory.Packages.props text eol=lf
 eng/fixtures/builds-6.0.5-binding.json text eol=lf
 
+# Keep the new verifier helpers' hashed Python source bytes consistent across checkouts.
+eng/bound_builds.py text eol=lf
+eng/test_bound_builds.py text eol=lf
+
 # Recognize existing CRLF in the tuple retirement controls while checking whitespace.
 src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

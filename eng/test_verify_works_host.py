@@ -127,6 +127,32 @@ def valid_states():
 
 
 class WorksEvidenceGateTests(unittest.TestCase):
+    def test_file_host_identity_requires_the_actual_selected_public_graph_and_deployment(self):
+        output = self.directory()
+        host = output / 'bin/apphost.cs/release'
+        host.mkdir(parents=True)
+        for name in ('apphost.dll', 'Hexalith.Platform.Composition.dll', 'Hexalith.Platform.Works.Runtime.dll'):
+            (host / name).write_bytes(b'fresh host fixture')
+        assets = output / 'obj/apphost.cs/project.assets.json'
+        assets.parent.mkdir(parents=True)
+        libraries = {name + '/' + VERSION: {'type': 'package'} for name in
+                     ('Hexalith.EventStore.Aspire', 'Hexalith.EventStore.ServiceDefaults')}
+        assets.write_text(json.dumps({'libraries': libraries}))
+        observed = {name.rsplit('/', 1)[0]: {'version': VERSION} for name in libraries}
+        with patch('verify_works_host.published_producers', return_value=observed) as bind:
+            self.assertEqual(verify_works_host.file_host_sdk_identity(output, VERSION), observed)
+            bind.assert_called_once_with(assets, host, VERSION)
+            for mutated in ({'Hexalith.EventStore.Aspire/4.2.0': {'type': 'package'}},
+                            {'Hexalith.EventStore.Aspire/' + VERSION: {'type': 'project'}}, {}):
+                assets.write_text(json.dumps({'libraries': mutated}))
+                with self.subTest(mutated=mutated), self.assertRaisesRegex(ValueError, 'selected public SDK'):
+                    verify_works_host.file_host_sdk_identity(output, VERSION)
+            assets.write_text(json.dumps({'libraries': libraries}))
+            other = output / 'obj/project.assets.json'
+            other.write_bytes(assets.read_bytes())
+            with self.assertRaisesRegex(ValueError, 'exactly one restored assets graph'):
+                verify_works_host.file_host_sdk_identity(output, VERSION)
+
     def test_agents_nested_compile_helpers_are_explicitly_hash_bound(self):
         helpers = set(verify_works_host.VERIFIER_HELPERS)
         self.assertTrue({"verify-agents-host.sh", "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
@@ -320,6 +346,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
             if entry['name'].startswith('agents-'):
                 self.assertIn('--configuration', entry['command'])
                 self.assertIn('Release', entry['command'])
+                self.assertEqual(entry['command'][entry['command'].index('--builds-root') + 1],
+                                 ledger['agentsProducerContext']['buildsRoot'])
             if entry['command'][0] == 'dotnet':
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
@@ -398,6 +426,10 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
                 patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
                 patch('verify_works_host.run_owned', side_effect=command):
+            final_checks.enter_context(patch('verify_works_host.materialize_bound_builds', return_value={
+                'buildsRoot': str(artifacts / 'agents-bound-builds'), 'catalogSha256': DIGEST,
+                'sourceRevision': 'b' * 40, 'producerBinding': str(platform / 'eng/builds-tuple.json')}))
+            final_checks.enter_context(patch('verify_works_host.file_host_sdk_identity', return_value=producers))
             final_checks.enter_context(patch('verify_works_host.runtime_source_snapshot',
                                              side_effect=lambda root: snapshot | {'root': str(root)}))
             final_checks.enter_context(patch('verify_works_host.qualify_runtime_source', return_value={}))
@@ -469,6 +501,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
                         properties = [value for value in entry['command'] if value.startswith('-p:' + key + '=')]
                         self.assertEqual(properties, ['-p:' + key + '=' + str(root)])
                     self.assertNotEqual(works / 'references/Hexalith.Platform', platform)
+                host = next(entry for entry in ledger['commands'] if entry['name'] == 'platform-file-host-release')
+                self.assertIn('-p:HexalithEventStoreVersion=' + VERSION, host['command'])
+                retained = [entry for entry in ledger['commands'] if entry['name'].startswith('runtime-release-prebuild-')
+                            and any('/retained-works-source/' in argument for argument in entry['command'])]
+                self.assertEqual(len(retained), 2)
+                for entry in retained:
+                    self.assertIn('-p:TargetFramework=net11.0', entry['command'])
+                    self.assertIn('-p:RuntimeFrameworkVersion=11.0.0', entry['command'])
                 self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
 
     def test_release_dependency_record_names_every_accepted_test_only_source_exception(self):
@@ -539,16 +579,31 @@ class WorksEvidenceGateTests(unittest.TestCase):
         commands = directory / 'bin'
         commands.mkdir()
         captured = directory / 'dotnet-args'
-        for name, body in {'python3': '#!/bin/sh\nexit 0\n',
+        pins = directory / 'pin-args'
+        context_args = directory / 'context-args'
+        full_context = directory / 'full-context'
+        bound = directory / 'bound-producer'
+        for name, body in {'python3': '#!/bin/sh\ncase "$1" in\n'
+                           '*/bound_builds.py) printf "%s\\n" "$@" > "$AGENTS_CONTEXT_ARGS";\n'
+                           'if [ "$2" = "--output" ]; then printf "%s\\n" "$3"; else printf "%s\\n" "$AGENTS_BOUND_BUILDS"; fi;;\n'
+                           '-) printf "%s\\n" "$AGENTS_CATALOG_SHA";;\n'
+                           '*/ext-host-1/verify_full.py) printf "%s\\n" "$HexalithBuildsRoot" > "$AGENTS_FULL_CONTEXT";\n'
+                           'echo "DependencyNotAvailable: EXT-HOST-1"; exit 1;;\n'
+                           '*/verify-platform-pins.py) printf "%s\\n" "$@" > "$AGENTS_PIN_ARGS";;\nesac\nexit 0\n',
                            'dotnet': '#!/bin/sh\nprintf "%s\\n" "$@" > "$AGENTS_BUILD_ARGS"\n'}.items():
             executable = commands / name
             executable.write_text(body)
             executable.chmod(0o755)
-        environment = os.environ.copy() | {'PATH': str(commands) + os.pathsep + os.environ['PATH'], 'AGENTS_BUILD_ARGS': str(captured)}
+        environment = os.environ.copy() | {'PATH': str(commands) + os.pathsep + os.environ['PATH'], 'AGENTS_BUILD_ARGS': str(captured),
+            'AGENTS_BOUND_BUILDS': str(bound), 'AGENTS_CATALOG_SHA': DIGEST, 'AGENTS_PIN_ARGS': str(pins),
+            'AGENTS_CONTEXT_ARGS': str(context_args),
+            'AGENTS_FULL_CONTEXT': str(full_context),
+            'HexalithBuildsRoot': '/unrelated/ambient/catalog'}
         script = Path(__file__).parent / 'verify-agents-host.sh'
         for configuration in ['Debug', 'Release']:
             options = [] if configuration == 'Debug' else ['--configuration', 'Release']
-            result = subprocess.run(['bash', script, '--mode', 'LocalScaffold', *options, '--artifacts-path', directory / configuration],
+            result = subprocess.run(['bash', script, '--mode', 'LocalScaffold', *options, '--builds-root', bound,
+                                     '--artifacts-path', directory / configuration],
                                     env=environment, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             self.assertEqual(result.returncode, 0, result.stdout)
             arguments = captured.read_text().splitlines()
@@ -559,6 +614,28 @@ class WorksEvidenceGateTests(unittest.TestCase):
             self.assertNotIn('-p:NuGetAudit=false', arguments)
             self.assertIn('-p:UseNuGetDeps=' + ('true' if configuration == 'Release' else 'false'), arguments)
             self.assertIn('-p:UseHexalithProjectReferences=' + ('false' if configuration == 'Release' else 'true'), arguments)
+            self.assertIn('-p:HexalithBuildsRoot=' + str(bound), arguments)
+            pin_arguments = pins.read_text().splitlines()
+            self.assertEqual(pin_arguments[pin_arguments.index('--catalog') + 1], str(bound / 'Props/Directory.Packages.props'))
+            self.assertEqual(pin_arguments[pin_arguments.index('--catalog-sha256') + 1], DIGEST)
+            self.assertEqual(Path(pin_arguments[pin_arguments.index('--producer-binding') + 1]), script.parent / 'builds-tuple.json')
+        relative = subprocess.run(['bash', script.resolve(), '--mode', 'LocalScaffold', '--builds-root', 'bound-producer',
+                                   '--artifacts-path', directory / 'relative'], cwd=directory, env=environment,
+                                  capture_output=True, text=True)
+        self.assertEqual(relative.returncode, 0, relative.stdout + relative.stderr)
+        context_arguments = context_args.read_text().splitlines()
+        self.assertEqual(context_arguments[context_arguments.index('--verify-root') + 1], str(bound))
+        for mode, expected in (('LocalScaffold', 0), ('Full', 1)):
+            for attempt in range(2):
+                result = subprocess.run(['bash', script, '--mode', mode, '--artifacts-path', directory / 'reused'],
+                                        env=environment, capture_output=True, text=True)
+                self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+                context_arguments = context_args.read_text().splitlines()
+                owned = Path(context_arguments[context_arguments.index('--output') + 1])
+                self.assertEqual(owned.parent.parent, directory / 'reused')
+                self.assertFalse(owned.parent.exists(), f'{mode} attempt {attempt} leaked its producer checkout')
+                if mode == 'Full':
+                    self.assertEqual(full_context.read_text().strip(), str(owned))
         captured.unlink()
         refused = subprocess.run(['bash', script, '--configuration', 'Custom'], env=environment,
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
