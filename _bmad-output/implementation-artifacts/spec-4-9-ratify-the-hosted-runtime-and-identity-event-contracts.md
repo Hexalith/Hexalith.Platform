@@ -21,6 +21,8 @@ context:
 
 **Decisions (2026-11-16, user: “apply recommended”):** Prepare a focused EventStore 3.19 profile-schema/validator construction spec; consume an adopted owner implementation if identified before coding. Prepare a measured capture-lag proposal without assigning a numeric bound. Keep the existing 9.2 history intact. These select preparation work, not an infrastructure target, final encoding or production authority. Schema construction does not wait for the capture-lag decision or issue-step qualification.
 
+**Subsequent mapping decision (2026-11-16, user: “apply recommended”):** Check the completed v1 against a standalone provider, bundled constituent and management/workload pair. Adopt only if clean; prepare focused owner v2 if a concrete gap is found. The node-level containerd mapping fails because v1 requires inapplicable namespace/configuration facts. Withhold v1 adoption and prepare the focused v2 construction spec; actual inventory and final contract adoption still follow owner implementation and review.
+
 ## Boundaries & Constraints
 
 **Always:** Keep Platform's infrastructure digest (template plus provider/topology and deploy-tool pins) distinct from EventStore's complete resolved-profile digest. Publish accepted resolved bytes only at EventStore's `deploy/dapr/production-profile.yaml`. Retain actual component scopes, immutable identities, supported/qualified sets, renewal/currency owners, authoritative upstream sources and management/workload pairing. Credentials are references only. Reuse the owning catalog generator and codecs.
@@ -46,6 +48,7 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 - `docs/contracts/ad26-preparation/release-binding-contract.draft.md` — two digest domains and binding classes; final schema/encoding remain unset.
 - `_bmad-output/planning-artifacts/epics.md`, Story 4.9 — owns inventory, catalog, secrets, renewal and capture lag; 6.14/8.17 callers remain backlog.
 - `references/Hexalith.EventStore/_bmad-output/planning-artifacts/epics.md`, Story 3.19 — owns canonical profile/publication validation; explicitly separates construction from issuance. Consume its implementation; never fork its codec.
+- `docs/contracts/hosted-profile-binding-v1.md`, `docs/implementation/hosted-profile-v1-mapping-assessment.md` — source-backed mapping against EventStore `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41` finds a node-scope gap; v1 is not adopted. The conditional decision is resolved; final adoption remains pending focused v2 implementation/review.
 - `src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs`, `src/Hexalith.Platform.CatalogBuilder/` — existing declaration-driven generator; local/source results grant no hosted acceptance.
 
 ## Tasks & Acceptance
@@ -53,7 +56,8 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 **Execution, ordered by dependency:**
 - [x] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-validation.md` — prepare the focused owner construction spec, preserving all publication/qualification gates.
 - [x] `docs/implementation/identity-event-capture-lag-measurement-proposal.md` — prepare timing, measurement cases and decision path without fabricating observations or a bound.
-- [ ] `docs/contracts/hosted-profile-binding-v1.md` — record adopted joint schema/encoding/validator identities and digest domains after owner implementation and review.
+- [ ] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md` — implement the approved focused owner scope revision selected by the mapping result.
+- [ ] `docs/contracts/hosted-profile-binding-v2.md` — record adopted joint schema/encoding/validator identities and digest domains after focused v2 implementation and review. The assessed v1 proposal remains unadopted.
 - [ ] `deploy/dapr/hosted-profile-inventory.json` — proposed Platform inventory path; populate actual qualified providers/topology, management/workload pairing, support sources, deploy tools and owners once available.
 - [ ] `deploy/dapr/eventstore-routing-catalog.json` — generate the hosted catalog through Story 3.3 with actual environment bindings; preserve retention entries.
 - [ ] `deploy/dapr/openbao-secret-contract.yaml` — enumerate value-free environment/static/dynamic namespaces and sole writers from owning declarations.
@@ -71,6 +75,9 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 
 - Planning only. Root baseline: `96383a27d1f79cb5d9e057e8acd8c07df444346f`; EventStore: `df976e0051b9e2eaa9d3592b3054a0317d83d0cb`. Both stories remain backlog; the canonical profile is absent. Broker/runtime, append-protection and restore qualification remain engineering dependencies, not facts a generic approval can supply.
 - 2026-11-16: Applied the user's selected preparation path. Both prior Open Questions are resolved; final contract adoption, measured policy and qualified actual inputs remain future acceptance requirements. This parent readiness plan stays draft.
+- 2026-11-16 prerequisite refresh from Platform `575aa1889b0dc654b36de2e6958878c5eadbc871`: EventStore's profile construction and publication-authority-validator specs are both done at `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41`. Prepared `docs/contracts/hosted-profile-binding-v1.md` for the next adoption decision without changing the approved package. Full execution-input proof, Builds codec integration, actual inventory/qualification, ratification and owner publication remain outstanding. This parent stays draft, and no acceptance task is newly marked complete.
+- 2026-11-16: The subsequent “apply recommended” selects conditional adoption after the three-case mapping check. Its containerd case establishes a representation gap, so the binding proposal now withholds v1 adoption and the next construction spec targets focused v2 scope. The frozen block adds only this authorized decision; prior decisions and approved-package bytes are unchanged. No parent acceptance is claimed.
+- 2026-11-16: User approved the focused v2 construction spec and requested a stop. Its status is `ready-for-dev` with reviewed body unchanged; implementation has not started. This parent remains draft/backlog and actual inventory/final adoption remain outstanding.
 
 ## Spec Change Log
 
@@ -78,5 +85,5 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 
 ## Verification
 
-- Use the focused owner construction spec for the next build. Full 4.9 acceptance still requires adopted contracts, measurements and qualified inventory; this parent is not ready for development.
+- Next, resume the approved owner v2 scope spec at implementation; the earlier v1 construction specs are complete but the mapping check found a gap. Full 4.9 acceptance still requires final adopted contracts, measurements and qualified inventory; this parent is not ready for development.
 - Validate exact approved-package hashes and preserved intent, dependency paths, JSON parsing and `git diff --check` under `run-with-temp`. These checks establish preparation consistency only.

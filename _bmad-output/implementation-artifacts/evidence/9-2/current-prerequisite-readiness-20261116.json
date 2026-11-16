@@ -1,0 +1,301 @@
+{
+  "purpose": "Focused v2 construction spec approved and ready-for-dev; explicit user stop recorded. No implementation, final format adoption, inventory acceptance or production authority.",
+  "observedAt": "2026-11-16T19:17:54.000566+00:00",
+  "platformRevision": "575aa1889b0dc654b36de2e6958878c5eadbc871",
+  "eventStoreRevision": "54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41",
+  "ownerConstructionSpecs": "done",
+  "ownerParent319": "in-progress",
+  "proposedBinding": {
+    "path": "docs/contracts/hosted-profile-binding-v1.md",
+    "sha256": "c5aee31830f7fa6e70d385d85e083acd591b070d88ba9e4ae03a0e88ba18af9b",
+    "adoptionDecision": "v1 withheld after demonstrated scope gap; focused v2 construction spec approved and ready-for-dev; implementation not started"
+  },
+  "ownerSources": [
+    {
+      "path": "docs/architecture/production-profile-v1.md",
+      "sha256": "49e389bf38105442fc69f0808164a261619115ae0733806de79a1c8a31c44395",
+      "bytes": 16555
+    },
+    {
+      "path": "docs/architecture/publication-authority-v1.md",
+      "sha256": "2c30a304f9e46447df68c528d2893dc80245635ac914d006b7d6e2c99ed09f8f",
+      "bytes": 10047
+    },
+    {
+      "path": "tools/publication_authority.py",
+      "sha256": "deea1458640da8de4553e7702755aed6aab525704c5a588b222f4d10d3630745",
+      "bytes": 31537
+    },
+    {
+      "path": "tools/publication-authority.schema.json",
+      "sha256": "f0ad2c3937756a0b25524042256321ea7b9c99692c51003f7c647884d15c0bbd",
+      "bytes": 14850
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfile.cs",
+      "sha256": "dbafbade580a8a472108285a2b2ba0ea6751d67bc44fbbcf00a8f3abdc3e2c99",
+      "bytes": 1758
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileApplication.cs",
+      "sha256": "dd7e2053691dff25fec1f80f7db28c1fa025e83a5e3f6056831eca52749364b1",
+      "bytes": 1995
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileArtifact.cs",
+      "sha256": "89ca3b5ba9b6daa5d5a1ff44bf14310816a24c79fc8867aadbab1c3d61b406c7",
+      "bytes": 465
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCatalogs.cs",
+      "sha256": "b0aa0ee88b9e0fa70b97464eeac5d85abf80f0388b41df9281cd80d7f4ab628d",
+      "bytes": 987
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCodec.cs",
+      "sha256": "4f34b287bc6f3f7be6191553cb152482b13b482f974e67e6cb8f0576d41c203c",
+      "bytes": 11181
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponent.cs",
+      "sha256": "7dcef4856bc10cb3d7f3c39bfd367a7ab61ab39ab4f3e9da0105c216d12c328b",
+      "bytes": 2324
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponentVersion.cs",
+      "sha256": "c1f3c4f0a2adb2556d1a735fb65038fa3f8900f8f1d69fb6e09c3a06bd4ad031",
+      "bytes": 335
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCredentialReference.cs",
+      "sha256": "5d4561f8098b26c45722527884891fb4efbb3ec5ad98330c94167b6a3870fd55",
+      "bytes": 794
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEndpoint.cs",
+      "sha256": "5d9caa8e827d43f0f19a225af107a42af84f12f25e84751f332c4034b7398065",
+      "bytes": 420
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEnvironment.cs",
+      "sha256": "54260cd61dfdf8f2c1a1bcb86244039140adc63d8ef55cb99b564cfaa9bf7da6",
+      "bytes": 2812
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEvidence.cs",
+      "sha256": "dd6710983e557dd27c51386837486b849301691157a93ffeb980e92524972dc4",
+      "bytes": 1080
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileFreshness.cs",
+      "sha256": "5973072ec75d7fa13194e21933e75aa040b32a13d428bbd89cc84265263fe653",
+      "bytes": 710
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileInfrastructure.cs",
+      "sha256": "69617219f0e32c0a0bef6b1913773d3541c65944b52087e12f2331241d964f9f",
+      "bytes": 535
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssue.cs",
+      "sha256": "c9ea25fe42c5767faca57d57f38ad87ec764376a07c31df15ceb94a4d4ef6903",
+      "bytes": 324
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssuer.cs",
+      "sha256": "db5773afcef9f688482a0f231ea562414cf9eb7e86c78f4158627267e9033cb1",
+      "bytes": 991
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfilePhysicalTarget.cs",
+      "sha256": "3b21bdf50d16d6f4edc7625490f9d9584e2323d6537a77eaa0e471b087597fbf",
+      "bytes": 745
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProtection.cs",
+      "sha256": "ee7a5eeae4e464bda4678ef157564b663b30b586c91ab165856324cb08adadf6",
+      "bytes": 1622
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProvider.cs",
+      "sha256": "b1ff79efc941615fe5bb71875b0950563bb1a22d59661c68c0ac4b4d39aaba8f",
+      "bytes": 679
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRelease.cs",
+      "sha256": "3b93e149d24e54f78af4cb98ce59bf86815ae5ca99b4ea3bb21293abb7983c47",
+      "bytes": 2290
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestore.cs",
+      "sha256": "42035a32b29d7edecb3ebce601dd58fddd07a2758a032a9701c22ba74063ec8a",
+      "bytes": 965
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestoreUnit.cs",
+      "sha256": "ccf84bc14ea3a59382184db62573e180925638a3f27b0168bfa5a20bfd8c6d33",
+      "bytes": 563
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTemplate.cs",
+      "sha256": "610881715a6d4ac1c1c1cde060bbaf8e2bb741ea9d96514128f9eda556469d93",
+      "bytes": 2128
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTool.cs",
+      "sha256": "2b961f086a8f3bcaabb7b6ab55650e937f644d1f4b0e31c18a0e7d2e85febb8b",
+      "bytes": 432
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTopology.cs",
+      "sha256": "3bc6701b7d2f2e441df60210af44df43c6c583875a6743f2b0b3228e5e7831a3",
+      "bytes": 1893
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationContext.cs",
+      "sha256": "fc109f5e01fb3c386790ebb082ecb3c2e54f0214fe7c9da51b6b4a44701ebcfb",
+      "bytes": 492
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationException.cs",
+      "sha256": "8f65090c0350a8ff78a354267632edd7e1e5c73dbd01f8b17e0a410eb50602ad",
+      "bytes": 764
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationResult.cs",
+      "sha256": "331c8e12ff668da2682177a4f05eb5632e66cca99aa76497ec0caa8c034cb5e3",
+      "bytes": 1058
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidator.cs",
+      "sha256": "50a865a096397a3b35287883d2856dae4af0d5216a83796829b22c37c421b840",
+      "bytes": 40820
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileWriter.cs",
+      "sha256": "95d2a3a6b10c63bc890bf9c7c0f45d64e5ca6e94523cdabfe870c20e81e03cb0",
+      "bytes": 649
+    }
+  ],
+  "missingPaths": [
+    "references/Hexalith.EventStore/deploy/dapr/production-profile.yaml",
+    "references/Hexalith.EventStore/deploy/dapr/production-composing-inventory.json",
+    "deploy/dapr/hosted-profile-inventory.json",
+    "deploy/dapr/eventstore-routing-catalog.json",
+    "deploy/dapr/openbao-secret-contract.yaml"
+  ],
+  "backlogStoryKeys": [
+    "4-9-ratify-the-hosted-runtime-and-identity-event-contracts",
+    "6-14-refuse-production-attempts-that-fail-a-precondition",
+    "8-17-run-the-isolated-dr-drill-and-prove-rpo-and-rto",
+    "9-2-run-the-shared-infrastructure-currency-check"
+  ],
+  "approvedFilesAndIndexVerified": 7,
+  "allPreparationBytesUnchanged": true,
+  "roleRecordsRemainUnissued": true,
+  "specifications": [
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md",
+      "status": "draft",
+      "sha256": "22cb1601489e3b878b2dbeed7246a3dee56874ae7357dec7968443c0af4cbe0b",
+      "frozenIntentSha256": "c2e0e90afd86058d34e577eb155645f5a585c7df00ab9bbd46f54c1fde929dd2",
+      "baselineFrozenIntentSha256": "b3e64a9819f3b0aa730921c01f138d3b2bfbfd0fba65d5c44b83900a5c9fd329",
+      "priorIntentRetainedWithOnlyAuthorizedDecisionAdded": true,
+      "historicalNotesPreserved": true,
+      "lastPlanningTokenCountO200kBase": 3473
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md",
+      "status": "draft",
+      "sha256": "91ead680ee38c61027bea47283f0a71f3069edc2cc041f794714fdf929af7454",
+      "frozenIntentSha256": "93a7082ea049dc52d47829c841808d10d890514aa20a89935e88ca0245a684f9",
+      "baselineFrozenIntentSha256": "8ad78be1ca9b1def74d6cf05ccf5adb475a0bea1ac5bab05c4bfea40c4a0303f",
+      "priorIntentRetainedWithOnlyAuthorizedDecisionAdded": true,
+      "historicalNotesPreserved": true,
+      "lastPlanningTokenCountO200kBase": 2079
+    },
+    {
+      "path": "references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md",
+      "status": "ready-for-dev",
+      "sha256": "3e7a296a6e6634014e0e44b89bed9c7ecf42246b9a908ed4c8fe82e5da778d96",
+      "implementationApproval": "approved-and-stop",
+      "lastPlanningTokenCountO200kBase": 1325,
+      "reviewedBodyUnchanged": true
+    }
+  ],
+  "whitespaceChecksPassed": true,
+  "verification": "Verified 33 unchanged owner sources, 14 local links, approved-package hashes and byte preservation, prior frozen intent/history plus only authorized decisions, parent statuses, absent prerequisite paths, focused-spec token range, JSON and whitespace. No executable tests, implementation, live qualification, CI or authority claim.",
+  "previousObservedAt": "2026-11-16T18:13:26.250624+00:00",
+  "mappingAssessment": {
+    "path": "docs/implementation/hosted-profile-v1-mapping-assessment.md",
+    "sha256": "a2541be3bfa1128f80e4eab269f573d268a2aa58e78c2d960eca73071e31f419",
+    "method": "Source-level mapping against unchanged owner grammar/validator; no runtime probe or deployment observations claimed",
+    "cases": {
+      "standaloneNamespacedProvider": "representable",
+      "bundledNodeContainerd": "namespace/configuration applicability gap",
+      "managementWorkloadPair": "identities representable; qualification unevaluated"
+    },
+    "localLinksVerified": 14
+  },
+  "userDecision": {
+    "statement": "apply recommended",
+    "scope": "Three-case mapping, v1 adoption only if clean, otherwise focused v2 preparation",
+    "decisionQuestionResolved": true,
+    "finalFormatAdopted": false,
+    "implementationApproval": "approved-and-stop for focused v2 construction spec only"
+  },
+  "previousSpecificationObservations": [
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md",
+      "status": "draft",
+      "sha256": "3a812e1e8c0aa2c7fb60390ea08d34e2208c6cde48ba329c022cab4e5ebdf35d",
+      "frozenIntentSha256": "b3e64a9819f3b0aa730921c01f138d3b2bfbfd0fba65d5c44b83900a5c9fd329",
+      "frozenIntentAndHistoricalNotesPreserved": true,
+      "tokensO200kBase": 3241
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md",
+      "status": "draft",
+      "sha256": "3723fa0556431376be2398b71d0972ca850bff184439e0709b8f0ea3037e584d",
+      "frozenIntentSha256": "8ad78be1ca9b1def74d6cf05ccf5adb475a0bea1ac5bab05c4bfea40c4a0303f",
+      "frozenIntentAndHistoricalNotesPreserved": true,
+      "tokensO200kBase": 1824
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md",
+      "status": "draft",
+      "sha256": "7f8b21652557a09986bef92be59548364851378c68055edf8a25e050c7f59e79",
+      "frozenIntentSha256": "c2e0e90afd86058d34e577eb155645f5a585c7df00ab9bbd46f54c1fde929dd2",
+      "baselineFrozenIntentSha256": "b3e64a9819f3b0aa730921c01f138d3b2bfbfd0fba65d5c44b83900a5c9fd329",
+      "priorIntentRetainedWithOnlyAuthorizedDecisionAdded": true,
+      "historicalNotesPreserved": true,
+      "tokensO200kBase": 3473
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md",
+      "status": "draft",
+      "sha256": "2ff2c3a4f1a0e9ca8824bd1e844489f556479a543ccd53f1ada2c2b731475d51",
+      "frozenIntentSha256": "93a7082ea049dc52d47829c841808d10d890514aa20a89935e88ca0245a684f9",
+      "baselineFrozenIntentSha256": "8ad78be1ca9b1def74d6cf05ccf5adb475a0bea1ac5bab05c4bfea40c4a0303f",
+      "priorIntentRetainedWithOnlyAuthorizedDecisionAdded": true,
+      "historicalNotesPreserved": true,
+      "tokensO200kBase": 2079
+    },
+    {
+      "path": "references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md",
+      "status": "draft",
+      "sha256": "1fe63b3b80284ce76238b76fa5daba44178e1c8219b38094e08fe18f5af9e611",
+      "tokensO200kBase": 1325,
+      "implementationApproval": "pending"
+    }
+  ],
+  "approval": {
+    "statement": "approve and stop",
+    "scope": "references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md",
+    "status": "ready-for-dev",
+    "reviewedBodyUnchanged": true,
+    "implementationStarted": false,
+    "finalFormatAdopted": false,
+    "productionAuthority": false
+  }
+}
