@@ -19,6 +19,7 @@ import retained_works_host
 import works_host_snapshot
 import works_toolchain
 import works_managed_runtime
+from current_catalog_view import evaluate_views
 from works_verifier_command import run_owned
 
 from verify_works_producer import (builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
@@ -35,6 +36,7 @@ VERIFIER_HELPERS = (
     "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py",
     "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
     "works_managed_runtime.py", "test_works_managed_runtime.py",
+    "current_catalog_view.py",
 )
 
 ROWS = {
@@ -150,11 +152,18 @@ def published_producers(assets_path, consumer_directory, version):
 
 
 def selected_sdk_version(catalog):
-    """Read the one stable public EventStore version selected by the authoritative Builds catalog."""
-    values = [item.text for item in ET.parse(catalog).getroot().iter("HexalithEventStoreVersion")]
-    if len(values) != 1 or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", (values[0] or "").strip()):
+    """Evaluate the current public SDK independently of retained named consumer cohorts."""
+    raw = Path(catalog).read_bytes()
+    defaults = [item.text for item in ET.fromstring(raw).iter("HexalithEventStoreVersion")
+                if re.sub(r"\s+", "", item.get("Condition", ""))
+                in ("", "'$(HexalithEventStoreVersion)'==''")]
+    if len(defaults) != 1 or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", (defaults[0] or "").strip()):
         raise ValueError("The Builds catalog must select exactly one stable public EventStore version: " + str(catalog))
-    return values[0].strip()
+    observed = evaluate_views(raw, consumer_names=("Unqualified.Consumer",))
+    selected = defaults[0].strip()
+    if len(observed) != 1 or observed[0].get("Identity") != "Unqualified.Consumer" or observed[0].get("Sdk") != selected:
+        raise ValueError("The Builds catalog's evaluated current SDK differs from its stable default: " + str(catalog))
+    return selected
 
 
 def require_consumer_pin(props, version):

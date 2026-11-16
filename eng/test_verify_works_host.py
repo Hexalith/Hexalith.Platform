@@ -1118,6 +1118,20 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.subTest(body=body), self.assertRaises(ValueError):
                 selected_sdk_version(self.catalog(body))
 
+    def test_current_sdk_evaluation_keeps_named_retained_cohorts_separate(self):
+        selected = self.catalog(
+            "<HexalithEventStoreVersion Condition=\"'$(MSBuildProjectName)' == 'Hexalith.Platform.Composition'\">4.2.0</HexalithEventStoreVersion>"
+            "<HexalithEventStoreVersion Condition=\"'$(HexalithEventStoreVersion)' == ''\">5.2.0</HexalithEventStoreVersion>")
+        with patch.dict(os.environ, {"HexalithEventStoreVersion": "99.0.0"}):
+            self.assertEqual(selected_sdk_version(selected), "5.2.0")
+
+    def test_current_sdk_default_must_agree_with_its_evaluated_context(self):
+        selected = self.catalog(
+            "<HexalithEventStoreVersion Condition=\"'$(MSBuildProjectName)' == 'Unqualified.Consumer'\">4.2.0</HexalithEventStoreVersion>"
+            "<HexalithEventStoreVersion Condition=\"'$(HexalithEventStoreVersion)' == ''\">5.2.0</HexalithEventStoreVersion>")
+        with self.assertRaisesRegex(ValueError, "evaluated current SDK differs"):
+            selected_sdk_version(selected)
+
     def test_works_consumer_default_pin_must_name_the_qualified_producer(self):
         pinned = self.catalog('<HexalithEventStoreVersion>3.125.1</HexalithEventStoreVersion>')
         self.assertEqual(require_consumer_pin(pinned, VERSION)['sha256'], sha256(pinned))
