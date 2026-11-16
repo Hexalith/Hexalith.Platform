@@ -1,0 +1,391 @@
+{
+  "purpose": "Reviewed focused owner v2 construction completed; proposed Platform binding only. No adopted format, qualified inventory or production authority.",
+  "observedAt": "2026-11-16T20:14:30.372844+00:00",
+  "platformRevision": "ac272053bbc05bbdf2be236608c939787aec58c5",
+  "eventStoreRevision": "57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e",
+  "ownerWorkingTreeClean": true,
+  "ownerCommitLocalOnly": true,
+  "ownerParent319": "in-progress",
+  "ownerConstructionV2": "done",
+  "platformParentStories": {
+    "4-9-ratify-the-hosted-runtime-and-identity-event-contracts": "backlog",
+    "6-14-refuse-production-attempts-that-fail-a-precondition": "backlog",
+    "8-17-run-the-isolated-dr-drill-and-prove-rpo-and-rto": "backlog",
+    "9-2-run-the-shared-infrastructure-currency-check": "backlog"
+  },
+  "bindingProposal": {
+    "path": "docs/contracts/hosted-profile-binding-v2.md",
+    "sha256": "bfca242447eb7f7c6a0a9c6e25dab9635f1816570a4cc45a2ab74c64c6f8f4d4",
+    "bytes": 6658,
+    "adopted": false
+  },
+  "ownerCommittedSources": [
+    {
+      "path": ".github/workflows/publication-authority.yml",
+      "sha256": "2ec6655eff5872039311cab1a9fabf2d7aa6568ff455dd34a7079771cb09b555",
+      "bytes": 3328
+    },
+    {
+      "path": "docs/architecture/production-profile-v1.md",
+      "sha256": "49e389bf38105442fc69f0808164a261619115ae0733806de79a1c8a31c44395",
+      "bytes": 16555
+    },
+    {
+      "path": "docs/architecture/production-profile-v2.md",
+      "sha256": "433c028f45a7a4993dc1b810e28dd3fdc8a6ab7427186f2d3e7b40b304986640",
+      "bytes": 11484
+    },
+    {
+      "path": "docs/architecture/publication-authority-v1.md",
+      "sha256": "0fbf6812de6cbcbb3b165878673c653c3a7ecf51344c6027356e96cf9a34707f",
+      "bytes": 10680
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfile.cs",
+      "sha256": "dbafbade580a8a472108285a2b2ba0ea6751d67bc44fbbcf00a8f3abdc3e2c99",
+      "bytes": 1758
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileApplication.cs",
+      "sha256": "dd7e2053691dff25fec1f80f7db28c1fa025e83a5e3f6056831eca52749364b1",
+      "bytes": 1995
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileArtifact.cs",
+      "sha256": "89ca3b5ba9b6daa5d5a1ff44bf14310816a24c79fc8867aadbab1c3d61b406c7",
+      "bytes": 465
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCanonicalJson.cs",
+      "sha256": "db14db9e2eace292a7f5c7268b38aeac8fd65f96b210278e933f0def387d53a8",
+      "bytes": 5187
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCatalogs.cs",
+      "sha256": "b0aa0ee88b9e0fa70b97464eeac5d85abf80f0388b41df9281cd80d7f4ab628d",
+      "bytes": 987
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCodec.cs",
+      "sha256": "65e2fedad3ab0f0137aabc16319144d0852d546895fe1d68026b749b7eabc878",
+      "bytes": 7409
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponent.cs",
+      "sha256": "7dcef4856bc10cb3d7f3c39bfd367a7ab61ab39ab4f3e9da0105c216d12c328b",
+      "bytes": 2324
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponentVersion.cs",
+      "sha256": "c1f3c4f0a2adb2556d1a735fb65038fa3f8900f8f1d69fb6e09c3a06bd4ad031",
+      "bytes": 335
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCredentialReference.cs",
+      "sha256": "5d4561f8098b26c45722527884891fb4efbb3ec5ad98330c94167b6a3870fd55",
+      "bytes": 794
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEndpoint.cs",
+      "sha256": "5d9caa8e827d43f0f19a225af107a42af84f12f25e84751f332c4034b7398065",
+      "bytes": 420
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEnvironment.cs",
+      "sha256": "54260cd61dfdf8f2c1a1bcb86244039140adc63d8ef55cb99b564cfaa9bf7da6",
+      "bytes": 2812
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEvidence.cs",
+      "sha256": "dd6710983e557dd27c51386837486b849301691157a93ffeb980e92524972dc4",
+      "bytes": 1080
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileFreshness.cs",
+      "sha256": "5973072ec75d7fa13194e21933e75aa040b32a13d428bbd89cc84265263fe653",
+      "bytes": 710
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileInfrastructure.cs",
+      "sha256": "69617219f0e32c0a0bef6b1913773d3541c65944b52087e12f2331241d964f9f",
+      "bytes": 535
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssue.cs",
+      "sha256": "c9ea25fe42c5767faca57d57f38ad87ec764376a07c31df15ceb94a4d4ef6903",
+      "bytes": 324
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssuer.cs",
+      "sha256": "db5773afcef9f688482a0f231ea562414cf9eb7e86c78f4158627267e9033cb1",
+      "bytes": 991
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfilePhysicalTarget.cs",
+      "sha256": "3b21bdf50d16d6f4edc7625490f9d9584e2323d6537a77eaa0e471b087597fbf",
+      "bytes": 745
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProtection.cs",
+      "sha256": "ee7a5eeae4e464bda4678ef157564b663b30b586c91ab165856324cb08adadf6",
+      "bytes": 1622
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProvider.cs",
+      "sha256": "b1ff79efc941615fe5bb71875b0950563bb1a22d59661c68c0ac4b4d39aaba8f",
+      "bytes": 679
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRelease.cs",
+      "sha256": "3b93e149d24e54f78af4cb98ce59bf86815ae5ca99b4ea3bb21293abb7983c47",
+      "bytes": 2290
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestore.cs",
+      "sha256": "42035a32b29d7edecb3ebce601dd58fddd07a2758a032a9701c22ba74063ec8a",
+      "bytes": 965
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestoreUnit.cs",
+      "sha256": "ccf84bc14ea3a59382184db62573e180925638a3f27b0168bfa5a20bfd8c6d33",
+      "bytes": 563
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTemplate.cs",
+      "sha256": "610881715a6d4ac1c1c1cde060bbaf8e2bb741ea9d96514128f9eda556469d93",
+      "bytes": 2128
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTool.cs",
+      "sha256": "2b961f086a8f3bcaabb7b6ab55650e937f644d1f4b0e31c18a0e7d2e85febb8b",
+      "bytes": 432
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTopology.cs",
+      "sha256": "3bc6701b7d2f2e441df60210af44df43c6c583875a6743f2b0b3228e5e7831a3",
+      "bytes": 1893
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2.cs",
+      "sha256": "34a9009162e142b5fa31434d9357dec4993a57c41ea693d42bfe3ac37057eb98",
+      "bytes": 1790
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Codec.cs",
+      "sha256": "423f95227e600c97caf0f7f1e5e7d9f94a00e65793e2e83518b80f78d79aa3a8",
+      "bytes": 7453
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Component.cs",
+      "sha256": "03bd43d4abe34fa9129512d8ba33274aaa3bce8f33f72bbc2b280ce81fc21e9a",
+      "bytes": 2151
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Dapr.cs",
+      "sha256": "b0844d561d241c2307f9ca4c1d6dece62cc88dfc5ac370e712c7ada1a8421d92",
+      "bytes": 919
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Scope.cs",
+      "sha256": "72a81cb62d02987049e1335a4dad4d26a6cf44609b0799532cf7fb2a967b914f",
+      "bytes": 751
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Validator.cs",
+      "sha256": "6e5e7317732cfee16a8fc69c82a3ffa9c68305caec6f4c5f5789adf04b86e714",
+      "bytes": 8766
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationComponent.cs",
+      "sha256": "ac4a5776519a8784cd7e17751af7285ad7c4fdc1bc4db12e59265757097f6f86",
+      "bytes": 4026
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationContext.cs",
+      "sha256": "fc109f5e01fb3c386790ebb082ecb3c2e54f0214fe7c9da51b6b4a44701ebcfb",
+      "bytes": 492
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationDocument.cs",
+      "sha256": "d3bcf2efc57cecc1701819fdeb20b196bca58040ab7cd60e74053294176e2bc2",
+      "bytes": 2746
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationException.cs",
+      "sha256": "8f65090c0350a8ff78a354267632edd7e1e5c73dbd01f8b17e0a410eb50602ad",
+      "bytes": 764
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationResult.cs",
+      "sha256": "331c8e12ff668da2682177a4f05eb5632e66cca99aa76497ec0caa8c034cb5e3",
+      "bytes": 1058
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidator.cs",
+      "sha256": "8472e59264b3ddc49ae300672fa64f83cf24caf2ac2b21c9556895371a2e3d2c",
+      "bytes": 41954
+    },
+    {
+      "path": "src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileWriter.cs",
+      "sha256": "95d2a3a6b10c63bc890bf9c7c0f45d64e5ca6e94523cdabfe870c20e81e03cb0",
+      "bytes": 649
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/GenerateSyntheticProfileV2.py",
+      "sha256": "5c85ad05233d7373dbfbfbdefebc32e919ef6f5db4392e793b5797ea7b6dc731",
+      "bytes": 4972
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticDigests.v1.json",
+      "sha256": "ea3d4d09de8b10bbc1a3a3605be7d40988bf37d9adb7065083baed6f5c5db04c",
+      "bytes": 173
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticDigests.v2.json",
+      "sha256": "cb3e109c59ca646722666d11f38cceab0ed494acc5251cebda624b078dee0d94",
+      "bytes": 163
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticInfrastructurePreimage.v1.json",
+      "sha256": "631e592f036ed45d839f55ee262f74836b5584e0f47354b8856463f864a43a86",
+      "bytes": 3826
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticInfrastructurePreimage.v2.json",
+      "sha256": "e9bc5878e367835346bc68d444eeed993c5d8d6682c066875a245d84e1d99537",
+      "bytes": 4753
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticProfile.v1.json",
+      "sha256": "f7184d77c3de3ef6e69dc5456c244eb99c4fa3816d6557fccdbfdabe666dc06b",
+      "bytes": 29342
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticProfile.v2.json",
+      "sha256": "5d590d69a24c2ff456d2baec004f09a4ca87bfc9221882a5710db6f38b9cdd9d",
+      "bytes": 38488
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/verify-golden.py",
+      "sha256": "19900f4d658df738468f1c652ecc1ff55459ddfeb0fc91591712072b72383d60",
+      "bytes": 2062
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/ProductionProfileTests.cs",
+      "sha256": "cf8b454f8a3b95011d6e33db3dbe98830b27108a5727aa2aaee838704f596f40",
+      "bytes": 36025
+    },
+    {
+      "path": "tests/Hexalith.EventStore.Contracts.Tests/Deployment/ProductionProfileV2Tests.cs",
+      "sha256": "b3a4b2919fb6a897940eb7154b2b64abbea0c9e19280f51b70cc59177c5e7255",
+      "bytes": 33047
+    },
+    {
+      "path": "tools/production-profile.cs",
+      "sha256": "7b7259682d630be11249c876047d5cef6d11ee33ed0ed92c5c3dfd505770a60c",
+      "bytes": 5747
+    },
+    {
+      "path": "tools/publication_authority.py",
+      "sha256": "7e7ae2ec7bbc1f910a1e720e94f4dbbcd8829c18a0e0623eecd795c54bb5eed1",
+      "bytes": 31980
+    },
+    {
+      "path": "tools/tests/check_production_profile_bridge.py",
+      "sha256": "2cd843a31522f8028e364f8c498a405965cf114be95ad878673cb84d37f285a4",
+      "bytes": 16026
+    },
+    {
+      "path": "tools/tests/test_publication_authority.py",
+      "sha256": "e5178cdd897df941a302b5b10fbb468be879a9cf402e64ead2368a008cc4b6e6",
+      "bytes": 32164
+    }
+  ],
+  "verification": {
+    "profileCases": 235,
+    "v1Cases": 130,
+    "v2Cases": 105,
+    "authorityCases": 25,
+    "genuineBridgeControls": 48,
+    "skippedOrUnrun": 0,
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "reviewLayers": 3,
+    "acceptedFocusedFindings": "patched and reverified",
+    "deferredFindings": [
+      "B3: generic provider category applicability, medium unverified",
+      "B4: external diagnostic log/source inventory overlap",
+      "B5: external fixture cleanup retry handles",
+      "B7: external asynchronous rejection-test hardening"
+    ],
+    "v1GoldenBytesUnchanged": true,
+    "approvedFileAndIndexIdentitiesVerified": 7,
+    "frozenIntentBlocksPreserved": 3,
+    "logs": [
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/contracts.log",
+        "sha256": "467fd7002718e708a1c571d6e74aa2a9b2bb556b9cdb3134c7d9f1a831f372dd"
+      },
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/authority-reviewed.log",
+        "sha256": "b9a0e49c91c7f09b288e67604c166ae5423a3ea6d42e79cfa27cbc671032ebe7"
+      },
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/bridge-reviewed.log",
+        "sha256": "be3726417ca2d557caebbbabdf5951ecd611ffeae16be5eeca41692cc9a0c25e"
+      },
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/contracts-v2-review.log",
+        "sha256": "0903094c58fac221088b7e4bffa91893a5fe33ef927fe81f0946804083d50f2e"
+      },
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/static-checks.log",
+        "sha256": "52447024db299b4bd17e75bb94cb2deac144e131834203c70a39453884a1cd39"
+      },
+      {
+        "path": "/home/administrator/.cache/hexalith-profile-v2-verification/commitlint.log",
+        "sha256": "5dad032cb22d3e9d11dc3397123f3cf311a0bedc77d21e636d82c3954d90675a"
+      }
+    ]
+  },
+  "missingPrerequisitePaths": [
+    "references/Hexalith.EventStore/deploy/dapr/production-profile.yaml",
+    "references/Hexalith.EventStore/deploy/dapr/production-composing-inventory.json",
+    "deploy/dapr/hosted-profile-inventory.json",
+    "deploy/dapr/eventstore-routing-catalog.json",
+    "deploy/dapr/openbao-secret-contract.yaml"
+  ],
+  "specifications": [
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md",
+      "sha256": "736e89084fbe7bd6cda1e4da0924edb5d7dc986a92d4585b85e698b68e03e154",
+      "bytes": 18443,
+      "status": "draft",
+      "frozenIntentSha256": "c2e0e90afd86058d34e577eb155645f5a585c7df00ab9bbd46f54c1fde929dd2"
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md",
+      "sha256": "0f65c32fa68ba4a037addc0cceffc204903ccc871e7d205eb295fce3e1767be6",
+      "bytes": 11605,
+      "status": "draft",
+      "frozenIntentSha256": "93a7082ea049dc52d47829c841808d10d890514aa20a89935e88ca0245a684f9"
+    },
+    {
+      "path": "references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md",
+      "sha256": "3f075346588a41e1f39915966e26281d6d53edc03c7d8283b60b9c687763c91f",
+      "bytes": 16830,
+      "status": "done",
+      "frozenIntentSha256": "768261a9b7b17cae9a950180fa4861a167b8be8526e1964aecf4d4caca6949ec"
+    }
+  ],
+  "productionAuthority": false,
+  "liveCurrencyCheckerImplemented": false,
+  "nextDecision": "Adopt the proposed v2 construction format for Platform 4.9; actual qualification, complete inventory, authenticated ratification, publication and callers remain outstanding.",
+  "superprojectCommitCreated": false,
+  "superprojectCommitConstraint": "The build workflow forbids remote operations; repository guidance forbids a superproject commit recording an unpushed submodule commit. Platform tracking changes remain uncommitted.",
+  "reviewDiff": {
+    "path": "/home/administrator/.cache/hexalith-profile-v2-verification/review-zjpzdeve.diff",
+    "sha256": "b44e138c5d26ccfe4a10814a2b765db9f6038106ff96befacbe39a15b0550cd1",
+    "includesConcurrentCommittedAuthenticationWork": true
+  }
+}

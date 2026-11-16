@@ -1,0 +1,82 @@
+{
+  "recordKind": "platform-construction-format-decision",
+  "recordVersion": 1,
+  "decision": "adopted",
+  "recordedAt": "2026-11-16T21:12:23.032007+00:00",
+  "userStatement": "adopt v2",
+  "source": "Explicit user decision in this conversation following the reviewed v2 binding proposal.",
+  "scope": "Adopt the owner v2 structural schema, canonical encoding, codec, validator and digest domains for Platform Story 4.9.",
+  "platformRevisionAtDecision": "2ce2a485d65ce66be7b7a6c7901d415b1fafa6e9",
+  "reviewedProposal": {
+    "repository": "Hexalith/Hexalith.Platform",
+    "revision": "b41861b22600a9a6607a99d30bfc0b229d6a81ee",
+    "path": "docs/contracts/hosted-profile-binding-v2.md",
+    "gitBlob": "cfcf6e7056a42ce9be1b3d11b9d4f9e13806e468",
+    "sha256": "bfca242447eb7f7c6a0a9c6e25dab9635f1816570a4cc45a2ab74c64c6f8f4d4",
+    "bytes": 6658
+  },
+  "ownerConstructionRevision": "57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e",
+  "ownerCheckoutRevisionObserved": "107e50e39cf2545cbc6546e60e02252251aca274",
+  "ownerSourceIdentityIndex": {
+    "repository": "Hexalith/Hexalith.Platform",
+    "revision": "b41861b22600a9a6607a99d30bfc0b229d6a81ee",
+    "path": "_bmad-output/implementation-artifacts/evidence/9-2/profile-v2-implementation-20261116.json",
+    "sha256": "5efba426e1b27d668bd5da7c9218f05f4d8defdb4ab041f8d3aac29b34ce828e",
+    "bytes": 16801,
+    "sourceCount": 56
+  },
+  "adoptedFormat": {
+    "profileSchemaVersion": 2,
+    "composingInventorySchema": "hexalith.eventstore.production-composing-inventory.v2",
+    "model": "Hexalith.EventStore.Contracts.Deployment.ProductionProfileV2",
+    "codec": "Hexalith.EventStore.Contracts.Deployment.ProductionProfileV2Codec",
+    "validator": "Hexalith.EventStore.Contracts.Deployment.ProductionProfileV2Validator",
+    "validationContext": "Hexalith.EventStore.Contracts.Deployment.ProductionProfileValidationContext",
+    "infrastructurePreimagePurpose": "platform-infrastructure-profile",
+    "infrastructurePreimageSchemaVersion": 2,
+    "infrastructureDomain": "Owner-canonical template plus declared invariant provider/topology/tool pins.",
+    "resolvedDomain": "Complete owner-canonical v2 profile including its recomputed infrastructureDigest, with the resolved digest external.",
+    "decoderFallbackPermitted": false
+  },
+  "authenticatedApproverIdentity": null,
+  "authenticatedAd26Ratification": false,
+  "technicalSelectionsApproved": false,
+  "qualifiedInventoryAccepted": false,
+  "captureLagPolicyApproved": false,
+  "productionAuthority": false,
+  "parentStoriesCompleted": [],
+  "remainingRequirements": [
+    "Actual qualified component/provider inventory and exact management/workload/Rancher pairing",
+    "Qualified runtime/broker, mandatory append/erasure protection and accepted restore posture",
+    "Hosted routing catalog, value-free secret contract, renewal ownership and measured capture-lag policy",
+    "Authenticated owner ratification, complete build-input proof, release-codec integration and owner publication",
+    "Production-attempt admission and monthly-drill callers before the live Story 9.2 checker"
+  ],
+  "verification": {
+    "ownerSourceIdentitiesMatched": 56,
+    "reviewedProposalMatched": true,
+    "approvedPreparationFileAndIndexIdentitiesMatched": 7,
+    "historicalImplementationObservationPreserved": true,
+    "ownerRuntimeFilesChanged": false,
+    "newExecutableTestsRun": false
+  },
+  "adoptedContract": {
+    "path": "docs/contracts/hosted-profile-binding-v2.md",
+    "sha256": "00bc39988af34d0ae0ddf3fe753dcd1039a12bfc5def814593ae043b4f8ac6ca",
+    "bytes": 7399
+  },
+  "parentDecisionRecords": [
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md",
+      "previousFrozenIntentSha256": "93a7082ea049dc52d47829c841808d10d890514aa20a89935e88ca0245a684f9",
+      "adoptedFrozenIntentSha256": "23aac5a314323c39655383fdb118ecbba76632356478cc31aabdb09f14fb4410",
+      "priorFrozenIntentRetainedWithOnlyUserDecisionAdded": true
+    },
+    {
+      "path": "_bmad-output/implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md",
+      "previousFrozenIntentSha256": "c2e0e90afd86058d34e577eb155645f5a585c7df00ab9bbd46f54c1fde929dd2",
+      "adoptedFrozenIntentSha256": "1cc49e7571bbab9389d2c38334df4acc8457fe4aed1dad9698aabbd87c77411d",
+      "priorFrozenIntentRetainedWithOnlyUserDecisionAdded": true
+    }
+  ]
+}

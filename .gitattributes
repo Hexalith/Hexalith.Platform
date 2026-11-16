@@ -196,6 +196,10 @@ eng/fixtures/builds-6.0.3-binding.json text eol=lf
 eng/fixtures/builds-6.0.5-Directory.Packages.props text eol=lf
 eng/fixtures/builds-6.0.5-binding.json text eol=lf
 
+# Keep the new verifier helpers' hashed Python source bytes consistent across checkouts.
+eng/bound_builds.py text eol=lf
+eng/test_bound_builds.py text eol=lf
+
 # Recognize existing CRLF in the tuple retirement controls while checking whitespace.
 src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformPackageCatalogQualificationTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
@@ -207,3 +211,9 @@ tests/Hexalith.Platform.Composition.Tests/PlatformReaderMutationControls.cs whit
 # Retain post-review patch observations verbatim, including diff context and CRLF.
 _bmad-output/implementation-artifacts/evidence/2-13/post-review/*.patch -text -whitespace
 _bmad-output/implementation-artifacts/evidence/2-13/review-20261116/package/*.patch -text -whitespace
+
+# Recognize the existing CRLF Works preview sources in whitespace checks.
+src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

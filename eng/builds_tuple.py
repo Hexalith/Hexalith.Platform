@@ -106,10 +106,10 @@ def validate_recorded_source(binding, pin, dirty, require_clean=True):
         raise ValueError("CI requires clean recorded Platform source with the exact approved Builds pin.")
 
 
-def verify_catalog(binding, builds_root):
+def verify_catalog(binding, builds_root, environment=None):
     """Check committed bytes and the real checkout, allowing Git's configured CRLF conversion."""
     def git(*arguments):
-        return subprocess.check_output(["git", *arguments], cwd=builds_root)
+        return subprocess.check_output(["git", *arguments], cwd=builds_root, **({"env": environment} if environment is not None else {}))
 
     producer = binding["producer"]
     catalog = producer["catalog"]
@@ -120,7 +120,8 @@ def verify_catalog(binding, builds_root):
     if hashlib.sha256(git("show", "HEAD:" + catalog["path"])).hexdigest() != catalog["sha256"]:
         raise ValueError("Recorded catalog SHA-256 differs from the producer binding.")
     command = ["git", "diff", "--exit-code", "HEAD", "--", catalog["path"]]
-    comparison = subprocess.run(command, cwd=builds_root, capture_output=True, text=True)
+    comparison = subprocess.run(command, cwd=builds_root, capture_output=True, text=True,
+                                **({"env": environment} if environment is not None else {}))
     if comparison.returncode:
         observation = {"argv": command, "cwd": str(builds_root), "exitCode": comparison.returncode,
                        "stdout": comparison.stdout, "stderr": comparison.stderr}

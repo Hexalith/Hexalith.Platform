@@ -168,6 +168,18 @@ class FinalInputClosureTests(unittest.TestCase):
     def test_unchanged_complete_input_graph_passes(self):
         self.check()
 
+    def test_file_host_sdk_runtime_bytes_are_rechecked(self):
+        host = self.root / 'host-output/apphost.dll'
+        sdk = host.with_name('Hexalith.EventStore.Aspire.dll')
+        self.write(host, 'host fixture')
+        self.write(sdk, 'qualified SDK fixture')
+        self.summary['host'] = {'assembly': str(host)}
+        self.summary['platformHostSdk'] = {
+            'Hexalith.EventStore.Aspire': {'consumerAssemblySha256': gate.sha256(sdk)}}
+        self.check()
+        with self.changed(sdk), self.assertRaisesRegex(ValueError, 'file-host SDK assembly changed'):
+            self.check()
+
     def test_runtime_source_bytes_and_membership_are_rechecked(self):
         for kind in ("changed", "added", "removed"):
             path = self.sdk / ("src/Domain/Added.cs" if kind == "added" else "src/Domain/Domain.cs")

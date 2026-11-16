@@ -1,0 +1,26 @@
+{
+  "revision": "8a56bd57837784806aae989159fbcbc71fbd41d4",
+  "sources": {
+    "src/Hexalith.Platform.Custody/SecuritySpoolSnapshot.cs": "dc707e24caae265c9e2d545487cfc29ea8648e184d6ca79e2e95cf63e6ed41e7",
+    "src/Hexalith.Platform.Custody/SecurityObservationRecord.cs": "40361907671920295f32d28d86fc902110e58fca2cf6799df6d4fd9c94fc34f6",
+    "src/Hexalith.Platform.Custody/SecurityObservationIntent.cs": "2fc25a8bc4afd374903860217d4a03c586d0f94c05cafdf8b15b3f0f6eb8f00b",
+    "src/Hexalith.Platform.Custody/SecurityEventRecordReceipt.cs": "eee27da2dd7a951dd87a144dfdedd40ef36deb3a4ba1196768c5b4f3b37e84f7",
+    "src/Hexalith.Platform.Custody/SecuritySpoolArchivePage.cs": "70ee7c03cb6568b85afee4f0ec14c430d69d5d30cada7e0313afc2693ef53b77"
+  },
+  "command": [
+    "dotnet",
+    "run",
+    "--project",
+    "/tmp/hexalith-job.8jfPJYpp/historical-spool-probe/Probe.csproj",
+    "--",
+    "/tmp/hexalith-job.8jfPJYpp/historical-spool-probe"
+  ],
+  "generatorSha256": "6429ef22c9b98094dabde67eb40871d85cb8570475c1c97b0a29acd33f4708bf",
+  "programSha256": "9f8630fe4956fd143b2b12eb0d2a0a3204e4604fcf80dfe2b070a6ddd8243374",
+  "outputs": {
+    "empty.json": "c63a578df54a5c6f8918b9093660ee01cb6f0648341f8efd4f4f158af21f4137",
+    "pending-head.json": "c9f10aacccfda9584845fd655e42c7d5e8ffec0f36c7b8e23cfecce979a16025",
+    "acknowledged-head.json": "a3753e55e29483912b05881765e21c99c1c18ae6f4cc8ad1bbe3d5c293f7c771",
+    "archive-page.json": "08101b3725097c6ff7bc8f12b778f4d99354071da3ddbb571cff1506df536802"
+  }
+}

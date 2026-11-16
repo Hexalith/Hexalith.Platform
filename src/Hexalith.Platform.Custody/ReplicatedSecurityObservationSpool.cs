@@ -307,13 +307,28 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     private static string PendingScope(ReplicatedSecuritySpoolTarget target) => target.ComponentName + "|" + Key(target);
     private static string ArchiveDigest(SecuritySpoolSnapshot carrier)
         => Digest(new SecuritySpoolArchivePage(carrier.PageIndex, carrier, carrier.ArchiveHeadDigest));
+    /// <summary>Restores only the exact compact legacy reservation phase; anchor validation still authenticates every byte.</summary>
+    internal static SecuritySpoolSnapshot RestoreLegacyReservation(SecuritySpoolSnapshot snapshot)
+    {
+        if (!snapshot.UsesReservationLayout && snapshot.Records is { Count: > 0 and <= RecordBound }
+            && snapshot.PageIndex is >= 0 and < ArchivePageBound && snapshot.Records.All(record => record?.Receipt is not null)
+            && snapshot.Revision == checked(snapshot.ArchivedObservedCount + snapshot.Records.Count
+                + snapshot.ArchivedAcknowledgedCount + snapshot.Records.Count + snapshot.DrainRevision + snapshot.PageIndex + 1))
+        {
+            var carrier = snapshot with { Revision = checked(snapshot.Revision - 1) };
+            return snapshot with { ReservedArchiveDigest = ArchiveDigest(carrier), UsesReservationLayout = false };
+        }
+        return snapshot;
+    }
     private async Task<bool> ArchiveAcknowledgedPageAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot state, string etag, PrivateOwnerOperationDeadline budget)
     {
         if (state.ReservedArchiveDigest is not null) { return await CompleteReservedArchiveAsync(target, state, etag, budget).ConfigureAwait(false); }
         if (state.PageIndex >= ArchivePageBound || state.Records.Count is < 1 or > RecordBound
             || state.Records.Any(record => record.Receipt is null) || !ValidTarget(target)) { return false; }
         // Reserve the anchored head before any archive page exists, so a stale writer cannot create an unlinked carrier.
-        var reserved = state with { Revision = checked(state.Revision + 1), ReservedArchiveDigest = ArchiveDigest(state) };
+        var carrier = state;
+        var reserved = carrier with { Revision = checked(state.Revision + 1), ReservedArchiveDigest = ArchiveDigest(carrier),
+            UsesReservationLayout = carrier.UsesReservationLayout };
         await TryWriteAsync(target, state, reserved, etag, budget).ConfigureAwait(false);
         var (saved, savedEtag) = await ReadAsync(target, budget, true).ConfigureAwait(false);
         if (saved is null || saved.ReservedArchiveDigest != reserved.ReservedArchiveDigest || StateDigest(saved) != StateDigest(reserved)) { return false; }
