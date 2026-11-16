@@ -2107,3 +2107,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: Define the generated Epic 9 rollback-set summary using the working baseline rather than “previous application” (medium).
   evidence: AD-15 names the working baseline's package; a previous failed/interrupted candidate can differ. Agent-context correction is deferred by the review workflow.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-publication-authority-validator.md`
+  summary: Restore the explicit sealed-input preservation and separate-reseal guardrail in EventStore's generated Epic 3 context while labelling the closed 1.19.1 refresh inputs as historical.
+  evidence: Review BH10/EH3 verified that context regeneration removed these constraints; the current November 9 planning preserves sealed inputs and treats 1.19.1 as historical. The build review workflow routes agent-context corrections to deferred work.
