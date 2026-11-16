@@ -1,0 +1,13 @@
+using System.Text.Json;
+using Hexalith.Platform.Custody;
+using System.Security.Cryptography;
+var output = args[0];
+void Save(string name, object value) => File.WriteAllBytes(Path.Combine(output,name+".json"),JsonSerializer.SerializeToUtf8Bytes(value));
+var empty = new SecuritySpoolSnapshot("installed-epoch-1",0,[]); Save("empty",empty);
+var intent = new SecurityObservationIntent("historical-pending","tenant-a","invalid-tag",new string('A',64),"system-observation-key-v1");
+var first = new SecurityObservationRecord(intent,new DateTimeOffset(2026,9,1,0,0,0,TimeSpan.Zero),"2026-09-01",1,null);
+var head = empty with { Revision=1, Records=new[]{first} }; Save("pending-head",head);
+var digest=Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(intent)));
+var receipt=new SecurityEventRecordReceipt(intent.ObservationId,intent.RoutingTenantId,first.UtcDay,digest,"tenant-a:agents:SecurityEventLog-2026-09-01",1,"historical-event");
+var acknowledged=head with { Revision=2,Records=new[]{first with {Receipt=receipt}}}; Save("acknowledged-head",acknowledged);
+Save("archive-page",new SecuritySpoolArchivePage(0,acknowledged,null));

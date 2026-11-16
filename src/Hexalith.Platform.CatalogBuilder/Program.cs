@@ -112,7 +112,9 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
         return factoryAdapters;
     }).ToArray();
     if (installed.Length != declaredCommands.Count
-        || installed.Select(adapter => adapter.Declaration.Route.RouteId).Distinct(StringComparer.Ordinal).Count() != installed.Length)
+        || installed.Select(adapter => adapter.Declaration.Route.RouteId).Distinct(StringComparer.Ordinal).Count() != installed.Length
+        || !installed.Select(adapter => adapter.Declaration.Route.RouteId).Order(StringComparer.Ordinal)
+            .SequenceEqual(declaredCommands.Select(command => command.Route.RouteId).Order(StringComparer.Ordinal), StringComparer.Ordinal))
         throw new InvalidDataException("The selected owner adapter inventory differs from its declared commands.");
     foreach (var adapter in installed)
     {

@@ -9,6 +9,188 @@ namespace Hexalith.Platform.Custody.Tests;
 /// <summary>Actual component/CAS/recovery source and serialized persisted end-state under synthetic authorities/backends; no replica, backup or production proof.</summary>
 public sealed class ReplicatedSecurityObservationSpoolTests
 {
+    /// <summary>Bytes produced by the exact pre-reservation source retain their layout, digest and source facts through restart and drain.</summary>
+    [Fact]
+    public async Task HistoricalSnapshotBytesSurviveRestartDrainAndRecordCopies()
+    {
+        byte[] empty = HistoricalBytes("empty");
+        Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(empty)).ShouldBe("C63A578DF54A5C6F8918B9093660EE01CB6F0648341F8EFD4F4F158AF21F4137");
+        var legacy = JsonSerializer.Deserialize<SecuritySpoolSnapshot>(empty)!;
+        JsonSerializer.SerializeToUtf8Bytes(legacy with { Records = legacy.Records.ToArray() }).ShouldBe(empty);
+        JsonSerializer.Serialize(new SecuritySpoolSnapshot("installed-epoch-1", 0, [])).ShouldContain("ArchiveReservationCount");
+        JsonSerializer.Serialize(legacy with { ReservedArchiveDigest = new string('A', 64) } with { ReservedArchiveDigest = null })
+            .ShouldContain("ArchiveReservationCount");
+        byte[] bytes = HistoricalBytes("pending-head");
+        var f = new SecuritySpoolFixture(now: new DateTimeOffset(2026, 9, 1, 0, 1, 0, TimeSpan.Zero))
+        { Persisted = bytes, Anchor = 1, AnchorDigest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)) };
+        var original = f.Read()!.Records.Single();
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.LookupAsync(original.Intent, TestContext.Current.CancellationToken)).ShouldBe(original);
+        f.Persisted.ShouldBe(bytes);
+        (await restarted.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
+        f.Read()!.Records.Single().Receipt.ShouldNotBeNull();
+        Encoding.UTF8.GetString(f.Persisted!).ShouldNotContain("ArchiveReservationCount");
+        (await new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+    }
+
+    /// <summary>Generic pending-transition recovery validates historical target bytes against their original independent digest.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task HistoricalPendingTransitionRecoversWithoutReencodingItsAuthenticatedTarget(bool tamper)
+    {
+        var previous = JsonSerializer.Deserialize<SecuritySpoolSnapshot>(HistoricalBytes("empty"))!;
+        var next = JsonSerializer.Deserialize<SecuritySpoolSnapshot>(HistoricalBytes("pending-head"))!;
+        var f = new SecuritySpoolFixture { Persisted = HistoricalBytes("empty"), AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(previous) };
+        string scope = f.Target.ComponentName + "|system/security-observations/" + f.Target.InstallationEpoch;
+        var transition = RecoverableAnchoredState.Prepare(scope, 0, 1, previous, next);
+        transition.TargetBytes.ShouldBe(HistoricalBytes("pending-head"));
+        (await f.Authority.AdmitTransitionAsync(transition, TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await f.Authority.RecordTransitionAsync(transition, TestContext.Current.CancellationToken)).ShouldBeTrue();
+        if (tamper) { transition.TargetBytes[20] ^= 1; }
+        f.PendingBytes = JsonSerializer.SerializeToUtf8Bytes(transition);
+        byte[] before = f.Persisted!.ToArray(); byte[] stage = f.PendingBytes.ToArray();
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.LookupAsync(next.Records.Single().Intent, TestContext.Current.CancellationToken)).ShouldBe(tamper ? null : next.Records.Single());
+        if (tamper) { f.Persisted.ShouldBe(before); f.PendingBytes.ShouldBe(stage); }
+        else { f.Persisted.ShouldBe(HistoricalBytes("pending-head")); f.PendingBytes.ShouldBeNull(); }
+    }
+
+    /// <summary>Legacy archives remain linked through a new current reservation, including both interrupted rollover boundaries.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task HistoricalArchiveChainPromotesOnlyAtReservationAndRecoversRollover(bool pageSaved)
+    {
+        byte[] archive = HistoricalBytes("archive-page");
+        var page = JsonSerializer.Deserialize<SecuritySpoolArchivePage>(archive)!;
+        JsonSerializer.SerializeToUtf8Bytes(page).ShouldBe(archive);
+        var f = new SecuritySpoolFixture(); f.SetArchive(0, archive);
+        string digest = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(archive));
+        var records = Enumerable.Range(2, 10000).Select(sequence =>
+        {
+            var pending = page.Snapshot.Records.Single() with
+            {
+                Intent = SecuritySpoolFixture.Intent("historical-full-" + sequence), Sequence = sequence, Receipt = null,
+            };
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) };
+        }).ToArray();
+        var head = page.Snapshot with { Revision = 20003, Records = records, PageIndex = 1,
+            ArchivedObservedCount = 1, ArchivedAcknowledgedCount = 1, ArchiveHeadDigest = digest };
+        f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
+        f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        Encoding.UTF8.GetString(f.Persisted).ShouldNotContain("ArchiveReservationCount");
+        if (pageSaved) { f.FaultSnapshotSave = 2; } else { f.FailNextArchiveSave = true; }
+        var intent = SecuritySpoolFixture.Intent("post-historical-rollover");
+        (await f.Spool.ObserveAsync(intent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        f.Read()!.ReservedArchiveDigest.ShouldNotBeNull();
+        Encoding.UTF8.GetString(f.Persisted!).ShouldNotContain("ArchiveReservationCount");
+        f.Archives.Count.ShouldBe(pageSaved ? 2 : 1);
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.ObserveAsync(intent, TestContext.Current.CancellationToken)).ShouldNotBeNull();
+        f.Read()!.PageIndex.ShouldBe(2); f.Read()!.ArchiveReservationCount.ShouldBe(1);
+        f.ArchiveAt(0).ShouldBe(archive);
+        (await restarted.LookupAsync(page.Snapshot.Records.Single().Intent, TestContext.Current.CancellationToken)).ShouldBe(page.Snapshot.Records.Single());
+        (await restarted.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
+        (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        byte[] retained = f.Persisted!.ToArray();
+        f.Archives[f.ArchiveKey(0, archive)] = Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(archive).Replace("historical-event", "tampered-event", StringComparison.Ordinal));
+        (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        f.Persisted.ShouldBe(retained);
+    }
+
+    /// <summary>A retained near-bound legacy carrier reserves without extra wire members, survives interrupted rollover, and refuses tampering.</summary>
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    public async Task NearBoundLegacyReservationRemainsCompactAcrossRecovery(bool pageSaved, bool tamper)
+    {
+        const int retainedBytes = 33554381;
+        const int paddingLength = 2040;
+        var f = new SecuritySpoolFixture();
+        SecurityObservationRecord Seed(int sequence)
+        {
+            var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("near-bound-" + sequence), f.Clock.Now,
+                f.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), sequence, null);
+            return pending with { Receipt = SecuritySpoolFixture.Receipt(pending) with { EventId = new string('\0', paddingLength) } };
+        }
+        var legacy = JsonSerializer.Deserialize<SecuritySpoolSnapshot>(HistoricalBytes("empty"))!;
+        int perRecord = JsonSerializer.SerializeToUtf8Bytes(Seed(1)).Length + 1;
+        var records = Enumerable.Range(1, retainedBytes / perRecord + 1).Select(Seed).ToArray();
+        SecuritySpoolSnapshot Head() => legacy with { Revision = records.Length * 2L, Records = records };
+        int excess = JsonSerializer.SerializeToUtf8Bytes(Head()).Length - retainedBytes;
+        excess.ShouldBeGreaterThan(0);
+        for (int index = records.Length - 1; excess > 0; index--)
+        {
+            int reduction = Math.Min(excess, paddingLength * 6 - 1);
+            int removed = (reduction + 5) / 6;
+            string padding = new string('\0', paddingLength - removed) + new string('e', removed * 6 - reduction);
+            records[index] = records[index] with { Receipt = records[index].Receipt! with { EventId = padding } };
+            excess -= reduction;
+        }
+        var head = Head();
+        byte[] original = JsonSerializer.SerializeToUtf8Bytes(head);
+        original.Length.ShouldBe(retainedBytes);
+        f.Persisted = original; f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
+        if (pageSaved) { f.FaultSnapshotSave = 2; } else { f.FailNextArchiveSave = true; }
+        (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("after-near-bound"), TestContext.Current.CancellationToken)).ShouldBeNull();
+        var reserved = f.Read()!;
+        reserved.ReservedArchiveDigest.ShouldNotBeNull(); reserved.UsesReservationLayout.ShouldBeFalse();
+        f.Persisted!.Length.ShouldBeLessThanOrEqualTo(RecoverableAnchoredState.MaximumPendingBytes);
+        JsonSerializer.SerializeToUtf8Bytes(reserved with { Revision = head.Revision, ReservedArchiveDigest = null }).ShouldBe(original);
+        if (tamper)
+        {
+            string json = Encoding.UTF8.GetString(f.Persisted);
+            int position = json.IndexOf("\\u0000", StringComparison.Ordinal);
+            f.Persisted = Encoding.UTF8.GetBytes(json.Remove(position, 6).Insert(position, "\\u0001"));
+            byte[] changed = f.Persisted.ToArray();
+            (await new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+            f.Persisted.ShouldBe(changed); f.Archives.ShouldBeEmpty();
+            return;
+        }
+        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        var successor = f.Read()!;
+        successor.Records.ShouldBeEmpty(); successor.UsesReservationLayout.ShouldBeTrue();
+        successor.ArchiveReservationCount.ShouldBe(1); f.PendingBytes.ShouldBeNull();
+        var archived = JsonSerializer.Deserialize<SecuritySpoolArchivePage>(f.ArchiveAt(0))!;
+        JsonSerializer.SerializeToUtf8Bytes(archived.Snapshot).ShouldBe(original);
+    }
+
+    /// <summary>Current default encoding remains current; malformed reservation layouts cannot mutate primary or pending bytes.</summary>
+    [Theory]
+    [InlineData("partial-digest")]
+    [InlineData("partial-count")]
+    [InlineData("duplicate")]
+    [InlineData("wrong-type")]
+    [InlineData("negative")]
+    public async Task MalformedReservationLayoutsRefuseWithoutMutation(string defect)
+    {
+        string current = JsonSerializer.Serialize(new SecuritySpoolSnapshot("installed-epoch-1", 0, []));
+        JsonSerializer.Serialize(JsonSerializer.Deserialize<SecuritySpoolSnapshot>(current)).ShouldBe(current);
+        string malformed = defect switch
+        {
+            "partial-digest" => current.Replace(",\"ArchiveReservationCount\":0", "", StringComparison.Ordinal),
+            "partial-count" => current.Replace(",\"ReservedArchiveDigest\":null", "", StringComparison.Ordinal),
+            "duplicate" => current.Replace("\"ArchiveReservationCount\":0", "\"ArchiveReservationCount\":0,\"ArchiveReservationCount\":0", StringComparison.Ordinal),
+            "wrong-type" => current.Replace("\"ArchiveReservationCount\":0", "\"ArchiveReservationCount\":\"0\"", StringComparison.Ordinal),
+            _ => current.Replace("\"ArchiveReservationCount\":0", "\"ArchiveReservationCount\":-1", StringComparison.Ordinal),
+        };
+        var f = new SecuritySpoolFixture { Persisted = Encoding.UTF8.GetBytes(malformed) };
+        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        Encoding.UTF8.GetString(f.Persisted).ShouldBe(malformed); f.PendingBytes.ShouldBeNull();
+    }
+
+    private static byte[] HistoricalBytes(string name)
+    {
+        var assembly = typeof(ReplicatedSecurityObservationSpoolTests).Assembly;
+        string resource = assembly.GetManifestResourceNames().Single(value => value.EndsWith("." + name + ".json", StringComparison.Ordinal));
+        using Stream stream = assembly.GetManifestResourceStream(resource)!;
+        using var buffer = new MemoryStream(); stream.CopyTo(buffer); return buffer.ToArray();
+    }
+
     [Fact]
     public async Task LegacySerializedAcknowledgementsAndPendingLocatorsRemainExactAcrossRestart()
     {
