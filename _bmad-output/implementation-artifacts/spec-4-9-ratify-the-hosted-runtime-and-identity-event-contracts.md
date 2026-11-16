@@ -23,6 +23,8 @@ context:
 
 **Subsequent mapping decision (2026-11-16, user: “apply recommended”):** Check the completed v1 against a standalone provider, bundled constituent and management/workload pair. Adopt only if clean; prepare focused owner v2 if a concrete gap is found. The node-level containerd mapping fails because v1 requires inapplicable namespace/configuration facts. Withhold v1 adoption and prepare the focused v2 construction spec; actual inventory and final contract adoption still follow owner implementation and review.
 
+**Format adoption (2026-11-16, user: “adopt v2”):** Adopt `docs/contracts/hosted-profile-binding-v2.md` as the owner-based construction format for Platform 4.9, using EventStore v2 schema, canonical encoding, codec/validator and digest domains at reviewed source `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`. `docs/contracts/hosted-profile-v2-adoption.json` binds the exact reviewed proposal and source identities. This resolves final construction-format selection only; actual technical selections, qualified inventory, authenticated AD-26 ratification, production authority and parent-story acceptance remain outstanding. Earlier pending-adoption statements are historical.
+
 ## Boundaries & Constraints
 
 **Always:** Keep Platform's infrastructure digest (template plus provider/topology and deploy-tool pins) distinct from EventStore's complete resolved-profile digest. Publish accepted resolved bytes only at EventStore's `deploy/dapr/production-profile.yaml`. Retain actual component scopes, immutable identities, supported/qualified sets, renewal/currency owners, authoritative upstream sources and management/workload pairing. Credentials are references only. Reuse the owning catalog generator and codecs.
@@ -45,13 +47,13 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 ## Code Map
 
 - `docs/contracts/ad26-preparation/design-approval.json` — binds six approved drafts and the preserved index; excludes technical selection and ratification. Preserve every bound byte.
-- `docs/contracts/ad26-preparation/release-binding-contract.draft.md` — two digest domains and binding classes; final schema/encoding remain unset.
+- `docs/contracts/ad26-preparation/release-binding-contract.draft.md` — approved preparation draft with unset selections; the adopted structural format is recorded separately in `docs/contracts/hosted-profile-binding-v2.md`.
 - `_bmad-output/planning-artifacts/epics.md`, Story 4.9 — owns inventory, catalog, secrets, renewal and capture lag; 6.14/8.17 callers remain backlog.
 - `references/Hexalith.EventStore/_bmad-output/planning-artifacts/epics.md`, Story 3.19 — owns canonical profile/publication validation; explicitly separates construction from issuance. Consume its implementation; never fork its codec.
-- `docs/contracts/hosted-profile-binding-v1.md`, `docs/implementation/hosted-profile-v1-mapping-assessment.md` — source-backed mapping against EventStore `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41` finds a node-scope gap; v1 is not adopted. The conditional decision is resolved; final adoption remains pending focused v2 implementation/review.
+- `docs/contracts/hosted-profile-binding-v1.md`, `docs/implementation/hosted-profile-v1-mapping-assessment.md` — source-backed mapping against EventStore `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41` finds a node-scope gap; v1 is not adopted. The conditional decision is resolved; v2 construction is complete and its format is now adopted by the user; qualified inventory remains outstanding.
 - `src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs`, `src/Hexalith.Platform.CatalogBuilder/` — existing declaration-driven generator; local/source results grant no hosted acceptance.
 
-- `docs/contracts/hosted-profile-binding-v2.md`, `evidence/9-2/profile-v2-implementation-20261116.json` — current proposed construction mapping and exact reviewed owner commit/source hashes; format adoption and inventory acceptance remain outstanding.
+- `docs/contracts/hosted-profile-binding-v2.md`, `evidence/9-2/profile-v2-implementation-20261116.json` — adopted construction mapping and pre-adoption source hashes; `docs/contracts/hosted-profile-v2-adoption.json` records the format decision, while inventory acceptance remains outstanding.
 
 ## Tasks & Acceptance
 
@@ -59,7 +61,7 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 - [x] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-validation.md` — prepare the focused owner construction spec, preserving all publication/qualification gates.
 - [x] `docs/implementation/identity-event-capture-lag-measurement-proposal.md` — prepare timing, measurement cases and decision path without fabricating observations or a bound.
 - [x] `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-v2-infrastructure-scope.md` — complete the approved focused owner scope revision at `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`.
-- [ ] `docs/contracts/hosted-profile-binding-v2.md` — record adopted joint schema/encoding/validator identities and digest domains after focused v2 implementation and review. The assessed v1 proposal remains unadopted.
+- [x] `docs/contracts/hosted-profile-binding-v2.md`, `docs/contracts/hosted-profile-v2-adoption.json` — record the user-adopted owner v2 schema/encoding/validator identities and digest domains after implementation and review. V1 remains unadopted; this completes format selection only.
 - [ ] `deploy/dapr/hosted-profile-inventory.json` — proposed Platform inventory path; populate actual qualified providers/topology, management/workload pairing, support sources, deploy tools and owners once available.
 - [ ] `deploy/dapr/eventstore-routing-catalog.json` — generate the hosted catalog through Story 3.3 with actual environment bindings; preserve retention entries.
 - [ ] `deploy/dapr/openbao-secret-contract.yaml` — enumerate value-free environment/static/dynamic namespaces and sole writers from owning declarations.
@@ -84,11 +86,13 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 - 2026-11-16 resumed prerequisite execution: approved owner v2 construction is done at local EventStore commit `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`. Three review layers completed; topology cardinality and namespace defects were fixed, regression coverage expanded, and all 235 profile cases, 25 authority tests and 48 genuine bridge controls pass. V1 golden bytes, fixed refusals and approval-bound preparation bytes remain unchanged. Four external/unverified follow-ups are recorded in the deferred-work ledger.
 - Prepared `docs/contracts/hosted-profile-binding-v2.md` and `evidence/9-2/profile-v2-implementation-20261116.json` as the concrete next format-adoption package. It is proposed, not adopted. Actual qualified inventory, runtime/broker/append/restore proof, authenticated ratification, owner publication and admission/drill callers remain outstanding; no live currency checker was implemented. This parent remains draft/backlog, and owner parent 3.19 remains in-progress. The owner commit is local; no remote operation or superproject commit was performed.
 
+- 2026-11-16: User said “adopt v2”. Recorded Platform's v2 construction-format adoption against the exact reviewed proposal and 56 owner-source identities, completed only the format-selection prerequisite, and retained the earlier readiness observation and approved preparation bytes. No component/provider selection, accepted inventory, capture-lag bound, qualification, authenticated ratification, production publication or live currency caller was created; parent story status remains draft/backlog.
+
 ## Spec Change Log
 
 ## Review Triage Log
 
 ## Verification
 
-- Next, decide adoption of `docs/contracts/hosted-profile-binding-v2.md` against the completed owner v2 construction and exact committed source hashes. Full 4.9 acceptance still requires adopted contracts, measurements, qualified inventory and authority; this parent is not ready for development.
+- Next, establish actual qualified inventory, hosted catalog and secret-contract inputs, renewal ownership, measured capture-lag policy and authenticated owner publication against the adopted v2 format. Full 4.9 acceptance remains outstanding; this parent is not ready for full implementation.
 - Validate exact approved-package hashes and preserved intent, dependency paths, JSON parsing and `git diff --check` under `run-with-temp`. These checks establish preparation consistency only.

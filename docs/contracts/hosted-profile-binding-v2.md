@@ -1,11 +1,23 @@
-# Proposed hosted profile binding v2
+# Hosted profile binding v2
 
-Status: **proposal awaiting Platform adoption after owner implementation review**.
+Status: **adopted construction format for Platform Story 4.9 on 2026-11-16**.
 This records the focused EventStore v2 construction contract required by the
 [three-case mapping assessment](../implementation/hosted-profile-v1-mapping-assessment.md).
 It accepts no inventory, selects no target or pin, and supplies no qualification,
 ratification or publication authority. The approved
 [preparation package](ad26-preparation/README.md) remains unchanged.
+
+## Adoption decision
+
+The user's “adopt v2” selects this reviewed structural format, canonical encoding,
+owner codec/validator and distinct digest domains. The
+[adoption record](hosted-profile-v2-adoption.json) binds the exact reviewed
+proposal bytes and owner-source identities. Earlier references to pending format
+adoption are historical; the inventory and authority requirements still apply.
+
+This is Platform's format decision. Authenticated AD-26 ratification, actual
+technical selections, qualified inventory and production authority remain
+separate requirements. The approved preparation package retains its exact bytes.
 
 ## Owner implementation and source identity
 
@@ -15,16 +27,17 @@ Reuse the EventStore-owned [v2 grammar and digest contract](../../references/Hex
 and [validator](../../references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Validator.cs).
 Platform must not introduce its own canonicalizer or parallel profile schema.
 
-The reviewed owner implementation is local commit
+The adopted owner construction implementation is commit
 `57459e03bfe4cdbcbf0ecc1435c7aeb49d60812e`, based on
 `70bf20dceaafd37229236e11d279a5d6ea434759`; its preserved implementation baseline
 is `54f83e3b6a6eca3c8cf0caeb734cbcad30e18e41`. Exact committed file hashes and
 verification references are recorded in the
-[readiness observation](../../_bmad-output/implementation-artifacts/evidence/9-2/profile-v2-implementation-20261116.json).
+[pre-adoption readiness observation](../../_bmad-output/implementation-artifacts/evidence/9-2/profile-v2-implementation-20261116.json).
 This source identity is not a package pin or complete authenticated execution-input
 closure. A future source update requires a recorded compatibility check and
-explicit identity, without silently following a later version. The owner commit
-has not been pushed by this workflow.
+explicit identity, without silently following a later version. The source commit
+was published through owner merge `107e50e39cf2545cbc6546e60e02252251aca274`;
+that merge preserves all reviewed profile-source identities.
 
 ## Complete actual-instance mapping
 
