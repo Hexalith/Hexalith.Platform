@@ -15,28 +15,24 @@ import secrets
 import socket
 import ssl
 import subprocess
-import tempfile
 import time
+import traceback
 import urllib.error
 import urllib.parse
 import urllib.request
 
-
-def command(*args):
-    try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT, text=True).strip()
-    except subprocess.CalledProcessError:
-        raise RuntimeError("Component command failed; protected arguments and output withheld.") from None
+from component_fixture import ChildFailure, ComponentFixture, command, sanitize
 
 
-def run(sdk_assembly=None, apphost_assembly=None):
+def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_timeout=600):
     root = Path(__file__).resolve().parent
     jar = root / "target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar"
     if not jar.is_file():
         raise RuntimeError("Build the provider with mvn package first.")
     name = "hexalith-workload-component-" + secrets.token_hex(6)
-    with tempfile.TemporaryDirectory(prefix=name + "-") as owned:
-        directory = Path(owned)
+    with ComponentFixture(name) as fixture:
+        directory = fixture.directory
+        owned = str(directory)
         os.chmod(directory, 0o700)
         cert, key = directory / "tls.pem", directory / "tls.key"
         command("openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1", "-subj", "/CN=localhost",
@@ -44,6 +40,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
         os.chmod(key, 0o600)
         now = int(time.time())
         secret, admin_secret = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
+        fixture.secrets.extend([secret, admin_secret])
         grant = dict(grantId="component-source", revision=1, clientId="folders-component", workload="folders-component",
                      audience="eventstore", operations=["eventstore:stream-read"],
                      bindings={"eventstore:bound-tenant": ["tenant-a"], "eventstore:bound-domain": ["folders"]},
@@ -150,7 +147,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
             image_id = command("docker", "inspect", name, "--format", "{{.Image}}")
             _, clients = request("/admin/realms/component/clients?clientId=folders-component", bearer=bearer)
             client_path = "/admin/realms/component/clients/" + clients[0]["id"]
-            if sdk_assembly:
+            if sdk_assembly or complete_assembly:
                 # Obtain a naturally expired, still valid-signed token from this same own client.
                 original_grants = client["attributes"]["hexalith.workload-binding.grants"]
                 client["attributes"]["hexalith.workload-binding.grants"] = json.dumps([dict(grant, expiresAt=int(time.time()) + 2)])
@@ -168,12 +165,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
                 component_file = directory / "sdk-component.json"
                 component_file.write_text(json.dumps(dict(issuer=issuer, secret=secret, certificatePath=str(cert), expiredTokenFile=str(expired_file))))
                 os.chmod(component_file, 0o600)
-                environment = dict(os.environ, HEXALITH_WORKLOAD_COMPONENT_FILE=str(component_file))
-                completed = subprocess.run(["dotnet", str(Path(sdk_assembly).resolve()), "-explicit", "on", "-class",
-                    "Hexalith.Folders.Server.Tests.EnrolledWorkloadSourceBoundaryTests"], env=environment, capture_output=True, text=True)
-                print(completed.stdout, end="")
-                if completed.returncode != 0:
-                    raise RuntimeError("Explicit real-issuer SDK component tests failed; see test output.")
+                execution = fixture.run_tests(complete_assembly or sdk_assembly, complete=bool(complete_assembly), timeout=child_timeout)
             controls = []
             for scenario in ["credential", "tenant", "domain", "audience", "operation", "scan-without-grant", "missing", "extra", "duplicate", "oversized", "unbound"]:
                 bad = list(form)
@@ -198,6 +190,7 @@ def run(sdk_assembly=None, apphost_assembly=None):
                 consumer_clients = []
                 for resource in ("eventstore", "tenants", "folders", "folders-workers"):
                     own_secret = secrets.token_urlsafe(32)
+                    fixture.secrets.append(own_secret)
                     secret_file = directory / (resource + ".secret")
                     secret_file.write_text(own_secret)
                     os.chmod(secret_file, 0o600)
@@ -242,8 +235,8 @@ def run(sdk_assembly=None, apphost_assembly=None):
                 os.chmod(manifest_file, 0o600)
                 environment = dict(os.environ, HEXALITH_WORKLOAD_CONSUMER_COMPONENT_MANIFEST=str(manifest_file), SSL_CERT_FILE=str(cert))
                 completed = subprocess.run(["dotnet", str(Path(apphost_assembly).resolve()), "-explicit", "on", "-method",
-                    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation"], env=environment, capture_output=True, text=True)
-                print(completed.stdout, end="")
+                    "Hexalith.Folders.AppHost.Tests.WorkloadEnrollmentComponentTests.ActualIssuerVerifiesCompleteConsumerCohortBeforeActivation"], env=environment, capture_output=True, text=True, timeout=600)
+                print(sanitize(completed.stdout, fixture.secrets), end="")
                 if completed.returncode != 0:
                     raise RuntimeError("Explicit consumer component tests failed; see test output.")
             _, clients = request("/admin/realms/component/clients?clientId=folders-component", bearer=bearer)
@@ -280,13 +273,12 @@ def run(sdk_assembly=None, apphost_assembly=None):
             summary = dict(qualification="disposable-component-only", serverVersion=server_version, imageId=image_id, providerSha256=hashlib.sha256(jar.read_bytes()).hexdigest(),
                 actualProtectedEnrollment=False, approvedTlsTrust=False, componentTlsValidation=True, independentRsaVerification=True,
                 negativeControls=controls, liveGrantReload=True, separateCallbackAndQueryGrants=True,
-                sdkValidSignedScopeAndNaturalExpiryControls=bool(sdk_assembly), consumerLiveControls=bool(apphost_assembly))
+                sdkValidSignedScopeAndNaturalExpiryControls=bool(sdk_assembly or complete_assembly), consumerLiveControls=bool(apphost_assembly))
+            if sdk_assembly or complete_assembly:
+                summary["execution"] = execution
         finally:
-            remaining = command("docker", "ps", "--all", "--filter", "name=^/" + name + "$", "--format", "{{.Names}}")
-            if remaining:
-                command("docker", "rm", "--force", "--volumes", name)
-            if command("docker", "ps", "--all", "--filter", "name=^/" + name + "$", "--format", "{{.Names}}"):
-                raise RuntimeError("Task-owned component container cleanup refused.")
+            # The scope observes cleanup even when startup, preparation or the child fails.
+            pass
     if Path(owned).exists():
         raise RuntimeError("Task-owned component directory cleanup refused.")
     summary.update(observedRemainingContainers=0, observedRemainingTemporaryPaths=0, privateDirectoryMode="0700", privateFileMode="0600")
@@ -295,11 +287,17 @@ def run(sdk_assembly=None, apphost_assembly=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--complete-assembly", help="Run the complete prebuilt Server assembly once in the real SDK fixture.")
+    parser.add_argument("--child-timeout", type=int, default=600, help="Bound SDK test child execution in seconds (1..1800).")
     parser.add_argument("--sdk-assembly", help="Run explicit source-boundary tests from this Debug assembly against the owned real issuer.")
     parser.add_argument("--apphost-assembly", help="Run explicit consumer controls against the owned component issuer and TLS fixture.")
     parser.add_argument("--run-owned", action="store_true", help="Select disposable run-owned startup import and owner/consumer controls; never uses the component administration path.")
     parser.add_argument("--platform-assembly", help="Run the focused run-owned bridge/consumer controls from this Debug Platform assembly.")
     arguments = parser.parse_args()
+    if not 1 <= arguments.child_timeout <= 1800:
+        parser.error("--child-timeout must be between 1 and 1800 seconds.")
+    if arguments.complete_assembly and (arguments.sdk_assembly or arguments.apphost_assembly or arguments.run_owned or arguments.platform_assembly):
+        parser.error("--complete-assembly selects only the complete Server fixture.")
     if arguments.run_owned:
         import run_owned_component
         if arguments.sdk_assembly or arguments.apphost_assembly and arguments.platform_assembly:
@@ -308,4 +306,11 @@ if __name__ == "__main__":
     else:
         if arguments.platform_assembly:
             parser.error("--platform-assembly requires --run-owned.")
-        run(arguments.sdk_assembly, arguments.apphost_assembly)
+        try:
+            run(arguments.sdk_assembly, arguments.apphost_assembly, arguments.complete_assembly, arguments.child_timeout)
+        except ChildFailure as error:
+            print(str(error))
+            raise SystemExit(error.code) from None
+        except (RuntimeError, AssertionError) as error:
+            print("Component qualification failed at line " + str(traceback.extract_tb(error.__traceback__)[-1].lineno) + ": " + sanitize(str(error)))
+            raise SystemExit(1) from None

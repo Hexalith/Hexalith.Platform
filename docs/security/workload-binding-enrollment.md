@@ -343,3 +343,24 @@ delete another runtime's trust, credentials, grants or persistent data.
 
 The SPI behavior is bound to [Keycloak 26.6.4 client credentials](https://github.com/keycloak/keycloak/blob/26.6.4/services/src/main/java/org/keycloak/protocol/oidc/grants/ClientCredentialsGrantType.java)
 and its [OIDC mapper contract](https://github.com/keycloak/keycloak/blob/26.6.4/services/src/main/java/org/keycloak/protocol/oidc/mappers/AbstractOIDCProtocolMapper.java).
+
+For the Folders complete Server hook, `--complete-assembly /absolute/path/to/Hexalith.Folders.Server.Tests.dll`
+uses the same real-issuer provisioning and naturally expired token, then runs the
+entire prebuilt assembly once without a class or method selector. Build the
+provider and .NET outputs before invoking it; the hook performs no builds.
+The child has a bounded deadline (`--child-timeout`, default 600 seconds), native
+failure propagation, strict nonempty summary counters and XML proof of all eleven
+passing SDK boundary cases. Cleanup runs for startup, preparation and child
+failures, emits observed container/private-path results, and fails if cleanup
+cannot be verified. Output is bounded and sanitized; private files use mode 0600
+inside a mode 0700 directory. Focused `--sdk-assembly` and consumer modes remain
+available. Complete Server mode cannot be combined with those modes.
+
+Server identity authority comes from evaluated build metadata. Debug/source
+qualification retains exact source SHA-256 and MVID checks. Release/package
+qualification resolves package identity and runtime entries from restore and
+`.deps.json` metadata, validates the actual archive SHA-512 against restore
+content identity, and binds each checked DLL's SHA-256 and MVID to its archive
+payload. Missing or ambiguous metadata and altered bytes refuse without fallback.
+This component scope supplies no protected enrollment approval and leaves
+AppHost cohort lifecycle, held FR58 work and migration acceptance separate.
