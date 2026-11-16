@@ -65,7 +65,7 @@ The user authorized preparing the missing records rather than locating existing 
 **Execution (prerequisites-first sequence):**
 - [x] `docs/contracts/shared-infrastructure-currency-policy-v1.md` — complete Story 9.1 from its approved spec, with review and verification.
 - [x] `docs/contracts/ad26-preparation/README.md` and its six companion files — prepare the user-requested review package, content-bound per-role drafts and source identities without issuing authority.
-- [ ] `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md` — investigate and plan the separately owned inventory prerequisite through the build workflow before implementation.
+- [x] `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md` — investigate and draft the inventory prerequisite. The user selected owner schema/validator preparation and a measured capture-lag proposal; full inventory acceptance remains outstanding.
 - [ ] This spec — replan the live checker against the ratified inventory and actual admission/drill contracts; do not implement the unselected foundation proposal.
 
 **Acceptance Criteria (original Story 9.2, still outstanding):**
@@ -85,6 +85,12 @@ The user authorized preparing the missing records rather than locating existing 
 - Final source-consistency corrections: kept activated catalog generations/root digest environment-current and attempt-bound, retained the explicit Dapr 1.18.3 floor separately from the unset runtime selection, and carried the proposed unratified `oq8-postgresql-v1` target. Refreshed dependent record/index hashes; final narrow verification passes all counts above, and independent source checks confirm the corrections. No source-owner repository, runtime pin or sprint acceptance changed.
 
 - 2026-11-16: Recorded the user’s “I approve” as the presented draft-design approval. Preserved `approved-review-index.json` and all six reviewed document bytes; added `design-approval.json` and refreshed only the current index. Both per-role records remain unissued and all technical, authentication, timing and assurance unknowns remain explicit.
+
+- 2026-11-16 resumed prerequisite planning: created the Story 4.9 draft readiness plan named in Execution. EventStore 3.19 explicitly permits schema/validator construction before its issue-step prerequisites; qualification and authenticated issuance remain separate gates. Joint schema/encoding implementation and the finite capture-lag decision remain unresolved. No canonical profile, accepted inventory, live checker or admission/drill caller was created. Preparation consistency is recorded in `evidence/9-2/prerequisite-readiness-20261116.json`; both stories remain backlog and the approved draft bytes and frozen intent are preserved.
+
+- 2026-11-16: User said “apply recommended” after the option analysis. Recorded the selected owner schema/validator construction path and capture-lag measurement proposal in the 4.9 frozen decisions; removed its resolved Open Questions. Prepared the focused EventStore 3.19 construction spec and measurement proposal. Retained this full history despite its size, as selected; no original intent or approval-bound package bytes changed. These preparation deliverables do not complete 4.9, 3.19 or 9.2.
+
+- 2026-11-16: User said “approve and stop” at the concrete profile-validation specification checkpoint. Re-read the owner spec and marked it `ready-for-dev`; its reviewed body is unchanged. Approval covers this construction spec only, not AD-26 ratification, qualified inventory, publication authority or completion of 3.19/4.9/9.2. Resume implementation from `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-production-profile-validation.md`; no implementation was started.
 
 ## Spec Change Log
 
