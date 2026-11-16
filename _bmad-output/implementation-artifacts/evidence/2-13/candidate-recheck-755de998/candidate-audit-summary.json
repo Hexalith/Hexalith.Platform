@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+  "sourceFilesCompared": 1599,
+  "sourceDeltaFromOriginalCompositionRun": {
+    "eng/test_current_tuple_source.py": {
+      "recordedSha256": "a26e29e1ff515cd9782f3ff1a0a1f6bbd1bfcfeba9a0bff428fa08e33b9c7458",
+      "currentSha256": "ebca3f227fbbbb17366a1eedee01bd056bd859b6fb561d80184b006c0880173a"
+    }
+  },
+  "originalCompositionCandidate": "79eabc424b40ccfc55679dc71325bffe89b86dee",
+  "originalCompositionGroups": 36,
+  "originalCompositionExecutions": {
+    "current42": 463,
+    "base42": 93,
+    "extensions": 9
+  },
+  "originalCompositionSkipped": 0,
+  "archivedMemberHashesVerified": 329,
+  "candidatePlatformCommitsAvailable": 1,
+  "auditCommand": [
+    "/usr/bin/python3",
+    "-B",
+    "eng/run_tuple_ci.py",
+    "--audit-only",
+    "--suite",
+    "current42",
+    "--eventstore-sdk",
+    "4.2.0",
+    "--artifacts",
+    "/tmp/hexalith-job.D3ODwOK3/artifacts",
+    "--evidence",
+    "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/2-13/candidate-recheck-755de998/tuple-audit"
+  ],
+  "auditStatus": "graph-verified",
+  "pinsAndGitlinksUnchanged": true,
+  "rootRefInventoryUnchanged": true,
+  "originalTagsPreserved": 152,
+  "archivedQualificationTags": 105,
+  "brokerTags": 2,
+  "localQualificationBranches": [],
+  "remoteRepositoryOperations": [],
+  "pushallInvoked": false,
+  "hostedMainAcceptance": false,
+  "remainingAcceptance": "AC3: successful hosted main resolve-sources, tuple and tuple-verdict.",
+  "disposableWorkspaceRemoved": true,
+  "tupleAuditResult": "tuple-audit/tuple-ci-result.json.gz"
+}

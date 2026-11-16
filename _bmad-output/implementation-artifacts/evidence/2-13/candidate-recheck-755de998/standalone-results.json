@@ -1,0 +1,212 @@
+[
+  {
+    "label": "test_builds_tuple",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_builds_tuple.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:37.154985+00:00",
+    "exitCode": 0,
+    "executed": 21,
+    "zeroSkipsVerified": true,
+    "logSha256": "6811fd1d052117a15577d3d10922f666ed55bf0374e8da83223fa38a2465804c"
+  },
+  {
+    "label": "test_builds_publication",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_builds_publication.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:39.024077+00:00",
+    "exitCode": 0,
+    "executed": 16,
+    "zeroSkipsVerified": true,
+    "logSha256": "2d553300022677f4de1b9068be409f98ec26e14e4897bb9cd0ac1e9277e8054e"
+  },
+  {
+    "label": "test_current_tuple_source",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_current_tuple_source.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:39.289026+00:00",
+    "exitCode": 0,
+    "executed": 16,
+    "zeroSkipsVerified": true,
+    "logSha256": "1585f9c61b1d1b40bab8bb46f9796063cae98d9642b0d1a13da63d51fcbdaa32"
+  },
+  {
+    "label": "test_tuple_collectors",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_tuple_collectors.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:41.959406+00:00",
+    "exitCode": 0,
+    "executed": 4,
+    "zeroSkipsVerified": true,
+    "logSha256": "d094b1bd2c8318c96097f80c50da282add5b2972970a77046de8db6c8935f6ca"
+  },
+  {
+    "label": "test_tuple_runtime_context",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_tuple_runtime_context.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:42.074057+00:00",
+    "exitCode": 0,
+    "executed": 2,
+    "zeroSkipsVerified": true,
+    "logSha256": "54b1cd6aece0c006b76f00ae2871623318380562cde0d2c42165e11f333d5f34"
+  },
+  {
+    "label": "test_tuple_sdk_suites",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_tuple_sdk_suites.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:53:43.041047+00:00",
+    "exitCode": 0,
+    "executed": 40,
+    "zeroSkipsVerified": true,
+    "logSha256": "db252abfd2584e161ca394928588d9710d05182de2d47f54a1eb83be8c0dd624"
+  },
+  {
+    "label": "test_tuple_output_identity",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_tuple_output_identity.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:54:44.232883+00:00",
+    "exitCode": 0,
+    "executed": 6,
+    "zeroSkipsVerified": true,
+    "logSha256": "d1a3bdcaa925bbf92cc120237c5ab1078f911832e5f3bbdd16fd82aab85d59fa"
+  },
+  {
+    "label": "test_current_catalog_view",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_current_catalog_view.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:54:44.347480+00:00",
+    "exitCode": 0,
+    "executed": 27,
+    "zeroSkipsVerified": true,
+    "logSha256": "a9bce458c06cf77a8c858493595201a78b46730e8fc94d71a6fc417b0631ce57"
+  },
+  {
+    "label": "test_host_builds_resolution",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_host_builds_resolution.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:55:45.579294+00:00",
+    "exitCode": 0,
+    "executed": 15,
+    "zeroSkipsVerified": true,
+    "logSha256": "0bb0bacc01cf5dc9231fccd6410e68a0742a9fade043972bdd7dc87529cd4e99"
+  },
+  {
+    "label": "test_historical_security_packages",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_historical_security_packages.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:55:55.771311+00:00",
+    "exitCode": 0,
+    "executed": 4,
+    "zeroSkipsVerified": true,
+    "logSha256": "d6e8b892ac836e0011dd686250da04faf554ab8a7157a692e281da0ee4507cbd"
+  },
+  {
+    "label": "test_verify_platform_pins",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test_verify_platform_pins.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:56:00.650563+00:00",
+    "exitCode": 0,
+    "executed": 19,
+    "zeroSkipsVerified": true,
+    "logSha256": "3b7683983e19eaf4f47cc76d880fb068fb927b2a569a051b2e9ba0d6fcbaa5fc"
+  },
+  {
+    "label": "source-release",
+    "command": [
+      "npm",
+      "run",
+      "test:source-release"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:56:14.100235+00:00",
+    "exitCode": 0,
+    "executed": 83,
+    "zeroSkipsVerified": true,
+    "logSha256": "0e09c8fd597728f48a005fe41ea8a52f5aed3fcb6a929c87abd93fc676c64fdd"
+  },
+  {
+    "label": "extension-node",
+    "command": [
+      "node",
+      "--test",
+      "eng/test-extension-release/gate.test.mjs"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:56:36.869382+00:00",
+    "exitCode": 0,
+    "executed": 14,
+    "zeroSkipsVerified": true,
+    "logSha256": "b8d412f750ea762aa4214f587f8fb676011e3eea59fabfe861fcdab4ac508ac6"
+  },
+  {
+    "label": "extension-python",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "eng/test-extension-release/run-controls.py"
+    ],
+    "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+    "cwd": "/home/administrator/projects/hexalith/platform",
+    "startedUtc": "2026-11-15T22:56:36.984157+00:00",
+    "exitCode": 0,
+    "executed": 30,
+    "zeroSkipsVerified": true,
+    "logSha256": "e3aa4ac6031acb9b1418ceeefa1132a5c9e58b116cb6ee54b073a9341ebe3ded"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "sourceRevision": "755de998e91a11545826748615785f0e43833152",
+  "runId": 43771691347,
+  "runAttempt": 1,
+  "event": "push",
+  "branch": "main",
+  "runUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/43771691347",
+  "jobs": {
+    "resolve-sources": "success",
+    "tuple": "success",
+    "tuple-verdict": "success"
+  },
+  "artifactId": 14185444975,
+  "profiles": {
+    "current42": {
+      "groups": 32,
+      "passed": 463,
+      "skipped": 0,
+      "status": "passed",
+      "inventoryPath": "eng/tuple-ci-sdk42-current-suites.json",
+      "inventorySha256": "556c42cca2a7b6d16e9eb0b132222c7fa346074dc18e34a8899b65ccbc50946d"
+    },
+    "extensions": {
+      "groups": 1,
+      "passed": 9,
+      "skipped": 0,
+      "status": "passed",
+      "inventoryPath": "eng/tuple-ci-extension-suites.json",
+      "inventorySha256": "12b0d89eb790105cbc17416b017b027062b9b1307f13b2ef8fb26a96760a2c73"
+    },
+    "base42": {
+      "groups": 3,
+      "passed": 93,
+      "skipped": 0,
+      "status": "passed",
+      "inventoryPath": "eng/tuple-ci-sdk42-base-suites.json",
+      "inventorySha256": "a2d8f023462e905d05e37faa431ebe1c553d11a77e37852aaf65df4ef25b7469"
+    }
+  },
+  "compositionExecutions": 565,
+  "compositionGroups": 36,
+  "skipped": 0,
+  "hostedMainAcceptance": true,
+  "tupleJobLogSha256": "e5c7183ed5b557288ad7116a071cf0739c9ed3a8735b84ef249c1cb88e8f4b50",
+  "retainedArtifactMembers": 40,
+  "observationReceipt": "observations-receipt.json"
+}

@@ -2,7 +2,7 @@
 title: '2.13 Retire the historical tuple-replay lanes from Platform CI'
 type: 'refactor'
 created: '2026-11-15'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci'
@@ -118,6 +118,12 @@ Rejected:
 
 ## Implementation Notes
 
+Completion (2026-11-16): all implementation tasks, acceptance criteria and matrix rows are verified. Hosted main AC3 and the resumed three-layer review are complete, including all five accepted evidence/documentation corrections and the independent parent verifier checks. Spec status is `done`; sprint tracking is `review` per the build workflow. Earlier pending statements are historical records. No new work was deferred and no remote writes were performed.
+
+Hosted main acceptance verified (2026-11-16): after the user's read-only remote authorization, run `43771691347`, attempt 1, proved a successful main push of the exact local candidate `755de998e91a11545826748615785f0e43833152`. All three required jobs (`resolve-sources`, `tuple`, `tuple-verdict`) succeeded. [Verified hosted evidence](evidence/2-13/hosted-main-43771691347/summary.json) reconciles the GitHub-digested artifact, candidate/bootstrap identity, all 36 selected XML groups and all 565 Composition executions (463/93/9), with zero skips. AC3 is satisfied; earlier pending-acceptance statements retain their original observation times. The workflow now proceeds through step-04 review. No remote writes were performed.
+
+Resumed candidate recheck (2026-11-16): at `755de998e91a11545826748615785f0e43833152`, no implementation changes were needed. [Fresh evidence](evidence/2-13/candidate-recheck-755de998/README.md) records 170 standalone Python, 83 source-release Node, 14 extension Node and 30 extension Python checks, zero skips, plus a successful signed-archive/project-graph audit from a depth-one Platform checkout containing one commit. Production and Composition source hashes still match the original 565-execution candidate; those observations retain their original subject. The parent independently checked all fourteen fresh command logs and archived their raw output with member hashes. Pins, gitlinks and refs remain unchanged. AC3 is still unverified; this run stops at the step-03 acceptance gate pending authorization for read-only hosted CI inspection under the workflow's explicit no-remote rule. Spec and sprint status remain `in-progress`.
+
 Review patch follow-up (2026-11-15): all sixteen Review/Patch findings above are resolved. [Fresh verification](evidence/2-13/review-patches/README.md) records all 565 Composition executions (463/93/9), 170 standalone Python, 83 source-release Node, 14 extension Node, 30 extension Python, the one collection-graph case and all 28 source-SDK controls, with zero skips. The transport passes with no machine Dapr CLI on PATH, and the selected reader executes the four pre-restore authority refusals plus its transitive-pinning argument control. Final source hashes and the 16-case real-Git supplement bind the stronger ref-generation assertion; production/Composition bytes match the full-run candidate. An initial source-SDK harness invocation lacked its artifact-path argument; its four asset-location diagnostics and corrected passing run are preserved separately. The isolated merge preserves pins/gitlinks and every original tag, with no local qualification branches or repository remote operations. AC3 remains unmet pending authorized landing and actual hosted main resolution/current/verdict success; story and sprint status remain non-done. Earlier implementation observations below retain their original subjects.
 
 The [independent parent audit](evidence/2-13/review-patches/parent-audit.json) checked all 329 archived member hashes, all 36 XML groups against their selected inventories, 1,599 recorded source hashes, unchanged outputs/pins/refs and frozen intent. The resumed build remains at the step-03 acceptance gate because AC3 is unmet; the workflow's no-remote rule prevents obtaining hosted main acceptance in this run.
@@ -160,6 +166,27 @@ All three independent layers completed before triage. The verification-gap layer
 After individual verdicts, Blind-9 and Edge-1 share one stale-guide root cause. The remaining accepted entries are independent trivial patches with no public surface or new runtime authority. Low caller-isolation requests are rejected under the review's low-finding filter; no intent gap, bad spec or deferred implementation issue remains.
 
 All accepted patches are applied and their focused checks passed (19 C# cases and the expanded 14-test real-Git module, zero skips). Parent verification additionally passed the complete 174-test standalone Python set, 83 source-release checks and 44 extension-release checks. Source/output hashes and all five focused XML groups were independently audited. Post-test changes are evidence, notes and the scoped verbatim-patch whitespace policy only.
+
+### Resumed review, 2026-11-16
+
+All three layers completed before triage: Edge Case Hunter returned no findings and Verification Gap Reviewer found no gaps. Blind Hunter's ten findings were assessed individually; the arithmetic line is not a finding.
+
+| ID | Verdict | Evidence and route |
+| --- | --- | --- |
+| Resume-Blind-1 | low | Carried: same enrichment claim previously rejected for the existing bound-by-design helper. The helper limits allowed cache additions; separate handoff assertions require cold/warm proof divergence. Keep the existing rejection; no repeated patch. |
+| Resume-Blind-2 | low | Carried: same component-versus-production caller claim as Blind-3. Current unqualified image admission deliberately refuses before that wiring; the production source-path listener test remains selected. Keep the existing rejection of added admission-layer instrumentation. |
+| Resume-Blind-3 | low | The new hosted verifier reads continuing profiles from the worktree, so a later historical recheck can consult different inventories. Patch: read the profile blobs at the recorded full revision and retain their hashes. |
+| Resume-Blind-4 | low | The fetched records do belong to the selected run, but the verifier does not independently enforce job run IDs, artifact run/attempt name and bootstrap attempt identity. Patch these direct provenance checks. |
+| Resume-Blind-5 | low | The authenticated artifact and runner already bind selectors, but the new verifier independently checks only XML aggregates. Patch the direct XML reconciliation to require passing test elements matching the declared class/method selectors, including representation of every selector. |
+| Resume-Blind-6 | low | The documented and executed invocation is ordinary `python3 -B`; optimized execution is not used by any caller. Reject adding a new invocation-mode guard for this one-off evidence script under the low-finding filter. It adds a branch for a state absent from normal use. |
+| Resume-Blind-7 | low | The verifier removes its raw tuple log after compression, then a repeat requires the removed input after beginning output replacement. Patch: read either retained log form and validate all inputs before replacing outputs. |
+| Resume-Blind-8 | low | Carried: the previously recorded PublishedSeed failure-path proof leak is unchanged, and all selected fixture runs passed. Keep the existing rejection of additional failure-path fixture handling; no repeated patch. |
+| Resume-Blind-9 | low | The archived one-off `execute-final-inventories.py` has parent-only timeout semantics, but no current CI/preparation caller uses it and no timed-out descendant is present in the recorded observations. Reject new process-group lifecycle branches in a historical harness under the low-finding filter; all jobs in this resumed run finished inside their wrapper before cleanup. |
+| Resume-Blind-10 | low | The evidence index still presents the old pending-hosted state as current and lacks the new successful run link. Patch its current status and label the earlier pending statement historically. |
+
+The survivors are independent direct evidence/documentation corrections (3, 4, 5, 7, 10), with no intent gap, bad spec or production change. They route to patch, without changing prior observation subjects or remote state.
+
+All five accepted corrections are applied. The verifier passed authentic retained observations and twenty focused controls without downloads; an [independent parent audit](evidence/2-13/hosted-main-43771691347/parent-audit.json) additionally passed the authentic drifted-worktree recheck and four provenance/XML/log refusals, preserving evidence outputs on every refusal. Production code and selected inventories remain identical to hosted candidate `755de998e91a11545826748615785f0e43833152`; all 297 fresh control observations and the complete hosted 565-execution result remain applicable. No broader runtime rerun was needed for evidence/documentation-only corrections.
 
 ## Verification
 

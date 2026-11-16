@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-15
+last_updated: 2026-11-16
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -101,7 +101,8 @@ development_status:
   2-12-provision-a-run-owned-workload-binding-authority-for-dispos: done
   # 2026-11-15: added by sprint-change-proposal-2026-11-15 (retire historical tuple-replay lanes; /pushall merged
   #   qualification siblings into main and reverted its pins). Main repair deferred by user decision; 2.13 owns it.
-  2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci: in-progress
+  2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci: review
+  # 2026-11-16: hosted main run 43771691347 passed all three jobs and 565 Composition executions, zero skips; build review complete.
   # 2026-11-15: added by sprint-change-proposal-2026-11-15 (version-only Builds/owner pins; lock-file integrity). Depends on 2.13.
   2-14-pin-builds-and-owner-modules-by-released-version: backlog
   epic-2-retrospective: optional

@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "control": "authentic-retained-observations-with-worktree-drift",
+      "passed": true,
+      "exitCode": 0,
+      "outputsUnchangedOnRefusal": null
+    },
+    {
+      "control": "wrong-job-run-refuses",
+      "passed": true,
+      "exitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "wrong-bootstrap-attempt-refuses",
+      "passed": true,
+      "exitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "wrong-xml-selector-refuses",
+      "passed": true,
+      "exitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "missing-log-refuses-without-replacing-evidence",
+      "passed": true,
+      "exitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    }
+  ],
+  "verifierSha256": "9b4c1c15bd5bb4bfe9fe16bbeea88beae30a7064464e8ff58e55c31786282169",
+  "childFocusedControls": 20,
+  "networkDownloads": 0,
+  "candidateCodeAndInventoriesUnchanged": true
+}

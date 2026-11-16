@@ -1,10 +1,19 @@
-# Story 2.13 local verification
+# Story 2.13 verification
+
+[Hosted main acceptance](hosted-main-43771691347/README.md) records successful
+`resolve-sources`, `tuple` and `tuple-verdict` jobs for run 43771691347, attempt 1,
+at `755de998e91a11545826748615785f0e43833152`. Its retained observations reconcile
+565 Composition executions across all 36 selected groups, with zero skips. This
+satisfies AC3; it grants no separate image, runtime or release admission.
 
 The latest [post-review supplement](post-review/README.md) records 19 affected C# cases and 14 current-source tests passing at `9b27493ed62183dd37c31894f2ac712da33bfed4`. The [independent audit](parent-post-review-audit.json) checks its XML, source/output identities and raw metadata. The [fresh parent controls](parent-post-review/summary.json) pass 174 standalone Python, 83 source-release Node and 44 extension-release checks, zero skips. Earlier full-run observations below retain their actual subjects; the complete 565-case inventory was not rerun on the post-review binary.
 
 An [updated isolated merge](upstream-merge/summary.json) against observed upstream `5b44f2d058f9221d8b54782c377e09fec5786b65` keeps the retired descriptors deleted, preserves incoming release tooling/lockfile/assertions and passes all 83 source-release checks after fresh dependency installation. All 85 production/review source hashes, current pins and 17 gitlinks match. The original 152 tags remain unchanged; background fetches added public `v2.1.6`, which is preserved. Completion subsequently rebased the feature branch onto that main with the verified resolutions; [final code verification](final-code-verification.json) proves code and documentation match the tested merge. [Merged code patch](upstream-merge/patch-receipt.json) and diagnostic archives retain their exact source/observation identities.
 
-Local implementation checks pass. Hosted main resolution, current execution and verdict remain outstanding until an authorized landing; these observations grant no candidate, image or native acceptance.
+Historical pre-landing observation: local implementation checks passed while
+hosted main resolution, current execution and verdict were still outstanding.
+The local observations below retain their original subjects and grant no
+candidate, image or native acceptance.
 
 Start with [verification-summary.json](verification-summary.json), [coverage-map.md](coverage-map.md) and [selector-count-mapping.tsv](selector-count-mapping.tsv). The continuing inventories reconcile **463 current42 + 93 base42 + 9 extension executions**, with zero skips. Standalone Python passed 173 executions, source-release Node 83, extension-release Node 14/Python 30, collection graph 1 and source-SDK propagation 28, all with zero skips. The solution package build produced 31 project outputs with zero warnings/errors.
 

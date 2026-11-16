@@ -1,0 +1,149 @@
+{
+  "passed": true,
+  "command": "run-with-temp python3 -B (focused retained-observation mutation harness)",
+  "verifierSha256": "9b4c1c15bd5bb4bfe9fe16bbeea88beae30a7064464e8ff58e55c31786282169",
+  "controls": 20,
+  "networkDownloads": 0,
+  "results": [
+    {
+      "control": "authentic-retained-compressed-log",
+      "passed": true,
+      "expectedAcceptance": true,
+      "observedExitCode": 0,
+      "outputsUnchangedOnRefusal": null
+    },
+    {
+      "control": "recorded-revision-over-worktree-drift",
+      "passed": true,
+      "expectedAcceptance": true,
+      "observedExitCode": 0,
+      "outputsUnchangedOnRefusal": null
+    },
+    {
+      "control": "authentic-retained-raw-log",
+      "passed": true,
+      "expectedAcceptance": true,
+      "observedExitCode": 0,
+      "outputsUnchangedOnRefusal": null
+    },
+    {
+      "control": "job-run-id-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "artifact-run-id-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "artifact-attempt-name-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "bootstrap-attempt-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "missing-passing-test-element",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "nonpassing-test-element",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "unselected-class",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "unselected-method",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "unrepresented-class-selector",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "unrepresented-method-selector",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "missing-log-preserves-evidence",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "invalid-gzip-preserves-evidence",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "changed-log-preserves-evidence",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "retained-artifact-id-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "original-zip-digest-mismatch",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "missing-run-url-preserves-evidence",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    },
+    {
+      "control": "missing-artifact-id-preserves-evidence",
+      "passed": true,
+      "expectedAcceptance": false,
+      "observedExitCode": 1,
+      "outputsUnchangedOnRefusal": true
+    }
+  ]
+}
