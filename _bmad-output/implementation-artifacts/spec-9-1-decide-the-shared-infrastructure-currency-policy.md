@@ -74,6 +74,8 @@ Confirmed by the user on 2026-11-15:
 - Final independent review: three direct policy corrections applied, four generated agent-context findings deferred as required by the review workflow, one spec-bookkeeping finding rejected. Edge-case review returned no findings; verification-gap review found no gaps.
 - Final verification rechecked all seven policy links/anchors, README discovery, staged/worktree whitespace and unchanged approved intent. Policy content SHA-256: `eebd46aa30c58be1879aab899bec5874bfe8cf0ff7c42bfced794c28ca7d454a`.
 
+- Retained the reviewed unified diff as `evidence/9-1/implementation-review-20261116.diff.gz`; gzip round-trip preserves exact patch bytes while avoiding whitespace warnings from unified-diff context lines. Final aggregate whitespace check passes.
+
 ## Spec Change Log
 
 ## Review Triage Log
