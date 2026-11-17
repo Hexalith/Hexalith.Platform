@@ -354,7 +354,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
 
     def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None,
                             observed_runtime_envs=None, profile='ci', observed_model_envs=None, runtime_sdk_root=None,
-                            command_effect=None):
+                            command_effect=None, monotonic_clock=None):
         """Drive the real gate sequence through toolchain qualification and optionally final acceptance."""
         works = self.directory()
         for _, _, _, consumer in ROWS.values():
@@ -380,6 +380,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
         producers = {package: {'version': VERSION} for _, package, _, _ in ROWS.values()} | {'Hexalith.EventStore.Client': {'version': VERSION}}
 
         def command(arguments, **kwargs):
+            if monotonic_clock is not None:
+                monotonic_clock[0] += 2.5
             name = Path(kwargs['stdout'].name).stem
             if observed_model_envs is not None and name in ('platform-tests-debug', 'platform-tests-release'):
                 observed_model_envs.append((name, kwargs['env']))
@@ -444,6 +446,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('works_toolchain.subprocess.check_output', side_effect=['1.18.7', 'CLI version: 1.18.2\nRuntime version: 1.18.7']), \
                 patch.dict(os.environ, {'WORKS_PLATFORM_DAPRD': str(runtime)}), \
                 patch('verify_works_host.run_owned', side_effect=command):
+            if monotonic_clock is not None:
+                final_checks.enter_context(patch('verify_works_host.time.monotonic', side_effect=lambda: monotonic_clock[0]))
             final_checks.enter_context(patch('verify_works_host.materialize_bound_builds', return_value={
                 'buildsRoot': str(artifacts / 'agents-bound-builds'), 'catalogSha256': DIGEST,
                 'sourceRevision': 'b' * 40, 'producerBinding': str(platform / 'eng/builds-tuple.json')}))
@@ -492,10 +496,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
         self.assertEqual(binary['persistedPrefix']['records'], 2)
         self.assertIn('platform-telemetry', [entry['name'] for entry in ledger['commands']])
 
-    def test_command_timings_survive_success_nonzero_and_launch_timeout(self):
-        for failure in ('nonzero', 'nonzero_bad_evidence', 'timeout'):
+    def test_command_timings_survive_success_nonzero_timeout_and_launch_error(self):
+        for failure in ('nonzero', 'nonzero_bad_evidence', 'timeout', 'launch_error'):
+            clock = [100.0]
             def command_failure(name, arguments, kwargs):
                 if name == 'platform-telemetry':
+                    clock[0] += 4.75
+                    if failure == 'launch_error':
+                        raise FileNotFoundError('missing verifier executable')
                     kwargs['stdout'].write('retained command output')
                     if failure == 'timeout':
                         raise subprocess.TimeoutExpired(arguments, 1800)
@@ -503,19 +511,20 @@ class WorksEvidenceGateTests(unittest.TestCase):
                         Path(kwargs['env']['WORKS_SDK_PROOF_EVIDENCE_PATH']).write_text('{broken')
                     return subprocess.CompletedProcess(arguments, 17)
             with self.subTest(failure=failure):
-                ledger, artifacts, _ = self.run_until_live_lanes(b'qualified runtime', command_effect=command_failure)
-                self.assertIn('TimeoutExpired' if failure == 'timeout' else 'platform-telemetry failed', ledger['failure'])
+                ledger, artifacts, _ = self.run_until_live_lanes(b'qualified runtime', command_effect=command_failure, monotonic_clock=clock)
+                expected = {'timeout': 'TimeoutExpired', 'launch_error': 'FileNotFoundError: missing verifier executable'}
+                self.assertIn(expected.get(failure, 'platform-telemetry failed'), ledger['failure'])
                 for entry in ledger['commands']:
                     started = verify_works_host.datetime.fromisoformat(entry['startedAtUtc'])
                     finished = verify_works_host.datetime.fromisoformat(entry['finishedAtUtc'])
                     self.assertEqual(started.utcoffset().total_seconds(), 0)
                     self.assertGreaterEqual(finished, started)
-                    self.assertGreaterEqual(entry['elapsedSeconds'], 0)
+                    self.assertEqual(entry['elapsedSeconds'], 7.25 if entry['name'] == 'platform-telemetry' else 2.5)
                     self.assertIn('sha256', entry)
                 failed = ledger['commands'][-1]
                 self.assertIn('failure', failed)
-                self.assertEqual((artifacts / failed['log']).read_text(), 'retained command output')
-                if failure != 'timeout':
+                self.assertEqual((artifacts / failed['log']).read_text(), '' if failure == 'launch_error' else 'retained command output')
+                if failure not in ('timeout', 'launch_error'):
                     self.assertEqual(failed['exitCode'], 17)
                     self.assertNotIn('persistedPrefix', failed)
                     self.assertNotIn('malformed', ledger['failure'])
