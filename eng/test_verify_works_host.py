@@ -518,6 +518,9 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertEqual(len(retained), 2)
                 for entry in retained:
                     self.assertIn('-p:TargetFramework=net11.0', entry['command'])
+                    self.assertIn('-p:TargetFrameworks=net11.0', entry['command'])
+                    self.assertIn('-p:ArtifactsPivots=release', entry['command'])
+                    self.assertIn('-p:HexalithWorksRetainedQualification=true', entry['command'])
                     self.assertIn('-p:RuntimeFrameworkVersion=11.0.0', entry['command'])
                 self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
 

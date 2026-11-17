@@ -1495,9 +1495,13 @@ def run_verification(args):
             "-p:UseHexalithProjectReferences=false", "-p:UseNuGetDeps=true",
             "-p:HexalithEventStoreRoot=" + str(runtime_sdk), "-p:HexalithEventStoreVersion=" + version,
             "-p:HexalithAspireHostingDaprVersion=" + adapter, path_map(runtime_output), *proof_properties]
-        retained_properties = ["-p:TargetFramework=net11.0", "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION]
+        retained_properties = ["-p:TargetFramework=net11.0", "-p:TargetFrameworks=net11.0",
+                               "-p:ArtifactsPivots=release", "-p:HexalithWorksRetainedQualification=true",
+                               "-p:RuntimeFrameworkVersion=" + works_managed_runtime.VERSION]
         summary["retainedHostSource"]["compilationContext"] = {
-            "targetFramework": "net11.0", "runtimeFrameworkVersion": works_managed_runtime.VERSION,
+            "targetFramework": "net11.0", "restoreTargetFrameworks": "net11.0", "artifactsPivots": "release",
+            "projectReferenceTargetFramework": "net11.0", "qualificationSelector": "HexalithWorksRetainedQualification=true",
+            "aspireAppHostPackageVersion": "from-current-HexalithAspireAppHostSdkVersion-catalog-property", "runtimeFrameworkVersion": works_managed_runtime.VERSION,
             "eventStoreVersion": version, "scope": "immutable historical topology sources rebuilt for current qualification; not original historical binaries"}
         runtime_directories = []
         for index, project in enumerate(runtime_projects):
