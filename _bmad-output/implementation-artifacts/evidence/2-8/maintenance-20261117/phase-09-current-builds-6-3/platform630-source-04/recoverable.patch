@@ -1,0 +1,843 @@
+diff --git a/.gitattributes b/.gitattributes
+index cb711414..3b83cdf4 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -217,3 +217,7 @@ src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,b
+ tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
++
++# Preserve the authenticated Builds 6.3.0 catalog and publication fixture bytes.
++eng/fixtures/builds-6.3.0-Directory.Packages.props text eol=lf
++eng/fixtures/builds-6.3.0-binding.json text eol=lf
+diff --git a/eng/current-tuple-source.json b/eng/current-tuple-source.json
+index 4fa32e47..b4c952d5 100644
+--- a/eng/current-tuple-source.json
++++ b/eng/current-tuple-source.json
+@@ -2,19 +2,19 @@
+   "schema": "hexalith.platform.current-tuple-source.v1",
+   "ownerSources": {
+     "eventstore": {
+-      "sourceRevision": "df976e0051b9e2eaa9d3592b3054a0317d83d0cb",
++      "sourceRevision": "96363934c6fd1da4d50c2078b13929c473ecab7f",
+       "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+     },
+     "parties": {
+-      "sourceRevision": "a494093da3e2656c49e539392284cd1b10f799b3",
++      "sourceRevision": "8abfd266eecb5a636ee5498f944304669c18aa41",
+       "declarationSha256": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee"
+     },
+     "tenants": {
+-      "sourceRevision": "2ec938397c5b330cf1e694e8cc442cb4ad022f2b",
++      "sourceRevision": "ac7b6ba9edd88c197701fa1d1503cf2743ee022a",
+       "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+     },
+     "memories": {
+-      "sourceRevision": "f20e8b8145a6c00310a2aed3d0c8758844b65fdc",
++      "sourceRevision": "68a78d475c7ae8b77193e308dfb8c8f5e4cc0826",
+       "declarationSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+     }
+   },
+diff --git a/eng/current_catalog_view.py b/eng/current_catalog_view.py
+index 1ef2f9d0..32efa575 100644
+--- a/eng/current_catalog_view.py
++++ b/eng/current_catalog_view.py
+@@ -83,6 +83,14 @@ GENERATION605_CATALOG = {
+ }
+ 
+ 
++GENERATION630_CATALOG = {
++    "version": "6.3.0",
++    "sourceRevision": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
++    "blob": "db85d885ae1b7478ee2d053a5b54b9a43bff9ae7",
++    "sha256": "aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4",
++}
++
++
+ def catalog_profile(binding=None) -> str:
+     """A new producer generation cannot inherit an earlier consumer qualification."""
+     if binding is None:
+@@ -93,7 +101,7 @@ def catalog_profile(binding=None) -> str:
+         producer = binding["producer"]
+         selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
+                     "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG,
+-                    "6.0.5": GENERATION605_CATALOG}.get(binding["publication"]["version"])
++                    "6.0.5": GENERATION605_CATALOG, "6.3.0": GENERATION630_CATALOG}.get(binding["publication"]["version"])
+         if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
+                 or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
+             raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
+@@ -183,7 +191,8 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
+         return json.loads(result.stdout)["TargetResults"]["ObserveAll"]["Items"]
+ 
+ 
+-def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) -> None:
++def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str, *,
++                        generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
+     """Check every package and both OpenAPI members in one exact independent evaluation context."""
+     names = [item["Identity"] for item in observed]
+     if len(names) != len(PLATFORM_CONSUMERS) + len(UNKNOWN_CONSUMERS) \
+@@ -194,7 +203,7 @@ def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) ->
+         expected_sdk = named_sdk if current else other_sdk
+         expected = {package: expected_sdk for package in SDK_PACKAGES}
+         expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0")
+-            if current and expected_sdk == "4.2.0" else ("11.0.0", "3.11.0"))))
++            if current and expected_sdk == "4.2.0" else generic_openapi)))
+         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
+         if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
+                 or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
+@@ -233,7 +242,9 @@ def verify_mcp_observations(observed: list[dict], *, generic_mcp: str) -> None:
+             raise ValueError("The authenticated catalog selects an unqualified MCP consumer view: " + item["Identity"])
+ 
+ 
+-def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7", generic_mcp: str = "2.0.1") -> None:
++def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7",
++                                      generic_mcp: str = "2.0.1", generic_sdk: str = "5.1.0",
++                                      generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
+     """Require each actual source-owner context's complete family and an unknown sibling refusal."""
+     names = [item["Identity"] for item in observed]
+     if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
+@@ -241,9 +252,9 @@ def verify_current_owner_observations(observed: list[dict], *, generic_tenants:
+         raise ValueError("Current-owner catalog evaluation differs from its exact source project contexts.")
+     for item in observed:
+         named = item["Identity"] in CURRENT_OWNER_CONSUMERS
+-        sdk = "4.2.0" if named else "5.1.0"
++        sdk = "4.2.0" if named else generic_sdk
+         expected = {package: sdk for package in SDK_PACKAGES}
+-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if named else ("11.0.0", "3.11.0"))))
++        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if named else generic_openapi)))
+         memories = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
+         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
+         if (item.get("Sdk") != sdk or item.get("PlatformView") != "false" \
+@@ -264,30 +275,34 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
+     if binding is not None and binding["producer"]["catalog"]["sha256"] != expected_sha256:
+         raise ValueError("The current catalog view differs from its exact producer binding.")
+     require_finite_selector(ET.fromstring(raw))
++    version = binding["publication"]["version"] if binding is not None else None
++    generic_sdk = "5.2.0" if version == "6.3.0" else "5.1.0"
++    generic_openapi = ("11.0.0", "3.11.1" if version == "6.3.0" else "3.11.0")
+     observed = evaluate_views(raw)
+     names = [item["Identity"] for item in observed]
+     verify_observations(observed, "5.1.0" if profile == "current-sdk51" else "4.2.0",
+-                        "5.1.0" if profile in ("current-sdk51", "current-sdk42") else "5.0.0")
++                        generic_sdk if profile in ("current-sdk51", "current-sdk42") else "5.0.0", generic_openapi=generic_openapi)
+     collecting = evaluate_views(raw, "4.2.0")
+     if [item["Identity"] for item in collecting] != names:
+         raise ValueError("The retained collecting view changed its exact consumer set.")
+-    verify_observations(collecting, "4.2.0", "4.2.0")
++    verify_observations(collecting, "4.2.0", "4.2.0", generic_openapi=generic_openapi)
+     if profile == "current-sdk42":
+         verify_memories_observations(observed)
+         verify_memories_observations(collecting)
+     owner_observed = []
+-    if binding is not None and binding["publication"]["version"] in ("6.0.2", "6.0.3", "6.0.5"):
+-        generic_tenants = "7.0.7" if binding["publication"]["version"] == "6.0.2" else "8.0.0"
++    if binding is not None and version in ("6.0.2", "6.0.3", "6.0.5", "6.3.0"):
++        generic_tenants = "8.0.1" if version == "6.3.0" else "7.0.7" if version == "6.0.2" else "8.0.0"
+         verify_tenants_observations(observed, generic_tenants=generic_tenants)
+         verify_tenants_observations(collecting, generic_tenants=generic_tenants)
+         owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
+-        generic_mcp = "3.0.0" if binding["publication"]["version"] == "6.0.5" else "2.0.1"
+-        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp)
+-        if binding["publication"]["version"] == "6.0.5":
++        generic_mcp = "3.0.0" if version in ("6.0.5", "6.3.0") else "2.0.1"
++        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp,
++                                          generic_sdk=generic_sdk, generic_openapi=generic_openapi)
++        if version in ("6.0.5", "6.3.0"):
+             for observations in (observed, collecting, owner_observed):
+                 verify_mcp_observations(observations, generic_mcp=generic_mcp)
+     return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
+             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
+             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,
+-            "scope": "Exact Builds6 SDK5.1 default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
++            "scope": "Exact Builds6 SDK" + generic_sdk + " default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+             "candidateAcceptance": False, "runtimeAcceptance": False}
+diff --git a/eng/fixtures/builds-6.3.0-Directory.Packages.props b/eng/fixtures/builds-6.3.0-Directory.Packages.props
+new file mode 100644
+index 00000000..db85d885
+--- /dev/null
++++ b/eng/fixtures/builds-6.3.0-Directory.Packages.props
+@@ -0,0 +1,564 @@
++﻿<Project>
++  <PropertyGroup>
++    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
++    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
++    <HexalithVersionsLoaded>true</HexalithVersionsLoaded>
++    <!-- Central audit policy: low/moderate advisories remain warnings; high/critical and unavailable audits fail. -->
++    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902</WarningsNotAsErrors>
++    <!-- The supplied Works wrapper declares these three items after importing this catalog.
++         Defer only for its normal wrapper; an explicit alternate catalog keeps our defaults. -->
++    <_HexalithWorksOwnsMSBuildPackageVersions>false</_HexalithWorksOwnsMSBuildPackageVersions>
++    <_HexalithNearestPackageProps>$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildProjectDirectory)'))</_HexalithNearestPackageProps>
++    <_HexalithNearestPackageOwner Condition="'$(_HexalithNearestPackageProps)' != ''">$([System.IO.Path]::GetDirectoryName('$(_HexalithNearestPackageProps)'))</_HexalithNearestPackageOwner>
++    <_HexalithSelectedPackageProps Condition="'$(DirectoryPackagesPropsPath)' != ''">$([MSBuild]::NormalizePath('$(DirectoryPackagesPropsPath)'))</_HexalithSelectedPackageProps>
++    <_HexalithWorksOwnsMSBuildPackageVersions Condition="'$(DirectoryPackagesPropsPath)' != '' and '$(_HexalithSelectedPackageProps)' == '$(_HexalithNearestPackageProps)' and Exists('$(_HexalithNearestPackageOwner)/Hexalith.Works.slnx')">true</_HexalithWorksOwnsMSBuildPackageVersions>
++    <!-- Preserve the measured net10 product/consumer contract for these exact Timesheets identities. -->
++    <HexalithTimesheetsNet10CatalogView>false</HexalithTimesheetsNet10CatalogView>
++    <HexalithTimesheetsNet10CatalogView Condition="$(MSBuildProjectName.Equals('Hexalith.Timesheets'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.AppHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.ArchitectureTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Client'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Contracts'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Contracts.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.IntegrationTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Projections'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Projections.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.ReadModels'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Server'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Server.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.ServiceDefaults'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Testing'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Works'))
++        or $(MSBuildProjectName.Equals('Hexalith.Timesheets.Works.Tests'))">true</HexalithTimesheetsNet10CatalogView>
++    <HexalithCommonsVersion Condition="'$(HexalithTimesheetsNet10CatalogView)' == 'true' and '$(HexalithCommonsVersion)' == ''">2.30.11</HexalithCommonsVersion>
++    <HexalithPolymorphicSerializationsVersion Condition="'$(HexalithTimesheetsNet10CatalogView)' == 'true' and '$(HexalithPolymorphicSerializationsVersion)' == ''">1.19.9</HexalithPolymorphicSerializationsVersion>
++    <HexalithCommonsVersion Condition="'$(HexalithCommonsVersion)' == ''">3.0.0</HexalithCommonsVersion>
++    <HexalithConversationsVersion Condition="'$(HexalithConversationsVersion)' == ''">2.0.0</HexalithConversationsVersion>
++    <HexalithPolymorphicSerializationsVersion Condition="'$(HexalithPolymorphicSerializationsVersion)' == ''">2.0.0</HexalithPolymorphicSerializationsVersion>
++    <!-- Record the composed-host consumer while keeping one canonical SDK version authority. -->
++    <HexalithPlatformEventStoreHostCatalogView Condition="'$(MSBuildProjectName)' == 'Hexalith.Platform.EventStoreHost'">true</HexalithPlatformEventStoreHostCatalogView>
++    <!-- Exact measured retained SDK4.2 consumers; other project names keep the current SDK5 catalog. -->
++    <HexalithPartiesSdk42CatalogView>false</HexalithPartiesSdk42CatalogView>
++    <HexalithPartiesSdk42CatalogView Condition="$(MSBuildProjectName.Equals('Hexalith.Parties'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.AdminPortal'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.AdminPortal.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.AppHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Aspire'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Aspire.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Authentication'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Authentication.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Catalog.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Ci.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Client'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Client.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.ConsumerPortal'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.ConsumerPortal.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Contracts'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Contracts.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.EventStoreAdminUI.TestHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.EventStoreExtensions'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.EventStoreGateway.TestHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.EventStoreSample.Contracts.TestArtifact'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.EventStoreSample.TestHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.IntegrationTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Mcp'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Mcp.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Picker'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Picker.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Platform.AttachedLifecycleTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Platform.IntegrationTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Platform.LifecycleTests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Projections'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Projections.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Sample'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Sample.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Security'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Security.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Server.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Testing'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.UI'))
++        or $(MSBuildProjectName.Equals('Hexalith.Parties.UI.Tests'))">true</HexalithPartiesSdk42CatalogView>
++    <!-- Preserve OpenAPI2 only when a Platform consumer explicitly selects historical SDK4.2. -->
++    <HexalithPlatformSdk42CatalogView>false</HexalithPlatformSdk42CatalogView>
++    <HexalithPlatformSdk42CatalogView Condition="$(MSBuildProjectName.Equals('Hexalith.Platform.CatalogBuilder'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Composition'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Composition.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Custody'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Custody.Component'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Custody.Component.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Custody.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.EventStoreHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Identity'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Identity.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.OwnerServices.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Protection'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Protection.Qualification.Enrollment'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Protection.Qualification.Executor'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Protection.Qualification.Observer'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Protection.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.ArchiveProcessFixture'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Authority'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Authority.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Custody'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Custody.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Inventory'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Inventory.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Qualification.Enrollment'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Qualification.Executor'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Qualification.Observer'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Runtime'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Secrets.Runtime.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.TenantRegistry.Host'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.TestExtension'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.TestExtension.Qualification.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Works.Runtime'))
++        or $(MSBuildProjectName.Equals('Hexalith.Platform.Works.Tests'))">true</HexalithPlatformSdk42CatalogView>
++    <!-- These supported net10 consumers include Shell's transitive CPM dependents.
++         OpenIdConnect 11 contains only net11 assets; other identities keep the current catalog. -->
++    <HexalithFrontComposerNet10CatalogView>false</HexalithFrontComposerNet10CatalogView>
++    <HexalithFrontComposerNet10CatalogView Condition="$(MSBuildProjectName.Equals('Counter.Domain'))
++        or $(MSBuildProjectName.Equals('Counter.Specimens'))
++        or $(MSBuildProjectName.Equals('Counter.Specimens.Domain'))
++        or $(MSBuildProjectName.Equals('Counter.Web'))
++        or $(MSBuildProjectName.Equals('IdeParityCounter'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.AppHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell.Tests.Bench'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.SourceTools.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Testing'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Testing.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.UI'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.UI.Tests'))">true</HexalithFrontComposerNet10CatalogView>
++    <!-- FrontComposer net10 compiler and generator consumers retain the supported Immutable ABI. -->
++    <HexalithFrontComposerImmutable10CatalogView>false</HexalithFrontComposerImmutable10CatalogView>
++    <HexalithFrontComposerImmutable10CatalogView Condition="$(MSBuildProjectName.Equals('Counter.Domain'))
++        or $(MSBuildProjectName.Equals('Counter.Specimens'))
++        or $(MSBuildProjectName.Equals('Counter.Specimens.Domain'))
++        or $(MSBuildProjectName.Equals('Counter.Web'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.AppHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Cli'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Cli.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Contracts'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Contracts.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Contracts.UI'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Contracts.UI.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.CounterFixture'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Mcp'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Mcp.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Schema'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Shell.Tests.Bench'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.SourceTools'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.SourceTools.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Testing'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.Testing.Tests'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.UI'))
++        or $(MSBuildProjectName.Equals('Hexalith.FrontComposer.UI.Tests'))
++        or $(MSBuildProjectName.Equals('IdeParityCounter'))">true</HexalithFrontComposerImmutable10CatalogView>
++    <HexalithImmutableVersion>11.0.0</HexalithImmutableVersion>
++    <HexalithImmutableVersion Condition="'$(HexalithFrontComposerImmutable10CatalogView)' == 'true'">10.0.15</HexalithImmutableVersion>
++    <HexalithAspNetCoreJwtBearerVersion>11.0.0</HexalithAspNetCoreJwtBearerVersion>
++    <HexalithAspNetCoreJwtBearerVersion Condition="'$(HexalithTimesheetsNet10CatalogView)' == 'true'">10.0.15</HexalithAspNetCoreJwtBearerVersion>
++    <HexalithAspNetCoreMvcTestingVersion>11.0.0</HexalithAspNetCoreMvcTestingVersion>
++    <HexalithAspNetCoreMvcTestingVersion Condition="'$(HexalithTimesheetsNet10CatalogView)' == 'true'">10.0.15</HexalithAspNetCoreMvcTestingVersion>
++    <HexalithAspNetCoreTestHostVersion>11.0.0</HexalithAspNetCoreTestHostVersion>
++    <HexalithAspNetCoreTestHostVersion Condition="'$(HexalithTimesheetsNet10CatalogView)' == 'true'">10.0.15</HexalithAspNetCoreTestHostVersion>
++    <HexalithAspNetCoreOpenIdConnectVersion>11.0.0</HexalithAspNetCoreOpenIdConnectVersion>
++    <HexalithAspNetCoreOpenIdConnectVersion Condition="'$(HexalithFrontComposerNet10CatalogView)' == 'true'">10.0.15</HexalithAspNetCoreOpenIdConnectVersion>
++    <!-- These finite producer host roles and Platform consumers retain the admitted SDK4.2/OpenAPI2 ABI. -->
++    <HexalithBuildsPackagedHostSdk42CatalogView>false</HexalithBuildsPackagedHostSdk42CatalogView>
++    <HexalithBuildsPackagedHostSdk42CatalogView Condition="$(MSBuildProjectName.Equals('Hexalith.Builds.Module.AppHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Builds.Module.EventStoreHost'))
++        or $(MSBuildProjectName.Equals('Hexalith.Builds.Module.UiHost'))">true</HexalithBuildsPackagedHostSdk42CatalogView>
++    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == '' and ('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithEventStoreFromSource)' == 'false') and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">4.2.0</HexalithEventStoreVersion>
++    <!-- Story 1.17: published 5.1.1 supplies the native source scanner APIs used by Folders and Projects. -->
++    <HexalithEventStoreVersion Condition="'$(HexalithEventStoreVersion)' == ''">5.2.0</HexalithEventStoreVersion>
++    <HexalithAspNetCoreOpenApiVersion>11.0.0</HexalithAspNetCoreOpenApiVersion>
++    <HexalithOpenApiVersion>3.11.1</HexalithOpenApiVersion>
++    <!-- Packaged SDK4.2 uses OpenApi2; current source projects consume the .NET11 OpenAPI ABI. -->
++    <HexalithAspNetCoreOpenApiVersion Condition="('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithEventStoreFromSource)' == 'false') and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">10.0.15</HexalithAspNetCoreOpenApiVersion>
++    <HexalithOpenApiVersion Condition="('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithEventStoreFromSource)' == 'false') and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">2.13.0</HexalithOpenApiVersion>
++    <HexalithFrontComposerVersion Condition="'$(HexalithFrontComposerVersion)' == ''">6.0.0</HexalithFrontComposerVersion>
++    <HexalithFoldersVersion Condition="'$(HexalithFoldersVersion)' == ''">2.0.0</HexalithFoldersVersion>
++    <!-- Retain the qualified MCP2 package ABI only for the finite SDK4.2 roles; source MCP keeps its current catalog. -->
++    <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == '' and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(UseHexalithProjectReferences)' != 'true' or '$(HexalithMcpCliFromSource)' == 'false') and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">2.0.1</HexalithMcpCliVersion>
++    <HexalithMcpCliVersion Condition="'$(HexalithMcpCliVersion)' == ''">3.0.0</HexalithMcpCliVersion>
++    <!-- Every finite SDK4.2 role uses the admitted Memories cohort, including private Parties producers; explicit selections remain authoritative. -->
++    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == '' and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">3.0.27</HexalithMemoriesVersion>
++    <!-- Current package selection; historical declarations retain their separately pinned release inputs. -->
++    <HexalithMemoriesVersion Condition="'$(HexalithMemoriesVersion)' == ''">4.0.0</HexalithMemoriesVersion>
++    <!-- SDK4.2 consumers retain Tenants7; Tenants8 requires the current SDK5 cohort. -->
++    <HexalithTenantsVersion Condition="'$(HexalithTenantsVersion)' == '' and '$(HexalithEventStoreVersion)' == '4.2.0' and ('$(HexalithPartiesSdk42CatalogView)' == 'true' or '$(HexalithPlatformSdk42CatalogView)' == 'true' or '$(HexalithBuildsPackagedHostSdk42CatalogView)' == 'true' or '$(HexalithTimesheetsNet10CatalogView)' == 'true')">7.0.7</HexalithTenantsVersion>
++    <HexalithTenantsVersion Condition="'$(HexalithTenantsVersion)' == ''">8.0.1</HexalithTenantsVersion>
++    <HexalithPartiesVersion Condition="'$(HexalithPartiesVersion)' == ''">3.1.1</HexalithPartiesVersion>
++    <HexalithPartiesAspireVersion Condition="'$(HexalithPartiesAspireVersion)' == ''">3.1.1</HexalithPartiesAspireVersion>
++    <HexalithProjectsVersion Condition="'$(HexalithProjectsVersion)' == ''">1.2.4</HexalithProjectsVersion>
++    <!-- Folders.Aspire is a stable public package; all other consumers retain the preview integration. -->
++    <HexalithAspireHostingDaprVersion>13.6.2-beta.959</HexalithAspireHostingDaprVersion>
++    <HexalithAspireHostingDaprVersion Condition="'$(MSBuildProjectName)' == 'Hexalith.Folders.Aspire'">13.0.0</HexalithAspireHostingDaprVersion>
++    <HexalithAspireAppHostSdkVersion>13.6.5</HexalithAspireAppHostSdkVersion>
++    <HexalithDaprRuntimeVersion>1.19.1</HexalithDaprRuntimeVersion>
++    <HexalithDaprCliVersion>1.19.1</HexalithDaprCliVersion>
++    <HexalithRedisImage>docker.io/library/redis</HexalithRedisImage>
++    <HexalithRedisImageTag>7.4-alpine</HexalithRedisImageTag>
++    <HexalithRedisImageDigest>sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf</HexalithRedisImageDigest>
++    <HexalithChatbotVersion Condition="'$(HexalithChatbotVersion)' == ''">1.83.0</HexalithChatbotVersion>
++  </PropertyGroup>
++  <ItemGroup>
++    <PackageVersion Include="Hexalith.Applications" Version="1.0.6" />
++    <PackageVersion Include="Hexalith.Applications.Abstractions" Version="1.0.6" />
++    <PackageVersion Include="Hexalith.Applications.Commands" Version="1.0.6" />
++    <PackageVersion Include="Hexalith.Applications.Commands.Abstractions" Version="1.0.6" />
++    <PackageVersion Include="Hexalith.Security.WebApp" Version="2.14.9" />
++    <PackageVersion Include="Hexalith.Security.WebServer" Version="2.14.9" />
++    <PackageVersion Include="Hexalith.Security.ApiServer" Version="2.14.9" />
++    <PackageVersion Include="Hexalith.Documents" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.Commands" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.Requests" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.UI.Components" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.WebApp" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.WebServer" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Documents.ApiServer" Version="2.7.1" />
++    <PackageVersion Include="Hexalith.Commons" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Configurations" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Diagnostics" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Aspire" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Http" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Metadatas" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Publication" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.Serialization" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.ServiceDefaults" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.TenantAccess" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.UniqueIds" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Commons.StringEncoders" Version="$(HexalithCommonsVersion)" />
++    <PackageVersion Include="Hexalith.Domains" Version="2.0.2" />
++    <PackageVersion Include="Hexalith.Domains.Abstractions" Version="2.0.2" />
++    <PackageVersion Include="Hexalith.EventStore.Admin.Abstractions" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Admin.Server" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Aspire" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Client" Version="$(HexalithEventStoreVersion)" />
++    <!-- Works source Contracts already enters through project edges: retain its source-only exclusion.
++         Package-mode versions and all other transitive security pins remain intact. -->
++    <PackageVersion Include="Hexalith.EventStore.Contracts" Version="$(HexalithEventStoreVersion)" Condition="'$(UseHexalithProjectReferences)' != 'true' or !$(MSBuildProjectName.StartsWith('Hexalith.Works'))" />
++    <PackageVersion Include="Hexalith.EventStore.DomainService" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Gateway" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.RestApi.Generators" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Server" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.ServiceDefaults" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.SignalR" Version="$(HexalithEventStoreVersion)" />
++    <!-- Descriptor CI prerequisites ship in one approved EventStore release; keep Testing and
++         Testing.Integration on the owner family pin. Staged API changes grant no pin/publication approval. -->
++    <PackageVersion Include="Hexalith.EventStore.Testing" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.EventStore.Testing.Integration" Version="$(HexalithEventStoreVersion)" />
++    <PackageVersion Include="Hexalith.Conversations.Client" Version="$(HexalithConversationsVersion)" />
++    <PackageVersion Include="Hexalith.Conversations.Contracts" Version="$(HexalithConversationsVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.Contracts" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.Contracts.UI" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.Mcp" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.Shell" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.SourceTools" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.FrontComposer.Testing" Version="$(HexalithFrontComposerVersion)" />
++    <PackageVersion Include="Hexalith.Folders" Version="$(HexalithFoldersVersion)" />
++    <PackageVersion Include="Hexalith.Folders.Aspire" Version="$(HexalithFoldersVersion)" />
++    <PackageVersion Include="Hexalith.Folders.Client" Version="$(HexalithFoldersVersion)" />
++    <PackageVersion Include="Hexalith.Folders.Contracts" Version="$(HexalithFoldersVersion)" />
++    <PackageVersion Include="Hexalith.Folders.Testing" Version="$(HexalithFoldersVersion)" />
++    <PackageVersion Include="Hexalith.KeyValueStorages" Version="2.1.2" />
++    <PackageVersion Include="Hexalith.KeyValueStorages.Abstractions" Version="2.1.2" />
++    <PackageVersion Include="Hexalith.KeyValueStorages.Files" Version="2.1.2" />
++    <PackageVersion Include="Hexalith.KeyValueStorages.DaprComponents" Version="2.1.2" />
++    <PackageVersion Include="Hexalith.IdentityStores" Version="1.4.5" />
++    <PackageVersion Include="Hexalith.IdentityStores.Abstractions" Version="1.4.5" />
++    <PackageVersion Include="Hexalith.IdentityStores.UI" Version="1.4.5" />
++    <PackageVersion Include="Hexalith.NetAspire.Defaults" Version="1.4.8" />
++    <PackageVersion Include="Hexalith.NetAspire.Hosting" Version="1.4.8" />
++    <PackageVersion Include="Hexalith.McpCli.Abstractions" Version="$(HexalithMcpCliVersion)" />
++    <PackageVersion Include="Hexalith.Memories.Aspire" Version="$(HexalithMemoriesVersion)" />
++    <PackageVersion Include="Hexalith.Memories.Client.Rest" Version="$(HexalithMemoriesVersion)" />
++    <PackageVersion Include="Hexalith.Memories.Contracts" Version="$(HexalithMemoriesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.AdminPortal" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.Aspire" Version="$(HexalithPartiesAspireVersion)" />
++    <PackageVersion Include="Hexalith.Parties.Client" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.ConsumerPortal" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.Contracts" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.EventStoreExtensions" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Memories.EventStore" Version="$(HexalithMemoriesVersion)" />
++    <PackageVersion Include="Hexalith.Memories.EventStoreExtensions" Version="$(HexalithMemoriesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.Picker" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Parties.Testing" Version="$(HexalithPartiesVersion)" />
++    <PackageVersion Include="Hexalith.Projects" Version="$(HexalithProjectsVersion)" />
++    <PackageVersion Include="Hexalith.Projects.Client" Version="$(HexalithProjectsVersion)" />
++    <PackageVersion Include="Hexalith.Projects.Contracts" Version="$(HexalithProjectsVersion)" />
++    <PackageVersion Include="Hexalith.Projects.ServiceDefaults" Version="$(HexalithProjectsVersion)" />
++    <PackageVersion Include="Hexalith.Projects.Testing" Version="$(HexalithProjectsVersion)" />
++    <PackageVersion Include="Hexalith.Chatbot.Contracts" Version="$(HexalithChatbotVersion)" />
++    <PackageVersion Include="Hexalith.PolymorphicSerializations" Version="$(HexalithPolymorphicSerializationsVersion)" />
++    <PackageVersion Include="Hexalith.PolymorphicSerializations.CodeGenerators" Version="$(HexalithPolymorphicSerializationsVersion)" />
++    <PackageVersion Include="Hexalith.Tenants.Aspire" Version="$(HexalithTenantsVersion)" />
++    <PackageVersion Include="Hexalith.Tenants.Client" Version="$(HexalithTenantsVersion)" />
++    <PackageVersion Include="Hexalith.Tenants.Contracts" Version="$(HexalithTenantsVersion)" />
++    <PackageVersion Include="Hexalith.Tenants.Server" Version="$(HexalithTenantsVersion)" />
++    <PackageVersion Include="Hexalith.Tenants.Testing" Version="$(HexalithTenantsVersion)" />
++  </ItemGroup>
++  <ItemGroup>
++    <PackageVersion Include="AdaptiveCards" Version="3.1.0" />
++    <PackageVersion Include="AdaptiveCards.Templating" Version="2.0.6" />
++    <!-- FrontComposer bunit transitive floor pulls the vulnerable 1.4.0; pin the GHSA-pgww-w46g-26qg fix. -->
++    <!-- bunit 2.15.2 implements AngleSharp 1.10 BeforeToggle; keep the latest 1.10 patch with that release. -->
++    <PackageVersion Include="AngleSharp" Version="1.10.4" />
++    <!-- OAuth and ASP.NET Core packages align with the .NET 11 host. -->
++    <PackageVersion Include="AspNet.Security.OAuth.Amazon" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Apple" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Shopify" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Okta" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Reddit" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Notion" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Basecamp" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.LinkedIn" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Instagram" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.GitHub" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Twitter" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Paypal" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Yahoo" Version="11.0.0" />
++    <PackageVersion Include="AspNet.Security.OAuth.Slack" Version="11.0.0" />
++    <PackageVersion Include="Aspire.Azure.Messaging.ServiceBus" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Azure.Security.KeyVault" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Azure.Storage.Blobs" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Azure.Storage.Queues" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting.Docker" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting.Keycloak" Version="13.6.5-preview.1.26559.7" />
++    <PackageVersion Include="Aspire.Hosting.Kubernetes" Version="13.6.5-preview.1.26559.7" />
++    <PackageVersion Include="Aspire.Hosting.Redis" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Hosting.Testing" Version="13.6.5" />
++    <PackageVersion Include="Aspire.Microsoft.Azure.Cosmos" Version="13.6.5" />
++    <PackageVersion Include="Azure.Bicep.Core" Version="0.49.2" />
++    <PackageVersion Include="Azure.Core" Version="1.65.0" />
++    <PackageVersion Include="Azure.Identity" Version="1.21.0" />
++    <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.6.0" />
++    <PackageVersion Include="Azure.ResourceManager" Version="1.14.0" />
++    <PackageVersion Include="Azure.ResourceManager.CognitiveServices" Version="1.6.0" />
++    <PackageVersion Include="Azure.ResourceManager.ContainerRegistry" Version="1.4.0" />
++    <PackageVersion Include="Azure.ResourceManager.KeyVault" Version="1.5.0" />
++    <PackageVersion Include="Azure.ResourceManager.Logic" Version="1.2.0" />
++    <PackageVersion Include="Azure.Security.KeyVault.Keys" Version="4.10.2" />
++    <PackageVersion Include="Azure.Security.KeyVault.Secrets" Version="4.12.0" />
++    <PackageVersion Include="Azure.Storage.Blobs" Version="12.30.1" />
++    <!-- FrontComposer Story 3-7 T2: benchmark harness for palette scoring. -->
++    <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
++    <PackageVersion Include="ByteAether.Ulid" Version="1.4.2" />
++    <PackageVersion Include="Cocona" Version="2.2.0" />
++    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Dapr" Version="$(HexalithAspireHostingDaprVersion)" />
++    <PackageVersion Include="CompareNETObjects" Version="4.84.0" />
++    <PackageVersion Include="coverlet.collector" Version="10.1.1" />
++    <PackageVersion Include="Dapr.Client" Version="1.19.1" />
++    <PackageVersion Include="Dapr.AspNetCore" Version="1.19.1" />
++    <PackageVersion Include="Dapr.Actors.AspNetCore" Version="1.19.1" />
++    <PackageVersion Include="Dapr.Actors.Generators" Version="1.19.1" />
++    <PackageVersion Include="Dapr.Actors" Version="1.19.1" />
++    <PackageVersion Include="Dapr.AI" Version="1.19.1" />
++    <PackageVersion Include="Dapr.AI.Microsoft.Extensions" Version="1.19.1" />
++    <PackageVersion Include="Dapr.Workflow" Version="1.19.1" />
++    <PackageVersion Include="Deque.AxeCore.Commons" Version="4.14.0" />
++    <PackageVersion Include="Deque.AxeCore.Playwright" Version="4.14.0" />
++    <PackageVersion Include="docfx.console" Version="2.59.4" />
++    <PackageVersion Include="FluentAssertions" Version="8.11.0" />
++    <PackageVersion Include="FluentValidation" Version="12.2.0" />
++    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.1" />
++    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
++    <PackageVersion Include="Fluxor" Version="6.11.0" />
++    <PackageVersion Include="Fluxor.Blazor.Web" Version="6.11.0" />
++    <PackageVersion Include="FsCheck" Version="3.6.0" />
++    <!-- FrontComposer Story 2-1: xUnit v3 integration for property-based tests. -->
++    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.6.0" />
++    <PackageVersion Include="GitHubActionsTestLogger" Version="3.0.5" />
++    <PackageVersion Include="Google.Apis" Version="1.78.0" />
++    <PackageVersion Include="Google.Apis.Auth.AspNetCore3" Version="1.78.0" />
++    <PackageVersion Include="Grpc" Version="2.46.6" />
++    <PackageVersion Include="Grpc.HealthCheck" Version="2.85.0" />
++    <PackageVersion Include="Grpc.Net.ClientFactory" Version="2.85.0" />
++    <PackageVersion Include="HotChocolate" Version="16.7.5" />
++    <PackageVersion Include="Humanizer" Version="3.0.10" />
++    <PackageVersion Include="ISO3166" Version="1.0.4" />
++    <PackageVersion Include="JsonSchema.Net" Version="9.7.0" />
++    <PackageVersion Include="Kreuzberg" Version="4.10.4" />
++    <PackageVersion Include="LibGit2Sharp" Version="0.32.0" />
++    <PackageVersion Include="MailKit" Version="5.0.0" />
++    <PackageVersion Include="MediatR" Version="15.0.0" />
++    <PackageVersion Include="MessagePack" Version="3.1.12" />
++    <!-- Authorization and SignalR align with the ASP.NET Core 11 host runtime. -->
++    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(HexalithAspNetCoreJwtBearerVersion)" />
++    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="$(HexalithAspNetCoreOpenIdConnectVersion)" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.CustomElements" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.DataProtection" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.3.14" />
++    <PackageVersion Include="StackExchange.Redis" Version="3.4.35" />
++    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(HexalithAspNetCoreMvcTestingVersion)" />
++    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(HexalithAspNetCoreOpenApiVersion)" />
++    <!-- ASP.NET Core 10 Blazor requires IInvocationBinder.GetTarget(ReadOnlySpan<byte>);
++         SignalR 11 falls back to netstandard2.0 and aborts interactive circuits. -->
++    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="11.0.0" />
++    <!-- GHSA-334f-vvp4-7g6p: patched Common for consumers with CentralPackageTransitivePinningEnabled=true. -->
++    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Common" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="$(HexalithAspNetCoreTestHostVersion)" />
++    <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.64.0" />
++    <PackageVersion Include="Microsoft.Bot.Builder" Version="4.23.1" />
++    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.12.0" />
++    <!-- MSBuild 18.12 targets .NET 11, matching the tooling and SDK host. -->
++    <PackageVersion Include="Microsoft.Build" Version="18.12.2" Condition="'$(_HexalithWorksOwnsMSBuildPackageVersions)' != 'true'" />
++    <PackageVersion Include="Microsoft.Build.Framework" Version="18.12.2" Condition="'$(_HexalithWorksOwnsMSBuildPackageVersions)' != 'true'" />
++    <PackageVersion Include="Microsoft.Build.Locator" Version="1.11.2" Condition="'$(_HexalithWorksOwnsMSBuildPackageVersions)' != 'true'" />
++    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="18.12.2" />
++    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.12.0" />
++    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.12.0" />
++    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.12.0" />
++    <!-- FrontComposer Roslyn tooling must remain compatible with the compiler host pinned by global.json (SDK 11.0.100 ships 5.12.0). -->
++    <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.12.0" />
++    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Configuration.FileExtensions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Diagnostics.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Http" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Identity.Stores" Version="11.0.0" />
++    <!-- FrontComposer quickstart localization registration. -->
++    <PackageVersion Include="Microsoft.Extensions.Localization" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Options" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="11.0.0" />
++    <!-- Prefer the stable validation implementation over preview transitive dependencies. -->
++    <PackageVersion Include="Microsoft.Extensions.Validation" Version="11.0.0" />
++    <!-- FrontComposer Story 2-4: deterministic TimeProvider-based threshold tests. -->
++    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="11.0.0" />
++    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="5.1.0" />
++    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="5.1.0" />
++    <PackageVersion Include="Microsoft.Graph" Version="6.10.0" />
++    <PackageVersion Include="Microsoft.Identity.Client" Version="4.92.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.Logging" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.23.0" />
++    <PackageVersion Include="Microsoft.Identity.Web" Version="4.18.0" />
++    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
++    <!-- ASP.NET Core OpenApi 11 and Swashbuckle 11 use OpenApi 3.x. -->
++    <PackageVersion Include="Microsoft.OpenApi" Version="$(HexalithOpenApiVersion)" />
++    <PackageVersion Include="Microsoft.Playwright" Version="1.64.1" />
++    <!-- Existing Timesheets Works prerequisite; retain the published version. -->
++    <PackageVersion Include="Hexalith.Works.Contracts" Version="1.0.2" />
++    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.82.0" />
++    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="11.0.100" />
++    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.12.0" />
++    <PackageVersion Include="Microsoft.TeamsFx" Version="3.0.0" />
++    <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="7.0.1" />
++    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.12.1" />
++    <PackageVersion Include="MinVer" Version="8.0.0" />
++    <PackageVersion Include="ModelContextProtocol" Version="2.4.0" />
++    <!-- FrontComposer MCP server runtime. -->
++    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="2.4.0" />
++    <PackageVersion Include="Moq" Version="4.21.0" />
++    <PackageVersion Include="Moq.Contrib.HttpClient" Version="1.4.0" />
++    <PackageVersion Include="NBomber" Version="6.7.1" />
++    <PackageVersion Include="NBomber.Http" Version="6.2.1" />
++    <!-- Maintained NetArchTest fork (same NetArchTest.Rules API); 1.4.5 brings Mono.Cecil 0.11.6 which parses net10.0 IL. -->
++    <PackageVersion Include="NetArchTest.eNhancedEdition" Version="1.4.5" />
++    <PackageVersion Include="NFalkorDB" Version="1.2.0" />
++    <PackageVersion Include="NRedisStack" Version="1.8.0" />
++    <PackageVersion Include="NuGet.Versioning" Version="8.0.0" />
++    <PackageVersion Include="NSubstitute" Version="6.2.0" />
++    <PackageVersion Include="NSwag.MSBuild" Version="14.8.0" />
++    <!-- FrontComposer Story 2-3: ULID generation for MessageId idempotency. -->
++    <PackageVersion Include="NUlid" Version="1.7.3" />
++    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
++    <PackageVersion Include="Octokit" Version="14.0.0" />
++    <PackageVersion Include="ObjectComparator" Version="3.9.0" />
++    <PackageVersion Include="OpenTelemetry" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Exporter.InMemory" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.21.0-beta.1" />
++    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.21.0" />
++    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.21.0" />
++    <!-- Prerelease accepted explicitly per Hexalith.Memories ADR-8.5-001 (b); upgrade-on-GA trigger tracked in Memories deferred-work.md. -->
++    <PackageVersion Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.21.0-beta.1" />
++    <PackageVersion Include="OrchardCore.Localization.Core" Version="3.0.1" />
++    <!-- FrontComposer Story 10-3: file-based EventStore REST consumer contracts. -->
++    <PackageVersion Include="PactNet" Version="5.0.1" />
++    <PackageVersion Include="Radzen.Blazor" Version="13.1.0" />
++    <PackageVersion Include="Roslynator.Analyzers" Version="5.0.1" />
++    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="5.0.1" />
++    <PackageVersion Include="Scriban" Version="7.6.1" />
++    <PackageVersion Include="SendGrid" Version="9.29.3" />
++    <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
++    <PackageVersion Include="Serilog" Version="4.4.0" />
++    <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
++    <PackageVersion Include="Serilog.Enrichers.Process" Version="3.0.0" />
++    <PackageVersion Include="Serilog.Enrichers.Thread" Version="4.0.0" />
++    <PackageVersion Include="Serilog.Formatting.Compact" Version="3.0.0" />
++    <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
++    <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
++    <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
++    <PackageVersion Include="Shouldly" Version="4.3.0" />
++    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.36.0.15337" />
++    <PackageVersion Include="StyleCop.Analyzers" Version="1.3.180" />
++    <PackageVersion Include="Swashbuckle.AspNetCore" Version="11.0.1" />
++    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="11.0.1" />
++    <PackageVersion Include="System.Collections.Immutable" Version="$(HexalithImmutableVersion)" />
++    <!-- Microsoft-supported CLI parser chosen per Hexalith.Memories ADR-7.1-008: recursive/global options, async handlers with CancellationToken, global-tool packaging. -->
++    <PackageVersion Include="System.CommandLine" Version="3.0.0" />
++    <!-- FrontComposer FcShellOptions data-annotation validation on netstandard2.0. -->
++    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
++    <!-- OpenTelemetry 1.21 supports net10.0 and requires DiagnosticSource 11 at runtime. -->
++    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="11.0.0" />
++    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
++    <PackageVersion Include="System.Security.Cryptography.Xml" Version="11.0.0" />
++    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
++    <!-- FrontComposer Story 3-5 D5: BadgeCountService observable isolation. -->
++    <PackageVersion Include="System.Reactive" Version="7.0.0" />
++    <PackageVersion Include="System.Text.Json" Version="11.0.0" />
++    <!-- FrontComposer Story 3-5 D3: ValueTask<T> contracts on netstandard2.0. -->
++    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
++    <PackageVersion Include="Testcontainers" Version="4.17.0" />
++    <PackageVersion Include="Threenine.Data" Version="5.0.1" />
++    <!-- FrontComposer snapshot testing uses the xUnit v3 adapter, not Verify.Xunit. -->
++    <PackageVersion Include="Verify" Version="33.5.0" />
++    <PackageVersion Include="Verify.XunitV3" Version="33.5.0" />
++    <PackageVersion Include="YamlDotNet" Version="18.1.0" />
++    <PackageVersion Include="bunit" Version="2.15.2" />
++    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
++    <PackageVersion Include="xunit.v3" Version="4.0.3" />
++    <PackageVersion Include="xunit.v3.assert" Version="4.0.3" />
++    <PackageVersion Include="xunit.v3.extensibility.core" Version="4.0.3" />
++  </ItemGroup>
++  <!-- Metadata-only catalog copies do not require build-time analyzer selection. -->
++  <Import Project="$(MSBuildThisFileDirectory)Logging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Logging.Build.targets')" />
++</Project>
+diff --git a/eng/fixtures/builds-6.3.0-binding.json b/eng/fixtures/builds-6.3.0-binding.json
+new file mode 100644
+index 00000000..d44c6c73
+--- /dev/null
++++ b/eng/fixtures/builds-6.3.0-binding.json
+@@ -0,0 +1,29 @@
++{
++  "schemaVersion": 1,
++  "candidateAcceptance": false,
++  "producer": {
++    "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
++    "sourceRevision": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
++    "catalog": {
++      "path": "Props/Directory.Packages.props",
++      "blob": "db85d885ae1b7478ee2d053a5b54b9a43bff9ae7",
++      "sha256": "aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4"
++    }
++  },
++  "publication": {
++    "kind": "shared-release-handoff/v1",
++    "version": "6.3.0",
++    "sourceRevision": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
++    "releaseTag": "v6.3.0",
++    "catalogSha256": "aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4",
++    "archiveSha256": "d7454b95f2275203b4018394a7a100ebf92f47b028d40c99a4db4195f6a617f6",
++    "toolingSha256": "48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27",
++    "releaseId": 449037811,
++    "runId": 44147684659,
++    "artifactId": 14357353124,
++    "artifactSha256": "e85304564ae6c4c04d7e8c4212a23d8a8173bace0ea4ce477ccfb70057d5afdc",
++    "releaseBodySha256": "eb3d5e3d855b8a12465c98b98cb0b49892c8a75d0a9fcbb612bfe061e6c2c1b3",
++    "manifestJson": "{\n  \"sha\": \"7afc4981e21bc2fcce687199a3fd2c61fe87336e\",\n  \"version\": \"6.3.0\",\n  \"packages\": [\n    {\n      \"id\": \"Hexalith.Builds.Evidence.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Evidence.Cli.6.3.0.nupkg\"\n    },\n    {\n      \"id\": \"Hexalith.Builds.Module.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Module.Cli.6.3.0.nupkg\"\n    }\n  ],\n  \"containers\": []\n}\n",
++    "manifestSha256": "157909506daa909b01ed1ddbe206b74ef56bc883722be411f3186555758e26cc"
++  }
++}
+diff --git a/eng/test_current_catalog_view.py b/eng/test_current_catalog_view.py
+index 87c0af18..5964280b 100644
+--- a/eng/test_current_catalog_view.py
++++ b/eng/test_current_catalog_view.py
+@@ -10,7 +10,7 @@ import unittest
+ from unittest.mock import patch
+ import xml.etree.ElementTree as ET
+ 
+-from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, GENERATION603_CATALOG, GENERATION605_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MCP_PACKAGES, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, TENANTS_PACKAGES, UNKNOWN_CONSUMERS,
++from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, GENERATION603_CATALOG, GENERATION605_CATALOG, GENERATION630_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MCP_PACKAGES, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, TENANTS_PACKAGES, UNKNOWN_CONSUMERS,
+                                   verify_named_platform_catalog)
+ 
+ BUILDS6_SOURCE = "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5"
+@@ -57,6 +57,11 @@ def builds605_catalog_body() -> bytes:
+         GENERATION605_CATALOG["blob"], GENERATION605_CATALOG["sha256"])
+ 
+ 
++def builds630_catalog_body() -> bytes:
++    return catalog_fixture("builds-6.3.0-Directory.Packages.props", GENERATION630_CATALOG["sourceRevision"],
++        GENERATION630_CATALOG["blob"], GENERATION630_CATALOG["sha256"])
++
++
+ def observe_producer_projects(raw: bytes, names: tuple[str, ...], sdk_version: str | None = None) -> list[dict]:
+     """Observe actual producer project identities without claiming mapping or publication authority."""
+     with tempfile.TemporaryDirectory(prefix="retained-producer-view-") as temporary:
+@@ -479,6 +484,59 @@ class CurrentCatalogViewTests(unittest.TestCase):
+                             self.assertRaisesRegex(ValueError, "unqualified MCP|unqualified current-owner"):
+                         self.verify(raw, binding)
+ 
++    def test_builds630_preserves_named_sdk42_and_measures_generic_sdk52_without_native_authority(self):
++        receipt = self.verify(builds630_catalog_body(), generation6_binding("6.3.0"))
++        self.assertEqual(receipt["catalogSha256"], GENERATION630_CATALOG["sha256"])
++        for context, count in (("defaultEvaluations", 36), ("collectingEvaluations", 36), ("currentOwnerEvaluations", 7)):
++            self.assertEqual(len(receipt[context]), count)
++            for item in receipt[context]:
++                named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS)
++                with self.subTest(context=context, project=item["Identity"]):
++                    self.assertEqual(item["Sdk"], "4.2.0" if named or context == "collectingEvaluations" else "5.2.0")
++                    pins = dict(pin.split("=", 1) for pin in item["Pins"].split("|"))
++                    self.assertEqual([pins[name] for name in OPENAPI_PACKAGES],
++                        ["10.0.15", "2.13.0"] if named else ["11.0.0", "3.11.1"])
++                    self.assertEqual(item["CatalogTenantsDefault"], "7.0.7" if named else "8.0.1")
++                    self.assertEqual(item["CatalogMemoriesDefault"], "3.0.27" if named else "4.0.0")
++                    self.assertEqual(item["CatalogMcpDefault"], "2.0.1" if named else "3.0.0")
++        self.assertFalse(receipt["candidateAcceptance"])
++        self.assertFalse(receipt["runtimeAcceptance"])
++
++    def test_builds630_refuses_neighbor_release_wrong_source_blob_and_raw_catalog(self):
++        from current_catalog_view import catalog_profile
++        for fault in ("source", "blob", "sha256", "version"):
++            binding = generation6_binding("6.3.0")
++            if fault == "source":
++                binding["producer"]["sourceRevision"] = binding["publication"]["sourceRevision"] = "e" * 40
++            elif fault == "version":
++                binding["publication"].update(version="6.3.1", releaseTag="v6.3.1")
++            else:
++                binding["producer"]["catalog"][fault] = "e" * (40 if fault == "blob" else 64)
++                if fault == "sha256": binding["publication"]["catalogSha256"] = "e" * 64
++            manifest = json.loads(binding["publication"]["manifestJson"])
++            manifest.update(sha=binding["producer"]["sourceRevision"], version=binding["publication"]["version"])
++            for package in manifest["packages"]:
++                package["path"] = "packages/" + package["id"] + "." + manifest["version"] + ".nupkg"
++            encoded = json.dumps(manifest)
++            binding["publication"].update(manifestJson=encoded, manifestSha256=hashlib.sha256(encoded.encode()).hexdigest())
++            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, "exact qualified Builds6"):
++                catalog_profile(binding)
++        with self.assertRaisesRegex(ValueError, "exact producer binding"):
++            self.verify(builds605_catalog_body(), generation6_binding("6.3.0"))
++
++    def test_builds630_refuses_named_and_generic_package_family_drift_in_every_context(self):
++        raw, binding = builds630_catalog_body(), generation6_binding("6.3.0")
++        receipt = self.verify(raw, binding)
++        contexts = ("defaultEvaluations", "collectingEvaluations", "currentOwnerEvaluations")
++        for context in contexts:
++            for index in (0, -1):
++                for field in ("Sdk", "Pins", "CatalogTenantsDefault", "TenantsPins", "CatalogMemoriesDefault", "MemoriesPins", "CatalogMcpDefault", "McpPins"):
++                    observations = [copy.deepcopy(receipt[name]) for name in contexts]
++                    observations[contexts.index(context)][index][field] = "unqualified"
++                    with self.subTest(context=context, index=index, field=field), \
++                            patch("current_catalog_view.evaluate_views", side_effect=observations), self.assertRaises(ValueError):
++                        self.verify(raw, binding)
++
+     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
+         root = Path(__file__).resolve().parents[1]
+         names = {path.stem for directory in ("src", "tests") for path in (root / directory).rglob("*.csproj")}

@@ -1,0 +1,191 @@
+{
+  "bindings": {
+    "artifacts": {
+      "expected": {
+        "state": "not-yet-populated"
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "holds": [],
+      "state": "populated"
+    },
+    "candidate": {
+      "classification": "baseline-only",
+      "reason": "No authenticated candidate request was selected.",
+      "state": "populated"
+    },
+    "deadlines": {
+      "execution": {
+        "state": "not-yet-populated"
+      },
+      "startup": {
+        "actualDurationSeconds": 162.0547447,
+        "effectiveSeconds": 600,
+        "expiresAt": "2026-11-17T11:47:46.7702310Z",
+        "origin": "environment-requested",
+        "originAt": "2026-11-17T11:37:46.7702310Z",
+        "override": {
+          "state": "not-overridden"
+        },
+        "state": "populated"
+      }
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "environment": {
+      "catalog": {
+        "state": "not-yet-populated"
+      },
+      "composition": {
+        "state": "not-yet-populated"
+      },
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "44073347507"
+      },
+      "isolation": {
+        "state": "not-yet-populated"
+      },
+      "mode": "package",
+      "readiness": {
+        "state": "not-yet-populated"
+      },
+      "resources": {
+        "state": "not-yet-populated"
+      },
+      "startupTasks": {
+        "state": "not-yet-populated"
+      }
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "run": {
+      "attemptId": "f65c4e776c16e0a107ba24b098d5888a",
+      "attemptSequence": 1,
+      "environmentId": "d933548c8af3c732cd81f268e8c871f0",
+      "ownerRunId": "f3f66d059ac626966d5cdaf976bc8c55",
+      "role": "owner",
+      "runId": "f3f66d059ac626966d5cdaf976bc8c55"
+    },
+    "suite": {
+      "completion": {
+        "state": "not-yet-populated"
+      },
+      "declared": {
+        "state": "not-yet-populated"
+      }
+    },
+    "tool": {
+      "buildsAdoption": {
+        "state": "not-yet-populated"
+      },
+      "contentIdentity": "sha256:b34ecf215843de5491a0c94c82cda1c1fe22bd9bc0dacc4a9568f7723d22401d",
+      "integrationQualification": {
+        "state": "not-yet-populated"
+      },
+      "name": "hexalith-module",
+      "platformAcceptance": {
+        "state": "not-yet-populated"
+      },
+      "state": "populated",
+      "version": "5.2.2"
+    }
+  },
+  "cleanup": {
+    "attemptId": "b441357d6952b29676ea48f23df76e3c",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "disposition": "complete",
+    "failures": [],
+    "leftoverResourceIds": [],
+    "observedAt": "2026-11-17T11:40:30.8221495Z",
+    "ownedResourceIds": [],
+    "state": "populated"
+  },
+  "diagnostics": [
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:cf258d4fd63309d85383121e512f33a9f060a685eb013e4b1621c73ab99eed99",
+      "id": "lifecycle",
+      "redacted": true,
+      "reference": "lifecycle-cf258d4fd63309d85383121e512f33a9f060a685eb013e4b1621c73ab99eed99.json"
+    },
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:b34ecf215843de5491a0c94c82cda1c1fe22bd9bc0dacc4a9568f7723d22401d",
+      "id": "executing-tool",
+      "redacted": true,
+      "reference": "executing-tool-b34ecf215843de5491a0c94c82cda1c1fe22bd9bc0dacc4a9568f7723d22401d.json"
+    },
+    {
+      "classification": "internal",
+      "contentIdentity": "sha256:f80de53d4a48c1af3169c29d48dd8fa34dcb72004e17a7028f721d120363d48e",
+      "id": "termination",
+      "redacted": true,
+      "reference": "termination-f80de53d4a48c1af3169c29d48dd8fa34dcb72004e17a7028f721d120363d48e.json"
+    }
+  ],
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "retention": {
+    "disposition": "not-retained",
+    "failureRunIds": [],
+    "reason": "local-failure-retention-not-established",
+    "recordedAt": "2026-11-17T11:40:30.8221495Z",
+    "retainedResourceIds": [],
+    "state": "populated"
+  },
+  "schema": "hexalith.test-result.v1",
+  "terminal": {
+    "cause": "startup-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "failed",
+    "recordedAt": "2026-11-17T11:40:28.8359126Z"
+  },
+  "termination": {
+    "environmentAccess": [
+      {
+        "diagnosticIds": [
+          "termination"
+        ],
+        "id": "access:f3f66d059ac626966d5cdaf976bc8c55",
+        "observedAt": "2026-11-17T11:40:28.8436295Z",
+        "status": "not-applicable"
+      }
+    ],
+    "failures": [],
+    "leftoverWorkIds": [],
+    "ownedWork": [
+      {
+        "diagnosticIds": [
+          "termination"
+        ],
+        "id": "native:f3f66d059ac626966d5cdaf976bc8c55",
+        "observedAt": "2026-11-17T11:40:28.8436295Z",
+        "status": "not-applicable"
+      },
+      {
+        "diagnosticIds": [
+          "termination"
+        ],
+        "id": "environment:f3f66d059ac626966d5cdaf976bc8c55",
+        "observedAt": "2026-11-17T11:40:29.0381803Z",
+        "status": "terminated"
+      }
+    ],
+    "state": "populated"
+  }
+}

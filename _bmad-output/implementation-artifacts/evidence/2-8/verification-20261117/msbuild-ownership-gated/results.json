@@ -1,0 +1,238 @@
+[
+  {
+    "mode": "sdk-default",
+    "sdk": "11.0.100",
+    "firstSupervisorExit": 0,
+    "secondExitAfterFirstCleanup": 1,
+    "secondSupervisorExit": 1,
+    "ancestry": {
+      "firstBeforePause": [
+        {
+          "pid": 3231235,
+          "parent": 3231227,
+          "birth": "18294669",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        },
+        {
+          "pid": 3231227,
+          "parent": 3230995,
+          "birth": "18294669",
+          "state": "S",
+          "role": [
+            "sh"
+          ]
+        },
+        {
+          "pid": 3230995,
+          "parent": 3230924,
+          "birth": "18294653",
+          "state": "S",
+          "role": [
+            "MSBuild"
+          ]
+        },
+        {
+          "pid": 3230924,
+          "parent": 3230922,
+          "birth": "18294637",
+          "state": "S",
+          "role": [
+            "dotnet"
+          ]
+        },
+        {
+          "pid": 3230922,
+          "parent": 3230881,
+          "birth": "18294635",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        }
+      ],
+      "first": [],
+      "second": [
+        {
+          "pid": 3231454,
+          "parent": 3231453,
+          "birth": "18294698",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        },
+        {
+          "pid": 3231453,
+          "parent": 3230995,
+          "birth": "18294698",
+          "state": "S",
+          "role": [
+            "sh"
+          ]
+        },
+        {
+          "pid": 3230995,
+          "parent": 3230922,
+          "birth": "18294653",
+          "state": "S",
+          "role": [
+            "MSBuild"
+          ]
+        },
+        {
+          "pid": 3230922,
+          "parent": 3230881,
+          "birth": "18294635",
+          "state": "T",
+          "role": [
+            "python3"
+          ]
+        }
+      ],
+      "secondAfterFirstCleanup": []
+    },
+    "stdoutLengths": {
+      "first": 0,
+      "second": 0
+    },
+    "stderr": {
+      "first": "",
+      "second": ""
+    }
+  },
+  {
+    "mode": "server-isolated",
+    "sdk": "11.0.100",
+    "firstSupervisorExit": 0,
+    "secondExitAfterFirstCleanup": null,
+    "secondSupervisorExit": 0,
+    "ancestry": {
+      "firstBeforePause": [
+        {
+          "pid": 3231523,
+          "parent": 3231521,
+          "birth": "18294747",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        },
+        {
+          "pid": 3231521,
+          "parent": 3231466,
+          "birth": "18294747",
+          "state": "S",
+          "role": [
+            "sh"
+          ]
+        },
+        {
+          "pid": 3231466,
+          "parent": 3231465,
+          "birth": "18294723",
+          "state": "S",
+          "role": [
+            "dotnet"
+          ]
+        },
+        {
+          "pid": 3231465,
+          "parent": 3230881,
+          "birth": "18294721",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        }
+      ],
+      "first": [],
+      "second": [
+        {
+          "pid": 3231896,
+          "parent": 3231895,
+          "birth": "18294779",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        },
+        {
+          "pid": 3231895,
+          "parent": 3231669,
+          "birth": "18294779",
+          "state": "S",
+          "role": [
+            "sh"
+          ]
+        },
+        {
+          "pid": 3231669,
+          "parent": 3231635,
+          "birth": "18294755",
+          "state": "S",
+          "role": [
+            "dotnet"
+          ]
+        },
+        {
+          "pid": 3231635,
+          "parent": 3230881,
+          "birth": "18294753",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        }
+      ],
+      "secondAfterFirstCleanup": [
+        {
+          "pid": 3231896,
+          "parent": 3231895,
+          "birth": "18294779",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        },
+        {
+          "pid": 3231895,
+          "parent": 3231669,
+          "birth": "18294779",
+          "state": "S",
+          "role": [
+            "sh"
+          ]
+        },
+        {
+          "pid": 3231669,
+          "parent": 3231635,
+          "birth": "18294755",
+          "state": "S",
+          "role": [
+            "dotnet"
+          ]
+        },
+        {
+          "pid": 3231635,
+          "parent": 3230881,
+          "birth": "18294753",
+          "state": "S",
+          "role": [
+            "python3"
+          ]
+        }
+      ]
+    },
+    "stdoutLengths": {
+      "first": 0,
+      "second": 0
+    },
+    "stderr": {
+      "first": "",
+      "second": ""
+    }
+  }
+]

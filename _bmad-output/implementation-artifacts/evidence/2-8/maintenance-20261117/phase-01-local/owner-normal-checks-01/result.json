@@ -1,0 +1,39 @@
+{
+  "kind": "normal owner global qualification; no publication or runtime acceptance",
+  "remoteMutations": false,
+  "commands": [
+    {
+      "label": "clone-owner",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "import-candidate",
+      "exitCode": 0,
+      "seconds": 0.032
+    },
+    {
+      "label": "checkout-candidate",
+      "exitCode": 0,
+      "seconds": 1.268
+    },
+    {
+      "label": "clone-direct-builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout-direct-builds",
+      "exitCode": 0,
+      "seconds": 0.365
+    },
+    {
+      "label": "global-check",
+      "exitCode": 1,
+      "seconds": 1093.419
+    }
+  ],
+  "source": "3c285357c9eadec74a3516d649c8197fe1719052",
+  "status": "failed",
+  "reason": "RuntimeError: global-check failed; see log"
+}

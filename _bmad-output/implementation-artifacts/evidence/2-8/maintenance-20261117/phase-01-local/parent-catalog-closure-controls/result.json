@@ -1,0 +1,18 @@
+{
+  "classification": "isolated graph closure controls only; not owner-source CI/runtime",
+  "base": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "results": [
+    {
+      "case": "options-only",
+      "exitCode": 1,
+      "seconds": 0.917,
+      "catalogSha256": "5bd2447ed66e7fa9e1b5c395bb5748616e020c34298615a561a0d5acae327085"
+    },
+    {
+      "case": "options-plus-di-abstractions",
+      "exitCode": 0,
+      "seconds": 0.916,
+      "catalogSha256": "908d6acf84f3fac00c14942652b7b6d35fc93094e5ce41f87061db44bdaf3295"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -240,7 +240,7 @@
+     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.14" />
+     <!-- GHSA-334f-vvp4-7g6p: patched Common for consumers with CentralPackageTransitivePinningEnabled=true. -->
+     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Common" Version="10.0.14" />
+-    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.14" />
++    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.15" />
+     <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.63.4" />
+     <PackageVersion Include="Microsoft.Bot.Builder" Version="4.23.1" />
+--- a/package.json
++++ b/package.json
+@@ -16,6 +16,10 @@
+       {
+         "name": "prerelease",
+         "prerelease": true
++      },
++      {
++        "name": "4.44.x",
++        "range": "4.44.x"
+       }
+     ],
+     "plugins": [
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -7,9 +7,9 @@
+ 
+ on:
+   pull_request:
+-    branches: [main, prerelease]
++    branches: [main, prerelease, 4.44.x]
+   push:
+-    branches: [main, prerelease]
++    branches: [main, prerelease, 4.44.x]
+ 
+ concurrency:
+   # Unlike the release workflow, superseded CI runs carry no publication risk.
+--- a/.github/workflows/build-release.yml
++++ b/.github/workflows/build-release.yml
+@@ -19,6 +19,7 @@
+     - uses: actions/checkout@v7.0.1
+       with:
+         persist-credentials: false
++        fetch-depth: 0
+ 
+     - name: Require exact current branch and successful push CI
+       shell: bash
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -19,7 +19,7 @@
+     $branch = $env:GITHUB_REF -creplace '^refs/heads/', ''
+     if ($RunId -cnotmatch '^[1-9][0-9]*$' -or $Revision -cnotmatch '^[0-9a-f]{40}$' -or
+         $repository -cnotmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$' -or
+-        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease')) {
++        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease', 'refs/heads/4.44.x')) {
+         throw 'Source CI verification requires a valid run ID, source revision, repository, and release branch.'
+     }
+ 
+@@ -95,7 +95,7 @@
+     }
+     if ($releaseContext -and (
+         $env:GITHUB_REPOSITORY -cne 'Hexalith/Hexalith.Builds' -or
+-        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease') -or
++        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease', 'refs/heads/4.44.x') -or
+         $env:GITHUB_EVENT_NAME -cne 'workflow_dispatch' -or
+         $env:GITHUB_WORKFLOW_REF -cne "Hexalith/Hexalith.Builds/.github/workflows/build-release.yml@$($env:GITHUB_REF)" -or
+         $env:GITHUB_WORKFLOW_SHA -cne [string]$Qualification.sourceTree.revision -or
+--- a/Tools/verify-g4-release-source.sh
++++ b/Tools/verify-g4-release-source.sh
+@@ -4,6 +4,11 @@
+ : "${REPOSITORY:?Repository identity is required}"
+ : "${DISPATCH_REF:?Dispatch branch is required}"
+ : "${DISPATCH_SHA:?Dispatch SHA is required}"
++
++# The named maintenance lane has an independent strict ancestry/latest-attempt gate.
++if [[ "$DISPATCH_REF" == refs/heads/4.44.x ]]; then
++  exec python3 "$({ cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd; })/verify-maintenance-release-source.py"
++fi
+ 
+ case "$DISPATCH_REF" in
+   refs/heads/main|refs/heads/prerelease) ;;

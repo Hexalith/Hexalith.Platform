@@ -1,0 +1,36 @@
+{
+  "purpose": "SDK4.2 package authenticity and private reader/purpose boundaries on the candidate current collector; no image or native admission.",
+  "remainingQualification": "Published extension fixture/host authority and native integration remain separately required.",
+  "groups": [
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42EventStorePackageTestCohortTests"
+      ],
+      "requiredCount": 40,
+      "purpose": "sdk42-private-eventstore-boundary",
+      "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42PublishedPartiesCohortTests"
+      ],
+      "requiredCount": 51,
+      "purpose": "sdk42-public-parties-boundary",
+      "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformSdk42PackageEntryTests"
+      ],
+      "requiredCount": 2,
+      "purpose": "sdk42-actual-signed-tool-seed-owner-and-reader",
+      "collector": "current"
+    }
+  ]
+}

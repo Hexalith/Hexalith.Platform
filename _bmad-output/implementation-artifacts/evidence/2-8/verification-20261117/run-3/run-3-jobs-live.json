@@ -1,0 +1,340 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 133968473257,
+      "run_id": 44062720071,
+      "workflow_name": "Disposable CI lifecycle qualification",
+      "head_branch": "proof/story-2-8-patched-cancel-ordering-522-20261117",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/runs/44062720071",
+      "run_attempt": 1,
+      "node_id": "CR_kwDORb3i1M8AAAAfMSSsqQ",
+      "head_sha": "68606e51aad58f4c220d516723eba792ed664a50",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/jobs/133968473257",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/44062720071/job/133968473257",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-17T10:12:56Z",
+      "started_at": "2026-11-17T10:13:05Z",
+      "completed_at": "2026-11-17T10:30:10Z",
+      "name": "baseline / build-and-test",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T10:13:06Z",
+          "completed_at": "2026-11-17T10:13:10Z"
+        },
+        {
+          "name": "Validate declared integration inputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T10:13:10Z",
+          "completed_at": "2026-11-17T10:13:10Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T10:13:10Z",
+          "completed_at": "2026-11-17T10:13:14Z"
+        },
+        {
+          "name": "Validate governed CI contract",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4,
+          "started_at": "2026-11-17T10:13:14Z",
+          "completed_at": "2026-11-17T10:13:14Z"
+        },
+        {
+          "name": "Checkout approved Builds actions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T10:13:14Z",
+          "completed_at": "2026-11-17T10:13:14Z"
+        },
+        {
+          "name": "Evaluate governed workflow provenance",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-11-17T10:13:14Z",
+          "completed_at": "2026-11-17T10:13:14Z"
+        },
+        {
+          "name": "Initialize root-declared submodules (governed)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-11-17T10:13:14Z",
+          "completed_at": "2026-11-17T10:13:14Z"
+        },
+        {
+          "name": "Initialize root-declared submodules",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-17T10:13:14Z",
+          "completed_at": "2026-11-17T10:13:54Z"
+        },
+        {
+          "name": "Initialize .NET",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T10:13:54Z",
+          "completed_at": "2026-11-17T10:13:55Z"
+        },
+        {
+          "name": "Checkout workflow-owned Builds preparation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T10:13:55Z",
+          "completed_at": "2026-11-17T10:13:57Z"
+        },
+        {
+          "name": "Prepare module build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T10:13:57Z",
+          "completed_at": "2026-11-17T10:14:41Z"
+        },
+        {
+          "name": "Cache NuGet packages",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-17T10:14:41Z",
+          "completed_at": "2026-11-17T10:14:46Z"
+        },
+        {
+          "name": "Validate test platform input",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13,
+          "started_at": "2026-11-17T10:14:46Z",
+          "completed_at": "2026-11-17T10:14:46Z"
+        },
+        {
+          "name": "Prepare package dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-17T10:14:46Z",
+          "completed_at": "2026-11-17T10:17:10Z"
+        },
+        {
+          "name": "Restore",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-17T10:17:10Z",
+          "completed_at": "2026-11-17T10:17:21Z"
+        },
+        {
+          "name": "Build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-11-17T10:17:21Z",
+          "completed_at": "2026-11-17T10:18:32Z"
+        },
+        {
+          "name": "Validate package consumer references",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-17T10:18:32Z",
+          "completed_at": "2026-11-17T10:19:08Z"
+        },
+        {
+          "name": "Unit tests (Tier 1, VSTest)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-17T10:19:08Z",
+          "completed_at": "2026-11-17T10:19:08Z"
+        },
+        {
+          "name": "Unit tests (Tier 1, Microsoft.Testing.Platform)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-17T10:19:08Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Require isolated success before integration",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 20,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Validate coverage gates",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Install integration toolchain without starting services",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Prepare integration binaries",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Authenticate pull-only integration registry",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Runner-owned package integration",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Finalize exact CI owner",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Remove integration registry credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:05Z"
+        },
+        {
+          "name": "Upload classified integration diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-11-17T10:30:05Z",
+          "completed_at": "2026-11-17T10:30:06Z"
+        },
+        {
+          "name": "Fail on blocking test failures",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 29,
+          "started_at": "2026-11-17T10:30:06Z",
+          "completed_at": "2026-11-17T10:30:06Z"
+        },
+        {
+          "name": "Upload test and coverage evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-17T10:30:06Z",
+          "completed_at": "2026-11-17T10:30:07Z"
+        },
+        {
+          "name": "Post Cache NuGet packages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 57,
+          "started_at": "2026-11-17T10:30:07Z",
+          "completed_at": "2026-11-17T10:30:07Z"
+        },
+        {
+          "name": "Post Checkout workflow-owned Builds preparation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 58,
+          "started_at": "2026-11-17T10:30:07Z",
+          "completed_at": "2026-11-17T10:30:08Z"
+        },
+        {
+          "name": "Post Initialize .NET",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 59,
+          "started_at": "2026-11-17T10:30:08Z",
+          "completed_at": "2026-11-17T10:30:08Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 60,
+          "started_at": "2026-11-17T10:30:08Z",
+          "completed_at": "2026-11-17T10:30:08Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-17T10:30:08Z",
+          "completed_at": "2026-11-17T10:30:08Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/check-runs/133968473257",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089264,
+      "runner_name": "GitHub Actions 1000089264",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 133977696657,
+      "run_id": 44062720071,
+      "workflow_name": "Disposable CI lifecycle qualification",
+      "head_branch": "proof/story-2-8-patched-cancel-ordering-522-20261117",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/runs/44062720071",
+      "run_attempt": 1,
+      "node_id": "CR_kwDORb3i1M8AAAAfMbFpkQ",
+      "head_sha": "68606e51aad58f4c220d516723eba792ed664a50",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/actions/jobs/133977696657",
+      "html_url": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/44062720071/job/133977696657",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-17T10:30:11Z",
+      "started_at": "2026-11-17T10:30:11Z",
+      "completed_at": "2026-11-17T10:30:10Z",
+      "name": "qualification",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Parties/check-runs/133977696657",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    }
+  ]
+}

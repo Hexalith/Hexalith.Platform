@@ -1,0 +1,316 @@
+{
+  "classification": "PR CI preflight only",
+  "candidateAcceptance": false,
+  "nativeQualificationCredit": false,
+  "remoteMutations": false,
+  "pr": 46,
+  "headSource": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "baseSource": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "tuple": {
+    "runId": 44166185074,
+    "attempt": 1,
+    "jobs": [
+      {
+        "id": 134332745013,
+        "name": "resolve-sources",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332985636,
+        "name": "tuple",
+        "conclusion": "success"
+      },
+      {
+        "id": 134372684798,
+        "name": "tuple-verdict",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "sdk": {
+    "runId": 44166185115,
+    "attempt": 1,
+    "jobs": [
+      {
+        "id": 134332930597,
+        "name": "consumer-binding (3.130.1)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930821,
+        "name": "consumer-binding (4.1.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930883,
+        "name": "consumer-binding (3.130.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930937,
+        "name": "consumer-binding (3.130.2)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332931259,
+        "name": "consumer-binding (4.2.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332931454,
+        "name": "consumer-binding (3.132.1)",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "artifact": {
+    "id": 14369843406,
+    "sha256": "7007cdc09afc7d815eddc37c7d1a84db91694bbf90bf5d4036ca970af1e3c18b",
+    "size": 255707477,
+    "officialDigestAndCrcVerified": true,
+    "uniqueSafePaths": true,
+    "retained": [
+      {
+        "name": "_temp/platform-tuple-bootstrap/bootstrap.json",
+        "sha256": "061d4442e6b04627111f81877f81fa8b521bf2069984e8972f03e4294906a3c4",
+        "size": 549
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-0.xml",
+        "sha256": "d607f89c9a6fc6edd6e55fc527533c05f73eaf7545e7d01edb9beee8013a8c55",
+        "size": 2053
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-1.xml",
+        "sha256": "ffdd9aa56448d8d3a0509e63acc531cf2d7321bbcab3a5aacedf30313e08e646",
+        "size": 62684
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-10.xml",
+        "sha256": "ecd63167942c92641e867ee2246301a90a46b993457b5e250f43fa2351c051ca",
+        "size": 6955
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-11.xml",
+        "sha256": "ef04ca87f7cd3eca3ec4a7c1d981f87485524d2767748a2b24aeabd3419683b4",
+        "size": 2593
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-12.xml",
+        "sha256": "7b23be4415003f8ff15cf5b3b335b6bc143256de439471430ecaa96f93483efc",
+        "size": 9348
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-13.xml",
+        "sha256": "926bbf5a996ec58b1445d7bacfbfdc4d7c4e4af73f1b0afa5023df847d2e9731",
+        "size": 3912
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-14.xml",
+        "sha256": "669255f463a50c9d7bf582c59dcf6f30e4b06ea6a15fe929da5456f3f30dc66e",
+        "size": 4106
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-15.xml",
+        "sha256": "c3da2955eb4c6ac2c968107dc4faeb46427aa2ec3eee00a39d8278d40659e111",
+        "size": 3776
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-16.xml",
+        "sha256": "d371fac1c158c4c6529bcc88b30e08ef0b72d0cae9cfeab6646fdf7c93d8a830",
+        "size": 3836
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-17.xml",
+        "sha256": "eae8857aad7556e462418bc7fdefe2db0354cbe0e673bf4b72c1306ea919a899",
+        "size": 20678
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-18.xml",
+        "sha256": "741f8d8182bb4d3d3296fcbad52cf9dbcdb8326e5efe2e316f58ee3cf8a679f6",
+        "size": 5273
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-19.xml",
+        "sha256": "cd15427d78bc8d815041855de4cd2e314f57acee9e1ad5cdeb3bda3f4bcd49ad",
+        "size": 1915
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-2.xml",
+        "sha256": "6c901356bc6600795d1fe806c16ea1c07dfa856c341d78e22e467aa387922054",
+        "size": 2406
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-20.xml",
+        "sha256": "aa69d18aa119419db5e78ec53a7dcff30893f75b64da6fc4de598492e509f7d2",
+        "size": 27983
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-21.xml",
+        "sha256": "a332d1b2d39467b1f73962fa0b34a20d128cbc1616cb85443162c7ef1a439e48",
+        "size": 4715
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-22.xml",
+        "sha256": "1f12e8b263d900e230c99f839ad3a32d39baf3541811f80d9bbb8fe8e5a34f11",
+        "size": 39323
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-23.xml",
+        "sha256": "57c3ef1b7423d021b558e33cb18fff23f7eb6d0c10ca2213c89ee6075ce12590",
+        "size": 8251
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-24.xml",
+        "sha256": "eb113f4ffbd314099cb51aec6d40d97ae4462aa7c08fa85c658de9ce4a088e87",
+        "size": 14087
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-25.xml",
+        "sha256": "004d80f4b4c63a5585679d3c22e9c179a69a8c9f8141ef2b0c9ce88ec7832b4e",
+        "size": 3778
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-26.xml",
+        "sha256": "66ef5ac9a9f82fb5b5baa13f4160b6fd965048bee208b726ecbbdeae40e74d7b",
+        "size": 3092
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-27.xml",
+        "sha256": "fe83d549f76dd0071a095638e9aba85bdbef22f18840338fad3666f3df57e538",
+        "size": 3074
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-28.xml",
+        "sha256": "c2edab56a62ce3e6955dd943a87d0b574d84def06cbf453adde0d4a8de6859d0",
+        "size": 27127
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-3.xml",
+        "sha256": "1aa74a572a501a79860265f82ad4ff73dcd7299e5a4c35fc0fa703ec8238559f",
+        "size": 17800
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-30.xml",
+        "sha256": "b1d4c12922a7883c27fb05cdc58ce0fefa1108edbea753ed7520fc464a87688d",
+        "size": 3124
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-31.xml",
+        "sha256": "478ebd00a4d7b79f1901692e6da29c9c9b601fb9332532048a3447f4d6ef90b7",
+        "size": 1883
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-29.xml",
+        "sha256": "8edcbcc44c73b7e93482df9e05904da6a9da26f76d19fe0a1e3c278db4747e6a",
+        "size": 12778
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-33.xml",
+        "sha256": "bdc9b1593e7920ae58a99a4c1803c850a0c23211ed71ce99949455bda57e444f",
+        "size": 2504
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-32.xml",
+        "sha256": "b61db507e222f0f813d5d0029aa0248f51b64f4c83947c9080d7e476801537f1",
+        "size": 15298
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-4.xml",
+        "sha256": "fd5358e1d301595989e63cb37ed3b46375de0eef77bbae1dfef6e061790028eb",
+        "size": 30719
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-5.xml",
+        "sha256": "068e8d92053b9bdb9a80c04d7b5f22b1da4fe90836c37152bc4177e0564923cd",
+        "size": 5568
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-6.xml",
+        "sha256": "8255f80ed51772c6085eb11ee3fb8d44128f0bb8f798d909b0ec1655d6959645",
+        "size": 20526
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-7.xml",
+        "sha256": "77126d48bbc73426948dfcbf87a1e25e903b5c4c11fba05e33f88fad2908a3b2",
+        "size": 4198
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-8.xml",
+        "sha256": "ddc7c6f99ad5471d34af8b67cb1acfb536e59aedbc058c35eea778ec65d98952",
+        "size": 26013
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/required-9.xml",
+        "sha256": "b0f7e1c5711da3e3310b33a9d695cb44732b3fab97ba4199cd2945118ff4ba27",
+        "size": 2389
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/source-sdk-propagation-controls.stderr",
+        "sha256": "5f0bd6b405873c3ebf5fcfcd58f793856662d12fa1f240f6eaee1382201ee3b6",
+        "size": 5174
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/source-sdk-propagation-controls.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-current/tuple-ci-result.json",
+        "sha256": "252f8d5042476593a78a9e89465d157fbb932ef252190ee4d8b738d3e9b9aa29",
+        "size": 6299418
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-0.xml",
+        "sha256": "62ba1560d9a0b09b8274a6b52eb02a36c4ab3efd5bd7534d53a4004265d3d1f1",
+        "size": 28591
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-1.xml",
+        "sha256": "af6922652f3d994e0a1201bbeabf69ae54b939b2157ccdc264cb34f46b5ee185",
+        "size": 40085
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/required-2.xml",
+        "sha256": "5a834cf8eecc3d7be03c5553d55f36e6890660ba4cfded915e3c6feb17cbe774",
+        "size": 2506
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/source-sdk-propagation-controls.stderr",
+        "sha256": "9f66e942336821b3f091f69c18183963ac0ff3f2ac96cf0a06fa5d896bedcebe",
+        "size": 5174
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/source-sdk-propagation-controls.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci/tuple-ci-result.json",
+        "sha256": "04d9c9867f70fd331d08d35072df243be74f12d7331bcd4da40723938319ace0",
+        "size": 6213673
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-extensions/required-0.xml",
+        "sha256": "8992d63e10716153040fc60caa55b6dbc9c078a9c1ab6bd0704840b1db1e42c8",
+        "size": 7140
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-extensions/source-sdk-propagation-controls.stderr",
+        "sha256": "97e4baa45dd24366b2e7b45b713881758e4883cf351b2654f86f4eb3d46ae995",
+        "size": 5174
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-extensions/source-sdk-propagation-controls.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      {
+        "name": "Hexalith.Platform/Hexalith.Platform/artifacts/tuple-ci-extensions/tuple-ci-result.json",
+        "sha256": "249119ee42c445a7792f7efeb3f0718ed6bd03369827acf4ebd2516bb8022513",
+        "size": 6212455
+      }
+    ]
+  },
+  "status": "archive-authenticated; primary receipt audit pending"
+}

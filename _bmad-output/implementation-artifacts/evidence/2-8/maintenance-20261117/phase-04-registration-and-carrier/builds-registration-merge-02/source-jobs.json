@@ -1,0 +1,1147 @@
+{
+  "total_count": 10,
+  "jobs": [
+    {
+      "id": 134183570648,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbM2A",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183570648",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183570648",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T16:18:33Z",
+      "completed_at": "2026-11-17T16:19:44Z",
+      "name": "Sample macOS tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T16:18:35Z",
+          "completed_at": "2026-11-17T16:18:43Z"
+        },
+        {
+          "name": "Prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T16:18:43Z",
+          "completed_at": "2026-11-17T16:19:35Z"
+        },
+        {
+          "name": "Run module action",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T16:19:35Z",
+          "completed_at": "2026-11-17T16:19:39Z"
+        },
+        {
+          "name": "Post Prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T16:19:39Z",
+          "completed_at": "2026-11-17T16:19:41Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T16:19:41Z",
+          "completed_at": "2026-11-17T16:19:42Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183570648",
+      "labels": [
+        "macos-latest"
+      ],
+      "runner_id": 1000089590,
+      "runner_name": "GitHub Actions 1000089590",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183571032,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbOWA",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183571032",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183571032",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T16:07:31Z",
+      "name": "Package catalog contracts",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:25Z",
+          "completed_at": "2026-11-17T15:47:26Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:32Z"
+        },
+        {
+          "name": "Initialize .NET",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:32Z",
+          "completed_at": "2026-11-17T15:47:34Z"
+        },
+        {
+          "name": "Install .NET 10 targeting packs for offline catalog fixtures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:34Z",
+          "completed_at": "2026-11-17T15:47:35Z"
+        },
+        {
+          "name": "Validate central package versions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:35Z",
+          "completed_at": "2026-11-17T15:47:51Z"
+        },
+        {
+          "name": "Test authoritative package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:47:51Z",
+          "completed_at": "2026-11-17T15:52:37Z"
+        },
+        {
+          "name": "Test logging generator selection",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:52:37Z",
+          "completed_at": "2026-11-17T15:52:40Z"
+        },
+        {
+          "name": "Test FrontComposer Immutable consumer view",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-17T15:52:40Z",
+          "completed_at": "2026-11-17T15:53:09Z"
+        },
+        {
+          "name": "Test central package version validator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T15:53:09Z",
+          "completed_at": "2026-11-17T15:53:26Z"
+        },
+        {
+          "name": "Validate package version audit",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T15:53:26Z",
+          "completed_at": "2026-11-17T15:53:50Z"
+        },
+        {
+          "name": "Test package version audit generator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T15:53:50Z",
+          "completed_at": "2026-11-17T15:54:25Z"
+        },
+        {
+          "name": "Test package version audit validator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-17T15:54:25Z",
+          "completed_at": "2026-11-17T16:00:31Z"
+        },
+        {
+          "name": "Validate Builds consumer package authority",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T16:00:31Z",
+          "completed_at": "2026-11-17T16:01:20Z"
+        },
+        {
+          "name": "Test consumer package authority validator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-17T16:01:20Z",
+          "completed_at": "2026-11-17T16:02:05Z"
+        },
+        {
+          "name": "Validate package version exception inventory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-17T16:02:05Z",
+          "completed_at": "2026-11-17T16:02:06Z"
+        },
+        {
+          "name": "Test package version exception validator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-11-17T16:02:06Z",
+          "completed_at": "2026-11-17T16:03:03Z"
+        },
+        {
+          "name": "Validate Platform version catalog and hosting compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-17T16:03:03Z",
+          "completed_at": "2026-11-17T16:03:06Z"
+        },
+        {
+          "name": "Test Platform version catalog contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-17T16:03:06Z",
+          "completed_at": "2026-11-17T16:06:59Z"
+        },
+        {
+          "name": "Validate Dapr package versions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-17T16:06:59Z",
+          "completed_at": "2026-11-17T16:07:00Z"
+        },
+        {
+          "name": "Test Dapr package validator",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-17T16:07:00Z",
+          "completed_at": "2026-11-17T16:07:29Z"
+        },
+        {
+          "name": "Post Install .NET 10 targeting packs for offline catalog fixtures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 38,
+          "started_at": "2026-11-17T16:07:29Z",
+          "completed_at": "2026-11-17T16:07:29Z"
+        },
+        {
+          "name": "Post Initialize .NET",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 39,
+          "started_at": "2026-11-17T16:07:29Z",
+          "completed_at": "2026-11-17T16:07:29Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-11-17T16:07:29Z",
+          "completed_at": "2026-11-17T16:07:29Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-11-17T16:07:29Z",
+          "completed_at": "2026-11-17T16:07:29Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183571032",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089574,
+      "runner_name": "GitHub Actions 1000089574",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183571395,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbPww",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183571395",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183571395",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T15:48:43Z",
+      "name": "Sample module / Build and tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:28Z"
+        },
+        {
+          "name": "Checkout module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:28Z",
+          "completed_at": "2026-11-17T15:47:36Z"
+        },
+        {
+          "name": "Stage 1 guard owned CI/CD content",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:36Z",
+          "completed_at": "2026-11-17T15:47:42Z"
+        },
+        {
+          "name": "Validate and prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:42Z",
+          "completed_at": "2026-11-17T15:47:42Z"
+        },
+        {
+          "name": "Setup module SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:42Z",
+          "completed_at": "2026-11-17T15:47:43Z"
+        },
+        {
+          "name": "Stage 2 restore and Release build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:47:43Z",
+          "completed_at": "2026-11-17T15:47:58Z"
+        },
+        {
+          "name": "Stage 3 unit tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:47:58Z",
+          "completed_at": "2026-11-17T15:48:08Z"
+        },
+        {
+          "name": "Set up Builds npm runtime",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T15:48:08Z",
+          "completed_at": "2026-11-17T15:48:08Z"
+        },
+        {
+          "name": "Stage 4 environment setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T15:48:08Z",
+          "completed_at": "2026-11-17T15:48:29Z"
+        },
+        {
+          "name": "After unit tests hook",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T15:48:29Z",
+          "completed_at": "2026-11-17T15:48:31Z"
+        },
+        {
+          "name": "Stage 4 integration tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T15:48:31Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "After integration tests hook",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "Preserve project results and coverage diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "Post Stage 4 environment setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "Post Setup module SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "Post Stage 1 guard owned CI/CD content",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:40Z"
+        },
+        {
+          "name": "Post Checkout module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T15:48:40Z",
+          "completed_at": "2026-11-17T15:48:41Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T15:48:41Z",
+          "completed_at": "2026-11-17T15:48:41Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183571395",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089577,
+      "runner_name": "GitHub Actions 1000089577",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183572077,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbSbQ",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183572077",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183572077",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T15:59:13Z",
+      "name": "Python contract tests (3.12)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:26Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:29Z"
+        },
+        {
+          "name": "Capture runner Python before setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:29Z",
+          "completed_at": "2026-11-17T15:47:29Z"
+        },
+        {
+          "name": "Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:29Z",
+          "completed_at": "2026-11-17T15:47:29Z"
+        },
+        {
+          "name": "Initialize .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:29Z",
+          "completed_at": "2026-11-17T15:47:31Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:47:31Z",
+          "completed_at": "2026-11-17T15:47:35Z"
+        },
+        {
+          "name": "Install Node.js dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:47:35Z",
+          "completed_at": "2026-11-17T15:47:38Z"
+        },
+        {
+          "name": "Verify npm dependency provenance and signatures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-17T15:47:38Z",
+          "completed_at": "2026-11-17T15:47:40Z"
+        },
+        {
+          "name": "Install integrity-checked CI tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T15:47:40Z",
+          "completed_at": "2026-11-17T15:47:42Z"
+        },
+        {
+          "name": "Run the shared Python suite and CI and perimeter contract validators",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T15:47:42Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-17T15:59:09Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        },
+        {
+          "name": "Post Initialize .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-17T15:59:09Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        },
+        {
+          "name": "Post Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-17T15:59:09Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-17T15:59:09Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-17T15:59:09Z",
+          "completed_at": "2026-11-17T15:59:09Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183572077",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089578,
+      "runner_name": "GitHub Actions 1000089578",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183572711,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbU5w",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183572711",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183572711",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T16:18:28Z",
+      "completed_at": "2026-11-17T16:17:45Z",
+      "name": ".NET tests / Restore owned CI/CD content",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183572711",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 134183574717,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfbcvQ",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183574717",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183574717",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:28Z",
+      "started_at": "2026-11-17T15:48:48Z",
+      "completed_at": "2026-11-17T15:49:58Z",
+      "name": "Sample Windows tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:48:48Z",
+          "completed_at": "2026-11-17T15:48:55Z"
+        },
+        {
+          "name": "Prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:48:55Z",
+          "completed_at": "2026-11-17T15:49:50Z"
+        },
+        {
+          "name": "Run module action",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:49:50Z",
+          "completed_at": "2026-11-17T15:49:54Z"
+        },
+        {
+          "name": "Post Prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:49:54Z",
+          "completed_at": "2026-11-17T15:49:57Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:49:57Z",
+          "completed_at": "2026-11-17T15:49:57Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183574717",
+      "labels": [
+        "windows-latest"
+      ],
+      "runner_id": 1000089580,
+      "runner_name": "GitHub Actions 1000089580",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183633516,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPffCbA",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183633516",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183633516",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-17T16:18:33Z",
+      "started_at": "2026-11-17T16:18:33Z",
+      "completed_at": "2026-11-17T15:48:43Z",
+      "name": "Sample module / Restore owned CI/CD content",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183633516",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    },
+    {
+      "id": 134183634045,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPffEfQ",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183634045",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183634045",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:33Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T15:58:00Z",
+      "name": "Python contract tests (runner)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:25Z",
+          "completed_at": "2026-11-17T15:47:26Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:28Z"
+        },
+        {
+          "name": "Capture runner Python before setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:28Z",
+          "completed_at": "2026-11-17T15:47:28Z"
+        },
+        {
+          "name": "Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:28Z",
+          "completed_at": "2026-11-17T15:47:28Z"
+        },
+        {
+          "name": "Initialize .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:28Z",
+          "completed_at": "2026-11-17T15:47:30Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:47:30Z",
+          "completed_at": "2026-11-17T15:47:34Z"
+        },
+        {
+          "name": "Install Node.js dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:47:34Z",
+          "completed_at": "2026-11-17T15:47:36Z"
+        },
+        {
+          "name": "Verify npm dependency provenance and signatures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-17T15:47:36Z",
+          "completed_at": "2026-11-17T15:47:39Z"
+        },
+        {
+          "name": "Install integrity-checked CI tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T15:47:39Z",
+          "completed_at": "2026-11-17T15:47:40Z"
+        },
+        {
+          "name": "Run the shared Python suite and CI and perimeter contract validators",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T15:47:40Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-17T15:57:58Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        },
+        {
+          "name": "Post Initialize .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-17T15:57:58Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        },
+        {
+          "name": "Post Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-17T15:57:58Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-17T15:57:58Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-17T15:57:58Z",
+          "completed_at": "2026-11-17T15:57:58Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183634045",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089575,
+      "runner_name": "GitHub Actions 1000089575",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183648732,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPff93A",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183648732",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183648732",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:34Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T16:17:45Z",
+      "name": ".NET tests / Build and tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:25Z",
+          "completed_at": "2026-11-17T15:47:30Z"
+        },
+        {
+          "name": "Checkout module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:30Z",
+          "completed_at": "2026-11-17T15:47:37Z"
+        },
+        {
+          "name": "Stage 1 guard owned CI/CD content",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:37Z",
+          "completed_at": "2026-11-17T15:47:37Z"
+        },
+        {
+          "name": "Validate and prepare module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:37Z",
+          "completed_at": "2026-11-17T15:47:37Z"
+        },
+        {
+          "name": "Setup module SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:37Z",
+          "completed_at": "2026-11-17T15:47:38Z"
+        },
+        {
+          "name": "Stage 2 restore and Release build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T15:47:38Z",
+          "completed_at": "2026-11-17T15:49:33Z"
+        },
+        {
+          "name": "Stage 3 unit tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T15:49:33Z",
+          "completed_at": "2026-11-17T16:17:31Z"
+        },
+        {
+          "name": "Set up Builds npm runtime",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T16:17:31Z",
+          "completed_at": "2026-11-17T16:17:31Z"
+        },
+        {
+          "name": "Stage 4 environment setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T16:17:31Z",
+          "completed_at": "2026-11-17T16:17:31Z"
+        },
+        {
+          "name": "After unit tests hook",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T16:17:31Z",
+          "completed_at": "2026-11-17T16:17:31Z"
+        },
+        {
+          "name": "Stage 4 integration tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T16:17:31Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "After integration tests hook",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "Preserve project results and coverage diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "Post Stage 4 environment setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "Post Setup module SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "Post Stage 1 guard owned CI/CD content",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:42Z"
+        },
+        {
+          "name": "Post Checkout module",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T16:17:42Z",
+          "completed_at": "2026-11-17T16:17:43Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T16:17:43Z",
+          "completed_at": "2026-11-17T16:17:43Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183648732",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089576,
+      "runner_name": "GitHub Actions 1000089576",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134183680486,
+      "run_id": 44118275946,
+      "workflow_name": "CI",
+      "head_branch": "fix/story-2-8-maintenance-registration",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/runs/44118275946",
+      "run_attempt": 2,
+      "node_id": "CR_kwDOOMzNRc8AAAAfPfh55g",
+      "head_sha": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/actions/jobs/134183680486",
+      "html_url": "https://github.com/Hexalith/Hexalith.Builds/actions/runs/44118275946/job/134183680486",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T16:18:37Z",
+      "started_at": "2026-11-17T15:47:25Z",
+      "completed_at": "2026-11-17T15:47:45Z",
+      "name": "Workflow lint and public API",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T15:47:26Z",
+          "completed_at": "2026-11-17T15:47:27Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T15:47:27Z",
+          "completed_at": "2026-11-17T15:47:35Z"
+        },
+        {
+          "name": "Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T15:47:35Z",
+          "completed_at": "2026-11-17T15:47:35Z"
+        },
+        {
+          "name": "Lint workflows and composite actions with online audits",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T15:47:35Z",
+          "completed_at": "2026-11-17T15:47:41Z"
+        },
+        {
+          "name": "Check public API against the reachable stable release",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T15:47:41Z",
+          "completed_at": "2026-11-17T15:47:42Z"
+        },
+        {
+          "name": "Post Setup Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T15:47:42Z",
+          "completed_at": "2026-11-17T15:47:43Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T15:47:43Z",
+          "completed_at": "2026-11-17T15:47:43Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T15:47:43Z",
+          "completed_at": "2026-11-17T15:47:43Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Builds/check-runs/134183680486",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089579,
+      "runner_name": "GitHub Actions 1000089579",
+      "runner_group_id": null,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

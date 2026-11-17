@@ -1,0 +1,152 @@
+{
+  "remoteMutations": false,
+  "classification": "unpublished source proposals and locked version analysis only",
+  "candidates": [
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "base": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+      "head": "7b95a68fa0657135cee1103defc59089defa93ff",
+      "tree": "f3370d3131b9bffbc6ca16835a50aa74bbad151f",
+      "branch": "4.44.x",
+      "packageLockSha256": "fb1bb642480452647a000a3d9b3cb052fcf055750d12a4aa4da1ee6f61ec59b0",
+      "state": "security maintenance source proposal"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "base": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+      "head": "4c590a600e2b691d37631cb306eb4f5b33807a50",
+      "tree": "56218dafc9f5fe638ceb0bee78965ffde5454412",
+      "branch": "1.7.x",
+      "packageLockSha256": "f80868b4535756cf61d5eac15870341e12a6b56d9b7704656e0ecf2ca92aee03",
+      "state": "support-only proposal; original tuple binding retained until genuine new publication exists"
+    }
+  ],
+  "status": "verified-local-proposals",
+  "commands": [
+    {
+      "label": "clone-owner",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "import-owner",
+      "exitCode": 0,
+      "seconds": 0.032
+    },
+    {
+      "label": "checkout-owner",
+      "exitCode": 0,
+      "seconds": 1.017
+    },
+    {
+      "label": "clone-Builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "branch-Builds",
+      "exitCode": 0,
+      "seconds": 0.265
+    },
+    {
+      "label": "npm-ci-Builds",
+      "exitCode": 0,
+      "seconds": 4.427
+    },
+    {
+      "label": "npm-signatures-Builds",
+      "exitCode": 0,
+      "seconds": 4.377
+    },
+    {
+      "label": "commitlint-Builds",
+      "exitCode": 0,
+      "seconds": 0.215
+    },
+    {
+      "label": "stage-Builds",
+      "exitCode": 0,
+      "seconds": 0.114
+    },
+    {
+      "label": "diff-check-Builds",
+      "exitCode": 0,
+      "seconds": 0.004
+    },
+    {
+      "label": "commit-Builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "actual-builds-guard-tests",
+      "exitCode": 0,
+      "seconds": 0.064
+    },
+    {
+      "label": "actual-dispatcher-syntax",
+      "exitCode": 0,
+      "seconds": 0.002
+    },
+    {
+      "label": "version-Builds",
+      "exitCode": 0,
+      "seconds": 0.666
+    },
+    {
+      "label": "bundle-Builds",
+      "exitCode": 0,
+      "seconds": 0.017
+    },
+    {
+      "label": "clone-Platform",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "branch-Platform",
+      "exitCode": 0,
+      "seconds": 2.873
+    },
+    {
+      "label": "npm-ci-Platform",
+      "exitCode": 0,
+      "seconds": 6.535
+    },
+    {
+      "label": "npm-signatures-Platform",
+      "exitCode": 0,
+      "seconds": 3.83
+    },
+    {
+      "label": "commitlint-Platform",
+      "exitCode": 0,
+      "seconds": 0.265
+    },
+    {
+      "label": "stage-Platform",
+      "exitCode": 0,
+      "seconds": 0.065
+    },
+    {
+      "label": "diff-check-Platform",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "commit-Platform",
+      "exitCode": 0,
+      "seconds": 0.033
+    },
+    {
+      "label": "version-Platform",
+      "exitCode": 0,
+      "seconds": 0.666
+    },
+    {
+      "label": "bundle-Platform",
+      "exitCode": 0,
+      "seconds": 0.008
+    }
+  ]
+}

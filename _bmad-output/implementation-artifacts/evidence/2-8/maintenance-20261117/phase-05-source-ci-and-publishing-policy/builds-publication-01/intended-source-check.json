@@ -1,0 +1,48 @@
+{
+  "classification": "intended dispatch only; not an executing GitHub job or release qualification",
+  "source": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+  "branch": "4.44.x",
+  "base": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "status": "verified",
+  "ciRunId": 44129245136,
+  "ciRunAttempt": 1,
+  "workflowId": 320718206,
+  "workflowCatalogLabel": "Shared CI",
+  "jobs": [
+    {
+      "id": 134201423674,
+      "name": "Python contract tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 134201424222,
+      "name": ".NET tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 134201424237,
+      "name": "Package catalog contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 134201424262,
+      "name": "CodeQL / analyze",
+      "conclusion": "success"
+    },
+    {
+      "id": 134201424324,
+      "name": "Build and package contracts",
+      "conclusion": "success"
+    },
+    {
+      "id": 134201426963,
+      "name": "Dependency review",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 134212899374,
+      "name": "Build and test",
+      "conclusion": "success"
+    }
+  ]
+}

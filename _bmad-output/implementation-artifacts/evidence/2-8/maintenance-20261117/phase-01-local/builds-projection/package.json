@@ -1,0 +1,65 @@
+{
+  "name": "hexalith-builds",
+  "version": "0.0.0-development",
+  "private": true,
+  "description": "Hexalith Build assets",
+  "engines": {
+    "node": ">=24.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hexalith/Hexalith.Builds.git"
+  },
+  "release": {
+    "branches": [
+      {
+        "name": "4.44.x",
+        "range": "4.44.x"
+      },
+      "main",
+      {
+        "name": "prerelease",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/exec",
+        {
+          "verifyReleaseCmd": "pwsh -NoProfile -File ./Tools/verify-g4-tool-release.ps1 -Version ${nextRelease.version}",
+          "publishCmd": "pwsh -NoProfile -File ./Tools/publish-g4-tool-packages.ps1 -Version ${nextRelease.version}",
+          "prepareCmd": "pwsh -NoProfile -File ./Tools/prepare-g4-tool-release.ps1 -Version ${nextRelease.version}"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "artifacts/g4-tool-packages/**/g4-tool-package-inventory.json",
+              "label": "G-4 tool package SHA-256 inventory"
+            },
+            {
+              "path": "artifacts/g4-tool-packages/**/g4-tool-qualification-evidence.zip",
+              "label": "G-4 qualification evidence, inventory and producer run identity"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/github": "^12.0.10",
+    "semantic-release": "^25.0.9"
+  },
+  "overrides": {
+    "semantic-release": {
+      "@semantic-release/npm": "npm:@semantic-release/error@4.0.0"
+    }
+  }
+}

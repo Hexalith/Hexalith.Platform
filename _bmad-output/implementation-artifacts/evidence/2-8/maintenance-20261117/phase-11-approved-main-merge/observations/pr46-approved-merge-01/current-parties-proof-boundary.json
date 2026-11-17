@@ -1,0 +1,50 @@
+{
+  "classification": "source analysis for the open hosted cancellation proof",
+  "platformMerge": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+  "buildsSource": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+  "partiesMainObserved": "c9c21fc3e48a999db575a361562707a79f1663cf",
+  "partiesMainCli": "5.2.2",
+  "partiesInputHashes": {
+    "module/hexalith.module-manifest.v2.json": {
+      "sha256": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee"
+    },
+    ".github/workflows/ci-lifecycle-qualification.yml": {
+      "sha256": "05f53cf4b3581ea0b28e29a673baa5025d814f6b560bd6d5369f33d728f9ea78"
+    },
+    ".config/dotnet-tools.json": {
+      "sha256": "9da4af0af015284fd7411755b37b71a958747caf055baeef0918db1f0737c838"
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": {
+      "sha256": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb"
+    },
+    "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": {
+      "sha256": "4910458276fbe8ea68ed6c89b97e20cfb25a4d59e60da906e93f33467b488135"
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs": {
+      "sha256": "ca261cdf81bdb0fc01d6b61a1947b4ad345478f3d29c0af9bab80b4989ad80d2"
+    },
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PublicRuntimeImageObservations.cs": {
+      "sha256": "4809e851e7b62b3e7d60cd396cfdd989da84798c4ec0adb6b98ca6f4e392e02b"
+    },
+    "scripts/story-2-8-proof-observer.py": {
+      "sha256": "02627b1fb8554ad37b71d0680c709ca2b16decf13dbe9548443e67be01922d98"
+    }
+  },
+  "controllerPathAbsentOnPartiesMain": "scripts/qualify-disposable-ci.py",
+  "buildsSourceHashes": {
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionProcess.cs": "389eecded8edcf2eaa16e07a6f9b2432d35b45befee080e55bba36e3824e938b",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionCiOwnerReceipt.cs": "bc8359da3123f7b3a228e562fcec6b4f73c1da7c67ad88269655ff39846c6cdc",
+    "src/libraries/Hexalith.Builds.Tooling/Runtime/CompositionRunStateStore.cs": "b4211b93a597163f47fb7b0cc7ca4e3083d9538111b6bca309c2e093d0c21104"
+  },
+  "observations": [
+    "The current main Parties checkout contains the existing bounded native fixture and marker. The registered lifecycle workflow references a controller that is absent at this source.",
+    "The current private Parties purpose accepts only the existing integration test entry. The existing separate lifecycle fixture is an ordinary package purpose and its native artifact verifier expects historical public image authority.",
+    "The current exact 6.3.0 named cohort has no native image admission in the merged Platform tree. The measured six image identities do not change that boundary.",
+    "The released Build helper clears the child process environment and does not inherit the GitHub job fields. A Platform AppHost admission relying on those process variables would fail even on a genuine hosted run.",
+    "The issued owner state contains the CI context. Any future change can evaluate that existing metadata only with the verified plan, source, exact executor and owner identity. Preserve ordinary, public and non-CI boundaries in that design.",
+    "The released EventStore expanded-owner path is ineligible to hold an attachment under HXR033."
+  ],
+  "nextProofRequires": "A released, admitted current Parties execution purpose and a caller that can bind the existing real persistence checkpoint and hold to the actual CI owner.",
+  "nativeDispatches": 0,
+  "lifecycleCancellationRequests": 0
+}

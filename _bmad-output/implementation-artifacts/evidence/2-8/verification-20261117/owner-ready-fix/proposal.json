@@ -1,0 +1,32 @@
+{
+  "recordedAtUtc": "2026-11-17T11:27:46.582638+00:00",
+  "owner": "Hexalith.Parties",
+  "targetBase": "8abfd266eecb5a636ee5498f944304669c18aa41",
+  "proofPatchBase": "83916016e0fb64b5fbde79f05c2cf317d0900f99",
+  "proofFinalSource": "bccab615f9e3d1a92e3bbf648ee89e78a925670b",
+  "behavioralControlSource": "08152211c392ee680c9b5537b1c1bb47b6d4234d",
+  "paths": [
+    "tests/PackageTests.Shared/PackageTestProcess.cs",
+    "tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs"
+  ],
+  "patchSha256": "fc0d33dcadaaa96bb4ed29ffbbaf42d77dab1033d877365e5c1f585633563bf9",
+  "applyCheck": {
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "helperSupervisorPassed": 32,
+  "memoriesPassed": 24,
+  "commonsPassed": 39,
+  "commitCreated": false,
+  "pushed": false,
+  "mainChanged": false,
+  "publication": false,
+  "newCampaign": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "scope": "Clean two-path current-owner proposal; novel bounded worker fix and durable two-row regression only. Preserve the incoming active-adoption tests and current supervisor. No proof hooks or dependency/pin adoption.",
+  "preservedIncomingOwnerRegression": "RunReapsAdoptedExitsWithoutConsumingTheActiveDirectCommandStatus, both rows",
+  "ownerSourceTestsRun": false,
+  "ownerReviewAndNormalDeliveryChecksPending": true
+}

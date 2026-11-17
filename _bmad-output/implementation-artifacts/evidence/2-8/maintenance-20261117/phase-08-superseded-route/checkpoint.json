@@ -1,0 +1,170 @@
+{
+  "asOf": "2026-11-17T19:26:14.734431+00:00",
+  "status": "obsolete route superseded by explicit user direction; no further1.7/4.44 maintenance publication",
+  "originalStoryGoalStillOpen": true,
+  "userDirection": {
+    "observedAt": "2026-11-17T19:20:36.067376+00:00",
+    "userInstruction": "Publish only Platform 2.x; do not maintain1.7; use latest Builds6.x",
+    "selectedBuildsVersion": "6.3.0",
+    "selectedBuildsSource": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+    "platformLatestVersion": "2.1.10",
+    "originalStoryGoalRetained": "Story2.8 genuine disposable-runner cancellation/cleanup proof",
+    "oldMaintenanceRoute": "superseded; do not merge or publish further1.7/4.44 proposals",
+    "lifecycleProofCancellationRequests": 0,
+    "administrativeCancelRequests": 1
+  },
+  "failedTupleCi": {
+    "run": 44147787827,
+    "source": "e1e8ccf5f51211fd5bd80259fbfd851b83513100",
+    "actualCheckout": "d7d2647a1f4c073fc0489ed1c50b037bd73163e3",
+    "failure": "restore NU1903 Aspire.Hosting13.6.4 GHSA-f7vh-h5g3-7jrh",
+    "requiredSuitesNotExecuted": true,
+    "legacyJobSkipped": true,
+    "primaryArtifactDigestAndCrcVerified": true
+  },
+  "sdkCi": {
+    "run": 44147787643,
+    "successfulJobs": 5,
+    "source": "e1e8ccf5f51211fd5bd80259fbfd851b83513100"
+  },
+  "aspireProposal": {
+    "source": "f934342d541f9802ce5a987a65c60af868ec6d5c",
+    "pr": 190,
+    "state": "closed; CI44154568897 cancelled administratively; no merge/publication",
+    "catalogCasesPassed": 90,
+    "notACompleteSourceQualification": true
+  },
+  "legacyProjection": {
+    "originalCases349PreservedInProposal": true,
+    "localLegacyControls": 14,
+    "localTupleControls": 21,
+    "notDeliveredToCurrent2xSource": true,
+    "securityBaselineChoice": "initially approved; superseded with obsolete1.7 route"
+  },
+  "cleanup": {
+    "authorization": "User: only Platform2.x; 1.7 obsolete; use latest Builds6.x",
+    "operations": [
+      "close-Hexalith.Builds-190",
+      "cancel-obsolete-ci"
+    ],
+    "lifecycleProofCancellationRequests": 0,
+    "administrativeCancellationRequests": 1,
+    "alreadyMerged": [
+      {
+        "repo": "Hexalith.Platform",
+        "pr": 44,
+        "mergeCommit": "571c6c7b20eb6c28b5d9ec67de1f90f40537ce9c",
+        "mergedAt": "2026-11-17T18:52:15Z",
+        "mergedBy": "jpiquot"
+      },
+      {
+        "repo": "Hexalith.Platform",
+        "pr": 43,
+        "mergeCommit": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+        "mergedAt": "2026-11-17T18:24:17Z",
+        "mergedBy": "jpiquot"
+      }
+    ],
+    "requestedAt": "2026-11-17T19:14:47.658292+00:00",
+    "status": "remaining unmerged obsolete PRs closed; obsolete CI cancellation requested if running; no publication request"
+  },
+  "rootHead": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "incomingRootCommit": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "incomingRootHistoryPreserved": true,
+  "rootPins": [
+    {
+      "path": "references/Hexalith.AI.Tools",
+      "gitlink": "180ca5692637a018c3f5547daf657e2a90bd5288",
+      "checkout": "180ca5692637a018c3f5547daf657e2a90bd5288"
+    },
+    {
+      "path": "references/Hexalith.Agents",
+      "gitlink": "e047a955d9eabe28b09499bbd14938da0da7f40b",
+      "checkout": "e047a955d9eabe28b09499bbd14938da0da7f40b"
+    },
+    {
+      "path": "references/Hexalith.Builds",
+      "gitlink": "a327bc5cf0eb2bd715deed6f1ea278a8f6946a2f",
+      "checkout": "a327bc5cf0eb2bd715deed6f1ea278a8f6946a2f"
+    },
+    {
+      "path": "references/Hexalith.ChatBot",
+      "gitlink": "e2727327bf495764fd8c31edd46a81c8048cbbac",
+      "checkout": "e2727327bf495764fd8c31edd46a81c8048cbbac"
+    },
+    {
+      "path": "references/Hexalith.Commons",
+      "gitlink": "cab344372536be4b5125bc144547fc78bca913f9",
+      "checkout": "cab344372536be4b5125bc144547fc78bca913f9"
+    },
+    {
+      "path": "references/Hexalith.Conversations",
+      "gitlink": "4ab8f9060d9d16302c1132734f0b234b4489b8a5",
+      "checkout": "4ab8f9060d9d16302c1132734f0b234b4489b8a5"
+    },
+    {
+      "path": "references/Hexalith.EventStore",
+      "gitlink": "96363934c6fd1da4d50c2078b13929c473ecab7f",
+      "checkout": "96363934c6fd1da4d50c2078b13929c473ecab7f"
+    },
+    {
+      "path": "references/Hexalith.Folders",
+      "gitlink": "438b8a0b9e3416669ac05152633301bc1bae76fb",
+      "checkout": "438b8a0b9e3416669ac05152633301bc1bae76fb"
+    },
+    {
+      "path": "references/Hexalith.FrontComposer",
+      "gitlink": "b23b4cb91d974b4266a9369a85e6dae32163a893",
+      "checkout": "b23b4cb91d974b4266a9369a85e6dae32163a893"
+    },
+    {
+      "path": "references/Hexalith.McpCli",
+      "gitlink": "c9ffbd5c9f6bc100ecbf6ac13acf4fbe50a498a9",
+      "checkout": "c9ffbd5c9f6bc100ecbf6ac13acf4fbe50a498a9"
+    },
+    {
+      "path": "references/Hexalith.Memories",
+      "gitlink": "68a78d475c7ae8b77193e308dfb8c8f5e4cc0826",
+      "checkout": "68a78d475c7ae8b77193e308dfb8c8f5e4cc0826"
+    },
+    {
+      "path": "references/Hexalith.Parties",
+      "gitlink": "8abfd266eecb5a636ee5498f944304669c18aa41",
+      "checkout": "8abfd266eecb5a636ee5498f944304669c18aa41"
+    },
+    {
+      "path": "references/Hexalith.PolymorphicSerializations",
+      "gitlink": "1f451a1ac5174b340f56763160f810d4a8364bb6",
+      "checkout": "1f451a1ac5174b340f56763160f810d4a8364bb6"
+    },
+    {
+      "path": "references/Hexalith.Projects",
+      "gitlink": "8b53d6b917957762949d39c21bc5de0919811413",
+      "checkout": "8b53d6b917957762949d39c21bc5de0919811413"
+    },
+    {
+      "path": "references/Hexalith.Tenants",
+      "gitlink": "ac7b6ba9edd88c197701fa1d1503cf2743ee022a",
+      "checkout": "ac7b6ba9edd88c197701fa1d1503cf2743ee022a"
+    },
+    {
+      "path": "references/Hexalith.Timesheets",
+      "gitlink": "d1dd313deabaf54309c7042ee78ffe2b856b377e",
+      "checkout": "d1dd313deabaf54309c7042ee78ffe2b856b377e"
+    },
+    {
+      "path": "references/Hexalith.Works",
+      "gitlink": "420729794cee02fd83a0c97cd921763da7a6fb94",
+      "checkout": "420729794cee02fd83a0c97cd921763da7a6fb94"
+    },
+    {
+      "path": "references/Hexalith.CiCd",
+      "gitlink": "83b2b8432fc16e37952981d149b0bc4be988260d",
+      "checkout": "83b2b8432fc16e37952981d149b0bc4be988260d"
+    }
+  ],
+  "frozenInclusiveSha256": "19044c59bdc8f93eee27bb766b6985fbc2f908f8e9764bebaeb72ecb908d9b0a",
+  "next": "Use supported Platform2.x main and observed latest Builds6.3.0; existingcurrent-only pipeline; no obsolete legacy work",
+  "lifecycleProofCancellationRequests": 0,
+  "administrativeCancellationRequests": 1
+}

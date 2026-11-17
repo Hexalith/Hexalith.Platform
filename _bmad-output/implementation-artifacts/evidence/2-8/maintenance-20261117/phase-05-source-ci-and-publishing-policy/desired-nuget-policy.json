@@ -1,0 +1,25 @@
+{
+  "authorization": "User replied add it yourself to the exact additional-policy and one-release-retry request",
+  "operation": "add one additional NuGet Trusted Publishing policy; preserve the existing policy",
+  "creatorUsername": "jpiquot",
+  "ownerAndPackageScopes": {
+    "owner": "Hexalith",
+    "glob": "Hexalith.Builds*",
+    "push": "new packages and package versions"
+  },
+  "githubOwner": "Hexalith",
+  "githubRepository": "Hexalith.Builds",
+  "workflowFile": "build-release.yml",
+  "environment": "production",
+  "policyMutations": 1,
+  "status": "verified active",
+  "releaseRun": 44133307523,
+  "releaseJob": 134216202450,
+  "source": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+  "sourceCi": 44129245136,
+  "normalReleaseRetry": "once after the authorized policy exists; no source CI rerun",
+  "existingGitHubProtectionChanges": false,
+  "newApiKeysOrCredentialChanges": false,
+  "policyId": 27467,
+  "existingPolicyUnchanged": true
+}

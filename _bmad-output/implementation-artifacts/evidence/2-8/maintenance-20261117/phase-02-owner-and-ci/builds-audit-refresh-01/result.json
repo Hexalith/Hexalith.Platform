@@ -1,0 +1,33 @@
+{
+  "classification": "bounded normal dotnet-10 audit refresh; no release/runtime acceptance",
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0,
+      "seconds": 0.032
+    },
+    {
+      "label": "import",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0,
+      "seconds": 0.265
+    },
+    {
+      "label": "normal-audit-generator",
+      "exitCode": 0,
+      "seconds": 51.312
+    },
+    {
+      "label": "normal-audit-validator",
+      "exitCode": 0,
+      "seconds": 24.792
+    }
+  ],
+  "remoteMutations": false,
+  "source": "e0cb4043fceda690457203f0895ea982a5ebbfd9",
+  "status": "audit-refreshed-and-validated"
+}

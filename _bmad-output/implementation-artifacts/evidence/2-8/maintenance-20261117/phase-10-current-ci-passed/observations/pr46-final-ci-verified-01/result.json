@@ -1,0 +1,68 @@
+{
+  "classification": "PR CI preflight only",
+  "candidateAcceptance": false,
+  "nativeQualificationCredit": false,
+  "remoteMutations": false,
+  "pr": 46,
+  "headSource": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "baseSource": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "tuple": {
+    "runId": 44166185074,
+    "attempt": 1,
+    "jobs": [
+      {
+        "id": 134332745013,
+        "name": "resolve-sources",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332985636,
+        "name": "tuple",
+        "conclusion": "success"
+      },
+      {
+        "id": 134372684798,
+        "name": "tuple-verdict",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "sdk": {
+    "runId": 44166185115,
+    "attempt": 1,
+    "jobs": [
+      {
+        "id": 134332930597,
+        "name": "consumer-binding (3.130.1)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930821,
+        "name": "consumer-binding (4.1.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930883,
+        "name": "consumer-binding (3.130.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332930937,
+        "name": "consumer-binding (3.130.2)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332931259,
+        "name": "consumer-binding (4.2.0)",
+        "conclusion": "success"
+      },
+      {
+        "id": 134332931454,
+        "name": "consumer-binding (3.132.1)",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "status": "failed",
+  "error": ""
+}

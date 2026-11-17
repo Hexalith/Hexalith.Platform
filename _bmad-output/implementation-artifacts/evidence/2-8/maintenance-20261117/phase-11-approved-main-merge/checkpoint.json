@@ -1,0 +1,43 @@
+{
+  "asOf": "2026-11-17T22:30:16.085270+00:00",
+  "pr": 46,
+  "approvedHead": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "mainMerge": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+  "mergeTree": "f8370e59ff5b20b75a681a581a21869f9e8b32c3",
+  "matchesTestedPrTree": true,
+  "ownerReviewExceptionApproved": true,
+  "reviewRuleset": 24657106,
+  "buildsVersion": "6.3.0",
+  "platformPublicationPolicy": "2.x only",
+  "mainChecks": {
+    "tuple": {
+      "id": 44189252348,
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1
+    },
+    "sdk": {
+      "id": 44189252435,
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1
+    }
+  },
+  "sourceReleaseCheck": {
+    "id": 44190151361,
+    "artifactId": 14377145059,
+    "status": "deferred",
+    "reason": "counterpart-pending"
+  },
+  "latestPublishedPlatformAtCheckpoint": "v2.1.10",
+  "newReleaseVerified": false,
+  "localReleasedBuildsControls": {
+    "passed": 75,
+    "skipped": 0,
+    "setupErrorsRetained": 2
+  },
+  "hostedExecutionCancellationProof": "open, no admitted current caller with active hold",
+  "currentNativeDispatches": 0,
+  "currentLifecycleCancellationRequests": 0,
+  "frozenBlockSha256": "19044c59bdc8f93eee27bb766b6985fbc2f908f8e9764bebaeb72ecb908d9b0a"
+}

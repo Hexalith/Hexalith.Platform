@@ -1,0 +1,351 @@
+[
+  {
+    "mode": "sdk-default",
+    "sdk": "11.0.100",
+    "firstSupervisorExit": 0,
+    "secondExitAfterFirstCleanup": null,
+    "secondSupervisorExit": 0,
+    "ancestry": {
+      "first": [
+        {
+          "pid": 3195815,
+          "parent": 3195813,
+          "birth": "18288191",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "first.json"
+          ]
+        },
+        {
+          "pid": 3195813,
+          "parent": 3195710,
+          "birth": "18288191",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmpf2a87359d89a42ffb94d6b2a943c081c.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3195710,
+          "parent": 3195533,
+          "birth": "18288178",
+          "state": "S",
+          "role": [
+            "MSBuild",
+            "nologo",
+            "nodemode:8"
+          ]
+        },
+        {
+          "pid": 3195533,
+          "parent": 3195502,
+          "birth": "18288160",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "first.proj"
+          ]
+        },
+        {
+          "pid": 3195502,
+          "parent": 3195485,
+          "birth": "18288159",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ],
+      "secondAfterFirstCleanup": [
+        {
+          "pid": 3195916,
+          "parent": 3195915,
+          "birth": "18288218",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "second.json"
+          ]
+        },
+        {
+          "pid": 3195915,
+          "parent": 3195838,
+          "birth": "18288218",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmpa789394e39064bb493ddcfa760158e35.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3195838,
+          "parent": 3195820,
+          "birth": "18288195",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "second.proj"
+          ]
+        },
+        {
+          "pid": 3195820,
+          "parent": 3195485,
+          "birth": "18288193",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ]
+    },
+    "stdoutLengths": {
+      "first": 0,
+      "second": 0
+    },
+    "stderr": {
+      "first": "",
+      "second": ""
+    }
+  },
+  {
+    "mode": "server-enabled",
+    "sdk": "11.0.100",
+    "firstSupervisorExit": 0,
+    "secondExitAfterFirstCleanup": null,
+    "secondSupervisorExit": 0,
+    "ancestry": {
+      "first": [
+        {
+          "pid": 3195999,
+          "parent": 3195997,
+          "birth": "18288282",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "first.json"
+          ]
+        },
+        {
+          "pid": 3195997,
+          "parent": 3195975,
+          "birth": "18288282",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmp016e0eb1b28045eb9aee0685d32b4c5d.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3195975,
+          "parent": 3195958,
+          "birth": "18288268",
+          "state": "S",
+          "role": [
+            "MSBuild",
+            "nologo",
+            "nodemode:8"
+          ]
+        },
+        {
+          "pid": 3195958,
+          "parent": 3195957,
+          "birth": "18288253",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "first.proj"
+          ]
+        },
+        {
+          "pid": 3195957,
+          "parent": 3195485,
+          "birth": "18288251",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ],
+      "secondAfterFirstCleanup": [
+        {
+          "pid": 3196073,
+          "parent": 3196071,
+          "birth": "18288310",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "second.json"
+          ]
+        },
+        {
+          "pid": 3196071,
+          "parent": 3196001,
+          "birth": "18288310",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmp923a8cf625aa49f88494924e5abea164.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3196001,
+          "parent": 3196000,
+          "birth": "18288285",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "second.proj"
+          ]
+        },
+        {
+          "pid": 3196000,
+          "parent": 3195485,
+          "birth": "18288283",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ]
+    },
+    "stdoutLengths": {
+      "first": 0,
+      "second": 0
+    },
+    "stderr": {
+      "first": "",
+      "second": ""
+    }
+  },
+  {
+    "mode": "server-isolated",
+    "sdk": "11.0.100",
+    "firstSupervisorExit": 0,
+    "secondExitAfterFirstCleanup": null,
+    "secondSupervisorExit": 0,
+    "ancestry": {
+      "first": [
+        {
+          "pid": 3196286,
+          "parent": 3196285,
+          "birth": "18288376",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "first.json"
+          ]
+        },
+        {
+          "pid": 3196285,
+          "parent": 3196079,
+          "birth": "18288376",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmp3fba991fb3404595839da84c2f70ec19.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3196079,
+          "parent": 3196078,
+          "birth": "18288348",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "first.proj"
+          ]
+        },
+        {
+          "pid": 3196078,
+          "parent": 3195485,
+          "birth": "18288346",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ],
+      "secondAfterFirstCleanup": [
+        {
+          "pid": 3196647,
+          "parent": 3196646,
+          "birth": "18288407",
+          "state": "S",
+          "role": [
+            "python3",
+            "gate.py",
+            "second.json"
+          ]
+        },
+        {
+          "pid": 3196646,
+          "parent": 3196326,
+          "birth": "18288406",
+          "state": "S",
+          "role": [
+            "sh",
+            "-c",
+            "tmpf6224c25a1034046b14a05423bd7c892.exec.cmd"
+          ]
+        },
+        {
+          "pid": 3196326,
+          "parent": 3196310,
+          "birth": "18288379",
+          "state": "S",
+          "role": [
+            "dotnet",
+            "msbuild",
+            "second.proj"
+          ]
+        },
+        {
+          "pid": 3196310,
+          "parent": 3195485,
+          "birth": "18288377",
+          "state": "S",
+          "role": [
+            "python3",
+            "-c",
+            " 'stop').exists() and termination_signal is None and caller_alive():\n        if not directory.is_dir():\n            raise OSError('supervisor state directory disappeared')\n        time.sleep(0.005)\n    exit_code = child.returncode if child.returncode is not None else 124\nexcept Exception as error:\n    record_failure(error)\nfinally:\n    if child is not None:\n        try:\n            cleanup()\n        except Exception as error:\n            record_failure(error)\n            exit_code = 125\nif termination_signal is not None and exit_code != 125:\n    exit_code = 128 + termination_signal\nsys.exit(exit_code if exit_code >= 0 else 128 - exit_code)\n"
+          ]
+        }
+      ]
+    },
+    "stdoutLengths": {
+      "first": 0,
+      "second": 0
+    },
+    "stderr": {
+      "first": "",
+      "second": ""
+    }
+  }
+]

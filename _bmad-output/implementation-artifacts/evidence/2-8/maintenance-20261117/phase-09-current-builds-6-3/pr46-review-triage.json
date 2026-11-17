@@ -1,0 +1,13 @@
+{
+  "asOf": "2026-11-17T20:10:51.112945+00:00",
+  "finding": "fd2f297a-2310-485d-867d-d69634c043a1",
+  "disposition": "false positive; retain the correct exact owner binding",
+  "reason": "The base already advanced all four gitlinks via /pushall. Its old binding was stale; the refreshed binding now matches those existing gitlinks. Canonical declaration hashes and package provenance genuinely remain unchanged.",
+  "localPrimary": "platform630-source-04/actual-source-closure.log",
+  "localFinalSourcePrimary": "platform630-source-06/actual-source-closure.log",
+  "hostedResolveSourceRun": 44162565511,
+  "hostedResolveSourceJob": 134319992941,
+  "hostedResolveSourceConclusion": "success",
+  "commentsOrReviewsSent": false,
+  "gatesWaived": false
+}

@@ -1,0 +1,74 @@
+{
+  "patchSha256": "8c1994b7a6442f624f7f165ba149da707489d4dae256b7bfea5da801049c9842",
+  "correctedPatchPreservesOriginalCRLF": true,
+  "actualProducerCommitPrimaryShowedOneInsertionOneDeletion": "{\"command\": [\"git\", \"-c\", \"user.name=Codex\", \"-c\", \"user.email=codex@openai.com\", \"-c\", \"commit.gpgsign=false\", \"commit\", \"-F\", \"/tmp/hexalith-job.d8VsbXq1/producer-message.txt\"], \"cwd\": \"/tmp/hexalith-job.d8VsbXq1/parties/references/Hexalith.Builds\"}\n[detached HEAD 3e313cba] fix(catalog): patch the redis signalr dependency\n 1 file changed, 1 insertion(+), 1 deletion(-)\n",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--shared",
+        "--no-checkout",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "/tmp/hexalith-job.0dTOwvSp/builds"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/tmp/hexalith-job.0dTOwvSp/builds'...\ndone.\n"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/hexalith-job.0dTOwvSp/builds",
+        "-c",
+        "submodule.recurse=false",
+        "checkout",
+        "--detach",
+        "3c8096180ecf2aa539ac454815efbfceb8a92822"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 3c809618 fix(module): drain redirected stdin during independent stop (#175)\n"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/hexalith-job.0dTOwvSp/builds",
+        "apply",
+        "--check",
+        "/home/administrator/projects/hexalith/platform/artifacts/2-8-continuation-20261117/historical-signalr-proposal/catalog-10.0.15.patch"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/hexalith-job.0dTOwvSp/builds",
+        "apply",
+        "/home/administrator/projects/hexalith/platform/artifacts/2-8-continuation-20261117/historical-signalr-proposal/catalog-10.0.15.patch"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/hexalith-job.0dTOwvSp/builds",
+        "diff",
+        "--numstat"
+      ],
+      "exitCode": 0,
+      "stdout": "1\t1\tProps/Directory.Packages.props\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "patch mechanics only; prior genuine HXW009 preparation refusal remains binding",
+  "rootPinsChanged": false
+}

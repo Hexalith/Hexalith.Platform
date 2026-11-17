@@ -1,0 +1,7 @@
+{
+  "head": "fix/story-2-8-aspire-maintenance",
+  "base": "4.44.x",
+  "title": "fix(deps): patch the supported Aspire 13.6 cohort",
+  "body": "Platform's supported tuple restore rejects Aspire.Hosting 13.6.4 with NU1903. Update the coherent 13.6 Aspire family, matching integration previews and AppHost SDK to 13.6.5, which includes the hosting and Dashboard security fixes ([hosting advisory](https://github.com/advisories/GHSA-f7vh-h5g3-7jrh), [Dashboard advisory](https://github.com/advisories/GHSA-4g86-54fm-h9h8)).\n\nOnly the thirteen Aspire package pins and AppHost SDK property change. Preserve every other package pin and all unselected audit families; refresh only the normal `aspire` audit family. The selected patch versions already exist in released executor source 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b; no other changes from that source are imported.\n\nValidation: the normal audit validator and authoritative catalog metadata validator passed; all 90 catalog controls passed on identical catalog bytes. Locked dependency signatures, full commit messages and real version analysis passed (prospective 4.44.15). Normal exact-source PR CI, merged-source CI and actual-version publication qualification remain required. No audit exception, native/caller acceptance or current-cohort registration is introduced.\n",
+  "draft": false
+}

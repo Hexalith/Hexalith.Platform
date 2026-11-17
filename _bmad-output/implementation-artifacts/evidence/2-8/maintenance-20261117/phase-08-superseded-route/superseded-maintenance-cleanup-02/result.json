@@ -1,0 +1,27 @@
+{
+  "authorization": "User: only Platform2.x; 1.7 obsolete; use latest Builds6.x",
+  "operations": [
+    "close-Hexalith.Builds-190",
+    "cancel-obsolete-ci"
+  ],
+  "lifecycleProofCancellationRequests": 0,
+  "administrativeCancellationRequests": 1,
+  "alreadyMerged": [
+    {
+      "repo": "Hexalith.Platform",
+      "pr": 44,
+      "mergeCommit": "571c6c7b20eb6c28b5d9ec67de1f90f40537ce9c",
+      "mergedAt": "2026-11-17T18:52:15Z",
+      "mergedBy": "jpiquot"
+    },
+    {
+      "repo": "Hexalith.Platform",
+      "pr": 43,
+      "mergeCommit": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+      "mergedAt": "2026-11-17T18:24:17Z",
+      "mergedBy": "jpiquot"
+    }
+  ],
+  "requestedAt": "2026-11-17T19:14:47.658292+00:00",
+  "status": "remaining unmerged obsolete PRs closed; obsolete CI cancellation requested if running; no publication request"
+}

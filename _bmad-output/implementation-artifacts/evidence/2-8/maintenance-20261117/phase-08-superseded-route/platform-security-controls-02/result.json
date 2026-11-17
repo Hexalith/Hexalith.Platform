@@ -1,0 +1,44 @@
+{
+  "remoteMutations": false,
+  "classification": "private Git fixture and MSBuild metadata controls only; no hosted suite or native acceptance",
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "import",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "clone-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "tuple-and-floor-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "stage",
+      "exitCode": 0
+    },
+    {
+      "label": "diff-check",
+      "exitCode": 2
+    }
+  ],
+  "status": "incomplete",
+  "reason": "AssertionError: diff-check"
+}

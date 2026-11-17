@@ -1,0 +1,12 @@
+diff --git a/.github/workflows/source-release.yml b/.github/workflows/source-release.yml
+index 3a11dd2b..ddb679fd 100644
+--- a/.github/workflows/source-release.yml
++++ b/.github/workflows/source-release.yml
+@@ -1,6 +1,7 @@
+ name: Qualified Platform source release
+ 
+ on:
++  workflow_dispatch:
+   workflow_run:
+     workflows: ['Platform tuple CI preflight', 'Catalog builder consumer binding']
+     types: [completed]

@@ -1,0 +1,34 @@
+{
+  "kind": "locked commit analysis only; no tag or release created",
+  "source": "4a7e0d22e79aeb26f73fd4b147cd4edece8e4f26",
+  "base": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "range": "4.44.x",
+  "baseTag": "v4.44.13",
+  "increment": "patch",
+  "computedVersion": "4.44.14",
+  "analyzerOptions": {},
+  "commits": [
+    {
+      "hash": "7b95a68fa0657135cee1103defc59089defa93ff",
+      "message": "fix(deps): support the patched 4.44 maintenance catalog"
+    },
+    {
+      "hash": "e0cb4043fceda690457203f0895ea982a5ebbfd9",
+      "message": "fix(ci): distinguish workflow registry labels from source identity"
+    },
+    {
+      "hash": "3aafeda8ed2b2befa0f49c78fe0b5c88c79d7f1c",
+      "message": "fix(ci): complete bounded maintenance source verification"
+    },
+    {
+      "hash": "51d56ec722e0e66c8957f2f7502015f2c9b7c5c1",
+      "message": "fix(ci): merge the qualified 4.44 maintenance catalog\n\nDeliver the minimal security maintenance through the supported release lane.\n\nPreserve the normal catalog, source-CI and package publication checks."
+    },
+    {
+      "hash": "4a7e0d22e79aeb26f73fd4b147cd4edece8e4f26",
+      "message": "fix(release): retain exact maintenance producer carriers"
+    }
+  ],
+  "analyzerVersion": "13.0.1",
+  "node": "v24.22.1"
+}

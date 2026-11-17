@@ -1,0 +1,33 @@
+{
+  "recordedAtUtc": "2026-11-17T09:11:11.225311+00:00",
+  "originalCaller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+  "newCaller": "6a9208daca7ff93d116159e5b71d9c2e94254bb9",
+  "branch": "proof/story-2-8-patched-cancel-execution-consumer-20261117",
+  "existingOwnerFix": "4aea34e048a4c6f2617e4c4f4972d2fbf184164c",
+  "changedPaths": [
+    "scripts/validate-consumer-package-references.py",
+    "tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py"
+  ],
+  "fileSha256": {
+    "scripts/validate-consumer-package-references.py": "940ce1c688a41ad5ad1933751ee2112a925ea9f9acda1a1b2170c69ff8b47a44",
+    "tests/Hexalith.Parties.Ci.Tests/consumer_validation_cases.py": "251f65a467a8476e7adf2b12339bc679c4672b8d72862c88aac4c99318b97acb"
+  },
+  "allOtherSourceFilesAndGitlinksUnchanged": true,
+  "affectedControls": {
+    "ConsumerTargets": {
+      "total": 3,
+      "passed": 3
+    }
+  },
+  "versions": {
+    "node": "v24.22.1",
+    "npm": "11.19.1"
+  },
+  "commitlintPassed": true,
+  "commitMessageSha256": "e997272179af7e3d88773fa7dca9614f20e64d5fb82695c07c9e3aaa492bf961",
+  "pushed": true,
+  "publication": false,
+  "mainPinChange": false,
+  "dispatched": false,
+  "classification": "baseline-only-focused-story-2-8"
+}

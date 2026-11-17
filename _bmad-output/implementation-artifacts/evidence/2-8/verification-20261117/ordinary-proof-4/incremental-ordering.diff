@@ -1,0 +1,41 @@
+--- previous/workflow
++++ corrected/workflow
+@@ -60,8 +60,6 @@
+           submodules: false
+       - name: Initialize only direct owner dependencies
+         run: git -c submodule.recurse=false submodule update --init --depth 1
+-      - name: Test the lifecycle controller before any service
+-        run: python3 -B -m unittest discover -s tests/ci-lifecycle -v
+       # The released executor remains separate from the caller's immutable catalog pin.
+       - name: Check out the exact released proof executor
+         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+@@ -75,6 +73,8 @@
+         run: |
+           test "$(git -C .hexalith/builds-execution rev-parse HEAD)" = 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b
+           test -z "$(git -C .hexalith/builds-execution status --porcelain --untracked-files=normal)"
++      - name: Test the lifecycle controller before any service
++        run: python3 -B -m unittest discover -s tests/ci-lifecycle -v
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+         with:
+           global-json-file: global.json
+--- previous/test
++++ corrected/test
+@@ -200,7 +200,17 @@
+         steps = re.findall(r'(?m)^      - (?:name: (.+)|uses: (\S+)(?: #.*)?)$', self.qualification)
+         self.assertEqual(steps[0][1].split('@')[0], 'actions/checkout')
+         self.assertEqual(steps[1][0], 'Initialize only direct owner dependencies')
+-        self.assertEqual(steps[2][0], 'Test the lifecycle controller before any service')
++        self.assertEqual(steps[2][0], 'Check out the exact released proof executor')
++        self.assertEqual(steps[3][0], 'Verify the exact clean proof executor')
++        self.assertEqual(steps[4][0], 'Test the lifecycle controller before any service')
++        executor = self.step('Check out the exact released proof executor')
++        self.assertIn('ref: 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b', executor)
++        self.assertIn('path: .hexalith/builds-execution', executor)
++        self.assertIn('persist-credentials: false', executor)
++        self.assertIn('submodules: false', executor)
++        verification = self.step('Verify the exact clean proof executor')
++        self.assertIn('rev-parse HEAD)" = 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b', verification)
++        self.assertIn('status --porcelain --untracked-files=normal)', verification)
+         self.assertIn('run: python3 -B -m unittest discover -s tests/ci-lifecycle -v', self.step('Test the lifecycle controller before any service'))
+         checkout = self.qualification.split('      - uses: actions/checkout@', 1)[1].split('\n      - ', 1)[0]
+         self.assertIn('persist-credentials: false', checkout)

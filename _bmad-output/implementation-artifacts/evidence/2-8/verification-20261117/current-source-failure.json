@@ -1,0 +1,40 @@
+{
+  "sourceRevision": "1a5666edd500ecf921d4068462c24d3d48663441",
+  "tupleRunId": 44047180420,
+  "catalogRunId": 44047180552,
+  "tupleConclusion": "failure",
+  "catalogConclusion": "success",
+  "failure": "Current owner gitlink differs from the committed source binding: Hexalith.EventStore",
+  "rulePreserved": true,
+  "fixApplied": false,
+  "scope": "Incoming owner dependency/source-binding drift, not a demonstrated CI cleanup defect.",
+  "eng/builds-tuple.json": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "42441eb4cefcff2f9c582fcda630d9ad15887df2",
+        "sha256": "d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637"
+      }
+    },
+    "publication": {
+      "kind": "shared-release-handoff/v1",
+      "version": "6.0.5",
+      "sourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+      "releaseTag": "v6.0.5",
+      "catalogSha256": "d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637",
+      "archiveSha256": "cf86abede9c303d7dc8390af030f6072429943da47604d9d44af50894118d03c",
+      "toolingSha256": "9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e",
+      "releaseId": 446092346,
+      "runId": 43719900160,
+      "artifactId": 14164446873,
+      "artifactSha256": "5db4809b2275d8c0dd64123c00cc40355797dd523657eb089f49c0d5b350241b",
+      "releaseBodySha256": "21905920e1f0759c13cf129c2a8e7530b5447bc346c7e752ac391b31a4ab8691",
+      "manifestJson": "{\n  \"sha\": \"e2bbbd0893f586e4d447ef8358ff747ea3d34435\",\n  \"version\": \"6.0.5\",\n  \"packages\": [\n    {\n      \"id\": \"Hexalith.Builds.Evidence.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Evidence.Cli.6.0.5.nupkg\"\n    },\n    {\n      \"id\": \"Hexalith.Builds.Module.Cli\",\n      \"path\": \"packages/Hexalith.Builds.Module.Cli.6.0.5.nupkg\"\n    }\n  ],\n  \"containers\": []\n}\n",
+      "manifestSha256": "38fcac929847c575e96f71eedf304358cabe7caf3bb0572335911ff20d9374e0"
+    }
+  }
+}

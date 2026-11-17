@@ -1,0 +1,86 @@
+{
+  "base": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+  "remoteMutations": false,
+  "legacyPolicyChanged": false,
+  "classification": "unpublished catalog security-patch proposal only",
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "origin",
+      "exitCode": 0
+    },
+    {
+      "label": "fetch-base",
+      "exitCode": 0
+    },
+    {
+      "label": "live-base",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "existing-patched-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "npm-ci",
+      "exitCode": 0
+    },
+    {
+      "label": "signatures",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-source",
+      "exitCode": 0
+    },
+    {
+      "label": "bounded-aspire-audit",
+      "exitCode": 0
+    },
+    {
+      "label": "normal-audit-validator",
+      "exitCode": 0
+    },
+    {
+      "label": "normal-platform-catalog-validator",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-audit",
+      "exitCode": 0
+    },
+    {
+      "label": "audit-commitlint",
+      "exitCode": 1
+    }
+  ],
+  "status": "incomplete",
+  "reason": "RuntimeError: audit-commitlint"
+}

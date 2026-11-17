@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "classification": "PR preflight only",
+  "candidateAcceptance": false,
+  "nativeQualificationCredit": false,
+  "headSource": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "baseSource": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "actualExecutedSource": "e6869d11be7e636ae2717ea77e504225eb83f5dd",
+  "executedMergeTreeEqualsPrHeadTree": true,
+  "tree": "f8370e59ff5b20b75a681a581a21869f9e8b32c3",
+  "buildsVersion": "6.3.0",
+  "buildsSource": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+  "tupleRun": 44166185074,
+  "sdkRun": 44166185115,
+  "attempt": 1,
+  "artifactId": 14369843406,
+  "artifactSha256": "7007cdc09afc7d815eddc37c7d1a84db91694bbf90bf5d4036ca970af1e3c18b",
+  "suites": [
+    {
+      "suite": "current42",
+      "groups": 34,
+      "passed": 486,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "notRun": 0,
+      "collector": "current",
+      "targetFramework": "net11.0",
+      "profileSha256": "1b198f714203e308bcbb337adb80090922840d0aefdfc9c5c626868b63ba3c1c"
+    },
+    {
+      "suite": "base42",
+      "groups": 3,
+      "passed": 93,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "notRun": 0,
+      "collector": "current",
+      "targetFramework": "net11.0",
+      "profileSha256": "a2d8f023462e905d05e37faa431ebe1c553d11a77e37852aaf65df4ef25b7469"
+    },
+    {
+      "suite": "extensions",
+      "groups": 1,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "notRun": 0,
+      "collector": "current",
+      "targetFramework": "net11.0",
+      "profileSha256": "12b0d89eb790105cbc17416b017b027062b9b1307f13b2ef8fb26a96760a2c73"
+    }
+  ],
+  "remoteMutations": false,
+  "sdkVersionsPassed": [
+    "3.130.0",
+    "3.130.1",
+    "3.130.2",
+    "3.132.1",
+    "4.1.0",
+    "4.2.0"
+  ],
+  "requiredPassingCases": 588,
+  "requiredOwnerReviewExceptionApproved": false,
+  "mainMergeOrPublication": false,
+  "mainPushChecksStillRequired": true,
+  "originalStoryCancellationProofStillOpen": true
+}

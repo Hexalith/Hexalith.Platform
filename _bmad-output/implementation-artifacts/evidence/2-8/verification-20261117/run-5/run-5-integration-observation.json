@@ -1,0 +1,72 @@
+{
+  "observedAtUtc": "2026-11-17T11:43:44.883629+00:00",
+  "runId": 44073347507,
+  "callerSource": "bccab615f9e3d1a92e3bbf648ee89e78a925670b",
+  "artifactId": 14324114503,
+  "artifactSha256": "0295bdba08a057723acf310aff917801c95b31f22b16f1d61a2bbbb8e2495e4d",
+  "ownerRunId": "f3f66d059ac626966d5cdaf976bc8c55",
+  "executionContext": {
+    "kind": "ci",
+    "repository": "Hexalith/Hexalith.Parties",
+    "workflowRunId": "44073347507",
+    "workflowAttempt": 1,
+    "jobId": "build-and-test",
+    "runnerKind": "github-hosted",
+    "operatingSystem": "Linux",
+    "disposable": true
+  },
+  "executionExit": 3,
+  "cancelled": false,
+  "timedOut": false,
+  "firstTerminal": {
+    "cause": "startup-failure",
+    "diagnosticIds": [
+      "lifecycle"
+    ],
+    "outcome": "failed",
+    "recordedAt": "2026-11-17T11:40:28.8359126Z"
+  },
+  "failureRule": "HXP020",
+  "failureMessage": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/f3f66d059ac626966d5cdaf976bc8c55'.",
+  "nativeChildIssued": false,
+  "attachments": [],
+  "cleanupChecks": {
+    "cleanup-1.json": {
+      "verified": true,
+      "runId": "f3f66d059ac626966d5cdaf976bc8c55",
+      "emptyInventories": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "jobStatus": ""
+    },
+    "cleanup-2.json": {
+      "verified": true,
+      "runId": "f3f66d059ac626966d5cdaf976bc8c55",
+      "emptyInventories": {
+        "claimIds": [],
+        "containerIds": [],
+        "discoveryFailures": [],
+        "isEmpty": true,
+        "processIds": [],
+        "resourceIds": [],
+        "unverified": false,
+        "workspaceIds": []
+      },
+      "jobStatus": "failure"
+    }
+  },
+  "contentAddressedDiagnosticsAuthenticated": 3,
+  "cancellationRequests": 0,
+  "qualification": "skipped",
+  "patchedReleaseCancellationGatePassed": false,
+  "orderingGatePassed": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false
+}

@@ -1,0 +1,74 @@
+{
+  "classification": "unpublished owner proposal; no release/runtime acceptance",
+  "remoteMutations": false,
+  "base": "522d011e69f1cca91fe118808f9849c5fa076568",
+  "pinnedBuilds": "e8b86ba3ae6e27c2d6cba536d6002ac8f3c5a921",
+  "validator": {
+    "releasedTag": "v6.1.0",
+    "releasedSource": "a1e0c310b1f1a50d78e6132890fae6bcba769f6d",
+    "pinnedSource": "e8b86ba3ae6e27c2d6cba536d6002ac8f3c5a921",
+    "identicalPolicyFiles": {
+      "Github/guard/package.json": "0a7ba91bc60f2fb1d9dca3501e973c86bb1761cd13b54597a18397fc77c66f8f",
+      "Github/guard/package-lock.json": "e1cee6ebc2ce6f5bb679d3739a7d957052c4fc1d19aebcbb834794f78d232835",
+      "Github/guard/commitlint.config.mjs": "685fce2f6e2a389fdfecc440ba72d516c6fd555950e4f260dbe1d7b39335cd1e",
+      "Github/guard/commitlint_bridge.mjs": "47b87a9a5937b39d925234ff3de1e0f813a4a67323f64d33bc9d7159c0a095ab"
+    },
+    "lockedInstallAndSignaturesPassed": true,
+    "exactMessageSha256": "319e219f289ef7d3c817ea0e60ed8f991ac9229ad1fc76ea4d068e53f0677747"
+  },
+  "head": "3c285357c9eadec74a3516d649c8197fe1719052",
+  "tree": "f50265fa89885b6369852f917e4aab36a9baa016",
+  "status": "verified-local-owner-proposal",
+  "commands": [
+    {
+      "label": "clone-owner",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "fetch-owner-main",
+      "exitCode": 0,
+      "seconds": 0.415
+    },
+    {
+      "label": "owner-branch",
+      "exitCode": 0,
+      "seconds": 1.368
+    },
+    {
+      "label": "clone-direct-builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout-direct-builds",
+      "exitCode": 0,
+      "seconds": 0.566
+    },
+    {
+      "label": "stage-owner",
+      "exitCode": 0,
+      "seconds": 0.215
+    },
+    {
+      "label": "owner-diff-check",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "commit-owner",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "owner-write-controls",
+      "exitCode": 0,
+      "seconds": 9.694
+    },
+    {
+      "label": "bundle-owner",
+      "exitCode": 0,
+      "seconds": 0.017
+    }
+  ]
+}

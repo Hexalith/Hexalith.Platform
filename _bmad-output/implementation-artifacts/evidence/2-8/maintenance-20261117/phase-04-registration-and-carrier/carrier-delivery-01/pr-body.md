@@ -1,0 +1,3 @@
+Push CI on the supported `4.44.x` branch completed qualification, then its evidence carrier refused the maintenance workflow ref. Add only the exact named maintenance branch and constrain maintenance release carriers to stable 4.44 versions. Preserve all source, workflow, job, event, run-attempt and inventory checks.
+
+Validation: all 16 carrier tests and 15 source-gate controls passed; exact commit message and locked dependency signatures passed. The original failed [push run](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44121371373) remains failed. Fresh PR and merged-source CI are required before publication.

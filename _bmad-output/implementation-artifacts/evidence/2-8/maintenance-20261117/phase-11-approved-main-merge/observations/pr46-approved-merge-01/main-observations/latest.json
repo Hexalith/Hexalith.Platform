@@ -1,0 +1,75 @@
+{
+  "tuple": {
+    "id": 44189252348,
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "name": "resolve-sources",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "tuple",
+        "status": "in_progress",
+        "conclusion": null,
+        "step": "Verify published tuple, reject source fallback, build and test Release"
+      }
+    ]
+  },
+  "sdk": {
+    "id": 44189252435,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "consumer-binding (4.1.0)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "consumer-binding (3.130.1)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "consumer-binding (3.132.1)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "consumer-binding (3.130.0)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "consumer-binding (3.130.2)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      },
+      {
+        "name": "consumer-binding (4.2.0)",
+        "status": "completed",
+        "conclusion": "success",
+        "step": null
+      }
+    ]
+  },
+  "publishers": [
+    {
+      "id": 44190151361,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": {
+        "verify": "success",
+        "publish": "skipped"
+      }
+    }
+  ]
+}

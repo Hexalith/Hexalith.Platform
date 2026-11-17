@@ -1,0 +1,60 @@
+{
+  "executionContext": {
+    "disposable": true,
+    "jobId": "build-and-test",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "44073347507"
+  },
+  "jobStatus": "",
+  "outputParsed": true,
+  "processExitCode": 0,
+  "result": {
+    "diagnostics": [
+      {
+        "category": "None",
+        "field": "down",
+        "hint": null,
+        "location": null,
+        "message": "Runner-owned invocation cleanup completed.",
+        "phase": "Cleanup",
+        "row": null,
+        "ruleId": "HXI001",
+        "source": null
+      }
+    ],
+    "outcome": {
+      "category": "None",
+      "exitCode": "Success",
+      "phase": "None",
+      "ruleId": null
+    },
+    "remainingResources": {
+      "claimIds": [],
+      "containerIds": [],
+      "discoveryFailures": [],
+      "isEmpty": true,
+      "processIds": [],
+      "resourceIds": [],
+      "unverified": false,
+      "workspaceIds": []
+    },
+    "runId": "f3f66d059ac626966d5cdaf976bc8c55",
+    "status": "completed",
+    "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/f3f66d059ac626966d5cdaf976bc8c55/test-result.json"
+  },
+  "runId": "f3f66d059ac626966d5cdaf976bc8c55",
+  "schema": "hexalith.module.ci-integration-cleanup.v1",
+  "status": "completed",
+  "stderr": {
+    "bytes": 0,
+    "excerpt": "",
+    "redacted": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "truncated": false
+  },
+  "verified": true
+}

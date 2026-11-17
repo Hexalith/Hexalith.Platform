@@ -1,0 +1,186 @@
+{
+  "base": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+  "remoteMutations": false,
+  "legacyPolicyChanged": false,
+  "classification": "unpublished catalog security-patch proposal only",
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "origin",
+      "exitCode": 0
+    },
+    {
+      "label": "fetch-base",
+      "exitCode": 0
+    },
+    {
+      "label": "live-base",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "existing-patched-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "npm-ci",
+      "exitCode": 0
+    },
+    {
+      "label": "signatures",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "catalog-source",
+      "exitCode": 0
+    },
+    {
+      "label": "bounded-aspire-audit",
+      "exitCode": 0
+    },
+    {
+      "label": "normal-audit-validator",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-audit",
+      "exitCode": 0
+    },
+    {
+      "label": "audit-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "audit-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "audit-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "audit-source",
+      "exitCode": 0
+    },
+    {
+      "label": "version-analysis",
+      "exitCode": 0
+    },
+    {
+      "label": "complete-diff",
+      "exitCode": 0
+    },
+    {
+      "label": "bundle",
+      "exitCode": 0
+    }
+  ],
+  "unchangedCatalogControlsReused": {
+    "normalPlatformCatalogValidator": "builds-aspire-security-01/normal-platform-catalog-validator.log",
+    "catalogControls": "builds-aspire-security-01/catalog-controls.log",
+    "sameBase": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+    "samePatchSource": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+    "catalogRawSha256": "3ec522e49729262d41976946c415cd7c623cfb7aa72667c65e8c3a7f06de2e2a",
+    "noPublishedCiOrAcceptanceCredit": true
+  },
+  "status": "verified-local-security-proposal",
+  "catalogCommit": "cfeea04cae50c56a8db186586983e4eb1d04b4f0",
+  "source": "f934342d541f9802ce5a987a65c60af868ec6d5c",
+  "branch": "fix/story-2-8-aspire-maintenance",
+  "replacements": [
+    {
+      "package": "Aspire.Azure.Messaging.ServiceBus",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Azure.Security.KeyVault",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Azure.Storage.Blobs",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Azure.Storage.Queues",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting.Azure.AppContainers",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting.Azure.CosmosDB",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting.Docker",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting.Keycloak",
+      "old": "13.6.4-preview.1.26523.11",
+      "new": "13.6.5-preview.1.26559.7"
+    },
+    {
+      "package": "Aspire.Hosting.Kubernetes",
+      "old": "13.6.4-preview.1.26523.11",
+      "new": "13.6.5-preview.1.26559.7"
+    },
+    {
+      "package": "Aspire.Hosting.Redis",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Hosting.Testing",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    },
+    {
+      "package": "Aspire.Microsoft.Azure.Cosmos",
+      "old": "13.6.4",
+      "new": "13.6.5"
+    }
+  ],
+  "appHostSdk": {
+    "old": "13.6.4",
+    "new": "13.6.5"
+  },
+  "otherPackagePinsUnchanged": true,
+  "otherAuditFamiliesUnchanged": true,
+  "catalogRawSha256": "3ec522e49729262d41976946c415cd7c623cfb7aa72667c65e8c3a7f06de2e2a"
+}

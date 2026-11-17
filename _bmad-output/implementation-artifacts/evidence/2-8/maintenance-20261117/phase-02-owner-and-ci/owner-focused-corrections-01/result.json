@@ -1,0 +1,49 @@
+{
+  "kind": "same-source correction of invocation failures only; initial full global command remains failed",
+  "remoteMutations": false,
+  "commands": [
+    {
+      "label": "clone-owner",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "import-candidate",
+      "exitCode": 0,
+      "seconds": 0.032
+    },
+    {
+      "label": "checkout-candidate",
+      "exitCode": 0,
+      "seconds": 1.067
+    },
+    {
+      "label": "clone-builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout-builds",
+      "exitCode": 0,
+      "seconds": 0.265
+    },
+    {
+      "label": "normal-api-checks",
+      "exitCode": 0,
+      "seconds": 3.274
+    },
+    {
+      "label": "correct-origin-maintenance-suite",
+      "exitCode": 0,
+      "seconds": 8.094
+    }
+  ],
+  "source": "3c285357c9eadec74a3516d649c8197fe1719052",
+  "tree": "f50265fa89885b6369852f917e4aab36a9baa016",
+  "status": "focused-corrections-passed",
+  "resolved": [
+    "immutable delivery bootstrap",
+    "acceptable Builds publication",
+    "maintenance tool suite correct official-origin fixture"
+  ]
+}

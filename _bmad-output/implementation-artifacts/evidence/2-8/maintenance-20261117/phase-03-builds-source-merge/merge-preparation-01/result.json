@@ -1,0 +1,88 @@
+{
+  "remoteMutations": false,
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "origin",
+      "exitCode": 0
+    },
+    {
+      "label": "import-source",
+      "exitCode": 0
+    },
+    {
+      "label": "import-registration",
+      "exitCode": 0
+    },
+    {
+      "label": "source-checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "source-source",
+      "exitCode": 0
+    },
+    {
+      "label": "source-npm-ci",
+      "exitCode": 0
+    },
+    {
+      "label": "source-signatures",
+      "exitCode": 0
+    },
+    {
+      "label": "source-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "source-prospective-tree",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-source",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-npm-ci",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-signatures",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "registration-prospective-tree",
+      "exitCode": 0
+    }
+  ],
+  "proposals": [
+    {
+      "pr": 188,
+      "source": "3aafeda8ed2b2befa0f49c78fe0b5c88c79d7f1c",
+      "base": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+      "expectedTree": "4a16e719d3659536c0b48bc8952bd2d20188c2cb",
+      "exactMessageSha256": "f9c371f52d9bcc63da933a2b0cf99fe70d37dcc53ad99bc88378813d9428343b",
+      "messageFile": "source-message.txt"
+    },
+    {
+      "pr": 187,
+      "source": "6c622123470b65cefbfc2326aeeee34a89b597a2",
+      "base": "e8b86ba3ae6e27c2d6cba536d6002ac8f3c5a921",
+      "expectedTree": "40e8557161f09a9628410c73269123ba3558dd99",
+      "exactMessageSha256": "210fb11458cc08a1bc3c2e4d0fe4b9b7fc7326f7d1bc4f3f26bf949d7f3cd9d2",
+      "messageFile": "registration-message.txt"
+    }
+  ],
+  "status": "prepared-only-pending-exact-pr-checks"
+}

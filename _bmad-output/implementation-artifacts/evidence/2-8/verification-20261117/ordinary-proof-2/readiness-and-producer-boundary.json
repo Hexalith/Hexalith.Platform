@@ -1,0 +1,135 @@
+{
+  "classification": "prepared-input-projection-with-actual-producer-blocker",
+  "base": "11053e562a2cba0196354cec655c01677e2afd46",
+  "executorSource": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+  "toolVersion": "4.48.2",
+  "catalogSource": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "platformSource": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "declarationSha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+  "metadataGuards": {
+    "result": "passed-both-ordinary-profiles",
+    "primary": "../ordinary-runtime-guards-3/guard-result.json",
+    "builderCreated": false,
+    "appHostExecuted": false,
+    "resourcesStarted": false,
+    "probesExecuted": false
+  },
+  "localControls": {
+    "controllerCasesPassed": 97,
+    "helperCasesPassed": 75,
+    "observerCasesPassed": 3,
+    "owningWorkflowClassPassed": 70,
+    "documentationCaseExecuted": false,
+    "documentationBlockedBy": "actual owning project build failure"
+  },
+  "originalBudgets": {
+    "baselineJobMinutes": 60,
+    "qualificationJobMinutes": 45,
+    "startupSeconds": 600,
+    "nativeExecutionSeconds": 300,
+    "nativeStopSeconds": 90,
+    "originalAttachmentHoldSeconds": 240,
+    "readyWaitSeconds": 120,
+    "exactFinalizeSeconds": 150
+  },
+  "requiredIsolatedProjects": 15,
+  "nativeInputs": {
+    "base": "11053e562a2cba0196354cec655c01677e2afd46",
+    "paths": {
+      "module/hexalith.module-manifest.v2.json": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs": "68c354f7c14dd041626b62116bed8bfc223cb00f684c1f822114cae5cf5f5fc3",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj": "b8ef49466ad1fa875024431088086f284c25b281bf4e2b4af2e3f7b5cd197ac2",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/MemoriesTenantObservationTests.cs": "1201add559c92ae10942f80c8bb5edffba48820f242a7409ac9bb190c1d5bba5",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "ae7334b135f8034eaa3451d430e74a312192ae081ca05a8b07c06ae423b91b08",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs": "e06d493cc2ab247baa6f2ea8f2c41a9b9c5fb90f7026cb0ff262acc8e53d3884",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "400b782261375edfeb195e578676f39dd6d93467ad01b01e7287262919414337",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "e6a3565d16b4db41c023dcc90964ccf05712bf02a770eeae2780b8e650fff622",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": "e8a8377a1d329f3aa0d17c5c64d42f770ce015ac0f4d6b58232f010a08e5c0e1",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs": "6c17fdb4893ab30b44487ff0c34f879cd01ed31d234a0dc4027492e7142a9128",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "74e8d3440ccdfc0e9042b847d88168adccfe27853da2b6afd22a17e4d7fc722a",
+      "tests/Hexalith.Parties.Platform.IntegrationTests/PublicRuntimeImageObservations.cs": "7e3d405238ed66a702e4b72850a64791bd85dcf5dc5ed87190298ba796f3c0c3",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+      "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "e4b0500117e40c1699e499f97d214e762626a97bcc3e26c77efe8c7900f4eeff"
+    },
+    "filesChecked": 15,
+    "allByteIdentical": true
+  },
+  "actualBlocker": {
+    "command": [
+      "dotnet",
+      "build",
+      "tests/Hexalith.Parties.Tests/Hexalith.Parties.Tests.csproj",
+      "--configuration",
+      "Release",
+      "--disable-build-servers",
+      "-m:1",
+      "-warnaserror",
+      "-p:UseHexalithProjectReferences=false",
+      "-p:UseNuGetDeps=true"
+    ],
+    "exitCode": 1,
+    "rule": "NU1903",
+    "owningRootTreatWarningsAsErrors": true,
+    "selectedPackage": "Microsoft.AspNetCore.SignalR.StackExchangeRedis",
+    "selectedVersion": "10.0.14",
+    "firstPatchedVersion": "10.0.15",
+    "advisory": "GHSA-wr8v-9x5q-ggcm",
+    "primaryBuildLog": "../ordinary-proof/build-parties.log",
+    "primaryAdvisory": "../ordinary-eligibility/signalr-advisory.json",
+    "pinnedProducerPath": "Props/Directory.Packages.props",
+    "pinnedProducerLine": 243
+  },
+  "reviewableProducerDelta": {
+    "owningRepository": "Hexalith.Builds",
+    "baseSource": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+    "path": "Props/Directory.Packages.props",
+    "from": "<PackageVersion Include=\"Microsoft.AspNetCore.SignalR.StackExchangeRedis\" Version=\"10.0.14\" />",
+    "to": "<PackageVersion Include=\"Microsoft.AspNetCore.SignalR.StackExchangeRedis\" Version=\"10.0.15\" />",
+    "applied": false,
+    "sourcePinAdoptionAuthorized": false,
+    "publicationAuthorized": false,
+    "catalogIdentityWouldChange": true,
+    "sameTupleCannotBeClaimed": true,
+    "dependentNativeExactIdentityGuard": "tests/Hexalith.Parties.Platform.IntegrationTests/PublicRuntimeImageObservations.cs:34 binds actual CatalogCommit to3c8096180ecf2aa539ac454815efbfceb8a92822; preserve/refreeze genuine accepted input instead of weakening it",
+    "patch": "../historical-signalr-proposal/catalog-10.0.15.patch",
+    "patchSha256": "8c1994b7a6442f624f7f165ba149da707489d4dae256b7bfea5da801049c9842"
+  },
+  "nextBoundary": "Owner dependency/producer decision is needed before modifying this authenticated historical tuple. Do not suppress audit, replace manifests to fit eligibility, or dispatch a known-red unchanged subject. No new candidate search or release campaign is queued.",
+  "proofProjectionCommitted": false,
+  "proofProjectionPushed": false,
+  "proofDispatched": false,
+  "cancellationRequests": 0,
+  "candidateAcceptance": false,
+  "toolAcceptance": false,
+  "storyCompletion": false,
+  "rootPinsChanged": false,
+  "finalPreparedProjection": "../ordinary-proof-4/projection.diff",
+  "finalPreparedProjectionSha256": "a33d3cec0dd7ae19bade50f1d6475c384713275d69c927996b55264e3dd7379f",
+  "finalControllerCasesPassed": 97,
+  "executorCheckoutPrecedesControllerUnitStep": true,
+  "maintenanceProposalValidation": "../historical-signalr-proposal/proposal-validation.json",
+  "maintenanceProposalPrepareOutcome": {
+    "exitCode": 1,
+    "rule": "HXW009",
+    "message": "Platform0f4e pins3c809; proposedone-pin catalog3e313cbaffc90a55f4fd2dad2607b6c06b393f7f is correctly refused before actual build."
+  },
+  "ownerDecision": {
+    "recommended": "Authorize one bounded historical-catalog maintenance and matching Platform source/publication path, preserving all normal owner source, package, publication and exact native identity checks. Refreeze a new exact holds-only caller only after those actual producer inputs exist. No current Platform root pin change or latest-main adoption is included.",
+    "maintenanceNeeds": [
+      "Explicit supported4.x maintenance source/release lane and release-version decision by Builds owner; no next version/tag is guessed. The one-pin patch against3c809 is review material, not an accepted release.",
+      "Matching Platform source must genuinely pin that maintained catalog; HXW009 forbidsusing unchanged0f4e witha substitutedcatalog. Publish once throughnormalowninggates afterreview.",
+      "Parties proof native exact source/catalog checks must bind the actual newly admitted Platform/catalog identities, preserving their assertions and all actual declared suites/budgets. Do not claim original3c809/0f4e identities for changedbytes.",
+      "Only then authorize/freeze the bounded patched-release cancel-execution proof with exact ready check, one normal cancellation and actual three-timestamp/kernel-origin evidence."
+    ],
+    "alternative": "Proper current-cohort lifecycle registration needs explicit Platform-owned purpose/entry/declaration guards and executed qualification for a genuine current lifecycle suite. Existing platform-current-package is fixed to its integration entry and is not lifecycle permission. This adds producer capability/qualification scope; it is not a tool-version retry and is not selected here.",
+    "tradeoff": "Historical maintenance preserves the already-verified genuine holds-only controller and finite2.8suite semantics, but needs matching catalog/Platform delivery. Current-cohort registration avoids maintaining this historical tuple but expands production capability and owning qualification work.",
+    "notAuthorized": [
+      "audit suppression or warning weakening",
+      "changing accepted root pins",
+      "main merge/publication/tag creation",
+      "another caller/tuple search",
+      "new dispatch of a predictably red subject"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "hexalith.cicd.maintenance-delivery.v1",
+  "ownerSource": "3c285357c9eadec74a3516d649c8197fe1719052",
+  "ownerPolicyPath": "policies/maintenance/story-2-8.json",
+  "ownerPolicySha256": "70077984fefa15e7558ee3b5d7deaaf31d6a3604ab37fe19b7cb9b7f9953281b",
+  "repository": "Hexalith/Hexalith.Platform",
+  "role": "maintenance",
+  "targetSource": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "branch": "1.7.x",
+  "intendedBranch": "1.7.x",
+  "detachedProposal": false,
+  "base": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "ownedFiles": {
+    ".github/workflows/source-release.yml": "f1e2123632e8da8f2fc25f986adfe89bcef26a4e07f194350bf050b4006e371b",
+    ".github/workflows/catalog-builder.yml": "fcc6d5492ed80d66e0486b8a2359591e24bbf6f0d4430c3c90a4400a3e154cfb",
+    ".github/workflows/tuple-ci.yml": "578b4a63451493c68c4c036eea08d61b4dc66f6b2861542a0a1dc6fcb459b05c"
+  },
+  "normalSourceAndPublicationChecksRequired": true,
+  "runtimeOrCandidateAcceptance": false
+}

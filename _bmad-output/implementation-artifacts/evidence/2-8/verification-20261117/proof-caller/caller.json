@@ -1,0 +1,27 @@
+{
+  "caller": "68606e51aad58f4c220d516723eba792ed664a50",
+  "branch": "proof/story-2-8-patched-cancel-ordering-522-20261117",
+  "base": "4eca9e8fbad451a602a9ec7d2d6384345b6b0e4e",
+  "builds": "02ed624aa19781cac75d2c9112940e9bd830441a",
+  "platform": "b76e0c7c70162653bbff6a8263ebfc4500c1631b",
+  "toolVersion": "5.2.2",
+  "toolSource": "02ed624aa19781cac75d2c9112940e9bd830441a",
+  "changedFiles": {
+    "scripts/prepare-native-admin-ui-artifact.py": "72eabc350f026e12a39cbdfc1c2ef28ba61e929d3923d959ae24e7b6df88a1a3",
+    "scripts/validate-aspire-runtime-cohort.py": "5393dd8b537f36e30225d35a8ce4e4b3ebb9b671b05c964dcd5eb88cd578ce4f",
+    "tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj": "ab4ebec72edcfc30192c44493ed5baa72ebadaeaabb481e4d03f59ada78f25dc",
+    "tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs": "704b58cbd6598db09949e79d496d095c63d25b215ec7fc03c5c32632df509c56",
+    "tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py": "02c61cfb15ed207c07ae68156435069d42343384ed99393015e66942a5d9301b",
+    "scripts/story-2-8-proof-observer.py": "02627b1fb8554ad37b71d0680c709ca2b16decf13dbe9548443e67be01922d98",
+    ".github/workflows/ci-lifecycle-qualification.yml": "05f53cf4b3581ea0b28e29a673baa5025d814f6b560bd6d5369f33d728f9ea78",
+    ".gitattributes": "a76b1db70f062ed0cfb1f476794ec3f5aad645d555966c3dd14deea0c8cd8541"
+  },
+  "existingOwnerFix": "53844114ffcedc5af96fbf1cb15e126adaae02a9",
+  "suiteFilesUnchanged": 20,
+  "dispatched": false,
+  "pushed": false,
+  "budgetsChanged": false,
+  "localRealServices": false,
+  "candidateAcceptance": false,
+  "qualification": "focused-story-2-8-cancel-execution-only"
+}

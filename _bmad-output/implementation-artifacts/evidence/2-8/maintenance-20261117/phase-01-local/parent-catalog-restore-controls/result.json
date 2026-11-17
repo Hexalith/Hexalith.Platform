@@ -1,0 +1,64 @@
+{
+  "classification": "isolated package-graph controls only; not owner-source CI or runtime acceptance",
+  "catalogSha256": "6aeca3d710290311b7a3e729a7dfd5e1897dd6a64175b7aa5a01a74f925394a2",
+  "catalogBase": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "globalJsonSha256": "722b3c748e87aea67cd06e65b9af200bf22aa69ec601a3d1fbc6e163e1cf3bb5",
+  "auditsEnabled": true,
+  "warningsAsErrors": true,
+  "results": [
+    {
+      "case": "redis-default",
+      "exitCode": 0,
+      "seconds": 1.518,
+      "argv": [
+        "dotnet",
+        "restore",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-default.csproj",
+        "--configfile",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/NuGet.Config",
+        "-p:RestorePackagesPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/packages",
+        "-p:BaseIntermediateOutputPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-default-obj/",
+        "-m:1",
+        "--verbosity",
+        "minimal"
+      ],
+      "log": "redis-default.log"
+    },
+    {
+      "case": "redis-transitive-pinning",
+      "exitCode": 1,
+      "seconds": 1.122,
+      "argv": [
+        "dotnet",
+        "restore",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-transitive-pinning.csproj",
+        "--configfile",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/NuGet.Config",
+        "-p:RestorePackagesPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/packages",
+        "-p:BaseIntermediateOutputPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-transitive-pinning-obj/",
+        "-m:1",
+        "--verbosity",
+        "minimal"
+      ],
+      "log": "redis-transitive-pinning.log"
+    },
+    {
+      "case": "redis-direct-options",
+      "exitCode": 1,
+      "seconds": 0.866,
+      "argv": [
+        "dotnet",
+        "restore",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-direct-options.csproj",
+        "--configfile",
+        "/tmp/hexalith-job.fFB22wJe/catalog-restore/NuGet.Config",
+        "-p:RestorePackagesPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/packages",
+        "-p:BaseIntermediateOutputPath=/tmp/hexalith-job.fFB22wJe/catalog-restore/redis-direct-options-obj/",
+        "-m:1",
+        "--verbosity",
+        "minimal"
+      ],
+      "log": "redis-direct-options.log"
+    }
+  ]
+}

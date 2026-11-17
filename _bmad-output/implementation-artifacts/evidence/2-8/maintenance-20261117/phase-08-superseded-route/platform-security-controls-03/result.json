@@ -1,0 +1,53 @@
+{
+  "remoteMutations": false,
+  "classification": "private Git fixture and MSBuild metadata controls only; no hosted suite or native acceptance",
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "import",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "clone-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout-catalog",
+      "exitCode": 0
+    },
+    {
+      "label": "stage",
+      "exitCode": 0
+    },
+    {
+      "label": "diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "source-diff",
+      "exitCode": 0
+    }
+  ],
+  "unchangedControlsReused": {
+    "legacyCases": 14,
+    "tupleCases": 21,
+    "logs": "platform-security-controls-02",
+    "onlySubsequentChange": "precise existing-CRLF whitespace attribute for Directory.Packages.props"
+  },
+  "status": "private-security-baseline-controls-passed",
+  "files": {
+    "Directory.Packages.props": "adf9c7bccf474436a4d14efad41e5057f5b0934b493f8eca6ab398f9ebaab013",
+    ".gitattributes": "100089768c2e8e1379974a92232ca4f45d6d6679220dcaeed001c0372f0647f6",
+    "eng/legacy-security-floor.props": "0ce3079ebd548362f440a8814be7952da91929f0502889874d33695db45fabab",
+    "eng/test_builds_tuple.py": "d635a6dc95b63bfae88ee60ae6936985eeb905046d0068e0d51f92b830073a1e",
+    "eng/legacy_tuple_source.py": "cbcc48934fd7233f13d778303c246540c57ddbcc6a0e39698bf544bf7b61986b",
+    "eng/test_legacy_tuple_source.py": "2bef051a54e01ca1bfbae5bf2b84c419aa06b2ce57cc50619eab291913c1c6c7"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "ownerSource": "3c285357c9eadec74a3516d649c8197fe1719052",
+  "purpose": "one reviewed exact maintenance branch; no reviewer or NuGet policy change",
+  "requests": [
+    {
+      "method": "GET",
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production",
+      "exitCode": 0,
+      "atUtc": "2026-11-17T15:11:12.911013+00:00",
+      "responseSha256": "c1fc4787be946178badead93491c18435c437e332fcd5d4f9ebaa39dab206f8c",
+      "protectionRulesSha256": "181277d2100b3c86a239cd5d7907d9f9d97151529ce80de4e5a6cba400501eaa"
+    },
+    {
+      "method": "GET",
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production/deployment-branch-policies",
+      "exitCode": 0,
+      "atUtc": "2026-11-17T15:11:13.242774+00:00",
+      "responseSha256": "b4e4ba2c89877d8e272756f1be8a314b5137a1b654dc25809b513dae5644da3f",
+      "branchPolicies": [
+        {
+          "id": 55113630,
+          "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTExMzYzMA==",
+          "name": "main",
+          "type": "branch"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production/deployment-branch-policies",
+      "exitCode": 0,
+      "atUtc": "2026-11-17T15:11:13.890772+00:00",
+      "responseSha256": "f853dcb45f7001819b80c044ae95844bbc9fa5f144436f091534be2464334708",
+      "branchPolicies": [
+        {
+          "id": 67136540,
+          "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2NzEzNjU0MA==",
+          "name": "4.44.x",
+          "type": "branch"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production",
+      "exitCode": 0,
+      "atUtc": "2026-11-17T15:11:14.266661+00:00",
+      "responseSha256": "c1fc4787be946178badead93491c18435c437e332fcd5d4f9ebaa39dab206f8c",
+      "protectionRulesSha256": "181277d2100b3c86a239cd5d7907d9f9d97151529ce80de4e5a6cba400501eaa"
+    },
+    {
+      "method": "GET",
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production/deployment-branch-policies",
+      "exitCode": 0,
+      "atUtc": "2026-11-17T15:11:14.616347+00:00",
+      "responseSha256": "0606238171a54514f8830dd8fd5abb649f018517e24475e9f206a8e16a33fc0f",
+      "branchPolicies": [
+        {
+          "id": 67136540,
+          "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2NzEzNjU0MA==",
+          "name": "4.44.x",
+          "type": "branch"
+        },
+        {
+          "id": 55113630,
+          "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTExMzYzMA==",
+          "name": "main",
+          "type": "branch"
+        }
+      ]
+    }
+  ],
+  "mutationRequests": 1,
+  "mutationRequestedAtUtc": "2026-11-17T15:11:13.243166+00:00",
+  "status": "verified",
+  "receipt": {
+    "environment": "production",
+    "requested": {
+      "name": "4.44.x",
+      "type": "branch"
+    },
+    "applied": true,
+    "existingProtectionRulesSha256": "181277d2100b3c86a239cd5d7907d9f9d97151529ce80de4e5a6cba400501eaa",
+    "reviewersUnchanged": true,
+    "normalNugetLoginRequired": true,
+    "createdPolicyId": 67136540
+  }
+}

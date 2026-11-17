@@ -1,0 +1,843 @@
+diff --git a/.gitattributes b/.gitattributes
+index d34340b4..954aee82 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -76,3 +76,7 @@ tests/Hexalith.Parties.Tests/FitnessTests/PackageCatalogFallbackTests.cs text eo
+ 
+ # Recognize the shared evaluator's existing CRLF while checking whitespace.
+ tests/PackageTests.Shared/EffectivePackageVersions.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
++
++# Preserve the existing CRLF convention in the private native UI boundary.
++tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
++tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+index 6f3c4952..da111eb5 100644
+--- a/.github/workflows/ci-lifecycle-qualification.yml
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -19,7 +19,7 @@ concurrency:
+ 
+ jobs:
+   baseline:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@02ed624aa19781cac75d2c9112940e9bd830441a
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       additional-sdk-version: '10.0.404'
+@@ -211,6 +211,10 @@ jobs:
+         env:
+           DOCKER_CONFIG: ${{ runner.temp }}/hexalith-lifecycle-registry.reader
+         run: python3 -B scripts/qualify-disposable-ci.py start-cancellation --phase startup
++      # Proof branch only: metadata, signal and container observation; suites are unchanged.
++      - name: Start the Story 2.8 proof event observer
++        if: ${{ inputs.scenario == 'cancel-execution' }}
++        run: setsid nohup python3 -B scripts/story-2-8-proof-observer.py lifecycle >/dev/null 2>&1 </dev/null &
+       - name: Observe actual execution cancellation readiness and active hold
+         if: ${{ inputs.scenario == 'cancel-execution' }}
+         env:
+@@ -221,7 +225,9 @@ jobs:
+         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+         with:
+           name: lifecycle-cancellation-ready
+-          path: TestResults/ci-lifecycle
++          path: |
++            TestResults/ci-lifecycle
++            TestResults/story-2-8-proof-observer
+           if-no-files-found: error
+           retention-days: 14
+       # The runner signals only this step's own process; exec keeps the controller as that process.
+@@ -249,3 +255,18 @@ jobs:
+           path: TestResults/ci-lifecycle
+           if-no-files-found: warn
+           retention-days: 14
++      - name: Wait for the Story 2.8 proof observer flush
++        if: ${{ always() && inputs.scenario == 'cancel-execution' }}
++        run: |
++          for _ in $(seq 1 40); do
++            if ! pgrep -f 'story-2-8-proof-observer.py lifecycle' > /dev/null; then break; fi
++            sleep 0.5
++          done
++      - name: Retain the Story 2.8 proof event observations
++        if: ${{ always() && inputs.scenario == 'cancel-execution' }}
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
++        with:
++          name: story-2-8-proof-observer
++          path: TestResults/story-2-8-proof-observer
++          if-no-files-found: error
++          retention-days: 14
+diff --git a/scripts/prepare-native-admin-ui-artifact.py b/scripts/prepare-native-admin-ui-artifact.py
+new file mode 100644
+index 00000000..b5e4ab5c
+--- /dev/null
++++ b/scripts/prepare-native-admin-ui-artifact.py
+@@ -0,0 +1,120 @@
++#!/usr/bin/env python3
++"""Qualify the private native UI artifact outside the root package catalog context."""
++
++import argparse
++import importlib.util
++import json
++import os
++import subprocess
++import time
++import xml.etree.ElementTree as ET
++from pathlib import Path
++
++SCRIPT_ROOT = Path(__file__).resolve().parent
++spec = importlib.util.spec_from_file_location("runtime_cohort", SCRIPT_ROOT / "validate-aspire-runtime-cohort.py")
++cohort = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(cohort)
++
++
++def evaluated_imports(project: Path, properties: list[str], environment: dict, output: Path) -> set[Path]:
++    """Read the resolved import boundaries emitted by MSBuild's evaluated preprocessor."""
++    subprocess.run(["dotnet", "msbuild", str(project), "-nologo", *properties, "-preprocess:" + str(output)],
++                   env=environment, check=True)
++    paths = {project.resolve()}
++    for _, comment in ET.iterparse(output, events=("comment",)):
++        lines = [line.strip() for line in (comment.text or "").splitlines() if line.strip()]
++        if len(lines) >= 3 and set(lines[0]) == {"="} and set(lines[-1]) == {"="}:
++            path = Path(lines[-2])
++            if path.is_absolute():
++                if not path.is_file():
++                    raise ValueError("An evaluated native UI import is unavailable: " + str(path))
++                paths.add(path.resolve())
++    return paths
++
++
++def prepare(owner: Path, output: Path, configuration: str, version: str, framework: str) -> None:
++    """Build the real application, then authenticate it before exposing its TargetPath."""
++    output = output.resolve()
++    output.mkdir(parents=True, exist_ok=True)
++    manifest = output / "prepared.json"
++    target_file = output / "target.txt"
++    for previous in (manifest, target_file):
++        previous.unlink(missing_ok=True)
++    if version != "4.2.0":
++        raise ValueError("The mapped private native UI boundary requires the exact retained SDK 4.2.0")
++    project = owner.resolve() / "src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj"
++    if not project.is_file():
++        raise ValueError("The complete selected native Admin UI project is required")
++    # These imports authenticate Root's mapped projects against Root's catalog.
++    # The external application retains its original identity and owner imports;
++    # its private package artifact is authenticated below using official archives.
++    environment = os.environ.copy()
++    inherited_imports = set()
++    for name in ("CustomBeforeDirectoryBuildProps", "CustomAfterMicrosoftCommonProps",
++                 "CustomBeforeDirectoryBuildTargets", "CustomAfterDirectoryBuildTargets",
++                 "AfterMicrosoftNETSdkTargets", "HEXALITH_SOURCE_MAPPING_HASH", "Configuration"):
++        value = environment.pop(name, None)
++        if name not in {"HEXALITH_SOURCE_MAPPING_HASH", "Configuration"} and value:
++            inherited_imports.add(Path(value).resolve())
++    properties = ["-p:Configuration=" + configuration, "-p:HexalithUsePublishedSdkForHostedTests=true",
++                  "-p:HexalithEventStoreVersion=" + version, "-p:UseHexalithProjectReferences=false",
++                  "-p:UseNuGetDeps=true", "-p:StaticWebAssetsEnabled=false", "-p:CopyLocalLockFileAssemblies=true",
++                  "-p:UseArtifactsOutput=true", "-p:ArtifactsPath=" + str(output / "build"),
++                  "-p:HexalithPartiesRuntimeTargetFramework=" + framework,
++                  "-p:CustomAfterMicrosoftCommonProps=" + str(cohort.RUNTIME_PROFILE)]
++    subprocess.run(["dotnet", "restore", str(project), "-m:1", "-nr:false", "-warnaserror", *properties],
++                   env=environment, check=True)
++    metadata = json.loads(subprocess.check_output([
++        "dotnet", "msbuild", str(project), "-nologo", *properties,
++        "-getProperty:TargetPath,ProjectAssetsFile,Configuration,HexalithEventStoreVersion,TargetFramework,"
++        "HexalithPartiesRuntimeTargetFramework,CustomAfterMicrosoftCommonProps"], env=environment, text=True))
++    target = Path(metadata["Properties"]["TargetPath"]).resolve()
++    sources = cohort.native_ui_owner_sources(project.parent)
++    sources.update(evaluated_imports(project, properties, environment, output / "native-owner.expanded.proj"))
++    sources.update(path for path in owner.resolve().iterdir() if path.is_file()
++                   and (path.name.startswith("Directory.") or path.name in {".editorconfig", "global.json"}))
++    sources.update({Path(__file__).resolve(), SCRIPT_ROOT / "validate-aspire-runtime-cohort.py", cohort.RUNTIME_PROFILE})
++    # Bind the incoming authenticated context as provenance, although only Root's
++    # own build uses those imports. Never synthesize or modify a catalog view.
++    sources.update(inherited_imports)
++    for imported in inherited_imports:
++        sources.update(path for path in imported.parent.glob("SourceMapping.*") if path.is_file())
++        sources.update(path for name in ("mapping.json", "catalog-versions.json")
++                       if (path := imported.parent / name).is_file())
++    original = {path: cohort.digest(path) for path in sources}
++    started = time.time_ns()
++    subprocess.run(["dotnet", "build", str(project), "--no-restore", "-t:Rebuild", "-m:1", "-nr:false", "-warnaserror", *properties],
++                   env=environment, check=True)
++    if cohort.native_ui_owner_sources(project.parent) != {path for path in sources if path.is_relative_to(project.parent)} \
++            or any(cohort.digest(path) != expected for path, expected in original.items()):
++        raise ValueError("Native Admin UI source inputs changed during compilation")
++    # This inventory is checked again by the ordinary runtime receipt reader.
++    provenance = target.parent / "native-admin-ui-artifact.tsv"
++    provenance.write_text("nativeSourceDirectory|" + str(project.parent) + "\n" + "\n".join(
++        str(path) + "|" + original[path] for path in sorted(sources)) + "\n", encoding="utf-8")
++    receipt = output / "native-owner.json"
++    cohort.write(receipt, cohort.record(metadata, project, configuration, version, started, "runtime", {}, target_framework=framework))
++    cohort.write(manifest, cohort.complete([receipt], configuration, version, [], output / "public-archives", {}, framework))
++    qualified = cohort.verify_manifest(manifest, project, configuration, version, {}, framework)
++    evidence = {Path(path) for path in qualified["files"]} | {manifest, receipt}
++    evidence.update(Path(archive["path"]) for archive in cohort.load(manifest)["publicArchives"])
++    (output / "evidence.txt").write_text("\n".join(str(path) for path in sorted(evidence)) + "\n", encoding="utf-8")
++    target_file.write_text(str(target) + "\n", encoding="utf-8")
++
++
++def main() -> None:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--owner-root", type=Path, required=True)
++    parser.add_argument("--output", type=Path, required=True)
++    parser.add_argument("--configuration", choices=("Debug", "Release"), required=True)
++    parser.add_argument("--version", required=True)
++    parser.add_argument("--target-framework", choices=("net10.0", "net11.0"), required=True)
++    args = parser.parse_args()
++    try:
++        prepare(args.owner_root, args.output, args.configuration, args.version, args.target_framework)
++    except (OSError, ValueError, KeyError, TypeError, ET.ParseError, subprocess.CalledProcessError) as failure:
++        parser.exit(1, "Private native Admin UI qualification failed: " + str(failure) + "\n")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/story-2-8-proof-observer.py b/scripts/story-2-8-proof-observer.py
+new file mode 100644
+index 00000000..2dc823c9
+--- /dev/null
++++ b/scripts/story-2-8-proof-observer.py
+@@ -0,0 +1,205 @@
++"""Proof branch only (Story 2.8 review loop 2; never merged).
++
++Records, in one job, the order of three durable events for the BS-4 hosted proofs:
++1. the owner's admission-closing status write (owner state and first outcome);
++2. the attachment withdrawal commit;
++3. the first stop of a composed resource: a Docker kill/stop/die of a container created by this owner, a kernel
++   signal_generate event (SIGHUP/INT/QUIT/KILL/TERM) aimed at a process carrying the owner's run tag or descending
++   from one, or such a process disappearing.
++It never records environment values, command lines or credentials: only process roles, pids and times.
++"""
++import json
++import os
++import pathlib
++import shutil
++import subprocess
++import sys
++import time
++
++MODE = sys.argv[1]
++assert MODE in ('v2', 'lifecycle')
++WORKSPACE = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
++RUNNER_TEMP = pathlib.Path(os.environ['RUNNER_TEMP'])
++OUT = RUNNER_TEMP / 'story-2-8-proof'
++OUT.mkdir(exist_ok=True)
++MIRROR = WORKSPACE / 'TestResults' / ('module-integration' if MODE == 'v2' else 'story-2-8-proof-observer') / 'story-2-8-proof'
++STATE = pathlib.Path(os.environ.get('XDG_DATA_HOME', str(pathlib.Path.home() / '.local' / 'share'))) / 'hexalith-builds' / 'g4-runs'
++TAG = b'HEXALITH_G4_RUN_ID='
++MARKER = pathlib.Path('/tmp/story-2-8-proof-native-live')
++log = open(OUT / 'observer.jsonl', 'a', buffering=1)
++
++
++def record(kind, **fields):
++    log.write(json.dumps({'kind': kind, 'wallNs': time.time_ns(), 'monoNs': time.monotonic_ns(), **fields}, sort_keys=True) + '\n')
++
++
++def sudo(script):
++    return subprocess.run(['sudo', '-n', 'sh', '-c', script], capture_output=True, text=True, timeout=30)
++
++
++def start_trace():
++    found = sudo('for d in /sys/kernel/tracing /sys/kernel/debug/tracing; do [ -e "$d/trace_pipe" ] && echo "$d" && exit 0; done; '
++                 'mount -t tracefs nodev /sys/kernel/tracing && echo /sys/kernel/tracing')
++    base = found.stdout.strip().splitlines()[-1] if found.returncode == 0 and found.stdout.strip() else ''
++    if not base:
++        record('trace-unavailable', code=found.returncode)
++        return None
++    setup = sudo(f'cd {base} && echo 0 > tracing_on && echo mono > trace_clock && echo > trace && '
++                 "echo 'sig==1||sig==2||sig==3||sig==9||sig==15' > events/signal/signal_generate/filter && "
++                 'echo 1 > events/signal/signal_generate/enable && echo 1 > tracing_on')
++    record('trace-started', base=base, code=setup.returncode, clock='mono')
++    if setup.returncode:
++        return None
++    return subprocess.Popen(['sudo', '-n', 'cat', base + '/trace_pipe'], stdout=open(OUT / 'signals.trace', 'ab'),
++                            stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL, start_new_session=True), base
++
++
++def stat(pid):
++    try:
++        fields = pathlib.Path(f'/proc/{pid}/stat').read_text(errors='replace').rpartition(')')[2].split()
++        return int(fields[1]), int(fields[3]), fields[19]
++    except (OSError, IndexError, ValueError):
++        return None
++
++
++def role(pid):
++    """A coarse role from argv[0..2] basenames only; the command line itself is never retained."""
++    try:
++        argv = pathlib.Path(f'/proc/{pid}/cmdline').read_bytes().split(b'\0')[:3]
++    except OSError:
++        return None
++    names = [os.path.basename(part.decode(errors='replace')) for part in argv if part]
++    text = ' '.join(names).lower()
++    for needle, label in (('hexalith-module', 'tool-or-muxer'), ('apphost', 'apphost'), ('dcp', 'dcp'), ('daprd', 'daprd'),
++                          ('testhost', 'native-test-host'), ('integrationtests', 'native-test-host'), ('placement', 'dapr-placement'),
++                          ('scheduler', 'dapr-scheduler'), ('dotnet', 'dotnet')):
++        if needle in text:
++            return label
++    return names[0][:40] if names else None
++
++
++def tagged(pid):
++    try:
++        for entry in pathlib.Path(f'/proc/{pid}/environ').read_bytes().split(b'\0'):
++            if entry.startswith(TAG):
++                return entry[len(TAG):].decode('ascii', 'replace')[:32]
++    except OSError:
++        return None
++    return None
++
++
++known, composed, states, files = {}, set(), {}, {}
++attached = False
++trace = start_trace()
++docker = subprocess.Popen(['docker', 'events', '--format', '{{json .}}', '--filter', 'type=container'],
++                          stdout=open(OUT / 'docker-events.jsonl', 'ab'), stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL,
++                          start_new_session=True)
++record('observer-started', mode=MODE, pid=os.getpid())
++deadline = time.monotonic() + 75 * 60
++last_mirror = last_clock = 0.0
++finished_at = None
++while time.monotonic() < deadline:
++    now = time.monotonic()
++    live = set()
++    for entry in os.scandir('/proc'):
++        if not entry.name.isdigit():
++            continue
++        pid = int(entry.name)
++        live.add(pid)
++        if pid in known:
++            continue
++        identity = stat(pid)
++        if identity is None:
++            continue
++        parent, session, start = identity
++        tag = tagged(pid)
++        is_composed = tag is not None or parent in composed
++        info = {'pid': pid, 'parent': parent, 'session': session, 'startTime': start, 'role': role(pid), 'runTag': tag,
++                'composed': is_composed}
++        known[pid] = info
++        if is_composed:
++            composed.add(pid)
++        if is_composed or info['role'] in ('tool-or-muxer', 'native-test-host'):
++            record('process-seen', **info)
++    for pid in [pid for pid in known if pid not in live]:
++        info = known.pop(pid)
++        if info['composed'] or info['role'] in ('tool-or-muxer', 'native-test-host'):
++            record('process-gone', **info)
++    for path in STATE.glob('*.json') if STATE.is_dir() else []:
++        try:
++            value = json.loads(path.read_text())
++        except (OSError, ValueError):
++            continue
++        if not isinstance(value, dict):
++            continue
++        test_run = value.get('testRun') or {}
++        summary = (value.get('status'), value.get('cleanupDisposition'), test_run.get('terminalStatus'))
++        if states.get(path.name) != summary:
++            states[path.name] = summary
++            record('owner-state', runId=value.get('runId'), status=summary[0], cleanupDisposition=summary[1],
++                   terminalStatus=summary[2], updatedAt=value.get('updatedAt'))
++        run_id = value.get('runId')
++        for name in ('attachments.json', 'attachment-withdrawals.json', 'test-result.json'):
++            candidate = STATE / 'diagnostics' / str(run_id) / name
++            try:
++                mtime = candidate.stat().st_mtime_ns
++            except OSError:
++                continue
++            if files.get(str(candidate)) != mtime:
++                files[str(candidate)] = mtime
++                record('owner-file', runId=run_id, name=name, mtimeNs=mtime)
++        if (MODE == 'v2' and not attached and value.get('status') == 'Ready' and MARKER.exists()
++                and isinstance(run_id, str) and isinstance(value.get('manifestHash'), str)):
++            attached = True
++            record('attach-requested', runId=run_id)
++            command = ['dotnet', 'tool', 'run', 'hexalith-module', '--', 'attach', '--owner-run-id=' + run_id, '--mode=package',
++                       '--composition-identity=' + value['manifestHash'], '--hold-seconds=900', '--output=json']
++            try:
++                completed = subprocess.run(command, cwd=WORKSPACE, capture_output=True, text=True, timeout=120,
++                                           stdin=subprocess.DEVNULL, start_new_session=True)
++                try:
++                    result = json.loads(completed.stdout)
++                except ValueError:
++                    result = None
++                attachment = (result or {}).get('attachment') if isinstance(result, dict) else None
++                record('attach-result', exitCode=completed.returncode, attachment=attachment,
++                       outcome=(result or {}).get('outcome') if isinstance(result, dict) else None)
++            except (OSError, subprocess.SubprocessError) as error:
++                record('attach-failed', error=type(error).__name__)
++    if now - last_clock >= 1:
++        last_clock = now
++        record('clock')
++    done = False
++    if MODE == 'v2':
++        evidence = WORKSPACE / 'TestResults' / 'module-integration'
++        for cleanup in evidence.glob('cleanup-*.json') if evidence.is_dir() else []:
++            try:
++                value = json.loads(cleanup.read_text())
++            except (OSError, ValueError):
++                continue
++            done = done or (value.get('jobStatus') == 'cancelled' and value.get('status') in ('completed', 'timed-out', 'tool-unavailable'))
++    else:
++        done = (WORKSPACE / 'TestResults' / 'ci-lifecycle' / 'cancel-independent-finalizer.json').exists()
++    if done and finished_at is None:
++        finished_at = now
++        record('finalizer-observed')
++    if now - last_mirror >= 0.5 or (finished_at is not None and now - finished_at >= 3):
++        last_mirror = now
++        if MIRROR.parent.is_dir() or MODE == 'lifecycle':
++            MIRROR.mkdir(parents=True, exist_ok=True)
++            for name in ('observer.jsonl', 'signals.trace', 'docker-events.jsonl'):
++                if (OUT / name).exists():
++                    shutil.copyfile(OUT / name, MIRROR / name)
++    if finished_at is not None and now - finished_at >= 3:
++        break
++    time.sleep(0.05)
++record('observer-stopping')
++if trace:
++    sudo(f'echo 0 > {trace[1]}/tracing_on')
++    subprocess.run(['sudo', '-n', 'kill', str(trace[0].pid)], capture_output=True)
++docker.terminate()
++time.sleep(0.5)
++MIRROR.mkdir(parents=True, exist_ok=True)
++for name in ('observer.jsonl', 'signals.trace', 'docker-events.jsonl'):
++    if (OUT / name).exists():
++        shutil.copyfile(OUT / name, MIRROR / name)
+diff --git a/scripts/validate-aspire-runtime-cohort.py b/scripts/validate-aspire-runtime-cohort.py
+index e633c7a3..1c419e04 100644
+--- a/scripts/validate-aspire-runtime-cohort.py
++++ b/scripts/validate-aspire-runtime-cohort.py
+@@ -270,11 +270,30 @@ def bind_native_ui(target: Path, project: Path, configuration: str, version: str
+     return {"path": str(owner_receipt.resolve()), "sha256": digest(owner_receipt)}
+ 
+ 
+-def native_ui_sources(target: Path) -> set[Path]:
++def native_ui_owner_sources(directory: Path) -> set[Path]:
++    """Inventory the complete original UI, excluding only build output directories."""
++    if not directory.is_absolute() or not directory.is_dir() or directory.is_symlink():
++        raise ValueError("The complete native Admin UI source directory is required")
++    paths = set()
++    for path in directory.rglob("*"):
++        relative = path.relative_to(directory)
++        if any(part in {"bin", "obj"} for part in relative.parts) \
++                or relative.parts[:2] == (".artifacts", "ui-test-obj") or path.name.endswith(".csproj.lscache"):
++            continue
++        if path.is_symlink():
++            raise ValueError("Linked native Admin UI sources cannot qualify an artifact")
++        if path.is_file():
++            paths.add(path.resolve())
++    return paths
++
++
++def native_ui_sources(target: Path, configuration: str | None = None, version: str | None = None,
++                      target_framework: str | None = None) -> set[Path]:
+     """Require actual absolute-source/hash evidence while preserving the artifact metadata headers."""
+     paths = set()
+     for proof in target.parent.glob("native-admin-ui-artifact.tsv"):
+         sources = set()
++        headers = {}
+         for row in proof.read_text(encoding="utf-8").splitlines():
+             filename, separator, expected = row.partition("|")
+             if separator and Path(filename).is_absolute():
+@@ -282,8 +301,30 @@ def native_ui_sources(target: Path) -> set[Path]:
+                 if not re.fullmatch(r"[0-9a-fA-F]{64}", expected) or digest(source) != expected.lower():
+                     raise ValueError("Native UI artifact provenance differs from its actual file: " + filename)
+                 sources.add(source)
++            elif separator:
++                if filename in headers:
++                    raise ValueError("Native UI artifact provenance contains duplicate headers")
++                headers[filename] = expected
+         if not sources:
+             raise ValueError("Native UI artifact provenance requires at least one absolute source/hash row")
++        if "nativeSourceDirectory" in headers:
++            inventory = native_ui_owner_sources(Path(headers["nativeSourceDirectory"]))
++            recorded = {path for path in sources if path.is_relative_to(Path(headers["nativeSourceDirectory"]))}
++            if inventory != recorded:
++                raise ValueError("Native UI complete source inventory drifted after compilation")
++        if headers.get("nativeBoundaryManifest"):
++            manifest = Path(headers["nativeBoundaryManifest"])
++            if manifest.resolve() not in sources:
++                raise ValueError("Native UI artifact boundary manifest is not bound to its provenance")
++            if configuration is None or version is None or target_framework is None \
++                    or headers.get("configuration") != configuration or headers.get("sdkVersion") != version \
++                    or headers.get("targetFramework") != target_framework:
++                raise ValueError("Native UI artifact boundary differs from the expected outer host context")
++            owner = verify_manifest(manifest, Path(headers["sourceProject"]), configuration, version, {}, target_framework)
++            # The host must consume exactly the application authenticated by that boundary.
++            if digest(target.parent / "Hexalith.EventStore.Admin.UI.dll") != digest(Path(owner["targetPath"])):
++                raise ValueError("Native UI artifact differs from its qualified native owner")
++            paths.update(Path(path) for path in owner["files"])
+         paths.update(sources)
+         paths.add(proof.resolve())
+     return paths
+@@ -362,7 +403,7 @@ def record(metadata: dict, project: Path, configuration: str, version: str, star
+     validate_deps(deps, version, set(assets["libraries"]), families, project, native_ui is not None)
+     archives, binaries = sdk_proof(assets, target, version, families)
+     paths = runtime_inputs(target) | {assets_path, project.resolve(), RUNTIME_PROFILE}
+-    paths.update(native_ui_sources(target))
++    paths.update(native_ui_sources(target, configuration, version, framework))
+     return {"schemaVersion": 1, "completed": True, "project": str(project.resolve()), "configuration": configuration,
+             "sdkVersion": version, "targetFramework": framework, "familyVersions": families, "role": role, "targetPath": str(target), "assetsPath": str(assets_path),
+             "buildStartedNs": started_ns, "completedNs": time.time_ns(),
+@@ -395,7 +436,7 @@ def verify_receipt(receipt: dict, project: Path, configuration: str, version: st
+         raise ValueError("Prepared runtime inventory contains unbound inputs")
+     if runtime_inputs(target) != recorded_inputs:
+         raise ValueError("Prepared runtime file inventory drifted after completed build")
+-    if not native_ui_sources(target).issubset({Path(filename) for filename in receipt["files"]}):
++    if not native_ui_sources(target, configuration, version, framework).issubset({Path(filename) for filename in receipt["files"]}):
+         raise ValueError("Native UI artifact provenance contains unbound source files")
+     assets = validate(assets_path, version, project)
+     validate_framework(assets, target, framework, receipt["role"])
+diff --git a/tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs b/tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs
+index 140a166b..57b8a7e9 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs
+@@ -1,3 +1,4 @@
++using System.Diagnostics;
+ using System.Text.Json;
+ using System.Xml.Linq;
+ 
+@@ -8,6 +9,89 @@ namespace Hexalith.Parties.Ci.Tests;
+ /// <summary>Checks the properties and artifact returned by the actual nested native UI build target.</summary>
+ public sealed class NativeAdminUiBuildProfileTests
+ {
++    /// <summary>The actual native compiler and official SDK archives qualify the private artifact despite the owner's different ordinary catalog.</summary>
++    [Fact]
++    public void MappedPackageArtifactQualifiesTheActualOwnerOutsideTheRootCatalog()
++    {
++        string root = Directory.CreateTempSubdirectory("parties-native-ui-boundary-").FullName;
++        try
++        {
++            File.Copy(CiTestPaths.RepoFile("global.json"), Path.Combine(root, "global.json"));
++            string owner = CiTestPaths.RepoFile("references/Hexalith.EventStore");
++            string imports = Path.Combine(root, "RootCatalog.targets");
++            // Model the demonstrated global SDK5 view at its real import boundary.
++            // The native application itself is the complete selected owner, not a tiny producer.
++            File.WriteAllText(imports, """
++                <Project>
++                  <Target Name="RejectPrivateSdkInOrdinaryOwnerContext" BeforeTargets="PrepareForBuild">
++                    <Error Condition="'$(MSBuildProjectName)' == 'Hexalith.EventStore.Admin.UI'"
++                      Text="HXW012: the ordinary native owner requires the global SDK5 catalog" />
++                  </Target>
++                </Project>
++                """);
++            string nativeImport = Path.Combine(root, "NativeInput.targets");
++            File.WriteAllText(nativeImport, "<Project><PropertyGroup><NativeInputMarker>original</NativeInputMarker></PropertyGroup></Project>");
++            XDocument source = XDocument.Load(CiTestPaths.RepoFile("tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj"));
++            string project = Path.Combine(root, "Host.proj");
++            new XDocument(new XElement("Project",
++                new XElement("PropertyGroup", new XElement("_AdminUiEventStoreRoot", owner),
++                    new XElement("_AdminUiRepositoryRoot", CiTestPaths.RepositoryRoot), new XElement("TargetFramework", "net11.0"),
++                    new XElement("IntermediateOutputPath", Path.Combine(root, "obj") + Path.DirectorySeparatorChar),
++                    new XElement("Configuration", "Release"), new XElement("HexalithEventStoreVersion", "4.2.0"),
++                    new XElement("HexalithSourceMappingApplies", "true"), new XElement("HexalithSourceMappingMode", "package")),
++                source.Root!.Elements("Target").Where(target => (string?)target.Attribute("Name") is "ValidateAdminUiSettingsRoot" or "BuildNativeAdminUiArtifact"),
++                new XElement("Target", new XAttribute("Name", "CaptureArtifact"), new XAttribute("AfterTargets", "BuildNativeAdminUiArtifact"),
++                    new XElement("WriteLinesToFile", new XAttribute("File", Path.Combine(root, "reference.txt")), new XAttribute("Lines", "@(Reference)")))))
++                .Save(project);
++            var start = new ProcessStartInfo("python3");
++            start.ArgumentList.Add("-c");
++            start.ArgumentList.Add("import subprocess,sys; sys.exit(subprocess.call(sys.argv[1:]))");
++            foreach (string argument in new[] { "dotnet", "msbuild", project, "-target:BuildNativeAdminUiArtifact", "-nologo", "-m:1", "-nr:false" })
++            {
++                start.ArgumentList.Add(argument);
++            }
++            PackageTestProcess.RemoveSourceMappingEnvironment(start);
++            foreach (string key in new[] { "CustomBeforeDirectoryBuildProps", "CustomAfterMicrosoftCommonProps",
++                "CustomBeforeDirectoryBuildTargets", "CustomAfterDirectoryBuildTargets", "AfterMicrosoftNETSdkTargets" })
++            {
++                start.Environment[key] = imports;
++            }
++            start.Environment["CustomAfterMicrosoftCommonTargets"] = nativeImport;
++            // Five independently downloaded archives each support 93 seconds of retries;
++            // retain that budget plus bounded restore, compilation and validation time.
++            PackageTestProcessResult result = PackageTestProcess.Run(start, root, 600_000);
++            result.ExitCode.ShouldBe(0, result.Diagnostic);
++            string artifact = File.ReadAllText(Path.Combine(root, "reference.txt")).Trim();
++            Path.GetFileName(artifact).ShouldBe("Hexalith.EventStore.Admin.UI.dll");
++            Path.GetFullPath(artifact).ShouldStartWith(root + Path.DirectorySeparatorChar);
++            string boundary = Path.Combine(root, "obj", "native-admin-ui", "qualified");
++            using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(boundary, "prepared.json")));
++            manifest.RootElement.GetProperty("sdkVersion").GetString().ShouldBe("4.2.0");
++            manifest.RootElement.GetProperty("targetFramework").GetString().ShouldBe("net11.0");
++            manifest.RootElement.GetProperty("publicArchives").EnumerateArray().ShouldNotBeEmpty();
++            using JsonDocument receipt = JsonDocument.Parse(File.ReadAllText(Path.Combine(boundary, "native-owner.json")));
++            receipt.RootElement.GetProperty("targetPath").GetString().ShouldBe(artifact);
++            JsonElement files = receipt.RootElement.GetProperty("files");
++            foreach (string input in new[] { Path.Combine(owner, "src", "Hexalith.EventStore.Admin.UI", "Program.cs"), nativeImport,
++                CiTestPaths.RepoFile("references/Hexalith.Builds/Props/Directory.Packages.props"),
++                CiTestPaths.RepoFile("references/Hexalith.Builds/Props/Logging.Build.targets") })
++            {
++                files.TryGetProperty(input, out _).ShouldBeTrue("The actual evaluated import/source closure must bind " + input);
++            }
++            File.WriteAllText(nativeImport, "<Project><PropertyGroup><NativeInputMarker>changed</NativeInputMarker></PropertyGroup></Project>");
++            PackageTestProcessResult changedImport = PackageTestProcess.Run("python3",
++                [CiTestPaths.RepoFile("scripts/validate-aspire-runtime-cohort.py"), "--manifest", Path.Combine(boundary, "prepared.json"),
++                    "--project", Path.Combine(owner, "src", "Hexalith.EventStore.Admin.UI", "Hexalith.EventStore.Admin.UI.csproj"),
++                    "--version", "4.2.0", "--configuration", "Release", "--target-framework", "net11.0"], root);
++            changedImport.ExitCode.ShouldNotBe(0);
++            changedImport.Diagnostic.ShouldContain("drifted after completed build");
++        }
++        finally
++        {
++            Directory.Delete(root, recursive: true);
++        }
++    }
++
+     /// <summary>Source mapping keeps its selectors while package and unmapped builds retain the hosted package profile.</summary>
+     /// <param name="mode">The active mapping mode, or empty for an ordinary build.</param>
+     /// <param name="configuration">The configuration selected for this build.</param>
+@@ -63,7 +147,8 @@ public sealed class NativeAdminUiBuildProfileTests
+                 .Save(project);
+             PackageTestProcessResult result = PackageTestProcess.Run("dotnet",
+                 ["msbuild", project, "-target:BuildNativeAdminUiArtifact", "-getItem:Reference", "-nologo", "-m:1", "-nr:false",
+-                    "-p:Configuration=" + configuration, "-p:HexalithSourceMappingMode=" + mode, "-p:HexalithEventStoreVersion=" + SdkVersion], root);
++                    "-p:Configuration=" + configuration, "-p:HexalithSourceMappingMode=" + mode,
++                    "-p:HexalithSourceMappingApplies=" + (mode == "source" ? "true" : "false"), "-p:HexalithEventStoreVersion=" + SdkVersion], root);
+             result.ExitCode.ShouldBe(0, result.Diagnostic);
+             string profile = $"{configuration}|{projectReferences}|{nugetDependencies}|true|{SdkVersion}|false|true";
+             File.ReadAllLines(Path.Combine(native, "profile.txt")).ShouldBe(new[] { "Restore|" + profile, "Build|" + profile });
+diff --git a/tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py b/tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py
+index b6da8b3a..46981100 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py
++++ b/tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py
+@@ -22,6 +22,155 @@ spec.loader.exec_module(cohort)
+ 
+ 
+ class RuntimeReceiptCases(unittest.TestCase):
++    def test_native_ui_source_inventory_refuses_added_removed_and_changed_inputs(self):
++        directory = self.root / "native-ui"
++        directory.mkdir()
++        source = directory / "App.razor"
++        source.write_text("<p>Actual owner application</p>")
++        proof = self.output / "native-admin-ui-artifact.tsv"
++        proof.write_text("nativeSourceDirectory|" + str(directory) + "\n" + str(source) + "|" + cohort.digest(source) + "\n")
++        receipt = self.prepare()
++        self.assertIn(str(source), receipt["files"])
++        extra = directory / "Added.razor"
++        extra.write_text("<p>Uncompiled component</p>")
++        with self.assertRaisesRegex(ValueError, "complete source inventory drifted"):
++            cohort.verify_receipt(receipt, self.project, "Release", "3.129.1", self.families)
++        extra.unlink()
++        source.unlink()
++        with self.assertRaises(FileNotFoundError):
++            cohort.verify_receipt(receipt, self.project, "Release", "3.129.1", self.families)
++        source.write_text("<p>Changed owner application</p>")
++        with self.assertRaisesRegex(ValueError, "drifted"):
++            cohort.verify_receipt(receipt, self.project, "Release", "3.129.1", self.families)
++
++    def test_native_ui_source_inventory_excludes_outputs_and_rejects_linked_inputs(self):
++        directory = self.root / "native-ui"
++        directory.mkdir()
++        source = directory / "Program.cs"
++        source.write_text("// actual owner")
++        for excluded in ("bin", "obj"):
++            output = directory / excluded
++            output.mkdir()
++            (output / "Generated.cs").write_text("// generated output")
++        generated = directory / ".artifacts/ui-test-obj/Debug/Generated.cs"
++        generated.parent.mkdir(parents=True)
++        generated.write_text("// private test build output")
++        (directory / "Native.csproj.lscache").write_text("language server cache")
++        asset = directory / "wwwroot/css/app.css"
++        asset.parent.mkdir(parents=True)
++        asset.write_text("actual owner CSS")
++        genuine = directory / ".artifacts/owner-source/Retained.razor"
++        genuine.parent.mkdir(parents=True)
++        genuine.write_text("<p>genuine source outside the known generated directory</p>")
++        self.assertEqual({source, asset, genuine}, cohort.native_ui_owner_sources(directory))
++        (directory / "Linked.cs").symlink_to(source)
++        with self.assertRaisesRegex(ValueError, "Linked native Admin UI sources"):
++            cohort.native_ui_owner_sources(directory)
++
++    def test_native_ui_private_boundary_requires_bound_completed_evidence(self):
++        source = self.root / "Program.cs"
++        source.write_text("// original native owner")
++        manifest = self.root / "missing-preparation.json"
++        proof = self.output / "native-admin-ui-artifact.tsv"
++        proof.write_text("nativeBoundaryManifest|" + str(manifest) + "\n" + str(source) + "|" + cohort.digest(source) + "\n")
++        with self.assertRaisesRegex(ValueError, "boundary manifest is not bound"):
++            self.prepare()
++        cohort.write(manifest, {"completed": False})
++        proof.write_text("nativeBoundaryManifest|" + str(manifest) + "\nsourceProject|" + str(self.project)
++                         + "\nconfiguration|Release\nsdkVersion|3.129.1\ntargetFramework|net10.0\n"
++                         + str(manifest) + "|" + cohort.digest(manifest) + "\n" + str(source) + "|" + cohort.digest(source) + "\n")
++        with self.assertRaisesRegex(ValueError, "preparation did not complete"):
++            self.prepare()
++
++    def native_boundary(self, name="native-owner", configuration="Release", version="3.129.1", framework="net10.0"):
++        """Complete a separately named native owner with real package/archive/receipt checks."""
++        directory = self.root / name
++        source = directory / "src/Hexalith.EventStore.Admin.UI"
++        source.mkdir(parents=True)
++        project = source / "Hexalith.EventStore.Admin.UI.csproj"
++        project.write_text("<Project />")
++        (source / "Program.cs").write_text("// original owner source")
++        asset = source / "wwwroot/css/app.css"
++        asset.parent.mkdir(parents=True)
++        asset.write_text("actual owner asset")
++        output = directory / "bin"
++        output.mkdir()
++        target = output / "Hexalith.EventStore.Admin.UI.dll"
++        target.write_bytes(b"actual compiled native owner")
++        (output / "wwwroot/css").mkdir(parents=True)
++        shutil.copyfile(asset, output / "wwwroot/css/app.css")
++        libraries, packages = {}, {}
++        for package in sorted(cohort.CORE_IDS):
++            self.add_package(package, version, libraries, packages, output)
++        assets = directory / "project.assets.json"
++        assets.write_text(json.dumps({"project": {"frameworks": {framework: {}}}, "libraries": libraries,
++                                      "targets": {framework: packages}, "packageFolders": {str(self.cache): {}}}))
++        target.with_suffix(".deps.json").write_text(json.dumps({"libraries": libraries, "targets": {framework: packages},
++                                                               "runtimeTarget": {"name": framework}}))
++        target.with_suffix(".runtimeconfig.json").write_text(json.dumps({"runtimeOptions": {"tfm": framework,
++            "framework": {"name": "Microsoft.NETCore.App", "version": framework.removeprefix("net") + ".0"}}}))
++        (output / "native-admin-ui-artifact.tsv").write_text("nativeSourceDirectory|" + str(source) + "\n" + "\n".join(
++            str(path) + "|" + cohort.digest(path) for path in sorted(cohort.native_ui_owner_sources(source))) + "\n")
++        metadata = {"Properties": {"TargetPath": str(target), "ProjectAssetsFile": str(assets), "Configuration": configuration,
++            "HexalithEventStoreVersion": version, "TargetFramework": framework, "HexalithPartiesRuntimeTargetFramework": framework,
++            "CustomAfterMicrosoftCommonProps": str(cohort.RUNTIME_PROFILE)}}
++        receipt = directory / "receipt.json"
++        cohort.write(receipt, cohort.record(metadata, project, configuration, version, 0, "runtime", {}))
++        manifest = directory / "prepared.json"
++        with patch.object(cohort, "public_archive", side_effect=self.official_archive):
++            cohort.write(manifest, cohort.complete([receipt], configuration, version, [], self.cache, {}, framework))
++        cohort.verify_manifest(manifest, project, configuration, version, {}, framework)
++        return {"project": project, "target": target, "manifest": manifest, "configuration": configuration,
++                "version": version, "framework": framework}
++
++    def attach_native_boundary(self, owner):
++        """Produce the wrapper provenance emitted by the real private host build target."""
++        shutil.copyfile(owner["target"], self.output / "Hexalith.EventStore.Admin.UI.dll")
++        self.deps["libraries"]["Hexalith.EventStore.Admin.UI/1.0.0.0"] = {"type": "reference"}
++        self.target.with_suffix(".deps.json").write_text(json.dumps(self.deps))
++        manifest = owner["manifest"]
++        (self.output / "native-admin-ui-artifact.tsv").write_text(
++            "nativeBoundaryManifest|" + str(manifest) + "\nsourceProject|" + str(owner["project"])
++            + "\nconfiguration|" + owner["configuration"] + "\nsdkVersion|" + owner["version"]
++            + "\ntargetFramework|" + owner["framework"] + "\n" + str(manifest) + "|" + cohort.digest(manifest) + "\n")
++
++    def test_completed_native_owner_and_wrapper_provenance_qualify_together(self):
++        owner = self.native_boundary()
++        self.attach_native_boundary(owner)
++        with patch.object(cohort, "PRIVATE_ADMIN_UI_PROJECT", self.project):
++            receipt = self.prepare()
++            cohort.verify_manifest(self.manifest, self.project, "Release", "3.129.1", self.families, "net10.0")
++        self.assertNotEqual(self.project, owner["project"])
++        self.assertIn(str(owner["project"]), receipt["files"])
++        self.assertIn(str(owner["target"].parent / "wwwroot/css/app.css"), receipt["files"])
++
++    def test_changed_native_dll_before_wrapper_recording_refuses(self):
++        owner = self.native_boundary()
++        self.attach_native_boundary(owner)
++        (self.output / "Hexalith.EventStore.Admin.UI.dll").write_bytes(b"different native artifact before wrapper recording")
++        with patch.object(cohort, "PRIVATE_ADMIN_UI_PROJECT", self.project), \
++                self.assertRaisesRegex(ValueError, "differs from its qualified native owner"):
++            self.prepare()
++        self.assertFalse(self.manifest.exists())
++
++    def test_completed_native_boundary_context_must_match_outer_record_and_readback(self):
++        for selection in ({"configuration": "Debug"}, {"version": "4.2.0"}, {"framework": "net11.0"}):
++            for phase in ("record", "readback"):
++                with self.subTest(selection=selection, phase=phase):
++                    self.tearDown(); self.setUp()
++                    with patch.object(cohort, "PRIVATE_ADMIN_UI_PROJECT", self.project):
++                        if phase == "readback":
++                            self.attach_native_boundary(self.native_boundary())
++                            receipt = self.prepare()
++                        self.attach_native_boundary(self.native_boundary("foreign-context", **selection))
++                        with self.assertRaisesRegex(ValueError, "expected outer host context"):
++                            if phase == "record":
++                                self.prepare()
++                            else:
++                                proof = self.output / "native-admin-ui-artifact.tsv"
++                                receipt["files"][str(proof)] = cohort.digest(proof)
++                                cohort.verify_receipt(receipt, self.project, "Release", "3.129.1", self.families, "net10.0")
++
+     def test_native_ui_wrapper_exception_requires_exact_project_type_and_bound_owner(self):
+         reference = {"Hexalith.EventStore.Admin.UI/4.2.0.0": {"type": "reference"}}
+         for project, bound, kind in [(cohort.MEMORY_QUALIFICATION_PROJECT, False, "reference"),
+@@ -97,13 +246,13 @@ class RuntimeReceiptCases(unittest.TestCase):
+         self.receipt_path = self.root / "receipt.json"
+         self.manifest = self.root / "prepared.json"
+ 
+-    def add_package(self, package, version, libraries, packages):
++    def add_package(self, package, version, libraries, packages, output=None):
+         relative = package.lower() + "/" + version
+         folder = self.cache / relative
+-        folder.mkdir(parents=True)
++        folder.mkdir(parents=True, exist_ok=True)
+         entry = "lib/net10.0/" + package + ".dll"
+         contents = ("actual archive runtime:" + package + "/" + version).encode()
+-        (self.output / (package + ".dll")).write_bytes(contents)
++        ((output or self.output) / (package + ".dll")).write_bytes(contents)
+         archive = folder / (package.lower() + "." + version + ".nupkg")
+         owner = next(name for name in ("Hexalith.EventStore", "Hexalith.FrontComposer", "Hexalith.McpCli") if package.startswith(name + "."))
+         nuspec = ('<package><metadata><id>' + package + '</id><version>' + version + '</version>'
+@@ -123,15 +272,16 @@ class RuntimeReceiptCases(unittest.TestCase):
+     def prepare(self):
+         receipt = cohort.record(self.metadata, self.project, "Release", "3.129.1", 0, "runtime", self.families)
+         cohort.write(self.receipt_path, receipt)
+-        def official(package, cache):
+-            package_id, version = package.split("=", 1)
+-            archive = self.official / (package_id.lower() + "." + version + ".nupkg")
+-            owner = next(name for name in ("Hexalith.EventStore", "Hexalith.FrontComposer", "Hexalith.McpCli") if package_id.startswith(name + "."))
+-            return cohort.archive_identity(archive, package_id, version, "https://github.com/Hexalith/" + owner)
+-        with patch.object(cohort, "public_archive", side_effect=official):
++        with patch.object(cohort, "public_archive", side_effect=self.official_archive):
+             cohort.write(self.manifest, cohort.complete([self.receipt_path], "Release", "3.129.1", [], self.cache, self.families))
+         return receipt
+ 
++    def official_archive(self, package, cache):
++        package_id, version = package.split("=", 1)
++        archive = self.official / (package_id.lower() + "." + version + ".nupkg")
++        owner = next(name for name in ("Hexalith.EventStore", "Hexalith.FrontComposer", "Hexalith.McpCli") if package_id.startswith(name + "."))
++        return cohort.archive_identity(archive, package_id, version, "https://github.com/Hexalith/" + owner)
++
+     def test_evaluated_framework_must_match_the_explicit_preparation_profile(self):
+         with self.assertRaisesRegex(ValueError, "Evaluated runtime target framework"):
+             cohort.record(self.metadata, self.project, "Release", "3.129.1", 0, "runtime", self.families,
+diff --git a/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj b/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj
+index 5be2b731..e67fd027 100644
+--- a/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj
++++ b/tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj
+@@ -93,9 +93,23 @@
+       <!-- The inherited mapper owns source selectors and reconciles the hosted SDK edges.
+            Keep the explicit package profile only when no source mapping is active. -->
+       <_NativeAdminUiBuildProperties Condition="'$(HexalithSourceMappingMode)' != 'source'">$(_NativeAdminUiBuildProperties);UseHexalithProjectReferences=false;UseNuGetDeps=true</_NativeAdminUiBuildProperties>
++      <!-- Root's authenticated package catalog deliberately gives this external owner
++           its ordinary SDK5 view. Qualify only the private SDK4 application artifact
++           independently; mapped source keeps the original inherited mapper. -->
++      <_NativeAdminUiPackageBoundary Condition="'$(HexalithSourceMappingApplies)' == 'true' and '$(HexalithSourceMappingMode)' == 'package'">true</_NativeAdminUiPackageBoundary>
++      <_NativeAdminUiBoundaryRoot>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)native-admin-ui/qualified', '$(MSBuildProjectDirectory)/'))</_NativeAdminUiBoundaryRoot>
+     </PropertyGroup>
++    <Exec Condition="'$(_NativeAdminUiPackageBoundary)' == 'true'"
++          Command="python3 &quot;$(_AdminUiRepositoryRoot)/scripts/prepare-native-admin-ui-artifact.py&quot; --owner-root &quot;$(_AdminUiEventStoreRoot)&quot; --output &quot;$(_NativeAdminUiBoundaryRoot)&quot; --configuration &quot;$(Configuration)&quot; --version &quot;$(HexalithEventStoreVersion)&quot; --target-framework &quot;$(TargetFramework)&quot;" />
++    <ReadLinesFromFile Condition="'$(_NativeAdminUiPackageBoundary)' == 'true'" File="$(_NativeAdminUiBoundaryRoot)/target.txt">
++      <Output TaskParameter="Lines" ItemName="_NativeAdminUiBuiltAssembly" />
++    </ReadLinesFromFile>
++    <ReadLinesFromFile Condition="'$(_NativeAdminUiPackageBoundary)' == 'true'" File="$(_NativeAdminUiBoundaryRoot)/evidence.txt">
++      <Output TaskParameter="Lines" ItemName="_NativeAdminUiBoundaryEvidence" />
++    </ReadLinesFromFile>
+     <MSBuild Projects="$(_AdminUiEventStoreRoot)/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj"
+-             Targets="Restore;Build;GetTargetPath" Properties="$(_NativeAdminUiBuildProperties)" BuildInParallel="false">
++             Targets="Restore;Build;GetTargetPath" Properties="$(_NativeAdminUiBuildProperties)" BuildInParallel="false"
++             Condition="'$(_NativeAdminUiPackageBoundary)' != 'true'">
+       <Output TaskParameter="TargetOutputs" ItemName="_NativeAdminUiBuiltAssembly" />
+     </MSBuild>
+     <ItemGroup>
+@@ -111,12 +125,15 @@
+     </Exec>
+     <ItemGroup>
+       <_NativeAdminUiEvidence Include="$(_AdminUiEventStoreRoot)/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj;@(_NativeAdminUiBuiltAssembly);@(_NativeAdminUiBuiltAssembly->'%(RootDir)%(Directory)%(Filename).deps.json');$(TargetDir)wwwroot/**/*;$(_NativeAdminUiStageRoot)/**/*" />
++      <_NativeAdminUiEvidence Include="@(_NativeAdminUiBoundaryEvidence)" />
++      <_NativeAdminUiBoundaryHeader Include="nativeBoundaryManifest|$(_NativeAdminUiBoundaryRoot)/prepared.json;configuration|$(Configuration);targetFramework|$(TargetFramework)"
++          Condition="'$(_NativeAdminUiPackageBoundary)' == 'true'" />
+     </ItemGroup>
+     <RemoveDuplicates Inputs="@(_NativeAdminUiEvidence)"><Output TaskParameter="Filtered" ItemName="_UniqueNativeAdminUiEvidence" /></RemoveDuplicates>
+     <GetFileHash Files="@(_UniqueNativeAdminUiEvidence)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="_NativeAdminUiHashedEvidence" /></GetFileHash>
+     <Copy SourceFiles="@(_NativeAdminUiBuiltAssembly->'%(RootDir)%(Directory)%(Filename).deps.json')" DestinationFolder="$(TargetDir)native-ui-artifact" />
+     <WriteLinesToFile File="$(TargetDir)native-admin-ui-artifact.tsv" Overwrite="true"
+-      Lines="sourceProject|$(_AdminUiEventStoreRoot)/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj;sourceCommit|$(_NativeAdminUiSourceCommit);sdkVersion|$(HexalithEventStoreVersion);properties|$(_NativeAdminUiBuildProperties);@(_NativeAdminUiHashedEvidence->'%(FullPath)|%(FileHash)')" />
++      Lines="sourceProject|$(_AdminUiEventStoreRoot)/src/Hexalith.EventStore.Admin.UI/Hexalith.EventStore.Admin.UI.csproj;sourceCommit|$(_NativeAdminUiSourceCommit);sdkVersion|$(HexalithEventStoreVersion);properties|$(_NativeAdminUiBuildProperties);@(_NativeAdminUiBoundaryHeader);@(_NativeAdminUiHashedEvidence->'%(FullPath)|%(FileHash)')" />
+   </Target>
+   <Target Name="SelectAdminUiRunDirectory" BeforeTargets="ComputeRunArguments">
+     <PropertyGroup><RunWorkingDirectory>$(TargetDir)</RunWorkingDirectory></PropertyGroup>

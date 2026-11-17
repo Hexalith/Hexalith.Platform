@@ -1,0 +1,54 @@
+{
+  "executorSource": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+  "catalogSource": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "catalogUnchanged": true,
+  "catalogHasDigestFile": false,
+  "actualWorkflowToolchainReadRoot": ".hexalith/builds-execution",
+  "executorFiles": {
+    ".github/workflows/domain-ci-v2.yml": {
+      "gitBlob": "0d25866aec8dbe8cdb473888f5592181fb107655",
+      "sha256": "0bbacbc146f83d2bcb7121744d77325f59f33123155eac607b465444718619b6"
+    },
+    "Github/run-module-integration/run_module_integration.py": {
+      "gitBlob": "ea4f7371c80b5d002aff4da0ef513e30ff299a2f",
+      "sha256": "19d51bcffd60b6fcb6c5d3eb67892eef0420498f6796328af045943316cfbc88"
+    },
+    "Github/prepare-module-build/prepare_module_build.py": {
+      "gitBlob": "a0a21abadd444cdd73504071b456f33945c55152",
+      "sha256": "df1544f1dd129a388f4ec9c78ab71233e60eb6368390635c19b41c5ed32a9550"
+    },
+    "Props/Directory.Packages.props": {
+      "gitBlob": "d70b21337feaf7e85a5e416c1fb179de03c8c20a",
+      "sha256": "afaa900a9467455043f679cbc5af81cfdca029a6b8c5b6c8658044c83296e147"
+    },
+    "Props/dapr-toolchain-sha256.json": {
+      "gitBlob": "7078c1e58d3347c81cfd794a730da3cc01b1bcab",
+      "sha256": "5efc6b13da703fb9f83265ef02973877f33e094192e0bf36c1fe30ebdfc23376"
+    }
+  },
+  "executorVersions": {
+    "HexalithAspireAppHostSdkVersion": "13.6.5",
+    "HexalithDaprCliVersion": "1.19.1",
+    "HexalithDaprRuntimeVersion": "1.19.1"
+  },
+  "executorDaprArchiveSha256": {
+    "cli": {
+      "dapr_linux_amd64.tar.gz": "6e9a339d261e430e5914909cc4443572573c197c174c3e14504c34116831de3b"
+    },
+    "runtime": {
+      "daprd_linux_amd64.tar.gz": "93217800d5072cf1735ed89ec8a9cdeedfb9d235895fb9e0d864088bc5d9466c",
+      "placement_linux_amd64.tar.gz": "2efbe23d12254f4822d61a17f58460a119c25d9e98740d8507a3a66e1c5aa0d5",
+      "scheduler_linux_amd64.tar.gz": "9064b6a6f3c4ff44d9ae69d22a07eedc564b3d11ab2653e9d5945768fc19f3af"
+    }
+  },
+  "legacyCatalogVersions": {
+    "HexalithAspireAppHostSdkVersion": "13.6.4",
+    "HexalithDaprCliVersion": "1.18.2",
+    "HexalithDaprRuntimeVersion": "1.18.7"
+  },
+  "cliArchiveSha256": "9b7c50125f0ddfc953c1c3d892cddec5ba2fa1d8741bd9e82d77669b4e86ee92",
+  "workflowExecuted": false,
+  "resourcesStarted": false,
+  "runtimeCompatibilityClaimed": false,
+  "candidateAcceptance": false
+}

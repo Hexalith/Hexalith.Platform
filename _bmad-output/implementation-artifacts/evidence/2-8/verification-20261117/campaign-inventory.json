@@ -1,0 +1,168 @@
+{
+  "recordedAtUtc": "2026-11-17T09:04:18.077081+00:00",
+  "note": "Input details expanded after dispatch and before the workflow native integration step. Exact source selection was recorded before dispatch. No input changed.",
+  "subject": {
+    "classification": "baseline-only-focused-story-2-8",
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+    "rootHead": "1a5666edd500ecf921d4068462c24d3d48663441",
+    "inputsFileSha256": "71d896098d475b6875f3a65705e672130b2e8cd2dfb6a8cf005501e11558bffd",
+    "inputsCanonicalSha256": "06ba09a2179dd78dd7de29be5c9195400d172da1afa960a104aa4268a646b91a",
+    "sources": {
+      "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+      "builds": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+      "platform": "32643bde39b4da0e4538f8388e225727f82122f6"
+    },
+    "tool": {
+      "version": "5.1.0",
+      "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+      "framework": "net11.0",
+      "downloadId": "module-tool"
+    },
+    "checks": {
+      "callerCommitPresent": true,
+      "buildsCommitPresent": true,
+      "platformCommitPresent": true,
+      "iteration3AncestorOf-3c2f5944aaa28dc7854a00a8a9df171aa810b0c7": true,
+      "iteration3AncestorOf-9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4": true,
+      "callerTool510": true,
+      "supportsExactExecutionCancellation": true,
+      "allPassing": true
+    },
+    "rootGitlinks": {
+      "references/Hexalith.AI.Tools": "180ca5692637a018c3f5547daf657e2a90bd5288",
+      "references/Hexalith.Agents": "e047a955d9eabe28b09499bbd14938da0da7f40b",
+      "references/Hexalith.Builds": "a327bc5cf0eb2bd715deed6f1ea278a8f6946a2f",
+      "references/Hexalith.ChatBot": "e2727327bf495764fd8c31edd46a81c8048cbbac",
+      "references/Hexalith.CiCd": "83b2b8432fc16e37952981d149b0bc4be988260d",
+      "references/Hexalith.Commons": "cab344372536be4b5125bc144547fc78bca913f9",
+      "references/Hexalith.Conversations": "4ab8f9060d9d16302c1132734f0b234b4489b8a5",
+      "references/Hexalith.EventStore": "96363934c6fd1da4d50c2078b13929c473ecab7f",
+      "references/Hexalith.Folders": "438b8a0b9e3416669ac05152633301bc1bae76fb",
+      "references/Hexalith.FrontComposer": "b23b4cb91d974b4266a9369a85e6dae32163a893",
+      "references/Hexalith.McpCli": "c9ffbd5c9f6bc100ecbf6ac13acf4fbe50a498a9",
+      "references/Hexalith.Memories": "68a78d475c7ae8b77193e308dfb8c8f5e4cc0826",
+      "references/Hexalith.Parties": "8abfd266eecb5a636ee5498f944304669c18aa41",
+      "references/Hexalith.PolymorphicSerializations": "1f451a1ac5174b340f56763160f810d4a8364bb6",
+      "references/Hexalith.Projects": "8b53d6b917957762949d39c21bc5de0919811413",
+      "references/Hexalith.Tenants": "ac7b6ba9edd88c197701fa1d1503cf2743ee022a",
+      "references/Hexalith.Timesheets": "d1dd313deabaf54309c7042ee78ffe2b856b377e",
+      "references/Hexalith.Works": "420729794cee02fd83a0c97cd921763da7a6fb94"
+    },
+    "callerFiles": {
+      ".github/workflows/ci-lifecycle-qualification.yml": "e49dd9decef67928d044f28243603446f4753bbc55172bd89c6a8c666eaf01a7",
+      "scripts/qualify-disposable-ci.py": "53205cd08502492b4c07ebc56bd19494a593320a421ec9688a6afe5b685c0920",
+      "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+      "global.json": "5feaf50426a6c5554654e326bedd2f6c6273f13b948b1ec6e11e12cae68f9f05"
+    }
+  },
+  "requiredCases": [
+    "cancel-execution"
+  ],
+  "fullMatrix": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "toolchain": {
+    "dotnetSdk": "11.0.100",
+    "aspire": "13.6.5",
+    "daprCli": "1.19.1",
+    "daprRuntime": "1.19.1"
+  },
+  "downloads": [
+    {
+      "id": "dapr-cli",
+      "fileName": "dapr_linux_amd64.tar.gz",
+      "sha256": "6e9a339d261e430e5914909cc4443572573c197c174c3e14504c34116831de3b"
+    },
+    {
+      "id": "daprd",
+      "fileName": "daprd_linux_amd64.tar.gz",
+      "sha256": "93217800d5072cf1735ed89ec8a9cdeedfb9d235895fb9e0d864088bc5d9466c"
+    },
+    {
+      "id": "placement",
+      "fileName": "placement_linux_amd64.tar.gz",
+      "sha256": "2efbe23d12254f4822d61a17f58460a119c25d9e98740d8507a3a66e1c5aa0d5"
+    },
+    {
+      "id": "scheduler",
+      "fileName": "scheduler_linux_amd64.tar.gz",
+      "sha256": "9064b6a6f3c4ff44d9ae69d22a07eedc564b3d11ab2653e9d5945768fc19f3af"
+    },
+    {
+      "id": "module-tool",
+      "fileName": "hexalith.builds.module.cli.5.1.0.nupkg",
+      "sha256": "b4146f4fe7b8ff0dbb8b5166cf4462b1c7b89744ad2d5517345d8f19c47b244c"
+    }
+  ],
+  "suites": [
+    {
+      "name": "platform-package",
+      "executor": "mtp",
+      "entry": "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj",
+      "reportFormat": "trx",
+      "executionTimeoutSeconds": 300,
+      "stopTimeoutSeconds": 90,
+      "mode": "package"
+    },
+    {
+      "name": "lifecycle-package",
+      "executor": "mtp",
+      "entry": "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj",
+      "reportFormat": "trx",
+      "executionTimeoutSeconds": 300,
+      "stopTimeoutSeconds": 90,
+      "mode": "package"
+    },
+    {
+      "name": "attached-lifecycle-package",
+      "executor": "mtp",
+      "entry": "tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleTests.csproj",
+      "reportFormat": "trx",
+      "executionTimeoutSeconds": 300,
+      "stopTimeoutSeconds": 90,
+      "mode": "package"
+    }
+  ],
+  "budgets": {
+    "baselineJobMinutes": 60,
+    "qualificationJobMinutes": 90,
+    "defaultStartupSeconds": 600,
+    "executionSeconds": 300,
+    "stopSeconds": 90,
+    "holdSeconds": 240,
+    "readyWaitSeconds": 120,
+    "finalizeExactDownSeconds": 150
+  },
+  "suiteFiles": {
+    "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "scripts/prepare-ci-package-dependencies.sh": "b4ef56af4757e6be2f6cf42b5f5f79aa05c49f246c9d3f57adf1488f8a489aeb",
+    "tests/Hexalith.Parties.Platform.AttachedLifecycleTests/AttachedLifecycleQualificationTests.cs": "538172fc8a294d71ff711d97e8bea10437685fc65f61a2823d0cf7ef55507835",
+    "tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleTests.csproj": "91bd95f63dcfd8c682cf7d0c894c73e79000de48666eb4ab663bc62633c1246d",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriter.cs": "7141e412fe54c990b7eae66da03e15a09f548d47caa9e231600a485bf8605eb0",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/FunctionalObservationWriterTests.cs": "3f026ce2e7f64af14acd24c9c7d0855757ccf897246f58b69c80c2d084214f02",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj": "b8ef49466ad1fa875024431088086f284c25b281bf4e2b4af2e3f7b5cd197ac2",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/MemoriesTenantObservationTests.cs": "1201add559c92ae10942f80c8bb5edffba48820f242a7409ac9bb190c1d5bba5",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservationTests.cs": "eface55d3536e6c50b0aa1343ccd4c5b3b3231e9a4f34092ee88cda9ca24b8dd",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeAssemblyObservations.cs": "b88d3280a47de6dbc2bbb090f9583cc769889731d40f2b19b76ce4225c803ca8",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "ca261cdf81bdb0fc01d6b61a1947b4ad345478f3d29c0af9bab80b4989ad80d2",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBindingTests.cs": "e6a3565d16b4db41c023dcc90964ccf05712bf02a770eeae2780b8e650fff622",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": "23cac8d395c1f208d5910f40b2cfc67e6a09f8c3668c6dc7e2503d844351c87a",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyPersistenceAssertions.cs": "2a6e830536d9218890f6837e7db45bdf7c87104966e897c99c5a83260aeccd3f",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PlatformEnvironmentFixture.cs": "74e8d3440ccdfc0e9042b847d88168adccfe27853da2b6afd22a17e4d7fc722a",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PublicRuntimeImageObservations.cs": "4809e851e7b62b3e7d60cd396cfdd989da84798c4ec0adb6b98ca6f4e392e02b",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj": "67a7ec7a51390dd4cea58ed94aede8905e2506c2a00ffa29390bd3c3bf1a61eb",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs": "4910458276fbe8ea68ed6c89b97e20cfb25a4d59e60da906e93f33467b488135",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/QualificationExecutionMarker.cs": "3b416655c73c3c3503ef2232246b08b9b44e14ed60660c1e5e46540baad75140",
+    "tests/Hexalith.Parties.Platform.LifecycleTests/QualificationExecutionMarkerTests.cs": "988dce41b61e9204e3535679a1fe32e47b1c90fd591fbed2b8bc4d189074f8bb"
+  },
+  "configuration": {
+    "references/Hexalith.Builds@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7:Props/Directory.Packages.props": "c55bf73782fa24478fab3a1c963f418cf90440a9532a15f96aee477fdb3b32ea",
+    "references/Hexalith.Builds@3c2f5944aaa28dc7854a00a8a9df171aa810b0c7:Github/run-module-integration/run_module_integration.py": "19d51bcffd60b6fcb6c5d3eb67892eef0420498f6796328af045943316cfbc88",
+    "references/Hexalith.Builds@9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4:.github/workflows/domain-ci-v2.yml": "0bbacbc146f83d2bcb7121744d77325f59f33123155eac607b465444718619b6"
+  },
+  "images": {
+    "source": "Exact pinned catalog and Platform source; actual immutable image IDs/digests must be observed on runner and reconciled in record_images. None invented locally.",
+    "actualDigests": "not-yet-observed"
+  }
+}

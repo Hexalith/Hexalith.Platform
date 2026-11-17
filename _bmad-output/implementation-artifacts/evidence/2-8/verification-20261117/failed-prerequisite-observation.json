@@ -1,0 +1,29 @@
+{
+  "runId": 44051836412,
+  "sourceRevision": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+  "conclusion": "failure",
+  "qualification": "skipped",
+  "cancellationRequests": 0,
+  "artifactId": 14314621203,
+  "artifactSha256": "eeea2697e6dded1799aa91445f0e087481017e71c082b269c0c7d730eeac759c",
+  "cause": "NU1202: net10.0 consumer projects cannot consume newly packed net11.0 Parties packages",
+  "recordedAtUtc": "2026-11-17T09:30:30.894728+00:00",
+  "members": {
+    "cleanup-1.json": {
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "44051836412"
+      },
+      "jobStatus": "failure",
+      "schema": "hexalith.module.ci-integration-cleanup.v1",
+      "status": "not-allocated",
+      "verified": true
+    }
+  }
+}

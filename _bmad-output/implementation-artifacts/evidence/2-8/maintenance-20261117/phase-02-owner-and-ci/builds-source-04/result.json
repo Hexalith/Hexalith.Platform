@@ -1,0 +1,48 @@
+{
+  "previousSource": "e0cb4043fceda690457203f0895ea982a5ebbfd9",
+  "remoteMutations": false,
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0,
+      "seconds": 0.032
+    },
+    {
+      "label": "origin",
+      "exitCode": 0,
+      "seconds": 0.004
+    },
+    {
+      "label": "import",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0,
+      "seconds": 0.366
+    },
+    {
+      "label": "release-branch-contract",
+      "exitCode": 0,
+      "seconds": 0.065
+    },
+    {
+      "label": "release-wrapper-contracts",
+      "exitCode": 0,
+      "seconds": 2.823
+    },
+    {
+      "label": "normal-audit-validator",
+      "exitCode": 0,
+      "seconds": 24.939
+    },
+    {
+      "label": "build-focused-project",
+      "exitCode": 1,
+      "seconds": 47.552
+    }
+  ],
+  "status": "failed",
+  "reason": "RuntimeError: build-focused-project failed"
+}

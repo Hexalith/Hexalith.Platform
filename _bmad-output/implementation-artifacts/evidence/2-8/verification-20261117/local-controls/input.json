@@ -1,0 +1,30 @@
+{
+  "base": "4eca9e8fbad451a602a9ec7d2d6384345b6b0e4e",
+  "existingBoundaryOwner": "53844114ffcedc5af96fbf1cb15e126adaae02a9",
+  "observerSource": "749b94cd6c7fc1f3ab65b9399c740684be802663",
+  "baselineReusableWorkflow": "02ed624aa19781cac75d2c9112940e9bd830441a",
+  "pins": {
+    "references/Hexalith.AI.Tools": "17a37d83db193f0b7494c1b931fd1e82a67c1424",
+    "references/Hexalith.Builds": "02ed624aa19781cac75d2c9112940e9bd830441a",
+    "references/Hexalith.Commons": "fbf4e94233821f6ca336af91a06feaaeb7a16855",
+    "references/Hexalith.EventStore": "69b244d9cfb0e5fc077e324fe9c2a9cae7d026dc",
+    "references/Hexalith.FrontComposer": "19418a0c29daf38eef03b0891958cd8aa93c59bf",
+    "references/Hexalith.McpCli": "85a5437b98d0e126147460ca1ee1fa6a36041a21",
+    "references/Hexalith.Memories": "c4ee997702ede948ada5f99eeae7b3782e92003b",
+    "references/Hexalith.Platform": "b76e0c7c70162653bbff6a8263ebfc4500c1631b",
+    "references/Hexalith.PolymorphicSerializations": "e97b56930e213f674b64c157551f499b0473ec43",
+    "references/Hexalith.Tenants": "401d926eb7d51bdf332696ed3f0fe39a812b3501"
+  },
+  "files": {
+    "scripts/prepare-native-admin-ui-artifact.py": "72eabc350f026e12a39cbdfc1c2ef28ba61e929d3923d959ae24e7b6df88a1a3",
+    "scripts/validate-aspire-runtime-cohort.py": "5393dd8b537f36e30225d35a8ce4e4b3ebb9b671b05c964dcd5eb88cd578ce4f",
+    "tests/Hexalith.Parties.EventStoreAdminUI.TestHost/Hexalith.Parties.EventStoreAdminUI.TestHost.csproj": "ab4ebec72edcfc30192c44493ed5baa72ebadaeaabb481e4d03f59ada78f25dc",
+    "tests/Hexalith.Parties.Ci.Tests/NativeAdminUiBuildProfileTests.cs": "704b58cbd6598db09949e79d496d095c63d25b215ec7fc03c5c32632df509c56",
+    "tests/Hexalith.Parties.Ci.Tests/runtime_cohort_receipt_cases.py": "02c61cfb15ed207c07ae68156435069d42343384ed99393015e66942a5d9301b",
+    "scripts/story-2-8-proof-observer.py": "02627b1fb8554ad37b71d0680c709ca2b16decf13dbe9548443e67be01922d98",
+    ".github/workflows/ci-lifecycle-qualification.yml": "05f53cf4b3581ea0b28e29a673baa5025d814f6b560bd6d5369f33d728f9ea78"
+  },
+  "noLocalServices": true,
+  "budgetsChanged": false,
+  "candidateAcceptance": false
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "hexalith.story-2-8.finite-continuation-audit.v1",
+  "classification": "original-subject-source-closure-and-failed-focused-proof",
+  "candidateAcceptance": false,
+  "toolAcceptance": false,
+  "originalMatrixUnchanged": true,
+  "historicalRowIndex": "../verification-20261111/row-index-continuation.json",
+  "historicalIndexSha256": "18e4a17405000c21026d4be440e5be55ca428c6efdf15ab200ed24ac897a3072",
+  "originalRows": [
+    {
+      "scenario": "Isolated failure",
+      "sourceProof": "Both workflow validator modes passed (312/206 assertions), retaining isolated-before-integration gating and fail-closed input checks.",
+      "result": "results.json"
+    },
+    {
+      "scenario": "Integration success/failure",
+      "helperTests": [
+        "test_passing_execution_requires_verified_cleanup",
+        "test_execution_failure_preserved_and_finalized_after_partial_startup",
+        "test_zero_exit_counts_only_with_a_receipt_and_a_success_outcome"
+      ],
+      "result": "results.json: builds-helper, 71/71"
+    },
+    {
+      "scenario": "Cancellation during startup/execution",
+      "helperTests": [
+        "test_signal_before_the_receipt_never_reports_not_allocated_while_a_tool_survives",
+        "test_runner_cancellation_reaches_only_the_tool_so_withdrawal_precedes_every_composed_stop",
+        "test_helper_timeout_interrupts_the_tool_so_withdrawal_precedes_every_composed_stop",
+        "test_helper_timeout_kills_a_tool_that_ignores_its_interrupt"
+      ],
+      "result": "results.json: builds-helper, 71/71",
+      "hostedLimit": "Prior startup/execution observations retain their original source and classification. The patched-release lifecycle cancellation delivery gate remains open."
+    },
+    {
+      "scenario": "Same-job/cross-job attachment",
+      "sourceProof": "Owner source CI executed the complete Module.Tests project with 3052 passes and four unchanged contextual skips; none of those skips is an AttachAdmissionTests or CiRunLifecycleTests case. This delta changes no admission implementation.",
+      "result": "hosted-source-dotnet.json",
+      "hostedLimit": "Use older row indexes only for their original subjects, not as fresh candidate or final-reference acceptance."
+    },
+    {
+      "scenario": "Cleanup failure or unknown discovery",
+      "helperTests": [
+        "test_cleanup_verification_requires_exit_owner_and_success",
+        "test_a_failed_cleanup_record_never_prevents_the_exact_down",
+        "test_down_timeout_malformed_or_non_json_output_is_unverified_and_still_retains",
+        "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain"
+      ],
+      "result": "results.json: builds-helper, 71/71; routing-snapshot-tests.xml: 34/34"
+    },
+    {
+      "scenario": "Missing tool/suite/package preparation",
+      "helperTests": [
+        "test_missing_or_wrong_mode_suite_refuses_before_process",
+        "test_missing_package_preparation_refuses_before_process",
+        "test_an_exhausted_job_budget_refuses_before_any_allocation",
+        "test_non_utf8_down_output_and_a_missing_tool_are_unverified_and_still_retain"
+      ],
+      "result": "results.json: builds-helper, 71/71 and workflow validator modes"
+    }
+  ],
+  "newExecutedControls": {
+    "releasedHelper": {
+      "source": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b",
+      "casesPassed": 75,
+      "primary": "ordinary-proof/released-helper-controls.log"
+    },
+    "holdsOnlyController": {
+      "base": "11053e562a2cba0196354cec655c01677e2afd46",
+      "casesPassed": 97,
+      "primary": "ordinary-proof-4/lifecycle-controller-controls.log"
+    },
+    "workflowClass": {
+      "casesPassed": 70,
+      "primary": "ordinary-proof-2/primary-workflow-class-audit.json"
+    },
+    "oldPackageBinding": {
+      "actualCollector": "b05616cc57c16b152a364d5a4d0382782b99332f",
+      "canonicalDeliveredPlatform": "32643bde39b4da0e4538f8388e225727f82122f6",
+      "primary": "original-tuple/required-5.xml",
+      "framework": ".NET10",
+      "toolVersion": "4.47.0",
+      "namedCasePassed": true,
+      "retiredLater": true
+    }
+  },
+  "effectiveFinalSourceChecks": {
+    "completeAtOriginalDeliveredSubject": true,
+    "primary": "source-reconciliation.json",
+    "doesNotPassCurrentRootSource": true
+  },
+  "failedHostedRunIds": [
+    44051836412,
+    44053412339,
+    44062720071,
+    44066243616,
+    44073347507
+  ],
+  "totalCancellationRequests": 0,
+  "latestExactCleanupVerified": true,
+  "latestFirstOutcomePreserved": "startup-failure/HXP020",
+  "remainingStoryGates": [
+    "focused released-tool lifecycle execution cancellation",
+    "durable admission-close and withdrawal before first composed-stop with actual kernel signal origins",
+    "normal story review"
+  ],
+  "sixRowsDoNotGrantFreshCandidateOrFullReferenceAcceptance": true
+}

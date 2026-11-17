@@ -1,0 +1,37 @@
+{
+  "classification": "effect-free API fixtures; no actual source CI, publication or runtime acceptance",
+  "originalSource": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "inputHashes": {
+    "original-gate.mjs": "c9e642cc6df7f1701d8361f1c2d9a4b938876007e76e1cd74075ddea06e480a0",
+    "gate.mjs": "d895e966856f96abb907eabe985029630131013a8c75208c31313eeabf2e0a09",
+    "maintenance-gate.mjs": "30f4624c46f0864bd69f66f8866242d52b958154c24c09e5633c38f010cafb71",
+    "release-gate.mjs": "20f9483a27a13533151c809c50f54927b3f2f1b60561671b0cfde8f6a6c8e400",
+    "parent-public-gate-controls.mjs": "bba437a4cbe90490de4543b038dc967d8432dc4909a73c5eb26b80dcd2c066d8"
+  },
+  "results": [
+    {
+      "case": "original-main-public-route-identical-success-receipt",
+      "pass": true
+    },
+    {
+      "case": "original-main-stale-head-refusal-preserved",
+      "pass": true
+    },
+    {
+      "case": "public-maintenance-route-qualifies-without-native-credit",
+      "pass": true
+    },
+    {
+      "case": "actual-release-hook-recheck-binds-verify-to-publish",
+      "pass": true
+    },
+    {
+      "case": "public-maintenance-route-preserves-typed-refusal-code",
+      "pass": true
+    },
+    {
+      "case": "actual-release-hook-refuses-rerun-before-save",
+      "pass": true
+    }
+  ]
+}

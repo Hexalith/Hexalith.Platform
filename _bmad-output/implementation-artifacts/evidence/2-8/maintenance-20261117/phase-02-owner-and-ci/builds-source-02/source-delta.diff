@@ -1,0 +1,78 @@
+diff --git a/Tools/test-maintenance-release-source.py b/Tools/test-maintenance-release-source.py
+index 9b46d558..6609d223 100644
+--- a/Tools/test-maintenance-release-source.py
++++ b/Tools/test-maintenance-release-source.py
+@@ -39,7 +39,7 @@ def fixtures():
+              'conclusion': 'skipped' if name.startswith('Dependency review') else 'success'} for index, name in enumerate(names)]
+     return {HEAD: {'ref': REF, 'url': f'https://api.github.com/repos/{REPO}/git/{REF}',
+                    'object': {'type': 'commit', 'sha': SOURCE, 'url': f'https://api.github.com/repos/{REPO}/git/commits/{SOURCE}'}},
+-            REG: {'id': 89, 'path': guard.WORKFLOW, 'name': 'CI', 'state': 'active'},
++            REG: {'id': 89, 'path': guard.WORKFLOW, 'name': 'Shared CI', 'state': 'active'},
+             LIST: {'total_count': 1, 'workflow_runs': [deepcopy(RUN)]}, RUN_PATH: deepcopy(RUN),
+             JOBS: {'total_count': 7, 'jobs': jobs}}
+ 
+@@ -79,11 +79,31 @@ class MaintenanceSourceTests(unittest.TestCase):
+ 
+     def test_exact_live_ref_and_workflow_are_required(self):
+         for path, key, value in [(HEAD, 'ref', 'refs/heads/other'), (HEAD, 'url', 'https://api.github.com/repos/Other/Repo/git/' + REF),
+-                                 (REG, 'path', '.github/workflows/other.yml'), (REG, 'state', 'disabled_manually'), (REG, 'id', 0), (REG, 'name', 'Other CI')]:
++                                 (REG, 'path', '.github/workflows/other.yml'), (REG, 'state', 'disabled_manually'), (REG, 'id', 0)]:
+             data = fixtures(); data[path][key] = value
+             with self.subTest(path=path, key=key), self.assertRaises(guard.Refusal):
+                 self.execute(data)
+ 
++    def test_registry_label_is_separate_from_the_frozen_source_run_name(self):
++        result, receipt = self.execute()
++        self.assertEqual(result, (123, 2))
++        self.assertEqual(receipt['workflowCatalogLabel'], 'Shared CI')
++        data = fixtures(); data[RUN_PATH]['name'] = 'Shared CI'
++        with self.assertRaises(guard.Refusal):
++            self.execute(data)
++
++    def test_late_registry_label_change_does_not_change_authenticated_identity(self):
++        def race(path, count, value):
++            if path == REG and count == 2: value['name'] = 'CI'
++        self.assertEqual(self.execute(race=race)[0], (123, 2))
++
++    def test_late_registry_identity_or_state_change_refuses(self):
++        for key, replacement in [('id', 999), ('path', '.github/workflows/foreign.yml'), ('state', 'disabled_manually')]:
++            def race(path, count, value):
++                if path == REG and count == 2: value[key] = replacement
++            with self.subTest(key=key), self.assertRaises(guard.Refusal):
++                self.execute(race=race)
++
+     def test_latest_failed_or_running_attempt_never_falls_back_to_older_success(self):
+         for conclusion, status in [('failure', 'completed'), (None, 'in_progress')]:
+             data = fixtures(); newer = deepcopy(RUN); newer.update(id=124, run_number=18, conclusion=conclusion, status=status)
+diff --git a/Tools/verify-maintenance-release-source.py b/Tools/verify-maintenance-release-source.py
+index afd6b71c..438a76d9 100644
+--- a/Tools/verify-maintenance-release-source.py
++++ b/Tools/verify-maintenance-release-source.py
+@@ -68,8 +68,7 @@ def verify(api, ancestor, environment, receipt):
+     live()
+     registered = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml")
+     require(isinstance(registered, dict) and positive(registered.get("id"))
+-            and registered.get("path") == WORKFLOW and registered.get("name") == "CI"
+-            and registered.get("state") == "active",
++            and registered.get("path") == WORKFLOW and registered.get("state") == "active",
+             "maintenance CI workflow is unavailable")
+     listing = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={source}&event=push&branch={BRANCH}&per_page=100")
+     runs = listing.get("workflow_runs")
+@@ -117,11 +116,15 @@ def verify(api, ancestor, environment, receipt):
+     # Re-discover without a status filter: a newer run or running rerun cannot expose an old green fallback.
+     latest = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={source}&event=push&branch={BRANCH}&per_page=100")
+     require(latest == listing, "maintenance CI discovery changed before publication")
+-    require(api(f"repos/{REPOSITORY}/actions/workflows/ci.yml") == registered,
++    # The registry display label follows the default-branch reusable workflow.
++    # Authenticate its stable identity/state; the source run name stays frozen in identity().
++    late_registered = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml")
++    require(isinstance(late_registered, dict) and late_registered.get("id") == registered["id"]
++            and late_registered.get("path") == WORKFLOW and late_registered.get("state") == "active",
+             "registered maintenance workflow changed before publication")
+     live()
+     receipt.update(status="verified", ciRunId=current["id"], ciRunAttempt=current["run_attempt"],
+-                   workflowId=registered["id"], jobs=[{key: job[key] for key in ("id", "name", "conclusion")} for job in values])
++                   workflowId=registered["id"], workflowCatalogLabel=registered.get("name"), jobs=[{key: job[key] for key in ("id", "name", "conclusion")} for job in values])
+     return current["id"], current["run_attempt"]
+ 
+ 

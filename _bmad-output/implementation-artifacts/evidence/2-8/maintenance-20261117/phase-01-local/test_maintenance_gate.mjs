@@ -1,0 +1,91 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { qualifyMaintenance, maintenance } from './platform-projection/eng/source-release/maintenance-gate.mjs';
+
+const repository = 'Hexalith/Hexalith.Platform';
+const source = 'a'.repeat(40);
+const workflows = [{ file: 'tuple-ci.yml', name: 'Platform tuple CI preflight', jobs: ['tuple', 'Same changed source against the legacy public tuple'] },
+  { file: 'catalog-builder.yml', name: 'Catalog builder consumer binding', jobs: ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0'].map(value => `consumer-binding (${value})`) }];
+class GateError extends Error {}
+const own = { id: 901, run_attempt: 2, workflow_id: 777, name: 'Qualified Platform source release',
+  path: '.github/workflows/source-release.yml', event: 'workflow_dispatch', head_branch: '1.7.x', head_sha: source,
+  repository: { full_name: repository }, head_repository: { full_name: repository }, status: 'in_progress', conclusion: null };
+
+function setup(change = () => {}, mutate = () => {}) {
+  const values = new Map();
+  values.set(`/repos/${repository}/actions/workflows/source-release.yml`, { id: 777, name: own.name, path: own.path, state: 'active' });
+  values.set(`/repos/${repository}/actions/runs/901`, structuredClone(own));
+  values.set(`/repos/${repository}/git/ref/heads/1.7.x`, { ref: 'refs/heads/1.7.x', url: `https://api.github.com/repos/${repository}/git/refs/heads/1.7.x`,
+    object: { type: 'commit', sha: source, url: `https://api.github.com/repos/${repository}/git/commits/${source}` } });
+  values.set(`/repos/${repository}/compare/${maintenance.base}...${source}`, { base_commit: { sha: maintenance.base }, merge_base_commit: { sha: maintenance.base }, status: 'ahead', behind_by: 0 });
+  workflows.forEach((workflow, index) => {
+    const run = { id: index + 10, run_number: index + 20, run_attempt: 3, workflow_id: index + 100,
+      name: workflow.name, path: `.github/workflows/${workflow.file}`, repository: { full_name: repository },
+      head_repository: { full_name: repository }, head_sha: source, head_branch: '1.7.x', event: 'push', pull_requests: [], status: 'completed', conclusion: 'success' };
+    values.set(`/repos/${repository}/actions/workflows/${workflow.file}`, { id: run.workflow_id, path: run.path, name: workflow.name, state: 'active' });
+    values.set(`/repos/${repository}/actions/workflows/${workflow.file}/runs?event=push&branch=1.7.x&head_sha=${source}&per_page=100`, { total_count: 1, workflow_runs: [run] });
+    values.set(`/repos/${repository}/actions/runs/${run.id}`, run);
+    values.set(`/repos/${repository}/actions/runs/${run.id}/attempts/3/jobs?per_page=100`, { total_count: workflow.jobs.length,
+      jobs: workflow.jobs.map((name, offset) => ({ id: index * 20 + offset + 1, name, run_id: run.id, head_sha: source, status: 'completed', conclusion: 'success' })) });
+  });
+  const counts = new Map();
+  const inputs = { eventName: 'workflow_dispatch', ownerRepository: repository, checkout: source, source,
+    workflowRef: `${repository}/.github/workflows/source-release.yml@refs/heads/1.7.x`, workflowSha: source,
+    job: 'verify', ref: 'refs/heads/1.7.x', runId: '901', runAttempt: '2',
+    api: async path => { assert.ok(values.has(path), `Unexpected API path ${path}`); const value = structuredClone(values.get(path));
+      counts.set(path, (counts.get(path) || 0) + 1); mutate(path, counts.get(path), value); return value; } };
+  change(inputs, values);
+  return inputs;
+}
+
+const execute = inputs => qualifyMaintenance(inputs, { repository, workflows, GateError });
+test('actual maintenance dispatch binds its original workflow/source and both complete normal CI sets', async () => {
+  const result = await execute(setup());
+  assert.equal(result.eligible, true);
+  assert.equal(result.qualifyingRuns.length, 2);
+  assert.deepEqual(result.dispatch, { run: 901, attempt: 2, workflow: own.path });
+  assert.equal(result.nativeAcceptance, false);
+});
+
+for (const [field, value] of [['ref', 'refs/heads/main'], ['workflowSha', 'b'.repeat(40)], ['checkout', 'b'.repeat(40)],
+  ['workflowRef', `${repository}/.github/workflows/source-release.yml@refs/heads/main`], ['eventName', 'workflow_run'], ['runAttempt', '1'], ['ownerRepository', 'Other/Repo']]) {
+  test(`real source context refuses mutation ${field}`, async () => {
+    await assert.rejects(execute(setup(inputs => { inputs[field] = value; })), GateError);
+  });
+}
+
+for (const kind of ['wrong-head', 'wrong-base', 'foreign-run', 'failed-latest', 'running-latest', 'truncated-runs', 'missing-job', 'skipped-job', 'extra-job', 'publisher-rerun']) {
+  test(`normal source gates refuse ${kind}`, async () => {
+    const inputs = setup((_, values) => {
+      const head = values.get(`/repos/${repository}/git/ref/heads/1.7.x`);
+      const comparison = values.get(`/repos/${repository}/compare/${maintenance.base}...${source}`);
+      const run = values.get(`/repos/${repository}/actions/runs/10`);
+      const listing = values.get(`/repos/${repository}/actions/workflows/tuple-ci.yml/runs?event=push&branch=1.7.x&head_sha=${source}&per_page=100`);
+      const jobs = values.get(`/repos/${repository}/actions/runs/10/attempts/3/jobs?per_page=100`);
+      if (kind === 'wrong-head') head.object.sha = 'b'.repeat(40);
+      if (kind === 'wrong-base') comparison.merge_base_commit.sha = 'b'.repeat(40);
+      if (kind === 'foreign-run') run.repository.full_name = 'Other/Repo';
+      if (kind === 'failed-latest') run.conclusion = 'failure';
+      if (kind === 'running-latest') run.status = 'in_progress';
+      if (kind === 'truncated-runs') listing.total_count = 2;
+      if (kind === 'missing-job') { jobs.jobs.pop(); jobs.total_count--; }
+      if (kind === 'skipped-job') jobs.jobs[0].conclusion = 'skipped';
+      if (kind === 'extra-job') { jobs.jobs.push({ ...jobs.jobs[0], id: 99, name: 'unexpected' }); jobs.total_count++; }
+      if (kind === 'publisher-rerun') values.get(`/repos/${repository}/actions/runs/901`).run_attempt = 4;
+    });
+    await assert.rejects(execute(inputs), GateError);
+  });
+}
+
+for (const kind of ['head', 'attempt', 'discovery', 'publisher']) {
+  test(`late ${kind} race refuses before publication`, async () => {
+    const inputs = setup(undefined, (path, count, value) => {
+      if (count !== 2) return;
+      if (kind === 'head' && path.endsWith('/git/ref/heads/1.7.x')) value.object.sha = 'b'.repeat(40);
+      if (kind === 'attempt' && path.endsWith('/actions/runs/10')) value.run_attempt = 9;
+      if (kind === 'discovery' && path.includes('/tuple-ci.yml/runs?')) value.total_count = 9;
+      if (kind === 'publisher' && path.endsWith('/actions/runs/901')) value.run_attempt = 9;
+    });
+    await assert.rejects(execute(inputs), GateError);
+  });
+}

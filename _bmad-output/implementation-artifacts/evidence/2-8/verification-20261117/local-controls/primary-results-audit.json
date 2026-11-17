@@ -1,0 +1,61 @@
+{
+  "counts": {
+    "native-profile": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/native-profile/administrator_DESKTOP-VIOG240_2026-11-17_10_06_17.002283.trx",
+      "sha256": "f73747fec5da320d81e8eadb6419d0646ed97c6bba8313ad2ec6d979be4e125f",
+      "total": 5,
+      "outcomes": {
+        "Passed": 5
+      }
+    },
+    "native-profile-correct-count": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/native-profile-correct-count/administrator_DESKTOP-VIOG240_2026-11-17_10_07_15.842752.trx",
+      "sha256": "aad94175cdceffd0d0db53c48730a19228a458d6c55fdf998d0d2329567fe722",
+      "total": 5,
+      "outcomes": {
+        "Passed": 5
+      }
+    },
+    "commons-fixtures": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/commons-fixtures/administrator_DESKTOP-VIOG240_2026-11-17_10_06_29.082024.trx",
+      "sha256": "ffe4a0e9695f6f84eba5a3bd60525f721500c00647bbeda474708bb71d83459d",
+      "total": 39,
+      "outcomes": {
+        "Passed": 39
+      }
+    },
+    "documentation": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/documentation/administrator_DESKTOP-VIOG240_2026-11-17_10_06_52.645624.trx",
+      "sha256": "2d413ebacd2018cf3808ef6f6b65ed94c9c287ab1643bc2848ce1cacf4d48bd6",
+      "total": 2,
+      "outcomes": {
+        "Passed": 2
+      }
+    },
+    "runtime-graphs": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/runtime-graphs/administrator_DESKTOP-VIOG240_2026-11-17_10_06_55.222062.trx",
+      "sha256": "ccdf6f238f7d020b2858cd0ff8592a0f74ca161cfa33b4148bc0ff8eed4e61e5",
+      "total": 15,
+      "outcomes": {
+        "Passed": 15
+      }
+    },
+    "openapi": {
+      "file": "artifacts/2-8-continuation-20261117/coherent-caller-2/openapi/administrator_DESKTOP-VIOG240_2026-11-17_10_07_25.714926.trx",
+      "sha256": "33effb5bb0e8e922a46c46451af3873534e57c45dbbc7bc0bba17eeda80d16f2",
+      "total": 9,
+      "outcomes": {
+        "Passed": 9
+      }
+    }
+  },
+  "nativeProfileSourceInventory": {
+    "fact": 1,
+    "theoryRows": 4,
+    "actualExpected": 5
+  },
+  "firstNativeHarnessExit": 9,
+  "firstNativeAssertionsAllPassed": true,
+  "correctedCountRerunExit": 0,
+  "noTestRemovedOrSkipped": true
+}

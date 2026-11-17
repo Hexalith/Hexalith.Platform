@@ -1,0 +1,16 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Update="Aspire.Hosting">
+      <Version Condition="$([MSBuild]::VersionLessThan('%(PackageVersion.Version)', '13.6.5'))">13.6.5</Version>
+    </PackageVersion>
+    <PackageVersion Update="Microsoft.AspNetCore.SignalR.StackExchangeRedis">
+      <Version Condition="$([MSBuild]::VersionLessThan('%(PackageVersion.Version)', '10.0.15'))">10.0.15</Version>
+    </PackageVersion>
+    <PackageVersion Update="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <Version Condition="$([MSBuild]::VersionLessThan('%(PackageVersion.Version)', '10.0.15'))">10.0.15</Version>
+    </PackageVersion>
+    <PackageVersion Update="Microsoft.Extensions.Options">
+      <Version Condition="$([MSBuild]::VersionLessThan('%(PackageVersion.Version)', '10.0.15'))">10.0.15</Version>
+    </PackageVersion>
+  </ItemGroup>
+</Project>

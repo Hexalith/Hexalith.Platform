@@ -131,7 +131,7 @@ The [2.10 implementation spec](spec-2-10-qualify-the-runner-lifecycle-on-the-ref
 - [x] Verify actual E/P caller execution uses the completed descriptor migration and preserves required isolated projects and blocking package-mode integration. Relevant existing implementation can be consumed; fresh candidate acceptance still requires its own exact-decision run.
 - [x] Build a finite row-to-test/result index for the six original matrix rows. Authenticate existing results for their original subject and record the remaining rows. Every required row must have an actual executed passing covering test; missing, filtered or required-skipped cases remain open.
 - [x] Complete focused real hosted proof of success/failure/partial-startup cleanup and same-job attachment withdrawal, plus separate real startup and execution cancellation runs with exact final owned inventories. Retain the ready-artifact-before-exact-cancel protocol, first outcomes and diagnostics. The three prior broad matrices remain failed; a focused result is explicitly labelled and cannot pass the full 2.10 matrix.
-- [ ] Complete relevant owner-repository source checks and the required final current/real-legacy/five-SDK checks for the actual final source. Preserve all original controls and explicitly account for meaningful incoming added cases. Complete any genuinely required normal source publication once; do not create unrelated release prerequisites.
+- [x] Complete relevant owner-repository source checks and the required final current/real-legacy/five-SDK checks for the actual final source. Preserve all original controls and explicitly account for meaningful incoming added cases. Complete any genuinely required normal source publication once; do not create unrelated release prerequisites.
 - [x] Complete the finite audit below and enter Step 04. Story completion still needs the normal review; full reference qualification/tool acceptance stays with 2.10.
 
 #### Review loop 1 tasks (2026-11-09; see Spec Change Log and Review Triage Log)
@@ -1038,3 +1038,530 @@ The user replied **“merge to main”** to the concrete PR #181 merge question.
 Direct Git fetch and ancestry checks verified actual main merge `213aab34be1ce97783a51ebeaf3d2d0c5dab6dd7`, tree `586cd76f23e5155992760186017dd85441516080`, with ordered parents `5050f01a74cd6ba22954030c852a097cffb2b5b8` and `b74b467ac5ce5d9f9fc440f43e279b7093b539de`. Both the iteration-3 fixes and fixture repair are ancestors. The actual full merge message is the external `/pushall` message, not the earlier prepared PR merge message; the owning locked commitlint CLI accepted its exact Git bytes. The [merge receipt](evidence/2-8/verification-20261111/observed-main-merge.json) and [separate manifest](evidence/2-8/verification-20261111/merge-observation-manifest.json) preserve that distinction.
 
 Fresh main [CI 43019233527](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43019233527) at this exact merge was **in progress** when observed; main commitlint `43019233552` passed. The earlier successful PR CI remains scoped to its own head and does not pass this main run. Root Platform pins and pending changes remain intact. The merge request is fulfilled; Story 2.8 stays in progress pending main CI and the previously recorded publication/final Platform/lifecycle gates. The merge request adds no source-publication authorization. Do not replay PR #181 delivery or start a release from an assumed version.
+
+
+### Delivery reconciliation and producer boundary — 2026-11-17
+
+The [finite continuation evidence](evidence/2-8/verification-20261117/README.md)
+closes the effective final-source task at its actual delivered subject,
+Platform `32643bde39b4da0e4538f8388e225727f82122f6` / 2.0.0: tuple
+`43391842440`, all six SDK catalog jobs in `43391842426`, and publisher
+`43396965519` succeeded. The original named PA-15/PB-9/PC-15/G14 case actually
+passed in the retained primary XML collected at
+`b05616cc57c16b152a364d5a4d0382782b99332f` with .NET 10/tool 4.47.0. Relevant
+production bytes match the delivered source; later Story 2.13 retirement and
+the separate current-root tuple failure remain explicitly attributed. Builds
+merge CI `43019233527` remains cancelled; later genuine delivered descendants
+supply their own source/publication receipts. No earlier failure is relabelled.
+
+Five focused patched-release attempts (`44051836412`, `44053412339`,
+`44062720071`, `44066243616`, `44073347507`) remain failed, each with zero
+cancellation requests. The final attempt passed all 15 isolated projects,
+then refused the ordinary package handoff before native execution. Both exact
+cleanup attempts verified the same durable owner with empty inventories; this
+supplies no cancellation or three-timestamp ordering credit. The task-owned
+final proof ref was verified at
+`bccab615f9e3d1a92e3bbf648ee89e78a925670b` and deleted. The novel bounded
+MSBuild-worker isolation fix and actual direct/Python worker regression remain
+as a separate [two-path owner proposal](evidence/2-8/verification-20261117/owner-ready-fix/proposal.json)
+against `8abfd266eecb5a636ee5498f944304669c18aa41`; normal owner review/delivery
+is pending and no current-owner qualification is inferred from its apply check.
+
+One finite genuine older holds-only subject,
+`11053e562a2cba0196354cec655c01677e2afd46`, passed both real ordinary
+parent-handoff/cohort metadata guards with released CLI 4.48.2 and separate
+executor `6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b`. Catalog
+`3c8096180ecf2aa539ac454815efbfceb8a92822`, Platform
+`0f4e27f1f78310bd731c10c19dc51bb1e0345d44`, actual native/declaration bytes,
+15 isolated projects and original 60/45-minute budgets stay intact. The
+[prepared nine-path projection](evidence/2-8/verification-20261117/ordinary-proof-4/projection.diff)
+authenticates its executor before controller imports. Controller 97, released
+helper 75, observer 3 and owning workflow class 70 controls passed; no local
+AppHost, builder, service or probe was executed. Original harness failures and
+unexecuted blocked cases remain recorded.
+
+The actual test-project build now fails `NU1903` for SignalR Redis 10.0.14.
+The [concrete 10.0.15 producer patch and local validation](evidence/2-8/verification-20261117/producer-boundary.md)
+correctly reach `HXW009`: the unchanged Platform source pins the original
+catalog, so a substituted catalog cannot claim its identity. The recommended
+owner decision is a bounded supported-4.x catalog maintenance and matching
+Platform source/publication path with all normal gates, followed by a genuinely
+refrozen caller. No version/tag is guessed. Audit and pin guards remain enabled; further
+dispatches remain stopped at this producer decision. Proper current-cohort lifecycle
+registration is a separate, broader capability/qualification alternative.
+
+The [finite task/row audit](evidence/2-8/verification-20261117/finite-task-and-row-audit.json)
+preserves all six original matrix rows and their original result subjects.
+The focused released-tool execution cancellation, durable admission-close /
+withdrawal / first composed-stop ordering with kernel signal origins, and
+normal story review remain open. Status remains **in-progress**; Step 04/05,
+Story 2.10 qualification and candidate/tool acceptance are not completed.
+The unrelated incoming root commit
+`4f88df0ec98885425db5ddb20a3a3bb34a93d046` is preserved without assigning it
+previous test outcomes. All 18 current root gitlinks and the frozen block are
+unchanged. All disposable jobs/monitors finished; no cancellation or remote
+mutation is queued.
+
+### Owner approval — 2026-11-17 maintenance continuation
+
+The user replied **“approve”** to the concrete request to proceed with the
+[catalog-maintenance and matching Platform release path](evidence/2-8/verification-20261117/producer-boundary.md)
+through its normal gates. This authorizes the bounded supported-4.x catalog
+security maintenance and corresponding Platform source/handoff/publication work,
+including necessary owner branches, PRs, normal delivery and publication after
+their required checks. It supersedes the previous no-publication boundary only
+for this approved path; do not ask again for that same authorization.
+
+Resume Step 03 of the already-rendered build workflow. Preserve the original
+baselines, frozen intent, all prior outcomes and the shared root's 18 current
+pins. Resolve the maintenance lane and version from the owning release policy,
+actual refs and publisher capabilities; do not invent a tag or bypass normal
+source, package, provenance, audit or publication checks. Prepare and review the
+concrete changes before delivery. The one-pin SignalR patch remains the starting
+change, with matching genuine catalog/Platform identities required before a
+refrozen caller can execute. Record every new source and publication receipt.
+
+After the producer inputs exist, resume the admitted holds-only focused proof
+with its original suites, budgets, ready-artifact verification and one normal
+cancellation, followed by exact cleanup and the three-timestamp/kernel-origin
+audit. No current-cohort lifecycle registration, Story 2.10 qualification,
+candidate/tool acceptance or shared-main accepted-pin adoption is authorized by
+this maintenance decision. Story 2.8 remains in-progress until the existing
+implementation, runtime and normal review gates actually complete.
+
+### Maintenance preparation — 2026-11-17
+
+The [reviewed local proposals and verification](evidence/2-8/maintenance-20261117/phase-01-local/parent-pre-delivery-review.json)
+retain schema 1's signed archive, executable, source, catalog and inventory
+binding. The actual supported maintenance policy names Builds `4.44.x` from
+`3c8096180ecf2aa539ac454815efbfceb8a92822` and Platform `1.7.x` from
+`0f4e27f1f78310bd731c10c19dc51bb1e0345d44`. Its owner proposal is
+`3c285357c9eadec74a3516d649c8197fe1719052`; no delivery is claimed yet.
+
+Actual restore controls show that Redis 10.0.15 also requires Options and
+DependencyInjection.Abstractions 10.0.15. Those three changes are the complete
+verified minimal catalog closure. The locked analyzers derive 4.44.14 and
+1.7.2 from genuine committed proposal ranges; no tag was created. The Platform
+proposal still retains its original tuple data until genuine new publication
+identities exist.
+
+The 12 Builds guard, 22 Platform guard, six independent public-route/recheck
+and 17 owner write/environment controls passed. The first complete owner global
+invocation failed because its API token used the audit-only variable and its
+disposable clone retained a local origin. Both normal API checks and all 17
+correct-origin controls subsequently passed at the unchanged source; the
+original aggregate failure remains recorded. Other global subchecks and
+retained tool suites passed. This is local verification, not hosted source CI,
+publication, runtime cancellation or story acceptance.
+
+All 18 shared root pins/checkouts and the frozen intent remain unchanged.
+Continue normal owner delivery and exact-source producer gates under the
+existing approval, then refreeze the focused proof. Step 04/05 and runtime
+ordering acceptance remain open.
+
+
+### Maintenance owner delivery and producer corrections — 2026-11-17
+
+The [phase 02 checkpoint](evidence/2-8/maintenance-20261117/phase-02-owner-and-ci/checkpoint.json)
+records the normal CiCd PR #1 merge at
+`93eb23114d4ca41b92c3dccf21c8e1baa9c5870e`, preserving the independent incoming
+AI.Tools change. Both reviewed-source CI `44100791669` and actual merge push CI
+`44106588862` passed. Frozen owner policy
+`3c285357c9eadec74a3516d649c8197fe1719052` is a genuine ancestor. The normal
+protected-environment API added only the named `4.44.x` branch; existing
+review/protection settings remained byte-bound and unchanged. Normal NuGet
+Trusted Publishing is still required; no policy/key fallback was installed.
+
+Builds PR #188 now names `3aafeda8ed2b2befa0f49c78fe0b5c88c79d7f1c`.
+Its first hosted source run `44110224042` remains failed. The normal audit
+generator refreshed only the dotnet-10 family, preserving all 155 other
+families and every non-dotnet-10 package observation. The three actual pins
+remain the complete verified Redis/Options/DI.Abstractions closure. Two
+branch-list assertions now include the approved maintenance lane. Four actual
+MSBuild failures were independently reproduced: build correctly refused the
+first conflicting source flag/root with HXW006, while the old assertion
+expected Configuration despite the CLI forwarding it globally. The corrected
+four cases executed and passed, retaining configuration/evaluation assertions
+and failure requirements. An intervening SA1515 failure is retained, then
+corrected with the required blank line. Locked full-message validation,
+dependency signatures and version analysis passed; computed version remains
+4.44.14. Exact corrected-head PR CI `44117921876` is pending.
+
+Builds default-branch registration PR #187 adds the actionless manual
+registration declaration. Its prior exact-head run `44109440725` failed two
+publication fixtures that were already failing on its genuine main base.
+The [focused fixture repair](evidence/2-8/maintenance-20261117/phase-02-owner-and-ci/registration-fixtures-02/source-delta.log)
+retains the authenticated original payload maps and producer artifact identity,
+then asserts the actual public payload map and signed archive hash. Both
+previously failing tests passed, with no production-publication change.
+The reviewed/commitlint-validated continuation is
+`6c622123470b65cefbfc2326aeeee34a89b597a2`; its fresh normal PR CI is pending.
+Superseded automatic cancellations are not test passes or user cancellation
+requests.
+
+Platform support proposal remains
+`ad32547462a746945631c35cb994bcdb8f53d0ed`, with all 42 retained/new release
+controls passed and original tuple data retained until a genuine Builds
+publication exists. Platform registration PR #43 has a one-review/code-owner
+repository rule and the independently observed current-root tuple failure.
+Do not bypass either or adopt current pins to repair this maintenance path.
+Its actual necessity will be resolved through the genuine qualified
+maintenance-ref dispatch; the workflow filename already exists on default main.
+
+The phase 02 manifest binds 260 files (SHA-256
+`3c88b15044ee3f6f6a7b668ca82368b1561b99b11d6a3d0723d5b59af78fdfbc`).
+Incoming root `24f8ebeba25a36e043942e7f1a76583724b27fef`, all 18 root
+pins/checkouts and the original frozen intent are preserved. There are no new
+tags/releases, no source-publication or runtime-ordering acceptance, and no new
+cancellation requests. Step 03 remains in progress.
+
+
+### Builds maintenance merge and runner-capacity boundary — 2026-11-17
+
+The [phase 03 checkpoint](evidence/2-8/maintenance-20261117/phase-03-builds-source-merge/checkpoint.json)
+records all seven exact PR-source CI jobs passed in run `44117921876`, then one
+normal merge of PR #188 at `51d56ec722e0e66c8957f2f7502015f2c9b7c5c1`.
+Its actual parents, reviewed tree and complete actual message were independently
+verified. The GitHub-formed message omits the proposed terminal newline; both
+forms were commitlint-validated before the request, and the actual Git object
+message was validated afterwards. The merged-source push CI `44121371373` is
+still required and in progress. CodeQL, Bugbot, security and Sonar passed;
+auxiliary Codacy remains action-required with no annotations and is not
+relabelled passed.
+
+The ordinary .NET job executed 2,856 module tests, 191 evidence tests and one
+integration test successfully. Five contextual module and 12 opt-in/live
+integration skips remain skips and supply no lifecycle credit. The primary PR
+qualification artifact's official digest/CRC were verified. It belongs to the
+synthetic PR merge checkout `e0c74dd62258e0114eac75466231910ddaad3338`, records
+source validation skipped/not-run and releaseEligible:false. It is validation
+only; normal actual-version publication must produce its own genuine inventory.
+
+Builds registration run `44118275946` now passes both Python lanes and catalog
+contracts. Its macOS job `134163397914` executed zero steps: GitHub records that
+the hosted arm64 runner was never acquired because of capacity constraints.
+The old publisher registry entry remains deleted, so normal default-branch
+registration is genuinely required. A concrete one-job normal retry exception
+was requested from the user because the repository instruction forbids
+unchanged-source retries. That exception is pending; no retry was requested
+from GitHub, no source change was fabricated, and the cancelled job is not a
+pass. Continue independent merged-source checks while waiting. There are no
+new tags/releases or lifecycle cancellation requests. Step 03 remains open.
+
+
+**Runner-capacity exception approved:** the user selected **“Retry the macOS job
+once (Recommended)”** for run `44118275946`, job `134163397914`, at unchanged
+source `6c622123470b65cefbfc2326aeeee34a89b597a2`. This authorizes one normal
+job retry after the current run finishes. Preserve the never-acquired original
+failure; no second retry, test skip, fabricated source change or runtime/gate
+waiver is authorized. Do not ask again for this specific exception.
+
+
+### Registration delivered; maintenance carrier correction — 2026-11-17
+
+The [phase 04 checkpoint](evidence/2-8/maintenance-20261117/phase-04-registration-and-carrier/checkpoint.json)
+records the one explicitly approved normal macOS retry. It acquired a runner,
+executed its actual steps and passed as job `134183570648`. Run `44118275946`
+completed successfully at attempt 2. The original never-acquired job remains
+cancelled; normal GitHub reuse of unchanged-source successful jobs is recorded
+separately. This specific exception is spent; no second retry is authorized.
+
+PR #187 merged normally at `7afc4981e21bc2fcce687199a3fd2c61fe87336e`.
+A first operator preflight made zero merge requests because it incorrectly
+assumed current main used ci.yml. Reading its genuine source and registered
+workflow established builds-ci.yml / `411848291`, while the supported old lane
+uses ci.yml / `320718206`. The corrected preflight, actual merge tree, parents
+and complete actual message passed verification. The legacy publisher registry
+`152656352` is now active. Its new default-main CI `44125038640` is separate
+from the supported maintenance source and is not relabelled complete.
+
+Maintenance push CI `44121371373` remains failed: .NET, catalog, Python and
+CodeQL passed; complete package qualification reported producer success, then
+carrier retention rejected the new maintenance workflow ref. The failed
+artifact's official ZIP digest/CRC and original producer identity were
+verified. All recorded identity fields match the actual source/job/run; the
+old carrier whitelist alone omitted refs/heads/4.44.x. No publication was
+dispatched from this failed source gate.
+
+The bounded two-path correction `4a7e0d22e79aeb26f73fd4b147cd4edece8e4f26`
+is in [Builds PR #189](https://github.com/Hexalith/Hexalith.Builds/pull/189).
+It admits only the exact named maintenance branch and constrains maintenance
+release carriers to stable 4.44 versions, preserving every other identity,
+source, eligibility, byte/hash, path and atomic-write check. All 16 carrier
+methods, including the real CI/release archive/verify round trips and strict
+negative cases, passed; all 15 source-gate controls passed. Locked dependency
+signatures/full commit message and actual version analysis passed; derived
+version remains 4.44.14. Exact-head PR CI `44125853269` is pending; normal
+merge and fresh merged-source CI remain necessary before publication. The
+remaining executed publisher path was checked for branch restrictions; the
+original old carrier omission is now explicitly covered.
+
+All 18 shared root pins/checkouts and frozen intent are unchanged. There are
+no new tags/releases, publication dispatches, lifecycle cancellation requests,
+source acceptance, current-cohort registration or Story 2.10 qualification.
+Continue Step 03 through the existing maintenance authorization; do not ask
+again for the already-spent single macOS retry or the approved publication path.
+
+
+### Source CI complete; NuGet maintenance policy and one retry — 2026-11-17
+
+The [phase 05 checkpoint](evidence/2-8/maintenance-20261117/phase-05-source-ci-and-publishing-policy/checkpoint.json)
+records normal PR #189 merge `979cfd3e2c4145be516fbd833dacfc6b8e8fdce5`,
+all seven PR CI jobs passed in `44125853269`, and its genuine push CI
+`44129245136` attempt 1 successful. Six jobs passed; the contextual dependency
+review skip stays a skip. Primary successful job logs and the official
+qualification ZIP digest/CRC bind the actual maintenance source, workflow, run
+and attempt. Registration main push CI `44125038640` also passed.
+
+Normal publication run `44133307523` passed both source checks but its first
+release job failed at NuGet OIDC: the existing policy expected builds-release.yml
+and hexalith-release, while this approved legacy lane uses build-release.yml and
+production. Create Release was skipped; no publication is inferred from that
+attempt. The user explicitly replied **“add it yourself”** to the exact additional
+NuGet policy and single normal release retry request, then signed in through
+the requested Windows browser.
+
+One additional policy, `Hexalith.Builds 4.44 maintenance` / `27467`, was created
+through the normal authenticated UI as creator jpiquot. It grants the same
+Hexalith owner, Hexalith.Builds* glob and push-new-packages scope, restricted to
+Hexalith/Hexalith.Builds, build-release.yml and production. The existing policy
+`26029` was independently compared and is unchanged. No API key fallback,
+credential change or environment protection change was made.
+
+Exactly one approved normal retry of failed job `134216202450` was requested.
+Run `44133307523` attempt 2 has passed its real source gates and NuGet
+authentication; Create Release is in progress. Its normal production review
+was approved through the existing required reviewer jpiquot, preserving all
+protection settings. The retry exception is spent; do not issue another retry.
+Only the actual completed publisher and public signed archive/inventory can
+authorize truthful Platform tuple fields.
+
+Platform support source `33d28ad2f3cac02de45652743707f73a8fd3d9f7` corrects the
+retained legacy test's obsolete main-only text assumption using real committed
+source selection. Its ten original controls now pass, with other assertions
+preserved. Tuple values are still original pending genuine publication. The
+current maintenance code differs from the old legacy source, so final source
+preparation must create a genuine same-code legacy commit, restoring only the
+existing eight allowed metadata paths from authenticated legacy source
+3cd036f78ccdfeb72521122a65f1a3aef0bff9da. Preserve its 349 controls/profile,
+original tool/catalog/provenance and qualificationCredit:false; keep the current
+412-case profile unchanged. Never widen the metadata allowance or claim an
+unchanged old legacy source is same-code.
+
+The phase 05 manifest binds 170 files (SHA-256
+`56ccee298fc3df7dd133d86c39e24d6439541065107304afb20381ec3080121a`). All 18 shared root pins/checkouts and the frozen intent
+remain unchanged. Source publication, current/legacy and SDK qualifications,
+and the final real hosted cancellation-order proof remain open. No new
+lifecycle cancellation request, current-cohort registration, Story 2.10
+qualification or candidate acceptance is recorded. Continue Step 03.
+
+
+### Supported Builds publication verified — 2026-11-17
+
+The [phase 06 checkpoint](evidence/2-8/maintenance-20261117/phase-06-published-builds/checkpoint.json)
+records run `44133307523` attempt 2 completed successfully. Both actual jobs
+passed, including release job `134250485020`, its protected source recheck,
+NuGet OIDC login and Create Release. The one authorized retry is spent. The
+normal publisher derived and published [v4.44.14](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.14)
+at source `979cfd3e2c4145be516fbd833dacfc6b8e8fdce5`; no tag or version was
+manually overridden. Its delay was normal NuGet repository signing and public
+blob availability, observed through the normal live Actions page.
+
+Independent verification bound the official attempt-2 artifact digest, outer
+and inner CRCs, complete evidence member hashes, actual producer source/run/job/
+workflow identity, release eligibility and genuine tag source. The official
+release inventory bytes match the qualified carrier and release asset digest:
+`e114c68e45fd6b23785370f3849efdca70411e603aee87da76dff7a07ad37119`. The independently downloaded public NuGet archive
+passed `dotnet nuget verify --all`; its SHA-256 is
+`4bd1338627c7283d5fc98db9b374b932fb946f3b0c14b3ed97b4cea604273a73`. The extracted CLI reports exactly
+`4.44.14+979cfd3e2c4145be516fbd833dacfc6b8e8fdce5`. Actual Tooling SHA-256 is
+`fcb860995228e4ae332cc6474341e6f8f34d714bb6f71488804dc34fc9933e63`, AppHost assembly SHA-256 is
+`c261d02d4ab2582c2a427361afb157552660b58365654abb39c6669210bf73f4`. Catalog blob `a82d3ad3e745ea7432f60c892c0c66395daaa8ef` has raw SHA-256
+`908d6acf84f3fac00c14942652b7b6d35fc93094e5ce41f87061db44bdaf3295` and genuine catalog-origin revision
+`7b95a68fa0657135cee1103defc59089defa93ff`. These are publication/artifact facts,
+not a new candidate or caller/native qualification.
+
+The phase 06 manifest binds 68 files (SHA-256
+`4ea2403357b0432a219b498b3377085e656a8df687f3bcc8a51510f8c283ef44`). Matching Platform current/legacy preparation is now authorized
+by the real publication data. Its existing 412 current cases, all 349 original
+legacy controls, unchanged eight-path same-code boundary and all five SDK
+gates remain required, followed by normal source publication and the final
+hosted cancellation-order proof. No lifecycle cancellation request, current
+cohort registration or Story 2.10 qualification is inferred. Step 03 remains open.
+
+
+### Matching Platform current and genuine legacy sources — 2026-11-17
+
+The [phase 07 checkpoint](evidence/2-8/maintenance-20261117/phase-07-platform-maintenance-source/checkpoint.json)
+records the actual observed Builds 4.44.14 binding in Platform current source
+`e1e8ccf5f51211fd5bd80259fbfd851b83513100`. The genuine same-code legacy source is
+`3aa95205d54fc6daba229f38655a024ae88132f1`. It restores exactly the original eight allowed
+metadata paths from 3cd036f78ccdfeb72521122a65f1a3aef0bff9da while retaining
+identical new code, tests, helpers and documentation. The production verifier
+ran at the actual legacy HEAD against the actual current Git commit and passed.
+Its original 349 controls/profile/tool/catalog/provenance remain unchanged,
+qualificationCredit:false and no binary-equivalence claim. The current profile
+is byte-identical to the supported base and still requires 412 cases.
+
+All 19 retained tuple controls, ten retained legacy controls and 42 source-
+release controls passed. The normal `eng/prepare_builds_artifacts.py` with
+--require-recorded passed on the clean committed current source and genuine
+Builds source, independently checking the public archive's signature, exact
+source/version, Tooling hash and catalog binding. Dependency signatures, all
+complete commit messages and locked real range analysis passed; the derived
+prospective source version is 1.7.2, with no tag/release created. The complete
+17-path source diff was read by the parent.
+
+A normal 1.7.x branch was created at authenticated supported base
+0f4e27f1f78310bd731c10c19dc51bb1e0345d44. The genuine legacy branch was pushed
+before the current source, then [Platform PR #44](https://github.com/Hexalith/Hexalith.Platform/pull/44) opened
+against 1.7.x. Exact PR-source hosted tuple CI `44147787827` and catalog/SDK CI
+`44147787643` are pending; current 412 cases, all 349 legacy controls and all
+five SDK jobs must actually run and pass. These local controls grant none of
+that hosted qualification. No source-publication dispatch or lifecycle
+cancellation request was sent, and no existing branch protection was changed.
+
+The phase 07 manifest binds 81 files (SHA-256
+`3a37ef613dfb5af6505887976d702c65e4505fa8357e0849ff3eadd177672408`). Continue through normal PR qualification/merge, fresh exact
+merged-source CI, normal registered source publication and the final genuine
+hosted cancellation-order proof. The default-main registration PR #43 remains
+unmerged until its necessity is resolved by the actual intended dispatch.
+Step 03 remains in progress.
+
+
+### User correction: supported Platform 2.x and latest Builds 6.x — 2026-11-17
+
+The [phase 08 checkpoint](evidence/2-8/maintenance-20261117/phase-08-superseded-route/checkpoint.json)
+records Platform PR #44's five SDK jobs passed, while tuple CI `44147787827`
+failed during restore with NU1903 for Aspire.Hosting 13.6.4. Required tuple
+suites never executed; its legacy job was skipped. The official failed artifact
+digest/CRC and primary restore output were verified. The earlier producer logs
+already contained the Aspire warning; the parent acknowledged that the initial
+three-package maintenance patch was too narrow for Platform's restore gate.
+
+The user first selected a security-patched legacy dependency baseline, retaining
+all 349 tests and keeping audit enabled. A local, explicit v2 descriptor/four-
+package floor proposal passed 14 legacy controls and 21 tuple/MSBuild controls.
+The initial metadata-condition implementation failed real MSBuild evaluation;
+the implementation was corrected without changing expected behavior. A precise
+existing-CRLF attribute resolved the final whitespace check. None of this
+obsolete projection was delivered to supported current Platform source.
+
+An independent two-path Aspire13.6.5 catalog proposal
+`f934342d541f9802ce5a987a65c60af868ec6d5c` passed normal catalog/audit checks
+and 90 catalog scenarios with other package pins and audit families preserved.
+Its first local finish failed commitlint for disallowed chore type; the corrected
+full build message passed. It opened normal Builds PR #190, but was never
+merged or published by this task.
+
+**The user's latest instructions supersede this route:** “we publish only
+2.x.x versions. 1.7.x is obsolete ans we do not want to maintain it” and
+“use latest builds 6.x.x”. Stop all further 1.7.x/4.44.x maintenance work.
+Use supported current Platform2.x with the observed latest stable Builds6.3.0
+at `7afc4981e21bc2fcce687199a3fd2c61fe87336e`. Current Platform's existing
+NET11/6.x path selects6.0.5; update its genuine publication binding, exact tool
+pin/range, Builds gitlink and current documentation together. The current2.x
+pipeline already retired L/M and349/412 obligations through Story2.13; do not
+carry the obsolete maintenance projection into it. The original Story2.8
+behavioral goal, actual verification and final native cancellation/cleanup proof
+remain required. The frozen text stays unchanged; these explicit user changes
+control the effective supported versions and route.
+
+Cleanup discovered PRs #43 and #44 had already merged externally as
+`11719c5cf51c2b2b080b89e0e301c2ef8dbacc46` and
+`571c6c7b20eb6c28b5d9ec67de1f90f40537ce9c`, respectively. Those histories
+are preserved. The shared root advanced externally to11719c5; all18 root
+pins/checkouts and pending work remain intact. Unmerged Builds PR #190 was
+closed and its CI `44154568897` cancelled through one ordinary administrative
+request. This is separate from the lifecycle proof, whose cancellation request
+count remains zero. No published tag/package/release was removed.
+
+The phase08 manifest binds 83 files (SHA-256
+`804242d6c01db0da88b296701c34b5de13634212e1bde2d7e548314393e5b4e2`). Further work is in artifacts/2-8-current-20261117 and the supported
+2.x/6.x flow. No old maintenance merge/publish operator may be resumed.
+Step03 remains in progress.
+
+
+### Current Platform2.x adopts genuine Builds6.3.0 — 2026-11-17
+
+The user's supported2.x/latest6.x decision is now concrete in [Platform PR #46](https://github.com/Hexalith/Hexalith.Platform/pull/46), final source `408481da06128ae50ad274d5dddcd4234d8b677d` against main `11719c5cf51c2b2b080b89e0e301c2ef8dbacc46`. It binds the normal signed Builds6.3.0 release/source `7afc4981e21bc2fcce687199a3fd2c61fe87336e`, exact tool pin/range, raw catalog and shared publication handoff together. Only the intended Builds gitlink changes; the other17 direct pins stay fixed. Current-only486+93+9 and six SDK gates remain mandatory. No obsolete1.7/4.44 operator is resumed.
+
+Independent normal-release, artifact-digest/CRC, public inventory, repository signature, payload, executable/source, Tooling and exact catalog checks passed. The real signed validation AppHost is `3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1`, paired with Tooling `48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27`. An earlier collector label contained the distinct EventStoreHost hash `e71345052a6b300eceab35b39026338fa0ebccb1ae5d2a2f6ed4a4a6d22feb40`; the signed member map and corrected host-identity record distinguish them. No signed archive or payload digest was relaxed.
+
+Normal recorded artifact preparation exposed the producer's CRLF checkout versus exact Git-byte guard. It now materializes the existing bound producer privately, authenticates all exact bytes, rechecks that same private checkout before receipt/export and cleans it on exit. The normal checkout and its attributes remain unchanged. Twelve real Git acquisition/refusal controls,22 tuple and16 publication controls passed; the real public normal command also passed on final source. Main's existing four owner gitlinks had advanced with a stale source binding: regenerate only that binding from their genuine Git bodies, preserving identical canonical declaration hashes and package provenance. Local actual owner/release-tag closure and hosted source resolution passed. The Bugbot claim that the new binding mismatches those already-advanced pins is contradicted by that primary evidence; no source guard is waived.
+
+Thirty catalog controls independently verify the exact6.3.0 raw body: finite named Platform/Parties contexts retain SDK4.2/OpenAPI10.0.15/2.13.0 and companions, while generic SDK5.2/OpenAPI11.0.0/3.11.1/Tenants8.0.1 remains separate. Exact source/range and signed host/Tooling admissions extend only to the observed tuple. The compiled owning project builds with zero warnings;17 current artifact and8 signed handoff cases passed with zero skips on source `44c0c647781543f774bfce9bb17d80cfba471ccf`. Source07 only adds the new catalog's5.2 selection to the source-metadata setup guard; all29 existing real metadata/restore controls pass, zero skips. Earlier SDK source `b5c3114a5a9b42adfd42668bcf1fcd2964d625fc` passed all six hosted SDK jobs in44162565674 but its tuple ran zero source-propagation cases because that finite setup guard still excluded5.2. Retain the failed run and authenticated diagnostics rather than giving them passing credit. No expected production assertion or mandatory count was weakened.
+
+The source06 operator's post-push prUrl bookkeeping error was reconciled from actual PR head and both complete passing XML reports; the successful push was never replayed. Source05's missing nested direct Builds checkout is retained as a failed local setup observation; the correctly prepared source06 supplies the genuine25-case passing evidence.
+
+Fresh final-source tuple [44166185074](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44166185074) and six-SDK [44166185115](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44166185115) are pending at this checkpoint. Main requires one approving code-owner review (`.github/CODEOWNERS`: jpiquot); no rule bypass, forged review, main merge or new Platform publication occurred. The original hosted cancellation-order/cleanup proof remains open, with zero lifecycle-proof cancellation requests. Local jobs used `run-with-temp`, completed their child work and cleaned disposable checkouts; no real local services, AppHost runtime, DCP, Dapr, Docker, listener or live probe was started. Artifact/source checks grant no image, native or candidate acceptance.
+
+Evidence: [current6.3 checkpoint](evidence/2-8/maintenance-20261117/phase-09-current-builds-6-3/checkpoint.json), [file manifest](evidence/2-8/maintenance-20261117/phase-09-current-builds-6-3/manifest.json). Manifest SHA-256 `c6b4ebf9a4112b024976e04730cca99c0744742a6ddd01da1a04fe8391aea462`.
+
+
+### Supported current focused proof: exact EventStore package-test purpose — 2026-11-17
+
+The latest2.x/6.x decision requires an eligible current execution path for the remaining focused2.8 proof. Existing private EventStore `platform-package` eligibility already authenticates its exact declaration/entry,120-second execution and90-second stop budgets, package mode, actual parent proof, SDK4.2.0/Tenants7.0.7 public bodies and only the EventStore/Tenants topology. Its native binding currently has no Tenants7.0.7 image rows. This is a demonstrated execution prerequisite, separate from complete2.10 reference qualification.
+
+A separate metadata-only diagnostic ref `be7149f6b4097b617ec1c5f287e68fe9cd4d9390` from genuine Parties main `c9c21fc3e48a999db575a361562707a79f1663cf` preserved every product gitlink and changed only the manual diagnostic workflow plus its collector/offline controls. The released Builds6.3 shared commit validator applied the owning module's exact policy; commitlint, npm signature verification, seven offline security/digest controls and actionlint passed. One normal workflow dispatch [44174015501](https://github.com/Hexalith/Hexalith.Parties/actions/runs/44174015501), job134360420143, completed its read-only hosted registry collection successfully. No service was provisioned or native proof attempted. Original artifact14368338901 digest/CRC and exact source/run/attempt/job observations are authenticated: SHA256 `c8ed0a948bbbbca2f0d5df5042255da7783cad06f4d87d2fa58101a0e6633379`. All six observed image labels match the already recorded Tenants7.0.7 and Memories3.0.27 public release revisions. Metadata facts supply no runtime, image-cohort or candidate acceptance by themselves.
+
+Prepare only the two exact Linux/amd64 Tenants7.0.7 image bindings for the existing EventStore package-test purpose: domain `590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635`; api `2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65`. Preserve every original parent/source/entry/declaration/package/topology/budget check, the preassigned-digest refusal and the ordinary/serialized-proof refusals. Independently hash the original manifest bytes in a small regression fixture and verify both resulting bindings through the existing40-case guard class. Keep the current full Parties native cohorts unadmitted; do not expand the complete2.10 qualification scope.
+
+After normal supported2.x source checks, owner review and publication, prepare one genuine EventStore caller for the remaining focused cancellation observation. Use its existing declared120/90 package suite and released6.3 executor; preserve production budgets and the240-second raw hold request. Any targeted execution hold must follow real gateway/readiness/persisted-state assertions and remain bounded by the declared suite. Use public testing packages in package mode and retain actual isolated-project execution. Record one finite exact-source/package/image/suite/workflow inventory before native dispatch; retain the original ready-before-one-cancel, first-outcome, withdrawal-before-stop, kernel-event and exact empty-inventory/diagnostic audit. This introduces no new policy schema, attached native execution, reference qualification or accepted-tool enrollment. Root owner gitlinks stay unchanged; helper/workflow diagnostics remain a genuine2.8 obligation.
+
+
+### Final supported-current PR qualification and corrected native route — 2026-11-17
+
+Final [PR #46](https://github.com/Hexalith/Hexalith.Platform/pull/46) source `408481da06128ae50ad274d5dddcd4234d8b677d` passed hosted tuple [44166185074](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44166185074) and all six SDK jobs in [44166185115](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44166185115), attempt1. Independently authenticated artifact14369843406 has SHA256 `7007cdc09afc7d815eddc37c7d1a84db91694bbf90bf5d4036ca970af1e3c18b`, valid CRCs and unique safe members. Complete primary receipts and all38 required XML groups match the exact committed profiles: current486, base93, extensions9; all588 passed with zero failed, skipped, errors or not-run. The sole current collector used genuine signed Builds6.3.0/source7af and actual NET11, with unchanged output snapshots and clean exact source. The actual executed PR virtual merge is `e6869d11be7e636ae2717ea77e504225eb83f5dd`, parents11719/408481; its Git tree `f8370e59ff5b20b75a681a581a21869f9e8b32c3` equals the PR head tree. Do not label the virtual merge as a literal checkout of408481. These remain PR preflight observations, with no native or candidate acceptance.
+
+The first local artifact extractor authenticated the ZIP but then failed its receipt-count assertion because its4MB retention cap omitted the genuine6MB receipts. That failure is preserved. The corrected extractor retrieved the same official archive, retained all original receipts and passed the independent per-case/source/tool audit. No hosted job was retried. GitHub's latest-release observation still reports Builds6.3.0. Platform remains supported2.x only; the obsolete1.7/4.44 route stays superseded.
+
+The preceding EventStore native-route proposal is **disqualified and must not be delivered**. The actual released Builds6.3.0 `CompositionAttachAdmission` refuses `QualificationOwners` with HXR033/qualification-owner-expansion: “Expanded qualification owners do not support attachment or reuse.” The EventStore package purpose needs that expansion, so it cannot supply this required active-hold observation under unchanged policy. Its local-only proposal `174bebdaf4ec4c7e454fdd7746f7ca1afe1d3c45` was never pushed;39/40 controls passed and the original signed-body failure remains failed. Preserve its sources/logs and the independently useful six hosted image facts. Do not change the published attachment policy or infer native eligibility from those metadata. A focused current Parties alternative remains investigation only; ordinary/public/non-CI full current cohorts remain unadmitted. No native grant or caller has been delivered, and no native dispatch or lifecycle cancellation request was sent on this supported route.
+
+The concrete normal merge payload for PR46/head408481 passed the owning locked commitlint and npm signature checks. GitHub rule [Platform main reviewed changes](https://github.com/Hexalith/Hexalith.Platform/rules/24657106) requires one code-owner approval; sole owner jpiquot is also the PR author and cannot self-review. Its existing configured user bypass is available, but no fresh exception is approved or used. Earlier exact-head exceptions cannot be replayed. Request approval only for this exact completed PR/head; retain all normal fresh main tuple/six-SDK and supported2.x source-publication checks after merge. No protected-main push, manual tag, forged review, rule/credential change, main merge or new Platform publication occurred. The remaining original cancellation-order/cleanup proof stays open; Step03 remains in progress.
+
+Evidence: [phase10 checkpoint](evidence/2-8/maintenance-20261117/phase-10-current-ci-passed/checkpoint.json), [primary receipt audit](evidence/2-8/maintenance-20261117/phase-10-current-ci-passed/observations/pr46-final-ci-verified-02/primary-receipt-audit.json), [specific review-exception request](evidence/2-8/maintenance-20261117/phase-10-current-ci-passed/owner-review-exception-request.json), [manifest](evidence/2-8/maintenance-20261117/phase-10-current-ci-passed/manifest.json). Manifest SHA256 `29cb085851f98944d3d48c40a6193cd9917922e5e59a6a62651f6c5c1d993d59`. Earlier phases and the frozen2526-byte block remain unchanged.
+
+
+### Owner-approved Builds 6.3.0 merge and main CI — 2026-11-17
+
+The owner replied “approve” to the specific PR46 code-owner review exception.
+After verifying GitHub still reported the prepared head and base and all nine
+required PR jobs passed, the configured jpiquot bypass was used for that exact
+merge. [PR #46](https://github.com/Hexalith/Hexalith.Platform/pull/46) merged
+as `a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b`. The merge parents are the approved base
+11719c5c and head408481da. Its tree equals the audited virtual-merge tree.
+The GitHub ruleset continues to require code-owner approval for later PRs.
+
+On the actual source pushed to main, [all six SDK jobs](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435)
+passed. The [tuple run](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252348)
+passed source resolution and is executing the release build and tests. The
+automatic [first source-release check](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44190151361)
+published an authenticated deferred receipt with reason `counterpart-pending`.
+Its publish job was skipped. GitHub invokes the same gate again on tuple
+completion. Latest published Platform at this checkpoint is v2.1.10.
+
+The released Builds6.3.0 helper passed all75 resource-free controls from source
+7afc4981, including tool-only signal forwarding, the exact down and first-outcome
+retention. The first two scratch runs omitted the prepare helper and then its
+test fixtures. Their setup failures are retained along with the complete
+passing run. The tests emitted a Python subprocess resource warning, and its
+reported process had exited before the job returned.
+
+Parties main c9c21fc3 has the bounded native persistence fixture and marker, but
+its registered manual lifecycle workflow calls an absent controller script.
+The lifecycle fixture uses the ordinary package entry. The current private
+profile only authorizes the distinct integration-project entry, and its exact
+current image cohort remains refused before native setup. Builds6.3 clears
+GitHub job variables from the AppHost process environment, so a future hosted
+admission must derive job context from the issued state and bind it to the
+authenticated plan and executor. The released EventStore expanded-owner route
+remains unable to admit a hold. Story2.8's real execution-cancellation ordering
+and exact cleanup proof remain open, with zero current native dispatches or
+lifecycle cancellation requests.
+
+[Phase11 checkpoint](evidence/2-8/maintenance-20261117/phase-11-approved-main-merge/checkpoint.json)
+and [manifest](evidence/2-8/maintenance-20261117/phase-11-approved-main-merge/manifest.json)
+preserve the merge, run observations and proof boundary. The manifest covers
+39 files with SHA256 `b69e67834e4d8be2759b16c38f334fd6ff9cd5f8e81c5f31d8899095fc153b1f`. The frozen acceptance text retains its
+original digest.

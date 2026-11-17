@@ -1,0 +1,99 @@
+diff --git a/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs b/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
+index 6100c8ec..cbbaf255 100644
+--- a/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
++++ b/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
+@@ -1,5 +1,6 @@
+ using System.Diagnostics;
+ using System.Text.Json;
++using System.Xml.Linq;
+ 
+ using Hexalith.Parties.PackageTests;
+ 
+@@ -9,6 +10,71 @@ namespace Hexalith.Parties.Contracts.Tests.Package;
+ 
+ public sealed class PackageTestProcessTests
+ {
++
++    /// <summary>Bounded direct and carried dotnet commands evaluate in a worker owned by their exact invocation.</summary>
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public void BoundedDotnetCommandsUseTheirOwnMsbuildWorker(bool throughPython)
++    {
++        string directory = Directory.CreateTempSubdirectory("parties-owned-msbuild-").FullName;
++        try
++        {
++            string project = Path.Combine(directory, "ExclusiveWorker.proj");
++            string marker = Path.Combine(directory, "worker.json");
++            string probe = Path.Combine(directory, "worker.py");
++            File.WriteAllText(Path.Combine(directory, "global.json"), """{"sdk":{"version":"11.0.100","rollForward":"disable"}}""");
++            File.WriteAllText(probe, """
++                import json,os,sys
++                from pathlib import Path
++                pid=os.getppid()
++                while pid > 1:
++                    root=Path('/proc')/str(pid)
++                    arguments=[x.decode() for x in (root/'cmdline').read_bytes().split(bytes([0])) if x]
++                    if arguments and Path(arguments[0]).name in ('dotnet','MSBuild','MSBuild.dll'):
++                        Path(sys.argv[1]).write_text(json.dumps({'pid':pid,'commandLine':' '.join(arguments)}))
++                        break
++                    text=(root/'stat').read_text()
++                    pid=int(text[text.rfind(')')+2:].split()[1])
++                else:
++                    raise RuntimeError('No actual Linux SDK worker in the controlled target ancestry')
++                """);
++            new XDocument(new XElement("Project", new XElement("Target", new XAttribute("Name", "ObserveWorker"),
++                new XElement("Exec", new XAttribute("Command", $"python3 \"{probe}\" \"{marker}\""))))).Save(project);
++            var command = new ProcessStartInfo(throughPython ? "python3" : "dotnet");
++            if (throughPython)
++            {
++                command.ArgumentList.Add("-c");
++                command.ArgumentList.Add("import os,sys; os.execvp('dotnet',['dotnet',*sys.argv[1:]])");
++            }
++            foreach (string argument in new[] { "msbuild", project, "-nologo", "-target:ObserveWorker", "-verbosity:quiet" })
++            {
++                command.ArgumentList.Add(argument);
++            }
++            // An ambient opt-in cannot move this bounded invocation onto a worker
++            // owned and reaped by another independent probe. Keep IPC private too.
++            command.Environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "true";
++            command.Environment["MSBUILDUSESERVER"] = "1";
++            command.Environment.Remove("MSBUILDDISABLENODEREUSE");
++            command.Environment["TMPDIR"] = directory;
++            command.Environment["TMP"] = directory;
++            command.Environment["TEMP"] = directory;
++            PackageTestProcessResult result = PackageTestProcess.Run(command, directory, 30_000);
++            result.ExitCode.ShouldBe(0, result.Diagnostic);
++            using JsonDocument observed = JsonDocument.Parse(File.ReadAllText(marker));
++            observed.RootElement.GetProperty("pid").GetInt32().ShouldBeGreaterThan(1);
++            // Read actual Linux worker argv from the target's ancestry; MSBuild's
++            // Environment.CommandLine property can report the client's context.
++            string worker = observed.RootElement.GetProperty("commandLine").GetString()!;
++            worker.ShouldContain(project);
++            worker.ShouldNotContain("nodemode:");
++        }
++        finally
++        {
++            Directory.Delete(directory, recursive: true);
++        }
++    }
++
+     /// <summary>The real supervised child receives caller-scoped environment changes instead of ambient source imports.</summary>
+     [Fact]
+     public async Task SupervisorPreservesExplicitEnvironmentAssignmentsAndRemovals()
+diff --git a/tests/PackageTests.Shared/PackageTestProcess.cs b/tests/PackageTests.Shared/PackageTestProcess.cs
+index 57f323f6..310581d8 100644
+--- a/tests/PackageTests.Shared/PackageTestProcess.cs
++++ b/tests/PackageTests.Shared/PackageTestProcess.cs
+@@ -166,6 +166,11 @@ internal static class PackageTestProcess
+         {
+             RemoveSourceMappingEnvironment(startInfo);
+         }
++        // Every bounded child owns and reaps its descendants, including dotnet
++        // reached through a Python/shell carrier. A shared SDK 11 worker can be
++        // reaped by another probe, so keep all such evaluations in this process.
++        startInfo.Environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "false";
++        startInfo.Environment["MSBUILDUSESERVER"] = "0";
+         startInfo.WorkingDirectory = workingDirectory;
+         startInfo.RedirectStandardError = true;
+         startInfo.RedirectStandardOutput = true;

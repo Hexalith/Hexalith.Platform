@@ -1,0 +1,29 @@
+{
+  "recordedAtUtc": "2026-11-17T11:25:22.775322+00:00",
+  "owner": "Hexalith.Parties",
+  "targetBase": "8abfd266eecb5a636ee5498f944304669c18aa41",
+  "proofPatchBase": "83916016e0fb64b5fbde79f05c2cf317d0900f99",
+  "proofFinalSource": "bccab615f9e3d1a92e3bbf648ee89e78a925670b",
+  "behavioralControlSource": "08152211c392ee680c9b5537b1c1bb47b6d4234d",
+  "paths": [
+    "tests/PackageTests.Shared/PackageTestProcess.cs",
+    "tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs"
+  ],
+  "patchSha256": "97192709ee1c22126b6162a792824576566570d7044b8af49fc7eafe13416078",
+  "applyCheck": {
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "error: patch failed: tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs:9\nerror: tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs: patch does not apply\n"
+  },
+  "helperSupervisorPassed": 32,
+  "memoriesPassed": 24,
+  "commonsPassed": 39,
+  "commitCreated": false,
+  "pushed": false,
+  "mainChanged": false,
+  "publication": false,
+  "newCampaign": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "scope": "Clean owner-ready two-path patch only; no proof observer, workflow, package, tuple or source-pin adoption."
+}

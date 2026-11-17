@@ -1,0 +1,40 @@
+{
+  "observedAtUtc": "2026-11-17T13:12:47.883482+00:00",
+  "reads": [
+    {
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production",
+      "exitCode": 0,
+      "environment": "production",
+      "protectionRules": [
+        {
+          "type": "required_reviewers",
+          "preventSelfReview": false
+        },
+        {
+          "type": "branch_policy",
+          "preventSelfReview": null
+        }
+      ],
+      "deploymentBranchPolicy": {
+        "protected_branches": false,
+        "custom_branch_policies": true
+      }
+    },
+    {
+      "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production/deployment-branch-policies",
+      "exitCode": 0,
+      "totalCount": 1,
+      "branchPolicies": [
+        {
+          "id": 55113630,
+          "name": "main",
+          "type": "branch"
+        }
+      ]
+    }
+  ],
+  "mutations": false,
+  "reviewerPersonalDataRetained": false,
+  "normalNugetLoginRemainsRequired": true,
+  "nugetPrivatePolicyObserved": false
+}

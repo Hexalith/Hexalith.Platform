@@ -1,0 +1,198 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index f33a2765..edbf7beb 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -10,7 +10,7 @@
+       "rollForward": false
+     },
+     "hexalith.builds.module.cli": {
+-      "version": "4.44.13",
++      "version": "4.48.2",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+index a911f56d..d87a7fb1 100644
+--- a/.github/workflows/ci-lifecycle-qualification.yml
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -19,7 +19,7 @@ concurrency:
+ 
+ jobs:
+   baseline:
+-    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@3c8096180ecf2aa539ac454815efbfceb8a92822
++    uses: Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b
+     with:
+       solution: Hexalith.Parties.Standalone.slnx
+       module-manifest: module/hexalith.module-manifest.v2.json
+@@ -60,13 +60,26 @@ jobs:
+           submodules: false
+       - name: Initialize only direct owner dependencies
+         run: git -c submodule.recurse=false submodule update --init --depth 1
++      # The released executor remains separate from the caller's immutable catalog pin.
++      - name: Check out the exact released proof executor
++        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
++        with:
++          repository: Hexalith/Hexalith.Builds
++          ref: 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b
++          path: .hexalith/builds-execution
++          persist-credentials: false
++          submodules: false
++      - name: Verify the exact clean proof executor
++        run: |
++          test "$(git -C .hexalith/builds-execution rev-parse HEAD)" = 6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b
++          test -z "$(git -C .hexalith/builds-execution status --porcelain --untracked-files=normal)"
+       - name: Test the lifecycle controller before any service
+         run: python3 -B -m unittest discover -s tests/ci-lifecycle -v
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+         with:
+           global-json-file: global.json
+       - name: Prepare the actual pinned package tool and catalog
+-        run: python3 -B references/Hexalith.Builds/Github/prepare-module-build/prepare_module_build.py --manifest module/hexalith.module-manifest.v2.json
++        run: python3 -B .hexalith/builds-execution/Github/prepare-module-build/prepare_module_build.py --manifest module/hexalith.module-manifest.v2.json
+       - name: Build the explicit declared lifecycle suite
+         run: dotnet build tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true
+       - name: Read verified catalog toolchain versions
+@@ -77,7 +90,7 @@ jobs:
+           import re
+           from pathlib import Path
+           from xml.etree import ElementTree as ET
+-          builds = Path('references/Hexalith.Builds')
++          builds = Path('.hexalith/builds-execution')
+           root = ET.parse(builds / 'Props/Directory.Packages.props').getroot()
+           versions = {}
+           for name, property_name in [('CI_ASPIRE_VERSION', 'HexalithAspireAppHostSdkVersion'), ('CI_DAPR_CLI_VERSION', 'HexalithDaprCliVersion'), ('CI_DAPR_RUNTIME_VERSION', 'HexalithDaprRuntimeVersion')]:
+@@ -196,6 +209,9 @@ jobs:
+         env:
+           DOCKER_CONFIG: ${{ runner.temp }}/hexalith-lifecycle-registry.reader
+         run: python3 -B scripts/qualify-disposable-ci.py start-cancellation --phase startup
++      - name: Start the Story 2.8 proof event observer
++        if: ${{ inputs.scenario == 'cancel-execution' }}
++        run: setsid nohup python3 -B scripts/story-2-8-proof-observer.py lifecycle >/dev/null 2>&1 </dev/null &
+       - name: Observe actual execution cancellation readiness and active hold
+         if: ${{ inputs.scenario == 'cancel-execution' }}
+         env:
+@@ -206,7 +222,9 @@ jobs:
+         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+         with:
+           name: lifecycle-cancellation-ready
+-          path: TestResults/ci-lifecycle
++          path: |
++            TestResults/ci-lifecycle
++            TestResults/story-2-8-proof-observer
+           if-no-files-found: error
+           retention-days: 14
+       # The runner signals only this step's own process; exec keeps the controller as that process.
+@@ -234,3 +252,18 @@ jobs:
+           path: TestResults/ci-lifecycle
+           if-no-files-found: warn
+           retention-days: 14
++      - name: Wait for the Story 2.8 proof observer flush
++        if: ${{ always() && inputs.scenario == 'cancel-execution' }}
++        run: |
++          for _ in $(seq 1 40); do
++            if ! pgrep -f 'story-2-8-proof-observer.py lifecycle' > /dev/null; then break; fi
++            sleep 0.5
++          done
++      - name: Retain the Story 2.8 proof event observations
++        if: ${{ always() && inputs.scenario == 'cancel-execution' }}
++        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
++        with:
++          name: story-2-8-proof-observer
++          path: TestResults/story-2-8-proof-observer
++          if-no-files-found: error
++          retention-days: 14
+diff --git a/README.md b/README.md
+index df0a2fb8..c6327d75 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,17 @@
+ # Hexalith.Parties
+ 
++This Story 2.8 proof ref selects the already released module CLI **4.48.2**
++with `rollForward=false`. Its manual lifecycle workflow uses the separate
++immutable Builds executor `6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b` and
++that tool's Aspire 13.6.5 / Dapr CLI and runtime 1.19.1 pins. The genuine
++caller catalog `3c8096180ecf2aa539ac454815efbfceb8a92822`, Platform
++`0f4e27f1f78310bd731c10c19dc51bb1e0345d44`, declaration, native suites,
++and all runtime budgets remain unchanged. Only `cancel-execution` is an
++authorized proof scenario here. This holds-only subject supplies no attached
++native-suite or Story 2.10 qualification credit. The general instructions
++below retain their original 4.44.13 subject.
++
++
+ Hexalith.Parties is a ready-to-deploy party management domain service for people and organizations. Public command and query traffic goes through Hexalith.EventStore; the `parties` service runs an EventStore SDK domain-service host behind that gateway, and consumers normally use the typed .NET client package. The solution also includes `parties-ui`, a Blazor Server browser UI/BFF for the Admin and Consumer experiences.
+ 
+ > **GDPR Notice:** Some GDPR infrastructure exists, and crypto-shredding is enabled by default, but the default key store is `LocalDevKeyStorageBackend` (in-memory, dev-only). **Do not store regulated EU personal data** until a production KMS or secret-store-backed key provider is provisioned. The MVP warning switch is separate from the crypto feature; see [deployment-guide.md](docs/deployment-guide.md) for the current runtime ownership boundary.
+diff --git a/docs/getting-started.md b/docs/getting-started.md
+index 1c332774..147f6f30 100644
+--- a/docs/getting-started.md
++++ b/docs/getting-started.md
+@@ -1,5 +1,17 @@
+ # Getting Started with Hexalith.Parties
+ 
++This Story 2.8 proof ref selects the already released module CLI **4.48.2**
++with `rollForward=false`. Its manual lifecycle workflow uses the separate
++immutable Builds executor `6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b` and
++that tool's Aspire 13.6.5 / Dapr CLI and runtime 1.19.1 pins. The genuine
++caller catalog `3c8096180ecf2aa539ac454815efbfceb8a92822`, Platform
++`0f4e27f1f78310bd731c10c19dc51bb1e0345d44`, declaration, native suites,
++and all runtime budgets remain unchanged. Only `cancel-execution` is an
++authorized proof scenario here. This holds-only subject supplies no attached
++native-suite or Story 2.10 qualification credit. The general instructions
++below retain their original 4.44.13 subject.
++
++
+ This guide starts the seven-server reference environment with the pinned Platform
+ module tool for readiness checks and source debugging. The command/query, typed
+ .NET client, UI and MCP walkthroughs then use the retained legacy AppHost and its
+diff --git a/scripts/qualify-disposable-ci.py b/scripts/qualify-disposable-ci.py
+index 85cb94cf..b864d46c 100755
+--- a/scripts/qualify-disposable-ci.py
++++ b/scripts/qualify-disposable-ci.py
+@@ -32,7 +32,7 @@ class _PinnedHelper:
+         module = type(self)._module
+         if module is None:
+             spec = importlib.util.spec_from_file_location(
+-                'integration_owner', ROOT / 'references/Hexalith.Builds/Github/run-module-integration/run_module_integration.py')
++                'integration_owner', ROOT / '.hexalith/builds-execution/Github/run-module-integration/run_module_integration.py')
+             module = importlib.util.module_from_spec(spec)
+             spec.loader.exec_module(module)
+             type(self)._module = module
+diff --git a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+index 142789d2..c469dc3f 100644
+--- a/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
++++ b/tests/Hexalith.Parties.Ci.Tests/PartiesContainerPublishWorkflowTests.cs
+@@ -96,7 +96,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+ 
+         workflow.ShouldContain($"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@{BuildsCiSha}");
+         string manual = CiTestPaths.ReadRepoFile(".github/workflows/ci-lifecycle-qualification.yml");
+-        manual.ShouldContain($"Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@{BuildsCiSha}");
++        manual.ShouldContain("Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b");
+         workflow.ShouldContain("solution: Hexalith.Parties.Standalone.slnx");
+         workflow.ShouldContain("test-platform: microsoft-testing-platform");
+         workflow.ShouldContain("run-consumer-validation: true");
+@@ -128,7 +128,7 @@ public sealed class PartiesContainerPublishWorkflowTests
+         }
+         using JsonDocument tools = JsonDocument.Parse(CiTestPaths.ReadRepoFile(".config/dotnet-tools.json"));
+         JsonElement tool = tools.RootElement.GetProperty("tools").GetProperty("hexalith.builds.module.cli");
+-        tool.GetProperty("version").GetString().ShouldBe("4.44.13");
++        tool.GetProperty("version").GetString().ShouldBe("4.48.2");
+         tool.GetProperty("rollForward").GetBoolean().ShouldBeFalse();
+         workflow.ShouldNotContain("submodules: recursive");
+ 
+diff --git a/tests/ci-lifecycle/test_workflow_boundaries.py b/tests/ci-lifecycle/test_workflow_boundaries.py
+index 19c17023..3c54d955 100644
+--- a/tests/ci-lifecycle/test_workflow_boundaries.py
++++ b/tests/ci-lifecycle/test_workflow_boundaries.py
+@@ -31,7 +31,10 @@ class WorkflowBoundaryTests(unittest.TestCase):
+         for setting in ('integration-test-profiles: platform-package', 'run-consumer-validation: true'):
+             self.assertIn(setting, baseline)
+         reference = r'Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@[0-9a-f]{40}'
+-        self.assertEqual(re.search(reference, baseline).group(), re.search(reference, ordinary).group())
++        self.assertEqual(re.search(reference, baseline).group(),
++                         'Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b')
++        self.assertEqual(re.search(reference, ordinary).group(),
++                         'Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@3c8096180ecf2aa539ac454815efbfceb8a92822')
+         self.assertIn('    needs: baseline\n', workflow)
+         self.assertNotIn('continue-on-error', workflow)
+         self.assertNotIn('--filter-trait', workflow)

@@ -1,0 +1,18 @@
+{
+  "status": "awaiting explicit user decision",
+  "pr": "https://github.com/Hexalith/Hexalith.Platform/pull/46",
+  "head": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "base": "11719c5cf51c2b2b080b89e0e301c2ef8dbacc46",
+  "action": "Use existing configured bypass for the required code-owner review and normally merge this one exact PR head.",
+  "rule": "https://github.com/Hexalith/Hexalith.Platform/rules/24657106",
+  "ruleName": "Platform main reviewed changes",
+  "requiredCodeOwner": "jpiquot",
+  "prAuthor": "jpiquot",
+  "requiredApprovingReviews": 1,
+  "ownerReviewExceptionApproved": false,
+  "mergePayload": "observations/pr46-merge-preparation/merge-request.json",
+  "mergePayloadSha256": "a4d8179f7ccb41e84d41949511d8e818723466f435d6981f262efb4efafae97d",
+  "prPreflight": "588 actual required cases, zero skips; all six SDK jobs passed",
+  "scope": "This PR and exact head only; no policy changes or future review waiver.",
+  "postMerge": "Fresh normal main tuple and six-SDK checks, then normal supported 2.x source publication and independent release verification."
+}

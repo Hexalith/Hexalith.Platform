@@ -1,0 +1,114 @@
+{
+  "asOf": "2026-11-17T20:53:42.098393+00:00",
+  "status": "metadata-complete-only",
+  "subjectBuildsVersion": "6.3.0",
+  "subjectBuildsSource": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+  "subjectPlatformCandidate": "408481da06128ae50ad274d5dddcd4234d8b677d",
+  "context": {
+    "GITHUB_REPOSITORY": "Hexalith/Hexalith.Parties",
+    "GITHUB_SHA": "be7149f6b4097b617ec1c5f287e68fe9cd4d9390",
+    "GITHUB_RUN_ID": "44174015501",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_JOB": "current-image-facts",
+    "RUNNER_ENVIRONMENT": "github-hosted",
+    "RUNNER_OS": "Linux",
+    "RUNNER_ARCH": "X64",
+    "ImageOS": "ubuntu24",
+    "ImageVersion": "20261111.127.1"
+  },
+  "images": [
+    {
+      "reference": "registry.hexalith.com/tenants:7.0.7",
+      "tagDigest": "sha256:c9bed4d4559eee740a83254805deee8e900c77439b28225a1ee11f8b2f4a3891",
+      "linuxAmd64ManifestDigest": "sha256:590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635",
+      "configDigest": "sha256:0fd8b8fada3d41d6d63687a1434096b12fc7bb637cd3c5dbfe7087d750780a4a",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants",
+        "org.opencontainers.image.revision": "bcee4b4dbd886b7b718843cfb80419a92d33de15",
+        "org.opencontainers.image.version": "7.0.7",
+        "org.opencontainers.image.created": "2026-11-11T17:46:25Z"
+      },
+      "qualificationCredit": false
+    },
+    {
+      "reference": "registry.hexalith.com/tenants-api:7.0.7",
+      "tagDigest": "sha256:9a24829d51075b937b28c5f740841f2e30140cf82f2b2ff87fb35cccd13c9dd2",
+      "linuxAmd64ManifestDigest": "sha256:2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65",
+      "configDigest": "sha256:583375e1c98c0084ee0f05e47ae3434a84059d73f8c602a304f467e2938f488c",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Tenants",
+        "org.opencontainers.image.revision": "bcee4b4dbd886b7b718843cfb80419a92d33de15",
+        "org.opencontainers.image.version": "7.0.7",
+        "org.opencontainers.image.created": "2026-11-11T17:46:25Z"
+      },
+      "qualificationCredit": false
+    },
+    {
+      "reference": "registry.hexalith.com/memories:3.0.27",
+      "tagDigest": "sha256:553dfebb2a39a274e4050f2c12eae1ef07dab177aa3e0d0791955773bd608239",
+      "linuxAmd64ManifestDigest": "sha256:4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8",
+      "configDigest": "sha256:4dc44ed3f1734e4bdd313864973bed835d0afde02d1c1701b178f0dcf38c71de",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.revision": "535ee97b694c79e6c7608e90a5a725f092ad982c",
+        "org.opencontainers.image.version": "3.0.27",
+        "org.opencontainers.image.created": "2026-11-11T22:32:39Z"
+      },
+      "qualificationCredit": false
+    },
+    {
+      "reference": "registry.hexalith.com/memories-domain-service:3.0.27",
+      "tagDigest": "sha256:4bdfe2c66af6b2ae9a026dbfde35e32855e9939f2f08bc97727c3e668aa17ca5",
+      "linuxAmd64ManifestDigest": "sha256:17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42",
+      "configDigest": "sha256:dd9756ee0b61c2a68bc8da26a62a68205588830a26ec20a96b9afe6e3e98995a",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.revision": "535ee97b694c79e6c7608e90a5a725f092ad982c",
+        "org.opencontainers.image.version": "3.0.27",
+        "org.opencontainers.image.created": "2026-11-11T22:32:39Z"
+      },
+      "qualificationCredit": false
+    },
+    {
+      "reference": "registry.hexalith.com/memories-access-telemetry-clock:3.0.27",
+      "tagDigest": "sha256:3015e7bc5a82b7311fa478c2306c813db5837e74d4b23b1aa1ade107093ba750",
+      "linuxAmd64ManifestDigest": "sha256:0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106",
+      "configDigest": "sha256:1ae371088910f786bbcc1b2aa54558b3ce1cb45f330b966872e955c212136110",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.revision": "535ee97b694c79e6c7608e90a5a725f092ad982c",
+        "org.opencontainers.image.version": "3.0.27",
+        "org.opencontainers.image.created": "2026-11-11T22:32:39Z"
+      },
+      "qualificationCredit": false
+    },
+    {
+      "reference": "registry.hexalith.com/memories-access-telemetry:3.0.27",
+      "tagDigest": "sha256:8d8fdb0cc9a40de4b3b761734ff49a4bbdb7d578ff484aa08f3801ec1f5e97f3",
+      "linuxAmd64ManifestDigest": "sha256:18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024",
+      "configDigest": "sha256:b8a7ec23ebd12e07bb3c7092d719ecd61cb4ba54669faa9fed2824fae25f40f7",
+      "labels": {
+        "org.opencontainers.image.source": "https://github.com/Hexalith/Hexalith.Memories",
+        "org.opencontainers.image.revision": "535ee97b694c79e6c7608e90a5a725f092ad982c",
+        "org.opencontainers.image.version": "3.0.27",
+        "org.opencontainers.image.created": "2026-11-11T22:32:39Z"
+      },
+      "qualificationCredit": false
+    }
+  ],
+  "requestMethods": [
+    "GET"
+  ],
+  "servicesStarted": false,
+  "candidateAcceptance": false,
+  "nativeQualificationCredit": false,
+  "tokenScopesRequested": [],
+  "authenticationSchemes": {
+    "tenants": "basic-reader-on-read-only-request",
+    "tenants-api": "basic-reader-on-read-only-request",
+    "memories": "basic-reader-on-read-only-request",
+    "memories-domain-service": "basic-reader-on-read-only-request",
+    "memories-access-telemetry-clock": "basic-reader-on-read-only-request",
+    "memories-access-telemetry": "basic-reader-on-read-only-request"
+  }
+}

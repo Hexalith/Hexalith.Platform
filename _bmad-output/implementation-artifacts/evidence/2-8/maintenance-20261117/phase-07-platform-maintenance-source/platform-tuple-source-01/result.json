@@ -1,0 +1,216 @@
+{
+  "base": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "supportSource": "33d28ad2f3cac02de45652743707f73a8fd3d9f7",
+  "originalLegacy": "3cd036f78ccdfeb72521122a65f1a3aef0bff9da",
+  "remoteMutations": false,
+  "candidateAcceptance": false,
+  "commands": [
+    {
+      "label": "clone",
+      "exitCode": 0
+    },
+    {
+      "label": "origin",
+      "exitCode": 0
+    },
+    {
+      "label": "import-support",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout",
+      "exitCode": 0
+    },
+    {
+      "label": "support-source",
+      "exitCode": 0
+    },
+    {
+      "label": "record-builds-gitlink",
+      "exitCode": 0
+    },
+    {
+      "label": "npm-ci",
+      "exitCode": 0
+    },
+    {
+      "label": "npm-signatures",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-published-tuple",
+      "exitCode": 0
+    },
+    {
+      "label": "published-tuple-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "published-tuple-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "published-tuple-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "published-tuple-source",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-branch",
+      "exitCode": 0
+    },
+    {
+      "label": "restore-authentic-legacy-metadata",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-projection-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-projection-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-projection-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "legacy-projection-source",
+      "exitCode": 0
+    },
+    {
+      "label": "return-current",
+      "exitCode": 0
+    },
+    {
+      "label": "stage-legacy-descriptor",
+      "exitCode": 0
+    },
+    {
+      "label": "current-source-commitlint",
+      "exitCode": 0
+    },
+    {
+      "label": "current-source-diff-check",
+      "exitCode": 0
+    },
+    {
+      "label": "current-source-commit",
+      "exitCode": 0
+    },
+    {
+      "label": "current-source-source",
+      "exitCode": 0
+    },
+    {
+      "label": "execute-legacy-head",
+      "exitCode": 0
+    },
+    {
+      "label": "genuine-same-code-legacy-proof",
+      "exitCode": 0
+    },
+    {
+      "label": "execute-current-head",
+      "exitCode": 0
+    },
+    {
+      "label": "clone-published-producer",
+      "exitCode": 0
+    },
+    {
+      "label": "fetch-published-producer",
+      "exitCode": 0
+    },
+    {
+      "label": "checkout-published-producer",
+      "exitCode": 0
+    },
+    {
+      "label": "retained-tuple-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "retained-legacy-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "release-controls",
+      "exitCode": 0
+    },
+    {
+      "label": "actual-published-artifact-verifier",
+      "exitCode": 0
+    },
+    {
+      "label": "final-source-cleanliness",
+      "exitCode": 0
+    },
+    {
+      "label": "version-analysis",
+      "exitCode": 0
+    },
+    {
+      "label": "source-diff",
+      "exitCode": 0
+    },
+    {
+      "label": "bundle",
+      "exitCode": 0
+    }
+  ],
+  "status": "verified-local-current-and-genuine-legacy-source",
+  "currentSource": "e1e8ccf5f51211fd5bd80259fbfd851b83513100",
+  "legacySource": "3aa95205d54fc6daba229f38655a024ae88132f1",
+  "tupleCommit": "5246dfb53ac9b56843b6990853b174d6153ae046",
+  "currentBranch": "fix/story-2-8-1.7-maintenance",
+  "legacyBranch": "fix/story-2-8-1.7-legacy-source",
+  "currentProfileSha256": "3643ab2f60f255bd0d0b9a91452e1f7060b5f5b69bf0fef0a51cf8336a526c6c",
+  "currentCount": 412,
+  "legacyCount": 349,
+  "sameCodeProof": {
+    "allowedMetadataDifferences": [
+      ".config/dotnet-tools.json",
+      "eng/builds-tuple.json",
+      "eng/legacy-tuple-source.json",
+      "eng/tuple-ci-suites.json",
+      "hexalith-platform.json",
+      "references/Hexalith.Builds",
+      "references/Hexalith.Parties",
+      "src/Hexalith.Platform.Composition/Declarations/provenance.json"
+    ],
+    "binaryEquivalenceClaimed": false,
+    "currentSource": "e1e8ccf5f51211fd5bd80259fbfd851b83513100",
+    "legacySource": "3aa95205d54fc6daba229f38655a024ae88132f1",
+    "purpose": "same-code-legacy-tuple-regression",
+    "qualificationCredit": false,
+    "requiredCount": 349,
+    "sourceEquivalence": "verified"
+  },
+  "binding": {
+    "schemaVersion": 1,
+    "candidateAcceptance": false,
+    "producer": {
+      "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
+      "sourceRevision": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+      "catalog": {
+        "path": "Props/Directory.Packages.props",
+        "blob": "a82d3ad3e745ea7432f60c892c0c66395daaa8ef",
+        "sha256": "908d6acf84f3fac00c14942652b7b6d35fc93094e5ce41f87061db44bdaf3295"
+      }
+    },
+    "publication": {
+      "version": "4.44.14",
+      "sourceRevision": "979cfd3e2c4145be516fbd833dacfc6b8e8fdce5",
+      "releaseTag": "v4.44.14",
+      "catalogSha256": "908d6acf84f3fac00c14942652b7b6d35fc93094e5ce41f87061db44bdaf3295",
+      "archiveSha256": "4bd1338627c7283d5fc98db9b374b932fb946f3b0c14b3ed97b4cea604273a73",
+      "toolingSha256": "fcb860995228e4ae332cc6474341e6f8f34d714bb6f71488804dc34fc9933e63",
+      "inventorySha256": "e114c68e45fd6b23785370f3849efdca70411e603aee87da76dff7a07ad37119",
+      "inventoryUrl": "https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.14/g4-tool-package-inventory.json"
+    }
+  }
+}

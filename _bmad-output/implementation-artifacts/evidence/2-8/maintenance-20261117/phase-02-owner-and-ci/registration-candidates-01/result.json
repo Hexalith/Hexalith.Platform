@@ -1,0 +1,138 @@
+{
+  "classification": "unpublished default-branch registration proposals; owner PR still pending",
+  "remoteMutations": false,
+  "candidates": [
+    {
+      "repository": "Hexalith/Hexalith.Builds",
+      "base": "e8b86ba3ae6e27c2d6cba536d6002ac8f3c5a921",
+      "head": "20e3383b082ffec45dd1da5d20e237dd021e3f8e",
+      "tree": "6f242e9102d0b81d671a32b1784925c2578d35f3",
+      "branch": "fix/story-2-8-maintenance-registration",
+      "onlyChangedPath": ".github/workflows/build-release.yml",
+      "ownerSource": "3c285357c9eadec74a3516d649c8197fe1719052",
+      "commitlintVersion": "21.2.4",
+      "ownConfigSha256": "d6d1ca8d51001e2802818ce665299d7f0929918acbd95e9a5c53057d6547352c",
+      "exactMessageSha256": "69cdeae94ccb706d89fb9244335be78fa3113125b7265c5237256a0e1d44e161"
+    },
+    {
+      "repository": "Hexalith/Hexalith.Platform",
+      "base": "24f8ebeba25a36e043942e7f1a76583724b27fef",
+      "head": "8e2da85fba9d02b9ae5c56c4d572cf99c3e9bbe6",
+      "tree": "fc006188e5509d72d5d50f0ed8056102574003b0",
+      "branch": "fix/story-2-8-maintenance-registration",
+      "onlyChangedPath": ".github/workflows/source-release.yml",
+      "ownerSource": "3c285357c9eadec74a3516d649c8197fe1719052",
+      "commitlintVersion": "21.2.4",
+      "ownConfigSha256": "7d7a89db3a7e3a78567ce79408fad48f414e1d487e93a39990e82822f850666b",
+      "exactMessageSha256": "f6a558f01680f5e926d7e64180d0388428ffb9762fb17c68ed0b4fd6df7f391b"
+    }
+  ],
+  "commands": [
+    {
+      "label": "clone-owner",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "import-owner",
+      "exitCode": 0,
+      "seconds": 0.064
+    },
+    {
+      "label": "checkout-owner",
+      "exitCode": 0,
+      "seconds": 1.118
+    },
+    {
+      "label": "clone-validator",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "checkout-validator",
+      "exitCode": 0,
+      "seconds": 0.365
+    },
+    {
+      "label": "clone-Builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "fresh-main-Builds",
+      "exitCode": 0,
+      "seconds": 0.467
+    },
+    {
+      "label": "branch-Builds",
+      "exitCode": 0,
+      "seconds": 0.366
+    },
+    {
+      "label": "commitlint-Builds",
+      "exitCode": 0,
+      "seconds": 0.265
+    },
+    {
+      "label": "stage-Builds",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "diff-check-Builds",
+      "exitCode": 0,
+      "seconds": 0.004
+    },
+    {
+      "label": "commit-Builds",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "bundle-Builds",
+      "exitCode": 0,
+      "seconds": 0.008
+    },
+    {
+      "label": "clone-Platform",
+      "exitCode": 0,
+      "seconds": 0.016
+    },
+    {
+      "label": "fresh-main-Platform",
+      "exitCode": 0,
+      "seconds": 0.516
+    },
+    {
+      "label": "branch-Platform",
+      "exitCode": 0,
+      "seconds": 6.588
+    },
+    {
+      "label": "commitlint-Platform",
+      "exitCode": 0,
+      "seconds": 0.315
+    },
+    {
+      "label": "stage-Platform",
+      "exitCode": 0,
+      "seconds": 0.165
+    },
+    {
+      "label": "diff-check-Platform",
+      "exitCode": 0,
+      "seconds": 0.01
+    },
+    {
+      "label": "commit-Platform",
+      "exitCode": 0,
+      "seconds": 0.065
+    },
+    {
+      "label": "bundle-Platform",
+      "exitCode": 0,
+      "seconds": 0.01
+    }
+  ],
+  "status": "prepared-and-commitlint-verified"
+}

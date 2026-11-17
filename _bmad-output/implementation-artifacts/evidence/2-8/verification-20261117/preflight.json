@@ -1,0 +1,54 @@
+{
+  "classification": "baseline-only-focused-story-2-8",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "rootHead": "1a5666edd500ecf921d4068462c24d3d48663441",
+  "inputsFileSha256": "71d896098d475b6875f3a65705e672130b2e8cd2dfb6a8cf005501e11558bffd",
+  "inputsCanonicalSha256": "06ba09a2179dd78dd7de29be5c9195400d172da1afa960a104aa4268a646b91a",
+  "sources": {
+    "caller": "5f94d7827f5b1d315856bb37b64f700e3ac56910",
+    "builds": "3c2f5944aaa28dc7854a00a8a9df171aa810b0c7",
+    "platform": "32643bde39b4da0e4538f8388e225727f82122f6"
+  },
+  "tool": {
+    "version": "5.1.0",
+    "sourceRevision": "9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4",
+    "framework": "net11.0",
+    "downloadId": "module-tool"
+  },
+  "checks": {
+    "callerCommitPresent": true,
+    "buildsCommitPresent": true,
+    "platformCommitPresent": true,
+    "iteration3AncestorOf-3c2f5944aaa28dc7854a00a8a9df171aa810b0c7": true,
+    "iteration3AncestorOf-9ebc31f606bc02f8a0ec2f1ec344127e2468c6b4": true,
+    "callerTool510": true,
+    "supportsExactExecutionCancellation": true,
+    "allPassing": true
+  },
+  "rootGitlinks": {
+    "references/Hexalith.AI.Tools": "180ca5692637a018c3f5547daf657e2a90bd5288",
+    "references/Hexalith.Agents": "e047a955d9eabe28b09499bbd14938da0da7f40b",
+    "references/Hexalith.Builds": "a327bc5cf0eb2bd715deed6f1ea278a8f6946a2f",
+    "references/Hexalith.ChatBot": "e2727327bf495764fd8c31edd46a81c8048cbbac",
+    "references/Hexalith.CiCd": "83b2b8432fc16e37952981d149b0bc4be988260d",
+    "references/Hexalith.Commons": "cab344372536be4b5125bc144547fc78bca913f9",
+    "references/Hexalith.Conversations": "4ab8f9060d9d16302c1132734f0b234b4489b8a5",
+    "references/Hexalith.EventStore": "96363934c6fd1da4d50c2078b13929c473ecab7f",
+    "references/Hexalith.Folders": "438b8a0b9e3416669ac05152633301bc1bae76fb",
+    "references/Hexalith.FrontComposer": "b23b4cb91d974b4266a9369a85e6dae32163a893",
+    "references/Hexalith.McpCli": "c9ffbd5c9f6bc100ecbf6ac13acf4fbe50a498a9",
+    "references/Hexalith.Memories": "68a78d475c7ae8b77193e308dfb8c8f5e4cc0826",
+    "references/Hexalith.Parties": "8abfd266eecb5a636ee5498f944304669c18aa41",
+    "references/Hexalith.PolymorphicSerializations": "1f451a1ac5174b340f56763160f810d4a8364bb6",
+    "references/Hexalith.Projects": "8b53d6b917957762949d39c21bc5de0919811413",
+    "references/Hexalith.Tenants": "ac7b6ba9edd88c197701fa1d1503cf2743ee022a",
+    "references/Hexalith.Timesheets": "d1dd313deabaf54309c7042ee78ffe2b856b377e",
+    "references/Hexalith.Works": "420729794cee02fd83a0c97cd921763da7a6fb94"
+  },
+  "callerFiles": {
+    ".github/workflows/ci-lifecycle-qualification.yml": "e49dd9decef67928d044f28243603446f4753bbc55172bd89c6a8c666eaf01a7",
+    "scripts/qualify-disposable-ci.py": "53205cd08502492b4c07ebc56bd19494a593320a421ec9688a6afe5b685c0920",
+    "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "global.json": "5feaf50426a6c5554654e326bedd2f6c6273f13b948b1ec6e11e12cae68f9f05"
+  }
+}

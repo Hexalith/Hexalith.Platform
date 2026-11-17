@@ -1,0 +1,117 @@
+--- a/release.config.mjs
++++ b/release.config.mjs
+@@ -1,5 +1,5 @@
+ export default {
+-  branches: ['main'],
++  branches: ['main', { name: '1.7.x', range: '1.7.x' }],
+   repositoryUrl: 'https://github.com/Hexalith/Hexalith.Platform.git',
+   tagFormat: 'v${version}',
+   plugins: [
+--- a/eng/source-release/gate.mjs
++++ b/eng/source-release/gate.mjs
+@@ -1,5 +1,6 @@
+ import { readFileSync, writeFileSync } from 'node:fs';
+ import { execFileSync } from 'node:child_process';
++import { qualifyMaintenance } from './maintenance-gate.mjs';
+ 
+ export const repository = 'Hexalith/Hexalith.Platform';
+ export const workflows = [
+@@ -22,7 +23,9 @@
+ }
+ 
+ // API inputs are injectable data for resource-free tests; production always uses GitHub's authenticated GET API.
+-export async function qualify({ event, eventName, ownerRepository, checkout, source, workflowRef, workflowSha, job, api }) {
++export async function qualify(inputs) {
++  if (inputs.eventName === 'workflow_dispatch') return qualifyMaintenance(inputs, { repository, workflows });
++  const { event, eventName, ownerRepository, checkout, source, workflowRef, workflowSha, job, api } = inputs;
+   requireValue(eventName === 'workflow_run' && event.action === 'completed', 'wrong-callback-event');
+   requireValue(ownerRepository === repository && event.repository?.full_name === repository, 'foreign-callback');
+   const callback = event.workflow_run;
+@@ -84,11 +87,12 @@
+ }
+ 
+ export function actualInputs(env = process.env) {
+-  requireValue(env.GITHUB_ACTIONS === 'true' && env.GITHUB_EVENT_NAME === 'workflow_run', 'hosted-callback-required');
++  requireValue(env.GITHUB_ACTIONS === 'true' && ['workflow_run', 'workflow_dispatch'].includes(env.GITHUB_EVENT_NAME), 'hosted-callback-required');
+   const event = JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, 'utf8'));
+   return { event, eventName: env.GITHUB_EVENT_NAME, ownerRepository: env.GITHUB_REPOSITORY,
+     source: env.SOURCE_RELEASE_SHA || event.workflow_run?.head_sha,
+     workflowRef: env.GITHUB_WORKFLOW_REF, workflowSha: env.GITHUB_WORKFLOW_SHA, job: env.GITHUB_JOB,
++    ref: env.GITHUB_REF, runId: env.GITHUB_RUN_ID, runAttempt: env.GITHUB_RUN_ATTEMPT,
+     checkout: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), api: githubReadApi(env.GITHUB_TOKEN) };
+ }
+ export const qualifyActual = () => qualify(actualInputs());
+@@ -97,4 +101,4 @@
+   requireValue(Buffer.byteLength(text) <= 16_384 && typeof file === 'string', 'invalid-receipt');
+   writeFileSync(file, text);
+ }
+-export function binding(receipt) { return JSON.stringify([receipt.source, receipt.executingWorkflow?.ref, receipt.executingWorkflow?.sha, receipt.callback, receipt.qualifyingRuns]); }
++export function binding(receipt) { return JSON.stringify([receipt.source, receipt.executingWorkflow?.ref, receipt.executingWorkflow?.sha, receipt.callback, receipt.qualifyingRuns, ...(receipt.maintenance ? [receipt.maintenance, receipt.dispatch] : [])]); }
+--- a/.github/workflows/source-release.yml
++++ b/.github/workflows/source-release.yml
+@@ -1,6 +1,7 @@
+ name: Qualified Platform source release
+ 
+ on:
++  workflow_dispatch:
+   workflow_run:
+     workflows: ['Platform tuple CI preflight', 'Catalog builder consumer binding']
+     types: [completed]
+@@ -14,8 +15,9 @@
+   verify:
+     if: >-
+       github.repository == 'Hexalith/Hexalith.Platform' &&
+-      github.event.workflow_run.event == 'push' &&
+-      github.event.workflow_run.head_repository.full_name == github.repository
++      ((github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
++        github.event.workflow_run.head_repository.full_name == github.repository) ||
++       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/1.7.x'))
+     runs-on: ubuntu-latest
+     timeout-minutes: 5
+     outputs:
+@@ -24,7 +26,7 @@
+     steps:
+       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+         with:
+-          ref: ${{ github.workflow_sha }}
++          ref: ${{ github.sha }}
+           submodules: false
+           persist-credentials: false
+       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+@@ -35,7 +37,7 @@
+         id: gate
+         env:
+           SOURCE_RELEASE_RECEIPT: ${{ runner.temp }}/source-release-check.json
+-          SOURCE_RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
++          SOURCE_RELEASE_SHA: ${{ github.event_name == 'workflow_dispatch' && github.sha || github.event.workflow_run.head_sha }}
+           GITHUB_TOKEN: ${{ github.token }}
+         run: node eng/source-release/run.mjs --check
+       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+--- a/.github/workflows/catalog-builder.yml
++++ b/.github/workflows/catalog-builder.yml
+@@ -2,9 +2,9 @@
+ 
+ on:
+   push:
+-    branches: [main, fix/catalog-consumer-run-binding]
++    branches: [main, fix/catalog-consumer-run-binding, 1.7.x]
+   pull_request:
+-    branches: [main]
++    branches: [main, 1.7.x]
+   workflow_dispatch:
+ 
+ concurrency:
+--- a/.github/workflows/tuple-ci.yml
++++ b/.github/workflows/tuple-ci.yml
+@@ -2,9 +2,9 @@
+ 
+ on:
+   push:
+-    branches: [main]
++    branches: [main, 1.7.x]
+   pull_request:
+-    branches: [main]
++    branches: [main, 1.7.x]
+   workflow_dispatch:
+     inputs:
+       candidate-sha:

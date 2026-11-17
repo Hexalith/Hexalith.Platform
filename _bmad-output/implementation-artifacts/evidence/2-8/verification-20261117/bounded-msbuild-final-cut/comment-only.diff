@@ -1,0 +1,35 @@
+diff --git a/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs b/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
+index cbbaf255..4dd6937c 100644
+--- a/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
++++ b/tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs
+@@ -10,7 +10,6 @@ namespace Hexalith.Parties.Contracts.Tests.Package;
+ 
+ public sealed class PackageTestProcessTests
+ {
+-
+     /// <summary>Bounded direct and carried dotnet commands evaluate in a worker owned by their exact invocation.</summary>
+     [Theory]
+     [InlineData(false)]
+@@ -63,8 +62,7 @@ public sealed class PackageTestProcessTests
+             result.ExitCode.ShouldBe(0, result.Diagnostic);
+             using JsonDocument observed = JsonDocument.Parse(File.ReadAllText(marker));
+             observed.RootElement.GetProperty("pid").GetInt32().ShouldBeGreaterThan(1);
+-            // Read actual Linux worker argv from the target's ancestry; MSBuild's
+-            // Environment.CommandLine property can report the client's context.
++            // Bind the actual Linux SDK worker argv through this controlled target's ancestry.
+             string worker = observed.RootElement.GetProperty("commandLine").GetString()!;
+             worker.ShouldContain(project);
+             worker.ShouldNotContain("nodemode:");
+diff --git a/tests/PackageTests.Shared/PackageTestProcess.cs b/tests/PackageTests.Shared/PackageTestProcess.cs
+index 310581d8..1db1bc73 100644
+--- a/tests/PackageTests.Shared/PackageTestProcess.cs
++++ b/tests/PackageTests.Shared/PackageTestProcess.cs
+@@ -168,7 +168,7 @@ internal static class PackageTestProcess
+         }
+         // Every bounded child owns and reaps its descendants, including dotnet
+         // reached through a Python/shell carrier. A shared SDK 11 worker can be
+-        // reaped by another probe, so keep all such evaluations in this process.
++        // reaped by another probe, so keep each evaluation in its own process.
+         startInfo.Environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "false";
+         startInfo.Environment["MSBUILDUSESERVER"] = "0";
+         startInfo.WorkingDirectory = workingDirectory;

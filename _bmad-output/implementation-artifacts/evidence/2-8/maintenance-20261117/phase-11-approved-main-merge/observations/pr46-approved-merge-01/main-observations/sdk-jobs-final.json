@@ -1,0 +1,941 @@
+{
+  "total_count": 6,
+  "jobs": [
+    {
+      "id": 134413943481,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7ICuQ",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413943481",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413943481",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:34Z",
+      "completed_at": "2026-11-17T22:22:58Z",
+      "name": "consumer-binding (4.1.0)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:36Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:36Z",
+          "completed_at": "2026-11-17T22:21:45Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:45Z",
+          "completed_at": "2026-11-17T22:21:51Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:51Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:22:01Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:22:01Z",
+          "completed_at": "2026-11-17T22:22:42Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-17T22:22:42Z",
+          "completed_at": "2026-11-17T22:22:54Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-17T22:22:54Z",
+          "completed_at": "2026-11-17T22:22:54Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T22:22:54Z",
+          "completed_at": "2026-11-17T22:22:54Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-17T22:22:54Z",
+          "completed_at": "2026-11-17T22:22:54Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T22:22:54Z",
+          "completed_at": "2026-11-17T22:22:54Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:22:54Z",
+          "completed_at": "2026-11-17T22:22:57Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:22:57Z",
+          "completed_at": "2026-11-17T22:22:57Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:22:57Z",
+          "completed_at": "2026-11-17T22:22:57Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:22:57Z",
+          "completed_at": "2026-11-17T22:22:57Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413943481",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089770,
+      "runner_name": "GitHub Actions 1000089770",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134413944011,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7IEyw",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413944011",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413944011",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:34Z",
+      "completed_at": "2026-11-17T22:22:48Z",
+      "name": "consumer-binding (3.130.1)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:36Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:36Z",
+          "completed_at": "2026-11-17T22:21:46Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:46Z",
+          "completed_at": "2026-11-17T22:21:53Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:53Z",
+          "completed_at": "2026-11-17T22:21:54Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:54Z",
+          "completed_at": "2026-11-17T22:21:54Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:21:54Z",
+          "completed_at": "2026-11-17T22:22:10Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:22:10Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:44Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:22:44Z",
+          "completed_at": "2026-11-17T22:22:46Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:22:46Z",
+          "completed_at": "2026-11-17T22:22:46Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:22:46Z",
+          "completed_at": "2026-11-17T22:22:46Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:22:46Z",
+          "completed_at": "2026-11-17T22:22:46Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413944011",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089771,
+      "runner_name": "GitHub Actions 1000089771",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134413944061,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7IE_Q",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413944061",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413944061",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:34Z",
+      "completed_at": "2026-11-17T22:26:52Z",
+      "name": "consumer-binding (3.132.1)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:36Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:36Z",
+          "completed_at": "2026-11-17T22:21:45Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:45Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:21:53Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:53Z",
+          "completed_at": "2026-11-17T22:26:03Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:26:03Z",
+          "completed_at": "2026-11-17T22:26:10Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:26:10Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:49Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:26:49Z",
+          "completed_at": "2026-11-17T22:26:51Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:26:51Z",
+          "completed_at": "2026-11-17T22:26:51Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:26:51Z",
+          "completed_at": "2026-11-17T22:26:51Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:26:51Z",
+          "completed_at": "2026-11-17T22:26:51Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413944061",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089774,
+      "runner_name": "GitHub Actions 1000089774",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134413944063,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7IE_w",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413944063",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413944063",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:35Z",
+      "completed_at": "2026-11-17T22:23:14Z",
+      "name": "consumer-binding (3.130.0)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:36Z",
+          "completed_at": "2026-11-17T22:21:37Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:37Z",
+          "completed_at": "2026-11-17T22:21:49Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:49Z",
+          "completed_at": "2026-11-17T22:21:55Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:55Z",
+          "completed_at": "2026-11-17T22:21:56Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:56Z",
+          "completed_at": "2026-11-17T22:21:56Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:21:56Z",
+          "completed_at": "2026-11-17T22:22:27Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:22:27Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:08Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:23:08Z",
+          "completed_at": "2026-11-17T22:23:11Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:23:11Z",
+          "completed_at": "2026-11-17T22:23:11Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:23:11Z",
+          "completed_at": "2026-11-17T22:23:11Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:23:11Z",
+          "completed_at": "2026-11-17T22:23:11Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413944063",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089772,
+      "runner_name": "GitHub Actions 1000089772",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134413944119,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7IFNw",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413944119",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413944119",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:34Z",
+      "completed_at": "2026-11-17T22:22:44Z",
+      "name": "consumer-binding (3.130.2)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:35Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:45Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:45Z",
+          "completed_at": "2026-11-17T22:21:51Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:51Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:22:01Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:22:01Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:40Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:22:40Z",
+          "completed_at": "2026-11-17T22:22:42Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:22:42Z",
+          "completed_at": "2026-11-17T22:22:42Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:22:42Z",
+          "completed_at": "2026-11-17T22:22:42Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:22:42Z",
+          "completed_at": "2026-11-17T22:22:42Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413944119",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089773,
+      "runner_name": "GitHub Actions 1000089773",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 134413944249,
+      "run_id": 44189252435,
+      "workflow_name": "Catalog builder consumer binding",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/runs/44189252435",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTzCqis8AAAAfS7IFuQ",
+      "head_sha": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+      "url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/actions/jobs/134413944249",
+      "html_url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44189252435/job/134413944249",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-17T22:21:32Z",
+      "started_at": "2026-11-17T22:21:34Z",
+      "completed_at": "2026-11-17T22:24:31Z",
+      "name": "consumer-binding (4.2.0)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-17T22:21:35Z",
+          "completed_at": "2026-11-17T22:21:36Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-17T22:21:36Z",
+          "completed_at": "2026-11-17T22:21:45Z"
+        },
+        {
+          "name": "Initialize only the declared shared package catalog",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-17T22:21:45Z",
+          "completed_at": "2026-11-17T22:21:52Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-17T22:21:52Z",
+          "completed_at": "2026-11-17T22:21:53Z"
+        },
+        {
+          "name": "Verify every finite capability gate once",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-17T22:21:53Z",
+          "completed_at": "2026-11-17T22:21:53Z"
+        },
+        {
+          "name": "Build the owning tool against the published SDK without warnings",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-17T22:21:53Z",
+          "completed_at": "2026-11-17T22:22:08Z"
+        },
+        {
+          "name": "Qualify the actual executable against public SDK and owner artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-17T22:22:08Z",
+          "completed_at": "2026-11-17T22:22:45Z"
+        },
+        {
+          "name": "Verify closed current public owner cohorts before any runner execution",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-17T22:22:45Z",
+          "completed_at": "2026-11-17T22:22:45Z"
+        },
+        {
+          "name": "Verify the SDK4.2 no-extension private and full public owner readers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-17T22:22:45Z",
+          "completed_at": "2026-11-17T22:23:09Z"
+        },
+        {
+          "name": "Verify the distinct SDK4.2 public Parties reader without image relabeling",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-17T22:23:09Z",
+          "completed_at": "2026-11-17T22:23:33Z"
+        },
+        {
+          "name": "Verify the independently signed current public reader without image or native authority",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-17T22:23:33Z",
+          "completed_at": "2026-11-17T22:23:58Z"
+        },
+        {
+          "name": "Verify the independently signed Memories 3.0.27 reader cohort",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-17T22:23:58Z",
+          "completed_at": "2026-11-17T22:24:24Z"
+        },
+        {
+          "name": "Retain executable and refusal evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-17T22:24:24Z",
+          "completed_at": "2026-11-17T22:24:29Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-17T22:24:29Z",
+          "completed_at": "2026-11-17T22:24:29Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-17T22:24:29Z",
+          "completed_at": "2026-11-17T22:24:29Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-17T22:24:29Z",
+          "completed_at": "2026-11-17T22:24:29Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Hexalith/Hexalith.Platform/check-runs/134413944249",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000089775,
+      "runner_name": "GitHub Actions 1000089775",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

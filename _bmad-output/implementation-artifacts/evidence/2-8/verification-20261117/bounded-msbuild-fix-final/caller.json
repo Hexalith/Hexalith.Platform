@@ -1,0 +1,21 @@
+{
+  "caller": "08152211c392ee680c9b5537b1c1bb47b6d4234d",
+  "parent": "83916016e0fb64b5fbde79f05c2cf317d0900f99",
+  "branch": "proof/story-2-8-patched-cancel-ordering-owned-msbuild-20261117",
+  "changedPaths": {
+    "tests/PackageTests.Shared/PackageTestProcess.cs": "85b420f9ec760ccdc76045d9953944ef80ab6cd880e605a1e63f8c7fc418f530",
+    "tests/Hexalith.Parties.Contracts.Tests/Package/PackageTestProcessTests.cs": "5ac5c796ecbc8736b27397579dd87affe675946e222b1d3840bfc2aebeb1b8de"
+  },
+  "sourceInventoryHelperCount": 32,
+  "genuineCausalRegressionFailedBeforeFix": 2,
+  "helperSupervisorCasesPassed": 32,
+  "memoriesCasesPassed": 24,
+  "commonsCasesPassed": 39,
+  "allNativeSourcePinsObserverBudgetsUnchanged": true,
+  "commitlintPassed": true,
+  "pushed": false,
+  "dispatched": false,
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "hostedAttributionLimit": "Original hosted worker PIDs were not retained; causal mechanism reproduced with actual SDK 11 and task-owned supervisors."
+}

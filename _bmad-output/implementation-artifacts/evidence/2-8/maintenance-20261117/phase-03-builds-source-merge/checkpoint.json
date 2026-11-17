@@ -1,0 +1,58 @@
+{
+  "asOfUtc": "2026-11-17T16:08:57.726220+00:00",
+  "classification": "normal maintenance source merge; no release or runtime acceptance",
+  "mergedSource": "51d56ec722e0e66c8957f2f7502015f2c9b7c5c1",
+  "mergedTree": "4a16e719d3659536c0b48bc8952bd2d20188c2cb",
+  "prSource": "3aafeda8ed2b2befa0f49c78fe0b5c88c79d7f1c",
+  "prCi": {
+    "id": 44117921876,
+    "attempt": 1,
+    "allSevenJobsPassed": true
+  },
+  "unitResults": {
+    "module": {
+      "total": 2861,
+      "passed": 2856,
+      "skipped": 5
+    },
+    "evidence": {
+      "total": 191,
+      "passed": 191,
+      "skipped": 0
+    },
+    "integration": {
+      "total": 13,
+      "passed": 1,
+      "skipped": 12
+    },
+    "failures": 0,
+    "skippedCasesAreNotRuntimeEvidence": true
+  },
+  "prQualification": {
+    "artifactId": 14345815377,
+    "source": "e0c74dd62258e0114eac75466231910ddaad3338",
+    "sourceValidation": "skipped/not-run",
+    "releaseEligible": false,
+    "digestAndCrcVerified": true
+  },
+  "auxiliaryCodacy": {
+    "conclusion": "action_required",
+    "annotations": 0,
+    "notRelabelledPassed": true
+  },
+  "mergePushCi": {
+    "id": 44121371373,
+    "status": "in_progress"
+  },
+  "registrationCapacity": {
+    "run": 44118275946,
+    "job": 134163397914,
+    "neverAcquiredRunner": true,
+    "steps": 0,
+    "testPassClaim": false,
+    "retryRequests": 0,
+    "userExceptionRequested": "one normal macOS retry; pending answer; unchanged-source retry prohibited by repository instruction"
+  },
+  "newTagsOrReleases": 0,
+  "lifecycleCancellationRequests": 0
+}

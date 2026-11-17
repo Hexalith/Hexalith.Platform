@@ -1,0 +1,475 @@
+diff --git a/.github/workflows/build-release.yml b/.github/workflows/build-release.yml
+index b76ad5e3..47b53f9f 100644
+--- a/.github/workflows/build-release.yml
++++ b/.github/workflows/build-release.yml
+@@ -19,6 +19,7 @@ jobs:
+     - uses: actions/checkout@v7.0.1
+       with:
+         persist-credentials: false
++        fetch-depth: 0
+ 
+     - name: Require exact current branch and successful push CI
+       shell: bash
+@@ -29,6 +30,15 @@ jobs:
+         DISPATCH_SHA: ${{ github.sha }}
+       run: bash ./Tools/verify-g4-release-source.sh
+ 
++    - name: Retain the exact maintenance source gate
++      if: ${{ always() && github.ref == 'refs/heads/4.44.x' }}
++      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++      with:
++        name: maintenance-source-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
++        path: ${{ runner.temp }}/g4-maintenance-source-*.json
++        if-no-files-found: error
++        retention-days: 14
++
+   release:
+     needs: verify-source
+     runs-on: ubuntu-latest
+@@ -102,3 +112,12 @@ jobs:
+           artifacts/g4-tool-packages/**/qualification-evidence/
+         if-no-files-found: warn
+         retention-days: 90
++
++    - name: Retain the exact maintenance source gate
++      if: ${{ always() && github.ref == 'refs/heads/4.44.x' }}
++      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
++      with:
++        name: maintenance-source-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
++        path: ${{ runner.temp }}/g4-maintenance-source-*.json
++        if-no-files-found: error
++        retention-days: 14
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 8b536214..b966b74b 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -7,9 +7,9 @@ name: CI
+ 
+ on:
+   pull_request:
+-    branches: [main, prerelease]
++    branches: [main, prerelease, 4.44.x]
+   push:
+-    branches: [main, prerelease]
++    branches: [main, prerelease, 4.44.x]
+ 
+ concurrency:
+   # Unlike the release workflow, superseded CI runs carry no publication risk.
+@@ -337,6 +337,9 @@ jobs:
+           PYTHONDONTWRITEBYTECODE: "1"
+         run: python3 -m unittest discover -v
+ 
++      - name: Test the approved maintenance publication gate
++        run: python3 Tools/test-maintenance-release-source.py
++
+       - name: Test commitlint helpers
+         working-directory: Github/commitlint/tests
+         run: python3 -m unittest discover -v
+diff --git a/Props/Directory.Packages.props b/Props/Directory.Packages.props
+index b4555580..a82d3ad3 100644
+--- a/Props/Directory.Packages.props
++++ b/Props/Directory.Packages.props
+@@ -240,7 +240,7 @@
+     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.14" />
+     <!-- GHSA-334f-vvp4-7g6p: patched Common for consumers with CentralPackageTransitivePinningEnabled=true. -->
+     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Common" Version="10.0.14" />
+-    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.14" />
++    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.15" />
+     <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.63.4" />
+     <PackageVersion Include="Microsoft.Bot.Builder" Version="4.23.1" />
+@@ -260,7 +260,7 @@
+     <PackageVersion Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.14" />
++    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.15" />
+     <PackageVersion Include="Microsoft.Extensions.Diagnostics.Abstractions" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.14" />
+@@ -272,7 +272,7 @@
+     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.14" />
+-    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.14" />
++    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.15" />
+     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.14" />
+     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.11.0" />
+diff --git a/Tools/G4PackageQualification.functions.ps1 b/Tools/G4PackageQualification.functions.ps1
+index 70fd4b89..2b2d51e8 100644
+--- a/Tools/G4PackageQualification.functions.ps1
++++ b/Tools/G4PackageQualification.functions.ps1
+@@ -19,7 +19,7 @@ function Get-VerifiedSourceCiRun {
+     $branch = $env:GITHUB_REF -creplace '^refs/heads/', ''
+     if ($RunId -cnotmatch '^[1-9][0-9]*$' -or $Revision -cnotmatch '^[0-9a-f]{40}$' -or
+         $repository -cnotmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$' -or
+-        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease')) {
++        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease', 'refs/heads/4.44.x')) {
+         throw 'Source CI verification requires a valid run ID, source revision, repository, and release branch.'
+     }
+ 
+@@ -95,7 +95,7 @@ function Assert-CurrentReleaseSource {
+     }
+     if ($releaseContext -and (
+         $env:GITHUB_REPOSITORY -cne 'Hexalith/Hexalith.Builds' -or
+-        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease') -or
++        $env:GITHUB_REF -cnotin @('refs/heads/main', 'refs/heads/prerelease', 'refs/heads/4.44.x') -or
+         $env:GITHUB_EVENT_NAME -cne 'workflow_dispatch' -or
+         $env:GITHUB_WORKFLOW_REF -cne "Hexalith/Hexalith.Builds/.github/workflows/build-release.yml@$($env:GITHUB_REF)" -or
+         $env:GITHUB_WORKFLOW_SHA -cne [string]$Qualification.sourceTree.revision -or
+diff --git a/Tools/test-maintenance-release-source.py b/Tools/test-maintenance-release-source.py
+new file mode 100644
+index 00000000..9b46d558
+--- /dev/null
++++ b/Tools/test-maintenance-release-source.py
+@@ -0,0 +1,158 @@
++"""Effect-free transport controls for the exact maintenance publication guard."""
++from copy import deepcopy
++import importlib.util
++import io
++import json
++import os
++from pathlib import Path
++import tempfile
++import types
++import unittest
++from unittest.mock import patch
++from contextlib import redirect_stderr
++
++HERE = Path(__file__).resolve().parent
++spec = importlib.util.spec_from_file_location('maintenance_guard', HERE / 'verify-maintenance-release-source.py')
++guard = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(guard)
++SOURCE = 'a' * 40
++REPO = guard.REPOSITORY
++REF = 'refs/heads/4.44.x'
++ENV = {'REPOSITORY': REPO, 'DISPATCH_SHA': SOURCE, 'DISPATCH_REF': REF,
++       'GITHUB_EVENT_NAME': 'workflow_dispatch', 'GITHUB_WORKFLOW_REF': f'{REPO}/.github/workflows/build-release.yml@{REF}',
++       'GITHUB_WORKFLOW_SHA': SOURCE, 'GITHUB_SHA': SOURCE}
++RUN = {'id': 123, 'run_number': 17, 'run_attempt': 2, 'workflow_id': 89, 'name': 'CI',
++       'path': guard.WORKFLOW, 'repository': {'full_name': REPO}, 'head_repository': {'full_name': REPO},
++       'head_sha': SOURCE, 'head_branch': '4.44.x', 'event': 'push', 'pull_requests': [],
++       'status': 'completed', 'conclusion': 'success'}
++LIST = f'repos/{REPO}/actions/workflows/ci.yml/runs?head_sha={SOURCE}&event=push&branch=4.44.x&per_page=100'
++RUN_PATH = f'repos/{REPO}/actions/runs/123'
++HEAD = f'repos/{REPO}/git/ref/heads/4.44.x'
++REG = f'repos/{REPO}/actions/workflows/ci.yml'
++JOBS = RUN_PATH + '/attempts/2/jobs?per_page=100'
++
++
++def fixtures():
++    names = ['Build and test', '.NET tests', 'Python contract tests', 'Package catalog contracts',
++             'Build and package contracts', 'CodeQL / analyze', 'Dependency review']
++    jobs = [{'id': index + 1, 'name': name, 'run_id': 123, 'head_sha': SOURCE, 'status': 'completed',
++             'conclusion': 'skipped' if name.startswith('Dependency review') else 'success'} for index, name in enumerate(names)]
++    return {HEAD: {'ref': REF, 'url': f'https://api.github.com/repos/{REPO}/git/{REF}',
++                   'object': {'type': 'commit', 'sha': SOURCE, 'url': f'https://api.github.com/repos/{REPO}/git/commits/{SOURCE}'}},
++            REG: {'id': 89, 'path': guard.WORKFLOW, 'name': 'CI', 'state': 'active'},
++            LIST: {'total_count': 1, 'workflow_runs': [deepcopy(RUN)]}, RUN_PATH: deepcopy(RUN),
++            JOBS: {'total_count': 7, 'jobs': jobs}}
++
++
++class MaintenanceSourceTests(unittest.TestCase):
++    def execute(self, data=None, environment=None, ancestor=True, race=None):
++        data = fixtures() if data is None else data
++        counts = {}
++        def api(path):
++            counts[path] = counts.get(path, 0) + 1
++            value = deepcopy(data[path])
++            if race:
++                race(path, counts[path], value)
++            return value
++        receipt = {}
++        result = guard.verify(api, lambda base, source: ancestor and base == guard.BASE and source == SOURCE,
++                              ENV | (environment or {}), receipt)
++        return result, receipt
++
++    def test_exact_normal_maintenance_source_and_attempt_are_retained(self):
++        result, receipt = self.execute(environment={'EXPECTED_CI_RUN_ID': '123', 'EXPECTED_CI_RUN_ATTEMPT': '2'})
++        self.assertEqual(result, (123, 2))
++        self.assertEqual(receipt['status'], 'verified')
++        self.assertEqual(len(receipt['jobs']), 7)
++
++    def test_foreign_missing_or_changed_executing_context_refuses(self):
++        for name, value in [('REPOSITORY', 'Other/Repo'), ('DISPATCH_REF', 'refs/heads/main'),
++                            ('DISPATCH_SHA', 'A' * 40), ('GITHUB_EVENT_NAME', 'push'),
++                            ('GITHUB_WORKFLOW_REF', f'{REPO}/.github/workflows/build-release.yml@refs/heads/main'),
++                            ('GITHUB_WORKFLOW_SHA', 'b' * 40), ('GITHUB_SHA', 'b' * 40)]:
++            with self.subTest(name=name), self.assertRaises(guard.Refusal):
++                self.execute(environment={name: value})
++
++    def test_unrelated_source_ancestry_refuses(self):
++        with self.assertRaises(guard.Refusal):
++            self.execute(ancestor=False)
++
++    def test_exact_live_ref_and_workflow_are_required(self):
++        for path, key, value in [(HEAD, 'ref', 'refs/heads/other'), (HEAD, 'url', 'https://api.github.com/repos/Other/Repo/git/' + REF),
++                                 (REG, 'path', '.github/workflows/other.yml'), (REG, 'state', 'disabled_manually'), (REG, 'id', 0), (REG, 'name', 'Other CI')]:
++            data = fixtures(); data[path][key] = value
++            with self.subTest(path=path, key=key), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_latest_failed_or_running_attempt_never_falls_back_to_older_success(self):
++        for conclusion, status in [('failure', 'completed'), (None, 'in_progress')]:
++            data = fixtures(); newer = deepcopy(RUN); newer.update(id=124, run_number=18, conclusion=conclusion, status=status)
++            data[LIST] = {'total_count': 2, 'workflow_runs': [deepcopy(RUN), newer]}
++            data[f'repos/{REPO}/actions/runs/124'] = newer
++            with self.subTest(status=status), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_missing_truncated_or_ambiguous_run_discovery_refuses(self):
++        for value in [{'total_count': 0, 'workflow_runs': []}, {'total_count': 2, 'workflow_runs': [RUN]},
++                      {'total_count': 101, 'workflow_runs': [RUN]}, {'total_count': 2, 'workflow_runs': [RUN, RUN]}]:
++            data = fixtures(); data[LIST] = deepcopy(value)
++            with self.subTest(value=value), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_foreign_or_incomplete_run_identity_refuses(self):
++        for key, value in [('name', 'Other workflow'), ('workflow_id', 7), ('path', '.github/workflows/other.yml'),
++                           ('head_branch', 'main'), ('head_sha', 'b' * 40), ('run_attempt', 0),
++                           ('event', 'pull_request'), ('pull_requests', [{}]), ('repository', {'full_name': 'Other/Repo'})]:
++            data = fixtures(); data[RUN_PATH][key] = value
++            with self.subTest(key=key), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_every_product_or_security_job_is_required(self):
++        for missing in range(7):
++            data = fixtures(); del data[JOBS]['jobs'][missing]; data[JOBS]['total_count'] -= 1
++            with self.subTest(missing=missing), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_failed_skipped_or_foreign_product_job_refuses(self):
++        for key, value in [('conclusion', 'failure'), ('conclusion', 'skipped'), ('run_id', 99),
++                           ('head_sha', 'b' * 40), ('status', 'in_progress')]:
++            data = fixtures(); data[JOBS]['jobs'][0][key] = value
++            with self.subTest(key=key, value=value), self.assertRaises(guard.Refusal):
++                self.execute(data)
++
++    def test_expected_attempt_cannot_be_missing_or_replaced(self):
++        for environment in [{'EXPECTED_CI_RUN_ID': '123'}, {'EXPECTED_CI_RUN_ID': '122', 'EXPECTED_CI_RUN_ATTEMPT': '2'},
++                            {'EXPECTED_CI_RUN_ID': '123', 'EXPECTED_CI_RUN_ATTEMPT': '1'}]:
++            with self.subTest(environment=environment), self.assertRaises(guard.Refusal):
++                self.execute(environment=environment)
++
++    def test_late_head_attempt_or_run_discovery_change_refuses(self):
++        mutations = [(HEAD, lambda value: value['object'].update(sha='b' * 40)),
++                     (RUN_PATH, lambda value: value.update(run_attempt=3)),
++                     (LIST, lambda value: value.update(total_count=2))]
++        for target, mutate in mutations:
++            def race(path, count, value):
++                if path == target and count == 2: mutate(value)
++            with self.subTest(target=target), self.assertRaises(guard.Refusal):
++                self.execute(race=race)
++
++    def test_real_cli_boundary_writes_output_and_immutable_receipt(self):
++        data = fixtures()
++        def command(arguments, **kwargs):
++            if arguments[:2] == ['gh', 'api']:
++                return types.SimpleNamespace(returncode=0, stdout=json.dumps(data[arguments[2]]))
++            self.assertEqual(arguments, ['git', 'merge-base', '--is-ancestor', guard.BASE, SOURCE])
++            return types.SimpleNamespace(returncode=0, stdout='')
++        with tempfile.TemporaryDirectory() as temporary:
++            output = Path(temporary) / 'outputs'
++            with patch.dict(os.environ, ENV | {'RUNNER_TEMP': temporary, 'GITHUB_OUTPUT': str(output)}, clear=True), \
++                 patch.object(guard.subprocess, 'run', side_effect=command), redirect_stderr(io.StringIO()):
++                self.assertEqual(guard.main(), 0)
++            self.assertEqual(output.read_text(), 'ci-run-id=123\nci-run-attempt=2\n')
++            receipts = list(Path(temporary).glob('g4-maintenance-source-*.json'))
++            self.assertEqual(len(receipts), 1)
++            self.assertEqual(json.loads(receipts[0].read_text())['ciRunAttempt'], 2)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+diff --git a/Tools/verify-g4-release-source.sh b/Tools/verify-g4-release-source.sh
+index 4452e479..451f2006 100644
+--- a/Tools/verify-g4-release-source.sh
++++ b/Tools/verify-g4-release-source.sh
+@@ -5,6 +5,11 @@ set -euo pipefail
+ : "${DISPATCH_REF:?Dispatch branch is required}"
+ : "${DISPATCH_SHA:?Dispatch SHA is required}"
+ 
++# The named maintenance lane has an independent strict ancestry/latest-attempt gate.
++if [[ "$DISPATCH_REF" == refs/heads/4.44.x ]]; then
++  exec python3 "$({ cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd; })/verify-maintenance-release-source.py"
++fi
++
+ case "$DISPATCH_REF" in
+   refs/heads/main|refs/heads/prerelease) ;;
+   *) echo "Builds Release requires main or prerelease branch." >&2; exit 1 ;;
+diff --git a/Tools/verify-maintenance-release-source.py b/Tools/verify-maintenance-release-source.py
+new file mode 100644
+index 00000000..afd6b71c
+--- /dev/null
++++ b/Tools/verify-maintenance-release-source.py
+@@ -0,0 +1,154 @@
++#!/usr/bin/env python3
++"""Verify only the approved 4.44 maintenance source through read-only Git/GitHub gates."""
++from __future__ import annotations
++
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import sys
++import uuid
++
++REPOSITORY = "Hexalith/Hexalith.Builds"
++BRANCH = "4.44.x"
++BASE = "3c8096180ecf2aa539ac454815efbfceb8a92822"
++WORKFLOW = ".github/workflows/ci.yml"
++SHA = re.compile(r"[0-9a-f]{40}")
++
++
++class Refusal(ValueError):
++    """An incomplete or changed source cannot enter publication."""
++
++
++def require(condition, message):
++    if not condition:
++        raise Refusal(message)
++
++
++def positive(value):
++    return type(value) is int and value > 0
++
++
++def verify(api, ancestor, environment, receipt):
++    """Freeze the exact latest push attempt, complete jobs and live source twice."""
++    repository = environment.get("REPOSITORY")
++    source = environment.get("DISPATCH_SHA", "")
++    ref = "refs/heads/" + BRANCH
++    require(repository == REPOSITORY and environment.get("DISPATCH_REF") == ref
++            and SHA.fullmatch(source), "unsupported maintenance source")
++    require(environment.get("GITHUB_EVENT_NAME") == "workflow_dispatch"
++            and environment.get("GITHUB_WORKFLOW_REF") == f"{REPOSITORY}/.github/workflows/build-release.yml@{ref}"
++            and environment.get("GITHUB_WORKFLOW_SHA") == source
++            and environment.get("GITHUB_SHA") == source,
++            "maintenance requires its exact executing release workflow")
++    require(ancestor(BASE, source), "maintenance source is outside its approved ancestry")
++    receipt.update(source=source, branch=BRANCH, base=BASE)
++    expected = (environment.get("EXPECTED_CI_RUN_ID", ""), environment.get("EXPECTED_CI_RUN_ATTEMPT", ""))
++    require(not any(expected) or all(re.fullmatch(r"[1-9][0-9]*", value) for value in expected),
++            "incomplete expected CI run/attempt")
++
++    def live():
++        value = api(f"repos/{REPOSITORY}/git/ref/heads/{BRANCH}")
++        require(isinstance(value, dict) and value.get("ref") == ref
++                and value.get("url") == f"https://api.github.com/repos/{REPOSITORY}/git/{ref}"
++                and value.get("object") == {"type": "commit", "sha": source,
++                    "url": f"https://api.github.com/repos/{REPOSITORY}/git/commits/{source}"},
++                "maintenance live source changed")
++
++    def identity(run, workflow_id):
++        require(isinstance(run, dict) and all(positive(run.get(key)) for key in ("id", "run_number", "run_attempt"))
++                and run.get("workflow_id") == workflow_id and run.get("path") == WORKFLOW
++                and run.get("name") == "CI" and run.get("repository", {}).get("full_name") == REPOSITORY
++                and run.get("head_repository", {}).get("full_name") == REPOSITORY
++                and run.get("event") == "push" and run.get("head_branch") == BRANCH
++                and run.get("head_sha") == source and run.get("pull_requests") == [],
++                "foreign or incomplete maintenance CI identity")
++
++    live()
++    registered = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml")
++    require(isinstance(registered, dict) and positive(registered.get("id"))
++            and registered.get("path") == WORKFLOW and registered.get("name") == "CI"
++            and registered.get("state") == "active",
++            "maintenance CI workflow is unavailable")
++    listing = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={source}&event=push&branch={BRANCH}&per_page=100")
++    runs = listing.get("workflow_runs")
++    require(isinstance(runs, list) and type(listing.get("total_count")) is int
++            and 0 < listing["total_count"] <= 100 and len(runs) == listing["total_count"],
++            "maintenance CI discovery is missing or truncated")
++    for run in runs:
++        identity(run, registered["id"])
++    require(len({run["run_number"] for run in runs}) == len(runs), "ambiguous latest maintenance run")
++    selected = max(runs, key=lambda run: run["run_number"])
++    run_path = f"repos/{REPOSITORY}/actions/runs/{selected['id']}"
++    current = api(run_path)
++    identity(current, registered["id"])
++    snapshot = {key: selected[key] for key in ("id", "run_number", "run_attempt")}
++    require(all(current.get(key) == value for key, value in snapshot.items())
++            and current.get("status") == "completed" and current.get("conclusion") == "success",
++            "latest maintenance attempt is not successful and complete")
++    require(not any(expected) or expected == (str(current["id"]), str(current["run_attempt"])),
++            "maintenance CI differs from the immutable qualified attempt")
++    jobs = api(f"{run_path}/attempts/{current['run_attempt']}/jobs?per_page=100")
++    values = jobs.get("jobs")
++    require(isinstance(values, list) and type(jobs.get("total_count")) is int
++            and 0 < jobs["total_count"] <= 100 and len(values) == jobs["total_count"],
++            "maintenance jobs are missing or truncated")
++    names = [job.get("name") for job in values]
++    require(all(isinstance(name, str) for name in names) and len(set(names)) == len(names),
++            "maintenance jobs have ambiguous identities")
++    required = {"Build and test", ".NET tests", "Python contract tests", "Package catalog contracts",
++                "Build and package contracts", "CodeQL / analyze", "Dependency review"}
++    require(set(names) == required, "maintenance source job set is incomplete or changed")
++    reviews = [job for job in values if job.get("name") == "Dependency review"]
++    require(len(reviews) == 1 and reviews[0].get("conclusion") == "skipped",
++            "push-only dependency review must retain its explicit contextual skip")
++    for job in values:
++        skipped_review = job is reviews[0]
++        require(positive(job.get("id")) and job.get("run_id") == current["id"]
++                and job.get("head_sha") == source and job.get("status") == "completed"
++                and (job.get("conclusion") == "success" or skipped_review),
++                "a maintenance source/security job did not succeed")
++    after = api(run_path)
++    identity(after, registered["id"])
++    require(all(after.get(key) == value for key, value in snapshot.items())
++            and after.get("status") == "completed" and after.get("conclusion") == "success",
++            "maintenance CI changed while its jobs were checked")
++    # Re-discover without a status filter: a newer run or running rerun cannot expose an old green fallback.
++    latest = api(f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={source}&event=push&branch={BRANCH}&per_page=100")
++    require(latest == listing, "maintenance CI discovery changed before publication")
++    require(api(f"repos/{REPOSITORY}/actions/workflows/ci.yml") == registered,
++            "registered maintenance workflow changed before publication")
++    live()
++    receipt.update(status="verified", ciRunId=current["id"], ciRunAttempt=current["run_attempt"],
++                   workflowId=registered["id"], jobs=[{key: job[key] for key in ("id", "name", "conclusion")} for job in values])
++    return current["id"], current["run_attempt"]
++
++
++def main():
++    receipt = {"schema": "hexalith.g4-maintenance-source.v1", "status": "refused"}
++    code = 1
++    try:
++        def api(path):
++            result = subprocess.run(["gh", "api", path], capture_output=True, text=True, timeout=45, check=False)
++            require(result.returncode == 0, "maintenance GitHub read failed")
++            return json.loads(result.stdout)
++        def ancestor(base, source):
++            return subprocess.run(["git", "merge-base", "--is-ancestor", base, source],
++                                  capture_output=True, timeout=30, check=False).returncode == 0
++        run, attempt = verify(api, ancestor, os.environ, receipt)
++        if os.environ.get("GITHUB_OUTPUT"):
++            with Path(os.environ["GITHUB_OUTPUT"]).open("a") as stream:
++                stream.write(f"ci-run-id={run}\nci-run-attempt={attempt}\n")
++        code = 0
++    except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError):
++        print("Maintenance source, workflow, latest CI attempt or required jobs are unavailable or changed.", file=sys.stderr)
++    finally:
++        if os.environ.get("RUNNER_TEMP"):
++            target = Path(os.environ["RUNNER_TEMP"]) / ("g4-maintenance-source-" + uuid.uuid4().hex + ".json")
++            target.write_text(json.dumps(receipt, sort_keys=True) + "\n")
++    return code
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/package.json b/package.json
+index 56bf1146..4065b1fc 100644
+--- a/package.json
++++ b/package.json
+@@ -12,6 +12,10 @@
+   },
+   "release": {
+     "branches": [
++      {
++        "name": "4.44.x",
++        "range": "4.44.x"
++      },
+       "main",
+       {
+         "name": "prerelease",

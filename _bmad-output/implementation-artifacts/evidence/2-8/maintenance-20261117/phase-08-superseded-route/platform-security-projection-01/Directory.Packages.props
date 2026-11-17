@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally><CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled></PropertyGroup>
+  <!-- Resolve after CustomAfterMicrosoftCommonProps applies the command's mapping. -->
+  <PropertyGroup>
+    <HexalithBuildsResolvedRoot>$([System.IO.Path]::GetFullPath('$(HexalithBuildsRoot)', '$(MSBuildThisFileDirectory)'))</HexalithBuildsResolvedRoot>
+  </PropertyGroup>
+  <Import Project="$(HexalithBuildsResolvedRoot)/Props/Directory.Packages.props" />
+  <!-- Keep the EventStore source graph's package compatibility adjustments. -->
+  <Import Project="$(HexalithEventStoreRoot)/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' == 'true'" />
+  <!-- The declared legacy regression baseline applies explicit security floors; current patched pins are unchanged. -->
+  <Import Project="$(MSBuildThisFileDirectory)eng/legacy-security-floor.props" />
+</Project>

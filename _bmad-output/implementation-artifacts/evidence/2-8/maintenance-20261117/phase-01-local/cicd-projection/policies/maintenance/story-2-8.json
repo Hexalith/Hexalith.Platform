@@ -1,0 +1,140 @@
+{
+  "schema": "hexalith.cicd.maintenance-lanes.v1",
+  "authorization": "Story2.8 owner approval \u20142026-11-17 maintenance continuation",
+  "purpose": "Bounded security maintenance and matching Platform source delivery; no current accepted pin adoption.",
+  "lanes": {
+    "Hexalith/Hexalith.Builds": {
+      "branch": "4.44.x",
+      "baseRevision": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+      "baseTag": "v4.44.13",
+      "releaseRange": "4.44.x",
+      "kind": "normal-g4-cli-release",
+      "sourceWorkflow": ".github/workflows/ci.yml",
+      "publisherWorkflow": ".github/workflows/build-release.yml",
+      "requiredEnvironment": "production",
+      "signedPackageAndInventoryChecksUnchanged": true
+    },
+    "Hexalith/Hexalith.Platform": {
+      "branch": "1.7.x",
+      "baseRevision": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+      "baseTag": "v1.7.1",
+      "releaseRange": "1.7.x",
+      "kind": "normal-platform-source-release",
+      "sourceWorkflows": [
+        ".github/workflows/tuple-ci.yml",
+        ".github/workflows/catalog-builder.yml"
+      ],
+      "publisherWorkflow": ".github/workflows/source-release.yml",
+      "bindingSchemaVersion": 1
+    }
+  },
+  "requiredGuards": [
+    "exact named repository/maintenance branch",
+    "original base ancestry",
+    "exact current live source head",
+    "full normal source CI and security gates",
+    "registered workflow ID/path and frozen source workflow name",
+    "latest run and exact latest attempt",
+    "complete required job outcomes",
+    "persistent immutable source/attempt/artifact proof",
+    "late source/run/attempt recheck before tag and publication",
+    "normal protected environment reviewer requirement",
+    "normal NuGet Trusted Publishing identity and signed package provenance"
+  ],
+  "ordinaryMainReleaseBehaviorUnchanged": true,
+  "profileDoesNotGrantRuntimeOrCandidateAcceptance": true,
+  "frozenProofExecutor": {
+    "version": "4.48.2",
+    "source": "6ad5854aa14a9950e1fbfc32d7e27953a1c4b82b"
+  },
+  "versionSelection": "Owning locked commit analyzer over actual maintenance Git range plus base reachable tag; no manual version override/tag.",
+  "ownedOutputs": {
+    "Hexalith/Hexalith.Builds": {
+      "maintenance": {
+        "baseRevision": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+        "files": {
+          ".github/workflows/build-release.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Builds/maintenance/.github/workflows/build-release.yml",
+            "sha256": "687b4ac1311d4107d2eebb314758cfdabdbbb065153a608fdcde6d770b4c0dc0",
+            "baseSha256": "b1943d16f0eab01fb4e4e195c98d233ba448a4d13bea9c01796ae01621f0da41"
+          },
+          ".github/workflows/ci.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Builds/maintenance/.github/workflows/ci.yml",
+            "sha256": "8121559d2b89ace1b83202614d60092f7e49d7dec681618a60046bbec156a9ef",
+            "baseSha256": "dfa5e4e02abff129a80810998159112e4e3a51f3a8d93ec93864c77a7c4aad92"
+          }
+        }
+      },
+      "registration": {
+        "baseRevision": "e8b86ba3ae6e27c2d6cba536d6002ac8f3c5a921",
+        "files": {
+          ".github/workflows/build-release.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Builds/registration/.github/workflows/build-release.yml",
+            "sha256": "43dc5c69251ee9099a0e3a3bd6333d17cdbf249757a0087b8ef1511adb777b59",
+            "baseSha256": null
+          }
+        }
+      }
+    },
+    "Hexalith/Hexalith.Platform": {
+      "maintenance": {
+        "baseRevision": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+        "files": {
+          ".github/workflows/source-release.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Platform/maintenance/.github/workflows/source-release.yml",
+            "sha256": "f1e2123632e8da8f2fc25f986adfe89bcef26a4e07f194350bf050b4006e371b",
+            "baseSha256": "bda2b2a492d6fe254c34d19d5864d60b111137a544e67ec1e2a4dac924480de6"
+          },
+          ".github/workflows/catalog-builder.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Platform/maintenance/.github/workflows/catalog-builder.yml",
+            "sha256": "fcc6d5492ed80d66e0486b8a2359591e24bbf6f0d4430c3c90a4400a3e154cfb",
+            "baseSha256": "75be89e6b8d14ff0ac3655decc4c6153714de3dbc012c12912ac77963169ed80"
+          },
+          ".github/workflows/tuple-ci.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Platform/maintenance/.github/workflows/tuple-ci.yml",
+            "sha256": "578b4a63451493c68c4c036eea08d61b4dc66f6b2861542a0a1dc6fcb459b05c",
+            "baseSha256": "05b7b7a5db8cfd1281591c47b17d0b925efff490a09d60224af1ab52d206a03c"
+          }
+        }
+      },
+      "registration": {
+        "baseRevision": "4f88df0ec98885425db5ddb20a3a3bb34a93d046",
+        "files": {
+          ".github/workflows/source-release.yml": {
+            "template": "policies/maintenance/templates/Hexalith.Platform/registration/.github/workflows/source-release.yml",
+            "sha256": "858fb5715c8cc19ae51e9adc547a48ca2c4ade7cf85fda1c7a854d8610a27a3c",
+            "baseSha256": "bda2b2a492d6fe254c34d19d5864d60b111137a544e67ec1e2a4dac924480de6"
+          }
+        }
+      }
+    }
+  },
+  "catalogSecurityClosure": {
+    "Microsoft.AspNetCore.SignalR.StackExchangeRedis": "10.0.15",
+    "Microsoft.Extensions.Options": "10.0.15",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.15"
+  },
+  "normalGates": {
+    "historicSourceCiRetained": true,
+    "normalSignedG4PublicationRetained": true,
+    "ownerRoleForGeneratedWorkflowChanges": "Hexalith.CiCd",
+    "maintenanceOnlyFreshMainRuleException": true,
+    "requiredProtectedBranchAddition": {
+      "environment": "production",
+      "branch": "4.44.x",
+      "reviewersUnchanged": true
+    },
+    "normalNuGetLoginUnchanged": true
+  },
+  "environmentProposal": {
+    "repository": "Hexalith/Hexalith.Builds",
+    "endpoint": "repos/Hexalith/Hexalith.Builds/environments/production/deployment-branch-policies",
+    "request": {
+      "name": "4.44.x",
+      "type": "branch"
+    },
+    "preserveRequiredReviewers": true,
+    "changesToNugetPolicy": false,
+    "executeOnlyAfterOwningDeltaReview": true
+  }
+}

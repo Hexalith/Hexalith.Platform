@@ -1,0 +1,47 @@
+{
+  "callerSource": "027b6e8e3813f2a95269dd2286db4815d223408a",
+  "catalogSource": "3c8096180ecf2aa539ac454815efbfceb8a92822",
+  "platformSource": "0f4e27f1f78310bd731c10c19dc51bb1e0345d44",
+  "modelSha256": "38e489d68524f07efdadf0318c34f94a8072a25bad8cfee43e859130aced60a3",
+  "toolingSha256": "142bd3fdd26ff4e5ba8eadd91d00de92b738b019270fa6742e3a35f41460b1cf",
+  "toolchain": {
+    "EventStoreVersion": "4.2.0",
+    "FrontComposerVersion": "5.0.0",
+    "DaprSdkVersion": "1.19.1",
+    "AspireHostingVersion": "13.6.5",
+    "AspireHostingDaprVersion": "13.6.2-beta.959",
+    "AspireAppHostSdkVersion": "13.6.5",
+    "DaprRuntimeVersion": "1.19.1",
+    "DaprCliVersion": "1.19.1",
+    "RedisImage": "docker.io/library/redis",
+    "RedisImageTag": "7.4-alpine",
+    "RedisImageDigest": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+    "EventStoreHostingDaprRange": "13.6.2-beta.959"
+  },
+  "outcomes": [
+    {
+      "profile": "platform-package",
+      "ordinaryRunProof": true,
+      "fullPackageCohortGuard": true,
+      "serverCount": 8,
+      "declarationSha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+      "executionTimeoutSeconds": 300,
+      "stopTimeoutSeconds": 90
+    },
+    {
+      "profile": "lifecycle-package",
+      "ordinaryRunProof": true,
+      "fullPackageCohortGuard": true,
+      "serverCount": 8,
+      "declarationSha256": "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348",
+      "executionTimeoutSeconds": 300,
+      "stopTimeoutSeconds": 90
+    }
+  ],
+  "appHostExecuted": false,
+  "builderCreated": false,
+  "servicesStarted": false,
+  "probesExecuted": false,
+  "runtimeExecutionClaimed": false,
+  "candidateAcceptance": false
+}
