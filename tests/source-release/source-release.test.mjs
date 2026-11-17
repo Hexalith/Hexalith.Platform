@@ -141,7 +141,7 @@ test('standard real analyzer computes patch/minor/major and declines build/docs/
   assert.equal(options.releaseRules, undefined);
 });
 test('explicit source-only plugins omit package publishing and source-main mutations', () => {
-  assert.deepEqual(config.branches, ['main']); assert.equal(config.tagFormat, 'v${version}');
+  assert.deepEqual(config.branches, [{ name: '1.7.x', range: '1.7.x' }, 'main']); assert.equal(config.tagFormat, 'v${version}');
   assert.equal(config.repositoryUrl, `https://github.com/${repository}.git`);
   assert.deepEqual(config.plugins.map(x => Array.isArray(x) ? x[0] : x), ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', './eng/source-release/release-gate.mjs', '@semantic-release/github']);
   assert.deepEqual(config.plugins[3][1].assets, []);
