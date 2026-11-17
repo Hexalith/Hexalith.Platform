@@ -65,7 +65,8 @@ class LegacyTupleSourceTests(unittest.TestCase):
 
     def test_workflow_uses_actual_automatic_source_and_committed_legacy_identity(self):
         workflow = (Path(__file__).parents[1] / ".github/workflows/tuple-ci.yml").read_text()
-        self.assertIn("  push:\n    branches: [main]", workflow)
+        self.assertEqual(legacy.resolve(self.root, self.current), self.old)
+        self.assertEqual(legacy.resolve(self.root, self.current, self.old), self.old)
         self.assertIn("PLATFORM_CANDIDATE_SHA: ${{ inputs.candidate-sha || github.sha }}", workflow)
         self.assertIn("ref: ${{ inputs.candidate-sha || github.sha }}", workflow)
         self.assertIn("python3 -B eng/legacy_tuple_source.py --current", workflow)

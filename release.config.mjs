@@ -1,5 +1,5 @@
 export default {
-  branches: ['main'],
+  branches: [{ name: '1.7.x', range: '1.7.x' }, 'main'],
   repositoryUrl: 'https://github.com/Hexalith/Hexalith.Platform.git',
   tagFormat: 'v${version}',
   plugins: [
