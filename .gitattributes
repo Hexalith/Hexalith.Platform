@@ -217,3 +217,7 @@ src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,b
 tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the authenticated Builds 6.3.0 catalog and publication fixture bytes.
+eng/fixtures/builds-6.3.0-Directory.Packages.props text eol=lf
+eng/fixtures/builds-6.3.0-binding.json text eol=lf
