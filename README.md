@@ -1,6 +1,32 @@
 # Hexalith.Platform
 
-## Current signed Builds4.44.13 and public Parties3.1.0 tuple
+## Current signed Builds 4.44.14 maintenance tuple
+
+This source prepares [Builds v4.44.14](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.14)
+at `979cfd3e2c4145be516fbd833dacfc6b8e8fdce5`, published by normal
+[release 44133307523, attempt 2](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44133307523)
+after exact-source [push CI 44129245136](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44129245136).
+The exact module-tool pin and supported range floor are `4.44.14`;
+the upper bound remains `5.0.0-0` and roll-forward is disabled.
+The verified public NuGet repository-signed archive SHA-256 is
+`4bd1338627c7283d5fc98db9b374b932fb946f3b0c14b3ed97b4cea604273a73`. Its observed AppHost assembly is
+`c261d02d4ab2582c2a427361afb157552660b58365654abb39c6669210bf73f4` and Tooling assembly is
+`fcb860995228e4ae332cc6474341e6f8f34d714bb6f71488804dc34fc9933e63`.
+Catalog blob `a82d3ad3e745ea7432f60c892c0c66395daaa8ef` has raw SHA-256
+`908d6acf84f3fac00c14942652b7b6d35fc93094e5ce41f87061db44bdaf3295`. The [official release inventory](https://github.com/Hexalith/Hexalith.Builds/releases/download/v4.44.14/g4-tool-package-inventory.json)
+has SHA-256 `e114c68e45fd6b23785370f3849efdca70411e603aee87da76dff7a07ad37119`;
+catalog-origin revision is `7b95a68fa0657135cee1103defc59089defa93ff`.
+
+The bounded catalog patch updates three .NET 10 package pins to 10.0.15.
+SDK 4.1.0, public Parties 3.1.0 and the other public package, image and
+declaration identities retain their recorded roles. The current profile still
+requires 412 cases and the genuine same-code legacy profile all 349 original
+controls. Both source qualifications and all five SDK gates must pass before
+normal Platform source publication. Published artifact identity grants no
+candidate acceptance, caller/native qualification, current-cohort registration
+or Story 2.10 qualification. The previous producer facts below remain historical.
+
+## Previous signed Builds4.44.13 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.44.13](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13)
 at `3c8096180ecf2aa539ac454815efbfceb8a92822`, from normal
