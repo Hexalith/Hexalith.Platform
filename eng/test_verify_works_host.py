@@ -353,7 +353,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
 
     def run_until_live_lanes(self, runtime_bytes, isolated_hash=None, finish=False, final_error=None,
-                            observed_runtime_envs=None, profile='ci', observed_model_envs=None, runtime_sdk_root=None):
+                            observed_runtime_envs=None, profile='ci', observed_model_envs=None, runtime_sdk_root=None,
+                            command_effect=None):
         """Drive the real gate sequence through toolchain qualification and optionally final acceptance."""
         works = self.directory()
         for _, _, _, consumer in ROWS.values():
@@ -404,6 +405,13 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 consumer = json.loads((artifacts / 'ledger.json').read_text())['consumer']
                 self.assertEqual(Path(consumer['root']), Path(arguments[0]).parent)
                 self.assertEqual(len(consumer['artifacts']), 4)
+            if name in ('selected-runtime-binaries', 'retained-host-preflight'):
+                path = Path(kwargs['env']['WORKS_SDK_PROOF_EVIDENCE_PATH'])
+                path.write_text(json.dumps({'phase': name, 'state': {'files': 1}}) + '\n')
+            if command_effect is not None:
+                result = command_effect(name, arguments, kwargs)
+                if result is not None:
+                    return result
             if name == 'agents-full-refusal':
                 kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
                 return subprocess.CompletedProcess(arguments, 1)
@@ -457,6 +465,62 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 else:
                     outcomes.assert_not_called()
         return json.loads((artifacts / 'ledger.json').read_text()), artifacts, qualified
+
+    def test_malformed_first_binary_record_refuses_before_telemetry_or_any_topology_start(self):
+        def malformed(name, arguments, kwargs):
+            if name == 'selected-runtime-binaries':
+                # The failed hosted writer put the payload beside phase instead of inside state.
+                Path(kwargs['env']['WORKS_SDK_PROOF_EVIDENCE_PATH']).write_text(
+                    json.dumps({'phase': 'selected-runtime-binary-capture-preflight', 'files': 42, 'totalBytes': 128}) + '\n')
+        ledger, artifacts, _ = self.run_until_live_lanes(b'qualified runtime', command_effect=malformed)
+        names = [entry['name'] for entry in ledger['commands']]
+        self.assertEqual(names[-1], 'selected-runtime-binaries')
+        self.assertFalse(set(names) & {'platform-telemetry', 'retained-host-preflight', 'platform-recovery'})
+        self.assertIn(str(artifacts / 'persisted-states.jsonl') + ':1:', ledger['failure'])
+        self.assertIn('no phase or state', ledger['failure'])
+        self.assertEqual(ledger['commands'][-1]['exitCode'], 0)
+        self.assertIn('failure', ledger['commands'][-1])
+
+    def test_valid_incomplete_prefix_and_list_state_continue_to_later_commands(self):
+        def append_list(name, arguments, kwargs):
+            if name == 'selected-runtime-binaries':
+                with Path(kwargs['env']['WORKS_SDK_PROOF_EVIDENCE_PATH']).open('a') as output:
+                    output.write(json.dumps({'phase': 'five-child-persisted-target-receipts', 'state': [1, 2]}) + '\n')
+        ledger, _, _ = self.run_until_live_lanes(b'qualified runtime', command_effect=append_list)
+        self.assertIn('stopped at live lane retained-host-preflight', ledger['failure'])
+        binary = next(entry for entry in ledger['commands'] if entry['name'] == 'selected-runtime-binaries')
+        self.assertEqual(binary['persistedPrefix']['records'], 2)
+        self.assertIn('platform-telemetry', [entry['name'] for entry in ledger['commands']])
+
+    def test_command_timings_survive_success_nonzero_and_launch_timeout(self):
+        for failure in ('nonzero', 'nonzero_bad_evidence', 'timeout'):
+            def command_failure(name, arguments, kwargs):
+                if name == 'platform-telemetry':
+                    kwargs['stdout'].write('retained command output')
+                    if failure == 'timeout':
+                        raise subprocess.TimeoutExpired(arguments, 1800)
+                    if failure == 'nonzero_bad_evidence':
+                        Path(kwargs['env']['WORKS_SDK_PROOF_EVIDENCE_PATH']).write_text('{broken')
+                    return subprocess.CompletedProcess(arguments, 17)
+            with self.subTest(failure=failure):
+                ledger, artifacts, _ = self.run_until_live_lanes(b'qualified runtime', command_effect=command_failure)
+                self.assertIn('TimeoutExpired' if failure == 'timeout' else 'platform-telemetry failed', ledger['failure'])
+                for entry in ledger['commands']:
+                    started = verify_works_host.datetime.fromisoformat(entry['startedAtUtc'])
+                    finished = verify_works_host.datetime.fromisoformat(entry['finishedAtUtc'])
+                    self.assertEqual(started.utcoffset().total_seconds(), 0)
+                    self.assertGreaterEqual(finished, started)
+                    self.assertGreaterEqual(entry['elapsedSeconds'], 0)
+                    self.assertIn('sha256', entry)
+                failed = ledger['commands'][-1]
+                self.assertIn('failure', failed)
+                self.assertEqual((artifacts / failed['log']).read_text(), 'retained command output')
+                if failure != 'timeout':
+                    self.assertEqual(failed['exitCode'], 17)
+                    self.assertNotIn('persistedPrefix', failed)
+                    self.assertNotIn('malformed', ledger['failure'])
+                else:
+                    self.assertNotIn('exitCode', failed)
 
     def test_model_owner_preparation_reuses_the_parent_sdk_build_context_in_both_profiles(self):
         for profile, explicit_sdk in (('full', False), ('full', True), ('ci', False), ('ci', True)):
@@ -1197,6 +1261,34 @@ class WorksEvidenceGateTests(unittest.TestCase):
         path = self.directory() / 'states.jsonl'
         path.write_text(''.join(json.dumps({'phase': phase, 'state': state}) + '\n' for phase, state in [*states.items(), *extra]))
         return path
+
+    def test_prefix_envelopes_refuse_bad_json_missing_state_and_duplicates_with_locations(self):
+        path = self.directory() / 'states.jsonl'
+        valid = json.dumps({'phase': 'first', 'state': []})
+        cases = [('{broken', 'malformed persisted outcome JSON'),
+                 (json.dumps({'phase': 'first', 'files': 1}), 'no phase or state'),
+                 ('[]', 'no phase or state'),
+                 (valid, 'Duplicate persisted outcome phase')]
+        for line, message in cases:
+            path.write_text(valid + '\n' + line + '\n')
+            with self.subTest(line=line), self.assertRaises(ValueError) as error:
+                verify_works_host.validate_persisted_prefix(path)
+            self.assertIn(str(path) + ':2:', str(error.exception))
+            self.assertIn(message, str(error.exception))
+        for content in ('', '\n'):
+            path.write_text(content)
+            with self.assertRaisesRegex(ValueError, ':1: No persisted outcome envelopes'):
+                verify_works_host.validate_persisted_prefix(path)
+        path.unlink()
+        with self.assertRaisesRegex(ValueError, ':1: No persisted outcome envelopes'):
+            verify_works_host.validate_persisted_prefix(path)
+
+    def test_valid_prefix_preserves_list_state_but_final_binding_still_requires_all_proofs(self):
+        path = self.outcomes({'five-child-persisted-target-receipts': valid_states()['five-child-persisted-target-receipts']})
+        prefix = verify_works_host.validate_persisted_prefix(path)
+        self.assertIsInstance(prefix['five-child-persisted-target-receipts']['state'], list)
+        with self.assertRaisesRegex(ValueError, 'Required target outcomes did not execute'):
+            bind_persisted_outcomes(path, {key: {} for key in ROWS}, RETAINED)
 
     def test_valid_outcomes_derive_every_rows_four_proofs_from_named_phases(self):
         rows = {key: {} for key in ROWS}

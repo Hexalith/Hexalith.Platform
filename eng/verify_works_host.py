@@ -1,6 +1,6 @@
 """Execute target-host evidence; never promote supporting checks to AD-20 acceptance."""
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import io
 import json
@@ -10,6 +10,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import tarfile
+import time
 import re
 import xml.etree.ElementTree as ET
 import zipfile
@@ -937,16 +938,35 @@ def required_phases():
     return phases
 
 
-def bind_persisted_outcomes(path, rows, starts):
-    records = [json.loads(line) for line in Path(path).read_text().splitlines() if line]
+def validate_persisted_prefix(path):
+    """Validate every available envelope without requiring phases from later commands."""
+    path = Path(path)
     by_phase = {}
-    for record in records:
+    locations = {}
+    if not path.is_file():
+        raise ValueError(f"{path}:1: No persisted outcome envelopes were produced")
+    for number, line in enumerate(path.read_text().splitlines(), 1):
+        if not line.strip():
+            continue
+        location = f"{path}:{number}"
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as error:
+            raise ValueError(f"{location}: malformed persisted outcome JSON: {error.msg}") from error
         phase = record.get("phase") if isinstance(record, dict) else None
-        if not isinstance(phase, str) or "state" not in record:
-            raise ValueError("A persisted outcome record has no phase or state")
+        if not isinstance(phase, str) or not phase.strip() or "state" not in record:
+            raise ValueError(f"{location}: A persisted outcome record has no phase or state")
         if phase in by_phase:
-            raise ValueError("Duplicate persisted outcome phase: " + phase)
+            raise ValueError(f"{location}: Duplicate persisted outcome phase: {phase} (first at {locations[phase]})")
         by_phase[phase] = record
+        locations[phase] = location
+    if not by_phase:
+        raise ValueError(f"{path}:1: No persisted outcome envelopes were produced")
+    return by_phase
+
+
+def bind_persisted_outcomes(path, rows, starts):
+    by_phase = validate_persisted_prefix(path)
     missing = sorted(required_phases() - set(by_phase))
     if missing:
         raise ValueError("Required target outcomes did not execute: " + ", ".join(missing))
@@ -1327,20 +1347,33 @@ def run_verification(args):
 
     def run(name, command, cwd=platform, environment=None, expected_refusal=None):
         log = artifacts / (name + ".log")
-        entry = {"name": name, "command": [str(value) for value in command], "cwd": str(cwd), "log": log.name}
+        entry = {"name": name, "command": [str(value) for value in command], "cwd": str(cwd), "log": log.name,
+                 "startedAtUtc": datetime.now(timezone.utc).isoformat()}
+        started = time.monotonic()
         summary["commands"].append(entry)
         save()
         print(name + ": " + str(log), flush=True)
-        with log.open("w") as output:
-            result = run_owned(entry["command"], cwd=cwd, env=environment, stdout=output, timeout=1800)
-        entry["exitCode"] = result.returncode
-        entry["sha256"] = sha256(log)
-        save()
-        if expected_refusal:
-            if result.returncode != 1 or expected_refusal not in log.read_text():
-                raise ValueError(name + ": required closed refusal was not preserved")
-        elif result.returncode:
-            raise ValueError(name + " failed; see " + str(log))
+        try:
+            with log.open("w") as output:
+                result = run_owned(entry["command"], cwd=cwd, env=environment, stdout=output, timeout=1800)
+            entry["exitCode"] = result.returncode
+            if expected_refusal:
+                if result.returncode != 1 or expected_refusal not in log.read_text():
+                    raise ValueError(name + ": required closed refusal was not preserved")
+            elif result.returncode:
+                raise ValueError(name + " failed; see " + str(log))
+            if environment and (evidence := environment.get("WORKS_SDK_PROOF_EVIDENCE_PATH")):
+                prefix = validate_persisted_prefix(evidence)
+                entry["persistedPrefix"] = {"path": evidence, "records": len(prefix), "sha256": sha256(evidence)}
+        except BaseException as error:
+            entry["failure"] = failure_text(error)
+            raise
+        finally:
+            entry["finishedAtUtc"] = datetime.now(timezone.utc).isoformat()
+            entry["elapsedSeconds"] = time.monotonic() - started
+            if log.is_file():
+                entry["sha256"] = sha256(log)
+            save()
 
     def build(name, project, configuration, root, output=None, extra=()):
         run(name, consumer_build_command(project, configuration, version, output, extra), root)

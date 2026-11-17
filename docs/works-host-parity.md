@@ -448,6 +448,43 @@ committed policy files. Until then the hashes are format-checked only. Productio
 admission stays refused regardless, and development values for `trustDomain` and
 `namespace` are refused in any letter case.
 
+## Qualification cadence and command evidence
+
+Works ordinary push/PR CI retains the blocking Release/public-package compilation,
+consumer and test lanes. CiCd's finite owner proposal moves the unchanged complete
+`platform-parity` job to `qualification.yml`: nightly at 02:23 UTC and manually.
+Before a release enters the protected production environment, the exact current
+`main` SHA must have both a successful push `ci.yml` run and a successful complete
+`qualification.yml` run. An older nightly result cannot qualify a newer source;
+run qualification manually on that exact source before releasing. The complete
+qualification still uses `--profile ci`, including all eleven rows and 44 proof
+kinds, Agents Full refusal and green LocalScaffold, public producer binding and
+complete-fleet rollback. The default local `full` profile still adds Debug source
+conformance.
+
+After each successful command with a persisted-evidence output, the verifier parses the
+whole available JSONL prefix. Invalid JSON, absent `phase`/`state` envelopes,
+empty outputs and duplicate phases fail immediately with file and line details.
+Objects and lists inside `state` remain valid; a partial prefix need not contain
+proofs produced by later commands. Final binding independently requires all
+phases, row predicates, cross-phase checks and unchanged source/runtime inputs.
+The selected-runtime binary preflight's first malformed envelope therefore
+refuses before telemetry, retained startup or recovery starts.
+
+Every command entry in `ledger.json` records `startedAtUtc`, `finishedAtUtc` and
+monotonic `elapsedSeconds`, even if the owned command fails to launch, times out,
+returns a failure, or prefix validation refuses its output. Available exit status,
+log hash and failure details remain alongside these timings. Timings measure the
+command and its immediate evidence validation, not a shortened recovery budget.
+The twelve-source/five-effect recovery budgets and all five recovery topology
+starts remain intact.
+
+Hosted Works run 44049423249 observed 44m12s for qualification versus 8m13s for
+ordinary compilation/tests, before these changes. Approximately eight minutes
+is the selected ordinary feedback target. New hosted durations require a later
+authorized publication and measurement; local qualification is reported
+separately and grants no hosted or release-source credit.
+
 ## Complete fleet rollback
 
 The drill first performs Platform writes and verifies terminal receipts, query
