@@ -93,6 +93,10 @@ public sealed class WorksPreviewModelTests : IDisposable
         works.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldBe("works/ready");
         works.Annotations.OfType<WaitAnnotation>().ShouldNotContain(wait => wait.Resource.Name == "eventstore");
         ProjectResource gateway = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
+        Dictionary<string, object> gatewayEnvironment = new(StringComparer.Ordinal);
+        await CaptureModelEnvironmentAsync(builder, gateway, gatewayEnvironment);
+        gatewayEnvironment["Dapr__DeclarativeSubscriptions"].ShouldBe("true");
+        gatewayEnvironment["EventStore__ProjectionChanges__Transport"].ShouldBe("Direct");
         gateway.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldBe("eventstore/ready");
         // Both names resolve to Platform's SDK readiness check, which keeps Degraded distinct; a plain HTTP probe would not.
         await using ServiceProvider services = builder.Services.BuildServiceProvider();

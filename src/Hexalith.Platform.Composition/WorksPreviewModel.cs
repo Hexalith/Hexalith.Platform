@@ -155,6 +155,10 @@ public static class WorksPreviewModel
             .WithEnvironment("EventStore__DomainServices__Registrations__wildcard_work_v1__Version", "v1")
             .WithEnvironment("EventStore__Publisher__TopicOverrides__work", "work.events")
             .WithEnvironment("EventStore__Publisher__DeadLetterTopicPrefix", "commanddeadletter")
+            // Projection freshness keeps the SDK's direct ETag/SignalR transport. The broker owns
+            // only the declared Works event/DLQ topics; do not advertise an unused wildcard subscription.
+            .WithEnvironment("EventStore__ProjectionChanges__Transport", "Direct")
+            .WithEnvironment("Dapr__DeclarativeSubscriptions", "true")
             .WithEnvironment("Authentication__DaprInternal__AllowedCallers__0", "works");
 
         // Development/test limits for this preview only. EventStore's defaults (1000 per minute per tenant,
