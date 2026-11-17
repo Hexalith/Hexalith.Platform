@@ -1,0 +1,101 @@
+{
+  "startedAt": "2026-11-17T03:04:04.668894+00:00",
+  "sourceSha256": {
+    "docs/architecture/publication-authority-v1.md": "7a4981a1c17a642398580dd971f91b4845471787b5930b4987edf69fe7ef0292",
+    "tools/ProductionProfileBridge/BuildProof.targets": "1b0951f4103d099bd8eb463c4cb0f9d99341e3c442734fdaeebccbfd7b17e523",
+    "tools/ProductionProfileBridge/ProductionProfileBridge.csproj": "de1fec2fb29ae044620442efe9a0cd570ef002cc88d74fd7f808751272c10e23",
+    "tools/phase-4-transition.schema.json": "5f56c30219a4064eda0f94d7a3e19c427e46b6f00dfbb6bafcfe8f26f036d8fe",
+    "tools/profile_bridge_build.py": "165954bebf0068729ecd4654120ee1e9fed51757e9da9053669f3bca24fc0ff5",
+    "tools/publication_authority.py": "061727c76adac62ff77856df0d67266be2c5c4c1d664602a0b9b85d4cc12cfc0",
+    "tools/tests/check_production_profile_bridge.py": "774a54c6efa458edd7d8c42d2308f5d0ce25f19ee3a560278e26abea5b0cbb71",
+    "tools/tests/test_phase_4_transition.py": "e43d5543a86e1c1813c37bee6d3d68e9de438bb0afadf6bae142a40b1f0b5e04",
+    "tools/tests/test_profile_bridge_build.py": "320d7bbe24524a6f0f000732123e5caa5d36989574043cc82fe3b23704de57fc",
+    "tools/tests/test_publication_authority.py": "d98348584926968c5f90dc829c9056b7f88a3f0b71478c945471fbed2afd9ec4"
+  },
+  "checks": [
+    {
+      "check": "snapshot",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_profile_bridge_build.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 1.631,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/9-2/sdk-proof-post-review-20261117/snapshot.log",
+      "logSha256": "7a49f3822a3f5a6d9459583042d7e8850ede6230a2b231843dba9cc18582e9d6"
+    },
+    {
+      "check": "publication",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_publication_authority.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 0.819,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/9-2/sdk-proof-post-review-20261117/publication.log",
+      "logSha256": "c34f9a817e5a02d2530ed71ededcce5dff1df4bbb9a30c0a756e1434631b3706"
+    },
+    {
+      "check": "lifecycle",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-p",
+        "test_phase_4_transition.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 493.56,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/9-2/sdk-proof-post-review-20261117/lifecycle.log",
+      "logSha256": "b91f3c1fe50ca293dfd7102d34382b6637ef8bd4bdf2c44963050adc3415fe39"
+    },
+    {
+      "check": "genuine-bridge",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/tests/check_production_profile_bridge.py"
+      ],
+      "exitCode": 0,
+      "seconds": 350.5,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/9-2/sdk-proof-post-review-20261117/genuine-bridge.log",
+      "logSha256": "9421a5ea1296d34fb341d27be7434e1a26c1c49670ff4a6bc07b155c58802891"
+    },
+    {
+      "check": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "seconds": 0.008,
+      "log": "/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/9-2/sdk-proof-post-review-20261117/whitespace.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "allCompleted": true,
+  "wrapper": "run-with-temp python3 -B sequential verification driver",
+  "finishedAt": "2026-11-17T03:18:11.152321+00:00"
+}

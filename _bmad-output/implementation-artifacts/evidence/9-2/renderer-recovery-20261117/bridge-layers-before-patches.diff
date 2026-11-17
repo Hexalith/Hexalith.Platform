@@ -1,0 +1,1391 @@
+diff --git a/.github/workflows/publication-authority.yml b/.github/workflows/publication-authority.yml
+index d7d852b20..ef0c4f525 100644
+--- a/.github/workflows/publication-authority.yml
++++ b/.github/workflows/publication-authority.yml
+@@ -23,6 +23,10 @@ jobs:
+           submodules: false
+       - name: Verify structural controls and authority refusals
+         run: python3 -B -m unittest discover -s tools/tests -p 'test_publication_authority.py'
++      - name: Verify bridge snapshots and fixed execution controls
++        run: python3 -B -m unittest discover -s tools/tests -p 'test_profile_bridge_build.py'
++      - name: Verify authenticated publication bindings and pre-launch refusals
++        run: python3 -B -m unittest discover -s tools/tests -p 'test_phase_4_transition.py' -k publication -k lifecycle_subject
+       - name: Materialize pinned root build configuration
+         run: git -c submodule.recurse=false submodule update --init -- references/Hexalith.Builds
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+@@ -32,10 +36,7 @@ jobs:
+         run: dotnet build tests/Hexalith.EventStore.Contracts.Tests/Hexalith.EventStore.Contracts.Tests.csproj -c Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -m:1 --disable-build-servers
+       - name: Verify owner profile digest domains and external coverage
+         run: dotnet tests/Hexalith.EventStore.Contracts.Tests/bin/Release/net11.0/Hexalith.EventStore.Contracts.Tests.dll -class '*ProductionProfileTests' -class '*ProductionProfileV2Tests'
+-      - name: Build read-only owner bridge with package references
+-        run: dotnet build tools/production-profile.cs -c Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:BuildInParallel=false --disable-build-servers
+-
+-      - name: Verify genuine bridge runtime and fixed token-free child
++      - name: Build verified SDK-only snapshots and verify genuine bridge isolation
+         run: python3 -B tools/tests/check_production_profile_bridge.py
+ 
+   live-evaluation:
+@@ -48,8 +49,6 @@ jobs:
+         with:
+           persist-credentials: false
+           submodules: false
+-      - name: Materialize pinned root build configuration
+-        run: git -c submodule.recurse=false submodule update --init -- references/Hexalith.Builds
+       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+         with:
+           global-json-file: global.json
+diff --git a/docs/architecture/publication-authority-v1.md b/docs/architecture/publication-authority-v1.md
+index 5882ba052..f68476907 100644
+--- a/docs/architecture/publication-authority-v1.md
++++ b/docs/architecture/publication-authority-v1.md
+@@ -73,22 +73,41 @@ digest still includes these authentication digests and the comment ID.
+ ## Profile and deployment
+ 
+ Only `deploy/dapr/production-profile.yaml` supplies profile bytes. The bounded
+-read-only `tools/production-profile.cs` bridge calls the genuine Contracts
++read-only `tools/ProductionProfileBridge/Program.cs` bridge calls the genuine Contracts
+ `ProductionProfileCodec.Decode` and `ProductionProfileValidator.Validate` for v1,
+ or explicitly selected `ProductionProfileV2Codec.Decode` and
+ `ProductionProfileV2Validator.Validate` for v2.
+-It accepts no alternate profile path or generation mode. The fixed child resolves
+-only the installed `dotnet` tool before dropping caller credentials, supplies its
+-runtime root and an existing package cache, disables build-server reuse, and copies
+-the bound owner `global.json` into scratch so SDK selection honors that pin.
+-The declared project, SDK, NuGet and build configuration files belong to its
+-bound inputs. They do not prove the complete execution closure: transitive
+-Contracts sources, imported Builds configuration and package/SDK resolution remain
+-unverified. `PROFILE_BUILD_INPUT_PROOF_UNAVAILABLE` therefore refuses the
+-authenticated adapter before any .NET launch. There is no success override or
+-complete-graph claim; the standalone structural bridge remains non-authorizing.
++It accepts no alternate profile path or generation mode. `tools/profile_bridge_build.py`
++captures bounded regular files with safe paths and no symbolic ancestors: the owner
++`global.json`, closed bridge project/configuration, unchanged bridge body, all 38
++explicit owner profile sources and separately validated profile/inventory/source
++bytes (plus rendered bytes when present). Capture requires complete fixed source and
++bridge membership. Before each child, the private snapshot must have exactly the
++captured files/directories and SHA-256 hashes; changed, missing, extra or symbolic
++members refuse. Checkout edits after capture cannot change compiled or decoded bytes.
++These local hashes detect copying/mutation; they authenticate no source.
++
++The SDK-only project has explicit compile items and no project/package references.
++Unrelated Contracts sources, Builds imports and Commons dependencies are unnecessary.
++Restore, build and execution use fixed arguments, the existing bounded child with
++filtered credentials/environment and descendant reaping, private outputs and an
++empty private package cache. Cleared package sources/fallback folders and disabled
++targeting/runtime pack downloads refuse package fallback; a missing installed SDK
++or targeting pack cannot be repaired by fetching. Ancestor build/central-package
++imports and build servers/shared compilation are disabled. SDK generators remain
++enabled. Exact owner SDK selection is retained; local builds use Debug and CI uses
++Release. A zero-exit child must still produce a fresh assembly and a closed genuine
++owner result. No checkout project is built directly.
++
++The reduced application graph does not prove complete installed SDK/import resolution.
++The existing installed-toolchain trust boundary is unchanged.
++`PROFILE_BUILD_INPUT_PROOF_UNAVAILABLE` therefore still refuses the authenticated
++adapter before any .NET launch. There is no success override or complete-graph claim;
++the standalone structural bridge remains non-authorizing.
+ `tools/tests/check_production_profile_bridge.py` exercises the real bridge and
+-Python child in disposable source copies; fixture success grants no authority. Both infrastructure and
++Python child in disposable source copies, with poisoned unrelated Contracts and
++ancestor build/package configuration and without Builds/Commons/Tenants sources;
++fixture success grants no authority. Both infrastructure and
+ resolved digest domains remain exactly as documented in
+ [production profile v1](production-profile-v1.md) and
+ [production profile v2](production-profile-v2.md), respectively.
+@@ -101,7 +120,8 @@ The separate `deploy/dapr/production-composing-inventory.json` has exactly
+ must be a separately bound composition inventory, never the profile or itself.
+ Its schema selects the owner decoder without fallback; mismatched versions refuse.
+ V2 expected component coverage includes every infrastructure and Dapr instance.
+-Both version contracts and every owner `ProductionProfile*.cs` source, including
++The snapshot helper, bridge project/configuration/body, both version contracts and
++every owner `ProductionProfile*.cs` source, including
+ the shared canonical writer and binding checks, remain required execution and
+ lifecycle subject bindings. No production coverage file is published by this
+ construction. Declared coverage
+diff --git a/tools/phase-4-transition.schema.json b/tools/phase-4-transition.schema.json
+index 25abbf539..dce174671 100644
+--- a/tools/phase-4-transition.schema.json
++++ b/tools/phase-4-transition.schema.json
+@@ -319,7 +319,7 @@
+             "$ref": "#/$defs/file"
+           },
+           "minItems": 1,
+-          "maxItems": 260,
++          "maxItems": 265,
+           "uniqueItems": true
+         },
+         "story": {
+@@ -362,7 +362,7 @@
+             "then": {
+               "properties": {
+                 "inputs": {
+-                  "maxItems": 260
++                  "maxItems": 265
+                 }
+               }
+             },
+diff --git a/tools/phase_4_transition.py b/tools/phase_4_transition.py
+index 13f304aed..0c7a24ab9 100644
+--- a/tools/phase_4_transition.py
++++ b/tools/phase_4_transition.py
+@@ -479,9 +479,7 @@ class Control:
+         extra_controls = STORY_CONTROL_FILES if request["transition"] == "high-risk-nfr-story-done" else ()
+         if request["transition"] in ("release-available", "production-promoted"):
+             import publication_authority as P
+-            extra_controls = P.CONTROL_FILES + tuple(
+-                p.relative_to(self.root).as_posix() for p in sorted(
+-                    (self.root / "src/Hexalith.EventStore.Contracts/Deployment").glob("ProductionProfile*.cs")))
++            extra_controls = P.CONTROL_FILES + P.B.SOURCES
+         for path in (*CONTROL_FILES, *extra_controls, workflow_path(request["transition"])):
+             value = digest(self.local(path))
+             require(path not in paths or paths[path] == value, "SOURCE_MISMATCH", "control file mismatch")
+diff --git a/tools/production-profile.cs b/tools/production-profile.cs
+deleted file mode 100644
+index 79ce0727b..000000000
+--- a/tools/production-profile.cs
++++ /dev/null
+@@ -1,108 +0,0 @@
+-#!/usr/bin/env dotnet
+-#:project ../src/Hexalith.EventStore.Contracts/Hexalith.EventStore.Contracts.csproj
+-#:property IsPackable=false
+-#:property PublishAot=false
+-
+-using System.Security.Cryptography;
+-using System.Text.Json;
+-using System.Text.RegularExpressions;
+-
+-using Hexalith.EventStore.Contracts.Deployment;
+-
+-// Read-only structural bridge. Root, separate inventory hash and both owner digest
+-// domains are bound by the caller. There is no generation, issuance or deployment mode.
+-try
+-{
+-    if (args is not [string repositoryRoot, string inventoryDigest, string resolvedDigest, string infrastructureDigest])
+-    {
+-        Console.Error.WriteLine("INPUT_INVALID");
+-        return 2;
+-    }
+-
+-    if (!IsDigest(inventoryDigest) || !IsDigest(resolvedDigest) || infrastructureDigest != "-" && !IsDigest(infrastructureDigest))
+-        throw new InvalidDataException();
+-    string root = Path.GetFullPath(repositoryRoot);
+-    byte[] inventoryBytes = ReadBounded(root, "deploy/dapr/production-composing-inventory.json", 1024 * 1024);
+-    if (Hash(inventoryBytes) != inventoryDigest) throw new InvalidDataException();
+-    using JsonDocument inventory = JsonDocument.Parse(inventoryBytes, new JsonDocumentOptions { MaxDepth = 16 });
+-    JsonElement document = inventory.RootElement;
+-    Closed(document, ["schema", "source", "expectedApplicationIds", "expectedComponentIds"]);
+-    int version = document.GetProperty("schema").GetString() switch
+-    {
+-        "hexalith.eventstore.production-composing-inventory.v1" => 1,
+-        "hexalith.eventstore.production-composing-inventory.v2" => 2,
+-        _ => throw new InvalidDataException(),
+-    };
+-    JsonElement source = document.GetProperty("source");
+-    Closed(source, ["path", "sha256"]);
+-    string sourcePath = source.GetProperty("path").GetString()!;
+-    if (sourcePath is "deploy/dapr/production-profile.yaml" or "deploy/dapr/production-composing-inventory.json")
+-        throw new InvalidDataException();
+-    string sourceDigest = source.GetProperty("sha256").GetString()!;
+-    if (!IsDigest(sourceDigest) || Hash(ReadBounded(root, sourcePath, 1024 * 1024)) != sourceDigest)
+-        throw new InvalidDataException();
+-    ProductionProfileValidationContext context = new(Ids(document, "expectedApplicationIds"), Ids(document, "expectedComponentIds"));
+-    byte[] bytes = ReadBounded(root, "deploy/dapr/production-profile.yaml", ProductionProfileCodec.MaximumByteLength);
+-    // Version comes from the separately bound inventory. Never probe or fall back.
+-    ProductionProfileValidationResult result = version switch
+-    {
+-        1 => ProductionProfileValidator.Validate(ProductionProfileCodec.Decode(bytes, context, resolvedDigest,
+-            infrastructureDigest == "-" ? null : infrastructureDigest), context),
+-        2 => ProductionProfileV2Validator.Validate(ProductionProfileV2Codec.Decode(bytes, context, resolvedDigest,
+-            infrastructureDigest == "-" ? null : infrastructureDigest), context),
+-        _ => throw new InvalidDataException(),
+-    };
+-    Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+-    return result.IsStructurallyValid ? 0 : 1;
+-}
+-catch (ProductionProfileValidationException exception)
+-{
+-    Console.Error.WriteLine(JsonSerializer.Serialize(exception.Issues));
+-    return 1;
+-}
+-catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException or JsonException or InvalidOperationException or KeyNotFoundException)
+-{
+-    Console.Error.WriteLine("INPUT_INVALID");
+-    return 2;
+-}
+-
+-static bool IsDigest(string? value) => value is not null && Regex.IsMatch(value, "^[0-9a-f]{64}$", RegexOptions.CultureInvariant);
+-
+-static string Hash(byte[] value) => Convert.ToHexStringLower(SHA256.HashData(value));
+-
+-static void Closed(JsonElement value, string[] expected)
+-{
+-    if (value.ValueKind != JsonValueKind.Object) throw new InvalidDataException();
+-    string[] names = value.EnumerateObject().Select(p => p.Name).ToArray();
+-    if (names.Length != expected.Length || !names.Order(StringComparer.Ordinal).SequenceEqual(expected.Order(StringComparer.Ordinal)))
+-        throw new InvalidDataException();
+-}
+-
+-static string[] Ids(JsonElement value, string name)
+-{
+-    JsonElement array = value.GetProperty(name);
+-    if (array.ValueKind != JsonValueKind.Array || array.GetArrayLength() is < 1 or > 1000) throw new InvalidDataException();
+-    string[] ids = array.EnumerateArray().Select(i => i.GetString()!).ToArray();
+-    if (ids.Any(string.IsNullOrWhiteSpace) || ids.Any(id => id.Length > 512 || id.Any(char.IsControl))
+-        || ids.Distinct(StringComparer.Ordinal).Count() != ids.Length) throw new InvalidDataException();
+-    return ids;
+-}
+-
+-static byte[] ReadBounded(string root, string relative, int maximum)
+-{
+-    if (!Regex.IsMatch(relative, "^[A-Za-z0-9_.@/-]+$", RegexOptions.CultureInvariant)
+-        || Path.IsPathRooted(relative) || relative.Split('/').Any(part => part is "" or "." or ".."))
+-        throw new InvalidDataException();
+-    string candidate = root;
+-    foreach (string part in relative.Split('/'))
+-    {
+-        candidate = Path.Combine(candidate, part);
+-        if ((File.GetAttributes(candidate) & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException();
+-    }
+-    if ((File.GetAttributes(candidate) & FileAttributes.Directory) != 0) throw new InvalidDataException();
+-    using FileStream stream = File.OpenRead(candidate);
+-    byte[] buffer = new byte[maximum + 1];
+-    int length = stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false);
+-    if (length == 0 || length > maximum) throw new InvalidDataException();
+-    return buffer.AsSpan(0, length).ToArray();
+-}
+diff --git a/tools/publication_authority.py b/tools/publication_authority.py
+index 16681383e..23463a3db 100644
+--- a/tools/publication_authority.py
++++ b/tools/publication_authority.py
+@@ -12,10 +12,10 @@ import json
+ import os
+ from pathlib import Path
+ import re
+-import shutil
+ import stat
+ import subprocess
+-import tempfile
++
++import profile_bridge_build as B
+ 
+ SCHEMA = "hexalith.eventstore.publication-authority.v1"
+ RESULT_SCHEMA = "hexalith.eventstore.publication-authority-result.v1"
+@@ -28,7 +28,7 @@ RECORDS = "deploy/dapr/publication-authority.json"
+ REGISTRY = "_bmad-output/implementation-artifacts/owner-role-registry.json"
+ RELEASE_WORKFLOW = ".github/workflows/release.yml"
+ CONTROL_FILES = ("tools/publication_authority.py", "tools/validate-publication-authority.py",
+-                 "tools/publication-authority.schema.json", "tools/production-profile.cs",
++                 "tools/publication-authority.schema.json", *B.CONTROLS,
+                  "docs/architecture/publication-authority-v1.md", "docs/architecture/production-profile-v1.md",
+                  "docs/architecture/production-profile-v2.md",
+                  RELEASE_WORKFLOW, "global.json", "nuget.config", ".gitmodules",
+@@ -373,8 +373,7 @@ def authenticate_records(control, records):
+ def transition_inputs(control):
+     """Require every fixed lifecycle and owner-profile implementation byte bound at exact head."""
+     required = set(CONTROL_FILES) | {RECORDS, PROFILE, INVENTORY}
+-    required |= {p.relative_to(control.root).as_posix() for p in
+-                 (control.root / "src/Hexalith.EventStore.Contracts/Deployment").glob("ProductionProfile*.cs")}
++    required |= set(B.SOURCES)
+     actual = {item["path"] for item in control.binding["inputs"]}
+     require(required <= actual, "PUBLICATION_INPUT_UNBOUND", 1)
+     inventory = parse(control.local(INVENTORY))
+@@ -387,6 +386,10 @@ def transition_inputs(control):
+     require(required <= actual, "PUBLICATION_INPUT_UNBOUND", 1)
+     require(control.request["subject_mode"] == "files" and required <= {item["path"] for item in control.request["subjects"]},
+             "PUBLICATION_SUBJECT_UNBOUND", 1)
++    try:
++        B.source_paths(control.root)
++    except B.Refusal as error:
++        raise Refusal(error.code) from error
+     records = parse(control.local(RECORDS))
+     validate_chain(records)
+     promotion = records["records"][-1]["promotion"]
+@@ -404,9 +407,8 @@ def evaluate_transition(control):
+         records = document["records"]
+         require(records[-1]["state"] == control.request["transition"], "STATE_MISMATCH", 1)
+         authenticate_records(control, records)
+-        # Partial project/config bindings do not prove the complete Contracts,
+-        # imported Builds and SDK/package execution closure. Never execute that
+-        # unverified graph with authenticated authority inputs.
++        # The isolated application snapshot reduces the graph but does not prove
++        # installed SDK/import resolution. Keep authenticated .NET unevaluated.
+         raise Refusal(BUILD_INPUT_PROOF)
+     except Refusal as error:
+         raise T.Refusal("BUSINESS_PREREQUISITE_MISSING", error.code, error.exit_code) from error
+@@ -422,7 +424,8 @@ def profile_check(root, record):
+                                     "hexalith.eventstore.production-composing-inventory.v2"))
+     binding(inventory["source"])
+     require(inventory["source"]["path"] not in (PROFILE, INVENTORY), "SELF_DERIVED_INVENTORY", 1)
+-    require(digest(read(root, inventory["source"]["path"])) == inventory["source"]["sha256"], "COMPOSING_SOURCE_MISMATCH", 1)
++    composition = read(root, inventory["source"]["path"])
++    require(digest(composition) == inventory["source"]["sha256"], "COMPOSING_SOURCE_MISMATCH", 1)
+     for key in ("expectedApplicationIds", "expectedComponentIds"):
+         require(isinstance(inventory[key], list) and 1 <= len(inventory[key]) <= 1000)
+         for value in inventory[key]: text(value)
+@@ -431,35 +434,18 @@ def profile_check(root, record):
+     promotion = record.get("promotion") if record else None
+     resolved = promotion["profile"]["resolved_sha256"] if promotion else digest(content)
+     require(digest(content) == resolved, "PROFILE_RESOLVED_DIGEST_MISMATCH", 1)
++    data = {PROFILE: content, INVENTORY: inventory_bytes, inventory["source"]["path"]: composition}
+     if promotion:
+         require(digest(inventory_bytes) == promotion["inventory"]["sha256"], "COMPOSING_INVENTORY_MISMATCH", 1)
+         rendered = read(root, promotion["rendered_deployment"]["path"])
+         require(digest(rendered) == promotion["rendered_deployment"]["sha256"], "DEPLOYMENT_MISMATCH", 1)
+-    # Fixed bridge only; neither paths to executables nor commands are accepted as input.
+-    # All build products belong to a disposable private directory. Token-free execution.
+-    import phase_4_transition as T
+-    executable = shutil.which("dotnet")
+-    require(executable is not None, "PROFILE_BRIDGE_UNAVAILABLE", 1)
+-    dotnet = Path(executable).resolve()
+-    environment = {"MSBUILDDISABLENODEREUSE": "1", "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+-                   "DOTNET_ROOT": str(dotnet.parent)}
+-    package_cache = Path(os.environ.get("NUGET_PACKAGES", str(Path.home() / ".nuget/packages"))).resolve()
+-    if package_cache.is_dir():
+-        environment["NUGET_PACKAGES"] = str(package_cache)
+-    with tempfile.TemporaryDirectory(prefix="publication-profile-") as directory:
+-        scratch = Path(directory)
+-        (scratch / "global.json").write_bytes(read(root, "global.json"))
+-        command = [str(dotnet), "run", "--disable-build-servers", "--file", str(root / "tools/production-profile.cs"), "--configuration", "Release" if os.environ.get("CI") else "Debug",
+-                   "-p:UseHexalithProjectReferences=" + ("false" if os.environ.get("CI") else "true"),
+-                   "-p:UseNuGetDeps=" + ("true" if os.environ.get("CI") else "false"),
+-                   "-p:BuildInParallel=false", "-p:UseArtifactsOutput=true", "-p:ArtifactsPath=" + str(scratch / "artifacts"), "--", str(root), digest(inventory_bytes), resolved,
+-                   promotion["profile"]["infrastructure_sha256"] if promotion else "-"]
+-        try:
+-            output = T.Control.bounded_process(command, scratch, "profile-result.txt", timeout_seconds=60,
+-                                      environment_extra=environment,
+-                                      failure_code="PROFILE_OWNER_VALIDATION_FAILED", limit_code="PROFILE_BRIDGE_UNAVAILABLE")
+-        except T.Refusal as error:
+-            raise Refusal(error.code) from error
++        data[promotion["rendered_deployment"]["path"]] = rendered
++    try:
++        captured = B.capture(root, data)
++        output = B.execute(captured, digest(inventory_bytes), resolved,
++                           promotion["profile"]["infrastructure_sha256"] if promotion else "-")
++    except B.Refusal as error:
++        raise Refusal(error.code) from error
+     profile = parse(content)
+     validate_owner_result(output, resolved, profile.get("infrastructureDigest"),
+                           promotion["profile"]["infrastructure_sha256"] if promotion else None)
+diff --git a/tools/tests/check_production_profile_bridge.py b/tools/tests/check_production_profile_bridge.py
+index b2b1ae8d3..8316b5449 100644
+--- a/tools/tests/check_production_profile_bridge.py
++++ b/tools/tests/check_production_profile_bridge.py
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
+ """Exercise the genuine bridge and fixed Python child in disposable repository copies.
+ 
+-CI uses package references and Release; local verification uses Debug source references.
++CI uses Release; local verification uses Debug. Neither bridge graph needs packages.
+ Synthetic profile files are created exclusively under the private temporary checkout.
+ """
+ import argparse
+@@ -14,6 +14,7 @@ import shutil
+ import subprocess
+ import sys
+ import tempfile
++from unittest import mock
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+ 
+@@ -39,48 +40,73 @@ def copy_repository(source, target):
+             shutil.copy2(original, destination)
+ 
+ 
++def check_missing_targeting_pack(root, dotnet, scratch):
++    """Relocate the selected installed SDK without its reference packs."""
++    import publication_authority as P
++    import phase_4_transition as T
++    incomplete = scratch / 'sdk-without-packs'
++    incomplete.mkdir()
++    shutil.copy2(dotnet, incomplete / 'dotnet')
++    for name in ('host', 'shared'):
++        (incomplete / name).symlink_to(Path(dotnet).parent / name, target_is_directory=True)
++    selected = run([dotnet, '--version'], root).stdout.strip()
++    # Linking the SDK itself would resolve its original installation's packs.
++    shutil.copytree(Path(dotnet).parent / 'sdk' / selected, incomplete / 'sdk' / selected)
++    diagnostics = []
++    bounded = T.Control.bounded_process
++    def observed(command, private, filename, **kwargs):
++        try:
++            return bounded(command, private, filename, **kwargs)
++        except T.Refusal:
++            diagnostics.append((private / filename).read_bytes())
++            raise
++    with mock.patch.object(P.B.shutil, 'which', return_value=str(incomplete / 'dotnet')), \
++         mock.patch.object(T.Control, 'bounded_process', side_effect=observed):
++        try:
++            P.profile_check(root, None)
++        except P.Refusal as error:
++            assert error.code == 'PROFILE_OWNER_VALIDATION_FAILED', error.code
++        else:
++            raise AssertionError('missing installed targeting pack accepted or fetched')
++    # .NET 11 can first refuse missing prune data from the reference pack;
++    # older SDKs can reach the explicit missing-targeting-pack diagnostic.
++    content = b'\n'.join(diagnostics)
++    code = next((value for value in (b'NETSDK1226', b'NETSDK1127') if value in content), None)
++    assert code is not None, content.decode()
++    print('missing-installed-targeting-pack-no-fallback: ' + code.decode() + ', PASS', flush=True)
++
++
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--root', type=Path, default=ROOT)
+     args = parser.parse_args()
+     original = args.root.resolve()
++    originals = {path: (original / path).read_bytes() if (original / path).exists() else None
++                 for path in ('deploy/dapr/production-profile.yaml', 'deploy/dapr/production-composing-inventory.json',
++                              'deploy/dapr/publication-authority.json')}
+     executable = shutil.which('dotnet')
+     if not executable:
+         raise AssertionError('dotnet SDK is required; this integration check cannot skip')
+     dotnet = str(Path(executable).resolve())
+-    configuration = 'Release' if os.environ.get('CI') else 'Debug'
+-    flags = ['-p:UseHexalithProjectReferences=' + ('false' if os.environ.get('CI') else 'true'),
+-             '-p:UseNuGetDeps=' + ('true' if os.environ.get('CI') else 'false'),
+-             '-p:BuildInParallel=false', '--disable-build-servers']
+     with tempfile.TemporaryDirectory(prefix='publication-bridge-integration-') as directory:
+         scratch = Path(directory)
+         workspace = scratch / 'workspace'
+         root = workspace / 'references/Hexalith.EventStore'
+-        # Preserve the root-declared source layout without initializing nested submodules.
+-        superproject = subprocess.check_output(['git', '-C', str(original), 'rev-parse', '--show-superproject-working-tree'], text=True).strip()
+-        if superproject:
+-            workspace.mkdir(parents=True)
+-            shutil.copy2(Path(superproject) / '.gitmodules', workspace / '.gitmodules')
+         copy_repository(original, root)
+-        for name in ('Hexalith.Builds', 'Hexalith.Commons', 'Hexalith.Tenants'):
+-            candidates = (original / 'references' / name, original.parent / name)
+-            for candidate in candidates:
+-                if not candidate.is_dir():
+-                    continue
+-                repository_root = subprocess.run(['git', '-C', str(candidate), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
+-                if repository_root.returncode == 0 and Path(repository_root.stdout.strip()).resolve() == candidate.resolve():
+-                    copy_repository(candidate, workspace / 'references' / name)
+-                    break
+-            else:
+-                if name == 'Hexalith.Builds' or not os.environ.get('CI'):
+-                    raise AssertionError('required root-declared source is unavailable: ' + name)
+         sys.path.insert(0, str(root / 'tools'))
+         import publication_authority as P
+-        environment = {key: value for key, value in os.environ.items()
+-                       if key in ('PATH', 'HOME', 'DOTNET_ROOT', 'NUGET_PACKAGES', 'TMPDIR', 'TMP', 'TEMP', 'CI')}
+-        environment.update(MSBUILDDISABLENODEREUSE='1', DOTNET_CLI_USE_MSBUILD_SERVER='0')
+-        artifacts = scratch / 'artifacts'
+-        run([dotnet, 'build', 'tools/production-profile.cs', '-c', configuration, *flags, '--artifacts-path', str(artifacts)], root, environment=environment)
++        import phase_4_transition as T
++        # These inputs must never be compiled/imported. No Builds/Commons/Tenants
++        # checkout exists in this private workspace (and no nested checkout runs).
++        (root / 'src/Hexalith.EventStore.Contracts/UnrelatedPoison.cs').write_text('#error unrelated Contracts must never compile')
++        poison = '<Project><Target Name="Poison" BeforeTargets="PrepareForBuild"><Error Text="unrelated-build-input-executed" /></Target></Project>'
++        for ancestor in (root, root.parent, workspace, scratch):
++            for name in ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props'):
++                (ancestor / name).write_text(poison)
++            (ancestor / 'Directory.Build.rsp').write_text('-p:CustomBeforeMicrosoftCommonTargets=' + str(root / 'Directory.Build.targets'))
++        (root / 'nuget.config').write_text('poisoned unrelated NuGet configuration')
++        for name in ('Hexalith.Builds', 'Hexalith.Commons', 'Hexalith.Tenants'):
++            assert not (workspace / 'references' / name).exists()
+         for version in (1, 2):
+             fixture = root / 'tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures'
+             encode_profile = runpy.run_path(str(fixture / 'verify-golden.py'))['encode']
+@@ -106,19 +132,59 @@ def main():
+                 inventory_path.write_text(json.dumps(inventory if model is None else model, sort_keys=True))
+ 
+             def bridge(label, expected, resolved=None, issue=None):
+-                result = run([dotnet, 'run', '--file', 'tools/production-profile.cs', '--no-build', '-c', configuration,
+-                              *flags, '--artifacts-path', str(artifacts), '--', str(root), P.digest(inventory_path.read_bytes()),
+-                              resolved or digests['resolved'], digests['infrastructure']], root, expected, environment)
+-                assert sentinel not in result.stdout + result.stderr
+-                assert 'Unhandled exception' not in result.stderr and ' at Program.' not in result.stderr
++                data = {P.PROFILE: profile_path.read_bytes(), P.INVENTORY: inventory_path.read_bytes(),
++                        composition.relative_to(root).as_posix(): composition.read_bytes()}
++                outputs = []
++                bounded = T.Control.bounded_process
++                def observed(command, private, filename, **kwargs):
++                    constructor = subprocess.Popen
++                    processes = []
++                    def spawn(*args, **options):
++                        process = constructor(*args, **options)
++                        processes.append(process)
++                        return process
++                    try:
++                        with mock.patch.object(subprocess, 'Popen', side_effect=spawn):
++                            return bounded(command, private, filename, **kwargs)
++                    finally:
++                        if filename == 'profile-result.txt':
++                            outputs.append(((private / filename).read_bytes(), processes[-1].returncode))
++                try:
++                    with mock.patch.object(T.Control, 'bounded_process', side_effect=observed):
++                        output = P.B.execute(P.B.capture(root, data), P.digest(inventory_path.read_bytes()),
++                                             resolved or digests['resolved'], digests['infrastructure'])
++                except P.B.Refusal as error:
++                    assert expected != 0 and error.code == 'PROFILE_OWNER_VALIDATION_FAILED', (label, error.code)
++                    output = outputs[-1][0] if outputs else b''
++                else:
++                    assert expected == 0, label + ' unexpectedly succeeded'
++                assert outputs and outputs[-1][1] == expected, (label, outputs)
++                diagnostic = output.decode()
++                assert sentinel not in diagnostic
++                assert 'Unhandled exception' not in diagnostic and ' at Program.' not in diagnostic
+                 if issue is not None:
+-                    assert issue in {item['Code'] for item in json.loads(result.stderr)}
++                    assert issue in {item['Code'] for item in json.loads(diagnostic)}
+                 if expected == 0:
+-                    document = json.loads(result.stdout)
++                    document = json.loads(diagnostic)
+                     assert document['isStructurallyValid'] and document['authorization'] == document['qualification'] == 'unevaluated'
++                    assert document['resolvedDigest'] == digests['resolved']
++                    assert document['infrastructureDigest'] == digests['infrastructure']
+                 print(f'v{version}-' + label + ': PASS', flush=True)
+ 
+             prepare(); bridge('complete-synthetic', 0)
++            captured = P.B.capture(root, {P.PROFILE: golden, P.INVENTORY: inventory_path.read_bytes(),
++                                         composition.relative_to(root).as_posix(): composition.read_bytes()})
++            source_path = root / P.B.SOURCES[0]
++            original_source = source_path.read_bytes()
++            try:
++                source_path.write_text('#error mutable checkout source must never compile')
++                profile_path.write_bytes(b'mutable checkout profile must never decode')
++                output = P.B.execute(captured, P.digest(inventory_path.read_bytes()), digests['resolved'], digests['infrastructure'])
++                P.validate_owner_result(output, digests['resolved'], digests['infrastructure'], digests['infrastructure'])
++            finally:
++                source_path.write_bytes(original_source)
++                prepare()
++            print(f'v{version}-verified-snapshot-survives-checkout-mutation: PASS', flush=True)
+             other = 2 if version == 1 else 1
+             prepare({**inventory, 'schema': f'hexalith.eventstore.production-composing-inventory.v{other}'})
+             bridge('explicit-version-mismatch-no-fallback', 1)
+@@ -146,16 +212,26 @@ def main():
+             prepare(profile=golden + b'\n'); bridge('noncanonical', 1)
+             prepare({**inventory, 'expectedComponentIds': components[1:]}); bridge('underdeclared-inventory', 1)
+             prepare(); bridge('digest-domain-substitution', 1, digests['infrastructure'])
+-            profile_path.rename(profile_path.with_name('alternate-profile.yaml')); bridge('missing-sole-slot', 2)
++            profile_path.rename(profile_path.with_name('alternate-profile.yaml'))
++            try:
++                P.profile_check(root, None)
++            except P.Refusal as error:
++                assert error.code == 'PROFILE_MISSING', error.code
++            else:
++                raise AssertionError('alternate profile path accepted')
++            print(f'v{version}-missing-sole-slot: PASS', flush=True)
+             prepare({**inventory, 'source': {'path': P.INVENTORY, 'sha256': 'a'*64}}); bridge('self-inventory-source', 2)
+             prepare({**inventory, 'schema': sentinel}); bridge('wrong-schema-no-echo', 2)
+             inventory_path.write_text('{"schema":"' + sentinel + '","schema":"duplicate"}')
+             bridge('duplicate-fields-no-echo', 2)
+             prepare(); inventory_path.write_text(sentinel); bridge('malformed-json-no-echo', 2)
+-            # Exercise the real production child path, including its filtered PATH/HOME,
+-            # copied owner SDK pin, package cache and forced build-server protections.
++            # Exercise the real child with poisoned caller properties and imports.
+             prepare()
+-            assert P.profile_check(root, None) == composition.relative_to(root).as_posix()
++            with mock.patch.dict(os.environ, {'MSBuildSDKsPath': str(root / 'untrusted-sdk'),
++                    'DirectoryBuildPropsPath': str(root / 'Directory.Build.props'),
++                    'CustomBeforeMicrosoftCommonTargets': str(root / 'Directory.Build.targets'),
++                    'NUGET_PACKAGES': str(root / 'untrusted-packages'), 'GITHUB_TOKEN': sentinel}):
++                assert P.profile_check(root, None) == composition.relative_to(root).as_posix()
+             print('fixed-python-child-complete: PASS', flush=True)
+             prepare(profile=golden + b'\n')
+             try:
+@@ -233,6 +309,11 @@ def main():
+             assert set(P.FIXED_MISSING) <= set(missing)
+             assert 'RELEASE_EVIDENCE_CODEC_UNAVAILABLE' in missing
+             print(f'v{version}-retained-fixed-authority-refusals: PASS', flush=True)
++        # A relocated installed toolchain with no targeting packs must fail,
++        # even when the caller offers its populated normal package cache.
++        check_missing_targeting_pack(root, dotnet, scratch)
++        for path, content in originals.items():
++            assert ((original / path).read_bytes() if (original / path).exists() else None) == content
+         print('Bridge integration: both explicit profile versions passed; synthetic controls grant no authority.', flush=True)
+     return 0
+ 
+diff --git a/tools/tests/test_phase_4_transition.py b/tools/tests/test_phase_4_transition.py
+index 0ca3e511c..84a892829 100644
+--- a/tools/tests/test_phase_4_transition.py
++++ b/tools/tests/test_phase_4_transition.py
+@@ -191,6 +191,17 @@ class TransitionTests(unittest.TestCase):
+         return self.state['responses'][API + endpoint]['json']
+ 
+     def run_cli(self, phase='evaluate', env_extra=None, raw=None, expected=None):
++        # Publication needs the complete owner graph; unrelated OQ8 controls
++        # should not repeatedly serialize those source blobs into HTTP state.
++        if isinstance(self.request, dict) and self.request.get('transition') in ('release-available', 'production-promoted'):
++            for path in P.B.SOURCES:
++                if (HEAD, path) not in self.blobs:
++                    content=(ROOT/path).read_bytes()
++                    destination=self.root/path
++                    destination.parent.mkdir(parents=True,exist_ok=True)
++                    if not destination.exists(): destination.write_bytes(content)
++                    self.blob(HEAD,path,content)
++                    self.blob(BEFORE,path,content)
+         self.state_path.write_text(json.dumps(self.state))
+         self.request_path.write_bytes(raw if raw is not None else canonical(self.request))
+         env = {k: v for k, v in os.environ.items() if not k.startswith(('GH_', 'GITHUB_', 'PYTHON'))}
+@@ -476,7 +487,7 @@ class TransitionTests(unittest.TestCase):
+         comments={item['url'] for item in self.state['observed'] if '/issues/comments/' in item['url']}
+         self.assertTrue({API+'/issues/comments/'+str(1000+i) for i in range(5)}<=comments)
+         self.assertIsNone(document['seal'])
+-        for path in (P.PROFILE,P.INVENTORY,P.RECORDS,rendered_path,'tools/production-profile.cs'):
++        for path in (P.PROFILE,P.INVENTORY,P.RECORDS,rendered_path,*P.B.CONTROLS,*P.B.SOURCES):
+             original=(self.root/path).read_bytes()
+             (self.root/path).write_bytes(original+b'\n')
+             with self.subTest(path=path): self.assert_refused('SOURCE_MISMATCH')
+@@ -517,6 +528,10 @@ class TransitionTests(unittest.TestCase):
+         self.assertEqual(1, len(document['approvals']))
+         self.assertEqual('none', document['downstream_minimum'])
+         self.assertIsNone(document['seal'])
++        schema=json.loads((ROOT/'tools/phase-4-transition.schema.json').read_text())
++        maximum=C.MAX_RESULT_INPUTS+len(P.CONTROL_FILES)+len(P.B.SOURCES)
++        self.assertEqual(maximum,schema['$defs']['binding']['properties']['inputs']['maxItems'])
++        self.assertEqual(maximum,schema['$defs']['binding']['allOf'][0]['else']['then']['properties']['inputs']['maxItems'])
+ 
+     def test_unbound_gate_and_runtime_parity_never_execute_caller_command(self):
+         self.assert_pass()
+diff --git a/tools/tests/test_publication_authority.py b/tools/tests/test_publication_authority.py
+index 69d4943e2..840217e28 100644
+--- a/tools/tests/test_publication_authority.py
++++ b/tools/tests/test_publication_authority.py
+@@ -3,6 +3,7 @@ import copy
+ import datetime as dt
+ import hashlib
+ import json
++import shutil
+ from pathlib import Path
+ import subprocess
+ import sys
+@@ -19,6 +20,13 @@ H = lambda label: hashlib.sha256(label.encode()).hexdigest()
+ NOW = dt.datetime(2026, 6, 1, tzinfo=dt.timezone.utc)
+ 
+ 
++def copy_bridge_inputs(root):
++    for path in P.B.BUILD_INPUTS:
++        destination = root / path
++        destination.parent.mkdir(parents=True, exist_ok=True)
++        shutil.copyfile(ROOT / path, destination)
++
++
+ def chain(kind='eventstore-package'):
+     owner = 'Hexalith/Hexalith.EventStore' if kind == 'eventstore-package' else 'Hexalith/Hexalith.Platform'
+     records = []
+@@ -227,13 +235,13 @@ class PublicationAuthorityTests(unittest.TestCase):
+             fixture=json.loads((ROOT/'tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticProfile.v1.json').read_bytes())
+             path=root/P.PROFILE; path.parent.mkdir(parents=True)
+             path.write_bytes((ROOT/'tests/Hexalith.EventStore.Contracts.Tests/Deployment/Fixtures/SyntheticProfile.v1.json').read_bytes())
+-            (root/'global.json').write_bytes((ROOT/'global.json').read_bytes())
++            copy_bridge_inputs(root)
+             (root/'composition.json').write_bytes(b'independent fixture composition')
+             (root/P.INVENTORY).write_bytes(P.canonical({'schema':'hexalith.eventstore.production-composing-inventory.v1',
+                 'source':{'path':'composition.json','sha256':P.digest(b'independent fixture composition')},
+                 'expectedApplicationIds':[a['id'] for a in fixture['applications']],
+                 'expectedComponentIds':[c['id'] for c in fixture['components']]}))
+-            with mock.patch.object(T.Control,'bounded_process',return_value=b''), mock.patch.object(P.shutil,'which',return_value='/usr/bin/dotnet'):
++            with mock.patch.object(T.Control,'bounded_process',return_value=b''), mock.patch.object(P.B.shutil,'which',return_value='/usr/bin/dotnet'):
+                 self.refusal('PROFILE_OWNER_RESULT_INVALID',lambda:P.profile_check(root,None))
+ 
+     def test_cli_structural_success_and_diagnostics_cannot_overwrite_input_or_profile(self):
+@@ -364,7 +372,7 @@ class PublicationAuthorityTests(unittest.TestCase):
+                 fixture=json.loads(content)
+                 (root/P.PROFILE).parent.mkdir(parents=True)
+                 (root/P.PROFILE).write_bytes(content)
+-                (root/'global.json').write_bytes((ROOT/'global.json').read_bytes())
++                copy_bridge_inputs(root)
+                 source=b'separately bound synthetic composing inventory'
+                 (root/'composition.json').write_bytes(source)
+                 inventory={'schema':f'hexalith.eventstore.production-composing-inventory.v{version}',
+@@ -377,10 +385,11 @@ class PublicationAuthorityTests(unittest.TestCase):
+                         'resolvedDigest':P.digest(content),'issues':[],'authorization':'unevaluated','qualification':'unevaluated'}
+                 # The genuine bridge separately exercises coverage and decoding. This
+                 # control isolates the fixed Python child's version/source bindings.
+-                with mock.patch.object(T.Control,'bounded_process',return_value=P.canonical(result)) as child, mock.patch.object(P.shutil,'which',return_value='/usr/bin/dotnet'):
++                with mock.patch.object(P.B,'execute',return_value=P.canonical(result)) as child:
+                     self.assertEqual('composition.json',P.profile_check(root,None))
+-                    self.assertIn(str(root/'tools/production-profile.cs'),child.call_args.args[0])
+-                    self.assertIn(P.digest(inventory_path.read_bytes()),child.call_args.args[0])
++                    self.assertEqual(set(P.B.BUILD_INPUTS)|{P.PROFILE,P.INVENTORY,'composition.json'},
++                                     set(dict(child.call_args.args[0].files)))
++                    self.assertEqual(P.digest(inventory_path.read_bytes()),child.call_args.args[1])
+                     inventory['source']['sha256']=H('wrong-source')
+                     inventory_path.write_bytes(P.canonical(inventory))
+                     self.refusal('COMPOSING_SOURCE_MISMATCH',lambda:P.profile_check(root,None))
+@@ -416,7 +425,7 @@ class PublicationAuthorityTests(unittest.TestCase):
+             self.assertEqual('BUSINESS_PREREQUISITE_MISSING',caught.exception.code)
+             self.assertEqual(P.BUILD_INPUT_PROOF,str(caught.exception))
+             child.assert_not_called()
+-        for path in ('docs/architecture/production-profile-v2.md',
++        for path in (*P.B.CONTROLS, 'docs/architecture/production-profile-v2.md',
+                      'src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Codec.cs',
+                      'src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCanonicalJson.cs',
+                      'src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationDocument.cs',source):
+@@ -425,6 +434,16 @@ class PublicationAuthorityTests(unittest.TestCase):
+         incomplete=control(required)
+         incomplete.request['subjects']=[item for item in incomplete.request['subjects'] if item['path']!=source]
+         self.refusal('PUBLICATION_SUBJECT_UNBOUND',lambda:P.transition_inputs(incomplete))
++        with tempfile.TemporaryDirectory() as directory:
++            root=Path(directory)
++            copy_bridge_inputs(root)
++            candidate=control(required)
++            candidate.root=root
++            extra=root/P.B.SOURCE_DIRECTORY/'ProductionProfileUnbound.cs'
++            extra.write_text('#error unbound owner source')
++            with mock.patch.object(P.B,'execute') as child:
++                self.refusal('PROFILE_BUILD_INPUT_INVALID',lambda:P.transition_inputs(candidate))
++                child.assert_not_called()
+ 
+     def test_schema_is_closed_and_has_explicit_state_grammar(self):
+         schema=json.loads((ROOT/'tools/publication-authority.schema.json').read_text())
+diff --git a/tools/ProductionProfileBridge/NuGet.Config b/tools/ProductionProfileBridge/NuGet.Config
+new file mode 100644
+index 000000000..f0051fbd1
+--- /dev/null
++++ b/tools/ProductionProfileBridge/NuGet.Config
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<configuration>
++  <packageSources><clear /></packageSources>
++  <fallbackPackageFolders><clear /></fallbackPackageFolders>
++</configuration>
+diff --git a/tools/ProductionProfileBridge/ProductionProfileBridge.csproj b/tools/ProductionProfileBridge/ProductionProfileBridge.csproj
+new file mode 100644
+index 000000000..a85cae676
+--- /dev/null
++++ b/tools/ProductionProfileBridge/ProductionProfileBridge.csproj
+@@ -0,0 +1,53 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <OutputType>Exe</OutputType>
++    <TargetFramework>net11.0</TargetFramework>
++    <ImplicitUsings>enable</ImplicitUsings>
++    <Nullable>enable</Nullable>
++    <EnableDefaultItems>false</EnableDefaultItems>
++    <UseAppHost>false</UseAppHost>
++    <IsPackable>false</IsPackable>
++    <NuGetAudit>false</NuGetAudit>
++  </PropertyGroup>
++  <ItemGroup>
++    <Compile Include="Program.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfile.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileApplication.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileArtifact.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCanonicalJson.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCatalogs.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCodec.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponent.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileComponentVersion.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileCredentialReference.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEndpoint.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEnvironment.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileEvidence.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileFreshness.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileInfrastructure.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssue.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileIssuer.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfilePhysicalTarget.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProtection.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileProvider.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRelease.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestore.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileRestoreUnit.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTemplate.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTool.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileTopology.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Codec.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Component.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Dapr.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Scope.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2Validator.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationComponent.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationContext.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationDocument.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationException.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidationResult.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileValidator.cs" />
++    <Compile Include="../../src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileWriter.cs" />
++  </ItemGroup>
++</Project>
+diff --git a/tools/ProductionProfileBridge/Program.cs b/tools/ProductionProfileBridge/Program.cs
+new file mode 100644
+index 000000000..6456bc041
+--- /dev/null
++++ b/tools/ProductionProfileBridge/Program.cs
+@@ -0,0 +1,103 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++using System.Text.RegularExpressions;
++
++using Hexalith.EventStore.Contracts.Deployment;
++
++// Read-only structural bridge. Root, separate inventory hash and both owner digest
++// domains are bound by the caller. There is no generation, issuance or deployment mode.
++try
++{
++    if (args is not [string repositoryRoot, string inventoryDigest, string resolvedDigest, string infrastructureDigest])
++    {
++        Console.Error.WriteLine("INPUT_INVALID");
++        return 2;
++    }
++
++    if (!IsDigest(inventoryDigest) || !IsDigest(resolvedDigest) || infrastructureDigest != "-" && !IsDigest(infrastructureDigest))
++        throw new InvalidDataException();
++    string root = Path.GetFullPath(repositoryRoot);
++    byte[] inventoryBytes = ReadBounded(root, "deploy/dapr/production-composing-inventory.json", 1024 * 1024);
++    if (Hash(inventoryBytes) != inventoryDigest) throw new InvalidDataException();
++    using JsonDocument inventory = JsonDocument.Parse(inventoryBytes, new JsonDocumentOptions { MaxDepth = 16 });
++    JsonElement document = inventory.RootElement;
++    Closed(document, ["schema", "source", "expectedApplicationIds", "expectedComponentIds"]);
++    int version = document.GetProperty("schema").GetString() switch
++    {
++        "hexalith.eventstore.production-composing-inventory.v1" => 1,
++        "hexalith.eventstore.production-composing-inventory.v2" => 2,
++        _ => throw new InvalidDataException(),
++    };
++    JsonElement source = document.GetProperty("source");
++    Closed(source, ["path", "sha256"]);
++    string sourcePath = source.GetProperty("path").GetString()!;
++    if (sourcePath is "deploy/dapr/production-profile.yaml" or "deploy/dapr/production-composing-inventory.json")
++        throw new InvalidDataException();
++    string sourceDigest = source.GetProperty("sha256").GetString()!;
++    if (!IsDigest(sourceDigest) || Hash(ReadBounded(root, sourcePath, 1024 * 1024)) != sourceDigest)
++        throw new InvalidDataException();
++    ProductionProfileValidationContext context = new(Ids(document, "expectedApplicationIds"), Ids(document, "expectedComponentIds"));
++    byte[] bytes = ReadBounded(root, "deploy/dapr/production-profile.yaml", ProductionProfileCodec.MaximumByteLength);
++    // Version comes from the separately bound inventory. Never probe or fall back.
++    ProductionProfileValidationResult result = version switch
++    {
++        1 => ProductionProfileValidator.Validate(ProductionProfileCodec.Decode(bytes, context, resolvedDigest,
++            infrastructureDigest == "-" ? null : infrastructureDigest), context),
++        2 => ProductionProfileV2Validator.Validate(ProductionProfileV2Codec.Decode(bytes, context, resolvedDigest,
++            infrastructureDigest == "-" ? null : infrastructureDigest), context),
++        _ => throw new InvalidDataException(),
++    };
++    Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
++    return result.IsStructurallyValid ? 0 : 1;
++}
++catch (ProductionProfileValidationException exception)
++{
++    Console.Error.WriteLine(JsonSerializer.Serialize(exception.Issues));
++    return 1;
++}
++catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or ArgumentException or JsonException or InvalidOperationException or KeyNotFoundException)
++{
++    Console.Error.WriteLine("INPUT_INVALID");
++    return 2;
++}
++
++static bool IsDigest(string? value) => value is not null && Regex.IsMatch(value, "^[0-9a-f]{64}$", RegexOptions.CultureInvariant);
++
++static string Hash(byte[] value) => Convert.ToHexStringLower(SHA256.HashData(value));
++
++static void Closed(JsonElement value, string[] expected)
++{
++    if (value.ValueKind != JsonValueKind.Object) throw new InvalidDataException();
++    string[] names = value.EnumerateObject().Select(p => p.Name).ToArray();
++    if (names.Length != expected.Length || !names.Order(StringComparer.Ordinal).SequenceEqual(expected.Order(StringComparer.Ordinal)))
++        throw new InvalidDataException();
++}
++
++static string[] Ids(JsonElement value, string name)
++{
++    JsonElement array = value.GetProperty(name);
++    if (array.ValueKind != JsonValueKind.Array || array.GetArrayLength() is < 1 or > 1000) throw new InvalidDataException();
++    string[] ids = array.EnumerateArray().Select(i => i.GetString()!).ToArray();
++    if (ids.Any(string.IsNullOrWhiteSpace) || ids.Any(id => id.Length > 512 || id.Any(char.IsControl))
++        || ids.Distinct(StringComparer.Ordinal).Count() != ids.Length) throw new InvalidDataException();
++    return ids;
++}
++
++static byte[] ReadBounded(string root, string relative, int maximum)
++{
++    if (!Regex.IsMatch(relative, "^[A-Za-z0-9_.@/-]+$", RegexOptions.CultureInvariant)
++        || Path.IsPathRooted(relative) || relative.Split('/').Any(part => part is "" or "." or ".."))
++        throw new InvalidDataException();
++    string candidate = root;
++    foreach (string part in relative.Split('/'))
++    {
++        candidate = Path.Combine(candidate, part);
++        if ((File.GetAttributes(candidate) & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException();
++    }
++    if ((File.GetAttributes(candidate) & FileAttributes.Directory) != 0) throw new InvalidDataException();
++    using FileStream stream = File.OpenRead(candidate);
++    byte[] buffer = new byte[maximum + 1];
++    int length = stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false);
++    if (length == 0 || length > maximum) throw new InvalidDataException();
++    return buffer.AsSpan(0, length).ToArray();
++}
+diff --git a/tools/profile_bridge_build.py b/tools/profile_bridge_build.py
+new file mode 100644
+index 000000000..12a7eed1e
+--- /dev/null
++++ b/tools/profile_bridge_build.py
+@@ -0,0 +1,264 @@
++"""Fixed SDK-only owner bridge built solely from verified private snapshot bytes.
++
++The hashes detect incomplete copies and changes. They authenticate no source or
++installed toolchain, and do not supply the publication build-input proof.
++"""
++from dataclasses import dataclass
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import shutil
++import stat
++import tempfile
++import xml.etree.ElementTree as ET
++
++BRIDGE = "tools/ProductionProfileBridge"
++PROJECT = BRIDGE + "/ProductionProfileBridge.csproj"
++CONFIG = BRIDGE + "/NuGet.Config"
++PROGRAM = BRIDGE + "/Program.cs"
++SOURCE_DIRECTORY = "src/Hexalith.EventStore.Contracts/Deployment"
++SOURCE_NAMES = (
++    "ProductionProfile.cs", "ProductionProfileApplication.cs", "ProductionProfileArtifact.cs",
++    "ProductionProfileCanonicalJson.cs", "ProductionProfileCatalogs.cs", "ProductionProfileCodec.cs",
++    "ProductionProfileComponent.cs", "ProductionProfileComponentVersion.cs", "ProductionProfileCredentialReference.cs",
++    "ProductionProfileEndpoint.cs", "ProductionProfileEnvironment.cs", "ProductionProfileEvidence.cs",
++    "ProductionProfileFreshness.cs", "ProductionProfileInfrastructure.cs", "ProductionProfileIssue.cs",
++    "ProductionProfileIssuer.cs", "ProductionProfilePhysicalTarget.cs", "ProductionProfileProtection.cs",
++    "ProductionProfileProvider.cs", "ProductionProfileRelease.cs", "ProductionProfileRestore.cs",
++    "ProductionProfileRestoreUnit.cs", "ProductionProfileTemplate.cs", "ProductionProfileTool.cs",
++    "ProductionProfileTopology.cs", "ProductionProfileV2.cs", "ProductionProfileV2Codec.cs",
++    "ProductionProfileV2Component.cs", "ProductionProfileV2Dapr.cs", "ProductionProfileV2Scope.cs",
++    "ProductionProfileV2Validator.cs", "ProductionProfileValidationComponent.cs",
++    "ProductionProfileValidationContext.cs", "ProductionProfileValidationDocument.cs",
++    "ProductionProfileValidationException.cs", "ProductionProfileValidationResult.cs",
++    "ProductionProfileValidator.cs", "ProductionProfileWriter.cs",
++)
++SOURCES = tuple(SOURCE_DIRECTORY + "/" + name for name in SOURCE_NAMES)
++CONTROLS = ("tools/profile_bridge_build.py", PROJECT, CONFIG, PROGRAM)
++BUILD_INPUTS = ("global.json", PROJECT, CONFIG, PROGRAM, *SOURCES)
++MAX_FILE = 1024 * 1024
++MAX_TOTAL = 12 * MAX_FILE
++PROPERTIES = {
++    "OutputType": "Exe", "TargetFramework": "net11.0", "ImplicitUsings": "enable", "Nullable": "enable",
++    "EnableDefaultItems": "false", "UseAppHost": "false", "IsPackable": "false", "NuGetAudit": "false",
++}
++
++
++class Refusal(Exception):
++    """Safe diagnostic without caller-controlled values or child diagnostics."""
++    def __init__(self, code="PROFILE_BUILD_INPUT_INVALID"):
++        super().__init__(code)
++        self.code = code
++
++
++def require(value, code="PROFILE_BUILD_INPUT_INVALID"):
++    if not value:
++        raise Refusal(code)
++
++
++def safe_path(path):
++    require(isinstance(path, str) and len(path) <= 512
++            and re.fullmatch(r"[A-Za-z0-9_.@/-]+", path) is not None and not path.startswith("/")
++            and all(part not in ("", ".", "..") for part in path.split("/")))
++
++
++def no_symbolic_ancestors(path):
++    require(all(not part.is_symlink() for part in (path.absolute(), *path.absolute().parents)))
++
++
++def read(root, relative, maximum=MAX_FILE):
++    safe_path(relative)
++    candidate = root / relative
++    no_symbolic_ancestors(candidate)
++    parent_fd = None
++    try:
++        # Anchor every ancestor without following links, including during opens.
++        parts = candidate.absolute().parts
++        require(all(part not in (".", "..") for part in parts))
++        parent_fd = os.open(parts[0], os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
++        for part in parts[1:-1]:
++            next_fd = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
++            os.close(parent_fd)
++            parent_fd = next_fd
++        # O_NONBLOCK prevents a substituted FIFO from hanging.
++        fd = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent_fd)
++        with os.fdopen(fd, "rb") as stream:
++            require(stat.S_ISREG(os.fstat(stream.fileno()).st_mode))
++            content = stream.read(maximum + 1)
++        require(0 < len(content) <= maximum)
++        return content
++    except OSError as error:
++        raise Refusal() from error
++    finally:
++        if parent_fd is not None:
++            os.close(parent_fd)
++
++
++def source_paths(root):
++    """Require the complete fixed owner source and bridge membership."""
++    try:
++        no_symbolic_ancestors(root / SOURCE_DIRECTORY)
++        actual = {p.name for p in (root / SOURCE_DIRECTORY).iterdir()
++                  if p.name.startswith("ProductionProfile") and p.name.endswith(".cs")}
++        require(actual == set(SOURCE_NAMES))
++        no_symbolic_ancestors(root / BRIDGE)
++        require({p.name for p in (root / BRIDGE).iterdir()} == {"Program.cs", "ProductionProfileBridge.csproj", "NuGet.Config"})
++    except OSError as error:
++        raise Refusal() from error
++    return SOURCES
++
++
++def validate_configuration(files):
++    """Closed project/configuration syntax: no extensible imports, items or properties."""
++    try:
++        def unique(pairs):
++            value = {}
++            for key, item in pairs:
++                require(key not in value)
++                value[key] = item
++            return value
++        sdk = json.loads(files["global.json"], object_pairs_hook=unique)
++        require(isinstance(sdk, dict) and set(sdk) <= {"sdk", "test"} and "sdk" in sdk)
++        require(isinstance(sdk["sdk"], dict) and set(sdk["sdk"]) <= {"version", "rollForward", "allowPrerelease"})
++        require(isinstance(sdk["sdk"].get("version"), str)
++                and re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?", sdk["sdk"]["version"]) is not None)
++        require("allowPrerelease" not in sdk["sdk"] or type(sdk["sdk"]["allowPrerelease"]) is bool)
++        require("rollForward" not in sdk["sdk"] or sdk["sdk"]["rollForward"] in
++                ("patch", "feature", "minor", "major", "latestPatch", "latestFeature", "latestMinor", "latestMajor", "disable"))
++        if "test" in sdk:
++            require(sdk["test"] == {"runner": "Microsoft.Testing.Platform"})
++        project = ET.fromstring(files[PROJECT])
++        require(project.tag == "Project" and project.attrib == {"Sdk": "Microsoft.NET.Sdk"})
++        require([node.tag for node in project] == ["PropertyGroup", "ItemGroup"])
++        properties, items = project
++        require(not properties.attrib and not items.attrib and len(properties) == len(PROPERTIES))
++        require({node.tag: node.text for node in properties} == PROPERTIES)
++        require(all(not node.attrib and len(node) == 0 for node in properties))
++        expected = ["Program.cs", *("../../" + path for path in SOURCES)]
++        require(len(items) == len(expected))
++        require(all(node.tag == "Compile" and node.attrib == {"Include": path}
++                    and len(node) == 0 and not (node.text or "").strip() for node, path in zip(items, expected)))
++        config = ET.fromstring(files[CONFIG])
++        require(config.tag == "configuration" and not config.attrib)
++        require([node.tag for node in config] == ["packageSources", "fallbackPackageFolders"])
++        require(all(not node.attrib and len(node) == 1 and node[0].tag == "clear"
++                    and not node[0].attrib and len(node[0]) == 0 for node in config))
++    except (ET.ParseError, KeyError, ValueError, TypeError, RecursionError) as error:
++        raise Refusal() from error
++
++
++@dataclass(frozen=True)
++class Capture:
++    """Exact captured bytes and SHA-256 membership; no source authority is implied."""
++    files: tuple
++    hashes: tuple
++
++
++def capture(root, data):
++    """Capture fixed controls/sources plus separately validated owner data."""
++    source_paths(root)
++    require(set(data).isdisjoint(BUILD_INPUTS) and 3 <= len(data) <= 4)
++    files = {path: read(root, path) for path in BUILD_INPUTS}
++    for path, expected in data.items():
++        require(isinstance(expected, bytes))
++        files[path] = read(root, path, 4 * MAX_FILE)
++        require(files[path] == expected)
++    require(sum(map(len, files.values())) <= MAX_TOTAL)
++    validate_configuration(files)
++    # Detect membership changing during capture as well as missing fixed files.
++    source_paths(root)
++    return Capture(tuple(sorted(files.items())), tuple(sorted((path, hashlib.sha256(content).hexdigest())
++                                                            for path, content in files.items())))
++
++
++def materialize(captured, snapshot):
++    require(not snapshot.exists())
++    snapshot.mkdir(mode=0o700)
++    for path, content in captured.files:
++        safe_path(path)
++        destination = snapshot / path
++        destination.parent.mkdir(parents=True, exist_ok=True)
++        with destination.open("xb") as stream:
++            stream.write(content)
++    verify(captured, snapshot)
++
++
++def verify(captured, snapshot):
++    """Reject missing, extra, changed, symbolic or nonregular snapshot members."""
++    no_symbolic_ancestors(snapshot)
++    expected = dict(captured.hashes)
++    require(len(expected) == len(captured.files) and set(expected) == {path for path, _ in captured.files})
++    directories = {parent.as_posix() for path in expected for parent in Path(path).parents if parent != Path(".")}
++    actual, actual_directories = set(), set()
++    try:
++        for base, children, filenames in os.walk(snapshot, followlinks=False):
++            for name in children:
++                path = Path(base) / name
++                no_symbolic_ancestors(path)
++                actual_directories.add(path.relative_to(snapshot).as_posix())
++            for name in filenames:
++                actual.add((Path(base) / name).relative_to(snapshot).as_posix())
++        require(actual == set(expected) and actual_directories == directories)
++        for path, checksum in expected.items():
++            require(hashlib.sha256(read(snapshot, path, 4 * MAX_FILE)).hexdigest() == checksum)
++        validate_configuration(dict(captured.files))
++    except OSError as error:
++        raise Refusal() from error
++
++
++def execute(captured, inventory_digest, resolved_digest, infrastructure_digest):
++    """Restore/build/run fixed arguments under the existing bounded child control."""
++    import phase_4_transition as T
++    for index, checksum in enumerate((inventory_digest, resolved_digest, infrastructure_digest)):
++        require(index == 2 and checksum == "-"
++                or isinstance(checksum, str) and re.fullmatch(r"[0-9a-f]{64}", checksum) is not None)
++    executable = shutil.which("dotnet")
++    require(executable is not None, "PROFILE_BRIDGE_UNAVAILABLE")
++    dotnet = Path(executable).resolve()
++    configuration = "Release" if os.environ.get("CI") else "Debug"
++    with tempfile.TemporaryDirectory(prefix="publication-profile-") as directory:
++        scratch = Path(directory)
++        snapshot = scratch / "snapshot"
++        materialize(captured, snapshot)
++        # SDK resolution starts at cwd; keep the exact owner SDK pin there too.
++        (scratch / "global.json").write_bytes(dict(captured.files)["global.json"])
++        environment = {"MSBUILDDISABLENODEREUSE": "1", "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
++                       "DOTNET_ROOT": str(dotnet.parent), "DOTNET_CLI_HOME": str(scratch / "home"),
++                       "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1", "DOTNET_NOLOGO": "1",
++                       "NUGET_PACKAGES": str(scratch / "packages"),
++                       "NUGET_HTTP_CACHE_PATH": str(scratch / "http-cache"),
++                       "MSBuildUserExtensionsPath": str(scratch / "msbuild-user")}
++        flags = ["--disable-build-servers", "-m:1", "-nodeReuse:false", "-noAutoResponse",
++                 "-p:ImportDirectoryBuildProps=false", "-p:ImportDirectoryBuildTargets=false",
++                 "-p:ImportDirectoryPackagesProps=false", "-p:ManagePackageVersionsCentrally=false",
++                 "-p:BuildInParallel=false", "-p:UseSharedCompilation=false", "-p:NuGetAudit=false",
++                 "-p:RestoreSources=", "-p:RestoreAdditionalProjectSources=", "-p:RestoreFallbackFolders=",
++                 "-p:RestoreAdditionalProjectFallbackFolders=", "-p:RestoreIgnoreFailedSources=false",
++                 "-p:EnableTargetingPackDownload=false", "-p:EnableRuntimePackDownload=false",
++                 "-p:BaseIntermediateOutputPath=" + str(scratch / "obj") + "/",
++                 "-p:MSBuildProjectExtensionsPath=" + str(scratch / "obj") + "/",
++                 "-p:OutputPath=" + str(scratch / "bin") + "/", "-p:Configuration=" + configuration]
++
++        def child(command, filename):
++            verify(captured, snapshot)
++            require(read(scratch, "global.json") == dict(captured.files)["global.json"])
++            try:
++                output = T.Control.bounded_process(command, scratch, filename, timeout_seconds=60,
++                    environment_extra=environment, failure_code="PROFILE_OWNER_VALIDATION_FAILED",
++                    limit_code="PROFILE_BRIDGE_UNAVAILABLE")
++            except T.Refusal as error:
++                raise Refusal(error.code) from error
++            verify(captured, snapshot)
++            require(read(scratch, "global.json") == dict(captured.files)["global.json"])
++            return output
++
++        child([str(dotnet), "restore", str(snapshot / PROJECT), "--configfile", str(snapshot / CONFIG),
++               "--no-http-cache", *flags], "restore.log")
++        child([str(dotnet), "build", str(snapshot / PROJECT), "--no-restore", *flags], "build.log")
++        # Exit zero cannot substitute for producing a fresh assembly in private outputs.
++        require((scratch / "bin/ProductionProfileBridge.dll").is_file(), "PROFILE_OWNER_RESULT_INVALID")
++        read(scratch, "bin/ProductionProfileBridge.dll", 4 * MAX_FILE)
++        return child([str(dotnet), str(scratch / "bin/ProductionProfileBridge.dll"), str(snapshot),
++                      inventory_digest, resolved_digest, infrastructure_digest], "profile-result.txt")
+diff --git a/tools/tests/test_profile_bridge_build.py b/tools/tests/test_profile_bridge_build.py
+new file mode 100644
+index 000000000..1268d9f1d
+--- /dev/null
++++ b/tools/tests/test_profile_bridge_build.py
+@@ -0,0 +1,203 @@
++"""Snapshot/application-graph controls; synthetic local hashes grant no authority."""
++import hashlib
++import os
++from pathlib import Path
++import shutil
++import sys
++import tempfile
++import unittest
++from unittest import mock
++
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT / 'tools'))
++import profile_bridge_build as B
++import phase_4_transition as T
++
++
++class ProfileBridgeBuildTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.base = Path(self.temp.name)
++        self.root = self.base / 'checkout'
++        for path in B.BUILD_INPUTS:
++            destination = self.root / path
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copyfile(ROOT / path, destination)
++        self.data = {'deploy/dapr/production-profile.yaml': b'synthetic profile',
++                     'deploy/dapr/production-composing-inventory.json': b'synthetic inventory',
++                     'composition.json': b'independent composition'}
++        for path, content in self.data.items():
++            destination = self.root / path
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            destination.write_bytes(content)
++
++    def assert_refused_before_child(self, action):
++        with mock.patch.object(T.Control, 'bounded_process') as child:
++            with self.assertRaises(B.Refusal):
++                action()
++            child.assert_not_called()
++
++    def test_complete_membership_exact_owner_bytes_and_hashes_survive_checkout_edits(self):
++        captured = B.capture(self.root, self.data)
++        self.assertEqual(38, len(B.SOURCES))
++        self.assertEqual(set(B.BUILD_INPUTS) | set(self.data), set(dict(captured.files)))
++        for path in B.SOURCES:
++            self.assertEqual((ROOT / path).read_bytes(), dict(captured.files)[path])
++            self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), dict(captured.hashes)[path])
++        for path in (*B.SOURCES, *self.data):
++            (self.root / path).write_bytes(b'checkout changed after capture')
++        snapshot = self.base / 'snapshot'
++        B.materialize(captured, snapshot)
++        B.verify(captured, snapshot)
++        for path, content in captured.files:
++            self.assertEqual(content, (snapshot / path).read_bytes())
++
++    def test_missing_sources_controls_and_changed_data_refuse_before_launch(self):
++        for path in B.BUILD_INPUTS:
++            original = (self.root / path).read_bytes()
++            (self.root / path).unlink()
++            with self.subTest(path=path):
++                self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++            (self.root / path).write_bytes(original)
++        for path, original in self.data.items():
++            (self.root / path).write_bytes(b'changed before capture')
++            with self.subTest(path=path):
++                self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++            (self.root / path).write_bytes(original)
++
++    def test_extra_profile_or_bridge_members_refuse_but_unrelated_contracts_are_not_captured(self):
++        for relative in (B.SOURCE_DIRECTORY + '/ProductionProfileUnexpected.cs', B.BRIDGE + '/Unexpected.cs',
++                         B.BRIDGE + '/Directory.Build.targets'):
++            path = self.root / relative
++            path.write_bytes(b'#error must never compile')
++            with self.subTest(path=relative):
++                self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++            path.unlink()
++        unrelated = self.root / 'src/Hexalith.EventStore.Contracts/Unexpected.cs'
++        unrelated.write_bytes(b'#error unrelated Contracts source')
++        self.assertNotIn(unrelated.relative_to(self.root).as_posix(), dict(B.capture(self.root, self.data).files))
++
++    def test_closed_project_and_config_refuse_imports_references_defaults_and_fallbacks(self):
++        project = (self.root / B.PROJECT).read_bytes()
++        config = (self.root / B.CONFIG).read_bytes()
++        candidates = [project.replace(b'</Project>', extra + b'</Project>') for extra in (
++            b'<Import Project="poison.targets" />', b'<ItemGroup><ProjectReference Include="other.csproj" /></ItemGroup>',
++            b'<ItemGroup><PackageReference Include="other" Version="1" /></ItemGroup>')]
++        candidates += [project.replace(b'EnableDefaultItems>false', b'EnableDefaultItems>true'),
++                       project.replace(b'Include="Program.cs"', b'Include="*.cs"'),
++                       project.replace(b'net11.0', b'net99.0')]
++        for content in candidates:
++            (self.root / B.PROJECT).write_bytes(content)
++            self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++        (self.root / B.PROJECT).write_bytes(project)
++        for content in (config.replace(b'<clear />', b'<add key="fallback" value="https://invalid/" />', 1),
++                        config.replace(b'</configuration>', b'<config><add key="globalPackagesFolder" value="/cached" /></config></configuration>')):
++            (self.root / B.CONFIG).write_bytes(content)
++            self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++
++    def test_paths_bounded_regular_files_and_symbolic_ancestors_refuse(self):
++        for relative in ('../outside', '/absolute', 'a//b', 'a/./b', 'a\\b'):
++            self.assert_refused_before_child(lambda: B.capture(self.root, {**self.data, relative: b'x'}))
++        path = self.root / B.PROGRAM
++        original = path.read_bytes()
++        path.unlink()
++        path.symlink_to(ROOT / B.PROGRAM)
++        self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++        path.unlink()
++        os.mkfifo(path)
++        self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++        path.unlink()
++        with path.open('wb') as stream:
++            stream.truncate(B.MAX_FILE + 1)
++        self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++        path.write_bytes(original)
++        symbolic = self.base / 'symbolic'
++        symbolic.symlink_to(self.root, target_is_directory=True)
++        self.assert_refused_before_child(lambda: B.capture(symbolic, self.data))
++
++    def test_global_sdk_pin_cannot_redirect_to_checkout_sdks_or_custom_resolvers(self):
++        for content in (b'{"sdk":{"version":"11.0.100","paths":["../untrusted"]}}',
++                        b'{"sdk":{"version":"11.0.100"},"msbuild-sdks":{"Microsoft.NET.Sdk":"1.0.0"}}',
++                        b'{"sdk":{"version":"11.0.100","version":"99.0.0"}}',
++                        b'{"sdk":{"version":"11.0.100","allowPrerelease":"true"}}'):
++            (self.root / 'global.json').write_bytes(content)
++            self.assert_refused_before_child(lambda: B.capture(self.root, self.data))
++
++    def test_snapshot_missing_changed_extra_and_symbolic_members_refuse(self):
++        captured = B.capture(self.root, self.data)
++        for mutation in ('missing', 'changed', 'extra', 'directory', 'symbolic'):
++            snapshot = self.base / mutation
++            B.materialize(captured, snapshot)
++            target = snapshot / B.SOURCES[0]
++            if mutation == 'missing': target.unlink()
++            if mutation == 'changed': target.write_bytes(b'changed')
++            if mutation == 'extra': (snapshot / 'extra.cs').write_bytes(b'added')
++            if mutation == 'directory': (snapshot / 'extra').mkdir()
++            if mutation == 'symbolic':
++                target.unlink()
++                target.symlink_to(self.root / B.SOURCES[0])
++            with self.subTest(mutation=mutation):
++                self.assert_refused_before_child(lambda: B.verify(captured, snapshot))
++
++    def test_snapshot_mutation_before_first_or_later_child_refuses(self):
++        captured = B.capture(self.root, self.data)
++        original = B.materialize
++        def mutated(capture, snapshot):
++            original(capture, snapshot)
++            (snapshot / B.PROGRAM).write_bytes(b'changed after copy')
++        with mock.patch.object(B, 'materialize', side_effect=mutated), mock.patch.object(B.shutil, 'which', return_value='/usr/bin/dotnet'):
++            self.assert_refused_before_child(lambda: B.execute(captured, 'a'*64, 'b'*64, '-'))
++        def child(command, scratch, filename, **kwargs):
++            (scratch / 'snapshot' / B.PROGRAM).write_bytes(b'changed after restore')
++            return b''
++        with mock.patch.object(T.Control, 'bounded_process', side_effect=child) as process, mock.patch.object(B.shutil, 'which', return_value='/usr/bin/dotnet'):
++            with self.assertRaises(B.Refusal): B.execute(captured, 'a'*64, 'b'*64, '-')
++            self.assertEqual(1, process.call_count)
++
++    def test_fixed_commands_private_outputs_filtered_environment_and_configuration(self):
++        captured = B.capture(self.root, self.data)
++        for ci, configuration in (('', 'Debug'), ('true', 'Release')):
++            calls = []
++            def child(command, scratch, filename, **kwargs):
++                calls.append((command, kwargs))
++                self.assertNotIn(str(self.root), ' '.join(command))
++                environment = kwargs['environment_extra']
++                self.assertNotIn('GITHUB_TOKEN', environment)
++                self.assertNotIn('DirectoryBuildPropsPath', environment)
++                self.assertNotIn('MSBuildSDKsPath', environment)
++                self.assertEqual(str(scratch / 'packages'), environment['NUGET_PACKAGES'])
++                self.assertEqual('1', environment['MSBUILDDISABLENODEREUSE'])
++                self.assertEqual('0', environment['DOTNET_CLI_USE_MSBUILD_SERVER'])
++                if filename == 'build.log':
++                    (scratch / 'bin').mkdir()
++                    (scratch / 'bin/ProductionProfileBridge.dll').write_bytes(b'fresh synthetic assembly')
++                return b'{"synthetic":"result"}' if filename == 'profile-result.txt' else b''
++            with mock.patch.dict(os.environ, {'CI': ci, 'GITHUB_TOKEN': 'secret', 'NUGET_PACKAGES': '/poison',
++                    'DirectoryBuildPropsPath': '/poison', 'MSBuildSDKsPath': '/poison'}), \
++                 mock.patch.object(T.Control, 'bounded_process', side_effect=child), \
++                 mock.patch.object(B.shutil, 'which', return_value='/usr/bin/dotnet'):
++                self.assertEqual(b'{"synthetic":"result"}', B.execute(captured, 'a'*64, 'b'*64, '-'))
++            self.assertEqual(3, len(calls))
++            for command, _ in calls[:2]:
++                for flag in ('--disable-build-servers', '-p:ImportDirectoryBuildProps=false',
++                             '-p:ImportDirectoryBuildTargets=false', '-p:ImportDirectoryPackagesProps=false',
++                             '-p:UseSharedCompilation=false', '-p:EnableTargetingPackDownload=false',
++                             '-p:RestoreFallbackFolders=', '-p:Configuration=' + configuration):
++                    self.assertIn(flag, command)
++
++    def test_sdk_unavailable_child_limits_and_noop_build_never_supply_success(self):
++        captured = B.capture(self.root, self.data)
++        with mock.patch.object(B.shutil, 'which', return_value=None):
++            self.assert_refused_before_child(lambda: B.execute(captured, 'a'*64, 'b'*64, '-'))
++        with mock.patch.object(B.shutil, 'which', return_value='/usr/bin/dotnet'):
++            for result in (b'', T.Refusal('PROFILE_BRIDGE_UNAVAILABLE', 'bounded')):
++                with mock.patch.object(T.Control, 'bounded_process', side_effect=result if isinstance(result, Exception) else None,
++                                       return_value=result):
++                    with self.assertRaises(B.Refusal) as caught:
++                        B.execute(captured, 'a'*64, 'b'*64, '-')
++                    self.assertIn(caught.exception.code, ('PROFILE_OWNER_RESULT_INVALID', 'PROFILE_BRIDGE_UNAVAILABLE'))
++
++
++if __name__ == '__main__':
++    unittest.main()

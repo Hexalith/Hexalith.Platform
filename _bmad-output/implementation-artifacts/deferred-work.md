@@ -2135,3 +2135,11 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-isolate-the-production-profile-bridge-build.md`
   summary: Preserve a safe phase identifier for profile-bridge restore/build/validation failures without exposing private child diagnostics.
   evidence: Review BH10 confirms both the former dotnet-run bridge and current helper return the same generic PROFILE_OWNER_VALIDATION_FAILED for these stages and remove scratch logs; an unavailable SDK and invalid profile are therefore not distinguishable from the refusal alone. This pre-existing developer diagnostic issue was not introduced by bridge isolation.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-prove-profile-bridge-sdk-import-resolution.md`
+  summary: Prepare an exact-Git-blob verification checkout for authenticated publication without changing pinned files or their existing EOL attributes.
+  evidence: BH1; baseline publication controls already include global.json and unchanged Control.prepare requires raw local/API byte equality. The normal CRLF-filtered checkout differs from its LF blob and correctly refuses before preflight. The focused SDK verifier preserves this existing source-binding prerequisite; caller/workflow integration remains separate.
+
+- source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-prove-profile-bridge-sdk-import-resolution.md`
+  summary: Verify whether an unsupported raw-packet socket envelope is reachable from the supported fixed SDK commands before extending the observer's network policy (medium, unverified).
+  evidence: BH9; AF_PACKET can carry IP with additional raw-socket capability, but no supported fixed SDK/bridge invocation was shown to use that envelope. A real supported-toolchain trace or reachable controlled fixture without replacing trusted SDK binaries would settle the claim. The installed SDK/runtime/OS remain trusted; this observer is not a hostile-toolchain sandbox.
