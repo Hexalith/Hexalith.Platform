@@ -8,18 +8,51 @@ import subprocess
 import urllib.request
 import zipfile
 
-from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins
+from bound_builds import inspection_environment, verify_bound_checkout
 from builds_publication import _read_official, verify_handoff
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def git_output(*arguments, text=True):
+    return subprocess.check_output(["git", *arguments], cwd=ROOT, env=inspection_environment(), text=text)
+
+
 def source_state():
-    status = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=all"], cwd=ROOT, text=True)
-    names = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=ROOT).decode().split("\0")
+    status = git_output("status", "--porcelain", "--untracked-files=all")
+    names = git_output("ls-files", "--cached", "--others", "--exclude-standard", "-z", text=False).decode().split("\0")
+    entries = git_output("ls-files", "-v", "-z").split("\0")
+    hidden = any(entry and (entry[0].islower() or entry.startswith("S ")) for entry in entries)
     hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in names if name and (ROOT / name).is_file()}
     digest = hashlib.sha256(json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    return {"dirty": bool(status.strip()), "status": status, "inputHashes": hashes, "inputDigest": digest}
+    return {"dirty": bool(status.strip()) or hidden, "status": status, "hiddenTrackedInputs": hidden,
+            "inputHashes": hashes, "inputDigest": digest}
+
+
+def recorded_preparation_context(binding=None):
+    """Bind the clean recorded owner and the independently authenticated published producer."""
+    if (not (ROOT / ".git").exists()
+            or Path(git_output("rev-parse", "--show-toplevel").strip()).resolve() != ROOT.resolve()):
+        raise ValueError("Published artifact preparation requires its own physical Platform checkout.")
+    revision = git_output("rev-parse", "HEAD").strip()
+    state = source_state()
+    if state["dirty"]:
+        raise ValueError("CI requires clean recorded Platform source for published artifact preparation.")
+    if binding is not None and load_binding() != binding:
+        raise ValueError("Recorded Platform publication binding changed before artifact preparation.")
+    entry = git_output("ls-tree", "HEAD", "--", "references/Hexalith.Builds").strip().split()
+    if len(entry) != 4 or entry[:2] != ["160000", "commit"] or entry[3] != "references/Hexalith.Builds":
+        raise ValueError("Recorded Platform source must declare its actual Builds catalog gitlink.")
+    return {"platformRevision": revision, "platformSourceState": state,
+            "platformRecordedBuildsRevision": entry[2],
+            "boundProducerContext": verify_bound_checkout(ROOT, resolve_builds_root(ROOT))}
+
+
+def require_unchanged_recorded_context(original, binding=None):
+    """Refuse owner revisions, source bodies or producer inputs changed during archive verification."""
+    if recorded_preparation_context(binding) != original:
+        raise ValueError("Recorded Platform source or the bound published producer changed during artifact preparation.")
 
 
 def main():
@@ -45,12 +78,9 @@ def _prepare_artifacts(metadata_token):
     version, source = publication["version"], binding["producer"]["sourceRevision"]
     archive_sha256, tooling_sha256 = publication["archiveSha256"], publication["toolingSha256"]
     validate_owner_pins(binding, ROOT)
-    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    state = source_state()
-    if args.require_recorded:
-        pin = subprocess.check_output(["git", "rev-parse", "HEAD:references/Hexalith.Builds"], cwd=ROOT, text=True).strip()
-        validate_recorded_source(binding, pin, state["dirty"])
-        verify_catalog(binding, resolve_builds_root(ROOT))
+    recorded = recorded_preparation_context(binding) if args.require_recorded else None
+    revision = recorded["platformRevision"] if recorded is not None else git_output("rev-parse", "HEAD").strip()
+    state = recorded["platformSourceState"] if recorded is not None else source_state()
     handoff = verify_handoff(binding, read=lambda path: _read_official(path, metadata_token))
     output.mkdir(parents=True)
     archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
@@ -94,6 +124,10 @@ def _prepare_artifacts(metadata_token):
                "toolRoot": str(tool), "toolingAssembly": str(tool / "Hexalith.Builds.Tooling.dll"),
                "eventStoreHostAssembly": str(host), "tupleBinding": binding, "publicationHandoff": handoff,
                "qualification": "artifact identity only", "candidateAcceptance": False}
+    if recorded is not None:
+        require_unchanged_recorded_context(recorded, binding)
+        receipt.update(platformRecordedBuildsRevision=recorded["platformRecordedBuildsRevision"],
+                       boundProducerContext=recorded["boundProducerContext"])
     (output / "artifact-identity.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(str(tool))
 

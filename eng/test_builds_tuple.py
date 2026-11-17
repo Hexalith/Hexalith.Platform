@@ -15,7 +15,7 @@ import prepare_builds_artifacts
 import run_tuple_ci
 from unittest.mock import patch
 
-from builds_tuple import BINDING, ROOT, load_binding, resolve_builds_root, validate_binding, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import ROOT, load_binding, resolve_builds_root, validate_binding, validate_owner_pins, validate_recorded_source, verify_catalog
 
 
 class BuildsTupleTests(unittest.TestCase):
@@ -161,51 +161,21 @@ class BuildsTupleTests(unittest.TestCase):
         (owner.parent / "Hexalith.Builds").mkdir(parents=True)
         self.assertEqual(resolve_builds_root(owner), owner / "references/Hexalith.Builds")
 
-    def test_stale_selected_sibling_refuses_before_artifact_side_effects(self):
-        owner = self.root / "workspace/references/Hexalith.Platform"
-        sibling = owner.parent / "Hexalith.Builds"
-        catalog = sibling / "Props/Directory.Packages.props"
-        catalog.parent.mkdir(parents=True)
-        catalog.write_bytes(b"synthetic stale producer control")
-        (owner / ".config").mkdir(parents=True)
-        (owner / ".config/dotnet-tools.json").write_text(json.dumps({
-            "tools": {"hexalith.builds.module.cli": {"version": "4.38.3"}}}))
-        (owner / "hexalith-platform.json").write_text(json.dumps({
-            "toolVersionRange": "[4.38.3, 5.0.0-0)"}))
-        nested = owner / "references/Hexalith.Builds"
-        nested_catalog = nested / "Props/Directory.Packages.props"
-        nested_catalog.parent.mkdir(parents=True)
-        valid_catalog = b"<Project />\n"
-        nested_catalog.write_bytes(valid_catalog)
-        self.binding["producer"]["catalog"]["sha256"] = hashlib.sha256(valid_catalog).hexdigest()
-        self.binding["publication"]["catalogSha256"] = self.binding["producer"]["catalog"]["sha256"]
-
-        def git_read(argv, cwd, **_kwargs):
-            if cwd == owner:
-                return "3" * 40 if argv[-1] == "HEAD" else self.binding["producer"]["sourceRevision"]
-            if cwd == sibling:
-                return b"4" * 40
-            if cwd == nested:
-                if argv[1] == "show":
-                    return valid_catalog
-                return (self.binding["producer"]["sourceRevision"] if argv[-1] == "HEAD"
-                        else self.binding["producer"]["catalog"]["blob"]).encode()
-            self.fail("Unexpected Git source lookup")
-
+    def test_recorded_context_refusal_precedes_artifact_side_effects(self):
         output = self.root / "stale-sibling-artifacts"
         with contextlib.ExitStack() as stack:
             stack.enter_context(patch.object(sys, "argv", ["prepare", "--output", str(output), "--require-recorded"]))
-            stack.enter_context(patch.object(prepare_builds_artifacts, "ROOT", owner))
             stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding))
-            stack.enter_context(patch.object(prepare_builds_artifacts, "source_state", return_value={"dirty": False}))
-            reads = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output",
-                side_effect=git_read))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+            context = stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context",
+                side_effect=ValueError("Builds checkout differs from the bound producer revision.")))
+            handoff = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff"))
             signature = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run"))
             download = stack.enter_context(patch.object(prepare_builds_artifacts.urllib.request, "urlopen"))
             with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
                 prepare_builds_artifacts.main()
-            self.assertEqual(reads.call_count, 3)
-            self.assertEqual(reads.call_args_list[2].kwargs["cwd"], sibling)
+            context.assert_called_once()
+            handoff.assert_not_called()
             signature.assert_not_called()
             download.assert_not_called()
         self.assertFalse(output.exists())
@@ -314,30 +284,25 @@ class BuildsTupleTests(unittest.TestCase):
                 observation = json.loads(str(failure.exception).split(": ", 1)[1])
                 self.assertEqual(observation, {"argv": command, "cwd": str(self.root), "exitCode": code, "stdout": stdout, "stderr": stderr})
 
-    def test_recorded_pin_and_catalog_refusals_precede_all_artifact_side_effects(self):
-        source = self.binding["producer"]["sourceRevision"]
-        other = load_binding(require_publication=False)["producer"]["sourceRevision"]
-        for name, pin, dirty, catalog_error in (("pin", other, False, None), ("dirty", source, True, None), ("catalog", source, False, ValueError("catalog identity mismatch"))):
+    def test_recorded_owner_and_catalog_refusals_precede_all_artifact_side_effects(self):
+        for name, message in (("dirty", "clean recorded Platform"), ("gitlink", "actual Builds catalog gitlink"),
+                              ("catalog", "catalog identity mismatch")):
             with self.subTest(refusal=name), contextlib.ExitStack() as stack:
                 output = self.root / ("recorded-" + name)
                 stack.enter_context(patch.object(sys, "argv", ["prepare", "--output", str(output), "--require-recorded"]))
                 stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding))
                 stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
-                stack.enter_context(patch.object(prepare_builds_artifacts, "source_state", return_value={"dirty": dirty}))
-                reads = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output", side_effect=[source, pin]))
-                catalog_check = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_catalog", side_effect=catalog_error))
+                stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context",
+                    side_effect=ValueError(message)))
+                handoff = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff"))
                 signature = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run"))
                 download = stack.enter_context(patch.object(prepare_builds_artifacts.urllib.request, "urlopen"))
-                with self.assertRaisesRegex(ValueError, "catalog identity mismatch" if catalog_error else "clean recorded Platform"):
+                with self.assertRaisesRegex(ValueError, message):
                     prepare_builds_artifacts.main()
                 self.assertFalse(output.exists())
-                self.assertEqual(reads.call_count, 2)  # Owner HEAD and pin only; no executable invocation.
+                handoff.assert_not_called()
                 signature.assert_not_called()
                 download.assert_not_called()
-                if catalog_error:
-                    catalog_check.assert_called_once()
-                else:
-                    catalog_check.assert_not_called()
 
     def test_major6_artifact_reuse_reaches_graph_only_with_the_exact_unchanged_net11_closure(self):
         owner = self.root / "reuse-workspace/references/Hexalith.Platform"
@@ -484,6 +449,56 @@ class BuildsTupleTests(unittest.TestCase):
                         self.assertIs(receipt["candidateAcceptance"], False)
                     self.assertEqual(handoff.call_args.args[0], binding)
                     self.assertEqual(signature.call_args.args[0], ["dotnet", "nuget", "verify", str(output / ("hexalith.builds.module.cli." + version + ".nupkg")), "--all"])
+
+    def test_recorded_owner_change_during_archive_verification_refuses_receipt_and_export(self):
+        # Synthetic package/signature/metadata controls exercise the complete preparation path;
+        # the final source-context comparison is the real production guard.
+        binding = self.shared_binding("6.0.0")
+        source = binding["producer"]["sourceRevision"]
+        payload = b"synthetic recorded tooling"
+        archive = self.root / "recorded-control.nupkg"
+        prefix = "tools/net11.0/any/"
+        with zipfile.ZipFile(archive, "w") as package:
+            package.writestr(prefix + "Hexalith.Builds.Tooling.dll", payload)
+            package.writestr(prefix + "Hexalith.Builds.Module.Cli.dll", b"synthetic CLI")
+            package.writestr(prefix + "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll", b"synthetic host")
+        binding["publication"].update(archiveSha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+                                      toolingSha256=hashlib.sha256(payload).hexdigest())
+        validate_binding(binding)
+        current = {"platformRevision": "a" * 40, "platformSourceState": {"dirty": False},
+                   "platformRecordedBuildsRevision": "b" * 40,
+                   "boundProducerContext": {"sourceRevision": source}}
+        observations = []
+
+        def context(_binding):
+            observations.append(copy.deepcopy(current))
+            return copy.deepcopy(current)
+
+        def signature(command, **_kwargs):
+            self.assertEqual(command[:3], ["dotnet", "nuget", "verify"])
+            # A different committed owner HEAD stays clean: status alone cannot detect it.
+            current["platformRevision"] = "c" * 40
+            return subprocess.CompletedProcess(command, 0, "verified synthetic control", "")
+
+        output = self.root / "recorded-archive-control"
+        exported = io.StringIO()
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.object(sys, "argv", ["prepare", "--require-recorded", "--archive", str(archive), "--output", str(output)]))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=binding))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context", side_effect=context))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff", return_value={"qualificationCredit": False}))
+            stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run", side_effect=signature))
+            executable = stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output",
+                return_value="6.0.0+" + source))
+            stack.enter_context(contextlib.redirect_stdout(exported))
+            with self.assertRaisesRegex(ValueError, "changed during artifact preparation"):
+                prepare_builds_artifacts.main()
+        self.assertEqual([entry["platformRevision"] for entry in observations], ["a" * 40, "c" * 40])
+        executable.assert_called_once()
+        self.assertTrue((output / "signature.stdout").is_file())
+        self.assertFalse((output / "artifact-identity.json").exists())
+        self.assertEqual(exported.getvalue(), "")
 
     def test_preparation_blocks_artifact_download_and_retains_terminal_preflight(self):
         self.binding["publication"]["version"] = None

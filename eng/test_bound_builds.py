@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -10,6 +11,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from bound_builds import materialize, verify_bound_checkout
+import prepare_builds_artifacts
+from builds_tuple import validate_recorded_source
 
 
 def git(root, *arguments):
@@ -145,6 +148,86 @@ class BoundBuildsTests(unittest.TestCase):
             context = materialize(self.platform, self.root / "private")
             self.assertEqual(context, verify_bound_checkout(self.platform, Path(context["buildsRoot"])))
         self.assertFalse((self.root / "foreign-index").exists())
+
+    def recorded_owner(self):
+        """Create a clean owner with a newer catalog gitlink and a separate exact signed-producer control."""
+        if not (self.platform / ".git").exists():
+            git(self.platform, "init", "--quiet")
+            (self.platform / "references/Hexalith.Builds").mkdir(parents=True)
+            git(self.platform, "update-index", "--add", "--cacheinfo", "160000", self.current,
+                "references/Hexalith.Builds")
+            commit(self.platform)
+        owner_revision = git(self.platform, "rev-parse", "HEAD")
+        owner = self.root / "private/Hexalith.Platform"
+        subprocess.run(["git", "-c", "submodule.recurse=false", "clone", "--quiet", "--shared",
+                        str(self.platform), str(owner)], check=True)
+        producer = self.root / "private/Hexalith.Builds"
+        materialize(owner, producer, self.builds)
+        return owner, producer, owner_revision
+
+    def test_recorded_artifacts_bind_advanced_owner_catalog_separately_from_published_producer(self):
+        owner, producer, revision = self.recorded_owner()
+        with patch.object(prepare_builds_artifacts, "ROOT", owner):
+            context = prepare_builds_artifacts.recorded_preparation_context()
+            prepare_builds_artifacts.require_unchanged_recorded_context(context)
+        self.assertEqual(context["platformRevision"], revision)
+        self.assertEqual(context["platformRecordedBuildsRevision"], self.current)
+        self.assertEqual(context["boundProducerContext"]["sourceRevision"], self.revision)
+        self.assertEqual(context["boundProducerContext"]["buildsRoot"], str(producer))
+        self.assertFalse((owner / "references/Hexalith.Builds/.git").exists())
+        with self.assertRaisesRegex(ValueError, "exact approved Builds pin"):
+            validate_recorded_source(self.binding, self.current, False)
+        self.assertEqual(git(self.builds, "rev-parse", "HEAD"), self.current)
+
+    def test_recorded_artifacts_refuse_wrong_dirty_or_hidden_bound_inputs(self):
+        for fault in ("wrong-revision", "dirty-catalog", "assume-unchanged", "skip-worktree"):
+            with self.subTest(fault=fault):
+                # Each subcase has its own materialized physical producer.
+                owner, producer, _ = self.recorded_owner()
+                if fault == "wrong-revision":
+                    git(producer, "checkout", "--quiet", "--detach", self.current)
+                elif fault == "dirty-catalog":
+                    (producer / "Props/Directory.Packages.props").write_text("changed catalog")
+                else:
+                    git(producer, "update-index", "--" + fault, "Hexalith.Build.props")
+                    (producer / "Hexalith.Build.props").write_text("hidden supporting input")
+                    self.assertEqual("", git(producer, "status", "--porcelain"))
+                with patch.object(prepare_builds_artifacts, "ROOT", owner), self.assertRaises(ValueError):
+                    prepare_builds_artifacts.recorded_preparation_context()
+                # Remove only this disposable fixture so the next subcase starts from its real Git bodies.
+                shutil.rmtree(owner.parent)
+
+    def test_recorded_artifacts_refuse_dirty_owner_and_hidden_owner_inputs(self):
+        owner, _, _ = self.recorded_owner()
+        binding = owner / "eng/builds-tuple.json"
+        before = binding.read_bytes()
+        for hidden in (False, True):
+            if hidden:
+                git(owner, "update-index", "--assume-unchanged", "eng/builds-tuple.json")
+            binding.write_bytes(before + b" ")
+            with self.subTest(hidden=hidden), patch.object(prepare_builds_artifacts, "ROOT", owner), self.assertRaisesRegex(ValueError, "clean recorded Platform"):
+                prepare_builds_artifacts.recorded_preparation_context()
+            binding.write_bytes(before)
+
+    def test_recorded_artifacts_recheck_clean_owner_head_changes(self):
+        owner, _, _ = self.recorded_owner()
+        with patch.object(prepare_builds_artifacts, "ROOT", owner):
+            context = prepare_builds_artifacts.recorded_preparation_context()
+            (owner / "future.txt").write_text("later clean owner revision")
+            advanced = commit(owner)
+            self.assertEqual("", git(owner, "status", "--porcelain"))
+            with self.assertRaisesRegex(ValueError, "changed during artifact preparation"):
+                prepare_builds_artifacts.require_unchanged_recorded_context(context)
+        self.assertNotEqual(context["platformRevision"], advanced)
+
+    def test_recorded_artifacts_require_a_real_recorded_catalog_gitlink(self):
+        owner, _, _ = self.recorded_owner()
+        git(owner, "update-index", "--force-remove", "references/Hexalith.Builds")
+        (owner / "references/Hexalith.Builds").rmdir()
+        (owner / "references/Hexalith.Builds").write_text("ordinary file cannot be a recorded catalog")
+        commit(owner)
+        with patch.object(prepare_builds_artifacts, "ROOT", owner), self.assertRaisesRegex(ValueError, "actual Builds catalog gitlink"):
+            prepare_builds_artifacts.recorded_preparation_context()
 
 
 if __name__ == "__main__":
