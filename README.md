@@ -9,7 +9,7 @@ The selected producer is signed Builds **6.3.0**, source
 `aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4`.
 The authoritative publication binding remains `eng/builds-tuple.json`.
 The authenticated Builds 6.3.0 validation pair is AppHost SHA-256
-`e71345052a6b300eceab35b39026338fa0ebccb1ae5d2a2f6ed4a4a6d22feb40`
+`3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1`
 and Tooling SHA-256
 `48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27`.
 This signed-host pairing grants no ordinary image or runtime admission.
