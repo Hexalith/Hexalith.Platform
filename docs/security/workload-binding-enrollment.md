@@ -359,8 +359,9 @@ available. Complete Server mode cannot be combined with those modes.
 Server identity authority comes from evaluated build metadata. Debug/source
 qualification retains exact source SHA-256 and MVID checks. Release/package
 qualification resolves package identity and runtime entries from restore and
-`.deps.json` metadata, validates the actual archive SHA-512 against restore
-content identity, and binds each checked DLL's SHA-256 and MVID to its archive
+`.deps.json` metadata, recomputes archive content SHA-512 with the pinned SDK's NuGet API (including
+signed-package record adjustments) against restore identity, verifies raw archive
+SHA-512 against the restored sidecar, and binds each checked DLL's SHA-256 and MVID to its archive
 payload. Missing or ambiguous metadata and altered bytes refuse without fallback.
 This component scope supplies no protected enrollment approval and leaves
 AppHost cohort lifecycle, held FR58 work and migration acceptance separate.

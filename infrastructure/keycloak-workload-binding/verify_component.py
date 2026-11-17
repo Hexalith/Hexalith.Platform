@@ -24,7 +24,7 @@ import urllib.request
 from component_fixture import ChildFailure, ComponentFixture, command, sanitize
 
 
-def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_timeout=600):
+def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_timeout=600, evidence_file=None):
     root = Path(__file__).resolve().parent
     jar = root / "target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar"
     if not jar.is_file():
@@ -73,7 +73,7 @@ def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_
         context = ssl.create_default_context(cafile=str(cert))
         issuer = base + "/realms/component"
         try:
-            command("docker", "run", "--detach", "--rm", "--name", name, "--user", f"{os.getuid()}:{os.getgid()}", "--publish", f"127.0.0.1:{port}:8443",
+            command("docker", "run", "--detach", "--rm", "--name", name, "--label", "hexalith.component.fixture=" + fixture.owner_token, "--user", f"{os.getuid()}:{os.getgid()}", "--publish", f"127.0.0.1:{port}:8443",
                     "--env", "KC_BOOTSTRAP_ADMIN_USERNAME=component-admin", "--env", "KC_BOOTSTRAP_ADMIN_PASSWORD=" + admin_secret,
                     "--volume", f"{jar}:/opt/keycloak/providers/workload-binding.jar:ro",
                     "--volume", f"{directory}:/component:ro", "--volume", f"{directory / 'realm.json'}:/opt/keycloak/data/import/component-realm.json:ro",
@@ -111,6 +111,7 @@ def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_
                     raise RuntimeError("Disposable Keycloak readiness deadline elapsed.")
                 time.sleep(0.5)
             assert metadata["issuer"] == issuer
+            print(json.dumps(dict(componentFixturePhase="issuer-ready")), flush=True)
             try:
                 request("/realms/component/.well-known/openid-configuration", trusted=False)
                 raise AssertionError("Untrusted component TLS certificate was accepted.")
@@ -144,6 +145,7 @@ def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_
             status, server_info = request("/admin/serverinfo", bearer=bearer)
             assert status == 200 and server_info["systemInfo"]["version"] == "26.6.4"
             server_version = server_info["systemInfo"]["version"]
+            print(json.dumps(dict(componentFixturePhase="rsa-and-version-verified", serverVersion=server_version)), flush=True)
             image_id = command("docker", "inspect", name, "--format", "{{.Image}}")
             _, clients = request("/admin/realms/component/clients?clientId=folders-component", bearer=bearer)
             client_path = "/admin/realms/component/clients/" + clients[0]["id"]
@@ -158,14 +160,25 @@ def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_
                 expiry = json.loads(decode(expired.split(".")[1]))["exp"]
                 client["attributes"]["hexalith.workload-binding.grants"] = original_grants
                 assert request(client_path, client, bearer, "PUT")[0] == 204
-                time.sleep(max(0, expiry - time.time() + 0.1))
+                expiry_wait = max(0, expiry - time.time() + 0.1)
+                if expiry_wait > 130:
+                    raise RuntimeError("Natural token expiry exceeds the component preparation deadline.")
+                print(json.dumps(dict(componentFixturePhase="natural-expiry", waitSeconds=round(expiry_wait, 2))), flush=True)
+                time.sleep(expiry_wait)
                 expired_file = directory / "expired-component.jwt"
                 expired_file.write_text(expired)
                 os.chmod(expired_file, 0o600)
                 component_file = directory / "sdk-component.json"
                 component_file.write_text(json.dumps(dict(issuer=issuer, secret=secret, certificatePath=str(cert), expiredTokenFile=str(expired_file))))
                 os.chmod(component_file, 0o600)
-                execution = fixture.run_tests(complete_assembly or sdk_assembly, complete=bool(complete_assembly), timeout=child_timeout)
+                print(json.dumps(dict(componentFixturePhase="test-child", completeProject=bool(complete_assembly))), flush=True)
+                execution = fixture.run_tests(complete_assembly or sdk_assembly, complete=bool(complete_assembly), timeout=child_timeout, evidence_file=evidence_file)
+                # The complete child can outlive the temporary administration token.
+                # Renew through the same owned credentials before retained mutation controls.
+                status, renewed_admin = request("/realms/master/protocol/openid-connect/token", [("grant_type", "password"), ("client_id", "admin-cli"),
+                    ("username", "component-admin"), ("password", admin_secret)])
+                assert status == 200, "Component administration renewal refused."
+                bearer = renewed_admin["access_token"]
             controls = []
             for scenario in ["credential", "tenant", "domain", "audience", "operation", "scan-without-grant", "missing", "extra", "duplicate", "oversized", "unbound"]:
                 bad = list(form)
@@ -288,6 +301,7 @@ def run(sdk_assembly=None, apphost_assembly=None, complete_assembly=None, child_
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--complete-assembly", help="Run the complete prebuilt Server assembly once in the real SDK fixture.")
+    parser.add_argument("--evidence-file", help="Retain sanitized SDK xUnit XML at this caller-selected path after cleanup.")
     parser.add_argument("--child-timeout", type=int, default=600, help="Bound SDK test child execution in seconds (1..1800).")
     parser.add_argument("--sdk-assembly", help="Run explicit source-boundary tests from this Debug assembly against the owned real issuer.")
     parser.add_argument("--apphost-assembly", help="Run explicit consumer controls against the owned component issuer and TLS fixture.")
@@ -307,10 +321,10 @@ if __name__ == "__main__":
         if arguments.platform_assembly:
             parser.error("--platform-assembly requires --run-owned.")
         try:
-            run(arguments.sdk_assembly, arguments.apphost_assembly, arguments.complete_assembly, arguments.child_timeout)
+            run(arguments.sdk_assembly, arguments.apphost_assembly, arguments.complete_assembly, arguments.child_timeout, arguments.evidence_file)
         except ChildFailure as error:
             print(str(error))
             raise SystemExit(error.code) from None
-        except (RuntimeError, AssertionError) as error:
+        except Exception as error:
             print("Component qualification failed at line " + str(traceback.extract_tb(error.__traceback__)[-1].lineno) + ": " + sanitize(str(error)))
             raise SystemExit(1) from None
