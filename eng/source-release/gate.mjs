@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { qualifyMaintenance } from './maintenance-gate.mjs';
 
 export const repository = 'Hexalith/Hexalith.Platform';
 export const workflows = [
@@ -22,7 +23,9 @@ function identity(run, workflow, source, workflowId) {
 }
 
 // API inputs are injectable data for resource-free tests; production always uses GitHub's authenticated GET API.
-export async function qualify({ event, eventName, ownerRepository, checkout, source, workflowRef, workflowSha, job, api }) {
+export async function qualify(inputs) {
+  if (inputs.eventName === 'workflow_dispatch') return qualifyMaintenance(inputs, { repository, workflows, GateError });
+  const { event, eventName, ownerRepository, checkout, source, workflowRef, workflowSha, job, api } = inputs;
   requireValue(eventName === 'workflow_run' && event.action === 'completed', 'wrong-callback-event');
   requireValue(ownerRepository === repository && event.repository?.full_name === repository, 'foreign-callback');
   const callback = event.workflow_run;
@@ -84,11 +87,12 @@ export function githubReadApi(token, request = fetch) {
 }
 
 export function actualInputs(env = process.env) {
-  requireValue(env.GITHUB_ACTIONS === 'true' && env.GITHUB_EVENT_NAME === 'workflow_run', 'hosted-callback-required');
+  requireValue(env.GITHUB_ACTIONS === 'true' && ['workflow_run', 'workflow_dispatch'].includes(env.GITHUB_EVENT_NAME), 'hosted-callback-required');
   const event = JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, 'utf8'));
   return { event, eventName: env.GITHUB_EVENT_NAME, ownerRepository: env.GITHUB_REPOSITORY,
     source: env.SOURCE_RELEASE_SHA || event.workflow_run?.head_sha,
     workflowRef: env.GITHUB_WORKFLOW_REF, workflowSha: env.GITHUB_WORKFLOW_SHA, job: env.GITHUB_JOB,
+    ref: env.GITHUB_REF, runId: env.GITHUB_RUN_ID, runAttempt: env.GITHUB_RUN_ATTEMPT,
     checkout: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), api: githubReadApi(env.GITHUB_TOKEN) };
 }
 export const qualifyActual = () => qualify(actualInputs());
@@ -97,4 +101,4 @@ export function saveReceipt(receipt, file = process.env.SOURCE_RELEASE_RECEIPT) 
   requireValue(Buffer.byteLength(text) <= 16_384 && typeof file === 'string', 'invalid-receipt');
   writeFileSync(file, text);
 }
-export function binding(receipt) { return JSON.stringify([receipt.source, receipt.executingWorkflow?.ref, receipt.executingWorkflow?.sha, receipt.callback, receipt.qualifyingRuns]); }
+export function binding(receipt) { return JSON.stringify([receipt.source, receipt.executingWorkflow?.ref, receipt.executingWorkflow?.sha, receipt.callback, receipt.qualifyingRuns, ...(receipt.maintenance ? [receipt.maintenance, receipt.dispatch] : [])]); }

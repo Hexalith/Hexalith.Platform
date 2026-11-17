@@ -2,9 +2,9 @@ name: Catalog builder consumer binding
 
 on:
   push:
-    branches: [main, fix/catalog-consumer-run-binding]
+    branches: [main, fix/catalog-consumer-run-binding, 1.7.x]
   pull_request:
-    branches: [main]
+    branches: [main, 1.7.x]
   workflow_dispatch:
 
 concurrency:

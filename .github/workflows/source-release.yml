@@ -1,6 +1,7 @@
 name: Qualified Platform source release
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ['Platform tuple CI preflight', 'Catalog builder consumer binding']
     types: [completed]
@@ -14,8 +15,9 @@ jobs:
   verify:
     if: >-
       github.repository == 'Hexalith/Hexalith.Platform' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_repository.full_name == github.repository
+      ((github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_repository.full_name == github.repository) ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/1.7.x'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -35,7 +37,7 @@ jobs:
         id: gate
         env:
           SOURCE_RELEASE_RECEIPT: ${{ runner.temp }}/source-release-check.json
-          SOURCE_RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+          SOURCE_RELEASE_SHA: ${{ github.event_name == 'workflow_dispatch' && github.sha || github.event.workflow_run.head_sha }}
           GITHUB_TOKEN: ${{ github.token }}
         run: node eng/source-release/run.mjs --check
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
