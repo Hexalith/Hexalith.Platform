@@ -19,8 +19,8 @@ public sealed class PlatformCurrentOwnerHandoffTests
             .Single(attribute => attribute.Key == "PlatformTestPublishedToolRoot").Value!;
         string host = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Module.AppHost.dll"));
         string tooling = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Tooling.dll"));
-        host.ShouldBe("b9c80faba94356860ac73b9e91f1c3721ccc90371726c8b8e33e8774ddbd61b1");
-        tooling.ShouldBe("9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e");
+        host.ShouldBe("3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1");
+        tooling.ShouldBe("48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27");
         PlatformPartiesValidationContext.IsPublishedPair(host, tooling).ShouldBeTrue();
         PlatformPartiesValidationContext.IsPublishedPair(host, "1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec").ShouldBeFalse();
         PlatformPartiesValidationContext.IsPublishedPair("e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709", tooling).ShouldBeFalse();

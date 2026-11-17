@@ -179,6 +179,29 @@ class BoundBuildsTests(unittest.TestCase):
             validate_recorded_source(self.binding, self.current, False)
         self.assertEqual(git(self.builds, "rev-parse", "HEAD"), self.current)
 
+    def test_normal_recorded_preparation_materializes_raw_bytes_and_rechecks_that_exact_producer(self):
+        owner, producer, _ = self.recorded_owner()
+        # Restore the normal CRLF checkout, which cannot itself supply exact catalog bytes.
+        (producer / ".git/info/attributes").unlink()
+        (producer / "Props/Directory.Packages.props").unlink()
+        git(producer, "checkout", "--", "Props/Directory.Packages.props")
+        before = (producer / "Props/Directory.Packages.props").read_bytes()
+        self.assertIn(b"\r\n", before)
+        with patch.object(prepare_builds_artifacts, "ROOT", owner):
+            with self.assertRaisesRegex(ValueError, "working bytes differ"):
+                prepare_builds_artifacts.recorded_preparation_context()
+            with tempfile.TemporaryDirectory() as temporary:
+                exact = materialize(owner, Path(temporary) / "producer", producer)
+                context = prepare_builds_artifacts.recorded_preparation_context(builds_root=exact["buildsRoot"])
+                prepare_builds_artifacts.require_unchanged_recorded_context(context)
+                # The end guard must inspect the same private source, not resolve the CRLF sibling again.
+                (Path(exact["buildsRoot"]) / "Hexalith.Build.props").write_text("changed producer")
+                with self.assertRaisesRegex(ValueError, "modified or untracked"):
+                    prepare_builds_artifacts.require_unchanged_recorded_context(context)
+            self.assertFalse(Path(exact["buildsRoot"]).exists())
+        self.assertEqual(before, (producer / "Props/Directory.Packages.props").read_bytes())
+        self.assertEqual("", git(producer, "status", "--porcelain"))
+
     def test_recorded_artifacts_refuse_wrong_dirty_or_hidden_bound_inputs(self):
         for fault in ("wrong-revision", "dirty-catalog", "assume-unchanged", "skip-worktree"):
             with self.subTest(fault=fault):

@@ -242,6 +242,10 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         {
             5 => "5.0.0",
             6 when (producerRange.MinVersion.ToFullString(), mapping.PlatformIdentity.CatalogCommit) is
+                    ("6.3.0", "7afc4981e21bc2fcce687199a3fd2c61fe87336e")
+                && producerRange.MaxVersion?.ToFullString() == "7.0.0-0"
+                && producerRange.IsMinInclusive && !producerRange.IsMaxInclusive => "5.2.0",
+            6 when (producerRange.MinVersion.ToFullString(), mapping.PlatformIdentity.CatalogCommit) is
                     ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") or
                     ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a") or
                     ("6.0.5", "e2bbbd0893f586e4d447ef8358ff747ea3d34435")
@@ -316,6 +320,8 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
                 "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[6.0.3,7.0.0)", "(6.0.3,7.0.0-0)",
                 "[6.0.3,7.0.0-0]", "[6.0.3,8.0.0-0)", "[6.0.3-preview,7.0.0-0)", "[6.0.3+metadata,7.0.0-0)",
                 "[6.0.6,7.0.0-0)", "[6.0.5,7.0.0)", "(6.0.5,7.0.0-0)", "[6.0.5,7.0.0-0]", "[6.0.5,8.0.0-0)",
+                "[6.3.1,7.0.0-0)", "[6.3.0,7.0.0)", "(6.3.0,7.0.0-0)", "[6.3.0,7.0.0-0]",
+                "[6.3.0,8.0.0-0)", "[6.3.0-preview,7.0.0-0)", "[6.3.0+metadata,7.0.0-0)",
                 "[6.0.5-preview,7.0.0-0)", "[6.0.5+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
             {
                 PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
@@ -338,6 +344,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
                     (Version: "6.0.2", Source: "60ce7967607dc8b703fff11f4fc13cabb09c090a"),
                     (Version: "6.0.3", Source: "99f7c86072ca7b35e3fbbaee4606a559a847805a"),
                     (Version: "6.0.5", Source: "e2bbbd0893f586e4d447ef8358ff747ea3d34435"),
+                    (Version: "6.3.0", Source: "7afc4981e21bc2fcce687199a3fd2c61fe87336e"),
                 };
                 foreach (var producer in qualifiedProducers)
                 {

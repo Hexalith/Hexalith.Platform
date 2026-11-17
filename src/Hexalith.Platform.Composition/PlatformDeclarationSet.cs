@@ -46,7 +46,8 @@ public static class PlatformDeclarationSet
             || (minimum.ToFullString(), identity.CatalogCommit) is not
                 ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") and not
                 ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a") and not
-                ("6.0.5", "e2bbbd0893f586e4d447ef8358ff747ea3d34435")))
+                ("6.0.5", "e2bbbd0893f586e4d447ef8358ff747ea3d34435") and not
+                ("6.3.0", "7afc4981e21bc2fcce687199a3fd2c61fe87336e")))
             throw new InvalidDataException("The Builds6 consumer context requires its exact qualified producer source and range.");
         // Retained 4.x component inputs keep their original default view. Real frozen 4.x tools also
         // compile as net10.0, where the successor's typed consumer API is deliberately absent.

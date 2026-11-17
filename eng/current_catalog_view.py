@@ -83,6 +83,14 @@ GENERATION605_CATALOG = {
 }
 
 
+GENERATION630_CATALOG = {
+    "version": "6.3.0",
+    "sourceRevision": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+    "blob": "db85d885ae1b7478ee2d053a5b54b9a43bff9ae7",
+    "sha256": "aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4",
+}
+
+
 def catalog_profile(binding=None) -> str:
     """A new producer generation cannot inherit an earlier consumer qualification."""
     if binding is None:
@@ -93,7 +101,7 @@ def catalog_profile(binding=None) -> str:
         producer = binding["producer"]
         selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
                     "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG,
-                    "6.0.5": GENERATION605_CATALOG}.get(binding["publication"]["version"])
+                    "6.0.5": GENERATION605_CATALOG, "6.3.0": GENERATION630_CATALOG}.get(binding["publication"]["version"])
         if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
                 or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
             raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
@@ -183,7 +191,8 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
         return json.loads(result.stdout)["TargetResults"]["ObserveAll"]["Items"]
 
 
-def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) -> None:
+def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str, *,
+                        generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
     """Check every package and both OpenAPI members in one exact independent evaluation context."""
     names = [item["Identity"] for item in observed]
     if len(names) != len(PLATFORM_CONSUMERS) + len(UNKNOWN_CONSUMERS) \
@@ -194,7 +203,7 @@ def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str) ->
         expected_sdk = named_sdk if current else other_sdk
         expected = {package: expected_sdk for package in SDK_PACKAGES}
         expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0")
-            if current and expected_sdk == "4.2.0" else ("11.0.0", "3.11.0"))))
+            if current and expected_sdk == "4.2.0" else generic_openapi)))
         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
         if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
                 or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
@@ -233,7 +242,9 @@ def verify_mcp_observations(observed: list[dict], *, generic_mcp: str) -> None:
             raise ValueError("The authenticated catalog selects an unqualified MCP consumer view: " + item["Identity"])
 
 
-def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7", generic_mcp: str = "2.0.1") -> None:
+def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7",
+                                      generic_mcp: str = "2.0.1", generic_sdk: str = "5.1.0",
+                                      generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
     """Require each actual source-owner context's complete family and an unknown sibling refusal."""
     names = [item["Identity"] for item in observed]
     if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
@@ -241,9 +252,9 @@ def verify_current_owner_observations(observed: list[dict], *, generic_tenants: 
         raise ValueError("Current-owner catalog evaluation differs from its exact source project contexts.")
     for item in observed:
         named = item["Identity"] in CURRENT_OWNER_CONSUMERS
-        sdk = "4.2.0" if named else "5.1.0"
+        sdk = "4.2.0" if named else generic_sdk
         expected = {package: sdk for package in SDK_PACKAGES}
-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if named else ("11.0.0", "3.11.0"))))
+        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if named else generic_openapi)))
         memories = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
         if (item.get("Sdk") != sdk or item.get("PlatformView") != "false" \
@@ -264,30 +275,34 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=N
     if binding is not None and binding["producer"]["catalog"]["sha256"] != expected_sha256:
         raise ValueError("The current catalog view differs from its exact producer binding.")
     require_finite_selector(ET.fromstring(raw))
+    version = binding["publication"]["version"] if binding is not None else None
+    generic_sdk = "5.2.0" if version == "6.3.0" else "5.1.0"
+    generic_openapi = ("11.0.0", "3.11.1" if version == "6.3.0" else "3.11.0")
     observed = evaluate_views(raw)
     names = [item["Identity"] for item in observed]
     verify_observations(observed, "5.1.0" if profile == "current-sdk51" else "4.2.0",
-                        "5.1.0" if profile in ("current-sdk51", "current-sdk42") else "5.0.0")
+                        generic_sdk if profile in ("current-sdk51", "current-sdk42") else "5.0.0", generic_openapi=generic_openapi)
     collecting = evaluate_views(raw, "4.2.0")
     if [item["Identity"] for item in collecting] != names:
         raise ValueError("The retained collecting view changed its exact consumer set.")
-    verify_observations(collecting, "4.2.0", "4.2.0")
+    verify_observations(collecting, "4.2.0", "4.2.0", generic_openapi=generic_openapi)
     if profile == "current-sdk42":
         verify_memories_observations(observed)
         verify_memories_observations(collecting)
     owner_observed = []
-    if binding is not None and binding["publication"]["version"] in ("6.0.2", "6.0.3", "6.0.5"):
-        generic_tenants = "7.0.7" if binding["publication"]["version"] == "6.0.2" else "8.0.0"
+    if binding is not None and version in ("6.0.2", "6.0.3", "6.0.5", "6.3.0"):
+        generic_tenants = "8.0.1" if version == "6.3.0" else "7.0.7" if version == "6.0.2" else "8.0.0"
         verify_tenants_observations(observed, generic_tenants=generic_tenants)
         verify_tenants_observations(collecting, generic_tenants=generic_tenants)
         owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
-        generic_mcp = "3.0.0" if binding["publication"]["version"] == "6.0.5" else "2.0.1"
-        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp)
-        if binding["publication"]["version"] == "6.0.5":
+        generic_mcp = "3.0.0" if version in ("6.0.5", "6.3.0") else "2.0.1"
+        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp,
+                                          generic_sdk=generic_sdk, generic_openapi=generic_openapi)
+        if version in ("6.0.5", "6.3.0"):
             for observations in (observed, collecting, owner_observed):
                 verify_mcp_observations(observations, generic_mcp=generic_mcp)
     return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
             "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,
-            "scope": "Exact Builds6 SDK5.1 default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+            "scope": "Exact Builds6 SDK" + generic_sdk + " default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}

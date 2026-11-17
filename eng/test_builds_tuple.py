@@ -167,6 +167,7 @@ class BuildsTupleTests(unittest.TestCase):
             stack.enter_context(patch.object(sys, "argv", ["prepare", "--output", str(output), "--require-recorded"]))
             stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding))
             stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "materialize", return_value={"buildsRoot": str(self.root / "synthetic-producer")}))
             context = stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context",
                 side_effect=ValueError("Builds checkout differs from the bound producer revision.")))
             handoff = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff"))
@@ -292,6 +293,7 @@ class BuildsTupleTests(unittest.TestCase):
                 stack.enter_context(patch.object(sys, "argv", ["prepare", "--output", str(output), "--require-recorded"]))
                 stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=self.binding))
                 stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+                stack.enter_context(patch.object(prepare_builds_artifacts, "materialize", return_value={"buildsRoot": str(self.root / "synthetic-producer")}))
                 stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context",
                     side_effect=ValueError(message)))
                 handoff = stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff"))
@@ -470,7 +472,7 @@ class BuildsTupleTests(unittest.TestCase):
                    "boundProducerContext": {"sourceRevision": source}}
         observations = []
 
-        def context(_binding):
+        def context(_binding, *, builds_root=None):
             observations.append(copy.deepcopy(current))
             return copy.deepcopy(current)
 
@@ -486,6 +488,7 @@ class BuildsTupleTests(unittest.TestCase):
             stack.enter_context(patch.object(sys, "argv", ["prepare", "--require-recorded", "--archive", str(archive), "--output", str(output)]))
             stack.enter_context(patch.object(prepare_builds_artifacts, "load_binding", return_value=binding))
             stack.enter_context(patch.object(prepare_builds_artifacts, "validate_owner_pins"))
+            stack.enter_context(patch.object(prepare_builds_artifacts, "materialize", return_value={"buildsRoot": str(self.root / "synthetic-producer")}))
             stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_preparation_context", side_effect=context))
             stack.enter_context(patch.object(prepare_builds_artifacts, "verify_handoff", return_value={"qualificationCredit": False}))
             stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run", side_effect=signature))

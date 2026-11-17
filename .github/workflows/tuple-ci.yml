@@ -86,6 +86,7 @@ jobs:
           python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
           python3 -B eng/test_builds_publication.py
+          python3 -B eng/test_bound_builds.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies
         id: dependencies
         shell: bash

@@ -2,17 +2,25 @@
 
 ## Candidate-only tuple preparation
 
-The selected producer is signed Builds **6.0.5**, source
-`e2bbbd0893f586e4d447ef8358ff747ea3d34435`, with exact tool pin and range
-`[6.0.5, 7.0.0-0)` and disabled roll-forward. The catalog blob is
-`42441eb4cefcff2f9c582fcda630d9ad15887df2`, SHA-256
-`d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637`.
+The selected producer is signed Builds **6.3.0**, source
+`7afc4981e21bc2fcce687199a3fd2c61fe87336e`, with exact tool pin and range
+`[6.3.0, 7.0.0-0)` and disabled roll-forward. The catalog blob is
+`db85d885ae1b7478ee2d053a5b54b9a43bff9ae7`, SHA-256
+`aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4`.
 The authoritative publication binding remains `eng/builds-tuple.json`.
-The authenticated Builds 6.0.5 validation pair is AppHost SHA-256
-`b9c80faba94356860ac73b9e91f1c3721ccc90371726c8b8e33e8774ddbd61b1`
+The authenticated Builds 6.3.0 validation pair is AppHost SHA-256
+`3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1`
 and Tooling SHA-256
-`9f7770dc05f32eda77c486307c110b8476be6b3abe8ffa19d65429c3d8f6451e`.
+`48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27`.
 This signed-host pairing grants no ordinary image or runtime admission.
+
+The signed Module archive SHA-256 is `d7454b95f2275203b4018394a7a100ebf92f47b028d40c99a4db4195f6a617f6`.
+Its [normal release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.3.0) and
+[publisher run](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44147684659)
+bind the original artifact and the [public package inventory](https://github.com/Hexalith/Hexalith.Builds/releases/download/v6.3.0/hexalith-package-publication.v1.json),
+SHA-256 `25078b6710fe5d86298d7d1574a69a102c0bdd450ff82b5ba9482a536f64b459`.
+Every public package payload matches the authenticated release artifact; the NuGet
+repository signature is verified separately. These are artifact facts only.
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
 candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,

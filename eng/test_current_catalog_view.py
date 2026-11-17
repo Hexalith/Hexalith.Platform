@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, GENERATION603_CATALOG, GENERATION605_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MCP_PACKAGES, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, TENANTS_PACKAGES, UNKNOWN_CONSUMERS,
+from current_catalog_view import (GENERATION6_CATALOG, GENERATION601_CATALOG, GENERATION602_CATALOG, GENERATION603_CATALOG, GENERATION605_CATALOG, GENERATION630_CATALOG, CURRENT_OWNER_CONSUMERS, UNKNOWN_OWNER_CONSUMERS, MCP_PACKAGES, MEMORIES_PACKAGES, OPENAPI_PACKAGES, PLATFORM_CONSUMERS, SDK_PACKAGES, TENANTS_PACKAGES, UNKNOWN_CONSUMERS,
                                   verify_named_platform_catalog)
 
 BUILDS6_SOURCE = "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5"
@@ -55,6 +55,11 @@ def builds605_catalog_body() -> bytes:
     """Read the independently measured signed6.0.5 producer's exact source catalog."""
     return catalog_fixture("builds-6.0.5-Directory.Packages.props", GENERATION605_CATALOG["sourceRevision"],
         GENERATION605_CATALOG["blob"], GENERATION605_CATALOG["sha256"])
+
+
+def builds630_catalog_body() -> bytes:
+    return catalog_fixture("builds-6.3.0-Directory.Packages.props", GENERATION630_CATALOG["sourceRevision"],
+        GENERATION630_CATALOG["blob"], GENERATION630_CATALOG["sha256"])
 
 
 def observe_producer_projects(raw: bytes, names: tuple[str, ...], sdk_version: str | None = None) -> list[dict]:
@@ -477,6 +482,59 @@ class CurrentCatalogViewTests(unittest.TestCase):
                     with self.subTest(context=context, index=index, fault=fault), \
                             patch("current_catalog_view.evaluate_views", side_effect=observations), \
                             self.assertRaisesRegex(ValueError, "unqualified MCP|unqualified current-owner"):
+                        self.verify(raw, binding)
+
+    def test_builds630_preserves_named_sdk42_and_measures_generic_sdk52_without_native_authority(self):
+        receipt = self.verify(builds630_catalog_body(), generation6_binding("6.3.0"))
+        self.assertEqual(receipt["catalogSha256"], GENERATION630_CATALOG["sha256"])
+        for context, count in (("defaultEvaluations", 36), ("collectingEvaluations", 36), ("currentOwnerEvaluations", 7)):
+            self.assertEqual(len(receipt[context]), count)
+            for item in receipt[context]:
+                named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS)
+                with self.subTest(context=context, project=item["Identity"]):
+                    self.assertEqual(item["Sdk"], "4.2.0" if named or context == "collectingEvaluations" else "5.2.0")
+                    pins = dict(pin.split("=", 1) for pin in item["Pins"].split("|"))
+                    self.assertEqual([pins[name] for name in OPENAPI_PACKAGES],
+                        ["10.0.15", "2.13.0"] if named else ["11.0.0", "3.11.1"])
+                    self.assertEqual(item["CatalogTenantsDefault"], "7.0.7" if named else "8.0.1")
+                    self.assertEqual(item["CatalogMemoriesDefault"], "3.0.27" if named else "4.0.0")
+                    self.assertEqual(item["CatalogMcpDefault"], "2.0.1" if named else "3.0.0")
+        self.assertFalse(receipt["candidateAcceptance"])
+        self.assertFalse(receipt["runtimeAcceptance"])
+
+    def test_builds630_refuses_neighbor_release_wrong_source_blob_and_raw_catalog(self):
+        from current_catalog_view import catalog_profile
+        for fault in ("source", "blob", "sha256", "version"):
+            binding = generation6_binding("6.3.0")
+            if fault == "source":
+                binding["producer"]["sourceRevision"] = binding["publication"]["sourceRevision"] = "e" * 40
+            elif fault == "version":
+                binding["publication"].update(version="6.3.1", releaseTag="v6.3.1")
+            else:
+                binding["producer"]["catalog"][fault] = "e" * (40 if fault == "blob" else 64)
+                if fault == "sha256": binding["publication"]["catalogSha256"] = "e" * 64
+            manifest = json.loads(binding["publication"]["manifestJson"])
+            manifest.update(sha=binding["producer"]["sourceRevision"], version=binding["publication"]["version"])
+            for package in manifest["packages"]:
+                package["path"] = "packages/" + package["id"] + "." + manifest["version"] + ".nupkg"
+            encoded = json.dumps(manifest)
+            binding["publication"].update(manifestJson=encoded, manifestSha256=hashlib.sha256(encoded.encode()).hexdigest())
+            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, "exact qualified Builds6"):
+                catalog_profile(binding)
+        with self.assertRaisesRegex(ValueError, "exact producer binding"):
+            self.verify(builds605_catalog_body(), generation6_binding("6.3.0"))
+
+    def test_builds630_refuses_named_and_generic_package_family_drift_in_every_context(self):
+        raw, binding = builds630_catalog_body(), generation6_binding("6.3.0")
+        receipt = self.verify(raw, binding)
+        contexts = ("defaultEvaluations", "collectingEvaluations", "currentOwnerEvaluations")
+        for context in contexts:
+            for index in (0, -1):
+                for field in ("Sdk", "Pins", "CatalogTenantsDefault", "TenantsPins", "CatalogMemoriesDefault", "MemoriesPins", "CatalogMcpDefault", "McpPins"):
+                    observations = [copy.deepcopy(receipt[name]) for name in contexts]
+                    observations[contexts.index(context)][index][field] = "unqualified"
+                    with self.subTest(context=context, index=index, field=field), \
+                            patch("current_catalog_view.evaluate_views", side_effect=observations), self.assertRaises(ValueError):
                         self.verify(raw, binding)
 
     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
