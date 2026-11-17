@@ -1,6 +1,7 @@
 name: Qualified Platform source release
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ['Platform tuple CI preflight', 'Catalog builder consumer binding']
     types: [completed]
