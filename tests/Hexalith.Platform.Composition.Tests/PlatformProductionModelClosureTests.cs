@@ -19,9 +19,8 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
     {
         string root = PlatformTestRepository.Root;
         string builds = PlatformTestRepository.ReferenceRoot(root, "Hexalith.Builds");
-        using JsonDocument tuple = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(root, "eng", "builds-tuple.json")));
-        string catalogHash = tuple.RootElement.GetProperty("producer").GetProperty("catalog").GetProperty("sha256").GetString()!;
-        string source = tuple.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString()!;
+        // The producer is the recorded Builds gitlink; the pin files carry no hashes or revisions.
+        string source = PlatformTestPins.BuildsGitlink;
         var revision = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], builds, null),
             TimeSpan.FromSeconds(30), TestContext.Current.CancellationToken).ConfigureAwait(true);
         revision.ExitCode.ShouldBe(0, revision.ErrorOutput);
@@ -30,7 +29,7 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
         string tool = typeof(PlatformProductionModelClosureTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
             .Single(attribute => attribute.Key == "PlatformTestPublishedToolRoot").Value!;
         string tooling = Path.Combine(tool, "Hexalith.Builds.Tooling.dll");
-        Hash(tooling).ShouldBe(tuple.RootElement.GetProperty("publication").GetProperty("toolingSha256").GetString());
+        Hash(tooling).ShouldBe(PlatformTestPins.LockedArchiveMemberHash(tool, "Hexalith.Builds.Tooling.dll"));
         string workspace = Path.Combine(Path.GetTempPath(), "platform-production-model-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
         try
@@ -38,7 +37,10 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             // Preserve the recorded blob's BOM and LF bytes; checkout/export EOL conversion and text capture are not catalog authority.
             string catalog = Path.Combine(workspace, "Directory.Packages.props");
             await ExportCatalogBlobAsync(builds, source, catalog).ConfigureAwait(true);
-            Hash(catalog).ShouldBe(catalogHash);
+            // Git's own blob identity checks the export byte-for-byte against the gitlink tree.
+            PlatformTestPins.Git(builds, "hash-object", "--no-filters", catalog)
+                .ShouldBe(PlatformTestPins.Git(builds, "rev-parse", source + ":Props/Directory.Packages.props"));
+            string catalogHash = Hash(catalog);
             string project = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Hexalith.Platform.Composition.csproj");
             // Observe this real model's named view; the authenticated catalog can also declare a generic Tenants default.
             var selection = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",

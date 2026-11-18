@@ -25,8 +25,7 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
         string tool = Metadata("PlatformTestPublishedToolRoot");
         Seed = Path.Combine(tool, "g4-host", "projects", "EventStore", "Host.csproj");
         File.Exists(Seed).ShouldBeTrue("The actual published tool seed is required for this package component fixture.");
-        using JsonDocument binding = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "eng", "builds-tuple.json")));
-        string pin = binding.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString()!;
+        string pin = PlatformTestPins.BuildsGitlink;
         using JsonDocument identity = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(platform, "hexalith-platform.json")));
         string range = identity.RootElement.GetProperty("toolVersionRange").GetString()!;
         var observed = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", ["rev-parse", "HEAD"], platform, null), TimeSpan.FromSeconds(10), CancellationToken.None).GetAwaiter().GetResult();

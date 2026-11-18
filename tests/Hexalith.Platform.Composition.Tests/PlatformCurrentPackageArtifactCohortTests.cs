@@ -238,22 +238,14 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         byte[] original = File.ReadAllBytes(path);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(original)!;
         var defaults = new CompositionDeclarationOptions(mapping, options.DeclarationPaths) { PlatformRoot = options.PlatformRoot, Workspace = fixture.Workspace };
-        NuGet.Versioning.VersionRange producerRange = NuGet.Versioning.VersionRange.Parse(mapping.PlatformIdentity.ToolVersionRange!);
-        string expectedDefault = producerRange.MinVersion!.Major switch
-        {
-            5 => "5.0.0",
-            6 when (producerRange.MinVersion.ToFullString(), mapping.PlatformIdentity.CatalogCommit) is
-                    ("6.3.0", "7afc4981e21bc2fcce687199a3fd2c61fe87336e")
-                && producerRange.MaxVersion?.ToFullString() == "7.0.0-0"
-                && producerRange.IsMinInclusive && !producerRange.IsMaxInclusive => "5.2.0",
-            6 when (producerRange.MinVersion.ToFullString(), mapping.PlatformIdentity.CatalogCommit) is
-                    ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") or
-                    ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a") or
-                    ("6.0.5", "e2bbbd0893f586e4d447ef8358ff747ea3d34435")
-                && producerRange.MaxVersion?.ToFullString() == "7.0.0-0"
-                && producerRange.IsMinInclusive && !producerRange.IsMaxInclusive => "5.1.0",
-            _ => throw new InvalidDataException("Unknown current consumer catalog producer."),
-        };
+        // The producer is the pinned version at the recorded gitlink; its generic default is read from that catalog blob.
+        mapping.PlatformIdentity.ToolVersionRange.ShouldBe(PlatformTestPins.ToolVersionRange);
+        mapping.PlatformIdentity.CatalogCommit.ShouldBe(PlatformTestPins.BuildsGitlink);
+        string builds = PlatformTestRepository.ReferenceRoot(PlatformTestRepository.Root, "Hexalith.Builds");
+        string expectedDefault = System.Xml.Linq.XDocument.Parse(PlatformTestPins.Git(builds, "show", PlatformTestPins.BuildsGitlink + ":Props/Directory.Packages.props").TrimStart('\uFEFF'))
+            .Descendants().Single(element => element.Name.LocalName == "HexalithEventStoreVersion"
+                && (string?)element.Attribute("Condition") == "'$(HexalithEventStoreVersion)' == ''").Value;
+        expectedDefault.ShouldNotBe("4.2.0", "The generic catalog default must stay distinct from the named SDK4.2 view.");
         defaults.CatalogVersion("eventstore", "current default control").ShouldBe(expectedDefault);
         PlatformDeclarationSet.DeclarationOptions(options).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
         foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
@@ -316,60 +308,29 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
                 Entries = mapping.Entries.Select(entry => entry.Identity == "Hexalith.Parties" ? entry with { Path = Path.Combine(fixture.Workspace, "foreign-owner") } : entry).ToArray(),
             };
             Refuses(options with { Mapping = changedSource });
+            // Structurally invalid ranges refuse in the consumer context itself.
             foreach (string? range in new string?[] { null, "", "invalid", "5.*", "5.2.1", "(,6.0.0)", "(5.2.1,6.0.0)", "[5.2.1-preview,6.0.0)", "[6.0.0,7.0.0)",
-                "6.*", "[6.0.2,7.0.0)", "[6.0.0,7.0.0-0)", "[6.0.1,7.0.0-0)", "[6.0.4,7.0.0-0)", "(6.0.2,7.0.0-0)", "[6.0.2,7.0.0-0]", "[6.0.2,8.0.0-0)",
-                "[6.0.2-preview,7.0.0-0)", "[6.0.2+metadata,7.0.0-0)", "[6.0.3,7.0.0)", "(6.0.3,7.0.0-0)",
-                "[6.0.3,7.0.0-0]", "[6.0.3,8.0.0-0)", "[6.0.3-preview,7.0.0-0)", "[6.0.3+metadata,7.0.0-0)",
-                "[6.0.6,7.0.0-0)", "[6.0.5,7.0.0)", "(6.0.5,7.0.0-0)", "[6.0.5,7.0.0-0]", "[6.0.5,8.0.0-0)",
-                "[6.3.1,7.0.0-0)", "[6.3.0,7.0.0)", "(6.3.0,7.0.0-0)", "[6.3.0,7.0.0-0]",
-                "[6.3.0,8.0.0-0)", "[6.3.0-preview,7.0.0-0)", "[6.3.0+metadata,7.0.0-0)",
-                "[6.0.5-preview,7.0.0-0)", "[6.0.5+metadata,7.0.0-0)", "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
+                "6.*", "[6.0.5,7.0.0)", "(6.0.5,7.0.0-0)", "[6.0.5,7.0.0-0]", "[6.0.5,8.0.0-0)", "[6.0.5-preview,7.0.0-0)", "[6.0.5+metadata,7.0.0-0)",
+                "[7.0.0,8.0.0-0)", "[7.0.0,8.0.0)" })
             {
                 PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
                 Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));
                 Refuses(changed);
             }
 
-            if (producerRange.MinVersion.Major == 6)
+            // Any well-formed [pin, next major) range or catalog commit selects the named consumer by the version rule; the
+            // persisted snapshot still binds the exact mapping, so a changed identity cannot reuse it.
+            foreach (string range in new[] { "[6.0.0,7.0.0-0)", "[6.0.5,7.0.0-0)", "[6.1.0,7.0.0-0)", "[5.2.2,6.0.0-0)" })
             {
-                foreach (string? source in new string?[] { null, new string('0', 40), "12475add3f14b06709a5ffe74f413d27d4111d75", "6de5ce0a7194321828a1ede119a98c5d31d05914", "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89", "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5", "02ed624aa19781cac75d2c9112940e9bd830441a",
-                    "73e60af8a1fcdf3f06726d5d1b6e1199cce778ee", "eeb42f165ec8eafb85269fb0e3e5585120a7090c", "f49a2021d757a0fe8d7344d7baa67e721155afa6" })
-                {
-                    PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { CatalogCommit = source } } };
-                    Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(changed));
-                    Refuses(changed);
-                }
-                // Exact historical and current admissions never admit a crossed source/range pair.
-                var qualifiedProducers = new[]
-                {
-                    (Version: "6.0.2", Source: "60ce7967607dc8b703fff11f4fc13cabb09c090a"),
-                    (Version: "6.0.3", Source: "99f7c86072ca7b35e3fbbaee4606a559a847805a"),
-                    (Version: "6.0.5", Source: "e2bbbd0893f586e4d447ef8358ff747ea3d34435"),
-                    (Version: "6.3.0", Source: "7afc4981e21bc2fcce687199a3fd2c61fe87336e"),
-                };
-                foreach (var producer in qualifiedProducers)
-                {
-                    PlatformCompositionOptions selected = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with
-                    {
-                        ToolVersionRange = $"[{producer.Version},7.0.0-0)", CatalogCommit = producer.Source,
-                    } } };
-                    PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
-                    foreach (var foreign in qualifiedProducers.Where(candidate => candidate.Source != producer.Source))
-                    {
-                        PlatformCompositionOptions crossed = selected with { Mapping = selected.Mapping with { PlatformIdentity = selected.Mapping.PlatformIdentity! with
-                        {
-                            CatalogCommit = foreign.Source,
-                        } } };
-                        Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(crossed));
-                        Refuses(crossed);
-                    }
-                }
-                // The retained producer5 branch still selects its named consumer without acquiring producer6 authority.
-                PlatformCompositionOptions retained = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with
-                {
-                    ToolVersionRange = "[5.2.2,6.0.0-0)", CatalogCommit = "02ed624aa19781cac75d2c9112940e9bd830441a",
-                } } };
-                PlatformDeclarationSet.DeclarationOptions(retained).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
+                PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { ToolVersionRange = range } } };
+                PlatformDeclarationSet.DeclarationOptions(changed).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
+                Refuses(changed);
+            }
+            foreach (string? source in new string?[] { null, new string('0', 40), new string('e', 40) })
+            {
+                PlatformCompositionOptions changed = options with { Mapping = mapping with { PlatformIdentity = mapping.PlatformIdentity with { CatalogCommit = source } } };
+                PlatformDeclarationSet.DeclarationOptions(changed).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
+                Refuses(changed);
             }
 
             foreach (string version in new[] { "5.0.0", "4.2.1", "4.2.0+metadata" })

@@ -113,8 +113,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         PlatformIdentity identity = mapping.PlatformIdentity.ShouldNotBeNull();
         identity.IsPlatformRepository.ShouldBeTrue("This is the real Platform-owned qualification path; it does not invent a consumer release tag.");
         identity.CheckoutCommit.ShouldBe(Git(root, "rev-parse", "HEAD"), "The actual candidate source must equal its authenticated checkout.");
-        using JsonDocument tuple = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(root, "eng", "builds-tuple.json")));
-        identity.CatalogCommit.ShouldBe(tuple.RootElement.GetProperty("producer").GetProperty("sourceRevision").GetString());
+        identity.CatalogCommit.ShouldBe(PlatformTestPins.BuildsGitlink);
+        identity.ToolVersionRange.ShouldBe(PlatformTestPins.ToolVersionRange);
         string seed = Path.Combine(Metadata("PlatformTestPublishedToolRoot"), "g4-host", "projects", "EventStore", "Host.csproj");
         File.Exists(seed).ShouldBeTrue("The actual published tool seed must be present.");
         string workspace = Path.Combine(Path.GetTempPath(), "platform-full-parties-" + Guid.NewGuid().ToString("N"));

@@ -1,0 +1,9 @@
+$ dotnet restore + dotnet build tests/Hexalith.Platform.Composition.Tests (Release, package mode, HexalithBuildsPublishedToolRoot=<prepared 6.3.1 tool>, SDK4.2 collecting family)
+    0 Warning(s)
+    0 Error(s)
+
+$ dotnet <Composition.Tests.dll> -method ...BuildsToolPairFollowsThePinnedVersionRule -method ...CurrentSignedHostAndToolingPairCannotBeCrossed
+=== TEST EXECUTION SUMMARY ===
+   Hexalith.Platform.Composition.Tests  Total: 2, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 0.249s
+Pass Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests.BuildsToolPairFollowsThePinnedVersionRule
+Pass Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.CurrentSignedHostAndToolingPairCannotBeCrossed

@@ -120,24 +120,24 @@ public sealed class PlatformMcpCliCatalogSelectionTests
             {
                 Mapping = options.Mapping with { PlatformIdentity = options.Mapping.PlatformIdentity! with
                 {
-                    ToolVersionRange = generation == 6 ? "[6.0.3,7.0.0-0)" : $"[{generation}.0.0,{generation + 1}.0.0-0)",
-                    CatalogCommit = generation == 6 ? "99f7c86072ca7b35e3fbbaee4606a559a847805a" : options.Mapping.PlatformIdentity!.CatalogCommit,
+                    ToolVersionRange = generation == 6 ? PlatformTestPins.ToolVersionRange : $"[{generation}.0.0,{generation + 1}.0.0-0)",
                 } },
             };
             PlatformDeclarationSet.DeclarationOptions(selected).ConsumerProjectName.ShouldBe(generation == 4
                 ? null : Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
             if (generation == 6)
             {
-                PlatformCompositionOptions released = selected with { Mapping = selected.Mapping with { PlatformIdentity = selected.Mapping.PlatformIdentity! with
+                // The version rule follows the pin; any catalog commit keeps the same consumer context.
+                PlatformCompositionOptions other = selected with { Mapping = selected.Mapping with { PlatformIdentity = selected.Mapping.PlatformIdentity! with
                 {
-                    ToolVersionRange = "[6.0.5,7.0.0-0)", CatalogCommit = "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+                    ToolVersionRange = "[6.0.5,7.0.0-0)", CatalogCommit = new string('e', 40),
                 } } };
-                PlatformDeclarationSet.DeclarationOptions(released).ConsumerProjectName.ShouldBe(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
-                PlatformCompositionOptions unreleased = released with { Mapping = released.Mapping with { PlatformIdentity = released.Mapping.PlatformIdentity! with
+                PlatformDeclarationSet.DeclarationOptions(other).ConsumerProjectName.ShouldBe(Hexalith.Builds.Tooling.Runtime.CompositionDeclarationOptions.PlatformCompositionProjectName);
+                PlatformCompositionOptions crossMajor = other with { Mapping = other.Mapping with { PlatformIdentity = other.Mapping.PlatformIdentity! with
                 {
-                    CatalogCommit = "eeb42f165ec8eafb85269fb0e3e5585120a7090c",
+                    ToolVersionRange = "[6.0.5,8.0.0-0)",
                 } } };
-                Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(unreleased));
+                Should.Throw<InvalidDataException>(() => PlatformDeclarationSet.DeclarationOptions(crossMajor));
             }
         }
         PlatformCompositionOptions future = options with

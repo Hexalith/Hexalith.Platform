@@ -39,16 +39,12 @@ public static class PlatformDeclarationSet
         if (string.IsNullOrWhiteSpace(identity.ToolVersionRange)
             || !NuGet.Versioning.VersionRange.TryParse(identity.ToolVersionRange, out var range)
             || range.MinVersion is not { } minimum || range.MaxVersion is null || range.Float is not null
-            || !range.IsMinInclusive || minimum.IsPrerelease
+            || !range.IsMinInclusive || minimum.IsPrerelease || minimum.HasMetadata
             || minimum.Major is not (4 or 5 or 6) || !range.Satisfies(minimum))
             throw new InvalidDataException("The selected Platform identity has no supported Builds generation for its catalog consumer context.");
-        if (minimum.Major == 6 && (range.MaxVersion.ToFullString() != "7.0.0-0" || range.IsMaxInclusive
-            || (minimum.ToFullString(), identity.CatalogCommit) is not
-                ("6.0.2", "60ce7967607dc8b703fff11f4fc13cabb09c090a") and not
-                ("6.0.3", "99f7c86072ca7b35e3fbbaee4606a559a847805a") and not
-                ("6.0.5", "e2bbbd0893f586e4d447ef8358ff747ea3d34435") and not
-                ("6.3.0", "7afc4981e21bc2fcce687199a3fd2c61fe87336e")))
-            throw new InvalidDataException("The Builds6 consumer context requires its exact qualified producer source and range.");
+        // The pinned version and its gitlink are authenticated by the tag, lock and catalog checks, not by a list here.
+        if (minimum.Major == 6 && (range.MaxVersion.ToFullString() != "7.0.0-0" || range.IsMaxInclusive))
+            throw new InvalidDataException("The Builds6 consumer context requires the range [pin, 7.0.0-0).");
         // Retained 4.x component inputs keep their original default view. Real frozen 4.x tools also
         // compile as net10.0, where the successor's typed consumer API is deliberately absent.
         return minimum.Major is 5 or 6 ? CompositionDeclarationOptions.PlatformCompositionProjectName : null;

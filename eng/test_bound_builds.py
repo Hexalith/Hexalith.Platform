@@ -12,7 +12,6 @@ from unittest.mock import patch
 
 from bound_builds import materialize, verify_bound_checkout
 import prepare_builds_artifacts
-from builds_tuple import validate_recorded_source
 
 
 def git(root, *arguments):
@@ -55,23 +54,20 @@ class BoundBuildsTests(unittest.TestCase):
         self.catalog.write_text("<Project />\n")
         (self.builds / "Hexalith.Build.props").write_text("<Project />\n")
         self.revision = commit(self.builds)
-        self.binding = {
-            "schemaVersion": 1,
-            "candidateAcceptance": False,
-            "producer": {
-                "repository": "https://github.com/Hexalith/Hexalith.Builds.git",
-                "sourceRevision": self.revision,
-                "catalog": {
-                    "path": "Props/Directory.Packages.props",
-                    "blob": git(self.builds, "rev-parse", "HEAD:Props/Directory.Packages.props"),
-                    "sha256": hashlib.sha256(self.catalog.read_bytes()).hexdigest(),
-                },
-            },
-        }
+        self.catalog_sha256 = hashlib.sha256(self.catalog.read_bytes()).hexdigest()
+        self.binding = {"schemaVersion": 2, "version": "6.0.5", "releaseTag": "v6.0.5"}
         self.binding_path = self.platform / "eng/builds-tuple.json"
         self.binding_path.write_text(json.dumps(self.binding))
+        # The recorded Platform gitlink is the producer authority; the source checkout has moved on.
+        git(self.platform, "init", "--quiet")
+        (self.platform / "references/Hexalith.Builds").mkdir(parents=True)
+        self.record_gitlink(self.revision)
         self.catalog.write_text("<Project><!-- later catalog --></Project>\n")
         self.current = commit(self.builds)
+
+    def record_gitlink(self, revision):
+        git(self.platform, "update-index", "--add", "--cacheinfo", "160000", revision, "references/Hexalith.Builds")
+        return commit(self.platform)
 
     def test_newer_dirty_workspace_is_preserved_and_private_catalog_drift_refuses(self):
         self.catalog.write_text(self.catalog.read_text() + "<!-- local work -->\n")
@@ -79,17 +75,16 @@ class BoundBuildsTests(unittest.TestCase):
         context = materialize(self.platform, self.root / "private")
         selected = Path(context["buildsRoot"])
         self.assertEqual(self.revision, git(selected, "rev-parse", "HEAD"))
-        self.assertEqual(
-            self.binding["producer"]["catalog"]["sha256"],
-            hashlib.sha256(Path(context["catalog"]).read_bytes()).hexdigest(),
-        )
+        self.assertEqual(self.catalog_sha256, hashlib.sha256(Path(context["catalog"]).read_bytes()).hexdigest())
+        self.assertEqual(context["catalogSha256"], self.catalog_sha256)
+        self.assertEqual(context["sourceRevision"], self.revision)
         self.assertEqual(self.current, git(self.builds, "rev-parse", "HEAD"))
         self.assertEqual(before, self.catalog.read_bytes())
         self.assertFalse((self.platform / "references/Hexalith.Builds/.git").exists())
         Path(context["catalog"]).write_text("changed private catalog")
         with self.assertRaisesRegex(ValueError, "checkout comparison failed"):
             verify_bound_checkout(self.platform, selected)
-        with self.assertRaisesRegex(ValueError, "bound producer revision"):
+        with self.assertRaisesRegex(ValueError, "recorded Builds gitlink"):
             verify_bound_checkout(self.platform, self.builds)
 
     def test_nested_paths_and_modified_supporting_inputs_cannot_supply_the_bound_context(self):
@@ -126,14 +121,14 @@ class BoundBuildsTests(unittest.TestCase):
             with self.subTest(flag=flag), self.assertRaisesRegex(ValueError, "assume-unchanged or skip-worktree"):
                 verify_bound_checkout(self.platform, selected)
 
-    def test_wrong_authenticated_catalog_refuses_without_changing_the_source(self):
-        for key, value in (("blob", "e" * 40), ("sha256", "e" * 64)):
-            original = self.binding["producer"]["catalog"][key]
-            self.binding["producer"]["catalog"][key] = value
-            self.binding_path.write_text(json.dumps(self.binding))
-            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "catalog (blob|SHA-256) differs"):
-                materialize(self.platform, self.root / key)
-            self.binding["producer"]["catalog"][key] = original
+    def test_unknown_gitlink_or_invalid_binding_refuses_without_changing_the_source(self):
+        self.record_gitlink("e" * 40)
+        with self.assertRaises(subprocess.CalledProcessError):
+            materialize(self.platform, self.root / "unknown")
+        self.record_gitlink(self.revision)
+        self.binding_path.write_text(json.dumps({**self.binding, "sourceRevision": self.revision}))
+        with self.assertRaisesRegex(ValueError, "schema 2"):
+            materialize(self.platform, self.root / "invalid")
         self.assertEqual(self.current, git(self.builds, "rev-parse", "HEAD"))
 
     def test_ambient_git_redirection_cannot_replace_the_physical_source(self):
@@ -150,13 +145,7 @@ class BoundBuildsTests(unittest.TestCase):
         self.assertFalse((self.root / "foreign-index").exists())
 
     def recorded_owner(self):
-        """Create a clean owner with a newer catalog gitlink and a separate exact signed-producer control."""
-        if not (self.platform / ".git").exists():
-            git(self.platform, "init", "--quiet")
-            (self.platform / "references/Hexalith.Builds").mkdir(parents=True)
-            git(self.platform, "update-index", "--add", "--cacheinfo", "160000", self.current,
-                "references/Hexalith.Builds")
-            commit(self.platform)
+        """Create a clean owner clone whose recorded gitlink selects the producer."""
         owner_revision = git(self.platform, "rev-parse", "HEAD")
         owner = self.root / "private/Hexalith.Platform"
         subprocess.run(["git", "-c", "submodule.recurse=false", "clone", "--quiet", "--shared",
@@ -165,18 +154,16 @@ class BoundBuildsTests(unittest.TestCase):
         materialize(owner, producer, self.builds)
         return owner, producer, owner_revision
 
-    def test_recorded_artifacts_bind_advanced_owner_catalog_separately_from_published_producer(self):
+    def test_recorded_artifacts_bind_the_owner_gitlink_as_the_producer(self):
         owner, producer, revision = self.recorded_owner()
         with patch.object(prepare_builds_artifacts, "ROOT", owner):
             context = prepare_builds_artifacts.recorded_preparation_context()
             prepare_builds_artifacts.require_unchanged_recorded_context(context)
         self.assertEqual(context["platformRevision"], revision)
-        self.assertEqual(context["platformRecordedBuildsRevision"], self.current)
+        self.assertEqual(context["platformRecordedBuildsRevision"], self.revision)
         self.assertEqual(context["boundProducerContext"]["sourceRevision"], self.revision)
         self.assertEqual(context["boundProducerContext"]["buildsRoot"], str(producer))
         self.assertFalse((owner / "references/Hexalith.Builds/.git").exists())
-        with self.assertRaisesRegex(ValueError, "exact approved Builds pin"):
-            validate_recorded_source(self.binding, self.current, False)
         self.assertEqual(git(self.builds, "rev-parse", "HEAD"), self.current)
 
     def test_normal_recorded_preparation_materializes_raw_bytes_and_rechecks_that_exact_producer(self):

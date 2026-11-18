@@ -13,10 +13,11 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from prepare_builds_artifacts import source_state
-from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins, validate_recorded_source, verify_catalog
+from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_framework, validate_owner_pins, verify_catalog
+from builds_tool_lock import load_lock, locked_entry, require_locked
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 486, "base42": 93, "extensions": 9}
+REQUIRED_TOTALS = {"current42": 487, "base42": 93, "extensions": 9}
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
@@ -48,12 +49,11 @@ def require_collector_source(root, source):
         raise ValueError("Collector source identity or clean recorded owner checkouts changed.")
 
 
-def tuple_runtime_context(binding, suite, profile_sha256):
-    """Select the bound current NET11 runtime; old package data grants no execution authority."""
-    publication = binding["publication"]
-    source, version = binding["producer"]["sourceRevision"], publication["version"]
-    if suite not in ("current42", "base42", "extensions") or not version.startswith(("5.", "6.")):
-        raise ValueError("Current runtime qualification requires the bound NET11 Builds generation.")
+def tuple_runtime_context(binding, source, suite, profile_sha256):
+    """Select the pinned generation's NET11 runtime; old package data grants no execution authority."""
+    version = binding["version"]
+    if suite not in ("current42", "base42", "extensions") or tool_framework(version) != "net11.0":
+        raise ValueError("Current runtime qualification requires the pinned NET11 Builds generation.")
     return {"purpose": "current-net11-with-explicit-public-sdk42", "targetFramework": "net11.0",
             "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
             "nativeAcceptance": False}
@@ -114,6 +114,33 @@ def verify_composition_test_outputs_unchanged(record):
         raise ValueError("Composition test outputs or platform context changed during required tests.")
 
 
+BUILDS_ARTIFACT_MEMBERS = (("Hexalith.Builds.Tooling.dll", "Hexalith.Builds.Tooling.dll"),
+    ("Hexalith.Builds.Module.EventStoreHost.dll", "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"))
+
+
+def builds_artifact_identities(receipt, lock, builds_source, collectors, identities=None):
+    """AR-12: expected = per-file SHA-256 of the lock-verified archive; loaded = the built outputs.
+
+    Records both identities for each collector, then refuses any difference.
+    """
+    identities = {} if identities is None else identities
+    if receipt.get("toolLock") != lock or receipt.get("buildsRevision") != builds_source:
+        raise ValueError("The artifact receipt differs from the locked tool and recorded Builds gitlink.")
+    for name, collector in collectors.items():
+        selected_tool = Path(collector["toolRoot"])
+        for filename, member in BUILDS_ARTIFACT_MEMBERS:
+            output = Path(collector["assembly"]).parent / filename
+            loaded = hashlib.sha256(output.read_bytes()).hexdigest()
+            if loaded != hashlib.sha256((selected_tool / member).read_bytes()).hexdigest():
+                raise ValueError("Collector output differs from its authenticated published artifact: " + filename)
+            expected = receipt["files"].get(receipt["toolPrefix"] + member)
+            identities.setdefault(name, {})[filename] = {"archiveMember": receipt["toolPrefix"] + member,
+                "expectedSha256": expected, "loadedPath": str(output), "loadedSha256": loaded}
+            if loaded != expected:
+                raise ValueError("Collector output differs from its lock-verified archive member: " + filename)
+    return identities
+
+
 def sdk_suite(suite, version):
     """Select an explicit current SDK4.2 inventory; historical CLI selections are retired."""
     if suite not in ("extensions", "base42", "current42") or version != "4.2.0":
@@ -121,7 +148,7 @@ def sdk_suite(suite, version):
     return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
 
 
-def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None, binding=None):
+def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
     """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
     from current_catalog_view import require_catalog_body, verify_named_platform_catalog
     raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
@@ -131,19 +158,16 @@ def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_s
     if document.findall(".//HexalithPlatformSdk42CatalogView"):
         if authenticated_body is None:
             raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
-        return verify_named_platform_catalog(raw, expected_sha256, binding=binding)
+        return verify_named_platform_catalog(raw, expected_sha256)
     pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
     if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
         raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
     return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}
 
 
-def sdk42_collecting_cohort(binding, suite):
+def sdk42_collecting_cohort(suite):
     """Keep the measured SDK4.2 collector separate from the producer's newer defaults."""
     if suite not in ("current42", "base42", "extensions"):
-        return None
-    from current_catalog_view import catalog_profile
-    if catalog_profile(binding) not in ("current-sdk51", "current-sdk42"):
         return None
     return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
             "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}
@@ -269,24 +293,25 @@ def _run_tuple_ci(metadata_token):
         run("dotnet-info", ["dotnet", "--info"])
         binding = load_binding()
         result["tupleBinding"] = binding
+        version = binding["version"]
+        validate_owner_pins(binding, ROOT)
+        lock = locked_entry(load_lock(), version)
+        result["toolLock"] = lock
+        builds_source = run("builds-pin", ["git", "rev-parse", "HEAD:references/Hexalith.Builds"]).strip()
+        if not args.audit_only and result["platformSourceState"]["dirty"]:
+            raise ValueError("CI requires clean recorded Platform source with the exact approved Builds pin.")
         runtime_context = None
         if not args.audit_only:
-            runtime_context = tuple_runtime_context(binding, args.suite, hashlib.sha256((ROOT / profile_path).read_bytes()).hexdigest())
+            runtime_context = tuple_runtime_context(binding, builds_source, args.suite, hashlib.sha256((ROOT / profile_path).read_bytes()).hexdigest())
             result["runtimeBuildContext"] = runtime_context
             run("runtime-context-controls", [sys.executable, "-B", "eng/test_tuple_runtime_context.py"])
             run("collector-context-controls", [sys.executable, "-B", "eng/test_tuple_collectors.py"])
-        version, source = binding["publication"]["version"], binding["producer"]["sourceRevision"]
-        archive_sha256 = binding["publication"]["archiveSha256"]
-        validate_owner_pins(binding, ROOT)
-        pin = run("builds-pin", ["git", "rev-parse", "HEAD:references/Hexalith.Builds"]).strip()
-        validate_recorded_source(binding, pin, result["platformSourceState"]["dirty"], require_clean=not args.audit_only)
         builds_root = resolve_builds_root(ROOT)
-        catalog = verify_catalog(binding, builds_root)
-        catalog_identity = binding["producer"]["catalog"]
-        catalog_body = subprocess.check_output(["git", "show", source + ":" + catalog_identity["path"]],
-                                               cwd=builds_root, timeout=30)
+        # The catalog comes from the gitlink blob; the checkout must hold those exact bytes.
+        catalog, catalog_body, catalog_identity = verify_catalog(builds_source, builds_root)
+        result["buildsCatalog"] = catalog_identity
         result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
-                                                                       expected_sha256=catalog_identity["sha256"], binding=binding)
+                                                                       expected_sha256=catalog_identity["sha256"])
         (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
         profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
@@ -304,14 +329,14 @@ def _run_tuple_ci(metadata_token):
             if result["platformSourceState"]["dirty"]:
                 raise ValueError("Tracked source is dirty.")
         if args.artifacts:
-            identity = json.loads((args.artifacts.resolve() / "artifact-identity.json").read_bytes())
-            framework = "net11.0" if version.startswith(("5.", "6.")) else "net10.0"
-            tool = args.artifacts.resolve() / ("published/tools/" + framework + "/any")
-            if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != version or identity["buildsRevision"] != source or identity.get("tupleBinding") != binding:
+            receipt_path = args.artifacts.resolve() / "artifact-identity.json"
+            identity = json.loads(receipt_path.read_bytes())
+            tool = args.artifacts.resolve() / ("published/tools/" + tool_framework(version) + "/any")
+            if Path(identity["toolRoot"]).resolve() != tool or identity["version"] != version or identity["buildsRevision"] != builds_source \
+                    or identity.get("tupleBinding") != binding or identity.get("toolLock") != lock:
                 raise ValueError("Artifact receipt names another tool root or tuple.")
-            archive = args.artifacts.resolve() / ("hexalith.builds.module.cli." + version + ".nupkg")
-            if hashlib.sha256(archive.read_bytes()).hexdigest() != archive_sha256:
-                raise ValueError("Reused archive is not the approved signed package.")
+            archive = args.artifacts.resolve() / (TOOL_PACKAGE.lower() + "." + version + ".nupkg")
+            require_locked(lock, archive.read_bytes())
             # Local graph diagnostics can reuse an already verified archive, but recheck every extracted byte.
             with zipfile.ZipFile(archive) as package:
                 for name in package.namelist():
@@ -320,11 +345,12 @@ def _run_tuple_ci(metadata_token):
             if not args.audit_only:
                 raise ValueError("CI must prepare fresh signed artifacts instead of reusing a caller receipt.")
         else:
+            receipt_path = evidence / "builds/artifact-identity.json"
             tool = Path(run("published-artifacts", [sys.executable, str(ROOT / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds"), "--require-recorded"]).strip())
         result["toolRoot"] = str(tool)
         properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
                       "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool), *sdk_properties]
-        collecting_cohort = sdk42_collecting_cohort(binding, args.suite)
+        collecting_cohort = sdk42_collecting_cohort(args.suite)
         if collecting_cohort is not None:
             properties.extend("-p:" + name + "=" + value for name, value in collecting_cohort.items()
                               if name != "HexalithEventStoreVersion")
@@ -352,10 +378,11 @@ def _run_tuple_ci(metadata_token):
         run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
         if args.suite == "current42":
             run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
+            run("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "GitlinkCatalogViewTests"])
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         file_catalog = evidence / "authenticated-catalog.props"
-        file_catalog_sha256 = binding["producer"]["catalog"]["sha256"]
+        file_catalog_sha256 = catalog_identity["sha256"]
         file_catalog_binding = ROOT / "eng/builds-tuple.json"
         run("file-host-pin-controls", [sys.executable, "-B", "eng/test_verify_platform_pins.py"])
         run("pin-alignment", [sys.executable, "eng/verify-platform-pins.py", "--catalog", str(file_catalog),
@@ -400,8 +427,8 @@ def _run_tuple_ci(metadata_token):
                 collecting_cohort["HexalithMemoriesVersion"] if name == "current" and collecting_cohort is not None else None)
             return {"source": source, "root": str(root), "project": str(project), "assembly": str(assembly),
                 "properties": selected_properties, "targetFramework": framework, "toolRoot": str(selected_tool),
-                "toolVersion": selected_binding["publication"]["version"],
-                "buildsSource": selected_binding["producer"]["sourceRevision"], "tupleBinding": selected_binding,
+                "toolVersion": selected_binding["version"],
+                "buildsSource": builds_source, "tupleBinding": selected_binding,
                 "packageAssets": str(asset_path), "packageAssetsSha256": hashlib.sha256(asset_path.read_bytes()).hexdigest(),
                 "nativeAcceptance": False}
 
@@ -455,12 +482,8 @@ def _run_tuple_ci(metadata_token):
                 raise verification_failure
         for collector in collectors.values():
             require_collector_source(Path(collector["root"]), collector["source"])
-            selected_tool = Path(collector["toolRoot"])
-            for filename, source in [("Hexalith.Builds.Tooling.dll", selected_tool / "Hexalith.Builds.Tooling.dll"),
-                    ("Hexalith.Builds.Module.EventStoreHost.dll", selected_tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll")]:
-                output = Path(collector["assembly"]).parent / filename
-                if hashlib.sha256(output.read_bytes()).digest() != hashlib.sha256(source.read_bytes()).digest():
-                    raise ValueError("Collector output differs from its authenticated published artifact: " + filename)
+        builds_artifact_identities(json.loads(receipt_path.read_bytes()), lock, builds_source, collectors,
+                                   result.setdefault("buildsArtifactIdentities", {}))
         result["status"] = "passed"
     except Exception as error:
         result["status"] = "failed"

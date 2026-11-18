@@ -47,6 +47,13 @@ jobs:
           read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])
           PYCODE
           printf 'current-source=%s\n' "$PLATFORM_CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
+      - name: Require the pinned Builds release tag to name the recorded gitlink
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B eng/builds_publication.py --revision "$PLATFORM_CANDIDATE_SHA"
 
   tuple:
     needs: [resolve-sources]
@@ -86,6 +93,7 @@ jobs:
           python3 -B eng/test-extension-release/run-controls.py
           python3 -B eng/test_tuple_sdk_suites.py
           python3 -B eng/test_builds_publication.py
+          python3 -B eng/test_builds_tool_lock.py
           python3 -B eng/test_bound_builds.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies
         id: dependencies
@@ -97,8 +105,8 @@ jobs:
           trap 'code=$?; printf "%s\n" "$code" > "$bootstrap/initialize.exit"' EXIT
           [[ "$PLATFORM_CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
+          # The pins must agree; the Builds checkout must then equal the recorded gitlink.
           builds_source="$(python3 -B eng/builds_tuple.py)"
-          test "$(git rev-parse HEAD:references/Hexalith.Builds)" = "$builds_source"
           git submodule update --init
           test "$(git -C references/Hexalith.Builds rev-parse HEAD)" = "$builds_source"
       - name: Recheck the exact initialized Parties source and declaration

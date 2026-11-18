@@ -1,4 +1,4 @@
-"""Verify the approved published Builds archive and retain its exact artifact closure."""
+"""Verify the pinned Builds tool against its lock and release tag, and retain its exact artifact closure."""
 import argparse
 from contextlib import ExitStack
 import hashlib
@@ -7,12 +7,13 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
-import urllib.request
 import zipfile
 
-from builds_tuple import load_binding, resolve_builds_root, validate_owner_pins
+from builds_tuple import (GITLINK, TOOL_PACKAGE, load_binding, recorded_gitlink, resolve_builds_root, tool_framework,
+                          validate_owner_pins)
 from bound_builds import inspection_environment, materialize, verify_bound_checkout
-from builds_publication import _read_official, verify_handoff
+from builds_publication import _read_official, verify_release
+from builds_tool_lock import download, load_lock, locked_entry, require_locked, verify_signature
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,7 +34,7 @@ def source_state():
 
 
 def recorded_preparation_context(binding=None, *, builds_root=None):
-    """Bind the clean recorded owner and the independently authenticated published producer."""
+    """Bind the clean recorded owner and the producer checked out at its recorded Builds gitlink."""
     if (not (ROOT / ".git").exists()
             or Path(git_output("rev-parse", "--show-toplevel").strip()).resolve() != ROOT.resolve()):
         raise ValueError("Published artifact preparation requires its own physical Platform checkout.")
@@ -43,11 +44,9 @@ def recorded_preparation_context(binding=None, *, builds_root=None):
         raise ValueError("CI requires clean recorded Platform source for published artifact preparation.")
     if binding is not None and load_binding() != binding:
         raise ValueError("Recorded Platform publication binding changed before artifact preparation.")
-    entry = git_output("ls-tree", "HEAD", "--", "references/Hexalith.Builds").strip().split()
-    if len(entry) != 4 or entry[:2] != ["160000", "commit"] or entry[3] != "references/Hexalith.Builds":
-        raise ValueError("Recorded Platform source must declare its actual Builds catalog gitlink.")
+    gitlink = recorded_gitlink(ROOT, environment=inspection_environment())
     return {"platformRevision": revision, "platformSourceState": state,
-            "platformRecordedBuildsRevision": entry[2],
+            "platformRecordedBuildsRevision": gitlink,
             "boundProducerContext": verify_bound_checkout(ROOT, resolve_builds_root(ROOT) if builds_root is None else builds_root)}
 
 
@@ -77,10 +76,10 @@ def _prepare_artifacts(metadata_token):
     if output.exists():
         raise ValueError("Choose a new artifact directory; existing evidence is never replaced.")
     binding = load_binding()
-    publication = binding["publication"]
-    version, source = publication["version"], binding["producer"]["sourceRevision"]
-    archive_sha256, tooling_sha256 = publication["archiveSha256"], publication["toolingSha256"]
+    version = binding["version"]
     validate_owner_pins(binding, ROOT)
+    # A stale or missing lock refuses before any download or side effect.
+    lock = locked_entry(load_lock(), version)
     # Own the exact producer checkout for the entire verification, including the final recheck.
     with ExitStack() as cleanup:
         builds_root = None
@@ -90,18 +89,14 @@ def _prepare_artifacts(metadata_token):
         recorded = recorded_preparation_context(binding, builds_root=builds_root) if args.require_recorded else None
         revision = recorded["platformRevision"] if recorded is not None else git_output("rev-parse", "HEAD").strip()
         state = recorded["platformSourceState"] if recorded is not None else source_state()
-        handoff = verify_handoff(binding, read=lambda path: _read_official(path, metadata_token))
+        source = recorded["platformRecordedBuildsRevision"] if recorded is not None else recorded_gitlink(ROOT, environment=inspection_environment())
+        release = verify_release(binding, source, read=lambda path: _read_official(path, metadata_token))
         output.mkdir(parents=True)
-        archive = output / ("hexalith.builds.module.cli." + version + ".nupkg")
-        if args.archive:
-            archive.write_bytes(args.archive.read_bytes())
-        else:
-            url = "https://api.nuget.org/v3-flatcontainer/hexalith.builds.module.cli/" + version + "/" + archive.name
-            with urllib.request.urlopen(url, timeout=90) as response:
-                archive.write_bytes(response.read())
-        if hashlib.sha256(archive.read_bytes()).hexdigest() != archive_sha256:
-            raise ValueError("Published signed Builds archive SHA-256 differs from the approved observation.")
-        verification = subprocess.run(["dotnet", "nuget", "verify", str(archive), "--all"], capture_output=True, text=True)
+        archive = output / (TOOL_PACKAGE.lower() + "." + version + ".nupkg")
+        archive.write_bytes(args.archive.read_bytes() if args.archive else download(version))
+        # The lock names the exact package bytes; the signature is checked separately.
+        require_locked(lock, archive.read_bytes())
+        verification = verify_signature(archive)
         (output / "signature.stdout").write_text(verification.stdout)
         (output / "signature.stderr").write_text(verification.stderr)
         if verification.returncode:
@@ -119,19 +114,20 @@ def _prepare_artifacts(metadata_token):
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_bytes(payload)
                 hashes[entry.filename] = hashlib.sha256(payload).hexdigest()
-        framework = "net11.0" if version.startswith(("5.", "6.")) else "net10.0"
-        tool_prefix = "tools/" + framework + "/any/"
+        tool_prefix = "tools/" + tool_framework(version) + "/any/"
         tool = extracted / tool_prefix
-        if hashes[tool_prefix + "Hexalith.Builds.Tooling.dll"] != tooling_sha256:
-            raise ValueError("Unexpected published Tooling identity.")
+        if tool_prefix + "Hexalith.Builds.Tooling.dll" not in hashes:
+            raise ValueError("The locked Builds archive has no " + tool_prefix + "Hexalith.Builds.Tooling.dll.")
         host = tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
         executable_version = subprocess.check_output(["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"], text=True).strip()
         if executable_version != version + "+" + source:
-            raise ValueError("Published executable source/version does not match the approved tuple.")
+            raise ValueError("Published executable reports " + executable_version + "; the pin requires " + version + "+" + source + ".")
+        # AR-12 expected identities: per-file SHA-256 of the lock-verified archive.
         receipt = {"platformRevision": revision, "platformSourceState": state, "buildsRevision": source, "version": version,
-                   "archiveSha256": archive_sha256, "files": hashes,
+                   "buildsGitlink": GITLINK, "toolLock": lock, "archiveSha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+                   "files": hashes, "toolPrefix": tool_prefix,
                    "toolRoot": str(tool), "toolingAssembly": str(tool / "Hexalith.Builds.Tooling.dll"),
-                   "eventStoreHostAssembly": str(host), "tupleBinding": binding, "publicationHandoff": handoff,
+                   "eventStoreHostAssembly": str(host), "tupleBinding": binding, "release": release,
                    "qualification": "artifact identity only", "candidateAcceptance": False}
         if recorded is not None:
             require_unchanged_recorded_context(recorded, binding)

@@ -2,25 +2,12 @@
 
 ## Candidate-only tuple preparation
 
-The selected producer is signed Builds **6.3.0**, source
-`7afc4981e21bc2fcce687199a3fd2c61fe87336e`, with exact tool pin and range
-`[6.3.0, 7.0.0-0)` and disabled roll-forward. The catalog blob is
-`db85d885ae1b7478ee2d053a5b54b9a43bff9ae7`, SHA-256
-`aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4`.
-The authoritative publication binding remains `eng/builds-tuple.json`.
-The authenticated Builds 6.3.0 validation pair is AppHost SHA-256
-`3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1`
-and Tooling SHA-256
-`48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27`.
-This signed-host pairing grants no ordinary image or runtime admission.
-
-The signed Module archive SHA-256 is `d7454b95f2275203b4018394a7a100ebf92f47b028d40c99a4db4195f6a617f6`.
-Its [normal release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.3.0) and
-[publisher run](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44147684659)
-bind the original artifact and the [public package inventory](https://github.com/Hexalith/Hexalith.Builds/releases/download/v6.3.0/hexalith-package-publication.v1.json),
-SHA-256 `25078b6710fe5d86298d7d1574a69a102c0bdd450ff82b5ba9482a536f64b459`.
-Every public package payload matches the authenticated release artifact; the NuGet
-repository signature is verified separately. These are artifact facts only.
+Builds is pinned by released version: the current pin is in
+[`eng/builds-tuple.json`](eng/builds-tuple.json), [`.config/dotnet-tools.json`](.config/dotnet-tools.json),
+[`hexalith-platform.json`](hexalith-platform.json), [`eng/builds-tool.lock.json`](eng/builds-tool.lock.json)
+and the `references/Hexalith.Builds` gitlink. How preparation fails closed on them
+and how to adopt a release are described in
+[adopting a Builds release](eng/tuple-source-preparation.md#adopting-a-builds-release).
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
 candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
@@ -30,7 +17,7 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](eng/tuple-source-preparation.md).
 
-The continuing inventories declare 486 current42, 93 base42 and nine extension
+The continuing inventories declare 487 current42, 93 base42 and nine extension
 executions, with exact positive group counts and zero skips.
 
 The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
@@ -41,13 +28,17 @@ model transport and exact positive counts with zero skips remain required.
 Hosted main tuple success still requires an authorized landing and actual run;
 local audits provide no hosted or native acceptance.
 
-Historical preparation records below describe their original subjects and past
-requirements. Their L/M, 349/412 and reader-companion obligations are retired by
-Story 2.13; archived qualification and broker tags remain evidence.
+## Historical preparation records
 
-## Historical signed Builds6.0.3 tuple
+The records below are historical. They describe their original subjects and past
+requirements, including the schema 1 binding fields, hash-pair admission and
+per-release catalog tables that Story 2.14 retired. Their L/M, 349/412 and
+reader-companion obligations are retired by Story 2.13; archived qualification
+and broker tags remain evidence.
 
-The current producer is genuine [Builds v6.0.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.0.3)
+### Historical signed Builds6.0.3 tuple
+
+The producer was genuine [Builds v6.0.3](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.0.3)
 at `99f7c86072ca7b35e3fbbaee4606a559a847805a`, published by successful normal
 [release43628367692](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43628367692).
 The exact tool pin and range floor are `6.0.3`, with upper bound `7.0.0-0`,
@@ -69,9 +60,9 @@ normal source publisher formed the gates for that source; companion execution wa
 retired by Story 2.13.
 Publication and these component observations grant no candidate or native acceptance.
 
-## Previous signed Builds5.2.2 consumer-context preparation
+### Previous signed Builds5.2.2 consumer-context preparation
 
-The current producer is genuine [Builds v5.2.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.2)
+The producer was genuine [Builds v5.2.2](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.2)
 at `02ed624aa19781cac75d2c9112940e9bd830441a`, from successful normal
 [release43455256492](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43455256492).
 The exact tool pin and range floor are `5.2.2`, with upper bound `6.0.0-0`,
@@ -96,9 +87,9 @@ The unchanged tuple/catalog gates and normal qualified source publisher
 remain required. This grants no candidate, lifecycle, image, native or
 Story acceptance. The previous sections retain their historical facts.
 
-## Previous signed Builds5.2.1 NET11 preparation
+### Previous signed Builds5.2.1 NET11 preparation
 
-The current producer is genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
+The producer was genuine [Builds v5.2.1](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v5.2.1)
 at `0e7424fdce6373920fb2019d1ad2a74d8fe5295c`, from successful normal
 [release43417380822](https://github.com/Hexalith/Hexalith.Builds/actions/runs/43417380822).
 The exact module-tool pin is `5.2.1`, its range is `[5.2.1, 6.0.0-0)`,
@@ -124,7 +115,7 @@ unchanged exact-source tuple/catalog qualification and the normal source
 publisher remain required. It grants no native, lifecycle, image, candidate or
 Story acceptance. Previous sections retain their own historical facts and counts.
 
-## Previous signed Builds4.45.0 and public Parties3.1.0 tuple
+### Previous signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal
@@ -151,7 +142,7 @@ EventStore release carrying the extension API. This prerequisite source preparat
 grants no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
-## Previous signed Builds4.44.13 and public Parties3.1.0 tuple
+### Previous signed Builds4.44.13 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.44.13](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13)
 at `3c8096180ecf2aa539ac454815efbfceb8a92822`, from normal
@@ -180,7 +171,7 @@ execution and verified cleanup. This prerequisite source preparation grants
 no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
-## Previous signed Builds4.44.12 and public Parties3.1.0 tuple
+### Previous signed Builds4.44.12 and public Parties3.1.0 tuple
 
 The selected producer is genuine [Builds v4.44.12](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.12)
 at `b4703ec2247321f867f14cd9caca43fa00190feb`, published by normal
@@ -214,7 +205,7 @@ reader/version/ordinary-entry/signed-validation/catalog/model controls. Its lega
 cases. That source required same-code qualification, five SDK gates, hosted source CI, native execution
 and cleanup; source preparation alone granted no acceptance.
 
-## Previous signed Builds4.44.11 and Tenants7.0.5 tuple
+### Previous signed Builds4.44.11 and Tenants7.0.5 tuple
 
 The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
 at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
@@ -249,9 +240,9 @@ validation, native effects and complete cleanup.
 Package measurement and component checks grant no public-consumer or candidate
 acceptance. The prior producer preparation below retains its own original facts.
 
-## Previous Builds 4.44.10 preparation
+### Previous Builds 4.44.10 preparation
 
-The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
+That private reference preparation bound genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
 at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
 at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images
@@ -303,10 +294,12 @@ dotnet tool restore
 dotnet tool run hexalith-module --version
 ```
 
-Use the exact published tool pin, supported range and producer identities from
-this selected checkout's `.config/dotnet-tools.json`, `hexalith-platform.json`
-and [`eng/builds-tuple.json`](eng/builds-tuple.json). A main-branch head or a
-compatible version range alone supplies no publication or acceptance authority.
+Use the exact published tool pin and supported range from this selected
+checkout's `.config/dotnet-tools.json`, `hexalith-platform.json` and
+[`eng/builds-tuple.json`](eng/builds-tuple.json). The Builds gitlink and
+[`eng/builds-tool.lock.json`](eng/builds-tool.lock.json) supply the producer
+source and package integrity. A main-branch head or a compatible version range
+alone supplies no publication or acceptance authority.
 
 The historical same-code lane L used genuine Builds `4.44.3` at
 `fc2122240a39f03628c04fa8433e5eece90b8b4c`, published by successful normal
@@ -333,10 +326,13 @@ native execution and cleanup remain separate obligations. Fresh exact-source
 hosted qualification is required; publication and positive counts alone establish
 no runtime or deployment acceptance.
 
-The configured range permits later 6.x versions from `6.3.0`, including prereleases
-within that range, and excludes `7.0.0-0` and later versions. Each accepted tool carries its own catalog; matching the range
+The configured range `[pin, next major)` admits the pin and later versions of
+its major generation, and refuses earlier versions and the next major. The
+validation AppHost and Tooling must report the same `<version>+<commit>`
+inside that range. Each accepted tool carries its own catalog; matching the range
 alone does not establish integration qualification. The exact tool pin and Builds
-gitlink must identify the same published release before acceptance.
+gitlink must identify the same published release, and the package bytes must
+match the tool lock, before acceptance.
 See the [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md)
 for owner approval, gated publication and fresh released-tool acceptance. The
 [Story 1.11 evidence](_bmad-output/implementation-artifacts/evidence/1-11/README.md)
@@ -394,13 +390,14 @@ establishing current compliance or implemented enforcement.
 
 ## Exact tuple CI preflight
 
-[`eng/builds-tuple.json`](eng/builds-tuple.json) is the single exact producer and
-publication binding used by the workflow and artifact scripts. Its missing
-publication values deliberately block preflight before dependency initialization,
-archive download or Release execution. After official publication is verified,
-the exact tool pin, range floor, recorded gitlink and publication hashes must all
-agree. The source catalog blob and SHA-256 are checked against the actual Builds
-checkout, with Git's normal CRLF checkout conversion preserved.
+[`eng/builds-tuple.json`](eng/builds-tuple.json) pins the Builds version and
+release tag used by the workflow and artifact scripts. An invalid binding blocks
+preflight before dependency initialization, archive download or Release
+execution. The tool pin, range floor and binding version must agree; the release
+tag must name the recorded gitlink; and the downloaded package must match
+[`eng/builds-tool.lock.json`](eng/builds-tool.lock.json). The catalog is read
+from the gitlink blob and checked against the actual Builds checkout, with Git's
+normal CRLF checkout conversion preserved.
 
 Local Debug defaults retain source references. For owner CI,
 `HexalithBuildsPublishedToolRoot` binds Tooling and the EventStore seed to the

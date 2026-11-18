@@ -121,7 +121,10 @@ development_status:
   # 2026-11-16: hosted main run 43846045454 (215ae18c) passed all three jobs, 588 executions, zero skips, no Dapr CLI; story done.
   2-13-retire-the-historical-tuple-replay-lanes-from-platform-ci: done
   # 2026-11-15: added by sprint-change-proposal-2026-11-15 (version-only Builds/owner pins; lock-file integrity). Depends on 2.13.
-  2-14-pin-builds-and-owner-modules-by-released-version: backlog
+  # 2026-11-18: Builds slice (version-only pin, generated tool lock, version-range admission) implemented and reviewed;
+  #   pass 1 applied 9 patches, deferred 2, rejected 21. Landing restores the five pinned gitlinks; hosted tuple CI pending.
+  #   The HXP020 allowlist slice follows as a second 2.14 spec (deferred-work).
+  2-14-pin-builds-and-owner-modules-by-released-version: review
   epic-2-retrospective: optional
 
   epic-3: in-progress

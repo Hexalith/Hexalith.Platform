@@ -1,0 +1,4 @@
+$ python3 -B eng/prepare_builds_artifacts.py --require-recorded --archive <6.3.1 nupkg + 1 byte> --output <new-dir>
+ValueError: Tool package Hexalith.Builds.Module.Cli 6.3.1 has contentHash FG0fSFeswrq//u3sSrjxJBG4XDWNT29QJx/0ZSmzdN1t7MpvLTa+Fz/ZkhI34EaGnyl8iz5eLkLVzu0E+xvT6w==, which differs from eng/builds-tool.lock.json.
+exit=1
+receipt written: no; extracted: no

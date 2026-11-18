@@ -46,6 +46,37 @@ The current private reader is exercised separately from the unchanged refusal of
 unqualified current image cohorts. Archived qualification and broker tags remain
 unchanged. Local `qualification/*` branches may be removed after recording targets.
 
+## Adopting a Builds release
+
+Builds is pinned by released version. Read the current pin from
+`eng/builds-tuple.json` (`{schemaVersion, version, releaseTag}`),
+`.config/dotnet-tools.json`, the `hexalith-platform.json` range `[pin, next major)`,
+the generated `eng/builds-tool.lock.json` and the `references/Hexalith.Builds` gitlink.
+To adopt a release:
+
+1. Set the version and `releaseTag` in `eng/builds-tuple.json`, the tool version in
+   `.config/dotnet-tools.json` and the range floor in `hexalith-platform.json`.
+2. Move the Builds gitlink to the commit the release tag names.
+3. Run `python3 eng/builds_tool_lock.py`. It downloads the package, runs
+   `dotnet nuget verify --all`, compares its SHA-512 `contentHash` with the
+   nuget.org `packageHash` and only then rewrites the lock.
+4. Commit the bump (pins, gitlink and lock) before running the local checks.
+   They read the committed gitlink from `HEAD`, and CI checks the committed tree.
+
+The range admits later versions of the pinned major, prereleases included, and
+refuses earlier versions, the next major and its prereleases.
+
+The diff is the pins, the gitlink and the lock. `resolve-sources` refuses a tag
+whose commit differs from the gitlink. Preparation also refuses changed tool
+bytes, a missing or stale lock entry, a release whose `hexalith-release:` marker
+differs from the gitlink, and an executable `--version` other than
+`<version>+<gitlink>`. The catalog is read from the gitlink blob. Composition
+admits the validation AppHost/Tooling pair only when both report the same
+`<version>+<commit>` inside the range. CI records each archive member's SHA-256
+as the AR-12 expected identity and compares it with the built Tooling and
+EventStore host outputs. Release, run and artifact IDs are evidence only. A new
+major generation or a behavior-changing release may still need code.
+
 ## Historical preparation observations
 
 The records below retain the identities and findings of their original subjects.
@@ -181,7 +212,7 @@ The earlier private explicit3.0.27 input experiment against c91 failed HXW012
 because its actual Parties project view required4.0.0; that experiment was
 removed without changing the snapshot or asset/body guards.
 
-## Synchronized owner source renewal on 2026-11-14
+## Historical synchronized owner source renewal on 2026-11-14
 
 Upstream Platform50fb selected the newer Builds12475 tests-only source while its
 authenticated producer remained the signed6.0.2/source60ce publication. The strict
@@ -200,11 +231,11 @@ owner selections substituted. Prepared source alignment grants no
 execution credit; fresh hosted tuple and catalog gates remain required.
 
 
-The current 6.0.3 renewal binds official source `99f7c86072ca7b35e3fbbaee4606a559a847805a`,
+The 6.0.3 renewal bound official source `99f7c86072ca7b35e3fbbaee4606a559a847805a`,
 raw LF catalog SHA256 `01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41` and
-blob `1968f12adb9151062915ab32cb76c5b9dbbc2a36`. Its genuine publication metadata is
-recorded in `eng/builds-tuple.json`; the Builds gitlink, exact local tool pin and
-supported range floor select that publication atomically. Exact 6.0.2/source60ce
+blob `1968f12adb9151062915ab32cb76c5b9dbbc2a36`. Its genuine publication metadata was
+then recorded in the schema 1 `eng/builds-tuple.json`; the Builds gitlink, exact local tool pin and
+supported range floor selected that publication atomically. Exact 6.0.2/source60ce
 admission remains explicit. Neither binding admits crossed source/range pairs
 or neighboring 6.0.4. Current owner observations retain Tenants7.0.7 for each
 named SDK4.2 Parties context and independently require generic Tenants8.0.0.
@@ -212,7 +243,7 @@ The current SDK4.2 collector and all frozen public provenance remain unchanged.
 That historical source required a fresh binding and three new immutable companions;
 prior immutable refs remain historical evidence only.
 
-## Source and package context renewal on 2026-11-15
+## Historical source and package context renewal on 2026-11-15
 
 The normal Builds6.0.5 publication binds source
 `e2bbbd0893f586e4d447ef8358ff747ea3d34435`, catalog blob
@@ -221,7 +252,7 @@ The normal Builds6.0.5 publication binds source
 Its exact-main CI43717004492 and release43719900160 passed. Both actual public
 NuGet archives pass repository-signature verification and preserve every
 authenticated original payload body; the executable names that exact version
-and source. The complete measured handoff is in `eng/builds-tuple.json`.
+and source. The complete measured handoff was then recorded in the schema 1 `eng/builds-tuple.json`.
 
 This exact publication preserves the finite SDK4.2 package view and its
 Tenants7.0.7/Memories3.0.27/Parties3.1.1/Mcp2.0.1 family. The existing33 named
