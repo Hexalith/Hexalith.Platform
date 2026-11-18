@@ -5,6 +5,7 @@
     <StartupObject>Hexalith.Platform.Composition.PlatformSourceStateWorker</StartupObject>
     <!-- Builds loads this model from its private output directory; native preparation also uses its runtime dependencies. -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS0618</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <!-- The source-selected SDK carries the extension API; exact public support is gated below. -->
