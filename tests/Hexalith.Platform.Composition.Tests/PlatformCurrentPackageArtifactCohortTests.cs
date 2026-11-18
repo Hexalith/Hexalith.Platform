@@ -162,7 +162,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
     }
 
-    /// <summary>The real current private producer and reader preserve exact dependencies without admitting an image cohort.</summary>
+    /// <summary>The real current private producer and reader preserve exact dependencies and admit only the measured 7.0.7/3.0.27 image cohort.</summary>
     [Fact]
     public async Task CurrentPrivateDependencyVersionsRemainExact()
     {
@@ -195,7 +195,8 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
-        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
+        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+            PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
         int probes = 0;
         var builder = PlatformPartiesPackageFixture.Builder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options with
@@ -206,7 +207,7 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
                 return Task.FromResult(new CompositionProcessResult(true, 83, "", false));
             },
         }));
-        probes.ShouldBe(0, "The current package reader purpose must refuse before the first image probe.");
+        probes.ShouldBe(1, "Admitted current owner images reach the first probe; a failed probe still refuses before rendering.");
         fixture.AssertNoEffects(builder);
         // Reader generation authenticates the measured current private bodies without composing images or resources.
         string verification = Path.Combine(fixture.Workspace, "current-reader-verification");

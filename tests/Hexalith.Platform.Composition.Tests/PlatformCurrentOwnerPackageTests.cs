@@ -52,7 +52,8 @@ public sealed class PlatformCurrentOwnerPackageTests
             .ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
         var declarations = PlatformDeclarationSet.Load(options);
         var unbound = PlatformAppModel.Prepare(options);
-        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true));
+        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+            PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true));
         var servers = unbound;
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);

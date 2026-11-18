@@ -169,7 +169,7 @@ public sealed class PlatformSdk42PublishedPartiesCohortTests
     {
         PlatformPartiesPackageFixture.PublishedImages.Count.ShouldBe(7);
         PlatformPartiesPackageFixture.PublishedImages.ShouldContain("registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb");
-        PlatformPartiesPackageFixture.PublishedImages.Except(PlatformPartiesPackageFixture.CurrentImages, StringComparer.Ordinal).Count().ShouldBe(1);
+        PlatformPartiesPackageFixture.PublishedImages.Except(PlatformPartiesPackageFixture.CurrentImages, StringComparer.Ordinal).Count().ShouldBe(7);
         bool published = PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.Sdk42PublishedPartiesName);
         PlatformPartiesPackageFixture.Images.Count.ShouldBe(7);
         PlatformPartiesPackageFixture.Images.ShouldContain(published

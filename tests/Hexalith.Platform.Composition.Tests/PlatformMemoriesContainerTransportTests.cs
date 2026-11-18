@@ -20,8 +20,8 @@ public sealed class PlatformMemoriesContainerTransportTests
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
         PlatformCompositionOptions options = fixture.CaptureCurrent();
         var servers = PlatformAppModel.Prepare(options);
-        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options,
-            PlatformDeclarationSet.Load(options), servers, developmentRun: true));
+        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+            PlatformPartiesPackageCatalogQualification.Bind(options, PlatformDeclarationSet.Load(options), servers, developmentRun: true));
         // Genuine resolved declaration environments retain workload credentials and readiness settings.
         PlatformServerBinding memoryBinding = servers.Single(server => server.ResourceId == "memories");
         PlatformServerBinding tenantBinding = servers.Single(server => server.ResourceId == "tenants-api");
@@ -61,7 +61,7 @@ public sealed class PlatformMemoriesContainerTransportTests
         gateway.WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = "eventstore", RuntimePath = runtime }));
         builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(
             [memoryBinding, tenantBinding, gatewayBinding], currentOwnerPackage: true));
-        TestContext.Current.TestOutputHelper!.WriteLine("Shared qualified public/private subscriber transport component; image admission refused; no application start.");
+        TestContext.Current.TestOutputHelper!.WriteLine("Shared qualified public/private subscriber transport component; current owner images admitted; no application start.");
         await using DistributedApplication app = builder.Build();
         DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
         IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();

@@ -38,7 +38,8 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
-        Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
+        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+            PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
         servers.Count(server => server.Image is not null && server.ImageDigest is not null).ShouldBe(0);
