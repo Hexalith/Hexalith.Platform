@@ -38,12 +38,21 @@ internal static class PlatformPublishedValidationRuntime
         if (!IsPinnedPair(originalHost, tooling)) throw Refusal();
         string originalHosting = Path.Combine(originalRoot, "Aspire.Hosting.dll");
         string originalHostingHash = Hash(originalHosting);
-        if (originalHostingHash == _patchedHosting)
+        const string HostingMember = "g4-host/Aspire.Hosting.dll";
+        string toolRoot = Path.GetDirectoryName(originalRoot)!;
+        string modelHosting = typeof(Aspire.Hosting.IDistributedApplicationBuilder).Assembly.Location;
+        string lockedHosting = PlatformTestPins.LockedArchiveMemberHash(toolRoot, HostingMember);
+        if (originalHostingHash == lockedHosting && originalHostingHash == Hash(modelHosting))
         {
-            return (originalHost, () =>
+            void VerifyOriginal()
             {
-                if (!IsPinnedPair(originalHost, tooling) || Hash(originalHosting) != _patchedHosting) throw Refusal();
-            });
+                if (!IsPinnedPair(originalHost, tooling) || Hash(originalHosting) != lockedHosting
+                    || Hash(modelHosting) != lockedHosting
+                    || Hash(originalHost) != PlatformTestPins.LockedArchiveMemberHash(toolRoot, "g4-host/Hexalith.Builds.Module.AppHost.dll")
+                    || Hash(tooling) != PlatformTestPins.LockedArchiveMemberHash(toolRoot, "g4-host/Hexalith.Builds.Tooling.dll")) throw Refusal();
+            }
+            VerifyOriginal();
+            return (originalHost, VerifyOriginal);
         }
         if (originalHostingHash != _oldHosting || AssemblyName.GetAssemblyName(originalHosting).Version != new Version(13, 6, 4, 0)) throw Refusal();
         string archive = Path.Combine(packageRoot, "aspire.hosting", "13.6.5", "aspire.hosting.13.6.5.nupkg");
@@ -68,7 +77,6 @@ internal static class PlatformPublishedValidationRuntime
             patched = bytes.ToArray();
             if (Convert.ToHexStringLower(SHA256.HashData(patched)) != _patchedHosting) throw Refusal();
         }
-        string modelHosting = typeof(Aspire.Hosting.IDistributedApplicationBuilder).Assembly.Location;
         if (Hash(modelHosting) != _patchedHosting) throw Refusal();
         Dictionary<string, string> original = Files(originalRoot);
         string archiveDirectory = Path.GetFullPath(Path.Combine(originalRoot, "..", "..", "..", "..", ".."));

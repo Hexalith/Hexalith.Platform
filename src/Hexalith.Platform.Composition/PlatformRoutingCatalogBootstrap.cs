@@ -17,6 +17,8 @@ internal sealed class PlatformRoutingCatalogBootstrap
     internal PlatformTenantBootstrapAccess TenantBootstrapAccess => _tenantBootstrap
         ?? throw new InvalidOperationException("The actual Tenants bootstrap delegation is unavailable.");
     internal string Directory { get; }
+    /// <summary>Gets the verified released gateway payload when the public receiver cohort requires .NET 10.</summary>
+    internal string? EventStoreSeedPayload { get; }
 
     /// <summary>Gets the immutable receiver cohort resolved by the owning composition.</summary>
     internal IReadOnlyDictionary<string, string> ExpectedHosts { get; }
@@ -25,6 +27,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
         PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
     {
         Directory = catalog.Directory;
+        EventStoreSeedPayload = catalog.EventStoreSeedPayload;
         ExpectedHosts = participants.ToFrozenDictionary(server => server.ResourceId, server => server.AppId, StringComparer.Ordinal);
         string[] hosts = participants.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ToArray();
         foreach (var server in participants)
@@ -127,6 +130,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
                         : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(server.ProjectPath))),
                 }).ToArray(),
                 callerClosure = plan.Modules.Select(module => module.ModuleId).ToArray(),
+                gatewaySeed = EventStoreSeedPayload is null ? null : PlatformPublishedEventStoreSeed.Provenance(),
             }));
         }
     }

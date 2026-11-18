@@ -38,7 +38,7 @@ class SourceSdkPropagationTests(unittest.TestCase):
         cls.default_sdk = cls.invoke(cls.fixture, ["-p:UseHexalithProjectReferences=true"])["Properties"]["HexalithEventStoreVersion"]
         # Source consumers follow the owning catalog's current SDK; package cohort qualification
         # stays separate and cannot be inferred from this metadata-only source check.
-        if cls.default_sdk not in ("4.1.0", "4.2.0", "5.1.0", "5.2.0"):
+        if cls.default_sdk not in ("4.1.0", "4.2.0", "5.1.0", "5.2.0", "5.3.0"):
             raise AssertionError("The focused controls require one of the recorded current/historical source SDKs.")
 
     @classmethod

@@ -153,9 +153,16 @@ internal sealed class PlatformPartiesRunProof
 
     private static string Git(string root, params string[] arguments)
     {
-        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", arguments, root, null), TimeSpan.FromSeconds(10), CancellationToken.None)
+        string operation = arguments[0];
+        bool status = operation == "status";
+        // On a fresh hosted checkout, status scans all initialized owner submodules.
+        string[] command = status ? ["--no-optional-locks", .. arguments] : arguments;
+        TimeSpan timeout = TimeSpan.FromSeconds(status ? 45 : 10);
+        var result = CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("git", command, root, null), timeout, CancellationToken.None)
             .GetAwaiter().GetResult();
-        return result.ExitCode == 0 && !result.TimedOut && !result.OutputTruncated ? result.Output.Trim() : throw Refusal();
+        if (result.ExitCode != 0 || result.TimedOut || result.OutputTruncated)
+            throw new InvalidDataException($"{Refusal().Message} Git {operation} in '{Path.GetFileName(root)}' failed (exit {result.ExitCode}, timed out: {result.TimedOut}, truncated: {result.OutputTruncated}).");
+        return result.Output.Trim();
     }
 
     private static string Hash(string path)

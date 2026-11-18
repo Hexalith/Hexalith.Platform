@@ -9,7 +9,7 @@ using Hexalith.Platform.CatalogArtifacts;
 
 /// <summary>The exact validated bytes owned by one environment, generated before any resource starts.</summary>
 internal sealed record PlatformRoutingCatalog(string InstanceId, string Directory, string CatalogPath, string RootDigest,
-    RouteCatalogEnvelope Envelope, IReadOnlyList<string> OwnerAssemblies, IReadOnlyList<string> AdapterAssemblies)
+    RouteCatalogEnvelope Envelope, IReadOnlyList<string> OwnerAssemblies, IReadOnlyList<string> AdapterAssemblies, string? EventStoreSeedPayload)
 {
     internal static TimeSpan ReaderTimeout(TimeSpan maximum, DateTimeOffset? startupDeadlineUtc, DateTimeOffset now)
     {
@@ -57,6 +57,13 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         else
             xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Packages.props"))));
         xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
+        bool useReleasedImageFramework = qualificationCohort == PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name;
+        if (useReleasedImageFramework)
+        {
+            PlatformPublishedEventStoreSeed.BindReader(xml.Root!);
+            // Use the released catalog's retained .NET 10 dependency view for this reader.
+            packageArguments = [.. packageArguments, "-p:HexalithTimesheetsNet10CatalogView=true"];
+        }
         xml.Save(project);
         File.Copy(Path.Combine(template, "Program.cs"), Path.Combine(build, "Program.cs"), true);
         File.Copy(Path.Combine(template, "PublishedCatalogArtifactCohort.cs"), Path.Combine(build, "PublishedCatalogArtifactCohort.cs"), true);
@@ -78,6 +85,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), packageReaderDeadline ?? options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
+        string? seedPayload = useReleasedImageFramework ? PlatformPublishedEventStoreSeed.Extract(build) : null;
         string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(pending);
         string request = Path.Combine(build, "request.json");
@@ -114,7 +122,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
                 receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
-                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());
+                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(), seedPayload);
         }
         catch
         {

@@ -138,11 +138,11 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.VerifyDeclaration(declaration, new string('0', 64), source));
     }
 
-    /// <summary>Artifact authentication cannot expand ordinary image admission or relabel the existing public declaration.</summary>
+    /// <summary>The measured public image cohort requires its exact current declaration and excludes historical declarations.</summary>
     [Theory]
     [InlineData("3.0.26")]
     [InlineData("3.0.27")]
-    public void CurrentArtifactsDoNotAcquireOrdinaryImageAuthority(string memoriesVersion)
+    public void PublicImageAuthorityRequiresItsDeclaredCohort(string memoriesVersion)
     {
         PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", "2.0.1").ShouldBe(PublicCohort(memoriesVersion));
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
