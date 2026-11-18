@@ -970,6 +970,39 @@ Orchestrator check:
 
 The implementer's mutation checks fail on each guard named in G3 and on the G5 catch. Reverting only `TryGetInt32` stays green, because the widened catch already refuses that case.
 
+### Iteration 5, 2026-11-18 (G1–G5 fix-delta review)
+
+Scope: Builds `eae4531a..58e8a03f` only (3 files, 15.4 KB). Four layers ran: blind hunter (BH5), edge-case hunter (ECH5), verification gap (VG5) and acceptance auditor (AA5). The orchestrator re-ran `AttachAdmissionTests` plus `NativeTestExecutorTests` from the fresh `bin/Debug/net11.0` build: 215/215 both in a clean environment and with a hosted-like GitHub identity and `HEXALITH_CI_LIFECYCLE_HOLD=1`. On .NET 10.0.15, `Path.GetFullPath` throws `ArgumentException` for a path containing NUL.
+
+| ID | Claim | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| AA5-1 | G4 is half done: `test-environment.json` is still hand-built, so the real descriptor writer never feeds the reader | medium | P: H1 | Only `plan.json` comes from `CompositionDocumentStore.Serialize`. VG5 found no other test that reaches `ResolveAttacherContext` from a written descriptor. A writer-side rename of `bindings.run.*` or `bindings.environment.executionContext` would break the Parties same-job attach with every test green, and no more hosted runs are planned. |
+| AA5-3 | `ArgumentException` still escapes admission | low | P: H2 | A NUL in the plan's `resourceClaimStateDirectory` reaches `Path.GetFullPath` in `ReadDocument`. The filter does not list `ArgumentException`, and `CheckContext` catches only `InvalidDataException`. The issued read runs before the process check, so it also crashes complete-CI attachers. Only a forged plan reaches it, but G5's stated goal is unmet. |
+| BH5-1 | Same as AA5-3 | low | P: H2 | Same evidence. |
+| ECH5-1 | Same as AA5-3 | low | P: H2 | Same evidence. |
+| ECH5-5 | The "unreadable metadata refuses" claim holds only for an incomplete process | low | P: H2 | Its NUL half is AA5-3. Its scrubbed-process half is BH5-2 (rejected). With a complete process identity, the process identity is used, which is correct. |
+| AA5-4 | No test pins `TryGetInt32` on its own | low | P: H3 | The fractional row stays green with `GetInt32` restored, because the filter wraps `FormatException`. |
+| BH5-5 | `FormatException` in the filter is dead | low | P: H3 | `TryGetInt32` removed the only `FormatException` source in the issued read. Deleting the clause makes the fractional row pin `TryGetInt32`. |
+| ECH5-3 | Same as AA5-4 | low | P: H3 | Same evidence. |
+| VG5-1 | The `IOException`/`UnauthorizedAccessException` arms are untested (pre-verified gap) | low | P: H4 | Narrowing the filter to `InvalidDataException or JsonException` keeps every test green. A descriptor held with `FileShare.None` then escapes `AdmitAsync`. |
+| BH5-6 | Same as VG5-1, plus no test of a complete process identity with a malformed handoff | low | P: H4 | The IO half is VG5-1. The complete-process half is rejected: `CompleteProcessIdentityPrecedesIssuedOwnerStateAsync` already pins process-first precedence, and the remaining mutation is unlikely. |
+| BH5-7 | The theory summary claims every issued-state guard | low | P: H5 | Its 7 rows cover the guards G3 named, the plan attempt binding and malformed JSON. About 13 other reader guards have no row. |
+| ECH5-4 | Same as BH5-7 | low | P: H5 | Same evidence. |
+| AA5-2 | The self-hosted row records a `runnerKind` the writer never produces | low | P: H6 | `ExecutionContext()` records `other` for any runner that is not `github-hosted`. |
+| BH5-10a | `handoff` in `IncompleteProcessWithoutIssuedHandoffIsUnverifiableAsync` removes the handoff | low | P: H7 | The name says the opposite of what the line does. |
+| BH5-8 | Joining the serial collection takes `AttachAdmissionTests` out of parallel execution | low | D: D1 | No assembly-level parallel setting exists, so the class ran in parallel before. It takes 78.8 s alone (145 cases), now added to every full run's serial phase. Only 5 methods change process variables. |
+| AA5-5 | Builds `main` stays red until this commit lands | medium | D: D2 | Runs 44260597208 and 44264165103 fail on the test this commit fixes. Delivery needs owner approval, because Builds `main` pushes trigger releases. |
+| BH5-2 | A scrubbed process drops `issuedError` and refuses as `cross-context` | low | RJ | Repeats BH4-3b: only the refusal reason is affected, and a CI owner still refuses. |
+| ECH5-2 | Same as BH5-2 | low | RJ | Same evidence. |
+| BH5-3 | The refusal message hides the cause | low | RJ | `CheckContext` is unchanged, and the refusal is correct. Surfacing the cause needs a new message design for rare failures. |
+| BH5-4 | The mutation rows cannot tell which guard fired | low | RJ | Unmutated controls prove both fixtures read: same-job `incomplete` admits, and the foreign fixture gives `cross-job` under `scrubbed`. Each row then changes one field. |
+| BH5-9 | `DefaultAttachContextMatchesProcessAsync` depends on ambient handoff variables | low | RJ | Untouched by this diff. It fails only with scrubbed GitHub variables plus an inherited G4 handoff, which Builds CI never has. |
+| BH5-10b | `ScrubbedGitHub` and `IncompleteGitHub` repeat the variable names | low | RJ | It drifts only if `ExecutionContext()` reads a new variable, and the fix adds a shared list. |
+| BH5-10c | The fractional row hand-copies the `Ci()` shape | low | RJ | It drifts only if `Ci()` gains a field, and the fix adds a parameter. |
+| BH5-11 | Only `"1"` is tested for `HEXALITH_CI_LIFECYCLE_HOLD` | low | RJ | Outside this delta; same area as the rejected BH4-10. |
+
+**Outcome:** two decisions (D1, D2), seven patch groups (H1–H7), no defers and no loopback. Eight findings are rejected, plus half of BH5-6.
+
 ### Review Findings
 
 - [x] [Review][Decision] G1 (resolved 2026-11-11: accept as owner cancellation; see the iteration-3 owner decision): A helper timeout is now recorded as a cancellation.
@@ -1034,6 +1067,28 @@ The implementer's mutation checks fail on each guard named in G3 and on the G5 c
 | xUnit | not rerun; no C# source changed |
 
 The G2, G3 (kill dropped, and SIGTERM on timeout), G4 (iteration-2 regex), G6 and G7 mutants each fail at least one test; G2 and G6 do so through the missing-tool test. G14 runs only in Platform L/M delivery, like PC-15.
+
+**Iteration 5 (2026-11-18), Builds `58e8a03f`:**
+
+- [x] [Review][Decision] D1 (resolved 2026-11-18: keep serial; no change): Keep `AttachAdmissionTests` serial, or split it — Joining the serial collection fixed the variable race (G2), but it adds the class's 78.8 s to every full run's serial phase. Only 5 methods change process variables. The options are to keep it (consistent with the 26 classes already in the collection), to move those 5 methods into a small serial class, or to defer to Story 2.10's feedback-time scope.
+- [x] [Review][Decision] D2 (resolved 2026-11-18: deliver through a PR after the patches; merge needs a separate owner yes): Deliver the fix to Builds `main` — Builds `main` CI stays red until this commit lands. Pushing to `main` triggers a release, so delivery needs owner approval.
+- [x] [Review][Patch] H1: Add one same-job admission test whose `test-environment.json` is written by `TestEnvironmentDescriptorWriter.WriteAsync` under a complete `job-a` GitHub identity, then admit under `ScrubbedGitHub()` [test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs:1938]
+- [x] [Review][Patch] H2: Add `ArgumentException` to the issued-read filter, and add a `state-directory-nul` row [src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs:280]
+- [x] [Review][Patch] H3: Delete the dead `FormatException` clause, so the fractional row pins `TryGetInt32` [src/libraries/Hexalith.Builds.Tooling/TestEnvironment/TestEnvironmentDescriptorWriter.cs:280]
+- [x] [Review][Patch] H4: Add a `descriptor-locked` row that holds the descriptor with `FileShare.None` during admission [test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs:241]
+- [x] [Review][Patch] H5: Narrow the theory summary to the guards it actually covers [test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs:241]
+- [x] [Review][Patch] H6: Use `runnerKind: "other"`, the value the writer records, in the self-hosted row [test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs:258]
+- [x] [Review][Patch] H7: Rename the handoff-clearing variable to `noHandoff` [test/Hexalith.Builds.Module.Tests/AttachAdmissionTests.cs:235]
+
+**Rejected (iteration 5 appendix):** BH5-2 and ECH5-2 (low; repeats BH4-3b, refusal reason only), BH5-3 (low; unchanged correct refusal), BH5-4 (low; unmutated controls prove both fixtures), BH5-9 (low; untouched, and Builds CI never reaches it), BH5-10b and BH5-10c (low; speculative drift, and the fix adds surface), BH5-11 (low; outside the delta, BH4-10), and the complete-process half of BH5-6 (low; precedence is already pinned).
+
+**Iteration 5 patches applied, 2026-11-18:** Builds `main` had meanwhile gained `88d93a29`, another session's minimal scrubbed-case fix. The fix branch was rebased onto `origin/main` `db7bb717`, which left a duplicate `ScrubbedGitHub()` that was then removed. H1–H7 were folded into one commit, `13e6e795` (`fix(runtime): harden issued-handoff attach admission`, commitlint-valid). The pre-rebase commit is kept as local ref `backup/58e8a03f`.
+
+- **Delivery:** branch `fix/attach-admission-test-isolation` pushed; [Builds PR #191](https://github.com/Hexalith/Hexalith.Builds/pull/191) opened. It is not merged, because the merge triggers a Builds release and needs a separate owner yes.
+- **Checks:**
+  - Analyzer-on build: 0 warnings, 0 errors.
+  - `AttachAdmissionTests` + `NativeTestExecutorTests`: 218/218 clean and 218/218 hosted-like (complete GitHub identity plus `HEXALITH_CI_LIFECYCLE_HOLD=1`).
+  - Mutants: dropping `ArgumentException` fails `state-directory-nul`; restoring `GetInt32` fails `fractional-attempt`; dropping `IOException` fails `descriptor-locked`; a reader that rejects the real writer's `attemptSequence` fails only `WrittenOwnerHandoffAdmitsScrubbedSameJobAttacherAsync`.
 
 ### Demonstrated owner-source gate blocker — 2026-11-11 continuation
 
