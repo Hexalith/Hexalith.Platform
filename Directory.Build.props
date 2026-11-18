@@ -4,6 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Aspire 17 keeps AddProject and Aspire.AppHost.Sdk available but obsolete. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS0618;ASPIRE012</WarningsNotAsErrors>
     <!-- Preserve centrally pinned package assemblies across libraries and ASP.NET Core hosts. -->
     <RestoreEnablePackagePruning>false</RestoreEnablePackagePruning>
     <!-- Use the existing workspace dependency; do not initialize nested submodules. -->

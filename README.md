@@ -290,7 +290,7 @@ Those hosting concerns live here.
 ## Requirements
 
 - .NET SDK `11.0.100` (`latestPatch` roll-forward) and the .NET 10 ASP.NET Core runtime
-- Aspire CLI `13.6.5` exactly for the current prepared tool. The module tool compares `aspire --version` with
+- Aspire CLI `17.0.0` exactly for the current prepared tool. The module tool compares `aspire --version` with
   the catalog-selected `Aspire.AppHost.Sdk` and refuses any other version with
   `HXR015`.
 
@@ -498,7 +498,7 @@ duplicates a module and fails with `HXP003`/`HXP020`).
 ### Prerequisites
 
 - The pinned tool (`dotnet tool restore`), the .NET SDK and Aspire CLI
-  `13.6.5` listed above, and a running Docker engine. This candidate's integration
+  `17.0.0` listed above, and a running Docker engine. This candidate's integration
   qualification remains pending.
 - The direct submodules `references/Hexalith.Builds`, `references/Hexalith.EventStore`,
   `references/Hexalith.Tenants` and `references/Hexalith.Memories`, initialized
@@ -510,7 +510,7 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   Each checkout's `HEAD` must equal the gitlink staged in this
   repository. After a local commit inside a submodule, stage it with
   `git add references/<Repository>` or the tool refuses the run.
-- The local Aspire orchestration and dashboard packages at `13.6.5`. From this
+- The local Aspire orchestration and dashboard packages at `17.0.0`. From this
   workspace, run `dotnet restore apphost.cs` once before the first `run` or `debug`.
   Tool restore alone does not install these SDK packages. If NuGet uses a custom
   `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both
