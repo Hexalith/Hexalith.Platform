@@ -3,6 +3,8 @@ using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Eventing;
 using Aspire.Hosting.Lifecycle;
 
+#pragma warning disable CA1050 // File-based AppHost includes require a global type.
+
 /// <summary>Binds local peer identities after the Dapr integration creates the generated executables.</summary>
 /// <param name="applications">The applications sharing the private control plane.</param>
 /// <param name="certificateDirectory">The private Sentry issuer directory.</param>

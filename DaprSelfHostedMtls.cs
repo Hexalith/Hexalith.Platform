@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 
+#pragma warning disable CA1050 // File-based AppHost includes require a global type.
+#pragma warning disable CA1859 // FirstValue keeps IReadOnlyDictionary for its callers.
+
 public static class DaprSelfHostedMtls
 {
     private const string CertificateDirectoryConfigurationKey = "Dapr:Mtls:CertificateDirectory";
