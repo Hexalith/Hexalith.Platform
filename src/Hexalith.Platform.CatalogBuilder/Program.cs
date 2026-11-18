@@ -59,7 +59,7 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
                 if (measured.EnumerateObject().Count() != 2
                     || !measured.TryGetProperty(artifact.GetName().Name!, out var expected)
                     || expected.GetString() != Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(artifact.Location))))
-                    throw new InvalidDataException("The private current owner reader loaded different measured artifacts.");
+                    throw new InvalidDataException($"The private reader loaded different measured bytes for '{artifact.GetName().Name}'.");
                 qualifiedArtifacts.Add(artifact.Location);
             }
             else qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(artifact, qualificationName!));

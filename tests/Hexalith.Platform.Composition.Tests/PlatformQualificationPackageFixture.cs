@@ -76,11 +76,14 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
             PlatformIdentity = new PlatformIdentity(source, source, source, Root, "synthetic-fixture", new string('b', 40), "[4.43.6,5.0.0-0)", "identity.json", false),
         };
         DateTimeOffset now = DateTimeOffset.UtcNow;
-        string entry = currentTest ? "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj" : "owned.csproj";
-        ModuleTestSelection selected = new("eventstore", "platform-package", currentTest ? "mtp" : "dotnet-test", entry,
-            currentTest ? Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(manifest))) : "manifest",
-            currentTest ? Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(Root, entry)))) : "entry",
-            120, currentTest ? 90 : 30, now, now.AddSeconds(120), now.AddSeconds(120), "package");
+        var suite = JsonNode.Parse(File.ReadAllText(manifest))!["modules"]![0]!["tests"]!.AsArray()
+            .Single(test => test!["name"]!.GetValue<string>() == "platform-package")!;
+        string entry = suite["entry"]!.GetValue<string>();
+        int duration = suite["executionTimeoutSeconds"]!.GetValue<int>();
+        ModuleTestSelection selected = new("eventstore", "platform-package", suite["executor"]!.GetValue<string>(), entry,
+            Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(manifest))),
+            Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(Root, entry)))),
+            duration, suite["stopTimeoutSeconds"]!.GetValue<int>(), now, now.AddSeconds(duration), now.AddSeconds(duration), "package");
         CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), Path.Combine(Root, "run"), Path.Combine(Root, "dapr"),
             new CompositionRunPorts(20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, [20014], 20015, 20016, 20017, [new(20018, 20019, 20020, 20021)]),
             [new CompositionRunModule("eventstore", "eventstore", "eventstore", seed)], []) with

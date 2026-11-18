@@ -32,15 +32,13 @@ public sealed class PlatformCurrentOwnerPurposeTests
     }
 
     [Fact]
-    public void PublishedPurposeCannotAuthorizeCurrentProfile()
+    public void CommittedUpdatedIntegrationInputsRequireFreshParentProof()
     {
         using PlatformPartiesProofFixture fixture = new();
         PlatformCompositionOptions options = Current(fixture);
-        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
         fixture.Options.PartiesRunProof!.Matches(options).ShouldBeFalse();
-        PlatformPartiesRunProof current = PlatformPartiesRunProof.CreateCurrent(options, fixture.Key);
-        current.MatchesCurrent(options).ShouldBeTrue();
-        current.Matches(options).ShouldBeFalse();
+        PlatformPartiesRunProof current = PlatformPartiesRunProof.Create(options, fixture.Key);
+        current.Matches(options).ShouldBeTrue();
         JsonSerializer.Serialize(options).ShouldNotContain("CurrentOwnerProof");
         JsonSerializer.Serialize(options).ShouldNotContain(fixture.Key);
     }
@@ -57,19 +55,19 @@ public sealed class PlatformCurrentOwnerPurposeTests
         PlatformCompositionOptions options = Current(fixture);
         if (change == "mixed") options = options with { RunPlan = options.RunPlan! with { SelectedTests = [options.RunPlan.SelectedTest!, fixture.Options.RunPlan!.SelectedTest!] } };
         if (change == "dirty-source") File.AppendAllText(Path.Combine(options.Mapping.Root, "Native.cs"), "// changed");
-        if (change == "entry") File.AppendAllText(Path.Combine(options.Mapping.Root, PlatformCurrentOwnerProof.TestEntry), "changed");
+        if (change == "entry") File.AppendAllText(Path.Combine(options.Mapping.Root, options.RunPlan!.SelectedTest!.Entry), "changed");
         if (change == "snapshot") File.AppendAllText(Path.Combine(options.RunPlan!.Workspace, "source-mapping", "catalog-versions.json"), " ");
         string key = change == "key" ? "not-a-key" : fixture.Key;
         if (change == "snapshot")
         {
             // The proof captures a legitimate snapshot once, then refuses even whitespace tampering.
             File.WriteAllText(Path.Combine(options.RunPlan!.Workspace, "source-mapping", "catalog-versions.json"), "{}");
-            PlatformPartiesRunProof proof = PlatformPartiesRunProof.CreateCurrent(options, key);
+            PlatformPartiesRunProof proof = PlatformPartiesRunProof.Create(options, key);
             File.AppendAllText(Path.Combine(options.RunPlan.Workspace, "source-mapping", "catalog-versions.json"), " ");
-            proof.MatchesCurrent(options).ShouldBeFalse();
+            proof.Matches(options).ShouldBeFalse();
             AssertSeedValidationRetainsSnapshot(fixture, options);
         }
-        else Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.CreateCurrent(options, key));
+        else Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, key));
     }
 
     [Fact]
@@ -109,7 +107,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
     {
         using PlatformPartiesProofFixture fixture = new();
         PlatformCompositionOptions options = Current(fixture);
-        PlatformPartiesRunProof oldParent = PlatformPartiesRunProof.CreateCurrent(options, fixture.Key);
+        PlatformPartiesRunProof oldParent = PlatformPartiesRunProof.Create(options, fixture.Key);
         string root = options.Mapping.Root;
         string revision = PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD");
         string tree = PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD^{tree}");
@@ -129,8 +127,8 @@ public sealed class PlatformCurrentOwnerPurposeTests
             Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.VerifyPreparedRevision(root, revision));
             observed.ShouldBe(1);
             PlatformPartiesProofFixture.Git(root, "rev-parse", "HEAD").ShouldNotBe(revision);
-            oldParent.MatchesCurrent(options).ShouldBeFalse();
-            PlatformPartiesRunProof.CreateCurrent(options, fixture.Key).MatchesCurrent(options).ShouldBeTrue();
+            oldParent.Matches(options).ShouldBeFalse();
+            PlatformPartiesRunProof.Create(options, fixture.Key).Matches(options).ShouldBeTrue();
             options.CurrentOwnerProof.ShouldBeNull();
             Directory.Exists(Path.Combine(fixture.Options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
         }
@@ -157,8 +155,8 @@ public sealed class PlatformCurrentOwnerPurposeTests
         Directory.CreateDirectory(preflight);
         _ = PlatformPackageCatalogReader.Prepare(new XDocument(new XElement("Project")), options, workspace, preflight, DateTimeOffset.UtcNow.AddMinutes(1));
         byte[] prepared = File.ReadAllBytes(snapshot);
-        PlatformPartiesRunProof proof = PlatformPartiesRunProof.CreateCurrent(options, fixture.Key);
-        proof.MatchesCurrent(options).ShouldBeTrue();
+        PlatformPartiesRunProof proof = PlatformPartiesRunProof.Create(options, fixture.Key);
+        proof.Matches(options).ShouldBeTrue();
         // Execute the real generated validation task as the actual seed consumer at its later build boundary.
         XDocument validation = XDocument.Load(Path.Combine(preflight, "validate-catalog.proj"));
         XElement target = validation.Root!.Element("Target")!;
@@ -173,7 +171,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
         result.ExitCode.ShouldBe(0, result.ErrorOutput);
         result.TimedOut.ShouldBeFalse();
         result.OutputTruncated.ShouldBeFalse();
-        proof.MatchesCurrent(options).ShouldBeTrue("Later legitimate seed validation must preserve the issued parent proof without repair or recapture.");
+        proof.Matches(options).ShouldBeTrue("Later legitimate seed validation must preserve the issued parent proof without repair or recapture.");
         File.ReadAllBytes(snapshot).SequenceEqual(prepared).ShouldBeTrue("The actual seed consumer must be evaluated before the parent proof seals its snapshot.");
         string ordinary = Path.Combine(workspace, "ordinary-preflight");
         Directory.CreateDirectory(ordinary);
@@ -183,7 +181,7 @@ public sealed class PlatformCurrentOwnerPurposeTests
             .ShouldBe(["Hexalith.Platform.CatalogBuilder"], "Ordinary reader preparation must retain its existing consumer selection.");
         File.ReadAllBytes(snapshot).SequenceEqual(prepared).ShouldBeTrue();
         File.AppendAllText(snapshot, " ");
-        proof.MatchesCurrent(options).ShouldBeFalse("Exact snapshot tampering remains refused after early preparation.");
+        proof.Matches(options).ShouldBeFalse("Exact snapshot tampering remains refused after early preparation.");
     }
 
     private static PlatformCompositionOptions Current(PlatformPartiesProofFixture fixture)
@@ -193,14 +191,15 @@ public sealed class PlatformCurrentOwnerPurposeTests
         JsonNode manifest = JsonNode.Parse(File.ReadAllBytes(declaration))!;
         JsonArray tests = manifest["modules"]![0]!["tests"]!.AsArray();
         JsonNode suite = tests.Single(test => test!["name"]!.GetValue<string>() == "platform-package")!.DeepClone();
-        suite["name"] = PlatformCurrentOwnerProof.Profile;
-        tests.Add(suite);
+        suite["executionTimeoutSeconds"] = 301;
+        tests[tests.IndexOf(tests.Single(test => test!["name"]!.GetValue<string>() == PlatformCurrentOwnerProof.Profile))] = suite;
         File.WriteAllBytes(declaration, JsonSerializer.SerializeToUtf8Bytes(manifest));
         PlatformPartiesProofFixture.Commit(original.Mapping.Root);
         string hash = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(declaration)));
-        ModuleTestSelection selected = original.RunPlan!.SelectedTest! with { Name = PlatformCurrentOwnerProof.Profile, ManifestHash = hash };
+        ModuleTestSelection selected = original.RunPlan!.SelectedTest! with { ManifestHash = hash, ExecutionTimeoutSeconds = 301 };
         CompositionRunPlan plan = original.RunPlan with { PlatformDeclarationHash = hash, SelectedTest = selected, SelectedTests = [selected] };
         CompositionDocumentStore.WriteAsync(Path.Combine(plan.Workspace, "plan.json"), plan, CancellationToken.None).GetAwaiter().GetResult();
-        return original with { RunPlan = plan, PartiesRunProof = null };
+        var changed = original with { RunPlan = plan, PartiesRunProof = null };
+        return changed with { PartiesRunProof = PlatformPartiesRunProof.Create(changed, fixture.Key) };
     }
 }

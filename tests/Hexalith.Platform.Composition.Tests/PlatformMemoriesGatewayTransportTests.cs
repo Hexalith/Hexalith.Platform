@@ -53,7 +53,7 @@ public sealed partial class PlatformAppModelTests
                 throw new InvalidOperationException("No image probe is permitted before qualification.");
             },
         };
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("authenticated EventStore package test");
         probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }

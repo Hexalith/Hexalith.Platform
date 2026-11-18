@@ -44,15 +44,14 @@ public sealed class PlatformCurrentOwnerPackageTests
         seedValidation.OutputTruncated.ShouldBeFalse();
         File.ReadAllBytes(preparedSnapshot).ShouldBe(preparedSnapshotBytes);
         proof.Matches(options).ShouldBeTrue("The actual published seed's legitimate validation must not invalidate or recapture the sealed snapshot.");
-        options.PartiesRunProof.ShouldBeNull();
-        PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull("The selected new tuple is not an admitted full public Parties cohort.");
+        options.PartiesRunProof!.Matches(options).ShouldBeTrue();
         options.QualificationOwnerProof.ShouldBeNull();
         options.Mapping.Mode.ShouldBe(Hexalith.Builds.Tooling.Workspace.WorkspaceMode.Package);
         options.Mapping.Entries.Where(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform"))
             .ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
         var declarations = PlatformDeclarationSet.Load(options);
         var unbound = PlatformAppModel.Prepare(options);
-        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(
             PlatformPartiesPackageCatalogQualification.Bind(options, declarations, unbound, developmentRun: true));
         var servers = unbound;
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));

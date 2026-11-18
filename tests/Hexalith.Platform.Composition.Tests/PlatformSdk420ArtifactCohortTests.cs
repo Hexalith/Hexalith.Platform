@@ -138,12 +138,6 @@ public sealed class PlatformSdk420ArtifactCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name));
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.0", false, PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name).ShouldBeTrue();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.0.0", false, PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.0", true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBeTrue();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.0+metadata", true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.0", true, PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name).ShouldBeFalse();
     }
 
     private static string Digest(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));

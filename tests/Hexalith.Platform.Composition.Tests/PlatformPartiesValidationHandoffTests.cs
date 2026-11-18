@@ -9,7 +9,7 @@ public sealed class PlatformPartiesValidationHandoffTests
     /// <summary>Ordinary execution retains its original non-null directory through the same trusted entry before image admission.</summary>
     /// <param name="profile">The actual declared suite.</param>
     [Theory]
-    [InlineData("platform-package")]
+    [InlineData("attached-lifecycle-package")]
     [InlineData("lifecycle-package")]
     public async Task OrdinaryEntryPreservesItsClaimDirectoryAsync(string profile)
     {

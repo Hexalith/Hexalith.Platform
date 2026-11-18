@@ -232,7 +232,8 @@ public sealed class PlatformEventStorePackageTestCohortTests
         fixture.Options.QualificationOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
         PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, true)
             .ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
-        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true));
+        PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true)
+            .ShouldAllBe(server => server.ImageDigest == null);
     }
 
     private static CompositionRunPlan Sign(CompositionRunPlan plan, string key) => CompositionQualificationOwners.Bind(plan with { QualificationOwnersBinding = null }, key);

@@ -27,7 +27,7 @@ internal static class PlatformPackageCatalogReader
         XElement early = Validation(false);
         early.SetAttributeValue("ProjectName", "Hexalith.Platform.CatalogBuilder");
         XElement preflightTarget = new("Target", new XAttribute("Name", "Validate"), early);
-        if (options.RunPlan?.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile)
+        if (options.PartiesRunProof is not null && PlatformCurrentOwnerProof.SelectsIntegration(options))
         {
             // The published seed builds after composition; record its consumer before the parent proof seals the snapshot.
             string seedName = Path.GetFileNameWithoutExtension(options.EventStoreSeedProject

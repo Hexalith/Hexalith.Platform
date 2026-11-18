@@ -19,8 +19,6 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         PlatformCompositionOptions options = Updated(fixture, profile);
         PlatformPartiesRunProof proof = PlatformPartiesRunProof.Create(options, fixture.Key);
         proof.Matches(options).ShouldBeTrue();
-        proof.MatchesCurrent(options).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(options.RunPlan!.PlatformDeclarationHash).ShouldBeTrue();
     }
 
     /// <summary>The actual published producer uses uppercase hex without changing the measured declaration bytes.</summary>
@@ -29,7 +27,7 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
     {
         using PlatformPartiesProofFixture fixture = new();
         PlatformCompositionOptions options = Updated(fixture, "platform-package");
-        ModuleTestSelection selected = options.RunPlan!.SelectedTest! with { ManifestHash = PlatformCurrentOwnerProof.DeclarationHash.ToUpperInvariant() };
+        ModuleTestSelection selected = options.RunPlan!.SelectedTest! with { ManifestHash = options.RunPlan.PlatformDeclarationHash!.ToUpperInvariant() };
         CompositionRunPlan plan = options.RunPlan with { PlatformDeclarationHash = selected.ManifestHash, SelectedTest = selected, SelectedTests = [selected] };
         await CompositionDocumentStore.WriteAsync(Path.Combine(plan.Workspace, "plan.json"), plan, CancellationToken.None).ConfigureAwait(true);
         options = options with { RunPlan = plan };
@@ -38,15 +36,12 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
 
     /// <summary>The compatibility set remains finite; changing only source bytes cannot acquire it.</summary>
     [Fact]
-    public void OnlyTheTwoMeasuredDeclarationsAreCompatible()
+    public void UncommittedDeclarationCannotAcquireParentProof()
     {
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash).ShouldBeTrue();
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.DeclarationHash).ShouldBeTrue();
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(new string('0', 64)).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(null).ShouldBeFalse();
         using PlatformPartiesProofFixture fixture = new();
         PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Options.RunPlan!, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
-        PlatformCompositionOptions options = Updated(fixture, "platform-current-package");
+        PlatformCompositionOptions options = Updated(fixture, "platform-package");
+        File.AppendAllText(options.DeclarationPaths.Single(), " ");
         Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
     }
 
@@ -109,7 +104,6 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
             "Hexalith.Platform.Composition.Tests.Fixtures.parties-current-declaration.json")!;
         using (FileStream target = File.Create(declaration)) original.CopyTo(target);
         string hash = Hash(declaration);
-        hash.ShouldBe(PlatformCurrentOwnerProof.DeclarationHash);
         using JsonDocument manifest = JsonDocument.Parse(File.ReadAllBytes(declaration));
         var suite = manifest.RootElement.GetProperty("modules")[0].GetProperty("tests").EnumerateArray().Single(test => test.GetProperty("name").GetString() == profile);
         string entry = suite.GetProperty("entry").GetString()!;

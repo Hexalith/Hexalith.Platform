@@ -106,9 +106,17 @@ public static class PlatformAppModel
             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
         };
         if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
-            options = plan.SelectedTests.Any(test => test.Name == PlatformCurrentOwnerProof.Profile)
-                ? options with { CurrentOwnerProof = PlatformCurrentOwnerProof.Create(options, signingKey, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode) }
-                : options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
+        {
+            options = options with { PartiesRunProof = PlatformPartiesRunProof.Create(options, signingKey) };
+            bool developmentRun = builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode;
+            if (PlatformCurrentOwnerProof.SelectsIntegration(options))
+            {
+                var declarations = PlatformDeclarationSet.Load(options);
+                PlatformPartiesPackageCatalogQualification.Bind(options, declarations, PlatformServerBindings.Resolve(options, declarations), developmentRun);
+                var current = PlatformCurrentOwnerProof.Create(options, signingKey, developmentRun);
+                options = options with { CurrentOwnerProof = current, PartiesRunProof = current.Parent };
+            }
+        }
         Compose(builder, configureOptions(options));
     }
 
@@ -119,6 +127,12 @@ public static class PlatformAppModel
         {
             if (workspace != options.RunPlan.Workspace || (options.PartiesRunProof?.Matches(options) != true && options.CurrentOwnerProof?.Matches(options) != true))
                 throw new InvalidDataException("The ordinary Parties package snapshot requires its unchanged trusted parent proof.");
+            return;
+        }
+        if (options.Mapping.Mode == WorkspaceMode.Package && options.Mapping.HasGit && options.QualificationOwnerProof?.Matches(options) == true)
+        {
+            if (workspace != options.RunPlan!.Workspace) throw new InvalidDataException("The EventStore package snapshot does not belong to this run.");
+            _ = SourceMapping.LoadVerified(Path.Combine(workspace, "source-mapping", "mapping.json"), options.Mapping.ContentHash);
             return;
         }
         SourceMappingMaterializer.WriteAsync(options.Mapping, workspace, CancellationToken.None).GetAwaiter().GetResult();
@@ -139,32 +153,34 @@ public static class PlatformAppModel
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
         HashSet<IResource> existingResources = [.. builder.Resources];
         var declarations = PlatformDeclarationSet.Load(options);
+        if (options.Mapping.Mode == WorkspaceMode.Package && options.ActiveModule == "parties"
+            && PlatformCurrentOwnerProof.SelectsIntegration(options) && options.CurrentOwnerProof?.Matches(options) != true)
+            throw new InvalidDataException("The Parties integration profile requires its authenticated and sealed Release owner.");
         PlatformDaprBindings dapr = PlatformDaprBindings.Resolve(declarations, options.RetentionProfile);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
-        bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan is
-            { PlatformActiveModule: "eventstore", SelectedTest: { ModuleId: "eventstore", Name: "platform-package" } };
-        if (options.Mapping.Mode != WorkspaceMode.Source && (catalogParticipants.Count > 0 || eventStorePackageTest))
+        bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan?.SelectedTest is { Mode: "package" };
+        if (options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties"))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
             catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         }
-        foreach (PlatformServerBinding server in servers.Where(s => s.Image is not null))
+        bool runBoundImages = options.PartiesRunProof is not null || options.QualificationOwnerProof is not null;
+        servers = servers.Select(server => server.Image is null ? server : PreflightImage(server)).ToArray();
+
+        PlatformServerBinding PreflightImage(PlatformServerBinding server)
         {
-            string imageReference = server.Image!;
-            if (server.ImageDigest is not null)
-            {
-                // Resolve appends the tag, so the final colon preserves any registry port.
-                imageReference = imageReference[..imageReference.LastIndexOf(':')] + "@sha256:" + server.ImageDigest;
-            }
-            IEnumerable<string> arguments = ["manifest", "inspect", imageReference];
+            if (runBoundImages) return PlatformReleasedImages.Resolve(options, server);
+            IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
 #if HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION
-            arguments = PlatformLoopbackRegistryProbe.Arguments(imageReference, options.Mapping.Mode, builder.Environment.IsDevelopment());
+            arguments = PlatformLoopbackRegistryProbe.Arguments(server.Image!, options.Mapping.Mode, builder.Environment.IsDevelopment());
 #endif
             System.Diagnostics.ProcessStartInfo probe = CompositionProcess.CreateStartInfo("docker", arguments, options.PlatformRoot, null);
             CompositionProcessResult result = options.ImageProbeRunner(probe, TimeSpan.FromSeconds(20), CancellationToken.None).GetAwaiter().GetResult();
             if (result.ExitCode != 0 || result.TimedOut) throw new InvalidDataException($"{server.Module.Source}: {PlatformDeclarationSet.Id(server.Module.Declaration)}/{server.ServerId}: image '{server.Image}' is unavailable from its released registry.");
+            return server;
         }
+
         string components = options.ComponentsDirectory ?? Path.Combine(options.PlatformRoot, "DaprComponents", "reference");
         string? selectedDaprHome = options.RunPlan?.DaprHome ?? Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
         string daprHome = selectedDaprHome ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -196,6 +212,8 @@ public static class PlatformAppModel
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             MaterializeSourceMapping(options, mappingWorkspace);
             catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
+            if (runBoundImages && servers.Any(server => server.ImageDigest is not null))
+                builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformReleasedImages(options, servers, catalog?.Directory ?? rendered));
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
@@ -337,7 +355,9 @@ public static class PlatformAppModel
                     }
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         container.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
-                    if (options.RunPlan is not null) container.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={options.RunPlan.RunId}");
+                    if (options.RunPlan is not null)
+                        container.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={options.RunPlan.RunId}",
+                            "--label", $"{PlatformReleasedImages.ResourceLabel}={server.ResourceId}");
                     containers.Add(server.ResourceId, container);
                 }
             }
@@ -385,7 +405,7 @@ public static class PlatformAppModel
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
-                        // Host processes share daprd's loopback; the current-owner container binds its provider after Toolkit creates it.
+                        // Host processes share daprd's loopback. Container transport is bound after Toolkit allocates its provider.
                         if (hasGateway && server.ResourceId == "memories" && projects.ContainsKey(server.ResourceId))
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", "http://127.0.0.1:" + ports.Http);
                         else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
@@ -446,10 +466,7 @@ public static class PlatformAppModel
                     && !builder.Resources.Contains(ownedSidecar))
                     ownedSidecar.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
             }
-            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered, currentOwnerPackage: options.CurrentOwnerProof?.Matches(options) == true
-                || options.PartiesRunProof?.Matches(options) == true
-                    && PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true) is Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesName
-                        or Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name));
+            builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(servers, certificates, sentryAddress, rendered));
             if (options.RetentionProfile is not null)
             {
                 PlatformServerBinding owner = servers.First(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");

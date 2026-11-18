@@ -44,6 +44,8 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
             Directory.CreateDirectory(Path.GetDirectoryName(project)!);
             File.WriteAllText(project, "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><PackageId>" + id + "</PackageId><IsPackable>true</IsPackable></PropertyGroup></Project>");
         }
+        PlatformPartiesProofFixture.Git(_owner.Root, "init", "-q");
+        PlatformPartiesProofFixture.Commit(_owner.Root);
         Plan = _owner.Plan with { SourceMapping = mapping, Workspace = Path.Combine(_owner.Root, "reader-run"), StartupDeadlineUtc = DateTimeOffset.UtcNow.AddSeconds(600), QualificationOwnersBinding = null };
         _key = CompositionSigningKey.Create();
         Plan = CompositionQualificationOwners.Bind(Plan, _key);

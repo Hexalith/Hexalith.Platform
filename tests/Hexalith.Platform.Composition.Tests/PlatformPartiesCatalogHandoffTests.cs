@@ -58,7 +58,7 @@ public sealed class PlatformPartiesCatalogHandoffTests
             TestContext.Current.TestOutputHelper!.WriteLine("ordinaryGenerateExceptionType=" + (generation?.GetType().Name ?? "none"));
             if (releasedMaterialization)
             {
-                generation.ShouldBeOfType<InvalidDataException>().Message.ShouldContain("current owner authority changed");
+                generation.ShouldBeOfType<InvalidDataException>().Message.ShouldContain("unchanged authenticated runner proof");
                 catalog.ShouldBeNull();
                 File.ReadAllBytes(preflightCatalog).ShouldBe(preflightBytes);
             }

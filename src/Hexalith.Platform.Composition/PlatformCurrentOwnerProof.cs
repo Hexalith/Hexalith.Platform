@@ -14,12 +14,8 @@ using Hexalith.Platform.CatalogArtifacts;
 /// <summary>Private runner authority for one measured current owner; never candidate or public-package authority.</summary>
 internal sealed class PlatformCurrentOwnerProof
 {
-    internal const string Profile = "platform-current-package";
-    internal const string DeclarationHash = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348";
-    /// <summary>The independently measured current source declaration; the historical/public hash remains unchanged.</summary>
-    internal const string CurrentDeclarationHash = "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee";
-    internal const string TestEntry = "tests/Hexalith.Parties.Platform.IntegrationTests/Hexalith.Parties.Platform.IntegrationTests.csproj";
-    private readonly PlatformPartiesRunProof _parent;
+    internal const string Profile = "platform-package";
+    internal PlatformPartiesRunProof Parent { get; }
     private readonly IReadOnlyDictionary<string, string> _files;
     private readonly string _receipt;
     private readonly string _seal;
@@ -29,11 +25,12 @@ internal sealed class PlatformCurrentOwnerProof
     private PlatformCurrentOwnerProof(PlatformCompositionOptions options, string key, string directory, IReadOnlyDictionary<string, string> bodies,
         IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
     {
-        _parent = PlatformPartiesRunProof.CreateCurrent(options, key);
+        Parent = PlatformPartiesRunProof.Create(options, key);
         source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
         _source = source;
         Directory = directory;
-        Cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) ?? throw Refusal();
+        Cohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
+        SdkVersion = PlatformServerBindings.Version(options, "eventstore", "Parties Release preparation");
         Bodies = bodies;
         PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
         _files = files;
@@ -42,7 +39,8 @@ internal sealed class PlatformCurrentOwnerProof
         {
             profile = Profile, revision = source.Revision, options.Mapping.ContentHash,
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
-            platform = options.Mapping.PlatformIdentity, configuration = "Release", targetFramework = PreparationTargetFramework, cohort = Cohort, sdkVersion = SdkVersion, bodies, files,
+            platform = options.Mapping.PlatformIdentity, configuration = "Release", targetFramework = PreparationTargetFramework,
+            options.RunPlan.PlatformDeclarationHash, options.RunPlan.SelectedTests, sdkVersion = SdkVersion, bodies, files,
         });
         _seal = Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt)));
     }
@@ -51,15 +49,10 @@ internal sealed class PlatformCurrentOwnerProof
     internal static AsyncLocal<Action?> PreparedObserver { get; } = new();
 
     internal string Cohort { get; }
-    internal string SelectedDeclarationHash => DeclarationHashForCohort(Cohort);
+    /// <summary>Identifies the active owner integration entry within the authenticated package selection.</summary>
+    internal static bool SelectsIntegration(PlatformCompositionOptions options)
+        => options.RunPlan?.SelectedTests.Any(test => test is { ModuleId: "parties", Mode: "package", Name: Profile }) == true;
 
-    /// <summary>Selects exact current-source declaration bytes without relabeling a historical/public declaration.</summary>
-    internal static string DeclarationHashForCohort(string cohort) => cohort switch
-    {
-        PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name => DeclarationHash,
-        PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name => CurrentDeclarationHash,
-        _ => throw Refusal(),
-    };
     /// <summary>The authenticated loaded Builds generation fixes this private preparation target.</summary>
     internal static string PreparationTargetFramework => typeof(CompositionEngine).Assembly
         .GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName switch
@@ -78,7 +71,7 @@ internal sealed class PlatformCurrentOwnerProof
             || frameworks[0].Value.GetProperty("targetAlias").GetString() != expected) throw Refusal();
     }
 
-    internal string SdkVersion => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(Cohort);
+    internal string SdkVersion { get; }
     internal string Directory { get; }
     internal string Artifacts => Path.Combine(Directory, "build");
     internal string MappingWorkspace => Path.Combine(Directory, "owner-mapping");
@@ -91,21 +84,22 @@ internal sealed class PlatformCurrentOwnerProof
 
     internal static PlatformCurrentOwnerProof Create(PlatformCompositionOptions options, string key, bool developmentRun)
     {
-        string? cohort = null;
         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
             || options.Mapping.Entries.Any(entry => entry.Identity is not ("Hexalith.Parties" or "Hexalith.Platform") && (entry.Origin != "package" || entry.Path is not null))
             || options.Projects != PlatformServerBindings.ReferenceProjects || options.TimesheetsEnabled || options.UsePrebuiltProjects
-            || !PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options))
-            || !PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(PlatformServerBindings.Version(options, "parties", "current owner"), true, cohort!))
+            || !SelectsIntegration(options) || options.PartiesRunProof?.Matches(options) != true)
             throw Refusal();
-        _ = PlatformPartiesRunProof.CreateCurrent(options, key);
-        string sdkVersion = PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(cohort!);
+        string cohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
+        string sdkVersion = PlatformServerBindings.Version(options, "eventstore", "Parties Release preparation");
+        string tenantsVersion = PlatformServerBindings.Version(options, "tenants", "Parties Release preparation");
+        string memoriesVersion = PlatformServerBindings.Version(options, "memories", "Parties Release preparation");
+        string? mcpCliVersion = PlatformMcpCliCatalogVersion.Resolve(options, "Parties Release preparation");
         string active = ActiveRoot(options);
         string revision = Git(active, "rev-parse", "HEAD");
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, options.RunPlan!.StartupDeadlineUtc);
         IReadOnlyDictionary<string, string> inputs = source.Inputs;
         string declaration = options.DeclarationPaths.Single();
-        VerifyDeclaration(declaration, cohort!, source);
+        VerifyDeclaration(declaration, options.RunPlan.PlatformDeclarationHash!, source);
         string project = OwnerProject(options);
         string directory = Path.Combine(options.RunPlan!.Workspace, "current-owner", Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(directory);
@@ -149,7 +143,7 @@ internal sealed class PlatformCurrentOwnerProof
         foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService" })
         {
             string path = Path.Combine(output, name + ".dll");
-            PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, Hash(path), cohort!);
+            PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, Hash(path), cohort);
         }
         Dictionary<string, string> bodies = new(StringComparer.Ordinal);
         Dictionary<string, string> files = new(inputs, StringComparer.Ordinal);
@@ -170,7 +164,8 @@ internal sealed class PlatformCurrentOwnerProof
                 || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Parties") throw Refusal();
             using Stream embedded = package.GetEntry("lib/" + PreparationTargetFramework + "/" + name + ".dll")?.Open() ?? throw Refusal();
             string digest = Convert.ToHexStringLower(SHA256.HashData(embedded));
-            if (digest != Hash(body) || bodies.TryGetValue(name, out string? runtime) && runtime != digest) throw Refusal();
+            if (digest != Hash(body) || bodies.TryGetValue(name, out string? runtime) && runtime != digest)
+                throw new InvalidDataException($"The Parties package '{name}' differs from its measured Release body.");
             bodies[name] = digest;
             files[body] = digest;
             files[archive] = Hash(archive);
@@ -188,9 +183,9 @@ internal sealed class PlatformCurrentOwnerProof
                 if (library.Value.GetProperty("type").GetString() == "package"
                     && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
                         || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != sdkVersion
-                        || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != PublishedCatalogArtifactCohort.CurrentOwnerTenantsVersion(cohort!)
-                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort!)
-                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != PublishedCatalogArtifactCohort.CurrentOwnerMcpCliVersion(cohort!))) throw Refusal();
+                        || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != tenantsVersion
+                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != memoriesVersion
+                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != mcpCliVersion)) throw Refusal();
                 if (library.Value.GetProperty("type").GetString() == "project")
                 {
                     string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(document.RootElement.GetProperty("project").GetProperty("restore").GetProperty("projectPath").GetString()!)!, library.Value.GetProperty("msbuildProject").GetString()!));
@@ -255,24 +250,25 @@ internal sealed class PlatformCurrentOwnerProof
         {
             var matches = artifacts.Where(item => new System.Reflection.AssemblyName(item.GetProperty("assemblyIdentity").GetString()!).Name == name).ToArray();
             if (matches.Length != 1 || matches[0].GetProperty("sha256").GetString() != Bodies[name]
-                || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name]) throw Refusal();
+                || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name])
+                throw new InvalidDataException($"The reader artifact '{name}' differs from its measured Parties Release body.");
         }
         PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray(), Cohort);
     }
 
     /// <summary>Requires the selected declaration to belong to the already measured immutable source and exact purpose.</summary>
-    internal static void VerifyDeclaration(string path, string cohort, PlatformCurrentOwnerSourceState source)
+    internal static void VerifyDeclaration(string path, string declaredHash, PlatformCurrentOwnerSourceState source)
     {
         if (!source.Inputs.TryGetValue(path, out string? measured)
-            || measured != DeclarationHashForCohort(cohort) || Hash(path) != measured) throw Refusal();
+            || !string.Equals(measured, declaredHash, StringComparison.OrdinalIgnoreCase) || Hash(path) != measured)
+            throw new InvalidDataException($"The Parties declaration '{path}' differs from the authenticated source and runner plan.");
     }
 
     internal bool Matches(PlatformCompositionOptions options)
     {
         try
         {
-            if (!_parent.MatchesCurrent(options) || options.Projects != PlatformServerBindings.ReferenceProjects
-                || PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) != Cohort) return false;
+            if (!Parent.Matches(options) || !SelectsIntegration(options) || options.Projects != PlatformServerBindings.ReferenceProjects) return false;
             _source.RequireUnchanged(ActiveRoot(options), SourceRevision);
             return _files.All(pair => Hash(pair.Key) == pair.Value)
                 && Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt))) == _seal;
@@ -306,5 +302,5 @@ internal sealed class PlatformCurrentOwnerProof
         for (DirectoryInfo? parent = file.Directory; parent is not null; parent = parent.Parent) if (parent.LinkTarget is not null) throw Refusal();
         return Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
     }
-    private static InvalidDataException Refusal() => new("The current-owner package profile requires its private runner authority and exact Release/public dependency artifacts.");
+    private static InvalidDataException Refusal() => new("The Parties integration profile requires its authenticated package run and exact Release dependency artifacts.");
 }

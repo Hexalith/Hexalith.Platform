@@ -113,41 +113,29 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PrivateCohort(memoriesVersion)));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.CurrentOwnerSdkVersion(PublicCohort(memoriesVersion)));
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.1", true, PrivateCohort(memoriesVersion)).ShouldBeTrue();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.0", true, PrivateCohort(memoriesVersion)).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.1", true, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion("3.1.1", false, PublicCohort(memoriesVersion)).ShouldBeTrue();
     }
 
     /// <summary>The actual source declaration belongs to the captured current owner revision, independently from published package bodies.</summary>
-    [Theory]
-    [InlineData("3.0.26")]
-    [InlineData("3.0.27")]
-    public void ActualCurrentDeclarationIsBoundToMeasuredSource(string memoriesVersion)
+    [Fact]
+    public void ActualCurrentDeclarationIsBoundToMeasuredSource()
     {
         string root = CurrentOwnerRoot();
         string revision = Revision(root);
         string declaration = Path.Combine(root, "module", "hexalith.module-manifest.v2.json");
-        Hash(declaration).ShouldBe(PlatformCurrentOwnerProof.CurrentDeclarationHash);
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(root, revision, DateTimeOffset.UtcNow.AddSeconds(60));
-        PlatformCurrentOwnerProof.VerifyDeclaration(declaration, PrivateCohort(memoriesVersion), source);
-        source.Inputs[declaration].ShouldBe(PlatformCurrentOwnerProof.CurrentDeclarationHash);
+        PlatformCurrentOwnerProof.VerifyDeclaration(declaration, Hash(declaration), source);
         source.Revision.ShouldBe(revision);
     }
 
     /// <summary>The current source declaration cannot replay into the frozen historical or public source-proof purpose.</summary>
-    [Theory]
-    [InlineData("3.0.26")]
-    [InlineData("3.0.27")]
-    public void CurrentDeclarationCannotReplayIntoHistoricalSourceAuthority(string memoriesVersion)
+    [Fact]
+    public void CurrentDeclarationCannotReplayIntoHistoricalSourceAuthority()
     {
         string root = CurrentOwnerRoot();
         string revision = Revision(root);
         string declaration = Path.Combine(root, "module", "hexalith.module-manifest.v2.json");
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(root, revision, DateTimeOffset.UtcNow.AddSeconds(60));
-        Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.VerifyDeclaration(declaration, PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name, source));
-        Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.DeclarationHashForCohort(PublicCohort(memoriesVersion)));
-        PlatformCurrentOwnerProof.DeclarationHash.ShouldBe(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash);
+        Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.VerifyDeclaration(declaration, new string('0', 64), source));
     }
 
     /// <summary>Artifact authentication cannot expand ordinary image admission or relabel the existing public declaration.</summary>
@@ -157,8 +145,6 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
     public void CurrentArtifactsDoNotAcquireOrdinaryImageAuthority(string memoriesVersion)
     {
         PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", "2.0.1").ShouldBe(PublicCohort(memoriesVersion));
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.CurrentDeclarationHash).ShouldBeFalse();
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash).ShouldBeTrue();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
     }
 
@@ -188,14 +174,13 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         string memoriesVersion = PlatformServerBindings.Version(options, "memories", "current preparation");
         proof.Cohort.ShouldBe(PrivateCohort(memoriesVersion));
         proof.SourceRevision.ShouldBe(Revision(CurrentOwnerRoot()));
-        proof.SelectedDeclarationHash.ShouldBe(PlatformCurrentOwnerProof.CurrentDeclarationHash);
         proof.Matches(options).ShouldBeTrue();
-        options.PartiesRunProof.ShouldBeNull();
+        options.PartiesRunProof!.Matches(options).ShouldBeTrue();
         options.QualificationOwnerProof.ShouldBeNull();
         Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
-        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(
             PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
         int probes = 0;
         var builder = PlatformPartiesPackageFixture.Builder();

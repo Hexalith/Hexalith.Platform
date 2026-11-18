@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class TupleCollectorTests(unittest.TestCase):
     def test_every_positive_inventory_executes_only_on_the_candidate(self):
         for filename, suite, expected in (
-                ('tuple-ci-sdk42-current-suites.json', 'current42', 487),
-                ('tuple-ci-sdk42-base-suites.json', 'base42', 93),
+                ('tuple-ci-sdk42-current-suites.json', 'current42', 471),
+                ('tuple-ci-sdk42-base-suites.json', 'base42', 72),
                 ('tuple-ci-extension-suites.json', 'extensions', 9)):
             profile = json.loads((ROOT / 'eng' / filename).read_bytes())
             self.assertEqual(expected, validate_profile(profile))

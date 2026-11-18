@@ -8,132 +8,170 @@ using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 
-/// <summary>Admits only the independently measured published SDK/Tenants qualification cohort.</summary>
+/// <summary>Verifies the authenticated test topology and its independent published package bodies.</summary>
 internal static class PlatformPackageCatalogQualification
 {
-    private const string _refusal = "Run-scoped package catalog composition requires the qualified authenticated EventStore 4.0.4/Tenants 7.0.0 or EventStore 4.1.0/Tenants 7.0.2 owner SDK cohort, or the exact private EventStore 4.1.0 or 4.2.0/Tenants 7.0.5 package-test purpose; other package cohorts remain unavailable.";
+    private const string _refusal = "Package composition requires the authenticated EventStore package test with its declared gateway and Tenants topology.";
 
-    /// <summary>Checks all finite inputs before image probes, filesystem rendering or resource allocation.</summary>
+    /// <summary>Validates the run before registry probes or application resource allocation.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
     {
+        string cohort;
         if (options.ActiveModule == "parties")
-            return PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
-        string cohort = ValidateTestInputs(options, declarations, servers, developmentRun);
-        if (!HasQualifiedSdkBytes(cohort) || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
-            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort))
-            throw new InvalidDataException(_refusal);
-
-        return servers.Select(server => (cohort, server.ServerId, server.Image) switch
         {
-            (PublishedCatalogArtifactCohort.Name, "domain", "registry.hexalith.com/tenants:7.0.0") => server with { ImageDigest = "2f4ab155bc4d33e4b16f1bc8995c45de83503bd8ad99d2c7e46ebbef382b6c42" },
-            (PublishedCatalogArtifactCohort.Name, "api", "registry.hexalith.com/tenants-api:7.0.0") => server with { ImageDigest = "2969ad3f75b154566567dbd6a8f55dd8a64364cbec6fed96398e921379dde9b6" },
-            (PublishedCatalogArtifactCohort.CurrentName, "domain", "registry.hexalith.com/tenants:7.0.2") => server with { ImageDigest = "adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed" },
-            (PublishedCatalogArtifactCohort.CurrentName, "api", "registry.hexalith.com/tenants-api:7.0.2") => server with { ImageDigest = "2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4" },
-            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name, "domain", "registry.hexalith.com/tenants:7.0.5") => server with { ImageDigest = "1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a" },
-            (PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name, "api", "registry.hexalith.com/tenants-api:7.0.5") => server with { ImageDigest = "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b" },
-            (_, "gateway", null) when server.ProjectPath == options.EventStoreSeedProject => server,
-            _ => throw new InvalidDataException(_refusal),
-        }).ToArray();
+            PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
+            cohort = RequirePackageCohort(options);
+        }
+        else
+        {
+            cohort = ValidateTestInputs(options, declarations, servers, developmentRun);
+        }
+
+        VerifyPackageBytes(options, cohort);
+        return servers;
     }
 
-    /// <summary>Validates the authenticated declared graph before package-body or image admission; grants no execution authority.</summary>
+    /// <summary>Validates the authenticated EventStore graph, then selects its package-byte verification table.</summary>
     internal static string ValidateTestInputs(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
     {
-        CompositionRunPlan? plan = options.RunPlan;
-        string? cohort = null;
         if (!developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
-            || options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
-            || options.ActiveModule != "eventstore" || plan?.PlatformActiveModule != "eventstore"
-            || plan.SelectedTest is not { ModuleId: "eventstore", Mode: "package" }
-            || plan.SelectedTests.Count == 0 || plan.SelectedTests.Any(test => test.ModuleId != "eventstore" || test.Mode != "package")
-            || !CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
-            || !declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).SequenceEqual(["eventstore", "tenants"], StringComparer.Ordinal)
-            || !servers.Select(server => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId).Order(StringComparer.Ordinal).SequenceEqual(["eventstore/gateway", "tenants/api", "tenants/domain"], StringComparer.Ordinal)
-            || !Snapshot(options, declarations, "eventstore", "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495")
-            || !Snapshot(options, declarations, "tenants", "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522")
-            || (cohort = SelectTestCohort(options)) is null
-            || cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName && servers.Any(server => server.ImageDigest is not null)
-            || !MatchesDeclaredTestServers(options, declarations, servers))
+            || options.Images != PlatformServerBindings.ReferenceImages
+            || !MatchesTestSource(options)
+            || !MatchesTopology(options, declarations, servers, ["eventstore", "tenants"], ["eventstore/gateway", "tenants/api", "tenants/domain"]))
             throw new InvalidDataException(_refusal);
-        return cohort;
+        return RequirePackageCohort(options);
     }
 
-    private static bool MatchesDeclaredTestServers(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
-        IReadOnlyList<PlatformServerBinding> servers)
+    /// <summary>Compares the supplied graph to the exact Builds declaration closure and derived bindings.</summary>
+    internal static bool MatchesTopology(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
+        IReadOnlyList<PlatformServerBinding> servers, IReadOnlyList<string> modules, IReadOnlyList<string> workloads)
     {
-        var expected = PlatformServerBindings.Resolve(options, declarations).ToDictionary(server =>
-            PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId, StringComparer.Ordinal);
-        return servers.All(server => expected.TryGetValue(PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId, out var declared)
-            && server.Image == declared.Image && server.ProjectPath == declared.ProjectPath);
+        var authority = PlatformDeclarationSet.Load(options).OrderBy(module => PlatformDeclarationSet.Id(module.Declaration), StringComparer.Ordinal).ToArray();
+        var supplied = declarations.OrderBy(module => PlatformDeclarationSet.Id(module.Declaration), StringComparer.Ordinal).ToArray();
+        if (!authority.Select(module => PlatformDeclarationSet.Id(module.Declaration)).SequenceEqual(modules, StringComparer.Ordinal)
+            || authority.Length != supplied.Length
+            || !authority.Zip(supplied).All(pair => pair.First.Source == pair.Second.Source
+                && JsonElement.DeepEquals(pair.First.Declaration, pair.Second.Declaration))
+            || !servers.Select(Identity).Order(StringComparer.Ordinal).SequenceEqual(workloads, StringComparer.Ordinal)
+            || options.Mapping.HasGit && !MatchesComposition(options, authority))
+            return false;
+
+        var expected = PlatformServerBindings.Resolve(options, authority).ToDictionary(Identity, StringComparer.Ordinal);
+        return servers.All(server => expected.TryGetValue(Identity(server), out var declared)
+            && server.Module.Source == declared.Module.Source
+            && JsonElement.DeepEquals(server.Module.Declaration, declared.Module.Declaration)
+            && server.Image == declared.Image && server.ImageDigest is null && server.ImageConfigDigest is null
+            && server.ProjectPath == declared.ProjectPath && server.EventStoreHost?.ServerProject == declared.EventStoreHost?.ServerProject
+            && server.ResourceId == declared.ResourceId && server.AppId == declared.AppId && server.ReadinessEndpoint == declared.ReadinessEndpoint);
     }
 
-    /// <summary>The loaded SDK must be the finite signed public producer, including its technical receiver API.</summary>
+    private static bool MatchesComposition(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations)
+    {
+        var selected = options.RunPlan!.SelectedTest;
+        string digest = Digest(new
+        {
+            modules = declarations.Select(declaration => new { declaration.Declaration, SourceHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(declaration.Source))) }),
+            selected?.Mode, selected?.DaprRuntimeVersion, retention = false,
+        });
+        var owners = CompositionQualificationOwners.Normalize(options.QualificationOwners);
+        if (owners.Count > 0) digest = Digest(new { purpose = "hexalith.qualification-owners-composition.v1", original = digest, owners });
+        return options.RunPlan.CompositionContentIdentity == digest;
+    }
+
+    private static string Digest<T>(T input) => "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(input)));
+    private static string Identity(PlatformServerBinding server) => PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId;
+
+    /// <summary>Returns the published package-byte table for the verified mapped package versions.</summary>
+    internal static string RequirePackageCohort(PlatformCompositionOptions options)
+        => (options.ActiveModule == "parties"
+                ? PlatformCurrentOwnerProof.SelectsIntegration(options) ? SelectCurrentOwnerCohort(options) : SelectCohort(options, fullParties: true)
+                : SelectTestCohort(options))
+            ?? throw new InvalidDataException("The pinned catalog has no package byte verification table for "
+                + PlatformServerBindings.Version(options, "eventstore", "package verification") + " EventStore and "
+                + PlatformServerBindings.Version(options, "tenants", "package verification") + " Tenants with the selected owner dependencies.");
+
+    private static void VerifyPackageBytes(PlatformCompositionOptions options, string cohort)
+    {
+        _ = PublishedCatalogArtifactCohort.VerifySdk(cohort);
+        _ = PublishedCatalogArtifactCohort.Verify(System.Reflection.Assembly.Load("Hexalith.Tenants.Contracts"), cohort);
+        if (options.ActiveModule == "parties")
+        {
+            _ = PublishedCatalogArtifactCohort.Verify(System.Reflection.Assembly.Load("Hexalith.Memories.Contracts"), cohort);
+            if (!PlatformCurrentOwnerProof.SelectsIntegration(options))
+                _ = PublishedCatalogArtifactCohort.Verify(System.Reflection.Assembly.Load("Hexalith.Parties.Contracts"), cohort);
+        }
+        else if (cohort is PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName)
+        {
+            _ = PublishedCatalogArtifactCohort.Verify(System.Reflection.Assembly.Load("Hexalith.Tenants.Server"), cohort);
+        }
+    }
+
+    /// <summary>Checks published SDK bytes independently of declaration and image selection.</summary>
     internal static bool HasQualifiedSdkBytes(string? cohort = null) => cohort is null
         ? PublishedCatalogArtifactCohort.MatchesSdk() || PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.CurrentName)
         : PublishedCatalogArtifactCohort.MatchesSdk(cohort);
 
-    /// <summary>Binds the selected SDK/Tenants versions to one complete measured public cohort; mixed pairs have no authority.</summary>
+    /// <summary>Selects the existing public package verification table without admitting any execution inputs.</summary>
     internal static string? SelectCohort(PlatformCompositionOptions options, bool fullParties = false)
     {
-        if (fullParties && (options.CurrentOwnerProof is not null
-            || options.RunPlan?.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile
-            || options.RunPlan?.SelectedTests.Any(test => test.Name == PlatformCurrentOwnerProof.Profile) == true)) return null;
-        string sdk = PlatformServerBindings.Version(options, "eventstore", "qualification");
-        string tenants = PlatformServerBindings.Version(options, "tenants", "qualification");
+        string sdk = PlatformServerBindings.Version(options, "eventstore", "package verification");
+        string tenants = PlatformServerBindings.Version(options, "tenants", "package verification");
         string? historical = PublishedCatalogArtifactCohort.ForVersions(sdk, tenants, fullParties);
         if (!fullParties) return historical;
-        string? mcpCli = PlatformMcpCliCatalogVersion.Resolve(options, "qualification");
+        string? mcpCli = PlatformMcpCliCatalogVersion.Resolve(options, "package verification");
         return historical is not null ? mcpCli == "2.0.0" ? historical : null
             : PublishedCatalogArtifactCohort.ForPublishedPartiesVersions(sdk, tenants,
-                PlatformServerBindings.Version(options, "memories", "qualification"), PlatformServerBindings.Version(options, "parties", "qualification"), mcpCli);
+                PlatformServerBindings.Version(options, "memories", "package verification"), PlatformServerBindings.Version(options, "parties", "package verification"), mcpCli);
     }
 
-    /// <summary>Selects old public pairs or the separately authenticated exact EventStore package-test purpose; performs no resource effects.</summary>
+    /// <summary>Selects the existing package verification table for a declared EventStore test.</summary>
     internal static string? SelectTestCohort(PlatformCompositionOptions options)
     {
-        string? historical = SelectCohort(options);
-        if (historical is not null) return historical;
-        CompositionRunPlan? plan = options.RunPlan;
-        return options.Mapping.Mode == WorkspaceMode.Package && options.QualificationOwnerProof?.Matches(options) == true
-            && options.Mapping.ActiveModule == "Hexalith.EventStore" && options.ActiveModule == "eventstore" && plan?.PlatformActiveModule == "eventstore"
-            && plan.SelectedTest is { ModuleId: "eventstore", Name: "platform-package", Executor: "mtp", Mode: "package",
-                Entry: "tests/Hexalith.EventStore.Platform.IntegrationTests/Hexalith.EventStore.Platform.IntegrationTests.csproj",
-                ExecutionTimeoutSeconds: 120, StopTimeoutSeconds: 90, DaprRuntimeVersion: null } selected
-            && plan.SelectedTests.Count == 1 && plan.SelectedTests[0] == selected
-            && string.Equals(selected.ManifestHash, plan.PlatformDeclarationHash, StringComparison.OrdinalIgnoreCase)
-            && string.Equals(plan.PlatformDeclarationHash, "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495", StringComparison.OrdinalIgnoreCase)
-            && MatchesTestSource(options, selected)
-            && CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal)
-            ? PublishedCatalogArtifactCohort.ForEventStorePackageTestVersions(
-                PlatformServerBindings.Version(options, "eventstore", "private EventStore package test"),
-                PlatformServerBindings.Version(options, "tenants", "private EventStore package test")) : null;
+        if (!MatchesTestSource(options)) return null;
+        return SelectCohort(options) ?? PublishedCatalogArtifactCohort.ForEventStorePackageTestVersions(
+            PlatformServerBindings.Version(options, "eventstore", "EventStore package test"),
+            PlatformServerBindings.Version(options, "tenants", "EventStore package test"));
     }
 
     internal static string? SelectCurrentOwnerCohort(PlatformCompositionOptions options)
         => PublishedCatalogArtifactCohort.ForCurrentOwnerVersions(
-            PlatformServerBindings.Version(options, "eventstore", "current qualification"),
-            PlatformServerBindings.Version(options, "tenants", "current qualification"),
-            PlatformServerBindings.Version(options, "memories", "current qualification"),
-            PlatformMcpCliCatalogVersion.Resolve(options, "current qualification"));
+            PlatformServerBindings.Version(options, "eventstore", "package verification"),
+            PlatformServerBindings.Version(options, "tenants", "package verification"),
+            PlatformServerBindings.Version(options, "memories", "package verification"),
+            PlatformMcpCliCatalogVersion.Resolve(options, "package verification"));
 
-    private static bool MatchesTestSource(PlatformCompositionOptions options, ModuleTestSelection selected)
+    private static bool MatchesTestSource(PlatformCompositionOptions options)
     {
-        SourceMappingEntry[] active = options.Mapping.Entries.Where(entry => entry.Identity == "Hexalith.EventStore" && entry.Origin == "source" && entry.Path is not null).ToArray();
-        if (active.Length != 1 || options.RunPlan!.PlatformDeclarationPaths.Count != 1) return false;
-        string manifest = Path.GetFullPath(Path.Combine(active[0].Path!, "module", "hexalith.module-manifest.v2.json"));
-        string entry = Path.Combine(active[0].Path!, selected.Entry);
-        return Path.GetFullPath(options.RunPlan.PlatformDeclarationPaths[0]) == manifest && File.Exists(manifest)
-            && string.Equals(selected.ManifestHash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(manifest))), StringComparison.OrdinalIgnoreCase)
-            && File.Exists(entry) && string.Equals(selected.EntryHash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(entry))), StringComparison.OrdinalIgnoreCase);
+        CompositionRunPlan? plan = options.RunPlan;
+        if (options.Mapping.Mode != WorkspaceMode.Package || options.QualificationOwnerProof?.Matches(options) != true
+            || options.Mapping.ActiveModule != "Hexalith.EventStore" || options.ActiveModule != "eventstore" || plan?.PlatformActiveModule != "eventstore"
+            || plan.SelectedTest is not { ModuleId: "eventstore", Mode: "package" } selected
+            || plan.SelectedTests.Count == 0 || plan.SelectedTests[0] != selected
+            || plan.SelectedTests.Select(test => test.Name).Distinct(StringComparer.Ordinal).Count() != plan.SelectedTests.Count
+            || plan.PlatformDeclarationPaths.Count != 1
+            || !string.Equals(plan.PlatformDeclarationHash, selected.ManifestHash, StringComparison.OrdinalIgnoreCase)
+            || !CompositionQualificationOwners.Normalize(options.QualificationOwners).SequenceEqual(["tenants"], StringComparer.Ordinal))
+            return false;
+        var active = options.Mapping.Entries.SingleOrDefault(entry => entry.Identity == "Hexalith.EventStore" && entry.Origin == "source");
+        if (active?.Path is not { } root) return false;
+        string manifest = Path.Combine(root, "module", "hexalith.module-manifest.v2.json");
+        if (plan.PlatformDeclarationPaths[0] != manifest) return false;
+        try
+        {
+            PlatformPartiesRunProof.ValidateTests(plan, "eventstore", root, manifest, options.Mapping);
+            if (options.Mapping.HasGit)
+            {
+                PlatformPartiesRunProof.RequireCommittedFile(root, manifest);
+                foreach (ModuleTestSelection test in plan.SelectedTests)
+                    PlatformPartiesRunProof.RequireCommittedFile(root, Path.Combine(root, test.Entry));
+                _ = SourceMapping.LoadVerified(Path.Combine(plan.Workspace, "source-mapping", "mapping.json"), options.Mapping.ContentHash);
+            }
+            return true;
+        }
+        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException or JsonException or InvalidOperationException or KeyNotFoundException)
+        {
+            return false;
+        }
     }
-
-    private static bool Snapshot(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, string owner, string expected)
-    {
-        PlatformModuleDeclaration selected = declarations.Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
-        if (Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(selected.Source))) != expected) return false;
-        PlatformModuleDeclaration authoritative = PlatformDeclarationSet.Load(options).Single(module => PlatformDeclarationSet.Id(module.Declaration) == owner);
-        return selected.Source == authoritative.Source && JsonElement.DeepEquals(selected.Declaration, authoritative.Declaration);
-    }
-
 }

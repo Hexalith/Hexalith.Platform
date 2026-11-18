@@ -119,8 +119,9 @@ internal sealed class PlatformRoutingCatalogBootstrap
             {
                 plan.RunId, hosts = participants.Select(server => new
                 {
-                    server.ResourceId, server.AppId, artifact = server.Image ?? server.ProjectPath,
+                    server.ResourceId, server.AppId, artifact = server.ImmutableImage ?? server.Image ?? server.ProjectPath,
                     artifactKind = server.Image is not null ? "released-image"
+                        : server.ResourceId == "parties" && options.CurrentOwnerProof is not null ? "mapped-release-project"
                         : options.Mapping.Mode == WorkspaceMode.Package ? "published-seed" : "mapped-project",
                     artifactSha256 = server.ProjectPath is null ? null
                         : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(server.ProjectPath))),

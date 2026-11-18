@@ -185,7 +185,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
             root = Path(directory)
             (root / "eng").mkdir()
             (root / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [
-                {"requiredCount": 487, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
+                {"requiredCount": 471, "filter": "-class", "selectors": ["Synthetic.Control"], "collector": "current"}]}))
             (root / "Hexalith.Platform.slnx").write_text("<Solution />")
             catalog = root / "catalog.props"
             catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>")

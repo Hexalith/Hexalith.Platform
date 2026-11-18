@@ -9,17 +9,23 @@ using Shouldly;
 /// <summary>Exercises the actual key-bearing ComposeRun path without starting resources or a package fleet.</summary>
 public sealed class PlatformPackageCatalogEntryPointTests
 {
-    /// <summary>A genuine loaded cohort probes both immutable owner images before adding resources.</summary>
+    /// <summary>A genuine authenticated request resolves a catalog-selected image before adding resources.</summary>
     [Fact]
     public void ValidBoundRequestReachesImageProbeThroughComposeRun()
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         var builder = Builder();
         int probes = 0;
+        string cohort = PlatformPartiesPackageFixture.EventStoreTestCohort;
+        string version = PlatformServerBindings.Version(fixture.Options, "tenants", "entry test");
+        string tag = "registry.hexalith.com/tenants:" + version;
+        var image = PlatformPartiesPackageFixture.ImageEvidence(tag, index: true);
         bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
-            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName);
+            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
+            && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
+            && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort);
         void Compose() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
             ImageProbeRunner = (start, timeout, _) =>
@@ -27,21 +33,28 @@ public sealed class PlatformPackageCatalogEntryPointTests
                 probes++;
                 start.FileName.ShouldBe("docker");
                 timeout.ShouldBe(TimeSpan.FromSeconds(20));
-                start.ArgumentList.ShouldBe(["manifest", "inspect", probes == 1
-                    ? "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed"
-                    : "registry.hexalith.com/tenants-api@sha256:2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4"]);
-                if (probes == 1) return Task.FromResult(new CompositionProcessResult(true, 0, "{}", false));
-                throw new InvalidOperationException("Expected immutable image-probe boundary reached.");
+                if (probes == 1)
+                {
+                    start.ArgumentList.ShouldBe(["buildx", "imagetools", "inspect", tag, "--format", "{{json .Manifest}}"]);
+                    return Task.FromResult(new CompositionProcessResult(true, 0, image.Tag, false));
+                }
+                if (probes == 2)
+                {
+                    start.ArgumentList.ShouldBe(["manifest", "inspect", "--verbose", image.Reference]);
+                    return Task.FromResult(new CompositionProcessResult(true, 0, image.Manifest, false));
+                }
+                start.ArgumentList.ShouldBe(["buildx", "imagetools", "inspect", "registry.hexalith.com/tenants-api:" + version, "--format", "{{json .Manifest}}"]);
+                return Task.FromResult(new CompositionProcessResult(true, 83, "", false));
             },
         });
         if (qualified)
         {
-            Should.Throw<InvalidOperationException>(Compose).Message.ShouldBe("Expected immutable image-probe boundary reached.");
-            probes.ShouldBe(2);
+            Should.Throw<InvalidDataException>(Compose).Message.ShouldContain("registry.hexalith.com/tenants-api:" + version);
+            probes.ShouldBe(3);
         }
         else
         {
-            Should.Throw<InvalidDataException>(Compose).Message.ShouldContain("owner SDK");
+            Should.Throw<InvalidDataException>(Compose).Message.ShouldContain("differs from its verified published bytes");
             probes.ShouldBe(0);
         }
         builder.Resources.ShouldBeEmpty();

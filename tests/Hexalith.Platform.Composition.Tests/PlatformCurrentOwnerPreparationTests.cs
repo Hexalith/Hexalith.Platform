@@ -88,12 +88,33 @@ public sealed class PlatformCurrentOwnerPreparationTests
         await using var positive = await PlatformMappedOwnerProcess.StartAsync(owners.Concat(sdk));
         await notifications.PublishUpdateAsync(parties, snapshot => snapshot with
         { State = new("Running", null), Properties = [new("executable.pid", positive.Id)] });
+        PlatformServerBinding dependency = PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "tenants");
+        var image = PlatformPartiesPackageFixture.ImageEvidence(dependency.Image!, index: true);
+        var images = new[] { new
+        {
+            dependency.ResourceId, catalogImage = dependency.Image, expectedReference = image.Reference,
+            expectedManifestDigest = image.Reference[(image.Reference.LastIndexOf('@') + 1)..], expectedConfigDigest = image.ImageId,
+            observedReference = image.Reference, observedImageId = image.ImageId, containerId = new string('c', 64),
+        } };
+        var json = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        void WriteImageReceipt(string mappingHash) =>
+            File.WriteAllBytes(Path.Combine(catalog.Directory, "released-images.json"), JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                fixture.Plan.RunId, fixture.Plan.AttemptId, fixture.Plan.EnvironmentId, mappingHash, qualificationCredit = false, images,
+            }, json));
+        WriteImageReceipt(new string('0', 64));
+        var foreignImageReceipt = await Should.ThrowAsync<InvalidDataException>(() =>
+            PlatformCurrentOwnerObservation.CaptureAsync(app.Services, options, catalog.Directory, TestContext.Current.CancellationToken));
+        foreignImageReceipt.Message.ShouldContain("Released image observations differ");
+        File.Exists(Path.Combine(catalog.Directory, "current-owner-observation.json")).ShouldBeFalse();
+        WriteImageReceipt(options.Mapping.ContentHash);
         await PlatformCurrentOwnerObservation.CaptureAsync(app.Services, options, catalog.Directory, TestContext.Current.CancellationToken);
         using JsonDocument observation = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-owner-observation.json")));
         observation.RootElement.GetProperty("revision").GetString().ShouldBe(proof.SourceRevision);
         observation.RootElement.GetProperty("qualificationCredit").GetBoolean().ShouldBeFalse();
         observation.RootElement.GetProperty("runtimeBodies").EnumerateObject().Count().ShouldBe(5);
         observation.RootElement.GetProperty("sdkBodies").EnumerateObject().Count().ShouldBe(4);
+        JsonElement.DeepEquals(observation.RootElement.GetProperty("dependencyImages"), JsonSerializer.SerializeToElement(images, json)).ShouldBeTrue();
         TestContext.Current.TestOutputHelper!.WriteLine("inertComponentObservation=" + observation.RootElement.GetRawText());
         File.Exists(credentials).ShouldBeFalse();
     }

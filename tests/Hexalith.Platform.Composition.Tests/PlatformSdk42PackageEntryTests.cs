@@ -38,7 +38,7 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
-        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(
             PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
         servers.Single(server => server.ResourceId == "parties").ProjectPath.ShouldBe(PlatformCurrentOwnerProof.OwnerProject(options));
@@ -59,7 +59,6 @@ public sealed class PlatformSdk42PackageEntryTests
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(fixture.Reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
         AssertReader(fixture.Reader, proof.Cohort, 70, 46, catalog.CatalogPath);
-        PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull();
     }
 
     private static void AssertReader(string reader, string cohort, int routes, int policies, string catalog)

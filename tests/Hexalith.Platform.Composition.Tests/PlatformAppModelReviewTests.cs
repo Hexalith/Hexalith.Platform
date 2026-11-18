@@ -467,7 +467,7 @@ public sealed partial class PlatformAppModelTests
             File.Delete(readerProject);
             IDistributedApplicationBuilder builder = Builder();
             Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, CompositionSigningKey.Create(), release.EventStoreSeedProject, Configure))
-                .Message.ShouldContain("owner SDK");
+                .Message.ShouldContain("authenticated EventStore package test");
             probes.ShouldBe(0);
             builder.Resources.ShouldBeEmpty();
             Directory.Exists(Path.Combine(workspace, "platform-components")).ShouldBeFalse();
@@ -506,7 +506,7 @@ public sealed partial class PlatformAppModelTests
                 return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut));
             },
         }));
-        failure.Message.ShouldContain(qualified ? "unavailable from its released registry" : "owner SDK");
+        failure.Message.ShouldContain(qualified ? "no valid released Linux/amd64 digest" : "verified published bytes");
         probes.ShouldBe(qualified ? 1 : 0);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(plan.Workspace).ShouldBeFalse();

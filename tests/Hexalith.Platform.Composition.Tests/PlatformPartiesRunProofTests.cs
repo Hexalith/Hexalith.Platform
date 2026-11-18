@@ -13,7 +13,7 @@ public sealed class PlatformPartiesRunProofTests
     [Fact]
     public void TrustedComposeRunCreatesOrdinaryProofWithoutExpandedOwners()
     {
-        using PlatformPartiesProofFixture fixture = new();
+        using PlatformPartiesProofFixture fixture = new(profile: "lifecycle-package");
         var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
             Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
@@ -24,6 +24,7 @@ public sealed class PlatformPartiesRunProofTests
             {
                 configured++;
                 options.PartiesRunProof!.Matches(options).ShouldBeTrue();
+                options.CurrentOwnerProof.ShouldBeNull();
                 options.QualificationOwnerProof.ShouldBeNull();
                 options.QualificationOwners.ShouldBeEmpty();
                 options.RunPlan!.QualificationOwners.ShouldBeNull();

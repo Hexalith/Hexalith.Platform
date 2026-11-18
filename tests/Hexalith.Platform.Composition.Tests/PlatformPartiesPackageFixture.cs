@@ -23,46 +23,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         Seed = seed;
     }
 
-    /// <summary>The seven authenticated Linux/amd64 identities expected at the real image-preflight boundary.</summary>
-    internal static IReadOnlySet<string> Images => PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName)
-        ? PublishedImages : HistoricalImages;
-
-    private static IReadOnlySet<string> HistoricalImages { get; } = new HashSet<string>(StringComparer.Ordinal)
-    {
-        "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed",
-        "registry.hexalith.com/tenants-api@sha256:2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4",
-        "registry.hexalith.com/memories@sha256:f8684c3d8a084a5bc357ec13e9c7c5294a350d73f570b585f5fb2bfde3d9904b",
-        "registry.hexalith.com/memories-domain-service@sha256:fb0190a1fc5ffdbdcf9cf5d4941ef81600bde23d38840058f695b52623870f5e",
-        "registry.hexalith.com/memories-access-telemetry-clock@sha256:b64505ee27cfd455f7efe730831a72688ca92ef6b49fd904eb0e68abdd38e54f",
-        "registry.hexalith.com/memories-access-telemetry@sha256:ee01a024abb17a7d465ba8fe5fbb626114b7fb380fc521a5fa7531ca514d548a",
-        "registry.hexalith.com/parties@sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b",
-    };
-
-    /// <summary>The six genuine current public images; the private current Parties executable is never relabeled as a public image.</summary>
-    internal static IReadOnlySet<string> CurrentImages { get; } = new HashSet<string>(StringComparer.Ordinal)
-    {
-        "registry.hexalith.com/tenants@sha256:590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635",
-        "registry.hexalith.com/tenants-api@sha256:2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65",
-        "registry.hexalith.com/memories@sha256:4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8",
-        "registry.hexalith.com/memories-domain-service@sha256:17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42",
-        "registry.hexalith.com/memories-access-telemetry-clock@sha256:0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106",
-        "registry.hexalith.com/memories-access-telemetry@sha256:18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024",
-    };
-
-    /// <summary>The seven separately measured images for the genuine complete public Parties3.1 profile.</summary>
-    internal static IReadOnlySet<string> PublishedImages { get; } = new HashSet<string>(StringComparer.Ordinal)
-    {
-        "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
-        "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
-        "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
-        "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
-        "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
-        "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
-        "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
-    };
-
-    private IReadOnlySet<string> SelectedImages => Plan.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile ? CurrentImages : Images;
-
     /// <summary>Gets the independently owned private workspace; no source checkout is copied or edited.</summary>
     internal string Workspace { get; }
     /// <summary>Gets the actual selected declaration/test/mapping handoff persisted by the fixture.</summary>
@@ -86,7 +46,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static string CurrentCohort => PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name;
     internal static string EventStoreTestCohort => PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName;
 
-    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "platform-package", bool sdk42 = false)
+    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package", bool sdk42 = false)
     {
         if (profile != PlatformCurrentOwnerProof.Profile)
         {
@@ -105,7 +65,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             (File.Exists(marker) || Directory.Exists(marker)).ShouldBeTrue("Direct dependencies must already be prepared; this test must not initialize them.");
         }
         string manifest = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
-        Hash(manifest).ShouldBe(PlatformCurrentOwnerProof.CurrentDeclarationHash);
         SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Package, TestContext.Current.CancellationToken);
         mapping.Root.ShouldBe(root);
         mapping.Entries.Single(entry => entry.Identity == "Hexalith.Parties").Path.ShouldBe(active);
@@ -204,12 +163,21 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         Directory.CreateDirectory(probes);
         string executable = Path.Combine(probes, "docker");
         string log = Path.Combine(probes, "images.txt");
-        // Never contacts a registry. Fail on the seventh exact inspect, before rendering or model allocation.
-        string script = "#!/bin/sh\n[ \"$#\" = 3 ] && [ \"$1\" = manifest ] && [ \"$2\" = inspect ] || exit 90\n"
-            + "case \"$3\" in\n" + string.Join("|", SelectedImages.Order(StringComparer.Ordinal)) + ") ;;\n*) exit 91 ;;\nesac\n"
-            + "printf '%s\\n' \"$3\" >> '" + log + "'\n"
-            + (completeCatalog ? string.Empty : "[ \"$(wc -l < '" + log + "')\" -lt " + SelectedImages.Count + " ] || exit 83\n")
-            + "printf '{}\\n'\n";
+        // Provide disposable registry protocol fixtures for the exact catalog-selected tags.
+        PlatformCompositionOptions options = new() { PlatformRoot = Plan.SourceMapping!.PlatformIdentity!.PlatformPath, Mapping = Plan.SourceMapping,
+            ActiveModule = "parties", DeclarationPaths = Plan.PlatformDeclarationPaths, RunPlan = Plan, EventStoreSeedProject = Seed };
+        string script = "#!/bin/sh\n";
+        foreach (string tag in DependencyTags(options))
+        {
+            var evidence = ImageEvidence(tag, index: true);
+            string prefix = Path.Combine(probes, Path.GetFileName(tag).Replace(':', '-'));
+            File.WriteAllText(prefix + ".tag", evidence.Tag);
+            File.WriteAllText(prefix + ".manifest", evidence.Manifest);
+            script += "if [ \"$1\" = buildx ] && [ \"$4\" = '" + tag + "' ]; then printf '%s\\n' \"$4\" >> '" + log
+                + "'; cat '" + prefix + ".tag'; exit; fi\n"
+                + "if [ \"$1\" = manifest ] && [ \"$4\" = '" + evidence.Reference + "' ]; then cat '" + prefix + ".manifest'; exit; fi\n";
+        }
+        script += "exit 91\n";
         await File.WriteAllTextAsync(executable, script, TestContext.Current.CancellationToken);
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(executable, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         var start = CompositionProcess.CreateStartInfo("dotnet", ["exec", host, "--validate-platform"], Workspace,
@@ -292,15 +260,30 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         return Options;
     }
 
-    /// <summary>Requires the measured current 7.0.7/3.0.27 linux/amd64 image bindings and project-only Parties/EventStore owners.</summary>
-    internal static void AssertCurrentOwnerMemories327Images(IReadOnlyList<PlatformServerBinding> servers)
+    /// <summary>Reads the dependency repository tags selected by the mapped catalog.</summary>
+    internal static IEnumerable<string> DependencyTags(PlatformCompositionOptions options)
+        => PlatformServerBindings.ReferenceImages.Where(pair => !pair.Key.StartsWith("parties/", StringComparison.Ordinal))
+            .Select(pair => pair.Value + ":" + PlatformServerBindings.Version(options, pair.Key.Split('/')[0], "fixture"));
+
+    /// <summary>Exercises image resolution with registry-shaped bodies whose digest is computed from the response.</summary>
+    internal static (string Tag, string Manifest, string Reference, string ImageId) ImageEvidence(string image, bool index)
     {
-        servers.Single(server => server.ResourceId == "tenants").ImageDigest.ShouldBe("590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635");
-        servers.Single(server => server.ResourceId == "tenants-api").ImageDigest.ShouldBe("2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65");
-        servers.Single(server => server.ResourceId == "memories").ImageDigest.ShouldBe("4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8");
-        servers.Single(server => server.ResourceId == "memories-domain-service").ImageDigest.ShouldBe("17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42");
-        servers.Single(server => server.ResourceId == "memories-access-telemetry-clock").ImageDigest.ShouldBe("0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106");
-        servers.Single(server => server.ResourceId == "memories-access-telemetry").ImageDigest.ShouldBe("18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024");
+        string config = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(image)));
+        byte[] body = JsonSerializer.SerializeToUtf8Bytes(new { schemaVersion = 2, config = new { digest = config } });
+        string digest = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(body));
+        var platform = new { os = "linux", architecture = "amd64" };
+        string tag = index ? JsonSerializer.Serialize(new { digest = "sha256:" + new string('a', 64), manifests = new[] { new { digest, platform } } })
+            : JsonSerializer.Serialize(new { digest });
+        string reference = image[..image.LastIndexOf(':')] + "@" + digest;
+        string manifest = JsonSerializer.Serialize(new { Ref = reference, Descriptor = new { digest, platform }, Raw = body });
+        return (tag, manifest, reference, config);
+    }
+
+    /// <summary>Checks that topology binds project owners and catalog-derived tags before registry resolution.</summary>
+    internal static void AssertCatalogSelectedDependencies(IReadOnlyList<PlatformServerBinding> servers)
+    {
+        servers.Count(server => server.Image is not null).ShouldBe(6);
+        servers.ShouldAllBe(server => server.ImageDigest == null);
         servers.Single(server => server.ResourceId == "parties").Image.ShouldBeNull();
         servers.Single(server => server.ResourceId == "eventstore").Image.ShouldBeNull();
     }

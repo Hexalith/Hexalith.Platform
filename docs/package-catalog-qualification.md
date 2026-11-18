@@ -1,14 +1,38 @@
 # Package catalog qualification
 
-Current preparation and CI are documented in [current tuple preparation](current-tuple-preparation.md).
-Only the candidate Platform checkout is selected. Continuing inventories contain
-487 current42, 93 base42 and nine extension cases. Current-owner reader controls
-in `PlatformCurrentOwnerPackageTests` exercise genuine measured packages,
-production reader generation, immutable catalog/receipt reuse and changed-body/
-request/version/assets refusals through `PlatformReaderMutationControls`.
-`PlatformPartiesCatalogHandoffTests` and `PlatformCurrentOwnerHandoffTests`
-retain snapshot derivation and authenticated handoff controls. These observations
-grant no image or native runtime admission.
+[Current tuple preparation](current-tuple-preparation.md) documents the
+authenticated Platform checkout and Builds pin. The current inventories require
+471 current42, 72 base42, and nine extension cases.
+
+Parties declares one package profile per project. Run the integration suite
+from the verified Platform checkout with the pinned module CLI:
+
+```bash
+dotnet hexalith-module test --mode package --profile platform-package \
+  --manifest references/Hexalith.Parties/module/hexalith.module-manifest.v2.json
+```
+
+The runner authenticates the committed owner declaration, actual test entry,
+source mapping, and Builds declaration closure. Platform prepares the mapped
+Parties source in Release using the selected catalog's packages and seals the
+resulting binaries and private reader inputs. The reader verifies the loaded
+published dependencies and measured owner bodies.
+
+Platform resolves each released dependency tag from its catalog-selected
+repository before launch. It gives Aspire the immutable Linux/amd64 manifest
+digest and checks the owned container's configured reference and loaded image
+ID against that manifest and its configuration digest. The run-owned catalog directory retains
+`released-images.json` and `current-owner-observation.json` for the integration
+suite. These observations and the existing cleanup report describe the run's
+baseline. Candidate acceptance still requires its independent policy and evidence.
+
+Use `lifecycle-package` for an independently owned lifecycle run and
+`attached-lifecycle-package` for its attachment project. EventStore package
+tests retain their authenticated additive Tenants owner and declared topology.
+Historical observations below retain their original release identities.
+
+Docker with Buildx and the Aspire and Dapr versions pinned by Builds are needed
+for live package execution.
 
 ## Historical signed producer and Tenants 7.0.5 tuple
 

@@ -27,13 +27,15 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
-        string? qualificationCohort = options.Mapping.Mode != WorkspaceMode.Package ? null
-            : options.CurrentOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
-            : options.PartiesRunProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)
-            : options.QualificationOwnerProof?.Matches(options) == true ? PlatformPackageCatalogQualification.SelectTestCohort(options)
-            : throw new InvalidDataException("The private package reader requires the unchanged qualified runner proof.");
-        if (options.Mapping.Mode == WorkspaceMode.Package && qualificationCohort is null)
-            throw new InvalidDataException("The private package reader requires a complete measured SDK/Tenants version pair.");
+        string? qualificationCohort = null;
+        if (options.Mapping.Mode == WorkspaceMode.Package)
+        {
+            bool authorized = options.ActiveModule == "parties"
+                ? PlatformCurrentOwnerProof.SelectsIntegration(options) ? options.CurrentOwnerProof?.Matches(options) == true : options.PartiesRunProof?.Matches(options) == true
+                : options.QualificationOwnerProof?.Matches(options) == true;
+            if (!authorized) throw new InvalidDataException("The private package reader requires the unchanged authenticated runner proof.");
+            qualificationCohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
+        }
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
         CompositionWorkspace.CreatePrivateDirectory(build);

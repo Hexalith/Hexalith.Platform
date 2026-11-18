@@ -123,7 +123,6 @@ public sealed class PlatformPublishedPartiesCohortTests
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformPublishedPartiesCohortTests).Assembly, PublishedCatalogArtifactCohort.PublishedPartiesName));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.EventStore.Contracts"), "unknown"));
         Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties("unknown"));
-        PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash.ShouldBe("d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348");
     }
 
     /// <summary>The actual published OCI owner Contracts body is valid for its measured image role and cannot become a public package reader.</summary>
@@ -153,74 +152,11 @@ public sealed class PlatformPublishedPartiesCohortTests
     {
         using PlatformPartiesProofFixture fixture = new(publishedDeclaration: true);
         PlatformCompositionOptions options = fixture.Options;
-        options.RunPlan!.PlatformDeclarationHash.ShouldBe(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash);
         options.PartiesRunProof!.Matches(options).ShouldBeTrue();
-        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.CreateCurrent(options, fixture.Key));
-        PlatformCompositionOptions replay = options with { RunPlan = options.RunPlan with { AttemptId = Hexalith.Builds.Tooling.Runtime.CompositionRunPlanFactory.NewRunId() } };
+        PlatformCompositionOptions replay = options with { RunPlan = options.RunPlan! with { AttemptId = Hexalith.Builds.Tooling.Runtime.CompositionRunPlanFactory.NewRunId() } };
         options.PartiesRunProof.Matches(replay).ShouldBeFalse();
         File.AppendAllText(options.DeclarationPaths.Single(), " ");
         options.PartiesRunProof.Matches(options).ShouldBeFalse();
-    }
-
-    /// <summary>Static fixture selection requires the actual public Parties reader, preserving the historical image set for partial or old loaded owners.</summary>
-    [Fact]
-    public void OrdinaryFixtureUsesOnlyItsActualMeasuredOwnerAndImageCohort()
-    {
-        PlatformPartiesPackageFixture.PublishedImages.Count.ShouldBe(7);
-        PlatformPartiesPackageFixture.PublishedImages.ShouldContain("registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb");
-        PlatformPartiesPackageFixture.PublishedImages.Except(PlatformPartiesPackageFixture.CurrentImages, StringComparer.Ordinal).Count().ShouldBe(7);
-        bool published = PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", PublishedCatalogArtifactCohort.PublishedPartiesName);
-        PlatformPartiesPackageFixture.Images.Count.ShouldBe(7);
-        PlatformPartiesPackageFixture.Images.ShouldContain(published
-            ? "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"
-            : "registry.hexalith.com/parties@sha256:25e4a03cfcc932f01fd9e66be647305c572a4c7d7e0a680db710cb9579bf783b");
-        PlatformPartiesPackageFixture.Images.ShouldContain(published
-            ? "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a"
-            : "registry.hexalith.com/tenants@sha256:adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed");
-    }
-
-    /// <summary>Private source owners retain exact old/new catalog versions without acquiring public or unknown purpose authority.</summary>
-    /// <param name="version">The catalog version.</param><param name="current">Whether the independently proven private purpose is selected.</param>
-    /// <param name="cohort">The exact reader authority.</param><param name="accepted">The finite expected version compatibility.</param>
-    [Theory]
-    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.PublishedPartiesName, true)]
-    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.FullPartiesName, true)]
-    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.CurrentFullPartiesName, true)]
-    [InlineData("3.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, true)]
-    [InlineData("3.1.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, true)]
-    [InlineData("3.0.0", false, PublishedCatalogArtifactCohort.PublishedPartiesName, false)]
-    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.FullPartiesName, false)]
-    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.CurrentFullPartiesName, false)]
-    [InlineData("3.1.0+metadata", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    [InlineData("3.1.1", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    [InlineData("4.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    [InlineData("unknown", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    [InlineData("3.1.0", true, PublishedCatalogArtifactCohort.PublishedPartiesName, false)]
-    [InlineData("3.1.0", false, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    [InlineData("3.0.0", false, "", false)]
-    [InlineData("3.0.0", false, "unknown", false)]
-    [InlineData("3.1.0.0", true, PublishedCatalogArtifactCohort.CurrentOwnerName, false)]
-    public void VersionCompatibilityPreservesEveryExactPurposeBoundary(string version, bool current, string cohort, bool accepted)
-        => PlatformPartiesPackageCatalogQualification.MatchesPartiesVersion(version, current, cohort).ShouldBe(accepted);
-
-    /// <summary>An unproven, partial or mixed private purpose cannot select ordinary public authority, even before reading catalog data.</summary>
-    /// <param name="scope">Which private-purpose representation is present.</param>
-    [Theory]
-    [InlineData("primary")]
-    [InlineData("batch")]
-    [InlineData("both")]
-    public void PrivatePurposeCannotSelectOrdinaryPublicAuthority(string scope)
-    {
-        using PlatformPartiesProofFixture fixture = new(publishedDeclaration: true);
-        PlatformCompositionOptions options = fixture.Options;
-        Hexalith.Builds.Tooling.Runtime.ModuleTestSelection ordinary = options.RunPlan!.SelectedTest!;
-        Hexalith.Builds.Tooling.Runtime.ModuleTestSelection current = ordinary with { Name = PlatformCurrentOwnerProof.Profile };
-        Hexalith.Builds.Tooling.Runtime.CompositionRunPlan plan = options.RunPlan with
-        {
-            SelectedTest = scope == "batch" ? ordinary : current,
-            SelectedTests = scope == "primary" ? [ordinary] : scope == "batch" ? [ordinary, current] : [current],
-        };
-        PlatformPackageCatalogQualification.SelectCohort(options with { RunPlan = plan, PartiesRunProof = null }, fullParties: true).ShouldBeNull();
     }
 
     private static string Body(string name, string? version = null)

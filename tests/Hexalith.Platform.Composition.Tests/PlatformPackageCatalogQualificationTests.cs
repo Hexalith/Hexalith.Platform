@@ -42,8 +42,8 @@ public sealed class PlatformPackageCatalogQualificationTests
         if (actualPublicBytes && actualOwnerBytes && OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
         {
             IReadOnlyList<PlatformServerBinding> admitted = PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, developmentRun: true);
-            admitted.Single(server => server.ResourceId == "tenants").ImageDigest.ShouldBe("adfcad2eea7c0b59e2936a62131c7925af518f1331a4e9fec0071da55874caed");
-            admitted.Single(server => server.ResourceId == "tenants-api").ImageDigest.ShouldBe("2922e0b1eb7b115bac472479213ca46d84c26ac4917b1d53854034618179c2e4");
+            admitted.Single(server => server.ResourceId == "tenants").Image.ShouldBe("registry.hexalith.com/tenants:7.0.2");
+            admitted.Single(server => server.ResourceId == "tenants-api").Image.ShouldBe("registry.hexalith.com/tenants-api:7.0.2");
             admitted.Single(server => server.ResourceId == "eventstore").ImageDigest.ShouldBeNull();
             servers.ShouldAllBe(server => server.ImageDigest == null);
         }
@@ -140,7 +140,7 @@ public sealed class PlatformPackageCatalogQualificationTests
         };
         Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true));
         var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = ["--environment=Development"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("authenticated EventStore package test");
         probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(Path.Combine(fixture.Root, "run")).ShouldBeFalse();

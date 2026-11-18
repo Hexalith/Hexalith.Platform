@@ -15,9 +15,15 @@ public sealed record PlatformServerBinding(
     IReadOnlyDictionary<string, string> Environment,
     IReadOnlyList<JsonElement> Tasks)
 {
-    /// <summary>Gets the independently qualified immutable image digest, absent for unchanged default/source bindings.</summary>
+    /// <summary>Gets the resolved immutable image digest for a released package workload.</summary>
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public string? ImageDigest { get; init; }
+
+    /// <summary>Gets the expected configuration digest from the immutable released manifest.</summary>
+    internal string? ImageConfigDigest { get; init; }
+
+    /// <summary>Gets the immutable image reference supplied to the runtime.</summary>
+    internal string? ImmutableImage => ImageDigest is null || Image is not { } image ? null : image[..image.LastIndexOf(':')] + "@sha256:" + ImageDigest;
 
     /// <summary>Gets the Platform-composed eventstore host binding; absent unless a module declares an EventStore extension.</summary>
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]

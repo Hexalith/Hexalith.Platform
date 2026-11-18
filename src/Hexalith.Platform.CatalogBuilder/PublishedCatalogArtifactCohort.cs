@@ -311,7 +311,7 @@ internal static class PublishedCatalogArtifactCohort
         string? name = assembly.GetName().Name;
         if (name is null || !hashes.TryGetValue(name, out string? expected) || string.IsNullOrWhiteSpace(assembly.Location)
             || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(assembly.Location))) != expected)
-            throw new InvalidDataException("The qualified package catalog reader requires the exact signed public artifact bytes.");
+            throw new InvalidDataException($"The package artifact '{name}' differs from its verified published bytes.");
         return assembly.Location;
     }
 
@@ -320,7 +320,7 @@ internal static class PublishedCatalogArtifactCohort
         string name = AssemblyName.GetAssemblyName(path).Name!;
         if (!name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) || !CurrentReferenceHashes(cohort).TryGetValue(name, out string? expected)
             || digest != expected || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))) != expected)
-            throw new InvalidDataException("The current owner must load the exact public SDK bodies.");
+            throw new InvalidDataException($"The Parties Release artifact '{name}' differs from its verified published bytes.");
     }
 
     internal static void VerifyCurrentReferenceReceipt(IReadOnlyList<(string Path, string Hash)> artifacts, string cohort = CurrentOwnerName)
@@ -330,7 +330,7 @@ internal static class PublishedCatalogArtifactCohort
             var matches = artifacts.Where(item => AssemblyName.GetAssemblyName(item.Path).Name == expected.Key).ToArray();
             if (matches.Length != 1 || matches[0].Hash != expected.Value
                 || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(matches[0].Path))) != expected.Value)
-                throw new InvalidDataException("The current reader receipt differs from the immutable public reference cohort.");
+                throw new InvalidDataException($"The reader receipt for '{expected.Key}' differs from its verified published bytes.");
         }
     }
 

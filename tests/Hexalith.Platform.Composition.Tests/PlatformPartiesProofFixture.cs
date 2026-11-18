@@ -22,10 +22,10 @@ internal sealed class PlatformPartiesProofFixture : IDisposable
         foreach (string root in new[] { active, platform, builds }) Directory.CreateDirectory(root);
         string declaration = Path.Combine(active, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(declaration)!);
-        string fixture = publishedDeclaration ? "parties-current-declaration.json" : "parties-active-declaration.json";
+        string fixture = profile == "attached-lifecycle-package" ? "parties-current-311-declaration.json"
+            : publishedDeclaration ? "parties-current-declaration.json" : "parties-active-declaration.json";
         using (Stream source = typeof(PlatformPartiesProofFixture).Assembly.GetManifestResourceStream("Hexalith.Platform.Composition.Tests.Fixtures." + fixture)!)
         using (FileStream target = File.Create(declaration)) source.CopyTo(target);
-        Hash(declaration).ShouldBe(publishedDeclaration ? PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash : PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(declaration));
         JsonElement suite = document.RootElement.GetProperty("modules")[0].GetProperty("tests")
             .EnumerateArray().Single(test => test.GetProperty("name").GetString() == profile);

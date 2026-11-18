@@ -137,7 +137,7 @@ internal static class PlatformReaderMutationControls
         TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
         result.TimedOut.ShouldBeFalse();
-        (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "exact signed public artifact bytes" : "not qualified");
+        (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "differs from its verified published bytes" : "not qualified");
         Directory.GetFiles(failed).ShouldBeEmpty();
         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
     }

@@ -28,7 +28,7 @@ internal static class PlatformCurrentOwnerObservation
         {
             string path = Path.Combine(output, name + ".dll");
             string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
-            if (maps.Length == 0) throw new InvalidDataException("The actual current owner SDK mapping is unavailable.");
+            if (maps.Length == 0) throw new InvalidDataException($"The actual Parties SDK mapping for '{name}' is unavailable.");
             string digest = PlatformMappedArtifact.Hash(pid, path, maps[0]);
             Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest, proof.Cohort);
             sdk[name] = digest;
@@ -41,17 +41,25 @@ internal static class PlatformCurrentOwnerObservation
         using JsonDocument reader = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "current-reader-receipt.json"), token).ConfigureAwait(false));
         proof.VerifyReader(reader.RootElement);
         using JsonDocument scope = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "native-scope.json"), token).ConfigureAwait(false));
+        using JsonDocument images = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "released-images.json"), token).ConfigureAwait(false));
+        if (images.RootElement.GetProperty("runId").GetString() != plan.RunId
+            || images.RootElement.GetProperty("attemptId").GetString() != plan.AttemptId
+            || images.RootElement.GetProperty("environmentId").GetString() != plan.EnvironmentId
+            || images.RootElement.GetProperty("mappingHash").GetString() != options.Mapping.ContentHash)
+            throw new InvalidDataException("Released image observations differ from the authenticated Parties run.");
         if (!proof.Matches(options)) throw new InvalidDataException("Current owner inputs changed before observation publication.");
         await File.WriteAllBytesAsync(Path.Combine(catalogDirectory, "current-owner-observation.json"), JsonSerializer.SerializeToUtf8Bytes(new
         {
             profile = PlatformCurrentOwnerProof.Profile, plan.RunId, plan.AttemptId, plan.EnvironmentId,
             revision = proof.SourceRevision,
             mappingHash = options.Mapping.ContentHash, configuration = "Release", qualificationCredit = false,
-            platform = options.Mapping.PlatformIdentity, sdkVersion = proof.SdkVersion, qualificationCohort = proof.Cohort, tenantsVersion = "7.0.5",
+            platform = options.Mapping.PlatformIdentity, sdkVersion = proof.SdkVersion,
+            tenantsVersion = PlatformServerBindings.Version(options, "tenants", "native observation"),
+            memoriesVersion = PlatformServerBindings.Version(options, "memories", "native observation"),
             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
             packageArchives = proof.PackageArchives,
             runtimeBodies = runtime, catalogBodies = proof.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
-            sdkBodies = sdk,
+            sdkBodies = sdk, dependencyImages = images.RootElement.GetProperty("images"),
             observedExecutableOwners = observed.ExecutableOwners, committedCatalogValidated = true,
         }, new JsonSerializerOptions(JsonSerializerDefaults.Web)), token).ConfigureAwait(false);
     }
@@ -68,10 +76,10 @@ internal static class PlatformCurrentOwnerObservation
         {
             string path = Path.Combine(output, expected.Key + ".dll");
             string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
-            if (maps.Length == 0) throw new InvalidDataException("The running owner differs from its measured Release body.");
+            if (maps.Length == 0) throw new InvalidDataException($"The running owner artifact '{expected.Key}' differs from its measured Release body.");
             string actual = PlatformMappedArtifact.Hash(pid, path, maps[0]);
             if (actual != expected.Value || maps.Skip(1).Any(line => PlatformMappedArtifact.Hash(pid, path, line) != actual))
-                throw new InvalidDataException("The running owner differs from its measured Release body.");
+                throw new InvalidDataException($"The running owner artifact '{expected.Key}' differs from its measured Release body.");
             runtime[expected.Key] = actual;
         }
         return (pid, runtime);

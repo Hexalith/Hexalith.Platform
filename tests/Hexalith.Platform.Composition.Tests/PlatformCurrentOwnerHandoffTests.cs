@@ -106,7 +106,8 @@ public sealed class PlatformCurrentOwnerHandoffTests
         Directory.Exists(Path.Combine(fixture.Workspace, "current-owner")).ShouldBeTrue(
             "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner.");
         File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt"))
-            .ToHashSet(StringComparer.Ordinal).SetEquals(PlatformPartiesPackageFixture.CurrentImages).ShouldBeTrue();
+            .ToHashSet(StringComparer.Ordinal).SetEquals(PlatformPartiesPackageFixture.DependencyTags(new()
+            { PlatformRoot = fixture.Plan.SourceMapping!.PlatformIdentity!.PlatformPath, Mapping = fixture.Plan.SourceMapping, RunPlan = fixture.Plan })).ShouldBeTrue();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);
@@ -115,7 +116,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         {
             PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
             proof.Matches(options).ShouldBeTrue();
-            options.PartiesRunProof.ShouldBeNull();
+            options.PartiesRunProof!.Matches(options).ShouldBeTrue();
             options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
             PlatformAppModel.MaterializeSourceMapping(options, fixture.Workspace);
             var catalog = PlatformRoutingCatalog.Generate(options, PlatformAppModel.Prepare(options), Path.Combine(fixture.Workspace, "platform-components"));

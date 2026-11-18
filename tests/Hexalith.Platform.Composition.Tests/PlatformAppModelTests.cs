@@ -132,7 +132,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             },
         };
         var builder = Builder();
-        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("owner SDK");
+        Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message.ShouldContain("authenticated EventStore package test");
         probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
     }

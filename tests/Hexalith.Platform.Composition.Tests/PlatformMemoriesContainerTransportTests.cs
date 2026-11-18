@@ -20,7 +20,7 @@ public sealed class PlatformMemoriesContainerTransportTests
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
         PlatformCompositionOptions options = fixture.CaptureCurrent();
         var servers = PlatformAppModel.Prepare(options);
-        PlatformPartiesPackageFixture.AssertCurrentOwnerMemories327Images(
+        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(
             PlatformPartiesPackageCatalogQualification.Bind(options, PlatformDeclarationSet.Load(options), servers, developmentRun: true));
         // Genuine resolved declaration environments retain workload credentials and readiness settings.
         PlatformServerBinding memoryBinding = servers.Single(server => server.ResourceId == "memories");
@@ -60,8 +60,8 @@ public sealed class PlatformMemoriesContainerTransportTests
         }
         gateway.WithDaprSidecar(sidecar => sidecar.WithOptions(new DaprSidecarOptions { AppId = "eventstore", RuntimePath = runtime }));
         builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber(
-            [memoryBinding, tenantBinding, gatewayBinding], currentOwnerPackage: true));
-        TestContext.Current.TestOutputHelper!.WriteLine("Shared qualified public/private subscriber transport component; current owner images admitted; no application start.");
+            [memoryBinding, tenantBinding, gatewayBinding]));
+        TestContext.Current.TestOutputHelper!.WriteLine("Generated container and project bindings use the actual allocated sidecar endpoints.");
         await using DistributedApplication app = builder.Build();
         DistributedApplicationModel model = app.Services.GetRequiredService<DistributedApplicationModel>();
         IDistributedApplicationEventing eventing = app.Services.GetRequiredService<IDistributedApplicationEventing>();
