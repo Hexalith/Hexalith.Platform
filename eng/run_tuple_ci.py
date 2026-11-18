@@ -17,7 +17,7 @@ from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_f
 from builds_tool_lock import load_lock, locked_entry, require_locked
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 487, "base42": 93, "extensions": 9}
+REQUIRED_TOTALS = {"current42": 489, "base42": 93, "extensions": 9}
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":

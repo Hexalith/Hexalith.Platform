@@ -17,9 +17,10 @@ internal static class PlatformPartiesPackageCatalogQualification
     /// <summary>The actual public3.1 declaration from release source50904cc4; separate from active-owner source authority.</summary>
     internal const string PublishedDeclarationHash = "d9c193b0e7b61601b8fcceb906b5dafe4769a1b9d7538a6ce164b4aa0840b348";
 
-    /// <summary>Only these exact old and additive-suite declaration bytes retain ordinary profile compatibility.</summary>
+    /// <summary>Only these exact historical and current declaration bytes retain ordinary profile compatibility.</summary>
     internal static bool IsOrdinaryDeclaration(string? hash) => string.Equals(hash, ActiveDeclarationHash, StringComparison.OrdinalIgnoreCase)
-        || string.Equals(hash, PlatformCurrentOwnerProof.DeclarationHash, StringComparison.OrdinalIgnoreCase);
+        || string.Equals(hash, PlatformCurrentOwnerProof.DeclarationHash, StringComparison.OrdinalIgnoreCase)
+        || string.Equals(hash, PlatformCurrentOwnerProof.CurrentDeclarationHash, StringComparison.OrdinalIgnoreCase);
 
     private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _images = new Dictionary<string, (string, string)>(StringComparer.Ordinal)
     {
@@ -89,6 +90,12 @@ internal static class PlatformPartiesPackageCatalogQualification
             ["parties/domain"] = ("registry.hexalith.com/parties:3.1.0", "48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
+    // The published Parties image identifies the v3.1.1 release source 84e3df796ac977041a21ec7bd8e5789bdc44241a.
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _publishedPartiesMemories327Images = new Dictionary<string, (string Image, string Digest)>(_currentOwnerMemories327Images, StringComparer.Ordinal)
+    {
+        ["parties/domain"] = ("registry.hexalith.com/parties:3.1.1", "205e374548d3cac33457551f9c6f7b5f213db804ca58ae185332522833fe83c8"),
+    };
+
     /// <summary>Checks the complete finite plan, source, declarations, package versions and topology before image probes or rendering.</summary>
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
@@ -112,10 +119,10 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
             || !Snapshot(options, declarations, "parties", current ? options.CurrentOwnerProof!.SelectedDeclarationHash : ownerHash!.ToLowerInvariant())
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
-            // Signed reader artifacts alone cannot authorize new execution image tuples except the measured current 7.0.7/3.0.27 owner.
+            // The 3.0.26 reader cohorts have no measured execution image tuple.
             || cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName
-                or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name
-            || !current && cohort is PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name
+            || !current && ((cohort == PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name)
+                != string.Equals(ownerHash, PlatformCurrentOwnerProof.CurrentDeclarationHash, StringComparison.OrdinalIgnoreCase))
             || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
@@ -124,8 +131,13 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !CompositionMatches(options, declarations)) throw Refusal();
         IReadOnlyDictionary<string, (string Image, string Digest)> images = current
             ? cohort == PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name ? _currentOwnerMemories327Images : _currentOwnerImages
-            : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name ? _publishedPartiesImages
-            : cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
+            : cohort switch
+            {
+                PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name => _publishedPartiesMemories327Images,
+                PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name => _publishedPartiesImages,
+                PublishedCatalogArtifactCohort.CurrentFullPartiesName => _currentImages,
+                _ => _images,
+            };
         return servers.Select(server =>
         {
             if (Identity(server) == "eventstore/gateway")

@@ -95,6 +95,13 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             return new(proof.Options.RunPlan!.Workspace, proof.Options.RunPlan, PublishedSeed()) { _proofFixture = proof };
         }
         if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0");
+        return await CreateFromCandidateAsync(profile);
+    }
+
+    /// <summary>Builds an ordinary or private plan from the actual candidate and its authenticated catalog.</summary>
+    internal static async Task<PlatformPartiesPackageFixture> CreateFromCandidateAsync(string profile)
+    {
+        bool current = profile == PlatformCurrentOwnerProof.Profile;
         string cohort = PublishedCatalogArtifactCohort.CurrentOwnerCurrentName;
         PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
         string root = PlatformTestRepository.Root;
@@ -137,13 +144,15 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
                 PlatformDeclarationHash = Hash(manifest), SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
-            cohort = PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
-                ?? throw new InvalidDataException("The current artifact fixture requires an independently authenticated complete tuple.");
-            (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
+            cohort = (current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
+                : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true))
+                ?? throw new InvalidDataException("The candidate fixture requires an independently authenticated complete tuple.");
+            if (current) (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
+            else cohort.ShouldBe(PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name);
             PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
             var declarations = PlatformDeclarationSet.Load(options);
             foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"),
-                ("memories", PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort)), ("parties", "3.1.1") })
+                ("memories", current ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort) : "3.0.27"), ("parties", "3.1.1") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new

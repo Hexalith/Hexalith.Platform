@@ -7,9 +7,34 @@ using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.Builds.Tooling.Runtime;
 using Shouldly;
 
-/// <summary>Authenticated parent/runner entry refusals before composition effects; grants no image admission.</summary>
+/// <summary>Exercises authenticated parent/runner entry and exact image preflight before composition effects.</summary>
 public sealed class PlatformPartiesPackageEntryTests
 {
+    /// <summary>The canonical caller reaches all seven immutable image probes through each ordinary fresh profile.</summary>
+    [Theory]
+    [InlineData("platform-package")]
+    [InlineData("lifecycle-package")]
+    public async Task CanonicalDeclarationBindsThePublicCohortAsync(string profile)
+    {
+        using var fixture = await PlatformPartiesPackageFixture.CreateFromCandidateAsync(profile);
+        var builder = PlatformPartiesPackageFixture.Builder();
+        HashSet<string> expected = new(PlatformPartiesPackageFixture.CurrentImages, StringComparer.Ordinal)
+        {
+            "registry.hexalith.com/parties@sha256:205e374548d3cac33457551f9c6f7b5f213db804ca58ae185332522833fe83c8",
+        };
+        Should.Throw<InvalidDataException>(() => fixture.Compose(builder, options => options with
+        {
+            ImageProbeRunner = (start, _, _) =>
+            {
+                start.ArgumentList.Take(2).ShouldBe(["manifest", "inspect"]);
+                expected.Remove(start.ArgumentList[2]).ShouldBeTrue(start.ArgumentList[2]);
+                return Task.FromResult(new CompositionProcessResult(true, expected.Count == 0 ? 83 : 0, "{}", false));
+            },
+        })).Message.ShouldContain("is unavailable from its released registry");
+        expected.ShouldBeEmpty();
+        fixture.AssertNoEffects(builder);
+    }
+
     /// <summary>Each mutation starts from a genuine parent proof or measured Development entry and refuses before composition effects.</summary>
     /// <param name="fault">The altered authority input.</param>
     [Theory]

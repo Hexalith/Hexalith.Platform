@@ -38,10 +38,11 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
 
     /// <summary>The compatibility set remains finite; changing only source bytes cannot acquire it.</summary>
     [Fact]
-    public void OnlyTheTwoMeasuredDeclarationsAreCompatible()
+    public void OnlyTheMeasuredDeclarationsAreCompatible()
     {
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.ActiveDeclarationHash).ShouldBeTrue();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.DeclarationHash).ShouldBeTrue();
+        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.CurrentDeclarationHash).ShouldBeTrue();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(new string('0', 64)).ShouldBeFalse();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(null).ShouldBeFalse();
         using PlatformPartiesProofFixture fixture = new();
