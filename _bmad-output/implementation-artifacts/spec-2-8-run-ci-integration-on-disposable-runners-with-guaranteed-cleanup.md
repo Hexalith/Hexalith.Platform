@@ -1565,3 +1565,111 @@ and [manifest](evidence/2-8/maintenance-20261117/phase-11-approved-main-merge/ma
 preserve the merge, run observations and proof boundary. The manifest covers
 39 files with SHA256 `b69e67834e4d8be2759b16c38f334fd6ff9cd5f8e81c5f31d8899095fc153b1f`. The frozen acceptance text retains its
 original digest.
+
+### Local current-owner execution path — 2026-11-18
+
+This Step 03 continuation implemented the phase-11 local prerequisites for the
+remaining focused current-owner proof. No push, dispatch, merge, publication,
+tag, pin change on `main`, native dispatch or lifecycle cancellation request
+occurred. Results are local and `baseline-only`.
+
+Uncommitted owner-repository work:
+
+- Builds `7afc4981` working tree: `ResolveAttacherContext()` admits same-job
+  issued owner state when process GitHub variables are scrubbed or incomplete;
+  `NativeTestHandoff` forwards `HEXALITH_CI_LIFECYCLE_HOLD=1`. Cross-job issued
+  state and incomplete CI without handoff still refuse.
+- Platform: `CurrentOwnerMemories327Name` (Tenants 7.0.7 / Memories 3.0.27)
+  binds only with `CurrentOwnerProof`. Ordinary/public 7.0.7 and
+  `CurrentOwnerCurrentName` stay refused. HEAD still records Builds `a327bc5c`;
+  the worktree checkout is `7afc4981` with additional uncommitted attach
+  fallback.
+- Parties `8abfd266` working tree: restored the lifecycle controller and
+  ci-lifecycle suite. Execution-cancellation owners launch
+  `platform-current-package`, set the hold flag before `execvp`, and wait on
+  `execution-ready.json` after real persistence. `start-cancellation --phase
+  execution` now takes a 240 s same-job CLI `attach()` hold named
+  `execution-hold` and does not launch `attached-lifecycle-package`.
+
+Independent resource-free recheck (no AppHost, Dapr, Docker or live probe):
+
+- Builds issued-state / incomplete-process / handoff / HXR033: 7 passed.
+- Parties `CiLifecycleHoldTests`: 2 passed.
+- Parties `ExecutionCancellationMainTests` + `LaunchContractTests`: 6 passed.
+- Platform `OrdinaryFixtureUsesOnlyItsActualMeasuredOwnerAndImageCohort`: 2 passed.
+
+Still open, so Step 04 is not entered:
+
+- Hosted execution-cancellation ordering, withdrawal-before-stop and exact
+  empty-inventory proof on the supported 2.x / 6.x current-owner path.
+- Current-owner Platform tests that resolve the workspace against a clean
+  signed 6.3.0 pin; they were not executed on this dirty Builds tree.
+- EventStore expanded-owner remains HXR033. No candidate or tool acceptance.
+
+### Hosted proof blocked before dispatch — 2026-11-18
+
+The user chose **hosted proof**. The [campaign inventory](evidence/2-8/hosted-proof-20261118/campaign-inventory.json)
+was recorded first. No workflow dispatch, cancellation request, proof-branch
+push, merge, tag or publication occurred.
+
+A Parties `cancel-execution` run cannot reach a Ready owner with an active hold
+on the required current-owner path from published identities:
+
+- Latest published Platform is still `v2.1.10` (`215ae18c`). It refuses
+  `CurrentOwnerMemories327Name`. Builds 6.3.0 Platform `a18e5f0e` passed tuple
+  CI `44189252348` and source-release verify `44190151361`, then skipped
+  publish and has no SemVer tag (HXW011 for any Parties caller).
+- Image admission exists only in the uncommitted Platform working tree. A
+  proof-branch Platform gitlink would be untagged and refused by HXW011 before
+  allocation. Tags and publication remain outside this hosted-proof boundary.
+- Parties `origin/main` `c9c21fc3` pins untagged Platform `1a5666ed`, tool
+  5.2.2 (HXW010 against the 2.x range), and still calls the absent
+  `scripts/qualify-disposable-ci.py`. Local controller restoration sits on
+  `8abfd266`, behind that main.
+
+The remaining proof still requires a tagged Platform release that admits the
+measured current-owner images, then a Parties proof branch that adopts that
+tuple, the restored controller, and one ready-then-cancel run. That publication
+is a separate authorization from this hosted-proof session.
+
+### Publication then proof authorized — 2026-11-18
+
+The user chose **publish then proof**. Isolated worktree
+`/tmp/hexalith-platform-current-owner-images` from `origin/main` `8069fcdd`
+produced two commits on `fix/current-owner-image-admission`:
+
+- `95bc1f99638ff20c0b6185a00a098066b60235c8` restores the signed Builds 6.3.0
+  gitlink `7afc4981e21bc2fcce687199a3fd2c61fe87336e`. Main `8069fcdd` had
+  recorded ancestor `a327bc5c`, so tuple initialization failed against
+  `eng/builds-tuple.json`.
+- `339af849b82dc82b1a3416931a7fff73d0ab2942` admits `CurrentOwnerMemories327`
+  linux/amd64 Tenants 7.0.7 / Memories 3.0.27 images only under
+  `CurrentOwnerProof`. Ordinary/public 7.0.7 and `CurrentOwnerCurrentName`
+  stay refused.
+
+[PR #47](https://github.com/Hexalith/Hexalith.Platform/pull/47) merged as
+`bb8c7915ae67e427f3629427550c96ca1e74bc14` (parents `8069fcdd` / `339af849`)
+using the configured code-owner bypass after PR tuple
+[44211008988](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44211008988)
+and all six catalog jobs in
+[44211009070](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44211009070)
+passed on head `339af849`. Fresh main tuple/catalog are
+[44220196201](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44220196201)
+and
+[44220196096](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44220196096).
+Main tuple [44220196201](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44220196201)
+and catalog [44220196096](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44220196096)
+passed. Source-release
+[44228001525](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44228001525)
+published tag `v2.1.11` at `bb8c7915` with Builds gitlink `7afc4981`.
+
+Parties proof branch
+`proof/story-2-8-current-owner-cancel-execution-20261118` (`0d64a977`) pins that
+tuple, restores the controller, and holds after persistence via the controller
+wait file. Restore blockers and isolated-test overlays are on that branch.
+[44241094448](https://github.com/Hexalith/Hexalith.Parties/actions/runs/44241094448)
+passed isolated tests and allocated a disposable owner, then refused ordinary
+`platform-package` integration with HXP020 (trusted parent plan/key handoff).
+Cleanup completed with empty leftovers. Qualification never started. Zero
+cancellation requests. The CiCd-owned lifecycle workflow still runs ordinary
+`platform-package` in baseline; that gate cannot be changed from Parties.

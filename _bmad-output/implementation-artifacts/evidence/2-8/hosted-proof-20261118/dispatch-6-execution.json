@@ -1,0 +1,60 @@
+{
+  "cancelled": false,
+  "executionContext": {
+    "disposable": true,
+    "jobId": "build-and-test",
+    "kind": "ci",
+    "operatingSystem": "Linux",
+    "repository": "Hexalith/Hexalith.Parties",
+    "runnerKind": "github-hosted",
+    "workflowAttempt": 1,
+    "workflowRunId": "44241094448"
+  },
+  "launched": true,
+  "outputParsed": true,
+  "processExitCode": 3,
+  "result": {
+    "diagnostics": [
+      {
+        "category": "TopologyOrLifecycle",
+        "field": "platform",
+        "hint": "Supply the named owner input; no resources were started.",
+        "location": null,
+        "message": "The ordinary Parties package profile requires its trusted parent plan/key handoff and unchanged source/test inputs. deadline='600s' diagnostics='/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/80463c8ca0d73577b62f889b9ac3c615'.",
+        "phase": "Topology",
+        "row": null,
+        "ruleId": "HXP020",
+        "source": null
+      }
+    ],
+    "outcome": {
+      "category": "TopologyOrLifecycle",
+      "exitCode": "TopologyOrLifecycle",
+      "phase": "Topology",
+      "ruleId": "HXP020"
+    },
+    "remainingResources": {
+      "claimIds": [],
+      "containerIds": [],
+      "discoveryFailures": [],
+      "isEmpty": true,
+      "processIds": [],
+      "resourceIds": [],
+      "unverified": false,
+      "workspaceIds": []
+    },
+    "runId": "80463c8ca0d73577b62f889b9ac3c615",
+    "status": "failed",
+    "testResultPath": "/home/runner/.local/share/hexalith-builds/g4-runs/diagnostics/80463c8ca0d73577b62f889b9ac3c615/test-result.json"
+  },
+  "schema": "hexalith.module.ci-integration-execution.v1",
+  "signals": [],
+  "stderr": {
+    "bytes": 0,
+    "excerpt": "",
+    "redacted": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "truncated": false
+  },
+  "timedOut": false
+}

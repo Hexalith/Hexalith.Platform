@@ -1,0 +1,88 @@
+{
+  "schema": "hexalith.story-2-8.focused-campaign-inventory.v1",
+  "recordedAtUtc": "2026-11-18T05:22:00Z",
+  "purpose": "Finite inputs for the supported 2.x / Builds 6.3.0 current-owner hosted cancellation proof after Platform v2.1.11 publication.",
+  "authority": "User chose publish then proof on 2026-11-18. Proof-branch push, one workflow dispatch, and exactly one cancellation after a ready artifact are permitted. No Parties or Platform main merge from this proof branch.",
+  "decisionClassification": "baseline-only",
+  "candidateAcceptance": false,
+  "dispatch": "baseline-integration-hxp020",
+  "nativeDispatches": 6,
+  "lifecycleCancellationRequests": 0,
+  "workflowRunId": 44241094448,
+  "workflowRunUrl": "https://github.com/Hexalith/Hexalith.Parties/actions/runs/44241094448",
+  "priorDispatches": [
+    {
+      "workflowRunId": 44231648484,
+      "headSha": "05a5e274a9b43ee6ecce8f6d1cb16fe27ba37e7e",
+      "result": "baseline failed before allocation: prepare-ci-package-dependencies.sh verification-only missing Aspire 13.6.5 dcp",
+      "qualification": "skipped",
+      "cancellations": 0
+    },
+    {
+      "workflowRunId": 44232956289,
+      "headSha": "ae9043bf01a511e8fa9674be3585884b79321f37",
+      "result": "baseline Restore HXW012 EventStore 5.1.1 vs catalog 4.2.0; HXW006 RuntimeArtifacts AdditionalProperties",
+      "qualification": "skipped",
+      "cancellations": 0
+    },
+    {
+      "workflowRunId": 44234935293,
+      "headSha": "de9126073a5344514aab10de82852a09d8fb830f",
+      "result": "Restore and Build passed; baseline unit tests failed (Ci.Tests 71, Parties.Tests 3 fitness/docs)",
+      "qualification": "skipped",
+      "cancellations": 0
+    },
+    {
+      "workflowRunId": 44237624464,
+      "headSha": "055981d753966606001ac1eca8bb1ef9f00d9e61",
+      "result": "Parties.Tests passed; 21 Ci.Tests publication cases still hashed the 5.2.2 OCI validator",
+      "qualification": "skipped",
+      "cancellations": 0
+    },
+    {
+      "workflowRunId": 44239247633,
+      "headSha": "0d64a9777314a2b1f898567bf38715a82badd360",
+      "result": "Ci.Tests 421 passed; one flaky Parties.Tests historical resolve after cancelled stall",
+      "qualification": "skipped",
+      "cancellations": 0
+    },
+    {
+      "workflowRunId": 44241094448,
+      "headSha": "0d64a9777314a2b1f898567bf38715a82badd360",
+      "result": "isolated tests passed; ordinary platform-package integration refused HXP020 without parent plan/key handoff; leftover inventories empty; qualification skipped",
+      "qualification": "skipped",
+      "cancellations": 0
+    }
+  ],
+  "partiesProofCommit": "0d64a9777314a2b1f898567bf38715a82badd360",
+  "policy": {
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+    "document": "docs/contracts/candidate-and-attachment-policy-v1.md"
+  },
+  "identities": {
+    "platformTag": "v2.1.11",
+    "platformCommit": "bb8c7915ae67e427f3629427550c96ca1e74bc14",
+    "platformSourceRelease": "44228001525",
+    "buildsTag": "v6.3.0",
+    "buildsCommit": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+    "partiesOriginMain": "c9c21fc3e48a999db575a361562707a79f1663cf",
+    "partiesProofBranch": "proof/story-2-8-current-owner-cancel-execution-20261118",
+    "partiesProofCommit": "0d64a9777314a2b1f898567bf38715a82badd360",
+    "tool": "6.3.0",
+    "toolRange": "[6.3.0, 7.0.0-0)",
+    "workflow": ".github/workflows/ci-lifecycle-qualification.yml",
+    "scenario": "cancel-execution",
+    "profile": "platform-current-package"
+  },
+  "budgets": {
+    "attachmentHoldSeconds": 240,
+    "executionTimeoutSeconds": 300,
+    "stopTimeoutSeconds": 90,
+    "readyFreshnessMaximumSeconds": 20,
+    "executionReadinessPollSeconds": 900,
+    "productionStartupStoppingBudgetsChanged": false
+  },
+  "requiredCases": {
+    "cancel-execution": "Real GitHub cancellation during native execution of platform-current-package with an active 240 s same-job CLI hold; withdrawal before composed stop; exact empty inventories. Ready artifact before the one cancellation."
+  }
+}

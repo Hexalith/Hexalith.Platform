@@ -1,0 +1,50 @@
+{
+  "schema": "hexalith.story-2-8.focused-campaign-inventory.v1",
+  "recordedAtUtc": "2026-11-18T00:38:00Z",
+  "purpose": "Finite inputs for the supported 2.x / Builds 6.3.0 current-owner hosted cancellation proof, recorded before any dispatch of this campaign.",
+  "authority": "User chose hosted proof on 2026-11-18. Spec remote-operation authorization: workflow dispatches, one cancellation after ready artifact, proof-branch pushes. No main merges, tags, or publication.",
+  "decisionClassification": "baseline-only",
+  "candidateAcceptance": false,
+  "dispatch": "not-sent",
+  "nativeDispatches": 0,
+  "lifecycleCancellationRequests": 0,
+  "policy": {
+    "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+    "document": "docs/contracts/candidate-and-attachment-policy-v1.md",
+    "sha256": "22ef0a64cfbb970dee680c11e3016f3bb99fd4e96a84d8a9f62556ae9c21cc71"
+  },
+  "observedIdentities": {
+    "platformHead": "8069fcdd21c038315c9077f3c0843567dbe104ec",
+    "platformV2110": "215ae18c972e6ea8ccb27032dfc11a57b098f047",
+    "platform630Merge": "a18e5f0e65b9cf733795f7fa134c5bdb2fd0858b",
+    "platformHeadBuildsGitlink": "a327bc5cf0eb2bd715deed6f1ea278a8f6946a2f",
+    "builds630": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+    "buildsV2110Pin": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
+    "partiesLocal": "8abfd266eecb5a636ee5498f944304669c18aa41",
+    "partiesOriginMain": "c9c21fc3e48a999db575a361562707a79f1663cf",
+    "latestPublishedPlatform": "v2.1.10",
+    "latestPublishedBuilds": "v6.3.0"
+  },
+  "localUncommitted": {
+    "platformImageAdmission": "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs sha256 16b33689883647ee95bb25bc932c9aa1bafa5d723fbc818ceb6afebb1200975f",
+    "partiesController": "scripts/qualify-disposable-ci.py sha256 31bfa8bcf5af06e23aca159b7a218907a70b1d61bc07634780fd613a130920ee",
+    "buildsIssuedStateFallback": "dirty working tree on 7afc4981"
+  },
+  "blocker": {
+    "id": "current-owner-hosted-proof-requires-tagged-platform-with-image-admission",
+    "hxw011": "A Parties caller must pin a Platform gitlink that has a local vSemVer tag. Untagged proof or main commits (a18e5f0e, 8069fcdd, Parties origin pin 1a5666ed) refuse before allocation.",
+    "hxw010": "Parties origin/main tool 5.2.2 is outside Platform 2.x range [6.0.5, 7.0.0-0) at 1a5666ed and [6.3.0, 7.0.0-0) at HEAD.",
+    "imageAdmission": "CurrentOwnerMemories327Name remains refused on tagged v2.1.10. Admission exists only in the uncommitted Platform working tree. Package-mode composition loads that Platform identity; a proof-branch overlay of untagged Platform is HXW011.",
+    "publication": "Source-release 44190151361 verified a18e5f0e then skipped publish. Latest GitHub release remains v2.1.10. Tags and publication are outside this hosted-proof authorization.",
+    "controller": "Parties origin/main still references scripts/qualify-disposable-ci.py but the file is absent there. The restored controller is local on 8abfd266, behind origin/main c9c21fc3."
+  },
+  "requiredCases": {
+    "cancel-execution": "Real GitHub cancellation during native execution of platform-current-package with an active 240 s same-job CLI hold; withdrawal before composed stop; exact empty inventories. Ready artifact before the one cancellation."
+  },
+  "budgets": {
+    "attachmentHoldSeconds": 240,
+    "readyFreshnessMaximumSeconds": 20,
+    "executionReadinessPollSeconds": 900,
+    "productionStartupStoppingBudgetsChanged": false
+  }
+}
