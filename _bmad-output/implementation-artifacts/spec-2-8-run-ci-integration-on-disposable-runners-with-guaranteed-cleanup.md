@@ -1673,3 +1673,33 @@ passed isolated tests and allocated a disposable owner, then refused ordinary
 Cleanup completed with empty leftovers. Qualification never started. Zero
 cancellation requests. The CiCd-owned lifecycle workflow still runs ordinary
 `platform-package` in baseline; that gate cannot be changed from Parties.
+
+### Proof-branch profile switch authorized — 2026-11-18
+
+Diagnosis: Platform `v2.1.11` admits the Parties declaration
+`dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee` (identical on
+Parties `origin/main`, `c9c21fc3`, `8abfd266` and the proof branch) only as
+`PlatformCurrentOwnerProof.CurrentDeclarationHash` through the declared
+`platform-current-package` profile. `PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration`
+refuses it for ordinary `platform-package`, which is why the baseline job of
+`ci-lifecycle-qualification.yml` in run 44241094448 failed with HXP020. That file
+lies in the CiCd story 21 owned perimeter.
+
+The user chose **proof-branch switch**. Permitted for this Step 03 continuation:
+
+- On Parties branch `proof/story-2-8-current-owner-cancel-execution-20261118`
+  only, change the baseline `integration-test-profiles` in
+  `.github/workflows/ci-lifecycle-qualification.yml` from `platform-package` to
+  `platform-current-package`. Any further proof-branch-only correction needed
+  for that same run is allowed if it stays within this branch and its
+  workflow/controller, and it must be recorded.
+- Run the lifecycle controller unit tests locally, push that branch, dispatch
+  `scenario=cancel-execution`, and send exactly one normal cancellation after
+  the ready artifact (`execution-ready.json`) check. Record exact final owned
+  inventories and the campaign input change before dispatch.
+
+Not permitted: merges, pushes to any `main`, tags, publications, pin changes on
+`main`, or CiCd perimeter changes outside that proof branch. If the
+current-owner path hits another gate, stop and report it rather than widening
+scope. Results remain `baseline-only`: no candidate or tool acceptance, and
+no Story 2.10 matrix pass.
