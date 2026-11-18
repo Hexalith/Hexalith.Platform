@@ -1,11 +1,11 @@
 #!/usr/bin/env dotnet
-#:sdk Aspire.AppHost.Sdk@13.6.5
+#:sdk Aspire.AppHost.Sdk@17.0.0
 #:property ManagePackageVersionsCentrally=false
 #:property RuntimeFrameworkVersion=11.0.0
-#:package Aspire.Hosting.Docker@13.6.5
-#:package Aspire.Hosting.Kubernetes@13.6.5-preview.1.26559.7
-#:package Aspire.Hosting.Redis@13.6.5
-#:package Aspire.Hosting.Keycloak@13.6.5-preview.1.26559.7
+#:package Aspire.Hosting.Docker@17.0.0
+#:package Aspire.Hosting.Kubernetes@17.0.0
+#:package Aspire.Hosting.Redis@17.0.0
+#:package Aspire.Hosting.Keycloak@17.0.0-preview.1.26567.5
 #:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.2-beta.959
 #:package Microsoft.Extensions.Hosting@11.0.0
 #:package Microsoft.Extensions.Http@11.0.0
