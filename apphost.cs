@@ -2,11 +2,12 @@
 #:sdk Aspire.AppHost.Sdk@17.0.0
 #:property ManagePackageVersionsCentrally=false
 #:property RuntimeFrameworkVersion=11.0.0
+#:property SuppressAspireAppHostSdkObsoleteWarning=true
 #:package Aspire.Hosting.Docker@17.0.0
 #:package Aspire.Hosting.Kubernetes@17.0.0
 #:package Aspire.Hosting.Redis@17.0.0
 #:package Aspire.Hosting.Keycloak@17.0.0-preview.1.26567.5
-#:package CommunityToolkit.Aspire.Hosting.Dapr@13.6.2-beta.959
+#:package CommunityToolkit.Aspire.Hosting.Dapr@17.0.0-beta.1052
 #:package Microsoft.Extensions.Hosting@11.0.0
 #:package Microsoft.Extensions.Http@11.0.0
 #:package System.Text.Json@11.0.0
