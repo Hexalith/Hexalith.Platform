@@ -2165,3 +2165,17 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
   summary: Delete the non-genuine `Hexalith.McpCli.Abstractions 2.0.0` entry from the shared local NuGet cache before trusting local package-mode runs.
   evidence: The 2.14 profile runs found the shared cache's copy differs from nuget.org; the passing runs used an isolated cache. This is pre-existing machine state, and local evidence such as the Story 2.10 runs may be affected.
+
+## Deferred from: code review of spec-2-14-retire-package-admission-allowlists.md (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
+  summary: Prove AC1 (live `platform-package` reports the Release owner, immutable dependency images and cleanup) and matrix row 5 (lifecycle and attachment entries still work) once the external blockers clear.
+  evidence: `artifacts/story-2-14-package-admission/summary.md`. The live integration and lifecycle runs stopped at HXR021 on operation-digest readiness (Tenants/Tenants API 2, Memories DomainService 6). That predates this change because it reproduced with the former image bytes. The attached project fails CS1061 against `Hexalith.EventStore.Testing` 4.2.0.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
+  summary: Confirm that the Memories container gateway rewrite (`EventStore__CommandGateway__BaseAddress` = `DAPR_HTTP_ENDPOINT`), now applied to every graph with a Memories container and EventStore, works outside the measured Parties cohorts (medium, unverified).
+  evidence: `PlatformDaprEndpointSubscriber.cs:45-52`; before 2.14 the rewrite was gated on current-owner/published-Parties cohorts. Settle with a package run of a non-Parties graph, or the historical FullParties 3.0.23 graph, that exercises Memories→gateway commands.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
+  summary: Pin `memories-vectors` (`redis/redis-stack:latest`) and `memories-graph` (`falkordb/falkordb:latest`) by digest when no retention profile is selected (low, pre-existing).
+  evidence: these images are not catalog-selected, so 2.14's released-image resolution does not cover them; the README's immutable-digest wording applies only to catalog dependency images.
