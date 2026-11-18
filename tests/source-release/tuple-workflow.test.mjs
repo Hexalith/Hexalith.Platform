@@ -63,3 +63,14 @@ test('candidate execution authenticates initialized owners and package identitie
   assert.ok(steps[check].run.includes("verify_checkout(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])"));
   assert.ok(check < steps.findIndex(step => step.run?.includes('eng/run_tuple_ci.py')));
 });
+
+test('source resolution refuses Builds tag drift and execution binds the checkout to the recorded gitlink', () => {
+  const resolution = workflow.jobs['resolve-sources'].steps;
+  const tag = resolution.findIndex(step => step.run?.includes('eng/builds_publication.py --revision "$PLATFORM_CANDIDATE_SHA"'));
+  assert.ok(tag > resolution.findIndex(step => step.id === 'sources'));
+  assert.equal(resolution[tag].env.GH_TOKEN, '${{ github.token }}');
+  const dependencies = workflow.jobs.tuple.steps.find(step => step.id === 'dependencies').run;
+  assert.match(dependencies, /builds_source="\$\(python3 -B eng\/builds_tuple\.py\)"\n\s*git submodule update --init\n\s*test "\$\(git -C references\/Hexalith\.Builds rev-parse HEAD\)" = "\$builds_source"/);
+  const controls = workflow.jobs.tuple.steps.find(step => step.name === 'Verify automatic source release controls').run;
+  assert.ok(controls.includes('python3 -B eng/test_builds_tool_lock.py'));
+});

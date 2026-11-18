@@ -2,25 +2,12 @@
 
 ## Candidate-only tuple preparation
 
-The selected producer is signed Builds **6.3.0**, source
-`7afc4981e21bc2fcce687199a3fd2c61fe87336e`, with exact tool pin and range
-`[6.3.0, 7.0.0-0)` and disabled roll-forward. The catalog blob is
-`db85d885ae1b7478ee2d053a5b54b9a43bff9ae7`, SHA-256
-`aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4`.
-The authoritative publication binding remains `eng/builds-tuple.json`.
-The authenticated Builds 6.3.0 validation pair is AppHost SHA-256
-`3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1`
-and Tooling SHA-256
-`48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27`.
-This signed-host pairing grants no ordinary image or runtime admission.
-
-The signed Module archive SHA-256 is `d7454b95f2275203b4018394a7a100ebf92f47b028d40c99a4db4195f6a617f6`.
-Its [normal release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.3.0) and
-[publisher run](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44147684659)
-bind the original artifact and the [public package inventory](https://github.com/Hexalith/Hexalith.Builds/releases/download/v6.3.0/hexalith-package-publication.v1.json),
-SHA-256 `25078b6710fe5d86298d7d1574a69a102c0bdd450ff82b5ba9482a536f64b459`.
-Every public package payload matches the authenticated release artifact; the NuGet
-repository signature is verified separately. These are artifact facts only.
+Builds is pinned by released version: the current pin is in
+[`eng/builds-tuple.json`](../eng/builds-tuple.json), [`.config/dotnet-tools.json`](../.config/dotnet-tools.json),
+[`hexalith-platform.json`](../hexalith-platform.json), [`eng/builds-tool.lock.json`](../eng/builds-tool.lock.json)
+and the `references/Hexalith.Builds` gitlink. How preparation fails closed on them
+and how to adopt a release are described in
+[adopting a Builds release](../eng/tuple-source-preparation.md#adopting-a-builds-release).
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
 candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
@@ -30,7 +17,7 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 
-The continuing inventories declare 486 current42, 93 base42 and nine extension
+The continuing inventories declare 487 current42, 93 base42 and nine extension
 executions, with exact positive group counts and zero skips.
 
 The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
@@ -41,11 +28,15 @@ model transport and exact positive counts with zero skips remain required.
 Hosted main tuple success still requires an authorized landing and actual run;
 local audits provide no hosted or native acceptance.
 
-Historical preparation records below describe their original subjects and past
-requirements. Their L/M, 349/412 and reader-companion obligations are retired by
-Story 2.13; archived qualification and broker tags remain evidence.
+## Historical preparation records
 
-## Historical signed Builds4.45.0 and public Parties3.1.0 tuple
+The records below are historical. They describe their original subjects and past
+requirements, including the schema 1 binding fields, hash-pair admission and
+per-release catalog tables that Story 2.14 retired. Their L/M, 349/412 and
+reader-companion obligations are retired by Story 2.13; archived qualification
+and broker tags remain evidence.
+
+### Historical signed Builds4.45.0 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.45.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.45.0)
 at `27145e52ffab5623198ba5efdab5cdb71aa42d28` (story 3.2 EventStore extension declarations), from normal
@@ -72,7 +63,7 @@ EventStore release carrying the extension API. This prerequisite source preparat
 grants no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
-## Previous signed Builds4.44.13 and public Parties3.1.0 tuple
+### Previous signed Builds4.44.13 and public Parties3.1.0 tuple
 
 This source prepares the exact published [Builds v4.44.13](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v4.44.13)
 at `3c8096180ecf2aa539ac454815efbfceb8a92822`, from normal
@@ -101,7 +92,7 @@ execution and verified cleanup. This prerequisite source preparation grants
 no new Platform publication, caller/native qualification or candidate acceptance.
 The previous producer sections below retain their own historical facts.
 
-## Previous signed Builds4.44.11 and Tenants 7.0.5 tuple
+### Previous signed Builds4.44.11 and Tenants 7.0.5 tuple
 
 The additive code selects genuine [Tenants 7.0.5](https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v7.0.5)
 at `d88aef6b52d7e8a2e2d81132b1d76b7e1d1f0f35`, published by normal
@@ -136,9 +127,9 @@ validation, native effects and complete cleanup.
 Package measurement and component checks grant no public-consumer or candidate
 acceptance. The prior producer preparation below retains its own original facts.
 
-## Previous Builds 4.44.10 preparation
+### Previous Builds 4.44.10 preparation
 
-The current private reference preparation binds genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
+That private reference preparation bound genuine [Memories v3.0.25](https://github.com/Hexalith/Hexalith.Memories/releases/tag/v3.0.25)
 at `246157a7ff8e2dcd8d356c833a77a02514490d2f` ([release 42134622308](https://github.com/Hexalith/Hexalith.Memories/actions/runs/42134622308))
 and genuine [McpCli v2.0.1](https://github.com/Hexalith/Hexalith.McpCli/releases/tag/v2.0.1)
 at `aa2845edbea23444a1d362060b8d0f5dc05a132e`. Both Memories bootstrap images

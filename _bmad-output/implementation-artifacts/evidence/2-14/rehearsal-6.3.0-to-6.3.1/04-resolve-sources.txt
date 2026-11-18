@@ -1,0 +1,26 @@
+$ python3 -B eng/builds_tuple.py
+db7bb7179244ce33483231687486381305c7c3db
+exit=0
+
+$ python3 -B eng/builds_publication.py --revision <rehearsal>
+{
+  "releaseTag": "v6.3.1",
+  "tagCommit": "db7bb7179244ce33483231687486381305c7c3db",
+  "releaseId": 449817502,
+  "publishedAt": "2026-11-18T10:42:13Z",
+  "releaseBodySha256": "9045a599b9a53de2bd802993f7df185a5774ae6669091e26fb6857fe9627e0d4",
+  "markers": {
+    "hexalith-release": "db7bb7179244ce33483231687486381305c7c3db",
+    "hexalith-release-artifact": "14419035876 sha256:0042aa8e73259ba78bf10d2927fd6b04542777eb40b7e62c636fe24b8cf0ebcd",
+    "hexalith-release-containers": "",
+    "hexalith-release-packages": "Hexalith.Builds.Evidence.Cli,Hexalith.Builds.Module.Cli",
+    "hexalith-release-run": "44282974072"
+  },
+  "evidenceOnly": true,
+  "qualificationCredit": false
+}
+exit=0
+
+$ python3 -B - (current_tuple_source.read_selection + verify_checkout)
+owner sources and package provenance verified
+exit=0

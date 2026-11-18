@@ -77,11 +77,15 @@ else
   BUILDS_ROOT="$(python3 "$ROOT/eng/bound_builds.py" --verify-root "$BUILDS_ROOT")"
 fi
 export HexalithBuildsRoot="$BUILDS_ROOT"
-catalog_sha256="$(python3 - "$ROOT/eng/builds-tuple.json" <<'PY'
+catalog_sha256="$(python3 - "$ROOT" "$BUILDS_ROOT" <<'PY'
 from pathlib import Path
 import sys
-from eng.builds_tuple import load_binding
-print(load_binding(Path(sys.argv[1]))["producer"]["catalog"]["sha256"])
+sys.path.insert(0, str(Path(sys.argv[1]) / "eng"))
+from bound_builds import inspection_environment
+from builds_tuple import recorded_gitlink, verify_catalog
+# The catalog identity is the recorded Builds gitlink's blob, not a hand-maintained digest; ambient GIT_* never redirect it.
+environment = inspection_environment()
+print(verify_catalog(recorded_gitlink(Path(sys.argv[1]), environment=environment), Path(sys.argv[2]), environment=environment)[2]["sha256"])
 PY
 )"
 python3 "$ROOT/eng/verify-platform-pins.py" --catalog "$BUILDS_ROOT/Props/Directory.Packages.props" \

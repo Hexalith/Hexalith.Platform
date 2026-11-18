@@ -11,10 +11,10 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
-from builds_tuple import load_binding
+from builds_tuple import ROOT, load_binding, recorded_gitlink
 from run_tuple_ci import sdk_suite, sdk42_collecting_cohort, verify_collecting_cohort
-from current_catalog_view import catalog_profile, require_catalog_body
-from test_current_catalog_view import builds6_catalog_body, generation6_binding
+from current_catalog_view import require_catalog_body
+from test_current_catalog_view import builds6_catalog_body, gitlink_catalog
 
 OPTIONS = None
 PACKAGES = (
@@ -65,14 +65,11 @@ class CollectionGraphTests(unittest.TestCase):
             self.assertIn("NU1109", result.stdout + result.stderr)
             self.assertIn("Hexalith.Memories.EventStoreExtensions 4.0.0", result.stdout + result.stderr)
 
-            raw = OPTIONS.catalog.read_bytes() if OPTIONS.catalog else builds6_catalog_body()
-            binding = load_binding(OPTIONS.producer_binding) if OPTIONS.producer_binding else generation6_binding()
-            profile = catalog_profile(binding)
-            require_catalog_body(raw, binding["producer"]["catalog"]["sha256"])
-            if OPTIONS.catalog:
-                require_catalog_body(raw, OPTIONS.catalog_sha256)
-            cohort = sdk42_collecting_cohort(binding, "current42")
-            self.assertIsNotNone(cohort, "The collection regression requires an exact authenticated current producer profile.")
+            raw = OPTIONS.catalog.read_bytes() if OPTIONS.catalog else gitlink_catalog()
+            binding = load_binding(OPTIONS.producer_binding) if OPTIONS.producer_binding else load_binding()
+            require_catalog_body(raw, OPTIONS.catalog_sha256 if OPTIONS.catalog else hashlib.sha256(raw).hexdigest())
+            cohort = sdk42_collecting_cohort("current42")
+            self.assertIsNotNone(cohort, "The collection regression requires the measured SDK4.2 collecting family.")
             catalog.write_bytes(raw)
             properties = [*sdk_suite("current42", "4.2.0")[1],
                 *("-p:" + name + "=" + value for name, value in cohort.items())]
@@ -100,9 +97,14 @@ class CollectionGraphTests(unittest.TestCase):
             self.assertEqual(catalog.read_bytes(), raw)
             (OPTIONS.evidence / "collector.packages.lock.json").write_bytes(lock)
             (OPTIONS.evidence / "selected-graph.json").write_text(json.dumps({"catalogSha256": hashlib.sha256(raw).hexdigest(),
-                "producerSource": binding["producer"]["sourceRevision"], "producerVersion": binding["publication"]["version"],
-                "catalogProfile": profile, "collectingProperties": cohort, "framework": "net11.0", "configuration": configuration, "packages": expected, "scope": "Package collection regression only",
+                "producerSource": recorded_gitlink(ROOT), "producerVersion": binding["version"],
+                "collectingProperties": cohort, "framework": "net11.0", "configuration": configuration, "packages": expected, "scope": "Package collection regression only",
                 "runtimeAcceptance": False, "candidateAcceptance": False}, indent=2) + "\n")
+
+
+def load_tests(loader, tests, pattern):
+    """Discovery cannot supply this command's evidence arguments; run_tuple_ci invokes it through main()."""
+    return unittest.TestSuite() if OPTIONS is None else tests
 
 
 def main():

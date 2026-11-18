@@ -371,6 +371,11 @@ class SourceSdkPropagationTests(unittest.TestCase):
                     self.assertEqual(engine, document["Properties"]["RestoreUseStaticGraphEvaluation"])
 
 
+def load_tests(loader, tests, pattern):
+    """Discovery cannot supply this command's evidence arguments; run_tuple_ci invokes it through main()."""
+    return unittest.TestSuite() if OPTIONS is None else tests
+
+
 def main():
     global OPTIONS
     parser = argparse.ArgumentParser(description=__doc__)

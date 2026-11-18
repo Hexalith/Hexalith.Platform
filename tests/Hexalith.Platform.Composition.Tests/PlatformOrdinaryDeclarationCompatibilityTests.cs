@@ -44,83 +44,61 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.DeclarationHash).ShouldBeTrue();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(new string('0', 64)).ShouldBeFalse();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(null).ShouldBeFalse();
-        const string LegacyAppHost = "23fbcd1b7e495a85920a44b1d7fd690cee69548dadd9ae02768d8d29b355577b";
-        const string LegacyTooling = "da4c0db5b9746609629f8ba20aadb06c5c792521149ce985b1fa56c8f4efb000";
-        const string CurrentAppHost = "e85148b3809600a8f6e81c1163618c0250b179f8f9e5435a46c2ad5fe119dc10";
-        const string CurrentTooling = "57eff14f810059878e1c43eafe2b1ee04382ea01cb8fd860cfc6810e9d2505a2";
-        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, LegacyTooling).ShouldBeTrue();
-        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, CurrentTooling).ShouldBeTrue();
-        const string NewAppHost = "acac3d8ee71977f2f70fc5099510d69be695e2ff466f78e06ee9086d86c45066";
-        const string NewTooling = "445d9219c0670abff9550fa3c028c3ee00ffc4d9b3a4c07e5e14b078f035cbb4";
-        PlatformPartiesValidationContext.IsPublishedPair(NewAppHost, NewTooling).ShouldBeTrue();
-        foreach (var previous in new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling) })
-        {
-            PlatformPartiesValidationContext.IsPublishedPair(previous.Item1, NewTooling).ShouldBeFalse();
-            PlatformPartiesValidationContext.IsPublishedPair(NewAppHost, previous.Item2).ShouldBeFalse();
-        }
-        const string NextAppHost = "2b746f7b8a91e70fe1e2a571dc4ca832c4cb18ca502b60a467347da32a4fe84c";
-        const string NextTooling = "23ef9fa3ec8a6c85e91a08da434e0fd1990ff1f613e8f36e0951144b09a37b87";
-        PlatformPartiesValidationContext.IsPublishedPair(NextAppHost, NextTooling).ShouldBeTrue();
-        foreach (var previous in new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling), (NewAppHost, NewTooling) })
-        {
-            PlatformPartiesValidationContext.IsPublishedPair(previous.Item1, NextTooling).ShouldBeFalse();
-            PlatformPartiesValidationContext.IsPublishedPair(NextAppHost, previous.Item2).ShouldBeFalse();
-        }
-        const string CanonicalClaimsAppHost = "f353c835fd365703c1e6cff7ee632e9f3e98f53e7acf8033e927772383bef911";
-        const string CanonicalClaimsTooling = "6639eb04d7fc99960b0bcd5ed6c978a7213e86f7c9d2b9963d3d3fe1ecf20c90";
-        PlatformPartiesValidationContext.IsPublishedPair(CanonicalClaimsAppHost, CanonicalClaimsTooling).ShouldBeTrue();
-        foreach (var previous in new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling), (NewAppHost, NewTooling), (NextAppHost, NextTooling) })
-        {
-            PlatformPartiesValidationContext.IsPublishedPair(previous.Item1, CanonicalClaimsTooling).ShouldBeFalse();
-            PlatformPartiesValidationContext.IsPublishedPair(CanonicalClaimsAppHost, previous.Item2).ShouldBeFalse();
-        }
-        const string SafeStatusAppHost = "ad2ed0e8a9a8e6b86ad21718d8856ced45ea3ce819797cd80cb2a11e09f04764";
-        const string SafeStatusTooling = "f37dc97c407b513dfecf99818606c954508c05dcece333d788aa5bc7ff3545e9";
-        const string CurrentProducerAppHost = "672f01e4165cd00ea2f6866dd5a2681afe4dc30764e8f31a6f396f03f9dbfef0";
-        const string CurrentProducerTooling = "3ce7ca60e805b03efd10f66a31734fc32f8c6568d0d20d9657b6a8af3a0c908a";
-        const string LatestProducerAppHost = "0795a6f45a68a78856670327f85549ef4173652780f31533d3342e2ea07529cf";
-        const string LatestProducerTooling = "c43e11474ce0d269e1492d0924d826538b3cb871869669ac23744a5f2f687632";
-        const string Builds44411AppHost = "f4a9cb4c9cd81579ccdcec7e40d4254219d5afeb7f7c28dcc5d566164bd0df2d";
-        const string Builds44411Tooling = "c1d319f7c5a5f33219bbe8437f95ff169318ef5265c5827591c547623171c8db";
-        const string Builds44412AppHost = "ac1b7477337c3921a77e1ca527cf3d76c7feeb2f5c8019bd14c1da9222581d8e";
-        const string Builds44412Tooling = "1bd228fc084776f48ad9faff8ac0c614e0c6dc0c2f03f309d325e0e90cbc1870";
-        const string Builds44413AppHost = "5d3ed600a11c921ad1ca8d98e90430c000681ab2b9d41dfb7d5df3a0dae6f252";
-        const string Builds44413Tooling = "39583273ccfbf9fac6b921e1996c109cc66b0d5336ff59fc7ac70923edcf0d2d";
-        const string Builds4450AppHost = "0afbfd9bfe10a6d28cce6b09e375e1cfbbd581bcc6d501157eccacd3e3cc2954";
-        const string Builds4450Tooling = "0c8c00e5563730f953f24b19b777dedd1887f4d186e92347145e55783d4d4981";
-        const string Builds4470AppHost = "6aae774cfcf41e0488cf7b2517d67897f1726c68674219fea164d6998ad60ebe";
-        const string Builds4470Tooling = "35d0eb2b0f32ad5e3b1e4353f088800e76084b99e60f46838e6e497105f64f01";
-        const string Builds4481AppHost = "adeffaefcbf7207711d7a8290d975edc9a6ffee446d0ad40194ad96b5299df70";
-        const string Builds4481Tooling = "592785b5fc3426321fec66538975988a74573df50f11f42bfd82268869bf23ab";
-        const string Builds4482AppHost = "f8f7b6e743a798e37784f5e3d44f62bc81c5cef112c8fa9ec643fcb35da825ba";
-        const string Builds4482Tooling = "142bd3fdd26ff4e5ba8eadd91d00de92b738b019270fa6742e3a35f41460b1cf";
-        const string Builds4483AppHost = "7ccaa52a5fb6144bb570fddc1d98514822c9ef22ceccbdc2c3ae840afa701340";
-        const string Builds4483Tooling = "e2248aa6b6978385a369f04668f167360775db72cb3bd773903af51266d77a6f";
-        const string Builds500AppHost = "c4bf26c96e72203c1143b92830dc8feeadc8cb88380dd16545a21abb97bbc63b";
-        const string Builds500Tooling = "6ceb2bcd28d7b99927b5b6e84b6e4e7ea4b5c485337003bcfdb04b752d9e7261";
-        const string Builds501AppHost = "a0fbad5e3639f9682eceb910c7b3250bd61c7ab2d0a6a9c8290140412a010aef";
-        const string Builds501Tooling = "550bfe2b2841e65dc97452d9f995709bcb27dba6e650109ffab6f02be825e6bc";
-        const string Builds510AppHost = "c5d2804f71532125f5f53dfc1ddeef8acbd2ed757201615d77a5471c28296a1b";
-        const string Builds510Tooling = "d75fb09296700b793ecbcf437836597878705dfd7eefe3314c80171427ff38ff";
-        const string Builds521AppHost = "a229438e01238f7e0ff2063eefb9595f37b072c893f3f3d138a348c1b970305f";
-        const string Builds521Tooling = "2c1fd7d2647e1460a438119e39d8e137f98d48857a6bdc028ab69925e5b09088";
-        const string Builds522AppHost = "e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709";
-        const string Builds522Tooling = "1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec";
-        var publishedPairs = new[] { (LegacyAppHost, LegacyTooling), (CurrentAppHost, CurrentTooling),
-            (NewAppHost, NewTooling), (NextAppHost, NextTooling), (CanonicalClaimsAppHost, CanonicalClaimsTooling),
-            (SafeStatusAppHost, SafeStatusTooling), (CurrentProducerAppHost, CurrentProducerTooling), (LatestProducerAppHost, LatestProducerTooling), (Builds44411AppHost, Builds44411Tooling), (Builds44412AppHost, Builds44412Tooling), (Builds44413AppHost, Builds44413Tooling), (Builds4450AppHost, Builds4450Tooling), (Builds4470AppHost, Builds4470Tooling), (Builds4481AppHost, Builds4481Tooling), (Builds4482AppHost, Builds4482Tooling), (Builds4483AppHost, Builds4483Tooling), (Builds500AppHost, Builds500Tooling), (Builds501AppHost, Builds501Tooling), (Builds510AppHost, Builds510Tooling), (Builds521AppHost, Builds521Tooling), (Builds522AppHost, Builds522Tooling) };
-        foreach (var appHostPair in publishedPairs)
-            foreach (var toolingPair in publishedPairs)
-                PlatformPartiesValidationContext.IsPublishedPair(appHostPair.Item1, toolingPair.Item2)
-                    .ShouldBe(appHostPair == toolingPair);
-        PlatformPartiesValidationContext.IsPublishedPair(LegacyAppHost, CurrentTooling).ShouldBeFalse();
-        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, LegacyTooling).ShouldBeFalse();
-        PlatformPartiesValidationContext.IsPublishedPair(CurrentAppHost, new string('0', 64)).ShouldBeFalse();
-        PlatformPartiesValidationContext.IsPublishedPair(null, CurrentTooling).ShouldBeFalse();
         using PlatformPartiesProofFixture fixture = new();
-        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Options.RunPlan!).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Options.RunPlan!, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
         PlatformCompositionOptions options = Updated(fixture, "platform-current-package");
         Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
+    }
+
+    /// <summary>The AppHost/Tooling pair is admitted by its shared released version inside <c>[pin, next major)</c>, never by a hash list.</summary>
+    [Fact]
+    public void BuildsToolPairFollowsThePinnedVersionRule()
+    {
+        // Rule-relative examples against an explicit range; the current pins are read from the pin files below.
+        const string Range = "[6.0.5, 7.0.0-0)";
+        const string Commit = "+0123456789abcdef0123456789abcdef01234567";
+        foreach (string admitted in new[] { "6.0.5", "6.1.0", "6.1.0-rc.1" })
+            PlatformPartiesValidationContext.IsPublishedPair(admitted + Commit, admitted + Commit, Range).ShouldBeTrue(admitted);
+        // Prereleases follow NuGet ordering: below the floor and the next major's prereleases refuse.
+        foreach (string refused in new[] { "6.0.3", "5.2.2", "7.0.0", "6.0.5-rc.1", "7.0.0-alpha" })
+        {
+            PlatformPartiesValidationContext.IsPublishedPair(refused + Commit, refused + Commit, Range).ShouldBeFalse(refused);
+            PlatformPartiesValidationContext.PairRefusal(refused + Commit, refused + Commit, Range).ShouldBe($"The Builds tool version {refused}{Commit} is outside {Range}.");
+        }
+        PlatformPartiesValidationContext.PairRefusal("6.0.5" + Commit, "6.1.0" + Commit, Range).ShouldBe($"The Builds AppHost 6.0.5{Commit} and Tooling 6.1.0{Commit} are a split pair.");
+        PlatformPartiesValidationContext.PairRefusal("not-a-version", "not-a-version", Range).ShouldBe("The Builds tool version 'not-a-version' is unparseable.");
+        // A split pair, a missing version and unparseable versions refuse.
+        PlatformPartiesValidationContext.IsPublishedPair("6.0.5" + Commit, "6.1.0" + Commit, Range).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair("6.1.0" + Commit, "6.1.0+fedcba9876543210fedcba9876543210fedcba98", Range).ShouldBeFalse();
+        foreach (string? missing in new string?[] { null, "", " " })
+        {
+            PlatformPartiesValidationContext.IsPublishedPair(missing, "6.1.0" + Commit, Range).ShouldBeFalse();
+            PlatformPartiesValidationContext.IsPublishedPair("6.1.0" + Commit, missing, Range).ShouldBeFalse();
+            PlatformPartiesValidationContext.IsPublishedPair(missing, missing, Range).ShouldBeFalse();
+        }
+        foreach (string unparseable in new[] { "6.1", "6.1.0.0", "v6.1.0", "6.1.0+", "06.1.0", "not-a-version" })
+            PlatformPartiesValidationContext.IsPublishedPair(unparseable, unparseable, Range).ShouldBeFalse(unparseable);
+        // Only the exact [pin, next major) range shape admits a pair.
+        foreach (string? range in new string?[] { null, "", "invalid", "6.*", "6.0.5", "[6.0.5, 7.0.0)", "[6.0.5, 7.0.0-0]",
+            "(6.0.5, 7.0.0-0)", "[6.0.5, 8.0.0-0)", "[6.0.5-preview, 7.0.0-0)", "[6.0.5+metadata, 7.0.0-0)", "[6.0.5, )" })
+            PlatformPartiesValidationContext.IsPublishedPair("6.1.0" + Commit, "6.1.0" + Commit, range).ShouldBeFalse(range ?? "null");
+
+        // The current pins come from the pin files; the published DLLs embed <version>+<gitlink>.
+        string pinned = PlatformTestPins.ToolVersion;
+        PlatformTestPins.BindingVersion.ShouldBe(pinned);
+        PlatformTestPins.ToolVersionRange.ShouldBe("[" + pinned + ", " + (int.Parse(pinned.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture) + 1) + ".0.0-0)");
+        string current = pinned + "+" + PlatformTestPins.BuildsGitlink;
+        PlatformPartiesValidationContext.IsPublishedPair(current, current, PlatformTestPins.ToolVersionRange).ShouldBeTrue();
+        string[] parts = pinned.Split('.');
+        string older = parts[2] != "0" ? parts[0] + "." + parts[1] + "." + (int.Parse(parts[2], System.Globalization.CultureInfo.InvariantCulture) - 1)
+            : parts[1] != "0" ? parts[0] + "." + (int.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture) - 1) + ".99"
+            : (int.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture) - 1) + ".99.99";
+        string newer = parts[0] + "." + parts[1] + "." + (int.Parse(parts[2], System.Globalization.CultureInfo.InvariantCulture) + 1);
+        string nextMajor = (int.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture) + 1) + ".0.0";
+        PlatformPartiesValidationContext.IsPublishedPair(newer + Commit, newer + Commit, PlatformTestPins.ToolVersionRange).ShouldBeTrue();
+        PlatformPartiesValidationContext.IsPublishedPair(older + Commit, older + Commit, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(nextMajor + Commit, nextMajor + Commit, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(current, newer + Commit, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
     }
 
     private static PlatformCompositionOptions Updated(PlatformPartiesProofFixture fixture, string profile)

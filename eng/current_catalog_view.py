@@ -1,4 +1,8 @@
-"""Evaluate the finite current and retained Platform views of an authenticated catalog."""
+"""Evaluate the finite named SDK4.2 and generic Platform views of the catalog read from the Builds gitlink.
+
+The named SDK4.2 view keeps its owner-version literals. Generic defaults come from the catalog itself,
+so a Builds release that moves them needs no edit here.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -43,70 +47,6 @@ MEMORIES_PACKAGES = tuple("Hexalith.Memories." + name for name in (
 TENANTS_PACKAGES = tuple("Hexalith.Tenants." + name for name in (
     "Aspire", "Client", "Contracts", "Server", "Testing"))
 MCP_PACKAGES = ("Hexalith.McpCli.Abstractions",)
-GENERATION6_CATALOG = {
-    "version": "6.0.0",
-    "sourceRevision": "1ebc5b84ff2c8afd21a87d80ef3d9c9048eaf5e5",
-    "blob": "cbfc6a888f269010600103a33c73d0cfc0af93a2",
-    "sha256": "45b05f6755f337baccfaa805e5e4afb4a57e91b2f70226a357c82d03b4c19bb7",
-}
-
-
-GENERATION601_CATALOG = {
-    "version": "6.0.1",
-    "sourceRevision": "c91beec60ce5eaa8cd62bf055d07fa6ca3890e89",
-    "blob": "e17e81e703da4cd1805644134e62ec1122cafb47",
-    "sha256": "ef691a7a3caa7a92e524f766a770574cd21ef5e32fccd996d1d2899b9d7bddd7",
-}
-
-
-GENERATION602_CATALOG = {
-    "version": "6.0.2",
-    "sourceRevision": "60ce7967607dc8b703fff11f4fc13cabb09c090a",
-    "blob": "86e9b0d6fd49551d80047d92f3aaed93b91ca5a3",
-    "sha256": "1291e32272127e2409e337fb6a974bc4c5f76a2907da0ba0d5528cc5016fe44e",
-}
-
-
-GENERATION603_CATALOG = {
-    "version": "6.0.3",
-    "sourceRevision": "99f7c86072ca7b35e3fbbaee4606a559a847805a",
-    "blob": "1968f12adb9151062915ab32cb76c5b9dbbc2a36",
-    "sha256": "01219d064fc1c375879312f543aa649c6aaef344be054cf4c80571825ca59b41",
-}
-
-
-GENERATION605_CATALOG = {
-    "version": "6.0.5",
-    "sourceRevision": "e2bbbd0893f586e4d447ef8358ff747ea3d34435",
-    "blob": "42441eb4cefcff2f9c582fcda630d9ad15887df2",
-    "sha256": "d098dab50977041a536508f6df7e934f95678a4a0abedd80b28e9bae19ee0637",
-}
-
-
-GENERATION630_CATALOG = {
-    "version": "6.3.0",
-    "sourceRevision": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
-    "blob": "db85d885ae1b7478ee2d053a5b54b9a43bff9ae7",
-    "sha256": "aa423407a51ca2ee6507c49c94effd9c3b2da144d24158a1223dd863550d22a4",
-}
-
-
-def catalog_profile(binding=None) -> str:
-    """A new producer generation cannot inherit an earlier consumer qualification."""
-    if binding is None:
-        return "retained-sdk42"
-    from builds_tuple import validate_binding
-    validate_binding(binding)
-    if binding["publication"]["version"].startswith("6."):
-        producer = binding["producer"]
-        selected = {"6.0.0": GENERATION6_CATALOG, "6.0.1": GENERATION601_CATALOG,
-                    "6.0.2": GENERATION602_CATALOG, "6.0.3": GENERATION603_CATALOG,
-                    "6.0.5": GENERATION605_CATALOG, "6.3.0": GENERATION630_CATALOG}.get(binding["publication"]["version"])
-        if selected is None or producer["sourceRevision"] != selected["sourceRevision"] \
-                or any(producer["catalog"][key] != selected[key] for key in ("blob", "sha256")):
-            raise ValueError("The current catalog view requires the exact qualified Builds6 producer and catalog.")
-        return "current-sdk51" if selected["version"] == "6.0.0" else "current-sdk42"
-    return "retained-sdk42"
 
 
 def require_catalog_body(raw: bytes, expected_sha256: str) -> None:
@@ -210,10 +150,10 @@ def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str, *,
             raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
 
 
-def verify_memories_observations(observed: list[dict]) -> None:
+def verify_memories_observations(observed: list[dict], *, generic_memories: str = "4.0.0") -> None:
     """Keep all five current Memories pins with the exact named SDK4.2 companion."""
     for item in observed:
-        expected = "3.0.27" if item["Identity"] in PLATFORM_CONSUMERS else "4.0.0"
+        expected = "3.0.27" if item["Identity"] in PLATFORM_CONSUMERS else generic_memories
         pins = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
         if item.get("CatalogMemoriesDefault") != expected or len(pins) != len(MEMORIES_PACKAGES) \
                 or dict(pins) != {package: expected for package in MEMORIES_PACKAGES}:
@@ -244,7 +184,8 @@ def verify_mcp_observations(observed: list[dict], *, generic_mcp: str) -> None:
 
 def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7",
                                       generic_mcp: str = "2.0.1", generic_sdk: str = "5.1.0",
-                                      generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
+                                      generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0"),
+                                      generic_memories: str = "4.0.0", generic_parties: str = "3.1.1") -> None:
     """Require each actual source-owner context's complete family and an unknown sibling refusal."""
     names = [item["Identity"] for item in observed]
     if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
@@ -259,50 +200,60 @@ def verify_current_owner_observations(observed: list[dict], *, generic_tenants: 
         pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
         if (item.get("Sdk") != sdk or item.get("PlatformView") != "false" \
                 or item.get("PartiesView") != str(named).lower() \
-                or item.get("CatalogMemoriesDefault") != ("3.0.27" if named else "4.0.0") \
+                or item.get("CatalogMemoriesDefault") != ("3.0.27" if named else generic_memories) \
                 or any(item.get(key) != value for key, value in (("CatalogTenantsDefault", "7.0.7" if named else generic_tenants),
-                    ("CatalogPartiesDefault", "3.1.1"), ("CatalogMcpDefault", "2.0.1" if named else generic_mcp))) \
+                    ("CatalogPartiesDefault", "3.1.1" if named else generic_parties), ("CatalogMcpDefault", "2.0.1" if named else generic_mcp))) \
                 or len(memories) != len(MEMORIES_PACKAGES)
-                or dict(memories) != {package: "3.0.27" if named else "4.0.0" for package in MEMORIES_PACKAGES}
+                or dict(memories) != {package: "3.0.27" if named else generic_memories for package in MEMORIES_PACKAGES}
                 or len(pins) != len(expected) or dict(pins) != expected):
             raise ValueError("The authenticated catalog selects an unqualified current-owner package view: " + item["Identity"])
     verify_tenants_observations(observed, generic_tenants=generic_tenants)
 
 
-def verify_named_platform_catalog(raw: bytes, expected_sha256: str, *, binding=None) -> dict:
+def generic_defaults(observed: list[dict]) -> dict:
+    """Read the catalog's own defaults from the unnamed consumers; they must agree and stay off the named view."""
+    unknown = [item for item in observed if item["Identity"] in UNKNOWN_CONSUMERS]
+    keys = ("Sdk", "Pins", "CatalogMemoriesDefault", "MemoriesPins", "CatalogTenantsDefault", "TenantsPins",
+            "CatalogPartiesDefault", "CatalogMcpDefault", "McpPins", "PlatformView", "PartiesView")
+    if len(unknown) != len(UNKNOWN_CONSUMERS) or any(item.get(key) != unknown[0].get(key) for item in unknown for key in keys):
+        raise ValueError("The unnamed catalog consumers disagree on the generic catalog defaults.")
+    first = unknown[0]
+    pins = dict(pin.split("=", 1) for pin in first.get("Pins", "").split("|") if "=" in pin)
+    defaults = {"sdk": first.get("Sdk"), "openapi": tuple(pins.get(package) for package in OPENAPI_PACKAGES),
+                "memories": first.get("CatalogMemoriesDefault"), "tenants": first.get("CatalogTenantsDefault"),
+                "parties": first.get("CatalogPartiesDefault"), "mcp": first.get("CatalogMcpDefault")}
+    if not all(isinstance(value, str) and value for value in (*defaults["openapi"], *(defaults[key] for key in defaults if key != "openapi"))):
+        raise ValueError("The catalog does not declare every generic default.")
+    if defaults["sdk"] == "4.2.0":
+        raise ValueError("The generic catalog default equals the named SDK4.2 view; the negative control is lost.")
+    return defaults
+
+
+def verify_named_platform_catalog(raw: bytes, expected_sha256: str) -> dict:
+    """Verify the named SDK4.2 view and the catalog's generic defaults in every context, without Builds-version keys."""
     require_catalog_body(raw, expected_sha256)
-    profile = catalog_profile(binding)
-    if binding is not None and binding["producer"]["catalog"]["sha256"] != expected_sha256:
-        raise ValueError("The current catalog view differs from its exact producer binding.")
     require_finite_selector(ET.fromstring(raw))
-    version = binding["publication"]["version"] if binding is not None else None
-    generic_sdk = "5.2.0" if version == "6.3.0" else "5.1.0"
-    generic_openapi = ("11.0.0", "3.11.1" if version == "6.3.0" else "3.11.0")
     observed = evaluate_views(raw)
     names = [item["Identity"] for item in observed]
-    verify_observations(observed, "5.1.0" if profile == "current-sdk51" else "4.2.0",
-                        generic_sdk if profile in ("current-sdk51", "current-sdk42") else "5.0.0", generic_openapi=generic_openapi)
+    generic = generic_defaults(observed)
+    openapi = generic["openapi"]
+    verify_observations(observed, "4.2.0", generic["sdk"], generic_openapi=openapi)
     collecting = evaluate_views(raw, "4.2.0")
     if [item["Identity"] for item in collecting] != names:
         raise ValueError("The retained collecting view changed its exact consumer set.")
-    verify_observations(collecting, "4.2.0", "4.2.0", generic_openapi=generic_openapi)
-    if profile == "current-sdk42":
-        verify_memories_observations(observed)
-        verify_memories_observations(collecting)
-    owner_observed = []
-    if binding is not None and version in ("6.0.2", "6.0.3", "6.0.5", "6.3.0"):
-        generic_tenants = "8.0.1" if version == "6.3.0" else "7.0.7" if version == "6.0.2" else "8.0.0"
-        verify_tenants_observations(observed, generic_tenants=generic_tenants)
-        verify_tenants_observations(collecting, generic_tenants=generic_tenants)
-        owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
-        generic_mcp = "3.0.0" if version in ("6.0.5", "6.3.0") else "2.0.1"
-        verify_current_owner_observations(owner_observed, generic_tenants=generic_tenants, generic_mcp=generic_mcp,
-                                          generic_sdk=generic_sdk, generic_openapi=generic_openapi)
-        if version in ("6.0.5", "6.3.0"):
-            for observations in (observed, collecting, owner_observed):
-                verify_mcp_observations(observations, generic_mcp=generic_mcp)
-    return {"kind": "finite-current-platform-sdk51-with-retained-sdk42-catalog-view" if profile == "current-sdk51" else "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
-            "consumers": list(PLATFORM_CONSUMERS), "evaluations": observed, "defaultEvaluations": observed,
+    verify_observations(collecting, "4.2.0", "4.2.0", generic_openapi=openapi)
+    owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
+    for observations in (observed, collecting):
+        verify_memories_observations(observations, generic_memories=generic["memories"])
+        verify_tenants_observations(observations, generic_tenants=generic["tenants"])
+    verify_current_owner_observations(owner_observed, generic_tenants=generic["tenants"], generic_mcp=generic["mcp"],
+                                      generic_sdk=generic["sdk"], generic_openapi=openapi,
+                                      generic_memories=generic["memories"], generic_parties=generic["parties"])
+    for observations in (observed, collecting, owner_observed):
+        verify_mcp_observations(observations, generic_mcp=generic["mcp"])
+    return {"kind": "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
+            "consumers": list(PLATFORM_CONSUMERS), "genericDefaults": {**generic, "openapi": list(openapi)},
+            "evaluations": observed, "defaultEvaluations": observed,
             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,
-            "scope": "Exact Builds6 SDK" + generic_sdk + " default and finite automatic/explicit SDK4.2 collection views" if profile in ("current-sdk51", "current-sdk42") else "SDK4.2 Platform package view only; default SDK5 observations are negative controls",
+            "scope": "Finite named SDK4.2 Platform and owner views; generic SDK" + generic["sdk"] + " defaults read from the catalog are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}

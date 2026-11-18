@@ -17,7 +17,7 @@ public sealed class PlatformPartiesValidationHandoffTests
         await fixture.PersistClaimStateAsync();
         fixture.CaptureOrdinary();
         fixture.Options.RunPlan!.ResourceClaimStateDirectory.ShouldBe(fixture.Plan.ResourceClaimStateDirectory);
-        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Plan).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsCurrentPublishedValidation(fixture.Plan, PlatformTestPins.ToolVersionRange).ShouldBeFalse();
     }
 
     /// <summary>A projected or substituted directory cannot acquire validation authority in an ordinary caller process.</summary>

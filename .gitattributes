@@ -180,25 +180,13 @@ src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs whitespace=blank-at-
 src/Hexalith.Platform.Composition/PlatformMcpCliCatalogVersion.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformMcpCliCatalogSelectionTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
-# Preserve the exact published Builds6 catalog used by offline current-view regression controls.
+# Preserve the exact published Builds6 catalog used by the offline collection-graph negative control.
 eng/fixtures/builds-6.0.0-Directory.Packages.props text eol=lf
-eng/fixtures/builds-c91beec6-Directory.Packages.props text eol=lf
-eng/fixtures/builds-6.0.0-binding.json text eol=lf
-eng/fixtures/builds-6.0.1-binding.json text eol=lf
-eng/fixtures/builds-60ce7967-Directory.Packages.props text eol=lf
-eng/fixtures/builds-6.0.2-binding.json text eol=lf
-
-# Preserve genuine6.0.3 offline catalog identities.
-eng/fixtures/builds-6.0.3-Directory.Packages.props text eol=lf
-eng/fixtures/builds-6.0.3-binding.json text eol=lf
-
-# Preserve independently measured6.0.5 source catalog and publication fixture bytes.
-eng/fixtures/builds-6.0.5-Directory.Packages.props text eol=lf
-eng/fixtures/builds-6.0.5-binding.json text eol=lf
 
 # Keep the new verifier helpers' hashed Python source bytes consistent across checkouts.
 eng/bound_builds.py text eol=lf
 eng/test_bound_builds.py text eol=lf
+eng/builds-tool.lock.json text eol=lf
 
 # Recognize existing CRLF in the tuple retirement controls while checking whitespace.
 src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
@@ -217,7 +205,3 @@ src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,b
 tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-
-# Preserve the authenticated Builds 6.3.0 catalog and publication fixture bytes.
-eng/fixtures/builds-6.3.0-Directory.Packages.props text eol=lf
-eng/fixtures/builds-6.3.0-binding.json text eol=lf

@@ -2149,3 +2149,19 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md`
   summary: Move `Hexalith.Parties.Platform.AttachedLifecycleTests` off the Builds catalog's SDK 4.2 view (`HexalithPartiesSdk42CatalogView`) and release Builds before the 2.10 local rerun.
   evidence: The Builds v6.3.0 `Props/Directory.Packages.props:68` resolves `Hexalith.EventStore.Testing` 4.2.0 for that project, which Builds `main` `eae4531a` still does. Parties `8e3507e4` `AttachedLifecycleQualificationTests.cs:16-31` uses `OwnerRunId`, `OriginalAttachmentRequestId` and `AttachmentExpiresAtUtc`, which ship from 5.0.0. The package-mode build therefore fails with 9 CS1061 errors and blocks the three attached rows. Story 2.14 also adopts the release (catalog or Parties fix).
+
+## Deferred from: resume of spec-2-14-pin-builds-and-owner-modules-by-released-version.md (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
+  summary: Story 2.14 allowlist slice — remove the hardcoded declaration-hash and image-digest allowlists and measured cohorts behind HXP020 (`PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration`, `PlatformCurrentOwnerProof`), and retire the `platform-current-package` profile so each test project declares one package integration profile.
+  evidence: sprint-change-proposal-2026-11-18 E3 extended Story 2.14 with this acceptance criterion after the Builds-slice spec was approved. At resume, the owner chose "Builds slice now, allowlist slice next". HXP020 still blocks the Story 2.10 local run (`IsOrdinaryDeclaration` admits only the `40cee6ce`/`d9c193b0` declarations).
+
+## Deferred from: code review of spec-2-14-pin-builds-and-owner-modules-by-released-version.md (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
+  summary: Update Works' `scripts/tests/test_platform_builds_preparation.py` for the schema 2 Builds binding; it copies Platform's `eng/builds_tuple.py`, writes a schema 1 binding and calls the removed `validate_recorded_source`.
+  evidence: Works lines 35, 50, 53 and 59. 2.14 removes schema 1 and `validate_recorded_source`, so the test fails at Works' next Platform reference bump. The fix lives in Hexalith.Works.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-pin-builds-and-owner-modules-by-released-version.md`
+  summary: Delete the non-genuine `Hexalith.McpCli.Abstractions 2.0.0` entry from the shared local NuGet cache before trusting local package-mode runs.
+  evidence: The 2.14 profile runs found the shared cache's copy differs from nuget.org; the passing runs used an isolated cache. This is pre-existing machine state, and local evidence such as the Story 2.10 runs may be affected.

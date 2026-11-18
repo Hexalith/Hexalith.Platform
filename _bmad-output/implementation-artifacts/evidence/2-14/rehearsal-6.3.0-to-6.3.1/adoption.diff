@@ -1,0 +1,57 @@
+diff --git a/.config/dotnet-tools.json b/.config/dotnet-tools.json
+index ec5ee313..f0a51853 100644
+--- a/.config/dotnet-tools.json
++++ b/.config/dotnet-tools.json
+@@ -3,7 +3,7 @@
+   "isRoot": true,
+   "tools": {
+     "hexalith.builds.module.cli": {
+-      "version": "6.3.0",
++      "version": "6.3.1",
+       "commands": [
+         "hexalith-module"
+       ],
+diff --git a/eng/builds-tool.lock.json b/eng/builds-tool.lock.json
+index 2569ec9f..35e7b6bf 100644
+--- a/eng/builds-tool.lock.json
++++ b/eng/builds-tool.lock.json
+@@ -3,8 +3,8 @@
+   "packages": [
+     {
+       "id": "Hexalith.Builds.Module.Cli",
+-      "version": "6.3.0",
+-      "contentHash": "cpj1IDw1wTcX3GsbdTYKSWFwhKl20d9foDMC/nP2OQuIq14AQQMoShGY9dtfTDa91FBb+kzWMHL0/V5IUSRs9w=="
++      "version": "6.3.1",
++      "contentHash": "aG9BwMIYKlK5FyiVo1uVl5jBWFB/Ru+pV699b8OVjFp8H8SLTnAlU9rsIl0m0ypjukfath6juGz7gbftBl1V5g=="
+     }
+   ]
+ }
+diff --git a/eng/builds-tuple.json b/eng/builds-tuple.json
+index 0357ac86..72652af7 100644
+--- a/eng/builds-tuple.json
++++ b/eng/builds-tuple.json
+@@ -1,5 +1,5 @@
+ {
+   "schemaVersion": 2,
+-  "version": "6.3.0",
+-  "releaseTag": "v6.3.0"
++  "version": "6.3.1",
++  "releaseTag": "v6.3.1"
+ }
+diff --git a/hexalith-platform.json b/hexalith-platform.json
+index 524675b5..c94d270d 100644
+--- a/hexalith-platform.json
++++ b/hexalith-platform.json
+@@ -1,4 +1,4 @@
+ {
+   "schemaVersion": 1,
+-  "toolVersionRange": "[6.3.0, 7.0.0-0)"
++  "toolVersionRange": "[6.3.1, 7.0.0-0)"
+ }
+diff --git a/references/Hexalith.Builds b/references/Hexalith.Builds
+index 7afc4981..db7bb717 160000
+--- a/references/Hexalith.Builds
++++ b/references/Hexalith.Builds
+@@ -1 +1 @@
+-Subproject commit 7afc4981e21bc2fcce687199a3fd2c61fe87336e
++Subproject commit db7bb7179244ce33483231687486381305c7c3db

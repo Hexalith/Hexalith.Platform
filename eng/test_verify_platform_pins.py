@@ -43,44 +43,35 @@ SPINE = """### AD-9 — Dapr runtime boundary [ADOPTED, AMENDED]
 
 
 class VerifyPlatformPinsTests(unittest.TestCase):
-    def test_generation6_file_host_requires_its_bound_current_catalog_view(self):
-        from test_current_catalog_view import generation6_binding, generation6_catalog
+    def test_file_host_aligns_with_the_gitlink_catalog_and_refuses_an_invalid_binding(self):
+        from test_current_catalog_view import gitlink_catalog
         owner = SCRIPT.parents[1]
+        raw = gitlink_catalog()
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
-            raw = generation6_catalog()
             (root / 'catalog.props').write_bytes(raw)
             (root / 'apphost.cs').write_bytes((owner / 'apphost.cs').read_bytes())
             (root / 'spine.md').write_text(SPINE)
             project = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
             project.parent.mkdir(parents=True)
             project.write_bytes((owner / project.relative_to(root)).read_bytes())
-            binding = generation6_binding()
-            (root / 'producer.json').write_text(json.dumps(binding))
-            for supplied in (False, True):
+            (root / 'producer.json').write_bytes((owner / 'eng/builds-tuple.json').read_bytes())
+            (root / 'schema1.json').write_text(json.dumps({'schemaVersion': 1, 'candidateAcceptance': False}))
+            for binding, expected in ((None, 0), ('producer.json', 0), ('schema1.json', 1)):
                 result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(root),
                     '--catalog', str(root / 'catalog.props'), '--catalog-sha256', hashlib.sha256(raw).hexdigest(),
-                    '--spine', str(root / 'spine.md'),
-                    *(['--producer-binding', str(root / 'producer.json')] if supplied else [])], capture_output=True, text=True)
-                with self.subTest(supplied=supplied):
-                    self.assertEqual(result.returncode, 0 if supplied else 1, result.stderr)
-                    if not supplied:
-                        self.assertIn('unqualified SDK/OpenAPI', result.stderr)
-
-    def test_actual_builds6_catalogs_align_current_file_host_with_each_bound_named_view(self):
-        from test_current_catalog_view import builds6_catalog_body, current_platform_catalog_body, builds602_catalog_body, builds603_catalog_body, generation6_binding
-        root = SCRIPT.resolve().parents[1]
-        for version, raw in (("6.0.0", builds6_catalog_body()), ("6.0.1", current_platform_catalog_body()),
-                ("6.0.2", builds602_catalog_body()), ("6.0.3", builds603_catalog_body())):
-            with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
-                catalog = pathlib.Path(directory) / "published-builds6.props"
-                catalog.write_bytes(raw)
-                binding = pathlib.Path(directory) / "producer.json"
-                binding.write_text(json.dumps(generation6_binding(version)))
-                result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(catalog),
-                    "--catalog-sha256", hashlib.sha256(raw).hexdigest(), "--producer-binding", str(binding)], capture_output=True, text=True, timeout=90)
-                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                self.assertIn("Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.", result.stdout)
+                    '--spine', str(root / 'spine.md'), *(['--producer-binding', str(root / binding)] if binding else [])],
+                    capture_output=True, text=True, timeout=90)
+                with self.subTest(binding=binding):
+                    self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+                    if expected:
+                        self.assertIn('schema 2', result.stderr)
+                    else:
+                        self.assertIn('Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.', result.stdout)
+            result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(root), '--catalog', str(root / 'catalog.props'),
+                '--catalog-sha256', '0' * 64, '--spine', str(root / 'spine.md')], capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn('authenticated catalog Git body', result.stderr)
 
     def test_named_composition_view_keeps_sdk42_instead_of_the_sdk5_default(self):
         from test_current_catalog_view import catalog_body

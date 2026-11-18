@@ -1,0 +1,4 @@
+$ python3 -B eng/prepare_builds_artifacts.py --output <new-dir>   # lock not rerun
+ValueError: The Builds tool lock names Hexalith.Builds.Module.Cli 6.3.0, but the Builds pin is 6.3.1; run python3 eng/builds_tool_lock.py.
+exit=1
+output created: no

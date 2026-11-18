@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -34,14 +35,14 @@ internal static class PlatformPublishedValidationRuntime
     {
         string originalRoot = Path.GetDirectoryName(originalHost)!;
         string tooling = Path.Combine(originalRoot, "Hexalith.Builds.Tooling.dll");
-        if (!PlatformPartiesValidationContext.IsPublishedPair(Hash(originalHost), Hash(tooling))) throw Refusal();
+        if (!IsPinnedPair(originalHost, tooling)) throw Refusal();
         string originalHosting = Path.Combine(originalRoot, "Aspire.Hosting.dll");
         string originalHostingHash = Hash(originalHosting);
         if (originalHostingHash == _patchedHosting)
         {
             return (originalHost, () =>
             {
-                if (!PlatformPartiesValidationContext.IsPublishedPair(Hash(originalHost), Hash(tooling)) || Hash(originalHosting) != _patchedHosting) throw Refusal();
+                if (!IsPinnedPair(originalHost, tooling) || Hash(originalHosting) != _patchedHosting) throw Refusal();
             });
         }
         if (originalHostingHash != _oldHosting || AssemblyName.GetAssemblyName(originalHosting).Version != new Version(13, 6, 4, 0)) throw Refusal();
@@ -87,10 +88,10 @@ internal static class PlatformPublishedValidationRuntime
             XElement repository = metadata.Elements().Single(element => element.Name.LocalName == "repository");
             if (metadata.Elements().Single(element => element.Name.LocalName == "id").Value != "Hexalith.Builds.Module.Cli"
                 || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Builds") throw Refusal();
-            string version = metadata.Elements().Single(element => element.Name.LocalName == "version").Value;
-            string framework = version.StartsWith("5.", StringComparison.Ordinal) || version.StartsWith("6.", StringComparison.Ordinal) ? "net11.0"
-                : version.StartsWith("4.", StringComparison.Ordinal) ? "net10.0" : throw Refusal();
-            string prefix = "tools/" + framework + "/any/g4-host/";
+            // The archive is the pinned version; its member prefix is the extracted host's own location.
+            if (metadata.Elements().Single(element => element.Name.LocalName == "version").Value != PlatformTestPins.ToolVersion) throw Refusal();
+            string prefix = Path.GetRelativePath(Path.Combine(archiveDirectory, "published"), originalRoot).Replace(Path.DirectorySeparatorChar, '/') + "/";
+            if (!prefix.StartsWith("tools/", StringComparison.Ordinal) || !prefix.EndsWith("/any/g4-host/", StringComparison.Ordinal)) throw Refusal();
             foreach (ZipArchiveEntry entry in package.Entries.Where(entry => entry.FullName.StartsWith(prefix, StringComparison.Ordinal) && !entry.FullName.EndsWith('/')))
             {
                 string relative = entry.FullName[prefix.Length..].Replace('/', Path.DirectorySeparatorChar);
@@ -133,11 +134,21 @@ internal static class PlatformPublishedValidationRuntime
             if (!Equal(Files(originalRoot), original) || !Equal(Files(copy), expected)
                 || !File.ReadAllBytes(receipt).AsSpan().SequenceEqual(evidence)
                 || Hash(archive) != _patchedArchive || Hash(publishedArchive) != publishedArchiveHash || Hash(modelHosting) != _patchedHosting
-                || !PlatformPartiesValidationContext.IsPublishedPair(Hash(copiedHost), Hash(Path.Combine(copy, "Hexalith.Builds.Tooling.dll")))) throw Refusal();
+                || !IsPinnedPair(copiedHost, Path.Combine(copy, "Hexalith.Builds.Tooling.dll"))) throw Refusal();
         }
         Verify();
         TestContext.Current.TestOutputHelper!.WriteLine(System.Text.Encoding.UTF8.GetString(evidence));
         return (copiedHost, Verify);
+    }
+
+    /// <summary>Applies Composition's own version rule to the pair on disk, with the range read from the pin files.</summary>
+    private static bool IsPinnedPair(string host, string tooling)
+    {
+        // Hash refuses links and missing files before the version is read.
+        _ = Hash(host);
+        _ = Hash(tooling);
+        return PlatformPartiesValidationContext.IsPublishedPair(FileVersionInfo.GetVersionInfo(host).ProductVersion,
+            FileVersionInfo.GetVersionInfo(tooling).ProductVersion, PlatformTestPins.ToolVersionRange);
     }
 
     private static Dictionary<string, string> Files(string root)
@@ -171,5 +182,5 @@ internal static class PlatformPublishedValidationRuntime
         using FileStream stream = File.OpenRead(path);
         return Convert.ToHexStringLower(SHA256.HashData(stream));
     }
-    private static InvalidDataException Refusal() => new("The test-only published validation runtime requires its exact signed entry/tooling pair and authenticated security dependency; unknown changes refuse.");
+    private static InvalidDataException Refusal() => new("The test-only published validation runtime requires its signed, pinned-version entry/tooling pair and authenticated security dependency; unknown changes refuse.");
 }

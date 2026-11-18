@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
+using System.Diagnostics;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -11,20 +12,30 @@ using Shouldly;
 /// <summary>Executes the signed entry/Tooling transport with its bounded test-only security overlay and a fresh reader before application resources start.</summary>
 public sealed class PlatformCurrentOwnerHandoffTests
 {
-    /// <summary>The genuine current pair is exact; crossed historical/current members and changed bytes refuse.</summary>
+    /// <summary>The genuine pinned pair is lock-verified and admitted by its version; crossed, split or out-of-range versions refuse.</summary>
     [Fact]
     public void CurrentSignedHostAndToolingPairCannotBeCrossed()
     {
         string tool = typeof(PlatformCurrentOwnerHandoffTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
             .Single(attribute => attribute.Key == "PlatformTestPublishedToolRoot").Value!;
-        string host = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Module.AppHost.dll"));
-        string tooling = Hash(Path.Combine(tool, "g4-host", "Hexalith.Builds.Tooling.dll"));
-        host.ShouldBe("3050b20b0037ab62470e4bb42a7e08512181b6abbbc02bb12de17b0f1e75f0a1");
-        tooling.ShouldBe("48448ba24ceb2d265ad4b641e6587c79547167c0563954c662807824fdd6be27");
-        PlatformPartiesValidationContext.IsPublishedPair(host, tooling).ShouldBeTrue();
-        PlatformPartiesValidationContext.IsPublishedPair(host, "1af7014c36c50bbb021f5c29b6360c9cbeefb91669b556d2c0c604c8f8d738ec").ShouldBeFalse();
-        PlatformPartiesValidationContext.IsPublishedPair("e1557fbb763fc388d0e911c839505ae1205a92d02f564ddbb2b4516bddccc709", tooling).ShouldBeFalse();
-        PlatformPartiesValidationContext.IsPublishedPair(new string('0', 64), tooling).ShouldBeFalse();
+        string host = Path.Combine(tool, "g4-host", "Hexalith.Builds.Module.AppHost.dll");
+        string tooling = Path.Combine(tool, "g4-host", "Hexalith.Builds.Tooling.dll");
+        // AR-12 expected identities come from the lock-verified archive, never from literals.
+        Hash(host).ShouldBe(PlatformTestPins.LockedArchiveMemberHash(tool, "g4-host/Hexalith.Builds.Module.AppHost.dll"));
+        Hash(tooling).ShouldBe(PlatformTestPins.LockedArchiveMemberHash(tool, "g4-host/Hexalith.Builds.Tooling.dll"));
+        string? hostVersion = FileVersionInfo.GetVersionInfo(host).ProductVersion;
+        string? toolingVersion = FileVersionInfo.GetVersionInfo(tooling).ProductVersion;
+        hostVersion.ShouldBe(PlatformTestPins.ToolVersion + "+" + PlatformTestPins.BuildsGitlink);
+        toolingVersion.ShouldBe(hostVersion);
+        string range = PlatformTestPins.ToolVersionRange;
+        PlatformPartiesValidationContext.IsPublishedPair(hostVersion, toolingVersion, range).ShouldBeTrue();
+        string foreign = PlatformTestPins.ToolVersion + "+" + new string('0', 40);
+        PlatformPartiesValidationContext.IsPublishedPair(hostVersion, foreign, range).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(foreign, toolingVersion, range).ShouldBeFalse();
+        PlatformPartiesValidationContext.IsPublishedPair(hostVersion, null, range).ShouldBeFalse();
+        // A range whose floor is the next major generation refuses the current pair.
+        int major = int.Parse(PlatformTestPins.ToolVersion.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture);
+        PlatformPartiesValidationContext.IsPublishedPair(hostVersion, toolingVersion, $"[{major + 1}.0.0, {major + 2}.0.0-0)").ShouldBeFalse();
     }
 
     /// <summary>Preflight can enrich only derived consumer cache; a fresh ordinary proof and reader preserve the same signed command inputs.</summary>

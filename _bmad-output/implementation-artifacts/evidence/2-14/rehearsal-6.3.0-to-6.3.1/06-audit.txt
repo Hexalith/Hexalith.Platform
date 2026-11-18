@@ -1,0 +1,30 @@
+
+$ python3 eng/run_tuple_ci.py --audit-only --suite current42 --eventstore-sdk 4.2.0 --evidence <new-dir>
+exit=0
+{
+  "status": "graph-verified",
+  "buildsCatalog": {
+    "path": "Props/Directory.Packages.props",
+    "sourceRevision": "db7bb7179244ce33483231687486381305c7c3db",
+    "blob": "4ef88b0ab9cb71504521cb66c1baf66cd36c673e",
+    "sha256": "cf2aded245ee32a0fc0c2680dca1818a7abdb4b69c066253d469fa40129d6550"
+  },
+  "toolLock": {
+    "id": "Hexalith.Builds.Module.Cli",
+    "version": "6.3.1",
+    "contentHash": "aG9BwMIYKlK5FyiVo1uVl5jBWFB/Ru+pV699b8OVjFp8H8SLTnAlU9rsIl0m0ypjukfath6juGz7gbftBl1V5g=="
+  },
+  "projectGraphPaths": 31,
+  "genericDefaults": {
+    "sdk": "5.3.0",
+    "openapi": [
+      "11.0.0",
+      "3.11.1"
+    ],
+    "memories": "4.0.0",
+    "tenants": "8.0.1",
+    "parties": "3.1.1",
+    "mcp": "3.0.0"
+  },
+  "kind": "finite-current-platform-sdk42-catalog-view"
+}

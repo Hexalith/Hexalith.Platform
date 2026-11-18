@@ -25,8 +25,9 @@ if properties.findall(".//HexalithPlatformSdk42CatalogView"):
     from current_catalog_view import verify_named_platform_catalog
     from builds_tuple import load_binding
     try:
-        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256,
-            binding=load_binding(arguments.producer_binding) if arguments.producer_binding is not None else None)
+        if arguments.producer_binding is not None:
+            load_binding(arguments.producer_binding)
+        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256)
     except ValueError as failure:
         raise SystemExit(str(failure)) from failure
     composition_view = next(item for item in view["evaluations"] if item["Identity"] == "Hexalith.Platform.Composition")

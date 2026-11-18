@@ -6,7 +6,7 @@ import os
 import subprocess
 from pathlib import Path
 
-from builds_tuple import load_binding, resolve_builds_root, verify_catalog
+from builds_tuple import load_binding, recorded_gitlink, resolve_builds_root, verify_catalog
 
 
 def inspection_environment():
@@ -19,11 +19,12 @@ def inspection_environment():
 
 
 def verify_bound_checkout(platform_root, builds_root):
-    """Verify against the owner's existing binding, never a digest of an arbitrary current file."""
+    """Verify against the owner's recorded Builds gitlink, never a digest of an arbitrary current file."""
     platform_root, builds_root = Path(platform_root).resolve(), Path(builds_root).resolve()
     binding_path = platform_root / "eng/builds-tuple.json"
-    binding = load_binding(binding_path, require_publication=False)
+    load_binding(binding_path)
     environment = inspection_environment()
+    gitlink = recorded_gitlink(platform_root, environment=environment)
     if (
         not (builds_root / ".git").exists()
         or Path(
@@ -34,8 +35,8 @@ def verify_bound_checkout(platform_root, builds_root):
         != builds_root
     ):
         raise ValueError("The bound producer must be its own initialized physical checkout.")
-    catalog = verify_catalog(binding, builds_root, environment=environment)
-    if hashlib.sha256(catalog.read_bytes()).hexdigest() != binding["producer"]["catalog"]["sha256"]:
+    catalog, _, identity = verify_catalog(gitlink, builds_root, environment=environment)
+    if hashlib.sha256(catalog.read_bytes()).hexdigest() != identity["sha256"]:
         raise ValueError("The bound catalog working bytes differ from the authenticated Git body.")
     entries = subprocess.check_output(
         ["git", "ls-files", "-v", "-z"], cwd=builds_root, env=environment, text=True
@@ -49,8 +50,9 @@ def verify_bound_checkout(platform_root, builds_root):
     return {
         "buildsRoot": str(builds_root),
         "catalog": str(catalog),
-        "catalogSha256": binding["producer"]["catalog"]["sha256"],
-        "sourceRevision": binding["producer"]["sourceRevision"],
+        "catalogBlob": identity["blob"],
+        "catalogSha256": identity["sha256"],
+        "sourceRevision": gitlink,
         "producerBinding": str(binding_path),
     }
 
@@ -79,9 +81,8 @@ def materialize(platform_root, output, source_root=None):
         or Path(git("-C", source, "rev-parse", "--show-toplevel").stdout.strip()).resolve() != source
     ):
         raise ValueError("The bound producer requires an initialized physical Builds checkout.")
-    revision = load_binding(platform_root / "eng/builds-tuple.json", require_publication=False)["producer"][
-        "sourceRevision"
-    ]
+    load_binding(platform_root / "eng/builds-tuple.json")
+    revision = recorded_gitlink(platform_root, environment=environment)
     output.parent.mkdir(parents=True, exist_ok=True)
     git("clone", "--quiet", "--shared", "--no-checkout", "--", source, output)
     if git("-C", output, "cat-file", "-e", revision + "^{commit}", check=False).returncode:
