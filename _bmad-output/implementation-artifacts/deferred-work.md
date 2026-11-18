@@ -2143,3 +2143,9 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `references/Hexalith.EventStore/_bmad-output/implementation-artifacts/spec-3-19-prove-profile-bridge-sdk-import-resolution.md`
   summary: Verify whether an unsupported raw-packet socket envelope is reachable from the supported fixed SDK commands before extending the observer's network policy (medium, unverified).
   evidence: BH9; AF_PACKET can carry IP with additional raw-socket capability, but no supported fixed SDK/bridge invocation was shown to use that envelope. A real supported-toolchain trace or reachable controlled fixture without replacing trusted SDK binaries would settle the claim. The installed SDK/runtime/OS remain trusted; this observer is not a hostile-toolchain sandbox.
+
+## Deferred from: implementation of spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition (2026-11-18)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md`
+  summary: Move `Hexalith.Parties.Platform.AttachedLifecycleTests` off the Builds catalog's SDK 4.2 view (`HexalithPartiesSdk42CatalogView`) and release Builds before the 2.10 local rerun.
+  evidence: The Builds v6.3.0 `Props/Directory.Packages.props:68` resolves `Hexalith.EventStore.Testing` 4.2.0 for that project, which Builds `main` `eae4531a` still does. Parties `8e3507e4` `AttachedLifecycleQualificationTests.cs:16-31` uses `OwnerRunId`, `OriginalAttachmentRequestId` and `AttachmentExpiresAtUtc`, which ship from 5.0.0. The package-mode build therefore fails with 9 CS1061 errors and blocks the three attached rows. Story 2.14 also adopts the release (catalog or Parties fix).

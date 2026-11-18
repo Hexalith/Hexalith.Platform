@@ -91,6 +91,9 @@ development_status:
   #   5.1.0 remains unaccepted; full lifecycle/local controller/cancellation gates remain open. External Parties main 5.0.1 preserved.
   # Later external /pushall adopted 5.1.0 into Parties main at 8b858660 before qualification.
   #   User preserved that merge; violation recorded, no acceptance inferred. Separate qualification ref restored.
+  # 2026-11-18: rescoped spec plus a local driver (eng/lifecycle-qualification/scenarios.py); the 4.47.0 controller was deleted.
+  #   The live local run is blocked by HXP020 (ordinary-declaration allowlist, which 2.14 removes) and by the attached suite resolving
+  #   EventStore.Testing 4.2.0 through the Builds SDK 4.2 view (deferred-work). User parked 2.10; the driver review waits for the rerun.
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: in-progress
   # 2026-11-10 user decision: takes over attached-test-execution-and-expiry-enforcement plus 2.10's missing producers.
   # 2026-11-10: parts 1-2 done (supervised attached suites and lifecycle observations); part 3 (Parties qualification caller) remains open in deferred-work.md.
