@@ -37,7 +37,8 @@ internal static class PlatformPublishedEventStoreSeed
             throw new InvalidDataException("The restored EventStore seed differs from the signed public release archive.");
         bytes.Position = 0;
         using var package = new ZipArchive(bytes, ZipArchiveMode.Read);
-        string directory = Path.Combine(readerRoot, "eventstore-seed");
+        // The same plan is composed once for preflight and again for the live AppHost.
+        string directory = Path.Combine(readerRoot, "eventstore-seed-" + Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(directory);
         foreach (ZipArchiveEntry file in package.Entries.Where(entry => entry.FullName.StartsWith(_payload, StringComparison.Ordinal) && entry.Name.Length > 0))
         {
