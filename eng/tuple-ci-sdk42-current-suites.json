@@ -188,11 +188,32 @@
     },
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
-      "filter": "-class",
+      "filter": "-method",
       "selectors": [
-        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests"
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationRefusesChangedAuthorityBeforeEffectsAsync",
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.CurrentSignedHostAndToolingPairCannotBeCrossed"
       ],
-      "requiredCount": 8,
+      "requiredCount": 6,
+      "purpose": "current-owner-package",
+      "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-method",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationAcceptsFreshWellFormedInitialKeyWithoutPriorAnchorAsync"
+      ],
+      "requiredCount": 1,
+      "purpose": "current-owner-package",
+      "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-method",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformCurrentOwnerHandoffTests.PublishedCurrentValidationThenFreshOrdinaryGeneratePreservesMeasuredAuthorityAsync"
+      ],
+      "requiredCount": 1,
       "purpose": "current-owner-package",
       "collector": "current"
     },
