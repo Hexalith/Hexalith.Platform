@@ -127,9 +127,9 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         source.Revision.ShouldBe(revision);
     }
 
-    /// <summary>The current source declaration cannot replay into the frozen historical or public source-proof purpose.</summary>
+    /// <summary>A declaration hash other than the measured source bytes refuses the Release preparation.</summary>
     [Fact]
-    public void CurrentDeclarationCannotReplayIntoHistoricalSourceAuthority()
+    public void DeclarationOutsideTheMeasuredSourceIsRefused()
     {
         string root = CurrentOwnerRoot();
         string revision = Revision(root);

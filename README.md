@@ -24,7 +24,7 @@ recorded by the run. The lifecycle owner and attachment keep their own
 declared profiles. See [package catalog qualification](docs/package-catalog-qualification.md)
 for execution and evidence details.
 
-The continuing inventories declare 471 current42, 72 base42 and nine extension
+The continuing inventories declare 479 current42, 72 base42 and nine extension
 executions, with exact positive group counts and zero skips.
 
 The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/

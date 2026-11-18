@@ -118,9 +118,10 @@ public sealed class PlatformCurrentOwnerPackageTests
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
         PlatformCompositionOptions accepted = Capture(fixture);
         PlatformCurrentOwnerProof proof = accepted.CurrentOwnerProof!;
+        int probes = 0;
         foreach (string fault in new[] { "archive", "runtime-body", "snapshot", "project-override", "dependency-source", "owner-source", "owner-missing", "reference-image" })
         {
-            PlatformCompositionOptions options = accepted;
+            PlatformCompositionOptions options = accepted with { ImageProbeRunner = (_, _, _) => { probes++; throw new InvalidOperationException("Unexpected image probe."); } };
             string? path = fault switch
             {
                 "archive" => Directory.GetFiles(Path.Combine(proof.Directory, "feed"), "*.nupkg").First(),
@@ -139,7 +140,10 @@ public sealed class PlatformCurrentOwnerPackageTests
                 if (fault == "reference-image") options = options with { Images = new Dictionary<string, string>(PlatformServerBindings.ReferenceImages) { ["tenants/domain"] = "registry.invalid/tenants" } };
                 proof.Matches(options).ShouldBeFalse(fault);
                 var builder = PlatformPartiesPackageFixture.Builder();
-                Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+                var refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+                // Changed sealed owner bytes are not parent inputs; Compose itself must refuse before registry resolution.
+                if (fault is "archive" or "runtime-body") refusal.Message.ShouldContain("authenticated and sealed Release owner", customMessage: fault);
+                probes.ShouldBe(0, fault);
                 builder.Resources.ShouldBeEmpty();
             }
             finally { if (path is not null) File.WriteAllBytes(path, original!); }

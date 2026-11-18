@@ -2,7 +2,7 @@
 
 [Current tuple preparation](current-tuple-preparation.md) documents the
 authenticated Platform checkout and Builds pin. The current inventories require
-471 current42, 72 base42, and nine extension cases.
+479 current42, 72 base42, and nine extension cases.
 
 Parties declares one package profile per project. Run the integration suite
 from the verified Platform checkout with the pinned module CLI:

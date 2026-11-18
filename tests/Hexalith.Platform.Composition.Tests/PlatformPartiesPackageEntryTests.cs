@@ -118,6 +118,80 @@ public sealed class PlatformPartiesPackageEntryTests
         Should.Throw<InvalidDataException>(() => PlatformReleasedImages.Resolve(options, server)).Message.ShouldContain(server.Image!);
     }
 
+    /// <summary>The prepared run records the loaded container of each resolved dependency, or names the substituted one.</summary>
+    /// <param name="fault">The loaded container observation to substitute, if any.</param>
+    [Theory]
+    [InlineData(null)]
+    [InlineData("manifest-image-id")]
+    [InlineData("foreign-image-id")]
+    [InlineData("foreign-reference")]
+    [InlineData("stopped")]
+    [InlineData("ambiguous")]
+    public async Task PreparedRunRecordsTheLoadedDependencyIdentityAsync(string? fault)
+    {
+        var server = DependencyImage();
+        var evidence = PlatformPartiesPackageFixture.ImageEvidence(server.Image!, index: true);
+        var resolved = PlatformReleasedImages.Resolve(ImageOptions((start, _, _) => Task.FromResult(new CompositionProcessResult(true, 0,
+            start.ArgumentList[0] == "buildx" ? evidence.Tag : evidence.Manifest, false))), server);
+        string directory = Directory.CreateTempSubdirectory("platform-released-images-").FullName;
+        try
+        {
+            CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), directory, directory, CompositionPortAllocator.Allocate(1), [], [],
+                platformDeclarationPaths: [Path.Combine(directory, "manifest.json")]);
+            string container = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData("tenants-container"u8));
+            string imageId = fault switch
+            {
+                "manifest-image-id" => "sha256:" + resolved.ImageDigest,
+                "foreign-image-id" => "sha256:" + new string('0', 64),
+                _ => evidence.ImageId,
+            };
+            string reference = fault == "foreign-reference" ? server.Image! : resolved.ImmutableImage!;
+            List<string[]> calls = [];
+            var options = ImageOptions((start, _, _) =>
+            {
+                string[] arguments = [.. start.ArgumentList];
+                calls.Add(arguments);
+                string output = arguments[0] switch
+                {
+                    "ps" => fault == "ambiguous" ? container + "\n" + new string('b', 64) : container,
+                    "container" => $"{container} {imageId} {reference} {(fault == "stopped" ? "false" : "true")}",
+                    _ => throw new InvalidOperationException("Unexpected docker command."),
+                };
+                return Task.FromResult(new CompositionProcessResult(true, 0, output, false));
+            }) with { RunPlan = plan };
+            var preparation = new PlatformReleasedImages(options, [resolved], directory);
+            string receipt = Path.Combine(directory, "released-images.json");
+            if (fault is not (null or "manifest-image-id"))
+            {
+                (await Should.ThrowAsync<InvalidDataException>(() => preparation.PrepareAsync(null!, TestContext.Current.CancellationToken)))
+                    .Message.ShouldContain(resolved.ResourceId);
+                File.Exists(receipt).ShouldBeFalse();
+                return;
+            }
+            await preparation.PrepareAsync(null!, TestContext.Current.CancellationToken);
+            // The run label and the resource label the composition applies select exactly this dependency's container.
+            calls[0].ShouldContain($"label={CompositionEnvironment.ContainerRunLabel}={plan.RunId}");
+            calls[0].ShouldContain($"label={PlatformReleasedImages.ResourceLabel}={resolved.ResourceId}");
+            using JsonDocument written = JsonDocument.Parse(File.ReadAllBytes(receipt));
+            JsonElement root = written.RootElement;
+            root.GetProperty("runId").GetString().ShouldBe(plan.RunId);
+            root.GetProperty("attemptId").GetString().ShouldBe(plan.AttemptId);
+            root.GetProperty("environmentId").GetString().ShouldBe(plan.EnvironmentId);
+            root.GetProperty("mappingHash").GetString().ShouldBe(options.Mapping.ContentHash);
+            root.GetProperty("qualificationCredit").GetBoolean().ShouldBeFalse();
+            JsonElement image = root.GetProperty("images").EnumerateArray().Single();
+            image.GetProperty("resourceId").GetString().ShouldBe(resolved.ResourceId);
+            image.GetProperty("catalogImage").GetString().ShouldBe(server.Image);
+            image.GetProperty("expectedReference").GetString().ShouldBe(evidence.Reference);
+            image.GetProperty("expectedManifestDigest").GetString().ShouldBe("sha256:" + resolved.ImageDigest);
+            image.GetProperty("expectedConfigDigest").GetString().ShouldBe(evidence.ImageId);
+            image.GetProperty("observedReference").GetString().ShouldBe(reference);
+            image.GetProperty("observedImageId").GetString().ShouldBe(imageId);
+            image.GetProperty("containerId").GetString().ShouldBe(container);
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
     private static PlatformServerBinding DependencyImage()
         => new(new PlatformModuleDeclaration("tenants.json", JsonSerializer.SerializeToElement(new { identity = new { moduleId = "tenants" } })),
             "domain", "tenants", "tenants", null, "registry.hexalith.com/tenants:7.0.7", "/ready", new Dictionary<string, string>(), []);

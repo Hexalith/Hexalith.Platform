@@ -34,7 +34,7 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         PlatformPartiesRunProof.Create(options, fixture.Key).Matches(options).ShouldBeTrue();
     }
 
-    /// <summary>The compatibility set remains finite; changing only source bytes cannot acquire it.</summary>
+    /// <summary>Declaration bytes that differ from the plan refuse the parent proof.</summary>
     [Fact]
     public void UncommittedDeclarationCannotAcquireParentProof()
     {
@@ -43,6 +43,37 @@ public sealed class PlatformOrdinaryDeclarationCompatibilityTests
         PlatformCompositionOptions options = Updated(fixture, "platform-package");
         File.AppendAllText(options.DeclarationPaths.Single(), " ");
         Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
+    }
+
+    /// <summary>Rehashed declaration or entry bytes hidden from Git status still refuse; only the committed bytes bind.</summary>
+    /// <param name="input">The owner input changed outside the committed revision.</param>
+    [Theory]
+    [InlineData("declaration")]
+    [InlineData("entry")]
+    public async Task HiddenUncommittedOwnerInputCannotAcquireParentProofAsync(string input)
+    {
+        using PlatformPartiesProofFixture fixture = new();
+        PlatformCompositionOptions options = Updated(fixture, "platform-package");
+        string root = options.Mapping.Root;
+        ModuleTestSelection selected = options.RunPlan!.SelectedTest!;
+        string path = input == "declaration" ? options.DeclarationPaths.Single() : Path.Combine(root, selected.Entry);
+        PlatformPartiesProofFixture.Git(root, "update-index", "--skip-worktree", Path.GetRelativePath(root, path));
+        File.AppendAllText(path, " ");
+        PlatformPartiesProofFixture.Git(root, "status", "--porcelain", "--untracked-files=normal").ShouldBeEmpty("skip-worktree hides the change from the clean-status check");
+        selected = input == "declaration" ? selected with { ManifestHash = Hash(path) } : selected with { EntryHash = Hash(path) };
+        CompositionRunPlan plan = options.RunPlan with
+        {
+            PlatformDeclarationHash = input == "declaration" ? selected.ManifestHash : options.RunPlan.PlatformDeclarationHash,
+            SelectedTest = selected, SelectedTests = [selected],
+        };
+        await CompositionDocumentStore.WriteAsync(Path.Combine(plan.Workspace, "plan.json"), plan, CancellationToken.None).ConfigureAwait(true);
+        options = options with { RunPlan = plan };
+        Should.Throw<InvalidDataException>(() => PlatformPartiesRunProof.Create(options, fixture.Key));
+
+        // Committing the same bytes is the only change that restores the proof.
+        PlatformPartiesProofFixture.Git(root, "update-index", "--no-skip-worktree", Path.GetRelativePath(root, path));
+        PlatformPartiesProofFixture.Commit(root);
+        PlatformPartiesRunProof.Create(options, fixture.Key).Matches(options).ShouldBeTrue();
     }
 
     /// <summary>The AppHost/Tooling pair is admitted by its shared released version inside <c>[pin, next major)</c>, never by a hash list.</summary>

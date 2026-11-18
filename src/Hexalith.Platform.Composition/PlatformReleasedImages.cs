@@ -107,7 +107,7 @@ internal sealed class PlatformReleasedImages(
 
     private async Task<string> DockerAsync(PlatformServerBinding server, string[] arguments, CancellationToken cancellationToken)
     {
-        var result = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("docker", arguments, options.PlatformRoot, null),
+        var result = await options.ImageProbeRunner(CompositionProcess.CreateStartInfo("docker", arguments, options.PlatformRoot, null),
             TimeSpan.FromSeconds(10), cancellationToken).ConfigureAwait(false);
         if (!result.Started || result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw LoadedMismatch(server);
         return result.Output.Trim();

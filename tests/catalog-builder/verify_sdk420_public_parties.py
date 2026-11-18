@@ -121,7 +121,7 @@ def qualify(args):
                     row.update(counts=counts, rootDigest=receipt["rootDigest"], catalogSha256=consumer.digest(destination / "catalog.json"))
                 else:
                     assert not list(destination.iterdir()), name
-                    assert "exact signed public artifact bytes" in completed.stderr or "not qualified" in completed.stderr, completed.stderr
+                    assert "differs from its verified published bytes" in completed.stderr or "not qualified" in completed.stderr, completed.stderr
                     row["refusedBeforeOutput"] = True
                 report["cases"].append(row)
                 save()

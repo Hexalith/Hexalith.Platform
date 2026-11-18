@@ -155,14 +155,17 @@ internal sealed class PlatformCurrentOwnerProof
             string body = Path.Combine(artifacts, "bin", name, "release", name + ".dll");
             string archive = Path.Combine(feed, name + "." + version + ".nupkg");
             using ZipArchive package = ZipFile.OpenRead(archive);
-            using Stream nuspec = package.GetEntry(name + ".nuspec")?.Open() ?? throw Refusal();
+            using Stream nuspec = package.GetEntry(name + ".nuspec")?.Open()
+                ?? throw new InvalidDataException($"The Parties package '{name}' has no nuspec.");
             var metadata = System.Xml.Linq.XDocument.Load(nuspec).Descendants().Single(element => element.Name.LocalName == "metadata");
             var repository = metadata.Elements().Single(element => element.Name.LocalName == "repository");
             if (metadata.Elements().Single(element => element.Name.LocalName == "id").Value != name
                 || metadata.Elements().Single(element => element.Name.LocalName == "version").Value != version
                 || (string?)repository.Attribute("commit") != revision
-                || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Parties") throw Refusal();
-            using Stream embedded = package.GetEntry("lib/" + PreparationTargetFramework + "/" + name + ".dll")?.Open() ?? throw Refusal();
+                || (string?)repository.Attribute("url") != "https://github.com/Hexalith/Hexalith.Parties")
+                throw new InvalidDataException($"The Parties package '{name}' metadata differs from its {version} source revision.");
+            using Stream embedded = package.GetEntry("lib/" + PreparationTargetFramework + "/" + name + ".dll")?.Open()
+                ?? throw new InvalidDataException($"The Parties package '{name}' has no {PreparationTargetFramework} body.");
             string digest = Convert.ToHexStringLower(SHA256.HashData(embedded));
             if (digest != Hash(body) || bodies.TryGetValue(name, out string? runtime) && runtime != digest)
                 throw new InvalidDataException($"The Parties package '{name}' differs from its measured Release body.");
@@ -185,7 +188,8 @@ internal sealed class PlatformCurrentOwnerProof
                         || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != sdkVersion
                         || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != tenantsVersion
                         || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != memoriesVersion
-                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != mcpCliVersion)) throw Refusal();
+                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != mcpCliVersion))
+                    throw new InvalidDataException($"The Parties Release restored '{name}' {actualVersion} outside the selected catalog dependencies.");
                 if (library.Value.GetProperty("type").GetString() == "project")
                 {
                     string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(document.RootElement.GetProperty("project").GetProperty("restore").GetProperty("projectPath").GetString()!)!, library.Value.GetProperty("msbuildProject").GetString()!));
