@@ -86,16 +86,16 @@ public sealed class PlatformCurrentOwnerHandoffTests
         var original = authority.ToDictionary(path => path, Hash, StringComparer.Ordinal);
         byte[] originalSnapshot = File.ReadAllBytes(snapshot);
         var validation = await fixture.RunPublishedValidationAsync(completeCatalog: true, signingKey: initialSigningKey);
-        validation.ExitCode.ShouldNotBe(0);
-        validation.ErrorOutput.ShouldContain("requires its exact qualified full owner/public/image cohort");
+        validation.ExitCode.ShouldBe(0, validation.ErrorOutput);
+        validation.ErrorOutput.ShouldNotContain("requires its exact qualified full owner/public/image cohort");
         validation.ErrorOutput.ShouldNotContain("trusted parent plan/key handoff");
         byte[] validationSnapshot = File.ReadAllBytes(snapshot);
         await PlatformPartiesCatalogHandoffTests.AssertDerivedConsumerEnrichmentAsync(originalSnapshot, validationSnapshot, snapshot, fixture.Seed);
         fixture.AssertValidationRuntimeIntegrity();
         Directory.Exists(Path.Combine(fixture.Workspace, "current-owner")).ShouldBeTrue(
-            "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner before image refusal.");
-        File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).ShouldBeFalse();
-        Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
+            "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner.");
+        File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt"))
+            .ToHashSet(StringComparer.Ordinal).SetEquals(PlatformPartiesPackageFixture.CurrentImages).ShouldBeTrue();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);

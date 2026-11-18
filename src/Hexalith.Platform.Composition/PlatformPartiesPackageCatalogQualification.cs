@@ -70,6 +70,18 @@ internal static class PlatformPartiesPackageCatalogQualification
             ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.5", "f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b"),
         }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
 
+    private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _currentOwnerMemories327Images = _currentOwnerImages
+        .Where(pair => !pair.Key.StartsWith("tenants/", StringComparison.Ordinal) && !pair.Key.StartsWith("memories/", StringComparison.Ordinal))
+        .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
+        {
+            ["tenants/domain"] = ("registry.hexalith.com/tenants:7.0.7", "590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635"),
+            ["tenants/api"] = ("registry.hexalith.com/tenants-api:7.0.7", "2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65"),
+            ["memories/server"] = ("registry.hexalith.com/memories:3.0.27", "4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8"),
+            ["memories/domain"] = ("registry.hexalith.com/memories-domain-service:3.0.27", "17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42"),
+            ["memories/clock"] = ("registry.hexalith.com/memories-access-telemetry-clock:3.0.27", "0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106"),
+            ["memories/telemetry"] = ("registry.hexalith.com/memories-access-telemetry:3.0.27", "18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024"),
+        }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
     private static readonly IReadOnlyDictionary<string, (string Image, string Digest)> _publishedPartiesImages = _currentOwnerImages
         .Where(pair => pair.Key != "parties/domain")
         .Concat(new Dictionary<string, (string Image, string Digest)>(StringComparer.Ordinal)
@@ -100,16 +112,18 @@ internal static class PlatformPartiesPackageCatalogQualification
             || !Snapshot(options, declarations, "memories", "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840")
             || !Snapshot(options, declarations, "parties", current ? options.CurrentOwnerProof!.SelectedDeclarationHash : ownerHash!.ToLowerInvariant())
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
-            // Signed reader artifacts alone cannot authorize new execution image tuples.
+            // Signed reader artifacts alone cannot authorize new execution image tuples except the measured current 7.0.7/3.0.27 owner.
             || cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName
-                or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name
+                or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name
+            || !current && cohort is PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name
             || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
             || !current && !PublishedCatalogArtifactCohort.Matches("Hexalith.Parties.Contracts", cohort)
             || !CompositionMatches(options, declarations)) throw Refusal();
-        IReadOnlyDictionary<string, (string Image, string Digest)> images = current ? _currentOwnerImages
+        IReadOnlyDictionary<string, (string Image, string Digest)> images = current
+            ? cohort == PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name ? _currentOwnerMemories327Images : _currentOwnerImages
             : cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name ? _publishedPartiesImages
             : cohort == PublishedCatalogArtifactCohort.CurrentFullPartiesName ? _currentImages : _images;
         return servers.Select(server =>

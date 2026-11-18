@@ -41,18 +41,25 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>The six genuine current public images; the private current Parties executable is never relabeled as a public image.</summary>
     internal static IReadOnlySet<string> CurrentImages { get; } = new HashSet<string>(StringComparer.Ordinal)
     {
+        "registry.hexalith.com/tenants@sha256:590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635",
+        "registry.hexalith.com/tenants-api@sha256:2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65",
+        "registry.hexalith.com/memories@sha256:4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8",
+        "registry.hexalith.com/memories-domain-service@sha256:17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42",
+        "registry.hexalith.com/memories-access-telemetry-clock@sha256:0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106",
+        "registry.hexalith.com/memories-access-telemetry@sha256:18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024",
+    };
+
+    /// <summary>The seven separately measured images for the genuine complete public Parties3.1 profile.</summary>
+    internal static IReadOnlySet<string> PublishedImages { get; } = new HashSet<string>(StringComparer.Ordinal)
+    {
         "registry.hexalith.com/tenants@sha256:1ba6ff9dd0623817d667bd46229dd0ba34a23ffc51d48c889d3e67f474bec22a",
         "registry.hexalith.com/tenants-api@sha256:f4707de77c595977d5b7913b4e6119aed407da3c72475ba13b46e9e302d1ef7b",
         "registry.hexalith.com/memories@sha256:a857a0865ff3781027cc392a7d36431fd13db1e7a3522690a8ef05df7036af3a",
         "registry.hexalith.com/memories-domain-service@sha256:90d15d551cb1ada3aafbcab823cbd8e83304605ca383abdbd47573613304e820",
         "registry.hexalith.com/memories-access-telemetry-clock@sha256:e4edd4f62a43fc404f40eac2fd107c17320420b38bbd6514f31f23b19b019d3e",
         "registry.hexalith.com/memories-access-telemetry@sha256:d227044d62db58b87c26f99a2ea6264b148ffd0c8d15c452b3bf4b30dd244e0b",
+        "registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb",
     };
-
-    /// <summary>The seven separately measured images for the genuine complete public Parties3.1 profile.</summary>
-    internal static IReadOnlySet<string> PublishedImages { get; } = CurrentImages
-        .Append("registry.hexalith.com/parties@sha256:48d0e8db506e4ce574e8c7bd97e528a302d3fbf97754b007176904cbc1f3abfb")
-        .ToHashSet(StringComparer.Ordinal);
 
     private IReadOnlySet<string> SelectedImages => Plan.SelectedTest?.Name == PlatformCurrentOwnerProof.Profile ? CurrentImages : Images;
 
@@ -283,6 +290,19 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         })).Message.ShouldBe("Expected measured runner authority; stop before resource effects.");
         builder.Resources.ShouldBeEmpty();
         return Options;
+    }
+
+    /// <summary>Requires the measured current 7.0.7/3.0.27 linux/amd64 image bindings and project-only Parties/EventStore owners.</summary>
+    internal static void AssertCurrentOwnerMemories327Images(IReadOnlyList<PlatformServerBinding> servers)
+    {
+        servers.Single(server => server.ResourceId == "tenants").ImageDigest.ShouldBe("590bc04ecc3301daef22b318d029b486edd8b40b550a592a32461223966a9635");
+        servers.Single(server => server.ResourceId == "tenants-api").ImageDigest.ShouldBe("2a72f0e36a0cfeef9b7e26731315049248fa6f2be164547de102b12481105b65");
+        servers.Single(server => server.ResourceId == "memories").ImageDigest.ShouldBe("4203f97879061c5ef9195f07a439157c515bc8b77d5cae78786bb0d7e2de65f8");
+        servers.Single(server => server.ResourceId == "memories-domain-service").ImageDigest.ShouldBe("17a278c6ecaaa54d2c6202c60dbaa812e736e7f0206d31846b11e4a46f503c42");
+        servers.Single(server => server.ResourceId == "memories-access-telemetry-clock").ImageDigest.ShouldBe("0d6d58e2c16dfaf603efd1ac1a8207d9f6179c67621023a65ae03865b4fc9106");
+        servers.Single(server => server.ResourceId == "memories-access-telemetry").ImageDigest.ShouldBe("18cfc788ddfab489df895acc85c1427d1bad9aae174a19b3a74f694ddc693024");
+        servers.Single(server => server.ResourceId == "parties").Image.ShouldBeNull();
+        servers.Single(server => server.ResourceId == "eventstore").Image.ShouldBeNull();
     }
 
     /// <summary>Requires zero model resources and no rendering from an entry-only control.</summary>
