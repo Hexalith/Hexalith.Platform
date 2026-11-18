@@ -2,7 +2,7 @@
 title: '2.8 Run CI integration on disposable runners with guaranteed cleanup'
 type: 'feature'
 created: '2026-10-31'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 2
 baseline_commit: '03a099bba258c37a8f16c8b2e842ae842b1ad6d6'
@@ -909,6 +909,67 @@ Verdict routes: **D** (decision needed), **P** (patch), **RJ** (reject).
 
 **Outcome:** 1 decision-needed group (G1), 15 patch groups (G2 to G16) and no defers. 14 findings are rejected, plus four partial claims inside kept findings (listed below).
 
+### Iteration 4, 2026-11-18 (closure delta review)
+
+Scope, per the 2026-11-18 course correction:
+- Builds `7afc4981..37e1a600`: the attach fallback, lifecycle-hold forwarding and their tests.
+- Platform `8069fcdd..339af849`: the current-owner image admission and the restored Builds gitlink.
+- The combined diff is 14 files (44.6 KB).
+
+Three layers ran: blind hunter (BH4), edge-case hunter (ECH4) and verification gap (VG4). The orchestrator confirmed that Builds `main` CI runs [44260597208](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44260597208) and [44264165103](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44264165103) fail on one test, `IssuedOwnerStateAdmitsSameJobWithoutProcessGitHubVariablesAsync(process: "scrubbed")` at `AttachAdmissionTests.cs:210`, with a `cross-job` refusal. It also confirmed that `CheckContext` catches only `InvalidDataException` and that `AdmitAsync` calls it at line 81 without a guard.
+
+| ID | Claim | Verdict | Route | Evidence |
+| --- | --- | --- | --- | --- |
+| BH4-7 | Issued-handoff tests depend on the ambient CI and handoff variables | high | P: G1 | Builds `main` CI fails the `scrubbed` case on hosted runners: the real GitHub identity wins, so the result is `cross-job`. |
+| VG4-1 | Same as BH4-7 (pre-verified gap; the foreign-job test passes vacuously on CI) | high | P: G1 | On hosted CI the process identity decides, so the issued path is never exercised. |
+| VG4-O1 | Builds `main` CI is red because of this test | high | P: G1 | Runs 44260597208 and 44264165103, 1 failure out of 3,166 tests. |
+| ECH4-11 | Same as BH4-7 | high | P: G1 | Same evidence. |
+| ECH4-13 | The unverifiable test leaves the ambient `HEXALITH_G4_*` handoff variables in place | low | P: G1 | Same root cause: ambient handoff variables change which branch runs. |
+| ECH4-14 | The `NativeTestExecutorTests` negative hold assertion depends on an ambient `HEXALITH_CI_LIFECYCLE_HOLD` | low | P: G1 | Same root cause; the fix is to clear the variable before asserting. |
+| BH4-6 | `AttachAdmissionTests` changes process-wide CI variables while running in parallel | medium | P: G2 | The class has no `[Collection(nameof(PlatformManifestTestGrouping))]`; every other class that sets CI variables is in that serial collection. |
+| ECH4-12 | Same as BH4-6 | medium | P: G2 | Same evidence. |
+| VG4-O2 | Same as BH4-6 | medium | P: G2 | Same evidence. |
+| BH4-8 | No negative tests for the issued-state guards or for process-first precedence | medium | P: G3 | Same as VG4-2. |
+| VG4-2 | Same as BH4-8 (pre-verified gap) | medium | P: G3 | Removing the `DeepEquals` check, the `VerifyIssuedContext` call or the role check, or returning issued state first, keeps every test green. |
+| VG4-3 | The reader is never checked against the real plan and descriptor writers (pre-verified gap) | medium | P: G4 | `WriteHandoff` builds both files by hand. No more hosted proof runs are planned, so nothing else would catch drift. |
+| BH4-1 | Non-`InvalidDataException` errors escape admission | low | P: G5 | A `JsonException`, `IOException`, `UnauthorizedAccessException` or `FormatException` from `GetInt32` escapes through `AdmitAsync:81`. The fix only widens a catch filter and uses `TryGetInt32`. |
+| ECH4-1 | Same as BH4-1 | low | P: G5 | Same evidence. |
+| ECH4-2 | A fault in an issued file aborts a complete-CI admission | low | P: G5 | Same root cause: only those exception types escape; `InvalidDataException` is already caught. |
+| ECH4-7 | A fractional `workflowAttempt` throws `FormatException` | low | P: G5 | Same root cause. |
+| ECH4-17 | A local admission can now throw | low | P: G5 | Same root cause. |
+| BH4-2 | The fallback identity is not bound to the requested owner or store | low | RJ | Forging it requires writing consistent owner files on the job's own disposable VM, where every process is already in the same job. `VerifyIssuedContext` requires `github-hosted`. Binding would add parameters and could refuse a legitimate same-job attach to another owner. |
+| ECH4-5 | Same as BH4-2 | low | RJ | Same evidence. |
+| VG4-O3 | Same as BH4-2 | low | RJ | Same evidence. |
+| BH4-3a | The catch branch accepts an issued `local` context for incomplete CI | false | RJ | In that case a verified handoff exists, so "incomplete CI without a handoff refuses" still holds. The context can only match a local owner. |
+| ECH4-3 | Same as BH4-3a | false | RJ | Same evidence. |
+| BH4-3b | The issued-read error is discarded, giving `cross-context` instead of `unverifiable` | low | RJ | It affects only the refusal reason. Surfacing it would refuse local attaches that succeed today. |
+| ECH4-4 | Same as BH4-3b | low | RJ | Same evidence. |
+| BH4-4 | `VerifyExecutingTool` skips a one-sided tool identity | low | RJ | It is reachable only with a partial or forged file. Tightening it would change refusal semantics without evidence that both writers always record the identity. |
+| ECH4-8 | Same as BH4-4 | low | RJ | Same evidence. |
+| BH4-5 | The reader re-implements validation (descriptor schema not checked, duplicate helpers, size checked before an unbounded read) | low | RJ | No reachable harm was shown; reusing the existing code would be a refactor. |
+| ECH4-9 | A file can change between the checks and `ReadAllBytes` | low | RJ | The owner writes these files once, before the child starts. A bounded stream read is more than a direct correction. |
+| ECH4-6 | A relative `resourceClaimStateDirectory` resolves against the working directory | low | RJ | The engine writes the absolute `_options.StateDirectory`; only a forged plan could be relative. The fix would add a guard. |
+| ECH4-10 | Linked ancestor directories reject a genuine handoff | low | RJ | The issued path matters only for CI owners on GitHub-hosted Linux, where workspace paths have no linked ancestors. Other Builds readers apply the same rule. |
+| BH4-9 | Nothing records which source supplied the attacher identity | low | RJ | The spec does not require it, and recording it would add public surface. |
+| BH4-10 | The `HEXALITH_CI_LIFECYCLE_HOLD` constant has loose edges | low | RJ | Cosmetic. The exact `"1"` contract matches the Parties controller. |
+| BH4-11 | The Platform change lost its refusal coverage | low | RJ | The new `!current` guard and the remaining refusals belong to the allowlist that Story 2.14 removes, so new tests would be thrown away. |
+| BH4-12 | Two Platform tests got weaker | low | RJ | Same allowlist; Story 2.14 rewrites these tests. |
+| ECH4-16 | The `platform-components` absence assertion was dropped | low | RJ | That validation now succeeds, so the refusal-path assertion no longer applies. Story 2.14 rewrites this test. |
+| ECH4-15 | `HashSet` hides duplicate image probes | low | RJ | Duplicate probes are harmless, and the set equality still proves all six digests. |
+| BH4-13 | `AssertCurrentOwnerMemories327Images` checks less than its summary claims | low | RJ | Every caller already asserts the Parties and EventStore `ProjectPath` (for example `PlatformCurrentOwnerPackageTests.cs:488-489`). |
+| BH4-14 | The allowlist comment is not traceable | low | RJ | Cosmetic; Story 2.14 removes the allowlist. |
+| BH4-15 | The diff does not identify the Builds commit or its release status | false | RJ | The scope above names `37e1a600`, and the closure record states it is unreleased. |
+
+**Outcome:** five patch groups (G1 to G5), no defers and no loopback. 20 findings are rejected.
+
+**Patches applied:** all five patch groups are in Builds `58e8a03fda27b5919760052cfa6da85e37eaa361`, on local branch `fix/attach-admission-test-isolation` from `origin/main` `eae4531a`. It is not pushed. The production change is limited to the widened catch filter and `TryGetInt32` in `TestEnvironmentDescriptorWriter.cs`.
+
+Orchestrator check:
+- In a clean environment, `AttachAdmissionTests` plus `NativeTestExecutorTests` pass 215/215.
+- With a complete hosted-like GitHub identity set, `AttachAdmissionTests` passes 145/145. This is the condition that turned Builds `main` red.
+
+The implementer's mutation checks fail on each guard named in G3 and on the G5 catch. Reverting only `TryGetInt32` stays green, because the widened catch already refuses that case.
+
 ### Review Findings
 
 - [x] [Review][Decision] G1 (resolved 2026-11-11: accept as owner cancellation; see the iteration-3 owner decision): A helper timeout is now recorded as a cancellation.
@@ -1703,3 +1764,105 @@ Not permitted: merges, pushes to any `main`, tags, publications, pin changes on
 current-owner path hits another gate, stop and report it rather than widening
 scope. Results remain `baseline-only`: no candidate or tool acceptance, and
 no Story 2.10 matrix pass.
+
+### Proof-branch switch executed; dispatch not achieved — 2026-11-18
+
+This continuation used the authorization above: one proof-branch push, one
+dispatch and no cancellation request. There were no merges, `main` pushes,
+tags, publications or pin changes. Records are in
+[hosted-proof-20261118](evidence/2-8/hosted-proof-20261118/). The result is
+`baseline-only`.
+
+External events, reported and not repaired:
+
+- At 07:41Z an external `/pushall` merged the earlier proof branch at
+  `0d64a977` into Parties `main` as `8e3507e4`, then deleted the remote branch.
+- Between 07:52Z and 07:54Z an external session removed worktree
+  `/tmp/hexalith-parties-current-owner-proof` and the local proof branch. That
+  discarded this task's first uncommitted copy of the edits. The edits were
+  reapplied in a standalone scratch clone and match the lost copy (same four
+  file SHA-256).
+
+Proof commit `063400a55718303f86464959f4769961410660d8` on parent `0d64a977`
+([patch](evidence/2-8/hosted-proof-20261118/proof-diff-063400a5.patch),
+[input change](evidence/2-8/hosted-proof-20261118/campaign-input-change-1.json),
+recorded before dispatch):
+
+- **The authorized switch:** the lifecycle baseline now sets
+  `integration-test-profiles: platform-current-package`. The ordinary `ci.yml`
+  keeps `platform-package`.
+- **Controller correction for the same run:** the controller's own source
+  showed a gap, so it was fixed before dispatch rather than found on a hosted
+  run. With the current profile in CI,
+  `NativeAssemblyObservations.Write` calls
+  `NativeDiagnosticBinding.VerifyCallerArtifact`, which reads
+  `TestResults/module-integration/invocation.json`. Only the v2 helper writes
+  that file, and the qualification job never runs the helper. The native test
+  would therefore throw before `CiLifecycleHold` publishes
+  `execution-ready.json`. The fix: before launching the execution owner,
+  `declare_current_invocation()` writes that exact-job, sole-profile
+  `baseline-only` invocation through the pinned helper's `write_evidence`.
+  The job also retains `TestResults/module-integration`.
+- **Controller tests:**
+  - the boundary assertion now expects the current profile;
+  - one new control fails against the parent controller.
+- **Local checks:**
+  - lifecycle controller suite 188/188 (the parent had 187);
+  - actionlint passed;
+  - commitlint 21.2.4 accepted the commit with the Parties config.
+
+  No local service was started.
+
+Run [44262928117](https://github.com/Hexalith/Hexalith.Parties/actions/runs/44262928117)
+([dispatch](evidence/2-8/hosted-proof-20261118/dispatch-7.json),
+[result](evidence/2-8/hosted-proof-20261118/dispatch-7-result.json)) **failed
+and is not achieved**:
+
+- One of 15 isolated projects failed: `Hexalith.Parties.Ci.Tests`, 420/421
+  passed. The failing case was
+  `AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts(version: "4.2.0", source: False, available: True, hostsAvailable: True)`.
+  Its `dotnet msbuild -getProperty` evaluation exited 1 with empty output.
+- The same row passed in run 44241094448 on unchanged test and MSBuild
+  sources. This failure is recorded as nondeterministic and unrelated, and it
+  is not relabelled passed.
+- "Require isolated success before integration" refused provisioning, and the
+  finalizer verified `not-allocated`. This is a fresh observation of matrix row
+  1.
+- The qualification job was skipped, so no owner, hold or cancellation
+  existed.
+- The one-request operator verified nothing and sent nothing. The lifecycle
+  cancellation request count stays zero.
+- The remote proof branch was deleted after the run so that `/pushall` cannot
+  merge it into `main`. The commit can be re-pushed unchanged.
+
+**Open — owner decision needed.** Repository CI guidance allows a re-run only
+after a source change, so a retry of the unchanged `063400a5` needs an explicit
+one-time exception, like the earlier macOS job retry. The choice is between:
+
+- re-pushing the same commit with one fresh `cancel-execution` dispatch and the
+  same one-request protocol;
+- separately correcting the nondeterministic owner test in its own work.
+
+The current-owner integration, the controller's invocation fix, the
+withdraw-before-stop ordering and the empty-inventory proof all remain
+unexercised on hosted runners. Step 04 is not entered.
+
+### Closure by course correction — 2026-11-18
+
+The user approved [sprint-change-proposal-2026-11-18.md](../planning-artifacts/sprint-change-proposal-2026-11-18.md).
+By owner decision, the acceptance criteria are met by hosted Parties runs
+42521615234 (matrix), 42526256372 (startup cancellation) and 42528046681
+(execution cancellation) on Parties `926c1c3f` / Builds 4.44.13. Re-proving on
+the newest tuple is not required. All remaining hosted-proof work in this spec
+is dropped: the HXP020 route, the proof branch, Parties commit `063400a5` and
+its scratch clone. No more 2.8 dispatches.
+
+Step 04 reviews only the remaining delta:
+
+- Builds `37e1a600` (on `main` through `/pushall`, unreleased): the same-job
+  attach fallback for scrubbed GitHub job variables, `HEXALITH_CI_LIFECYCLE_HOLD`
+  forwarding, `TestEnvironmentDescriptorWriter` and their tests.
+- Platform `339af849` (released in v2.1.11): `CurrentOwnerMemories327` image
+  admission under `CurrentOwnerProof`. Story 2.14 later removes this allowlist.
+
+Story 2.10 (rescoped) and Story 2.14 (extended) own the follow-up work.

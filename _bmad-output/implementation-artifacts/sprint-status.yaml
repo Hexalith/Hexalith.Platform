@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-16
+last_updated: 2026-11-18
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -80,7 +80,7 @@ development_status:
   #   EventStore native proposal disqualified by released HXR033; no native dispatch or lifecycle cancellation; Step03 remains open.
   # 2026-11-17 approved PR46 merged at a18e5f0e; exact main SDK six passed.
   #   Main tuple 44189252348 running. Source-release check deferred pending tuple. See phase-11-approved-main-merge.
-  2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: in-progress
+  2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cle: review
   # Fixture migration remains complete; do not repeat it inside 2.8.
   2-9-migrate-eventstore-and-parties-test-fixtures-to-the-environm: done
   # New spec owns complete reference qualification, broad manual matrix and final accepted-tool enrollment.

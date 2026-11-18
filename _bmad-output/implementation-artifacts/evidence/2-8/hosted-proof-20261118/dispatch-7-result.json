@@ -1,0 +1,124 @@
+{
+  "schema": "hexalith.story-2-8.focused-dispatch-result.v1",
+  "runId": 44262928117,
+  "sha": "063400a55718303f86464959f4769961410660d8",
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "failure",
+  "createdAt": "2026-11-18T07:57:31Z",
+  "updatedAt": "2026-11-18T08:13:51Z",
+  "classification": "baseline-only",
+  "cancellationRequests": 0,
+  "nativeDispatchReachedQualification": false,
+  "outcome": "not achieved: baseline isolated tests failed before integration; qualification job skipped; no owner, hold or cancellation",
+  "jobs": {
+    "baseline / build-and-test": {
+      "id": 134660415608,
+      "conclusion": "failure",
+      "steps": {
+        "Set up job": "success",
+        "Validate declared integration inputs": "success",
+        "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "success",
+        "Validate governed CI contract": "skipped",
+        "Checkout approved Builds actions": "skipped",
+        "Evaluate governed workflow provenance": "skipped",
+        "Initialize root-declared submodules (governed)": "skipped",
+        "Initialize root-declared submodules": "success",
+        "Initialize .NET": "success",
+        "Checkout workflow-owned Builds preparation": "success",
+        "Prepare module build": "success",
+        "Cache NuGet packages": "success",
+        "Validate test platform input": "skipped",
+        "Prepare package dependencies": "success",
+        "Restore": "success",
+        "Build": "success",
+        "Validate package consumer references": "success",
+        "Unit tests (Tier 1, VSTest)": "skipped",
+        "Unit tests (Tier 1, Microsoft.Testing.Platform)": "success",
+        "Require isolated success before integration": "failure",
+        "Validate coverage gates": "skipped",
+        "Install integration toolchain without starting services": "skipped",
+        "Prepare integration binaries": "skipped",
+        "Authenticate pull-only integration registry": "skipped",
+        "Runner-owned package integration": "skipped",
+        "Finalize exact CI owner": "success",
+        "Remove integration registry credentials": "success",
+        "Upload classified integration diagnostics": "success",
+        "Fail on blocking test failures": "failure",
+        "Upload test and coverage evidence": "success",
+        "Post Cache NuGet packages": "skipped",
+        "Post Checkout workflow-owned Builds preparation": "success",
+        "Post Initialize .NET": "skipped",
+        "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "success",
+        "Complete job": "success"
+      }
+    },
+    "qualification": {
+      "id": 134667878384,
+      "conclusion": "skipped",
+      "steps": {}
+    }
+  },
+  "isolatedFailure": {
+    "project": "tests/Hexalith.Parties.Ci.Tests",
+    "total": 421,
+    "passed": 420,
+    "failed": 1,
+    "test": "Hexalith.Parties.Ci.Tests.AspireRuntimePreparationTests.CatalogApiAvailabilityDoesNotSelectNativeHosts(version: \"4.2.0\", source: False, available: True, hostsAvailable: True)",
+    "assertion": "result.ExitCode should be 0 but was 1 (dotnet msbuild -getProperty evaluation of a temporary project importing Directory.Build.targets; empty stdout/stderr)",
+    "location": "tests/Hexalith.Parties.Ci.Tests/AspireRuntimePreparationTests.cs:657",
+    "priorObservation": "The same row passed in run 44241094448 at parent 0d64a977 (Ci.Tests 421/421). The proof commit changes only the lifecycle workflow, its controller and two tests/ci-lifecycle Python files; none is imported by Directory.Build.targets or this test. Classified as a nondeterministic unrelated isolated failure; not relabelled passed."
+  },
+  "integrationGate": {
+    "requireIsolatedSuccessBeforeIntegration": "failure",
+    "cleanupRecord": {
+      "executionContext": {
+        "disposable": true,
+        "jobId": "build-and-test",
+        "kind": "ci",
+        "operatingSystem": "Linux",
+        "repository": "Hexalith/Hexalith.Parties",
+        "runnerKind": "github-hosted",
+        "workflowAttempt": 1,
+        "workflowRunId": "44262928117"
+      },
+      "jobStatus": "failure",
+      "schema": "hexalith.module.ci-integration-cleanup.v1",
+      "status": "not-allocated",
+      "verified": true
+    },
+    "meaning": "matrix row \"Isolated failure\": no integration provisioning; blocking failure; finalizer verified not-allocated"
+  },
+  "artifacts": {
+    "blocking-test-results": {
+      "id": 14410575719,
+      "sha256": "5e3393ef50ededdcf9f72e734eb74f7060d6fffb7a85cf82e5de9c30a8847a10"
+    },
+    "module-integration-diagnostics": {
+      "id": 14409587604,
+      "sha256": "8dc1e539df0d0ffe646718e58fe9174df7ceef41ee4e0a3af4f4fc5cd147eda1"
+    }
+  },
+  "baselineJobLogSha256": "dda8926793894e43df2ac37c1ec48b644566061dd5ab29b4b3c462bdc08b8a10",
+  "operator": [
+    {
+      "atUtc": "2026-11-18T07:59:50.692301+00:00",
+      "kind": "operator-started",
+      "runId": 44262928117,
+      "source": "063400a55718303f86464959f4769961410660d8"
+    },
+    {
+      "atUtc": "2026-11-18T08:01:49.290457+00:00",
+      "kind": "operator-started",
+      "runId": 44262928117,
+      "source": "063400a55718303f86464959f4769961410660d8"
+    },
+    {
+      "atUtc": "2026-11-18T08:14:00.980979+00:00",
+      "conclusion": "failure",
+      "kind": "run-completed-without-request"
+    }
+  ],
+  "retryPolicy": "Repository CI guidance permits re-runs only after a source change. An unchanged-source re-dispatch or failed-job re-run of 063400a5 needs an explicit owner exception, as with the earlier one-job macOS retry; none was requested or sent.",
+  "recordedAtUtc": "2026-11-18T08:16:05.621821+00:00"
+}

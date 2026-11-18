@@ -1,0 +1,106 @@
+{
+  "schema": "hexalith.story-2-8.focused-campaign-input-change.v1",
+  "recordedAtUtc": "2026-11-18T07:57:13.640442+00:00",
+  "authority": "Spec section \"Proof-branch profile switch authorized - 2026-11-18\": on proof/story-2-8-current-owner-cancel-execution-20261118 only, switch the lifecycle baseline integration-test-profiles to platform-current-package; further proof-branch-only workflow/controller corrections for the same run allowed and recorded.",
+  "decisionClassification": "baseline-only",
+  "candidateAcceptance": false,
+  "toolAccepted": false,
+  "story210MatrixPass": false,
+  "dispatchesBeforeThisRecord": 0,
+  "cancellationRequestsBeforeThisRecord": 0,
+  "branch": "proof/story-2-8-current-owner-cancel-execution-20261118",
+  "parentCommit": "0d64a9777314a2b1f898567bf38715a82badd360",
+  "proofCommit": "063400a55718303f86464959f4769961410660d8",
+  "commitMessageValidation": {
+    "tool": "@commitlint/cli 21.2.4 + @commitlint/config-conventional 21.2.4",
+    "config": "Parties commitlint.config.mjs at parent",
+    "result": "found 0 problems, 0 warnings",
+    "actualCommitObjectValidated": true
+  },
+  "changes": [
+    {
+      "path": ".github/workflows/ci-lifecycle-qualification.yml",
+      "change": "baseline integration-test-profiles platform-package -> platform-current-package (authorized switch); always() ci-lifecycle-observations upload also retains TestResults/module-integration (controller-declared invocation and the native loaded-assembly observation)"
+    },
+    {
+      "path": "scripts/qualify-disposable-ci.py",
+      "change": "Qualification.declare_current_invocation(): before launching a platform-current-package owner (execution cancellation only), write TestResults/module-integration/invocation.json through the pinned helper write_evidence with {executionContext, profiles:[platform-current-package], classification:baseline-only, caller:ci-lifecycle-controller}",
+      "reason": "Demonstrated by source, not by a hosted run: PartyEnvironmentTests.RealDependencies_CreateQueryAndPersistMatchingPartyEvents -> NativeAssemblyObservations.Write -> RetainHostedObservation -> NativeDiagnosticBinding.VerifyCallerArtifact reads CallerRoot/TestResults/module-integration/invocation.json for platform-current-package in CI. Only the v2 helper writes it; the qualification job has no helper invocation, so the native test would throw before CiLifecycleHold.AfterPersistenceAsync publishes execution-ready.json."
+    },
+    {
+      "path": "tests/ci-lifecycle/test_workflow_boundaries.py",
+      "change": "expects platform-current-package in the lifecycle baseline and platform-package in ordinary ci.yml"
+    },
+    {
+      "path": "tests/ci-lifecycle/test_review_pass2.py",
+      "change": "new control: only the execution (current-profile) owner declares the exact invocation, before launch; red against the parent controller (1 failure)"
+    }
+  ],
+  "fileSha256": {
+    ".github/workflows/ci-lifecycle-qualification.yml": {
+      "parent": "05f53cf4b3581ea0b28e29a673baa5025d814f6b560bd6d5369f33d728f9ea78",
+      "proof": "de4c0be537393f7d60d52e00aeec4daee635a5693d6a19b97e51e231ecccde58"
+    },
+    "scripts/qualify-disposable-ci.py": {
+      "parent": "7a50a0015bfca4581e4643e98d2ba7091970d9d285989883dd0102434d5e28cd",
+      "proof": "ef6d48a25b677d27adcb5f1e4bacc179c80ec37834a023830b3a5b975e32341f"
+    },
+    "tests/ci-lifecycle/test_workflow_boundaries.py": {
+      "parent": "80cd7398e83a0c4735e731ed68c1c1be2cbfda990c433c36ceb81de276d98fa9",
+      "proof": "4682f971dd9e9b8b9bcf17e52bf99a93b0a0d153974486d37ad65abd4a6b5277"
+    },
+    "tests/ci-lifecycle/test_review_pass2.py": {
+      "parent": "8d2fb0de0e55cfc915338b7ae948e818699b7f6bbdbb63a5d8641deb7448d571",
+      "proof": "3b84edf4fa45056ff68d55bfc57e6a8816e593ec4bca26071b4f6a3dd554e82d"
+    }
+  },
+  "unchangedFileSha256": {
+    "module/hexalith.module-manifest.v2.json": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    ".config/dotnet-tools.json": "c12b248c688c60ce4feeaed1c548db7fe4ea398bf6f9caeee16ca4ce1ddb4a70",
+    "global.json": "5feaf50426a6c5554654e326bedd2f6c6273f13b948b1ec6e11e12cae68f9f05",
+    "scripts/story-2-8-proof-observer.py": "02627b1fb8554ad37b71d0680c709ca2b16decf13dbe9548443e67be01922d98",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/PartyEnvironmentTests.cs": "944df41c59d037505f11cd4a16859fa2dac003793557d56cbc3ee1af31cd2cae",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/CiLifecycleHold.cs": "cddbbf0781c02e10fcb929e76940f9047f4c492a8f8de5592c21594a12d7c140",
+    "tests/Hexalith.Parties.Platform.IntegrationTests/NativeDiagnosticBinding.cs": "ca261cdf81bdb0fc01d6b61a1947b4ad345478f3d29c0af9bab80b4989ad80d2"
+  },
+  "unchangedInputs": {
+    "manifestDeclarationHash": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "expectedCurrentDeclarationHash": "dfb03b6e397944c4f24737f4ac9278fba033399a0efa30a80447c9112709efee",
+    "buildsGitlink": "7afc4981e21bc2fcce687199a3fd2c61fe87336e",
+    "platformGitlink": "bb8c7915ae67e427f3629427550c96ca1e74bc14",
+    "baselineExecutor": "Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@02ed624aa19781cac75d2c9112940e9bd830441a",
+    "isolatedProjects": 15,
+    "buildTimeoutMinutes": 60,
+    "qualificationTimeoutMinutes": 90,
+    "holdSeconds": 240,
+    "nativeHoldBoundSeconds": 240,
+    "waitCancellationSeconds": 120,
+    "executionTimeoutSeconds": 300,
+    "stopTimeoutSeconds": 90,
+    "productionStartupStoppingBudgetsChanged": false
+  },
+  "localChecks": {
+    "controllerSuite": "python3 -B -m unittest discover -s tests/ci-lifecycle -v: Ran 188 tests, OK (parent: 187 OK)",
+    "redControl": "new test failed against the parent controller",
+    "actionlint": "exit 0",
+    "controllerLogSha256": "65fc6cabcb92978e341a8f986b3ec6f1421db6acf8a446481307b94ae2edbfcf",
+    "noLocalServices": "no AppHost, DCP, Dapr, Docker service or live probe was started locally"
+  },
+  "externalEvents": [
+    "Parties origin/main 8e3507e4 (07:41:41Z) is an external /pushall merge of the earlier proof branch at 0d64a977; the remote proof branch was then absent. Not by this task; not repaired.",
+    "Between 07:52Z and 07:54Z an external session removed worktree /tmp/hexalith-parties-current-owner-proof and the local proof branch, discarding this task's first uncommitted copy of the same edits. They were reapplied byte-identically (same four file SHA-256) in a standalone scratch clone."
+  ],
+  "oneCancellationProtocol": {
+    "requiredBeforeRequest": [
+      "qualification job in_progress at exact head",
+      "step \"Await parent cancellation of this exact ready run\" in_progress",
+      "lifecycle-cancellation-ready artifact digest verified",
+      "unique execution owner with real persistence checkpoint and live native process",
+      "active 240 s same-job hold with unchanged expiry",
+      "ready age <= 20 s",
+      "kernel trace started and fresh observer heartbeat"
+    ],
+    "maximumRequests": 1,
+    "onVerificationFailure": "send no request; the run is not achieved"
+  }
+}

@@ -1,0 +1,130 @@
+From 063400a55718303f86464959f4769961410660d8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=B4me=20Piquot?= <jpiquot@itaneo.com>
+Date: Wed, 18 Nov 2026 08:56:40 +0100
+Subject: [PATCH] test(ci): select the current-owner profile for lifecycle
+ proof
+
+Proof branch only. Platform v2.1.11 admits this Parties declaration
+only through platform-current-package, so the lifecycle baseline
+integration now selects that profile. The ordinary ci.yml keeps
+platform-package.
+
+The execution-cancellation owner runs the same current-owner suite.
+Its native test retains observations only in a caller-declared
+TestResults/module-integration directory, so the controller declares
+that exact-job, sole-profile invocation before launch, and the job
+retains that directory with the classified observations.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../workflows/ci-lifecycle-qualification.yml  |  6 ++++--
+ scripts/qualify-disposable-ci.py              | 12 +++++++++++
+ tests/ci-lifecycle/test_review_pass2.py       | 21 +++++++++++++++++++
+ .../ci-lifecycle/test_workflow_boundaries.py  |  4 +++-
+ 4 files changed, 40 insertions(+), 3 deletions(-)
+
+diff --git a/.github/workflows/ci-lifecycle-qualification.yml b/.github/workflows/ci-lifecycle-qualification.yml
+index da111eb5..5570e41a 100644
+--- a/.github/workflows/ci-lifecycle-qualification.yml
++++ b/.github/workflows/ci-lifecycle-qualification.yml
+@@ -24,7 +24,7 @@ jobs:
+       solution: Hexalith.Parties.Standalone.slnx
+       additional-sdk-version: '10.0.404'
+       module-manifest: module/hexalith.module-manifest.v2.json
+-      integration-test-profiles: platform-package
++      integration-test-profiles: platform-current-package
+       package-prepare-script: scripts/prepare-ci-package-dependencies.sh
+       test-platform: microsoft-testing-platform
+       run-consumer-validation: true
+@@ -252,7 +252,9 @@ jobs:
+         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+         with:
+           name: ci-lifecycle-observations
+-          path: TestResults/ci-lifecycle
++          path: |
++            TestResults/ci-lifecycle
++            TestResults/module-integration
+           if-no-files-found: warn
+           retention-days: 14
+       - name: Wait for the Story 2.8 proof observer flush
+diff --git a/scripts/qualify-disposable-ci.py b/scripts/qualify-disposable-ci.py
+index 772177de..1958296b 100755
+--- a/scripts/qualify-disposable-ci.py
++++ b/scripts/qualify-disposable-ci.py
+@@ -992,6 +992,8 @@ class Qualification:
+             item['eventStorePort'] = eventstore_port
+         self.journal['owners'].append(item)
+         self.save()
++        if owner_profile(item) == CURRENT_PROFILE:
++            self.declare_current_invocation()
+         self.launch(item)
+         if cancellation_phase == 'execution':
+             self.poll(item, lambda: self.receipt_present(item), 600)
+@@ -1002,6 +1004,16 @@ class Qualification:
+                 self.control(item, 'wait')
+         return item
+ 
++    def declare_current_invocation(self):
++        """Declare this controller as the caller of the one current-owner suite before its owner can launch.
++
++        The native current-owner test retains its bounded observation only in a caller-declared
++        TestResults/module-integration directory for this exact job and sole profile.
++        """
++        HELPER.write_evidence(ROOT / 'TestResults/module-integration', 'invocation.json',
++                              {'executionContext': self.context, 'profiles': [CURRENT_PROFILE],
++                               'classification': 'baseline-only', 'caller': 'ci-lifecycle-controller'})
++
+     def start(self, label, startup=False, cancellation_phase=None):
+         return self.ready(self.begin(label, cancellation_phase), startup)
+ 
+diff --git a/tests/ci-lifecycle/test_review_pass2.py b/tests/ci-lifecycle/test_review_pass2.py
+index 2fd18925..8a1fb01f 100644
+--- a/tests/ci-lifecycle/test_review_pass2.py
++++ b/tests/ci-lifecycle/test_review_pass2.py
+@@ -107,6 +107,27 @@ class LaunchContractTests(unittest.TestCase):
+                     child.stdin.close()
+                     child.stderr.close()
+ 
++    def test_only_the_current_owner_declares_its_caller_artifact_before_launch(self):
++        # The native current-owner test refuses to retain observations without this exact-job, sole-profile declaration.
++        for phase, declared in ((None, False), ('startup', False), ('failure', False), ('execution', True)):
++            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as temporary:
++                value, _, _, _, _ = lifecycle.prepared(Path(temporary))
++                workspace = Path(temporary).resolve() / 'checkout'
++                workspace.mkdir()
++                invocation = workspace / 'TestResults/module-integration/invocation.json'
++                observed = []
++
++                def launch(item):
++                    observed.append(Q.read(invocation) if invocation.exists() else None)
++                    raise InterruptedError('test interruption before release')
++                value.launch = launch
++                with patch.object(Q, 'ROOT', workspace), patch.dict(os.environ, GITHUB_WORKSPACE=str(workspace)):
++                    with self.assertRaises(InterruptedError):
++                        value.begin('cancel', cancellation_phase=phase, wait_workspace=False)
++                expected = {'executionContext': lifecycle.CONTEXT, 'profiles': [Q.CURRENT_PROFILE],
++                            'classification': 'baseline-only', 'caller': 'ci-lifecycle-controller'}
++                self.assertEqual(observed, [expected if declared else None])
++
+     def test_explicit_port_is_journaled_before_launch_release(self):
+         with tempfile.TemporaryDirectory() as temporary:
+             value, _, _, _, _ = lifecycle.prepared(Path(temporary))
+diff --git a/tests/ci-lifecycle/test_workflow_boundaries.py b/tests/ci-lifecycle/test_workflow_boundaries.py
+index d126add8..3ceca15e 100644
+--- a/tests/ci-lifecycle/test_workflow_boundaries.py
++++ b/tests/ci-lifecycle/test_workflow_boundaries.py
+@@ -28,8 +28,10 @@ class WorkflowBoundaryTests(unittest.TestCase):
+             return re.search(r'unit-test-projects: \|\n((?:        tests/[^\n]+\n)+)', text).group(1).split()
+         self.assertEqual(isolated(baseline), isolated(ordinary))
+         self.assertEqual(len(isolated(baseline)), 15)
+-        for setting in ('integration-test-profiles: platform-package', 'run-consumer-validation: true'):
++        # Proof branch only: Platform v2.1.11 admits this declaration only through the current-owner profile.
++        for setting in ('integration-test-profiles: platform-current-package\n', 'run-consumer-validation: true'):
+             self.assertIn(setting, baseline)
++        self.assertIn('integration-test-profiles: platform-package\n', ordinary)
+         reference = r'Hexalith/Hexalith.Builds/.github/workflows/domain-ci-v2.yml@[0-9a-f]{40}'
+         self.assertIsNotNone(re.search(reference, baseline))
+         self.assertIsNotNone(re.search(reference, ordinary))
+-- 
+2.53.0
+

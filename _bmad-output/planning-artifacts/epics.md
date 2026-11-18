@@ -1500,6 +1500,8 @@ So that CI evidence is trustworthy and CI never leaks resources or touches hoste
 
 **Execution boundary (2026-11-08 course correction):** Deliver the CI runner/workflow contract and prove its six original edge-case rows, including real startup and execution cancellation. Consume the completed Story 2.9 fixture migration. Story 2.10 owns the complete reference lifecycle matrix, local retention/collision/expiry qualification and final Platform-accepted tool enrollment. Necessary producer fixes remain prerequisites only when they block these CI cases; unrelated publications, newer module enrollment and exhaustive historical archive reading are outside this story. Preserve all original acceptance criteria below. See the [approved correction](sprint-change-proposal-2026-11-08.md) and the [active execution spec](../implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md).
 
+**Closure (2026-11-18 course correction):** By owner decision, the acceptance criteria are met by hosted Parties runs [42521615234](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42521615234) (pass, fail, retry with peer, partial startup, same-job and cross-job attachment), [42526256372](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372) (startup cancellation) and [42528046681](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42528046681) (execution cancellation). All three ran on Parties `926c1c3f` with Builds 4.44.13. The workflow passes only the read-only registry pull secret. The Builds 6.3 same-job attach fallback is covered by resource-free tests and the Step 04 review. Re-proving on the newest tuple is not required. See [sprint-change-proposal-2026-11-18.md](sprint-change-proposal-2026-11-18.md).
+
 **Acceptance Criteria:**
 
 **Given** a module's CI
@@ -1555,12 +1557,12 @@ So that local and CI integration evidence can be accepted.
 
 **Repo:** Hexalith.Platform, Hexalith.Builds · **Covers:** FR-4, FR-5, SM-3 (proven on the reference composition), SM-C4, SM-C5
 
-**Execution boundary (2026-11-08 course correction):** Own the full reference matrix, including the manual `matrix` controller's metadata-lock retry, peer-preservation and partial-startup scenarios, plus local failure retention, collision, expiry and failure-followed-by-cancellation. Account for the focused CI proofs delivered by 2.8 under their original identities. Keep missing or failed rows open. Final tool acceptance and pins remain gated here; completing 2.8 alone grants no candidate, SM-3 or tool acceptance. The [implementation spec](../implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md) records the transferred work and bounded optimization tasks.
+**Scope (2026-11-18 course correction):** Run the scenario list below locally on the reference composition with the pinned released tool, recording one compact summary per scenario. For CI, count Story 2.8's hosted runs under their original identities, plus Parties' normal CI through the shared CiCd workflow (success and failure with the always-run cleanup report). No dedicated hosted scenario workflow or controller is built. Tool acceptance and pins follow Story 2.14's version rule. Completing 2.8 alone grants no candidate, SM-3 or tool acceptance. **Depends on:** Story 2.14; the CI part also depends on CiCd story 21. See [sprint-change-proposal-2026-11-18.md](sprint-change-proposal-2026-11-18.md); earlier history is in git and the [implementation spec](../implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md).
 
 **Acceptance Criteria:**
 
 **Given** the Parties reference composition
-**When** scenarios run locally and in CI
+**When** scenarios run locally, and CI runs its success, failure and cancellation paths
 **Then** each of these is recorded with its expected ownership, retention, cleanup and leftover reporting:
 - success, failure, startup timeout, cancellation and collision;
 - owner finish before attachment end, and owner cancellation before attachment end;
@@ -1574,9 +1576,7 @@ So that local and CI integration evidence can be accepted.
 
 **Given** the lifecycle implementation
 **When** released
-**Then** the tool version that carries it is recorded as Platform-accepted and pinned in Platform and in Parties
-
-**Blocked (2026-11-10, user decision):** The published 4.47.0 lifecycle campaign recorded 7 passed, 7 incomplete and 2 unexecuted local/CI scenario rows. The remaining rows need producers that the tool and the fixed Parties caller lack. [Story 2.11](#story-211-supervise-attached-runs-and-report-the-missing-lifecycle-producers) owns them. This story stays in progress. Once a Builds release carries 2.11, it runs one complete qualification against that fixed input set, then records the Platform-accepted tool and its pins. The 4.47.0 observations keep their own subjects. They supply no acceptance for the new tool.
+**Then** the tool version that carries it is recorded as Platform-accepted and pinned by released version in Platform and in Parties, under Story 2.14's version compatibility rule
 
 ### Story 2.11: Supervise attached runs and report the missing lifecycle producers
 
@@ -1713,9 +1713,9 @@ As a Platform maintainer,
 I want Builds and owner modules pinned by released version, with package integrity taken from NuGet lock files,
 So that adopting a Builds or module release is a version bump rather than an edit to Platform source, tests and docs.
 
-**Repo:** Hexalith.Platform · **Covers:** AR-12 (expected and loaded content identities) · **Depends on:** Story 2.13
+**Repo:** Hexalith.Platform, Hexalith.Parties (owner review) · **Covers:** AR-12 (expected and loaded content identities) · **Depends on:** Story 2.13
 
-**Origin (2026-11-15):** [sprint-change-proposal-2026-11-15.md](sprint-change-proposal-2026-11-15.md). `eng/builds-tuple.json` binds about 12 identities of one Builds release. Composition source compiles in release identities, such as `IsPublishedPair`'s AppHost and Tooling DLL hashes. 180 of 706 Platform commits since 2026-11-01 touched `builds-tuple.json`.
+**Origin (2026-11-15):** [sprint-change-proposal-2026-11-15.md](sprint-change-proposal-2026-11-15.md). `eng/builds-tuple.json` binds about 12 identities of one Builds release. Composition source compiles in release identities, such as `IsPublishedPair`'s AppHost and Tooling DLL hashes. 180 of 706 Platform commits since 2026-11-01 touched `builds-tuple.json`. 2026-11-18: also removes the declaration and image allowlists behind HXP020 ([proposal](sprint-change-proposal-2026-11-18.md)).
 
 **Acceptance Criteria:**
 
@@ -1733,6 +1733,11 @@ So that adopting a Builds or module release is a version bump rather than an edi
 **When** inspected
 **Then** it contains no Builds or owner-module release-identity literal
 **And** Builds tool admission uses a version compatibility rule against the pinned version, and its tests cover accepted, older and newer versions
+
+**Given** owner-module declarations and images
+**When** Composition admits a package-mode run
+**Then** it uses no hardcoded declaration-hash or image-digest allowlist and no measured image cohort (`PlatformPartiesPackageCatalogQualification`, `PlatformCurrentOwnerProof`)
+**And** each test project declares one package integration profile, so `platform-current-package` is retired
 
 **Given** a new Builds or owner-module release
 **When** Platform adopts it
