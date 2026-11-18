@@ -19,9 +19,11 @@ internal static class PlatformPublishedEventStoreSeed
     /// <summary>Restores the exact signed seed alongside a reader that uses the image cohort's schema exporter.</summary>
     internal static void BindReader(XElement project)
     {
-        project.Add(new XElement("PropertyGroup", new XElement("TargetFramework", _framework), new XElement("RollForward", "LatestPatch")));
-        project.Add(new XElement("ItemGroup", new XElement("PackageDownload",
-            new XAttribute("Include", _package), new XAttribute("Version", "[" + _version + "]"))));
+        // Use the same ASP.NET Core shared framework as the published EventStore seed.
+        project.Add(new XElement("PropertyGroup", new XElement("TargetFramework", _framework),
+            new XElement("RollForward", "LatestPatch"), new XElement("RestoreEnablePackagePruning", "true")));
+        project.Add(new XElement("ItemGroup", new XElement("FrameworkReference", new XAttribute("Include", "Microsoft.AspNetCore.App")),
+            new XElement("PackageDownload", new XAttribute("Include", _package), new XAttribute("Version", "[" + _version + "]"))));
     }
 
     /// <summary>Verifies the sealed NuGet.org archive and extracts only its EventStore payload into the owning run.</summary>
