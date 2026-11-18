@@ -121,9 +121,7 @@ internal static class PlatformPartiesPackageCatalogQualification
             || (cohort = current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options) : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true)) is null
             // The 3.0.26 reader cohorts have no measured execution image tuple.
             || cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName
-            || !current && ((cohort == PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name)
-                != string.Equals(ownerHash, PlatformCurrentOwnerProof.CurrentDeclarationHash, StringComparison.OrdinalIgnoreCase))
-            || cohort is PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name && !string.Equals(ownerHash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase)
+            || !current && !MatchesOrdinaryDeclaration(ownerHash, cohort)
             || !VersionsMatch(options, current, cohort) || !PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
             || !PublishedCatalogArtifactCohort.Matches("Hexalith.Memories.Contracts", cohort)
@@ -148,6 +146,18 @@ internal static class PlatformPartiesPackageCatalogQualification
             return server.Image == expected.Image && server.ImageDigest is null ? server with { ImageDigest = expected.Digest } : throw Refusal();
         }).ToArray();
     }
+
+    /// <summary>Requires the exact declaration authorized for the selected public runtime cohort.</summary>
+    internal static bool MatchesOrdinaryDeclaration(string? hash, string cohort) => cohort switch
+    {
+        PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name =>
+            string.Equals(hash, PlatformCurrentOwnerProof.CurrentDeclarationHash, StringComparison.OrdinalIgnoreCase),
+        PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name =>
+            string.Equals(hash, PublishedDeclarationHash, StringComparison.OrdinalIgnoreCase),
+        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName =>
+            IsOrdinaryDeclaration(hash) && !string.Equals(hash, PlatformCurrentOwnerProof.CurrentDeclarationHash, StringComparison.OrdinalIgnoreCase),
+        _ => false,
+    };
 
     /// <summary>Retains exact historical and public versions and only the two measured private source-owner catalog versions.</summary>
     internal static bool MatchesPartiesVersion(string version, bool current, string cohort) => (current, cohort, version) switch

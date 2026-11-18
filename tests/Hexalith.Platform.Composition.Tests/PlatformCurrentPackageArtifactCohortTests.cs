@@ -150,14 +150,17 @@ public sealed class PlatformCurrentPackageArtifactCohortTests
         PlatformCurrentOwnerProof.DeclarationHash.ShouldBe(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash);
     }
 
-    /// <summary>Artifact authentication cannot expand ordinary image admission or relabel the existing public declaration.</summary>
+    /// <summary>The measured public image cohort requires its exact current declaration and excludes historical declarations.</summary>
     [Theory]
     [InlineData("3.0.26")]
     [InlineData("3.0.27")]
-    public void CurrentArtifactsDoNotAcquireOrdinaryImageAuthority(string memoriesVersion)
+    public void PublicImageAuthorityRequiresItsDeclaredCohort(string memoriesVersion)
     {
         PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", memoriesVersion, "3.1.1", "2.0.1").ShouldBe(PublicCohort(memoriesVersion));
-        PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformCurrentOwnerProof.CurrentDeclarationHash).ShouldBeFalse();
+        PlatformPartiesPackageCatalogQualification.MatchesOrdinaryDeclaration(PlatformCurrentOwnerProof.CurrentDeclarationHash,
+            PublicCohort(memoriesVersion)).ShouldBe(memoriesVersion == "3.0.27");
+        PlatformPartiesPackageCatalogQualification.MatchesOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash,
+            PublicCohort(memoriesVersion)).ShouldBeFalse();
         PlatformPartiesPackageCatalogQualification.IsOrdinaryDeclaration(PlatformPartiesPackageCatalogQualification.PublishedDeclarationHash).ShouldBeTrue();
         PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.7", fullParties: true).ShouldBeNull();
     }
