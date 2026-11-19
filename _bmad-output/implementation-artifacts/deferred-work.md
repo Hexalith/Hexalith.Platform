@@ -2185,3 +2185,15 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
   summary: Retire the Builds `HexalithPartiesSdk42CatalogView`, so Parties and its package-mode dependency images resolve the .NET 11 default view (EventStore 5.2.x, Tenants 8.0.x, Memories 4.0.x). Then release Builds, adopt it in Platform by version bump and repin Parties. This proves the allowlist slice's AC1 and matrix row 5 live.
   evidence: `artifacts/story-2-14-package-admission/runtime-digest-probe/README.md`. The net11 catalog builder and the net10 released images compute 8 different operation digests (the `JsonSchemaExporter` `contentEncoding` change), which produces HXR021. The same view gives the attached suite `Hexalith.EventStore.Testing` 4.2.0 (CS1061). The owner chose this route over a per-owner runtime reader. It follows the 2.14 lock-file slice, because Platform's package byte tables cover only EventStore 4.2.0 and older.
+
+## Deferred from: scope split of /bmad-build 2.14 (2026-11-19)
+
+- source_spec: none
+  summary: Story 2.14 view slice — retire the Builds `HexalithPartiesSdk42CatalogView`, release Builds, adopt it in Platform by version bump, repin Parties and prove the allowlist slice's AC1 and matrix row 5 live (the HXR021 and CS1061 fix).
+  evidence: At the 2026-11-19 multi-goal check the owner chose "Split: repair first". This run takes audit action 1 (reconcile the five dependency revisions; tuple CI green on one commit). The view retirement follows on that green baseline.
+
+## Deferred from: planning of spec-2-14-reconcile-the-five-dependency-revisions.md (2026-11-19)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-reconcile-the-five-dependency-revisions.md`
+  summary: Keep `/pushall` submodule syncs from redrifting Platform's tuple bindings. It moves owner and Builds gitlinks to upstream main without refreshing `eng/current-tuple-source.json` or the Builds pins, so main's tuple CI turns red until the next reconciliation.
+  evidence: That is how `707cf901` broke `read_selection`. At planning the owner chose "out of scope, log it" over a `/pushall` change. A binding refresh still cannot fix a Builds gitlink on an unreleased commit.
