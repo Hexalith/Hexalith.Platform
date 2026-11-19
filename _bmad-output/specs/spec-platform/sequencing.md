@@ -74,7 +74,7 @@ The gates run strictly in the order G1 → G2 → G3. The PRD's "before producti
 
 - The SM-5 rehearsals pass.
 - EventStore confirms the AD-15 retention entries, the catalog activation order, and production-promoted record invalidation and renewal (spine Owned work, First production attempt).
-- The shared-infrastructure currency policy fixes the checked inventory, allowed lag and effect on approved attempts while preserving the check at every production attempt and monthly drill.
+- The shared-infrastructure currency policy fixes the checked inventory, allowed lag and effect on approved attempts with checks at every production attempt, every monthly drill and on a weekly schedule.
 
 **Suspension:** a change to verification, recovery or rollback-set policy suspends automatic promotion until the affected SM-5 rehearsals repeat.
 
@@ -96,7 +96,7 @@ Spine Owned work, in gate order. The spine holds each row's acceptance boundary.
 | --- | --- | --- | --- |
 | First Platform-accepted tool version | Platform tool ratification (`hexalith-module`; versions through 4.27.4 not accepted) | Builds with Platform | Any workspace pin; CAP-1–CAP-5 |
 | Before accepting local/CI composition and testing evidence | Runner lifecycle, ownership and resource isolation | Builds with Platform and module owners | CAP-4 evidence (SM-3) |
-| Before accepting CI integration evidence | Candidate revision, gated decision, evidence-reuse and attachment-hold policy | Platform with Builds | Candidate and attachment evidence for CAP-4 (SM-3) |
+| Before accepting CI integration evidence | Runner adoption and integration qualification under candidate and attachment policy v1 | Platform with Builds | Candidate and attachment evidence for CAP-4 (SM-3) |
 | First publication | Publication and operations repository controls | Administrator | CAP-6–CAP-8 |
 | First local enrollment | Local Dapr and hosting conventions (local mTLS, per-receiver ACL, scoped components; canonical ServiceDefaults and Aspire Dapr package set) | Platform, consulting EventStore and Commons | CAP-1–CAP-4 |
 | Module adoption | Source/package adoption (direct declarations including `references/Hexalith.Platform`; canonical McpCli enrollment; fallback removal) | Platform, Builds, module owners | CAP-2, CAP-3 (SM-2) |
@@ -110,7 +110,7 @@ Spine Owned work, in gate order. The spine holds each row's acceptance boundary.
 | First staging deployment | Secrets, identity, network and transport | Platform, Administrator, module owners | CAP-10–CAP-12 |
 | First staging deployment | Staging data restore and takeover fencing | Platform, Builds | Staging reset; CAP-6 and CAP-8 recovery qualification |
 | First staging deployment | Telemetry sink (retention and off-site durability before G2) | Platform | CAP-7–CAP-9 diagnostics |
-| First staging evidence | Staging evidence policy | Platform with Builds, module owners | CAP-6 |
+| First staging evidence | Qualify enforcement of staging evidence policy v1 | Platform with Builds, module owners | CAP-6 |
 | First staging promotion | Module image attestation | Builds, EventStore, Memories | CAP-6 |
 | First staging promotion | Image and dependency vulnerability policy | Builds with Platform | CAP-6 |
 | First production attempt | Release state, checks and notifications (SM-5 and EventStore confirmations also gate G3) | Platform, Builds, Administrator | CAP-7, CAP-8; G1 deployment |
@@ -122,8 +122,8 @@ Spine Owned work, in gate order. The spine holds each row's acceptance boundary.
 | G2 | Recovery capacity and coverage | Administrator with deputy and dependency owners | CAP-9; G2 |
 | G2 | Reduced-recovery operating policy | Administrator with Platform architecture | G2 |
 | G2 | Memories conformance and continuity | Memories, EventStore, Platform | CAP-9; G2 |
-| G3 | Shared-infrastructure currency policy | Platform with Administrator | G3 |
-| Before recovery or deployment stories are finalized | Source-document alignment | Module documentation, spec and PRD owners | Recovery and deployment stories (CAP-6–CAP-9); not an enrollment block |
+| G3 | Qualify enforcement of shared-infrastructure currency policy v1 | Platform with Administrator | G3 |
+| Upstream documentation maintenance | Folders, Projects and McpCli override records | Respective module documentation owners | Platform completed the [October 1 reconciliation](#source-document-alignment) for CAP-6–CAP-9 |
 | Trigger | GitHub Team controls; additional McpCli transports and other AD-gated items; broker change, standby, scale or universal in-transit TLS | Per spine row | Outside the MVP |
 
 ## First shared versions
@@ -198,16 +198,17 @@ The module developer supplies:
 **PRD downstream-owner rows** (each keeps the PRD's own boundary; spine rows supply the mechanism)
 
 - **Module declarations, surfaces, suites, inventories and hooks:** each module developer, before qualification for each target environment.
-- **Critical-flow removal and remap review policy:** module owners with Platform, before release-gate qualification (spine First staging evidence).
+- Before release-gate qualification, the module owner and Platform approve removals or remaps against the exact before/after coverage. Tenant-lifecycle changes also require Tenants review under the [staging evidence policy v1](../../../docs/contracts/staging-evidence-policy-v1.md).
 - **Tenant lifecycle:** Tenants owner with module owners and Platform reviews tenant-lifecycle flows, qualifies cleanup or reporting of leftover synthetic staging tenants before the release gate and provisions the production synthetic tenant before first production verification.
-- **Staging triggers and rerun evidence acceptance:** Platform with Builds, before accepting the first staging release evidence (spine First staging evidence).
+- Before accepting the first staging release evidence, Platform and Builds qualify attempt triggers, full reruns, retained history and the 24-hour freshness check in the [staging evidence policy v1](../../../docs/contracts/staging-evidence-policy-v1.md).
 - **Root-source mapping, declaration and export contracts, runner ownership and CI lifecycle:** Platform with Builds and module maintainers, including candidate loaded-identity and attachment rules, before accepting local/CI composition and testing evidence.
-- **Candidate and attachment shared policy:** Platform with Builds fixes the candidate revision, merge or release decision being gated, unchanged-module evidence reuse and finite attachment hold before any consumer accepts CI evidence or implements attachments.
+- Builds adopts the [candidate evidence and attachment policy v1](../../../docs/contracts/candidate-and-attachment-policy-v1.md) in its runner and workflows. Platform accepts the tool version and qualifies decision binding, the refusal of cross-decision evidence reuse and enforcement of finite attachment holds before accepting CI integration evidence.
 - **McpCli enrollment, contract matching, surface and actor authorization, named demonstrations:** Platform, McpCli and EventStore, before FR-12, SM-1 and SM-4 acceptance.
 - **Identity and state separation, automation permissions, network isolation, explicit admission:** Platform with Administrator and module maintainers, before G2 and after access changes; controlled test admission precedes general opening.
 - **Supported infrastructure, ingress, DNS and certificates, executor and probe access, monitoring, GitHub delivery:** Administrator with Platform, before G1.
 - **Retained artifacts, evidence age, attempt serialization, compatibility rehearsal, interruption and recovery bounds, notification delivery, promotion-stop clearance:** Platform with Builds, EventStore and Administrator, before applicable production attempts; SM-5 before G3.
-- **Monitor, admission and currency bounds:** Platform with Administrator declares probe-stop and locked-attempt behavior, identity-event capture lag and two-way admission cadence before G1; shared-infrastructure inventory, cadence, allowed lag and approved-attempt effect before G3.
+- Before G1, Platform and Administrator decide the probe-stop bound, handling of failures during a locked attempt and two-way admission check cadence in Story 6.2. Story 4.9 supplies the measured identity-event capture-lag bound.
+- Before G3, Platform and Administrator qualify the inventory, cadence, allowed lag and approved-attempt handling in the [shared-infrastructure currency policy v1](../../../docs/contracts/shared-infrastructure-currency-policy-v1.md).
 - **Degraded retained-data qualification:** Platform with Builds and Administrator proves refusal without valid compatibility or a named data restore, candidate-removal failure, no automatic rollback, later-stop preservation, and post-cut admission-revocation and Memories-erasure continuity before the first applicable attempt.
 - **Recovery inventory, independent backups, artifacts and keys, deputy access, response coverage, prepared capacity, representative volume:** Administrator with deputy and dependency owners, before G2.
 - **Memories tombstone and key continuity, module recovery reconciliation:** Memories and EventStore with module owners and Platform, before G2 and whenever recovery mechanisms change.
@@ -220,7 +221,7 @@ The module developer supplies:
 
 ## Source-document alignment
 
-Spine Owned work requires this alignment before recovery or deployment stories are finalized; it is not an enrollment block.
+Recovery and deployment story authors use the synchronized Platform spec. The remaining upstream documentation work does not gate module enrollment.
 
 - **Spec package:** synchronized on 2026-10-01 with the finalized PRD, addendum, final architecture update 4 and approved Rancher correction, including the retained-data compatibility or named-recovery rule and management authority/recovery boundary. CAP-1–CAP-12, FR/NFR/SM IDs, AD-1–AD-15 references and numeric targets remain stable.
 - **PRD and addendum:** architecture adoption, update-4 confirmation and the approved 2026-10-01 Rancher decision are recorded; no stale spec-owner correction remains.

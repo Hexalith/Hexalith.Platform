@@ -274,8 +274,9 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - every FR-7 trigger;
   - one FR-8 recovery within budget with state preserved;
   - interruption, routing-only change, first deployment, and failed or unverified recovery;
-  - every stop trigger with Administrator-only clearance, per-cause re-recording and the reviews before clearing;
-  - approved degraded attempts: clearing only the observed stop, later-stop precedence, candidate removal on failure, refusal when production is neither empty nor degraded, and the deputy unable to approve;
+  - every stop trigger, clearance of the observed stop by an authenticated Administrator record after the required reviews, and per-cause recurrence after clearance;
+  - a verified successful approved empty/degraded attempt clearing only its observed stop, a later stop prevailing, candidate workload removal with data retained and a new stop on failure, and refusal of deputy approval;
+  - paired rehearsals on the same healthy baseline that refuse the empty/degraded exception and accept an otherwise eligible Administrator-approved pre-G3 release;
   - a failed approved incompatible release with its recovery preserving a post-cut admission revocation and a Memories erasure;
   - shared-infrastructure forward revert and a currency-check block;
   - GitHub delivery and deputy recovery access.
@@ -374,7 +375,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Implement collision failure, deadline and override, immediate terminal outcomes, failure retention, listing, artifact-compatible attachment with finite holds and withdrawal, owner-finish refusal, same-job CI attachment, cleanup reporting leftovers, CI partial-start cleanup and the descriptor. Resolve `HXR003`.
   - Reconcile fixed Dapr ports and volumes, dapr-init Redis, the fixture lock, fixed-port Keycloak and the shared certificate directory.
   - There is no custom DSL or environment service.
-- AR-16: *Candidate and attachment policy* (Platform with Builds, before any CI evidence is accepted): one shared candidate-revision rule (PR head or merge result), the merge or release decision the evidence gates, unchanged-module evidence reuse and a finite attachment hold limit, all published in the runner contract before consumers implement them.
+- AR-16: Enforce the [candidate evidence and attachment policy v1](../../docs/contracts/candidate-and-attachment-policy-v1.md) in the runner and descriptor contract. A merge requires the committed result for its exact head/base pair. Each new merge or release decision needs its own run. Attachment holds default to 30 minutes and have a four-hour maximum.
 
 **Release artifacts, provenance and records**
 - AR-17 (AD-2): *Retained release artifacts:*
@@ -756,7 +757,7 @@ Developers and CI provision run-owned, real-service environments through the run
 
 Isolated tests run first, without Platform, and the package-mode integration tier blocks CI.
 - **FRs covered:** FR-4 (lifecycle, readiness, isolation, attachment, retention, cleanup), FR-5 · **Evidence:** SM-3 mechanism, SM-C4, SM-C5
-- **Policy decision (opens the epic):** one shared candidate-and-attachment policy fixes the candidate revision, the merge or release decision its evidence gates, reuse of accepted evidence for unchanged modules, and default and maximum attachment holds with owners and revisit conditions. It is published in the runner and descriptor contract before any consumer implements attachment or accepts CI evidence.
+- Story 2.1 published the [candidate evidence and attachment policy v1](../../docs/contracts/candidate-and-attachment-policy-v1.md). Builds owns adoption in the runner and workflows. Platform qualifies integration and accepts the tool version before accepting CI evidence.
 - **Notes:** candidate artifact-identity implementation and evidence follow in Epic 3, once the composed host and run-scoped McpCli exist to report what they loaded; those consumers use Epic 2's policy rather than choosing their own.
 
 **Accepted planning work (2026-11-09):** [PLAT-ES416-QH](../implementation-artifacts/spec-plat-es416-qh-qualification-handoff.md) records the owner-accepted [EventStore 4.16 qualification plan](sprint-change-proposal-2026-11-09.md). Reuse the existing runner, descriptor adoption and lifecycle; plan the versioned qualification bindings, independent hosts, bounded controls, logical readback and exact cleanup. This unnumbered work adds no tracker entry and changes no existing story acceptance or lifecycle. Platform planning acceptance supplies neither Builds' receipt nor supported Dapr capability, executing-profile/tool acceptance or run authorization. Preserve 2.8's focused CI scope, completed 2.9 adoption, 2.10's reference matrix/tool gate and 3.9's loaded-identity/candidate authority. EventStore 4.16 remains distinct from Platform 4.16's staging-policy work.
@@ -792,12 +793,8 @@ The publication workflow produces an attested, immutable release: application He
 ### Epic 5: Gate every release on exact-release staging evidence
 Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows pass. With no production baseline, staging proves installation and candidate behavior. With a production baseline and automatic-recovery eligibility, it upgrades from that baseline and rehearses the rollback set. A retained-data approved path without compatible evidence qualifies its named data recovery and does not prepare automatic rollback. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one. After staging validation passes, the Platform publication workflow alone publishes the stable McpCli version.
 - **FRs covered:** FR-6, NFR-1 (compatibility evidence)
-- **Policy decisions (open the epic):**
-  - evidence maximum age;
-  - staging triggers and rerun acceptance that never hides failed attempts;
-  - review policy for removing or remapping critical flows;
-  - staging-reset maximum duration;
-  - the image and dependency vulnerability severity that blocks promotion, and how exceptions are recorded.
+- Story 5.1 published the [staging evidence policy v1](../../docs/contracts/staging-evidence-policy-v1.md). Qualify its evidence deadline, attempt triggers, full reruns and retained history, coverage-change approvals and staging-reset duration.
+- The separate image and dependency vulnerability policy governs blocking severity and recorded exceptions.
 - **Conditional closure:** the no-baseline branch enables the first G1 deployment. Baseline-dependent rehearsal branches close after Epic 6 establishes the first working production baseline and before a second production candidate is accepted.
 - **Prerequisites:** Epic 4's owned reference-composition suites; module recovery-hook implementations (staging reset); EventStore and Memories image attestation before publication. The Builds check-suite contract lands in Epic 4, before the first publication.
 
@@ -813,7 +810,7 @@ Administrator deploys a staged release to `tache.ai` through the Administrator-a
     - rehearsal-labelled GitHub notifications, so the deputy never receives a real alert for a planned fault;
     - injection only inside an Administrator-approved rehearsal attempt, with no standing credential, and recorded in the attempt record.
   - Epic 6 then builds one shared rehearsal harness, which Epics 8, 9 and 10 reuse.
-- **Policy decisions (before G1):** the availability-probe stop bound, including how probe failures during a locked attempt count, and the two-way admission-check cadence. Epic 4 has already fixed the identity-event capture-lag bound before staging event export.
+- **Policy decisions (before G1):** the availability-probe stop bound, including how probe failures during a locked attempt count, and the two-way admission-check cadence. Story 4.9 supplies the measured identity-event capture-lag bound before staging event export.
 - **Early independent stories:** naming the recovery deputy; the off-site monitor host, notification delivery and dead-man workflow.
 - **G1 access mechanisms:** the production realm, signed admission records and two-way drift detection are built here, because the standing synthetic check identities and the G1 admission-bounds row need them.
 - **Bounded change windows:** infrastructure currency is divided into identity/secrets, shared data services, control-plane/networking, and artifact/backup/administration tooling so each change has a recoverable scope.
@@ -836,7 +833,7 @@ Administrator or the deputy restores production on prepared capacity within one 
 ### Epic 9: Promote releases to production automatically (G3)
 Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals prove every failure trigger and every recovery, stop and approval rule, including all deputy prohibitions and both accepted/unaccepted cause recurrence rules. They also qualify successful shared-infrastructure execution and forward revert after Epic 8 supplies complete recovery points. A policy change suspends automatic promotion until the affected rehearsals repeat.
 - **FRs covered:** FR-6 (automatic mode), FR-8, FR-10 (currency check), NFR-1 · **Evidence:** SM-5 (reference composition), SM-C1
-- **Policy decision (opens the epic):** the shared-infrastructure currency policy — checked inventory, cadence, allowed lag and effect on approved attempts.
+- Story 9.1 published the [shared-infrastructure currency policy v1](../../docs/contracts/shared-infrastructure-currency-policy-v1.md). Story 9.2 implements it, and the SM-5 rehearsals qualify its effect on automatic and approved attempts before G3.
 - **Notes:** the SM-5 suite runs on the Epic 6 rehearsal harness; it adds no harness of its own.
 - **Prerequisites:** EventStore's G3 confirmations.
 
@@ -1308,7 +1305,7 @@ So that no consumer invents its own candidate-selection or attachment rules.
 
 **Given** the FR-4 candidate-evidence rules
 **When** this story completes
-**Then** the decision record fixes whether the candidate revision is the pull-request head or merge result, which merge or release decision its evidence gates, and when accepted evidence for an unchanged module may be reused
+**Then** the published decision record requires the committed merge result for the exact head/base pair and the exact committed release revision for release decisions, with a fresh run for every new decision, including unchanged modules
 
 **Given** the FR-4 attachment rules
 **When** the same decision record is completed
@@ -1767,16 +1764,16 @@ So that every module produces and consumes candidate evidence consistently.
 
 **Given** the decision record from Story 2.1
 **When** the runner selects a candidate
-**Then** it selects exactly the declared pull-request head or merge result and records the merge or release decision that the evidence gates
+**Then** it selects the committed merge result for the exact head/base pair for a merge, or the exact committed release revision for a release, and records the decision identity with the candidate
 
 **Given** accepted evidence for an unchanged module
 **When** a consumer requests reuse
-**Then** the runner accepts it only under the policy's recorded reuse conditions and records the source evidence and target decision
-**And** it rejects reuse when any declared condition is not met, naming the condition
+**Then** the runner refuses evidence from another decision even when the artifact bytes match
+**And** a new merge or release decision requires a fresh qualifying run
 
 **Given** a candidate descriptor and result
 **When** they are written
-**Then** they carry the policy identifier, candidate revision, gated decision and any reused-evidence lineage defined by the versioned contract
+**Then** they carry the policy identifier, candidate revision, gated decision and the producing run, with reuse disallowed and no reused source runs or decisions
 
 **Given** a consumer that attempts to select or accept a candidate by another rule
 **When** the contract is validated
@@ -3667,8 +3664,8 @@ So that production can be installed or repaired without weakening any other gate
 **And** it lifts only that stop and precondition 8, for that attempt only
 
 **Given** production that is neither empty nor degraded, including the reduced-recovery state
-**When** approval is requested
-**Then** it is refused
+**When** an attempt requests the empty/degraded exception
+**Then** the exception is refused
 **And** a deputy's approval is always refused
 
 **Given** a stop recorded after the approval
@@ -4686,21 +4683,27 @@ So that promotion can never resume, or be approved, when it shouldn't.
 
 **Given** each stop trigger
 **When** rehearsed
-**Then** it sets a durable stop that the monitor never clears, and only a signed Administrator record clears it
+**Then** it sets a durable stop that the monitor and deputy cannot clear
+**And** an authenticated Administrator clearance record can clear the observed stop after the required reviews
 
 **Given** a clear
 **When** rehearsed
 **Then** Administrator's lost-window and admission reviews happen first
 **And** a persisting condition that is not marked accepted is re-recorded after the clear
 
-**Given** approved degraded attempts
-**When** rehearsed
-**Then** each of these is shown:
-- an approval clears only the stop it observed;
-- a later stop prevails over the clear;
-- a failed degraded attempt removes the candidate and sets a new stop;
-- approval is refused when production is neither empty nor degraded;
-- the deputy cannot approve
+**Given** an Administrator-approved attempt into empty or degraded production
+**When** the approval is recorded
+**Then** the observed stop remains set until the attempt is verified working
+**And** verified success clears only the observed stop, with a later stop prevailing
+**And** failure removes the candidate workloads, retains data and sets a new stop
+**And** the deputy cannot approve the attempt
+
+**Given** a healthy working baseline before G3, an eligible compatible release and passing common preconditions
+**When** an authenticated Administrator requests the empty/degraded exception
+**Then** the gate refuses that request
+**When** the Administrator approves an ordinary pre-G3 attempt for the same release on that baseline
+**Then** the gate admits the attempt with its exact-release staging E2E pass, provenance, isolation and serialized ownership
+**And** a successful outcome requires passing production verification
 
 ### Story 9.6: Rehearse release-mode, retained-data and infrastructure rules (SM-5, part 3)
 

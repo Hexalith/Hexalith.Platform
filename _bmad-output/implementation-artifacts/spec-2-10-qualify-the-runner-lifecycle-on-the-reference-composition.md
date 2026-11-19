@@ -7,6 +7,7 @@ route: 'dispatch'
 baseline_commit: 'a2d746475d77202ddd31d09980857eba9bf6b157'
 review_loop_iteration: 0
 story_key: '2-10-qualify-the-runner-lifecycle-on-the-reference-composition'
+course_correction: '../planning-artifacts/sprint-change-proposal-2026-11-18.md'
 context: []
 ---
 
@@ -83,7 +84,7 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
   - `bindings.deadlines.startup.{effectiveSeconds,actualDurationSeconds,override.state}`
   - `bindings.attachments.holds[]`, `retention`, `cleanup.{disposition,leftoverResourceIds}` and `bindings.tool.{version,contentIdentity}`
   - It does not record the source revision; the driver captures it.
-- CI identities are counted, not re-run. They are the Story 2.8 hosted Parties runs [42521615234](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42521615234), [42526256372](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372) and [42528046681](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42528046681).
+- Story 2.8 supplies hosted lifecycle evidence under the original Parties revision `926c1c3f` and Builds 4.44.13. Its lifecycle, startup-cancellation and execution-cancellation runs, respectively, are [42521615234](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42521615234), [42526256372](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372) and [42528046681](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42528046681).
 - Earlier 2.10 history lives in this file's git history (`ed8e1048ddf83012a70e6fc7254e7dfe9c981025`) and in `evidence/2-10/`, which stays as committed.
 
 ## Tasks & Acceptance
@@ -103,6 +104,13 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
   - an unchanged foreign-resource check.
 - **Given** any driver exit, **when** it finishes, **then** `list` shows no issued run and no new container remains.
 - **Given** the summary README, **when** read, **then** it links the 2.8 runs and states that the CI part and the accepted-tool record wait for 2.14 and CiCd story 21.
+
+**Remaining CI and tool qualification**
+
+- [ ] After Story 2.14 and CiCd story 21, record one success and one failure in normal Parties CI through the shared CiCd workflow. In each run, verify that the always-run cleanup step stops the job's owned runs and reports leftovers. Remaining owned resources mean cleanup is incomplete.
+- [ ] Once the local reference scenarios and the required CI evidence pass, record Platform tool acceptance and pin the released version in Platform and Parties under Story 2.14's version compatibility rule.
+
+The original Story 2.8 runs supply both hosted cancellation cases. Each new candidate merge or release decision requires a fresh qualifying run under the [candidate evidence and attachment policy v1](../../docs/contracts/candidate-and-attachment-policy-v1.md).
 
 ## Implementation Notes
 

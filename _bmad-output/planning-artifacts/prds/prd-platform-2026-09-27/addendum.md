@@ -71,7 +71,7 @@ Do not add a generic Platform mocking subsystem or per-service real/fake switche
 
 Story 2.8 provides the accepted hosted lifecycle runs under their original identities, including startup and execution cancellation. Story 2.9 records the completed fixture migration. Story 2.10 qualifies the Parties reference composition through local scenarios and hosted evidence. Run the local scenarios with the pinned release of the tool. For hosted evidence, use the Story 2.8 runs and the always-run cleanup reports from successful and failed Parties CI runs through the shared CiCd workflow. The CI portion depends on CiCd story 21, and released-version acceptance follows Story 2.14. Qualification uses the shared workflow without a dedicated hosted scenario controller. [Story 2.10](../../epics.md#story-210-qualify-the-runner-lifecycle-on-the-reference-composition) · [November 18 correction](../../sprint-change-proposal-2026-11-18.md)
 
-Pin each qualification campaign's inputs and run focused checks before broad acceptance runs. Preserve a compact summary of each scenario and link to the CI runs, reports, and diagnostic artifacts. Keep bulk logs and archives out of Git. Candidate acceptance requires a fresh qualifying run for each decision, including decisions involving unchanged modules. SM-3 requires every MVP module to demonstrate its integration checks. [November 8 correction](../../sprint-change-proposal-2026-11-08.md) · [Candidate evidence and attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
+Pin each qualification campaign's inputs and run focused checks before broad acceptance runs. Preserve a compact summary of each scenario and link to the CI runs, reports, and diagnostic artifacts. Keep bulk logs and archives out of Git. Each new candidate merge or release decision requires a fresh qualifying run, including decisions involving unchanged modules. SM-3 requires every MVP module to demonstrate its integration checks. [November 8 correction](../../sprint-change-proposal-2026-11-08.md) · [Candidate evidence and attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
 
 ### Option 1: Real services for all tests that exercise dependencies
 
@@ -411,7 +411,7 @@ Later architecture decisions add:
 - plaintext Redis and FalkorDB connections inside the data namespace;
 - shared Keycloak, Dapr control plane and ingress.
 
-The architecture permits the recorded pre-production Kubernetes support exception only until G1. Concrete version currency is checked through the profile inventory; historical stack observations do not establish a qualified production combination.
+The [October 1 decision](../../sprint-change-proposal-2026-10-01.md) superseded the pre-production Kubernetes support exception. Retire KubeSphere, complete and verify the upgrade to a supported workload Kubernetes release, then qualify private Rancher management and independent native access. Staging waits until this sequence and its other prerequisites pass. A delayed upgrade or Rancher qualification delays staging. The profile inventory records the actual versions and evidence of support.
 
 ## Approved cluster-management correction — 2026-10-01
 
