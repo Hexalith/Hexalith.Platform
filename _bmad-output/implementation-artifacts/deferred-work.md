@@ -2179,3 +2179,9 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
   summary: Pin `memories-vectors` (`redis/redis-stack:latest`) and `memories-graph` (`falkordb/falkordb:latest`) by digest when no retention profile is selected (low, pre-existing).
   evidence: these images are not catalog-selected, so 2.14's released-image resolution does not cover them; the README's immutable-digest wording applies only to catalog dependency images.
+
+## Deferred from: resume of spec-2-14-retire-package-admission-allowlists.md (2026-11-19)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-retire-package-admission-allowlists.md`
+  summary: Retire the Builds `HexalithPartiesSdk42CatalogView`, so Parties and its package-mode dependency images resolve the .NET 11 default view (EventStore 5.2.x, Tenants 8.0.x, Memories 4.0.x). Then release Builds, adopt it in Platform by version bump and repin Parties. This proves the allowlist slice's AC1 and matrix row 5 live.
+  evidence: `artifacts/story-2-14-package-admission/runtime-digest-probe/README.md`. The net11 catalog builder and the net10 released images compute 8 different operation digests (the `JsonSchemaExporter` `contentEncoding` change), which produces HXR021. The same view gives the attached suite `Hexalith.EventStore.Testing` 4.2.0 (CS1061). The owner chose this route over a per-owner runtime reader. It follows the 2.14 lock-file slice, because Platform's package byte tables cover only EventStore 4.2.0 and older.

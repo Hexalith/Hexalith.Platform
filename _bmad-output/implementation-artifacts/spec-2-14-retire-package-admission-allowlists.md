@@ -2,7 +2,7 @@
 title: '2.14 Retire package admission allowlists'
 type: 'refactor'
 created: '2026-11-18'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: '1ffa6013577fb0aace1cab93371db98f92829244'
@@ -122,6 +122,8 @@ Landed 2026-11-19, each push confirmed by the owner:
 - A separate repository sync recorded the Parties edits as `bfd63514579b7e9a273875ec421685a9f45702e6` during verification. Parties' local commit needs the coordinated Platform release and CiCd story 21. The legacy workflow already references a verifier absent from its committed tree.
 
 ## Spec Change Log
+
+- 2026-11-19 (resume): HXR021 root cause found. The run-scoped catalog builder runs on .NET 11 because Platform targets `net11.0`. The Builds Parties SDK 4.2 view selects Tenants 7.0.7 and Memories 3.0.27, whose images run .NET 10.0.15. .NET 11's `JsonSchemaExporter` adds `contentEncoding: base64` to `byte[]` members, so 8 operation digests differ. The probe reproduces both sides exactly: [runtime digest probe](../../artifacts/story-2-14-package-admission/runtime-digest-probe/README.md). The owner chose to retire the Builds Parties SDK 4.2 view so every owner runs on .NET 11. That follows a lock-file slice that replaces the package byte tables. This slice closes with its implementation and review complete. AC1 and matrix row 5 are proven live by the final adoption step of that route (Builds release, Platform version bump, Parties repin).
 
 ## Review Triage Log
 
