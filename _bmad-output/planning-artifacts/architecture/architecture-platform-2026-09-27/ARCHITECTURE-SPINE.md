@@ -14,6 +14,10 @@ sources:
   - ../../prds/prd-platform-2026-09-27/addendum.md
   - ../../sprint-change-proposal-2026-09-27.md
   - ../../sprint-change-proposal-2026-10-01.md
+  - ../../sprint-change-proposal-2026-11-08.md
+  - ../../sprint-change-proposal-2026-11-15.md
+  - ../../sprint-change-proposal-2026-11-18.md
+  - ../../../../docs/contracts/candidate-and-attachment-policy-v1.md
   - ../../../../references/Hexalith.McpCli/_bmad-output/planning-artifacts/architecture/architecture-mcpcli-2026-09-22/ARCHITECTURE-SPINE.md
   - ../../../../references/Hexalith.McpCli/_bmad-output/planning-artifacts/prds/prd-mcpcli-2026-09-21/prd.md
   - ../../../../references/Hexalith.Builds/README.md
@@ -24,7 +28,7 @@ sources:
   - reviews/update-2026-09-28
   - reviews/validate-2026-09-28/findings.json
   - reviews/update-2026-09-28-r4
-companions: []
+companions: [team-briefing-2026-11-19.md]
 ---
 
 # Architecture Spine — Hexalith Platform
@@ -103,6 +107,8 @@ Arrows show calls or dependency direction. Module-owned presentation and read tr
   - *Candidate mapping:* For candidate acceptance, every artifact of the candidate module consumed by the composition comes from that candidate's own Release build of its declared committed revision, including Contracts, server and extension packages, services and tools. These candidate artifacts replace that module's catalog artifacts in the one mapping used by the composed host, run-scoped McpCli and tests; libraries still cross NuGet package boundaries. Other modules remain catalog-pinned. Version labels never substitute for content identities; no package or image cache may silently supply another build.
   - *Mode selection:* The Platform tool, pinned in the workspace's `.config/dotnet-tools.json`, alone sets the single mode property; file existence never selects a mode. Missing required source fails with the named dependency and path; no ancestor, sibling, recursive, nested-Platform or package fallback.
   - *Platform identity:* Every workspace other than the Platform repository that runs the tool declares `references/Hexalith.Platform` directly, and its submodule commit is the single Platform identity; in the Platform repository the identity is its HEAD. The identity pins the Builds catalog commit and a supported Platform-tool version range. In package mode the tool refuses a composition commit that differs from the submodule HEAD, a Builds submodule that differs from the pinned catalog, or a tool outside the range; source mode warns, and an untagged or dirty submodule is allowed only in source mode.
+  - *Released dependency admission:* Pin Builds and owner dependencies by released version. The Builds binding carries only the release version and tag as release metadata. The tag resolves to the pinned Builds commit. The binding version, workspace tool pin and compatibility-range floor must match. AppHost and Tooling must report the same version within that range, up to the next major, exclusive. Verify the tool package against its generated lock. For released owner packages, Platform checks the archive against the package ID, version and content hash in `eng/owner-packages.lock.json`, then checks each loaded assembly against its archive member. Missing entries, version mismatches and substituted bytes fail before the run can create resources. [Owner package lock decision](../../../implementation-artifacts/spec-2-14-admit-owner-packages-by-lock.md)
+  - *Owner package profiles:* Each test project declares one package integration profile. Validate owner declarations and catalog image identities through that profile. Admission must be independent of compiled release identities, hardcoded declaration-hash or image-digest allowlists, and measured image cohorts. Candidate artifacts follow the candidate mapping above. [Story 2.14](../../epics.md#story-214-pin-builds-and-owner-modules-by-released-version)
 
 ### AD-5 — Runner-owned CI integration environments [ADOPTED, AMENDED]
 
@@ -110,7 +116,7 @@ Arrows show calls or dependency direction. Module-owned presentation and read tr
 - **Prevents:** integration jobs sharing hosted data or credentials, or claiming candidate acceptance against other artifacts.
 - **Rule:**
   - *Execution:* Reuse Builds workflows on disposable Linux GitHub-hosted runners. Run isolated tests without Platform first, then real-service integration through the AD-10 runner in package mode as a blocking tier. CI never receives staging or production provider credentials; its only retained-registry access is a read-only pull credential. Staging Kubernetes E2E remains a separate mandatory gate.
-  - *Evidence:* The run descriptor and results bind the candidate module and source revision, expected artifact content identities and the identities the environment actually loaded, including packages inside the composed host and run-scoped McpCli. Candidate acceptance refuses a missing identity, another build or revision, or uncommitted source inputs. A baseline-only run is explicitly labelled and cannot satisfy candidate acceptance. Builds owns this encoding; its candidate-selection and evidence-reuse policy must be fixed before evidence is accepted (Owned work).
+  - *Evidence:* The run descriptor and results bind the candidate module and source revision, expected artifact content identities and the identities the environment actually loaded, including packages inside the composed host and run-scoped McpCli. Candidate acceptance refuses a missing identity, another build or revision, or uncommitted source inputs. A baseline-only run is explicitly labelled and cannot satisfy candidate acceptance. For released packages, derive expected identities from the lock-verified artifacts and measure the files actually loaded. Builds owns the encoding. Platform policy v1 requires a fresh qualifying run for each merge or release decision. [Candidate and attachment policy](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
 
 ### AD-6 — Environment-specific identity realms [ADOPTED, AMENDED]
 
@@ -247,13 +253,15 @@ Arrows show calls or dependency direction. Module-owned presentation and read tr
 
 ### CI qualification execution
 
-The [2026-11-08 sprint correction](../../sprint-change-proposal-2026-11-08.md) changes execution planning within AD-4, AD-5 and AD-10; it introduces no new architecture decision, schema, authority or deadline.
+The November sprint corrections govern how Platform, Builds and Parties qualify AD-4, AD-5 and AD-10. [Initial scope](../../sprint-change-proposal-2026-11-08.md) · [Package admission and CI lanes](../../sprint-change-proposal-2026-11-15.md) · [Lifecycle qualification](../../sprint-change-proposal-2026-11-18.md)
 
 - Bind each qualification campaign to explicit source revisions, catalog/tool identities, package/image digests and suite/configuration identities. Reconcile incoming work once before the final source cut. A newer branch head alone does not require changing a diagnostic campaign's pinned inputs; an actual new merge or release decision still requires its own evidence.
 - Run focused resource-free checks and fresh-runner prerequisite checks before broad service campaigns. Cache only verified setup inputs; validate their content and current execution bindings on consumption. Each service job keeps its own receipt, isolation, readiness and cleanup proof.
 - Follow the immutable [candidate-and-attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md): do not reuse test results across acceptance decisions or turn baseline diagnostics into candidate evidence. Any future evidence-reuse mechanism requires a new policy version, explicit adoption and requalification.
 - Review active source, configuration, test and documentation changes. Historical evidence stays as committed and is not re-verified unless a decision consumes it. New evidence is a compact summary with links to CI runs and artifacts ([2026-11-18 correction](../../sprint-change-proposal-2026-11-18.md)).
-- Platform tuple CI runs only the current-tuple lane, on the candidate commit itself, behind a fail-closed combined gate ([2026-11-15 correction](../../sprint-change-proposal-2026-11-15.md)). The legacy, pre-extension and package-reader replay lanes are retired: they pinned Builds 4.44.3 and 4.45.0, which no module uses, and granted no qualification credit. Lifecycle cancellation is proven by Story 2.8's recorded hosted runs and Builds' lifecycle tests; module CI keeps job-owned always-run cleanup.
+- Platform tuple CI tests the candidate commit. Its verdict requires both source resolution and the current test lane to pass. Story 2.13 retired the legacy, pre-extension and package-reader replay lanes and their companion commits.
+- Story 2.10 qualifies the runner lifecycle on the Parties reference composition. Run the local scenarios with the pinned released tool and record one compact summary per scenario. The original Story 2.8 matrix ran on Parties `566b9bfc`. The startup and execution cancellation runs used `926c1c3f`. All three used Builds 4.44.13. Cite those runs for their original lifecycle scenarios alongside the Builds lifecycle tests. [Original execution record](../../../implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md#execution-record--2026-11-08-focused-hosted-proof)
+- Complete the CI part of Story 2.10 after both Story 2.14 and the CiCd story 21 migration of Parties. Use normal Parties success and failure runs through the shared workflow, including the AD-10 cleanup report. This requires no dedicated hosted scenario workflow. Once reference qualification passes, record Platform acceptance and pin the qualified tool release in Platform and Parties. [Story 2.10](../../epics.md#story-210-qualify-the-runner-lifecycle-on-the-reference-composition)
 
 ### Cluster management
 

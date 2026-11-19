@@ -1,0 +1,11 @@
+# Team briefing for Platform, Builds and Parties
+
+19 November 2026
+
+**Package adoption.** Platform pins Builds and released owner packages by version. It checks each package against its generated lock and compares the loaded assemblies with the verified archive. Parties now uses one ordinary integration profile, `platform-package`. The five dependency revisions flagged by the November 19 audit still need qualification before the next candidate is published. [Owner package lock decision](../../../implementation-artifacts/spec-2-14-admit-owner-packages-by-lock.md) · [Story 2.14 audit follow-up](../../epics.md#story-214-pin-builds-and-owner-modules-by-released-version)
+
+**Runner qualification.** Story 2.10 still needs one compact result for each of the nine local scenarios on the pinned tool. After Story 2.14 and CiCd story 21’s migration of Parties, collect cleanup reports from a successful and a failed run of the normal Parties workflow. Once qualification passes, Platform records acceptance and pins the tool release in Platform and Parties. [Story 2.10](../../epics.md#story-210-qualify-the-runner-lifecycle-on-the-reference-composition)
+
+**What CI already proves.** Story 2.8’s accepted matrix ran on Parties `566b9bfc`. The startup and execution cancellation runs used `926c1c3f`. All three used Builds 4.44.13. Each new merge or release decision needs its own qualifying run. [Matrix](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42521615234) · [Startup cancellation](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42526256372) · [Execution cancellation](https://github.com/Hexalith/Hexalith.Parties/actions/runs/42528046681) · [Candidate policy](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
+
+**Everyday CI.** Platform requires source resolution and the current test lane to pass on the candidate commit. Story 2.13 retired the historical replay lanes and their companion commits. On disposable module runners, the job ends attached runs before cleanup, removes its own resources and reports leftovers on success, failure or cancellation. Leftovers mean cleanup is incomplete. Runner disposal is the backstop. [CI qualification rules](ARCHITECTURE-SPINE.md#ci-qualification-execution)
