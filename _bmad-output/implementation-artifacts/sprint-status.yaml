@@ -17,7 +17,7 @@
 #   - done: Retrospective has been completed
 
 # Action Item Status:
-#   - open: Committed during a retrospective, not yet addressed
+#   - open: Accepted during a retrospective or sprint change review and awaiting work
 #   - in-progress: Actively being worked on
 #   - done: Completed
 
@@ -124,6 +124,7 @@ development_status:
   # 2026-11-18: Builds slice (version-only pin, generated tool lock, version-range admission) implemented and reviewed;
   #   pass 1 applied 9 patches, deferred 2, rejected 21. Landing restores the five pinned gitlinks; hosted tuple CI pending.
   #   The HXP020 allowlist slice follows as a second 2.14 spec (deferred-work).
+  # 2026-11-19: f3f96b2e passed tuple preflight. Audit item 1 reopened after the submodule sync at 707cf901.
   2-14-pin-builds-and-owner-modules-by-released-version: in-progress
   epic-2-retrospective: optional
 
@@ -294,6 +295,84 @@ development_status:
   12-2-compose-agents-from-a-clean-checkout-and-pass-the-ext-host-1: backlog
   epic-12-retrospective: optional
 action_items:
+  - id: "audit-2026-11-19-candidate-repair"
+    epic: 2
+    action: "Item 1. Reconcile and qualify the five dependency revisions after the submodule sync at 707cf901."
+    owner: "Platform release maintainer and release owner"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-host-request-limit"
+    epic: 3
+    action: "Item 2. Verify the 1 MiB Kestrel limit and route exceptions in both hosts before deployment."
+    owner: "Platform host maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-openbao-inventory-transport"
+    epic: 4
+    action: "Item 3. Restore direct OpenBao metadata transport and verify it on .NET 11 with a configured proxy."
+    owner: "Secrets.Inventory maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-release-tooling-advisory"
+    epic: 4
+    action: "Item 4. Resolve the picomatch advisory or track the remaining exposure and review date."
+    owner: "Release-tooling maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-tenant-inventory-reads"
+    epic: 5
+    action: "Item 5. Measure tenant enrollment read cost and preserve current-state checks."
+    owner: "Secrets.Inventory maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-profile-cancellation"
+    epic: 5
+    action: "Item 6. Propagate HTTP cancellation through to the profile authority."
+    owner: "Secrets.Inventory maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-composition-key-cleanup"
+    epic: 1
+    action: "Item 7. Remove temporary private keys after a failed run while retaining useful diagnostics."
+    owner: "Platform composition maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-custody-snapshot-restore"
+    epic: 5
+    action: "Item 8. Validate the complete local snapshot before replacing the current Custody volume."
+    owner: "Custody maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-identity-test-synchronization"
+    epic: 5
+    action: "Item 9. Synchronize saturation-test workers before advancing the test clock."
+    owner: "Identity maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-authority-receiver-maintenance"
+    epic: 5
+    action: "Item 10. Extract signed-response encoding and covered transitions after the reliability fixes."
+    owner: "Secrets.Runtime maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-protection-test-paths"
+    epic: 5
+    action: "Item 11. Supply explicit script and EventStore paths and verify the five out-of-tree Protection cases."
+    owner: "Protection maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-supported-qualification-runs"
+    epic: 5
+    action: "Item 12. Record ext4 and native Protection results and investigate Custody recovery in the full suite."
+    owner: "QA and Custody maintainer"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
+  - id: "audit-2026-11-19-erasure-root-decision"
+    epic: 4
+    action: "Item 13. Record the permanent-loss decision and verify restart with the intact volume before using the profile."
+    owner: "Data owner and platform operator"
+    status: open
+    ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
   - id: "epic-1-retro-active-identity"
     epic: 1
     action: "F1: Derive active v2 module identity from the declaration and verify

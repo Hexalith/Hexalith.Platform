@@ -1054,6 +1054,8 @@ So that every environment comes from one definition instead of per-module AppHos
 
 **Repo:** Hexalith.Platform (model); Hexalith.Builds (Module.AppHost, EventStoreHost, UiHost) · **Covers:** FR-3, AR-3, AR-7 (with no extension packages), AR-49, AR-50 (EventStore.Aspire and toolkit alignment)
 
+**Composition maintenance.** When local startup fails, retain the run’s redacted diagnostics and remove its temporary private keys after their consumers stop. Platform owns this follow-up. [Audit action 7](sprint-change-proposal-2026-11-19.md#reliability-and-maintenance)
+
 **Acceptance Criteria:**
 
 **Given** a domain module's declaration
@@ -1715,6 +1717,8 @@ So that adopting a Builds or module release is a version bump rather than an edi
 
 **Repo:** Hexalith.Platform, Hexalith.Parties (owner review) · **Covers:** AR-12 (expected and loaded content identities) · **Depends on:** Story 2.13
 
+**Audit follow-up.** The tuple preflight passed on `f3f96b2e`. The submodule sync at `707cf901` reintroduced drift across Builds, EventStore, Parties, Tenants and Memories. Reconcile and qualify the five revisions again before publishing a new candidate. [Audit action 1](sprint-change-proposal-2026-11-19.md#release-and-deployment)
+
 **Origin (2026-11-15):** [sprint-change-proposal-2026-11-15.md](sprint-change-proposal-2026-11-15.md). `eng/builds-tuple.json` binds about 12 identities of one Builds release. Composition source compiles in release identities, such as `IsPublishedPair`'s AppHost and Tooling DLL hashes. 180 of 706 Platform commits since 2026-11-01 touched `builds-tuple.json`. 2026-11-18: also removes the declaration and image allowlists behind HXP020 ([proposal](sprint-change-proposal-2026-11-18.md)).
 
 **Acceptance Criteria:**
@@ -1785,6 +1789,8 @@ I want Platform to compose my extension packages into the one `eventstore` host,
 So that my module's semantics run in the shared gateway without a module-built `eventstore` image.
 
 **Repo:** Hexalith.Platform, Hexalith.Builds · **Covers:** FR-1, AR-7, AR-62 · **Prerequisites:** EventStore extension API with supported majors
+
+**Host deployment check.** Verify the effective 1 MiB Kestrel limit and intended route exceptions in both the composed EventStore host and TenantRegistry. [Audit action 2](sprint-change-proposal-2026-11-19.md#release-and-deployment)
 
 **Acceptance Criteria:**
 
@@ -2405,6 +2411,8 @@ So that staging and production deploy exactly what was published, and nothing is
 
 **Repo:** Hexalith.Platform (publication workflow), Hexalith.Builds (reusable workflows) · **Covers:** AR-17, AR-18, AR-46 (McpCli candidate) · **Prerequisites:** EventStore AD-13 ratification and composed-subject issuer registration
 
+**Release-tooling follow-up.** The release-tooling maintainer owns the `picomatch` advisory in the development dependencies and records the disposition for publication. [Audit action 4](sprint-change-proposal-2026-11-19.md#release-and-deployment)
+
 **Acceptance Criteria:**
 
 **Given** the public publication workflow on disposable hosted runners
@@ -2734,6 +2742,8 @@ So that I can use Parties, EventStore, Tenants and Memories in a hosted environm
 
 **Repo:** Hexalith.Platform (operations repository) · **Covers:** FR-10 (staging), AR-17, AR-32, AR-37
 
+**Deployment checks.** Verify the two hosts’ body limits and the OpenBao inventory client’s direct, TLS-validated connection. Before using the erasure-root profile, obtain the data owner’s decision on permanent volume loss and verify restart with the intact volume. [Audit actions 2, 3 and 13](sprint-change-proposal-2026-11-19.md)
+
 **Acceptance Criteria:**
 
 **Given** a published release
@@ -2879,6 +2889,8 @@ Acceptance criteria:
 
 
 ## Epic 5: Gate every release on exact-release staging evidence
+
+The Platform maintainers and QA track the audit’s reliability repairs and qualification runs in the sprint tracker. Record the ext4, native Dapr/OpenBao and full-suite Custody outcomes against their candidate. The receiver refactor follows the higher-priority work. [Audit actions 5–12](sprint-change-proposal-2026-11-19.md)
 
 Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows must pass. With no production baseline, staging proves installation and candidate behavior. With a production baseline and automatic-recovery eligibility, it upgrades from that baseline and rehearses the rollback set. A retained-data approved path without compatible evidence qualifies its named data recovery and does not prepare automatic rollback. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one. The no-baseline branch enables the first G1 deployment; baseline-dependent branches close after Epic 6 establishes the first working production baseline and before a second production candidate is accepted. After staging validation passes, only the Platform publication workflow publishes a stable McpCli version.
 
