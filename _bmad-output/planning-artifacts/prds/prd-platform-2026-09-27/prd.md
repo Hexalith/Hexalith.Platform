@@ -2,7 +2,7 @@
 title: Hexalith Platform Product Requirements
 status: final
 created: 2026-09-27
-updated: 2026-11-08
+updated: 2026-11-19
 ---
 
 # PRD: Hexalith Platform
@@ -145,8 +145,10 @@ A developer or automated CI workflow can provision the configured environment th
 - CI automatically cleans up its test environment after success, failure, or cancellation, including resources created before provisioning failed. CI attachment is limited to runs within the same CI job; attached runs end with the job, and cancelling the job ends them before cleanup.
 - Cleanup affects only the resources belonging to that test environment; it must not remove resources belonging to another active run or a hosted environment.
 - Cleanup can be retried safely and reports remaining owned resources; an incomplete cleanup is not recorded as complete.
-- On a disposable GitHub-hosted runner, an always-run cleanup step that stops the job's owned runs and reports leftovers is the cleanup record, and the runner's disposal at job end is the backstop. Proving this does not need a dedicated hosted scenario workflow.
+- On a disposable GitHub-hosted runner, the always-run cleanup step stops the job's owned runs and reports any remaining owned resources. Its report serves as the cleanup record, with runner disposal as the backstop.
 - Test results and useful diagnostic logs remain available after environment cleanup; keeping live resources is not the only means of diagnosing a failure.
+
+**Runner lifecycle qualification.** Accepting the runner lifecycle requires Story 2.10 qualification on the Parties reference composition. This combines local lifecycle scenarios, the accepted hosted runs from Story 2.8, and cleanup reports from normal Parties CI. Each candidate acceptance decision requires a fresh qualifying run under the published policy. [Qualification evidence in the addendum](addendum.md#runner-lifecycle-qualification-evidence) · [Candidate evidence and attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
 
 #### FR-5: Keep isolated tests independent of Platform
 
@@ -157,8 +159,6 @@ A module developer can run isolated tests directly from the module's test projec
 - Isolated tests can execute without starting the configured domain-module servers.
 - CI runs isolated tests first and real-service integration tests afterward; passing isolated tests alone does not satisfy the module's integration acceptance.
 - Platform development and integration environments continue to run their configured real services regardless of test doubles used inside isolated tests.
-
-**Execution clarification (2026-11-08):** The [approved sprint correction](../../sprint-change-proposal-2026-11-08.md) bounds Story 2.8 to CI lifecycle implementation and focused proof, preserves the completed fixture migration in 2.9, and assigns complete reference qualification to 2.10. MVP scope and FR/NFR/SM acceptance remain unchanged. Pin qualification inputs for each campaign and use focused checks before broad acceptance runs. Keep evidence compact: a summary in the spec and links to CI runs and artifacts, with no bulk logs or archives in git. Reusing downloaded setup assets or rereading an original result does not authorize test-result reuse across acceptance decisions: the published candidate-and-attachment policy v1 continues to require fresh qualifying runs. Story 2.10, as rescoped on 2026-11-18 ([correction](../../sprint-change-proposal-2026-11-18.md)), is the reference qualification required before accepting runner lifecycle capability.
 
 ### Staging validation and production promotion
 
@@ -408,7 +408,7 @@ The product rules above are settled except where a row below routes a decision t
 | Tenants-owner review of tenant-lifecycle critical-flow declarations, cleanup or reporting of leftover synthetic staging tenants, and operator provisioning of the production synthetic tenant | Tenants owner with module owners and Platform | Before release-gate qualification and the first production verification |
 | Staging execution triggers and rules for accepting rerun evidence without hiding failed or incomplete attempts | Platform with Builds | Before accepting the first staging release evidence; retain attempt history and enforce FR-6 evidence identity and validity |
 | Implement and qualify the selected root-source mapping, declaration/export contracts, Platform runner ownership and disposable CI lifecycle, and the adopted FR-4 attachment and CI candidate-evidence rules | Platform with Builds and module maintainers | Before accepting local/CI composition and testing evidence |
-| Define the module candidate revision (pull-request head or merge result), the merge or release decision that CI candidate evidence gates, reuse of accepted evidence for unchanged modules, and the attachment hold limit | Platform with Builds | Before accepting CI integration evidence |
+| Apply the published [candidate evidence and attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md) for candidate revision, decision-bound evidence and attachment hold limits | Platform with Builds | Before accepting CI candidate evidence |
 | Qualify McpCli enrollment and selected-environment contract matching, surface/actor authorization and named positive/refusal demonstrations | Platform, McpCli and EventStore maintainers | Before FR-12/SM-1/SM-4 acceptance |
 | Qualify environment-specific identity/state, automation permissions, network isolation and explicit production admission | Platform with Administrator and module maintainers | Before G2 and after access changes; controlled test admission precedes general user opening |
 | Supported infrastructure, KubeSphere retirement and qualified private Rancher management with independent native access, ingress/DNS/certificates, executor/probe access, independent monitoring and verified GitHub delivery | Administrator with Platform implementation | Retirement before the Kubernetes hop; Rancher qualified before staging; retain actual configuration/version, access and recovery evidence before G1 |
@@ -417,7 +417,7 @@ The product rules above are settled except where a row below routes a decision t
 | Reduced-recovery operating rules: whether automatic promotion resumes before the return to G2 conditions, restore-exercise cadence while prepared capacity is consumed, and re-establishing staging after disaster recovery | Administrator with Platform architecture | Before G2 |
 | Complete recovery inventory, independent backups/artifacts/keys, named deputy access, declared response hours/time zone/acknowledgement bound, prepared capacity and representative recovery volume | Administrator with deputy and dependency owners | Before G2; demonstrate in the timed drill and repeat after material changes; whole-site coverage requires independent capacity |
 | Memories tombstone/key continuity and module-specific recovery reconciliation | Memories/EventStore with other module owners and Platform | Before G2 and whenever recovery mechanisms change |
-| Qualify the FR-4 rules adopted in AD-4/AD-5/AD-10: candidate content identity and loaded-identity reporting, baseline-only labelling, attachment artifact-identity checks and post-finish refusal, hold limit, attached-run failure retention, withdrawn outcome, attached-run listing and same-job CI attachment | Platform with Builds | Before accepting runner-lifecycle and CI integration evidence; the shared policy precedes consumer implementation |
+| Qualify the FR-4 rules adopted in AD-4/AD-5/AD-10: candidate content identity and loaded-identity reporting, baseline-only labelling, attachment artifact-identity checks and post-finish refusal, hold limit, attached-run failure retention, withdrawn outcome, attached-run listing and same-job CI attachment | Platform with Builds | Before accepting runner lifecycle and CI integration evidence. Story 2.10 supplies the reference lifecycle qualification. |
 | Qualify the adopted FR-8/FR-9 rules: the degraded definition, two-way admission mismatch, per-cause clearance and re-recording, reviews before approved attempts, and grants listed for re-application after restore. Retained-data repair requires valid compatibility evidence or a named data-restore recovery | Platform with Builds and Administrator | Before the first applicable production attempt; architecture update 4 resolves the compatibility/recovery choice |
 | Synchronize spec/acceptance wording with this PRD and the accepted architecture: both release modes, empty/degraded and incompatible approved attempts, G1–G3, RTO coverage, restoration revocation exceptions and deputy authority | Platform spec owners with Administrator | Before recovery/deployment stories are finalized; include the confirmed architecture update-4 rules and preserve all FR/NFR/SM IDs |
 
