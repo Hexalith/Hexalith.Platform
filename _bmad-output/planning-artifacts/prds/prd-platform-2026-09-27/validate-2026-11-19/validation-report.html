@@ -1,0 +1,269 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hexalith Platform — BMAD PRD validation</title><style>
+
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #e7e5e4;
+    --text: #1c1917;
+    --muted: #78716c;
+
+    --verdict-strong: #16a34a;
+    --verdict-adequate: #65a30d;
+    --verdict-thin: #d97706;
+    --verdict-broken: #dc2626;
+
+    --sev-low: #64748b;
+    --sev-medium: #ca8a04;
+    --sev-high: #ea580c;
+    --sev-critical: #dc2626;
+
+    --grade-exc: #16a34a;
+    --grade-good: #65a30d;
+    --grade-fair: #d97706;
+    --grade-poor: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  header.report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .title h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .title .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .grade {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .grade-excellent { background: var(--grade-exc); }
+  .grade-good { background: var(--grade-good); }
+  .grade-fair { background: var(--grade-fair); }
+  .grade-poor { background: var(--grade-poor); }
+
+  .synthesis {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 15.5px;
+  }
+  .synthesis p { margin: 0 0 10px; }
+  .synthesis p:last-child { margin-bottom: 0; }
+
+  .dimension-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .dim-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .dim-card .dim-name { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .dim-card .dim-verdict { font-size: 14px; font-weight: 600; }
+
+  section.dimension, section.reviewer-section { margin-bottom: 14px; }
+  section.dimension details, section.reviewer-section details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  section summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  section summary::-webkit-details-marker { display: none; }
+  section summary::before {
+    content: "▸";
+    display: inline-block;
+    color: var(--muted);
+    transition: transform 0.15s ease;
+  }
+  section details[open] summary::before { transform: rotate(90deg); }
+  section summary h2 {
+    display: inline;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    flex: 1;
+  }
+  .verdict-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: white;
+  }
+  .verdict-strong { background: var(--verdict-strong); }
+  .verdict-adequate { background: var(--verdict-adequate); }
+  .verdict-thin { background: var(--verdict-thin); }
+  .verdict-broken { background: var(--verdict-broken); }
+
+  .dim-body { padding: 4px 20px 18px; }
+  .dim-judgment { color: var(--text); font-size: 14.5px; }
+  .dim-judgment p { margin: 0 0 10px; }
+
+  .findings-list { padding: 0 20px 4px; }
+  article.finding {
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+  article.finding:first-child { border-top: none; }
+  article.finding header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .badge {
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+  .badge-sev-low { background: rgba(100, 116, 139, 0.12); color: var(--sev-low); }
+  .badge-sev-medium { background: rgba(202, 138, 4, 0.14); color: var(--sev-medium); }
+  .badge-sev-high { background: rgba(234, 88, 12, 0.14); color: var(--sev-high); }
+  .badge-sev-critical { background: rgba(220, 38, 38, 0.14); color: var(--sev-critical); }
+  .finding-title { margin: 0; font-size: 15px; font-weight: 500; flex: 1; min-width: 200px; }
+  .finding-location { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: var(--muted); }
+  .finding-note, .finding-fix { margin-top: 6px; font-size: 14px; }
+  .finding-fix strong { color: var(--muted); font-weight: 500; }
+
+  .reviewer-source {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .mechanical {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  .mechanical h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .mechanical ul { margin: 0; padding-left: 20px; }
+  .mechanical li { margin-bottom: 4px; color: var(--text); }
+
+  footer.report-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  footer .meta { display: flex; gap: 24px; flex-wrap: wrap; }
+
+.subtitle,.finding-location,.meta,.reviewer-source{overflow-wrap:anywhere}.dim-verdict{font-weight:600}a{color:#245879}.report-footer p{margin:6px 0}.summary-count{font-size:14px}.finding-location a{white-space:normal}@media(max-width:600px){header.report-header,section.reviewer-section summary{flex-wrap:wrap}.container{padding:18px 12px}}
+</style></head><body><main class="container"><header class="report-header"><div class="title"><h1>Hexalith Platform — PRD validation</h1>
+<div class="subtitle">_bmad-output/planning-artifacts/prds/prd-platform-2026-09-27/prd.md</div><p class="summary-count">0 critical · 3 high · 3 medium · 1 low</p></div><div class="grade grade-fair">Fair</div></header>
+<div class="synthesis">
+<p>The seven-module scope, developer workflows and recovery objectives are well defined. The PRD is usable for planning. Correct three passages before using it to decide whether staging may open, whether an Administrator may approve a release on healthy production, or which build may qualify a pull request.</p>
+<p>The November 18 changes are present in FR-4 and the execution clarification. Story 2.8’s recorded CI runs count toward runner lifecycle qualification under their original identities. A new candidate merge or release decision still needs its own qualifying run. The Story 2.10 execution spec contains older instructions that obscure this distinction.</p>
+<p><a href="../../../briefs/brief-platform-2026-09-27/brief.md">Platform brief</a> · <a href="../update-2026-09-28/update-summary.md">September findings and resolutions</a> · <a href="../../../sprint-change-proposal-2026-11-18.md">November 18 approved correction</a></p></div><div class="dimension-summary">
+<div class="dim-card"><div class="dim-name">Decision-readiness</div><div class="dim-verdict" style="color:var(--verdict-adequate)">Adequate</div></div>
+<div class="dim-card"><div class="dim-name">Substance over theater</div><div class="dim-verdict" style="color:var(--verdict-strong)">Strong</div></div>
+<div class="dim-card"><div class="dim-name">Strategic coherence</div><div class="dim-verdict" style="color:var(--verdict-strong)">Strong</div></div>
+<div class="dim-card"><div class="dim-name">Done-ness clarity</div><div class="dim-verdict" style="color:var(--verdict-adequate)">Adequate</div></div>
+<div class="dim-card"><div class="dim-name">Scope honesty</div><div class="dim-verdict" style="color:var(--verdict-strong)">Strong</div></div>
+<div class="dim-card"><div class="dim-name">Downstream usability</div><div class="dim-verdict" style="color:var(--verdict-adequate)">Adequate</div></div>
+<div class="dim-card"><div class="dim-name">Shape fit</div><div class="dim-verdict" style="color:var(--verdict-strong)">Strong</div></div>
+</div>
+<section class="dimension"><details><summary><h2>Decision-readiness</h2><span class="verdict-pill verdict-adequate">adequate</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>The G1–G3 table distinguishes closed deployment, user access and automatic promotion. FR-8 names the people who can restore service, declare a stop and clear it. The addendum nevertheless presents a withdrawn staging exception in the present tense.</p></div></div><div class="findings-list">
+<article class="finding"><header><span class="badge badge-sev-high">High</span><h3 class="finding-title">The addendum still permits staging on unsupported Kubernetes</h3></header>
+<div class="finding-note">The addendum says the pre-production support exception lasts “until G1.” The October 1 decision explicitly withdrew that waiver. On a delayed upgrade, the two instructions give opposite answers about starting staging after Kubernetes 1.34 reached end of life on October 27.</div><div class="finding-fix"><strong>Suggested change</strong> · Mark the waiver superseded in the risk entry. State the accepted order there: retire KubeSphere, complete the supported Kubernetes upgrade, qualify private Rancher management, then start staging.</div>
+<p class="finding-location"><a href="../addendum.md">Addendum, lines 370, 408 and 412</a> · <a href="../prd.md">PRD, line 414</a> · <a href="../../../sprint-change-proposal-2026-10-01.md">October 1 decision, line 269</a> · <a href="../../../architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md">Architecture, lines 262 and 536</a></p></article>
+</div></details></section>
+<section class="dimension"><details><summary><h2>Substance over theater</h2><span class="verdict-pill verdict-strong">strong</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>FR-2 tests whether a breakpoint changes the running module. FR-4 tests actual loaded artifacts, bounded startup and resource ownership. NFR-2 defines the start and end of the recovery clock and explains who covers an outage that begins during a shift. These consequences let a reviewer reject misleading success claims.</p></div></div><div class="findings-list">
+</div></details></section>
+<section class="dimension"><details><summary><h2>Strategic coherence</h2><span class="verdict-pill verdict-strong">strong</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>The vision assigns shared hosting to Platform and business behavior to module owners. The Parties example in FR-3 shows what that boundary means in a developer's workspace. FR-6 carries it into release decisions by requiring each enrolled module's declared checks. SM-C1, SM-C4 and SM-C5 guard against passing a release with incomplete evidence, deleting another run's resources or hiding a slower startup with a longer timeout.</p></div></div><div class="findings-list">
+</div></details></section>
+<section class="dimension"><details><summary><h2>Done-ness clarity</h2><span class="verdict-pill verdict-adequate">adequate</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>Every FR has testable consequences. FR-7 supplies a ten-minute rollout deadline and a five-minute verification window with concrete retry conditions. One SM-5 acceptance instruction is broad enough to reverse a valid result for an otherwise permitted approval.</p></div></div><div class="findings-list">
+<article class="finding"><header><span class="badge badge-sev-high">High</span><h3 class="finding-title">SM-5 can reject a permitted release on healthy production</h3></header>
+<div class="finding-note">SM-5 calls for “refusal of approval when production is neither empty nor degraded.” FR-6 allows an Administrator to approve a pre-G3 release, or one requiring an explicit recovery plan, on a healthy baseline. SM-C1 limits its refusal to attempts invoking the degraded-production exception. SM-5’s adjacent stop-clearance wording also omits the verified approved attempt described in FR-8.</div><div class="finding-fix"><strong>Suggested change</strong> · Test the two cases on the same healthy baseline. Refuse a request invoking the empty/degraded exception. Accept an otherwise eligible pre-G3 or incompatible release under its own approval rules. List both authorized ways to clear a stop, including the verified attempt that can clear only the stop the Administrator observed.</div>
+<p class="finding-location"><a href="../prd.md">PRD, lines 50, 181, 230, 235–241, 384–385 and 394</a> · <a href="../../../../specs/spec-platform/acceptance-criteria.md">Acceptance criteria, line 104</a></p></article>
+</div></details></section>
+<section class="dimension"><details><summary><h2>Scope honesty</h2><span class="verdict-pill verdict-strong">strong</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>The seven-module MVP at prd.md:40–48 and the exclusions at lines 62–68 set clear boundaries. FR-9 names which acknowledged changes may be lost after a restore and gives Memories erasures stronger protection. NFR-2 conditions the four-hour recovery target on response coverage and replacement capacity. The September repository observations in addendum.md:10–24 are expressly dated.</p></div></div><div class="findings-list">
+</div></details></section>
+<section class="dimension"><details><summary><h2>Downstream usability</h2><span class="verdict-pill verdict-adequate">adequate</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>The stable identifiers, glossary and named evidence owners support extraction into stories. The handoff table should identify which decisions are now published so that a team can tell policy ownership from implementation and qualification work.</p></div></div><div class="findings-list">
+<article class="finding"><header><span class="badge badge-sev-high">High</span><h3 class="finding-title">The CI handoff reopens the choice of commit that qualifies a merge</h3></header>
+<div class="finding-note">The handoff asks owners to define “pull-request head or merge result,” evidence reuse and attachment limits. Policy v1 already requires the committed merge result for the exact head/base pair. A passing head-only build could otherwise be accepted for an untested merge. A distinct release decision requires fresh evidence even for identical bytes. The attachment hold defaults to 30 minutes and has a four-hour maximum.</div><div class="finding-fix"><strong>Suggested change</strong> · Link policy v1 from FR-4 and the handoff row. Record these choices as settled and leave tool adoption, enforcement and integration qualification with Platform and Builds.</div>
+<p class="finding-location"><a href="../prd.md">PRD, lines 125–126, 137, 161, 411 and 420</a> · <a href="../../../../../docs/contracts/candidate-and-attachment-policy-v1.md">Candidate policy v1, lines 28–43, 79–84 and 244–246</a></p></article>
+<article class="finding"><header><span class="badge badge-sev-medium">Medium</span><h3 class="finding-title">The handoff still asks owners to define published hosted-release rules</h3></header>
+<div class="finding-note">The PRD routes staging reruns, evidence age, changes to required checks and infrastructure currency back to owners. The staging policy sets a 24-hour maximum from attempt start, defines reruns and specifies who approves coverage changes. The infrastructure policy defines cadence and allowed lag and requires an approved attempt to name each failing component.</div><div class="finding-fix"><strong>Suggested change</strong> · Link the two policies in the applicable handoff rows. Retain outstanding implementation, testing and operator evidence against each policy and identify any genuinely open bound separately.</div>
+<p class="finding-location"><a href="../prd.md">PRD, lines 179, 407–409 and 415–416</a> · <a href="../../../../../docs/contracts/staging-evidence-policy-v1.md">Staging policy v1, lines 76–96, 100–137 and 186–204</a> · <a href="../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md">Infrastructure currency policy v1, lines 50–134</a></p></article>
+<article class="finding"><header><span class="badge badge-sev-medium">Medium</span><h3 class="finding-title">Story 2.10 still directs engineers to repeat superseded hosted work</h3></header>
+<div class="finding-note">FR-4 and the approved epic accept the always-run cleanup record on disposable hosted runners. The Story 2.10 execution spec still prescribes separate cancellation workflows and full qualification on the final fixed inputs. An engineer could rerun a dedicated campaign even after the owner accepted Story 2.8’s original hosted cancellation results.</div><div class="finding-fix"><strong>Suggested change</strong> · Point the execution spec to the November 18 scope. Keep the historical runs under their original identities. Run reference scenarios locally and use normal Parties CI success and failure with cleanup under the declared dependencies. Reserve the fresh-run rule for new candidate merge or release decisions.</div>
+<p class="finding-location"><a href="../prd.md">PRD, lines 145–149 and 161</a> · <a href="../../../../implementation-artifacts/spec-2-10-qualify-the-runner-lifecycle-on-the-reference-composition.md">Story 2.10 execution spec, lines 46, 68, 72 and 634–636</a> · <a href="../../../epics.md">Epics, lines 1503 and 1560–1567</a> · <a href="../../../sprint-change-proposal-2026-11-18.md">November 18 decision, lines 37–41 and 99–108</a></p></article>
+<article class="finding"><header><span class="badge badge-sev-medium">Medium</span><h3 class="finding-title">The handoff lists completed specification work as a prerequisite</h3></header>
+<div class="finding-note">The PRD tells spec owners to synchronize recovery and deployment wording before finalizing stories. The spec package records completion of that reconciliation on October 1. Module documentation owners still hold separate work for Folders, Projects and McpCli. Reading the PRD alone could unnecessarily hold a story.</div><div class="finding-fix"><strong>Suggested change</strong> · Replace the spec-owner prerequisite with a link to the completed reconciliation. Identify the remaining upstream documentation work and preserve the separate implementation and qualification gates.</div>
+<p class="finding-location"><a href="../prd.md">PRD, line 422</a> · <a href="../../../../specs/spec-platform/sequencing.md">Specification sequencing, lines 221–227</a></p></article>
+<article class="finding"><header><span class="badge badge-sev-low">Low</span><h3 class="finding-title">The revision date hides the November 18 amendment</h3></header>
+<div class="finding-note">The frontmatter dates this revision November 8. The hosted cleanup rule and the explicit reference to the rescoped Story 2.10 reflect the approved November 18 edits. Someone selecting the PRD by its date could pick the wrong baseline.</div><div class="finding-fix"><strong>Suggested change</strong> · Date the existing content through November 18 and link the November amendment in the revision summary. Use the actual edit date for any subsequent update.</div>
+<p class="finding-location"><a href="../prd.md">PRD, lines 5, 12, 16, 148 and 161</a> · <a href="../../../sprint-change-proposal-2026-11-18.md">November 18 decision, lines 7 and 118–133</a></p></article>
+</div></details></section>
+<section class="dimension"><details><summary><h2>Shape fit</h2><span class="verdict-pill verdict-strong">strong</span></summary>
+<div class="dim-body"><div class="dim-judgment"><p>Separate capability scenarios for developers, automated workflows, Administrator and the recovery deputy suit this internal platform. The PRD explains at line 36 why module business journeys stay with the modules. FR-4, FR-8 and FR-9 give role-specific acceptance scenarios where story writers need them, while the addendum preserves alternatives and their operating costs.</p></div></div><div class="findings-list">
+</div></details></section>
+<section class="reviewer-section"><details><summary><h2>Current plan alignment</h2><span class="reviewer-source">review-plan-alignment.md</span></summary><div class="dim-body"><div class="dim-judgment">
+<p>The planning review traced the November changes into the PRD and the executable story instructions. It identified four findings included in the severity totals.</p>
+<ul>
+<li>High · The CI handoff reopens the choice of commit that qualifies a merge</li>
+<li>Medium · Story 2.10 still directs engineers to repeat superseded hosted work</li>
+<li>Medium · The handoff lists completed specification work as a prerequisite</li>
+<li>Low · The revision date hides the November 18 amendment</li>
+</ul><p><a href="review-plan-alignment.md">Read the plan alignment review</a></p></div></div></details></section>
+<section class="mechanical"><h3>Mechanical notes</h3><ul>
+<li>The PRD defines 12 functional requirements, 3 non-functional requirements, 6 success measures and 5 counter-metrics. All 26 IDs are unique and contiguous within their series. All three release gates are defined.</li>
+<li>All 25 local Markdown link occurrences in the PRD and addendum resolve, including their explicit heading fragments. Neither document contains an inline assumption tag, PM-note placeholder, TODO or TBD.</li>
+<li>The PRD explains why capability scenarios stand in for user journeys. The original seven-module scope and the split between module and Platform workspaces are accounted for. The September update records the resolution of its five findings.</li>
+<li>This review covers requirements and their handoff at repository revision cb57dd4f. Production readiness, deployed configuration and live CI outcomes require their own evidence.</li>
+</ul></section>
+<footer class="report-footer"><div class="meta"><span>Platform revision cb57dd4f</span><span>Reviewed 2026-11-19T13:11:28+01:00</span></div>
+<p><a href="../prd.md">PRD</a> · <a href="../addendum.md">Addendum</a> · <a href="../../../../../.agents/skills/bmad-prd/assets/prd-validation-checklist.md">Rubric</a> · <a href="validation-report.md">Markdown report</a></p>
+<p><a href="review-rubric.md">BMAD rubric review</a> · <a href="review-plan-alignment.md">Current plan alignment review</a></p></footer></main></body></html>
