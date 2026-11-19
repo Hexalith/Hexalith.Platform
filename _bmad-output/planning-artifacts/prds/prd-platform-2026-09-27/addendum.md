@@ -2,7 +2,7 @@
 title: Hexalith Platform PRD — Supporting Context
 status: final
 created: 2026-09-27
-updated: 2026-10-01
+updated: 2026-11-19
 ---
 
 # Supporting context
@@ -66,6 +66,12 @@ Default to a fresh run-owned environment per suite or compatible batch with isol
 FR-4 additionally requires an accepted attachment to hold the environment: the owner's first terminal outcome is recorded immediately and automatic cleanup waits until attached runs end, up to a finite hold limit. Any failed local run served by the environment retains it; an explicit developer stop or owner cancellation ends and reports attached runs first, recording them as withdrawn. Attachment requires matching artifact identities, is refused once the owner has finished unless the environment is retained after failure, and in CI is limited to runs within the same job. AD-10 now binds these requirements.
 
 Do not add a generic Platform mocking subsystem or per-service real/fake switches for the MVP. If a concrete test later needs a substitute service, assess that specific case. Testing domain rules should not require launching Platform; claiming that a module integrates with its required services should require evidence from real-service tests.
+
+### Runner lifecycle qualification evidence
+
+Story 2.8 provides the accepted hosted lifecycle runs under their original identities, including startup and execution cancellation. Story 2.9 records the completed fixture migration. Story 2.10 qualifies the Parties reference composition through local scenarios and hosted evidence. Run the local scenarios with the pinned release of the tool. For hosted evidence, use the Story 2.8 runs and the always-run cleanup reports from successful and failed Parties CI runs through the shared CiCd workflow. The CI portion depends on CiCd story 21, and released-version acceptance follows Story 2.14. Qualification uses the shared workflow without a dedicated hosted scenario controller. [Story 2.10](../../epics.md#story-210-qualify-the-runner-lifecycle-on-the-reference-composition) · [November 18 correction](../../sprint-change-proposal-2026-11-18.md)
+
+Pin each qualification campaign's inputs and run focused checks before broad acceptance runs. Preserve a compact summary of each scenario and link to the CI runs, reports, and diagnostic artifacts. Keep bulk logs and archives out of Git. Candidate acceptance requires a fresh qualifying run for each decision, including decisions involving unchanged modules. SM-3 requires every MVP module to demonstrate its integration checks. [November 8 correction](../../sprint-change-proposal-2026-11-08.md) · [Candidate evidence and attachment policy v1](../../../../docs/contracts/candidate-and-attachment-policy-v1.md)
 
 ### Option 1: Real services for all tests that exercise dependencies
 
