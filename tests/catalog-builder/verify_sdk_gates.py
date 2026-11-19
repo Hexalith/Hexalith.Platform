@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Evaluate the real host, reader and extension projects' finite SDK gates without restoring or building."""
+"""Evaluate the real host, reader and extension projects' SDK version-range gates without restoring or building."""
 
 import argparse
 import json
 from pathlib import Path
+import re
 import signal
 import subprocess
 import tempfile
@@ -32,7 +33,7 @@ VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2
             "4.0.4-preview.1", "4.0.4+metadata", "4.0.4.0", "4.0.4.1",
             "3.132.1-preview.1", "3.132.1+metadata", "3.132.1.0", "3.132.1.1",
             "3.133.0-preview.1", "3.133.0+metadata", "3.133.0.0",
-            "03.132.1", "3.132.01", "v3.132.1", "invalid-version"]
+            "03.132.1", "3.132.01", "v3.132.1", "5.2.0", "invalid-version"]
 PROJECTS = {
     "host": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
     "composition": "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
@@ -42,29 +43,35 @@ PROJECTS = {
 }
 
 
+# Each package-mode capability is a version-range rule: the first SDK that ships the API and every later one.
+FLOORS = {CATALOG: "3.129.0", V2: "3.130.0", SCOPED: "3.130.0", TECHNICAL: "3.132.1", CANONICAL: "4.0.0", EXTENSION: "4.2.0"}
+RANGED = {"host": {CATALOG, TECHNICAL, EXTENSION}, "composition": {CATALOG, V2, CANONICAL, EXTENSION},
+          "tests": {CATALOG, V2, CANONICAL, EXTENSION}, "tool": {SCOPED}}
+
+
+def parsed(version):
+    """MSBuild's version-function reading: optional leading v, one to four numeric parts, any -/+ suffix ignored."""
+    text = version[1:] if version.startswith(("v", "V")) else version
+    parts = re.split(r"[-+]", text, maxsplit=1)[0].split(".")
+    if not 1 <= len(parts) <= 4 or not all(part.isascii() and part.isdigit() for part in parts):
+        return None
+    return tuple(int(part) for part in parts) + (0,) * (4 - len(parts))
+
+
 def expected_flags(project, version, source):
+    """The expected constants, or None when MSBuild must refuse the version expression (MSB4184)."""
     if source:
         # The tool's source binding deliberately retains its prior unqualified path.
         return {"host": {SOURCE, TECHNICAL, CATALOG, EXTENSION},
                 "composition": {SOURCE, CATALOG, V2, EXTENSION, CANONICAL},
                 "tests": {SOURCE, CATALOG, V2, EXTENSION, CANONICAL},
                 "tool": set(), "extension": {EXTENSION}}[project]
-    if project == "tool":
-        return {SCOPED} if version in [*LEGACY, *ALIASES, "3.132.1", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"] else set()
     if project == "extension":
         return {EXTENSION} if version == "4.2.0" else set()
-    flags = set()
-    if version in ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
-        flags.add(CATALOG)
-    if project != "host" and version in [*LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
-        flags.add(V2)
-    if project == "host" and version in ["3.132.1", "4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
-        flags.add(TECHNICAL)
-    if project != "host" and version in ["4.0.0", "4.0.2", "4.0.3", "4.0.4", "4.1.0", "4.2.0"]:
-        flags.add(CANONICAL)
-    if version == "4.2.0":
-        flags.add(EXTENSION)
-    return flags
+    value = parsed(version)
+    if value is None:
+        return None
+    return {flag for flag in RANGED[project] if value >= parsed(FLOORS[flag])}
 
 
 def verify(evidence, builds_root=None):
@@ -121,7 +128,8 @@ def verify(evidence, builds_root=None):
                 expected = expected_flags(project, expected_version, source)
                 case = {"project": relative, "version": version, "source": source,
                         "catalogDefault": version is None, "status": "pending", "command": command,
-                        "expectedVersion": expected_version, "expected": sorted(expected)}
+                        "expectedVersion": expected_version,
+                        "expected": "MSB4184" if expected is None else sorted(expected)}
                 report["cases"].append(case)
                 checkpoint()
                 try:
@@ -135,6 +143,13 @@ def verify(evidence, builds_root=None):
                     raise
                 case.update(status="completed", exitCode=result.returncode, stdout=result.stdout, stderr=result.stderr)
                 checkpoint()
+                if expected is None:
+                    # An unparseable version must stop evaluation, never select a capability.
+                    if not result.returncode or "MSB4184" not in result.stdout + result.stderr:
+                        raise AssertionError(f"{relative}: {version}: expected MSB4184, exit {result.returncode}")
+                    case["status"] = "passed"
+                    checkpoint()
+                    continue
                 if result.returncode:
                     raise AssertionError(f"{relative}: {version}, source={source}: exit {result.returncode}")
                 properties = json.loads(result.stdout)["Properties"]
@@ -154,7 +169,7 @@ def verify(evidence, builds_root=None):
         checkpoint()
         for signum, previous in previous_handlers.items():
             signal.signal(signum, previous)
-    print(f"Passed {report['count']} finite SDK gate evaluations; no runtime acceptance.")
+    print(f"Passed {report['count']} SDK gate evaluations; no runtime acceptance.")
 
 
 def main():
