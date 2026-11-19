@@ -16,6 +16,9 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
+sys.path.insert(0, str(ROOT / 'eng/helm-qualification'))
+from environment_components import render_components
+
 IDENTITIES = {'eventstore/gateway', 'tenants/domain', 'tenants/api', 'parties/domain',
               'memories/server', 'memories/domain', 'memories/clock', 'memories/telemetry'}
 IMAGE = re.compile(r'[a-z0-9][a-z0-9.:-]*/[a-z0-9][a-z0-9/_.-]*@sha256:[0-9a-f]{64}')
@@ -50,6 +53,7 @@ def run(argv):
 def source_inputs(root):
     paths = [root / 'apphost.cs', *sorted((root / 'src/Hexalith.Platform.Composition').glob('*.cs')),
              *sorted((root / 'eng/helm-qualification/chart').rglob('*')),
+             root / 'eng/helm-qualification/environment_components.py',
              *sorted((root / 'eng/mcpcli-operator-setup/chart').rglob('*')),
              *sorted((root / 'eng/mcpcli-operator-setup').glob('*.py')),
              *sorted((root / 'eng/mcpcli-operator-setup/graph-export').glob('*.cs*')),
@@ -185,6 +189,12 @@ def prepare(profile_path, canonical_graph, output, helm, skopeo, root=ROOT):
         pulled[image] = hashlib.sha256(raw_manifest).hexdigest()
     # Only validated public metadata reaches the fresh review directory.
     docs = [d for d in yaml.safe_load_all(raw) if d]
+    require(all(doc['kind'] != 'Component' for doc in docs), 'application-owns-environment-component')
+    namespace_name = profile['target']['namespace']
+    components = render_components(graph, profile['values'], namespace_name)
+    for component in components:
+        component['metadata'].setdefault('labels', {})['hexalith.com/operator-task'] = namespace_name
+    environment = [*environment, *components]
     # The declared public surfaces remain graph-bound; this task publishes none of their routes.
     secret_refs = {}
     def references(node):
@@ -195,6 +205,7 @@ def prepare(profile_path, canonical_graph, output, helm, skopeo, root=ROOT):
         elif isinstance(node, list):
             for child in node: references(child)
     references(docs)
+    references(components)
     secret_refs.setdefault(profile['values']['imagePullSecret'], set()).add('.dockerconfigjson')
     external_secrets = {d['spec'].get('target', {}).get('name', d['metadata']['name'])
                         for d in environment if d['kind'] == 'ExternalSecret'}

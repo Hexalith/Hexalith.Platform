@@ -1,0 +1,23 @@
+# Architecture review and implementation handoff
+
+19 November 2026 · Approved combined course correction · Platform base `54d90be3`
+
+**The architecture passes review for implementation.** All nine findings from the November 19 validation have an approved disposition and an existing story owner. The rubric, adversarial and implementation reviewers agreed on the handoff. The spine linter returned zero findings for AD-1 through AD-15. [Original validation](../validate-2026-11-19/validation-report.md) · [Approved proposal](../../../../sprint-change-proposal-2026-11-19-architecture-validation.md) · [Corrected spine](../../ARCHITECTURE-SPINE.md)
+
+| Finding | What changed | Evidence still required |
+| --- | --- | --- |
+| V1 · Dapr Component ownership | Helm 4.2.0 rendered zero application Components in normal, recovery and remove-workloads modes. The environment rendered eight with the expected bindings and scopes. The remaining 30, 27 and 11 application objects respectively matched the previous render in full. | Story 4.5 exercises separate environment and application identities on a live cluster and verifies the same Components survive install, upgrade, recovery, workload removal and uninstall. |
+| V2 · Vulnerability admission | Both production modes require current staging E2E and a qualifying scan for the pending decision. An incomplete latest-issued scan prevents fallback. Each image has an exclusive 24-hour deadline. | Stories 5.5, 5.11 and 6.14 exercise complete coverage, deadlines, exceptions and refusal in both modes. |
+| V3 · Recovery rehearsal | First installation, compatible rollback and approved retained-data recovery have distinct rehearsal requirements. | Stories 5.7–5.9, 5.11 and 6.14 exercise each applicable path, including full E2E and the named restore for retained data without proven compatibility. |
+| V4 · Retry after incompatible writes | A retry or later candidate must wait for verified restoration to the earliest pre-write point for that candidate since the last verified reset. | Story 5.10 exercises both retry cases and verifies evidence needed by open recovery references survives pruning. |
+| V5 · Competing production and staging decisions | Policy v2 reserves the pending decision for the exact production attempt and epoch under the production lock before the first rollout effect. | Builds and Platform adopt the policy and qualify both transition orders, retry, replay, stale epochs and uncertain outcomes under Stories 5.1, 5.6, 5.10–5.11, 6.14 and 6.16. |
+| V6 · Module attestations | Platform verifies digest-bound module-owner attestations at first admission for publication. | Stories 4.8 and 4.12 exercise refusal for missing or mismatched attestations before writing the release record. |
+| V7 · Helm proof by stage | Stories 4.5, 4.12 and 4.13 own local chart qualification, published OCI provenance and off-site retrieval by digest respectively. | The release and retention owners qualify the exact package at publication and retrieval. |
+| V8 · Rollback witness | Policy v2 requires a new idempotent command when one exists. An exact catalog comparison proving none was added permits an existing idempotent command on the affected write path. Both cases require baseline readback of candidate-written state and events. | Stories 5.1 and 5.8 exercise both witnesses and their refusals. Builds and Platform must record adoption before using v2. |
+| V9 · Version authority | The spine distinguishes the historical probe from the current SDK, AppHost and CLI manifests. | Stories 2.10 and 2.14 own tool acceptance and dependency reconciliation. |
+
+**Story 4.5 remains in progress.** The live qualifier stopped before cluster creation because `kind` was unavailable. Its Dapr 1.18.7 pin also differs from the checked-out Builds catalog at 1.19.1. A fresh run needs the required tools and reconciled inputs. [Render evidence](../../../../../implementation-artifacts/evidence/4-5/component-ownership-20261119/render-check.json) · [Qualification procedure](../../../../../../eng/helm-qualification/README.md)
+
+**Policy v2 requires explicit adoption.** Builds and Platform must record the committed Platform revision, matching policy bytes and pinned v1 base, then qualify the enforcing writers and evaluator. Existing decisions and evidence retain their producing policy identifiers. [Staging evidence policy v2](../../../../../../docs/contracts/staging-evidence-policy-v2.md) · [Story handoffs](../../../../epics.md)
+
+[Rubric review](review-rubric.md) · [Adversarial review](review-adversarial.md) · [Implementation and toolchain review](review-reality.md)

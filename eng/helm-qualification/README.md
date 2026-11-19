@@ -42,15 +42,36 @@ checked by the C# tests and every native probe. To update it after a declaration
 change, run the same probe with `Platform__Hosted__GraphPath` pointing at that
 file. The maintained chart remains generic.
 
-The application owns Deployments, Services, HTTPRoutes and Dapr binding objects
-(Components, Configurations and Subscriptions). Its generic component template
-binds hosted provider types to endpoint parameters and existing credential
-references; scopes come exclusively from the graph. Endpoint metadata can use
-`endpointFormat: authority` for host:port providers or `url` for URL providers;
-hosted Redis bindings require `enableTLS: "true"`. The environment owns the
-underlying data services, Gateway/listeners, namespace, identity authority,
-credential Secrets, registry credential, component-file ConfigMap and persistent
-infrastructure. The application chart creates none of those prerequisites.
+The application package owns Deployments, Services, HTTPRoutes, Dapr Configurations
+and Subscriptions. In normal, recovery and remove-workloads modes, the application
+package emits zero Dapr Components. Workloads and Subscriptions reference the
+logical Component names from the graph.
+
+The environment writer renders Components with `environment_components.render_components`
+from the same checked graph and environment profile. For an existing release, pass
+its graph and profile as the baseline alongside the candidate inputs. A shared
+name requires a compatible provider, metadata, credential reference and recovery
+class. The render takes the union of allowed workload scopes and retains names
+used by either release. A conflicting binding requires a separate name during
+the transition. Apply the union with the environment identity before changing
+the application release. Keep it through application recovery and removal.
+
+**Existing releases.** Before the first upgrade or removal, inspect the recorded
+Helm manifest for the deployed release. If it contains Dapr Components, stop.
+A new field manager or edited live labels alone cannot prevent Helm from
+pruning resources that still appear in its previous release record. The
+environment owner must first qualify a transfer on an isolated copy, retaining
+the UIDs, provider metadata, scopes and secret references for the full union.
+Verify that the current Helm release record has relinquished those objects
+and that the environment identity owns their live bindings before resuming.
+Do not roll back through an earlier release record that would reintroduce them.
+The Story 4.5 fixture refuses upgrades and uninstall while its recorded release
+still claims a Component.
+
+The environment also owns the data services, Gateway and listeners, namespace,
+identity authority, credential Secrets, registry credential, component-file
+ConfigMap and persistent infrastructure. Endpoint metadata may select
+`authority` for a host and port or `url`; hosted Redis bindings require TLS.
 Existing component manifest files are mounted read-only from the environment
 ConfigMap on every workload, so that ConfigMap is a prerequisite for every Deployment.
 The environment writer supplies its control-plane trust domain and a non-secret
@@ -98,7 +119,7 @@ admission-test inputs; it is not a deployable staging profile.
 
 Normal mode has serving replicas and declared public routes. Recovery sets every
 workload to zero replicas and removes every HTTPRoute. Remove-workloads omits
-Deployments, Services and routes while retaining application Dapr bindings.
+Deployments, Services and routes while retaining Dapr Configurations and Subscriptions.
 Unknown modes fail. Dapr HotReload remains disabled in every mode. These modes do
 not implement data restoration.
 
@@ -114,7 +135,10 @@ python3 eng/helm-qualification/qualify.py
 ```
 
 `toolchain.json` pins Helm 4.2.0, kind, the digest-qualified Kubernetes node image,
-Gateway CRDs and the Builds-catalog Dapr patch. Downloaded CRDs and the Dapr chart
+Gateway CRDs and Dapr 1.18.7 for the historical probe. The current Builds catalog
+selects Dapr 1.19.1. The live qualifier checks its pinned patch against Builds
+and refuses that mismatch. An aligned toolchain and fresh ownership evidence
+are required before hosted use. Downloaded CRDs and the Dapr chart
 must match the recorded SHA256 values. The qualifier downloads Helm from its pinned
 distribution URL, verifies the archive SHA256, extracts its binary into its private
 directory and supplies that binary to the chart tests. Every transfer requires curl
@@ -142,22 +166,30 @@ It installs and upgrades the packaged archive using `--server-side=true`, requir
 Helm `Apply` managed fields, demonstrates refusal of a deliberately conflicting
 writer without Helm force flags, then verifies recovery and workload removal.
 Only the synthetic rival writer uses `--force-conflicts` to set up the conflict.
-Environment fixtures must retain their UIDs and remain free of Helm ownership
-through removal and uninstall. Every wait is bounded. The `finally` path deletes
+The environment service account applies the graph-derived Components by server-side
+apply. The separate namespace application service account stores Helm revisions
+in ConfigMaps. Qualification verifies that this identity cannot create, patch,
+update or delete Components. It checks each Component's UID, binding, scopes and
+environment field ownership after install, normal upgrade, recovery, removal and
+uninstall. Every wait is bounded. The `finally` path deletes
 only the invocation's named cluster, checks owned node absence, and removes the
 private kubeconfig even after cluster deletion or inventory fails, retaining that
 cleanup failure in the result. Final source verification compares both complete
 file inventories and hashes, detecting newly added templates as well as edits.
 Local failure-path regressions exercise those behaviors without a live cluster.
 
-The durable result is
-`_bmad-output/implementation-artifacts/evidence/4-5/qualification.json`, accompanied
+A fresh run writes `qualification.json` and `environment-components.json` to a
+new `_bmad-output/implementation-artifacts/evidence/4-5/component-ownership-<run>/`
+directory by default, accompanied
 by version-control-visible command logs (retained through the evidence directory
 ignore override), exact source/input/tool/package hashes, native output, archived
 chart, rendered manifests and admitted Pods. A failed result remains failed and
-does not close the story. The evidence excludes OCI publication/attestation,
-off-site restoration, staging deployment and functional application readiness
-with retained production images. Those are separate downstream acceptances. The
+does not close the story. Story 4.5 qualifies local chart rendering, admission, field ownership and
+lifecycle. Story 4.12 verifies the published OCI digest and attestation. Story
+4.13 retrieves the retained package by that digest from the off-site replica
+and proves the recovery path. Earlier chart evidence predates this ownership
+correction. Staging deployment and readiness with retained production images
+require their own qualification. The
 Timesheets enrollment candidate is unchanged.
 
 Each run clears prior numbered command logs before its first command. Source

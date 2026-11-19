@@ -58,7 +58,15 @@ class RenderTests(unittest.TestCase):
                 packet = prepare.prepare(path, prepare.HERE / 'chart/reference-graph.json', output, helm, 'skopeo')
             documents = list(yaml.safe_load_all((output / 'application.yaml').read_text()))
             self.assertEqual(8, sum(d['kind'] == 'Deployment' for d in documents))
-            self.assertFalse(any(d['kind'] == 'HTTPRoute' for d in documents))
+            self.assertFalse(any(d['kind'] in ('HTTPRoute', 'Component') for d in documents))
+            environment = list(yaml.safe_load_all((output / 'environment.yaml').read_text()))
+            components = {d['metadata']['name']: d for d in environment if d['kind'] == 'Component'}
+            graph = prepare.read(prepare.HERE / 'chart/reference-graph.json')
+            self.assertEqual({c['name'] for c in graph['capabilities']}, set(components))
+            for capability in graph['capabilities']:
+                component = components[capability['name']]
+                self.assertEqual(sorted(capability['consumers']), sorted(component['scopes']))
+                self.assertEqual(TENANT, component['metadata']['labels']['hexalith.com/operator-task'])
             self.assertEqual('review-required', packet['status']); self.assertFalse(packet['applyAuthorized'])
             self.assertEqual(8, len(packet['imagesPulled']))
             self.assertTrue(all(command[1:3] in (['version', '--short'], ['template', 'mcpcli-417'], ['inspect', '--raw']) for command in commands))

@@ -195,7 +195,7 @@ def admit(plan, plan_sha, action):
     for ref in [*plan['source'], *[r for group in inputs.values() for r in group]]:
         capacity.reference(ref)
     sources = {r['path']: r['sha256'] for r in plan['source']}
-    required = {'qualify.py', 'campaign_lifecycle.py', 'campaign_capacity.py', 'campaign_environment.py', 'independent_calibration.py', 'calibration_workload.py'}
+    required = {'qualify.py', 'campaign_lifecycle.py', 'campaign_capacity.py', 'campaign_environment.py', 'environment_components.py', 'independent_calibration.py', 'calibration_workload.py'}
     if 's3Backup' in plan:
         required.add('calibration_s3_backup.py')
     require({str((HERE / n).resolve()) for n in required} <= set(sources)

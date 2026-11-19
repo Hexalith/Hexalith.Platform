@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import yaml
 import prepare
+from test_chart import fixture_values
 from test_seed import plan, TENANT
 
 
@@ -19,6 +20,8 @@ class Control:
         self.root = self.directory / 'platform'; self.root.mkdir()
         for target in ('eng/helm-qualification/chart', 'eng/mcpcli-operator-setup/chart'):
             shutil.copytree(prepare.ROOT / target, self.root / target)
+        renderer = 'eng/helm-qualification/environment_components.py'
+        shutil.copy2(prepare.ROOT / renderer, self.root / renderer)
         self.graph = self.root / 'eng/mcpcli-operator-setup/chart/reference-graph.json'
         self.seed = self.directory / 'private-seed.json'
         self.seed.write_text(json.dumps(plan())); self.seed.chmod(0o600)
@@ -36,9 +39,13 @@ class Control:
         self.profile['prerequisites'] = {k:'synthetic-binding' for k in self.profile['prerequisites']}
         self.profile['values'].update(images={w['identity']:self.image for w in graph['workloads']},
             bindings={w['identity']:{} for w in graph['workloads']}, imagePullSecret='task-registry')
+        bindings = fixture_values(graph)
+        self.profile['values']['endpoints'] = bindings['endpoints']
+        self.profile['values']['environment'] = bindings['environment']
         self.profile['values']['environment']['componentConfigMap'] = 'task-components'
         self.profile['privateSecretFiles'] = {'task-registry':{'.dockerconfigjson':str(self.secret)},
-                                               'task-channel':{'token':str(self.secret)}}
+                                               'task-channel':{'token':str(self.secret)},
+                                               'fixture-credential':{'token':str(self.secret)}}
         self.profile['environmentManifests'] = [
             self.document('ConfigMap', 'task-components', data={'components.yaml':'synthetic'}),
             self.document('PersistentVolumeClaim', 'task-data', spec={'resources':{'requests':{'storage':'1Gi'}}}),

@@ -18,6 +18,7 @@ Spine carry-through, not new targets:
 
 - SM-3 evidence counts only from runs owned by the `hexalith-module` runner; a technical module's own AppHost runs never count (AD-10).
 - SM-5 fault rehearsals on a staged release may run before G2 in the Administrator-approved mode (RRA Release modes).
+- Repeat affected SM-5 cases before automatic promotion and on the full Epic 10 composition. After explicit adoption of [staging evidence policy v2](../../../docs/contracts/staging-evidence-policy-v2.md), include both orderings of admission and supersession, fenced interruption and both eligible rollback witnesses. Preserve current scan, reset and named-recovery refusal cases.
 
 ## Counter-metrics
 

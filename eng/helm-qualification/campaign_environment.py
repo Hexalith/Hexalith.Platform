@@ -9,6 +9,7 @@ from pathlib import Path
 import yaml
 
 import campaign_capacity as capacity
+from environment_components import render_components
 
 RUN_LABEL = 'hexalith.com/campaign-run'
 SECURITY = {'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL']},
@@ -243,6 +244,7 @@ def topology(profile, config, run_id, *, profile_id=capacity.PROFILE_ID):
     require(any(o.get('kind') == 'StatefulSet' and o['metadata']['name'] == 'redis-stack'
                 and any(c['name'] == 'redis' for c in o['spec']['template']['spec']['containers']) for o in objects), 'redis-fault-target-required')
     graph = json.loads((Path(__file__).parent / 'chart/reference-graph.json').read_bytes())
+    objects.extend(render_components(graph, values, ns))
     required_accounts = {w['resourceId'] for w in graph['workloads']} | {'memories', 'memories-access-telemetry', 'memories-access-telemetry-clock', 'access-telemetry-postgresql', 'access-telemetry-adapter'}
     existing_accounts = {o['metadata']['name'] for o in objects if o['kind'] == 'ServiceAccount' and o['metadata'].get('namespace', ns) == ns}
     for name in sorted(required_accounts - existing_accounts):

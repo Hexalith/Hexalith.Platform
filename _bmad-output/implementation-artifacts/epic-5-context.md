@@ -26,7 +26,7 @@ Every included module, including unchanged modules, infrastructure modules and t
 
 Evidence identifies the served release and the required suite, runtime profile and configuration digests. It has a finite maximum age. Wrong-release, stale or mismatched evidence fails the gate. Reruns preserve prior failures and incomplete attempts; a staging failure blocks its candidate. Evidence policies fix triggers, rerun acceptance, flow-change review and the staging-reset duration, with owners and revisit conditions.
 
-Builds and Platform decide the image and dependency vulnerability policy before the first staging promotion: scanner, blocking severity and exception approval, recording and expiry. Scan module and composed images at intake. Findings at or above the threshold block promotion unless covered by a recorded, unexpired exception. Retain every scanned image digest and scanner-database identity with release evidence. Module-image attestation is a distinct prerequisite that precedes publication.
+Story 5.2 recorded the [adopted vulnerability policy](../../docs/contracts/image-and-dependency-vulnerability-policy-v1.md). Story 5.5 scans the complete image inventory for each pending decision. Stories 5.11 and 6.14 require the latest issued scan to be complete and current in either mode. Each report expires 24 hours from its own start. An unexcepted High, Critical or unresolved Unknown finding refuses admission. An exact current Administrator exception covers only its occurrence. An incomplete newer scan blocks fallback. Module image attestations precede publication.
 
 Tenant creation and deletion during E2E are limited to owner-reviewed lifecycle flows using run-scoped synthetic tenants under staging-only admission. Exclusion from real-tenant views follows the immutable, attested synthetic-creation marker. Leftover tenants are removed or reported with their creating run. Production smoke has its own non-empty declaration; necessary writes use synthetic identities and data, with no real-user change, external effect, or tenant creation/deletion.
 
@@ -36,7 +36,7 @@ Promote the same immutable Helm package and images qualified in staging. The rel
 
 One serialized environment attempt holds the lock and monotonic epoch across preparation, deployment and evidence collection. Cut a staging recovery point before candidate writes. Executors keep module-supplied E2E and smoke code sandboxed away from deployment credentials. Provenance, isolation and the staging gate apply equally to both release modes; Administrator approval does not waive them.
 
-Without a production baseline or retained application data, qualify fresh installation without inventing a rollback target. With a baseline and eligible compatibility evidence, start from that baseline, upgrade to the exact candidate and rehearse its prepared rollback set with HotReload off. Exercise a candidate-new idempotent command and verify that baseline code reads candidate state and events. A failed rollback rehearsal is breaking compatibility evidence. Staging catalog, key and secret retirements follow AD-15's expand-only rule relative to production's working baseline.
+On a first empty installation without a baseline or retained application data, qualify fresh installation without inventing a rollback target. With a baseline and eligible compatibility evidence, start from that baseline, upgrade to the exact candidate and rehearse its prepared rollback set with HotReload off. Under v1, exercise a candidate-new idempotent command. After explicit adoption of [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), apply the command witness below. In both cases prove the baseline reads candidate-written state and events. A failed rollback rehearsal is breaking compatibility evidence. Staging catalog, key and secret retirements follow AD-15's expand-only rule relative to production's working baseline.
 
 A retained-data approved attempt lacking safe compatibility needs a named, rehearsed data recovery with retained artifacts, a recovery point, authority, verification and lost-window treatment; it prepares no automatic rollback set. An unadopted candidate's unreadable or unproven-readability writes require a verified in-place staging restore as a separate attempt before a later candidate starts or a same-candidate rerun. Retain recovery points under the policy's retention rule, regenerate the staging realm and remove candidate-only environment objects. Additive candidates need no reset.
 
@@ -45,7 +45,7 @@ A retained-data approved attempt lacking safe compatibility needs a named, rehea
 The approved [staging evidence policy v1](../../docs/contracts/staging-evidence-policy-v1.md)
 (`hexalith.platform.staging-evidence-policy.v1`, Story 5.1) is the canonical
 decision record for Stories 5.3, 5.6–5.11 and the related lifecycle review in
-Story 5.4. It fixes:
+Story 5.4. V2 incorporates these rules and changes the ordering and rollback witness described below.
 
 - **Evidence age.** Evidence has a 24-hour (86,400-second) exclusive deadline
   from attempt start, checked at promotion admission.
@@ -88,6 +88,10 @@ Story 5.4. It fixes:
   same-candidate rerun or later candidate. The reset uses the earliest pre-write
   point since the last verified reset.
 - **Preparation.** Missing applicable preparation proof or an unmatched state
+
+**V2 adoption and qualification.** Builds and Platform must explicitly adopt the exact committed Platform revision and the v2 policy bytes together with the pinned v1 base and qualify both changed cases and existing refusals before using it. Each result keeps its policy identity. V1 evidence retains its original meaning. Compare the exact baseline and candidate command catalogs and their contract identities. Exercise a newly introduced idempotent command if one exists. If the comparison proves none was added, exercise a suite-named existing idempotent command on the affected write path. Retain both catalog identities, comparison, command and successful baseline readback of candidate-written state and events. An unknown delta, missing suitable command or failed readback refuses automatic compatibility.
+
+After every production check passes and before any rollout effect, the authorized production writer conditionally reserves the pending decision for the exact release, attempt and epoch. A conflicting staging start or reset uses the same durable ordering point. If staging wins, production refuses before mutation. If admission wins, staging waits. Verified success completes the decision with the working-pointer transition. A terminal non-working outcome releases the reservation and leaves the decision pending under the existing stop and recovery rules. Uncertainty retains the reservation until fenced takeover or terminal reconciliation. Queued staging work reevaluates the decision, baseline and recovery state. Replays are idempotent and stale epochs fail. An explicit Administrator reservation remains distinct.
   refuses admission.
 
 Qualification also depends on Epic 6. Story 5.6 completed closure requires

@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-19",
+  "reviewedBaseCommit": "54d90be3b661591048640d3585a8eab4aea0e534",
+  "scope": "Offline Story 4.5 chart and environment rendering against the listed working-tree file hashes.",
+  "helmVersion": "v4.2.0+g0646808",
+  "helmBinarySha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869",
+  "sourceSha256": {
+    "eng/helm-qualification/chart/Chart.yaml": "b5c7d2eb27d2ec237620088a13bd4c45a67a1ba424f0b9e0b01429aca9a8da7a",
+    "eng/helm-qualification/chart/reference-graph.json": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55",
+    "eng/helm-qualification/chart/templates/_helpers.tpl": "b8e551932ed25a5e0c69d77f949cc743a266068dfa6fdccc8165e24ee3187dea",
+    "eng/helm-qualification/chart/templates/application.yaml": "b6da37d3dd124dcba2a8f701262a1ea60e75783408e78df3b7db0c7258f142bb",
+    "eng/helm-qualification/chart/templates/dapr.yaml": "dca8a2c2c27224af448fc4b408263602de05b2b23ee2aa23d1dc631eac67bfa8",
+    "eng/helm-qualification/chart/values.yaml": "1d7873e046862d488f886e53a04a35a9c44291c1ac77514e3d18c9773b2c1e8f",
+    "eng/helm-qualification/environment_components.py": "e4ec8a2c0fd38ad55441c324acfa01ba0858c3de047c626058f0d14f158df1ab",
+    "eng/helm-qualification/qualify.py": "88c69aafa04706b181d99af29dc6b7dfe8f887bc883eb57398ab0585ba1c3be1",
+    "eng/helm-qualification/test_chart.py": "ad21680a2b82ac9ba047e7e39bd2103d6dd0121f2b85c2573fe6167bacde4fbe",
+    "eng/helm-qualification/toolchain.json": "54fcd4e67d3c900750882b2f329ec594547bd0dcdcf1263f3cb692fa99758fc8"
+  },
+  "historicalRenderSha256": "e2ceda5f412c5c1c3670cc3d42395d2a059f5f0728b2682f4d653c0f49a7da48",
+  "application": {
+    "normal": {
+      "applicationComponentCount": 0,
+      "resourceCounts": {
+        "Configuration": 8,
+        "Deployment": 8,
+        "HTTPRoute": 3,
+        "Service": 8,
+        "Subscription": 3
+      },
+      "renderSha256": "08cc2f07d1add0254a1670d22cc6971659d6c4fc72c585fac060d775743d8668",
+      "sourceEqualsPackage": true,
+      "repeatedPackageRenderIdentical": true
+    },
+    "recovery": {
+      "applicationComponentCount": 0,
+      "resourceCounts": {
+        "Configuration": 8,
+        "Deployment": 8,
+        "Service": 8,
+        "Subscription": 3
+      },
+      "renderSha256": "53130f748f79eb04c3cb069c2a9dd2d6e682b69ff307326f81abe6fe8c94bb86",
+      "sourceEqualsPackage": true,
+      "repeatedPackageRenderIdentical": true
+    },
+    "remove-workloads": {
+      "applicationComponentCount": 0,
+      "resourceCounts": {
+        "Configuration": 8,
+        "Subscription": 3
+      },
+      "renderSha256": "209fe8011ecbc4d322d50251639009ed3a68b0d0ca729d8f06280e89e3249ee1",
+      "sourceEqualsPackage": true,
+      "repeatedPackageRenderIdentical": true
+    }
+  },
+  "environment": {
+    "namespace": "reference",
+    "candidateGraphSha256": "41ef1d67761df96865a3d3a82576fce404abe3a61c92dc373a5f8fa385393dac",
+    "baselineGraphSha256": "afcab451d9e4d9cccc28068a01ccfc035db32907f19aa979d94d3b76acec5aa1",
+    "candidateValuesSha256": "68a6129f8e8283fb9984aa703745bbdccb2b6bfb28be87addad2d75852ea71d7",
+    "baselineValuesSha256": "6ba179fbc5e904392314bc2b5b85f3c9c8f745f4f7c72431af2951159f6eec1f",
+    "componentCount": 8,
+    "components": [
+      "access-telemetry-config",
+      "access-telemetry-secrets",
+      "access-telemetry-store",
+      "configstore",
+      "llm",
+      "pubsub",
+      "secretstore",
+      "statestore"
+    ],
+    "componentListSha256": "83e35a4fc43eb2aea63ad356728f842c66aeaeb224a14f171e2d3351c068afae",
+    "historicalBindingsAndScopesPreserved": true
+  },
+  "liveLifecycleQualification": "pending",
+  "publicationQualification": "outside Story 4.5",
+  "offSiteRetrievalQualification": "outside Story 4.5"
+}

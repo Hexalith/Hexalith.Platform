@@ -18,7 +18,8 @@ import tarfile
 import tempfile
 import uuid
 
-from test_chart import CHART, HERE, documents, fixture_values, graph
+from environment_components import render_components
+from test_chart import CHART, HERE, campaign_graph_fixture, documents, fixture_values, graph
 
 ROOT = HERE.parent.parent
 DEFAULT_EVIDENCE = ROOT / '_bmad-output/implementation-artifacts/evidence/4-5'
@@ -76,7 +77,7 @@ class Qualification:
     def _initialize(self):
         # The directory lock is held before discarding the previous invocation.
         names = ('qualification.json', 'normal.yaml', 'fixture-values.json',
-                 'native-output', 'native-rendered.yaml')
+                 'native-output', 'native-rendered.yaml', 'environment-components.json')
         for path in self.evidence.iterdir():
             if (path.name in names or re.fullmatch(r'[0-9]+-.*[.]log', path.name)
                     or re.fullmatch(r'admitted-.*[.]json', path.name)
@@ -500,15 +501,107 @@ class Qualification:
         fixtures.extend({'apiVersion': 'v1', 'kind': 'Secret',
                          'metadata': {'name': name, 'namespace': 'reference'},
                          'stringData': {'token': 'invocation-owned-' + name}} for name in sorted(token_names))
-        fixtures.append({'apiVersion': 'dapr.io/v1alpha1', 'kind': 'Component',
-                         'metadata': {'name': 'environment-preserved', 'namespace': 'reference'},
-                         'spec': {'type': 'secretstores.kubernetes', 'version': 'v1', 'metadata': []}, 'scopes': ['environment-owner']})
         controller = json.loads(self.kube('get', 'serviceaccount', 'replicaset-controller', '-n', 'kube-system', '-o', 'json').stdout)
         self.admission_identity = {'username': 'system:serviceaccount:kube-system:replicaset-controller', 'uid': controller['metadata']['uid']}
         self.record['admissionIdentity'] = json.loads(self.pod_kube('auth', 'whoami', '-o', 'json').stdout)
         self.fixtures = fixtures
         self.kube('apply', '--server-side', '--field-manager=h45-environment', '-f', '-', data='\n---\n'.join(json.dumps(v) for v in fixtures))
         self.fixture_uids = [self.fixture_identity(v) for v in fixtures]
+        self.component_access()
+        baseline = campaign_graph_fixture()
+        self.components = render_components(graph(), json.loads(self.values.read_text()), 'reference',
+                                            baseline_graph=baseline, baseline_values=fixture_values(baseline))
+        manifest = {'apiVersion': 'v1', 'kind': 'List', 'items': self.components}
+        manifest_path = self.evidence / 'environment-components.json'
+        manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+        self.kube('--as=system:serviceaccount:reference:environment-writer', 'apply', '--server-side',
+                  '--field-manager=h45-environment', '-n', 'reference', '-f', manifest_path)
+        self.record['inputs']['environmentComponentsSha256'] = sha(manifest_path)
+        self.component_baseline = self.component_snapshot()
+        self.record['checks']['componentOwnership'] = {'beforeInstall': self.component_baseline}
+
+    def component_access(self):
+        # Helm stores only its own release revisions in ConfigMaps; the application writer has no Secret or Component grants.
+        writes = ['get', 'list', 'watch', 'create', 'patch', 'update', 'delete']
+        app_rules = [
+            {'apiGroups': [''], 'resources': ['services'], 'verbs': writes},
+            {'apiGroups': ['apps'], 'resources': ['deployments'], 'verbs': writes},
+            {'apiGroups': ['gateway.networking.k8s.io'], 'resources': ['httproutes'], 'verbs': writes},
+            {'apiGroups': ['dapr.io'], 'resources': ['configurations', 'subscriptions'], 'verbs': writes},
+            {'apiGroups': [''], 'resources': ['configmaps'], 'verbs': ['get', 'list', 'watch', 'create']},
+            {'apiGroups': [''], 'resources': ['configmaps'], 'verbs': ['update', 'patch', 'delete'],
+             'resourceNames': [f'sh.helm.release.v1.reference.v{revision}' for revision in range(1, 7)]},
+            {'apiGroups': [''], 'resources': ['pods'], 'verbs': ['get', 'list', 'watch']},
+            {'apiGroups': ['apps'], 'resources': ['replicasets'], 'verbs': ['get', 'list', 'watch']},
+        ]
+        env_rules = [{'apiGroups': ['dapr.io'], 'resources': ['components'], 'verbs': ['get', 'create', 'patch']}]
+        objects = []
+        for name, rules in [('environment-writer', env_rules), ('application-writer', app_rules)]:
+            meta = {'namespace': 'reference', 'name': name}
+            subject = {'kind': 'ServiceAccount', **meta}
+            objects.extend([
+                {'apiVersion': 'v1', 'kind': 'ServiceAccount', 'metadata': meta, 'automountServiceAccountToken': False},
+                {'apiVersion': 'rbac.authorization.k8s.io/v1', 'kind': 'Role', 'metadata': meta, 'rules': rules},
+                {'apiVersion': 'rbac.authorization.k8s.io/v1', 'kind': 'RoleBinding', 'metadata': meta,
+                 'roleRef': {'apiGroup': 'rbac.authorization.k8s.io', 'kind': 'Role', 'name': name}, 'subjects': [subject]},
+            ])
+        self.kube('apply', '-f', '-', data=json.dumps({'apiVersion': 'v1', 'kind': 'List', 'items': objects}))
+        for verb in ('create', 'patch', 'update', 'delete'):
+            result = self.kube('--as=system:serviceaccount:reference:application-writer',
+                               'auth', 'can-i', verb, 'components.dapr.io', '-n', 'reference', ok=False)
+            if result.returncode != 1 or result.stdout.strip() != 'no':
+                raise AssertionError('application writer must be denied Dapr Component ' + verb)
+        self.record['checks']['applicationComponentWritesDenied'] = True
+
+    def component_snapshot(self):
+        observed = {}
+        for component in self.components:
+            name = component['metadata']['name']
+            live = json.loads(self.kube('get', 'components.dapr.io', name, '-n', 'reference',
+                                        '--show-managed-fields=true', '-o', 'json').stdout)
+            managers = live['metadata']['managedFields']
+            fields = next((m.get('fieldsV1', {}) for m in managers
+                           if m['manager'] == 'h45-environment' and m['operation'] == 'Apply'
+                           and not m.get('subresource')), {})
+            spec_fields = fields.get('f:spec')
+            owns_bindings = spec_fields == {} or (isinstance(spec_fields, dict) and all(
+                spec_fields.get('f:' + key) == {} for key in component['spec']))
+            if not owns_bindings or fields.get('f:scopes') != {}:
+                raise AssertionError('environment writer does not own Component bindings and scopes: ' + name)
+            if any(m['manager'] == 'helm' for m in managers):
+                raise AssertionError('Helm owns Component ' + name)
+            for key, value in component['spec'].items():
+                if live['spec'].get(key) != value:
+                    raise AssertionError('environment Component binding changed: ' + name)
+            if sorted(live.get('scopes', [])) != component['scopes']:
+                raise AssertionError('environment Component scopes changed: ' + name)
+            observed[name] = {'uid': live['metadata']['uid'], 'spec': live['spec'], 'scopes': component['scopes'],
+                              'environmentApplyFields': {'f:spec': spec_fields, 'f:scopes': fields['f:scopes']}}
+        return observed
+
+    def check_components(self, phase):
+        observed = self.component_snapshot()
+        if observed != self.component_baseline:
+            raise AssertionError('environment Component changed during ' + phase)
+        self.record['checks']['componentOwnership'][phase] = True
+
+    def application_helm(self, *args, **kwargs):
+        previous = self.env.get('HELM_DRIVER')
+        self.env['HELM_DRIVER'] = 'configmap'
+        try:
+            identity = ['--kube-as-user=system:serviceaccount:reference:application-writer',
+                        '--kube-as-group=system:authenticated']
+            if args[0] in ('upgrade', 'uninstall'):
+                previous_manifest = self.helm_run(*identity, 'get', 'manifest', args[1], '-n', 'reference').stdout
+                for obj in documents(previous_manifest):
+                    if obj.get('kind') == 'Component' and obj.get('apiVersion', '').startswith('dapr.io/'):
+                        raise RuntimeError('existing Helm release owns Dapr Components; verified transfer required before ' + args[0])
+            return self.helm_run(*identity, *args, **kwargs)
+        finally:
+            if previous is None:
+                self.env.pop('HELM_DRIVER')
+            else:
+                self.env['HELM_DRIVER'] = previous
 
     def fixture_identity(self, obj):
         args = ['get', obj['kind'], obj['metadata']['name'], '-o', 'json', '--show-managed-fields=true']
@@ -520,8 +613,12 @@ class Qualification:
 
     def admission_and_ssa(self):
         # Use archive for the complete lifecycle. No readiness claim is made for synthetic image bindings.
-        self.helm_run('install', 'reference', self.archive, '-n', 'reference', '-f', self.values, '--server-side=true', '--wait=hookOnly', '--timeout', '60s')
-        rendered = self.helm_run('template', 'reference', self.archive, '-n', 'reference', '-f', self.values).stdout
+        self.application_helm('install', 'reference', self.archive, '-n', 'reference', '-f', self.values, '--server-side=true', '--wait=hookOnly', '--timeout', '60s')
+        self.check_components('install')
+        self.application_helm('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
+                              '--server-side=true', '--wait=hookOnly', '--set', 'replicas=2')
+        self.check_components('upgrade')
+        rendered = self.application_helm('template', 'reference', self.archive, '-n', 'reference', '-f', self.values).stdout
         rendered_path = self.evidence / 'normal.yaml'; rendered_path.write_text(rendered)
         self.record['inputs']['renderedSha256'] = sha(rendered_path)
         deployments = [d for d in documents(rendered) if d['kind'] == 'Deployment']
@@ -549,8 +646,9 @@ class Qualification:
             owners.append({'workload': d['metadata']['name'], 'managedFields': fields})
         self.record['checks']['helmApplyOwnership'] = owners
         print('PASSED Helm Apply field ownership verified', flush=True)
-        self.helm_run('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
+        self.application_helm('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
                       '--server-side=true', '--wait=hookOnly', '--set', 'mode=recovery')
+        self.check_components('recovery')
         live = json.loads(self.kube('get', 'deployments', '-n', 'reference', '-o', 'json').stdout)
         if any(d['spec']['replicas'] != 0 for d in live['items']): raise AssertionError('recovery did not quiesce workloads')
         if json.loads(self.kube('get', 'httproutes', '-n', 'reference', '-o', 'json').stdout)['items']:
@@ -561,7 +659,7 @@ class Qualification:
         name = deployments[0]['metadata']['name']
         rival = {'apiVersion': 'apps/v1', 'kind': 'Deployment', 'metadata': {'name': name, 'namespace': 'reference'}, 'spec': {'replicas': 2}}
         self.kube('apply', '--server-side', '--field-manager=h45-rival', '--force-conflicts', '-f', '-', data=json.dumps(rival))
-        refused = self.helm_run('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
+        refused = self.application_helm('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
                                 '--server-side=true', '--wait=hookOnly', '--set', 'mode=recovery', ok=False)
         message = refused.stderr + refused.stdout
         if refused.returncode == 0 or 'conflict' not in message.lower() or 'h45-rival' not in message:
@@ -570,8 +668,9 @@ class Qualification:
         if unchanged['spec']['replicas'] != 2: raise AssertionError('conflicting Helm upgrade changed rival-owned field')
         self.record['checks']['unforcedConflictRefusal'] = True
         print('PASSED unforced Helm SSA conflict refusal verified', flush=True)
-        self.helm_run('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
+        self.application_helm('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
                       '--server-side=true', '--wait=hookOnly', '--set', 'mode=remove-workloads')
+        self.check_components('removeWorkloads')
         for kind in ('deployments', 'services', 'httproutes', 'pods'):
             # Controllers may take a bounded interval to remove dependent Pods.
             if kind == 'pods':
@@ -582,9 +681,10 @@ class Qualification:
             raise AssertionError('workload removal changed environment fixtures')
         self.record['checks']['removalPreservesEnvironment'] = self.fixture_uids
         print('PASSED workload removal preserved separately owned environment fixtures', flush=True)
-        self.helm_run('uninstall', 'reference', '-n', 'reference', '--wait', '--timeout', '60s')
+        self.application_helm('uninstall', 'reference', '-n', 'reference', '--wait', '--timeout', '60s')
         if self.fixture_uids != [self.fixture_identity(v) for v in self.fixtures]:
             raise AssertionError('uninstall changed environment fixtures')
+        self.check_components('uninstall')
         self.record['checks']['uninstallPreservesEnvironment'] = True
         print('PASSED uninstall preserved separately owned environment fixtures', flush=True)
 
@@ -642,7 +742,7 @@ class Qualification:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE)
+    parser.add_argument('--evidence', type=Path, help='Separate directory for this qualification run.')
     parser.add_argument('--calibration', choices=('prepare', 'inspect', 'launch', 'monitor', 'stop', 'remove'), help='Independent calibration, with separate plan/authority/reservations; no campaign credit.')
     parser.add_argument('--calibration-state', type=Path)
     parser.add_argument('--calibration-plan', type=Path)
@@ -701,7 +801,8 @@ def main():
         raise RuntimeError('qualification interrupted; cleaning owned resources')
     signal.signal(signal.SIGTERM, interrupted)
     try:
-        qualification = Qualification(args.evidence.resolve())
+        evidence = args.evidence or DEFAULT_EVIDENCE / ('component-ownership-' + uuid.uuid4().hex[:12])
+        qualification = Qualification(evidence.resolve())
         qualification.execute()
     except Exception as error:
         print('QUALIFICATION FAILED: ' + str(error), file=sys.stderr); return 1

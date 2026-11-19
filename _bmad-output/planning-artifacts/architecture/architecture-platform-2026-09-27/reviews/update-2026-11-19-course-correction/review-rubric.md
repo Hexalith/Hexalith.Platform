@@ -1,0 +1,21 @@
+# Independent architecture rubric review · 19 November 2026
+
+**Passed for architecture handoff.** Three discrepancies found during review were corrected and rechecked. The PRD and backlog now require exact v2 revision and bytes with the pinned base. The PRD addendum and epic preconditions explicitly refuse fallback from a newer incomplete scan. The epic distinguishes the September Aspire 13.5.4 seed from the measured 13.6.4 export probe. No material finding remains in the course correction.
+
+The initiative review covers the [amended architecture spine](../../ARCHITECTURE-SPINE.md), [approved proposal](../../../../sprint-change-proposal-2026-11-19-architecture-validation.md), [PRD](../../../../prds/prd-platform-2026-09-27/prd.md), [spec acceptance criteria](../../../../../specs/spec-platform/acceptance-criteria.md) and [story handoffs](../../../../epics.md).
+
+| Finding | Decision and downstream evidence checked |
+| --- | --- |
+| V1 | AD-3 and Story 4.5 assign zero Dapr Components to the application chart in normal, quiesce and recovery modes. The environment owner must prove all eight expected Components, exact scopes and bindings, and ownership through the lifecycle of the reference graph. |
+| V2 | Production precondition 4 requires both the exact staging E2E and an independently qualifying image scan in both modes. Stories 5.5, 5.11 and 6.14 bind the latest issued scan, each report’s own exclusive deadline and current finding exceptions. |
+| V3 | Staging preparation selects fresh install, compatible rollback, named retained-data recovery, or degraded-path proof as applicable. An approved retained-data attempt without qualifying compatibility needs full candidate E2E and separate proof of its named recovery. |
+| V4 | The staging reset rule applies to the same candidate’s retry and to a successor. Only the earliest pre-write point since the last verified reset qualifies. Uncertain readability and an unverified reset keep the next attempt queued. |
+| V5 | Production admission and conflicting staging work use one durable conditional decision transition. Qualification covers both orderings, terminal failure, uncertain outcome, fencing and replay. The approved [v2 policy](../../../../../../docs/contracts/staging-evidence-policy-v2.md) requires exact consumer adoption and rejects mixed writers. |
+| V6 | Module intake verifies the owner’s digest-bound image attestation at first admission in 4.8. Missing or mismatched proof blocks intake before 4.12 publication. The publication recheck preserves that ordering. |
+| V7 | The maintained-chart probe fixes the rendering choice. Story 4.5 owns local chart and admission proof, 4.12 owns the published OCI identity and attestation, and 4.13 owns off-site retrieval by that identity. Previous chart evidence cannot establish the amended ownership claim. |
+| V8 | Under v2, both catalog identities and their comparison determine the command. A newly introduced idempotent command takes precedence. A proven empty delta for idempotent commands permits a suite-named existing command on the affected write path. Both require baseline readback of candidate-written state and events. Missing proof refuses automatic compatibility. |
+| V9 | The checkout manifests confirm SDK 11.0.100 with `latestPatch`, AppHost 17.0.0 and prepared tool 6.3.2. The September seed and the Story 4.5 Aspire 13.6.4 probe have separate provenance. The manifest identifies the selected tool and Stories 2.10/2.14 govern lifecycle acceptance. |
+
+The spine retains AD-1 through AD-15 and maps FR-1 through FR-12 and NFR-1 through NFR-3 to owners and governing rules. The changes preserve module authority and cover deployment, environments, infrastructure ownership, release operations and recovery. Qualification work identifies its owner and stage. Platform and Builds still need to adopt the exact committed v2 revision and bytes with the pinned v1 base, and demonstrate the changed and inherited cases. The working v1 file matches the policy’s pinned SHA-256. Runtime admission, live ownership and off-site recovery each require their corresponding evidence.
+
+The BMAD spine lint returned `ok: true` with zero findings. `git diff --check` passed.

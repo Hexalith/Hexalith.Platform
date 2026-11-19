@@ -100,7 +100,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Isolated tests, integration tests or health checks alone do not satisfy the gate.
   - Passing results identify the served release, the production working baseline, the check suite, runtime profile and configuration.
   - The same retained application artifacts are promoted. Stale, mismatched or wrong-release evidence is refused.
-  - Evidence has a finite maximum age, defined and enforced by Platform and Builds before the gate is enabled. Rerun evidence never hides an earlier failed or incomplete attempt.
+  - Staging evidence expires exactly 24 hours after the serialized attempt starts. Independent complete image scans must pass with current exception state at admission in either mode. The latest issued scan must qualify for the pending decision and each image report must be younger than 24 hours from its own scan start.
 - *Release modes:*
   - Automatic promotion additionally requires G3, passing compatibility evidence against the current production working baseline (NFR-1) and a passing shared-infrastructure currency check. Modules supply change classifications; Platform supplies the combined staging rehearsal.
   - An authenticated Administrator approval permits a pre-G3 release, a release without valid compatibility evidence, or one attempt into empty or degraded production (FR-8). It never substitutes for the staging gate, artifact provenance, environment isolation or production verification.
@@ -234,9 +234,9 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - Application rollback preserves business data, event history, credential rotations, revocations and current security authority. It restores only the previous application and compatible current environment configuration, never rewinding those resources or shared infrastructure.
 - *Compatibility on the automatic path:*
   - Automatic-rollback releases keep data schemas, newly written events and required routing and security state compatible with the previous working version.
-  - Module change classifications plus a staging candidate-to-baseline rehearsal prove the baseline reads candidate-written state and events, including a newly introduced idempotent command.
+  - Module change classifications and the AD-15 rehearsal establish baseline readability. V1 requires a candidate-new command. After adoption of [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), compare the exact baseline and candidate command catalogs and their contract identities. Exercise a newly introduced idempotent command if one exists. If the comparison proves none was added, exercise a suite-named existing idempotent command on the affected write path. Retain both catalog identities, comparison, command and successful baseline readback of candidate-written state and events. An unknown delta, missing suitable command or failed readback refuses automatic compatibility.
   - Keys, secrets and routing entries needed by the recovery combination are not retired before the candidate becomes working (AD-15 expand-only).
-  - Missing or invalid compatibility evidence blocks automatic promotion. An incompatible change requires the Administrator-approved release with a separately planned recovery.
+  - Missing or invalid compatibility evidence blocks automatic promotion. An incompatible change requires the Administrator-approved release with full E2E and a separately rehearsed named data restore when data remain.
 - DR data-loss targets (NFR-2) never permit application rollback to rewind data. The data restore after a failed approved incompatible release is an explicitly approved recovery, not application rollback.
 
 **NFR-2: Bound production data loss and disaster recovery time** (major server/storage failure requiring backup restore).
@@ -297,10 +297,10 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 
 ### Additional Requirements
 
-> **Starter template: none.** This is brownfield. There is no greenfield scaffold, so Epic 1 Story 1 is not a project-initialization story. The root `apphost.cs` is a file-based Aspire host on SDK 13.5.4, `global.json` pins .NET SDK 10.0.401, and the opt-in, Development-only Works preview stays the rollback composition until Works passes its parity gate. The first shared artifacts are the Platform-accepted `hexalith-module` tool version and the next-major module declaration schema; every consumer waits on them.
+> **Starter template: none.** This is brownfield. There is no greenfield scaffold, so Epic 1 Story 1 is not a project-initialization story. The September seed used Aspire AppHost SDK 13.5.4 and .NET SDK 10.0.401. The opt-in, Development-only Works preview stays the rollback composition until Works passes its parity gate. The first shared artifacts are the Platform-accepted `hexalith-module` tool version and the next-major module declaration schema; every consumer waits on them.
 
 **Baseline and stack**
-- AR-1: *Stack pins (existing, no upgrade requested):*
+- AR-1: *Historical September stack pins.* Current checkout identities come from the [SDK](../../global.json), [AppHost](../../apphost.cs), [tool manifest](../../.config/dotnet-tools.json) and [CLI requirements](../../README.md#requirements). The independently dated 4.5 probe used Aspire 13.6.4. Stories 2.10 and 2.14 govern tool acceptance. The original seed was:
   - .NET SDK 10.0.401 (latestPatch).
   - Aspire AppHost SDK, Docker and Redis hosting 13.5.4; the Aspire CLI must equal the AppHost SDK, checked by the Platform tool.
   - CommunityToolkit Aspire Dapr 13.5.1-beta.757.
@@ -458,10 +458,10 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Before rollout of an attempt eligible for automatic recovery, the rollback set (baseline package with environment-current values plus the rollback generation) is recorded, prepared and ready-validated. Approved empty/degraded and named-recovery attempts do not require production baseline-host validation or an automatic rollback generation.
   - Every forward-only input stays expand-only until the candidate is working, and contraction happens in a later attempt.
 - AR-34 (RRA Staging gate / Staging reset):
-  - Each staging attempt cuts a staging recovery point, deploys the production baseline, upgrades to the candidate, runs E2E and rehearses the rollback set with HotReload off. When production has no baseline, it rehearses a fresh install instead.
+  - Cut a staging point before candidate writes and run the complete exact-release E2E suite on every path. An empty first installation with no retained data proves fresh installation. A compatible working baseline takes the AD-15 rollback rehearsal with HotReload off. An approved retained-data attempt without valid compatibility must rehearse the named data restore with the retained inputs, procedure, authority, checks, maximum duration and post-cut treatment. It prepares no automatic rollback set. An empty/degraded exception also requires fresh-install evidence and, if data remain, valid compatibility or the qualified named restore. The production recovery point must still be cut after taking the production lock.
   - A failed rehearsal is breaking evidence, not a staging failure.
   - Evidence has a maximum age, and reruns never hide failures.
-  - Staging reset: an unadopted candidate whose writes the baseline cannot read is reset by in-place data restore before a later candidate's attempt, and the staging realm regenerates.
+  - Unreadable or unproven candidate writes, including writes with no production baseline, require a verified staging reset before a same-candidate rerun or a later candidate starts. Restore the earliest point since the last verified reset taken before any of that candidate’s writes. Keep the point and its artifacts while the candidate can require reset or a recovery, reset or named recovery references them, even after evidence expiry. A later point containing candidate writes is ineligible. A failed reset keeps the attempt blocked. Proven baseline-readable writes require no reset.
 - AR-35 (Release modes, Empty or degraded production, In-place recovery):
   - These follow the FR-8 rules. An approved retained-data attempt starts only after a complete recovery point cut after the lock.
   - In-place recovery is either a baseline re-deploy or a data restore, runs on the production executor under a new epoch, and is started by Administrator or the deputy with the stop kept set.
@@ -478,7 +478,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   1. Lock, epoch and a clear stop.
   2. The release-mode trigger.
   3. Provenance.
-  4. Exact-release staging evidence within its maximum age.
+  4. Both modes require fresh exact-release staging E2E with applicable preparation proof. The latest image scan issued for the pending decision must itself be complete, every report current, and every blocking occurrence resolved or covered by a current, exact exception. A newer incomplete scan blocks fallback to an earlier pass.
   5. EventStore server package and composed image release-available.
   6. Equal profile digests, versions within the qualified sets, the required realm-contract version, and the environment layer applied.
   7. Every included module enrolled for production with valid, non-empty readiness and smoke declarations.
@@ -571,7 +571,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-55: *First publication* (Administrator): apply the `main` ruleset, CODEOWNERS, tag ruleset and Builds bypass; set the organization base permission to read or none (today it is write); create the operations and notification repositories with only the named writers.
 - AR-56: *First staging deployment* rows:
   - Composed host: Folders adapters are packaged before Folders joins.
-  - Aspire-to-Helm qualification with the representative Parties+EventStore+Tenants+Memories composition. Aspire 13.5.4 `AddGateway` materializes its own Gateway, so work around it. Prove deterministic rendering, chart contents, server-side dry-run against `restricted`, no Secret in the chart, digest-pinned images via values, Helm SSA ownership and the fallback trigger. Publication separately proves OCI attestation, and retained-artifact qualification separately proves restore/rollback from the off-site replica.
+  - The recorded Aspire 13.6.4 probe selected the maintained chart after native publishing dropped the Dapr sidecar annotations. [Story 4.5 probe](../../eng/helm-qualification/README.md) Story 4.5 proves deterministic rendering, restricted admission, zero Secrets, image digest bindings and independent resource ownership on the Parties, EventStore, Tenants and Memories graph. The environment writer owns all eight Components and the application writer owns zero in each mode. Story 4.12 proves the OCI digest and published attestation. Story 4.13 proves recovery of the same artifact by digest from off site.
   - Shared runtime and profile: ratify the profile; create the catalog and secret-contract instances; select and qualify the durable production broker (Redis pub/sub excluded) with retention, dead-letter and backlog recovery; qualify Dapr activation with one policy-only and one HTTPEndpoint-only update.
   - Secrets, identity, network and transport: Keycloak inventory, realm contract and event export, token-exchange clients, per-environment OpenBao and tenant-key store, per-app token mounts, splitting the shared `openbao-runtime-bootstrap` token (expires 2027-07-19), the executor sandbox, CNI enforcement, drop-all-capabilities, volume encryption and TLS, Gateway API CRDs with the Traefik provider, cert-manager per-environment `gatewayHTTPRoute` issuers, staging HTTP-01, trust domains and every negative isolation case.
   - Staging data restore and takeover fencing.
@@ -784,7 +784,7 @@ The publication workflow produces an attested, immutable release: application He
   - Relocate the Forgejo runner.
   - Apply publication and operations repository controls before notification or publication consumers need them.
 - **Notes:**
-  - The Aspire-to-Helm qualification comes early and proves deterministic rendering, chart contents, admission and ownership; OCI attestation is proven by publication, and retained-package restore from the off-site replica by retention. The AD-1 fallback to a maintained Helm chart applies if needed.
+  - The dated exporter probe selected the maintained chart. Story 4.5 qualifies its rendering, tier ownership and isolated lifecycle. Story 4.12 proves the published package OCI digest and attestation. Story 4.13 restores that same digest from the off-site replica.
   - The record encoding, the recovery hook contract and the check-suite contract precede the first publication, because the release record binds their versions.
   - The identity-event capture-lag bound is decided before the staging realm implements bounded event export.
   - The reference composition's critical-flow, E2E and smoke suites have explicit Platform-accountable ownership in this epic and block staging-gate validation.
@@ -794,7 +794,8 @@ The publication workflow produces an attested, immutable release: application He
 Each candidate is proven in staging against that exact release. Every enrolled module's non-empty critical flows pass. With no production baseline, staging proves installation and candidate behavior. With a production baseline and automatic-recovery eligibility, it upgrades from that baseline and rehearses the rollback set. A retained-data approved path without compatible evidence qualifies its named data recovery and does not prepare automatic rollback. Evidence is bound to the release, has a maximum age and never hides failures. Missing, stale or wrong evidence blocks promotion in both release modes. Unadopted incompatible candidates are reset before the next one. After staging validation passes, the Platform publication workflow alone publishes the stable McpCli version.
 - **FRs covered:** FR-6, NFR-1 (compatibility evidence)
 - Story 5.1 published the [staging evidence policy v1](../../docs/contracts/staging-evidence-policy-v1.md). Qualify its evidence deadline, attempt triggers, full reruns and retained history, coverage-change approvals and staging-reset duration.
-- The separate image and dependency vulnerability policy governs blocking severity and recorded exceptions.
+- [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md) adds a production admission reservation and a conditional idempotent command witness. Builds and Platform must explicitly adopt the exact committed Platform revision and the v2 policy bytes together with the pinned v1 base and qualify both changed cases and existing refusals before using it. Each result keeps its policy identity. V1 evidence retains its original meaning.
+- The [adopted vulnerability policy](../../docs/contracts/image-and-dependency-vulnerability-policy-v1.md) fixes severity and exception rules. Story 5.5 issues complete release-bound scan evidence. Story 5.11 independently checks scan and staging verdicts at Story 6.14 production admission in both modes.
 - **Conditional closure:** the no-baseline branch enables the first G1 deployment. Baseline-dependent rehearsal branches close after Epic 6 establishes the first working production baseline and before a second production candidate is accepted.
 - **Prerequisites:** Epic 4's owned reference-composition suites; module recovery-hook implementations (staging reset); EventStore and Memories image attestation before publication. The Builds check-suite contract lands in Epic 4, before the first publication.
 
@@ -2215,10 +2216,17 @@ So that hosted deployment has one definition, or we trigger the maintained-chart
 
 **Acceptance Criteria:**
 
+The historical export selected the maintained chart. The original probe versions and results remain dated evidence. For current versions use the [SDK](../../global.json), [AppHost](../../apphost.cs), [tool manifest](../../.config/dotnet-tools.json) and [CLI requirements](../../README.md#requirements). Stories 2.10 and 2.14 govern tool acceptance.
+
+**Given** the same reference graph and environment profile
+**When** the maintained chart renders normal, recovery and remove-workloads and the environment renderer derives the baseline/candidate union
+**Then** each application render contains zero Dapr Components and the reference environment output contains all eight with the expected names, scopes and provider bindings
+**And** an isolated install, upgrade, recovery and removal with the intended identities proves the environment writer retains those Components. Record fresh render and ownership evidence. Story 4.12 proves the published OCI attestation and 4.13 off-site retrieval by digest.
+
 **Given** the reference composition
 **When** exported
 **Then** the chart has Dapr sidecar annotations and Pod-Security-compliant security contexts added by one shared helper, and HTTPRoutes whose parent reference names the environment's Gateway with its namespace
-**And** the chart contains no Gateway, even though Aspire 13.5.4 `AddGateway` would materialize one
+**And** the chart contains no Gateway and binds the HTTPRoutes to the environment-owned Gateway
 
 **Given** the rendered chart
 **When** inspected
@@ -2248,6 +2256,10 @@ So that deployment accepts a record only from the writer entitled to issue it.
 
 **Acceptance Criteria:**
 
+**Given** the prospective [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md) decision and attempt records
+**When** a trusted writer signs a conditional reservation, supersession, completion or release
+**Then** bind its signer, decision, exact release, production attempt and epoch where applicable. Distinguish a production admission reservation from an explicit Administrator reservation and reject an unauthorized signer.
+
 **Given** the release, attempt, qualification, production-promoted, release-available, latest-working-pointer, promotion-stop and Administrator record kinds
 **When** encoded
 **Then** each has a versioned schema and names its writer
@@ -2271,6 +2283,10 @@ So that staging attempts are serialized and their records survive the environmen
 **Repo:** Hexalith.Platform with Hexalith.Builds · **Covers:** AR-20, AR-21 (store), AR-36
 
 **Acceptance Criteria:**
+
+**Given** explicit v2 adoption
+**When** successful production admission races with a staging start or reset that would supersede the same release
+**Then** the authorized writers use one durable conditional transition in the existing decision and attempt state. Only one outcome commits, replay is idempotent and stale epochs fail. The staging worker holds only its own environment lock.
 
 **Given** the store
 **When** deployed
@@ -2303,7 +2319,7 @@ So that every release knows exactly which module artifacts it contains and how b
 **Given** a module image pinned in the intake manifest
 **When** it is admitted for publication
 **Then** its attestation is verified and names the module repository, workflow, protected ref and pinned Builds workflow ref recorded in the manifest
-**And** a missing or mismatched attestation refuses the module release before publication
+**And** a missing or mismatched attestation refuses the module release before publication writes a release record, even if a vulnerability scan passed
 
 **Given** a chain of module releases between production's working baseline and a candidate
 **When** the classification is computed
@@ -2991,6 +3007,10 @@ So that only images below the accepted vulnerability threshold reach production.
 
 **Acceptance Criteria:**
 
+**Given** a pending promotion decision in either release mode
+**When** the trusted gate issues a scan
+**Then** scan the full current image inventory including unchanged modules, infrastructure and tools. Retain exact image and scan identities, per-image start times, findings, database verification and attempt order. An incomplete newer scan blocks fallback to a prior clean one. Story 5.11 consumes this evidence under the [adopted vulnerability policy](../../docs/contracts/image-and-dependency-vulnerability-policy-v1.md).
+
 **Given** module and composed images
 **When** scanned
 **Then** a finding at or above the blocking severity from Story 5.2 blocks promotion unless a recorded, unexpired exception covers it
@@ -3005,6 +3025,10 @@ So that production only ever receives releases proven end to end.
 **Repo:** Hexalith.Platform (operations repository) · **Covers:** FR-6, AR-34, SM-C1
 
 **Acceptance Criteria:**
+
+**Given** a pending promotion decision under explicitly adopted v2
+**When** a staging start or reset could supersede a release being admitted in production
+**Then** use the signed conditional transition from Stories 4.6/4.7. If unreserved staging supersession wins, refuse the release before production mutation. If production admission wins, queue conflicting staging work and recheck authoritative decision, baseline and recovery state before starting. The staging worker never takes the production lock.
 
 **Given** a candidate whose intake artifacts and declarations are validated
 **When** a staging attempt starts
@@ -3041,7 +3065,7 @@ So that a first production installation rests on real evidence.
 
 **Given** the fresh-install evidence
 **When** recorded
-**Then** it is labelled as fresh-install proof, which serves only a first installation with no retained application data
+**Then** it is labelled as fresh-install proof. This suffices for the preparation branch of a first empty installation without retained data. An approved empty/degraded attempt also requires it and, whenever data remain, valid compatibility or the separately qualified named recovery
 
 ### Story 5.8: Rehearse the rollback set and record compatibility evidence
 
@@ -3055,7 +3079,7 @@ So that automatic rollback is only ever used when it is safe.
 
 **Given** a candidate over production's working baseline
 **When** the staging attempt rehearses the AD-15 rollback set with HotReload off
-**Then** it runs at least one idempotent command that is new in the candidate, and verifies that the baseline reads the state and events the candidate wrote
+**Then** v1 evidence requires a candidate-new idempotent command. After explicit adoption of [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), apply the following rule. Compare the exact baseline and candidate command catalogs and their contract identities. Exercise a newly introduced idempotent command if one exists. If the comparison proves none was added, exercise a suite-named existing idempotent command on the affected write path. Retain both catalog identities, comparison, command and successful baseline readback of candidate-written state and events. An unknown delta, missing suitable command or failed readback refuses automatic compatibility. Full E2E and all other AD-15 checks still apply.
 
 **Given** the rehearsal result and the effective change classification from the intake manifest
 **When** recorded
@@ -3090,9 +3114,13 @@ So that an approved retained-data production attempt has a proven recovery witho
 **When** the qualification is evaluated
 **Then** the retained-data approved path is not qualified and the reason is recorded
 
-**Given** production has no working baseline or retained application data
+**Given** a first empty installation with no retained application data
 **When** staging selects its preparation branch
-**Then** it uses the fresh-install proof from Story 5.7 instead of this path
+**Then** it uses the fresh-install proof from Story 5.7
+
+**Given** an Administrator-approved empty/degraded release with retained data
+**When** staging qualifies it
+**Then** it must pass complete candidate E2E and fresh installation, plus valid compatibility or the named restore rehearsal with its maximum duration. A plan or fresh install alone refuses admission. Production still requires the actual recovery point taken after its lock.
 
 ### Story 5.10: Reset staging for unadopted incompatible candidates
 
@@ -3104,22 +3132,17 @@ So that each candidate's evidence starts from a clean, representative staging.
 
 **Acceptance Criteria:**
 
-**Given** a later candidate's staging attempt starts
-**When** an earlier candidate has not been adopted and no Administrator record reserves it
-**Then** the earlier candidate is no longer adoptable
+**Given** A made unreadable or unproven writes, including with no production baseline
+**When** A retries or B starts
+**Then** both wait for a separate verified reset from A’s earliest pre-write point since the last verified reset. Reject a later snapshot containing A’s writes. Regenerate the staging realm and remove candidate-only environment objects under their proper writer. Proven baseline-readable writes need no reset. A failed reset keeps queued work blocked.
 
-**Given** that unadopted candidate wrote state that production's working baseline cannot read
-**When** the later attempt is requested
-**Then** staging first runs an in-place data restore, as its own attempt, to the recovery point cut at the start of the unadopted candidate's attempt
-**And** the staging realm is regenerated from the realm contract, and the later candidate's environment-layer attempt removes objects declared only by the reset candidate
+**Given** pruning or evidence expiry
+**When** A can still need a reset or an open recovery, reset or pending named recovery references the point
+**Then** retain the point and its artifacts. Preserve the existing recovery-entry, fencing and deadline rules.
 
-**Given** an additive unadopted candidate
-**When** a later attempt is requested
-**Then** no reset runs
-
-**Given** recovery-point pruning
-**When** it runs
-**Then** it keeps any point that a pending staging reset references
+**Given** explicitly adopted v2 and competing staging or production transitions
+**When** B’s staging start or reset would supersede A
+**Then** respect the admission reservation and the distinct explicit Administrator reservation. B may supersede an unreserved A only by winning the conditional transition. Otherwise B waits and reevaluates the authoritative decision, baseline and recovery state.
 
 ### Story 5.11: Evaluate staging evidence for promotion
 
@@ -3130,6 +3153,14 @@ So that the production workflow never promotes on missing, stale or mismatched e
 **Repo:** Hexalith.Platform · **Covers:** FR-6, SM-C1, AR-38 (precondition 4)
 
 **Acceptance Criteria:**
+
+**Given** either release mode under the production lock
+**When** checking Story 5.5’s scan for the pending decision
+**Then** independently require latest-issued full-inventory coverage and exact digest and exception bindings. An unexcepted High, Critical or unresolved Unknown finding, a newer incomplete scan, or any report at its exclusive 24-hour deadline refuses admission despite fresh E2E. A valid Administrator exception still requires complete current scans and every other check.
+
+**Given** v2 consumers have adopted and qualified the exact policy
+**When** the release and a conflicting staging start or reset race
+**Then** evaluate the same conditional reservation under Story 6.14 and verify both orderings. A queued or partially checked request reserves nothing. Record the policy identity on every result.
 
 **Given** a release and its staging evidence
 **When** evaluated
@@ -3142,7 +3173,7 @@ So that the production workflow never promotes on missing, stale or mismatched e
 **Given** the release modes
 **When** evaluated
 **Then** both require the same evidence
-**And** a first installation requires the fresh-install proof from Story 5.7
+**And** a first empty installation and an empty/degraded exception require the fresh-install proof from Story 5.7. Retained data additionally require valid compatibility or a qualified named restore
 **And** the automatic path requires valid compatibility evidence and a rehearsed rollback set from Story 5.8 against the current baseline
 **And** an approved retained-data attempt without compatibility evidence requires the named recovery qualification from Story 5.9
 
@@ -3520,12 +3551,14 @@ So that a missing condition stops the attempt safely and tells me why.
 1. the lock and a new epoch are held, and the stop is clear;
 2. the release-mode trigger is met;
 3. provenance matches;
-4. exact-release staging evidence is within its maximum age (the evaluator from Story 5.11);
+4. the Story 5.11 evaluator confirms both fresh, exact-release staging E2E with the applicable preparation evidence and an independently qualifying complete scan for the pending decision under the adopted vulnerability policy. Apply image-specific expiry and current exception state in both modes.
 5. the EventStore server package and the composed image are release-available;
 6. profile digests are equal, versions fall within the qualified sets, the realm-contract version is present, and the environment layer is applied;
 7. every included module is enrolled for production, with valid, non-empty readiness and smoke declarations;
 8. the working baseline is ready and its smoke suite passes now;
 9. retained-data compatibility evidence exists; an approved retained-data attempt without it is available only when a named data-restore recovery has been separately qualified, which is not a G1 capability
+
+Under explicitly adopted [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), once all checks pass and before any rollout effect, conditionally reserve the still-pending decision for this release, attempt and epoch. A prior supersession refuses before mutation. A queued request or partial success reserves nothing. Uncertain ownership retains the reservation pending fenced takeover or terminal reconciliation.
 
 **Given** any precondition fails
 **When** it is detected
@@ -3602,6 +3635,7 @@ So that a release is declared working only when it actually works.
 **Given** window end
 **When** readiness and the latest required smoke results hold and no trigger fired
 **Then** the attempt is recorded working, the candidate generation is committed, and the latest-working pointer moves
+**And** under explicitly adopted v2, verified completion and the working-pointer transition complete the reserved decision exactly once. Terminal non-working releases the reservation and leaves the decision pending with its stop and recovery obligations. Executor loss or uncertain state retains it pending fenced takeover or terminal reconciliation. Queue replay refuses stale epochs and rechecks the current baseline before further staging evidence.
 
 **Given** a failure found after the verification window ends
 **When** recorded
@@ -4715,6 +4749,8 @@ So that automatic promotion and its alternatives each behave as specified.
 
 **Acceptance Criteria:**
 
+Repeat affected SM-5 cases before automatic promotion under the adopted policy identity, including scan refusal in both modes, same-candidate reset, named restore, both admission orderings and interruption, and both new-command and verified command-preserving rollback witnesses after v2 adoption.
+
 **Given** both release modes
 **When** rehearsed
 **Then** each requires exact-release staging E2E evidence for the complete enrolled composition
@@ -4892,6 +4928,8 @@ So that automatic promotion stays proven for the complete release.
 **Repo:** Hexalith.Platform · **Covers:** SM-5, SM-C1, FR-6
 
 **Acceptance Criteria:**
+
+Repeat the affected Epic 9 SM-5 release and recovery cases on the full composition using evidence bound to the applicable policy identity. Cite Story 9.6 for adopted-v2 ordering and witness cases.
 
 **Given** the new modules' readiness and smoke declarations
 **When** assessed under the rule from Story 9.7

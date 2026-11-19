@@ -12,6 +12,8 @@ from urllib.parse import urlsplit
 
 import yaml
 
+from environment_components import render_components
+
 HERE = Path(__file__).resolve().parent
 CHART = HERE / 'chart'
 HELM = os.environ.get('HELM_BIN') or shutil.which('helm')
@@ -278,6 +280,12 @@ class ChartTests(unittest.TestCase):
                              'metadata': {'name': capability['name']},
                              'spec': {'type': binding['type'], 'version': 'v1', 'metadata': metadata},
                              'scopes': capability['consumers']})
+        environment = render_components(graph(), values, namespace)
+        self.assertEqual(sorted(expected, key=lambda d: d['metadata']['name']),
+                         [{**d, 'metadata': {'name': d['metadata']['name']}} for d in environment])
+        self.assertTrue(all(d['metadata']['namespace'] == namespace for d in environment))
+        self.assertFalse(any(d['kind'] == 'Component' for d in docs))
+        expected = []
         for workload in graph()['workloads']:
             acl = json.loads(json.dumps(workload['accessControl']).replace('__APPLICATION_NAMESPACE__', namespace)
                              .replace('__TRUST_DOMAIN__', values['environment']['trustDomain']))
@@ -318,6 +326,39 @@ class ChartTests(unittest.TestCase):
                     # Application Dapr objects are retained through workload removal; infrastructure is external.
                     self.assertEqual(len([d for d in docs if d['kind'] == 'Configuration']), len(graph()['workloads']))
 
+    def test_forward_only_component_union(self):
+        baseline, candidate = graph(), graph()
+        base_name, next_name = [c['name'] for c in baseline['capabilities'][:2]]
+        baseline['capabilities'] = [c for c in baseline['capabilities'] if c['name'] != next_name]
+        candidate['capabilities'] = [c for c in candidate['capabilities'] if c['name'] != base_name]
+        for release, consumer in ((baseline, 'memories'), (candidate, 'eventstore')):
+            item = next(c for c in release['capabilities'] if c['name'] == 'statestore')
+            item['consumers'] = [consumer]
+        values, prior = fixture_values(candidate), fixture_values(baseline)
+        merged = render_components(candidate, values, 'reference', baseline_graph=baseline, baseline_values=prior)
+        self.assertEqual([c['metadata']['name'] for c in merged], sorted(c['name'] for c in graph()['capabilities']))
+        state = next(c for c in merged if c['metadata']['name'] == 'statestore')
+        self.assertEqual(state['scopes'], ['eventstore', 'memories'])
+        self.assertEqual(merged, render_components(baseline, prior, 'reference', baseline_graph=candidate, baseline_values=values))
+        with self.assertRaisesRegex(ValueError, 'together'):
+            render_components(candidate, values, 'reference', baseline_graph=baseline)
+        for field, changed in [('type', 'state.postgresql'), ('credential', {'name': 'another', 'key': 'token'})]:
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'incompatible.*statestore'):
+                conflict = copy.deepcopy(values)
+                conflict['environment']['components']['statestore'][field] = changed
+                render_components(candidate, conflict, 'reference', baseline_graph=baseline, baseline_values=prior)
+        for generation in ('baseline', 'candidate'):
+            with self.subTest(generation=generation), self.assertRaisesRegex(ValueError, 'TLS URL'):
+                base_profile, next_profile = copy.deepcopy(prior), copy.deepcopy(values)
+                selected = base_profile if generation == 'baseline' else next_profile
+                selected['endpoints']['data'] = 'http://provider.invalid'
+                render_components(candidate, next_profile, 'reference', baseline_graph=baseline, baseline_values=base_profile)
+        for scopes in ([], ['foreign-app'], ['memories', 'memories']):
+            with self.subTest(scopes=scopes), self.assertRaisesRegex(ValueError, 'scopes'):
+                invalid = copy.deepcopy(baseline)
+                invalid['capabilities'][0]['consumers'] = scopes
+                render_components(candidate, values, 'reference', baseline_graph=invalid, baseline_values=prior)
+
     def test_identity_readiness_and_shared_dapr_security(self):
         _, docs = self.good(fixture_values())
         for w in graph()['workloads']:
@@ -348,8 +389,9 @@ class ChartTests(unittest.TestCase):
             self.assertEqual(config['spec']['features'], [{'name': 'HotReload', 'enabled': False}])
             for key, value in w['environment'].items():
                 self.assertIn({'name': key, 'value': value}, app['env'])
+        components = render_components(graph(), fixture_values(), 'reference')
         for capability in graph()['capabilities']:
-            component = next(d for d in docs if d['kind'] == 'Component' and d['metadata']['name'] == capability['name'])
+            component = next(d for d in components if d['metadata']['name'] == capability['name'])
             self.assertEqual(component['scopes'], capability['consumers'])
             self.assertTrue(any('secretKeyRef' in m for m in component['spec']['metadata']))
             expected_endpoint = 'fixture-data.environment.svc.cluster.local:6380' if capability['kind'] in ('state', 'pubsub', 'configuration') else fixture_values()['endpoints']['identity']
@@ -510,7 +552,7 @@ class ChartTests(unittest.TestCase):
 
     def test_no_secrets_providers_or_persistent_environment_resources(self):
         output, docs = self.good(fixture_values())
-        self.assertLessEqual({d['kind'] for d in docs}, {'Deployment', 'Service', 'HTTPRoute', 'Configuration', 'Subscription', 'Component'})
+        self.assertLessEqual({d['kind'] for d in docs}, {'Deployment', 'Service', 'HTTPRoute', 'Configuration', 'Subscription'})
         for forbidden in ('secretstores.local.file', 'conversation.echo', 'redis:7', 'kind: Gateway\n', 'kind: Secret\n', 'secretsFile', 'HotReload: true'):
             self.assertNotIn(forbidden, output)
         for d in docs:
@@ -626,7 +668,7 @@ class ChartTests(unittest.TestCase):
                                          ('memories-access-telemetry-clock', 'Clock__Sources__0__RetentionSeconds', '2000000')]:
             app = next(d for d in docs if d['kind'] == 'Deployment' and d['metadata']['name'] == resource)['spec']['template']['spec']['containers'][0]
             self.assertIn({'name': key, 'value': expected}, app['env'])
-        component = next(d for d in docs if d['kind'] == 'Component' and d['metadata']['name'] == 'statestore')
+        component = next(d for d in render_components(graph(), values, 'reference') if d['metadata']['name'] == 'statestore')
         self.assertIn({'name': 'retentionSeconds', 'value': '2592000'}, component['spec']['metadata'])
 
     def test_credential_keys_share_one_denylist_for_configuration_and_metadata(self):

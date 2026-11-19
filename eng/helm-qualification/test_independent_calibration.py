@@ -280,7 +280,7 @@ class IndependentCalibrationTests(unittest.TestCase):
             providerObjects=self.write('providers.json', []), reporterObjects=self.write('reporters.json', []),
             secrets=[], openbaoSeed=self.write('seed.json', {}))
         self.plan['source'] = [{'path': str(HERE / name), 'sha256': lifecycle.sha(HERE / name)} for name in (
-            'qualify.py', 'campaign_capacity.py', 'campaign_lifecycle.py', 'campaign_environment.py', 'independent_calibration.py', 'calibration_workload.py')]
+            'qualify.py', 'campaign_capacity.py', 'campaign_lifecycle.py', 'campaign_environment.py', 'environment_components.py', 'independent_calibration.py', 'calibration_workload.py')]
         legacy = campaign_graph_fixture()
         values = capacity.configure_application(fixture_values(legacy), legacy); values['capacityProfile'] = calibration.PROFILE_ID
         self.plan['inputs'] = {name: [self.write(name + '.json', {})] for name in calibration.INPUT_GROUPS}

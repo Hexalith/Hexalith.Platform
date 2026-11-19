@@ -328,7 +328,7 @@ def admit(plan, plan_sha, action):
                           original_admission=original_admission(plan), require_original=True)
     for ref in [*plan['tools'].values(), *plan['toolFiles']]:
         binary(ref)
-    expected_sources = {str((HERE / name).resolve()) for name in ('qualify.py', 'campaign_capacity.py', 'campaign_environment.py', 'campaign_lifecycle.py')}
+    expected_sources = {str((HERE / name).resolve()) for name in ('qualify.py', 'campaign_capacity.py', 'campaign_environment.py', 'environment_components.py', 'campaign_lifecycle.py')}
     require(expected_sources <= {r['path'] for r in plan['source']}, 'lifecycle-source-incomplete')
     profile_sources = {r['path']: r['sha256'] for r in profile['inputs']['source']}
     for ref in plan['source']:
@@ -669,11 +669,12 @@ class CampaignQualification(Qualification):
         self.create_owned_namespaces(objects)
         self.apply_objects([environment.label(capacity.retained_json(r), self.record['runId']) for r in self.plan['environment']['secrets']])
         self.kube('apply', '--server-side', '--field-manager=hexalith-campaign', '-f', self.plan['assets']['gateway']['path'], timeout=30)
-        self.apply_objects([o for o in objects if o['kind'] not in {'Namespace', 'Job'}])
+        self.apply_objects([o for o in objects if o['kind'] not in {'Namespace', 'Job', 'Component'}])
         self.kube('wait', '-n', profile['target']['namespace'], '--for=jsonpath={.status.phase}=Running', 'pod/campaign-openbao-0', '--timeout=90s', timeout=95)
         self.bootstrap_openbao()
         self.helm_run('install', 'dapr', self.plan['assets']['dapr']['path'], '--namespace', 'dapr-system', '--create-namespace',
                       '-f', '-', '--wait', '--timeout=180s', data=prepared['dapr-values.json'], timeout=185)
+        self.apply_objects([o for o in objects if o['kind'] == 'Component'])
         self.apply_objects([self.binding(profile, self.plan['profileSha256']),
             {'apiVersion': 'v1', 'kind': 'ConfigMap', 'metadata': {'name': 'access-telemetry-qualification-gate', 'namespace': self.record['target']['namespace']},
              'data': {'gate.json': json.dumps({'schemaVersion': 1, 'state': 'disabled', 'profileSha256': self.plan['profileSha256'], 'expiresUtcMs': 0})}},

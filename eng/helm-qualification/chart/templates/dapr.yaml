@@ -1,32 +1,5 @@
 {{- include "reference.validate" . -}}
 {{- $graph := include "reference.graph" . | fromJson -}}
-{{- range $graph.capabilities }}
-{{- $binding := index $.Values.environment.components .name }}
----
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: {{ .name }}
-spec:
-  type: {{ $binding.type | quote }}
-  version: v1
-  metadata:
-    - name: {{ $binding.endpointMetadataKey | quote }}
-      {{- if eq (default "url" $binding.endpointFormat) "authority" }}
-      value: {{ (urlParse (index $.Values.endpoints $binding.endpoint)).host | quote }}
-      {{- else }}
-      value: {{ index $.Values.endpoints $binding.endpoint | quote }}
-      {{- end }}
-    - name: {{ $binding.credentialMetadataKey | quote }}
-      secretKeyRef:
-        {{- include "reference.secretRef" $binding.credential | nindent 8 }}
-    {{- range $key, $value := $binding.metadata }}
-    - name: {{ $key | quote }}
-      value: {{ include "reference.scalar" $value | quote }}
-    {{- end }}
-scopes:
-  {{- toYaml .consumers | nindent 2 }}
-{{- end }}
 {{- range $graph.workloads }}
 ---
 apiVersion: dapr.io/v1alpha1

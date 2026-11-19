@@ -10,11 +10,12 @@ Everything added for this task lives here. Existing Platform/user changes are
 preserved. The task chart copies the maintained `../helm-qualification/chart`
 byte-for-byte except `reference-graph.json`, regenerated from the canonical graph.
 It contains all eight declared servers, including `memories/domain`. Templates are
-checked against the maintained originals before each preparation. The maintained
-chart's seven-workload snapshot, stale seven/15 hosted assertions and separate
-finite campaign policy are not changed: their approved nine-Pod allocation must
-not silently become a ten-Pod campaign. This isolated snapshot allows the operator
-task to render the current complete closure without changing that policy.
+checked against the maintained originals before each preparation. The packet renders
+Dapr Components from the task graph and its provider bindings into `environment.yaml`.
+The environment identity owns them. The application manifest contains zero Components.
+The packet verifies the secret references used by those bindings alongside application
+secret references. The operator packet renders all eight workloads. The separate
+finite campaign uses its approved nine-Pod allocation and has its own capacity gate.
 
 From the owning Platform root, export a new canonical graph to a fresh path:
 

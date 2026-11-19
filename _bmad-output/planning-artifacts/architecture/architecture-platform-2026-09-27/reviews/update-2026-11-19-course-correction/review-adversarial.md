@@ -1,0 +1,15 @@
+# Adversarial review of the November 19 course correction
+
+**Verdict.** The corrected architecture gives the competing writers a single enforceable decision and defines when each rehearsal can qualify. One medium handoff mismatch found in review was corrected. No critical or high finding remains. Runtime qualification is still due.
+
+| Decision challenged | Review result |
+| --- | --- |
+| V5, two writers race | Supersession winning the conditional write refuses A before production mutation. Production winning after all checks queues conflicting staging starts and resets. A working outcome must agree with the working pointer and close the decision before B can use the new baseline. A queued admission acquires no protection. |
+| V4 and V5, interrupted or retried work | A signed non-working outcome releases only the matching reservation. An uncertain outcome or partially recorded success holds it through fenced reconciliation. Duplicate acknowledgments and stale epochs cannot cause a second transition. A same-candidate retry and a later candidate both wait for verified restoration to the earliest pre-write point if readability is unknown or fails. |
+| V3 and V8, unsuitable compatibility proof | Both catalog identities and the command comparison determine the witness. A new idempotent command takes precedence. An existing one qualifies only for a proven empty delta on the affected path. In both cases baseline code must read the candidate-written state and events. Missing proof refuses automatic compatibility. An approved retained-data release without compatibility needs full E2E and a separate named restore rehearsal. |
+| V2, independent admission evidence | Both release modes require current qualifying E2E and complete digest-bound scans for the same decision. An exception cannot rehabilitate an incomplete scan. |
+| V1, V6, V7 and V9, misplaced evidence | The spine assigns Components to the environment identity in all three chart modes, verifies owner attestations at first publication intake, assigns local chart proof and off-site retrieval to distinct stories, and resolves current tool versions from the checkout manifests. The criteria still require independent implementation evidence. |
+
+**Medium finding, resolved.** The epic initially allowed a revision or digest as the adoption identity. The revised handoff now requires the exact committed Platform revision, v2 policy bytes and pinned v1 base. The policy also refuses activation while an older writer can supersede a v2 reservation. V1 decisions retain their historical semantics. [Epic 5 handoff](../../../../epics.md) · [Consumer adoption and qualification](../../../../../../docs/contracts/staging-evidence-policy-v2.md#consumer-adoption-and-qualification)
+
+Sources include the [architecture spine](../../ARCHITECTURE-SPINE.md) · [approved proposal](../../../../sprint-change-proposal-2026-11-19-architecture-validation.md) · [staging evidence policy v2](../../../../../../docs/contracts/staging-evidence-policy-v2.md)

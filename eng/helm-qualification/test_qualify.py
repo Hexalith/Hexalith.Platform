@@ -101,11 +101,48 @@ class QualifierFailureTests(unittest.TestCase):
             self.assertFalse(record['cleanup']['complete'])
             self.assertTrue(record['cleanup']['temporaryKubeconfigRemoved'])
 
+    def test_component_ownership_requires_environment_spec_and_scope_fields(self):
+        from subprocess import CompletedProcess
+        from test_chart import graph, fixture_values
+        with self.qualification() as q:
+            q.components = qualify.render_components(graph(), fixture_values(), 'reference')[:1]
+            live = copy.deepcopy(q.components[0])
+            ownership = {'f:spec': {f'f:{key}': {} for key in live['spec']}, 'f:scopes': {}}
+            entry = {'manager': 'h45-environment', 'operation': 'Apply', 'fieldsV1': ownership}
+            live['metadata'].update(uid='component-uid', managedFields=[entry])
+            def observe(*args):
+                return CompletedProcess([], 0, json.dumps(live))
+            with patch.object(q, 'kube', side_effect=observe):
+                observed = q.component_snapshot()[live['metadata']['name']]
+                self.assertEqual(observed['environmentApplyFields'], ownership)
+                del ownership['f:spec']['f:metadata']
+                with self.assertRaisesRegex(AssertionError, 'bindings and scopes'):
+                    q.component_snapshot()
+                ownership['f:spec'] = {}
+                del ownership['f:scopes']
+                with self.assertRaisesRegex(AssertionError, 'bindings and scopes'):
+                    q.component_snapshot()
+
+    def test_application_cutover_checks_stored_manifest_before_upgrade_and_uninstall(self):
+        from subprocess import CompletedProcess
+        legacy = 'apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata: {name: statestore}\n'
+        for operation in ('upgrade', 'uninstall'):
+            with self.subTest(operation=operation), self.qualification() as q:
+                with patch.object(q, 'helm_run', return_value=CompletedProcess([], 0, legacy)) as run:
+                    with self.assertRaisesRegex(RuntimeError, 'verified transfer'):
+                        q.application_helm(operation, 'reference')
+                    self.assertEqual(run.call_count, 1)
+                    self.assertIn('manifest', run.call_args.args)
+                with patch.object(q, 'helm_run', return_value=CompletedProcess([], 0, 'kind: Deployment')) as run:
+                    q.application_helm(operation, 'reference')
+                    self.assertEqual(run.call_count, 2)
+                    self.assertIn(operation, run.call_args.args)
+
     def test_new_run_removes_prior_qualifier_outputs_and_keeps_other_evidence(self):
         with tempfile.TemporaryDirectory(prefix='h45-log-reuse-') as directory:
             evidence = Path(directory)
             stale_names = ['006-curl.log', '1000-dotnet.log', 'qualification.json', 'admitted-memories.json',
-                           'normal.yaml', 'fixture-values.json', 'native-rendered.yaml',
+                           'normal.yaml', 'environment-components.json', 'fixture-values.json', 'native-rendered.yaml',
                            'resolved-native-project.assets.json', 'resolved-composition-project.assets.json',
                            'hexalith-reference-0.1.0.tgz', 'hexalith-reference-0.2.0.tgz']
             retained_names = ['parent-full-suite.log', 'verification.json', 'isolated-verification.json',

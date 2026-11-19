@@ -40,6 +40,10 @@ Confirmed by the user on 2026-10-30:
 
 </frozen-after-approval>
 
+## November 19 policy decision
+
+The owner approved V5 and V8 under a successor policy. V2 orders production admission against staging supersession and selects the rollback witness from the exact baseline and candidate catalogs. V1 keeps the bytes and meaning used by its existing readers. The downstream stories in the v2 adoption section own cross-repository acceptance, execution and qualification. [Staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md) · [Approved decisions](../planning-artifacts/sprint-change-proposal-2026-11-19-architecture-validation.md)
+
 ## Code Map
 
 - `docs/contracts/candidate-and-attachment-policy-v1.md`: reuse policy structure; FR-4 does not decide staging semantics.

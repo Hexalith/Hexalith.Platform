@@ -47,6 +47,8 @@ context:
 
 ## Tasks & Acceptance
 
+**19 November ownership correction.** AD-8 assigns Dapr Components to the environment identity. For this story, qualify zero Components in every application render and all required graph-derived Components in the environment output. Exercise install, upgrade, recovery, remove-workloads and uninstall with the intended identities. Preserve the baseline/candidate union and verify that the same environment-owned objects survive. Historical runs below identify their own inputs. Helm 4.2.0 rendered zero application Components in all three modes and eight environment Components. The live run stopped at the missing kind executable. The amended criterion remains open for isolated-cluster proof. [November 19 ownership renders](evidence/4-5/component-ownership-20261119/render-check.json) Stories 4.12 and 4.13 supply publication and off-site retrieval evidence. [Approved V1 and V7](../planning-artifacts/sprint-change-proposal-2026-11-19-architecture-validation.md) · [Qualification procedure](../../eng/helm-qualification/README.md)
+
 **Execution:**
 - [x] `src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs`, `PlatformServerBindings.cs`, `PlatformDaprBindings.cs` — expose shared neutral workload/Dapr metadata; local binding consumes the same graph without behavior changes.
 - [x] `src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs`, `Hexalith.Platform.Composition.csproj`, `apphost.cs` — add hosted selection and a native publishing probe using catalog-pinned APIs; avoid local secret/provider setup. Record the export decision and trigger evidence in `eng/helm-qualification/README.md`.

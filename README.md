@@ -379,14 +379,15 @@ downstream responsibilities.
 
 ## Staging policies
 
-The canonical [staging evidence policy v1](docs/contracts/staging-evidence-policy-v1.md)
-fixes the 24-hour evidence age, staging triggers, complete latest-attempt reruns,
-critical-flow review and 60-minute reset lifetime. Publication records Platform's
-decisions; Builds and Platform must implement and qualify downstream validators,
-executors and promotion evaluation before accepting staging evidence. Modules,
-Platform and Tenants must record their required flow approvals and reviews, and
-Administrator and EventStore must qualify reset behavior. This policy does not
-establish runtime enforcement or release authorization.
+Platform's staging evidence policy v2 reserves a pending release decision at
+successful production admission and defines the rollback rehearsal for a
+candidate that adds no idempotent command. It inherits v1's 24-hour evidence
+age, complete latest-attempt reruns, critical-flow review and 60-minute reset
+notification. Builds and Platform must adopt the exact policy revision and
+qualify their executors and evaluators before accepting v2 evidence. Each
+result retains the policy version under which it was produced.
+[Staging evidence policy v2](docs/contracts/staging-evidence-policy-v2.md) ·
+[Frozen staging evidence policy v1](docs/contracts/staging-evidence-policy-v1.md)
 
 Platform adopts the Builds-owned
 [image and dependency vulnerability policy v1](docs/contracts/image-and-dependency-vulnerability-policy-v1.md)
