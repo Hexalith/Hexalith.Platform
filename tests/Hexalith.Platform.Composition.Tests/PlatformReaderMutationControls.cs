@@ -1,6 +1,5 @@
 namespace Hexalith.Platform.Composition.Tests;
 
-using System.Runtime.Loader;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -23,7 +22,7 @@ internal static class PlatformReaderMutationControls
         AssertPreparationPolicy(fixture);
         foreach (string fault in new[] { "mapping", "snapshot", "catalog", "missing-snapshot" })
             AssertRunAuthorityRefusal(fixture, catalog, fault);
-        foreach (string fault in new[] { "missing-owner", "foreign-owner", "legacy-cohort", "unknown-cohort", "foreign-body" })
+        foreach (string fault in new[] { "duplicate-owner", "foreign-owner", "missing-lock", "stale-lock", "tampered-lock", "foreign-body" })
             await AssertRequestRefusalAsync(fixture, catalog, fault);
         string project = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
         string assets = Path.Combine(fixture.Reader, "obj", "project.assets.json");
@@ -43,7 +42,7 @@ internal static class PlatformReaderMutationControls
         try { await AssertOrdinarySourceGuardAsync(fixture, catalog); }
         finally { foreach (var input in inputs) File.WriteAllBytes(input.Key, input.Value); }
         fixture.Options.CurrentOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
-        TestContext.Current.TestOutputHelper!.WriteLine("Current reader matrix: complete baseline; transitive pinning preserved; 4 pre-restore authority refusals; 5 request/body refusals; 2 version/assets refusals; 1 source/package duplicate refusal.");
+        TestContext.Current.TestOutputHelper!.WriteLine("Current reader matrix: complete baseline; transitive pinning preserved; 4 pre-restore authority refusals; 6 request/lock/body refusals; 2 version/assets refusals; 1 source/package duplicate refusal.");
     }
 
     private static void AssertPreparationPolicy(PlatformPartiesPackageFixture fixture)
@@ -112,10 +111,20 @@ internal static class PlatformReaderMutationControls
         string output = Path.Combine(fixture.Reader, "output");
         switch (fault)
         {
-            case "missing-owner": request["owners"]!.AsArray().RemoveAt(0); break;
+            case "duplicate-owner": request["owners"]!.AsArray().Add(request["owners"]![0]!.DeepClone()); break;
             case "foreign-owner": request["owners"]![0]!["assembly"] = "Hexalith.Foreign.Contracts"; break;
-            case "legacy-cohort": request["qualificationCohort"] = PublishedCatalogArtifactCohort.Name; break;
-            case "unknown-cohort": request["qualificationCohort"] = "unknown"; break;
+            case "missing-lock": request["ownerPackageLock"] = Path.Combine(fixture.Workspace, "absent-owner-packages.lock.json"); break;
+            case "stale-lock":
+            case "tampered-lock":
+                // A private changed copy of the lock; the committed lock is untouched.
+                JsonNode changedLock = JsonNode.Parse(File.ReadAllBytes(request["ownerPackageLock"]!.GetValue<string>()))!;
+                JsonNode entry = changedLock["packages"]!.AsArray().Single(item => item!["id"]!.GetValue<string>() == "Hexalith.Memories.Contracts")!;
+                if (fault == "stale-lock") entry["version"] = "3.0.26";
+                else entry["contentHash"] = Convert.ToBase64String(new byte[64]);
+                string changedPath = Path.Combine(fixture.Workspace, fault + ".lock.json");
+                File.WriteAllText(changedPath, changedLock.ToJsonString());
+                request["ownerPackageLock"] = changedPath;
+                break;
             case "foreign-body":
                 string copy = Path.Combine(fixture.Workspace, "tampered-reader");
                 foreach (string file in Directory.GetFiles(output, "*", SearchOption.AllDirectories))
@@ -137,7 +146,15 @@ internal static class PlatformReaderMutationControls
         TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
         result.TimedOut.ShouldBeFalse();
-        (result.Output + result.ErrorOutput).ShouldContain(fault == "foreign-body" ? "differs from its verified published bytes" : "not qualified");
+        (result.Output + result.ErrorOutput).ShouldContain(fault switch
+        {
+            "duplicate-owner" => "without duplicate owner or adapter assemblies",
+            "foreign-owner" => "Hexalith.Foreign.Contracts",
+            "missing-lock" => "is missing or unreadable",
+            "stale-lock" => "names Hexalith.Memories.Contracts 3.0.26, but 3.0.27 is selected",
+            "tampered-lock" => "owner package Hexalith.Memories.Contracts 3.0.27 archive has contentHash",
+            _ => "loaded assembly 'Hexalith.Memories.Contracts' differs from its lock-verified package member",
+        });
         Directory.GetFiles(failed).ShouldBeEmpty();
         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
     }
@@ -218,24 +235,31 @@ internal static class PlatformReaderMutationControls
         TestContext.Current.TestOutputHelper!.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
             + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=70 policies=46");
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(fixture.Options.CurrentOwnerProof!.Cohort);
+        request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(fixture.Options.CurrentOwnerProof!.OwnerPackages.Path);
         request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
         SourceMapping.LoadVerified(Path.Combine(fixture.Workspace, "source-mapping", "mapping.json"), fixture.Options.Mapping.ContentHash).ContentHash.ShouldBe(fixture.Options.Mapping.ContentHash);
         using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
         receipt.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
-        var context = new AssemblyLoadContext("full-reader-public-bodies-" + Guid.NewGuid().ToString("N"), isCollectible: true);
-        try
+        // AR-12: every public reference body is recorded against its lock-verified archive member; run-built Parties bodies keep run-bound authority.
+        var evidence = fixture.Options.CurrentOwnerProof!.OwnerPackages.VerifyReceipt(receipt.RootElement, PlatformCurrentOwnerProof.RunBuiltBodies)
+            .ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        foreach (string name in _publicNames)
         {
-            foreach (string name in _publicNames)
+            string body = Path.Combine(fixture.Reader, "output", name + ".dll");
+            string digest = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body)));
+            if (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal))
             {
-                string body = Path.Combine(fixture.Reader, "output", name + ".dll");
-                if (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal))
-                    Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))).ShouldBe(fixture.Options.CurrentOwnerProof!.Bodies[name]);
-                else PublishedCatalogArtifactCohort.Verify(context.LoadFromAssemblyPath(body), fixture.Options.CurrentOwnerProof!.Cohort).ShouldBe(body);
-                TestContext.Current.TestOutputHelper!.WriteLine(name + " sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(body))));
+                digest.ShouldBe(fixture.Options.CurrentOwnerProof!.Bodies[name]);
+                evidence.ShouldNotContainKey(name);
             }
+            else
+            {
+                evidence[name].LoadedPath.ShouldBe(body);
+                evidence[name].ExpectedSha256.ShouldBe(digest);
+                evidence[name].LoadedSha256.ShouldBe(digest);
+            }
+            TestContext.Current.TestOutputHelper!.WriteLine(name + " sha256=" + digest);
         }
-        finally { context.Unload(); }
         JsonNode assets = JsonNode.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "obj", "project.assets.json")))!;
         foreach (string name in _publicNames)
         {

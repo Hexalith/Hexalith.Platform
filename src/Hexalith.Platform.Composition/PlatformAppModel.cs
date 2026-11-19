@@ -310,12 +310,7 @@ public static class PlatformAppModel
                     // The signed package payload can be extracted without an executable mode.
                     // Let dotnet run host the managed EventStore payload in the private build directory.
                     if (server.ResourceId == "eventstore" && options.Mapping.Mode == WorkspaceMode.Package && projectPath == options.EventStoreSeedProject)
-                    {
                         project.WithArgs("-p:UseAppHost=false");
-                        if (catalog?.EventStoreSeedPayload is { } payload)
-                            project.WithArgs("-p:PackagedHostDirectory=" + Path.TrimEndingDirectorySeparator(payload) + Path.DirectorySeparatorChar)
-                                .WithEnvironment("DOTNET_ROLL_FORWARD", "LatestPatch");
-                    }
                     if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
                     if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)

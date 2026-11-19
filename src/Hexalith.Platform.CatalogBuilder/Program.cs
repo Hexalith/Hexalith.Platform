@@ -17,25 +17,46 @@ if (!input.TryGetProperty("gatewayAppId", out var gateway) || gateway.ValueKind 
 string gatewayAppId = gateway.GetString()!;
 #if !HEXALITH_SCOPED_CONSUMER_BINDING
 if (gatewayAppId != "eventstore")
-    throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK 3.130.0, 3.130.1, 3.130.2, exact 3.132.1 or exact 3.133.0.");
+    throw new InvalidDataException("This SDK can bind only an explicitly requested gatewayAppId of eventstore; scoped consumers require a qualified SDK inside the scoped-consumer binding range.");
 #endif
-List<string> qualifiedArtifacts = [];
-bool qualified = input.TryGetProperty("qualificationCohort", out var cohort) && cohort.ValueKind != JsonValueKind.Null;
-string? qualificationName = qualified && cohort.ValueKind == JsonValueKind.String ? cohort.GetString() : null;
-if (qualified)
+var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
+if (requestedOwners.Length == 0
+    || requestedOwners.Select(owner => owner.GetProperty("assembly").GetString()).Distinct(StringComparer.Ordinal).Count() != requestedOwners.Length
+    || requestedOwners.Select(owner => owner.GetProperty("adapterAssembly").GetString()).Distinct(StringComparer.Ordinal).Count() != requestedOwners.Length)
+    throw new InvalidDataException("The routing catalog requires a nonempty owner set without duplicate owner or adapter assemblies.");
+// Package mode names the generated owner package lock; every owner package the reader loads must match it (AR-12).
+bool verified = input.TryGetProperty("ownerPackageLock", out var lockPath) && lockPath.ValueKind != JsonValueKind.Null;
+OwnerPackageLock? ownerLock = verified ? OwnerPackageLock.Load(lockPath.GetString() ?? throw new InvalidDataException("The owner package lock path is invalid.")) : null;
+// Run-built Parties bodies keep their run-bound authority; they are measured by the current-owner proof, never locked.
+var runBound = input.TryGetProperty("currentOwnerArtifacts", out var measured) && measured.ValueKind == JsonValueKind.Object
+    ? measured.EnumerateObject().ToDictionary(pair => pair.Name, pair => pair.Value.GetString(), StringComparer.Ordinal)
+    : new Dictionary<string, string?>(StringComparer.Ordinal);
+if (runBound.Count > 0 && (!verified || runBound.Keys.Any(name => !name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal))))
+    throw new InvalidDataException("Only package-mode Parties bodies can keep run-bound reader authority.");
+Dictionary<string, OwnerPackageIdentity> ownerPackages = new(StringComparer.Ordinal);
+if (ownerLock is not null)
 {
-    var requestedOwners = input.GetProperty("owners").EnumerateArray().ToArray();
-    string[] expected = qualificationName switch
+    string[] packageFolders = input.GetProperty("packageFolders").EnumerateArray().Select(folder => folder.GetString()
+        ?? throw new InvalidDataException("The reader package folders are invalid.")).ToArray();
+    if (packageFolders.Length == 0) throw new InvalidDataException("The reader package folders are absent.");
+    using var graph = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, typeof(OwnerPackageLock).Assembly.GetName().Name + ".deps.json")));
+    // Check every owner package in the reader closure before any owner attribute or factory is read.
+    foreach (var identity in ownerLock.VerifyDirectory(graph.RootElement, packageFolders, AppContext.BaseDirectory, runBound.Keys.ToHashSet(StringComparer.Ordinal)))
+        ownerPackages.Add(identity.Assembly, identity);
+    if (ownerPackages.Count == 0) throw new InvalidDataException("The package reader loaded no lock-verified owner package.");
+}
+void RequireAdmitted(Assembly artifact)
+{
+    string name = artifact.GetName().Name!;
+    if (runBound.TryGetValue(name, out string? expected))
     {
-        PublishedCatalogArtifactCohort.Name or PublishedCatalogArtifactCohort.CurrentName or PublishedCatalogArtifactCohort.EventStorePackageTestName or PublishedCatalogArtifactCohort.EventStorePackageTestSdk420Name or PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName => ["Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
-        PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name or PublishedCatalogArtifactCohort.CurrentOwnerName or PublishedCatalogArtifactCohort.CurrentOwnerSdk420Name or PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name => ["Hexalith.Memories.EventStore/Hexalith.Memories.EventStoreExtensions", "Hexalith.Parties.Contracts/Hexalith.Parties.EventStoreExtensions", "Hexalith.Tenants.Contracts/Hexalith.Tenants.Server"],
-        _ => throw new InvalidDataException("The requested package catalog cohort is not qualified."),
-    };
-    if (!requestedOwners.Select(owner => owner.GetProperty("assembly").GetString() + "/" + owner.GetProperty("adapterAssembly").GetString())
-        .Order(StringComparer.Ordinal).SequenceEqual(expected, StringComparer.Ordinal))
-        throw new InvalidDataException("The requested package catalog cohort or compiled owner set is not qualified.");
-    qualifiedArtifacts.AddRange(PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(qualificationName) ? PublishedCatalogArtifactCohort.VerifyCurrentReferences(qualificationName!) : qualificationName is PublishedCatalogArtifactCohort.FullPartiesName or PublishedCatalogArtifactCohort.CurrentFullPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesName or PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name or PublishedCatalogArtifactCohort.PublishedPartiesCurrentName or PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name
-        ? PublishedCatalogArtifactCohort.VerifyFullParties(qualificationName) : PublishedCatalogArtifactCohort.VerifySdk(qualificationName!));
+        if (expected != Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(artifact.Location))))
+            throw new InvalidDataException($"The private reader loaded different measured bytes for '{name}'.");
+        return;
+    }
+    if (!ownerPackages.TryGetValue(name, out var identity) || identity.LoadedPath != artifact.Location
+        || Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(artifact.Location))) != identity.ExpectedSha256)
+        throw new InvalidDataException($"The loaded assembly '{name}' differs from its lock-verified package member.");
 }
 List<RouteContractDeclaration> declarations = [];
 List<RouteOperationContract> operations = [];
@@ -49,21 +70,9 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
     owners.Add(assembly.Location);
     var adapterAssembly = Assembly.Load(new AssemblyName(owner.GetProperty("adapterAssembly").GetString()!));
     adapters.Add(adapterAssembly.Location);
-    if (qualified)
+    if (verified)
     {
-        foreach (Assembly artifact in new[] { assembly, adapterAssembly })
-        {
-            if (PublishedCatalogArtifactCohort.IsCurrentOwnerCohort(qualificationName) && artifact.GetName().Name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions")
-            {
-                var measured = input.GetProperty("currentOwnerArtifacts");
-                if (measured.EnumerateObject().Count() != 2
-                    || !measured.TryGetProperty(artifact.GetName().Name!, out var expected)
-                    || expected.GetString() != Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(artifact.Location))))
-                    throw new InvalidDataException($"The private reader loaded different measured bytes for '{artifact.GetName().Name}'.");
-                qualifiedArtifacts.Add(artifact.Location);
-            }
-            else qualifiedArtifacts.Add(PublishedCatalogArtifactCohort.Verify(artifact, qualificationName!));
-        }
+        foreach (Assembly artifact in new[] { assembly, adapterAssembly }) RequireAdmitted(artifact);
     }
     var routes = CompiledRouteCatalogDeclarations.Read([assembly]);
     declarations.AddRange(routes);
@@ -135,6 +144,13 @@ foreach (var owner in input.GetProperty("owners").EnumerateArray())
             throw new InvalidDataException("The selected owner adapter differs from its declared route or semantic policy.");
     }
 }
+var loadedOwnerArtifacts = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => !assembly.IsDynamic && assembly.Location.Length > 0
+    && Path.GetDirectoryName(assembly.Location) == Path.GetDirectoryName(typeof(RouteCatalogCodec).Assembly.Location)).ToArray();
+if (verified)
+{
+    // A substituted DLL refuses even after a successful load, naming the assembly.
+    foreach (Assembly artifact in loadedOwnerArtifacts.Where(artifact => OwnerPackageLock.IsOwnerPackage(artifact.GetName().Name))) RequireAdmitted(artifact);
+}
 byte[]? predecessor = input.TryGetProperty("committedPredecessor", out var previous) && previous.ValueKind == JsonValueKind.String
     ? File.ReadAllBytes(previous.GetString()!) : null;
 string? predecessorRoot = input.TryGetProperty("committedPredecessorRootDigest", out var previousRoot) && previousRoot.ValueKind == JsonValueKind.String
@@ -149,13 +165,20 @@ File.WriteAllBytes(Path.Combine(directory, "receipt.json"), JsonSerializer.Seria
     sourceMappingHash = input.TryGetProperty("sourceMappingHash", out var sourceMappingHash) ? sourceMappingHash.GetString() : null,
     mode = input.TryGetProperty("mode", out var mode) ? mode.GetString() : null,
     // This records actual reader-output dependencies, not an installed execution image measurement.
-    loadedArtifacts = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => !assembly.IsDynamic && assembly.Location.Length > 0
-        && Path.GetDirectoryName(assembly.Location) == Path.GetDirectoryName(typeof(RouteCatalogCodec).Assembly.Location))
-        .Select(assembly => assembly.Location).Concat(owners).Concat(adapters).Concat(qualifiedArtifacts).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(path => new
+    loadedArtifacts = loadedOwnerArtifacts
+        .Select(assembly => assembly.Location).Concat(owners).Concat(adapters).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(path => new
     {
         path, sha256 = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path))),
         assemblyIdentity = AssemblyName.GetAssemblyName(path).FullName,
         informationalVersion = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => !assembly.IsDynamic && assembly.Location == path)
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
+    }).ToArray(),
+    // AR-12: the lock entry, the expected identity from the lock-verified archive member and the loaded identity.
+    ownerPackageLock = ownerLock is null ? null : new { path = ownerLock.Path, sha256 = ownerLock.Sha256 },
+    ownerPackages = ownerPackages.Values.OrderBy(identity => identity.Assembly, StringComparer.Ordinal).Select(identity => new
+    {
+        assembly = identity.Assembly, packageId = identity.PackageId, version = identity.Version, contentHash = identity.ContentHash,
+        archive = identity.Archive, archiveMember = identity.ArchiveMember, expectedSha256 = identity.ExpectedSha256,
+        loadedPath = identity.LoadedPath, loadedSha256 = identity.LoadedSha256,
     }).ToArray(),
 }));

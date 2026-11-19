@@ -60,13 +60,16 @@ To adopt a release:
 3. Run `python3 eng/builds_tool_lock.py`. It downloads the package, runs
    `dotnet nuget verify --all`, compares its SHA-512 `contentHash` with the
    nuget.org `packageHash` and only then rewrites the lock.
-4. Commit the bump (pins, gitlink and lock) before running the local checks.
+4. Commit the bump (pins, gitlink and tool lock) before running the local checks.
    They read the committed gitlink from `HEAD`, and CI checks the committed tree.
+5. Then run `python3 eng/owner_packages_lock.py` and commit the regenerated owner
+   package lock. A new catalog can select other owner versions, and the generator
+   reads the Builds and Parties gitlinks from `HEAD` (see below).
 
 The range admits later versions of the pinned major, prereleases included, and
 refuses earlier versions, the next major and its prereleases.
 
-The diff is the pins, the gitlink and the lock. `resolve-sources` refuses a tag
+The diffs are the pins, the gitlink and the two locks. `resolve-sources` refuses a tag
 whose commit differs from the gitlink. Preparation also refuses changed tool
 bytes, a missing or stale lock entry, a release whose `hexalith-release:` marker
 differs from the gitlink, and an executable `--version` other than
@@ -76,6 +79,47 @@ admits the validation AppHost/Tooling pair only when both report the same
 as the AR-12 expected identity and compares it with the built Tooling and
 EventStore host outputs. Release, run and artifact IDs are evidence only. A new
 major generation or a behavior-changing release may still need code.
+
+## Adopting an owner release
+
+Composition admits the owner packages (EventStore, Tenants, Memories, Parties and
+McpCli) through the generated `eng/owner-packages.lock.json`. Each entry is
+`{id, version, contentHash}`, where `contentHash` is the base64 SHA-512 of the exact
+`.nupkg` bytes and equals the nuget.org `packageHash`. No owner hash, revision or
+release version is compiled into `src/`. An owner release reaches Platform through
+the Builds catalog, so adopting one is a version bump plus a regenerated lock:
+
+1. Adopt the Builds release whose catalog selects the owner version, as above, and
+   commit its pins, gitlink and tool lock (or commit the Parties gitlink move).
+2. Run `python3 eng/owner_packages_lock.py`. It reads the Builds and Parties gitlinks
+   from `HEAD`, so run it only after that commit. It restores the owner references
+   of Platform's package-mode surfaces (Composition, the routing catalog reader, the
+   EventStore host and the `platform-package` Parties Release build) against the
+   catalog read from the Builds gitlink, under each surface's own project name. The
+   Parties references are read from its project closure at the recorded Parties
+   gitlink, so a Parties repin also regenerates the lock. Running it before committing
+   a moved gitlink refuses or locks the previous catalog. For every owner package in
+   that restored closure it runs `dotnet nuget verify --all` and compares the archive
+   hash with the nuget.org `packageHash`. It rewrites the lock only when every
+   package passes.
+3. Commit the regenerated lock as the next commit. CI runs
+   `python3 eng/owner_packages_lock.py --check`, which regenerates the lock in memory
+   and refuses a committed lock that differs.
+
+Composition then applies one rule before any run effect. Every declared owner's
+contract and adapter packages must be locked, and every locked package of that
+owner's family must name exactly the catalog-selected version. A missing entry or
+another version refuses, naming the package and version. Composition checks each
+owner assembly it loads, and the routing catalog reader checks its whole owner
+closure. Each check maps the assembly to its package through `deps.json` or
+`project.assets.json`, verifies the SHA-512 of the `.nupkg` in the package folder
+actually used, and compares the SHA-256 of the archive's `lib/<tfm>/<name>.dll`
+member with the loaded DLL. A different archive or DLL refuses, naming the package
+or assembly. The reader receipt records the lock entry, the expected member
+SHA-256 and the loaded SHA-256 of every owner body (AR-12). Run-built Parties bodies
+of the `platform-package` profile keep their run-bound authority and are not locked.
+The compile-time SDK constants in the project files are version-range rules, so a
+later release needs no project edit.
 
 ## Historical preparation observations
 

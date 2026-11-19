@@ -61,7 +61,7 @@ public sealed class PlatformCurrentOwnerPackageTests
         proof.VerifyReader(receipt.RootElement);
         proof.Matches(options).ShouldBeTrue("Legitimate reader evaluation must not invalidate or repair the captured snapshot.");
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(proof.Cohort);
+        request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(proof.OwnerPackages.Path);
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
         {
             string body = Path.Combine(fixture.Reader, "output", name + ".dll");

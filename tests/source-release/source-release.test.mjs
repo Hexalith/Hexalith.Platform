@@ -57,10 +57,8 @@ test('the exact SDK 4.2 job is required alongside every historical catalog row',
   assert.deepEqual(workflows[1].jobs, sdks.map(sdk => `consumer-binding (${sdk})`));
   const qualification = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_catalog_builder.py'));
   assert.ok(qualification.run.includes("matrix.sdk == '4.2.0' && '7.0.5'"));
-  const historical = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_public_owner_cohorts.py'));
-  assert.equal(historical.if, "matrix.sdk == '4.1.0'");
-  const sdk420 = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_sdk420_public_parties.py'));
-  assert.equal(sdk420.if, "matrix.sdk == '4.2.0'");
+  const lockReader = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_owner_package_lock_reader.py'));
+  assert.equal(lockReader.if, "matrix.sdk == '4.2.0'");
   for (const replacement of [null, 'consumer-binding (4.2.0-preview.1)', 'consumer-binding (4.2.0+metadata)', 'consumer-binding (4.2.0.0)', 'consumer-binding (4.2.1)']) {
     const f = fixture();
     const index = f.state.jobs[1].findIndex(job => job.name === 'consumer-binding (4.2.0)');

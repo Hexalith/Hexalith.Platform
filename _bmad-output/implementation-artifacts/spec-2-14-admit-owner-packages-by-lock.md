@@ -2,9 +2,10 @@
 title: '2.14 Admit owner packages by lock file'
 type: 'refactor'
 created: '2026-11-19'
-status: 'ready-for-dev'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
+baseline_commit: 'f3f96b2ed5ee877597de66ce10bf11a4843629b7'
 story_key: '2-14-pin-builds-and-owner-modules-by-released-version'
 context: []
 ---
@@ -87,12 +88,12 @@ Aliases: C = `src/Hexalith.Platform.Composition`, B = `src/Hexalith.Platform.Cat
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `eng/owner_packages_lock.py`, `eng/owner-packages.lock.json`, `eng/test_owner_packages_lock.py`, `.github/workflows/tuple-ci.yml` -- generate `{id, version, contentHash}` for every owner package that the pinned catalog selects for Platform's package-mode surfaces, and check it in CI -- this is the single integrity source.
-- [ ] `B/PublishedCatalogArtifactCohort.cs` → a lock verifier (same link and copy) -- check the archive against `contentHash`, derive member sha256 and compare it with the loaded DLL -- this replaces the tables.
-- [ ] `C/PlatformPackageCatalogQualification.cs`, `C/PlatformRoutingCatalog.cs`, `B/Program.cs`, `C/PlatformCurrentOwnerProof.cs`, `C/PlatformCurrentOwnerObservation.cs`, `C/PlatformPublishedEventStoreSeed.cs` -- verify through the lock and take owner sets from the declared graph. Send the lock path instead of a cohort, record the AR-12 expected/loaded pairs, and retire the net10 seed path -- this removes the version tuples.
-- [ ] The three project files -- replace exact-version lists with range rules -- adopting a new release then needs no project edit.
-- [ ] T, `tests/catalog-builder/`, `docs/implementation/current-package-cohort-*.json` -- cover the matrix, including the real Tenants 8.0.1 / EventStore 5.2.0 row. Keep the substitution cases and delete the cohort-only tests and docs.
-- [ ] `eng/tuple-source-preparation.md`, `README.md`, `docs/package-catalog-qualification.md` -- add lock regeneration to the adoption procedure.
+- [x] `eng/owner_packages_lock.py`, `eng/owner-packages.lock.json`, `eng/test_owner_packages_lock.py`, `.github/workflows/tuple-ci.yml` -- generate `{id, version, contentHash}` for every owner package that the pinned catalog selects for Platform's package-mode surfaces, and check it in CI -- this is the single integrity source.
+- [x] `B/PublishedCatalogArtifactCohort.cs` → a lock verifier (same link and copy) -- check the archive against `contentHash`, derive member sha256 and compare it with the loaded DLL -- this replaces the tables.
+- [x] `C/PlatformPackageCatalogQualification.cs`, `C/PlatformRoutingCatalog.cs`, `B/Program.cs`, `C/PlatformCurrentOwnerProof.cs`, `C/PlatformCurrentOwnerObservation.cs`, `C/PlatformPublishedEventStoreSeed.cs` -- verify through the lock and take owner sets from the declared graph. Send the lock path instead of a cohort, record the AR-12 expected/loaded pairs, and retire the net10 seed path -- this removes the version tuples.
+- [x] The three project files -- replace exact-version lists with range rules -- adopting a new release then needs no project edit.
+- [x] T, `tests/catalog-builder/`, `docs/implementation/current-package-cohort-*.json` -- cover the matrix, including the real Tenants 8.0.1 / EventStore 5.2.0 row. Keep the substitution cases and delete the cohort-only tests and docs.
+- [x] `eng/tuple-source-preparation.md`, `README.md`, `docs/package-catalog-qualification.md` -- add lock regeneration to the adoption procedure.
 
 **Acceptance Criteria:**
 - Given `src/` and the project files, when scanned for owner hash, revision and version literals used in package admission, then none remain (the Never exclusions apply).
@@ -115,3 +116,37 @@ To find the expected identity of an assembly:
 - `python3 -m unittest eng/test_owner_packages_lock.py eng/test_builds_tool_lock.py` -- expected: pass.
 - `dotnet exec tests/Hexalith.Platform.Composition.Tests/bin/Release/net11.0/Hexalith.Platform.Composition.Tests.dll -class '*Lock*'` -- expected: the matrix rows pass with zero skips.
 - `python3 eng/run_tuple_ci.py` for the base42, current42 and extensions suites, with `NO_COLOR=1 TERM=dumb` -- expected: positive counts and zero skips.
+
+## Review Triage Log
+
+Iteration 1 (2026-11-19). Layers: blind (B), edge-case (E), verification-gap (V; gaps pre-verified).
+
+| Entry | Findings | Verdict | Route | Evidence |
+|---|---|---|---|---|
+| P1 | B1, E13 | high | patch | `tests/source-release/source-release.test.mjs:60-63` still finds the deleted `verify_public_owner_cohorts.py`/`verify_sdk420_public_parties.py` steps, so `historical.if` throws and `npm run test:source-release` fails in tuple CI. |
+| P2 | B9, E6 | high | patch | `sdkBodies` became name→object over every mapped owner body; Parties `scripts/runtime_observation_contract.py:323` requires `sdkBodies == SDK` (the four name→hex bodies). |
+| P3 | B12, E2, E16, V-other-1 | medium | patch | `OwnerPackageLock.VerifyReceipt` never reopens `archive`/`archiveMember` or checks the loaded file's assembly name, and `VerifyReader` no longer requires every `ObservedSdk` record, so a self-consistent forged or partial receipt passes. |
+| P4 | B3, E17, V-other-2 | medium | patch | `VerifyPackageBytes` checks a fixed name list; `Hexalith.EventStore.Aspire` and `Admin.Abstractions`, loaded by Composition, are never checked, contrary to the intent and the three docs. All owner packages in the test host graph are locked. |
+| P5 | B2 | medium | patch | `owner_packages_lock.py` reads both gitlinks from `HEAD` (`recorded_gitlink`, `git ls-tree HEAD`), so the documented "regenerate, then commit" order refuses or locks the old catalog. |
+| P6 | V1, B8, E19 | medium | patch | No test admits a 5.2.0/8.0.1 catalog through `RequireLockedVersions`; a reintroduced version tuple in `RequireLockedPackages` would pass every test. |
+| P7 | V2 | medium | patch | No test reaches `Bind`'s `VerifyPackageBytes` refusal; deleting that call passes every test. |
+| P8 | V3 | medium | patch | `ReadMappedOwnerPackages` refusals (digest mismatch, missing `ObservedSdk` mapping) are untested. |
+| P9 | V4 | medium | patch | The non-integration Parties branch of `RequireLockedPackages`/`VerifyPackageBytes` is never exercised; inverting its predicate passes every test. |
+| P10 | B5 | medium | patch | `SURFACES` restates the project files' owner references with no check; a new reference leaves the lock incomplete and "regenerate the lock" cannot fix it. |
+| P11 | B11 | medium | patch | `ReleasedDeclarationPreservesTheOrdinarySourceAndPurposeBoundary` (attempt replay, appended declaration) was not cohort-only but was deleted with both cohort files; `publishedDeclaration: true` is now dead. |
+| P12 | E5, B15 | low | patch | `PlatformCurrentOwnerProof` seals `Hash(owners.Path)` instead of the admitted `owners.Sha256`. |
+| P13 | E1 | low | patch | `ReaderPackageFolders(build)` runs after `catalog-pending` is created and outside the `try`, so a failure leaks the directory. |
+| P14 | E10 | low | patch | `owner_packages_lock.py` main catches only `ValueError`; OSError/subprocess failures print raw tracebacks. |
+| P15 | E11 | low | patch | `require_current` names no package when only the entry order differs. |
+| R1 | B4 | low | reject | The EventStore host was never runtime-checked (pre-existing); the docs claim only that its packages are locked; a host check is a new path. |
+| R2 | B5 (net11 restore) | low | reject | `--check` reproduces the lock for the current Parties Release closure. |
+| R3 | B6, E8 | low | reject | Every catalog-builder matrix SDK (3.130.0-2, 3.132.1, 4.1.0, 4.2.0) keeps its constants; the spec licenses range rules; prerelease selection is not a catalog input. |
+| R4 | B7 | false | reject | The spec derives the reader owner set from the request, which Composition writes from `PlatformCatalogContractBinding.Resolve`. |
+| R5 | E15 | low | reject | Composition writes exactly the two run-bound keys; an absent key makes that body lock-verified and fail closed. |
+| R6 | B10, E12 | low | reject | The weak refusal asserts sit on branches that Linux x64 CI does not take; the refusal message varies with the platform guard. The duplicated helper is cosmetic. |
+| R7 | B11 (older genuine body) | low | reject | `verify_owner_package_lock_reader.py` `older-genuine-tenants-body` covers it in catalog-builder CI. |
+| R8 | B13 | false | reject | The embedded `$(NuGetPackageRoot)` is NuGet's resolved global packages folder (it honours nuget.config and `RestorePackagesPath`). |
+| R9 | B14 | low | reject | Every caller passes a single-target deps.json. |
+| R10 | B15 (copies, prefixes) | low | reject | No divergence today; no named caller breaks. |
+| R11 | E3, E4, E7, E9, E14 | low | reject | Generated deps.json files, ids from the same restore graph, five owner families only, clean CI checkouts with fail-closed refusals, and `VerifyDirectory` checking every reader owner DLL before load. |
+| R12 | E18 | low | reject | The reader receipt and the current-owner proof carry the AR-12 records; a Composition record sink would be new surface. |

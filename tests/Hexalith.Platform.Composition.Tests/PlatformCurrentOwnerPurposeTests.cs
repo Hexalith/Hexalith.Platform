@@ -77,27 +77,53 @@ public sealed class PlatformCurrentOwnerPurposeTests
         PlatformCompositionOptions options = Current(fixture);
         Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerProof.Create(options, fixture.Key, developmentRun: true));
         Directory.Exists(Path.Combine(options.RunPlan!.Workspace, "current-owner")).ShouldBeFalse();
-        // Component-only version selection: these local catalog bytes grant no artifact or runtime authority.
+        // Component-only version admission: these local catalog bytes grant no artifact or runtime authority.
         string catalogRoot = Path.Combine(fixture.Root, "version-selection");
         string catalog = Path.Combine(catalogRoot, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
         Directory.CreateDirectory(Path.GetDirectoryName(catalog)!);
         PlatformCompositionOptions selection = options with { PlatformRoot = catalogRoot, RunPlan = null };
-        const string Prefix = "<Project><PropertyGroup><HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion><HexalithTenantsVersion>7.0.5</HexalithTenantsVersion><HexalithMemoriesVersion>";
-        const string Suffix = "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"2.0.1\" /></ItemGroup></Project>";
-        File.WriteAllText(catalog, Prefix + "3.0.25" + Suffix);
-        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBe(Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentOwnerName);
-        foreach (string refused in new[] { "3.0.23", "3.0.24", "3.0.250", "3.0.25+unqualified", "3.0.26" })
+        var owners = PlatformPartiesPackageFixture.Lock;
+        string Locked(string id) => owners.Entries.Single(entry => entry.Id == id).Version;
+        string sdk = Locked("Hexalith.EventStore.Contracts"), tenants = Locked("Hexalith.Tenants.Contracts"), memories = Locked("Hexalith.Memories.Contracts");
+        string Catalog(string eventStore, string tenant, string memory) => "<Project><PropertyGroup><HexalithEventStoreVersion>" + eventStore + "</HexalithEventStoreVersion><HexalithTenantsVersion>"
+            + tenant + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memory + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\""
+            + Locked("Hexalith.McpCli.Abstractions") + "\" /></ItemGroup></Project>";
+        void Admit() => PlatformPackageCatalogQualification.RequireLockedVersions(owners, selection, ["eventstore", "tenants", "memories"]);
+        File.WriteAllText(catalog, Catalog(sdk, tenants, memories));
+        Admit();
+        PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, selection, required: true);
+        foreach (string refused in new[] { "3.0.23", "3.0.25", "3.0.270", memories + "+unqualified", "3.0.28" })
         {
-            File.WriteAllText(catalog, Prefix + refused + Suffix);
-            PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
+            File.WriteAllText(catalog, Catalog(sdk, tenants, refused));
+            Should.Throw<InvalidDataException>(Admit).Message.ShouldContain("but " + refused + " is selected");
         }
-        foreach (string refused in new[] { "7.0.0", "7.0.2", "7.0.4", "7.0.50", "7.0.5+unqualified", "7.0.6" })
+        foreach (string refused in new[] { "7.0.0", "7.0.5", "7.0.70", tenants + "+unqualified", "8.0.1" })
         {
-            File.WriteAllText(catalog, Prefix.Replace("7.0.5", refused, StringComparison.Ordinal) + "3.0.25" + Suffix);
-            PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
+            File.WriteAllText(catalog, Catalog(sdk, refused, memories));
+            Should.Throw<InvalidDataException>(Admit).Message.ShouldContain("but " + refused + " is selected");
         }
-        File.WriteAllText(catalog, Prefix.Replace("4.1.0", "4.0.4", StringComparison.Ordinal) + "3.0.25" + Suffix);
-        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(selection).ShouldBeNull();
+        File.WriteAllText(catalog, Catalog("4.1.0", tenants, memories));
+        Should.Throw<InvalidDataException>(Admit).Message.ShouldContain("but 4.1.0 is selected");
+        // A later owner release is admitted by the same rule once its lock entries exist; the committed lock refuses it.
+        // These genuine nuget.org packageHash values are test inputs only and never enter the committed lock.
+        var release = Hexalith.Platform.CatalogArtifacts.OwnerPackageLock.Parse(System.Text.Encoding.UTF8.GetBytes("""
+            {"schemaVersion": 1, "packages": [
+              {"id": "Hexalith.EventStore.Client", "version": "5.2.0", "contentHash": "/75VQNzzvd09DkbD6jlLzBCpLB4o/N9u+b4DTRi2NcPjNGvQXCWYXpi+QLL8JjP+g4D0HAiFcdSeaKfd/uYfpw=="},
+              {"id": "Hexalith.EventStore.Contracts", "version": "5.2.0", "contentHash": "Ziuou6o21o7ppvdSY/2qAffVOLEcg4Ew1QgjE8BfOvK4smPzVPKReWTAwv8QhLm5624x6wwT+IoDBdLcrU3SCg=="},
+              {"id": "Hexalith.EventStore.DomainService", "version": "5.2.0", "contentHash": "2gFWTXZshn2+cSEBXrPMcPgtapiorWfglQg8GG+RdX8nPRWrF67IDi5057JInnrP46vlakUuceTOIv1ZxpzJog=="},
+              {"id": "Hexalith.EventStore.ServiceDefaults", "version": "5.2.0", "contentHash": "ZEOSUfrh+7iOOj1Qprzfio60vKA6QyZI/b+bw9FdJk06+CnpoZSDtmPK36JwjjQVbHrJnWQ4hN7GusjwPWWUIw=="},
+              {"id": "Hexalith.Tenants.Contracts", "version": "8.0.1", "contentHash": "Y/CEYTJxwG5wI4P0VfDHi3ecMDunkDCj+840biy5ujuZBu1FoK9hLXxrz+hEO2bD0xv3aA/zZGZWS2tDnNWRZg=="},
+              {"id": "Hexalith.Tenants.Server", "version": "8.0.1", "contentHash": "x1umR5hN7sQ+Xcv9N9a/vAsdF7BPW0qHaoTKxwet/c7Q+fhgxl9e/NRKZWrGdl/l1PSwl2MiLRbeDNBUaaCinQ=="}]}
+            """), "new-release.lock.json");
+        string[] releaseIds = [.. PlatformPackageCatalogQualification.LoadedPackages("eventstore"), .. PlatformPackageCatalogQualification.LoadedPackages("tenants")];
+        releaseIds.ShouldAllBe(id => release.Entries.Any(entry => entry.Id == id));
+        File.WriteAllText(catalog, Catalog("5.2.0", "8.0.1", memories));
+        PlatformPackageCatalogQualification.RequireLockedVersions(release, selection, ["eventstore", "tenants"]);
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedVersions(owners, selection, ["eventstore", "tenants"]))
+            .Message.ShouldContain("but 5.2.0 is selected");
+        File.WriteAllText(catalog, Catalog(sdk, tenants, memories));
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedVersions(release, selection, ["eventstore", "tenants"]))
+            .Message.ShouldContain("but " + sdk + " is selected");
         Directory.Exists(Path.Combine(options.RunPlan.Workspace, "current-owner")).ShouldBeFalse();
     }
 

@@ -124,6 +124,12 @@ jobs:
         with:
           global-json-file: global.json
           dotnet-version: '10.0.x'
+      - name: Require the owner package lock to equal the pinned catalog and nuget.org
+        # Composition admits owner packages only through this lock; a stale or tampered lock refuses here.
+        # Both read the initialized Builds catalog and Parties project closure at their recorded gitlinks.
+        run: |
+          python3 -B eng/test_owner_packages_lock.py
+          python3 -B eng/owner_packages_lock.py --check
       - name: Verify published tuple, reject source fallback, build and test Release
         id: preflight
         env:

@@ -15,8 +15,7 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
             string repository = PlatformServerBindings.Repository(module);
             var selected = options.Mapping.Entries.SingleOrDefault(entry => entry.Identity == repository)
                 ?? throw new InvalidDataException($"{module}: mapped Contracts owner is missing.");
-            string contract = repository + (module == "memories" ? ".EventStore" : ".Contracts");
-            string adapter = repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions");
+            (string contract, string adapter) = Packages(module);
             string? version = null;
             bool fromSource = options.Mapping.Mode == WorkspaceMode.Source && selected.Origin == "source";
             string Reference(string assembly)
@@ -33,5 +32,13 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
         }
         if (result.Count == 0) throw new InvalidDataException("The selected closure has no compiled catalog owners.");
         return result;
+    }
+
+    /// <summary>Names the contract and adapter packages the reader loads for one declared owner.</summary>
+    /// <param name="module">The declared owner module.</param>
+    internal static (string Contract, string Adapter) Packages(string module)
+    {
+        string repository = PlatformServerBindings.Repository(module);
+        return (repository + (module == "memories" ? ".EventStore" : ".Contracts"), repository + (module == "tenants" ? ".Server" : ".EventStoreExtensions"));
     }
 }

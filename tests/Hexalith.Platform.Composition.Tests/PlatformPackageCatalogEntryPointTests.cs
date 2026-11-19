@@ -18,14 +18,10 @@ public sealed class PlatformPackageCatalogEntryPointTests
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         var builder = Builder();
         int probes = 0;
-        string cohort = PlatformPartiesPackageFixture.EventStoreTestCohort;
         string version = PlatformServerBindings.Version(fixture.Options, "tenants", "entry test");
         string tag = "registry.hexalith.com/tenants:" + version;
         var image = PlatformPartiesPackageFixture.ImageEvidence(tag, index: true);
-        bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
-            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort)
-            && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", cohort)
-            && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Server", cohort);
+        bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64 && LoadedBodiesMatchTheLock();
         void Compose() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
             ImageProbeRunner = (start, timeout, _) =>
@@ -54,7 +50,7 @@ public sealed class PlatformPackageCatalogEntryPointTests
         }
         else
         {
-            Should.Throw<InvalidDataException>(Compose).Message.ShouldContain("differs from its verified published bytes");
+            Should.Throw<InvalidDataException>(Compose);
             probes.ShouldBe(0);
         }
         builder.Resources.ShouldBeEmpty();
@@ -95,6 +91,20 @@ public sealed class PlatformPackageCatalogEntryPointTests
         probes.ShouldBe(0);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(plan.Workspace).ShouldBeFalse();
+    }
+
+    private static bool LoadedBodiesMatchTheLock()
+    {
+        try
+        {
+            _ = PlatformPartiesPackageFixture.Lock.VerifyLoaded([.. PlatformPackageCatalogQualification.LoadedPackages("eventstore"), "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server"],
+                PlatformPartiesPackageFixture.PackageFolders);
+            return true;
+        }
+        catch (InvalidDataException)
+        {
+            return false;
+        }
     }
 
     private static IDistributedApplicationBuilder Builder() => DistributedApplication.CreateBuilder(new DistributedApplicationOptions

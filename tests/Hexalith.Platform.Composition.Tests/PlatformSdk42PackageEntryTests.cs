@@ -21,10 +21,11 @@ public sealed class PlatformSdk42PackageEntryTests
         snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe("4.2.0");
         snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe("4.2.0");
         PlatformRoutingCatalog catalog = fixture.Generate();
-        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
+        OwnerPackageLock owners = PlatformPackageCatalogQualification.RequireLockedPackages(fixture.Options);
+        owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
         var servers = PlatformAppModel.Prepare(fixture.Options);
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
-        AssertReader(fixture.Reader, PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName, 23, 12, catalog.CatalogPath);
+        AssertReader(fixture.Reader, owners, new HashSet<string>(), 23, 12, catalog);
     }
 
     /// <summary>The existing parent proof builds and seals the real source owner and package-only SDK4.2 references.</summary>
@@ -34,7 +35,8 @@ public sealed class PlatformSdk42PackageEntryTests
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true).ConfigureAwait(true);
         PlatformCompositionOptions options = fixture.CaptureCurrent();
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
-        proof.Cohort.ShouldBe(PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name);
+        proof.OwnerPackages.Path.ShouldBe(OwnerPackageLock.PathFor(options.PlatformRoot));
+        PlatformCurrentOwnerProof.ObservedSdk.ShouldAllBe(name => proof.OwnerBodies.ContainsKey(name));
         proof.Matches(options).ShouldBeTrue();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
@@ -58,18 +60,26 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(fixture.Reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
-        AssertReader(fixture.Reader, proof.Cohort, 70, 46, catalog.CatalogPath);
+        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 70, 46, catalog);
     }
 
-    private static void AssertReader(string reader, string cohort, int routes, int policies, string catalog)
+    private static void AssertReader(string reader, OwnerPackageLock owners, IReadOnlySet<string> runBound, int routes, int policies, PlatformRoutingCatalog catalog)
     {
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(reader, "request.json")));
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(cohort);
-        using JsonDocument content = JsonDocument.Parse(File.ReadAllBytes(catalog));
+        request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(owners.Path);
+        request.RootElement.GetProperty("packageFolders").GetArrayLength().ShouldBeGreaterThan(0);
+        using JsonDocument content = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
         foreach (string key in new[] { "routes", "operations", "declarations" }) content.RootElement.GetProperty(key).GetArrayLength().ShouldBe(routes);
         content.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(policies);
-        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults" })
-            PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(Path.Combine(reader, "output", name + ".dll"), Hash(Path.Combine(reader, "output", name + ".dll")), PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name);
+        using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
+        var evidence = owners.VerifyReceipt(receipt.RootElement, runBound).ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        foreach (string name in PlatformCurrentOwnerProof.ObservedSdk)
+        {
+            string output = Path.Combine(reader, "output", name + ".dll");
+            evidence[name].LoadedPath.ShouldBe(output);
+            evidence[name].ExpectedSha256.ShouldBe(Hash(output));
+        }
+        evidence.Keys.ShouldNotContain("Hexalith.Parties.Contracts", runBound.Count > 0 ? "Run-built Parties bodies keep their run-bound authority." : null);
     }
 
     private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));

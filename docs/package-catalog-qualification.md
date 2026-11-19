@@ -2,7 +2,7 @@
 
 [Current tuple preparation](current-tuple-preparation.md) documents the
 authenticated Platform checkout and Builds pin. The current inventories require
-479 current42, 72 base42, and nine extension cases.
+380 current42, 67 base42, and nine extension cases.
 
 Parties declares one package profile per project. Run the integration suite
 from the verified Platform checkout with the pinned module CLI:
@@ -16,7 +16,39 @@ The runner authenticates the committed owner declaration, actual test entry,
 source mapping, and Builds declaration closure. Platform prepares the mapped
 Parties source in Release using the selected catalog's packages and seals the
 resulting binaries and private reader inputs. The reader verifies the loaded
-published dependencies and measured owner bodies.
+published dependencies against the owner package lock and the measured owner
+bodies against the run-bound Release build.
+
+## Owner package admission
+
+The generated `eng/owner-packages.lock.json` is the single integrity source for
+published owner packages. Each `{id, version, contentHash}` entry names one owner
+package of Platform's package-mode surfaces at the version the pinned catalog
+selects, with the base64 SHA-512 of its exact `.nupkg` bytes. Composition refuses
+before any run effect, naming the package or assembly, when:
+
+- no lock entry exists for a selected package;
+- the lock entry names another version than the catalog selects;
+- the archive in the package folder actually used differs from `contentHash`;
+- a loaded DLL differs from its `lib/<tfm>/<name>.dll` archive member.
+
+The routing catalog reader receives the lock path and its restored package
+folders instead of a cohort name. Its receipt lists, for every owner body it
+loaded, the lock id, version and `contentHash`, the archive member SHA-256 and
+the loaded SHA-256 (AR-12). Composition re-derives each record from its archive
+and member. The `platform-package` current-owner observation keeps `sdkBodies`
+(the four mapped SDK digests) and records the expected/loaded pair of every mapped
+owner body under `ownerPackages`. Run-built
+Parties bodies keep their run-bound authority. To adopt an owner release, commit
+the version bump (pins, gitlink and tool lock) first, then regenerate and commit
+the lock; the generator reads the Builds and Parties gitlinks from `HEAD`:
+
+```bash
+python3 eng/owner_packages_lock.py           # after the committed bump; then commit the lock
+python3 eng/owner_packages_lock.py --check   # CI: refuse a stale or tampered lock
+```
+
+See [adopting an owner release](../eng/tuple-source-preparation.md#adopting-an-owner-release).
 
 Platform resolves each released dependency tag from its catalog-selected
 repository before launch. It gives Aspire the immutable Linux/amd64 manifest

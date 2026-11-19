@@ -211,14 +211,39 @@ public sealed class PlatformPartiesRunProofTests
         Should.Throw<InvalidDataException>(() => PlatformPartiesPackageCatalogQualification.Bind(fixture.Options, [], [], development));
     }
 
-    /// <summary>The independent reader allowlist refuses foreign bodies in both separate public cohorts.</summary>
-    /// <param name="cohort">The supported or unknown requested cohort.</param>
-    [Theory]
-    [InlineData(PublishedCatalogArtifactCohort.Name)]
-    [InlineData(PublishedCatalogArtifactCohort.FullPartiesName)]
-    [InlineData("unknown")]
-    public void ReaderAuthorityRefusesForeignPublicBytes(string cohort)
+    /// <summary>The released declaration retains the complete ordinary parent/source proof and grants no private current profile.</summary>
+    [Fact]
+    public void ReleasedDeclarationPreservesTheOrdinarySourceAndPurposeBoundary()
     {
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformPartiesRunProofTests).Assembly, cohort));
+        using PlatformPartiesProofFixture fixture = new(publishedDeclaration: true);
+        PlatformCompositionOptions options = fixture.Options;
+        options.PartiesRunProof!.Matches(options).ShouldBeTrue();
+        PlatformCompositionOptions replay = options with { RunPlan = options.RunPlan! with { AttemptId = CompositionRunPlanFactory.NewRunId() } };
+        options.PartiesRunProof.Matches(replay).ShouldBeFalse();
+        File.AppendAllText(options.DeclarationPaths.Single(), " ");
+        options.PartiesRunProof.Matches(options).ShouldBeFalse();
+    }
+
+    /// <summary>The owner package lock refuses foreign bodies: assemblies without an owner package identity, or a foreign file under an owner name.</summary>
+    /// <param name="fault">The foreign body presented to the lock.</param>
+    [Theory]
+    [InlineData("test-assembly")]
+    [InlineData("composition-assembly")]
+    [InlineData("foreign-owner-body")]
+    public void ReaderAuthorityRefusesForeignPublicBytes(string fault)
+    {
+        OwnerPackageLock owners = PlatformPartiesPackageFixture.Lock;
+        if (fault == "foreign-owner-body")
+        {
+            using JsonDocument graph = JsonDocument.Parse(File.ReadAllBytes(Path.ChangeExtension(typeof(PlatformPartiesRunProofTests).Assembly.Location, ".deps.json")));
+            string version = owners.Entries.Single(entry => entry.Id == "Hexalith.Parties.Contracts").Version;
+            // Source-mode collectors restore no Parties package; the locked identity still names its genuine archive member.
+            OwnerPackageAsset asset = OwnerPackageLock.ReadAssets(graph.RootElement).GetValueOrDefault("Hexalith.Parties.Contracts")
+                ?? new("Hexalith.Parties.Contracts", "Hexalith.Parties.Contracts", version, "hexalith.parties.contracts/" + version, "lib/net10.0/Hexalith.Parties.Contracts.dll");
+            Should.Throw<InvalidDataException>(() => owners.Verify(asset, PlatformPartiesPackageFixture.PackageFolders, typeof(PlatformPartiesRunProofTests).Assembly.Location));
+            return;
+        }
+        string name = (fault == "test-assembly" ? typeof(PlatformPartiesRunProofTests) : typeof(PlatformAppModel)).Assembly.GetName().Name!;
+        Should.Throw<InvalidDataException>(() => owners.VerifyLoaded([name], PlatformPartiesPackageFixture.PackageFolders));
     }
 }

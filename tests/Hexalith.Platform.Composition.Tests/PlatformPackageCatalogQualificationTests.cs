@@ -1,6 +1,5 @@
 namespace Hexalith.Platform.Composition.Tests;
 
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -9,41 +8,41 @@ using Aspire.Hosting;
 using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
-using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
 /// <summary>Tests finite package admission with real released declarations; these controls do not claim a live package run.</summary>
 public sealed class PlatformPackageCatalogQualificationTests
 {
-    /// <summary>Measures actual loaded producer bytes and verifies the exact immutable image bindings or finite refusal.</summary>
+    /// <summary>The lock admits the current declared graph with its immutable tenant images and refuses the genuine historical graph.</summary>
     [Fact]
     public void LoadedPublicSdkBytesDetermineAdmissionAndImmutableTenantImages()
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
-        PlatformServerBindings.Version(fixture.Options, "tenants", "historical public fixture").ShouldBe("7.0.2");
-        PlatformServerBindings.Version(fixture.Options, "memories", "historical public fixture").ShouldBe("3.0.23");
-        using PlatformQualificationPackageFixture current = PlatformQualificationPackageFixture.CurrentTest();
-        string currentProvenance = Path.Combine(current.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
+        using PlatformQualificationPackageFixture historical = PlatformQualificationPackageFixture.HistoricalPublic();
+        PlatformServerBindings.Version(historical.Options, "tenants", "historical public fixture").ShouldBe("7.0.2");
+        PlatformServerBindings.Version(historical.Options, "memories", "historical public fixture").ShouldBe("3.0.23");
+        IReadOnlyList<PlatformModuleDeclaration> historicalDeclarations = PlatformDeclarationSet.Load(historical.Options);
+        IReadOnlyList<PlatformServerBinding> historicalServers = PlatformServerBindings.Resolve(historical.Options, historicalDeclarations);
+        historicalDeclarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(historical.Options, historicalDeclarations, historicalServers, developmentRun: true))
+            .Message.ShouldContain("is selected", customMessage: "The historical graph keeps its topology; only the lock refuses its owner versions.");
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
+        string currentProvenance = Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
         Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(currentProvenance)))
             .ShouldBe(Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json")))));
-        PlatformServerBindings.Version(current.Options, "eventstore", "current private fixture").ShouldBe("4.2.0");
-        PlatformServerBindings.Version(current.Options, "tenants", "current private fixture").ShouldBe("7.0.7");
-        PlatformServerBindings.Version(current.Options, "memories", "current private fixture").ShouldBe("3.0.27");
+        PlatformServerBindings.Version(fixture.Options, "eventstore", "current private fixture").ShouldBe("4.2.0");
+        string tenants = PlatformServerBindings.Version(fixture.Options, "tenants", "current private fixture");
+        tenants.ShouldBe("7.0.7");
+        PlatformServerBindings.Version(fixture.Options, "memories", "current private fixture").ShouldBe("3.0.27");
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
-        declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration)).Order(StringComparer.Ordinal).ShouldBe(["eventstore", "tenants"]);
-        PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
-            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName, "The genuine historical declared graph retains its source/purpose/topology behavior independently from loaded current bodies.");
-        bool actualPublicBytes = Hash(typeof(RouteCatalogEnvelope).Assembly) == "f3f2d7f6e7edf54e187af15edec8b4f13bf7e255b186b999efa0836a0c86a739"
-            && Hash(Assembly.Load("Hexalith.EventStore.ServiceDefaults")) == "0e3f88ffefb12327d53f865b96bbb774beb71f7c78c9f20a3cbefa4901e9ba2d";
-        PlatformPackageCatalogQualification.HasQualifiedSdkBytes().ShouldBe(actualPublicBytes);
-        bool actualOwnerBytes = Hash(Assembly.Load("Hexalith.Tenants.Contracts")) == "4f07e5529c43f60859c4372fa718dd339c4e18dd0b81db301abe0e4a4e665df9";
-        if (actualPublicBytes && actualOwnerBytes && OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+        OwnerPackageLock owners = PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true);
+        owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
+        if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
         {
             IReadOnlyList<PlatformServerBinding> admitted = PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, developmentRun: true);
-            admitted.Single(server => server.ResourceId == "tenants").Image.ShouldBe("registry.hexalith.com/tenants:7.0.2");
-            admitted.Single(server => server.ResourceId == "tenants-api").Image.ShouldBe("registry.hexalith.com/tenants-api:7.0.2");
+            admitted.Single(server => server.ResourceId == "tenants").Image.ShouldBe("registry.hexalith.com/tenants:" + tenants);
+            admitted.Single(server => server.ResourceId == "tenants-api").Image.ShouldBe("registry.hexalith.com/tenants-api:" + tenants);
             admitted.Single(server => server.ResourceId == "eventstore").ImageDigest.ShouldBeNull();
             servers.ShouldAllBe(server => server.ImageDigest == null);
         }
@@ -77,12 +76,13 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData("production")]
     public void ChangedScopeCohortOrAuthorityRefusesBeforeEffects(string fault)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
         PlatformCompositionOptions options = fixture.Options;
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations);
+        string sdk = PlatformServerBindings.Version(options, "eventstore", "lock baseline");
         PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true)
-            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
+            .Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         switch (fault)
         {
             case "no-proof": options = options with { QualificationOwnerProof = null }; break;
@@ -95,7 +95,7 @@ public sealed class PlatformPackageCatalogQualificationTests
             case "declaration-path": options = options with { DeclarationPaths = [] }; break;
             case "active-module": options = options with { ActiveModule = "tenants" }; break;
             case "suite": options = options with { RunPlan = fixture.Plan with { SelectedTest = fixture.Plan.SelectedTest! with { Mode = "source" } } }; break;
-            case "sdk-near-miss": ChangeCatalog(fixture.Root, "<HexalithEventStoreVersion>4.1.0", "<HexalithEventStoreVersion>4.1.1"); break;
+            case "sdk-near-miss": ChangeCatalog(fixture.Root, "<HexalithEventStoreVersion>" + sdk + "<", "<HexalithEventStoreVersion>" + sdk + "1<"); break;
             case "tenants-near-miss":
                 string tenantsVersion = JsonNode.Parse(File.ReadAllText(Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json")))!["tenants"]!["version"]!.GetValue<string>();
                 ChangeCatalog(fixture.Root, $"<HexalithTenantsVersion>{tenantsVersion}</HexalithTenantsVersion>", $"<HexalithTenantsVersion>{tenantsVersion}0</HexalithTenantsVersion>");
@@ -122,11 +122,11 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData(true)]
     public void OrdinaryComposeCannotUseSerializedRequestOrProofFields(bool stripped)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
-            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
+            .Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         int probes = 0;
         string serialized = JsonSerializer.Serialize(fixture.Options);
         serialized.Contains("QualificationOwnerProof", StringComparison.Ordinal).ShouldBeFalse();
@@ -153,14 +153,14 @@ public sealed class PlatformPackageCatalogQualificationTests
     [InlineData("eventstore")]
     public void AuthenticatedButUnqualifiedAdditionalOwnersRemainRefused(string owner)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwners = [owner], QualificationOwnersBinding = null }, key);
         PlatformCompositionOptions options = fixture.Options with { QualificationOwners = [owner], RunPlan = plan, QualificationOwnerProof = PlatformQualificationOwnerProof.Create(plan, key) };
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true)
-            .ShouldBe(PublishedCatalogArtifactCohort.CurrentName);
+            .Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         options.QualificationOwnerProof.Matches(options).ShouldBeTrue();
         Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.ValidateTestInputs(options, declarations, servers, developmentRun: true));
         Directory.Exists(Path.Combine(fixture.Root, "run")).ShouldBeFalse();
@@ -178,8 +178,6 @@ public sealed class PlatformPackageCatalogQualificationTests
         entries[0] = entries[0] with { Identity = "Hexalith.Foreign" };
         fixture.Options.QualificationOwnerProof.Matches(fixture.Options).ShouldBeFalse();
     }
-
-    private static string Hash(Assembly assembly) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(assembly.Location)));
 
     private static void ChangeCatalog(string root, string before, string after)
     {

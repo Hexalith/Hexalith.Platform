@@ -1,7 +1,6 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text.Json;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
@@ -22,21 +21,28 @@ public sealed class PlatformEventStorePackageCatalogReaderTests
         PlatformRoutingCatalog catalog = fixture.Generate(servers);
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
         request.RootElement.GetProperty("gatewayAppId").GetString().ShouldBe(gatewayAppId);
-        request.RootElement.GetProperty("qualificationCohort").GetString().ShouldBe(PlatformPartiesPackageFixture.EventStoreTestCohort);
+        OwnerPackageLock owners = OwnerPackageLock.Load(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
+        request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(owners.Path);
         request.RootElement.GetProperty("owners").GetArrayLength().ShouldBe(1);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
         foreach (string key in new[] { "routes", "operations", "declarations" }) document.RootElement.GetProperty(key).GetArrayLength().ShouldBe(23);
         document.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(12);
         catalog.Envelope.Idempotency.ShouldAllBe(policy => policy.ConsumerAppId == gatewayAppId);
         using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
-        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService",
-            "Hexalith.EventStore.ServiceDefaults", "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server" })
+        // AR-12: the reader records each owner body against its lock-verified archive member; Composition loads the same bodies.
+        var evidence = owners.VerifyReceipt(receipt.RootElement, new HashSet<string>()).ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        var composition = owners.VerifyLoaded(PlatformPackageCatalogQualification.LoadedPackages("eventstore").Concat(PlatformPackageCatalogQualification.LoadedPackages("tenants")),
+            PlatformPartiesPackageFixture.PackageFolders).ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        composition.Count.ShouldBe(6);
+        foreach ((string name, OwnerPackageIdentity loaded) in composition)
         {
-            string original = PublishedCatalogArtifactCohort.Verify(Assembly.Load(name), PlatformPartiesPackageFixture.EventStoreTestCohort);
             string output = Path.Combine(fixture.Reader, "output", name + ".dll");
-            File.ReadAllBytes(output).ShouldBe(File.ReadAllBytes(original));
+            File.ReadAllBytes(output).ShouldBe(File.ReadAllBytes(Assembly.Load(name).Location));
+            evidence[name].LoadedPath.ShouldBe(output);
+            evidence[name].ExpectedSha256.ShouldBe(loaded.ExpectedSha256);
+            evidence[name].ContentHash.ShouldBe(owners.Require(loaded.PackageId, loaded.Version).ContentHash);
             var actual = receipt.RootElement.GetProperty("loadedArtifacts").EnumerateArray().Single(item => item.GetProperty("path").GetString() == output);
-            actual.GetProperty("sha256").GetString().ShouldBe(Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(original))));
+            actual.GetProperty("sha256").GetString().ShouldBe(loaded.LoadedSha256);
         }
     }
 }

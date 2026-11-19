@@ -57,8 +57,8 @@ class SdkSuiteTests(unittest.TestCase):
     def test_default_sdk42_base_requires_all_controls_and_actual_entry_cases(self):
         self.assertEqual(sdk_suite("base42", "4.2.0")[0], "eng/tuple-ci-sdk42-base-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-base-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 72)
-        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [40, 30, 2])
+        self.assertEqual(validate_profile(profile), 67)
+        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [39, 26, 2])
         for version in [None, "4.1.0", "4.2.1"]:
             with self.subTest(version=version), self.assertRaises(ValueError):
                 sdk_suite("base42", version)
@@ -66,7 +66,7 @@ class SdkSuiteTests(unittest.TestCase):
     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 479)
+        self.assertEqual(validate_profile(profile), 380)
         binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
         binding_groups = [group for group in profile["groups"] if binding_test in group["selectors"]]
         self.assertEqual(len(binding_groups), 1)

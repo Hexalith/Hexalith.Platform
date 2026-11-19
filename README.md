@@ -24,8 +24,17 @@ recorded by the run. The lifecycle owner and attachment keep their own
 declared profiles. See [package catalog qualification](docs/package-catalog-qualification.md)
 for execution and evidence details.
 
-The continuing inventories declare 479 current42, 72 base42 and nine extension
+The continuing inventories declare 380 current42, 67 base42 and nine extension
 executions, with exact positive group counts and zero skips.
+
+Owner packages (EventStore, Tenants, Memories, Parties and McpCli) are admitted
+through the generated, CI-enforced `eng/owner-packages.lock.json` of
+`{id, version, contentHash}` entries. Composition and the routing catalog reader
+check each archive against its `contentHash` and each loaded DLL against its
+lock-verified archive member, and record both identities. Adopting an owner
+release is a committed version bump, then `python3 eng/owner_packages_lock.py`
+(it reads the gitlinks from `HEAD`) and a commit of the regenerated lock; see
+[adopting an owner release](eng/tuple-source-preparation.md#adopting-an-owner-release).
 
 The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
 Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
@@ -38,8 +47,8 @@ local audits provide no hosted or native acceptance.
 ## Historical preparation records
 
 The records below are historical. They describe their original subjects and past
-requirements, including the schema 1 binding fields, hash-pair admission and
-per-release catalog tables that Story 2.14 retired. Their L/M, 349/412 and
+requirements, including the schema 1 binding fields, hash-pair admission,
+per-release catalog tables and owner package byte tables that Story 2.14 retired. Their L/M, 349/412 and
 reader-companion obligations are retired by Story 2.13; archived qualification
 and broker tags remain evidence.
 

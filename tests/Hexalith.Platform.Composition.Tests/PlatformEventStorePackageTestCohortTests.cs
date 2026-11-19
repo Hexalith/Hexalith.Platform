@@ -1,8 +1,5 @@
 namespace Hexalith.Platform.Composition.Tests;
 
-using System.Reflection;
-using System.Runtime.Loader;
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Aspire.Hosting;
@@ -12,59 +9,9 @@ using Hexalith.Platform.CatalogArtifacts;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 
-/// <summary>Private EventStore package-test component guards; no services or native acceptance are simulated.</summary>
+/// <summary>Private EventStore package-test component guards over lock-admitted owner packages; no services or native acceptance are simulated.</summary>
 public sealed class PlatformEventStorePackageTestCohortTests
 {
-    /// <summary>The six genuine signed bodies have a separate private purpose and retain all historical authorities.</summary>
-    [Fact]
-    public void ActualPrivateBodiesRefuseOldMixedTamperedAndPublicAuthorities()
-    {
-        string cohort = PlatformPartiesPackageFixture.EventStoreTestCohort;
-        string[] paths = [.. PublishedCatalogArtifactCohort.VerifySdk(cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Contracts"), cohort),
-            PublishedCatalogArtifactCohort.Verify(Assembly.Load("Hexalith.Tenants.Server"), cohort)];
-        paths.Length.ShouldBe(6);
-        PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5").ShouldBeNull();
-        PublishedCatalogArtifactCohort.ForVersions("4.1.0", "7.0.5", fullParties: true).ShouldBeNull();
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
-        cohort.ShouldNotBe(PublishedCatalogArtifactCohort.CurrentOwnerName);
-        Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(typeof(PlatformEventStorePackageTestCohortTests).Assembly, cohort));
-        string cache = typeof(PlatformEventStorePackageTestCohortTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
-            .Single(attribute => attribute.Key == "PlatformHistoricalPackageRoot").Value!;
-        foreach (string version in new[] { "7.0.0", "7.0.2", "7.0.4" })
-        {
-            var context = new AssemblyLoadContext("historical-private-eventstore-" + Guid.NewGuid().ToString("N"), isCollectible: true);
-            try
-            {
-                foreach (string name in new[] { "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server" })
-                {
-                    string path = Path.Combine(cache, name.ToLowerInvariant(), version, "lib", "net10.0", name + ".dll");
-                    File.Exists(path).ShouldBeTrue("Old body refusals require the genuine independently restored package.");
-                    Assembly old = context.LoadFromAssemblyPath(path);
-                    string historical = version == "7.0.0" ? PublishedCatalogArtifactCohort.Name : version == "7.0.2"
-                        ? PublishedCatalogArtifactCohort.CurrentName : PublishedCatalogArtifactCohort.Tenants704CurrentOwnerName;
-                    PublishedCatalogArtifactCohort.Verify(old, historical).ShouldBe(path);
-                    Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(old, cohort));
-                }
-            }
-            finally { context.Unload(); }
-        }
-        foreach (string original in paths)
-        {
-            string directory = Path.Combine(Path.GetTempPath(), "changed-private-package-body-" + Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(directory);
-            var context = new AssemblyLoadContext("changed-private-package-body-" + Guid.NewGuid().ToString("N"), isCollectible: true);
-            try
-            {
-                string path = Path.Combine(directory, Path.GetFileName(original));
-                File.WriteAllBytes(path, [.. File.ReadAllBytes(original), 0]);
-                Assembly changed = context.LoadFromAssemblyPath(path);
-                Should.Throw<InvalidDataException>(() => PublishedCatalogArtifactCohort.Verify(changed, cohort));
-            }
-            finally { context.Unload(); Directory.Delete(directory, recursive: true); }
-        }
-    }
-
     /// <summary>Even a correctly authenticated parent cannot select another purpose, graph, mode or catalog.</summary>
     /// <param name="fault">The explicit negative input.</param>
     [Theory]
@@ -182,7 +129,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var original = PlatformServerBindings.Resolve(fixture.Options, declarations);
         PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, original, true)
-            .ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
+            .Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         IReadOnlyList<PlatformServerBinding> servers = fault switch
         {
             "missing-server" => original.Where(server => server.ServerId != "api").ToArray(),
@@ -215,7 +162,7 @@ public sealed class PlatformEventStorePackageTestCohortTests
         serialized.ShouldNotContain("QualificationOwnerProof");
         PlatformCompositionOptions ordinary = JsonSerializer.Deserialize<PlatformCompositionOptions>(serialized)!;
         ordinary.QualificationOwnerProof.ShouldBeNull();
-        PlatformPackageCatalogQualification.SelectTestCohort(ordinary).ShouldBeNull();
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedPackages(ordinary));
         var builder = Builder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, ordinary));
         AssertNoEffects(builder, fixture.Plan);
@@ -226,12 +173,12 @@ public sealed class PlatformEventStorePackageTestCohortTests
 
     private static void RequireBaseline(PlatformQualificationPackageFixture fixture)
     {
-        PlatformPackageCatalogQualification.SelectTestCohort(fixture.Options).ShouldBe(PlatformPartiesPackageFixture.EventStoreTestCohort);
+        PlatformPackageCatalogQualification.RequireLockedPackages(fixture.Options).Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         var declarations = PlatformDeclarationSet.Load(fixture.Options);
         var servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         fixture.Options.QualificationOwnerProof!.Matches(fixture.Options).ShouldBeTrue();
         PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, true)
-            .ShouldBe(PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName);
+            .Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Root));
         PlatformPackageCatalogQualification.Bind(fixture.Options, declarations, servers, true)
             .ShouldAllBe(server => server.ImageDigest == null);
     }

@@ -59,7 +59,7 @@ def retain_execution(project, output, name, evidence, expected_sdk, expected_ten
               "projectFileSha256": digest(project),
               "resolvedTenantsPackages": tenants,
               "copiedCatalogSourceSha256": {name: digest(project.parent / name) for name in
-                  ["Program.cs", "PublishedCatalogArtifactCohort.cs"] if (project.parent / name).is_file()}}
+                  ["Program.cs", "OwnerPackageLock.cs"] if (project.parent / name).is_file()}}
     assert record["packageSources"] == ["https://api.nuget.org/v3/index.json"]
     (destination / "identity.json").write_text(json.dumps(record, indent=2) + "\n")
     return record
@@ -162,8 +162,8 @@ def make_project(path, *, probe=False, program=None):
     else:
         project = ET.parse(ROOT / "src/Hexalith.Platform.CatalogBuilder/Hexalith.Platform.CatalogBuilder.csproj").getroot()
         (path.parent / "Program.cs").write_text(program)
-        shutil.copyfile(ROOT / "src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs",
-                        path.parent / "PublishedCatalogArtifactCohort.cs")
+        shutil.copyfile(ROOT / "src/Hexalith.Platform.CatalogBuilder/OwnerPackageLock.cs",
+                        path.parent / "OwnerPackageLock.cs")
     for filename in ["Directory.Packages.props", "Directory.Build.props"]:
         project.insert(0, ET.Element("Import", {"Project": str(ROOT / filename)}))
     ET.ElementTree(project).write(path, encoding="unicode")
@@ -327,7 +327,7 @@ def qualify(args):
                     cases.append({"case": "legacy129-scoped", "refusedBeforeOutput": True})
         report = {"sdk": args.sdk_version, "toolSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
                   "toolSourceClosureSha256": {name: digest(source.parent / name) for name in
-                      ["Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "PublishedCatalogArtifactCohort.cs"]},
+                      ["Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "OwnerPackageLock.cs"]},
                   "genuineOwnerAssemblies": [owner["assembly"] for owner in owners], "tenants": args.tenants_version, "cases": cases,
                   "baseline": BASELINE, "allDeclarationsBindingsAndOperationsUnchanged": True,
                   "policyFieldsExceptConsumerAndDigestUnchanged": True,

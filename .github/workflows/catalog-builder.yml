@@ -59,47 +59,14 @@ jobs:
           --sdk-version "${{ matrix.sdk }}"
           --tenants-version "${{ matrix.sdk == '4.2.0' && '7.0.5' || matrix.sdk == '4.1.0' && '7.0.2' || '6.0.0' }}"
           --evidence "$RUNNER_TEMP/catalog-builder-evidence"
-      - name: Verify closed current public owner cohorts before any runner execution
-        if: matrix.sdk == '4.1.0'
-        env:
-          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
-        run: >-
-          python3 tests/catalog-builder/verify_public_owner_cohorts.py
-          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
-          --evidence "$RUNNER_TEMP/catalog-public-owner-evidence"
-      - name: Verify the SDK4.2 no-extension private and full public owner readers
+      - name: Verify the reader admits owner packages only through the generated lock
         if: matrix.sdk == '4.2.0'
         env:
           NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
         run: >-
-          python3 tests/catalog-builder/verify_sdk42_owner_cohorts.py
+          python3 tests/catalog-builder/verify_owner_package_lock_reader.py
           --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
-          --evidence "$RUNNER_TEMP/catalog-sdk42-owner-evidence"
-      - name: Verify the distinct SDK4.2 public Parties reader without image relabeling
-        if: matrix.sdk == '4.2.0'
-        env:
-          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
-        run: >-
-          python3 tests/catalog-builder/verify_sdk420_public_parties.py
-          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
-          --evidence "$RUNNER_TEMP/catalog-sdk420-public-parties-evidence"
-      - name: Verify the independently signed current public reader without image or native authority
-        if: matrix.sdk == '4.2.0'
-        env:
-          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
-        run: >-
-          python3 tests/catalog-builder/verify_current_public_reader.py
-          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
-          --evidence "$RUNNER_TEMP/catalog-current-public-reader-evidence"
-      - name: Verify the independently signed Memories 3.0.27 reader cohort
-        if: matrix.sdk == '4.2.0'
-        env:
-          NUGET_PACKAGES: ${{ runner.temp }}/catalog-builder-nuget
-        run: >-
-          python3 tests/catalog-builder/verify_current_public_reader.py
-          --builds-root "$GITHUB_WORKSPACE/references/Hexalith.Builds"
-          --memories-version 3.0.27
-          --evidence "$RUNNER_TEMP/catalog-current-memories27-reader-evidence"
+          --evidence "$RUNNER_TEMP/catalog-owner-package-lock-evidence"
       - name: Retain executable and refusal evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -108,9 +75,5 @@ jobs:
           path: |
             ${{ runner.temp }}/catalog-builder-evidence
             ${{ runner.temp }}/catalog-sdk-gates.json
-            ${{ runner.temp }}/catalog-public-owner-evidence
-            ${{ runner.temp }}/catalog-sdk42-owner-evidence
-            ${{ runner.temp }}/catalog-sdk420-public-parties-evidence
-            ${{ runner.temp }}/catalog-current-public-reader-evidence
-            ${{ runner.temp }}/catalog-current-memories27-reader-evidence
+            ${{ runner.temp }}/catalog-owner-package-lock-evidence
           if-no-files-found: error

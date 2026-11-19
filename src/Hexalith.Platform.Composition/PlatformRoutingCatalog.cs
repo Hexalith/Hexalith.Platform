@@ -9,7 +9,7 @@ using Hexalith.Platform.CatalogArtifacts;
 
 /// <summary>The exact validated bytes owned by one environment, generated before any resource starts.</summary>
 internal sealed record PlatformRoutingCatalog(string InstanceId, string Directory, string CatalogPath, string RootDigest,
-    RouteCatalogEnvelope Envelope, IReadOnlyList<string> OwnerAssemblies, IReadOnlyList<string> AdapterAssemblies, string? EventStoreSeedPayload)
+    RouteCatalogEnvelope Envelope, IReadOnlyList<string> OwnerAssemblies, IReadOnlyList<string> AdapterAssemblies)
 {
     internal static TimeSpan ReaderTimeout(TimeSpan maximum, DateTimeOffset? startupDeadlineUtc, DateTimeOffset now)
     {
@@ -27,14 +27,14 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
-        string? qualificationCohort = null;
+        OwnerPackageLock? ownerPackages = null;
         if (options.Mapping.Mode == WorkspaceMode.Package)
         {
             bool authorized = options.ActiveModule == "parties"
                 ? PlatformCurrentOwnerProof.SelectsIntegration(options) ? options.CurrentOwnerProof?.Matches(options) == true : options.PartiesRunProof?.Matches(options) == true
                 : options.QualificationOwnerProof?.Matches(options) == true;
             if (!authorized) throw new InvalidDataException("The private package reader requires the unchanged authenticated runner proof.");
-            qualificationCohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
+            ownerPackages = PlatformPackageCatalogQualification.RequireLockedPackages(options);
         }
         var owners = PlatformCatalogContractBinding.Resolve(options, servers);
         string build = Path.Combine(workspace, "catalog-reader");
@@ -57,16 +57,9 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         else
             xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Packages.props"))));
         xml.Root!.AddFirst(new XElement("Import", new XAttribute("Project", Path.Combine(options.PlatformRoot, "Directory.Build.props"))));
-        bool useReleasedImageFramework = qualificationCohort == PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name;
-        if (useReleasedImageFramework)
-        {
-            PlatformPublishedEventStoreSeed.BindReader(xml.Root!);
-            // Use the released catalog's retained .NET 10 dependency view for this reader.
-            packageArguments = [.. packageArguments, "-p:HexalithTimesheetsNet10CatalogView=true"];
-        }
         xml.Save(project);
         File.Copy(Path.Combine(template, "Program.cs"), Path.Combine(build, "Program.cs"), true);
-        File.Copy(Path.Combine(template, "PublishedCatalogArtifactCohort.cs"), Path.Combine(build, "PublishedCatalogArtifactCohort.cs"), true);
+        File.Copy(Path.Combine(template, "OwnerPackageLock.cs"), Path.Combine(build, "OwnerPackageLock.cs"), true);
         var references = new XElement("ItemGroup");
         foreach (var owner in owners)
         foreach (string reference in new[] { owner.ContractReference, owner.AdapterReference })
@@ -85,13 +78,15 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), packageReaderDeadline ?? options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
         File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
         if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
-        string? seedPayload = useReleasedImageFramework ? PlatformPublishedEventStoreSeed.Extract(build) : null;
+        // Read the restored package folders before any pending output exists, so a refusal leaves nothing behind.
+        string[]? packageFolders = ownerPackages is null ? null : ReaderPackageFolders(build);
         string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));
         CompositionWorkspace.CreatePrivateDirectory(pending);
         string request = Path.Combine(build, "request.json");
         File.WriteAllBytes(request, JsonSerializer.SerializeToUtf8Bytes(new
         {
-            qualificationCohort, currentOwnerArtifacts = options.CurrentOwnerProof?.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
+            ownerPackageLock = ownerPackages?.Path, packageFolders,
+            currentOwnerArtifacts = options.CurrentOwnerProof?.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
             generation = options.CatalogGeneration, instanceId = instance, outputDirectory = pending,
             gatewayAppId = servers.Single(server => server.ResourceId == "eventstore").AppId,
             sourceMappingHash = options.Mapping.ContentHash, mode = options.Mapping.Mode.ToString().ToLowerInvariant(),
@@ -108,6 +103,8 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             byte[] bytes = File.ReadAllBytes(Path.Combine(pending, "catalog.json"));
             byte[] verifiedReceipt = File.ReadAllBytes(Path.Combine(pending, "receipt.json"));
             using var receipt = JsonDocument.Parse(verifiedReceipt);
+            // AR-12: every owner package the reader loaded is recorded against its lock-verified archive member.
+            _ = ownerPackages?.VerifyReceipt(receipt.RootElement, RunBound(options));
             options.CurrentOwnerProof?.VerifyReader(receipt.RootElement);
             string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
             if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
@@ -122,12 +119,27 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
                 receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
-                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(), seedPayload);
+                receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());
         }
         catch
         {
             if (System.IO.Directory.Exists(pending)) System.IO.Directory.Delete(pending, true);
             throw;
         }
+    }
+
+    /// <summary>Run-built Parties bodies keep their run-bound authority; every other owner body is lock-verified.</summary>
+    /// <param name="options">The composition whose current-owner proof, if any, measured the run-built bodies.</param>
+    internal static IReadOnlySet<string> RunBound(PlatformCompositionOptions options)
+        => (options.CurrentOwnerProof?.Bodies.Keys.Where(name => name is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions") ?? [])
+            .ToHashSet(StringComparer.Ordinal);
+
+    /// <summary>Reads the package folders the reader build actually restored into.</summary>
+    /// <param name="build">The reader build directory.</param>
+    internal static string[] ReaderPackageFolders(string build)
+    {
+        using var assets = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(build, "obj", "project.assets.json")));
+        string[] folders = assets.RootElement.GetProperty("packageFolders").EnumerateObject().Select(folder => Path.GetFullPath(folder.Name)).ToArray();
+        return folders.Length > 0 ? folders : throw new InvalidDataException("The private package reader restored into no package folder.");
     }
 }

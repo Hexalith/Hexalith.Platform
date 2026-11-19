@@ -5,6 +5,7 @@ using System.Text.Json;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.EventStore.ServiceDefaults.Routing;
+using Hexalith.Platform.CatalogArtifacts;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Independently verifies the process-mapped owner bodies before native readiness is published.</summary>
@@ -23,16 +24,7 @@ internal static class PlatformCurrentOwnerObservation
         var running = ReadRunningOwners(launcher, output, proof.Bodies);
         int pid = running.Process;
         IReadOnlyDictionary<string, string> runtime = running.Bodies;
-        Dictionary<string, string> sdk = new(StringComparer.Ordinal);
-        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService" })
-        {
-            string path = Path.Combine(output, name + ".dll");
-            string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
-            if (maps.Length == 0) throw new InvalidDataException($"The actual Parties SDK mapping for '{name}' is unavailable.");
-            string digest = PlatformMappedArtifact.Hash(pid, path, maps[0]);
-            Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, digest, proof.Cohort);
-            sdk[name] = digest;
-        }
+        var (sdk, ownerPackages) = ReadMappedOwnerPackages(pid, output, proof.OwnerBodies);
         var observed = JsonSerializer.Deserialize<RouteCatalogHostObservation>(await File.ReadAllBytesAsync(Path.Combine(catalogDirectory, "parties.observation.json"), token).ConfigureAwait(false))
             ?? throw new InvalidDataException("The current owner's independent catalog observation is absent.");
         if (observed.HostId != "parties" || observed.ExecutableOwners is null
@@ -59,9 +51,43 @@ internal static class PlatformCurrentOwnerObservation
             routingCatalogRoot = scope.RootElement.GetProperty("RoutingCatalogRoot").GetString(),
             packageArchives = proof.PackageArchives,
             runtimeBodies = runtime, catalogBodies = proof.Bodies.Where(pair => pair.Key is "Hexalith.Parties.Contracts" or "Hexalith.Parties.EventStoreExtensions").ToDictionary(),
-            sdkBodies = sdk, dependencyImages = images.RootElement.GetProperty("images"),
+            sdkBodies = sdk, ownerPackages, dependencyImages = images.RootElement.GetProperty("images"),
             observedExecutableOwners = observed.ExecutableOwners, committedCatalogValidated = true,
         }, new JsonSerializerOptions(JsonSerializerDefaults.Web)), token).ConfigureAwait(false);
+    }
+
+    /// <summary>Checks each mapped owner package body against its lock-verified archive member.</summary>
+    /// <remarks>Returns the observed SDK digests by name and the AR-12 expected/loaded record of every mapped owner package body.</remarks>
+    /// <param name="pid">The running owner process.</param>
+    /// <param name="output">The measured Release output directory.</param>
+    /// <param name="expected">The lock-verified owner package bodies of that output.</param>
+    internal static (IReadOnlyDictionary<string, string> Sdk, IReadOnlyDictionary<string, object> OwnerPackages) ReadMappedOwnerPackages(
+        int pid, string output, IReadOnlyDictionary<string, OwnerPackageIdentity> expected)
+    {
+        Dictionary<string, string> sdk = new(StringComparer.Ordinal);
+        Dictionary<string, object> observed = new(StringComparer.Ordinal);
+        foreach (string name in PlatformCurrentOwnerProof.ObservedSdk.Where(name => !expected.ContainsKey(name)))
+            throw new InvalidDataException($"The actual Parties SDK mapping for '{name}' is unavailable.");
+        foreach (OwnerPackageIdentity identity in expected.Values.OrderBy(identity => identity.Assembly, StringComparer.Ordinal))
+        {
+            string path = Path.Combine(output, identity.Assembly + ".dll");
+            string[] maps = File.ReadLines("/proc/" + pid + "/maps").Where(line => line.EndsWith(" " + path, StringComparison.Ordinal)).ToArray();
+            if (maps.Length == 0)
+            {
+                if (PlatformCurrentOwnerProof.ObservedSdk.Contains(identity.Assembly, StringComparer.Ordinal))
+                    throw new InvalidDataException($"The actual Parties SDK mapping for '{identity.Assembly}' is unavailable.");
+                continue;
+            }
+            string digest = PlatformMappedArtifact.Hash(pid, path, maps[0]);
+            if (digest != identity.ExpectedSha256 || maps.Skip(1).Any(line => PlatformMappedArtifact.Hash(pid, path, line) != digest))
+                throw new InvalidDataException($"The running Parties artifact '{identity.Assembly}' differs from its lock-verified package member.");
+            observed[identity.Assembly] = new
+            {
+                identity.PackageId, identity.Version, identity.ContentHash, identity.ArchiveMember, identity.ExpectedSha256, loadedSha256 = digest,
+            };
+            if (PlatformCurrentOwnerProof.ObservedSdk.Contains(identity.Assembly, StringComparer.Ordinal)) sdk[identity.Assembly] = digest;
+        }
+        return (sdk, observed);
     }
 
     /// <summary>Reads actual owned process mappings; this observation seam grants no runner or qualification authority.</summary>

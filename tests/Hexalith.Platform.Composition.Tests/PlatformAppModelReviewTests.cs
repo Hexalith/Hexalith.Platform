@@ -8,7 +8,6 @@ using Aspire.Hosting.ApplicationModel;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
-using Hexalith.Platform.CatalogArtifacts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
@@ -490,14 +489,13 @@ public sealed partial class PlatformAppModelTests
     [InlineData(0, true)]
     public void QualifiedPackageCatalogUnavailableImageRefusesBeforeAddingResources(int exit, bool timedOut)
     {
-        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.HistoricalPublic();
+        using PlatformQualificationPackageFixture fixture = PlatformQualificationPackageFixture.CurrentTest();
         string key = CompositionSigningKey.Create();
         CompositionRunPlan plan = CompositionQualificationOwners.Bind(fixture.Plan with { QualificationOwnersBinding = null }, key);
         int probes = 0;
         var builder = Builder();
         builder.Environment.EnvironmentName = Environments.Development;
-        bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64
-            && PlatformPackageCatalogQualification.HasQualifiedSdkBytes() && PublishedCatalogArtifactCohort.Matches("Hexalith.Tenants.Contracts", PublishedCatalogArtifactCohort.CurrentName);
+        bool qualified = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64 && LoadedOwnerBodiesMatchTheLock();
         InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeRun(builder, plan, key, fixture.Options.EventStoreSeedProject, options => options with
         {
             ImageProbeRunner = (_, _, _) =>
@@ -506,10 +504,24 @@ public sealed partial class PlatformAppModelTests
                 return Task.FromResult(new CompositionProcessResult(true, exit, "unavailable", timedOut));
             },
         }));
-        failure.Message.ShouldContain(qualified ? "no valid released Linux/amd64 digest" : "verified published bytes");
+        failure.Message.ShouldContain(qualified ? "no valid released Linux/amd64 digest" : "lock");
         probes.ShouldBe(qualified ? 1 : 0);
         builder.Resources.ShouldBeEmpty();
         Directory.Exists(plan.Workspace).ShouldBeFalse();
+    }
+
+    private static bool LoadedOwnerBodiesMatchTheLock()
+    {
+        try
+        {
+            _ = PlatformPartiesPackageFixture.Lock.VerifyLoaded([.. PlatformPackageCatalogQualification.LoadedPackages("eventstore"), "Hexalith.Tenants.Contracts", "Hexalith.Tenants.Server"],
+                PlatformPartiesPackageFixture.PackageFolders);
+            return true;
+        }
+        catch (InvalidDataException)
+        {
+            return false;
+        }
     }
 
     [Fact]

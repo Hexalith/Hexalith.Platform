@@ -54,12 +54,9 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             selection.TimedOut.ShouldBeFalse();
             selection.OutputTruncated.ShouldBeFalse();
             string tenantsVersion = selection.Output.Trim();
-            (string ExpectedHash, string Cohort) selected = tenantsVersion switch
-            {
-                "7.0.5" => ("e84f4b22485c5db4866636558488e387132369583483b0334839c1bcf66b95ad", PlatformPartiesPackageFixture.EventStoreTestCohort),
-                "7.0.7" => ("1e180b869b693ab50c5522959f52b6b8f1f5637102d18fc9df1f3fa9768ca68d", PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName),
-                _ => throw new InvalidDataException("The production closure requires an independently measured Server package."),
-            };
+            // The generated lock admits the production model's selected Server version; no hash or version tuple is compiled in.
+            OwnerPackageLock owners = PlatformPartiesPackageFixture.Lock;
+            _ = owners.Require("Hexalith.Tenants.Server", tenantsVersion);
             string security = Path.Combine(root, "eng", "HistoricalPackageSecurity.props");
             File.Exists(security).ShouldBeTrue("The isolated build must use the same bounded security patches as the owning Platform build.");
             string model = Path.Combine(workspace, "hosts", "platform-model");
@@ -86,7 +83,11 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             Hash(catalog).ShouldBe(catalogHash, "Security patches must not rewrite the authenticated exported catalog blob.");
             string server = Path.Combine(model, "Hexalith.Tenants.Server.dll");
             File.Exists(server).ShouldBeTrue("The production model output itself must supply Server; the test project's reference cannot satisfy this prerequisite.");
-            Hash(server).ShouldBe(selected.ExpectedHash);
+            using (JsonDocument modelGraph = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(model, "Hexalith.Platform.Composition.deps.json"))))
+            {
+                OwnerPackageIdentity expected = owners.Verify(OwnerPackageLock.ReadAssets(modelGraph.RootElement)["Hexalith.Tenants.Server"], PlatformPartiesPackageFixture.PackageFolders, server);
+                Hash(server).ShouldBe(expected.ExpectedSha256);
+            }
             using JsonDocument assets = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")));
             JsonElement audit = assets.RootElement.GetProperty("project").GetProperty("restore").GetProperty("restoreAuditProperties");
             audit.GetProperty("enableAudit").GetString().ShouldBe("true");
@@ -118,10 +119,14 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                 Assembly production = context.LoadFromAssemblyPath(Path.Combine(model, "Hexalith.Platform.Composition.dll"));
                 using (context.EnterContextualReflection())
                 {
-                    Type authority = production.GetType("Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort", throwOnError: true)!;
-                    bool matched = (bool)authority.GetMethod("Matches", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
-                        ["Hexalith.Tenants.Server", selected.Cohort])!;
-                    matched.ShouldBeTrue("The actual production authority must verify the body from its own isolated model directory.");
+                    Type authority = production.GetType("Hexalith.Platform.CatalogArtifacts.OwnerPackageLock", throwOnError: true)!;
+                    object productionLock = authority.GetMethod("Load", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [owners.Path])!;
+                    object folders = authority.GetMethod("PackageFolders", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [production])!;
+                    object identity = ((System.Collections.IEnumerable)authority.GetMethod("VerifyLoaded", BindingFlags.NonPublic | BindingFlags.Instance)!
+                        .Invoke(productionLock, [new[] { "Hexalith.Tenants.Server" }, folders])!).Cast<object>().Single();
+                    identity.GetType().GetProperty("LoadedPath")!.GetValue(identity).ShouldBe(server,
+                        "The actual production authority must verify the body from its own isolated model directory.");
+                    identity.GetType().GetProperty("ExpectedSha256")!.GetValue(identity).ShouldBe(Hash(server));
                 }
                 context.Assemblies.Single(assembly => assembly.GetName().Name == "Hexalith.Tenants.Server").Location.ShouldBe(server);
             }

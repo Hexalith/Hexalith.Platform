@@ -29,6 +29,9 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         Directory.CreateDirectory(declarations);
         foreach (string file in new[] { "eventstore.json", "tenants.json", "memories.json", "local-profile.json" })
             File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", file), Path.Combine(declarations, file));
+        // The candidate's generated owner package lock is the sole package admission authority for this synthetic root.
+        Directory.CreateDirectory(Path.Combine(Root, "eng"));
+        File.Copy(Path.Combine(PlatformTestRepository.Root, "eng", "owner-packages.lock.json"), Path.Combine(Root, "eng", "owner-packages.lock.json"));
         string provenancePath = Path.Combine(declarations, "provenance.json");
         if (currentTest)
         {

@@ -8,35 +8,35 @@ using Shouldly;
 /// <summary>Checks package-version selection using component catalogs and snapshots; grants no artifact or runtime authority.</summary>
 public sealed class PlatformMcpCliCatalogSelectionTests
 {
-    /// <summary>Both purposes require the actual catalog's exact measured abstraction pin, including refusal of unqualified major three.</summary>
+    /// <summary>The abstraction family is admitted only at the locked version of the actual catalog pin; other and absent pins refuse.</summary>
     [Fact]
-    public void ActualCatalogPinSelectsOnlyExistingMeasuredPurposes()
+    public void ActualCatalogPinIsAdmittedOnlyAtTheLockedVersion()
     {
         using var fixture = PlatformQualificationPackageFixture.SelectedSdkTest();
         PlatformCompositionOptions options = fixture.Options with { RunPlan = null };
-        string sdk = PlatformPartiesPackageFixture.SelectedSdkVersion;
-        string privateCohort = PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name;
-        string publicCohort = PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name;
+        OwnerPackageLock owners = OwnerPackageLock.Load(OwnerPackageLock.PathFor(fixture.Root));
+        string locked = owners.Entries.Single(entry => entry.Id == "Hexalith.McpCli.Abstractions").Version;
         string catalog = Catalog(fixture.Root);
         string original = File.ReadAllText(catalog).Replace("</PropertyGroup>", "<HexalithPartiesVersion>3.1.1</HexalithPartiesVersion></PropertyGroup>", StringComparison.Ordinal);
+        original.ShouldContain("Version=\"" + locked + "\"");
         File.WriteAllText(catalog, original);
-        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBe(privateCohort);
-        PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBe(publicCohort);
+        PlatformMcpCliCatalogVersion.Resolve(options, "component selection").ShouldBe(locked);
+        PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: true);
         foreach (string refused in new[] { "2.0.0", "2.0.2", "2.0.1+metadata", "3.0.0", "3.0.1", "" })
         {
-            File.WriteAllText(catalog, original.Replace("Version=\"2.0.1\"", "Version=\"" + refused + "\"", StringComparison.Ordinal));
-            PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBeNull();
-            PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull();
+            File.WriteAllText(catalog, original.Replace("Version=\"" + locked + "\"", "Version=\"" + refused + "\"", StringComparison.Ordinal));
+            Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: true), refused);
         }
-        File.WriteAllText(catalog, original.Replace("<PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"2.0.1\" />", "", StringComparison.Ordinal));
-        PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options).ShouldBeNull();
-        PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true).ShouldBeNull();
+        File.WriteAllText(catalog, original.Replace("<PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + locked + "\" />", "", StringComparison.Ordinal));
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: true))
+            .Message.ShouldContain("selects no Hexalith.McpCli.Abstractions version");
+        PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: false);
         using var historical = PlatformQualificationPackageFixture.HistoricalPublic();
         PlatformCompositionOptions historicalOptions = historical.Options with { RunPlan = null };
-        PlatformPackageCatalogQualification.SelectCohort(historicalOptions, fullParties: true).ShouldBe(PublishedCatalogArtifactCohort.CurrentFullPartiesName);
-        string historicalCatalog = Catalog(historical.Root);
-        File.WriteAllText(historicalCatalog, File.ReadAllText(historicalCatalog).Replace("2.0.0", "2.0.1", StringComparison.Ordinal));
-        PlatformPackageCatalogQualification.SelectCohort(historicalOptions, fullParties: true).ShouldBeNull();
+        string historicalPin = PlatformMcpCliCatalogVersion.Resolve(historicalOptions, "historical selection").ShouldNotBeNull();
+        historicalPin.ShouldNotBe(locked);
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, historicalOptions, required: true))
+            .Message.ShouldContain("names Hexalith.McpCli.Abstractions " + locked + ", but " + historicalPin + " is selected");
     }
 
     /// <summary>Physical resolution permits the canonical default assignment and refuses ambiguous, conditional or imported package inputs.</summary>
@@ -107,8 +107,8 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
         PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection").ShouldBe("3.0.0");
-        PublishedCatalogArtifactCohort.ForCurrentOwnerVersions("4.2.0", "7.0.7", "3.0.27", PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection")).ShouldBeNull();
-        PublishedCatalogArtifactCohort.ForPublishedPartiesVersions("4.2.0", "7.0.7", "3.0.27", "3.1.1", PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection")).ShouldBeNull();
+        Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(PlatformPartiesPackageFixture.Lock, options, required: true))
+            .Message.ShouldContain("but 3.0.0 is selected");
         versions.Clear();
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));

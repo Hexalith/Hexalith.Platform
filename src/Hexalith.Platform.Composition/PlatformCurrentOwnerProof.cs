@@ -23,15 +23,16 @@ internal sealed class PlatformCurrentOwnerProof
     private readonly PlatformCurrentOwnerSourceState _source;
 
     private PlatformCurrentOwnerProof(PlatformCompositionOptions options, string key, string directory, IReadOnlyDictionary<string, string> bodies,
-        IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
+        OwnerPackageLock owners, IReadOnlyDictionary<string, OwnerPackageIdentity> ownerPackages, IReadOnlyDictionary<string, string> files, PlatformCurrentOwnerSourceState source)
     {
         Parent = PlatformPartiesRunProof.Create(options, key);
         source.RequireUnchanged(ActiveRoot(options), source.Revision, options.RunPlan!.StartupDeadlineUtc);
         _source = source;
         Directory = directory;
-        Cohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
+        OwnerPackages = owners;
         SdkVersion = PlatformServerBindings.Version(options, "eventstore", "Parties Release preparation");
         Bodies = bodies;
+        OwnerBodies = ownerPackages;
         PackageArchives = files.Where(pair => pair.Key.EndsWith(".nupkg", StringComparison.Ordinal)).ToDictionary(pair => Path.GetFileName(pair.Key), pair => pair.Value, StringComparer.Ordinal);
         _files = files;
         _key = Convert.FromBase64String(key);
@@ -41,6 +42,7 @@ internal sealed class PlatformCurrentOwnerProof
             options.RunPlan!.RunId, options.RunPlan.AttemptId, options.RunPlan.EnvironmentId,
             platform = options.Mapping.PlatformIdentity, configuration = "Release", targetFramework = PreparationTargetFramework,
             options.RunPlan.PlatformDeclarationHash, options.RunPlan.SelectedTests, sdkVersion = SdkVersion, bodies, files,
+            ownerPackageLock = OwnerPackages.Sha256, ownerPackages = ownerPackages.Values.OrderBy(identity => identity.Assembly, StringComparer.Ordinal),
         });
         _seal = Convert.ToHexStringLower(HMACSHA256.HashData(_key, System.Text.Encoding.UTF8.GetBytes(_receipt)));
     }
@@ -48,7 +50,8 @@ internal sealed class PlatformCurrentOwnerProof
     /// <summary>Optional isolated test observation after real measurement; cannot replace artifacts or grant authority.</summary>
     internal static AsyncLocal<Action?> PreparedObserver { get; } = new();
 
-    internal string Cohort { get; }
+    /// <summary>Gets the owner package lock admitted for this run's catalog selection.</summary>
+    internal OwnerPackageLock OwnerPackages { get; }
     /// <summary>Identifies the active owner integration entry within the authenticated package selection.</summary>
     internal static bool SelectsIntegration(PlatformCompositionOptions options)
         => options.RunPlan?.SelectedTests.Any(test => test is { ModuleId: "parties", Mode: "package", Name: Profile }) == true;
@@ -80,6 +83,8 @@ internal sealed class PlatformCurrentOwnerProof
     /// <summary>Gets the immutable pre-build source identity retained by the proof and readiness observation.</summary>
     internal string SourceRevision => _source.Revision;
     internal IReadOnlyDictionary<string, string> Bodies { get; }
+    /// <summary>Gets the lock-verified owner package bodies of the Release output, keyed by assembly name (AR-12 expected identities).</summary>
+    internal IReadOnlyDictionary<string, OwnerPackageIdentity> OwnerBodies { get; }
     internal IReadOnlyDictionary<string, string> PackageArchives { get; }
 
     internal static PlatformCurrentOwnerProof Create(PlatformCompositionOptions options, string key, bool developmentRun)
@@ -89,11 +94,7 @@ internal sealed class PlatformCurrentOwnerProof
             || options.Projects != PlatformServerBindings.ReferenceProjects || options.TimesheetsEnabled || options.UsePrebuiltProjects
             || !SelectsIntegration(options) || options.PartiesRunProof?.Matches(options) != true)
             throw Refusal();
-        string cohort = PlatformPackageCatalogQualification.RequirePackageCohort(options);
-        string sdkVersion = PlatformServerBindings.Version(options, "eventstore", "Parties Release preparation");
-        string tenantsVersion = PlatformServerBindings.Version(options, "tenants", "Parties Release preparation");
-        string memoriesVersion = PlatformServerBindings.Version(options, "memories", "Parties Release preparation");
-        string? mcpCliVersion = PlatformMcpCliCatalogVersion.Resolve(options, "Parties Release preparation");
+        OwnerPackageLock owners = PlatformPackageCatalogQualification.RequireLockedPackages(options);
         string active = ActiveRoot(options);
         string revision = Git(active, "rev-parse", "HEAD");
         PlatformCurrentOwnerSourceState source = PlatformCurrentOwnerSourceState.Capture(active, revision, options.RunPlan!.StartupDeadlineUtc);
@@ -140,11 +141,13 @@ internal sealed class PlatformCurrentOwnerProof
             Run(["pack", ownProject, "--no-build", "--output", feed, .. arguments], name + "-pack.log");
         }
         string output = Path.Combine(artifacts, "bin", "Hexalith.Parties", "release");
-        foreach (string name in new[] { "Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService" })
-        {
-            string path = Path.Combine(output, name + ".dll");
-            PublishedCatalogArtifactCohort.VerifyCurrentSdkFile(path, Hash(path), cohort);
-        }
+        // Every owner package body in the Release output must equal its lock-verified archive member; Parties bodies are run-built.
+        Dictionary<string, OwnerPackageIdentity> ownerPackages;
+        using (JsonDocument runtimeGraph = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(output, "Hexalith.Parties.deps.json"))))
+            ownerPackages = owners.VerifyDirectory(runtimeGraph.RootElement, [cache], output, RunBuiltBodies)
+                .ToDictionary(identity => identity.Assembly, StringComparer.Ordinal);
+        foreach (string name in ObservedSdk)
+            if (!ownerPackages.ContainsKey(name)) throw new InvalidDataException($"The Parties Release has no lock-verified '{name}' package body.");
         Dictionary<string, string> bodies = new(StringComparer.Ordinal);
         Dictionary<string, string> files = new(inputs, StringComparer.Ordinal);
         foreach (string path in System.IO.Directory.GetFiles(output, "*")) files[path] = Hash(path);
@@ -183,13 +186,13 @@ internal sealed class PlatformCurrentOwnerProof
             {
                 string name = library.Name.Split('/')[0];
                 string actualVersion = library.Name.Split('/')[1];
-                if (library.Value.GetProperty("type").GetString() == "package"
-                    && (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal)
-                        || name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) && actualVersion != sdkVersion
-                        || name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) && actualVersion != tenantsVersion
-                        || name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) && actualVersion != memoriesVersion
-                        || name == "Hexalith.McpCli.Abstractions" && actualVersion != mcpCliVersion))
-                    throw new InvalidDataException($"The Parties Release restored '{name}' {actualVersion} outside the selected catalog dependencies.");
+                if (library.Value.GetProperty("type").GetString() == "package")
+                {
+                    if (name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal))
+                        throw new InvalidDataException($"The Parties Release restored '{name}' {actualVersion} outside the selected catalog dependencies.");
+                    // Every other restored owner package must be exactly the locked version.
+                    if (OwnerPackageLock.IsOwnerPackage(name)) _ = owners.Require(name, actualVersion);
+                }
                 if (library.Value.GetProperty("type").GetString() == "project")
                 {
                     string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(document.RootElement.GetProperty("project").GetProperty("restore").GetProperty("projectPath").GetString()!)!, library.Value.GetProperty("msbuildProject").GetString()!));
@@ -205,7 +208,9 @@ internal sealed class PlatformCurrentOwnerProof
         _ = PlatformPackageCatalogReader.Prepare(new System.Xml.Linq.XDocument(new System.Xml.Linq.XElement("Project")), options,
             options.RunPlan.Workspace, readerPreflight, DateTimeOffset.UtcNow + PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan.StartupDeadlineUtc, DateTimeOffset.UtcNow));
         VerifyPreparedRevision(active, revision, source, options.RunPlan.StartupDeadlineUtc);
-        return new(options, key, directory, bodies, files, source);
+        // Seal the admitted lock bytes, not a later re-read of the lock file.
+        files[owners.Path] = owners.Sha256;
+        return new(options, key, directory, bodies, owners, ownerPackages, files, source);
 
         void Run(string[] command, string log)
         {
@@ -257,8 +262,18 @@ internal sealed class PlatformCurrentOwnerProof
                 || Hash(matches[0].GetProperty("path").GetString()!) != Bodies[name])
                 throw new InvalidDataException($"The reader artifact '{name}' differs from its measured Parties Release body.");
         }
-        PublishedCatalogArtifactCohort.VerifyCurrentReferenceReceipt(artifacts.Select(item => (item.GetProperty("path").GetString()!, item.GetProperty("sha256").GetString()!)).ToArray(), Cohort);
+        // AR-12: each lock-verified reference body the reader loaded is recorded against its archive member.
+        IReadOnlyList<OwnerPackageIdentity> records = OwnerPackages.VerifyReceipt(receipt, RunBuiltBodies);
+        foreach (string name in ObservedSdk)
+            if (!records.Any(record => record.Assembly == name))
+                throw new InvalidDataException($"The reader receipt has no lock-verified '{name}' package body.");
     }
+
+    /// <summary>The SDK bodies the running Parties executable maps; each must equal its lock-verified package member.</summary>
+    internal static IReadOnlyList<string> ObservedSdk { get; } = ["Hexalith.EventStore.Contracts", "Hexalith.EventStore.ServiceDefaults", "Hexalith.EventStore.Client", "Hexalith.EventStore.DomainService"];
+
+    /// <summary>The run-built Parties reader bodies; they keep their run-bound authority and are never locked.</summary>
+    internal static IReadOnlySet<string> RunBuiltBodies { get; } = new HashSet<string>(["Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions"], StringComparer.Ordinal);
 
     /// <summary>Requires the selected declaration to belong to the already measured immutable source and exact purpose.</summary>
     internal static void VerifyDeclaration(string path, string declaredHash, PlatformCurrentOwnerSourceState source)

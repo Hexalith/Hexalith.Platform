@@ -211,13 +211,16 @@ public sealed class EventStoreExtensionCompositionTests
     [Fact]
     public void MeasuredReleasedExtensionSdkBodiesConferNoOwnerOrHostAdmission()
     {
-        const string cohort = Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ExtensionSdkName;
-        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifySdk(cohort).Count.ShouldBe(8);
-        Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.ForVersions("4.2.0", "7.0.5").ShouldBeNull();
-        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.VerifyFullParties(cohort));
-        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(typeof(PlatformTestExtensionAdapters).Assembly, cohort));
-        Should.Throw<InvalidDataException>(() => Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.Verify(
-            typeof(EventStoreExtensionApi).Assembly, Hexalith.Platform.CatalogArtifacts.PublishedCatalogArtifactCohort.CurrentName));
+        // The eight released extension SDK bodies verify against the generated lock; that grants no owner or host admission.
+        string[] sdk = ["Hexalith.EventStore.Admin.Abstractions", "Hexalith.EventStore.Aspire", "Hexalith.EventStore.Client", "Hexalith.EventStore.Contracts",
+            "Hexalith.EventStore.DomainService", "Hexalith.EventStore.Gateway", "Hexalith.EventStore.Server", "Hexalith.EventStore.ServiceDefaults"];
+        var owners = PlatformPartiesPackageFixture.Lock;
+        var bodies = owners.VerifyLoaded(sdk, PlatformPartiesPackageFixture.PackageFolders);
+        bodies.Select(body => body.Assembly).ShouldBe(sdk);
+        bodies.ShouldAllBe(body => body.ExpectedSha256 == body.LoadedSha256 && body.Version == PlatformPartiesPackageFixture.SelectedSdkVersion);
+        Should.Throw<InvalidDataException>(() => owners.Require("Hexalith.Tenants.Contracts", "7.0.5"));
+        Should.Throw<InvalidDataException>(() => owners.VerifyLoaded([typeof(PlatformTestExtensionAdapters).Assembly.GetName().Name!], PlatformPartiesPackageFixture.PackageFolders));
+        Should.Throw<InvalidDataException>(() => owners.VerifyLoaded([typeof(PlatformAppModel).Assembly.GetName().Name!], PlatformPartiesPackageFixture.PackageFolders));
     }
 #endif
 

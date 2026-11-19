@@ -58,5 +58,50 @@ public sealed class PlatformCurrentOwnerObservationTests
         }
     }
 
+    /// <summary>Mapped SDK bodies must equal their lock-verified members; every observed SDK body must be mapped; matches keep <c>sdkBodies</c> name-to-digest.</summary>
+    /// <param name="fault">The inert mapping control.</param>
+    [Theory]
+    [InlineData("none")]
+    [InlineData("different-sdk")]
+    [InlineData("absent-sdk")]
+    public async Task MappedOwnerPackageBodiesMustEqualTheirLockVerifiedMembersAsync(string fault)
+    {
+        OperatingSystem.IsLinux().ShouldBeTrue("The current purpose and its actual /proc observer require Linux.");
+        string directory = Path.Combine(Path.GetTempPath(), "current-owner-packages-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            Dictionary<string, Hexalith.Platform.CatalogArtifacts.OwnerPackageIdentity> expected = new(StringComparer.Ordinal);
+            foreach (string name in PlatformCurrentOwnerProof.ObservedSdk.Append("Hexalith.Tenants.Contracts"))
+            {
+                string path = Path.Combine(directory, name + ".dll");
+                File.WriteAllText(path, "inert " + name + " mapping fixture");
+                string digest = fault == "different-sdk" && name == "Hexalith.EventStore.Client" ? new string('0', 64) : Hash(path);
+                expected[name] = new(name, name, "0.0.0-fixture", Convert.ToBase64String(new byte[64]), Path.Combine(directory, name + ".nupkg"),
+                    "lib/net11.0/" + name + ".dll", digest, path, Hash(path));
+            }
+            // The Tenants body is not mapped by the process: an unmapped non-SDK body is not observed.
+            string[] mapped = PlatformCurrentOwnerProof.ObservedSdk.Where(name => fault != "absent-sdk" || name != "Hexalith.EventStore.DomainService")
+                .Select(name => Path.Combine(directory, name + ".dll")).ToArray();
+            await using var process = await PlatformMappedOwnerProcess.StartAsync(mapped);
+            if (fault == "none")
+            {
+                var (sdk, ownerPackages) = PlatformCurrentOwnerObservation.ReadMappedOwnerPackages(process.Id, directory, expected);
+                sdk.Keys.Order(StringComparer.Ordinal).ShouldBe(PlatformCurrentOwnerProof.ObservedSdk.Order(StringComparer.Ordinal));
+                sdk.ShouldAllBe(pair => pair.Value == expected[pair.Key].ExpectedSha256);
+                ownerPackages.Keys.Order(StringComparer.Ordinal).ShouldBe(PlatformCurrentOwnerProof.ObservedSdk.Order(StringComparer.Ordinal));
+                return;
+            }
+            var refusal = Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerObservation.ReadMappedOwnerPackages(process.Id, directory, expected));
+            refusal.Message.ShouldContain(fault == "different-sdk"
+                ? "The running Parties artifact 'Hexalith.EventStore.Client' differs from its lock-verified package member"
+                : "The actual Parties SDK mapping for 'Hexalith.EventStore.DomainService' is unavailable");
+            var withoutBody = expected.Where(pair => pair.Key != "Hexalith.EventStore.Contracts").ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+            Should.Throw<InvalidDataException>(() => PlatformCurrentOwnerObservation.ReadMappedOwnerPackages(process.Id, directory, withoutBody))
+                .Message.ShouldContain("'Hexalith.EventStore.Contracts' is unavailable");
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
     private static string Hash(string path) => Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
 }

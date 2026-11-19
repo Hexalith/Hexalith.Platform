@@ -37,14 +37,22 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Gets the actual production-generated reader directory.</summary>
     internal string Reader => Path.Combine(Workspace, "platform-components", "catalog-reader");
 
-    /// <summary>Requires the real full public bodies before resolving an explicitly prepared coherent workspace; there is no legacy or synthetic fallback.</summary>
-    internal static string SelectedSdkVersion => PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name) ? "4.2.0"
-        : PublishedCatalogArtifactCohort.MatchesSdk(PublishedCatalogArtifactCohort.PublishedPartiesName) ? "4.1.0"
-        : throw new InvalidDataException("The package fixture requires one complete authenticated SDK cohort.");
+    /// <summary>Gets the candidate's committed owner package lock, the sole package admission authority.</summary>
+    internal static OwnerPackageLock Lock => OwnerPackageLock.Load(OwnerPackageLock.PathFor(PlatformTestRepository.Root));
 
-    internal static string PublishedCohort => SelectedSdkVersion == "4.2.0" ? PublishedCatalogArtifactCohort.PublishedPartiesSdk420Name : PublishedCatalogArtifactCohort.PublishedPartiesName;
-    internal static string CurrentCohort => PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name;
-    internal static string EventStoreTestCohort => PublishedCatalogArtifactCohort.EventStorePackageTestCurrentName;
+    /// <summary>Gets the package folders the test build restored owner packages into.</summary>
+    internal static IReadOnlyList<string> PackageFolders => OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
+
+    /// <summary>Requires the loaded SDK bodies to equal their lock-verified archive members, then returns the locked SDK version; there is no legacy or synthetic fallback.</summary>
+    internal static string SelectedSdkVersion
+    {
+        get
+        {
+            OwnerPackageLock owners = Lock;
+            IReadOnlyList<OwnerPackageIdentity> sdk = owners.VerifyLoaded(PlatformPackageCatalogQualification.LoadedPackages("eventstore"), PackageFolders);
+            return sdk.Select(identity => identity.Version).Distinct(StringComparer.Ordinal).Single();
+        }
+    }
 
     internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package", bool sdk42 = false)
     {
@@ -62,8 +70,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static async Task<PlatformPartiesPackageFixture> CreateFromCandidateAsync(string profile)
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
-        string cohort = PublishedCatalogArtifactCohort.CurrentOwnerCurrentName;
-        PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
+        SelectedSdkVersion.ShouldBe("4.2.0", "The loaded SDK bodies must equal their lock-verified package members.");
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -103,15 +110,10 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
                 PlatformDeclarationHash = Hash(manifest), SelectedTest = selected, SelectedTests = [selected], StartupDeadlineUtc = now.AddSeconds(600),
             };
             PlatformCompositionOptions options = new() { PlatformRoot = identity.PlatformPath, Mapping = mapping, ActiveModule = "parties", DeclarationPaths = [manifest], RunPlan = plan, EventStoreSeedProject = seed };
-            cohort = (current ? PlatformPackageCatalogQualification.SelectCurrentOwnerCohort(options)
-                : PlatformPackageCatalogQualification.SelectCohort(options, fullParties: true))
-                ?? throw new InvalidDataException("The candidate fixture requires an independently authenticated complete tuple.");
-            if (current) (cohort is PublishedCatalogArtifactCohort.CurrentOwnerCurrentName or PublishedCatalogArtifactCohort.CurrentOwnerMemories327Name).ShouldBeTrue();
-            else cohort.ShouldBe(PublishedCatalogArtifactCohort.PublishedPartiesMemories327Name);
-            PlatformPackageCatalogQualification.HasQualifiedSdkBytes(cohort).ShouldBeTrue();
+            // The catalog-selected owner versions are admitted by the lock rule; no version tuple is consulted.
+            PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(identity.PlatformPath));
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"),
-                ("memories", current ? PublishedCatalogArtifactCohort.CurrentOwnerMemoriesVersion(cohort) : "3.0.27"), ("parties", "3.1.1") })
+            foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"), ("memories", "3.0.27"), ("parties", "3.1.1") })
                 PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
