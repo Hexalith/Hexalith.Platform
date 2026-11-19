@@ -14,6 +14,22 @@ from current_catalog_view import PLATFORM_CONSUMERS
 
 ROOT = Path(__file__).resolve().parents[1]
 OPTIONS = None
+# The guard admits the catalog's default source SDK by version range: the oldest default the old fixed list held (4.1.0) and every later one.
+SOURCE_SDK_FLOOR = "4.1.0"
+
+
+def parsed(version):
+    """MSBuild's version-function reading: optional leading v, one to four numeric parts, any -/+ suffix ignored."""
+    text = version[1:] if version.startswith(("v", "V")) else version
+    parts = re.split(r"[-+]", text, maxsplit=1)[0].split(".")
+    if not 1 <= len(parts) <= 4 or not all(part.isascii() and part.isdigit() for part in parts):
+        return None
+    return tuple(int(part) for part in parts) + (0,) * (4 - len(parts))
+
+
+def supported_source_sdk(version):
+    value = parsed(version)
+    return value is not None and value >= parsed(SOURCE_SDK_FLOOR)
 
 
 class SourceSdkPropagationTests(unittest.TestCase):
@@ -38,8 +54,9 @@ class SourceSdkPropagationTests(unittest.TestCase):
         cls.default_sdk = cls.invoke(cls.fixture, ["-p:UseHexalithProjectReferences=true"])["Properties"]["HexalithEventStoreVersion"]
         # Source consumers follow the owning catalog's current SDK; package cohort qualification
         # stays separate and cannot be inferred from this metadata-only source check.
-        if cls.default_sdk not in ("4.1.0", "4.2.0", "5.1.0", "5.2.0", "5.3.0"):
-            raise AssertionError("The focused controls require one of the recorded current/historical source SDKs.")
+        if not supported_source_sdk(cls.default_sdk):
+            raise AssertionError("The focused controls require a parseable source SDK of at least " + SOURCE_SDK_FLOOR
+                                 + ", not " + repr(cls.default_sdk) + ".")
 
     @classmethod
     def invoke(cls, project, properties, target=None, configuration="Release"):
@@ -75,6 +92,14 @@ class SourceSdkPropagationTests(unittest.TestCase):
         document, metadata = self.selection(["-p:UseHexalithProjectReferences=true"])
         self.assertEqual(self.default_sdk, document["Properties"]["HexalithEventStoreVersion"])
         self.assertEqual(";HexalithEventStoreVersion=" + self.default_sdk + ";UseHexalithProjectReferences=true", metadata)
+
+    def test_default_source_sdk_guard_is_a_version_range_rule(self):
+        for version in ["4.1.0", "5.3.1", "v5.3.1", "5.4.0-preview.1", "6.0.0"]:
+            with self.subTest(version=version):
+                self.assertTrue(supported_source_sdk(version))
+        for version in ["4.0.4", "3.132.2", "", "invalid-version", "5.3.1.0.0", "5.x"]:
+            with self.subTest(version=version):
+                self.assertFalse(supported_source_sdk(version))
 
     def test_explicit_historical_global_selection_is_preserved(self):
         document, metadata = self.selection(["-p:UseHexalithProjectReferences=true", "-p:HexalithEventStoreVersion=4.0.4"])
@@ -387,11 +412,11 @@ def main():
         raise ValueError("Choose a fresh metadata-control evidence directory.")
     OPTIONS.evidence.mkdir(parents=True)
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(SourceSdkPropagationTests)
-    if suite.countTestCases() != 29:
-        raise ValueError("The source SDK metadata contract requires exactly twenty-nine controls.")
+    if suite.countTestCases() != 30:
+        raise ValueError("The source SDK metadata contract requires exactly thirty controls.")
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    passed = result.testsRun == 29 and not result.skipped and result.wasSuccessful()
-    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 29, "executed": result.testsRun,
+    passed = result.testsRun == 30 and not result.skipped and result.wasSuccessful()
+    (OPTIONS.evidence / "result.json").write_text(json.dumps({"expected": 30, "executed": result.testsRun,
         "failures": len(result.failures), "errors": len(result.errors), "skipped": len(result.skipped),
         "passed": passed, "qualificationCredit": False,
         "scope": "Real metadata evaluation only; controlled mapping signals grant no authentication or runtime authority."}, indent=2) + "\n")
