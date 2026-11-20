@@ -55,6 +55,18 @@ class WorksToolchainTests(unittest.TestCase):
         (explicit / "Directory.Packages.props").write_text(catalog(cli="1.18.4"))
         self.assertEqual(works_toolchain.load(root, environ={"HexalithBuildsRoot": str(explicit.parent)})["daprCli"], "1.18.4")
 
+    def test_selects_only_the_record_for_the_catalog_runtime(self):
+        root = self.fixture(props=catalog(runtime="1.19.2", cli="1.19.1"))
+        path = root / "config/works-proof-toolchains/1.19.2.json"
+        path.parent.mkdir()
+        path.write_text(json.dumps({"qualifiedDaprRuntime": "1.19.2", "linuxAmd64DaprdSha256": "a" * 64}))
+        selected = works_toolchain.load(root, environ={})
+        self.assertEqual("a" * 64, selected["linuxAmd64DaprdSha256"])
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), selected["pinSha256"])
+        path.write_text(path.read_text().replace("1.19.2", "1.19.1"))
+        with self.assertRaisesRegex(ValueError, "requalify"):
+            works_toolchain.load(root, environ={})
+
     def test_a_catalog_runtime_without_a_requalified_hash_refuses(self):
         root = self.fixture(props=catalog(runtime="1.18.8"))
         with self.assertRaisesRegex(ValueError, "requalify"):

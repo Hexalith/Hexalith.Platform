@@ -530,36 +530,38 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   `globalPackagesFolder`, set `NUGET_PACKAGES` to that absolute folder for both
   restore and `debug`; the tool otherwise checks `~/.nuget/packages` and reports
   `HXR016` when the required packages are missing.
-- `HEXALITH_DAPR_HOME`: an absolute, isolated Dapr home with Dapr CLI `1.18.2`
-  at `tools/dapr` and runtime `1.18.7` at `.dapr/bin/{daprd,placement,scheduler}`.
-  A machine-wide `dapr init` does not qualify. On Linux x64 (including WSL2),
-  prepare one from the official release assets; other platforms need the
-  matching `<os>_<arch>` assets of the same releases. The subshell stops at the
-  first failed download or checksum, removes its downloads and leaves your shell
-  where it was:
+- `HEXALITH_DAPR_HOME` is an absolute, isolated Dapr installation. The
+  Builds catalog (`Props/Directory.Packages.props`) pins the CLI and runtime
+  separately. The CLI belongs at `tools/dapr` and the runtime binaries at
+  `.dapr/bin/{daprd,placement,scheduler}`. From the
+  Platform root on Linux x64 (including WSL2), run the following in Bash.
+  Other platforms need the matching release assets for their OS and architecture.
 
   ```bash
-  export HEXALITH_DAPR_HOME="$HOME/.hexalith/dapr/1.18.7"
+  project=src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj
+  dapr_runtime=$(dotnet msbuild "$project" -nologo -getProperty:HexalithDaprRuntimeVersion) &&
+  dapr_cli=$(dotnet msbuild "$project" -nologo -getProperty:HexalithDaprCliVersion) &&
+  [[ "$dapr_runtime" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && "$dapr_cli" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] &&
+  export HEXALITH_DAPR_HOME="$HOME/.hexalith/dapr/$dapr_runtime" &&
   (
     set -euo pipefail
-    mkdir -p "$HEXALITH_DAPR_HOME/tools" "$HEXALITH_DAPR_HOME/.dapr/bin"
-    downloads="$(mktemp -d)"
+    downloads=$(mktemp -d)
     trap 'rm -rf "$downloads"' EXIT
     cd "$downloads"
-    base=https://github.com/dapr
-    for asset in cli/releases/download/v1.18.2/dapr_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.7/daprd_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.7/placement_linux_amd64.tar.gz \
-        dapr/releases/download/v1.18.7/scheduler_linux_amd64.tar.gz; do
-      curl -fsSLO "$base/$asset"
-      curl -fsSLO "$base/$asset.sha256"
+    for asset in "cli/releases/download/v$dapr_cli/dapr_linux_amd64.tar.gz" \
+        "dapr/releases/download/v$dapr_runtime/daprd_linux_amd64.tar.gz" \
+        "dapr/releases/download/v$dapr_runtime/placement_linux_amd64.tar.gz" \
+        "dapr/releases/download/v$dapr_runtime/scheduler_linux_amd64.tar.gz"; do
+      curl -fsSLO "https://github.com/dapr/$asset"
+      curl -fsSLO "https://github.com/dapr/$asset.sha256"
     done
     sha256sum -c ./*.sha256
-    tar -xzf dapr_linux_amd64.tar.gz -C "$HEXALITH_DAPR_HOME/tools"
+    mkdir -p "$HEXALITH_DAPR_HOME/tools" "$HEXALITH_DAPR_HOME/.dapr/bin"
+    tar -xzf dapr_linux_amd64.tar.gz -C "$HEXALITH_DAPR_HOME/tools" dapr
     for binary in daprd placement scheduler; do
-      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$HEXALITH_DAPR_HOME/.dapr/bin"
+      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$HEXALITH_DAPR_HOME/.dapr/bin" "$binary"
     done
-    DAPR_RUNTIME_PATH="$HEXALITH_DAPR_HOME" "$HEXALITH_DAPR_HOME/tools/dapr" --version   # CLI 1.18.2, runtime 1.18.7
+    DAPR_RUNTIME_PATH="$HEXALITH_DAPR_HOME" "$HEXALITH_DAPR_HOME/tools/dapr" --version
   )
   ```
 

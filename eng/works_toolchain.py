@@ -1,9 +1,9 @@
 """Platform-owned toolchain selected by the complete Works parity qualification.
 
 The Builds catalog (``HexalithDaprRuntimeVersion`` / ``HexalithDaprCliVersion``) is the single version authority
-for the Works fleet: Platform composes the Dapr control plane from it, and this helper derives the sidecar
-runtime and CLI from the same catalog. ``config/works-proof-toolchain.json`` only binds the exact qualified Linux
-daprd bytes to the catalog runtime they were qualified for; a catalog change refuses until that hash is requalified.
+for the Works fleet. Platform composes the Dapr control plane from it, and this helper derives the sidecar
+runtime and CLI from the same catalog. Platform records the qualified Linux daprd digest for each runtime in
+``config/works-proof-toolchains/``. The original record in ``config/works-proof-toolchain.json`` covers 1.19.1.
 """
 import argparse
 import hashlib
@@ -46,21 +46,24 @@ def catalog_version(catalog, name):
 
 def load(root, environ=None):
     """Derive the Works proof toolchain from the Builds catalog and bind its qualified Linux runtime hash."""
-    path = Path(root) / PIN
-    pins = json.loads(path.read_text())
+    catalog = builds_catalog(root, environ)
+    runtime = catalog_version(catalog, "HexalithDaprRuntimeVersion")
+    cli = catalog_version(catalog, "HexalithDaprCliVersion")
+    versioned = Path(root) / "config/works-proof-toolchains" / (runtime + ".json")
+    path = versioned if versioned.is_file() else Path(root) / PIN
+    contents = path.read_bytes()
+    pins = json.loads(contents)
     if not isinstance(pins, dict) or set(pins) != {"qualifiedDaprRuntime", "linuxAmd64DaprdSha256"} or not isinstance(
         pins["qualifiedDaprRuntime"], str
     ) or not STABLE.fullmatch(pins["qualifiedDaprRuntime"]) or not isinstance(
         pins["linuxAmd64DaprdSha256"], str
     ) or not DIGEST.fullmatch(pins["linuxAmd64DaprdSha256"]):
         raise ValueError("Platform Works proof toolchain requires an exact stable qualified runtime and a lowercase Linux runtime hash")
-    catalog = builds_catalog(root, environ)
-    runtime = catalog_version(catalog, "HexalithDaprRuntimeVersion")
-    cli = catalog_version(catalog, "HexalithDaprCliVersion")
     if runtime != pins["qualifiedDaprRuntime"]:
         raise ValueError("The Builds catalog selects Dapr runtime " + runtime + " but Platform qualified the Works proof runtime hash for "
                          + pins["qualifiedDaprRuntime"] + "; requalify the Linux runtime before using the new catalog pin")
     return {"daprCli": cli, "daprRuntime": runtime, "linuxAmd64DaprdSha256": pins["linuxAmd64DaprdSha256"],
+            "pinSha256": hashlib.sha256(contents).hexdigest(),
             "catalog": str(catalog), "catalogSha256": hashlib.sha256(catalog.read_bytes()).hexdigest()}
 
 
@@ -77,8 +80,7 @@ def qualify(root, runtime, environ=None):
         r"(?m)^CLI version:\s*" + re.escape(pins["daprCli"]) + r"\s*$", cli
     ):
         raise ValueError("Installed Dapr differs from Platform's qualified Works proof toolchain")
-    return pins | {"runtime": str(runtime), "runtimeSha256": digest,
-        "pinSha256": hashlib.sha256((Path(root) / PIN).read_bytes()).hexdigest()}
+    return pins | {"runtime": str(runtime), "runtimeSha256": digest}
 
 
 def main():
