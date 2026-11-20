@@ -204,7 +204,7 @@ class PreflightTests(unittest.TestCase):
         stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding()))
         stack.enter_context(patch.object(run_tuple_ci, "load_lock", return_value={"schemaVersion": 1, "packages": [locked]}))
         stack.enter_context(patch.object(run_tuple_ci, "source_state", return_value={"dirty": False}))
-        stack.enter_context(patch.object(run_tuple_ci, "sdk42_collecting_cohort", return_value=None))
+        stack.enter_context(patch.object(run_tuple_ci, "verify_unified_catalog", return_value={"properties": {"HexalithEventStoreVersion": "5.4.0"}}))
         stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
         stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic platform"))
         reads = stack.enter_context(patch.object(run_tuple_ci.subprocess, "check_output", side_effect=git_reads))
@@ -236,7 +236,7 @@ class PreflightTests(unittest.TestCase):
 
                 # An ambient root is never the verified producer; the selected sibling is bound instead.
                 stack.enter_context(patch.dict(run_tuple_ci.os.environ, {"HexalithBuildsRoot": str(self.root / "unverified-root")}))
-                reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"],
+                reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42"],
                                        [checkout.encode(), BLOB.encode(), self.catalog_body], command, lock("6.0.5"))
                 if name == "stale":
                     with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
@@ -269,7 +269,7 @@ class PreflightTests(unittest.TestCase):
                 kwargs["stdout"].write("3" * 40 if argv[0] == "git" else "synthetic dotnet info")
                 return subprocess.CompletedProcess(argv, 0)
 
-            reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"],
+            reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42"],
                                    [], command, lock("6.0.4"))
             with self.assertRaisesRegex(ValueError, "names Hexalith.Builds.Module.Cli 6.0.4, but the Builds pin is 6.0.5"):
                 run_tuple_ci.main()
@@ -328,7 +328,7 @@ class PreflightTests(unittest.TestCase):
                     return subprocess.CompletedProcess(argv, 0)
 
                 self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--artifacts", str(artifacts),
-                                              "--suite", "extensions", "--eventstore-sdk", "4.2.0"], git_read, command, locked)
+                                              "--suite", "extensions"], git_read, command, locked)
                 if fault:
                     message = {"changed-extracted-host": "Extracted artifact changed",
                                "tampered-archive": "Tool package Hexalith.Builds.Module.Cli 6.0.5 has contentHash"}.get(fault, "another tool root or tuple")
@@ -359,7 +359,7 @@ class PreflightTests(unittest.TestCase):
             prepare_builds_artifacts.main()
         self.assertFalse(output.exists())
         evidence = self.root / "preflight"
-        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"]), \
+        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42"]), \
                 patch.object(run_tuple_ci.signal, "signal"), patch.object(run_tuple_ci, "load_binding", incomplete), \
                 self.assertRaisesRegex(ValueError, "exact released"):
             run_tuple_ci.main()

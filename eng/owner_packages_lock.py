@@ -265,6 +265,10 @@ def main():
     parser.add_argument("--output", type=Path, default=LOCK)
     args = parser.parse_args()
     lock, identity = generate()
+    if args.output.resolve() == LOCK.resolve():
+        # The same Builds adoption advances the restore graph and the released deployment manifests.
+        sync = resolve_builds_root(ROOT) / "Tools/ci/release_declarations.py"
+        subprocess.run([sys.executable, str(sync), "--sync-platform", str(ROOT), *(["--check"] if args.check else [])], check=True)
     if args.check:
         require_current(load_lock(args.output), lock)
         print(json.dumps({"status": "current", "catalog": identity, "packages": len(lock["packages"])}))

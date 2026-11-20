@@ -27,7 +27,7 @@ reader checkout is required.
 The workflow resolves that candidate with a shallow checkout, authenticates its
 initialized direct owners and release identities, then runs current42, base42
 and extensions on the same candidate and current NET11 collector. Explicit
-`--suite` and `--eventstore-sdk 4.2.0` arguments are required. Exact positive group
+The `--suite` argument selects the test inventory. All suites use the release selected by the authenticated Builds catalog. Exact positive group
 counts, real runtime and output identities, package-only restore and zero skips
 remain enforced. The aggregate verdict requires both source resolution and
 current execution to succeed. The source publisher requires those three jobs.
@@ -35,7 +35,7 @@ current execution to succeed. The source publisher requires those three jobs.
 For local graph verification, use a new evidence directory:
 
 ```bash
-python3 -B eng/run_tuple_ci.py --audit-only --suite current42 --eventstore-sdk 4.2.0 --evidence <new-evidence-directory>
+python3 -B eng/run_tuple_ci.py --audit-only --suite current42 --evidence <new-evidence-directory>
 ```
 
 This audit authenticates archive/catalog/output inputs but grants no hosted,

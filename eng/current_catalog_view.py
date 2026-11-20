@@ -257,3 +257,54 @@ def verify_named_platform_catalog(raw: bytes, expected_sha256: str) -> dict:
             "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,
             "scope": "Finite named SDK4.2 Platform and owner views; generic SDK" + generic["sdk"] + " defaults read from the catalog are negative controls",
             "candidateAcceptance": False, "runtimeAcceptance": False}
+
+
+def catalog_cohort(raw):
+    """Read each owner's single release selection independently from the Builds catalog."""
+    root = ET.fromstring(raw)
+    result = {}
+    for owner in ("EventStore", "Memories", "Tenants", "Parties", "McpCli"):
+        key = "Hexalith" + owner + "Version"
+        entries = root.findall("PropertyGroup/" + key)
+        if len(entries) != 1 or not re.fullmatch(r"[0-9]+(?:\.[0-9]+){2,3}", entries[0].text or ""):
+            raise ValueError(f"Expected one stable Builds catalog selection for {key}")
+        result[key] = entries[0].text
+    return result
+
+
+def verify_unified_catalog(raw, expected_sha256):
+    require_catalog_body(raw, expected_sha256)
+    cohort = catalog_cohort(raw)
+    names = (*PLATFORM_CONSUMERS, *UNKNOWN_CONSUMERS, *CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS)
+    observed = evaluate_views(raw, consumer_names=names)
+    if sorted(item["Identity"] for item in observed) != sorted(names):
+        raise ValueError("Missing or duplicate consumer views in the Builds catalog")
+    for item in observed:
+        for prop, field, pin_field, packages in (
+                ("EventStore", "Sdk", "Pins", SDK_PACKAGES), ("Memories", "CatalogMemoriesDefault", "MemoriesPins", MEMORIES_PACKAGES),
+                ("Tenants", "CatalogTenantsDefault", "TenantsPins", TENANTS_PACKAGES), ("McpCli", "CatalogMcpDefault", "McpPins", MCP_PACKAGES)):
+            expected = cohort["Hexalith" + prop + "Version"]
+            pins = [pin.split("=", 1) for pin in item[pin_field].split("|") if pin]
+            actual = sorted((name, version) for name, version in pins if name.startswith("Hexalith."))
+            if actual != sorted((name, expected) for name in packages) or item[field] != expected:
+                raise ValueError(f"{item['Identity']} selects a different {prop} package family from its catalog")
+        if item["CatalogPartiesDefault"] != cohort["HexalithPartiesVersion"]:
+            raise ValueError(f"{item['Identity']} selects a different Parties release from its catalog")
+    return {"kind": "unified-package-catalog", "catalogSha256": expected_sha256, "properties": cohort,
+            "consumers": list(names), "runtimeAcceptance": False}
+
+
+def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
+    """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
+    raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
+    if authenticated_body is not None:
+        require_catalog_body(raw, expected_sha256)
+    document = ET.fromstring(raw)
+    if document.findall(".//HexalithPlatformSdk42CatalogView"):
+        if authenticated_body is None:
+            raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
+        return verify_named_platform_catalog(raw, expected_sha256)
+    pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
+    if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
+        raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
+    return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}

@@ -46,8 +46,12 @@ def gitlink_catalog() -> bytes:
 
 
 @functools.cache
+def historical_catalog():
+    return catalog_fixture("builds-before-unified-catalog.props", "dc225a6969473c21c3dad6bda8f1a18ad0aaae0d", "eca862048fa5a5348f3bc2c23dc66df9cec5c1a9", "bd616e0d9e88168104d8a6b847612bff7ff7ec595b8e014d9886122be0bfbb25")
+
+@functools.cache
 def gitlink_receipt() -> dict:
-    raw = gitlink_catalog()
+    raw = historical_catalog()
     return verify_named_platform_catalog(raw, hashlib.sha256(raw).hexdigest())
 
 
@@ -89,14 +93,30 @@ def catalog_body(*, sdk="5.0.0", aspnet="11.0.0", openapi="3.11.0", memories="4.
     return ET.tostring(project, encoding="utf-8")
 
 
-class GitlinkCatalogViewTests(unittest.TestCase):
-    """The pinned catalog itself; a Builds adoption changes these inputs without changing this code."""
+class UnifiedGitlinkCatalogTests(unittest.TestCase):
+    def test_all_consumers_use_the_current_release(self):
+        from current_catalog_view import verify_unified_catalog
+        raw = gitlink_catalog()
+        receipt = verify_unified_catalog(raw, hashlib.sha256(raw).hexdigest())
+        self.assertEqual(receipt["properties"]["HexalithEventStoreVersion"], unconditioned(raw, "HexalithEventStoreVersion"))
+
+    def test_divergent_package_is_rejected_even_with_a_valid_catalog_digest(self):
+        from current_catalog_view import verify_unified_catalog
+        catalog = ET.fromstring(gitlink_catalog())
+        catalog.find(".//PackageVersion[@Include='Hexalith.EventStore.Contracts']").set("Version", "0.0.1")
+        altered = ET.tostring(catalog)
+        with self.assertRaisesRegex(ValueError, "EventStore package family"):
+            verify_unified_catalog(altered, hashlib.sha256(altered).hexdigest())
+
+
+class HistoricalCatalogViewTests(unittest.TestCase):
+    """Release archive for the named catalog views that preceded the unified catalog."""
 
     def verify(self, raw):
         return verify_named_platform_catalog(raw, hashlib.sha256(raw).hexdigest())
 
     def test_named_views_keep_owner_versions_and_generic_defaults_come_from_the_catalog(self):
-        raw, receipt = gitlink_catalog(), gitlink_receipt()
+        raw, receipt = historical_catalog(), gitlink_receipt()
         generic = receipt["genericDefaults"]
         self.assertEqual(generic["sdk"], unconditioned(raw, "HexalithEventStoreVersion"))
         self.assertNotEqual(generic["sdk"], "4.2.0")
@@ -127,7 +147,7 @@ class GitlinkCatalogViewTests(unittest.TestCase):
                     observations[CONTEXTS.index(context)][index][field] = "unqualified"
                     with self.subTest(context=context, index=index, field=field), \
                             patch("current_catalog_view.evaluate_views", side_effect=observations), self.assertRaises(ValueError):
-                        self.verify(gitlink_catalog())
+                        self.verify(historical_catalog())
 
     def test_each_tenants_family_fault_refuses(self):
         receipt = gitlink_receipt()
@@ -147,7 +167,7 @@ class GitlinkCatalogViewTests(unittest.TestCase):
                         with self.subTest(context=context, index=index, package=package, fault=fault), \
                                 patch("current_catalog_view.evaluate_views", side_effect=[changed[name] for name in CONTEXTS]), \
                                 self.assertRaisesRegex(ValueError, "unqualified Tenants|unqualified current-owner|disagree"):
-                            self.verify(gitlink_catalog())
+                            self.verify(historical_catalog())
 
     def test_named_and_unknown_mcp_property_or_package_drift_refuses(self):
         receipt = gitlink_receipt()
@@ -166,7 +186,7 @@ class GitlinkCatalogViewTests(unittest.TestCase):
                     with self.subTest(context=context, index=index, fault=fault), \
                             patch("current_catalog_view.evaluate_views", side_effect=observations), \
                             self.assertRaisesRegex(ValueError, "unqualified MCP|unqualified current-owner|disagree"):
-                        self.verify(gitlink_catalog())
+                        self.verify(historical_catalog())
 
     def test_current_owner_views_refuse_changed_family_and_unknown_aliases(self):
         receipt = gitlink_receipt()
@@ -188,7 +208,7 @@ class GitlinkCatalogViewTests(unittest.TestCase):
                 verify_current_owner_observations(observed, **options)
 
     def test_split_memories_family_or_pinned_sdk_member_in_the_real_catalog_refuses(self):
-        raw = gitlink_catalog()
+        raw = historical_catalog()
         for name in (MEMORIES_PACKAGES[0], MEMORIES_PACKAGES[-1]):
             document = ET.fromstring(raw)
             next(item for item in document.iter() if item.tag.rsplit("}", 1)[-1] == "PackageVersion"
@@ -281,7 +301,7 @@ class CurrentCatalogViewTests(unittest.TestCase):
                 evaluate.assert_not_called()
 
     def test_named_view_cannot_be_read_from_an_unverified_worktree_path(self):
-        from run_tuple_ci import verify_extension_catalog_pin
+        from current_catalog_view import verify_extension_catalog_pin
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "catalog.props"
             raw = catalog_body()

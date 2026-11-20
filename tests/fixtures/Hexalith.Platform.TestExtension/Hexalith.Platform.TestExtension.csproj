@@ -24,7 +24,7 @@
     <None Include="../../../eng/test-extension-release/qualify-host.py" Pack="true" PackagePath="build/qualification/qualify-host.py" />
   </ItemGroup>
   <!-- Measured signed EventStore 4.2.0 carries the extension API; unknown SDKs remain unqualified. -->
-  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and '$(HexalithEventStoreVersion)' == '4.2.0'">
+  <PropertyGroup Condition="'$(UseHexalithProjectReferences)' != 'true' and ('$(HexalithEventStoreVersion)' == '4.2.0' or ('$(HexalithCatalogEventStoreVersion)' != '' and '$(HexalithCatalogEventStoreVersion)' == '$(HexalithEventStoreVersion)'))">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>
 </Project>

@@ -12,6 +12,7 @@ import signal
 import xml.etree.ElementTree as ET
 import zipfile
 
+from current_catalog_view import verify_unified_catalog
 from prepare_builds_artifacts import source_state
 from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_framework, validate_owner_pins, verify_catalog
 from builds_tool_lock import load_lock, locked_entry, require_locked
@@ -27,7 +28,7 @@ def collector_for(group, suite):
 
 def require_collector_framework(document, expected):
     """Refuse a mixed or changed target before any collector may execute tests."""
-    if expected not in ("net10.0", "net11.0") or set(document["project"]["frameworks"]) != {expected}:
+    if expected != "net11.0" or set(document["project"]["frameworks"]) != {expected}:
         raise ValueError("Collector assets differ from their exact recorded target framework.")
 
 
@@ -54,7 +55,7 @@ def tuple_runtime_context(binding, source, suite, profile_sha256):
     version = binding["version"]
     if suite not in ("current42", "base42", "extensions") or tool_framework(version) != "net11.0":
         raise ValueError("Current runtime qualification requires the pinned NET11 Builds generation.")
-    return {"purpose": "current-net11-with-explicit-public-sdk42", "targetFramework": "net11.0",
+    return {"purpose": "current-net11-with-catalog-sdk", "targetFramework": "net11.0",
             "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
             "nativeAcceptance": False}
 
@@ -141,38 +142,6 @@ def builds_artifact_identities(receipt, lock, builds_source, collectors, identit
     return identities
 
 
-def sdk_suite(suite, version):
-    """Select an explicit current SDK4.2 inventory; historical CLI selections are retired."""
-    if suite not in ("extensions", "base42", "current42") or version != "4.2.0":
-        raise ValueError("Current tuple suites require the measured EventStore 4.2.0 SDK.")
-    return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
-
-
-def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
-    """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
-    from current_catalog_view import require_catalog_body, verify_named_platform_catalog
-    raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
-    if authenticated_body is not None:
-        require_catalog_body(raw, expected_sha256)
-    document = ET.fromstring(raw)
-    if document.findall(".//HexalithPlatformSdk42CatalogView"):
-        if authenticated_body is None:
-            raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
-        return verify_named_platform_catalog(raw, expected_sha256)
-    pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
-    if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
-        raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
-    return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}
-
-
-def sdk42_collecting_cohort(suite):
-    """Keep the measured SDK4.2 collector separate from the producer's newer defaults."""
-    if suite not in ("current42", "base42", "extensions"):
-        return None
-    return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
-            "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}
-
-
 def verify_collecting_cohort(assets, cohort):
     """Require the actual public package graph, including every collected Memories body."""
     packages = {"Hexalith.EventStore.DomainService": cohort["HexalithEventStoreVersion"],
@@ -188,12 +157,12 @@ def verify_collecting_cohort(assets, cohort):
     for name, version in packages.items():
         identities = [key for key in libraries if key.startswith(name + "/")]
         if identities != [name + "/" + version] or libraries[identities[0]].get("type") != "package":
-            raise ValueError("The SDK4.2 collecting graph differs from its exact public cohort: " + name)
+            raise ValueError("The collecting graph differs from its exact public cohort: " + name)
     sdk_packages = {name: item for name, item in libraries.items() if name.startswith("Hexalith.EventStore.")}
     if any(name.rpartition("/")[2] != cohort["HexalithEventStoreVersion"] or item.get("type") != "package"
            for name, item in sdk_packages.items()):
-        raise ValueError("Every restored EventStore package must match the exact SDK4.2 collecting cohort.")
-    return {"packages": packages, "eventStorePackages": sorted(sdk_packages), "scope": "Measured SDK4.2 collector only; no default SDK5.1 or native acceptance",
+        raise ValueError("Every restored EventStore package must match the exact collecting cohort.")
+    return {"packages": packages, "eventStorePackages": sorted(sdk_packages), "scope": "Catalog package graph for this collector",
             "candidateAcceptance": False, "runtimeAcceptance": False}
 
 
@@ -209,8 +178,6 @@ def verify_test_sdk(assembly, version, memories_version=None):
         if dependencies.get(identity, {}).get("type") != "package":
             raise ValueError("The actual test binary does not resolve the selected SDK package: " + identity)
     if memories_version is not None:
-        if version != "4.2.0" or memories_version != "3.0.27":
-            raise ValueError("Only the exact current SDK4.2 collection Memories companion is qualified.")
         for name in ("Contracts", "EventStore", "EventStoreExtensions"):
             identity = "Hexalith.Memories." + name + "/" + memories_version
             if dependencies.get(identity, {}).get("type") != "package":
@@ -241,14 +208,14 @@ def _run_tuple_ci(metadata_token):
     parser.add_argument("--artifacts", type=Path)
     parser.add_argument("--audit-only", action="store_true")
     parser.add_argument("--suite", choices=["extensions", "base42", "current42"], required=True)
-    parser.add_argument("--eventstore-sdk", choices=["4.2.0"], required=True)
     args = parser.parse_args()
-    profile_path, sdk_properties = sdk_suite(args.suite, args.eventstore_sdk)
+    profile_path = {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json",
+                    "current42": "eng/tuple-ci-sdk42-current-suites.json"}[args.suite]
     evidence = args.evidence.resolve()
     if evidence.exists():
         raise ValueError("Choose a new evidence directory.")
     evidence.mkdir(parents=True)
-    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": [], "suite": args.suite, "eventStoreSdk": args.eventstore_sdk}
+    result = {"kind": "tuple-ci-preflight", "candidateAcceptance": False, "status": "running", "tests": [], "commands": [], "suite": args.suite}
 
     def checkpoint():
         (evidence / "tuple-ci-result.json").write_text(json.dumps(result, indent=2) + "\n")
@@ -310,8 +277,9 @@ def _run_tuple_ci(metadata_token):
         # The catalog comes from the gitlink blob; the checkout must hold those exact bytes.
         catalog, catalog_body, catalog_identity = verify_catalog(builds_source, builds_root)
         result["buildsCatalog"] = catalog_identity
-        result["extensionCatalogView"] = verify_extension_catalog_pin(catalog, authenticated_body=catalog_body,
-                                                                       expected_sha256=catalog_identity["sha256"])
+        result["extensionCatalogView"] = verify_unified_catalog(catalog_body, catalog_identity["sha256"])
+        collecting_cohort = result["extensionCatalogView"]["properties"]
+        result["eventStoreSdk"] = collecting_cohort["HexalithEventStoreVersion"]
         (evidence / "authenticated-catalog.props").write_bytes(catalog_body)
         profile = json.loads((ROOT / profile_path).read_bytes())
         required_total = validate_profile(profile)
@@ -349,14 +317,9 @@ def _run_tuple_ci(metadata_token):
             tool = Path(run("published-artifacts", [sys.executable, str(ROOT / "eng/prepare_builds_artifacts.py"), "--output", str(evidence / "builds"), "--require-recorded"]).strip())
         result["toolRoot"] = str(tool)
         properties = ["-p:Configuration=Release", "-p:UseHexalithProjectReferences=false",
-                      "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool), *sdk_properties]
-        collecting_cohort = sdk42_collecting_cohort(args.suite)
-        if collecting_cohort is not None:
-            properties.extend("-p:" + name + "=" + value for name, value in collecting_cohort.items()
-                              if name != "HexalithEventStoreVersion")
-            result["collectingPackageSelection"] = {"properties": collecting_cohort,
-                "scope": "Explicit SDK4.2 regression collector; authenticated producer defaults remain unchanged",
-                "candidateAcceptance": False, "runtimeAcceptance": False}
+                      "-p:HexalithBuildsRoot=" + str(builds_root), "-p:HexalithBuildsPublishedToolRoot=" + str(tool)]
+        result["collectingPackageSelection"] = {"properties": collecting_cohort, "scope": "Authenticated Builds catalog",
+                                                "candidateAcceptance": False, "runtimeAcceptance": False}
         projects = [ROOT / x.attrib["Path"] for x in ET.parse(ROOT / "Hexalith.Platform.slnx").iter("Project")]
         seen = {project.resolve() for project in projects}
         for number, project in enumerate(projects):
@@ -378,7 +341,7 @@ def _run_tuple_ci(metadata_token):
         run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
         if args.suite == "current42":
             run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
-            run("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "GitlinkCatalogViewTests"])
+            run("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "UnifiedGitlinkCatalogTests"])
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         file_catalog = evidence / "authenticated-catalog.props"
@@ -423,7 +386,7 @@ def _run_tuple_ci(metadata_token):
             assembly = Path(measured["TargetPath"]).resolve(strict=True)
             asset_path = Path(measured["ProjectAssetsFile"]).resolve(strict=True)
             require_collector_framework(json.loads(asset_path.read_bytes()), framework)
-            verify_test_sdk(assembly, args.eventstore_sdk,
+            verify_test_sdk(assembly, result["eventStoreSdk"],
                 collecting_cohort["HexalithMemoriesVersion"] if name == "current" and collecting_cohort is not None else None)
             return {"source": source, "root": str(root), "project": str(project), "assembly": str(assembly),
                 "properties": selected_properties, "targetFramework": framework, "toolRoot": str(selected_tool),

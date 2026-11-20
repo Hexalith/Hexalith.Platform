@@ -16,16 +16,7 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SDK = "3.130.1"
-TENANTS = "6.0.0"
 BASELINE = "68b785b6a929050771e70d78f83ff10fea3daabc"
-SAMPLE_SOURCES = {"3.130.0": "484f4bd82fd2ef4b6c2653fdde57feeeb6d85a3c",
-                  "3.130.1": "1de42b706f52af0da6513f0b7663002606d17156",
-                  "3.130.2": "28e3f260bbaf4619d1a99d656fba04c0c532387b",
-                  "3.132.1": "0ace1545c433bf234f54cef3a57ac77d62b4175f",
-                  "3.133.0": "6b2ef99ac55a6e548f504a81d30289bb3deff89d",
-                  "4.1.0": "dbc6e7e08d605ba6c6c790e3e08a15dc8bbdec8a",
-                  "4.2.0": "aa16227bd07f0564a3026d619a5abd973e02656f"}
 
 
 def digest(path):
@@ -68,7 +59,11 @@ def retain_execution(project, output, name, evidence, expected_sdk, expected_ten
 def sample_fixture(work, args):
     directory = work / "sample"
     directory.mkdir()
-    commit = SAMPLE_SOURCES[args.sdk_version]
+    releases = json.loads((args.builds_root / "Props/release-declarations.json").read_bytes())
+    release = releases["eventstore/" + args.sdk_version]
+    if release["repository"] != "Hexalith.EventStore" or release["version"] != args.sdk_version:
+        raise ValueError("Unexpected EventStore sample source")
+    commit = release["commit"]
     groups = {
         "contracts": ["Counter/Commands/IncrementCounter.cs", "Counter/Commands/DecrementCounter.cs",
                       "Counter/Commands/ResetCounter.cs", "Counter/Commands/CloseCounter.cs",
@@ -125,7 +120,7 @@ def sample_fixture(work, args):
         assert nuspec.find(".//{*}id").text == "Hexalith.EventStore.Contracts"
         assert nuspec.find(".//{*}version").text == args.sdk_version
         assert nuspec.find(".//{*}repository").attrib["commit"] == commit
-        dll = package.read("lib/net10.0/Hexalith.EventStore.Contracts.dll")
+        dll = package.read("lib/net11.0/Hexalith.EventStore.Contracts.dll")
     identity = {"publishedSource": commit, "sourceFiles": hashes, "publicContractsArchiveSha256": digest(archive),
                 "publicContractsDllSha256": hashlib.sha256(dll).hexdigest(),
                 "contracts": artifacts["contractsIdentity"], "host": artifacts["hostIdentity"],
@@ -141,7 +136,7 @@ def execute(command, evidence, expected=0):
     return result
 
 
-def properties(builds, sdk=SDK, tenants=TENANTS):
+def properties(builds, sdk, tenants):
     return [f"-p:HexalithBuildsRoot={builds}", f"-p:HexalithEventStoreVersion={sdk}",
             f"-p:HexalithTenantsVersion={tenants}", "-p:UseHexalithProjectReferences=false",
             "-p:CentralPackageVersionsFileImported=true",
@@ -198,10 +193,10 @@ def qualify(args):
                 reference = ET.SubElement(items, "Reference", {"Include": name})
                 ET.SubElement(reference, "HintPath").text = str(dll)
         else:
-            # Genuine SDK Sample: seven TOTAL routes, including one actor query.
+            # Read the routing inventory from the selected release of each owner.
             sample_output, sample_identity = sample_fixture(work, args)
             executed["sample"] = sample_identity
-            fixture = {"expectedPolicies": 17, "expectedProjectionQueries": 1, "expectedSampleRoutes": 7}
+            fixture = {"expectedPolicies": "owner", "expectedProjectionQueries": "owner", "expectedSampleRoutes": "owner"}
             owners = [{"assembly": "Hexalith.Tenants.Contracts", "adapterAssembly": "Hexalith.Tenants.Server",
                        "appId": "tenants-binding-check"},
                       {"assembly": "Hexalith.Platform.CatalogBuilder.SampleFixture",
@@ -256,7 +251,7 @@ def qualify(args):
             execute(["dotnet", str(outputs[kind]), str(path)], args.evidence / f"{name}-generate.log")
             result = execute(["dotnet", str(probe), str(path), str(fixture["expectedPolicies"]),
                               str(fixture["expectedProjectionQueries"]), "accept" if kind == "actual" else "refuse",
-                              str(fixture.get("expectedSampleRoutes", 0))],
+                              str(fixture.get("expectedSampleRoutes", 0)), str(outputs[kind].parent)],
                              args.evidence / f"{name}-activation.log")
             for filename in ["catalog.json", "receipt.json"]:
                 shutil.copyfile(target / filename, args.evidence / f"{name}-{filename}")
@@ -298,7 +293,7 @@ def qualify(args):
             legacy_dir = work / "legacy"
             legacy_dir.mkdir()
             legacy_project = legacy_dir / "Hexalith.Platform.CatalogBuilder.csproj"
-            make_project(legacy_project, program=original)
+            make_project(legacy_project, program="#undef HEXALITH_SCOPED_CONSUMER_BINDING\n" + original)
             legacy_output = legacy_dir / "output"
             legacy_bindings = legacy_dir / "bindings.props"
             legacy_xml = ET.Element("Project")
@@ -308,8 +303,8 @@ def qualify(args):
             ET.ElementTree(legacy_xml).write(legacy_bindings, encoding="unicode")
             execute(["dotnet", "build", str(legacy_project), "-c", "Release", "--output", str(legacy_output),
                      "-m:1", "-nr:false", "-warnaserror", f"-p:PlatformCatalogBindings={legacy_bindings}",
-                     *properties(args.builds_root, "3.129.0")], args.evidence / "legacy129-build.log")
-            executed["legacy129"] = retain_execution(legacy_project, legacy_output, "legacy129", args.evidence, "3.129.0")
+                     *properties(args.builds_root, args.sdk_version, args.tenants_version)], args.evidence / "without-scoped-bindings-build.log")
+            executed["without-scoped-bindings"] = retain_execution(legacy_project, legacy_output, "without-scoped-bindings", args.evidence, args.sdk_version)
             for gateway in ["eventstore", "eventstore-scoped"]:
                 target = legacy_dir / gateway
                 target.mkdir()
@@ -317,14 +312,14 @@ def qualify(args):
                 path.write_text(json.dumps({"generation": 1, "instanceId": "legacy-binding-check", "gatewayAppId": gateway,
                                             "outputDirectory": str(target), "owners": owners[:1]}))
                 result = execute(["dotnet", str(legacy_output / "Hexalith.Platform.CatalogBuilder.dll"), str(path)],
-                                 args.evidence / f"legacy129-{gateway}.log", expected=0 if gateway == "eventstore" else 1)
+                                 args.evidence / f"without-scoped-bindings-{gateway}.log", expected=0 if gateway == "eventstore" else 1)
                 if gateway == "eventstore":
-                    result = execute(["dotnet", str(probe), str(path), "12", "0", "accept", "0"],
-                                     args.evidence / "legacy129-activation.log")
-                    cases.append({"case": "legacy129-explicit-eventstore", **json.loads(result.stdout)})
+                    result = execute(["dotnet", str(probe), str(path), "owner", "owner", "accept", "0", str(legacy_output)],
+                                     args.evidence / "without-scoped-bindings-activation.log")
+                    cases.append({"case": "without-scoped-bindings-explicit-eventstore", **json.loads(result.stdout)})
                 else:
                     assert "qualified SDK" in result.stderr and not list(target.iterdir())
-                    cases.append({"case": "legacy129-scoped", "refusedBeforeOutput": True})
+                    cases.append({"case": "without-scoped-bindings-scoped", "refusedBeforeOutput": True})
         report = {"sdk": args.sdk_version, "toolSourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
                   "toolSourceClosureSha256": {name: digest(source.parent / name) for name in
                       ["Hexalith.Platform.CatalogBuilder.csproj", "Program.cs", "OwnerPackageLock.cs"]},
@@ -341,9 +336,12 @@ def main():
     parser.add_argument("--builds-root", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--owners", type=Path, help="Optional copied genuine owner DLL closure manifest.")
-    parser.add_argument("--sdk-version", choices=["3.130.0", "3.130.1", "3.130.2", "3.132.1", "3.133.0", "4.1.0", "4.2.0"], default=SDK)
-    parser.add_argument("--tenants-version", choices=["6.0.0", "7.0.0", "7.0.2", "7.0.5"], default=TENANTS)
     args = parser.parse_args()
+    sys.path.insert(0, str(ROOT / "eng"))
+    from current_catalog_view import catalog_cohort
+    selection = catalog_cohort((args.builds_root / "Props/Directory.Packages.props").read_bytes())
+    args.sdk_version = selection["HexalithEventStoreVersion"]
+    args.tenants_version = selection["HexalithTenantsVersion"]
     args.evidence = args.evidence.resolve()
     state = {"attempt": uuid.uuid4().hex, "startedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
              "status": "started", "candidateAcceptance": False}

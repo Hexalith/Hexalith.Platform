@@ -38,7 +38,9 @@ class TupleCollectorTests(unittest.TestCase):
             self.assertNotIn(retired, source)
 
     def test_framework_and_actual_runtime_must_both_match_the_collector(self):
-        for framework, major in (('net10.0', '10'), ('net11.0', '11')):
+        with self.assertRaises(ValueError):
+            require_collector_framework({'project': {'frameworks': {'net10.0': {}}}}, 'net10.0')
+        for framework, major in [('net11.0', '11')]:
             require_collector_framework({'project': {'frameworks': {framework: {}}}}, framework)
             exact = {'target-framework': '.NETCoreApp,Version=v' + major + '.0',
                      'environment': '64-bit (x64) .NET ' + major + '.0.15 [collection-per-class]'}
