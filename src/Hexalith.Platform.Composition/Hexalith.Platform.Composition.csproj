@@ -40,6 +40,7 @@
   <ItemGroup Condition="'$(UseHexalithProjectReferences)' != 'true'">
     <PackageReference Include="Hexalith.EventStore.Aspire" />
     <PackageReference Include="Hexalith.EventStore.DomainService" />
+    <PackageReference Include="Hexalith.EventStore.Server" />
     <PackageReference Include="Hexalith.EventStore.ServiceDefaults" />
     <PackageReference Include="Hexalith.Tenants.Contracts" />
     <PackageReference Include="Hexalith.Tenants.Server" Condition="'$(HexalithEventStoreVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithEventStoreVersion)', '4.1.0')) and '$(HexalithTenantsVersion)' != '' and $([MSBuild]::VersionGreaterThanOrEquals('$(HexalithTenantsVersion)', '7.0.5'))" />
