@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-19
+last_updated: 2026-11-20
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -125,6 +125,9 @@ development_status:
   #   pass 1 applied 9 patches, deferred 2, rejected 21. Landing restores the five pinned gitlinks; hosted tuple CI pending.
   #   The HXP020 allowlist slice follows as a second 2.14 spec (deferred-work).
   # 2026-11-19: f3f96b2e passed tuple preflight. Audit item 1 reopened after the submodule sync at 707cf901.
+  # 2026-11-20: reconcile slice on b8048739: test(ci) 527c3fec (SDK guard range) + build(deps) Builds 6.4.3 and upstream owner binding;
+  #   local current42 380, base42 67, extensions 9, zero skips; hosted run pending (releases v2.2.3).
+  #   Evidence: evidence/2-14-reconcile/summary.md.
   2-14-pin-builds-and-owner-modules-by-released-version: in-progress
   epic-2-retrospective: optional
 
