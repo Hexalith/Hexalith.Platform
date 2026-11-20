@@ -32,7 +32,7 @@ OWNER_PREFIXES = ("Hexalith.EventStore.", "Hexalith.Tenants.", "Hexalith.Memorie
 # checks them against the project files); restore resolves the transitive closure.
 SURFACES = {
     "Hexalith.Platform.Composition": ("Hexalith.EventStore.Aspire", "Hexalith.EventStore.Client", "Hexalith.EventStore.Contracts",
-                                      "Hexalith.EventStore.DomainService", "Hexalith.EventStore.ServiceDefaults",
+                                      "Hexalith.EventStore.DomainService", "Hexalith.EventStore.Server", "Hexalith.EventStore.ServiceDefaults",
                                       "Hexalith.Memories.Contracts", "Hexalith.Parties.Contracts", "Hexalith.Tenants.Contracts",
                                       "Hexalith.Tenants.Server"),
     # The routing catalog reader: its SDK references plus the declared owners' contract and adapter packages.
