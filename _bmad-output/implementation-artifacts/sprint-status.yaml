@@ -126,7 +126,8 @@ development_status:
   #   The HXP020 allowlist slice follows as a second 2.14 spec (deferred-work).
   # 2026-11-19: f3f96b2e passed tuple preflight. Audit item 1 reopened after the submodule sync at 707cf901.
   # 2026-11-20: reconcile slice on b8048739: test(ci) 527c3fec (SDK guard range) + build(deps) Builds 6.4.3 and upstream owner binding;
-  #   local current42 380, base42 67, extensions 9, zero skips; hosted run pending (releases v2.2.3).
+  #   landed 5f684500; hosted tuple CI 44712072381 green (current42 380, base42 67, extensions 9, zero skips); released v2.2.3.
+  #   SDK 4.2 view retirement slice next (deferred-work).
   #   Evidence: evidence/2-14-reconcile/summary.md.
   2-14-pin-builds-and-owner-modules-by-released-version: in-progress
   epic-2-retrospective: optional
@@ -302,7 +303,7 @@ action_items:
     epic: 2
     action: "Item 1. Reconcile and qualify the five dependency revisions after the submodule sync at 707cf901."
     owner: "Platform release maintainer and release owner"
-    status: open
+    status: done
     ref: "_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-19.md"
   - id: "audit-2026-11-19-host-request-limit"
     epic: 3

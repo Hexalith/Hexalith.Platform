@@ -1,7 +1,7 @@
 # Story 2.14 reconcile slice: verification summary
 
 Spec: [spec-2-14-reconcile-the-five-dependency-revisions.md](../../spec-2-14-reconcile-the-five-dependency-revisions.md) (audit action 1).
-These are local observations from 2026-11-20, made before landing. Hosted tuple CI on the landed commit is still required.
+The local observations below are from 2026-11-20, before landing. Hosted tuple CI on the landed commit passed (see the end).
 
 ## Revisions
 
@@ -79,6 +79,15 @@ The AR-12 hashes matched for Tooling and EventStoreHost, and the output snapshot
 
 ## Hosted tuple CI and release
 
-The run links go here after landing:
-- tuple CI (`resolve-sources`, `tuple`, `tuple-verdict`): pending;
-- `source-release.yml`: pending. Main already carries the `fix` commits `0e922c8c` and `b8048739`, so a green tuple run releases v2.2.3, as the owner accepted on 2026-11-20.
+The landed commit is `5f6845005eaa7f1d4e2481b59642f81b8b214d4a`, a fast-forward of `b8048739` pushed on 2026-11-20.
+
+- Tuple CI [run 44712072381](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44712072381) (09:35–10:54 UTC): `resolve-sources`, `tuple` and `tuple-verdict` succeeded.
+
+  | Suite | Groups | Total | Passed | Failed, errors, skipped, not run |
+  | --- | --- | --- | --- | --- |
+  | current42 | 32 | 380 | 380 | 0 |
+  | base42 | 3 | 67 | 67 | 0 |
+  | extensions | 1 | 9 | 9 | 0 |
+
+  Each `tuple-ci-result.json` reports status `passed` and `platformRevision` `5f684500`.
+- Source release [run 44723218751](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44723218751): `verify` and `publish` succeeded. It published [v2.2.3](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.2.3) at `5f684500` at 10:56 UTC. The release was triggered by `0e922c8c` and `b8048739`, as the owner accepted.
