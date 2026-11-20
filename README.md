@@ -539,10 +539,10 @@ duplicates a module and fails with `HXP003`/`HXP020`).
   where it was:
 
   ```bash
+  export HEXALITH_DAPR_HOME="$HOME/.hexalith/dapr/1.18.7"
   (
     set -euo pipefail
-    dapr_home="$HOME/.hexalith/dapr/1.18.7"
-    mkdir -p "$dapr_home/tools" "$dapr_home/.dapr/bin"
+    mkdir -p "$HEXALITH_DAPR_HOME/tools" "$HEXALITH_DAPR_HOME/.dapr/bin"
     downloads="$(mktemp -d)"
     trap 'rm -rf "$downloads"' EXIT
     cd "$downloads"
@@ -555,21 +555,21 @@ duplicates a module and fails with `HXP003`/`HXP020`).
       curl -fsSLO "$base/$asset.sha256"
     done
     sha256sum -c ./*.sha256
-    tar -xzf dapr_linux_amd64.tar.gz -C "$dapr_home/tools"
+    tar -xzf dapr_linux_amd64.tar.gz -C "$HEXALITH_DAPR_HOME/tools"
     for binary in daprd placement scheduler; do
-      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$dapr_home/.dapr/bin"
+      tar -xzf "${binary}_linux_amd64.tar.gz" -C "$HEXALITH_DAPR_HOME/.dapr/bin"
     done
-    DAPR_RUNTIME_PATH="$dapr_home" "$dapr_home/tools/dapr" --version   # CLI 1.18.2, runtime 1.18.7
+    DAPR_RUNTIME_PATH="$HEXALITH_DAPR_HOME" "$HEXALITH_DAPR_HOME/tools/dapr" --version   # CLI 1.18.2, runtime 1.18.7
   )
   ```
 
 ### Commands
 
-From the Platform root:
+Run these commands from the Platform root in the same terminal. If you prepared
+your isolated Dapr installation earlier, set `HEXALITH_DAPR_HOME` to its absolute
+directory in this terminal first.
 
 ```bash
-export HEXALITH_DAPR_HOME="$HOME/.hexalith/dapr/1.18.2"
-
 # EventStore alone
 dotnet tool run hexalith-module -- debug --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
 dotnet tool run hexalith-module -- down --manifest references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json
