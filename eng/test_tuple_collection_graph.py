@@ -12,8 +12,8 @@ import unittest
 import xml.etree.ElementTree as ET
 
 from builds_tuple import ROOT, load_binding, recorded_gitlink
-from run_tuple_ci import sdk_suite, sdk42_collecting_cohort, verify_collecting_cohort
-from current_catalog_view import require_catalog_body
+from run_tuple_ci import verify_collecting_cohort
+from current_catalog_view import catalog_cohort, require_catalog_body
 from test_current_catalog_view import builds6_catalog_body, gitlink_catalog
 
 OPTIONS = None
@@ -68,11 +68,9 @@ class CollectionGraphTests(unittest.TestCase):
             raw = OPTIONS.catalog.read_bytes() if OPTIONS.catalog else gitlink_catalog()
             binding = load_binding(OPTIONS.producer_binding) if OPTIONS.producer_binding else load_binding()
             require_catalog_body(raw, OPTIONS.catalog_sha256 if OPTIONS.catalog else hashlib.sha256(raw).hexdigest())
-            cohort = sdk42_collecting_cohort("current42")
-            self.assertIsNotNone(cohort, "The collection regression requires the measured SDK4.2 collecting family.")
+            cohort = catalog_cohort(raw)
             catalog.write_bytes(raw)
-            properties = [*sdk_suite("current42", "4.2.0")[1],
-                *("-p:" + name + "=" + value for name, value in cohort.items())]
+            properties = []
             result = run("scoped-restore", ["restore", str(project), "--force-evaluate", *base, *properties])
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             lock = (root / "packages.lock.json").read_bytes()
@@ -87,9 +85,8 @@ class CollectionGraphTests(unittest.TestCase):
             self.assertEqual(assets["project"]["restore"]["restoreAuditProperties"]["enableAudit"], "true")
             self.assertEqual(assets["project"]["restore"]["restoreAuditProperties"]["auditMode"], "all")
             dependencies = json.loads((root / ("bin/" + configuration + "/net11.0/Hexalith.Platform.Composition.Tests.deps.json")).read_bytes())["libraries"]
-            expected = {name: "4.2.0" if name.startswith("Hexalith.EventStore.") else
-                "3.0.27" if name.startswith("Hexalith.Memories.") else "7.0.7" if name.startswith("Hexalith.Tenants.") else
-                "3.1.1" if name.startswith("Hexalith.Parties.") else "2.0.1" for name in (*PACKAGES, "Hexalith.EventStore.DomainService")}
+            expected = {name: cohort["Hexalith" + name.split(".")[1] + "Version"]
+                        for name in (*PACKAGES, "Hexalith.EventStore.DomainService")}
             for name, version in expected.items():
                 self.assertEqual(assets["libraries"][name + "/" + version]["type"], "package")
                 self.assertEqual(dependencies[name + "/" + version]["type"], "package")

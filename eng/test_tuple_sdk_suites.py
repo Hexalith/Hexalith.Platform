@@ -6,7 +6,23 @@ import unittest
 
 # Run the synthetic catalog-view controls with this pre-dependency suite; the gitlink catalog controls run in run_tuple_ci.
 from test_current_catalog_view import CurrentCatalogViewTests  # noqa: F401
-from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, sdk_suite, sdk42_collecting_cohort, validate_profile, verify_collecting_cohort, verify_extension_catalog_pin, verify_test_sdk
+from current_catalog_view import verify_extension_catalog_pin
+from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, validate_profile, verify_collecting_cohort, verify_test_sdk
+
+
+def sdk_suite(suite, version):
+    """Select an explicit current SDK4.2 inventory; historical CLI selections are retired."""
+    if suite not in ("extensions", "base42", "current42") or version != "4.2.0":
+        raise ValueError("Current tuple suites require the measured EventStore 4.2.0 SDK.")
+    return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
+
+
+def sdk42_collecting_cohort(suite):
+    """Keep the measured SDK4.2 collector separate from the producer's newer defaults."""
+    if suite not in ("current42", "base42", "extensions"):
+        return None
+    return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
+            "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}
 
 
 class SdkSuiteTests(unittest.TestCase):

@@ -213,7 +213,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
 
                 with self.subTest(failure=fail), contextlib.ExitStack() as stack:
                     stack.enter_context(patch.dict(os.environ, {"GH_TOKEN": token, "CONTROL": "preserved"}))
-                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42", "--eventstore-sdk", "4.2.0"]))
+                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42"]))
                     stack.enter_context(patch.object(run_tuple_ci, "ROOT", root))
                     stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding))
                     stack.enter_context(patch.object(run_tuple_ci, "load_lock", return_value={"schemaVersion": 1, "packages": [locked]}))
@@ -221,8 +221,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
                     stack.enter_context(patch.object(run_tuple_ci, "validate_owner_pins"))
                     stack.enter_context(patch.object(run_tuple_ci, "resolve_builds_root", return_value=root))
                     stack.enter_context(patch.object(run_tuple_ci, "verify_catalog", side_effect=catalog_check))
-                    stack.enter_context(patch.object(run_tuple_ci, "verify_extension_catalog_pin", return_value={"scope": "token inheritance control"}))
-                    stack.enter_context(patch.object(run_tuple_ci, "sdk42_collecting_cohort", return_value=None))
+                    stack.enter_context(patch.object(run_tuple_ci, "verify_unified_catalog", return_value={"properties": {"HexalithEventStoreVersion": "5.4.0"}}))
                     stack.enter_context(patch.object(run_tuple_ci.signal, "signal"))
                     stack.enter_context(patch.object(run_tuple_ci.platform, "platform", return_value="synthetic platform"))
                     stack.enter_context(patch.object(run_tuple_ci.subprocess, "run", side_effect=command))
