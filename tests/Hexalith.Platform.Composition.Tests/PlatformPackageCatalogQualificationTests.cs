@@ -30,10 +30,10 @@ public sealed class PlatformPackageCatalogQualificationTests
         string currentProvenance = Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json");
         Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(currentProvenance)))
             .ShouldBe(Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json")))));
-        PlatformServerBindings.Version(fixture.Options, "eventstore", "current private fixture").ShouldBe(PlatformPartiesPackageFixture.SelectedSdkVersion);
+        PlatformServerBindings.Version(fixture.Options, "eventstore", "current private fixture").ShouldBe(PlatformTestPins.CatalogVersion("EventStore"));
         string tenants = PlatformServerBindings.Version(fixture.Options, "tenants", "current private fixture");
-        tenants.ShouldBe(PlatformPartiesPackageFixture.LockedOwnerVersion("tenants"));
-        PlatformServerBindings.Version(fixture.Options, "memories", "current private fixture").ShouldBe(PlatformPartiesPackageFixture.LockedOwnerVersion("memories"));
+        tenants.ShouldBe(PlatformTestPins.CatalogVersion("Tenants"));
+        PlatformServerBindings.Version(fixture.Options, "memories", "current private fixture").ShouldBe(PlatformTestPins.CatalogVersion("Memories"));
         IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(fixture.Options);
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(fixture.Options, declarations);
         OwnerPackageLock owners = PlatformPackageCatalogQualification.ValidateTestInputs(fixture.Options, declarations, servers, developmentRun: true);

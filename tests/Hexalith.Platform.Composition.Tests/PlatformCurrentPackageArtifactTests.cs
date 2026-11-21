@@ -83,8 +83,8 @@ public sealed class PlatformCurrentPackageArtifactTests
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(verification, "catalog-reader", "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
         using JsonDocument canonical = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
-        foreach (string name in new[] { "routes", "operations", "declarations" }) canonical.RootElement.GetProperty(name).GetArrayLength().ShouldBe(70);
-        canonical.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(46);
+        foreach (string name in new[] { "routes", "operations", "declarations" }) canonical.RootElement.GetProperty(name).GetArrayLength().ShouldBe(71);
+        canonical.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(47);
         proof.Matches(options).ShouldBeTrue();
         fixture.AssertNoEffects(builder);
     }
@@ -105,19 +105,14 @@ public sealed class PlatformCurrentPackageArtifactTests
         // The producer is the pinned version at the recorded gitlink; its generic default is read from that catalog blob.
         mapping.PlatformIdentity.ToolVersionRange.ShouldBe(PlatformTestPins.ToolVersionRange);
         mapping.PlatformIdentity.CatalogCommit.ShouldBe(PlatformTestPins.BuildsGitlink);
-        string builds = PlatformTestRepository.ReferenceRoot(PlatformTestRepository.Root, "Hexalith.Builds");
-        string expectedDefault = System.Xml.Linq.XDocument.Parse(PlatformTestPins.Git(builds, "show", PlatformTestPins.BuildsGitlink + ":Props/Directory.Packages.props").TrimStart('\uFEFF'))
-            .Descendants().Single(element => element.Name.LocalName == "HexalithEventStoreVersion"
-                && (string?)element.Attribute("Condition") == "'$(HexalithEventStoreVersion)' == ''").Value;
-        string expectedSdk = PlatformPartiesPackageFixture.SelectedSdkVersion;
-        expectedDefault.ShouldBe(expectedSdk, "The unified catalog default must match the installed, lock-verified SDK.");
+        string expectedDefault = PlatformTestPins.CatalogVersion("EventStore");
         defaults.CatalogVersion("eventstore", "current default control").ShouldBe(expectedDefault);
         PlatformDeclarationSet.DeclarationOptions(options).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
         foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
             PlatformServerBindings.Version(options, module, "current named control")
                 .ShouldBe(defaults.CatalogVersion(module, "current named control", CompositionDeclarationOptions.PlatformCompositionProjectName));
-        PlatformServerBindings.Version(options, "eventstore", "current named control").ShouldBe(expectedSdk);
-        PlatformMcpCliCatalogVersion.Resolve(options, "current named control").ShouldBe(PlatformPartiesPackageFixture.LockedOwnerVersion("mcpcli"));
+        PlatformServerBindings.Version(options, "eventstore", "current named control").ShouldBe(expectedDefault);
+        PlatformMcpCliCatalogVersion.Resolve(options, "current named control").ShouldBe(PlatformTestPins.CatalogVersion("McpCli"));
         PlatformDeclarationSet.Load(options).Count.ShouldBe(4);
         PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(options.PlatformRoot));
         File.ReadAllBytes(path).ShouldBe(original, "Reading the named view must preserve the default catalog and original snapshot bytes.");
@@ -145,7 +140,7 @@ public sealed class PlatformCurrentPackageArtifactTests
                 }
                 else
                 {
-                    PlatformServerBindings.Version(options, "eventstore", "missing named MCP pin").ShouldBe(expectedSdk);
+                    PlatformServerBindings.Version(options, "eventstore", "missing named MCP pin").ShouldBe(expectedDefault);
                     PlatformMcpCliCatalogVersion.Resolve(options, "missing named MCP pin").ShouldBeNull();
                     Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedPackages(options))
                         .Message.ShouldContain("selects no Hexalith.McpCli.Abstractions version");

@@ -91,9 +91,8 @@ public sealed class PlatformOwnerPackageLockTests
             // The version rule admits the release by its catalog selection; the committed lock names other versions and refuses it.
             owners.RequireFamily("Hexalith.Tenants.", "8.0.1");
             owners.RequireFamily("Hexalith.EventStore.", "5.2.0");
-            string lockedTenants = PlatformPartiesPackageFixture.LockedOwnerVersion("tenants");
             Should.Throw<InvalidDataException>(() => PlatformPartiesPackageFixture.Lock.Require("Hexalith.Tenants.Contracts", "8.0.1"))
-                .Message.ShouldContain($"names Hexalith.Tenants.Contracts {lockedTenants}, but 8.0.1 is selected");
+                .Message.ShouldContain($"names Hexalith.Tenants.Contracts {PlatformTestPins.CatalogVersion("Tenants")}, but 8.0.1 is selected");
         }
         finally { Directory.Delete(directory, recursive: true); }
     }

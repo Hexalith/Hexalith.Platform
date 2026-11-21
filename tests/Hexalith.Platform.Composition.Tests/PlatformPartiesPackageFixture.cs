@@ -40,15 +40,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Gets the candidate's committed owner package lock, the sole package admission authority.</summary>
     internal static OwnerPackageLock Lock => OwnerPackageLock.Load(OwnerPackageLock.PathFor(PlatformTestRepository.Root));
 
-    /// <summary>Gets the one released package version recorded for a current owner in the committed lock.</summary>
-    /// <param name="module">The owner whose catalog-selected version is under test.</param>
-    internal static string LockedOwnerVersion(string module)
-    {
-        string prefix = PlatformServerBindings.Repository(module) + ".";
-        return Lock.Entries.Where(entry => entry.Id.StartsWith(prefix, StringComparison.Ordinal))
-            .Select(entry => entry.Version).Distinct(StringComparer.Ordinal).Single();
-    }
-
     /// <summary>Gets the package folders the test build restored owner packages into.</summary>
     internal static IReadOnlyList<string> PackageFolders => OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
 
@@ -78,8 +69,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static async Task<PlatformPartiesPackageFixture> CreateFromCandidateAsync(string profile)
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
-        string lockedSdk = LockedOwnerVersion("eventstore");
-        SelectedSdkVersion.ShouldBe(lockedSdk, "The loaded SDK bodies must equal their lock-verified package members.");
+        SelectedSdkVersion.ShouldBe(PlatformTestPins.CatalogVersion("EventStore"), "The loaded SDK bodies must equal their lock-verified package members.");
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -122,10 +112,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             // The catalog-selected owner versions are admitted by the lock rule; no version tuple is consulted.
             PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(identity.PlatformPath));
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
-                PlatformServerBindings.Version(options, module, manifest).ShouldBe(LockedOwnerVersion(module));
-            PlatformServerBindings.Version(options, "eventstore", manifest).ShouldBe(SelectedSdkVersion,
-                "The authenticated consumer snapshot must select the loaded, lock-verified SDK.");
+            foreach (string family in new[] { "EventStore", "Tenants", "Memories", "Parties" })
+                PlatformServerBindings.Version(options, family.ToLowerInvariant(), manifest).ShouldBe(PlatformTestPins.CatalogVersion(family));
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
             {

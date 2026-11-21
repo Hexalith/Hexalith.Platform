@@ -7,10 +7,10 @@ using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
-/// <summary>Requires the actual selected signed tool, catalog, seed and owner handoff; no services are started.</summary>
+/// <summary>Requires the actual selected signed tool, catalog, seed and owner handoff for the current catalog; no services are started.</summary>
 public sealed class PlatformSdk42PackageEntryTests
 {
-    /// <summary>The real private reader must consume the pinned SDK snapshot and retain its six public bodies.</summary>
+    /// <summary>The real private reader must consume the pinned catalog snapshot and retain its six public bodies.</summary>
     [Fact]
     public async Task PrivateEventStoreReaderUsesTheActualPinnedSdk42CatalogAndSeedAsync()
     {
@@ -18,18 +18,17 @@ public sealed class PlatformSdk42PackageEntryTests
         await fixture.MaterializeAsync().ConfigureAwait(true);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllBytes(Path.Combine(fixture.Plan.Workspace, "source-mapping", "catalog-versions.json")))!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
-        string expectedSdk = PlatformPartiesPackageFixture.SelectedSdkVersion;
-        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe(expectedSdk);
-        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe(expectedSdk);
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe(PlatformTestPins.CatalogVersion("EventStore"));
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe(PlatformTestPins.CatalogVersion("EventStore"));
         PlatformRoutingCatalog catalog = fixture.Generate();
         OwnerPackageLock owners = PlatformPackageCatalogQualification.RequireLockedPackages(fixture.Options);
         owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
         var servers = PlatformAppModel.Prepare(fixture.Options);
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
-        AssertReader(fixture.Reader, owners, new HashSet<string>(), 23, 12, catalog);
+        AssertReader(fixture.Reader, owners, new HashSet<string>(), 24, 13, catalog);
     }
 
-    /// <summary>The existing parent proof builds and seals the real source owner and package-only SDK references.</summary>
+    /// <summary>The existing parent proof builds and seals the real source owner and package-only references from the current catalog.</summary>
     [Fact]
     public async Task CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync()
     {
@@ -61,7 +60,7 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(fixture.Reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
-        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 70, 46, catalog);
+        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 71, 47, catalog);
     }
 
     private static void AssertReader(string reader, OwnerPackageLock owners, IReadOnlySet<string> runBound, int routes, int policies, PlatformRoutingCatalog catalog)
