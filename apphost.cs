@@ -7,7 +7,7 @@
 #:package Aspire.Hosting.Kubernetes@17.0.0
 #:package Aspire.Hosting.Redis@17.0.0
 #:package Aspire.Hosting.Keycloak@17.0.0-preview.1.26567.5
-#:package CommunityToolkit.Aspire.Hosting.Dapr@17.0.0-beta.1078
+#:package CommunityToolkit.Aspire.Hosting.Dapr@17.0.0-preview.1.261120-0454
 #:package Microsoft.Extensions.Hosting@11.0.0
 #:package Microsoft.Extensions.Http@11.0.0
 #:package System.Text.Json@11.0.0

@@ -5,6 +5,9 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
+from builds_tuple import load_binding
+from current_catalog_view import require_catalog_body, verify_named_platform_catalog
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
 parser.add_argument("--catalog", type=pathlib.Path)
@@ -19,14 +22,17 @@ if catalog is None:
     sibling = arguments.root.parent / "Hexalith.Builds/Props/Directory.Packages.props"
     catalog = sibling if sibling.is_file() else arguments.root / "references/Hexalith.Builds/Props/Directory.Packages.props"
 catalog_body = catalog.read_bytes()
+try:
+    if arguments.producer_binding is not None:
+        load_binding(arguments.producer_binding)
+    if arguments.catalog_sha256 is not None or arguments.producer_binding is not None:
+        require_catalog_body(catalog_body, arguments.catalog_sha256)
+except ValueError as failure:
+    raise SystemExit(str(failure)) from failure
 properties = ET.fromstring(catalog_body)
 values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
 if properties.findall(".//HexalithPlatformSdk42CatalogView"):
-    from current_catalog_view import verify_named_platform_catalog
-    from builds_tuple import load_binding
     try:
-        if arguments.producer_binding is not None:
-            load_binding(arguments.producer_binding)
         view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256)
     except ValueError as failure:
         raise SystemExit(str(failure)) from failure

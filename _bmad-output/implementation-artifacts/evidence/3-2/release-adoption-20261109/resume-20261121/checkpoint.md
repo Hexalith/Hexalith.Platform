@@ -73,3 +73,21 @@ actual fixture pin, finite producer and host admission, and signed package host
 and native startup remain pending. The story remains in progress.
 [Historical publisher](https://github.com/Hexalith/Hexalith.Platform/actions/runs/42716926527),
 [NuGet account controls](https://www.nuget.org/account/TrustedPublishing).
+
+## Current tuple preflight correction
+
+Main 25887836 subsequently failed its tuple in `file-host-pin-controls`
+before xUnit. The failed test output reports that the file AppHost declares
+Dapr integration `17.0.0-beta.1078` while the bound Builds 6.5.0 catalog
+selects `17.0.0-preview.1.261120-0454`. The apphost directive now uses
+that catalog pin. With the pin aligned, existing controls revealed two further
+refusals that failed to fire on the unified catalog: an invalid producer binding
+and a mismatched catalog digest. These checks now apply when the caller supplies
+authentication metadata, independently of whether the catalog has a historical
+named view.
+
+The unchanged `python3 -B eng/test_verify_platform_pins.py` passes all 18
+controls under `run-with-temp`. The direct verifier also accepts the real
+producer binding and the SHA-256 of the catalog read from its exact Builds
+gitlink. The two fixes are a prerequisite for the ordinary source-release
+gate. [Failed tuple](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44893084604).
