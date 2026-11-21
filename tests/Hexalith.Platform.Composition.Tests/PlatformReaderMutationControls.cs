@@ -151,8 +151,8 @@ internal static class PlatformReaderMutationControls
             "duplicate-owner" => "without duplicate owner or adapter assemblies",
             "foreign-owner" => "Hexalith.Foreign.Contracts",
             "missing-lock" => "is missing or unreadable",
-            "stale-lock" => "names Hexalith.Memories.Contracts 3.0.26, but 3.0.27 is selected",
-            "tampered-lock" => "owner package Hexalith.Memories.Contracts 3.0.27 archive has contentHash",
+            "stale-lock" => $"names Hexalith.Memories.Contracts 3.0.26, but {PlatformTestPins.CatalogVersion("Memories")} is selected",
+            "tampered-lock" => $"owner package Hexalith.Memories.Contracts {PlatformTestPins.CatalogVersion("Memories")} archive has contentHash",
             _ => "loaded assembly 'Hexalith.Memories.Contracts' differs from its lock-verified package member",
         });
         Directory.GetFiles(failed).ShouldBeEmpty();
@@ -166,8 +166,9 @@ internal static class PlatformReaderMutationControls
         XDocument bindings = XDocument.Load(Path.Combine(fixture.Reader, "bindings.props"));
         bindings.Descendants("PackageReference").Select(item => (string?)item.Attribute("Include"))
             .ShouldContain("Hexalith.Memories.EventStore", "Mutate an actual direct owner reference validated by the generated task.");
+        string memoriesVersion = PlatformTestPins.CatalogVersion("Memories");
         versions.RootElement.GetProperty("ProjectVersions").GetProperty("Hexalith.Platform.CatalogBuilder")
-            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe("3.0.27");
+            .GetProperty("Hexalith.Memories.EventStore").GetString().ShouldBe(memoriesVersion);
         string path = Path.Combine(fixture.Reader, "Hexalith.Platform.CatalogBuilder.csproj");
         XDocument project = XDocument.Load(path);
         string target;
@@ -181,8 +182,9 @@ internal static class PlatformReaderMutationControls
             string assetsPath = Path.Combine(fixture.Reader, "obj", "project.assets.json");
             JsonNode assets = JsonNode.Parse(File.ReadAllBytes(assetsPath))!;
             JsonObject packages = assets["targets"]!.AsObject().Single().Value!.AsObject();
-            JsonNode changed = packages["Hexalith.Memories.EventStore/3.0.27"]!.DeepClone();
-            packages.Remove("Hexalith.Memories.EventStore/3.0.27");
+            string selected = "Hexalith.Memories.EventStore/" + memoriesVersion;
+            JsonNode changed = packages[selected]!.DeepClone();
+            packages.Remove(selected);
             packages["Hexalith.Memories.EventStore/3.0.18"] = changed;
             File.WriteAllText(assetsPath, assets.ToJsonString());
             project.Root!.Elements("Target").Single(element => (string?)element.Attribute("Name") == "ValidatePrivateReaderCatalogAfterRestore").Attribute("DependsOnTargets")!.Remove();
@@ -195,7 +197,7 @@ internal static class PlatformReaderMutationControls
              "-p:PlatformCatalogBindings=" + Path.Combine(fixture.Reader, "bindings.props")], fixture.Options.PlatformRoot, null), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken);
         TestContext.Current.TestOutputHelper!.WriteLine(result.Output + result.ErrorOutput);
         result.ExitCode.ShouldNotBe(0);
-        (result.Output + result.ErrorOutput).ShouldContain("requires 3.0.27");
+        (result.Output + result.ErrorOutput).ShouldContain("requires " + memoriesVersion);
         File.ReadAllBytes(catalog.CatalogPath).ShouldBe(previous);
     }
 
@@ -263,8 +265,7 @@ internal static class PlatformReaderMutationControls
         JsonNode assets = JsonNode.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "obj", "project.assets.json")))!;
         foreach (string name in _publicNames)
         {
-            string version = name.StartsWith("Hexalith.EventStore.", StringComparison.Ordinal) ? "4.2.0" : name.StartsWith("Hexalith.Tenants.", StringComparison.Ordinal) ? "7.0.7"
-                : name.StartsWith("Hexalith.Memories.", StringComparison.Ordinal) ? "3.0.27" : name.StartsWith("Hexalith.Parties.", StringComparison.Ordinal) ? "3.1.1" : "2.0.1";
+            string version = PlatformTestPins.CatalogVersion(name.Split('.')[1]);
             assets["libraries"]![name + "/" + version]!["type"]!.GetValue<string>().ShouldBe("package");
         }
     }

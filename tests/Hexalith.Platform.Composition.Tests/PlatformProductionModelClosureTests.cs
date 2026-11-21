@@ -102,8 +102,9 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                     CatalogSha256 = catalogHash, AssetsSha256 = Hash(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")),
                     ServerSha256 = Hash(server), Properties = admittedProperties, CandidateAcceptance = false, RuntimeAcceptance = false }));
             }
+            string serverFramework = tenantsVersion == "7.0.7" ? "net10.0" : "net11.0";
             assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
-                .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();
+                .GetProperty("runtime").TryGetProperty($"lib/{serverFramework}/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();
             var context = new AssemblyLoadContext("production-model-only-" + Guid.NewGuid().ToString("N"), isCollectible: true);
             context.Resolving += (load, name) =>
             {

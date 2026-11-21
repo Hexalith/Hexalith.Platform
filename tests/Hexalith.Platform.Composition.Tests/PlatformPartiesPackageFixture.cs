@@ -54,7 +54,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         }
     }
 
-    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package", bool sdk42 = false)
+    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package")
     {
         if (profile != PlatformCurrentOwnerProof.Profile)
         {
@@ -62,7 +62,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             var proof = new PlatformPartiesProofFixture(platformOwned: true, profile: profile);
             return new(proof.Options.RunPlan!.Workspace, proof.Options.RunPlan, PublishedSeed()) { _proofFixture = proof };
         }
-        if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0");
         return await CreateFromCandidateAsync(profile);
     }
 
@@ -70,7 +69,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static async Task<PlatformPartiesPackageFixture> CreateFromCandidateAsync(string profile)
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
-        SelectedSdkVersion.ShouldBe("4.2.0", "The loaded SDK bodies must equal their lock-verified package members.");
+        SelectedSdkVersion.ShouldBe(PlatformTestPins.CatalogVersion("EventStore"), "The loaded SDK bodies must equal their lock-verified package members.");
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -113,8 +112,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             // The catalog-selected owner versions are admitted by the lock rule; no version tuple is consulted.
             PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(identity.PlatformPath));
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"), ("memories", "3.0.27"), ("parties", "3.1.1") })
-                PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
+            foreach (string family in new[] { "EventStore", "Tenants", "Memories", "Parties" })
+                PlatformServerBindings.Version(options, family.ToLowerInvariant(), manifest).ShouldBe(PlatformTestPins.CatalogVersion(family));
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
             {

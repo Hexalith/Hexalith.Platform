@@ -39,7 +39,7 @@ public sealed class PlatformCurrentPackageArtifactTests
     [Fact]
     public async Task CurrentPrivateDependencyVersionsRemainExact()
     {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true).ConfigureAwait(true);
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
 #if NET11_0_OR_GREATER
         AssertCurrentConsumerCatalog(fixture);
 #endif
@@ -105,18 +105,14 @@ public sealed class PlatformCurrentPackageArtifactTests
         // The producer is the pinned version at the recorded gitlink; its generic default is read from that catalog blob.
         mapping.PlatformIdentity.ToolVersionRange.ShouldBe(PlatformTestPins.ToolVersionRange);
         mapping.PlatformIdentity.CatalogCommit.ShouldBe(PlatformTestPins.BuildsGitlink);
-        string builds = PlatformTestRepository.ReferenceRoot(PlatformTestRepository.Root, "Hexalith.Builds");
-        string expectedDefault = System.Xml.Linq.XDocument.Parse(PlatformTestPins.Git(builds, "show", PlatformTestPins.BuildsGitlink + ":Props/Directory.Packages.props").TrimStart('\uFEFF'))
-            .Descendants().Single(element => element.Name.LocalName == "HexalithEventStoreVersion"
-                && (string?)element.Attribute("Condition") == "'$(HexalithEventStoreVersion)' == ''").Value;
-        expectedDefault.ShouldNotBe("4.2.0", "The generic catalog default must stay distinct from the named SDK4.2 view.");
+        string expectedDefault = PlatformTestPins.CatalogVersion("EventStore");
         defaults.CatalogVersion("eventstore", "current default control").ShouldBe(expectedDefault);
         PlatformDeclarationSet.DeclarationOptions(options).ConsumerProjectName.ShouldBe(CompositionDeclarationOptions.PlatformCompositionProjectName);
         foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
             PlatformServerBindings.Version(options, module, "current named control")
                 .ShouldBe(defaults.CatalogVersion(module, "current named control", CompositionDeclarationOptions.PlatformCompositionProjectName));
-        PlatformServerBindings.Version(options, "eventstore", "current named control").ShouldBe("4.2.0");
-        PlatformMcpCliCatalogVersion.Resolve(options, "current named control").ShouldBe("2.0.1");
+        PlatformServerBindings.Version(options, "eventstore", "current named control").ShouldBe(expectedDefault);
+        PlatformMcpCliCatalogVersion.Resolve(options, "current named control").ShouldBe(PlatformTestPins.CatalogVersion("McpCli"));
         PlatformDeclarationSet.Load(options).Count.ShouldBe(4);
         PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(options.PlatformRoot));
         File.ReadAllBytes(path).ShouldBe(original, "Reading the named view must preserve the default catalog and original snapshot bytes.");
@@ -144,7 +140,7 @@ public sealed class PlatformCurrentPackageArtifactTests
                 }
                 else
                 {
-                    PlatformServerBindings.Version(options, "eventstore", "missing named MCP pin").ShouldBe("4.2.0");
+                    PlatformServerBindings.Version(options, "eventstore", "missing named MCP pin").ShouldBe(expectedDefault);
                     PlatformMcpCliCatalogVersion.Resolve(options, "missing named MCP pin").ShouldBeNull();
                     Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedPackages(options))
                         .Message.ShouldContain("selects no Hexalith.McpCli.Abstractions version");

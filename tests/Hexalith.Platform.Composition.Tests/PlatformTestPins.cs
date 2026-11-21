@@ -3,12 +3,28 @@ namespace Hexalith.Platform.Composition.Tests;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Runtime;
 
 /// <summary>Reads the Builds pin files and the lock-verified tool archive; tests never restate a Builds release identity.</summary>
 internal static class PlatformTestPins
 {
     private const string ToolPackage = "Hexalith.Builds.Module.Cli";
+
+    private static readonly Lazy<XDocument> _catalog = new(() =>
+    {
+        string builds = PlatformTestRepository.ReferenceRoot(PlatformTestRepository.Root, "Hexalith.Builds");
+        return XDocument.Parse(Git(builds, "show", BuildsGitlink + ":Props/Directory.Packages.props").TrimStart('\uFEFF'));
+    });
+
+    /// <summary>Reads the exact default package family selection from the recorded Builds catalog.</summary>
+    /// <param name="family">The package family whose default version is required.</param>
+    internal static string CatalogVersion(string family)
+    {
+        string property = "Hexalith" + family + "Version";
+        return _catalog.Value.Root!.Elements("PropertyGroup").Elements(property)
+            .Single(element => (string?)element.Attribute("Condition") == "'$(" + property + ")' == ''").Value;
+    }
 
     /// <summary>Gets the pinned tool version from <c>.config/dotnet-tools.json</c>.</summary>
     internal static string ToolVersion => Read(".config/dotnet-tools.json",

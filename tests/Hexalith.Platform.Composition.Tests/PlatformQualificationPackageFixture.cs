@@ -2,6 +2,7 @@ namespace Hexalith.Platform.Composition.Tests;
 
 using System.Security.Cryptography;
 using System.Text.Json.Nodes;
+using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 
@@ -65,7 +66,7 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         string sdkVersion = provenance["eventstore"]!["version"]!.GetValue<string>();
         string tenantsVersion = provenance["tenants"]!["version"]!.GetValue<string>();
         // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + (currentTest ? "2.0.1" : "2.0.0") + "\" /></ItemGroup></Project>");
+        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + (currentTest ? PlatformTestPins.CatalogVersion("McpCli") : "2.0.0") + "\" /></ItemGroup></Project>");
         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);
@@ -114,6 +115,20 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
     internal CompositionRunPlan Plan { get; }
     /// <summary>Gets the component options with genuine released declaration bytes and no runtime acceptance.</summary>
     internal PlatformCompositionOptions Options { get; }
+
+    /// <summary>Changes one package family in the private fixture's catalog.</summary>
+    /// <param name="family">The catalog family to mutate.</param>
+    /// <param name="version">The alternative version under test.</param>
+    internal void ChangeCatalogVersion(string family, string version)
+    {
+        string path = Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
+        XDocument catalog = XDocument.Load(path);
+        XElement selection = catalog.Root!.Elements("PropertyGroup").Elements("Hexalith" + family + "Version").Single();
+        if (selection.Value == version)
+            throw new InvalidOperationException("The test mutation must change the selected " + family + " version.");
+        selection.Value = version;
+        catalog.Save(path);
+    }
 
     /// <inheritdoc />
     public void Dispose() => Directory.Delete(Root, true);

@@ -92,7 +92,7 @@ public sealed class PlatformOwnerPackageLockTests
             owners.RequireFamily("Hexalith.Tenants.", "8.0.1");
             owners.RequireFamily("Hexalith.EventStore.", "5.2.0");
             Should.Throw<InvalidDataException>(() => PlatformPartiesPackageFixture.Lock.Require("Hexalith.Tenants.Contracts", "8.0.1"))
-                .Message.ShouldContain("names Hexalith.Tenants.Contracts 7.0.7, but 8.0.1 is selected");
+                .Message.ShouldContain($"names Hexalith.Tenants.Contracts {PlatformTestPins.CatalogVersion("Tenants")}, but 8.0.1 is selected");
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
