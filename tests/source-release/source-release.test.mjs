@@ -14,12 +14,13 @@ import { recheck, verifyRelease, generateNotes } from '../../eng/source-release/
 import { runRelease, recordCliFailure } from '../../eng/source-release/run.mjs';
 
 const source = 'a'.repeat(40), foreign = 'b'.repeat(40);
+const jobNames = [['resolve-sources', 'tuple', 'tuple-verdict'], ['consumer-binding']];
 const clone = value => structuredClone(value);
 function fixture(trigger = 0) {
   const runs = workflows.map((w, n) => ({ id: 101 + n, workflow_id: 11 + n, run_number: 21 + n, run_attempt: 1,
     name: w.name, path: `.github/workflows/${w.file}`, head_sha: source, event: 'push', head_branch: 'main',
     repository: { full_name: repository }, head_repository: { full_name: repository }, pull_requests: [], status: 'completed', conclusion: 'success' }));
-  const state = { main: source, runs, jobs: workflows.map((w, n) => w.jobs.map((name, j) => ({ name, id: 1000 + n * 10 + j,
+  const state = { main: source, runs, jobs: jobNames.map((names, n) => names.map((name, j) => ({ name, id: 1000 + n * 10 + j,
     run_id: runs[n].id, head_sha: source, status: 'completed', conclusion: 'success' }))), missing: -1, extra: [], reads: [] };
   const event = { action: 'completed', repository: { full_name: repository }, workflow_run: clone(runs[trigger]) };
   const api = async path => {
@@ -42,30 +43,26 @@ function fixture(trigger = 0) {
   return { state, inputs: { event, eventName: 'workflow_run', ownerRepository: repository, checkout: source, source, workflowRef: `${repository}/.github/workflows/source-release.yml@refs/heads/main`, workflowSha: source, job: 'verify', api } };
 }
 
-test('either final callback requires both latest successful main lanes and exact three tuple and six catalog jobs', async () => {
+test('either final callback requires both latest successful main lanes and exact tuple and catalog jobs', async () => {
   for (const trigger of [0, 1]) {
     const { inputs } = fixture(trigger); const result = await qualify(inputs);
-    assert.equal(result.eligible, true); assert.equal(result.source, source); assert.deepEqual(result.qualifyingRuns.map(x => x.jobs.length), [3, 6]);
+    assert.equal(result.eligible, true); assert.equal(result.source, source);
+    assert.deepEqual(result.qualifyingRuns.map(run => run.jobs.map(job => job.name)), jobNames);
     assert.deepEqual([result.nativeAcceptance, result.candidateAcceptance, result.storyAcceptance], [false, false, false]);
     assert.ok(Buffer.byteLength(JSON.stringify(result)) < 16384);
   }
 });
-test('the exact SDK 4.2 job is required alongside every historical catalog row', async () => {
-  const catalog = yaml.load(readFileSync('.github/workflows/catalog-builder.yml', 'utf8'));
-  const sdks = catalog.jobs['consumer-binding'].strategy.matrix.sdk;
-  assert.deepEqual(sdks, ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0', '4.2.0']);
-  assert.deepEqual(workflows[1].jobs, sdks.map(sdk => `consumer-binding (${sdk})`));
-  const qualification = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_catalog_builder.py'));
-  assert.ok(qualification.run.includes("matrix.sdk == '4.2.0' && '7.0.5'"));
-  const lockReader = catalog.jobs['consumer-binding'].steps.find(step => step.run?.includes('verify_owner_package_lock_reader.py'));
-  assert.equal(lockReader.if, "matrix.sdk == '4.2.0'");
-  for (const replacement of [null, 'consumer-binding (4.2.0-preview.1)', 'consumer-binding (4.2.0+metadata)', 'consumer-binding (4.2.0.0)', 'consumer-binding (4.2.1)']) {
-    const f = fixture();
-    const index = f.state.jobs[1].findIndex(job => job.name === 'consumer-binding (4.2.0)');
-    if (replacement === null) f.state.jobs[1].splice(index, 1);
-    else f.state.jobs[1][index].name = replacement;
-    await assert.rejects(qualify(f.inputs), replacement === null ? /missing-or-extra-jobs/ : /wrong-required-jobs/);
-  }
+test('a historical matrix job cannot replace or supplement the catalog binding job', async () => {
+  const f = fixture();
+  const [current] = f.state.jobs[1];
+  const historical = ['3.130.0', '3.130.1', '3.130.2', '3.132.1', '4.1.0', '4.2.0']
+    .map((sdk, index) => ({ ...current, id: current.id + index + 1, name: `consumer-binding (${sdk})` }));
+  f.state.jobs[1] = [historical.at(-1)];
+  await assert.rejects(qualify(f.inputs), /wrong-required-jobs/);
+  f.state.jobs[1].push(current);
+  await assert.rejects(qualify(f.inputs), /missing-or-extra-jobs/);
+  f.state.jobs[1] = historical;
+  await assert.rejects(qualify(f.inputs), /missing-or-extra-jobs/);
 });
 test('earlier callback defers pending/missing counterpart; later callback can proceed', async () => {
   const f = fixture(); f.state.runs[1].status = 'in_progress'; f.state.runs[1].conclusion = null;
@@ -92,11 +89,11 @@ test('superseded callback, primary attempt race and latest pending attempt refus
 });
 test('required job failure/cancellation/skip, missing/unknown and duplicate names refuse', async () => {
   for (const conclusion of ['failure', 'cancelled', 'skipped']) {
-    const f = fixture(); f.state.jobs[1][2].conclusion = conclusion; await assert.rejects(qualify(f.inputs), /unsuccessful-required-job/);
+    const f = fixture(); f.state.jobs[1][0].conclusion = conclusion; await assert.rejects(qualify(f.inputs), /unsuccessful-required-job/);
   }
   const a = fixture(); a.state.jobs[1].pop(); await assert.rejects(qualify(a.inputs), /missing-or-extra-jobs/);
   const b = fixture(); b.state.jobs[1][0].name = 'unknown'; await assert.rejects(qualify(b.inputs), /wrong-required-jobs/);
-  const c = fixture(); c.state.jobs[1][0].name = c.state.jobs[1][1].name; await assert.rejects(qualify(c.inputs), /wrong-required-jobs/);
+  const c = fixture(); c.state.jobs[0][0].name = c.state.jobs[0][1].name; await assert.rejects(qualify(c.inputs), /wrong-required-jobs/);
 });
 test('source release requires candidate resolution, current execution and aggregate verdict', async () => {
   assert.deepEqual(workflows[0].jobs, ['resolve-sources', 'tuple', 'tuple-verdict']);

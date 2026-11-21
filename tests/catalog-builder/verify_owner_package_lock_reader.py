@@ -114,8 +114,9 @@ def qualify(args):
                     receipt = json.loads((destination / "receipt.json").read_text())
                     counts = {key: len(catalog[key]) for key in ["routes", "operations", "declarations", "idempotency"]}
                     private = len(owners) == 1
-                    assert counts == ({"routes": 23, "operations": 23, "declarations": 23, "idempotency": 12} if private
-                                      else {"routes": 70, "operations": 70, "declarations": 70, "idempotency": 46}), counts
+                    # Tenants 8.0.2 adds RefreshTenantAccess and its idempotency policy to both catalogs.
+                    assert counts == ({"routes": 24, "operations": 24, "declarations": 24, "idempotency": 13} if private
+                                      else {"routes": 71, "operations": 71, "declarations": 71, "idempotency": 47}), counts
                     assert receipt["ownerPackageLock"]["sha256"] == consumer.digest(lock_path)
                     records = {record["assembly"]: record for record in receipt["ownerPackages"]}
                     locked = {entry["id"]: entry for entry in json.loads(lock_path.read_bytes())["packages"]}

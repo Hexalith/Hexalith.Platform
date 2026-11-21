@@ -3,7 +3,8 @@
 `source-release.yml` responds to completed main-push runs of **Platform tuple CI
 preflight** and **Catalog builder consumer binding**. Its read-only job requires
 both latest exact-source runs, latest attempts, all three tuple jobs
-(`resolve-sources`, `tuple`, `tuple-verdict`) and all six SDK jobs to pass.
+(`resolve-sources`, `tuple`, `tuple-verdict`) and `consumer-binding` to pass.
+Missing, unexpected, or duplicate jobs refuse qualification.
 Resolution and current execution use only the candidate's shallow Platform
 checkout. The verdict requires both prerequisites to succeed; failure,
 cancellation, skip or an absent result refuses release qualification.
@@ -22,10 +23,11 @@ only to published-artifact verification. That verifier retains it privately for
 fixed official Builds API metadata requests; its Git, signature and tool subprocesses
 do not inherit it. Signature, publication, source and execution-count checks remain independent.
 
-The catalog-builder SDK matrix retains its independent published owner and
-extension controls. The continuing Platform profiles retain genuine old public
-packages as explicit fixture data and verify actual package bodies, private
-purpose/key/snapshot boundaries, signed-host handoff, reader integrity,
+The catalog-builder job checks the selected SDK against published owner packages
+and verifies owner admission against the generated package lock. The continuing
+Platform profiles retain genuine old public packages as explicit fixture data and
+verify actual package bodies, private purpose/key/snapshot boundaries,
+signed-host handoff, reader integrity,
 readiness and generated model transport. Current private reader preparation
 uses the candidate binding's SDK4.2.0, Tenants7.0.7, Memories3.0.27 and
 Parties3.1.1 inputs. Reader authenticity and component checks grant no image or

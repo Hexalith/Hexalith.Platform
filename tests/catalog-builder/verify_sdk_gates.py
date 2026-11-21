@@ -33,7 +33,7 @@ VERSIONS = ["3.129.0", *LEGACY, "3.132.1", "3.132.2", "3.133.0", "4.0.0", "4.0.2
             "4.0.4-preview.1", "4.0.4+metadata", "4.0.4.0", "4.0.4.1",
             "3.132.1-preview.1", "3.132.1+metadata", "3.132.1.0", "3.132.1.1",
             "3.133.0-preview.1", "3.133.0+metadata", "3.133.0.0",
-            "03.132.1", "3.132.01", "v3.132.1", "5.2.0", "invalid-version"]
+            "03.132.1", "3.132.01", "v3.132.1", "5.2.0", "5.4.0", "invalid-version"]
 PROJECTS = {
     "host": "src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj",
     "composition": "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj",
@@ -58,7 +58,7 @@ def parsed(version):
     return tuple(int(part) for part in parts) + (0,) * (4 - len(parts))
 
 
-def expected_flags(project, version, source):
+def expected_flags(project, version, source, *, catalog_sdk=None):
     """The expected constants, or None when MSBuild must refuse the version expression (MSB4184)."""
     if source:
         # The tool's source binding deliberately retains its prior unqualified path.
@@ -67,7 +67,7 @@ def expected_flags(project, version, source):
                 "tests": {SOURCE, CATALOG, V2, EXTENSION, CANONICAL},
                 "tool": set(), "extension": {EXTENSION}}[project]
     if project == "extension":
-        return {EXTENSION} if version == "4.2.0" else set()
+        return {EXTENSION} if version in ("4.2.0", catalog_sdk) else set()
     value = parsed(version)
     if value is None:
         return None
@@ -103,14 +103,16 @@ def verify(evidence, builds_root=None):
                 ET.SubElement(document, "Import", Project=str(catalog_path))
                 ET.ElementTree(document).write(probe, encoding="unicode")
                 probe_command = ["dotnet", "msbuild", str(probe), "-nologo",
-                                 "-getProperty:HexalithEventStoreVersion"]
+                                 "-getProperty:HexalithEventStoreVersion,HexalithCatalogEventStoreVersion"]
                 result = subprocess.run(probe_command, cwd=ROOT, text=True, capture_output=True,
                                         check=True, timeout=60)
-                catalog_default = result.stdout.strip()
+                properties = json.loads(result.stdout)["Properties"]
+                catalog_default = properties["HexalithEventStoreVersion"]
+                catalog_sdk = properties["HexalithCatalogEventStoreVersion"]
                 if not catalog_default:
                     raise ValueError("The selected Builds catalog has no default EventStore version.")
                 report.setdefault("catalogDefaults", {})[project] = {
-                    "version": catalog_default, "command": probe_command,
+                    "version": catalog_default, "catalogSdk": catalog_sdk, "command": probe_command,
                     "probe": ET.tostring(document, encoding="unicode"), "exitCode": result.returncode}
                 checkpoint()
             # Both valid and invalid package inputs must retain explicit source-mode semantics.
@@ -125,7 +127,7 @@ def verify(evidence, builds_root=None):
                 if builds_root is not None:
                     command.append(f"-p:HexalithBuildsRoot={builds_root}")
                 expected_version = version or catalog_default
-                expected = expected_flags(project, expected_version, source)
+                expected = expected_flags(project, expected_version, source, catalog_sdk=catalog_sdk if version is None else None)
                 case = {"project": relative, "version": version, "source": source,
                         "catalogDefault": version is None, "status": "pending", "command": command,
                         "expectedVersion": expected_version,
