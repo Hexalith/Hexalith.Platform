@@ -1,0 +1,45 @@
+{
+  "candidate": "37e6bcc95ae2a38ab9342ac2ee484ba0f686d294",
+  "testedSource": "37e6bcc95ae2a38ab9342ac2ee484ba0f686d294",
+  "buildsSource": "d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9",
+  "publishedBuildsVersion": "6.6.0",
+  "hostedTupleArtifact": {
+    "run": 44936356883,
+    "id": 14721252340,
+    "sha256": "547b27a618ea8e87c495f6e22821f596fe8c9dd2fa2dd0018f27f9460347d53a"
+  },
+  "hostedCatalogArtifact": {
+    "run": 44936356667,
+    "id": 14720245566,
+    "sha256": "4b03b209524368fd1d85db77f9933ad1c248508c918912f01c562b6418a4931a"
+  },
+  "profiles": {
+    "current42": {
+      "xunitPassed": 380,
+      "allOutputsUnchanged": true
+    },
+    "base42": {
+      "xunitPassed": 67,
+      "allOutputsUnchanged": true
+    },
+    "extensions": {
+      "xunitPassed": 21,
+      "allOutputsUnchanged": true,
+      "component": {
+        "readiness": {
+          "status": "Healthy",
+          "description": "Loaded EventStore extensions: platform-test@1 (Hexalith.Platform.TestExtension).",
+          "duration": "00:00:00.0006829",
+          "data": {
+            "platform-test": 1
+          }
+        },
+        "http": 503,
+        "fixtureSource": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+        "observedLibrarySha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004"
+      }
+    }
+  },
+  "xunitTotal": 468,
+  "nativeAcceptance": false
+}

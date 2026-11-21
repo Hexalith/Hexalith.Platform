@@ -1,0 +1,47 @@
+{
+  "source": "37e6bcc95ae2a38ab9342ac2ee484ba0f686d294",
+  "run": 44940361378,
+  "runUrl": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44940361378",
+  "tag": "v2.4.0",
+  "tagCommit": "37e6bcc95ae2a38ab9342ac2ee484ba0f686d294",
+  "releaseId": 453924846,
+  "releaseUrl": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.4.0",
+  "qualifyingRuns": [
+    {
+      "workflow": ".github/workflows/tuple-ci.yml",
+      "run": 44936356883,
+      "number": 361,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44936356883",
+      "jobs": [
+        {
+          "name": "resolve-sources",
+          "id": 136943711773
+        },
+        {
+          "name": "tuple",
+          "id": 136943821717
+        },
+        {
+          "name": "tuple-verdict",
+          "id": 136955951501
+        }
+      ]
+    },
+    {
+      "workflow": ".github/workflows/catalog-builder.yml",
+      "run": 44936356667,
+      "number": 417,
+      "attempt": 1,
+      "url": "https://github.com/Hexalith/Hexalith.Platform/actions/runs/44936356667",
+      "jobs": [
+        {
+          "name": "consumer-binding",
+          "id": 136943711040
+        }
+      ]
+    }
+  ],
+  "artifactId": 14721975049,
+  "artifactDigest": "sha256:fbb43c43454bcb166301b12176acdea6ba03c2fe491fe3fba25ad1d3807c80aa"
+}

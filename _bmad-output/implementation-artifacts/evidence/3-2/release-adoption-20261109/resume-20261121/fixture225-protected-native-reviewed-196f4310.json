@@ -1,0 +1,333 @@
+{
+  "platformSource": "196f43100d1292fee7110b7861348facf24c2442",
+  "platformTree": "f205825423e96ed3efc0a52f2e5b58ee46acae0a",
+  "runId": "4c0a576646c6ff0d32b6d68b39c527b4",
+  "tool": {
+    "version": "6.6.0",
+    "buildsRevision": "d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9",
+    "archiveSha256": "b531901ef92ac0f8c834563e0e871e3a209d945d398c44402e65ad1591144799"
+  },
+  "profile": {
+    "moduleId": "platformtestextension",
+    "name": "eventstore-extension-package",
+    "executor": "mtp",
+    "mode": "package",
+    "manifestHash": "6807B0212F29D5A0F7F82FFDB77BF1B85F3B12B0A29C0073E307BA99F8BC9E24",
+    "entryHash": "35EBEE634B9EDB008115684AC5BD4EA90BFF32FA6AA4E87A8D392767200F6F76"
+  },
+  "sameRunProtection": {
+    "runId": "4c0a576646c6ff0d32b6d68b39c527b4",
+    "installationSha256": "0fc1c1466ee7ed9fc58f2fdca343e2ecebd828f02125a6007037cd0f4823941f",
+    "nativeVersion": "2.6.2",
+    "nativeSource": "dd9c19c37a878cf4a81b18efb8d6f0599c7da923",
+    "image": "quay.io/openbao/openbao@sha256:e29524ba7c3f20d01f562c481e3eccbad6c91df45a2f2531433da4951e408cff",
+    "runtimePolicies": [
+      "fixture-readiness-observer"
+    ],
+    "runtimeAccess": "read-only",
+    "rootRevoked": true,
+    "healthy": true,
+    "networkMode": "none",
+    "listenerAddress": "127.0.0.1",
+    "publishedPorts": 0
+  },
+  "sameRunGateway": {
+    "runId": "4c0a576646c6ff0d32b6d68b39c527b4",
+    "packageId": "Hexalith.Platform.TestExtension",
+    "version": "2.2.5",
+    "extensionId": "platform-test",
+    "apiMajor": 1,
+    "archiveSha256": "7c3b432aba236b9cd102b6fad98a15ed629b3dcdfb9bad9ee6a3d105f63d04b4",
+    "librarySha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+    "processId": 2104893,
+    "assetsType": "package",
+    "depsType": "package"
+  },
+  "qualifiedOwnerReader": {
+    "rootDigest": "98f5d2ec001508e8651737fcee57e35d00604cc53e3b95bf236e66bf80bfc2a6",
+    "mappingHash": "e49c9b23a4e3cb82c60be6bb6f8da864f76d1462f8f32d8be7a290677110bbd7",
+    "ownerPackageLockSha256": "7426f980c0a1f35117d29d7277550c0fa5df174022b71e6ee3b2ff0b5f57b094",
+    "packages": [
+      {
+        "assembly": "Hexalith.EventStore.Client",
+        "packageId": "Hexalith.EventStore.Client",
+        "version": "5.4.0",
+        "contentHash": "H8XW/CKGSIBWgchTPNkdrgpRGNj/KZZWeQ/7512nE5gO+l5blF0QOwu1DkZMKqfJVFDMuD7pgiAK1V/jCYdG4w==",
+        "archiveMember": "lib/net11.0/Hexalith.EventStore.Client.dll",
+        "expectedSha256": "612c4f851f8b2b08b24f21a4d11cb78cc50940030224653d29043faab2623cf9",
+        "loadedSha256": "612c4f851f8b2b08b24f21a4d11cb78cc50940030224653d29043faab2623cf9"
+      },
+      {
+        "assembly": "Hexalith.EventStore.Contracts",
+        "packageId": "Hexalith.EventStore.Contracts",
+        "version": "5.4.0",
+        "contentHash": "LIxRmd/qpYl5Ag0uILSRSG+QxIg02dCl/sMkFZVUD7deIGhsC1Ukp41UK7FmM94loQ0B1zz/9gDK2DLfLbaBBw==",
+        "archiveMember": "lib/net11.0/Hexalith.EventStore.Contracts.dll",
+        "expectedSha256": "7079a488683bfa53898a236817a1f5ae9d4c39d2830410a0982ddf750049d336",
+        "loadedSha256": "7079a488683bfa53898a236817a1f5ae9d4c39d2830410a0982ddf750049d336"
+      },
+      {
+        "assembly": "Hexalith.EventStore.DomainService",
+        "packageId": "Hexalith.EventStore.DomainService",
+        "version": "5.4.0",
+        "contentHash": "m9DU/Z4r1SAXJGv8XTMraxFj6LJeU1fmkKPZwSmGXK96JAFUYLvhuzWmSCMH2PCZC8XPUxM7P4dKOILDDQJ6kA==",
+        "archiveMember": "lib/net11.0/Hexalith.EventStore.DomainService.dll",
+        "expectedSha256": "4abeca6cffcd8c55a06493b72ea93687f1b9355c479ec53531047e2d0833e246",
+        "loadedSha256": "4abeca6cffcd8c55a06493b72ea93687f1b9355c479ec53531047e2d0833e246"
+      },
+      {
+        "assembly": "Hexalith.EventStore.Server",
+        "packageId": "Hexalith.EventStore.Server",
+        "version": "5.4.0",
+        "contentHash": "TAea4tJCGEz4QOMy6S2oaPzbYoibI5a8E9AdVf2bNoQRPeedVEBeYmGe4J9qOkJ1xoUUy/PIMqZeQEvTUVd/3g==",
+        "archiveMember": "lib/net11.0/Hexalith.EventStore.Server.dll",
+        "expectedSha256": "6a7354fb1c29f37113794e76353670b2bdc50098a3afacc92e2a25f5f9fecd6a",
+        "loadedSha256": "6a7354fb1c29f37113794e76353670b2bdc50098a3afacc92e2a25f5f9fecd6a"
+      },
+      {
+        "assembly": "Hexalith.EventStore.ServiceDefaults",
+        "packageId": "Hexalith.EventStore.ServiceDefaults",
+        "version": "5.4.0",
+        "contentHash": "iBsZC69HADbkiFRhUlYorrzr2esptiOCHnHhpjEo/tgW7MGUCf2lgS+iEArZq1TVKkCCRrdmGzI7cRtqpPKtrA==",
+        "archiveMember": "lib/net11.0/Hexalith.EventStore.ServiceDefaults.dll",
+        "expectedSha256": "c08c7c119e0e2e7a599232e30ab88636ee449e1b80e52bf901a21646911c6f59",
+        "loadedSha256": "c08c7c119e0e2e7a599232e30ab88636ee449e1b80e52bf901a21646911c6f59"
+      },
+      {
+        "assembly": "Hexalith.McpCli.Abstractions",
+        "packageId": "Hexalith.McpCli.Abstractions",
+        "version": "3.0.0",
+        "contentHash": "LUZ7IQkVEEU+MhBrpm8yJDsd0X1aMjZRrHNSbvOaE5HNFwJfA1DIcjlOMoLR7IEGz+xvkYCuRTba9GNJHk8QCA==",
+        "archiveMember": "lib/net11.0/Hexalith.McpCli.Abstractions.dll",
+        "expectedSha256": "d84cb2a7e6823756633c374a8cec55ae088962ea1b508be53b7604de7ca13e88",
+        "loadedSha256": "d84cb2a7e6823756633c374a8cec55ae088962ea1b508be53b7604de7ca13e88"
+      },
+      {
+        "assembly": "Hexalith.Memories.Contracts",
+        "packageId": "Hexalith.Memories.Contracts",
+        "version": "4.1.0",
+        "contentHash": "xsfl5v7Tq0eizpnmZuuh+4ltzS/NM3oPqXDfOlqXBoMXQM5y1aTeIsA07Ksn4Q1qUvpvHm183uUMbfTkH6VY4w==",
+        "archiveMember": "lib/net11.0/Hexalith.Memories.Contracts.dll",
+        "expectedSha256": "0e79077cbff5f5d0997fe40dcc02401b98b9bdd40c60f19a01ca75bd004dab83",
+        "loadedSha256": "0e79077cbff5f5d0997fe40dcc02401b98b9bdd40c60f19a01ca75bd004dab83"
+      },
+      {
+        "assembly": "Hexalith.Memories.EventStore",
+        "packageId": "Hexalith.Memories.EventStore",
+        "version": "4.1.0",
+        "contentHash": "aDh72fYVOM1dQUasTxF/T9tPO+zokZ8S+Cd2a6xtteuWagJTlXdqLVsFq5pN3v848TXLPVYSv5D2p+83MdRPQQ==",
+        "archiveMember": "lib/net11.0/Hexalith.Memories.EventStore.dll",
+        "expectedSha256": "d3bfe498a1a04ee4ea2df6a301753e17bdbae9d39499f40e97edfb916c2ad6fb",
+        "loadedSha256": "d3bfe498a1a04ee4ea2df6a301753e17bdbae9d39499f40e97edfb916c2ad6fb"
+      },
+      {
+        "assembly": "Hexalith.Memories.EventStoreExtensions",
+        "packageId": "Hexalith.Memories.EventStoreExtensions",
+        "version": "4.1.0",
+        "contentHash": "Z1eKtBVFt8RQ+ZnalizROFNS279GUTYDhSbClo1FRPCqRJehWxhLuCRdM3XD7O4uJ0dXHzMFy2D/Vn3iR0T4Eg==",
+        "archiveMember": "lib/net11.0/Hexalith.Memories.EventStoreExtensions.dll",
+        "expectedSha256": "72c083e06f8622014faf721058e31508c67933c2cd7dc23d8be069982006bc0d",
+        "loadedSha256": "72c083e06f8622014faf721058e31508c67933c2cd7dc23d8be069982006bc0d"
+      },
+      {
+        "assembly": "Hexalith.Tenants.Contracts",
+        "packageId": "Hexalith.Tenants.Contracts",
+        "version": "8.0.2",
+        "contentHash": "SB2mFYTV5LrYIq0sO24cvkECJFYep7YSF5cI2x+0QqbK+RZUH1yMZsiMvOSMqmXRzkx1SKJICRVsekb9MB7pHQ==",
+        "archiveMember": "lib/net11.0/Hexalith.Tenants.Contracts.dll",
+        "expectedSha256": "b5c483ce473181a50a4338e604ca06656e0b38c9ce202a41b2467de8b219979d",
+        "loadedSha256": "b5c483ce473181a50a4338e604ca06656e0b38c9ce202a41b2467de8b219979d"
+      },
+      {
+        "assembly": "Hexalith.Tenants.Server",
+        "packageId": "Hexalith.Tenants.Server",
+        "version": "8.0.2",
+        "contentHash": "LG7zgCL9BcGsLCVbET3o+cNnh05MbGf9Yq9Su81KUZaq8nHrM36pRRlnP4/mjgw9xevMBDpYZGIZqIyMOvkPaw==",
+        "archiveMember": "lib/net11.0/Hexalith.Tenants.Server.dll",
+        "expectedSha256": "58746593eb9bc3ae90531ae25457e5899e44294aa0ef0ae40bcab6ff8edb9fc8",
+        "loadedSha256": "58746593eb9bc3ae90531ae25457e5899e44294aa0ef0ae40bcab6ff8edb9fc8"
+      }
+    ]
+  },
+  "healthyResources": [
+    "dapr-placement-mtls",
+    "dapr-scheduler-mtls",
+    "dapr-sentry",
+    "eventstore",
+    "eventstore-dapr-cli",
+    "fixture-erasure-root",
+    "memories",
+    "memories-access-telemetry",
+    "memories-access-telemetry-clock",
+    "memories-access-telemetry-clock-dapr-cli",
+    "memories-access-telemetry-dapr-cli",
+    "memories-dapr-cli",
+    "memories-domain-service",
+    "memories-domain-service-dapr-cli",
+    "memories-graph",
+    "memories-vectors",
+    "redis",
+    "tenants",
+    "tenants-api",
+    "tenants-api-dapr-cli",
+    "tenants-dapr-cli"
+  ],
+  "releasedOwnerImages": [
+    {
+      "resourceId": "tenants",
+      "catalogImage": "registry.hexalith.com/tenants:8.0.2",
+      "expectedReference": "registry.hexalith.com/tenants@sha256:3e468dc6edf5a126cf952f5b69b939d545f56b189f1db896edf1e9ccee8fb41f",
+      "expectedManifestDigest": "sha256:3e468dc6edf5a126cf952f5b69b939d545f56b189f1db896edf1e9ccee8fb41f",
+      "expectedConfigDigest": "sha256:b30721df9a9b267aa338847e230b679507ff6e6b28391ca6ee7dac7dd21e996b",
+      "observedReference": "registry.hexalith.com/tenants@sha256:3e468dc6edf5a126cf952f5b69b939d545f56b189f1db896edf1e9ccee8fb41f",
+      "observedImageId": "sha256:3e468dc6edf5a126cf952f5b69b939d545f56b189f1db896edf1e9ccee8fb41f"
+    },
+    {
+      "resourceId": "tenants-api",
+      "catalogImage": "registry.hexalith.com/tenants-api:8.0.2",
+      "expectedReference": "registry.hexalith.com/tenants-api@sha256:cb85a053a458de77825c8c14a5844235b379de4561be65f4623b3d7f8918ef79",
+      "expectedManifestDigest": "sha256:cb85a053a458de77825c8c14a5844235b379de4561be65f4623b3d7f8918ef79",
+      "expectedConfigDigest": "sha256:364236e01c83b25872dc90d9360e988660a9dfa7df00c2140789bb96ef745c99",
+      "observedReference": "registry.hexalith.com/tenants-api@sha256:cb85a053a458de77825c8c14a5844235b379de4561be65f4623b3d7f8918ef79",
+      "observedImageId": "sha256:cb85a053a458de77825c8c14a5844235b379de4561be65f4623b3d7f8918ef79"
+    },
+    {
+      "resourceId": "memories",
+      "catalogImage": "registry.hexalith.com/memories:4.1.0",
+      "expectedReference": "registry.hexalith.com/memories@sha256:0d52ceb355eb2000b843549bd23aa685c3566c8953a97e36eeed46f7e18d9c1c",
+      "expectedManifestDigest": "sha256:0d52ceb355eb2000b843549bd23aa685c3566c8953a97e36eeed46f7e18d9c1c",
+      "expectedConfigDigest": "sha256:c16528a774309db78e2d8d27dd8a86934d2f7f8889dec6560c80e38e9850c18d",
+      "observedReference": "registry.hexalith.com/memories@sha256:0d52ceb355eb2000b843549bd23aa685c3566c8953a97e36eeed46f7e18d9c1c",
+      "observedImageId": "sha256:0d52ceb355eb2000b843549bd23aa685c3566c8953a97e36eeed46f7e18d9c1c"
+    },
+    {
+      "resourceId": "memories-access-telemetry-clock",
+      "catalogImage": "registry.hexalith.com/memories-access-telemetry-clock:4.1.0",
+      "expectedReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:b2ea6f42b32f403a64818d16118f40a11b000889322c81bdc0fd65eab7788572",
+      "expectedManifestDigest": "sha256:b2ea6f42b32f403a64818d16118f40a11b000889322c81bdc0fd65eab7788572",
+      "expectedConfigDigest": "sha256:6f8c7ae4647ca6e0c9ec38dbc6d2930b35420bd6687527ea3abb97e01ab56ddb",
+      "observedReference": "registry.hexalith.com/memories-access-telemetry-clock@sha256:b2ea6f42b32f403a64818d16118f40a11b000889322c81bdc0fd65eab7788572",
+      "observedImageId": "sha256:b2ea6f42b32f403a64818d16118f40a11b000889322c81bdc0fd65eab7788572"
+    },
+    {
+      "resourceId": "memories-access-telemetry",
+      "catalogImage": "registry.hexalith.com/memories-access-telemetry:4.1.0",
+      "expectedReference": "registry.hexalith.com/memories-access-telemetry@sha256:03c1f01bfb44d3a97819684e5cc638508c303aba7e723b8a6939e832edd3d63e",
+      "expectedManifestDigest": "sha256:03c1f01bfb44d3a97819684e5cc638508c303aba7e723b8a6939e832edd3d63e",
+      "expectedConfigDigest": "sha256:a23ab4ad925b0e84cb2eca0a8adff4a8a9637f1b8a8e0b0663506d6f7589a2c8",
+      "observedReference": "registry.hexalith.com/memories-access-telemetry@sha256:03c1f01bfb44d3a97819684e5cc638508c303aba7e723b8a6939e832edd3d63e",
+      "observedImageId": "sha256:03c1f01bfb44d3a97819684e5cc638508c303aba7e723b8a6939e832edd3d63e"
+    },
+    {
+      "resourceId": "memories-domain-service",
+      "catalogImage": "registry.hexalith.com/memories-domain-service:4.1.0",
+      "expectedReference": "registry.hexalith.com/memories-domain-service@sha256:dbf81b2eea4d97cd50abca3dafab87ca00e6fe144de01305fc00aeaf0ef2ee64",
+      "expectedManifestDigest": "sha256:dbf81b2eea4d97cd50abca3dafab87ca00e6fe144de01305fc00aeaf0ef2ee64",
+      "expectedConfigDigest": "sha256:9fb52b28164fa7edd41ec3d21a1e6daf462ef8481f187e9cee36ab73298f1950",
+      "observedReference": "registry.hexalith.com/memories-domain-service@sha256:dbf81b2eea4d97cd50abca3dafab87ca00e6fe144de01305fc00aeaf0ef2ee64",
+      "observedImageId": "sha256:dbf81b2eea4d97cd50abca3dafab87ca00e6fe144de01305fc00aeaf0ef2ee64"
+    }
+  ],
+  "supportImageObservations": [
+    {
+      "imageRef": "quay.io/openbao/openbao@sha256:e29524ba7c3f20d01f562c481e3eccbad6c91df45a2f2531433da4951e408cff",
+      "imageId": "sha256:e29524ba7c3f20d01f562c481e3eccbad6c91df45a2f2531433da4951e408cff"
+    },
+    {
+      "imageRef": "falkordb/falkordb:latest",
+      "imageId": "sha256:bef8acb1d8ed9ff8d2ea251767e75c6c05cfa759f7c6bc7e1c122f27d0ea4d7f"
+    },
+    {
+      "imageRef": "docker.io/library/redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+      "imageId": "sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf"
+    },
+    {
+      "imageRef": "redis/redis-stack:latest",
+      "imageId": "sha256:5d5154123426693540ea6c1d9e638eae2bf2024879c839db6fcfdd7717e817c7"
+    },
+    {
+      "imageRef": "daprio/sentry:1.19.2",
+      "imageId": "sha256:9c18a914aa1689935ed264fed38b98baabfe3e4c4b91959912a4d804518d8835"
+    },
+    {
+      "imageRef": "daprio/dapr:1.19.2",
+      "imageId": "sha256:16ca01236a97825e30b19ef9c89c7c9006fabdd9036a6d7e8947662371418851"
+    },
+    {
+      "imageRef": "daprio/dapr:1.19.2",
+      "imageId": "sha256:16ca01236a97825e30b19ef9c89c7c9006fabdd9036a6d7e8947662371418851"
+    }
+  ],
+  "nativeTest": {
+    "diagnostics": [
+      "HXI010",
+      "HXI005"
+    ],
+    "counts": {
+      "reported": true,
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mtpReportSha256": "c10bc7b863aab84a54be8a758e16cff43e0570c3feb91a5a019e2f80c352ab0b",
+    "resourceDisposition": "removed",
+    "remainingResources": {
+      "containerIds": [],
+      "processIds": [],
+      "unverified": false,
+      "isEmpty": true,
+      "workspaceIds": [],
+      "claimIds": [],
+      "discoveryFailures": [],
+      "resourceIds": []
+    },
+    "remainingLabeledContainers": 0,
+    "nativeReportSha256": "c10bc7b863aab84a54be8a758e16cff43e0570c3feb91a5a019e2f80c352ab0b",
+    "actualGatewayProcess": {
+      "processId": 2104893,
+      "parentProcessId": 2092125,
+      "executable": "Hexalith.Platform.EventStoreHost"
+    },
+    "testResultSha256": "ac08d17cf1a801d30f6e92085a7c74c5917b0f4098fd6aca4be5d73616604081",
+    "parentRetainedObservationSha256": "e511b83a7af4b4519b294574a7e5f327a5495e922dbec0c51e8be3059f99f212",
+    "selectedClosureSha256": "f0c021f98f9406081caaab5c487cd2e5e0a0816a815b9b12355200306dd69cb6"
+  },
+  "priorSignedProtectionActorRefusal": {
+    "runId": "5785edf7dd233008fc937e05ba1f900e",
+    "rule": "HXR025",
+    "diagnosis": "EventStore 5.4.0 closed SDK receiver rejects non-SDK actor implementations",
+    "actualGatewayStderrSha256": "81c254245a77bff83f7f5f1a931957ccbb6e09397078464aaf6668c679f886c4",
+    "cleanupSha256": "82fdfd152b55d4d1842a27e9638fb4b251c431f4c11e8bd75a1beeea6df01467",
+    "remainingResourcesAfterDown": {
+      "containerIds": [],
+      "processIds": [],
+      "unverified": false,
+      "isEmpty": true,
+      "workspaceIds": [],
+      "claimIds": [],
+      "discoveryFailures": [],
+      "resourceIds": []
+    }
+  },
+  "previousHostedCandidate": {
+    "revision": "794625df85332f90994931e941699872efc3fd27",
+    "catalogRun": 44913632623,
+    "tupleRun": 44913632631,
+    "verifiedReceiptSha256": "4926290269c742a2b2857061a302a5834219d1e72076e69f8320c5295216d33c"
+  },
+  "originalSha256": {
+    "native-outcome.json": "45ee43952bea5e0890760e2dd244b1be644121ef12b8b0c34b7c2cb2e37cfded",
+    "native-evidence.json": "5a30e7c8f8ca6ac76d9326756585a5b974c240604ec1cc0b1b84280a4cb6b6ba",
+    "artifact-identity.json": "3841bd2bd19aa85c5ca6068beeae82c4654124f2aa6fe24ca370205cf13374b8",
+    "observed-runtime-image-identities.json": "17df83a0a996bd5c23b8bbb686442ad5ea54f5afe98636e2e1950a672715f895",
+    "4c0a576646c6ff0d32b6d68b39c527b4-fixture-host-loaded.json": "e511b83a7af4b4519b294574a7e5f327a5495e922dbec0c51e8be3059f99f212",
+    "4c0a576646c6ff0d32b6d68b39c527b4-fixture-reader-receipt.json": "64b6815c3550fc6f3f791c8beabe9cc4be52c28b0b15e5fb1d8c544e33219581",
+    "4c0a576646c6ff0d32b6d68b39c527b4-released-images.json": "7590e1b02d387f9cad441bdbbadb738705cbaf78d5536df7bfdd5c1b33aabff1",
+    "4c0a576646c6ff0d32b6d68b39c527b4-readiness.json": "18e26708b4b21c3f8fe35f4ad3d91ad1680ed5d62f8fa0d4e37f3908441a4b4c",
+    "4c0a576646c6ff0d32b6d68b39c527b4-installed.json": "9180e811acfd7a5f02c876013d4ce717e17deb20ad4b29940aa34492a2a272f6",
+    "4c0a576646c6ff0d32b6d68b39c527b4-fixture-host-retained.json": "e511b83a7af4b4519b294574a7e5f327a5495e922dbec0c51e8be3059f99f212",
+    "4c0a576646c6ff0d32b6d68b39c527b4-selected-closure.json": "f0c021f98f9406081caaab5c487cd2e5e0a0816a815b9b12355200306dd69cb6",
+    "selected-closure-project-identities.json": "f3fb772931a226a38e60ee9e82a5ca1c577772620be7b9e5d11823fc59ea6eb4"
+  }
+}

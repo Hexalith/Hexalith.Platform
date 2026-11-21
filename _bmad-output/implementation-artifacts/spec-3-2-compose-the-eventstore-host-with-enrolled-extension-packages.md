@@ -2,7 +2,7 @@
 title: '3.2 Compose the eventstore host with enrolled extension packages'
 type: 'feature'
 created: '2026-11-08'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'f7c68398cdcb494d535e789e3d9577af9e8d5d36'
@@ -584,3 +584,15 @@ The first protected run reached the EventStore 5.4.0 receiver and reproduced its
 The protected follow-up isolates OpenBao from Docker bridge peers. It uses Docker's built-in `none` network, confirms the actual native sockets bind only to container loopback, and publishes no Docker ports. A run-owned host loopback socket forwards the pinned TLS connection through the local Docker Unix socket. The standard run label still identifies the only Docker resource for cleanup.
 
 The prior candidate `794625df85332f90994931e941699872efc3fd27` passed the catalog gate and 465 hosted tuple executions, including 18 extension cases and the separate signed component startup. The protected candidate requires its own exact hosted qualification before landing. **Status remains in-progress.** [Catalog gate](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44913632623) · [Tuple gate](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44913632631)
+
+### Reviewed acceptance and landing — 2026-11-21
+
+The dedicated NuGet Trusted Publishing policy was narrowed in Windows Chrome to `Hexalith.Platform.TestExtension`, workflow `test-extension-release.yml`, and environment `production`. Its normal publication produced signed fixture 2.2.5. The hardened archive verifier independently rechecked its repository signature, NuGet registration hash and original qualified payload. [Fixture publication](https://github.com/Hexalith/Hexalith.Platform/actions/runs/44902658431) · [Signed fixture](https://www.nuget.org/packages/Hexalith.Platform.TestExtension/2.2.5) · [Owning Builds 6.6.0 release](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44909014255)
+
+Three independent reviewers examined the change. The patches refuse colliding structured extension keys, attest the composed project and published seed separately, and enforce the fixture archive layout on immutable publication retries. Three targeted controls cover the required protection digest, cross-run host observations and reader route-facet changes. No new work was deferred. The complete source extension class passed all 39 cases. Both broader package runs reported all 70 Composition classes. The reviewed revision added five passing cases, with the same 35 failures, 12 skips and one unselected opt-in case as the preceding revision. All 35 failure identities also occur in the original baseline. [Full inventory comparison](evidence/3-2/release-adoption-20261109/resume-20261121/platform-reviewed-full-inventory-comparison.json)
+
+The normal signed Builds 6.6.0 run `4c0a576646c6ff0d32b6d68b39c527b4` at exact reviewed Platform `196f43100d1292fee7110b7861348facf24c2442` reached 21 Healthy resources, matched all six released owner images and passed the one native MTP readiness test. The package assets, dependency manifest and live gateway agree on the fixture DLL. The parent retained the exact gateway observation, and the selected closure independently identifies the composed project and published seed. Cleanup left no resources for this run. A first exact attempt timed out when the local Docker proxy refused the Memories graph connection. The normal `down` emptied its retained resources, and the unchanged retry above passed. [Verified native receipt](evidence/3-2/release-adoption-20261109/resume-20261121/fixture225-protected-native-reviewed-196f4310.json)
+
+The exact reviewed PR passed both hosted checks and all 468 required xUnit executions with zero failures, skips or errors. The component started the signed host and reported `platform-test@1`. PR #55 merged as `37e6bcc95ae2a38ab9342ac2ee484ba0f686d294`; the merge retains the reviewed tree and both verified parents. [Platform PR #55](https://github.com/Hexalith/Hexalith.Platform/pull/55) · [Hosted qualification receipt](evidence/3-2/release-adoption-20261109/resume-20261121/hosted-platform-fixture-196f4310-receipt.json) · [Merge verification](evidence/3-2/release-adoption-20261109/resume-20261121/platform-pr55-merge-verification.json)
+
+The main-branch catalog and tuple passed for that exact merge. The automatic publisher created Platform v2.4.0, and the official Git tag resolves to the verified merge. Story verification is complete. [Exact-main qualification](evidence/3-2/release-adoption-20261109/resume-20261121/hosted-platform-fixture-37e6bcc9-receipt.json) · [Source release verification](evidence/3-2/release-adoption-20261109/resume-20261121/platform-source-release-37e6bcc9-verification.json) · [Platform v2.4.0](https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.4.0)

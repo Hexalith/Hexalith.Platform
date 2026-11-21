@@ -1,0 +1,86 @@
+{
+  "before": {
+    "source": "cf002bace462b681179723b4bb65adfd6e034a98",
+    "classes": 70,
+    "counts": {
+      "Pass": 934,
+      "Skip": 12,
+      "Fail": 35,
+      "NotRun": 1
+    },
+    "rawCounts": {
+      "Pass": 932,
+      "Skip": 12,
+      "Fail": 37,
+      "NotRun": 1
+    },
+    "documentedToolRestoreXmlSha256": "e6b322374ab3e8e6f3a5d6a85c8e76919ac798ea32ca2c201e23d7ab88237edc"
+  },
+  "reviewed": {
+    "source": "196f43100d1292fee7110b7861348facf24c2442",
+    "classes": 70,
+    "counts": {
+      "Pass": 939,
+      "Skip": 12,
+      "Fail": 35,
+      "NotRun": 1
+    },
+    "rawCounts": {
+      "Pass": 937,
+      "Skip": 12,
+      "Fail": 37,
+      "NotRun": 1
+    },
+    "documentedToolRestoreXmlSha256": "3507aff9d4edd4d5de1db4a757378f1a4fc773ac6126e8f3f279db7d94ba5ef2"
+  },
+  "newFailuresComparedWithBeforeReview": [],
+  "resolvedFailuresComparedWithBeforeReview": [],
+  "addedCaseOutcomes": [
+    {
+      "type": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "method": "StructuredExtensionInputFlattensOrIsRefused",
+      "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Nested\\\\\\\":[1],\\\\\\\"nested__0\\\\\\\":2}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")",
+      "result": "Pass",
+      "occurrences": 1
+    },
+    {
+      "type": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests",
+      "method": "StructuredExtensionInputFlattensOrIsRefused",
+      "name": "Hexalith.Platform.Composition.Tests.EventStoreExtensionCompositionTests.StructuredExtensionInputFlattensOrIsRefused(key: \\\"PlatformTestExtension:Marker\\\", value: \\\"{\\\\\\\"Nested\\\\\\\":{\\\\\\\"Level\\\\\\\":1},\\\\\\\"Nested:Level\\\\\\\":2}\\\", expected: null, condition: \\\"eventstore-extension-configuration-conflict\\\")",
+      "result": "Pass",
+      "occurrences": 1
+    },
+    {
+      "type": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests",
+      "method": "FixtureReaderRefusesADifferentRouteFacetWithTheSameInventoryCounts",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests.FixtureReaderRefusesADifferentRouteFacetWithTheSameInventoryCounts",
+      "result": "Pass",
+      "occurrences": 1
+    },
+    {
+      "type": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests",
+      "method": "ObserverEnvironmentBindsTheMeasuredInstallationAndRefusesAForeignReceiptAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests.ObserverEnvironmentBindsTheMeasuredInstallationAndRefusesAForeignReceiptAsync",
+      "result": "Pass",
+      "occurrences": 1
+    },
+    {
+      "type": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests",
+      "method": "ParentPreparationRefusesAForeignGatewayObservationBeforeProcessAccessOrRetentionAsync",
+      "name": "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests.ParentPreparationRefusesAForeignGatewayObservationBeforeProcessAccessOrRetentionAsync",
+      "result": "Pass",
+      "occurrences": 1
+    }
+  ],
+  "removedCaseOutcomes": [],
+  "historicalBaseline": {
+    "source": "f7c68398cdcb494d535e789e3d9577af9e8d5d36",
+    "counts": {
+      "Pass": 744,
+      "Skip": 12,
+      "Fail": 163
+    },
+    "failuresAlsoObservedOnReviewedSource": 35,
+    "sourceAndBuildInputsDiffer": true
+  }
+}
