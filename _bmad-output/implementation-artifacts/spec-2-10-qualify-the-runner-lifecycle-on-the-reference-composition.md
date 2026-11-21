@@ -15,7 +15,7 @@ context: []
 
 ## Intent
 
-**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) makes 2.10 a local run of the nine lifecycle scenarios on Parties, using the pinned released tool (Builds 6.3.0) and recording one compact summary per scenario. No 6.3.0 local run exists. The current controller is bound to 4.47.0 and cannot drive attached suites or collisions.
+**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) calls for a local run of the nine lifecycle scenarios on Parties and one compact summary per scenario. The owner directed the campaign to use only the latest released Builds CLI on 2026-11-21. The current Parties checkout pins Builds CLI 6.4.4.
 
 **Approach:** Add a small stdlib Python driver. It runs the released `hexalith-module` against Parties' existing `lifecycle-package` and `attached-lifecycle-package` fixtures through their `control.json`. Run all nine scenarios once and commit a compact summary. The CI part and the tool acceptance and pins stay open for Story 2.14 and CiCd story 21.
 
@@ -23,9 +23,9 @@ context: []
 
 **Always:**
 - **Inputs:**
-  - Use Parties `8e3507e47a157875931b4ebcf34aff67fd3d5962`, the Platform gitlink, in a scratch git worktree.
-  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its gitlink `7afc4981e21bc2fcce687199a3fd2c61fe87336e` (v6.3.0), from local objects with no fetch.
-  - Restore the tool from the worktree's `.config/dotnet-tools.json`. NuGet and registry pulls are allowed.
+  - Use Parties `d8d599e611c6a2999780907369ba70febfd266c2`, the Platform gitlink at `d54baff2503f7f9a35146408c6cd04271cf8c124`, in a scratch git worktree.
+  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its committed catalog gitlink `dc225a6969473c21c3dad6bda8f1a18ad0aaae0d`, from local objects with no fetch. Record the catalog revision separately from the CLI release.
+  - Restore Builds CLI 6.4.4 from the worktree's `.config/dotnet-tools.json`. Use only the latest released CLI. NuGet and registry pulls are allowed.
 - **Package mode:** use package mode, as both profiles declare.
 - **Environment:** leave `CI` and `GITHUB_ACTIONS` unset and fabricate no GitHub metadata.
 - **Isolation:**
@@ -65,7 +65,7 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 ## Code Map
 
 - `eng/lifecycle-qualification/local.py` is the old controller, to be deleted. Before deleting it, reuse its ideas: run-id discovery from `g4-runs/*.json` (`discover`, line 466), the control-file write (line 503) and the `diagnostics/<runId>/selected-test.json` read (line 563).
-- Parties `module/hexalith.module-manifest.v2.json` declares `tests[3]` `lifecycle-package` and `tests[4]` `attached-lifecycle-package`. Both use package mode with 300 s execution and 90 s stop limits. There is no `lifecycle.startup`, so the default 600 s applies.
+- Parties `module/hexalith.module-manifest.v2.json` declares `lifecycle-package` and `attached-lifecycle-package`. Both use package mode with 300 s execution and 90 s stop limits. The empty `lifecycle.startup` object leaves the default 600 s in effect.
 - Parties `tests/Hexalith.Parties.Platform.LifecycleTests/LifecycleQualificationTests.cs:18-50`:
   - Reads `HEXALITH_G4_RUN_ID` and `HEXALITH_TEST_ENVIRONMENT_PATH`.
   - Requires `~/.local/share/hexalith-builds/ci-qualification/<runId>/control.json`, with `{"runId","action":"wait|pass|fail"}`, to exist when the test starts.
@@ -73,13 +73,13 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 - Parties `tests/Hexalith.Parties.Platform.AttachedLifecycleTests/AttachedLifecycleQualificationTests.cs:15-50`: its control file adds `ownerRunId`, `environmentId` and `originalAttachmentRequestId`.
 - 6.3.0 scrubs `XDG_DATA_HOME` from children, so do not relocate state.
 - Package preparation: `hexalith-module prepare-build --manifest module/hexalith.module-manifest.v2.json --mode package --workspace <W> --output json`. Then run `dotnet build <suite csproj> -c Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true` with the prepared imports.
-- Builds 6.3.0 `ModuleCommandApplication.cs:224-238,391-421` defines the commands:
+- Builds CLI 6.4.4 `ModuleCommandApplication.cs` defines the commands:
   - `test --attach-to/--hold-seconds/--attachment-request-id/--eventstore-port`
   - `attach --owner-run-id --composition-identity <sha256 of manifest bytes> --hold-seconds` and `attach --end --attached-run-id --outcome`
   - `down --run-id` and `list --output json`
   - Exit codes: 3 topology, 4 test, 130 cancelled.
   - Only SIGINT is cooperative (`ToolCommandHost.cs:20-53`).
-- `~/.local/share/hexalith-builds/diagnostics/<runId>/test-result.json` holds:
+- `~/.local/share/hexalith-builds/g4-runs/diagnostics/<runId>/test-result.json` holds:
   - `terminal.{outcome,cause,recordedAt,diagnosticIds}`
   - `bindings.deadlines.startup.{effectiveSeconds,actualDurationSeconds,override.state}`
   - `bindings.attachments.holds[]`, `retention`, `cleanup.{disposition,leftoverResourceIds}` and `bindings.tool.{version,contentIdentity}`
@@ -94,7 +94,7 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 - [x] `eng/lifecycle-qualification/test_scenarios.py`: unit-test the pure summary extraction and the row verdicts against sample `test-result.json` documents.
 - [x] `eng/lifecycle-qualification/{local,test_local,prepare,test_prepare}.py`: delete them.
 - [x] `eng/lifecycle-qualification/README.md`: rewrite it to cover the prerequisites and the run command.
-- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-3-0-20261118/`: run all nine rows live and write `summary.json` and `README.md`. **Blocked (2026-11-18):** two product defects, see Implementation Notes; no evidence directory was written.
+- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-4-4-20261121/`: run all nine rows live with the latest released CLI and write `summary.json` and `README.md`. Package preparation is blocked by the attached-suite compilation described below.
 
 **Acceptance Criteria:**
 - **Given** the summary, **when** inspected, **then** each row holds:
@@ -114,6 +114,13 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 
 ## Implementation Notes
 
+**2026-11-21: latest released CLI 6.4.4 stopped in package preparation.**
+
+- The restored executable reported `6.4.4+fe68718b6c074a6b500a7191e3554a1d39e17688`. `prepare-build --mode package` and the owner suite build passed. The attached suite failed with nine `CS1061` errors for `OwnerRunId`, `EnvironmentId`, `OriginalAttachmentRequestId` and `AttachmentExpiresAtUtc`. Package-mode MSBuild evaluation confirmed that the catalog at Parties' Builds gitlink selects `Hexalith.EventStore.Testing` 4.2.0.
+- No scenario or owner run started. The Docker inventory, runner state files and normalized `list` entries matched before and after. The scratch worktree was removed. No lifecycle summary was produced. The earlier HXP020 refusal was outside this attempt because the CLI never reached startup.
+- Builds source commit `3be0f781` retires the old catalog view. Release v6.4.4 and the catalog pinned by Parties still contain it. The live rerun needs a released and adopted catalog with the fix. CI evidence and the accepted-tool record remain open.
+- The driver now stops all remaining rows on a product refusal. Owner and collision-peer discovery uses the launched process's open provisioning lock, its AppHost process group or its own terminal result. Failed cleanup calls remain eligible for retry. Resource-free tests cover these changes. Live behavior remains unverified until package preparation succeeds.
+
 **2026-11-18: driver delivered, live campaign stopped at two product defects.**
 
 - **Driver:** `scenarios.py` (stdlib), its unit tests and the README are in place, and the 4.47.0 controller is deleted. The driver launches the restored 6.3.0 entry assembly directly, so each owner tool leads its own process group. Run ids come from new `g4-runs` states bound to the manifest hash and to the driver's own AppHost process group. It is 733 lines, more than the ~300 estimate, because each of the nine rows has its own checks.
@@ -122,13 +129,15 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 - **Local prerequisites found:**
   - 6.3.0 selects Dapr CLI and runtime 1.19.1. The shell's `HEXALITH_DAPR_HOME` (1.18.2 and 1.18.7) is refused with HXR012. An isolated home was created at `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.1` from the archives pinned in `Props/dapr-toolchain-sha256.json`; shell profiles are unchanged.
   - The tool's workspace resolver initializes the worktree's nested `references/Hexalith.Platform` itself, from GitHub, during `prepare-build` and `test`.
-- **Rerun** after 2.14 and a catalog fix: follow `eng/lifecycle-qualification/README.md` and write the summary to the evidence directory above.
+- **Rerun** after 2.14 and a catalog fix: follow `eng/lifecycle-qualification/README.md` with the latest released CLI and write the summary to the evidence directory named in the execution task.
 - **Parked (2026-11-18, user decision):**
   - Verified: the current Parties declaration `dfb03b6e…` is absent from `IsOrdinaryDeclaration` (`src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs:21`). That method admits only `40cee6ce…` and `d9c193b0…`, and Story 2.14 removes it.
   - The attached-suite catalog defect is in `deferred-work.md`.
   - The work is committed locally without a push. Step 04 review is deferred to the live rerun, after 2.14 and a Builds release carrying the catalog fix. The status stays `in-progress`.
 
 ## Spec Change Log
+
+- 2026-11-21: The owner directed the campaign to use only the latest released CLI. The inputs and evidence path now identify the 6.4.4 campaign. The earlier 6.3.0 defects remain historical observations.
 
 ## Review Triage Log
 

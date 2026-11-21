@@ -1,9 +1,15 @@
 """Resource-free checks of the scenario driver's summary extraction and row verdicts."""
 import copy
+import io
 import json
+import os
 import sys
+import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scenarios  # noqa: E402
@@ -190,6 +196,80 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(text.count('| passed |'), 9)
         self.assertNotIn('/home/', text)
         self.assertNotIn('/tmp/', text)
+
+
+class CampaignTests(unittest.TestCase):
+    def test_product_refusal_skips_all_remaining_rows(self):
+        source = {'revision': 'a' * 40, 'buildsRevision': 'b' * 40}
+        tool = {'version': '6.4.4'}
+        with (tempfile.TemporaryDirectory() as directory,
+              patch.object(scenarios, 'Driver') as driver_type,
+              patch.object(scenarios.signal, 'signal'),
+              redirect_stdout(io.StringIO())):
+            driver = driver_type.return_value
+            driver.preflight.return_value = source, tool
+            driver.prepare.return_value = 'c' * 64
+            driver.row.return_value = {'scenario': 'success', 'verdict': 'failed', 'refusal': True,
+                                       'failedChecks': ['driver:HXP020'], 'runs': []}
+            driver.residue.return_value = {'listedIssuedRuns': [], 'issuedContainers': 0}
+            root = Path(directory)
+            evidence = root / 'evidence'
+
+            result = scenarios.main(['--checkout', str(root / 'parties'), '--evidence', str(evidence)])
+            summary = json.loads((evidence / 'summary.json').read_text())
+
+        self.assertEqual(result, 1)
+        driver.row.assert_called_once_with('success', source['revision'], tool['version'])
+        driver.release.assert_called_once()
+        self.assertEqual([row['scenario'] for row in summary['rows']], list(scenarios.SCENARIOS))
+        self.assertEqual([row['verdict'] for row in summary['rows']], ['failed'] + ['not-run'] * 8)
+
+
+class OwnershipTests(unittest.TestCase):
+    def test_discovery_requires_the_launched_process_to_own_the_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_dir = Path(directory)
+            diagnostics = state_dir / 'diagnostics'
+            driver = scenarios.Driver(state_dir, state_dir)
+            driver.manifest_hash = 'a' * 64
+            for run_id in (OWNER, PEER):
+                state = {'runId': run_id, 'manifestHash': driver.manifest_hash, 'executionContext': {'kind': 'local'}}
+                (state_dir / f'{run_id}.json').write_text(json.dumps(state))
+            owner_dir = diagnostics / OWNER
+            owner_dir.mkdir(parents=True)
+            proc = SimpleNamespace(pid=os.getpid(), poll=lambda: None)
+
+            with patch.object(scenarios, 'STATE', state_dir), patch.object(scenarios, 'DIAGNOSTICS', diagnostics):
+                self.assertIsNone(driver.discover(proc, set()))
+                with (owner_dir / 'provisioning.lock').open('w'):
+                    self.assertEqual(driver.discover(proc, set())['runId'], OWNER)
+                    self.assertIsNone(driver.discover(proc, {OWNER}))
+
+    def test_final_release_retries_an_unsuccessful_down(self):
+        driver = scenarios.Driver(Path('.'), Path('.'))
+        driver.bind({}, OWNER, ENVIRONMENT)
+        with patch.object(driver, 'tool', side_effect=[(3, {}), (0, {})]) as tool:
+            driver._release()
+            self.assertNotIn(OWNER, driver.downed)
+            driver._release()
+            driver._release()
+
+        self.assertIn(OWNER, driver.downed)
+        self.assertEqual(tool.call_count, 2)
+
+    def test_terminal_output_only_binds_new_run_ids(self):
+        driver = scenarios.Driver(Path('.'), Path('.'))
+        driver.bind({}, OWNER, ENVIRONMENT)
+        peer = {'knownStates': {ATTACHED}}
+        with patch.object(scenarios, 'read_json', return_value=None) as read_state:
+            for run_id in (OWNER, ATTACHED, '../unexpected'):
+                driver.bind_reported_owner(peer, {'runId': run_id})
+            self.assertNotIn('runId', peer)
+            read_state.assert_not_called()
+            driver.bind_reported_owner(peer, {'runId': PEER})
+
+        self.assertEqual(peer['runId'], PEER)
+        self.assertEqual(driver.owners, [OWNER, PEER])
 
 
 if __name__ == '__main__':

@@ -280,12 +280,13 @@ class Driver:
         self.sequence += 1
         if label in self.current:
             raise Failure('duplicate role ' + label)
+        known = self.states() if label in ('owner', 'peer') else set()
         stem = self.work / f'{self.sequence:02d}-{label}'
         with open(str(stem) + '.json', 'w') as stdout, open(str(stem) + '.log', 'w') as stderr:
             proc = subprocess.Popen(['dotnet', str(self.dll), *args, '--output', 'json'], cwd=self.checkout, env=self.env,
                                     stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, start_new_session=True)
         self.procs.append(proc)
-        self.current[label] = {'label': label, 'proc': proc, 'stdout': Path(str(stem) + '.json')}
+        self.current[label] = {'label': label, 'proc': proc, 'stdout': Path(str(stem) + '.json'), 'knownStates': known}
         return self.current[label]
 
     def poll(self, check, seconds, proc=None, what='condition'):
@@ -309,13 +310,40 @@ class Driver:
         except ProcessLookupError:
             return None
 
+    def provisioning_ids(self, proc):
+        """Read the provisioning locks opened by this exact CLI process."""
+        if proc.poll() is not None:
+            return set()
+        locks = set()
+        try:
+            for descriptor in Path(f'/proc/{proc.pid}/fd').iterdir():
+                try:
+                    target = descriptor.readlink()
+                except FileNotFoundError:  # The process closed this descriptor during the scan.
+                    continue
+                if target.name == 'provisioning.lock' and target.parent.parent == DIAGNOSTICS:
+                    locks.add(target.parent.name)
+        except FileNotFoundError:  # The launcher exited during the scan.
+            pass
+        return locks if proc.poll() is None else set()
+
+    def bind_reported_owner(self, run, output):
+        run_id = output.get('runId')
+        if (not run.get('runId') and isinstance(run_id, str) and re.fullmatch('[0-9a-f]{32}', run_id)
+                and run_id not in self.ids and run_id not in run['knownStates']):
+            state = read_json(STATE / (run_id + '.json')) or {}
+            self.bind(run, run_id, state.get('environmentId'))
+
     def discover(self, proc, known):
+        if proc.poll() is not None:
+            return None
+        provisioning = self.provisioning_ids(proc)
         found = []
         for stem in self.states() - known - self.ids:
             state = read_json(STATE / (stem + '.json'))
-            if (state and str(state.get('manifestHash', '')).lower() == self.manifest_hash
+            if (state and state.get('runId') == stem and str(state.get('manifestHash', '')).lower() == self.manifest_hash
                     and (state.get('executionContext') or {}).get('kind') == 'local'
-                    and self.group(state.get('appHostProcessId')) in (None, proc.pid)):
+                    and (stem in provisioning or self.group(state.get('appHostProcessId')) == proc.pid)):
                 found.append(state)
         return found[0] if len(found) == 1 else None
 
@@ -333,9 +361,8 @@ class Driver:
         os.replace(temporary, directory / 'control.json')
 
     def owner(self, label='owner', *extra):
-        known = self.states()
         run = self.launch(label, 'test', '--manifest', MANIFEST, '--mode', 'package', '--profile', OWNER, *extra)
-        state = self.starting(run, lambda: self.discover(run['proc'], known), 300, ' run id')
+        state = self.starting(run, lambda: self.discover(run['proc'], run['knownStates']), 300, ' run id')
         self.bind(run, state['runId'], state.get('environmentId'))
         self.control(run, 'wait')  # The fixture requires its control file when the suite starts.
         return run
@@ -417,8 +444,12 @@ class Driver:
             raise Failure(run['label'] + ' did not exit') from None
         output = last_json(run['stdout'].read_text())
         run.update(output=output, ruleIds=rule_ids(output), reasons=reasons(output))
+        if run['label'] in ('owner', 'peer'):
+            self.bind_reported_owner(run, output)
         if run.get('runId'):
             run['first'] = self.result(run['runId'])
+            if not run.get('environmentId'):
+                run['environmentId'] = (run['first'] or {}).get('environmentId')
             if run['runId'] in self.owners:
                 run['containersAtExit'] = len(self.containers(run['runId']))
                 run['listedAtExit'] = self.listing(run['runId'])
@@ -426,7 +457,8 @@ class Driver:
 
     def close(self, run):
         code, _ = self.tool('down', '--run-id', run['runId'], timeout=600)
-        self.downed.add(run['runId'])
+        if code == 0:
+            self.downed.add(run['runId'])
         run.update(downExitCode=code, final=self.result(run['runId']), containersAfter=len(self.containers(run['runId'])),
                    listedAfter=self.listing(run['runId']) is not None)
         return run
@@ -469,6 +501,10 @@ class Driver:
 
     def _release(self):
         self.resume()
+        owners = [self.current[role] for role in ('owner', 'peer') if role in self.current]
+        for run in owners:
+            if not run.get('runId') and (state := self.discover(run['proc'], run['knownStates'])):
+                self.bind(run, state['runId'], state.get('environmentId'))
         alive = [proc for proc in self.procs if proc.poll() is None]
         for proc in alive:
             os.killpg(proc.pid, signal.SIGINT)
@@ -479,11 +515,15 @@ class Driver:
                 os.killpg(proc.pid, signal.SIGKILL)
                 proc.wait(30)
         self.procs.clear()
+        for run in owners:
+            if not run.get('runId'):
+                self.bind_reported_owner(run, last_json(run['stdout'].read_text()))
         for run_id in self.owners:
             if run_id not in self.downed:
                 try:
-                    self.tool('down', '--run-id', run_id, timeout=600)
-                    self.downed.add(run_id)
+                    code, _ = self.tool('down', '--run-id', run_id, timeout=600)
+                    if code == 0:
+                        self.downed.add(run_id)
                 except subprocess.TimeoutExpired:
                     pass  # Reported through residue; a later release retries.
 
@@ -527,22 +567,17 @@ class Driver:
             port = str(probe.getsockname()[1])
         owner = self.owner('owner', '--eventstore-port', port)
         self.ready(owner)
-        known = self.states()
         peer = self.settle(self.launch('peer', 'test', '--manifest', MANIFEST, '--mode', 'package', '--profile', OWNER,
                                        '--eventstore-port', port), 900)
-        issued = ({peer['output']['runId']} if peer['output'].get('runId') else set()) | {
-            stem for stem in self.states() - known - self.ids
-            if str((read_json(STATE / (stem + '.json')) or {}).get('manifestHash', '')).lower() == self.manifest_hash}
+        if peer.get('runId'):
+            self.close(peer)
         names = any(item.get('ruleId') == 'HXR031' and owner['runId'] in str(item.get('message'))
                     for item in peer['output'].get('diagnostics') or [])
         untouched = (owner['proc'].poll() is None and self.recorded(owner['runId']) is None
                      and str((read_json(STATE / (owner['runId'] + '.json')) or {}).get('status')).lower() == 'ready')
         self.control(owner, 'pass')
         self.close(self.settle(owner))
-        for run_id in sorted(issued):
-            self.bind(peer, run_id, None)
-            self.close(peer)
-        return {'namesFirstRun': names, 'firstUnaffected': untouched, 'peerIssuedRuns': len(issued)}
+        return {'namesFirstRun': names, 'firstUnaffected': untouched, 'peerIssuedRuns': int('runId' in peer)}
 
     def owner_finish_hold(self):
         owner = self.owner()
@@ -696,9 +731,10 @@ def main(argv=None):
     source, tool = driver.preflight()
     source['mappingHash'] = None if arguments.skip_prepare else driver.prepare()
     rows, selected = [], arguments.scenario or list(SCENARIOS)
+    refused = False
     try:
         for scenario in selected:
-            if rows and rows[-1].get('refusal'):  # A product refusal stops the campaign for a report.
+            if refused:
                 rows.append({'scenario': scenario, 'verdict': 'not-run', 'failedChecks': ['not-run'], 'runs': []})
                 continue
             row = driver.row(scenario, source['revision'], tool['version'])
@@ -707,6 +743,7 @@ def main(argv=None):
                 retry.update(flaky=not retry['failedChecks'], firstAttempt={key: row.get(key) for key in (
                     'failedChecks', 'error', 'runs', 'facts')})
                 row = retry
+            refused = row.get('refusal', False)
             rows.append(row)
             print(json.dumps({'scenario': scenario, 'verdict': row['verdict'], 'failedChecks': row['failedChecks']}), flush=True)
     finally:

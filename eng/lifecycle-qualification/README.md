@@ -5,6 +5,9 @@ composition (Parties) with the released `hexalith-module` that Parties pins. It
 drives Parties' committed `lifecycle-package` and `attached-lifecycle-package`
 fixtures through their `control.json` files and writes one compact
 `summary.json` plus a `README.md` table. Epic 3 reruns use the same command.
+For Story 2.10, confirm that the Parties tool manifest pins the latest released
+CLI. The nested Builds gitlink supplies the package catalog and is recorded
+separately in the summary.
 
 It replaces the 4.47.0 controller (`local.py`, `prepare.py` and their tests),
 which remains in git history.
@@ -19,11 +22,11 @@ which remains in git history.
   - `HEXALITH_DAPR_HOME` names an isolated Dapr home: `tools/dapr` and
     `.dapr/bin/{daprd,placement,scheduler}` at the `HexalithDaprCliVersion`
     and `HexalithDaprRuntimeVersion` of the nested Builds
-    `Props/Directory.Packages.props` (1.19.1 for Builds 6.3.0). Builds CI
+    `Props/Directory.Packages.props`. Builds CI
     downloads those archives and checks them against
     `Props/dapr-toolchain-sha256.json`; do the same locally. Otherwise the
     owner stops with HXR012 or HXR013.
-  - The Aspire CLI on `PATH` matches `Aspire.AppHost.Sdk` (13.6.5 for 6.3.0).
+  - The Aspire CLI on `PATH` matches `Aspire.AppHost.Sdk`.
 - A scratch worktree of Parties at the Platform gitlink, with only its nested
   `references/Hexalith.Builds` initialized at its own gitlink, from local
   objects and without a fetch:
@@ -76,8 +79,9 @@ selected row passed and no issued run or container remains.
    the suite and its compiler error codes.
 3. **Rows.** Each row snapshots non-owned containers and `list` entries before
    and after itself. It finds its run ids from new `g4-runs/*.json` states
-   bound to this manifest and to its own AppHost process group. It acts only on
-   those ids. Signals are SIGINT, which is the only cooperative one, plus
+   bound to this manifest and to the CLI's provisioning lease or its AppHost
+   process group. It also reads the run id from the launched CLI's terminal
+   output when cleanup needs it. Signals are SIGINT for cooperative shutdown and
    SIGSTOP/SIGCONT of the owned starting AppHost. No timeout is overridden.
 4. **Cleanup.** Every exit path, including SIGINT, SIGTERM and SIGHUP, stops the
    launched processes and runs `down` for every issued owner. The summary
