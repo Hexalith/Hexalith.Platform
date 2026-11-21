@@ -23,14 +23,14 @@ internal static partial class PlatformFixtureToolRelease
 
     internal static (string Seed, IReadOnlyDictionary<string, string> Settings) Verify(PlatformCompositionOptions options)
     {
-        CompositionRunPlan plan = options.RunPlan ?? throw PlatformFixturePackageQualification.Refusal();
+        CompositionRunPlan plan = options.RunPlan ?? throw PlatformFixturePackageQualification.Refusal("run-plan");
         string seed = Path.Combine(plan.Workspace, "hosts", "eventstore", PackagedHostProject.ProjectFileName);
         string seedDirectory = Path.GetDirectoryName(seed)!;
         if (options.EventStoreSeedProject != seed || plan.ExecutingTool is not { } executor)
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("seed-project");
         string[] seedFiles = [PackagedHostProject.ProjectFileName, "Placeholder.cs", "PackagedHost.props"];
         if (Directory.EnumerateFileSystemEntries(seedDirectory).Any(path => !seedFiles.Contains(Path.GetFileName(path), StringComparer.Ordinal)))
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("seed-source");
 
         string lockPath = Path.Combine(options.PlatformRoot, "eng", "builds-tool.lock.json");
         string tuplePath = Path.Combine(options.PlatformRoot, "eng", "builds-tuple.json");
@@ -43,18 +43,18 @@ internal static partial class PlatformFixtureToolRelease
         string expected = pin.GetProperty("contentHash").GetString()!;
         if (!ReleaseVersion().IsMatch(version) || Convert.FromBase64String(expected).Length != 64
             || executor.Version != version || tuple.RootElement.GetProperty("version").GetString() != version || tuple.RootElement.GetProperty("releaseTag").GetString() != "v" + version)
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("tools-pin");
 
         string archive = Path.Combine(plan.Workspace, "fixture-builds-tool.nupkg");
         if (!File.Exists(archive)) RetrieveAsync(version, archive, plan.StartupDeadlineUtc).GetAwaiter().GetResult();
         FileInfo file = new(archive);
-        if (!file.Exists || file.LinkTarget is not null || file.Length is <= 0 or > _archiveBound) throw PlatformFixturePackageQualification.Refusal();
+        if (!file.Exists || file.LinkTarget is not null || file.Length is <= 0 or > _archiveBound) throw PlatformFixturePackageQualification.Refusal("tools-archive-file");
         using FileStream content = file.OpenRead();
-        if (Convert.ToBase64String(SHA512.HashData(content)) != expected) throw PlatformFixturePackageQualification.Refusal();
+        if (Convert.ToBase64String(SHA512.HashData(content)) != expected) throw PlatformFixturePackageQualification.Refusal("tools-archive-digest");
         content.Position = 0;
         using ZipArchive package = new(content);
         if (package.Entries.Select(member => member.FullName).Distinct(StringComparer.Ordinal).Count() != package.Entries.Count
-            || package.GetEntry(".signature.p7s") is null) throw PlatformFixturePackageQualification.Refusal();
+            || package.GetEntry(".signature.p7s") is null) throw PlatformFixturePackageQualification.Refusal("tools-archive-layout");
 
         using Stream nuspec = Member(package, _package + ".nuspec").Open();
         XElement metadata = XDocument.Load(nuspec).Root!.Elements().Single(element => element.Name.LocalName == "metadata");
@@ -64,7 +64,7 @@ internal static partial class PlatformFixtureToolRelease
             || (string?)repository.Attribute("type") != "git"
             || ((string?)repository.Attribute("url"))?.TrimEnd('/') != "https://github.com/Hexalith/Hexalith.Builds"
             || (string?)repository.Attribute("commit") != options.Mapping.EffectiveCatalogCommit)
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("tools-producer");
 
         string tooling = BodyHash(package, _layout + _tooling);
         string cli = BodyHash(package, _layout + _cli);
@@ -75,9 +75,9 @@ internal static partial class PlatformFixtureToolRelease
         });
         if (executor.Manifest != manifest || executor.ContentIdentity != "sha256:" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(manifest)))
             || PlatformFixturePackageQualification.Hash(typeof(CompositionFixtureProducer).Assembly.Location) != tooling)
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("tools-executor");
 
-        RequireBody(package, _appHost + "Hexalith.Builds.Module.AppHost.dll", Assembly.GetEntryAssembly()?.Location ?? throw PlatformFixturePackageQualification.Refusal());
+        RequireBody(package, _appHost + "Hexalith.Builds.Module.AppHost.dll", Assembly.GetEntryAssembly()?.Location ?? throw PlatformFixturePackageQualification.Refusal("tools-apphost"));
         string shim = _appHost + "projects/EventStore/";
         string binaryPrefix = _appHost + "bin/EventStoreHost/";
         RequireBody(package, shim + PackagedHostProject.ProjectFileName, seed);
@@ -92,7 +92,7 @@ internal static partial class PlatformFixtureToolRelease
         if (supplied != Path.TrimEndingDirectorySeparator(binaryDirectory) + Path.DirectorySeparatorChar
             || properties.Name.LocalName != "Project" || properties.HasAttributes || group!.HasAttributes || location!.HasAttributes
             || properties.Elements().Count() != 1 || group.Elements().Count() != 1 || location.HasElements)
-            throw PlatformFixturePackageQualification.Refusal();
+            throw PlatformFixturePackageQualification.Refusal("seed-build-import");
 
         RequireBody(package, binaryPrefix + _seedDll, Path.Combine(binaryDirectory, _seedDll));
         Dictionary<string, string> settings = new(StringComparer.Ordinal);
@@ -107,7 +107,7 @@ internal static partial class PlatformFixtureToolRelease
             }
             else if (File.Exists(path))
             {
-                throw PlatformFixturePackageQualification.Refusal();
+                throw PlatformFixturePackageQualification.Refusal("seed-settings");
             }
         }
         return (seed, settings.AsReadOnly());
@@ -128,21 +128,21 @@ internal static partial class PlatformFixtureToolRelease
             ? await _nuget.GetAsync(resolved, HttpCompletionOption.ResponseHeadersRead, bound.Token).ConfigureAwait(false)
             : null;
         var response = redirected ?? initial;
-        if (!response.IsSuccessStatusCode) throw PlatformFixturePackageQualification.Refusal();
+        if (!response.IsSuccessStatusCode) throw PlatformFixturePackageQualification.Refusal("tools-download");
         await using Stream source = await response.Content.ReadAsStreamAsync(bound.Token).ConfigureAwait(false);
         await using FileStream target = new(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
         byte[] buffer = new byte[64 * 1024];
         int read;
         while ((read = await source.ReadAsync(buffer, bound.Token).ConfigureAwait(false)) > 0)
         {
-            if (target.Length + read > _archiveBound) throw PlatformFixturePackageQualification.Refusal();
+            if (target.Length + read > _archiveBound) throw PlatformFixturePackageQualification.Refusal("tools-download-size");
             await target.WriteAsync(buffer.AsMemory(0, read), bound.Token).ConfigureAwait(false);
         }
     }
 
     private static void RequireBody(ZipArchive package, string member, string path)
     {
-        if (PlatformFixturePackageQualification.Hash(path) != BodyHash(package, member)) throw PlatformFixturePackageQualification.Refusal();
+        if (PlatformFixturePackageQualification.Hash(path) != BodyHash(package, member)) throw PlatformFixturePackageQualification.Refusal("tools-package-member-" + Path.GetFileName(member));
     }
 
     private static string BodyHash(ZipArchive package, string member)
@@ -152,7 +152,7 @@ internal static partial class PlatformFixtureToolRelease
     }
 
     private static ZipArchiveEntry Member(ZipArchive package, string member)
-        => package.GetEntry(member) ?? throw PlatformFixturePackageQualification.Refusal();
+        => package.GetEntry(member) ?? throw PlatformFixturePackageQualification.Refusal("tools-package-member-" + Path.GetFileName(member));
 
     [GeneratedRegex(@"\A[0-9]+\.[0-9]+\.[0-9]+\z", RegexOptions.CultureInvariant)]
     private static partial Regex ReleaseVersion();

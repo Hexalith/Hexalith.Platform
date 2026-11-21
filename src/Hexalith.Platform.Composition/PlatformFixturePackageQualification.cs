@@ -60,7 +60,7 @@ internal sealed class PlatformFixturePackageQualification
 
     internal static PlatformFixturePackageQualification? Authenticate(PlatformCompositionOptions options, string signingKey)
     {
-        CompositionRunPlan plan = options.RunPlan ?? throw Refusal();
+        CompositionRunPlan plan = options.RunPlan ?? throw Refusal("run-plan");
         CompositionFixtureProducer? producer = CompositionFixtureProducer.Verify(plan, signingKey);
         if (producer is null) return null;
         if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64 || !Selects(options)
@@ -70,7 +70,7 @@ internal sealed class PlatformFixturePackageQualification
             || producer.SourceCommit != "0aacf13244fa6b1d9e08d627149d72cf12229167"
             || producer.ArchiveSha256 != "7c3b432aba236b9cd102b6fad98a15ed629b3dcdfb9bad9ee6a3d105f63d04b4"
             || producer.LibrarySha256 != "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004")
-            throw Refusal();
+            throw Refusal("signed-fixture");
 
         var (seed, settings) = PlatformFixtureToolRelease.Verify(options);
         return new(options, seed, settings, producer);
@@ -91,18 +91,18 @@ internal sealed class PlatformFixturePackageQualification
 
     internal static IReadOnlyList<string> RequireOwners(PlatformCompositionOptions options)
     {
-        if (options.FixturePackageProof?.Matches(options) != true) throw Refusal();
+        if (options.FixturePackageProof?.Matches(options) != true) throw Refusal("fixture-owner-scope");
         if (_owners.Any(pair => PlatformServerBindings.Version(options, pair.Key, "signed fixture cohort") != pair.Value))
-            throw Refusal();
+            throw Refusal("fixture-owner-versions");
         return [.. _owners.Keys];
     }
 
     internal static void ValidateTopology(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
     {
-        PlatformFixturePackageQualification proof = options.FixturePackageProof ?? throw Refusal();
-        if (!developmentRun || !proof.Matches(options)
-            || !PlatformPackageCatalogQualification.MatchesTopology(options, declarations, servers, _modules, _servers)) throw Refusal();
+        PlatformFixturePackageQualification proof = options.FixturePackageProof ?? throw Refusal("fixture-topology-proof");
+        if (!developmentRun || !proof.Matches(options)) throw Refusal("fixture-topology-scope");
+        if (!PlatformPackageCatalogQualification.MatchesTopology(options, declarations, servers, _modules, _servers)) throw Refusal("fixture-topology-closure");
 
         PlatformServerBinding gateway = servers.Single(server => server.ResourceId == "eventstore");
         if (gateway.ProjectPath != PlatformEventStoreExtensionBindings.HostProjectPath(options)
@@ -110,14 +110,14 @@ internal sealed class PlatformFixturePackageQualification
             || host.Extensions[0] is not { Module: Module, PackageId: Package, ExtensionId: Extension, ApiMajor: 1 } extension
             || extension.PackageVersion != proof.Producer.Version
             || extension.Source != options.DeclarationPaths.Single() || extension.Reference != Package)
-            throw Refusal();
+            throw Refusal("fixture-gateway-binding");
     }
 
     internal static void VerifyImage(PlatformServerBinding server)
     {
         string identity = PlatformDeclarationSet.Id(server.Module.Declaration) + "/" + server.ServerId;
         if (!_images.TryGetValue(identity, out var expected) || server.ImageDigest != expected.Manifest || server.ImageConfigDigest != "sha256:" + expected.Configuration)
-            throw Refusal();
+            throw Refusal("fixture-owner-image-" + identity);
     }
 
     internal static void VerifyReader(RouteCatalogEnvelope catalog, JsonElement receipt)
@@ -130,10 +130,11 @@ internal sealed class PlatformFixturePackageQualification
             || catalog.IdempotencyFacetDigest != "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83"
             || !Files(receipt, "ownerAssemblies").SequenceEqual(["Hexalith.Memories.EventStore.dll", "Hexalith.Tenants.Contracts.dll"], StringComparer.Ordinal)
             || !Files(receipt, "adapterAssemblies").SequenceEqual(["Hexalith.Memories.EventStoreExtensions.dll", "Hexalith.Tenants.Server.dll"], StringComparer.Ordinal))
-            throw Refusal();
+            throw Refusal("fixture-reader-inventory");
     }
 
-    internal static InvalidDataException Refusal() => new("The signed Platform extension fixture requires its authenticated package, named catalog view, composed host, and released workload cohort.");
+    internal static InvalidDataException Refusal([System.Runtime.CompilerServices.CallerMemberName] string stage = "admission")
+        => new($"{Module}: eventstore-extension-fixture-refused ({stage}). The signed fixture requires its authenticated package, named catalog view, composed host, and released workload cohort.");
 
     private static string ConfigurationHash(PlatformCompositionOptions options)
         => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(options.Configuration.OrderBy(pair => pair.Key, StringComparer.Ordinal))));
