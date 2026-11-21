@@ -83,11 +83,10 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
             Hash(catalog).ShouldBe(catalogHash, "Security patches must not rewrite the authenticated exported catalog blob.");
             string server = Path.Combine(model, "Hexalith.Tenants.Server.dll");
             File.Exists(server).ShouldBeTrue("The production model output itself must supply Server; the test project's reference cannot satisfy this prerequisite.");
-            using (JsonDocument modelGraph = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(model, "Hexalith.Platform.Composition.deps.json"))))
-            {
-                OwnerPackageIdentity expected = owners.Verify(OwnerPackageLock.ReadAssets(modelGraph.RootElement)["Hexalith.Tenants.Server"], PlatformPartiesPackageFixture.PackageFolders, server);
-                Hash(server).ShouldBe(expected.ExpectedSha256);
-            }
+            using JsonDocument modelGraph = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(model, "Hexalith.Platform.Composition.deps.json")));
+            OwnerPackageIdentity expectedServer = owners.Verify(OwnerPackageLock.ReadAssets(modelGraph.RootElement)["Hexalith.Tenants.Server"],
+                PlatformPartiesPackageFixture.PackageFolders, server);
+            Hash(server).ShouldBe(expectedServer.ExpectedSha256);
             using JsonDocument assets = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(artifacts, "obj", "Hexalith.Platform.Composition", "project.assets.json")));
             JsonElement audit = assets.RootElement.GetProperty("project").GetProperty("restore").GetProperty("restoreAuditProperties");
             audit.GetProperty("enableAudit").GetString().ShouldBe("true");
@@ -103,7 +102,7 @@ public sealed class PlatformProductionModelClosureTests(ITestOutputHelper output
                     ServerSha256 = Hash(server), Properties = admittedProperties, CandidateAcceptance = false, RuntimeAcceptance = false }));
             }
             assets.RootElement.GetProperty("targets").EnumerateObject().Single().Value.GetProperty("Hexalith.Tenants.Server/" + tenantsVersion)
-                .GetProperty("runtime").TryGetProperty("lib/net10.0/Hexalith.Tenants.Server.dll", out _).ShouldBeTrue();
+                .GetProperty("runtime").TryGetProperty(expectedServer.ArchiveMember, out _).ShouldBeTrue();
             var context = new AssemblyLoadContext("production-model-only-" + Guid.NewGuid().ToString("N"), isCollectible: true);
             context.Resolving += (load, name) =>
             {

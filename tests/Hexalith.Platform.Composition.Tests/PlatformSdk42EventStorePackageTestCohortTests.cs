@@ -82,11 +82,13 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
         if (fault == "binding") plan = plan with { QualificationOwnersBinding = new string('0', 64) };
         if (fault == "missing-binding") plan = plan with { QualificationOwnersBinding = null };
         if (fault == "missing-proof") plan = plan with { QualificationOwners = null, QualificationOwnersBinding = null };
-        string catalog = Path.Combine(fixture.Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
-        if (fault == "catalog") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.4", StringComparison.Ordinal));
-        if (fault == "sdk") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("4.2.0", "4.0.4", StringComparison.Ordinal));
-        if (fault == "near-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.70", StringComparison.Ordinal));
-        if (fault == "metadata-version") File.WriteAllText(catalog, File.ReadAllText(catalog).Replace("7.0.7", "7.0.7+foreign", StringComparison.Ordinal));
+        const string tenantsProperty = "HexalithTenantsVersion";
+        string tenants = PlatformPartiesPackageFixture.LockedOwnerVersion("tenants");
+        if (fault == "catalog") fixture.ChangeCatalogVersion(tenantsProperty, tenants, "7.0.4");
+        if (fault == "sdk")
+            fixture.ChangeCatalogVersion("HexalithEventStoreVersion", PlatformPartiesPackageFixture.SelectedSdkVersion, "4.0.4");
+        if (fault == "near-version") fixture.ChangeCatalogVersion(tenantsProperty, tenants, tenants + "0");
+        if (fault == "metadata-version") fixture.ChangeCatalogVersion(tenantsProperty, tenants, tenants + "+foreign");
         if (fault == "snapshot") File.AppendAllText(Path.Combine(fixture.Root, "src", "Hexalith.Platform.Composition", "Declarations", "tenants.json"), " ");
         if (fault == "declaration") File.AppendAllText(plan.PlatformDeclarationPaths.Single(), " ");
         if (fault == "entry-bytes") File.AppendAllText(Path.Combine(fixture.Root, test.Entry), " ");
@@ -135,7 +137,7 @@ public sealed class PlatformSdk42EventStorePackageTestCohortTests
         {
             "missing-server" => original.Where(server => server.ServerId != "api").ToArray(),
             "extra-server" => [.. original, original[0] with { ServerId = "foreign" }],
-            "old-image" => original.Select(server => server.Image is null ? server : server with { Image = server.Image.Replace("7.0.7", "7.0.4", StringComparison.Ordinal) }).ToArray(),
+            "old-image" => original.Select(server => server.Image is null ? server : server with { Image = server.Image[..server.Image.LastIndexOf(':')] + ":7.0.4" }).ToArray(),
             "foreign-image" => original.Select(server => server.Image is null ? server : server with { Image = "registry.invalid/foreign:7.0.5" }).ToArray(),
             "digest" => original.Select(server => server.Image is null ? server : server with { ImageDigest = new string('0', 64) }).ToArray(),
             "seed" => original.Select(server => server.ServerId == "gateway" ? server with { ProjectPath = "foreign.csproj" } : server).ToArray(),

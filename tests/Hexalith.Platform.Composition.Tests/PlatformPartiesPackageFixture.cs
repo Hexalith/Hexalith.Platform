@@ -40,6 +40,15 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     /// <summary>Gets the candidate's committed owner package lock, the sole package admission authority.</summary>
     internal static OwnerPackageLock Lock => OwnerPackageLock.Load(OwnerPackageLock.PathFor(PlatformTestRepository.Root));
 
+    /// <summary>Gets the one released package version recorded for a current owner in the committed lock.</summary>
+    /// <param name="module">The owner whose catalog-selected version is under test.</param>
+    internal static string LockedOwnerVersion(string module)
+    {
+        string prefix = PlatformServerBindings.Repository(module) + ".";
+        return Lock.Entries.Where(entry => entry.Id.StartsWith(prefix, StringComparison.Ordinal))
+            .Select(entry => entry.Version).Distinct(StringComparer.Ordinal).Single();
+    }
+
     /// <summary>Gets the package folders the test build restored owner packages into.</summary>
     internal static IReadOnlyList<string> PackageFolders => OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
 
@@ -54,7 +63,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         }
     }
 
-    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package", bool sdk42 = false)
+    internal static async Task<PlatformPartiesPackageFixture> CreateAsync(string profile = "lifecycle-package")
     {
         if (profile != PlatformCurrentOwnerProof.Profile)
         {
@@ -62,7 +71,6 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             var proof = new PlatformPartiesProofFixture(platformOwned: true, profile: profile);
             return new(proof.Options.RunPlan!.Workspace, proof.Options.RunPlan, PublishedSeed()) { _proofFixture = proof };
         }
-        if (sdk42) SelectedSdkVersion.ShouldBe("4.2.0");
         return await CreateFromCandidateAsync(profile);
     }
 
@@ -70,7 +78,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
     internal static async Task<PlatformPartiesPackageFixture> CreateFromCandidateAsync(string profile)
     {
         bool current = profile == PlatformCurrentOwnerProof.Profile;
-        SelectedSdkVersion.ShouldBe("4.2.0", "The loaded SDK bodies must equal their lock-verified package members.");
+        string lockedSdk = LockedOwnerVersion("eventstore");
+        SelectedSdkVersion.ShouldBe(lockedSdk, "The loaded SDK bodies must equal their lock-verified package members.");
         string root = PlatformTestRepository.Root;
         string active = Path.Combine(root, "references", "Hexalith.Parties");
         foreach (string repository in new[] { "Hexalith.Builds", "Hexalith.Parties" })
@@ -113,8 +122,10 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
             // The catalog-selected owner versions are admitted by the lock rule; no version tuple is consulted.
             PlatformPackageCatalogQualification.RequireLockedPackages(options).Path.ShouldBe(OwnerPackageLock.PathFor(identity.PlatformPath));
             var declarations = PlatformDeclarationSet.Load(options);
-            foreach (var pair in new[] { ("eventstore", "4.2.0"), ("tenants", "7.0.7"), ("memories", "3.0.27"), ("parties", "3.1.1") })
-                PlatformServerBindings.Version(options, pair.Item1, manifest).ShouldBe(pair.Item2);
+            foreach (string module in new[] { "eventstore", "tenants", "memories", "parties" })
+                PlatformServerBindings.Version(options, module, manifest).ShouldBe(LockedOwnerVersion(module));
+            PlatformServerBindings.Version(options, "eventstore", manifest).ShouldBe(SelectedSdkVersion,
+                "The authenticated consumer snapshot must select the loaded, lock-verified SDK.");
             // This is the existing producer's ordinary closure format, without an additive-owner MAC.
             plan = plan with { CompositionContentIdentity = "sha256:" + Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
             {

@@ -22,7 +22,8 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         File.WriteAllText(catalog, original);
         PlatformMcpCliCatalogVersion.Resolve(options, "component selection").ShouldBe(locked);
         PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: true);
-        foreach (string refused in new[] { "2.0.0", "2.0.2", "2.0.1+metadata", "3.0.0", "3.0.1", "" })
+        string[] refusedPins = ["2.0.0", "2.0.2", "2.0.1+metadata", "3.0.0", "3.0.1", locked + "+metadata", ""];
+        foreach (string refused in refusedPins.Where(version => version != locked))
         {
             File.WriteAllText(catalog, original.Replace("Version=\"" + locked + "\"", "Version=\"" + refused + "\"", StringComparison.Ordinal));
             Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(owners, options, required: true), refused);
@@ -101,14 +102,16 @@ public sealed class PlatformMcpCliCatalogSelectionTests
         Should.Throw<InvalidDataException>(() => PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection"));
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot with { MappingHash = "changed" }));
         Should.Throw<InvalidDataException>(() => PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection"));
-        versions["Hexalith.McpCli.Abstractions"] = "3.0.0";
+        string locked = PlatformPartiesPackageFixture.LockedOwnerVersion("mcpcli");
+        string unqualified = locked == "3.0.0" ? "3.0.1" : "3.0.0";
+        versions["Hexalith.McpCli.Abstractions"] = unqualified;
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
         Should.Throw<InvalidDataException>(() => PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection"));
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));
-        PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection").ShouldBe("3.0.0");
+        PlatformMcpCliCatalogVersion.Resolve(options, "recorded component selection").ShouldBe(unqualified);
         Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.RequireLockedMcpCli(PlatformPartiesPackageFixture.Lock, options, required: true))
-            .Message.ShouldContain("but 3.0.0 is selected");
+            .Message.ShouldContain("but " + unqualified + " is selected");
         versions.Clear();
         snapshot = snapshot with { Hash = CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, pinnedFiles, versions, projects) };
         File.WriteAllText(path, JsonSerializer.Serialize(snapshot));

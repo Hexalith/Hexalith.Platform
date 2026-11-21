@@ -7,10 +7,10 @@ using Hexalith.Builds.Tooling.Workspace;
 using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
-/// <summary>Requires the actual selected signed tool, catalog, seed and owner handoff for SDK4.2; no services are started.</summary>
+/// <summary>Requires the actual selected signed tool, catalog, seed and owner handoff; no services are started.</summary>
 public sealed class PlatformSdk42PackageEntryTests
 {
-    /// <summary>The real private reader must consume the pinned SDK4.2 snapshot and retain its six public bodies.</summary>
+    /// <summary>The real private reader must consume the pinned SDK snapshot and retain its six public bodies.</summary>
     [Fact]
     public async Task PrivateEventStoreReaderUsesTheActualPinnedSdk42CatalogAndSeedAsync()
     {
@@ -18,8 +18,9 @@ public sealed class PlatformSdk42PackageEntryTests
         await fixture.MaterializeAsync().ConfigureAwait(true);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllBytes(Path.Combine(fixture.Plan.Workspace, "source-mapping", "catalog-versions.json")))!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
-        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe("4.2.0");
-        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe("4.2.0");
+        string expectedSdk = PlatformPartiesPackageFixture.SelectedSdkVersion;
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.Server"].ShouldBe(expectedSdk);
+        snapshot.ProjectVersions["Hexalith.Platform.EventStoreHost"]["Hexalith.EventStore.DomainService"].ShouldBe(expectedSdk);
         PlatformRoutingCatalog catalog = fixture.Generate();
         OwnerPackageLock owners = PlatformPackageCatalogQualification.RequireLockedPackages(fixture.Options);
         owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
@@ -28,11 +29,11 @@ public sealed class PlatformSdk42PackageEntryTests
         AssertReader(fixture.Reader, owners, new HashSet<string>(), 23, 12, catalog);
     }
 
-    /// <summary>The existing parent proof builds and seals the real source owner and package-only SDK4.2 references.</summary>
+    /// <summary>The existing parent proof builds and seals the real source owner and package-only SDK references.</summary>
     [Fact]
     public async Task CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync()
     {
-        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile, sdk42: true).ConfigureAwait(true);
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
         PlatformCompositionOptions options = fixture.CaptureCurrent();
         PlatformCurrentOwnerProof proof = options.CurrentOwnerProof!;
         proof.OwnerPackages.Path.ShouldBe(OwnerPackageLock.PathFor(options.PlatformRoot));

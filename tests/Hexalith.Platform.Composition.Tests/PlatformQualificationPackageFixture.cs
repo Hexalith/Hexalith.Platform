@@ -65,7 +65,7 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         string sdkVersion = provenance["eventstore"]!["version"]!.GetValue<string>();
         string tenantsVersion = provenance["tenants"]!["version"]!.GetValue<string>();
         // This explicitly synthetic component catalog must agree with its copied genuine snapshot.
-        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + (currentTest ? "2.0.1" : "2.0.0") + "\" /></ItemGroup></Project>");
+        File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup><HexalithEventStoreVersion>" + sdkVersion + "</HexalithEventStoreVersion><HexalithTenantsVersion>" + tenantsVersion + "</HexalithTenantsVersion><HexalithMemoriesVersion>" + memoriesVersion + "</HexalithMemoriesVersion></PropertyGroup><ItemGroup><PackageVersion Include=\"Hexalith.McpCli.Abstractions\" Version=\"" + (currentTest ? PlatformPartiesPackageFixture.LockedOwnerVersion("mcpcli") : "2.0.0") + "\" /></ItemGroup></Project>");
         string manifest = Path.Combine(Root, "module", "hexalith.module-manifest.v2.json");
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
         File.Copy(Path.Combine(declarations, "eventstore.json"), manifest);
@@ -114,6 +114,20 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
     internal CompositionRunPlan Plan { get; }
     /// <summary>Gets the component options with genuine released declaration bytes and no runtime acceptance.</summary>
     internal PlatformCompositionOptions Options { get; }
+
+    /// <summary>Mutates the exact selected property in the private catalog for a refusal control.</summary>
+    /// <param name="property">The catalog property under test.</param>
+    /// <param name="selected">Its selected version before the mutation.</param>
+    /// <param name="replacement">The unqualified version.</param>
+    internal void ChangeCatalogVersion(string property, string selected, string replacement)
+    {
+        string catalog = Path.Combine(Root, "references", "Hexalith.Builds", "Props", "Directory.Packages.props");
+        string before = $"<{property}>{selected}</{property}>";
+        string original = File.ReadAllText(catalog);
+        if (!original.Contains(before, StringComparison.Ordinal) || selected == replacement)
+            throw new InvalidDataException($"The test must change the selected {property} {selected}.");
+        File.WriteAllText(catalog, original.Replace(before, $"<{property}>{replacement}</{property}>", StringComparison.Ordinal));
+    }
 
     /// <inheritdoc />
     public void Dispose() => Directory.Delete(Root, true);
