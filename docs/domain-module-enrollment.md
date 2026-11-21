@@ -406,9 +406,13 @@ packages and never enrolls a gateway extension.
   `eventstore-extensions` requirements, which name the module and the offending project
   or direct dependency.
 
-Package-mode qualification of extensions waits for the EventStore and Builds releases
-that carry this API; until then a package-mode host refuses declared extensions
-(`eventstore-extension-api-unavailable`).
+The signed Platform fixture is the first package-mode qualification for this API.
+Builds 6.6.0 admits `Hexalith.Platform.TestExtension` 2.2.5 for the exact Platform
+fixture declaration and `eventstore-extension-package` profile. The ordinary test
+runner uses the released EventStore SDK and measures `platform-test@1` on the
+composed host. This fixture provisions its own read-only protection observer for
+the readiness request. Production protection still requires its own installed
+authority, and other module packages follow the enrollment rules above.
 
 ## 5. Complete the accountable Platform registration handoff
 
