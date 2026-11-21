@@ -108,9 +108,11 @@ internal sealed class PlatformFixturePackageQualification
         if (gateway.ProjectPath != PlatformEventStoreExtensionBindings.HostProjectPath(options)
             || gateway.EventStoreHost is not { } host || host.ServerProject != options.EventStoreSeedProject || host.Extensions.Count != 1
             || host.Extensions[0] is not { Module: Module, PackageId: Package, ExtensionId: Extension, ApiMajor: 1 } extension
-            || extension.PackageVersion != proof.Producer.Version
-            || extension.Source != options.DeclarationPaths.Single() || extension.Reference != Package)
+            || extension.PackageVersion != proof.Producer.Version || extension.Reference != Package)
             throw Refusal("fixture-gateway-binding");
+        // Builds declarations carry a display path relative to the AppHost; the signed plan carries an absolute path.
+        if (Path.GetFullPath(extension.Source) != Path.GetFullPath(options.DeclarationPaths.Single()))
+            throw Refusal("fixture-gateway-declaration");
     }
 
     internal static void VerifyImage(PlatformServerBinding server)
