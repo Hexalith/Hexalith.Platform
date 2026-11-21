@@ -1,5 +1,6 @@
 """Run a bounded disposable TLS/OpenBao installation for the signed Platform fixture."""
 import base64
+from contextlib import contextmanager
 import hashlib
 import importlib.util
 import json
@@ -8,9 +9,11 @@ from pathlib import Path
 import re
 import secrets
 import signal
+import socketserver
 import ssl
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -69,7 +72,8 @@ def create_container(directory, run_id, name):
 disable_mlock = true
 storage "inmem" {}
 listener "tcp" {
-  address = "0.0.0.0:8200"
+  address = "127.0.0.1:8200"
+  cluster_address = "127.0.0.1:8201"
   tls_cert_file = "/fixture/server.pem"
   tls_key_file = "/fixture/server.key"
 }
@@ -77,7 +81,7 @@ listener "tcp" {
     uid, gid = os.getuid(), os.getgid()
     require(uid > 0 and gid > 0, 'nonroot-owner')
     arguments = [*DOCKER, 'create', '--pull=missing', '--platform=linux/amd64', '--name', name, '--label', f'{OWNER}={run_id}',
-                 '--network=bridge', '--publish', '127.0.0.1::8200', '--read-only', '--log-driver=none', '--cap-drop=ALL',
+                 '--network=none', '--read-only', '--log-driver=none', '--cap-drop=ALL',
                  '--security-opt=no-new-privileges', '--user', f'{uid}:{gid}', '--memory=512m', '--memory-swap=512m', '--pids-limit=128',
                  '--env', 'GOMAXPROCS=2', '--mount', f'type=bind,source={certs},target=/fixture,readonly']
     for mount in ('/tmp', '/openbao/file', '/openbao/logs'):
@@ -85,23 +89,72 @@ listener "tcp" {
     arguments += ['--entrypoint=/bin/sh', IMAGE, '-ec', 'exec bao server -config=/fixture/native.hcl']
     container = command('container-create', arguments, timeout=160).decode('ascii').strip()
     require(re.fullmatch('[0-9a-f]{64}', container), 'container-id')
-    inspected = json.loads(command('container-inspect', [*DOCKER, 'inspect', '--type', 'container', container]))[0]
+    inspected = inspect_container(container)
     options = inspected['HostConfig']
     mounts = inspected['Mounts']
     binds = [mount for mount in mounts if mount['Type'] == 'bind']
     require(inspected['Config']['Labels'].get(OWNER) == run_id and inspected['Image'] in (IMAGE_CONFIG, IMAGE.split('@')[1])
-            and options['PortBindings'] == {'8200/tcp': [{'HostIp': '127.0.0.1', 'HostPort': ''}]}
-            and options['NetworkMode'] == 'bridge' and not options['Privileged']
+            and not options['PortBindings'] and not options['PublishAllPorts']
+            and options['NetworkMode'] == 'none' and not options['Privileged']
             and options['ReadonlyRootfs'] and options['LogConfig']['Type'] == 'none' and options['CapDrop'] == ['ALL']
             and 'no-new-privileges' in options['SecurityOpt'] and set(options['Tmpfs']) == {'/tmp', '/openbao/file', '/openbao/logs'}
             and len(binds) == 1 and binds[0]['Destination'] == '/fixture' and binds[0]['Source'] == str(certs) and not binds[0]['RW']
             and all(mount['Type'] in ('bind', 'tmpfs') for mount in mounts), 'container-isolation')
     command('container-start', [*DOCKER, 'start', container])
-    binding = command('container-port', [*DOCKER, 'port', container, '8200/tcp']).decode('ascii').strip()
-    require(re.fullmatch(r'127\.0\.0\.1:[0-9]{1,5}', binding), 'loopback-listener')
+    network = inspect_container(container)['NetworkSettings']
+    require(set(network['Networks']) == {'none'} and not network['Ports']
+            and not network['Networks']['none']['IPAddress'], 'container-network-readback')
+    wait_for_loopback_listener(container)
     actual = command('native-version', [*DOCKER, 'exec', container, 'bao', 'version']).decode('ascii').strip()
     require(actual.startswith(f'OpenBao v{VERSION} ({REVISION})'), 'native-version')
-    return container, 'https://' + binding + '/', ca
+    return container, ca
+
+
+def inspect_container(container):
+    return json.loads(command('container-inspect', [*DOCKER, 'inspect', '--type', 'container', container]))[0]
+
+
+def wait_for_loopback_listener(container):
+    deadline = time.monotonic() + 30
+    while True:
+        sockets = command('container-sockets', [*DOCKER, 'exec', container, '/bin/sh', '-ec',
+                           'cat /proc/net/tcp; if [ -r /proc/net/tcp6 ]; then cat /proc/net/tcp6; fi']).decode('ascii')
+        listeners = [fields[1] for row in sockets.splitlines() if len(fields := row.split()) > 3 and fields[3] == '0A']
+        require(set(listeners) <= {'0100007F:2008', '0100007F:2009'}, 'loopback-listener')
+        if '0100007F:2008' in listeners:
+            return
+        require(time.monotonic() < deadline, 'loopback-listener')
+        time.sleep(0.1)
+
+
+@contextmanager
+def loopback_tunnel(container):
+    # Pass raw TLS bytes through Docker's local Unix socket to the container's isolated loopback.
+    # Neither the host proxy nor Docker CLI needs the key, token or HTTP body in its arguments.
+    slots = threading.BoundedSemaphore(8)
+
+    class Forward(socketserver.BaseRequestHandler):
+        def handle(self):
+            if not slots.acquire(blocking=False):
+                return
+            try:
+                subprocess.run([*DOCKER, 'exec', '-i', container, '/bin/busybox', 'nc', '127.0.0.1', '8200'],
+                               stdin=self.request, stdout=self.request, stderr=subprocess.DEVNULL, timeout=35)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            finally:
+                slots.release()
+
+    with socketserver.ThreadingTCPServer(('127.0.0.1', 0), Forward) as server:
+        address, port = server.server_address
+        require(address == '127.0.0.1' and port > 0, 'host-loopback-tunnel')
+        thread = threading.Thread(target=server.serve_forever)
+        thread.start()
+        try:
+            yield f'https://{address}:{port}/'
+        finally:
+            server.shutdown()
+            thread.join()
 
 
 def cleanup(name, run_id):
@@ -235,19 +288,21 @@ def main():
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
     try:
-        container, address, ca = create_container(directory, run_id, name)
-        enrollment, policies = install(directory, run_id, bootstrap, address, ca, credential)
-        digest = write_installation(directory, run_id, enrollment, policies, ca)
-        pending = directory / 'installed.pending'
-        write_json(pending, {'runId': run_id, 'installationSha256': digest, 'nativeVersion': VERSION, 'nativeSource': REVISION,
-                             'image': IMAGE, 'containerId': container, 'runtimePolicies': policies,
-                             'runtimeAccess': 'read-only', 'rootRevoked': True, 'healthy': True})
-        pending.replace(directory / 'installed.json')
-        print('fixture-erasure-root: run-owned TLS installation ready', flush=True)
-        while True:
-            time.sleep(2)
-            running = command('native-runtime-status', [*DOCKER, 'inspect', '--format', '{{.State.Running}}', container])
-            require(running.strip() == b'true', 'native-runtime-exited')
+        container, ca = create_container(directory, run_id, name)
+        with loopback_tunnel(container) as address:
+            enrollment, policies = install(directory, run_id, bootstrap, address, ca, credential)
+            digest = write_installation(directory, run_id, enrollment, policies, ca)
+            pending = directory / 'installed.pending'
+            write_json(pending, {'runId': run_id, 'installationSha256': digest, 'nativeVersion': VERSION, 'nativeSource': REVISION,
+                                 'image': IMAGE, 'containerId': container, 'runtimePolicies': policies,
+                                 'runtimeAccess': 'read-only', 'rootRevoked': True, 'healthy': True,
+                                 'networkMode': 'none', 'listenerAddress': '127.0.0.1', 'publishedPorts': 0})
+            pending.replace(directory / 'installed.json')
+            print('fixture-erasure-root: run-owned TLS installation ready', flush=True)
+            while True:
+                time.sleep(2)
+                running = command('native-runtime-status', [*DOCKER, 'inspect', '--format', '{{.State.Running}}', container])
+                require(running.strip() == b'true', 'native-runtime-exited')
     except KeyboardInterrupt:
         return
     finally:

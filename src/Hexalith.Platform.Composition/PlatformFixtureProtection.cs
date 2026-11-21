@@ -83,6 +83,8 @@ internal sealed class PlatformFixtureProtection : IHealthCheck
         string expected = body.GetProperty("installationSha256").GetString()!;
         if (body.GetProperty("runId").GetString() != _plan.RunId || !body.GetProperty("healthy").GetBoolean()
             || body.GetProperty("runtimeAccess").GetString() != "read-only"
+            || body.GetProperty("networkMode").GetString() != "none" || body.GetProperty("listenerAddress").GetString() != "127.0.0.1"
+            || body.GetProperty("publishedPorts").GetInt32() != 0
             || !body.GetProperty("rootRevoked").GetBoolean() || expected != PlatformFixturePackageQualification.Hash(InstallationPath))
             throw PlatformFixturePackageQualification.Refusal("protection-installation-identity");
         return expected;
