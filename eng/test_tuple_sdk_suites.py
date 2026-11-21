@@ -65,10 +65,11 @@ class SdkSuiteTests(unittest.TestCase):
             with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
                 sdk_suite(suite, version)
 
-    def test_extension_suite_has_one_exact_sdk_and_nine_mandatory_cases(self):
+    def test_extension_suite_preserves_sdk_controls_and_adds_finite_fixture_controls(self):
         self.assertEqual(sdk_suite("extensions", "4.2.0"), ("eng/tuple-ci-extension-suites.json", ["-p:HexalithEventStoreVersion=4.2.0"]))
         profile = json.loads((Path(__file__).parent / "tuple-ci-extension-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 9)
+        self.assertEqual(validate_profile(profile), 18)
+        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [9, 9])
 
     def test_default_sdk42_base_requires_all_controls_and_actual_entry_cases(self):
         self.assertEqual(sdk_suite("base42", "4.2.0")[0], "eng/tuple-ci-sdk42-base-suites.json")

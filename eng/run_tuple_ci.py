@@ -18,7 +18,7 @@ from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_f
 from builds_tool_lock import load_lock, locked_entry, require_locked
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 380, "base42": 67, "extensions": 9}
+REQUIRED_TOTALS = {"current42": 380, "base42": 67, "extensions": 18}
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
@@ -447,6 +447,12 @@ def _run_tuple_ci(metadata_token):
             require_collector_source(Path(collector["root"]), collector["source"])
         builds_artifact_identities(json.loads(receipt_path.read_bytes()), lock, builds_source, collectors,
                                    result.setdefault("buildsArtifactIdentities", {}))
+        if args.suite == "extensions":
+            component = evidence / "signed-fixture-component"
+            run("signed-fixture-component", [sys.executable, "-B", "eng/test-extension-release/qualify-signed-component.py",
+                "--tool-root", str(tool), "--evidence", str(component)])
+            result["signedFixtureComponent"] = json.loads((component / "fixture225-signed-host-component.json").read_bytes())
+            require_collector_source(ROOT, revision)
         result["status"] = "passed"
     except Exception as error:
         result["status"] = "failed"

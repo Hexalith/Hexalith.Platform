@@ -279,7 +279,7 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual([item["name"] for item in result["commands"]], ["revision", "dotnet-info"])
 
     def test_artifact_reuse_reaches_graph_only_with_the_locked_unchanged_net11_closure(self):
-        owner, sibling = self.owner("reuse", "tuple-ci-extension-suites.json", 9)
+        owner, sibling = self.owner("reuse", "tuple-ci-extension-suites.json", run_tuple_ci.REQUIRED_TOTALS["extensions"])
         host = "tools/net11.0/any/g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
         for fault in (None, "net10-root", "different-binding", "different-lock", "tampered-archive", "changed-extracted-host"):
             with self.subTest(fault=fault), contextlib.ExitStack() as stack:

@@ -92,3 +92,12 @@ test to pass without skips. The readiness observer refuses redirects and late
 responses cannot report a pass.
 A successful local observer or native report from an unsigned historical
 candidate grants no signed fixture, parent-plan or cohort qualification credit.
+
+The extension tuple profile runs 18 required component cases, including the nine
+original SDK controls. It also builds the actual Platform host using the named
+Builds catalog selection and starts it with a disposable Dapr state sidecar. The
+component check compares the restored archive, selected assets and loaded DLL
+against signed NuGet 2.2.5 and requires `platform-test@1` in the extension readiness
+result. The check records the overall HTTP status. The ordinary owned MTP run
+qualifies distributed readiness separately, using the authenticated released
+Tenants and Memories images and the SDK-issued fixture proof.

@@ -98,6 +98,9 @@ public static class PlatformAppModel
             configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
             configuration[server + "/Jwt:SigningKey"] = signingKey;
         }
+        if (plan.PlatformActiveModule == PlatformFixturePackageQualification.Module && mapping.Mode == WorkspaceMode.Package)
+            configuration[PlatformFixturePackageQualification.MarkerKey] = PlatformFixturePackageQualification.Marker;
+
         PlatformCompositionOptions options = new()
         {
             PlatformRoot = root, Mapping = mapping, DeclarationPaths = plan.PlatformDeclarationPaths,
@@ -117,6 +120,9 @@ public static class PlatformAppModel
                 options = options with { CurrentOwnerProof = current, PartiesRunProof = current.Parent };
             }
         }
+        if (CompositionFixtureProducer.RequiresProof(plan) || plan.FixtureProducerBinding is not null)
+            options = options with { FixturePackageProof = PlatformFixturePackageQualification.Authenticate(options, signingKey) };
+
         Compose(builder, configureOptions(options));
     }
 
@@ -127,6 +133,13 @@ public static class PlatformAppModel
         {
             if (workspace != options.RunPlan.Workspace || (options.PartiesRunProof?.Matches(options) != true && options.CurrentOwnerProof?.Matches(options) != true))
                 throw new InvalidDataException("The ordinary Parties package snapshot requires its unchanged trusted parent proof.");
+            return;
+        }
+        if (PlatformFixturePackageQualification.Selects(options))
+        {
+            if (workspace != options.RunPlan?.Workspace || options.FixturePackageProof?.Matches(options) != true)
+                throw PlatformFixturePackageQualification.Refusal();
+            _ = SourceMapping.LoadVerified(Path.Combine(workspace, "source-mapping", "mapping.json"), options.Mapping.ContentHash);
             return;
         }
         if (options.Mapping.Mode == WorkspaceMode.Package && options.Mapping.HasGit && options.QualificationOwnerProof?.Matches(options) == true)
@@ -160,17 +173,23 @@ public static class PlatformAppModel
         IReadOnlyList<PlatformServerBinding> servers = PlatformServerBindings.Resolve(options, declarations, dapr);
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan?.SelectedTest is { Mode: "package" };
-        if (options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties"))
+        bool fixturePackageTest = PlatformFixturePackageQualification.Selects(options);
+        if (options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties" || fixturePackageTest))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
             catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         }
-        bool runBoundImages = options.PartiesRunProof is not null || options.QualificationOwnerProof is not null;
+        bool runBoundImages = options.PartiesRunProof is not null || options.QualificationOwnerProof is not null || fixturePackageTest;
         servers = servers.Select(server => server.Image is null ? server : PreflightImage(server)).ToArray();
 
         PlatformServerBinding PreflightImage(PlatformServerBinding server)
         {
-            if (runBoundImages) return PlatformReleasedImages.Resolve(options, server);
+            if (runBoundImages)
+            {
+                var resolved = PlatformReleasedImages.Resolve(options, server);
+                if (fixturePackageTest) PlatformFixturePackageQualification.VerifyImage(resolved);
+                return resolved;
+            }
             IEnumerable<string> arguments = ["manifest", "inspect", server.Image!];
 #if HEXALITH_PLATFORM_LOCAL_PACKAGE_QUALIFICATION
             arguments = PlatformLoopbackRegistryProbe.Arguments(server.Image!, options.Mapping.Mode, builder.Environment.IsDevelopment());
@@ -214,6 +233,11 @@ public static class PlatformAppModel
             catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
             if (runBoundImages && servers.Any(server => server.ImageDigest is not null))
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformReleasedImages(options, servers, catalog?.Directory ?? rendered));
+            if (options.FixturePackageProof is { } fixtureProof)
+            {
+                if (catalog is null || options.RunPlan is null) throw PlatformFixturePackageQualification.Refusal();
+                builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformFixtureHostPreparation(options.RunPlan, fixtureProof.Producer, catalog.Directory));
+            }
             if (catalog is not null && options.RunPlan?.SelectedTest?.ModuleId == "parties")
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformNativeTestPreparation(options.RunPlan, catalog.Directory,
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
@@ -241,7 +265,7 @@ public static class PlatformAppModel
             PlatformServerBinding? gatewayBinding = servers.FirstOrDefault(server => server.ResourceId == "eventstore");
             // A composed host keeps the EventStore server's own settings; its generated bindings add only the declared packages.
             string? gatewayContentRoot = gatewayBinding?.ProjectPath is { } gatewayProject
-                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers) : null;
+                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers, options.FixturePackageProof?.Settings) : null;
             string? gatewayExtensionBindings = gatewayBinding?.EventStoreHost is { } composedHost
                 ? PlatformEventStoreExtensionBindings.Write(composedHost, Path.Combine(rendered, "eventstore-extensions")) : null;
 
@@ -312,6 +336,15 @@ public static class PlatformAppModel
                     if (server.ResourceId == "eventstore" && options.Mapping.Mode == WorkspaceMode.Package && projectPath == options.EventStoreSeedProject)
                         project.WithArgs("-p:UseAppHost=false");
                     if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
+                    if (server.ResourceId == "eventstore" && options.FixturePackageProof is { } fixture)
+                    {
+                        const string prefix = "Platform__SignedFixtureQualification__";
+                        project.WithEnvironment(prefix + "Workspace", options.RunPlan!.Workspace)
+                            .WithEnvironment(prefix + "RunId", fixture.Producer.RunId)
+                            .WithEnvironment(prefix + "Version", fixture.Producer.Version)
+                            .WithEnvironment(prefix + "ArchiveSha256", fixture.Producer.ArchiveSha256)
+                            .WithEnvironment(prefix + "LibrarySha256", fixture.Producer.LibrarySha256);
+                    }
                     if (options.UsePrebuiltProjects || options.CurrentOwnerProof is not null && server.ResourceId == "parties") project.WithArgs("--no-build", "--no-restore");
                     if (options.RetentionProfile is not null)
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));

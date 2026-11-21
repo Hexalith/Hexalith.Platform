@@ -6,7 +6,8 @@ using System.Text.Json.Nodes;
 internal static class PlatformGatewayConfiguration
 {
     /// <summary>Creates a composition-owned content root without modifying the owner's settings.</summary>
-    public static string Create(string project, string workspace, IReadOnlyList<PlatformServerBinding> servers)
+    public static string Create(string project, string workspace, IReadOnlyList<PlatformServerBinding> servers,
+        IReadOnlyDictionary<string, string>? verifiedSettings = null)
     {
         string directory = Path.Combine(workspace, "gateway");
         Hexalith.Builds.Tooling.Runtime.CompositionWorkspace.CreatePrivateDirectory(directory);
@@ -14,9 +15,19 @@ internal static class PlatformGatewayConfiguration
         foreach (string filename in new[] { "appsettings.json", "appsettings.Development.json" })
         {
             string source = Path.Combine(Path.GetDirectoryName(project)!, filename);
-            if (!File.Exists(source)) continue;
+            string body;
+            if (verifiedSettings is not null)
+            {
+                if (!verifiedSettings.TryGetValue(filename, out string? supplied)) continue;
+                body = supplied;
+            }
+            else
+            {
+                if (!File.Exists(source)) continue;
+                body = File.ReadAllText(source);
+            }
             JsonNode settings;
-            try { settings = JsonNode.Parse(File.ReadAllText(source)) ?? throw new InvalidDataException($"{source}: appsettings: JSON root is null."); }
+            try { settings = JsonNode.Parse(body) ?? throw new InvalidDataException($"{source}: appsettings: JSON root is null."); }
             catch (System.Text.Json.JsonException exception) { throw new InvalidDataException($"{source}: appsettings: JSON is invalid: {exception.Message}", exception); }
             if (settings is not JsonObject) throw new InvalidDataException($"{source}: appsettings: JSON root must be an object.");
             if (settings["EventStore"]?["DomainServices"]?["Registrations"] is JsonObject registrations)

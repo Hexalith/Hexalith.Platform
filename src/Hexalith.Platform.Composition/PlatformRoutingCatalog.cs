@@ -30,9 +30,12 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         OwnerPackageLock? ownerPackages = null;
         if (options.Mapping.Mode == WorkspaceMode.Package)
         {
-            bool authorized = options.ActiveModule == "parties"
-                ? PlatformCurrentOwnerProof.SelectsIntegration(options) ? options.CurrentOwnerProof?.Matches(options) == true : options.PartiesRunProof?.Matches(options) == true
-                : options.QualificationOwnerProof?.Matches(options) == true;
+            bool authorized = options.ActiveModule switch
+            {
+                "parties" => PlatformCurrentOwnerProof.SelectsIntegration(options) ? options.CurrentOwnerProof?.Matches(options) == true : options.PartiesRunProof?.Matches(options) == true,
+                PlatformFixturePackageQualification.Module => options.FixturePackageProof?.Matches(options) == true,
+                _ => options.QualificationOwnerProof?.Matches(options) == true,
+            };
             if (!authorized) throw new InvalidDataException("The private package reader requires the unchanged authenticated runner proof.");
             ownerPackages = PlatformPackageCatalogQualification.RequireLockedPackages(options);
         }
@@ -109,6 +112,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             string root = receipt.RootElement.GetProperty("rootDigest").GetString()!;
             if (receipt.RootElement.GetProperty("instanceId").GetString() != instance) throw new InvalidDataException("Cross-run catalog binding refused.");
             var catalog = RouteCatalogCodec.Decode(bytes, root);
+            if (options.FixturePackageProof is not null) PlatformFixturePackageQualification.VerifyReader(catalog, receipt.RootElement);
             string target = Path.Combine(workspace, instance);
             if (System.IO.Directory.Exists(target))
             {
@@ -117,6 +121,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             }
             else System.IO.Directory.Move(pending, target);
             if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
+            if (options.FixturePackageProof is not null) File.WriteAllBytes(Path.Combine(target, "fixture-reader-receipt.json"), verifiedReceipt);
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,
                 receipt.RootElement.GetProperty("ownerAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray(),
                 receipt.RootElement.GetProperty("adapterAssemblies").EnumerateArray().Select(value => value.GetString()!).ToArray());

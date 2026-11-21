@@ -1,0 +1,175 @@
+{
+  "artifact": {
+    "id": 14706727068,
+    "name": "platform-test-extension-44902658431-1",
+    "sha256": "ff93f28af71d1f13b5ca55ed23a88694669222a29b198e8d0b0d898c7475299c"
+  },
+  "candidatePackage": {
+    "archiveSha256": "749f983f53e96440a97176aa851c3d5b4f910b9918ce13d5945e7d08e116fc7d",
+    "bodies": {
+      "Hexalith.Platform.TestExtension.nuspec": "7d140d679c8e926b7455e941e7405d63a42a8bcfeb60cf9443e60a903bc2afa5",
+      "[Content_Types].xml": "834dac411a54062d6bc7ef81f12469e694bf382d6c09996dd2b384a366d78e00",
+      "_rels/.rels": "d3df72f4b320bb1be320f516d3ca3a4e50e03231e82b6a3e7d5d1fdd6b5f3c12",
+      "build/fixture-producer.json": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+      "build/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+      "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76",
+      "build/qualification/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3",
+      "build/qualification/qualify-host.py": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511",
+      "lib/net11.0/Hexalith.Platform.TestExtension.dll": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+      "lib/net11.0/Hexalith.Platform.TestExtension.xml": "85459f559ba405fad5aaa0675d9d15658fcd8bc71c9e52a1ab84a338ad2b3c15",
+      "package/services/metadata/core-properties/nuget.psmdcp": "09c9036b1070a9b294a4cbc81d410d03945c10be369d4dc68d1b8da7b4cdbc73"
+    },
+    "declaration": {
+      "moduleId": "platformtestextension",
+      "path": "build/hexalith.module-manifest.v2.json",
+      "sha256": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24"
+    },
+    "dependencies": [
+      {
+        "exclude": "Build,Analyzers",
+        "id": "Hexalith.EventStore.DomainService",
+        "version": "5.4.0"
+      }
+    ],
+    "librarySha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+    "packageId": "Hexalith.Platform.TestExtension",
+    "producer": {
+      "path": "build/fixture-producer.json",
+      "publisherRepository": "Hexalith/Hexalith.Platform",
+      "sha256": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914"
+    },
+    "repository": "https://github.com/Hexalith/Hexalith.Platform",
+    "source": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+    "test": {
+      "files": {
+        "eng/test-extension-release/qualify-host.py": {
+          "path": "build/qualification/qualify-host.py",
+          "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"
+        },
+        "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {
+          "path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+          "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"
+        },
+        "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {
+          "path": "build/qualification/ReadinessTests.cs",
+          "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
+        }
+      },
+      "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
+    },
+    "version": "2.2.5"
+  },
+  "gateProof": {
+    "candidateAcceptance": false,
+    "packageId": "Hexalith.Platform.TestExtension",
+    "runs": [
+      {
+        "attempt": 1,
+        "run": 44898998036,
+        "workflow": ".github/workflows/tuple-ci.yml"
+      },
+      {
+        "attempt": 1,
+        "run": 44898997995,
+        "workflow": ".github/workflows/catalog-builder.yml"
+      }
+    ],
+    "schema": "hexalith.platform.test-extension-publication.v1",
+    "source": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+    "sourceRelease": "https://github.com/Hexalith/Hexalith.Platform/releases/tag/v2.2.5",
+    "storyAcceptance": false,
+    "version": "2.2.5"
+  },
+  "nugetRegisteredSha512": "YOILq8u8rkUsR4j5uD9C9E5r2lLNRsBnSNhnoj8jRyV7zdtwiG0yatb7FEH+VXEi71QgYKKOixulUPq8rmp9cg==",
+  "publicPackage": {
+    "archiveSha256": "7c3b432aba236b9cd102b6fad98a15ed629b3dcdfb9bad9ee6a3d105f63d04b4",
+    "bodies": {
+      "Hexalith.Platform.TestExtension.nuspec": "7d140d679c8e926b7455e941e7405d63a42a8bcfeb60cf9443e60a903bc2afa5",
+      "[Content_Types].xml": "834dac411a54062d6bc7ef81f12469e694bf382d6c09996dd2b384a366d78e00",
+      "_rels/.rels": "d3df72f4b320bb1be320f516d3ca3a4e50e03231e82b6a3e7d5d1fdd6b5f3c12",
+      "build/fixture-producer.json": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+      "build/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+      "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76",
+      "build/qualification/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3",
+      "build/qualification/qualify-host.py": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511",
+      "lib/net11.0/Hexalith.Platform.TestExtension.dll": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+      "lib/net11.0/Hexalith.Platform.TestExtension.xml": "85459f559ba405fad5aaa0675d9d15658fcd8bc71c9e52a1ab84a338ad2b3c15",
+      "package/services/metadata/core-properties/nuget.psmdcp": "09c9036b1070a9b294a4cbc81d410d03945c10be369d4dc68d1b8da7b4cdbc73"
+    },
+    "declaration": {
+      "moduleId": "platformtestextension",
+      "path": "build/hexalith.module-manifest.v2.json",
+      "sha256": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24"
+    },
+    "dependencies": [
+      {
+        "exclude": "Build,Analyzers",
+        "id": "Hexalith.EventStore.DomainService",
+        "version": "5.4.0"
+      }
+    ],
+    "librarySha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+    "packageId": "Hexalith.Platform.TestExtension",
+    "producer": {
+      "path": "build/fixture-producer.json",
+      "publisherRepository": "Hexalith/Hexalith.Platform",
+      "sha256": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914"
+    },
+    "repository": "https://github.com/Hexalith/Hexalith.Platform",
+    "source": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+    "test": {
+      "files": {
+        "eng/test-extension-release/qualify-host.py": {
+          "path": "build/qualification/qualify-host.py",
+          "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"
+        },
+        "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {
+          "path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+          "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"
+        },
+        "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {
+          "path": "build/qualification/ReadinessTests.cs",
+          "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
+        }
+      },
+      "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
+    },
+    "version": "2.2.5"
+  },
+  "publicationArtifact": {
+    "id": 14706703046,
+    "name": "platform-test-extension-publication-44902658431-1",
+    "sha256": "756942d30ce56efce3e44ebe9be6dc9e6bd7ae00072f813ce973cbb240f7d5c3"
+  },
+  "run": 44902658431,
+  "sdk": {
+    "Hexalith.EventStore.Client/5.4.0": {
+      "contentHash": "H8XW/CKGSIBWgchTPNkdrgpRGNj/KZZWeQ/7512nE5gO+l5blF0QOwu1DkZMKqfJVFDMuD7pgiAK1V/jCYdG4w==",
+      "sha256": "a27d51db7d801c9300034b0861f3203a0f70354b16e45b78ad4e7a82a857be13",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Client.5.4.0\nContent hash: yYfRqeeCpw2jDk01XKruu+7WV2F5vtI1D63d3x9dofWYNzM6AMcTi3jFdwT1MPGcIEK4IwnrP2NYNm65OfjO+w==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 00:00:00 to 05/18/2027 23:59:59\n",
+      "source": "2ec21f631a2e292fba8c5537fe665ab275ed1081"
+    },
+    "Hexalith.EventStore.Contracts/5.4.0": {
+      "contentHash": "LIxRmd/qpYl5Ag0uILSRSG+QxIg02dCl/sMkFZVUD7deIGhsC1Ukp41UK7FmM94loQ0B1zz/9gDK2DLfLbaBBw==",
+      "sha256": "eea33fc87bfaa9ca5be7a25a4e56d17757ad0a4496da63483df78b127a8a51b8",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.Contracts.5.4.0\nContent hash: X2mPB9XdDkVx96n51fOMF6QZVUj5YlKwIBSo+UOvKeI4wpAmkpZkY6iavoKte0EdFX9DJ5KIqrl7iUcxmqr51A==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 00:00:00 to 05/18/2027 23:59:59\n",
+      "source": "2ec21f631a2e292fba8c5537fe665ab275ed1081"
+    },
+    "Hexalith.EventStore.DomainService/5.4.0": {
+      "contentHash": "m9DU/Z4r1SAXJGv8XTMraxFj6LJeU1fmkKPZwSmGXK96JAFUYLvhuzWmSCMH2PCZC8XPUxM7P4dKOILDDQJ6kA==",
+      "sha256": "3715f8a6d38a806f4c9eb0d1b2b98dbcb2d5d49d6c100d418592c9033ba8936d",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.DomainService.5.4.0\nContent hash: klMx/YNO19jIMyHg0CJFXjzbGfxURAqED0y1MP8y5HAs/rRxvQk8XWeJxFypPlub2RJpt7lLy52svWVpWkwYaA==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 00:00:00 to 05/18/2027 23:59:59\n",
+      "source": "2ec21f631a2e292fba8c5537fe665ab275ed1081"
+    },
+    "Hexalith.EventStore.ServiceDefaults/5.4.0": {
+      "contentHash": "iBsZC69HADbkiFRhUlYorrzr2esptiOCHnHhpjEo/tgW7MGUCf2lgS+iEArZq1TVKkCCRrdmGzI7cRtqpPKtrA==",
+      "sha256": "a276701bb3a4c3099d569da8c0d69267b60b7f76eecd7ea60b78c6bf23d1f441",
+      "signatureVerification": "\nVerifying Hexalith.EventStore.ServiceDefaults.5.4.0\nContent hash: RNunMzEidXuruJLZSXWeMzBvBb2rD1+fwz09PnLdOlqTiUxu7anb8pBdb3q06Emzq/FOii0wO+seh0f/HIbswQ==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 00:00:00 to 05/18/2027 23:59:59\n",
+      "source": "2ec21f631a2e292fba8c5537fe665ab275ed1081"
+    }
+  },
+  "signatureVerification": "\nVerifying Hexalith.Platform.TestExtension.2.2.5\nContent hash: /kaYxX5ZGJzTdXP8JfllIm4nOMwxMs4U90GZ9KQDN5x9YOmbNgWjZ0AYRhPKd+WtqNtvL5sQ7XY2hsBd2YLyMA==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+  "source": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+  "sourceVersion": "2.2.5",
+  "url": "https://api.nuget.org/v3-flatcontainer/hexalith.platform.testextension/2.2.5/hexalith.platform.testextension.2.2.5.nupkg"
+}
