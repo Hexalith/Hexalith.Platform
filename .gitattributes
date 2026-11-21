@@ -206,3 +206,7 @@ tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-a
 src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 eng/fixtures/builds-before-unified-catalog.props -text
+
+# Recognize the existing CRLF in the composition options and routing reader.
+src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

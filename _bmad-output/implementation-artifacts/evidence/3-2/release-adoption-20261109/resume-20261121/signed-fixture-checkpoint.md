@@ -7,3 +7,18 @@ The normal source publisher tagged exact main as v2.2.5. The dedicated fixture p
 The exact Platform host and generated binding writer built in a disposable workspace using the verified published Builds tool. Its assets and dependency manifest both selected the fixture and seven locked EventStore 5.4.0 libraries as packages. The host process loaded `Hexalith.Platform.TestExtension.dll` with SHA-256 `650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004`, matching the signed package. A real pinned Dapr 1.19.2 sidecar with a private in-memory state component let the unmodified Program start. The extension was Healthy and reported `platform-test@1`; overall `/ready` returned HTTP 503. The no-sidecar startup refusal and first observer timeout are retained. The host and sidecar exited before workspace cleanup. [Component startup receipt](fixture225-signed-host-component.json)
 
 Full Story 3.2 acceptance still requires the normally released Builds named-consumer fixture pin and producer proof, authenticated finite Platform reader and host admission, an owned Healthy distributed environment exercising the native MTP test, and its mandatory CI inventory. The original baseline and frozen spec remain intact. **Status remains in-progress.**
+
+The isolated finite receiver uses the measured fixture cohort. Its package reader
+authenticated the released Tenants and Memories owner assemblies and generated 30
+routes and 19 policies. It recorded both facet digests. Six released Linux/amd64
+workload manifests and image configuration digests were independently verified
+through the existing local read-only registry client. [Reader measurement](fixture225-reader-identities.json) · [Image identities](fixture225-image-identities.json)
+
+The candidate host observer also passed against the real signed fixture. The
+extension CI profile preserves its nine SDK cases, adds nine fixture admission
+cases and requires a component startup with the public pinned Dapr sidecar. This
+component uses public signed packages and requires no private workload pulls.
+The ordinary owned native startup uses the authenticated released images. The
+current organization registry grants exclude Platform, so the hosted component
+preserves that access boundary while the full distributed qualification remains
+a separate local owned run after the signed Builds adoption. [Builds qualification PR](https://github.com/Hexalith/Hexalith.Builds/pull/198)

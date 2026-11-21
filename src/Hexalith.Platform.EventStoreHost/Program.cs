@@ -25,6 +25,7 @@ builder.Services.AddEventStore();
 // Declared extensions register before AddEventStoreServer, which can start the catalog bootstrap.
 #if HEXALITH_PLATFORM_EXTENSION_SDK
 Hexalith.EventStore.Server.Extensions.EventStoreExtensionServiceCollectionExtensions.AddEventStoreExtensions(builder.Services, builder.Configuration);
+SignedFixtureObservation.Record(builder.Configuration);
 #else
 if (builder.Configuration.GetSection("EventStore:Extensions:Packages").GetChildren().Any())
     throw new InvalidOperationException("eventstore-extension-api-unavailable: Declared EventStore extensions require an EventStore server SDK that carries the extension API; package-mode qualification awaits its release.");
