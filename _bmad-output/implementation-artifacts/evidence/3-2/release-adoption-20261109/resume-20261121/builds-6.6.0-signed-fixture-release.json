@@ -1,0 +1,49 @@
+{
+  "release": {
+    "releaseTag": "v6.6.0",
+    "tagCommit": "d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9",
+    "releaseId": 453727898,
+    "publishedAt": "2026-11-21T14:03:56Z",
+    "releaseBodySha256": "48987158e87d1d503ef534abbd9e546f069db0e50601c0be50553e3d597bd114",
+    "markers": {
+      "hexalith-release": "d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9",
+      "hexalith-release-artifact": "14709129492 sha256:b6ae6c2cc7085fc63936d6ea04ad1bf36a381c89e34612d065842393de5a1c1d",
+      "hexalith-release-containers": "",
+      "hexalith-release-packages": "Hexalith.Builds.Evidence.Cli,Hexalith.Builds.Module.Cli",
+      "hexalith-release-run": "44909014255"
+    },
+    "evidenceOnly": true,
+    "qualificationCredit": false
+  },
+  "run": 44909014255,
+  "source": "d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9",
+  "originalArtifact": 14709129492,
+  "artifactSha256": "sha256:b6ae6c2cc7085fc63936d6ea04ad1bf36a381c89e34612d065842393de5a1c1d",
+  "manifestSha256": "2d241f879ed2dd987db7235cee6422fa7e39e0055b466ef6516834f7285c44de",
+  "published": {
+    "Hexalith.Builds.Evidence.Cli": {
+      "version": "6.6.0",
+      "originalArchiveSha256": "291cf5bee5e7330112dd921e3bbfe94f87bfb09ce3a86dee6de435bf78d83240",
+      "publicArchiveSha256": "d35306c974cff4e029fc386536b22668d790a8aa7ffc547b43fdcb71c63bcfda",
+      "publicContentHash": "5/U6t9o0FhSPdfcv8rRe6vQ/38hI5dbyobPGpuO5XNzEBU6aLRhpsMhq3aTw5Q4y75s6dOojWEvAAStlIJK98A==",
+      "retainedMembers": 38,
+      "signature": "\nVerifying Hexalith.Builds.Evidence.Cli.6.6.0\nContent hash: T8HcvjRDFERxfFWPf6Hn/thRXMkP0yaLupUicFPeWDuk1kvKCF0e5pBxAyy4Jk5nsqFAHjAG5HYCoG+7jvHbfw==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n"
+    },
+    "Hexalith.Builds.Module.Cli": {
+      "version": "6.6.0",
+      "originalArchiveSha256": "346a9e81f84abd2e354e1450b5f7ff9c0ce25477480cd0a12068dca390a8af76",
+      "publicArchiveSha256": "b531901ef92ac0f8c834563e0e871e3a209d945d398c44402e65ad1591144799",
+      "publicContentHash": "JCV36/N86WPjXUC+PdXb7Y5FllGaBA2Jo/ynCuDx2eWY83/TRslh7Fy+DdnusJNowIAF8q0isK4MrggcDNxhRw==",
+      "retainedMembers": 317,
+      "signature": "\nVerifying Hexalith.Builds.Module.Cli.6.6.0\nContent hash: ULJdxy6R+YyBXV6+pnqrfbtT2Kxb1OY5BIs2ekpZ3C3YyYtVyMp9AT1el31m8wOsUgxDwtxSfBnKdvVa+jMIgg==\n\nSignature type: Repository\n  Subject Name: CN=NuGet.org Repository by Microsoft, O=NuGet.org Repository by Microsoft, L=Redmond, S=Washington, C=US\n  SHA256 hash: 1F4B311D9ACC115C8DC8018B5A49E00FCE6DA8E2855F9F014CA6F34570BC482D\n  Valid from: 02/23/2024 01:00:00 to 05/19/2027 01:59:59\n",
+      "binarySha256": {
+        "Hexalith.Builds.Module.Cli.dll": "872357696f98d7c5cc95c4f9710cfc117463ef4563c030b9e9285829fe485f7a",
+        "Hexalith.Builds.Tooling.dll": "4588e22bfa5a838ab82dd9b694718b07becda34b9a353600783642bcf61d544a",
+        "g4-host/Hexalith.Builds.Module.AppHost.dll": "2c5099456d8cd9d2a74364b72b3989aa810770008dce2a2b69c32b5cb604b37b",
+        "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll": "e9dfa7f03c8ae465a078e0ce204f97b213e19a3b041064a6075c44f3f041798f"
+      }
+    }
+  },
+  "allOriginalMembersMatch": true,
+  "repositorySignaturesVerified": true
+}
