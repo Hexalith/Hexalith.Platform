@@ -1,0 +1,64 @@
+Publisher controls: 36 (17 readiness, 15 archive and SDK identity, 4 execution-inventory controls).
+test_incomplete_execution_is_refused_even_without_failure (test_controls.ExecutionInventoryTests.test_incomplete_execution_is_refused_even_without_failure) ... ok
+test_missing_discovered_case_is_refused (test_controls.ExecutionInventoryTests.test_missing_discovered_case_is_refused) ... ok
+test_skipped_discovered_control_is_refused (test_controls.ExecutionInventoryTests.test_skipped_discovered_control_is_refused) ... ok
+test_successful_exact_inventory_passes (test_controls.ExecutionInventoryTests.test_successful_exact_inventory_passes) ... ok
+test_actual_sdk_uppercase_hash_handoff_passes (test_host_entry.HostEntryTests.test_actual_sdk_uppercase_hash_handoff_passes) ... ok
+test_authentication_failure_cannot_become_a_healthy_extension (test_host_entry.HostEntryTests.test_authentication_failure_cannot_become_a_healthy_extension) ... ok
+test_boolean_is_not_an_api_major (test_host_entry.HostEntryTests.test_boolean_is_not_an_api_major) ... ok
+test_changed_source_hashes_are_refused_before_http (test_host_entry.HostEntryTests.test_changed_source_hashes_are_refused_before_http) ... ok
+test_declared_major_mismatch_is_refused (test_host_entry.HostEntryTests.test_declared_major_mismatch_is_refused) ... ok
+test_existing_report_is_never_overwritten (test_host_entry.HostEntryTests.test_existing_report_is_never_overwritten) ... ok
+test_expiry_during_http_cannot_emit_a_passing_report (test_host_entry.HostEntryTests.test_expiry_during_http_cannot_emit_a_passing_report) ... ok
+test_foreign_producer_is_refused_before_http (test_host_entry.HostEntryTests.test_foreign_producer_is_refused_before_http) ... ok
+test_healthy_extension_is_independent_of_overall_distributed_readiness (test_host_entry.HostEntryTests.test_healthy_extension_is_independent_of_overall_distributed_readiness) ... ok
+test_healthy_extension_with_http200_also_passes (test_host_entry.HostEntryTests.test_healthy_extension_with_http200_also_passes) ... ok
+test_invalid_or_expired_run_is_refused_before_http (test_host_entry.HostEntryTests.test_invalid_or_expired_run_is_refused_before_http) ... ok
+test_malformed_or_oversized_health_body_fails (test_host_entry.HostEntryTests.test_malformed_or_oversized_health_body_fails) ... ok
+test_redirect_to_healthy_target_is_refused_without_second_request (test_host_entry.HostEntryTests.test_redirect_to_healthy_target_is_refused_without_second_request) ... ok
+test_unhealthy_extension_fails_and_retains_a_failed_report (test_host_entry.HostEntryTests.test_unhealthy_extension_fails_and_retains_a_failed_report) ... ok
+test_wrong_extension_or_package_is_refused (test_host_entry.HostEntryTests.test_wrong_extension_or_package_is_refused) ... ok
+test_wrong_native_owner_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_native_owner_is_refused_before_http) ... ok
+test_wrong_profile_or_mode_is_refused_before_http (test_host_entry.HostEntryTests.test_wrong_profile_or_mode_is_refused_before_http) ... ok
+test_accepts_only_the_declared_source_and_fixture (test_package.PackageIdentityTests.test_accepts_only_the_declared_source_and_fixture) ... ok
+test_refuses_altered_declaration_or_foreign_producer (test_package.PackageIdentityTests.test_refuses_altered_declaration_or_foreign_producer) ... ok
+test_refuses_consistently_rebound_foreign_owner_metadata (test_package.PackageIdentityTests.test_refuses_consistently_rebound_foreign_owner_metadata) ... ok
+test_refuses_consistently_rebound_test_profile (test_package.PackageIdentityTests.test_refuses_consistently_rebound_test_profile) ... ok
+test_refuses_different_source (test_package.PackageIdentityTests.test_refuses_different_source) ... ok
+test_refuses_fixture_built_without_extension_api (test_package.PackageIdentityTests.test_refuses_fixture_built_without_extension_api) ... ok
+test_refuses_foreign_dependency (test_package.PackageIdentityTests.test_refuses_foreign_dependency) ... ok
+test_refuses_missing_declaration_or_producer (test_package.PackageIdentityTests.test_refuses_missing_declaration_or_producer) ... ok
+test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent (test_package.PackageIdentityTests.test_refuses_unapproved_source_owned_identity_even_if_body_is_consistent) ... ok
+test_accepts_current_release_and_authenticates_actual_archive (test_package.PackageSdkTests.test_accepts_current_release_and_authenticates_actual_archive) ... ok
+test_refuses_invalid_nuget_signature (test_package.PackageSdkTests.test_refuses_invalid_nuget_signature) ... ok
+test_refuses_locked_archive_from_wrong_source_or_with_wrong_compile_bytes (test_package.PackageSdkTests.test_refuses_locked_archive_from_wrong_source_or_with_wrong_compile_bytes) ... ok
+test_refuses_missing_domainservice_compile_asset (test_package.PackageSdkTests.test_refuses_missing_domainservice_compile_asset) ... ok
+test_refuses_modified_archive_before_signature_verification (test_package.PackageSdkTests.test_refuses_modified_archive_before_signature_verification) ... ok
+test_refuses_wrong_dependency_and_restored_version (test_package.PackageSdkTests.test_refuses_wrong_dependency_and_restored_version) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 9.115s
+
+OK
+✔ exact normal source qualifications authorize only the named fixture (1.389745ms)
+✔ refuses foreign repository (0.345857ms)
+✔ refuses different checkout (0.208331ms)
+✔ refuses foreign workflow (0.111105ms)
+✔ refuses arbitrary version (0.252818ms)
+✔ refuses advanced main (0.177532ms)
+✔ refuses different source tag (0.140701ms)
+✔ refuses draft release (0.281673ms)
+✔ refuses latest tuple failed (0.315719ms)
+✔ refuses latest tuple pending (1.00633ms)
+✔ refuses foreign push proof (0.303997ms)
+✔ refuses missing required tuple job (0.179686ms)
+✔ refuses failed catalog job (0.326039ms)
+✔ refuses incomplete proof discovery (0.110393ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51.207196

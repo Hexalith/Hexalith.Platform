@@ -5,20 +5,22 @@ not publish a host, deploy resources, adopt module manifests, create a source
 release, or establish Story 3.2 acceptance.
 
 Publication has two normally qualified stages to avoid a circular prerequisite.
-First, adopt the released EventStore extension SDK and Builds consumer-view
-correction through a refreshed exact-source L/N/M tuple, compile the package-mode
-extension tests, and let the existing source-release workflow tag that exact
-current main. The fixture stays outside finite package-host admission at this
-stage. Dispatch `test-extension-release.yml` from that same current main with
-its existing stable Platform source-release version. The workflow rechecks the
-normal exact-source tuple and catalog jobs, the source tag, and the executing
-workflow identity before packaging and again before OIDC/publication.
+First, qualify the current tuple with the released EventStore extension SDK,
+the Builds consumer view and the package-mode extension tests. The existing
+source-release workflow tags that exact current main. The fixture stays outside
+finite package-host admission at this stage. Dispatch `test-extension-release.yml`
+from that same current main with its existing stable Platform source-release
+version. The workflow rechecks the normal exact-source tuple and catalog jobs,
+the source tag, and the executing workflow identity before packaging and again
+before OIDC/publication.
 
 The fixture restores from NuGet only. Its extension feature constant must be
 enabled by the measured catalog pin. The archive must contain its extension
 identity, exactly its DomainService dependency, the actual built library and
-the exact Platform repository/source metadata. Actual restored EventStore SDK
-archives must pass NuGet signature verification. The publisher consumes only
+the exact Platform repository/source metadata. The actual EventStore SDK archives
+must match that source revision's owner package lock and EventStore release
+provenance and pass NuGet signature verification. The restored compile and
+runtime files must match the signed archives. The publisher consumes only
 this run's immutable artifact and compares its full package identity to the
 qualified receipt. NuGet's signed public archive must retain those package
 bodies. A failed late check stops publication; an already published version is
@@ -64,9 +66,6 @@ source project dependencies, another SDK version, or a different SDK release
 source. These packaged inputs prepare a concrete declaration authority for
 subsequent finite host admission; they grant no current composition authority.
 
-The publication controls now run automatically in tuple CI and again before
-fixture publication: 14 Node gate cases and 30 Python readiness, archive/producer and execution-inventory cases.
-
 The fixture declaration has one `mtp` package test,
 `eventstore-extension-package`, implemented in the separate
 `Hexalith.Platform.TestExtension.Qualification.Tests` project. It runs one bounded
@@ -86,10 +85,10 @@ ordinary service adoption, owner repository mapping, private parent plan or
 finite host admission. Those require a normally released SDK path that proves
 the signed producer identity and the expanded reader/purpose cohort.
 
-Both tuple preflight and this publisher require exactly 30 resource-free Python
-controls (17 readiness, 9 archive identity, 4 execution-inventory controls) plus the existing 14 Node refusal
-controls. A missing or extra Python control fails the inventory before tests run. Execution
-also requires all 30 controls to run without skips. Readiness redirects are refused,
-and an observation completed after its native deadline cannot report Pass.
+Both tuple preflight and the publisher require 36 resource-free Python controls
+(17 readiness, 15 archive and SDK identity, 4 execution inventory) and 14 Node
+refusal controls. The Python runner checks the exact inventory and requires each
+test to pass without skips. The readiness observer refuses redirects and late
+responses cannot report a pass.
 A successful local observer or native report from an unsigned historical
 candidate grants no signed fixture, parent-plan or cohort qualification credit.

@@ -1,0 +1,55 @@
+{
+  "packageId": "Hexalith.Platform.TestExtension",
+  "version": "0.0.0-story32.local.20261121",
+  "source": "25887836c2c7a63edbff7a4e0426e078a188b98c",
+  "repository": "https://github.com/Hexalith/Hexalith.Platform",
+  "archiveSha256": "66fd0248c8c9330ed8c4550babf90282bb31290c94abe4cbe23e0c0c746aebf0",
+  "librarySha256": "a2c676217d2d50cc0d2c38265ad07c03794b25dca1ec1400ac16665cd436a3a3",
+  "bodies": {
+    "_rels/.rels": "d3df72f4b320bb1be320f516d3ca3a4e50e03231e82b6a3e7d5d1fdd6b5f3c12",
+    "Hexalith.Platform.TestExtension.nuspec": "22645926cb2864e237a04e91072cc91143a7fc63e626c0519a04776e777886bc",
+    "build/fixture-producer.json": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+    "build/hexalith.module-manifest.v2.json": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+    "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76",
+    "build/qualification/ReadinessTests.cs": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3",
+    "build/qualification/qualify-host.py": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511",
+    "lib/net11.0/Hexalith.Platform.TestExtension.dll": "a2c676217d2d50cc0d2c38265ad07c03794b25dca1ec1400ac16665cd436a3a3",
+    "lib/net11.0/Hexalith.Platform.TestExtension.xml": "85459f559ba405fad5aaa0675d9d15658fcd8bc71c9e52a1ab84a338ad2b3c15",
+    "[Content_Types].xml": "834dac411a54062d6bc7ef81f12469e694bf382d6c09996dd2b384a366d78e00",
+    "package/services/metadata/core-properties/nuget.psmdcp": "ed856431dd90219307807503996f5afc9d60c784e574617233237b3aa416a164"
+  },
+  "dependencies": [
+    {
+      "id": "Hexalith.EventStore.DomainService",
+      "version": "5.4.0",
+      "exclude": "Build,Analyzers"
+    }
+  ],
+  "declaration": {
+    "path": "build/hexalith.module-manifest.v2.json",
+    "sha256": "6807b0212f29d5a0f7f82ffdb77bf1b85f3b12b0a29c0073e307ba99f8bc9e24",
+    "moduleId": "platformtestextension"
+  },
+  "producer": {
+    "path": "build/fixture-producer.json",
+    "sha256": "f8ef5ea9bd70e7446dc449e64214df045f0e28563be8b3fbbf851d16eb381914",
+    "publisherRepository": "Hexalith/Hexalith.Platform"
+  },
+  "test": {
+    "sourceEntry": "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+    "files": {
+      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj": {
+        "path": "build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj",
+        "sha256": "35ebee634b9edb008115684ac5bd4ea90bff32fa6aa4e87a8d392767200f6f76"
+      },
+      "tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs": {
+        "path": "build/qualification/ReadinessTests.cs",
+        "sha256": "79f99abe1a100e560c007d6b7b4fe831bf15b7e64bbc0b59bb0a963c6ac823a3"
+      },
+      "eng/test-extension-release/qualify-host.py": {
+        "path": "build/qualification/qualify-host.py",
+        "sha256": "af7fa849d069fbe2b7b4b36fc80a6434bca12bc03d9816b425ac9e061e0fb511"
+      }
+    }
+  }
+}
