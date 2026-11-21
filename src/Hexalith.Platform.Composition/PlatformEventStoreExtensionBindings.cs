@@ -117,14 +117,19 @@ internal static class PlatformEventStoreExtensionBindings
                     secretValues.Add(identity, value);
                 }
             }
-            Dictionary<string, string> bound = new(StringComparer.Ordinal);
+            Dictionary<string, string> bound = new(StringComparer.OrdinalIgnoreCase);
+            InvalidDataException Conflict(string leaf)
+                => new($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-configuration-conflict: '{leaf}' overlaps a key already bound on the composed eventstore host.");
             ReadOnlySpan<char> structuredValue = value.AsSpan().TrimStart();
             if (source is not ("secret" or "dynamic-secret") && !structuredValue.IsEmpty && structuredValue[0] is '[' or '{')
             {
                 try
                 {
                     using JsonDocument structured = JsonDocument.Parse(value);
-                    PlatformLocalProfile.Flatten(bound, key, structured.RootElement);
+                    PlatformLocalProfile.Flatten(key, structured.RootElement, (leaf, body) =>
+                    {
+                        if (!bound.TryAdd(leaf, body)) throw Conflict(leaf);
+                    });
                 }
                 catch (JsonException exception)
                 {
@@ -136,7 +141,7 @@ internal static class PlatformEventStoreExtensionBindings
             {
                 // Configuration keys ignore case and a parent or child key rebinds the same section, so any overlap is a conflict.
                 if (Overlaps(pair.Key, "EventStore__Extensions") || environment.Keys.Any(existing => Overlaps(pair.Key, existing)))
-                    throw new InvalidDataException($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-configuration-conflict: '{pair.Key}' overlaps a key already bound on the composed eventstore host.");
+                    throw Conflict(pair.Key);
                 environment[pair.Key] = pair.Value;
             }
         }

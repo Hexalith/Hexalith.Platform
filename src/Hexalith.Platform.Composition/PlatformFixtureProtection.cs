@@ -18,16 +18,16 @@ internal sealed class PlatformFixtureProtection : IHealthCheck
     private readonly IResourceBuilder<ExecutableResource> _resource;
     private readonly IResourceBuilder<ParameterResource> _credential;
 
-    private PlatformFixtureProtection(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
+    internal PlatformFixtureProtection(IDistributedApplicationBuilder builder, string root, CompositionRunPlan plan)
     {
-        _plan = options.RunPlan ?? throw PlatformFixturePackageQualification.Refusal("protection-run-owner");
+        _plan = plan;
         _directory = Path.Combine(_plan.Workspace, "fixture-protection");
         if (Path.GetFileName(_plan.Workspace) != _plan.RunId || new DirectoryInfo(_plan.Workspace).LinkTarget is not null)
             throw PlatformFixturePackageQualification.Refusal("protection-workspace");
 
-        string provisioner = Committed(options.PlatformRoot, "eng/test-extension-release/provision-fixture-protection.py");
-        string bootstrap = Committed(options.PlatformRoot, "deploy/erasure-root/bootstrap.py");
-        _ = Committed(options.PlatformRoot, "deploy/erasure-root/custody-policy.hcl");
+        string provisioner = Committed(root, "eng/test-extension-release/provision-fixture-protection.py");
+        string bootstrap = Committed(root, "deploy/erasure-root/bootstrap.py");
+        _ = Committed(root, "deploy/erasure-root/custody-policy.hcl");
 
         string credential = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         _credential = builder.AddParameter("fixture-erasure-root-credential", () => credential, secret: true);
@@ -41,7 +41,7 @@ internal sealed class PlatformFixtureProtection : IHealthCheck
 
     internal static PlatformFixtureProtection Attach(IDistributedApplicationBuilder builder, PlatformCompositionOptions options)
         => options.FixturePackageProof?.Matches(options) == true
-            ? new(builder, options)
+            ? new(builder, options.PlatformRoot, options.RunPlan ?? throw PlatformFixturePackageQualification.Refusal("protection-run-owner"))
             : throw PlatformFixturePackageQualification.Refusal("protection-fixture-proof");
 
     internal void Configure(IResourceBuilder<ProjectResource> gateway)

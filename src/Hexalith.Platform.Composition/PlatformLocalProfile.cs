@@ -125,13 +125,16 @@ public static class PlatformLocalProfile
     }
 
     internal static void Flatten(Dictionary<string, string> environment, string key, JsonElement value)
+        => Flatten(key, value, (leaf, body) => environment[leaf] = body);
+
+    internal static void Flatten(string key, JsonElement value, Action<string, string> bind)
     {
-        if (value.ValueKind == JsonValueKind.Object) foreach (JsonProperty property in value.EnumerateObject()) Flatten(environment, key + ":" + property.Name, property.Value);
+        if (value.ValueKind == JsonValueKind.Object) foreach (JsonProperty property in value.EnumerateObject()) Flatten(key + ":" + property.Name, property.Value, bind);
         else if (value.ValueKind == JsonValueKind.Array)
         {
             int index = 0;
-            foreach (JsonElement item in value.EnumerateArray()) Flatten(environment, key + ":" + index++, item);
+            foreach (JsonElement item in value.EnumerateArray()) Flatten(key + ":" + index++, item, bind);
         }
-        else environment[key.Replace(":", "__", StringComparison.Ordinal)] = value.ValueKind == JsonValueKind.String ? value.GetString()! : value.GetRawText();
+        else bind(key.Replace(":", "__", StringComparison.Ordinal), value.ValueKind == JsonValueKind.String ? value.GetString()! : value.GetRawText());
     }
 }

@@ -1,8 +1,10 @@
 """Run a bounded disposable TLS/OpenBao installation for the signed Platform fixture."""
 import base64
 from contextlib import contextmanager
+import csv
 import hashlib
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -80,10 +82,12 @@ listener "tcp" {
 ''')
     uid, gid = os.getuid(), os.getgid()
     require(uid > 0 and gid > 0, 'nonroot-owner')
+    bind_mount = io.StringIO(newline='')
+    csv.writer(bind_mount).writerow(('type=bind', f'source={certs}', 'target=/fixture', 'readonly'))
     arguments = [*DOCKER, 'create', '--pull=missing', '--platform=linux/amd64', '--name', name, '--label', f'{OWNER}={run_id}',
                  '--network=none', '--read-only', '--log-driver=none', '--cap-drop=ALL',
                  '--security-opt=no-new-privileges', '--user', f'{uid}:{gid}', '--memory=512m', '--memory-swap=512m', '--pids-limit=128',
-                 '--env', 'GOMAXPROCS=2', '--mount', f'type=bind,source={certs},target=/fixture,readonly']
+                 '--env', 'GOMAXPROCS=2', '--mount', bind_mount.getvalue().removesuffix('\r\n')]
     for mount in ('/tmp', '/openbao/file', '/openbao/logs'):
         arguments += ['--tmpfs', f'{mount}:rw,noexec,nosuid,nodev,size=32m,mode=0700,uid={uid},gid={gid}']
     arguments += ['--entrypoint=/bin/sh', IMAGE, '-ec', 'exec bao server -config=/fixture/native.hcl']

@@ -24,8 +24,9 @@ recorded by the run. The lifecycle owner and attachment keep their own
 declared profiles. See [package catalog qualification](docs/package-catalog-qualification.md)
 for execution and evidence details.
 
-The continuing inventories declare 380 current42, 67 base42 and nine extension
-executions, with exact positive group counts and zero skips.
+The current tuple requires 380 `current42`, 67 `base42` and 21 `extensions`
+xUnit executions, with exact group counts and zero skips. The extension lane
+also starts the signed fixture host with a disposable Dapr sidecar.
 
 Owner packages (EventStore, Tenants, Memories, Parties and McpCli) are admitted
 through the generated, CI-enforced `eng/owner-packages.lock.json` of
@@ -36,13 +37,11 @@ release is a committed version bump, then `python3 eng/owner_packages_lock.py`
 (it reads the gitlinks from `HEAD`) and a commit of the regenerated lock; see
 [adopting an owner release](eng/tuple-source-preparation.md#adopting-an-owner-release).
 
-The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
-Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
-data with their original provenance. Reader authenticity supplies no image or
-runtime permission. Signed-host plan/key checks, reader integrity, readiness,
-model transport and exact positive counts with zero skips remain required.
-Hosted main tuple success still requires an authorized landing and actual run;
-local audits provide no hosted or native acceptance.
+The current collector targets .NET 11 with the SDK and owner versions resolved
+from the pinned Builds catalog and verified against the owner lock. Historical
+package fixtures retain their original provenance. The `eventstore-extension-package`
+profile runs the signed Platform fixture in its finite EventStore, Tenants and
+Memories cohort. See the [fixture publisher and qualification guide](eng/test-extension-release/README.md).
 
 ## Historical preparation records
 

@@ -17,16 +17,14 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 
-The continuing inventories declare 487 current42, 93 base42 and nine extension
-executions, with exact positive group counts and zero skips.
+The current tuple requires 380 `current42`, 67 `base42` and 21 `extensions`
+xUnit executions with exact group counts and zero skips. The extension lane
+also runs the signed host component startup check.
 
-The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
-Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
-data with their original provenance. Reader authenticity supplies no image or
-runtime permission. Signed-host plan/key checks, reader integrity, readiness,
-model transport and exact positive counts with zero skips remain required.
-Hosted main tuple success still requires an authorized landing and actual run;
-local audits provide no hosted or native acceptance.
+The current collector targets .NET 11 with owner versions from the pinned Builds
+catalog and the verified owner lock. Historical package fixtures retain their
+original provenance. Runtime qualification also checks the selected run plan,
+reader, images and readiness for the declared profile.
 
 ## Historical preparation records
 
@@ -372,22 +370,26 @@ packages and never enrolls a gateway extension.
   majors). Platform refuses a declared major outside them before any resource starts
   (`eventstore-extension-unsupported-major`), and refuses a duplicate extension id or
   package across the declaration set (`eventstore-extension-duplicate`).
-- When at least one extension is declared, Platform runs its own
-  `src/Hexalith.Platform.EventStoreHost` with the EventStore server's settings. Source
-  mode adds a project reference to the mapped owner project; package mode adds a package
-  reference at the Builds catalog version and refuses an unpinned package
-  (`eventstore-extension-unpinned`). Without a declared extension, gateway selection is
-  unchanged.
+- When at least one extension is declared, gateway selection resolves the
+  `src/Hexalith.Platform.EventStoreHost` project with the EventStore server's
+  settings. Source bindings use a project reference to the mapped owner project.
+  Package bindings use the Builds catalog version and refuse an unpinned package
+  with `eventstore-extension-unpinned`. The ordinary package launch also requires
+  the admitted runtime cohort described below. A declaration without an extension
+  uses the original EventStore gateway selection.
 - The composed host loads each package, compares its attribute with the declaration
   (`eventstore-extension-declaration-drift` stops the host), registers its adapters
   through the trusted adapter registry and lists the loaded ids and majors in the
   `eventstore-extensions` readiness check.
-- Inputs are `configuration` only, except the AD-9 secrets described in the next item.
-  Platform reads each value from its configuration, or from
-  `src/Hexalith.Platform.Composition/Declarations/local-profile.json`, under
-  `<moduleId>/<extensionId>/<key>`; an unbound input is refused
-  (`eventstore-extension-input-unbound`). Structured values flatten exactly as owner
-  inputs do, and an invalid one is refused (`eventstore-extension-input-invalid`).
+- Inputs use `configuration` except for the AD-9 secrets described below. The
+  ordinary AppHost reads declared extension values from the Platform-owned
+  `src/Hexalith.Platform.Composition/Declarations/local-profile.json`. A
+  programmatic caller can supply values in `PlatformCompositionOptions.Configuration`.
+  Both use `<moduleId>/<extensionId>/<key>`. The authenticated package fixture
+  receives its marker from the owner-run model. Missing inputs fail with
+  `eventstore-extension-input-unbound` and malformed structured values fail with
+  `eventstore-extension-input-invalid`. Structured leaves flatten using the owner
+  profile rules, with duplicate normalized keys refused case-insensitively.
   A key under `EventStore:Extensions`, or one that equals, contains or is contained in a
   key bound by the gateway's own declared inputs, its Dapr bindings or an earlier
   extension input, compared without case, is refused
@@ -406,13 +408,14 @@ packages and never enrolls a gateway extension.
   `eventstore-extensions` requirements, which name the module and the offending project
   or direct dependency.
 
-The signed Platform fixture is the first package-mode qualification for this API.
-Builds 6.6.0 admits `Hexalith.Platform.TestExtension` 2.2.5 for the exact Platform
-fixture declaration and `eventstore-extension-package` profile. The ordinary test
-runner uses the released EventStore SDK and measures `platform-test@1` on the
-composed host. This fixture provisions its own read-only protection observer for
-the readiness request. Production protection still requires its own installed
-authority, and other module packages follow the enrollment rules above.
+The ordinary package runner admits `Hexalith.Platform.TestExtension` 2.2.5 for
+the exact Platform declaration and `eventstore-extension-package` profile with
+the signed Builds 6.6.0 parent proof. That finite cohort uses EventStore 5.4.0,
+Tenants 8.0.2 and Memories 4.1.0. One Platform-composed gateway loads
+`platform-test@1` and uses a disposable read-only protection observer for the
+readiness request. Other modules can declare extensions and prepare catalog-pinned
+bindings. An ordinary signed runtime run also requires an admitted owner and
+cohort. [Fixture publisher and qualification](../eng/test-extension-release/README.md)
 
 ## 5. Complete the accountable Platform registration handoff
 
