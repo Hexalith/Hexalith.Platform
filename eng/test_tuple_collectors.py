@@ -16,7 +16,7 @@ class TupleCollectorTests(unittest.TestCase):
         for filename, suite, expected in (
                 ('tuple-ci-sdk42-current-suites.json', 'current42', 380),
                 ('tuple-ci-sdk42-base-suites.json', 'base42', 67),
-                ('tuple-ci-extension-suites.json', 'extensions', 18)):
+                ('tuple-ci-extension-suites.json', 'extensions', 21)):
             profile = json.loads((ROOT / 'eng' / filename).read_bytes())
             self.assertEqual(expected, validate_profile(profile))
             self.assertEqual({'current'}, {collector_for(group, suite) for group in profile['groups']})

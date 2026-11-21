@@ -117,19 +117,35 @@ internal sealed class PlatformRoutingCatalogBootstrap
             }
             File.WriteAllBytes(Path.Combine(catalog.Directory, "selected-closure.json"), JsonSerializer.SerializeToUtf8Bytes(new
             {
-                plan.RunId, hosts = participants.Select(server => new
-                {
-                    server.ResourceId, server.AppId, artifact = server.ImmutableImage ?? server.Image ?? server.ProjectPath,
-                    artifactKind = server.Image is not null ? "released-image"
-                        : server.ResourceId == "parties" && options.CurrentOwnerProof is not null ? "mapped-release-project"
-                        : options.Mapping.Mode == WorkspaceMode.Package ? "published-seed" : "mapped-project",
-                    artifactSha256 = server.ProjectPath is null ? null
-                        : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(server.ProjectPath))),
-                }).ToArray(),
+                plan.RunId, hosts = participants.Select(server => DescribeHost(server, options)).ToArray(),
                 callerClosure = plan.Modules.Select(module => module.ModuleId).ToArray(),
             }));
         }
     }
+
+    internal static object DescribeHost(PlatformServerBinding server, PlatformCompositionOptions options)
+    {
+        bool package = options.Mapping.Mode == WorkspaceMode.Package;
+        string? seed = package ? server.EventStoreHost?.ServerProject : null;
+        var identity = new
+        {
+            server.ResourceId, server.AppId, artifact = server.ImmutableImage ?? server.Image ?? server.ProjectPath,
+            artifactKind = server.Image is not null ? "released-image"
+                : server.EventStoreHost is not null ? "composed-project"
+                : server.ResourceId == "parties" && options.CurrentOwnerProof is not null ? "mapped-release-project"
+                : package ? "published-seed" : "mapped-project",
+            artifactSha256 = ProjectHash(server.ProjectPath),
+        };
+        return seed is null ? identity : new
+        {
+            identity.ResourceId, identity.AppId, identity.artifact, identity.artifactKind, identity.artifactSha256,
+            seedArtifact = seed,
+            seedArtifactSha256 = ProjectHash(seed),
+        };
+    }
+
+    private static string? ProjectHash(string? path)
+        => path is null ? null : Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(path)));
 
     internal static string AuthorityName(string instance) => "routing-" + instance.ToLowerInvariant();
 

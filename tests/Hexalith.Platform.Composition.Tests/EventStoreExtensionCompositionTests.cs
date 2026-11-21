@@ -493,6 +493,8 @@ public sealed class EventStoreExtensionCompositionTests
     [InlineData("PlatformTestExtension:Marker", """["alpha","beta"]""", "PlatformTestExtension__Marker__0=alpha;PlatformTestExtension__Marker__1=beta", null)]
     [InlineData("PlatformTestExtension:Marker", """{"Name":""", null, "eventstore-extension-input-invalid")]
     [InlineData("Authentication", """{"JwtBearer":{"Issuer":"forged"}}""", null, "eventstore-extension-configuration-conflict")]
+    [InlineData("PlatformTestExtension:Marker", """{"Nested":{"Level":1},"Nested:Level":2}""", null, "eventstore-extension-configuration-conflict")]
+    [InlineData("PlatformTestExtension:Marker", """{"Nested":[1],"nested__0":2}""", null, "eventstore-extension-configuration-conflict")]
     public void StructuredExtensionInputFlattensOrIsRefused(string key, string value, string? expected, string? condition)
     {
         JsonObject extension = Extension();

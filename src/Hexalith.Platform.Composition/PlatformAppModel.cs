@@ -321,6 +321,7 @@ public static class PlatformAppModel
             var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry, certificates, schedulerData, placementPort, schedulerPort, options.RetentionProfile is null ? null : PlatformRetentionProfile.RuntimeVersion);
             if (options.RunPlan is { } securityRun)
                 foreach (var control in new[] { sentry, placement, scheduler }) control.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={securityRun.RunId}");
+            PlatformFixtureProtection? fixtureProtection = fixturePackageTest ? PlatformFixtureProtection.Attach(builder, options) : null;
             Dictionary<string, IResourceBuilder<ProjectResource>> projects = new(StringComparer.Ordinal);
             Dictionary<string, IResourceBuilder<ContainerResource>> containers = new(StringComparer.Ordinal);
             foreach (PlatformServerBinding server in servers)
@@ -338,6 +339,7 @@ public static class PlatformAppModel
                     if (server.EventStoreHost is not null) project.WithArgs("-p:" + PlatformEventStoreExtensionBindings.BindingsProperty + "=" + gatewayExtensionBindings);
                     if (server.ResourceId == "eventstore" && options.FixturePackageProof is { } fixture)
                     {
+                        fixtureProtection!.Configure(project);
                         const string prefix = "Platform__SignedFixtureQualification__";
                         project.WithEnvironment(prefix + "Workspace", options.RunPlan!.Workspace)
                             .WithEnvironment(prefix + "RunId", fixture.Producer.RunId)

@@ -141,7 +141,7 @@ jobs:
           [[ "$FIXTURE_ARCHIVE_SHA256" =~ ^[a-f0-9]{64}$ ]]
           test "$(sha256sum "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" | cut -d ' ' -f 1)" = "$FIXTURE_ARCHIVE_SHA256"
           python3 eng/test-extension-release/verify-package.py "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" "$FIXTURE_VERSION" "$GITHUB_SHA" --receipt "$PACKAGE_DIRECTORY/package-identity.json"
-          dotnet nuget push "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY"
+          dotnet nuget push "$PACKAGE_DIRECTORY/Hexalith.Platform.TestExtension.$FIXTURE_VERSION.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
       - name: Verify the signed public archive
         env:
           PACKAGE_DIRECTORY: ${{ runner.temp }}/fixture-package

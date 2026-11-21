@@ -26,10 +26,13 @@ class PackageIdentityTests(unittest.TestCase):
         path = Path(root) / "fixture.nupkg"
         source = source or "a" * 40
         with zipfile.ZipFile(path, "w") as archive:
-            archive.writestr("fixture.nuspec", f'<package><metadata><id>{package.PACKAGE}</id><version>1.9.0</version>'
+            archive.writestr(package.SPECIFICATION, f'<package><metadata><id>{package.PACKAGE}</id><version>1.9.0</version>'
                 f'<repository type="git" url="{package.REPOSITORY}" commit="{source}" />'
                 f'<dependencies><dependency id="{dependency}" version="[4.2.0, )" /></dependencies></metadata></package>')
             archive.writestr(package.LIBRARY, body or b"EventStoreExtensionAttribute platform-test")
+            archive.writestr(package.LIBRARY.removesuffix(".dll") + ".xml", "<doc/>")
+            for member in package.NUGET_METADATA - {package.SPECIFICATION}:
+                archive.writestr(member, "<metadata/>")
             if omit != package.DECLARATION:
                 archive.writestr(package.DECLARATION, declaration or self.approved[package.DECLARATION])
             if omit != package.PRODUCER:
@@ -44,6 +47,20 @@ class PackageIdentityTests(unittest.TestCase):
             result = self.inspect(self.archive(root), "1.9.0", "a" * 40)
             self.assertEqual(result["packageId"], package.PACKAGE)
             self.assertIn(package.LIBRARY, result["bodies"])
+
+    def test_refuses_extra_payload_and_excludes_only_the_standard_signature_from_body_comparison(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = self.archive(root)
+            with zipfile.ZipFile(path, "a") as archive:
+                archive.writestr(".signature.p7s", b"signature belongs to the independent signature verifier")
+            self.assertNotIn(".signature.p7s", self.inspect(path, "1.9.0", "a" * 40)["bodies"])
+        for member in ["build/Unexpected.targets", "lib/net11.0/Unexpected.dll", "package/services/metadata/core-properties/unexpected.psmdcp"]:
+            with self.subTest(member=member), tempfile.TemporaryDirectory() as root:
+                path = self.archive(root)
+                with zipfile.ZipFile(path, "a") as archive:
+                    archive.writestr(member, b"unexpected")
+                with self.assertRaisesRegex(ValueError, "Unexpected or missing fixture archive members"):
+                    self.inspect(path, "1.9.0", "a" * 40)
 
     def test_refuses_missing_declaration_or_producer(self):
         for missing in [package.DECLARATION, package.PRODUCER, *package.NATIVE_SOURCE_FILES.values()]:

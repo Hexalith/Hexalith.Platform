@@ -23,6 +23,8 @@ PRODUCER = "build/fixture-producer.json"
 TEST_ENTRY = "build/qualification/qualify-host.py"
 SOURCE_TEST_ENTRY = "tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj"
 NATIVE_SOURCE_FILES = {'tests/Hexalith.Platform.TestExtension.Qualification.Tests/Hexalith.Platform.TestExtension.Qualification.Tests.csproj': 'build/qualification/Hexalith.Platform.TestExtension.Qualification.Tests.csproj', 'tests/Hexalith.Platform.TestExtension.Qualification.Tests/ReadinessTests.cs': 'build/qualification/ReadinessTests.cs', 'eng/test-extension-release/qualify-host.py': 'build/qualification/qualify-host.py'}
+SPECIFICATION = PACKAGE + ".nuspec"
+NUGET_METADATA = {SPECIFICATION, "[Content_Types].xml", "_rels/.rels", "package/services/metadata/core-properties/nuget.psmdcp"}
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
 
@@ -48,10 +50,10 @@ def inspect(path, version, source, *, approved=None):
         names = archive.namelist()
         if len(names) != len(set(names)) or any(name.startswith("/") or ".." in Path(name).parts for name in names):
             raise ValueError("Unsafe or duplicate fixture archive members")
-        specifications = [name for name in names if name.endswith(".nuspec")]
-        if len(specifications) != 1:
-            raise ValueError("Require one fixture package specification")
-        metadata = ET.fromstring(archive.read(specifications[0]))
+        required = {LIBRARY, LIBRARY.removesuffix(".dll") + ".xml", DECLARATION, PRODUCER, *NATIVE_SOURCE_FILES.values(), *NUGET_METADATA}
+        if set(names) - {".signature.p7s"} != required:
+            raise ValueError("Unexpected or missing fixture archive members")
+        metadata = ET.fromstring(archive.read(SPECIFICATION))
         values = {node.tag.rsplit("}", 1)[-1]: node.text for node in metadata.iter()}
         repository = next((node.attrib for node in metadata.iter() if node.tag.endswith("repository")), {})
         if values.get("id") != PACKAGE or values.get("version") != version or repository.get("commit") != source \
