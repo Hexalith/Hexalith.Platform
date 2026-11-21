@@ -83,8 +83,8 @@ public sealed class PlatformCurrentPackageArtifactTests
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(verification, "catalog-reader", "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
         using JsonDocument canonical = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
-        foreach (string name in new[] { "routes", "operations", "declarations" }) canonical.RootElement.GetProperty(name).GetArrayLength().ShouldBe(70);
-        canonical.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(46);
+        foreach (string name in new[] { "routes", "operations", "declarations" }) canonical.RootElement.GetProperty(name).GetArrayLength().ShouldBe(71);
+        canonical.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(47);
         proof.Matches(options).ShouldBeTrue();
         fixture.AssertNoEffects(builder);
     }

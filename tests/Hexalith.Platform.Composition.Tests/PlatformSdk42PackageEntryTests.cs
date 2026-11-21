@@ -25,7 +25,7 @@ public sealed class PlatformSdk42PackageEntryTests
         owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
         var servers = PlatformAppModel.Prepare(fixture.Options);
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
-        AssertReader(fixture.Reader, owners, new HashSet<string>(), 23, 12, catalog);
+        AssertReader(fixture.Reader, owners, new HashSet<string>(), 24, 13, catalog);
     }
 
     /// <summary>The existing parent proof builds and seals the real source owner and package-only references from the current catalog.</summary>
@@ -60,7 +60,7 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(fixture.Reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
-        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 70, 46, catalog);
+        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 71, 47, catalog);
     }
 
     private static void AssertReader(string reader, OwnerPackageLock owners, IReadOnlySet<string> runBound, int routes, int policies, PlatformRoutingCatalog catalog)
