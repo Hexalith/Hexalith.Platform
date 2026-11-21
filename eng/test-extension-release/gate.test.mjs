@@ -48,7 +48,7 @@ for (const [name, change] of [
   ['latest tuple failed', ({ data, base }) => { data.get(`${base}/actions/runs/100`).conclusion = 'failure'; }],
   ['latest tuple pending', ({ data, base }) => { data.get(`${base}/actions/runs/100`).status = 'in_progress'; }],
   ['foreign push proof', ({ data, base }) => { data.get(`${base}/actions/runs/100`).head_repository.full_name = 'foreign/repo'; }],
-  ['missing legacy source job', ({ data, base }) => { data.get(`${base}/actions/runs/100/attempts/1/jobs?per_page=100`).jobs.pop(); }],
+  ['missing required tuple job', ({ data, base }) => { data.get(`${base}/actions/runs/100/attempts/1/jobs?per_page=100`).jobs.pop(); }],
   ['failed catalog job', ({ data, base }) => { data.get(`${base}/actions/runs/101/attempts/1/jobs?per_page=100`).jobs[0].conclusion = 'failure'; }],
   ['incomplete proof discovery', ({ data, base, options }) => { data.get(`${base}/actions/workflows/tuple-ci.yml/runs?event=push&branch=main&head_sha=${options.source}&per_page=100`).total_count = 101; }],
 ]) test(`refuses ${name}`, async () => {

@@ -1,16 +1,21 @@
 """Validate the one fixture archive without extracting or accepting source outputs."""
 import argparse
 import hashlib
+import io
 import json
 from pathlib import Path
+import re
 import subprocess
+import sys
+import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
-import re
 
 PACKAGE = "Hexalith.Platform.TestExtension"
 LIBRARY = "lib/net11.0/" + PACKAGE + ".dll"
 REPOSITORY = "https://github.com/Hexalith/Hexalith.Platform"
+SDK_PACKAGE = "Hexalith.EventStore.DomainService"
+SDK_REPOSITORY = "https://github.com/Hexalith/Hexalith.EventStore"
 
 
 DECLARATION = "build/hexalith.module-manifest.v2.json"
@@ -21,14 +26,21 @@ NATIVE_SOURCE_FILES = {'tests/Hexalith.Platform.TestExtension.Qualification.Test
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = "tests/fixtures/Hexalith.Platform.TestExtension/"
 
+sys.path.insert(0, str(ROOT / "eng"))
+from current_tuple_source import read_selection
+from owner_packages_lock import archive_path, locked_entry, owner_closure, require_locked
+
+
+def committed_file(source, path):
+    return subprocess.check_output(["git", "show", source + ":" + path], cwd=ROOT, timeout=30)
+
 
 def approved_documents(source):
     if re.fullmatch(r"[a-f0-9]{40}", source) is None:
         raise ValueError("Require an exact immutable fixture source revision")
     paths = {DECLARATION: FIXTURE + "hexalith.module-manifest.v2.json", PRODUCER: FIXTURE + "fixture-producer.json",
              **{member: source for source, member in NATIVE_SOURCE_FILES.items()}}
-    return {member: subprocess.check_output(["git", "show", source + ":" + path], cwd=ROOT, timeout=30)
-            for member, path in paths.items()}
+    return {member: committed_file(source, path) for member, path in paths.items()}
 
 
 def inspect(path, version, source, *, approved=None):
@@ -46,7 +58,7 @@ def inspect(path, version, source, *, approved=None):
                 or repository.get("type") != "git" or repository.get("url", "").removesuffix(".git") != REPOSITORY:
             raise ValueError("Fixture package/source identity differs")
         dependencies = [node.attrib for node in metadata.iter() if node.tag.endswith("dependency")]
-        if len(dependencies) != 1 or dependencies[0].get("id") != "Hexalith.EventStore.DomainService":
+        if len(dependencies) != 1 or dependencies[0].get("id") != SDK_PACKAGE:
             raise ValueError("Unexpected fixture package dependency closure")
         expected_documents = approved_documents(source) if approved is None else approved
         if set(expected_documents) != {DECLARATION, PRODUCER, *NATIVE_SOURCE_FILES.values()}:
@@ -87,6 +99,57 @@ def inspect(path, version, source, *, approved=None):
                      for source, member in NATIVE_SOURCE_FILES.items()}}}
 
 
+def verify_sdk(assets, dependencies, eventstore, owner_lock):
+    if any(value["type"] == "project" for value in assets["libraries"].values()):
+        raise ValueError("The fixture was built against source project dependencies")
+
+    version = eventstore["version"]
+    if dependencies[0].get("version") not in (version, f"[{version}, )"):
+        raise ValueError(f"The fixture dependency must name the qualified {SDK_PACKAGE} {version}")
+
+    closure = owner_closure({PACKAGE: assets})
+    if SDK_PACKAGE not in closure:
+        raise ValueError("The published DomainService SDK was not resolved")
+
+    signed = {}
+    for package_id, restored in closure.items():
+        if not package_id.startswith("Hexalith.EventStore."):
+            continue
+        name = f"{package_id}/{restored['version']}"
+        if restored["version"] != version:
+            raise ValueError(f"The fixture restored {name}, but the qualified EventStore release is {version}")
+        archives = [archive_path(folder, package_id, version) for folder in assets["packageFolders"]]
+        found = [path for path in archives if path.is_file()]
+        if len(found) != 1 or restored["path"] != f"{package_id.lower()}/{version}":
+            raise ValueError("The actual restored SDK archive is unavailable: " + name)
+
+        path = found[0]
+        raw = path.read_bytes()
+        content_hash = require_locked(locked_entry(owner_lock, package_id, version), raw)
+        compile_assets = {member for target in assets["targets"].values() for member in target.get(name, {}).get("compile", {})}
+        if package_id == SDK_PACKAGE and not any(Path(member).name == SDK_PACKAGE + ".dll" for member in compile_assets):
+            raise ValueError("The published DomainService SDK has no selected compile assembly")
+        runtime_assets = {member for target in assets["targets"].values() for member in target.get(name, {}).get("runtime", {})}
+
+        with tempfile.TemporaryDirectory(prefix="platform-fixture-sdk-") as directory:
+            copy = Path(directory) / path.name
+            copy.write_bytes(raw)
+            verification = subprocess.run(["dotnet", "nuget", "verify", str(copy), "--all"],
+                                          capture_output=True, text=True, timeout=60, check=True)
+        with zipfile.ZipFile(io.BytesIO(raw)) as sdk:
+            nuspec = ET.fromstring(sdk.read(package_id + ".nuspec"))
+            repository = nuspec.find(".//{*}repository")
+            if repository is None or repository.attrib.get("commit") != eventstore["commit"] \
+                    or repository.attrib.get("url", "").rstrip("/").removesuffix(".git") != SDK_REPOSITORY:
+                raise ValueError("The actual fixture SDK source differs from the qualified release: " + name)
+            for member in sorted(compile_assets | runtime_assets):
+                if not member.endswith("/_._") and (path.parent / member).read_bytes() != sdk.read(member):
+                    raise ValueError(f"The restored SDK body for {name}/{member} differs from its signed archive")
+        signed[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "contentHash": content_hash,
+                        "source": eventstore["commit"], "signatureVerification": verification.stdout}
+    return signed
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("archive", type=Path)
@@ -105,31 +168,9 @@ def main():
                 or hashlib.sha256(args.built_library.read_bytes()).hexdigest() != identity["librarySha256"]:
             raise ValueError("Packaged fixture differs from the tested Release library")
         assets = json.loads(args.assets.read_text())
-        if any(value["type"] == "project" for value in assets["libraries"].values()):
-            raise ValueError("The fixture was built against source project dependencies")
-        signed = {}
-        for name, library in assets["libraries"].items():
-            if not name.startswith("Hexalith.EventStore."):
-                continue
-            if name.split("/", 1)[1] != "4.2.0":
-                raise ValueError("The fixture requires the exact measured SDK4.2 package closure")
-            archives = [Path(folder) / library["path"] / (library["path"].replace("/", ".") + ".nupkg")
-                        for folder in assets["packageFolders"]]
-            found = [path for path in archives if path.is_file()]
-            if len(found) != 1:
-                raise ValueError("The actual restored SDK archive is unavailable: " + name)
-            verification = subprocess.run(["dotnet", "nuget", "verify", str(found[0]), "--all"],
-                                          capture_output=True, text=True, timeout=60, check=True)
-            with zipfile.ZipFile(found[0]) as sdk:
-                specification = ET.fromstring(sdk.read(next(member for member in sdk.namelist() if member.endswith(".nuspec"))))
-                repository = specification.find(".//{*}repository")
-                if repository is None or repository.attrib.get("commit") != "aa16227bd07f0564a3026d619a5abd973e02656f" \
-                        or repository.attrib.get("url", "").rstrip("/").removesuffix(".git") != "https://github.com/Hexalith/Hexalith.EventStore":
-                    raise ValueError("The actual fixture SDK source differs from the measured release")
-            signed[name] = {"sha256": hashlib.sha256(found[0].read_bytes()).hexdigest(),
-                            "signatureVerification": verification.stdout}
-        if not any(name.startswith("Hexalith.EventStore.DomainService/") for name in signed):
-            raise ValueError("The published DomainService SDK was not resolved")
+        _, provenance = read_selection(ROOT, args.source)
+        owner_lock = json.loads(committed_file(args.source, "eng/owner-packages.lock.json"))
+        signed = verify_sdk(assets, identity["dependencies"], provenance["eventstore"], owner_lock)
         args.archive.with_name("signed-sdk-identity.json").write_text(json.dumps(signed, indent=2) + "\n")
         args.archive.with_name("package-identity.json").write_text(json.dumps(identity, indent=2) + "\n")
     print(json.dumps(identity, sort_keys=True))

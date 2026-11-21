@@ -30,8 +30,8 @@ def run(suite, expected, *, stream=sys.stderr, runner_factory=unittest.TextTestR
 
 def main():
     suite = unittest.defaultTestLoader.discover(str(Path(__file__).resolve().parent), pattern="test_*.py")
-    expected = {"test_host_entry": 17, "test_package": 9, "test_controls": 4}
-    print("Publisher controls: 30 (17 readiness, 9 archive identity, 4 execution-inventory controls).", flush=True)
+    expected = {"test_host_entry": 17, "test_package": 15, "test_controls": 4}
+    print("Publisher controls: 36 (17 readiness, 15 archive and SDK identity, 4 execution-inventory controls).", flush=True)
     return run(suite, expected)
 
 
