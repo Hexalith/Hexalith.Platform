@@ -265,7 +265,7 @@ public static class PlatformAppModel
             PlatformServerBinding? gatewayBinding = servers.FirstOrDefault(server => server.ResourceId == "eventstore");
             // A composed host keeps the EventStore server's own settings; its generated bindings add only the declared packages.
             string? gatewayContentRoot = gatewayBinding?.ProjectPath is { } gatewayProject
-                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers) : null;
+                ? PlatformGatewayConfiguration.Create(gatewayBinding.EventStoreHost?.ServerProject ?? gatewayProject, rendered, servers, options.FixturePackageProof?.Settings) : null;
             string? gatewayExtensionBindings = gatewayBinding?.EventStoreHost is { } composedHost
                 ? PlatformEventStoreExtensionBindings.Write(composedHost, Path.Combine(rendered, "eventstore-extensions")) : null;
 

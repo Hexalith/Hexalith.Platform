@@ -41,16 +41,20 @@ internal sealed class PlatformFixturePackageQualification
     private readonly IReadOnlyList<string> _hostSources;
     private readonly string _configurationHash;
 
-    private PlatformFixturePackageQualification(PlatformCompositionOptions options, string seed, CompositionFixtureProducer producer)
+    private PlatformFixturePackageQualification(PlatformCompositionOptions options, string seed, IReadOnlyDictionary<string, string> settings,
+        CompositionFixtureProducer producer)
     {
         _plan = options.RunPlan!;
         _seed = seed;
         _hostSources = HostSources(options);
         _configurationHash = ConfigurationHash(options);
+        Settings = settings;
         Producer = producer;
     }
 
     internal CompositionFixtureProducer Producer { get; }
+
+    internal IReadOnlyDictionary<string, string> Settings { get; }
 
     internal static bool Selects(PlatformCompositionOptions options) => options.Mapping.Mode == WorkspaceMode.Package && options.ActiveModule == Module;
 
@@ -68,8 +72,8 @@ internal sealed class PlatformFixturePackageQualification
             || producer.LibrarySha256 != "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004")
             throw Refusal();
 
-        string seed = PlatformFixtureToolRelease.Verify(options);
-        return new(options, seed, producer);
+        var (seed, settings) = PlatformFixtureToolRelease.Verify(options);
+        return new(options, seed, settings, producer);
     }
 
     internal bool Matches(PlatformCompositionOptions options)

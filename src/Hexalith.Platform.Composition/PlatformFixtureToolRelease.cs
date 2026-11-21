@@ -21,7 +21,7 @@ internal static partial class PlatformFixtureToolRelease
     private const int _archiveBound = 200_000_000;
     private static readonly HttpClient _nuget = new(new HttpClientHandler { AllowAutoRedirect = false });
 
-    internal static string Verify(PlatformCompositionOptions options)
+    internal static (string Seed, IReadOnlyDictionary<string, string> Settings) Verify(PlatformCompositionOptions options)
     {
         CompositionRunPlan plan = options.RunPlan ?? throw PlatformFixturePackageQualification.Refusal();
         string seed = Path.Combine(plan.Workspace, "hosts", "eventstore", PackagedHostProject.ProjectFileName);
@@ -95,13 +95,22 @@ internal static partial class PlatformFixtureToolRelease
             throw PlatformFixturePackageQualification.Refusal();
 
         RequireBody(package, binaryPrefix + _seedDll, Path.Combine(binaryDirectory, _seedDll));
+        Dictionary<string, string> settings = new(StringComparer.Ordinal);
         foreach (string configuration in new[] { "appsettings.json", "appsettings.Development.json" })
         {
             string path = Path.Combine(binaryDirectory, configuration);
-            if (package.GetEntry(binaryPrefix + configuration) is not null) RequireBody(package, binaryPrefix + configuration, path);
-            else if (File.Exists(path)) throw PlatformFixturePackageQualification.Refusal();
+            if (package.GetEntry(binaryPrefix + configuration) is { } entry)
+            {
+                RequireBody(package, entry.FullName, path);
+                using StreamReader reader = new(entry.Open());
+                settings.Add(configuration, reader.ReadToEnd());
+            }
+            else if (File.Exists(path))
+            {
+                throw PlatformFixturePackageQualification.Refusal();
+            }
         }
-        return seed;
+        return (seed, settings.AsReadOnly());
     }
 
     private static async Task RetrieveAsync(string version, string destination, DateTimeOffset? deadline)

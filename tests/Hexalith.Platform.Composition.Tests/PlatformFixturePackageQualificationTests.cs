@@ -7,12 +7,20 @@ using Shouldly;
 public sealed class PlatformFixturePackageQualificationTests
 {
     [Fact]
-    public void CommittedGatewayProjectAndBothSourcesAreRetained()
+    public void CommittedGatewaySourcesAndVerifiedSeedSettingsAreRetained()
     {
         using HostWorkspace workspace = new();
         Directory.CreateDirectory(Path.Combine(workspace.Host, "bin"));
         Directory.CreateDirectory(Path.Combine(workspace.Host, "obj"));
         PlatformFixturePackageQualification.HostSources(workspace.Options).Count.ShouldBe(3);
+
+        string shim = Path.Combine(workspace.Root, "shim");
+        Directory.CreateDirectory(shim);
+        File.WriteAllText(Path.Combine(shim, "appsettings.json"), "\"unverified overlay\"");
+        IReadOnlyDictionary<string, string> settings = new Dictionary<string, string> { ["appsettings.json"] = "{\"Approved\":true}" };
+        string content = PlatformGatewayConfiguration.Create(Path.Combine(shim, "shim.csproj"), workspace.Root, [], settings);
+        File.ReadAllText(Path.Combine(content, "appsettings.json")).ShouldBe(settings["appsettings.json"]);
+        File.Exists(Path.Combine(content, "appsettings.Development.json")).ShouldBeFalse();
     }
 
     [Theory]
