@@ -72,6 +72,8 @@ public sealed class PlatformFixturePackageQualificationTests
         using HostWorkspace workspace = new();
         _ = Should.Throw<InvalidDataException>(() => PlatformPackageCatalogQualification.Bind(workspace.Options, [], [], developmentRun: true));
         _ = Should.Throw<InvalidDataException>(() => PlatformFixturePackageQualification.RequireOwners(workspace.Options));
+        var failure = Should.Throw<InvalidDataException>(() => PlatformFixtureProtection.Attach(null!, workspace.Options));
+        failure.Message.ShouldContain("protection-fixture-proof");
     }
 
     private sealed class HostWorkspace : IDisposable
