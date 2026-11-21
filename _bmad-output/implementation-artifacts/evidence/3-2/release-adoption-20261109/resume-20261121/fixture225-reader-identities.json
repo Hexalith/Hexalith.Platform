@@ -1,0 +1,143 @@
+{
+  "platformSource": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+  "fixturePackage": "Hexalith.Platform.TestExtension/2.2.5",
+  "catalogSdk": "5.4.0",
+  "declaredOwners": [
+    "Hexalith.Memories.EventStore.dll",
+    "Hexalith.Tenants.Contracts.dll"
+  ],
+  "loadedAdapters": [
+    "Hexalith.Memories.EventStoreExtensions.dll",
+    "Hexalith.Tenants.Server.dll"
+  ],
+  "routes": 30,
+  "policies": 19,
+  "routeFacetDigest": "8ae9fac964c0cae30747fa4950706b00061f09f6081a13b54278bb4579c0d4fd",
+  "idempotencyFacetDigest": "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83",
+  "catalogSha256": "98f5d2ec001508e8651737fcee57e35d00604cc53e3b95bf236e66bf80bfc2a6",
+  "ownerLockSha256": "7426f980c0a1f35117d29d7277550c0fa5df174022b71e6ee3b2ff0b5f57b094",
+  "ownerPackages": [
+    {
+      "assembly": "Hexalith.EventStore.Client",
+      "packageId": "Hexalith.EventStore.Client",
+      "version": "5.4.0",
+      "contentHash": "H8XW/CKGSIBWgchTPNkdrgpRGNj/KZZWeQ/7512nE5gO+l5blF0QOwu1DkZMKqfJVFDMuD7pgiAK1V/jCYdG4w==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.client/5.4.0/hexalith.eventstore.client.5.4.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.EventStore.Client.dll",
+      "expectedSha256": "612c4f851f8b2b08b24f21a4d11cb78cc50940030224653d29043faab2623cf9",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.EventStore.Client.dll",
+      "loadedSha256": "612c4f851f8b2b08b24f21a4d11cb78cc50940030224653d29043faab2623cf9"
+    },
+    {
+      "assembly": "Hexalith.EventStore.Contracts",
+      "packageId": "Hexalith.EventStore.Contracts",
+      "version": "5.4.0",
+      "contentHash": "LIxRmd/qpYl5Ag0uILSRSG+QxIg02dCl/sMkFZVUD7deIGhsC1Ukp41UK7FmM94loQ0B1zz/9gDK2DLfLbaBBw==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.contracts/5.4.0/hexalith.eventstore.contracts.5.4.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.EventStore.Contracts.dll",
+      "expectedSha256": "7079a488683bfa53898a236817a1f5ae9d4c39d2830410a0982ddf750049d336",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.EventStore.Contracts.dll",
+      "loadedSha256": "7079a488683bfa53898a236817a1f5ae9d4c39d2830410a0982ddf750049d336"
+    },
+    {
+      "assembly": "Hexalith.EventStore.DomainService",
+      "packageId": "Hexalith.EventStore.DomainService",
+      "version": "5.4.0",
+      "contentHash": "m9DU/Z4r1SAXJGv8XTMraxFj6LJeU1fmkKPZwSmGXK96JAFUYLvhuzWmSCMH2PCZC8XPUxM7P4dKOILDDQJ6kA==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.domainservice/5.4.0/hexalith.eventstore.domainservice.5.4.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.EventStore.DomainService.dll",
+      "expectedSha256": "4abeca6cffcd8c55a06493b72ea93687f1b9355c479ec53531047e2d0833e246",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.EventStore.DomainService.dll",
+      "loadedSha256": "4abeca6cffcd8c55a06493b72ea93687f1b9355c479ec53531047e2d0833e246"
+    },
+    {
+      "assembly": "Hexalith.EventStore.Server",
+      "packageId": "Hexalith.EventStore.Server",
+      "version": "5.4.0",
+      "contentHash": "TAea4tJCGEz4QOMy6S2oaPzbYoibI5a8E9AdVf2bNoQRPeedVEBeYmGe4J9qOkJ1xoUUy/PIMqZeQEvTUVd/3g==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.server/5.4.0/hexalith.eventstore.server.5.4.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.EventStore.Server.dll",
+      "expectedSha256": "6a7354fb1c29f37113794e76353670b2bdc50098a3afacc92e2a25f5f9fecd6a",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.EventStore.Server.dll",
+      "loadedSha256": "6a7354fb1c29f37113794e76353670b2bdc50098a3afacc92e2a25f5f9fecd6a"
+    },
+    {
+      "assembly": "Hexalith.EventStore.ServiceDefaults",
+      "packageId": "Hexalith.EventStore.ServiceDefaults",
+      "version": "5.4.0",
+      "contentHash": "iBsZC69HADbkiFRhUlYorrzr2esptiOCHnHhpjEo/tgW7MGUCf2lgS+iEArZq1TVKkCCRrdmGzI7cRtqpPKtrA==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.eventstore.servicedefaults/5.4.0/hexalith.eventstore.servicedefaults.5.4.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.EventStore.ServiceDefaults.dll",
+      "expectedSha256": "c08c7c119e0e2e7a599232e30ab88636ee449e1b80e52bf901a21646911c6f59",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.EventStore.ServiceDefaults.dll",
+      "loadedSha256": "c08c7c119e0e2e7a599232e30ab88636ee449e1b80e52bf901a21646911c6f59"
+    },
+    {
+      "assembly": "Hexalith.McpCli.Abstractions",
+      "packageId": "Hexalith.McpCli.Abstractions",
+      "version": "3.0.0",
+      "contentHash": "LUZ7IQkVEEU+MhBrpm8yJDsd0X1aMjZRrHNSbvOaE5HNFwJfA1DIcjlOMoLR7IEGz+xvkYCuRTba9GNJHk8QCA==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.mcpcli.abstractions/3.0.0/hexalith.mcpcli.abstractions.3.0.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.McpCli.Abstractions.dll",
+      "expectedSha256": "d84cb2a7e6823756633c374a8cec55ae088962ea1b508be53b7604de7ca13e88",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.McpCli.Abstractions.dll",
+      "loadedSha256": "d84cb2a7e6823756633c374a8cec55ae088962ea1b508be53b7604de7ca13e88"
+    },
+    {
+      "assembly": "Hexalith.Memories.Contracts",
+      "packageId": "Hexalith.Memories.Contracts",
+      "version": "4.1.0",
+      "contentHash": "xsfl5v7Tq0eizpnmZuuh+4ltzS/NM3oPqXDfOlqXBoMXQM5y1aTeIsA07Ksn4Q1qUvpvHm183uUMbfTkH6VY4w==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.memories.contracts/4.1.0/hexalith.memories.contracts.4.1.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.Memories.Contracts.dll",
+      "expectedSha256": "0e79077cbff5f5d0997fe40dcc02401b98b9bdd40c60f19a01ca75bd004dab83",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.Memories.Contracts.dll",
+      "loadedSha256": "0e79077cbff5f5d0997fe40dcc02401b98b9bdd40c60f19a01ca75bd004dab83"
+    },
+    {
+      "assembly": "Hexalith.Memories.EventStore",
+      "packageId": "Hexalith.Memories.EventStore",
+      "version": "4.1.0",
+      "contentHash": "aDh72fYVOM1dQUasTxF/T9tPO+zokZ8S+Cd2a6xtteuWagJTlXdqLVsFq5pN3v848TXLPVYSv5D2p+83MdRPQQ==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.memories.eventstore/4.1.0/hexalith.memories.eventstore.4.1.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.Memories.EventStore.dll",
+      "expectedSha256": "d3bfe498a1a04ee4ea2df6a301753e17bdbae9d39499f40e97edfb916c2ad6fb",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.Memories.EventStore.dll",
+      "loadedSha256": "d3bfe498a1a04ee4ea2df6a301753e17bdbae9d39499f40e97edfb916c2ad6fb"
+    },
+    {
+      "assembly": "Hexalith.Memories.EventStoreExtensions",
+      "packageId": "Hexalith.Memories.EventStoreExtensions",
+      "version": "4.1.0",
+      "contentHash": "Z1eKtBVFt8RQ+ZnalizROFNS279GUTYDhSbClo1FRPCqRJehWxhLuCRdM3XD7O4uJ0dXHzMFy2D/Vn3iR0T4Eg==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.memories.eventstoreextensions/4.1.0/hexalith.memories.eventstoreextensions.4.1.0.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.Memories.EventStoreExtensions.dll",
+      "expectedSha256": "72c083e06f8622014faf721058e31508c67933c2cd7dc23d8be069982006bc0d",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.Memories.EventStoreExtensions.dll",
+      "loadedSha256": "72c083e06f8622014faf721058e31508c67933c2cd7dc23d8be069982006bc0d"
+    },
+    {
+      "assembly": "Hexalith.Tenants.Contracts",
+      "packageId": "Hexalith.Tenants.Contracts",
+      "version": "8.0.2",
+      "contentHash": "SB2mFYTV5LrYIq0sO24cvkECJFYep7YSF5cI2x+0QqbK+RZUH1yMZsiMvOSMqmXRzkx1SKJICRVsekb9MB7pHQ==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.tenants.contracts/8.0.2/hexalith.tenants.contracts.8.0.2.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.Tenants.Contracts.dll",
+      "expectedSha256": "b5c483ce473181a50a4338e604ca06656e0b38c9ce202a41b2467de8b219979d",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.Tenants.Contracts.dll",
+      "loadedSha256": "b5c483ce473181a50a4338e604ca06656e0b38c9ce202a41b2467de8b219979d"
+    },
+    {
+      "assembly": "Hexalith.Tenants.Server",
+      "packageId": "Hexalith.Tenants.Server",
+      "version": "8.0.2",
+      "contentHash": "LG7zgCL9BcGsLCVbET3o+cNnh05MbGf9Yq9Su81KUZaq8nHrM36pRRlnP4/mjgw9xevMBDpYZGIZqIyMOvkPaw==",
+      "archive": "/home/administrator/.nuget/packages/hexalith.tenants.server/8.0.2/hexalith.tenants.server.8.0.2.nupkg",
+      "archiveMember": "lib/net11.0/Hexalith.Tenants.Server.dll",
+      "expectedSha256": "58746593eb9bc3ae90531ae25457e5899e44294aa0ef0ae40bcab6ff8edb9fc8",
+      "loadedPath": "/tmp/hexalith-job.M2dX3Gwh/artifacts/bin/Hexalith.Platform.CatalogBuilder/release/Hexalith.Tenants.Server.dll",
+      "loadedSha256": "58746593eb9bc3ae90531ae25457e5899e44294aa0ef0ae40bcab6ff8edb9fc8"
+    }
+  ],
+  "proof": "Measured the actual package reader and selected official owner package members. This run did not issue fixture or native eligibility."
+}

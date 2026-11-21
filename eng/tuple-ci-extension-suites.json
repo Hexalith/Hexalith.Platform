@@ -1,5 +1,5 @@
 {
-  "purpose": "Measured signed EventStore 4.2.0 extension SDK component boundaries; fixture publication and finite host startup remain separate requirements.",
+  "purpose": "Current signed EventStore SDK and finite Platform extension component boundaries.",
   "groups": [
     {
       "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
@@ -16,6 +16,16 @@
       ],
       "requiredCount": 9,
       "purpose": "released-extension-sdk-component-boundary",
+      "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.Composition.Tests.PlatformFixturePackageQualificationTests"
+      ],
+      "requiredCount": 9,
+      "purpose": "signed-platform-fixture-admission-controls",
       "collector": "current"
     }
   ]

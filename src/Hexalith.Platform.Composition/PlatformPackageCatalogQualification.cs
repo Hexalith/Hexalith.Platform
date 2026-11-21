@@ -19,7 +19,12 @@ internal static class PlatformPackageCatalogQualification
     internal static IReadOnlyList<PlatformServerBinding> Bind(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)
     {
         OwnerPackageLock owners;
-        if (options.ActiveModule == "parties")
+        if (PlatformFixturePackageQualification.Selects(options))
+        {
+            PlatformFixturePackageQualification.ValidateTopology(options, declarations, servers, developmentRun);
+            owners = RequireLockedPackages(options);
+        }
+        else if (options.ActiveModule == "parties")
         {
             PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun);
             owners = RequireLockedPackages(options);
@@ -93,7 +98,8 @@ internal static class PlatformPackageCatalogQualification
     /// <param name="options">The authenticated package-mode composition.</param>
     internal static OwnerPackageLock RequireLockedPackages(PlatformCompositionOptions options)
     {
-        if (options.ActiveModule != "parties" && !MatchesTestSource(options)) throw new InvalidDataException(_refusal);
+        if (options.ActiveModule != "parties" && !PlatformFixturePackageQualification.Selects(options) && !MatchesTestSource(options))
+            throw new InvalidDataException(_refusal);
         return RequireLockedPackages(options, OwnerPackageLock.Load(OwnerPackageLock.PathFor(options.PlatformRoot)));
     }
 
@@ -102,6 +108,12 @@ internal static class PlatformPackageCatalogQualification
     /// <param name="owners">The owner package lock.</param>
     internal static OwnerPackageLock RequireLockedPackages(PlatformCompositionOptions options, OwnerPackageLock owners)
     {
+        if (PlatformFixturePackageQualification.Selects(options))
+        {
+            RequireLockedVersions(owners, options, PlatformFixturePackageQualification.RequireOwners(options));
+            RequireLockedMcpCli(owners, options, required: false);
+            return owners;
+        }
         bool runBoundParties = options.ActiveModule == "parties" && PlatformCurrentOwnerProof.SelectsIntegration(options);
         string[] modules = PlatformDeclarationSet.Load(options).Select(module => PlatformDeclarationSet.Id(module.Declaration))
             .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
@@ -153,6 +165,7 @@ internal static class PlatformPackageCatalogQualification
         else
         {
             names.Add("Hexalith.Tenants.Server");
+            if (PlatformFixturePackageQualification.Selects(options)) names.Add("Hexalith.Memories.Contracts");
         }
 
         IReadOnlyList<string> folders = OwnerPackageLock.PackageFolders(typeof(PlatformPackageCatalogQualification).Assembly);
