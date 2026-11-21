@@ -22,3 +22,19 @@ The ordinary owned native startup uses the authenticated released images. The
 current organization registry grants exclude Platform, so the hosted component
 preserves that access boundary while the full distributed qualification remains
 a separate local owned run after the signed Builds adoption. [Builds qualification PR](https://github.com/Hexalith/Hexalith.Builds/pull/198)
+
+The owning Builds PR passed its exact hosted workflow. Its normal merge
+`d532b1e9b1f595e2c9867bfa9780dccd78c9a2d9` retains the reviewed tree, including the
+catalog audit. Exact-main CI and the owner release started from that commit.
+The Platform candidate passed 18 extension executions, 33 tuple controls and
+three source topology controls in disposable local jobs. [Builds PR CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44907019166) · [Builds main CI](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44908984505) · [Builds release](https://github.com/Hexalith/Hexalith.Builds/actions/runs/44909014255)
+
+A second component probe restored those same signed packages and started the
+same pinned Dapr sidecar, with the protection test installation omitted. The
+unmodified released host refused before listening with
+`DependencyNotAvailable:EXT-PROTECTION-1:ExplicitProtectionInstallationRequired`.
+The ordinary Builds child uses a fixed environment allowlist, and the Platform
+model supplies no authenticated protection installation. The component test
+installation exercised startup validation for the isolated HTTP proof. The
+owned distributed MTP run still requires a supported authenticated disposable
+installation. [Prerequisite refusal](fixture225-protection-prerequisite.json)
