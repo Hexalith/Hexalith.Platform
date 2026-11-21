@@ -1,0 +1,66 @@
+{
+  "source": "0aacf13244fa6b1d9e08d627149d72cf12229167",
+  "buildsCatalog": "055d7df5b49669d5b705ce163b0b2e187ecb9a50",
+  "nugetPackage": "Hexalith.Platform.TestExtension",
+  "version": "2.2.5",
+  "hostProgramSha256": "ea25827a8f8fdca0eb99bca4d01f3384b7c808936511cd2a94efc4f463b80cf1",
+  "generatedBindingXml": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Project>\n  <ItemGroup>\n    <PackageReference Include=\"Hexalith.Platform.TestExtension\" />\n    <PackageVersion Remove=\"Hexalith.Platform.TestExtension\" />\n    <PackageVersion Include=\"Hexalith.Platform.TestExtension\" Version=\"2.2.5\" />\n  </ItemGroup>\n</Project>",
+  "loadedPackageArchiveSha256": {
+    "Hexalith.EventStore.Admin.Abstractions/5.4.0": "9a64f674f6149bb129ec48b33035ac9a3d9e9a987304d71ef146e2fd83a3d2de",
+    "Hexalith.EventStore.Client/5.4.0": "a27d51db7d801c9300034b0861f3203a0f70354b16e45b78ad4e7a82a857be13",
+    "Hexalith.EventStore.Contracts/5.4.0": "eea33fc87bfaa9ca5be7a25a4e56d17757ad0a4496da63483df78b127a8a51b8",
+    "Hexalith.EventStore.DomainService/5.4.0": "3715f8a6d38a806f4c9eb0d1b2b98dbcb2d5d49d6c100d418592c9033ba8936d",
+    "Hexalith.EventStore.Gateway/5.4.0": "8ce0d6148a2a7ccdd6cff4f199ac512b85b8472460460cb7f2ce7b803dc5e3a1",
+    "Hexalith.EventStore.Server/5.4.0": "1ebcf9f6a7cc60f69aaf93039b1aec1273e79e541ba0fdc1904bf3d5afb622fb",
+    "Hexalith.EventStore.ServiceDefaults/5.4.0": "a276701bb3a4c3099d569da8c0d69267b60b7f76eecd7ea60b78c6bf23d1f441",
+    "Hexalith.Platform.TestExtension/2.2.5": "7c3b432aba236b9cd102b6fad98a15ed629b3dcdfb9bad9ee6a3d105f63d04b4"
+  },
+  "declarationAndAssembly": {
+    "extension": "platform-test",
+    "major": 1,
+    "fixtureDllSha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004"
+  },
+  "attempts": [
+    {
+      "name": "direct host without state sidecar",
+      "passed": false,
+      "observed": "Dapr gRPC connection refused while AdminOperationalIndexHostedService wrote the startup index; host did not listen."
+    },
+    {
+      "name": "pinned sidecar with first observer",
+      "passed": false,
+      "observed": "Actual host started listening; the diagnostic observer parsed a JSON-formatted listener line as plain text and expired.",
+      "sidecarArchiveSha256": "a5ab822a607f158666c214b918785698883202278312d931da63a6c24d61c8e4"
+    },
+    {
+      "name": "pinned sidecar with JSON listener observation",
+      "passed": true,
+      "observed": {
+        "httpStatus": 503,
+        "extensionReadiness": {
+          "status": "Healthy",
+          "description": "Loaded EventStore extensions: platform-test@1 (Hexalith.Platform.TestExtension).",
+          "duration": "00:00:00.0015038",
+          "data": {
+            "platform-test": 1
+          }
+        },
+        "loaded": {
+          "location": "/tmp/hexalith-job.u9weXSjx/artifacts/bin/Hexalith.Platform.EventStoreHost/release/Hexalith.Platform.TestExtension.dll",
+          "sha256": "650d37d4aa1ae6de6c4633c1ecafa763349ed8c29f1c7e24d257ec0853d3f004",
+          "process": 3403991
+        },
+        "hostProcess": 3403991
+      },
+      "sidecar": {
+        "version": "1.19.2",
+        "archiveSha256": "a5ab822a607f158666c214b918785698883202278312d931da63a6c24d61c8e4",
+        "binarySha256": "96d2a0aeaafc8993ed41151e184e2b1c67dc03fc21c9ba561c92e34cb5696596",
+        "state": "disposable in-memory component",
+        "exitCode": 0
+      }
+    }
+  ],
+  "distributedQualification": false,
+  "verification": "Both project.assets.json and .deps.json resolve the fixture and seven EventStore libraries as packages. The exact restored fixture bytes equal public NuGet and the loaded artifact hash equals its archive member. Every selected EventStore package matches the exact Platform owner lock."
+}
