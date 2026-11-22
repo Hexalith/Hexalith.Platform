@@ -12,12 +12,17 @@ public sealed partial class ConversationsEnrollmentTests
 {
     private static string Root => PlatformTestRepository.Root;
 
-    /// <summary>Provides every explicit input from the real owner declaration.</summary>
-    public static IEnumerable<object[]> RequiredConfigurationKeys() => Configuration().Keys.Select(key => new object[] { key });
+    /// <summary>Supplies the declared inputs that the local profile leaves to the operator.</summary>
+    public static IEnumerable<object[]> RequiredConfigurationKeys()
+    {
+        string profile = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json");
+        var defaults = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(profile))!;
+        return Configuration().Keys.Where(key => !defaults.ContainsKey(key)).Select(key => new object[] { key });
+    }
 
     /// <summary>Retains the real server, app, resource, readiness and dependency identities with explicit settings.</summary>
     [Fact]
-    public void RealDeclarationResolvesOnlyItsOrdinaryServerWithCompleteExplicitConfiguration()
+    public void RealDeclarationResolvesDomainAndApiWithIsolatedConfiguration()
     {
         PlatformCompositionOptions options = Options();
         PlatformManifestValidationResult validation = PlatformManifestValidator.Validate(options.DeclarationPaths, TestContext.Current.CancellationToken);
@@ -26,17 +31,18 @@ public sealed partial class ConversationsEnrollmentTests
         declaration.GetProperty("identity").GetProperty("dependencies").EnumerateArray().Select(value => value.GetString())
             .ShouldBe(["eventstore", "tenants", "memories"]);
         declaration.GetProperty("runtime").GetProperty("extensions").EnumerateArray()
-            .SelectMany(extension => extension.GetProperty("configurationInputs").EnumerateArray())
-            .Select(input => "conversations/domain/" + input.GetProperty("key").GetString()).Order()
+            .SelectMany(extension => extension.GetProperty("configurationInputs").EnumerateArray().Select(input =>
+                "conversations/" + (extension.GetProperty("packageId").GetString() == "Hexalith.Conversations.Api" ? "api/" : "domain/")
+                    + input.GetProperty("key").GetString())).Order()
             .ShouldBe(options.Configuration.Keys.Order());
 
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
         servers.Select(server => server.ResourceId).Order().ShouldBe(new[]
         {
             "eventstore", "tenants", "tenants-api", "memories", "memories-domain-service",
-            "memories-access-telemetry-clock", "memories-access-telemetry", "conversations",
+            "memories-access-telemetry-clock", "memories-access-telemetry", "conversations", "conversations-api",
         }.Order());
-        PlatformServerBinding conversation = servers.Single(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "conversations");
+        PlatformServerBinding conversation = servers.Single(server => server.ResourceId == "conversations");
         conversation.ServerId.ShouldBe("domain");
         conversation.AppId.ShouldBe("conversation");
         conversation.ResourceId.ShouldBe("conversations");
@@ -53,6 +59,14 @@ public sealed partial class ConversationsEnrollmentTests
         conversation.Environment["EventStore__Authentication__ClientSecret"].ShouldBe("composition-only-worker-secret");
         conversation.Environment["EventStore__CommandStatus__StateStoreName"].ShouldBe("statestore");
         conversation.Environment["Dapr__DeclarativeSubscriptions"].ShouldBe("true");
+        PlatformServerBinding api = servers.Single(server => server.ResourceId == "conversations-api");
+        api.ServerId.ShouldBe("api");
+        api.AppId.ShouldBe("conversations-api");
+        api.ReadinessEndpoint.ShouldBe("/ready");
+        api.Environment["Authentication__JwtBearer__Audience"].ShouldBe("hexalith-eventstore");
+        api.Environment.ShouldNotContainKey("EventStore__Authentication__ClientSecret");
+        api.Environment.ShouldNotContainKey("Conversations__Pilot__HumanPartyBindings");
+        conversation.Environment.ShouldNotContainKey("DAPR_API_TOKEN");
         servers.Select(server => server.ResourceId).ShouldNotContain("receiver");
     }
 
@@ -118,10 +132,10 @@ public sealed partial class ConversationsEnrollmentTests
         RefusesBeforeComposition(options with { Projects = projects }, "physically outside its owner root");
     }
 
-    /// <summary>Every declared setting remains mandatory; the enrollment adds no implicit local defaults.</summary>
+    /// <summary>Required operator inputs must exist before composition.</summary>
     [Theory]
     [MemberData(nameof(RequiredConfigurationKeys))]
-    public void EveryMissingDeclaredSettingRefusesBeforeComposition(string key)
+    public void EveryMissingOperatorSettingRefusesBeforeComposition(string key)
     {
         PlatformCompositionOptions options = Options();
         Dictionary<string, string> configuration = new(options.Configuration);
@@ -135,9 +149,9 @@ public sealed partial class ConversationsEnrollmentTests
     {
         PlatformCompositionOptions options = Options();
         Dictionary<string, string> configuration = new(options.Configuration);
-        string key = "conversations/domain/EventStore:DomainService:AppId";
+        string key = "conversations/domain/EventStore:Authentication:ClientSecret";
         configuration.Remove(key).ShouldBeTrue();
-        configuration["conversations/receiver/EventStore:DomainService:AppId"] = "receiver";
+        configuration["conversations/api/EventStore:Authentication:ClientSecret"] = "foreign-secret";
         RefusesBeforeComposition(options with { Configuration = configuration }, key);
     }
 
@@ -150,7 +164,7 @@ public sealed partial class ConversationsEnrollmentTests
         validation.IsValid.ShouldBeTrue();
         PlatformServerBindings.ReferenceImages.ShouldNotContainKey("conversations/domain");
         PlatformServerBindings.ReferenceProjects.Keys.Where(key => key.StartsWith("conversations/", StringComparison.Ordinal))
-            .ShouldBe(["conversations/domain"]);
+            .Order().ShouldBe(["conversations/api", "conversations/domain"]);
         InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformServerBindings.Resolve(
             options with { Mapping = options.Mapping with { Mode = WorkspaceMode.Package } }, validation.Declarations!));
         failure.Message.ShouldContain("conversations/domain: image: released image is unavailable");
@@ -187,7 +201,17 @@ public sealed partial class ConversationsEnrollmentTests
         ["conversations/domain/Authentication:Workload:MaximumLifetimeSeconds"] = "60",
         ["conversations/domain/APP_API_TOKEN"] = "composition-only-channel-token",
         ["conversations/domain/EventStore:DataProtection:PersistToStateStore"] = "true",
-        ["conversations/domain/Tenants:TopicName"] = "system.tenants.events",
+        ["conversations/domain/Conversations:Pilot:HumanPartyBindings"] = "[]",
+        ["conversations/api/Authentication:JwtBearer:Authority"] = "https://issuer.example.invalid",
+        ["conversations/api/Authentication:JwtBearer:Issuer"] = "https://issuer.example.invalid",
+        ["conversations/api/Authentication:JwtBearer:Audience"] = "hexalith-eventstore",
+        ["conversations/api/Authentication:JwtBearer:ValidAudiences"] = "[\"hexalith-eventstore\"]",
+        ["conversations/api/Authentication:JwtBearer:AllowedAlgorithms"] = "[\"RS256\"]",
+        ["conversations/api/Authentication:JwtBearer:RequireHttpsMetadata"] = "true",
+        ["conversations/api/Authentication:JwtBearer:AllowInsecureSymmetricKey"] = "false",
+        ["conversations/api/Authentication:JwtBearer:SigningKey"] = "",
+        ["conversations/api/DAPR_API_TOKEN"] = "composition-only-api-sidecar-token",
+        ["conversations/domain/Tenants:TopicName"] = "tenants.events",
         ["conversations/domain/Authentication:WorkloadJwtBearer:Authority"] = "https://issuer.example.invalid",
         ["conversations/domain/Authentication:WorkloadJwtBearer:Issuer"] = "https://issuer.example.invalid",
         ["conversations/domain/Authentication:WorkloadJwtBearer:Audience"] = "conversation",

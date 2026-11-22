@@ -58,6 +58,13 @@ internal sealed class PlatformRoutingCatalogBootstrap
             _environment.Add(server.ResourceId, environment);
         }
         var gateway = _environment["eventstore"];
+        if (_environment.TryGetValue("conversations-api", out var conversationsApi))
+        {
+            conversationsApi["EventStore__RouteCatalog__DevelopmentBootstrap__Role"] = "aux-client";
+            conversationsApi["ASPNETCORE_HOSTINGSTARTUPASSEMBLIES"] = "Hexalith.EventStore.ServiceDefaults";
+            gateway["Authentication__QueryAuthority__RequiredQueries__conversations__0"] = "conversation-detail";
+            gateway["Authentication__QueryAuthority__RequiredQueries__conversations__1"] = "conversation-list";
+        }
         gateway["Authentication__DaprInternal__Audience"] = participants.Single(server => server.ResourceId == "eventstore").AppId;
         if (_environment.TryGetValue("memories", out var memories)) memories["EventStore__CommandGateway__Audience"] = gateway["Authentication__DaprInternal__Audience"];
         gateway["EventStore__IdempotencyAdmission__Enabled"] = "true";
@@ -156,7 +163,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
         // A gateway-only infrastructure graph has no enrolled business operations.
         if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
-            || server.ResourceId is "tenants-api" or "memories").ToArray();
+            || server.ResourceId is "tenants-api" or "memories" or "conversations-api").ToArray();
         var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
         var enrolledApps = participants.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
         foreach (var receiver in participants)

@@ -61,13 +61,13 @@ public sealed partial class ConversationsEnrollmentTests
                 EventStoreSeedProject = Path.Combine(mapping.Entries.Single(entry => entry.Identity == "Hexalith.Builds").Path!,
                     "src", "hosts", "Hexalith.Builds.Module.EventStoreHost", "Hexalith.Builds.Module.EventStoreHost.csproj"),
             };
-            options.Configuration.Count.ShouldBe(28);
+            options.Configuration.Count.ShouldBe(38);
             var builder = Builder();
             builder.Environment.EnvironmentName = Environments.Development;
             PlatformAppModel.Compose(builder, options);
             var resources = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
             resources.Select(resource => resource.Name).Order().ShouldBe(new[] { "eventstore", "tenants", "tenants-api", "memories",
-                "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry", "conversations" }.Order());
+                "memories-domain-service", "memories-access-telemetry-clock", "memories-access-telemetry", "conversations", "conversations-api" }.Order());
             var environments = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
             foreach (var resource in resources)
             {
@@ -79,13 +79,13 @@ public sealed partial class ConversationsEnrollmentTests
             const string prefix = "EventStore__RouteCatalog__DevelopmentBootstrap__";
             var gateway = environments["eventstore"];
             string[] participants = resources.Where(resource => environments[resource.Name].ContainsKey(prefix + "HostId")).Select(resource => resource.Name).Order().ToArray();
-            participants.ShouldBe(new[] { "conversations", "eventstore", "memories", "memories-domain-service", "tenants", "tenants-api" });
+            participants.ShouldBe(new[] { "conversations", "conversations-api", "eventstore", "memories", "memories-domain-service", "tenants", "tenants-api" });
             string catalogPath = (string)gateway[prefix + "CatalogPath"];
             string digest = (string)gateway[prefix + "RootDigest"];
             var catalog = RouteCatalogCodec.Decode(File.ReadAllBytes(catalogPath), digest);
             var routes = catalog.Declarations.Where(route => route.Domain is "conversation" or "conversations").ToArray();
-            routes.Length.ShouldBe(22);
-            routes.Count(route => route.Kind == "command").ShouldBe(13);
+            routes.Length.ShouldBe(24);
+            routes.Count(route => route.Kind == "command").ShouldBe(15);
             routes.Count(route => route.Kind == "query").ShouldBe(7);
             routes.Count(route => route.Kind == "projection").ShouldBe(2);
             foreach (var route in routes)
@@ -94,7 +94,8 @@ public sealed partial class ConversationsEnrollmentTests
                 target.AppId.ShouldBe("conversation");
                 target.Method.ShouldBe(route.Kind switch { "command" => "process", "query" => "query", _ => route.ProjectionType == "conversation" ? "project" : "project/v2" });
                 route.CredentialKind.ShouldBe("workload"); route.PlatformAdmission.ShouldBeNull();
-                catalog.Operations!.Single(operation => operation.RouteId == route.RouteId).Ingress.ShouldBe("internal");
+                bool pilot = route.MessageType is "CreateHumanConversation" or "AppendMessage" or "conversation-list" or "conversation-detail";
+                catalog.Operations!.Single(operation => operation.RouteId == route.RouteId).Ingress.ShouldBe(pilot ? "public" : "internal");
             }
             foreach (string participant in participants)
             {
@@ -188,7 +189,7 @@ public sealed partial class ConversationsEnrollmentTests
                 });
                 using var gatewayClient = gatewayFactory.CreateClient();
                 var installed = gatewayFactory.Services.GetServices<IIdempotencyIntentAdapter>().OfType<IDeclaredIdempotencyIntentAdapter>().ToArray();
-                installed.Count(adapter => adapter.Declaration.Route.Domain == "conversation").ShouldBe(13);
+                installed.Count(adapter => adapter.Declaration.Route.Domain == "conversation").ShouldBe(15);
                 _ = gatewayFactory.Services.GetRequiredService<IIdempotencyIntentAdapterRegistry>();
                 var actualAdmission = await RouteCatalogAdmissionObservation.CaptureAsync(gatewayFactory.Services, "eventstore", TestContext.Current.CancellationToken);
                 actualAdmission.Select(entry => entry.ContentDigest).Order().ShouldBe(catalog.Idempotency.Select(entry => entry.ContentDigest).Order());

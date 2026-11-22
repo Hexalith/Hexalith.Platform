@@ -29,6 +29,8 @@ public static class PlatformLocalProfile
         foreach (JsonElement extension in module.Declaration.GetProperty("runtime").GetProperty("extensions").EnumerateArray())
         foreach (JsonElement input in extension.GetProperty("configurationInputs").EnumerateArray())
         {
+            if (id == "conversations" && extension.GetProperty("packageId").GetString() !=
+                (server == "api" ? "Hexalith.Conversations.Api" : "Hexalith.Conversations.Server")) continue;
             string key = input.GetProperty("key").GetString()!;
             string scoped = id + "/" + server + "/" + key;
             if (!options.Configuration.TryGetValue(scoped, out string? value) && !defaults.TryGetValue(scoped, out value)) throw new InvalidDataException($"{module.Source}: {scoped}: runtime.extensions.configurationInputs: binding is unavailable.");

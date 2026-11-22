@@ -84,7 +84,7 @@ public static class PlatformAppModel
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        foreach (string server in new[] { "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
+        foreach (string server in new[] { "conversations/domain", "conversations/api", "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
         {
             configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
             configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
@@ -166,6 +166,24 @@ public static class PlatformAppModel
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
         HashSet<IResource> existingResources = [.. builder.Resources];
         var declarations = PlatformDeclarationSet.Load(options);
+        if (declarations.Any(module => PlatformDeclarationSet.Id(module.Declaration) == "conversations"))
+        {
+            // Only the domain consumes operator-provisioned Party bindings and history-reader credentials.
+            var scoped = options.Configuration.ToDictionary(StringComparer.Ordinal);
+            foreach (string key in new[] { "Conversations:Pilot:HumanPartyBindings", "Authentication:WorkloadJwtBearer:Authority",
+                "Authentication:WorkloadJwtBearer:Issuer", "EventStore:Authentication:Authority", "EventStore:Authentication:TokenEndpoint",
+                "EventStore:Authentication:ClientId", "EventStore:Authentication:ClientSecret" })
+                if (builder.Configuration["Platform:Conversations:Domain:" + key] is { Length: > 0 } value)
+                    scoped["conversations/domain/" + key] = value;
+            const string partyKey = "Conversations:Pilot:HumanPartyBindings";
+            var partySection = builder.Configuration.GetSection("Platform:Conversations:Domain:" + partyKey);
+            if (partySection.Value is null && partySection.GetChildren().Any())
+            {
+                var bindings = partySection.Get<Dictionary<string, string>[]>();
+                scoped["conversations/domain/" + partyKey] = JsonSerializer.Serialize(bindings);
+            }
+            options = options with { Configuration = scoped };
+        }
         if (options.Mapping.Mode == WorkspaceMode.Package && options.ActiveModule == "parties"
             && PlatformCurrentOwnerProof.SelectsIntegration(options) && options.CurrentOwnerProof?.Matches(options) != true)
             throw new InvalidDataException("The Parties integration profile requires its authenticated and sealed Release owner.");
@@ -449,6 +467,8 @@ public static class PlatformAppModel
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", "http://127.0.0.1:" + ports.Http);
                         else if (hasGateway && PlatformDeclarationSet.Id(server.Module.Declaration) != "eventstore")
                             resource.WithEnvironment("EventStore__CommandGateway__BaseAddress", projects["eventstore"].GetEndpoint("http"));
+                        if (hasGateway && server.ResourceId == "conversations")
+                            resource.WithEnvironment("Hexalith__Conversations__TenantAccess__GatewayBaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (hasGateway && server.ResourceId == "tenants-api") resource.WithEnvironment("EventStore__GatewayReadiness__BaseAddress", projects["eventstore"].GetEndpoint("http"));
                         if (catalog is not null && server.ResourceId == "parties") resource.WithEnvironment("Tenants__ReadinessBaseAddress", projects.TryGetValue("tenants", out var tenantProject) ? tenantProject.GetEndpoint("http") : containers["tenants"].GetEndpoint("http"));
                     }

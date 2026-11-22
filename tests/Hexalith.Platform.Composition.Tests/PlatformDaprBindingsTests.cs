@@ -14,6 +14,19 @@ using YamlDotNet.RepresentationModel;
 public sealed partial class PlatformAppModelTests
 {
     [Fact]
+    public void ConversationsHumanGatewayGrantsStayLimitedToSubmitQueryAndSingleMessageStatus()
+    {
+        var gateway = PlatformDeclarationSet.Load(Options(active: "eventstore")).Single();
+        var bindings = PlatformDaprBindings.Resolve([gateway]);
+        var acl = bindings.AccessControl("eventstore", "default", "public");
+        var policy = acl.GetProperty("policies").EnumerateArray().Single(item => item.GetProperty("appId").GetString() == "conversations-api");
+        policy.GetProperty("defaultAction").GetString().ShouldBe("deny");
+        policy.GetProperty("operations").EnumerateArray().Select(op =>
+            op.GetProperty("httpVerb").EnumerateArray().Single().GetString() + " " + op.GetProperty("name").GetString()).Order()
+            .ShouldBe(["GET /api/v1/commands/status/*", "POST /api/v1/commands/submit", "POST /api/v1/queries/submit"]);
+    }
+
+    [Fact]
     public void CatalogAuthorityScopingPreservesEveryExistingDeclaredInvocationRule()
     {
         var declarations = PlatformDeclarationSet.Load(Options());

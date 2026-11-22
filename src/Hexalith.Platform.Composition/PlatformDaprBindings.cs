@@ -202,6 +202,15 @@ public sealed class PlatformDaprBindings
                     Path = path.Key.ToLowerInvariant(),
                     Verbs = path.SelectMany(rule => rule.Verbs).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
                 }).ToArray();
+                // The human status route takes one message ID. Keep the two human submission paths separate so
+                // this caller never acquires POST on a workload or validation subroute.
+                string InvocationPath(string path)
+                {
+                    if (appId == "eventstore" && group.Key == "conversations-api")
+                        return path == "/api/v1/commands/status" ? path + "/*" : path;
+                    return operations.Any(other => other.Path != path && other.Path.StartsWith(path.TrimEnd('/') + "/", StringComparison.Ordinal))
+                        ? path.TrimEnd('/') + "/*" : path;
+                }
                 return new
                 {
                     appId = group.Key, @namespace = applicationNamespace, trustDomain, defaultAction = "deny",
@@ -209,7 +218,7 @@ public sealed class PlatformDaprBindings
                     // a parent's base invocation while letting explicit descendants retain their verbs.
                     operations = operations.OrderByDescending(operation => operation.Path.Length).ThenBy(operation => operation.Path, StringComparer.Ordinal).Select(operation => new
                     {
-                        name = operations.Any(other => other.Path != operation.Path && other.Path.StartsWith(operation.Path.TrimEnd('/') + "/", StringComparison.Ordinal)) ? operation.Path.TrimEnd('/') + "/*" : operation.Path,
+                        name = InvocationPath(operation.Path),
                         httpVerb = operation.Verbs, action = "allow",
                     }).ToArray(),
                 };
