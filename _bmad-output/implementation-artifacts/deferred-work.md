@@ -2225,3 +2225,12 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Record the source-mode composed host's server project in `selected-closure.json` (AA9+ECH5; joins the Story 3.9 identity entry above).
   evidence: `PlatformRoutingCatalogBootstrap.DescribeHost` (`:136`) records `seedArtifact` only in package mode. A source-mode `composed-project` omits the mapped EventStore server project that supplies its settings. Source mode never recorded it.
+
+## Deferred from the signed adoption review for story 3.3 (2026-11-22)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Add explicit published operation policy assertions to the Tenants pack-and-consume gate.
+  evidence: The existing tool checks the approved route inventory and recomputes the package's operation digests. A changed eligibility value accompanied by its matching digest can still pass this gate. The adopted 8.0.4 inventory was independently verified through the signed runtime.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
+  summary: Require the complete compiled Tenants catalog test inventory in the owner workflows.
+  evidence: The existing source and published-SDK jobs require at least one and two cases. Those floors permit a discovery regression to omit part of the six-case inventory verified in this story.

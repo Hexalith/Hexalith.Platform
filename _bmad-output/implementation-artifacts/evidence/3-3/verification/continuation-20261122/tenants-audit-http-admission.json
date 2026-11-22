@@ -1,0 +1,34 @@
+{
+  "scope": "Generated Tenants API audit endpoint surface admission against the released Tenants source",
+  "publishedTenantsSource": "465f0b36afeeb880c4b66144547a127e5bc57208",
+  "testOnlyRevision": "1352d29934ab915554e099cbb35d067767222b1c",
+  "testOnlyTree": "4f125e48291f9b9342b7cec9e614e9d6c8b82f23",
+  "sdkVersion": "5.4.0",
+  "endpoint": "/api/global-administrators/audit",
+  "agent": {
+    "permission": "tenants:read",
+    "status": 403,
+    "gatewaySubmissions": 0
+  },
+  "uiPositiveControl": true,
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "tenantsPullRequest": 79,
+  "reportSha256": "966bbf75230f5880c81740c548838dd3233ef064d8fcce6ed7ec34993fbdfa5f",
+  "preCorrectionControl": {
+    "scope": "Only the earlier agent-eligible audit declaration restored in the isolated build",
+    "otherCasesPassed": 4,
+    "auditAgentStatus": 500,
+    "gatewaySubmissionReached": true,
+    "reportSha256": "8e2c4512e366a931d954b244ff0bd570462a68d00761be10d13eb77223d328e5"
+  },
+  "hostedVerification": {
+    "pullRequest": 79,
+    "head": "1352d29934ab915554e099cbb35d067767222b1c",
+    "ciRun": 45063354897,
+    "conclusion": "success",
+    "merge": "54985ab11ade150d5fa908be179cf2a5a407353d",
+    "identicalTestedTree": true
+  }
+}

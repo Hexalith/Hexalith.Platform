@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-22-2026 16:20
+last_updated: 11-22-2026 21:38
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -142,7 +142,7 @@ development_status:
   3-1-apply-the-candidate-selection-policy-to-the-runner-contract: done
   # 2026-11-22: delta review cf002bac..0f6468ed -> 10 patches applied, 3 deferred, 19 rejected; story done.
   3-2-compose-the-eventstore-host-with-enrolled-extension-packages: done
-  3-3-generate-the-run-scoped-routing-catalog: in-progress
+  3-3-generate-the-run-scoped-routing-catalog: review
   3-4-generate-the-local-realm-from-the-realm-contract: backlog
   3-5-provide-the-synthetic-tenant-in-local-and-ci-environments: backlog
   3-6-run-all-seven-mvp-modules-together-locally: backlog

@@ -1,0 +1,91 @@
+{
+  "scope": "Ordinary local Parties package execution with signed Builds 6.6.2 and Tenants 8.0.4",
+  "platformRevision": "74c5ca1a30c4a42037d8708d616d35a4cd5109c7",
+  "runId": "7b66369271dd64157c96bd499f6a9992",
+  "profile": "platform-package",
+  "tool": {
+    "version": "6.6.2",
+    "buildsSource": "2d9ef8b454ff897daca0149f3549844f584b634a",
+    "archiveSha256": "fd3697d6881641639fd3005ac98a4259b225764fa2ffe3a811687edc82efc711",
+    "installedToolFilesVerified": 311
+  },
+  "catalog": {
+    "commit": "2d9ef8b454ff897daca0149f3549844f584b634a",
+    "instanceId": "a66c5953d0245e7ec329013c8f5ea888-catalog"
+  },
+  "rootDigest": "5b974248fef28bebfa2e722749b72594d493ee1e9348784308d8b9ec10091f97",
+  "participantGenerations": {
+    "eventstore": 1,
+    "memories-domain-service": 1,
+    "memories": 1,
+    "parties": 1,
+    "tenants-api": 1,
+    "tenants": 1
+  },
+  "publicMetadataOperations": 46,
+  "tenantsAgentEligible": {
+    "command": 10,
+    "query": 5
+  },
+  "auditQuery": {
+    "eligibility": "UI-only",
+    "digest": "a263f4e816a28d1e4ca5dc6737154f2bd3ad4228cf803033f02d9ccf459773b2"
+  },
+  "refreshTenantAccessEligibility": "agent-eligible",
+  "tenantsReaderPackages": [
+    {
+      "packageId": "Hexalith.Tenants.Contracts",
+      "version": "8.0.4",
+      "contentHash": "ShAdI6kH9zKjCn+C4FwaK95Qr5ePgKNddT72Sgazvk8mjeELbUiuBzH45zUY3MIArFSpSWuj6Iy5pKcZHDKv0A==",
+      "expectedSha256": "c87eb1c8cdae121f80cb00724800118bdf27b669356bdf1be674a437b1b66302",
+      "loadedSha256": "c87eb1c8cdae121f80cb00724800118bdf27b669356bdf1be674a437b1b66302"
+    },
+    {
+      "packageId": "Hexalith.Tenants.Server",
+      "version": "8.0.4",
+      "contentHash": "7y+0vhfrL4i18xVALjaMTmCHEAmvL1DeGb67GVizaDFNYwbJya9Ob1Nf74q6KWLz7Q0+JWfNE+x1FWcCr6iM8Q==",
+      "expectedSha256": "8ad8ab851eff13d405a3c15dfdac821e43fc1416aee5e41bee52ff36e466fb73",
+      "loadedSha256": "8ad8ab851eff13d405a3c15dfdac821e43fc1416aee5e41bee52ff36e466fb73"
+    }
+  ],
+  "tenantsImages": [
+    {
+      "resourceId": "tenants",
+      "catalogImage": "registry.hexalith.com/tenants:8.0.4",
+      "expectedManifestDigest": "sha256:0a2290fc85d7161dec46bc0c0d616933d89efa77cb1d100ea9a91d6fb2685600",
+      "expectedConfigDigest": "sha256:6f988ceef8245f15ee281e4448ca39ec318e493cdb3d1d202c116242904dc57f",
+      "observedImageId": "sha256:0a2290fc85d7161dec46bc0c0d616933d89efa77cb1d100ea9a91d6fb2685600"
+    },
+    {
+      "resourceId": "tenants-api",
+      "catalogImage": "registry.hexalith.com/tenants-api:8.0.4",
+      "expectedManifestDigest": "sha256:38e38bc98150b2fe3d4b8011494af65387fabe63d98e6770f00a26ee6ee0c7e4",
+      "expectedConfigDigest": "sha256:68dd0bc0f23e19162f0690978e318b0add5b562ee252da4ba4e7b7358efcc037",
+      "observedImageId": "sha256:38e38bc98150b2fe3d4b8011494af65387fabe63d98e6770f00a26ee6ee0c7e4"
+    }
+  ],
+  "nativeReport": {
+    "executed": 46,
+    "passed": 46,
+    "sha256": "cf1ba8395ac3a5458f73304bc022a336c82962d6c2e3bdd0723eb9c2f2758896"
+  },
+  "focusedSignedPackageControls": {
+    "codeRevision": "d76b6ae517ccdbc75c35aa59df7333c6985036a9",
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0
+  },
+  "persistedTenantQueryObserved": true,
+  "memoriesRegistryObserved": true,
+  "retainedEnvironments": [],
+  "remainingResources": {
+    "containerIds": [],
+    "processIds": [],
+    "unverified": false,
+    "isEmpty": true,
+    "workspaceIds": [],
+    "claimIds": [],
+    "discoveryFailures": [],
+    "resourceIds": []
+  }
+}

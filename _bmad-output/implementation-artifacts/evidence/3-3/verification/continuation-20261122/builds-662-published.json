@@ -1,0 +1,67 @@
+{
+  "release": {
+    "releaseTag": "v6.6.2",
+    "tagCommit": "2d9ef8b454ff897daca0149f3549844f584b634a",
+    "releaseId": 454690032,
+    "publishedAt": "2026-11-22T19:34:49Z",
+    "releaseBodySha256": "de8ce9de246f8cd75d219a04029bf621bad6c18436d2c1c01b9a8d734f48992b",
+    "markers": {
+      "hexalith-release": "2d9ef8b454ff897daca0149f3549844f584b634a",
+      "hexalith-release-artifact": "14769162640 sha256:b3351c4a6f009edf2ee0c5301288504da3b5e13b050f71e569639e4f814b6574",
+      "hexalith-release-containers": "",
+      "hexalith-release-packages": "Hexalith.Builds.Evidence.Cli,Hexalith.Builds.Module.Cli",
+      "hexalith-release-run": "45057509167"
+    },
+    "evidenceOnly": true,
+    "qualificationCredit": false
+  },
+  "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+  "mainCiRun": 45057490226,
+  "releaseRun": 45057509167,
+  "originalArtifact": {
+    "artifactId": 14769162640,
+    "runId": 45057509167,
+    "zipSha256": "b3351c4a6f009edf2ee0c5301288504da3b5e13b050f71e569639e4f814b6574",
+    "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+    "packages": [
+      {
+        "id": "Hexalith.Builds.Evidence.Cli",
+        "version": "6.6.2",
+        "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+        "sha256": "852b0d7d593009ef08dadbff80fa6d93e832731a814675a9002d4314d9a88369"
+      },
+      {
+        "id": "Hexalith.Builds.Module.Cli",
+        "version": "6.6.2",
+        "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+        "sha256": "cf3d24c0af3696b060858a9926e1f32e967acf706ff61f2ad5736caad747b458"
+      }
+    ],
+    "inventory": [
+      "packages/Hexalith.Builds.Evidence.Cli.6.6.2.nupkg",
+      "packages/Hexalith.Builds.Module.Cli.6.6.2.nupkg",
+      "release-manifest.json"
+    ],
+    "scope": "Original workflow artifact before publication"
+  },
+  "publishedPackages": [
+    {
+      "id": "Hexalith.Builds.Evidence.Cli",
+      "version": "6.6.2",
+      "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+      "sha256": "2144123cb6daea2bf50e3d284ddc4d06c9facdc9890eec19b862c5c571437f34",
+      "contentHash": "TkK18ODuAmP69MyQ4Z9GoATYFUmTyBFuXPgrR1oGTz6DqCwGidqHEGpbN2MnKMMq5jm8oUV+1moSPEZE0o3c6w==",
+      "signatureVerified": true,
+      "nugetRegistrationHashVerified": true
+    },
+    {
+      "id": "Hexalith.Builds.Module.Cli",
+      "version": "6.6.2",
+      "source": "2d9ef8b454ff897daca0149f3549844f584b634a",
+      "sha256": "fd3697d6881641639fd3005ac98a4259b225764fa2ffe3a811687edc82efc711",
+      "contentHash": "yzemvQQzR9lmLrpgFQlnOPDkGdcSywMbk0BpxL6XOxizbqzwsbBqJdG+CoKHdkEbh1EV/CJS2yTuZissqtiPsQ==",
+      "signatureVerified": true,
+      "nugetRegistrationHashVerified": true
+    }
+  ]
+}

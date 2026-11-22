@@ -1,0 +1,48 @@
+{
+  "platformSourceSnapshot": "13f0c7ad8b56a5221c5be4023b0bb40ddf24c512",
+  "platformSourceTree": "ce0085527ca541e0204f69d649b92efebc462dc8",
+  "tenantsSource": "31a91e3b7ccefa93d3902e964b72b33c39dd9bd9",
+  "mode": "source",
+  "catalogs": [
+    {
+      "instance": "catalog-run-one-catalog",
+      "canonicalSha256": "5b974248fef28bebfa2e722749b72594d493ee1e9348784308d8b9ec10091f97",
+      "root": "5b974248fef28bebfa2e722749b72594d493ee1e9348784308d8b9ec10091f97",
+      "operations": 71,
+      "agentCommands": 10,
+      "agentQueries": 5,
+      "audit": {
+        "routeId": "tenants-get-global-administrator-audit",
+        "ingress": "public",
+        "eligibility": "UI-only",
+        "digest": "a263f4e816a28d1e4ca5dc6737154f2bd3ad4228cf803033f02d9ccf459773b2"
+      },
+      "refresh": {
+        "routeId": "tenants-refresh-tenant-access",
+        "ingress": "public",
+        "eligibility": "agent-eligible",
+        "digest": "e631608658b1334bd6f3f332d7c93cdbf2f511c5c7a8d76406cce2e2d9472539"
+      }
+    },
+    {
+      "instance": "catalog-run-two-catalog",
+      "canonicalSha256": "5b974248fef28bebfa2e722749b72594d493ee1e9348784308d8b9ec10091f97",
+      "root": "5b974248fef28bebfa2e722749b72594d493ee1e9348784308d8b9ec10091f97",
+      "operations": 71,
+      "agentCommands": 10,
+      "agentQueries": 5,
+      "audit": {
+        "routeId": "tenants-get-global-administrator-audit",
+        "ingress": "public",
+        "eligibility": "UI-only",
+        "digest": "a263f4e816a28d1e4ca5dc6737154f2bd3ad4228cf803033f02d9ccf459773b2"
+      },
+      "refresh": {
+        "routeId": "tenants-refresh-tenant-access",
+        "ingress": "public",
+        "eligibility": "agent-eligible",
+        "digest": "e631608658b1334bd6f3f332d7c93cdbf2f511c5c7a8d76406cce2e2d9472539"
+      }
+    }
+  ]
+}
