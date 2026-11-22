@@ -85,7 +85,9 @@ selected row passed and no issued run or container remains.
    SIGSTOP/SIGCONT of the owned starting AppHost. No timeout is overridden.
 4. **Cleanup.** Every exit path, including SIGINT, SIGTERM and SIGHUP, stops the
    launched processes and runs `down` for every issued owner. The summary
-   records any issued run that `list` still shows, and any container left.
+   records any issued run that `list` still shows and any container left. If
+   Docker or runner inventory fails, the driver records the check as unverified
+   and fails the affected row or the campaign's final cleanup check.
 
 A row whose expectations fail is recorded as `failed` with its failed checks
 and rule ids, and the campaign continues. A row that fails is re-run once; if

@@ -3,10 +3,11 @@ import copy
 import io
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -223,6 +224,65 @@ class CampaignTests(unittest.TestCase):
         driver.release.assert_called_once()
         self.assertEqual([row['scenario'] for row in summary['rows']], list(scenarios.SCENARIOS))
         self.assertEqual([row['verdict'] for row in summary['rows']], ['failed'] + ['not-run'] * 8)
+
+    def test_unknown_final_inventory_fails_campaign_even_with_passing_rows(self):
+        with (tempfile.TemporaryDirectory() as directory,
+              patch.object(scenarios, 'Driver') as driver_type,
+              patch.object(scenarios.signal, 'signal'),
+              redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO())):
+            driver = driver_type.return_value
+            driver.preflight.return_value = {'revision': 'a' * 40, 'buildsRevision': 'b' * 40}, {'version': '6.4.4'}
+            driver.row.return_value = dict(passing_rows()['success'], verdict='passed', failedChecks=[])
+            driver.residue.side_effect = scenarios.InventoryFailure('Runner inventory failed (HXR024)')
+            root = Path(directory)
+            evidence = root / 'evidence'
+
+            result = scenarios.main(['--checkout', str(root / 'parties'), '--evidence', str(evidence),
+                                     '--scenario', 'success', '--skip-prepare'])
+            summary = json.loads((evidence / 'summary.json').read_text())
+            readme = (evidence / 'README.md').read_text()
+
+        self.assertEqual(result, 1)
+        driver.release.assert_called_once()
+        self.assertEqual(summary['passed'], 1)
+        self.assertEqual(summary['residue'], {'listedIssuedRuns': None, 'issuedContainers': None,
+                                             'error': 'Runner inventory failed (HXR024)'})
+        self.assertIn('Final cleanup inventory unavailable. Runner inventory failed (HXR024).', readme)
+
+
+class InventoryTests(unittest.TestCase):
+    def setUp(self):
+        self.driver = scenarios.Driver(Path('.'), Path('.'))
+
+    def test_docker_failure_and_incomplete_runner_listing_are_rejected(self):
+        with patch.object(scenarios.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, ['docker', 'ps'])) as command:
+            with self.assertRaisesRegex(scenarios.InventoryFailure, 'Docker inventory failed'):
+                self.driver.containers(OWNER)
+            self.assertTrue(command.call_args.kwargs['check'])
+
+        for code, output, detail in ((3, {'environments': [], 'outcome': {'ruleId': 'HXR024'}}, 'HXR024'),
+                                     (0, {}, 'JSON is invalid')):
+            with self.subTest(code=code), patch.object(self.driver, 'tool', return_value=(code, output)):
+                with self.assertRaisesRegex(scenarios.InventoryFailure, detail):
+                    self.driver.listing()
+        with patch.object(self.driver, 'tool', return_value=(0, {'environments': []})):
+            self.assertEqual(self.driver.listing(), [])
+
+    def test_missing_snapshot_fails_the_row_and_preserves_cleanup(self):
+        snapshot = {'containers': [], 'list': []}
+        failure = scenarios.InventoryFailure('Docker inventory failed')
+        for snapshots, calls in (([failure, snapshot], 0), ([snapshot, failure], 1)):
+            with (self.subTest(snapshot=snapshots),
+                  patch.object(self.driver, 'foreign', side_effect=snapshots),
+                  patch.object(self.driver, 'success', return_value={}) as run,
+                  patch.object(self.driver, 'release') as release):
+                row = self.driver.row('success', 'a' * 40, '6.4.4')
+
+                self.assertEqual(row['verdict'], 'failed')
+                self.assertEqual(row['failedChecks'], ['driver:Docker inventory failed'])
+                self.assertIsNone(row['foreign']['unchanged'])
+                self.assertEqual(run.call_count, calls)
+                release.assert_called_once()
 
 
 class OwnershipTests(unittest.TestCase):

@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 2026-11-21
+last_updated: 2026-11-22
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -97,6 +97,9 @@ development_status:
   # 2026-11-21: owner requested latest only. Released CLI 6.4.4 prepared package mode and built the owner suite.
   #   The pinned catalog still selected EventStore.Testing 4.2.0, and the attached suite failed with nine CS1061 errors.
   #   No scenario started. Docker and runner state were unchanged. The catalog fix needs release and adoption before a rerun.
+  # 2026-11-22: Builds 6.6.1 is published, but the approved and current Parties inputs both pin 6.4.4.
+  #   The current Parties revision fixes attached-suite selection. A new approved Parties revision is needed for the latest-only run.
+  #   Docker and runner inventory failures now fail qualification checks. All 18 resource-free tests passed. No live scenario ran.
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: in-progress
   # 2026-11-10 user decision: takes over attached-test-execution-and-expiry-enforcement plus 2.10's missing producers.
   # 2026-11-10: parts 1-2 done (supervised attached suites and lifecycle observations); part 3 (Parties qualification caller) remains open in deferred-work.md.

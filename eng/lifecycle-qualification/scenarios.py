@@ -15,6 +15,7 @@ import shutil
 import signal
 import socket
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +40,10 @@ class Failure(Exception):
 
 class Refused(Failure):
     """An owner exited before execution: a product refusal or missing prerequisite stops the campaign."""
+
+
+class InventoryFailure(Failure):
+    """Docker or the runner could not supply a verifiable inventory."""
 
 
 # ---- Pure projections and verdicts (unit-tested) ----
@@ -208,8 +213,10 @@ def render(summary):
             None if actual is None else round(actual, 1), startup.get('override'), owner.get('retentionAtExit'),
             owner.get('cleanup'), len(owner.get('leftovers') or []), row.get('foreign', {}).get('unchanged')))
     lines += ['', 'Failed checks: ' + ('; '.join(row['scenario'] + ': ' + ', '.join(row['failedChecks'])
-                                                for row in summary['rows'] if row['failedChecks']) or 'none') + '.', '',
-              'CI identities are counted, not re-run: the Story 2.8 hosted Parties runs '
+                                                for row in summary['rows'] if row['failedChecks']) or 'none') + '.', '']
+    if error := summary.get('residue', {}).get('error'):
+        lines += ['Final cleanup inventory unavailable. ' + error + '.', '']
+    lines += ['CI identities are counted, not re-run: the Story 2.8 hosted Parties runs '
               + ', '.join('[{}]({})'.format(url.rsplit('/', 1)[1], url) for url in CI_RUNS) + '.',
               'The CI part of Story 2.10 and the Platform-accepted tool record (and pins) wait for Story 2.14 and CiCd story 21.', '']
     return '\n'.join(lines)
@@ -408,22 +415,34 @@ class Driver:
         return self.tool('attach', '--owner-run-id', owner['runId'], '--mode', 'package',
                          '--composition-identity', self.manifest_hash, '--hold-seconds', str(hold), *extra)
 
+    def docker_inventory(self, *args):
+        try:
+            return subprocess.run(['docker', 'ps', *args], capture_output=True, text=True, timeout=60,
+                                  env=self.env, check=True).stdout.splitlines()
+        except (OSError, subprocess.SubprocessError) as error:
+            raise InventoryFailure('Docker inventory failed (' + type(error).__name__ + ')') from None
+
     def containers(self, run_id):
-        result = subprocess.run(['docker', 'ps', '-aq', '--no-trunc', '--filter', 'label=hexalith.g4.run=' + run_id],
-                                capture_output=True, text=True, timeout=60, env=self.env)
-        return result.stdout.split()
+        return self.docker_inventory('-aq', '--no-trunc', '--filter', 'label=hexalith.g4.run=' + run_id)
 
     def listing(self, run_id=None):
-        _, output = self.tool('list')
-        entries = output.get('environments') or []
+        try:
+            code, output = self.tool('list')
+        except (OSError, subprocess.SubprocessError) as error:
+            raise InventoryFailure('Runner inventory failed (' + type(error).__name__ + ')') from None
+        if code != 0:
+            detail = ', '.join(rule_ids(output)) or f'exit {code}'
+            raise InventoryFailure('Runner inventory failed (' + detail + ')')
+        entries = output.get('environments')
+        if not isinstance(entries, list) or any(not isinstance(entry, dict) or not entry.get('ownerRunId') for entry in entries):
+            raise InventoryFailure('Runner inventory JSON is invalid')
         if run_id is None:
             return entries
         return next(({key: entry.get(key) for key in ('retention', 'cleanup', 'failureRunIds', 'attachedRunIds')}
                      for entry in entries if entry.get('ownerRunId') == run_id), None)
 
     def foreign(self):
-        rows = subprocess.run(['docker', 'ps', '-a', '--no-trunc', '--format', '{{.ID}}\t{{.Label "hexalith.g4.run"}}'],
-                              capture_output=True, text=True, timeout=60, env=self.env).stdout.splitlines()
+        rows = self.docker_inventory('-a', '--no-trunc', '--format', '{{.ID}}\t{{.Label "hexalith.g4.run"}}')
         containers = sorted(row.split('\t')[0] for row in rows if row.split('\t')[-1] not in self.ids)
         entries = sorted((entry.get('ownerRunId'), entry.get('retention'), entry.get('cleanup'))
                          for entry in self.listing() if entry.get('ownerRunId') not in self.ids)
@@ -659,8 +678,10 @@ class Driver:
         return facts
 
     def row(self, scenario, revision, version):
-        before, started, self.current, facts, error, refused = self.foreign(), now(), {}, {}, None, False
+        before, after = None, None
+        started, self.current, facts, error, refused = now(), {}, {}, None, False
         try:
+            before = self.foreign()
             facts = getattr(self, scenario.replace('-', '_'))()
         except Exception as failure:  # Recorded as a failed row; the campaign continues unless refused.
             error = str(failure) if isinstance(failure, Failure) else type(failure).__name__
@@ -670,12 +691,17 @@ class Driver:
         if error:
             for run in self.current.values():
                 self.observe(run)
+        try:
+            after = self.foreign()
+        except InventoryFailure as failure:
+            error = error or str(failure)
         row = {'scenario': scenario, 'startedAt': started, 'finishedAt': now(), 'sourceRevision': revision,
                'runs': [summarize(role, run) for role, run in self.current.items()], 'facts': facts}
         if error:
             row.update(error=error, refusal=refused)
-        after = self.foreign()
-        row['foreign'] = {'unchanged': before == after, 'containers': len(after['containers']), 'listEntries': len(after['list'])}
+        row['foreign'] = {'unchanged': before == after if before is not None and after is not None else None,
+                          'containers': len(after['containers']) if after is not None else None,
+                          'listEntries': len(after['list']) if after is not None else None}
         row['failedChecks'] = verdict(scenario, row, version)
         row['verdict'] = 'failed' if row['failedChecks'] else 'passed'
         return row
@@ -741,14 +767,17 @@ def main(argv=None):
             if row['failedChecks'] and not row.get('refusal'):  # One re-run of a non-reproducing failure; flaky.
                 retry = driver.row(scenario, source['revision'], tool['version'])
                 retry.update(flaky=not retry['failedChecks'], firstAttempt={key: row.get(key) for key in (
-                    'failedChecks', 'error', 'runs', 'facts')})
+                    'failedChecks', 'error', 'runs', 'facts', 'foreign')})
                 row = retry
             refused = row.get('refusal', False)
             rows.append(row)
             print(json.dumps({'scenario': scenario, 'verdict': row['verdict'], 'failedChecks': row['failedChecks']}), flush=True)
     finally:
         driver.release()
-        residue = driver.residue()
+        try:
+            residue = driver.residue()
+        except InventoryFailure as failure:
+            residue = {'listedIssuedRuns': None, 'issuedContainers': None, 'error': str(failure)}
         for run_id in driver.ids:
             shutil.rmtree(CONTROLS / run_id, ignore_errors=True)
     identities = {(run.get('toolVersion'), run.get('toolContentIdentity')) for row in rows for run in row['runs'] if run.get('toolContentIdentity')}
@@ -762,7 +791,9 @@ def main(argv=None):
     evidence.mkdir(parents=True, exist_ok=True)
     (evidence / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
     (evidence / 'README.md').write_text(render(summary))
-    clean = not residue['listedIssuedRuns'] and not residue['issuedContainers']
+    if 'error' in residue:
+        print(residue['error'], file=sys.stderr)
+    clean = residue['listedIssuedRuns'] == [] and residue['issuedContainers'] == 0
     return 0 if clean and summary['passed'] == len(rows) == len(selected) else 1
 
 

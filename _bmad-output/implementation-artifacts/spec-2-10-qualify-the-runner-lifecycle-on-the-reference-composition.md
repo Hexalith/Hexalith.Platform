@@ -114,6 +114,12 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 
 ## Implementation Notes
 
+**The latest-release requirement blocked the campaign on 2026-11-22.**
+
+- Builds CLI 6.6.1 is published and available through NuGet. The approved Parties revision `d8d599e611c6a2999780907369ba70febfd266c2` pins CLI 6.4.4 and catalog `dc225a6969473c21c3dad6bda8f1a18ad0aaae0d`. The catalog fix first shipped in Builds 6.5.0. [Builds 6.6.1 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.6.1), [Builds 6.5.0 release](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.5.0)
+- The current Platform gitlink, Parties `3480c5025873bec368ed6ebd74337166e249b706`, fixes attached-suite catalog selection by moving the suite to a new project name. It still pins CLI 6.4.4. A new approved Parties revision that pins the latest released CLI is required for the live campaign. No live row ran and no live evidence was written.
+- The driver now fails the affected checks when Docker or runner inventory cannot be verified, including after final cleanup. The 18 resource-free tests passed, including sample verdicts for all nine rows. Live qualification remains open.
+
 **2026-11-21: latest released CLI 6.4.4 stopped in package preparation.**
 
 - The restored executable reported `6.4.4+fe68718b6c074a6b500a7191e3554a1d39e17688`. `prepare-build --mode package` and the owner suite build passed. The attached suite failed with nine `CS1061` errors for `OwnerRunId`, `EnvironmentId`, `OriginalAttachmentRequestId` and `AttachmentExpiresAtUtc`. Package-mode MSBuild evaluation confirmed that the catalog at Parties' Builds gitlink selects `Hexalith.EventStore.Testing` 4.2.0.
