@@ -83,8 +83,8 @@ The producer document binds the exact native project, test source and Python
 observer bodies carried in the archive. The fixture keeps its original
 `platformtestextension` module identity and explicitly declares EventStore,
 Tenants and Memories. The declaration sets `serviceEnrollment: false`. Signed
-Builds 6.6.0 admits the exact fixture package 2.2.5 in the
-`eventstore-extension-package` profile with EventStore 5.4.0, Tenants 8.0.2 and
+Builds 6.6.2 admits the exact fixture package 2.2.5 in the
+`eventstore-extension-package` profile with EventStore 5.4.0, Tenants 8.0.4 and
 Memories 4.1.0. The ordinary run authenticates that parent proof and checks the
 exact released reader and workload identities.
 
