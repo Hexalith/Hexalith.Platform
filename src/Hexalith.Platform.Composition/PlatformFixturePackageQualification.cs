@@ -24,7 +24,7 @@ internal sealed class PlatformFixturePackageQualification
     ];
     private static readonly Dictionary<string, string> _owners = new(StringComparer.Ordinal)
     {
-        ["eventstore"] = "5.4.0", ["memories"] = "4.1.0", ["tenants"] = "8.0.2",
+        ["eventstore"] = "5.4.0", ["memories"] = "4.1.0", ["tenants"] = "8.0.4",
     };
     private static readonly Dictionary<string, (string Manifest, string Configuration)> _images = new(StringComparer.Ordinal)
     {
@@ -32,8 +32,8 @@ internal sealed class PlatformFixturePackageQualification
         ["memories/domain"] = ("dbf81b2eea4d97cd50abca3dafab87ca00e6fe144de01305fc00aeaf0ef2ee64", "9fb52b28164fa7edd41ec3d21a1e6daf462ef8481f187e9cee36ab73298f1950"),
         ["memories/server"] = ("0d52ceb355eb2000b843549bd23aa685c3566c8953a97e36eeed46f7e18d9c1c", "c16528a774309db78e2d8d27dd8a86934d2f7f8889dec6560c80e38e9850c18d"),
         ["memories/telemetry"] = ("03c1f01bfb44d3a97819684e5cc638508c303aba7e723b8a6939e832edd3d63e", "a23ab4ad925b0e84cb2eca0a8adff4a8a9637f1b8a8e0b0663506d6f7589a2c8"),
-        ["tenants/api"] = ("cb85a053a458de77825c8c14a5844235b379de4561be65f4623b3d7f8918ef79", "364236e01c83b25872dc90d9360e988660a9dfa7df00c2140789bb96ef745c99"),
-        ["tenants/domain"] = ("3e468dc6edf5a126cf952f5b69b939d545f56b189f1db896edf1e9ccee8fb41f", "b30721df9a9b267aa338847e230b679507ff6e6b28391ca6ee7dac7dd21e996b"),
+        ["tenants/api"] = ("38e38bc98150b2fe3d4b8011494af65387fabe63d98e6770f00a26ee6ee0c7e4", "68dd0bc0f23e19162f0690978e318b0add5b562ee252da4ba4e7b7358efcc037"),
+        ["tenants/domain"] = ("0a2290fc85d7161dec46bc0c0d616933d89efa77cb1d100ea9a91d6fb2685600", "6f988ceef8245f15ee281e4448ca39ec318e493cdb3d1d202c116242904dc57f"),
     };
 
     private readonly CompositionRunPlan _plan;
@@ -128,7 +128,7 @@ internal sealed class PlatformFixturePackageQualification
             => receipt.GetProperty(property).EnumerateArray().Select(file => Path.GetFileName(file.GetString())).Order(StringComparer.Ordinal);
 
         if (catalog.Generation != 1 || catalog.Routes.Count != 30 || catalog.Idempotency.Count != 19
-            || catalog.RouteFacetDigest != "8ae9fac964c0cae30747fa4950706b00061f09f6081a13b54278bb4579c0d4fd"
+            || catalog.RouteFacetDigest != "44c6a777693baf59cdc2b575beaebd0a3ba74c610c78e5a2a4a13280fe9f5c03"
             || catalog.IdempotencyFacetDigest != "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83"
             || !Files(receipt, "ownerAssemblies").SequenceEqual(["Hexalith.Memories.EventStore.dll", "Hexalith.Tenants.Contracts.dll"], StringComparer.Ordinal)
             || !Files(receipt, "adapterAssemblies").SequenceEqual(["Hexalith.Memories.EventStoreExtensions.dll", "Hexalith.Tenants.Server.dll"], StringComparer.Ordinal))
