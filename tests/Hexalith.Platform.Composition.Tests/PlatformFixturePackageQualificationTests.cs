@@ -157,9 +157,14 @@ public sealed class PlatformFixturePackageQualificationTests
         }
 
         Dictionary<string, object> actual = await EnvironmentAsync();
+        actual["EventStore__PayloadProtection__Enabled"].ShouldBe("true");
         actual["EventStore__PayloadProtection__QualificationObserver"].ShouldBe("true");
         actual["EventStore__PayloadProtection__InstallationFile"].ShouldBe(installation);
         actual["EventStore__PayloadProtection__InstallationSha256"].ShouldBe(digest);
+        File.WriteAllText(installation, "{\"fixture\":false}");
+        (await Should.ThrowAsync<InvalidDataException>(EnvironmentAsync)).Message.ShouldContain("protection-installation-identity");
+        File.WriteAllText(installation, "{\"fixture\":true}");
+        (await EnvironmentAsync())["EventStore__PayloadProtection__InstallationSha256"].ShouldBe(digest);
         WriteReceipt(CompositionRunPlanFactory.NewRunId());
         var refusal = await Should.ThrowAsync<InvalidDataException>(EnvironmentAsync);
         refusal.Message.ShouldContain("protection-installation-identity");
@@ -169,9 +174,9 @@ public sealed class PlatformFixturePackageQualificationTests
     public void FixtureReaderRefusesADifferentRouteFacetWithTheSameInventoryCounts()
     {
         const string routeFacet = "8ae9fac964c0cae30747fa4950706b00061f09f6081a13b54278bb4579c0d4fd";
-        const string policyFacet = "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83";
+        const string idempotencyFacet = "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83";
         // The reader admission consumes the verified envelope's counts and digests, not individual route or policy fields.
-        RouteCatalogEnvelope catalog = new(3, 1, "Development", false, [], new RouteCatalogEntry[30], new IdempotencyCatalogEntry[19], routeFacet, policyFacet);
+        RouteCatalogEnvelope catalog = new(3, 1, "Development", false, [], new RouteCatalogEntry[30], new IdempotencyCatalogEntry[19], routeFacet, idempotencyFacet);
         using JsonDocument receipt = JsonDocument.Parse("""
             {"ownerAssemblies":["Hexalith.Memories.EventStore.dll","Hexalith.Tenants.Contracts.dll"],
              "adapterAssemblies":["Hexalith.Memories.EventStoreExtensions.dll","Hexalith.Tenants.Server.dll"]}

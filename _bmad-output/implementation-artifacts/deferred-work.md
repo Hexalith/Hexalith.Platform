@@ -1798,15 +1798,21 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Qualify the package-mode EventStore extension bindings once the EventStore and Builds releases carrying the extension API exist.
   evidence: Unverified medium. Three things are untested: the run-plan snapshot (`catalog-versions.json`) branch of `CompositionDeclarationOptions.CatalogPackageVersion`, whether the generated `PackageVersion Update` matches an item under the composed host's central package management (else NU1010 or another version), and conditioned or repeated catalog items. The 3.2 package tests set no `RunPlan` and never restore the props. A restored package-mode host build with a snapshot-pinned extension would settle all three.
+  status: resolved
+  resolution: 2026-11-22 review of the 3.2 landing: the EventStore 5.4.0 and Builds 6.6.0 releases carry the API, and `EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync` (hosted extension suite) restores and builds a host-scoped snapshot pin with the live central item absent or different. Conditioned or repeated catalog items stay open as W1.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Add a CI path that compiles and runs `EventStoreExtensionCompositionTests`.
   evidence: Tuple CI builds with `-p:UseHexalithProjectReferences=false`, which compiles out every `HEXALITH_PLATFORM_EXTENSION_SDK` test. `eng/tuple-ci-suites.json` (hash-pinned for legacy equivalence) also selects no `EventStoreExtension` suite. The 3.2 tests ran only in a local source-mode run.
+  status: resolved
+  resolution: 2026-11-22: `eng/tuple-ci-extension-suites.json` selects the released-SDK `EventStoreExtensionCompositionTests` methods in the hosted tuple `extensions` lane (PR #55 run, 468 required executions).
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Decide which gateway a parties selected-test run uses once Parties declares EventStore extensions.
   evidence: Unverified medium. `PlatformServerBindings` replaces the runner-owned Builds seed (`privateRunnerGateway`) with `src/Hexalith.Platform.EventStoreHost` whenever any extension is declared. Nobody declares one today, so whether the selected-test runner should keep its verified seed is settled in the Parties adoption story.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: After an EventStore release carrying story 3.2, enable package-mode extensions.
   evidence: `HEXALITH_PLATFORM_EXTENSION_SDK` is defined only in source mode, so a package-built Composition or host refuses declared extensions (`eventstore-extension-api-unavailable`) until it is also defined for the released `HexalithEventStoreVersion`. The same switch gates the package catalog lookup, so the composition also builds against published Builds tools that predate it. The pinned-tool adoption expectation (11 rows) was updated when Platform pinned the Builds release that carries story 3.2.
+  status: resolved
+  resolution: 2026-11-22: the Composition, EventStoreHost and test projects define `HEXALITH_PLATFORM_EXTENSION_SDK` for `HexalithEventStoreVersion` 4.2.0 or later, and the signed fixture 2.2.5 loads in the package-mode host (`fixture225-protected-native-reviewed-196f4310.json`).
 
 ## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages (2026-11-08, iteration 1)
 
@@ -1819,6 +1825,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: When enabling package-mode extensions, also admit the composed host in the package qualification gate.
   evidence: `PlatformPackageCatalogQualification.cs:47` accepts a gateway only when `server.ProjectPath == options.EventStoreSeedProject`. With a declared extension, `ProjectPath` is `src/Hexalith.Platform.EventStoreHost`, so a qualified package cohort would refuse it. This adds to the package-mode qualification and enablement entries above.
+  status: resolved
+  resolution: 2026-11-22: `PlatformPackageCatalogQualification.cs:72` compares the composed host and its `EventStoreHost.ServerProject` against the declared binding.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Decide which path registers a module's adapters once it declares an EventStore extension that 3.3's Development bootstrap already loads.
   evidence: Medium. `RunScopedRouteCatalogGateway.cs:61-68` registers every `EventStore:RouteCatalog:DevelopmentBootstrap:AdapterAssemblies` adapter as `IIdempotencyIntentAdapter`, and the qualified catalog cohorts list `Hexalith.Parties.EventStoreExtensions` and `Hexalith.Memories.EventStoreExtensions` there. `AddEventStoreExtensions` registers the same adapters again, and the shared registry refuses overlapping adapters at host start (see EventStore's `DuplicateAdaptersAcrossExtensionsFailTheSharedRegistry`). Deferred by the maintainer on 2026-11-08: it fails loudly, nobody declares an extension today, and the owner of registration is decided in the Parties/Memories adoption story.
@@ -1835,18 +1843,26 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W2 — Qualify generated PackageVersion Update against the host's central package items (medium, unverified; BH5).
   evidence: PlatformEventStoreExtensionBindings.Write updates existing central items without creating absent ones. A snapshot-pinned restore including a package absent from the live host catalog would demonstrate or disprove the proposed NU1010/wrong-version failure. Refines the earlier package qualification follow-up.
+  status: resolved
+  resolution: 2026-11-22: `EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync` (hosted extension suite) covers the absent and different live central item through an actual restore and build.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W3 — Check the composed host's project-specific snapshot package view (medium, unverified; BH6).
   evidence: Extension lookup reads snapshot.Versions without selecting ProjectVersions. Current extension pins do not override the composed host's view. A valid host-conditioned snapshot followed by restore/resolved-version assertions would settle this additional package qualification boundary.
+  status: resolved
+  resolution: 2026-11-22: `EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync` (hosted extension suite) pins the version only in the host's `ProjectVersions` and asserts that version, different from the default view.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W4 — Execute extension composition/readiness tests in CI (medium; BH7+VG2).
   evidence: Tuple CI uses package references and selects no EventStoreExtension suite, so source-only Platform feature tests do not run there. Retains the earlier CI follow-up: qualify/select the feature tests with a released package cohort. A source-mode CI job requires an explicit exception to repository CI guidance.
+  status: resolved
+  resolution: 2026-11-22: the hosted `extensions` lane runs the package-mode composition and readiness methods, including `PlatformHostLoadsTheTestExtensionAndReportsItInReadinessAsync`.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W5 — Exercise actual owner/extension generated-secret sharing when Memories adopts (medium; BH9).
   evidence: AdmittedAd9ExceptionBindsOnlyItsOwnSharedSecret seeds secretValues directly and never calls PlatformLocalProfile.Bind. Retains the earlier adoption follow-up: run both binders with empty admitted secrets and assert identical owner/gateway values.
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: W6 — Verify snapshot-selected extension package versions through an actual restore/build (medium; VG3).
   evidence: PackageModeComposesThePlatformHostWithACatalogPinnedPackageReference sets no RunPlan and checks generated XML only. Ignoring Workspace would leave it green. Retains the earlier package qualification follow-up: choose a snapshot pin different from the live catalog, restore/build a supported host, and assert the resolved package version.
+  status: resolved
+  resolution: 2026-11-22: `EventStoreExtensionCompositionTests.SnapshotPinnedPackageRestoresAndBuildsWhenTheLiveCentralItemIsAbsentOrDifferentAsync` (hosted extension suite) chooses a snapshot pin different from the live catalog, restores and builds, and asserts the compiled version.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: VG2-1 — Execute the legacy domain-ci.yml allowed-not-runnable-tests allowlist in test-domain-workflow-test-platforms.ps1 (medium).
   evidence: The shim never emits NotRunnable TRX results. Deleting the allowlist predicate and env mappings in all four steps still passed 411 assertions. Origin cce084c4 (Works allowlist), not Story 2.8.
@@ -2197,3 +2213,15 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-14-reconcile-the-five-dependency-revisions.md`
   summary: Keep `/pushall` submodule syncs from redrifting Platform's tuple bindings. It moves owner and Builds gitlinks to upstream main without refreshing `eng/current-tuple-source.json` or the Builds pins, so main's tuple CI turns red until the next reconciliation.
   evidence: That is how `707cf901` broke `read_selection`. At planning the owner chose "out of scope, log it" over a `/pushall` change. A binding refresh still cannot fix a Builds gitlink on an unreleased commit.
+
+## Deferred from: code review of spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md (2026-11-22)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Add a control for `verify-published.py`'s signed public byte comparison (VG2).
+  evidence: `--skip-duplicate` makes `eng/test-extension-release/verify-published.py:36-39` the only barrier when a version already exists. It is module-level network code that no publisher control imports, so narrowing the comparison would pass all 37 controls. A testable comparison function with refusal cases for changed nonsignature bodies would settle it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Add a control for the CSV-encoded protection `--mount` spec (VG3+BH6).
+  evidence: `provision-fixture-protection.py:85-90` CSV-encodes `source=<certs>`, but nothing parses the generated argument for a path with `,` or `"`. A regression fails closed at the post-create bind readback. The fix pulls the mount builder out of `create_container` (`lineterminator=''` would also replace `removesuffix`).
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
+  summary: Record the source-mode composed host's server project in `selected-closure.json` (AA9+ECH5; joins the Story 3.9 identity entry above).
+  evidence: `PlatformRoutingCatalogBootstrap.DescribeHost` (`:136`) records `seedArtifact` only in package mode. A source-mode `composed-project` omits the mapped EventStore server project that supplies its settings. Source mode never recorded it.

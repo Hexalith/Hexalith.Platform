@@ -81,7 +81,7 @@ internal static class PlatformEventStoreExtensionBindings
     /// <param name="options">The selected composition inputs.</param>
     /// <param name="extensions">The resolved extension bindings.</param>
     /// <param name="secretValues">The composition-wide generated secrets, shared with the owner servers.</param>
-    /// <exception cref="InvalidDataException">An input is unbound or overlaps a key already bound by the gateway or another extension.</exception>
+    /// <exception cref="InvalidDataException">An input is unbound, repeats a leaf of its own structured value, or overlaps a key already bound by the gateway or another extension.</exception>
     internal static void Bind(Dictionary<string, string> environment, PlatformCompositionOptions options, IReadOnlyList<PlatformEventStoreExtensionBinding> extensions,
         Dictionary<string, string> secretValues)
     {
@@ -118,8 +118,8 @@ internal static class PlatformEventStoreExtensionBindings
                 }
             }
             Dictionary<string, string> bound = new(StringComparer.OrdinalIgnoreCase);
-            InvalidDataException Conflict(string leaf)
-                => new($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-configuration-conflict: '{leaf}' overlaps a key already bound on the composed eventstore host.");
+            InvalidDataException Conflict(string leaf, string reason = "overlaps a key already bound on the composed eventstore host")
+                => new($"{extension.Source}: {scoped}: runtime.eventStoreExtensions.configurationInputs: eventstore-extension-configuration-conflict: '{leaf}' {reason}.");
             ReadOnlySpan<char> structuredValue = value.AsSpan().TrimStart();
             if (source is not ("secret" or "dynamic-secret") && !structuredValue.IsEmpty && structuredValue[0] is '[' or '{')
             {
@@ -128,7 +128,7 @@ internal static class PlatformEventStoreExtensionBindings
                     using JsonDocument structured = JsonDocument.Parse(value);
                     PlatformLocalProfile.Flatten(key, structured.RootElement, (leaf, body) =>
                     {
-                        if (!bound.TryAdd(leaf, body)) throw Conflict(leaf);
+                        if (!bound.TryAdd(leaf, body)) throw Conflict(leaf, "repeats another leaf of the same structured value, compared without case");
                     });
                 }
                 catch (JsonException exception)

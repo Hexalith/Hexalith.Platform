@@ -2,7 +2,7 @@
 
 [Current tuple preparation](current-tuple-preparation.md) documents the
 authenticated Platform checkout and Builds pin. The current inventories require
-380 current42, 67 base42, and nine extension cases.
+the exact counts in `REQUIRED_TOTALS` of [`eng/run_tuple_ci.py`](../eng/run_tuple_ci.py).
 
 Parties declares one package profile per project. Run the integration suite
 from the verified Platform checkout with the pinned module CLI:

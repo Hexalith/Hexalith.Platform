@@ -27,7 +27,10 @@ build and native-test files, NuGet metadata and the standard signature entry.
 NuGet may report the same immutable version already exists. The authenticated
 retry continues to the mandatory public download, repository signature
 verification and comparison of every nonsignature member with the qualified
-archive. Different payload bytes fail the retry.
+archive. Different payload bytes fail the retry. Retry with a full workflow
+re-run or a new dispatch, which qualifies and packs again. Re-running only the
+failed `publish` job fails, because it downloads the artifact named for its own
+attempt.
 
 Second, measure that signed public fixture archive and the owner SDK releases,
 then add the finite cohort/declaration/host/seed/image/publication bindings and
@@ -36,7 +39,8 @@ the packaged extension and report `platform-test@1`; overall distributed
 readiness remains a separate result. An unsigned candidate fixture and a
 source-only fixture test cannot substitute for this second stage.
 
-The production environment requires normal review and allows main. The publisher uses
+The production environment requires normal review, allows only `main` and
+disables administrator bypass. The publisher uses
 NuGet Trusted Publishing for account `jpiquot`, repository
 `Hexalith/Hexalith.Platform`, workflow `test-extension-release.yml`, environment
 `production`, and package `Hexalith.Platform.TestExtension`, with the already configured
@@ -92,8 +96,8 @@ responses cannot report a pass.
 A successful local observer or native report from an unsigned historical
 candidate grants no signed fixture, parent-plan or cohort qualification credit.
 
-The extension tuple profile runs 21 required component cases, including the nine
-original SDK controls. It also builds the actual Platform host using the named
+The extension tuple profile runs every required component case selected in
+`eng/tuple-ci-extension-suites.json`, including the original SDK controls. It also builds the actual Platform host using the named
 Builds catalog selection and starts it with a disposable Dapr state sidecar. The
 component check compares the restored archive, selected assets and loaded DLL
 against signed NuGet 2.2.5 and requires `platform-test@1` in the extension readiness

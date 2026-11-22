@@ -17,16 +17,14 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 
-The continuing inventories declare 489 current42, 93 base42 and nine extension
-executions, with exact positive group counts and zero skips.
+The current tuple requires the exact `current42`, `base42` and `extensions`
+xUnit execution counts in `REQUIRED_TOTALS` of [`eng/run_tuple_ci.py`](../eng/run_tuple_ci.py), each
+with exact group counts and zero skips.
 
-The current collector uses NET11 and the explicit SDK4.2/Tenants7.0.7/
-Memories3.0.27/Parties3.1.1/McpCli2.0.1 family. Genuine old packages remain fixture
-data with their original provenance. Reader authenticity supplies no image or
-runtime permission. Signed-host plan/key checks, reader integrity, readiness,
-model transport and exact positive counts with zero skips remain required.
-Hosted main tuple success still requires an authorized landing and actual run;
-local audits provide no hosted or native acceptance.
+The current collector targets .NET 11 with owner versions from the pinned Builds
+catalog and the verified owner lock. Historical package fixtures retain their
+original provenance. Runtime qualification also checks the selected run plan,
+reader, images and readiness for the declared profile.
 
 ## Historical preparation records
 

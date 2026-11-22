@@ -208,6 +208,47 @@ Rejected appendix:
 - ECH1 — low: sibling configuration leaves require a Platform-owned value; a new reserved-section policy is not a direct correction and repeats the earlier rejected finding.
 - ECH2 — low: scalar-only raw Packages configuration is not emitted by the composer; adding a guard for this manually malformed shape is not warranted.
 
+#### Review iteration 2026-11-22 — delta `cf002bac..0f6468ed`
+
+Scope: the review-patch commit `196f4310` and the completion evidence `0f6468ed` (27 files, +895/−104). The 2026-11-21 layers stopped at `cf002bac`. Layers: Blind Hunter (BH), Edge Case Hunter (ECH), Verification Gap (VG), Acceptance Auditor (AA). 41 raw findings: 10 patch, 3 defer, 0 decision, 19 rejected.
+
+- [x] [Review][Patch] Select `StructuredExtensionInputFlattensOrIsRefused` (6 rows) in the hosted extension suite so the BH4/EC3 duplicate-leaf refusal is gated: group 9→15, totals 21→27 (VG1+AA3) [eng/tuple-ci-extension-suites.json:17]
+- [x] [Review][Patch] Stop repeating lane counts in prose. Two copies are already stale (`docs/current-tuple-preparation.md` 489/93/nine, `docs/package-catalog-qualification.md` nine), so point to `REQUIRED_TOTALS` and the profiles instead (BH2+BH3) [docs/current-tuple-preparation.md:20]
+- [x] [Review][Patch] The observer control asserts neither `EventStore__PayloadProtection__Enabled` nor a refusal for a changed `installation.json` (BH5+AA8) [tests/Hexalith.Platform.Composition.Tests/PlatformFixturePackageQualificationTests.cs:160]
+- [x] [Review][Patch] A duplicate leaf inside one structured value reports "overlaps a key already bound on the composed eventstore host"; give it its own message and keep the condition (BH17+AA6) [src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs:122]
+- [x] [Review][Patch] Enrollment guide: state that `PlatformCompositionOptions.Configuration` wins over the profile, name `eventstore-extension-configuration-conflict` for duplicate leaves, and say plainly that the app model supplies the fixture marker (BH16) [docs/domain-module-enrollment.md:387]
+- [x] [Review][Patch] Publisher README: restore "only main" and "administrator bypass is disabled", read back 2026-11-22 as custom branch policy `main` and `can_admins_bypass: false` (BH14) [eng/test-extension-release/README.md:39]
+- [x] [Review][Patch] Publisher README: the duplicate-version retry works only as a full re-run or a new dispatch, because "Re-run failed jobs" downloads an artifact named for the new attempt (BH8) [eng/test-extension-release/README.md:27]
+- [x] [Review][Patch] Rename the reader control's `policyFacet` to `idempotencyFacet` to match `IdempotencyFacetDigest` (BH19) [tests/Hexalith.Platform.Composition.Tests/PlatformFixturePackageQualificationTests.cs:172]
+- [x] [Review][Patch] Mark the 3.2 deferred entries this landing resolved: CI path, package-mode enablement, composed-host admission, W2, W3, W4, W6. Keep W1 and the Parties, 3.9 and Memories entries open (AA2) [_bmad-output/implementation-artifacts/deferred-work.md:1801]
+- [x] [Review][Patch] Sync `sprint-status.yaml` with the review outcome; the spec says `done` while tracking says `review` (BH1+AA1+ECH7+VG) [_bmad-output/implementation-artifacts/sprint-status.yaml:143]
+- [x] [Review][Defer] `verify-published.py`'s byte comparison, now the only barrier on a duplicate-version retry, has no control (VG2) [eng/test-extension-release/verify-published.py:39] — deferred: needs the comparison extracted from a network script and a larger pinned 37-control inventory; the only version, 2.2.5, was verified independently.
+- [x] [Review][Defer] The CSV-encoded `--mount` spec has no control (VG3+BH6) [eng/test-extension-release/provision-fixture-protection.py:85] — deferred: a regression fails closed at the post-create bind readback, and a test needs the mount builder pulled out of `create_container`.
+- [x] [Review][Defer] Source-mode composed hosts record no `seedArtifact` (AA9+ECH5) [src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:136] — deferred: pre-existing, because source mode never recorded the server project; it joins the Story 3.9 candidate artifact identity entry.
+
+
+Patches applied 2026-11-22 (Release, package mode, `-p:UseHexalithProjectReferences=false`): build 0 errors, with only the existing CS0618 warnings in untouched files. `PlatformFixturePackageQualificationTests` 12/12, extension group 1's selectors 15/15 (the new `requiredCount`) and the whole `EventStoreExtensionCompositionTests` class 39/39. `eng` tuple tests (`test_tuple_collectors`, `test_tuple_sdk_suites`, `test_builds_tuple`) 50/50 and publisher controls 37/37. The extension total is now 27; hosted tuple CI confirms it on the next landing.
+Rejected:
+- BH1 (part) `review_loop_iteration: 0` and BH20 spacing and superseded "in-progress" lines: the fix edits the spec under review.
+- BH4, false: removing the `runId` check sends the control to `/proc/2147483647/environ`, which throws `DirectoryNotFoundException`, so `Should.ThrowAsync<InvalidDataException>` fails and the refusal stays pinned.
+- BH7, low: set equality pins missing and extra members alike, and the positive archive carries every required member. A future SDK psmdcp name fails closed.
+- BH9+AA4, low, evidence only: the raw-to-normalized difference and missing identities leave the empty new-failure list unchanged. Regenerating them needs the raw runs.
+- BH10, low, evidence only: `platform-pr55-merge-verification.json` ties the merged tree to `196f4310`, and exact-main qualification reran that merge.
+- BH11, low, evidence only: the spec records the timed-out first attempt and its `down` cleanup; the credited run is the retry.
+- BH12, false: every support image records its `imageId` digest. The floating tags come from the upstream Memories graph, and the second `daprio/dapr` row is a second container.
+- BH13, low: the spec records the 503 as the separate overall distributed readiness result.
+- BH15, low, process only: the policy lives in the owner's NuGet account, and the signed 2.2.5 publication through it is the evidence.
+- BH18+AA7, low: the internal constructors are test seams. Production goes through `Attach` and the producer constructor, and restoring privacy means restructuring the tests.
+- BH19 (part), low: the route facet was the requested VG3 control; mutating every field adds cases without a named regression.
+- BH5+AA8 (part): the app model's `Attach` wiring (`PlatformAppModel.cs:342`) stays covered by the ordinary native run; a hosted app-model test is more than a direct fix.
+- AA5, low, process only: the fix is to correct the spec claim or regenerate the hash.
+- AA10, low: carries the BH14/AA6 → BH6 disposition to Story 3.6.
+- ECH1, low, pre-existing: an empty `{}`/`[]` input comes only from Platform-owned configuration, and a guard adds a branch.
+- ECH2, low, pre-existing: property names come from Platform-owned configuration, and a guard adds a branch.
+- ECH3, low: owner-profile last-wins flattening was kept by the 2026-11-21 BH4 decision.
+- ECH4, low: no caller passes null, and the authenticated producer always carries values.
+- ECH6, low: the qualify job packs the candidate itself, so nothing can add `.signature.p7s`; a signed-mode parameter adds surface.
+
 ## Implementation Notes
 
 - Scratch branches (local commits, not pushed; main checkouts, pins and tuple CI untouched):

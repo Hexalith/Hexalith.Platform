@@ -17,9 +17,10 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 
-The current tuple requires 380 `current42`, 67 `base42` and 21 `extensions`
-xUnit executions with exact group counts and zero skips. The extension lane
-also runs the signed host component startup check.
+The current tuple requires the exact `current42`, `base42` and `extensions`
+xUnit execution counts in `REQUIRED_TOTALS` of [`eng/run_tuple_ci.py`](../eng/run_tuple_ci.py), each
+with exact group counts and zero skips. The extension lane also runs the
+signed host component startup check.
 
 The current collector targets .NET 11 with owner versions from the pinned Builds
 catalog and the verified owner lock. Historical package fixtures retain their
@@ -384,12 +385,14 @@ packages and never enrolls a gateway extension.
 - Inputs use `configuration` except for the AD-9 secrets described below. The
   ordinary AppHost reads declared extension values from the Platform-owned
   `src/Hexalith.Platform.Composition/Declarations/local-profile.json`. A
-  programmatic caller can supply values in `PlatformCompositionOptions.Configuration`.
-  Both use `<moduleId>/<extensionId>/<key>`. The authenticated package fixture
-  receives its marker from the owner-run model. Missing inputs fail with
+  programmatic caller can supply values in `PlatformCompositionOptions.Configuration`,
+  which take precedence over the profile. Both use `<moduleId>/<extensionId>/<key>`.
+  In package mode, the Platform app model itself supplies the authenticated
+  fixture's `PlatformTestExtension:Marker` value. Missing inputs fail with
   `eventstore-extension-input-unbound` and malformed structured values fail with
   `eventstore-extension-input-invalid`. Structured leaves flatten using the owner
-  profile rules, with duplicate normalized keys refused case-insensitively.
+  profile rules. Two leaves that normalize to the same key, compared without case,
+  fail with `eventstore-extension-configuration-conflict`.
   A key under `EventStore:Extensions`, or one that equals, contains or is contained in a
   key bound by the gateway's own declared inputs, its Dapr bindings or an earlier
   extension input, compared without case, is refused
