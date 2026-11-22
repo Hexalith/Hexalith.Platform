@@ -104,3 +104,45 @@ Line numbers refer to the current `epics.md`. Fix the findings with a direct edi
 ## Carried forward unchanged
 
 The open policy decisions, human decisions, spike, embedded ratifications and the stories blocked by the External Prerequisites Register are as recorded in the 2026-09-28 report. Two renumberings apply: the candidate policy is now Story 2.1, and the named-recovery qualification is now 8.16 (see N-05).
+
+## November 22, 2026 readiness gate
+
+**Verdict: FAIL.** Reviewed Platform revision `b0124db4` against the current PRD, architecture spine, Platform spec, epic breakdown and staging foundation handoff. The sprint tracker contains all 12 epic IDs and 151 story IDs. The following conflicts stopped the tracker refresh.
+
+| ID | Severity | Finding | Sources |
+| --- | --- | --- | --- |
+| IR-2026-11-22-1 | High | Initial production setup needs a procedure for creating the production namespaces, identity RBAC, StorageClass and PriorityClass before a complete production recovery point can exist. Story 6.7 places these resources in the environment-layer apply. The architecture assigns them to shared infrastructure, and Story 6.22 requires a complete recovery point for its ordinary workflow. The staging handoff records separate owners and apply stages. | [Story 6.7](epics.md#story-67-build-the-production-environment-layer), [Story 6.22](epics.md#story-622-guard-shared-infrastructure-changes-with-one-controlled-procedure), [architecture release tiers](architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md#release-tiers), [staging foundation sequence](../../eng/staging-foundation/CONTINUATION-PACKAGE.md#ordered-owners-and-acceptance-boundaries) |
+| IR-2026-11-22-2 | High | Story 5.11 requires fresh-install proof for an approved empty or degraded attempt, with compatibility or a qualified named restore required when data remain. Story 6.18 limits use of fresh-install proof to first installation without retained data. Story 5.7 also needs an explicit execution branch for a degraded target with an existing baseline. | [Story 5.7](epics.md#story-57-rehearse-a-fresh-install-when-production-has-no-baseline), [Story 5.11](epics.md#story-511-evaluate-staging-evidence-for-promotion), [Story 6.18](epics.md#story-618-run-administrator-approved-attempts-into-empty-or-degraded-production), [PRD staging validation](prds/prd-platform-2026-09-27/prd.md#staging-validation-and-production-promotion) |
+| IR-2026-11-22-3 | High | Story 8.19 makes candidate-specific named-recovery qualification a universal G2 condition. The spec requires it for the first applicable degraded attempt with retained data and defines G2 through standing controls and an isolated disaster-recovery drill. A healthy first release may have no such candidate. | [Story 8.19](epics.md#story-819-open-production-to-users-g2), [Platform spec sequencing](../specs/spec-platform/sequencing.md#g2--users-admitted-ingress-open) |
+
+The [November 22 sprint change proposal](sprint-change-proposal-2026-11-22.md) records the corrections, the owner’s approval and the cases assigned to implementation.
+
+### November 22 re-gate after the approved course correction
+
+**Verdict: PASS for the three November 22 planning findings.** The production foundation has a named owner, order and narrow pre-recovery-point procedure under both locks. Staging and production now require the same exact-release fresh-install proof for the approved empty or degraded path. G2 uses the independent disaster-recovery drill and standing controls, while admission of a candidate relying on named recovery requires its own qualification.
+
+The [sprint tracker](../implementation-artifacts/sprint-status.yaml) was checked against 12 epics and 151 stories. The generator treated two existing story keys as new slugs and attempted to advance the expressly backlogged Story 4.28 because a scoped input file exists. The reconciled preview matched all statuses by numeric ID and all 19 action items. The refresh updated the tracker timestamp in place to retain the keys referenced by frozen specs and the evidence comments that the generator drops. This re-gate covers planning. Live bootstrap, release-admission and recovery evidence remain acceptance work for their respective stories.
+
+### November 22 full planning gate follow-up
+
+**Verdict at this gate: FAIL.** The tracker matched all 12 epic IDs and 151 story IDs. Three production requirements blocked that refresh. The preceding PASS applied to findings IR-2026-11-22-1 through IR-2026-11-22-3.
+
+| ID | Severity | Finding | Sources |
+| --- | --- | --- | --- |
+| IR-2026-11-22-4 | High | FR-10 requires a complete recovery point for every shared-infrastructure change. Record the approved first-production foundation exception that Story 6.22 limits to a create-only procedure using current, verified native recovery evidence under both locks. | [PRD FR-10](prds/prd-platform-2026-09-27/prd.md#fr-10-provide-isolated-staging-and-production-environments) · [Story 6.22](epics.md#story-622-guard-shared-infrastructure-changes-with-one-controlled-procedure) |
+| IR-2026-11-22-5 | High | Story 6.7 needs Story 6.9’s proof that the production attempt store is reachable from the recovery executor. Story 8.9 commissions the executor after usable production recovery points exist. Specify what Story 6.9 must verify from the selected recovery host before full commissioning. | [Story 6.7](epics.md#story-67-build-the-production-environment-layer) · [Story 6.9](epics.md#story-69-provide-the-production-attempt-lock-and-stop-store) · [Story 8.9](epics.md#story-89-fence-the-failed-environment-and-rebuild-it-on-prepared-capacity) |
+| IR-2026-11-22-6 | Medium | AR-35 requires a complete post-lock point for every approved retained-data attempt. Story 6.18 makes the point explicit in its named-restore branch and leaves the compatible G1 repair requirement unstated. | [AR-35](epics.md#additional-requirements) · [Story 6.18](epics.md#story-618-run-administrator-approved-attempts-into-empty-or-degraded-production) |
+
+The owner approved the edits and acceptance cases in the [production readiness sprint change proposal](sprint-change-proposal-2026-11-22-production-requirements.md) on 22 November 2026.
+
+### November 22 re-gate after the production requirements correction
+
+**Current verdict: PASS.** The re-gate resolves IR-2026-11-22-4 through IR-2026-11-22-6. The scope is planning readiness. Live acceptance evidence remains with the delivery stories.
+
+| Finding | Verified planning rule |
+| --- | --- |
+| IR-2026-11-22-4 | FR-10 and CAP-10 record Story 6.22's approved create-only foundation exception before production has workload data or a working baseline. The exception uses both locks and current verified native recovery evidence. Ordinary shared changes require a complete recovery point. |
+| IR-2026-11-22-5 | Story 8.1 prepares the designated off-site host in time for Story 6.9's authenticated, scoped read from the production store before Story 6.7. Story 8.9 commissions the executor after usable Story 8.7 recovery points and its other inputs exist. |
+| IR-2026-11-22-6 | FR-8, AR-35, the architecture and spec, and Stories 6.14 and 6.18 require both approved retained-data branches to cut and verify a complete point under the production lock before workload mutation. Story 6.23 covers the first empty installation without retained data. A failed first installation that leaves data stays stopped if the retained-data gates cannot be met. |
+
+The [sprint tracker](../implementation-artifacts/sprint-status.yaml) matches 12 epics and 151 story IDs. The generator preview derived different slugs for Stories 2.11 and 2.12 and treated the Story 4.28 input as a reason to advance its status. The reconciled preview matched all statuses by numeric ID and all 19 action items. The tracker refresh updated `last_updated` in place to preserve the existing keys, statuses, action items and evidence comments.
