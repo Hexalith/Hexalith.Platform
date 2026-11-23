@@ -6,19 +6,17 @@ offline rootless-engine bundle. They perform no host contact or installation and
 grant no calibration admission. Actual new host changes require their exact
 approval; the existing calibration approval remains accepted and unused.
 
-The selected application package is the maintained chart in `chart/`. The native
-probe uses Aspire **13.6.4**, `Aspire.Hosting.Kubernetes`
+The selected application package is the maintained chart in `chart/`. The dated native
+probe used Aspire **13.6.4**, `Aspire.Hosting.Kubernetes`
 **13.6.4-preview.1.26523.11**, and the catalog Dapr integration
-**13.6.2-beta.959**. These are the actual tools, replacing the story's historical
-13.5.4 identity. No dependency upgrade is part of this qualification.
+**13.6.2-beta.959** with Dapr runtime **1.18.7**.
 
-Native publishing succeeds but drops the `WithDaprSidecar` annotation from all
+Native publishing succeeded and dropped the `WithDaprSidecar` annotation from all
 eight generated Pod templates. Preserving module Dapr plumbing would require a
-separate Kubernetes model, which is the AD-1 fallback trigger. `qualify.py`
-repeats that measurement, requires every enabled native workload to exist, retains
-the generated files and render, and records their hashes and missing annotations
-in `exportDecision`. A build failure or incomplete probe fails qualification.
-No generated native files are patched.
+separate Kubernetes model, which triggered the AD-1 fallback. The historical
+`qualify.py` path requires every enabled native workload, retains the generated
+files and render, and records their hashes and missing annotations in
+`exportDecision`. A build failure or incomplete probe fails that measurement.
 
 `PlatformApplicationGraph` selects the actual Parties declaration and its
 EventStore, Tenants and Memories closure. `PlatformServerBindings` consumes that
@@ -36,11 +34,10 @@ The pinned [13.6.4 CLI](https://github.com/microsoft/aspire/blob/v13.6.4/src/Asp
 passes `--operation publish --step deploy`; the
 [SDK builder](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Hosting/DistributedApplicationBuilder.cs)
 maps that step to `Pipeline:Step`, which the guard checks.
-The chart's `reference-graph.json` is a serialized metadata input from that graph,
-not a second hand-written topology. Its parity with current declarations is
-checked by the C# tests and every native probe. To update it after a declaration
-change, run the same probe with `Platform__Hosted__GraphPath` pointing at that
-file. The maintained chart remains generic.
+The chart's `reference-graph.json` serializes the approved hosted graph from
+that composition. The hosted C# tests and native probe check parity against
+the owner-approved direct-revision tuple. A declaration change enters the
+hosted chart through a reviewed source mapping and a fresh graph export.
 
 The application package owns Deployments, Services, HTTPRoutes, Dapr Configurations
 and Subscriptions. In normal, recovery and remove-workloads modes, the application
@@ -123,22 +120,48 @@ Deployments, Services and routes while retaining Dapr Configurations and Subscri
 Unknown modes fail. Dapr HotReload remains disabled in every mode. These modes do
 not implement data restoration.
 
-Run from the Platform root with the repository's .NET test runner:
+### Dapr 1.19.2 candidate
+
+Run from the Platform root on Linux amd64 with Docker, kind, kubectl, Git, curl,
+skopeo, Python 3.12 or newer, PyYAML and the Platform .NET SDK available. The
+offline descriptor tests require the source/Debug Builds Module CLI built for the
+framework selected by `.config/dotnet-tools.json` in the sibling Builds checkout
+or, when the sibling catalog is absent, the nested Builds checkout. The evidence
+records the selected CLI files and reported version separately from the manifest
+pin. Choose a fresh evidence path outside the disposable workspace for every
+attempt.
 
 ```bash
-DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
-  dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
-  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
-HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
-  -s eng/helm-qualification -p 'test_*.py' -v
-python3 eng/helm-qualification/qualify.py
+run-with-temp env PYTHONDONTWRITEBYTECODE=1 python3 -B eng/helm-qualification/dapr_candidate.py \
+  --evidence "_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-$(date -u +%Y%m%dT%H%M%SZ)"
 ```
 
-`toolchain.json` pins Helm 4.2.0, kind, the digest-qualified Kubernetes node image,
-Gateway CRDs and Dapr 1.18.7 for the historical probe. The live qualifier requires
-its runtime pin to match the released Builds catalog. The November 23 course
-correction selects Dapr 1.19.2 for fresh hosted qualification using a versioned,
-aligned toolchain and new ownership evidence. [Builds catalog](../../references/Hexalith.Builds/Props/Directory.Packages.props) · [Approved Dapr adoption](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-23.md)
+The [versioned candidate lock](dapr-1.19.2.json) freezes the official Dapr archive
+and CRDs, the released Builds 6.6.2 tuple, the Helm and kind inputs, and the
+Linux amd64 Dapr image index and manifest digests. The qualifier compares the
+chart to the official index, checks the seven archive CRDs against the frozen
+upstream source, and verifies the runtime source revision and
+`components-contrib` checksum embedded in the pinned `daprd` binary. CLI and
+.NET SDK versions are recorded from the released Builds catalog at 1.19.1.
+The approved hosted graph is the byte-identical graph from the Story 1.17
+reviewed merge. A later source projection has the same eight workloads, capability
+bindings and subscriptions and adds one EventStore ACL caller for three
+Conversations operations. Qualifying that projection requires an updated
+hosted source approval. [Graph comparison](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-graph-parity/comparison.json) · [Builds catalog](../../references/Hexalith.Builds/Props/Directory.Packages.props) · [Approved Dapr adoption](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-23.md)
+
+The documented starting runtime is 1.18.7. Its chart differs in
+`configuration.yaml` and `workflowaccesspolicy.yaml`. Install the canonical
+1.19 CRDs before changing the control plane, and check that the installed
+WorkflowAccessPolicy schema exposes typed `requires` fields in both activity
+and workflow rules. Helm upgrades leave CRDs
+under the infrastructure writer. The Dapr 1.19 Scheduler also requires
+`get`, `list` and `watch` on Pods in the control-plane namespace. The qualifier
+checks the chart's namespaced Role and RoleBinding, then proves these grants on
+the fresh cluster with the Scheduler service account and verifies it cannot
+list Pods in the default namespace. The fixture uses
+in-memory Scheduler storage with standalone actor placement. Upgrading an
+existing shared control plane and exercising persistent Scheduler storage
+belong to their existing environment gates. [Dapr Kubernetes upgrade guide](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-upgrade/) · [Dapr 1.19 release notes](https://blog.dapr.io/posts/2026/10/22/dapr-v1.19-is-now-available/)
 
 Downloaded CRDs and the Dapr chart
 must match the recorded SHA256 values. The qualifier downloads Helm from its pinned
@@ -150,8 +173,10 @@ there are no skipped qualification checks.
 
 The qualifier creates a unique `h45-*` kind cluster and private kubeconfig, passes
 that kubeconfig and context to every Kubernetes/Helm operation, and never reads
-the ambient kubeconfig. It installs the pinned Dapr control plane and Gateway
-CRDs, enforces restricted admission in the application namespace, and submits an
+the ambient kubeconfig. It applies the verified CRDs from the private workspace
+and installs the pinned Dapr control plane with Helm Secret storage. It verifies
+ready container image identities against the replica counts in the control-plane
+render, enforces restricted admission in the application namespace, and submits an
 actual Pod for each rendered Deployment template with server dry-run. Both the
 real templates and unsafe control use the observed ReplicaSet-controller service
 account UID and groups, matching the Deployment admission caller. The injector
@@ -168,31 +193,53 @@ It installs and upgrades the packaged archive using `--server-side=true`, requir
 Helm `Apply` managed fields, demonstrates refusal of a deliberately conflicting
 writer without Helm force flags, then verifies recovery and workload removal.
 Only the synthetic rival writer uses `--force-conflicts` to set up the conflict.
+The qualifier checks that all expected Dapr Configurations and Subscriptions
+survive workload removal and are absent after uninstall.
 The environment service account applies the graph-derived Components by server-side
 apply. The separate namespace application service account stores Helm revisions
 in ConfigMaps. Qualification verifies that this identity cannot create, patch,
 update or delete Components. It checks each Component's UID, binding, scopes and
 environment field ownership after install, normal upgrade, recovery, removal and
-uninstall. Every wait is bounded. The `finally` path deletes
+uninstall, including after the refused upgrade. Every wait is bounded. The `finally` path deletes
 only the invocation's named cluster, checks owned node absence, and removes the
 private kubeconfig even after cluster deletion or inventory fails, retaining that
 cleanup failure in the result. Final source verification compares both complete
 file inventories and hashes, detecting newly added templates as well as edits.
 Local failure-path regressions exercise those behaviors without a live cluster.
 
-A fresh run writes `qualification.json` and `environment-components.json` to a
-new `_bmad-output/implementation-artifacts/evidence/4-5/component-ownership-<run>/`
-directory by default, accompanied
-by version-control-visible command logs (retained through the evidence directory
-ignore override), exact source/input/tool/package hashes, native output, archived
-chart, rendered manifests and admitted Pods. A failed result remains failed and
-does not close the story. Story 4.5 qualifies local chart rendering, admission, field ownership and
-lifecycle. Story 4.12 verifies the published OCI digest and attestation. Story
-4.13 retrieves the retained package by that digest from the off-site replica
-and proves the recovery path. Earlier chart evidence predates this ownership
-correction. Staging deployment and readiness with retained production images
-require their own qualification. The
-Timesheets enrollment candidate is unchanged.
+A 1.19.2 run retains the qualification record, exact source and package
+identities, input and application archives, canonical CRDs, Dapr values,
+source and archive renders for all three modes, admitted Pods, and Component
+ownership snapshots. The command logs retain the observed results, including
+the intentional SSA conflict. The 23 November passing run admitted all eight
+workloads under restricted policy and retained byte-identical snapshots of
+all eight environment Components across seven lifecycle checkpoints.
+[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-20261123-04/qualification.json)
+
+Story 4.9 consumes these exact Dapr identities
+for the hosted inventory. Story 4.12 verifies the published OCI digest and
+attestation. Story 4.13 retrieves the retained package from the off-site
+replica and proves recovery. Staging deployment, runtime policy and durable
+broker guarantees retain their own qualification gates.
+
+### Historical native probe and source verification
+
+`toolchain.json` pins the Dapr 1.18.7 probe and supplies the existing
+calibration and campaign tools. `qualify.py` continues to expose those paths.
+Use the recorded source and dependency revisions to reproduce the dated native
+probe. Its original evidence directory records those inputs.
+
+Run these commands from the historical Platform checkout in a disposable
+workspace. Save the historical qualifier's evidence outside that workspace.
+
+```bash
+DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
+  dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
+  -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
+HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
+  -s eng/helm-qualification -p 'test_*.py' -v
+python3 eng/helm-qualification/qualify.py --evidence "$QUALIFICATION_EVIDENCE"
+```
 
 Each run clears prior numbered command logs before its first command. Source
 evidence records the root revision, porcelain status and submodule revisions, so

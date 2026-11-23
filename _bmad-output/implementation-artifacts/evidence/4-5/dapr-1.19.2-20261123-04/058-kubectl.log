@@ -1,0 +1,32 @@
+{
+    "kind": "Config",
+    "apiVersion": "v1",
+    "clusters": [
+        {
+            "name": "kind-h45-78f877888c2d",
+            "cluster": {
+                "server": "https://127.0.0.1:36683",
+                "certificate-authority-data": "DATA+OMITTED"
+            }
+        }
+    ],
+    "users": [
+        {
+            "name": "kind-h45-78f877888c2d",
+            "user": {
+                "client-certificate-data": "DATA+OMITTED",
+                "client-key-data": "DATA+OMITTED"
+            }
+        }
+    ],
+    "contexts": [
+        {
+            "name": "kind-h45-78f877888c2d",
+            "context": {
+                "cluster": "kind-h45-78f877888c2d",
+                "user": "kind-h45-78f877888c2d"
+            }
+        }
+    ],
+    "current-context": "kind-h45-78f877888c2d"
+}

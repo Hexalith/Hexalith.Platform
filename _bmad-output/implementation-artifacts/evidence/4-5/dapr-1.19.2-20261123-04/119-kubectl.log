@@ -1,0 +1,49 @@
+{
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T07:54:10Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "dapr.io/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:scopes": {},
+                    "f:spec": {
+                        "f:metadata": {},
+                        "f:type": {},
+                        "f:version": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T07:54:10Z"
+            }
+        ],
+        "name": "llm",
+        "namespace": "reference",
+        "resourceVersion": "1189",
+        "uid": "45362e09-50c8-4daf-baa0-e972f74f6262"
+    },
+    "scopes": [
+        "memories"
+    ],
+    "spec": {
+        "metadata": [
+            {
+                "name": "endpoint",
+                "value": "https://identity.fixture.invalid/realm"
+            },
+            {
+                "name": "key",
+                "secretKeyRef": {
+                    "key": "token",
+                    "name": "fixture-credential"
+                }
+            }
+        ],
+        "type": "conversation.openai",
+        "version": "v1"
+    }
+}

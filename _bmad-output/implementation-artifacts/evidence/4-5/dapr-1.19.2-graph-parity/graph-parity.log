@@ -1,16 +1,36 @@
-Platform 2e5b8ae7c2848cb1022e93005c7f9e6dd5fceeac
-Builds 2d9ef8b454ff897daca0149f3549844f584b634a
-EventStore d810b7a9a4db5454783a5eb776d60b708264ea45
-Tenants 465f0b36afeeb880c4b66144547a127e5bc57208
+Platform 646ce2a8104b7ef512568b21340d203143d5a0d8
+references/Hexalith.AI.Tools 2e591bddc6c951ee8a2018c2bac05755f2f5af00
+references/Hexalith.Agents e72605a6c4bc73af40c41e744b56c1e7a2a14391
 warning: unable to find all commit-graph files
 warning: unable to find all commit-graph files
-Memories 2b82cb36cba33b41cff8fb83f15924e24ca64002
-Parties cc691319b8ee622198f7d8d93a87f85a86b9fd8a
+references/Hexalith.Builds 2d9ef8b454ff897daca0149f3549844f584b634a
+references/Hexalith.ChatBot 034dd5f8a687087ebcc62aa57d0598f566b321fb
+references/Hexalith.CiCd 7dc3a2ef50b06ed0b3e6cad93736a8d07741b830
+references/Hexalith.Commons 5f646d4e49279cca0d31ab577e91719c3ed7e434
+references/Hexalith.Conversations f517ee6f1f94c6e0c0202798d601cf1a3e208967
 warning: unable to find all commit-graph files
 warning: unable to find all commit-graph files
-Commons 5f646d4e49279cca0d31ab577e91719c3ed7e434
-McpCli a8f2b5fa35227ee22ee925ce88640db745c9af8e
-PolymorphicSerializations 99c2344f08d3e3560a891f79ab63f8722fa14e60
-/tmp/hexalith-job.Gd4n57n8/platform/references/Hexalith.EventStore/tools/Hexalith.EventStore.RuntimeIdentityProbe/Hexalith.EventStore.RuntimeIdentityProbe.csproj : error MSB4025: The project file '/tmp/hexalith-job.Gd4n57n8/platform/references/Hexalith.EventStore/tools/Hexalith.EventStore.RuntimeIdentityProbe/Hexalith.EventStore.RuntimeIdentityProbe.csproj' could not be loaded when referenced by /tmp/hexalith-job.Gd4n57n8/platform/references/Hexalith.EventStore/src/Hexalith.EventStore.Aspire/Hexalith.EventStore.Aspire.csproj. Could not find a part of the path '/tmp/hexalith-job.Gd4n57n8/platform/references/Hexalith.EventStore/tools/Hexalith.EventStore.RuntimeIdentityProbe/Hexalith.EventStore.RuntimeIdentityProbe.csproj'.  /tmp/hexalith-job.Gd4n57n8/platform/references/Hexalith.EventStore/tools/Hexalith.EventStore.RuntimeIdentityProbe/Hexalith.EventStore.RuntimeIdentityProbe.csproj [/tmp/hexalith-job.Gd4n57n8/platform/h45-parity/GraphParity.csproj]
-
-The build failed. Fix the build errors and run again.
+references/Hexalith.EventStore d810b7a9a4db5454783a5eb776d60b708264ea45
+references/Hexalith.Folders 1c8da626f05b25b36dbc5813d68bc44da09a27f4
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+references/Hexalith.FrontComposer 6d90c6154d2ca6155eeae17a3f280dc22ff9560b
+references/Hexalith.McpCli a8f2b5fa35227ee22ee925ce88640db745c9af8e
+references/Hexalith.Memories 2b82cb36cba33b41cff8fb83f15924e24ca64002
+references/Hexalith.Parties cc691319b8ee622198f7d8d93a87f85a86b9fd8a
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+references/Hexalith.PolymorphicSerializations 99c2344f08d3e3560a891f79ab63f8722fa14e60
+references/Hexalith.Projects 6e9fc7225cad314b3065fb8b42872715ec9fb192
+references/Hexalith.Tenants 465f0b36afeeb880c4b66144547a127e5bc57208
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+references/Hexalith.Timesheets 151fd37308eb08f942040c283209e7886ad954a6
+references/Hexalith.Works ed05c0855e1699f3b3b1348cb44dd3aa8840bfe7
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/AgentsHostComposition.cs(156,28): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string, string?)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs(349,65): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string, string?)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/WorksPreviewModel.cs(149,26): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/WorksPreviewModel.cs(172,21): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/WorksPreviewModel.cs(188,76): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/WorksPreviewModel.cs(250,26): warning CS0618: 'ProjectResourceBuilderExtensions.AddProject(IDistributedApplicationBuilder, string, string)' is obsolete: 'Use AddDotnetProject(name, path) from the Aspire.Hosting.Dotnet package instead.' [/tmp/hexalith-job.4AEBsd9V/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj]
+Graph parity: False. Workloads: eventstore/gateway, tenants/domain, tenants/api, memories/server, memories/clock, memories/telemetry, memories/domain, parties/domain

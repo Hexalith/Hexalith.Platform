@@ -1,0 +1,123 @@
++ platform_source=/home/administrator/projects/hexalith/platform
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform /tmp/hexalith-job.JujrN8ZA/platform
++ git -C /tmp/hexalith-job.JujrN8ZA/platform sparse-checkout set --no-cone '/*' '!/_bmad-output/' '!/references/'
++ git -C /tmp/hexalith-job.JujrN8ZA/platform checkout --quiet --detach 759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=EventStore
++ revision=a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore /tmp/hexalith-job.JujrN8ZA/Hexalith.EventStore
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.JujrN8ZA/Hexalith.EventStore checkout --quiet --detach a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ export HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.EventStore
++ HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.EventStore
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Tenants
++ revision=b7824e4bba174b3a459364af24c99dedaf8f0738
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants /tmp/hexalith-job.JujrN8ZA/Hexalith.Tenants
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.JujrN8ZA/Hexalith.Tenants checkout --quiet --detach b7824e4bba174b3a459364af24c99dedaf8f0738
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Tenants
++ HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Tenants
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Memories
++ revision=8aee7a1323160cb39d7b1415256dbfdcb032939a
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Memories /tmp/hexalith-job.JujrN8ZA/Hexalith.Memories
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.JujrN8ZA/Hexalith.Memories checkout --quiet --detach 8aee7a1323160cb39d7b1415256dbfdcb032939a
++ export HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Memories
++ HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Memories
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Parties
++ revision=1d3576084ced39ec5104dac409becdbdd1c8635f
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Parties /tmp/hexalith-job.JujrN8ZA/Hexalith.Parties
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.JujrN8ZA/Hexalith.Parties checkout --quiet --detach 1d3576084ced39ec5104dac409becdbdd1c8635f
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Parties
++ HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Parties
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Builds
++ revision=13f503caecba9f449d84a8e005258626a64edd06
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Builds /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds checkout --quiet --detach 13f503caecba9f449d84a8e005258626a64edd06
++ export HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds
++ HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds
++ export MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ MSBUILDDISABLENODEREUSE=1
++ DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ cd /tmp/hexalith-job.JujrN8ZA/platform
++ git rev-parse HEAD
+759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ dotnet --version
+10.0.404
++ test_project=tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++ timeout 180s dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false -p:WarningsNotAsErrors=NU1903
+  Determining projects to restore...
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Secrets.Runtime/Hexalith.Platform.Secrets.Runtime.csproj (in 265 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Works.Runtime/Hexalith.Platform.Works.Runtime.csproj (in 265 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 265 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Custody.Component/Hexalith.Platform.Custody.Component.csproj (in 265 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Custody/Hexalith.Platform.Custody.csproj (in 265 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 276 ms).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj (in 985 ms).
+/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj (in 1.6 sec).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj (in 1.6 sec).
+  Restored /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj (in 1.61 sec).
+  Restored /tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj (in 1.67 sec).
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+  Hexalith.Platform.Works.Runtime -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Works.Runtime/bin/Release/net10.0/Hexalith.Platform.Works.Runtime.dll
+  Hexalith.Platform.Identity -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/bin/Release/net10.0/Hexalith.Platform.Identity.dll
+  Hexalith.Platform.Custody -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Custody/bin/Release/net10.0/Hexalith.Platform.Custody.dll
+  Hexalith.Builds.Module.EventStoreHost -> /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/bin/Release/net10.0/Hexalith.Builds.Module.EventStoreHost.dll
+  Hexalith.Platform.Custody.Component -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Custody.Component/bin/Release/net10.0/Hexalith.Platform.Custody.Component.dll
+  Hexalith.Platform.Secrets.Runtime -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Secrets.Runtime/bin/Release/net10.0/Hexalith.Platform.Secrets.Runtime.dll
+  Hexalith.Platform.Protection -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Protection/bin/Release/net10.0/Hexalith.Platform.Protection.dll
+  Platform version catalog validated: Hexalith.EventStore.Aspire/3.132.2, CommunityToolkit.Aspire.Hosting.Dapr/13.6.2-beta.959, required range 13.6.2-beta.959 for net10.0.
+  Hexalith.Platform.EventStoreHost -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/bin/Release/net10.0/Hexalith.Platform.EventStoreHost.dll
+  Hexalith.Builds.Tooling -> /tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/bin/Release/net10.0/Hexalith.Builds.Tooling.dll
+  Hexalith.Platform.Composition -> /tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/bin/Release/net10.0/Hexalith.Platform.Composition.dll
+  Hexalith.Platform.Composition.Tests -> /tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll
+
+Build succeeded.
+
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm [/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj]
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.EventStoreHost/Hexalith.Platform.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/Hexalith.Builds/src/hosts/Hexalith.Builds.Module.EventStoreHost/Hexalith.Builds.Module.EventStoreHost.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.JujrN8ZA/platform/src/Hexalith.Platform.Identity/Hexalith.Platform.Identity.csproj : warning NU1903: Package 'Microsoft.AspNetCore.SignalR.StackExchangeRedis' 10.0.14 has a known high severity vulnerability, https://github.com/advisories/GHSA-wr8v-9x5q-ggcm
+    12 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:08.79
++ timeout 120s dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-build -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -- --filter-class Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests
+Running tests from /tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+/tmp/hexalith-job.JujrN8ZA/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64) passed (18s 285ms)
+
+Test run summary: Passed!
+  total: 16
+  failed: 0
+  succeeded: 16
+  skipped: 0
+  duration: 18s 426ms

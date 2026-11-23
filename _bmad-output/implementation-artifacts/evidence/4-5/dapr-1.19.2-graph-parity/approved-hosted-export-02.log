@@ -1,0 +1,15 @@
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+warning: unable to find all commit-graph files
+759bb89753de7e70cb0b0db61c7142e96ec5bac0
+10.0.404
+/tmp/hexalith-job.46YfGdr1/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh [/tmp/hexalith-job.46YfGdr1/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj]
+/tmp/hexalith-job.46YfGdr1/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.46YfGdr1/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.46YfGdr1/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+Unhandled exception. System.IO.InvalidDataException: Hosted reference Memories declaration digest differs from the approved bytes.
+   at Hexalith.Platform.Composition.PlatformHostedReferenceMapping.Verify(String platformRoot, IReadOnlyDictionary`2 sourceRoots) in /tmp/hexalith-job.46YfGdr1/platform/src/Hexalith.Platform.Composition/PlatformHostedReferenceMapping.cs:line 81
+   at Hexalith.Platform.Composition.PlatformHostedPublishing.ReferenceOptions(String root, IReadOnlyDictionary`2 sourceRoots) in /tmp/hexalith-job.46YfGdr1/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:line 59
+   at Hexalith.Platform.Composition.PlatformHostedPublishing.ReferenceOptions(String root) in /tmp/hexalith-job.46YfGdr1/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs:line 53
+   at Program.<Main>$(String[] args) in /tmp/hexalith-job.46YfGdr1/platform/eng/mcpcli-operator-setup/graph-export/Program.cs:line 7

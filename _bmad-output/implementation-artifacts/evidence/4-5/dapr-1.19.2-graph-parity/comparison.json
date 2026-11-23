@@ -1,0 +1,47 @@
+{
+  "platformRevision": "646ce2a8104b7ef512568b21340d203143d5a0d8",
+  "verification": "Data-only projection via PlatformApplicationGraph.Resolve and PlatformHostedPublishing.Describe",
+  "hostedApprovalUsedForQualification": "759bb89753de7e70cb0b0db61c7142e96ec5bac0",
+  "laterPlatformRevisionCoveredByHostedApproval": false,
+  "matchesApprovedGraph": false,
+  "onlyDifference": {
+    "workload": "eventstore/gateway",
+    "addedAccessPolicy": {
+      "appId": "conversations-api",
+      "namespace": "__APPLICATION_NAMESPACE__",
+      "trustDomain": "__TRUST_DOMAIN__",
+      "defaultAction": "deny",
+      "operations": [
+        {
+          "name": "/api/v1/commands/status/*",
+          "httpVerb": [
+            "GET"
+          ],
+          "action": "allow"
+        },
+        {
+          "name": "/api/v1/commands/submit",
+          "httpVerb": [
+            "POST"
+          ],
+          "action": "allow"
+        },
+        {
+          "name": "/api/v1/queries/submit",
+          "httpVerb": [
+            "POST"
+          ],
+          "action": "allow"
+        }
+      ]
+    }
+  },
+  "workloadCount": 8,
+  "componentCapabilityCount": 8,
+  "files": {
+    "reference-graph.json": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55",
+    "current-reference-graph.json": "4a1441cd251cc7bc40beb5a5e44a11ce6fe190bb26590e68b9e70b41f61b5922",
+    "graph-parity.log": "da577af0bd42b5f222dab2aba16853dedea367aa62017d97acf403ac095791dd",
+    "graph-parity.cs": "0c3dc7b14ac6d339460602cc54cdd2a1675740805aeca1b7a91a0c10cbcb057b"
+  }
+}

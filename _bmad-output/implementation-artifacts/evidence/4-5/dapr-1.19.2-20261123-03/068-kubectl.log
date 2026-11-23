@@ -1,0 +1,30 @@
+GROUP:      dapr.io
+KIND:       WorkflowAccessPolicy
+VERSION:    v1alpha1
+
+FIELD: spec <Object>
+
+
+DESCRIPTION:
+    WorkflowAccessPolicySpec defines the desired state of WorkflowAccessPolicy.
+    
+FIELDS:
+  rules	<[]Object>
+    activities	<[]Object>
+      name	<string> -required-
+      requires	<[]Object>
+        appID	<string> -required-
+        eventType	<string> -required-
+        enum: activity.started, activity.completed, workflow.started, workflow.completed, ....
+        name	<string> -required-
+    callers	<[]Object> -required-
+      appID	<string> -required-
+    workflows	<[]Object>
+      name	<string> -required-
+      operations	<[]string> -required-
+      requires	<[]Object>
+        appID	<string> -required-
+        eventType	<string> -required-
+        enum: activity.started, activity.completed, workflow.started, workflow.completed, ....
+        name	<string> -required-
+

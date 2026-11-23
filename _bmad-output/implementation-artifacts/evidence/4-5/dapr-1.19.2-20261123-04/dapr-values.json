@@ -1,0 +1,57 @@
+{
+  "global": {
+    "tag": "1.19.2",
+    "daprControlPlaneArch": "amd64",
+    "ha": {
+      "enabled": false
+    },
+    "mtls": {
+      "enabled": true,
+      "controlPlaneTrustDomain": "cluster.local"
+    },
+    "scheduler": {
+      "enabled": true,
+      "placement": {
+        "enabled": false
+      }
+    }
+  },
+  "dapr_operator": {
+    "image": {
+      "name": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+    }
+  },
+  "dapr_placement": {
+    "image": {
+      "name": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+    },
+    "volumeclaims": {
+      "enabled": false
+    }
+  },
+  "dapr_scheduler": {
+    "image": {
+      "name": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+    },
+    "cluster": {
+      "inMemoryStorage": true
+    }
+  },
+  "dapr_sentry": {
+    "image": {
+      "name": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+    }
+  },
+  "dapr_sidecar_injector": {
+    "injectorImage": {
+      "name": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+    },
+    "image": {
+      "name": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+    },
+    "sidecarRunAsNonRoot": true,
+    "sidecarRunAsUser": 1654,
+    "sidecarReadOnlyRootFilesystem": true,
+    "sidecarDropALLCapabilities": true
+  }
+}

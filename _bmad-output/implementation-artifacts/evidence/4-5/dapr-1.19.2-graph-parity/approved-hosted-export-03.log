@@ -1,0 +1,67 @@
++ set -o pipefail
++ platform_source=/home/administrator/projects/hexalith/platform
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform /tmp/hexalith-job.1g4qnRUl/platform
++ git -C /tmp/hexalith-job.1g4qnRUl/platform sparse-checkout set --no-cone '/*' '!/_bmad-output/' '!/references/'
++ git -C /tmp/hexalith-job.1g4qnRUl/platform checkout --quiet --detach 759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=EventStore
++ revision=a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore /tmp/hexalith-job.1g4qnRUl/Hexalith.EventStore
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.1g4qnRUl/Hexalith.EventStore checkout --quiet --detach a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ export HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.EventStore
++ HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.EventStore
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Tenants
++ revision=b7824e4bba174b3a459364af24c99dedaf8f0738
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants /tmp/hexalith-job.1g4qnRUl/Hexalith.Tenants
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.1g4qnRUl/Hexalith.Tenants checkout --quiet --detach b7824e4bba174b3a459364af24c99dedaf8f0738
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Tenants
++ HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Tenants
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Memories
++ revision=8aee7a1323160cb39d7b1415256dbfdcb032939a
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Memories /tmp/hexalith-job.1g4qnRUl/Hexalith.Memories
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.1g4qnRUl/Hexalith.Memories checkout --quiet --detach 8aee7a1323160cb39d7b1415256dbfdcb032939a
++ export HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Memories
++ HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Memories
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Parties
++ revision=1d3576084ced39ec5104dac409becdbdd1c8635f
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Parties /tmp/hexalith-job.1g4qnRUl/Hexalith.Parties
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.1g4qnRUl/Hexalith.Parties checkout --quiet --detach 1d3576084ced39ec5104dac409becdbdd1c8635f
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Parties
++ HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Parties
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Builds
++ revision=13f503caecba9f449d84a8e005258626a64edd06
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Builds /tmp/hexalith-job.1g4qnRUl/Hexalith.Builds
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.1g4qnRUl/Hexalith.Builds checkout --quiet --detach 13f503caecba9f449d84a8e005258626a64edd06
++ export HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Builds
++ HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.1g4qnRUl/Hexalith.Builds
++ export MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ MSBUILDDISABLENODEREUSE=1
++ DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ cd /tmp/hexalith-job.1g4qnRUl/platform
++ git rev-parse HEAD
+759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ dotnet --version
+10.0.404
++ timeout 180s dotnet run --project eng/mcpcli-operator-setup/graph-export/GraphExport.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false -p:WarningsNotAsErrors=NU1903 -- /tmp/hexalith-job.1g4qnRUl/platform /tmp/hexalith-job.1g4qnRUl/graph.json
+/tmp/hexalith-job.1g4qnRUl/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh [/tmp/hexalith-job.1g4qnRUl/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj]
+/tmp/hexalith-job.1g4qnRUl/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.1g4qnRUl/platform/eng/mcpcli-operator-setup/graph-export/GraphExport.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.1g4qnRUl/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
++ python3 -c 'import json,pathlib,sys; p=pathlib.Path(sys.argv[1]); actual=json.loads(p.read_text()); expected=json.loads(pathlib.Path("eng/helm-qualification/chart/reference-graph.json").read_text()); assert actual == expected; print("Approved hosted graph semantically matches fresh canonical export")' /tmp/hexalith-job.1g4qnRUl/graph.json
+Approved hosted graph semantically matches fresh canonical export
++ sha256sum /tmp/hexalith-job.1g4qnRUl/graph.json eng/helm-qualification/chart/reference-graph.json
+820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55  /tmp/hexalith-job.1g4qnRUl/graph.json
+820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55  eng/helm-qualification/chart/reference-graph.json

@@ -1,0 +1,50 @@
+time="2026-11-23T07:36:32.522890723Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-11-24 07:36:32 +0000 UTC, renewal at: 2026-11-23 19:29:02 +0000 UTC" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:32.522946701Z" level=info msg="Running gRPC server on port 50001" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:34.522679315Z" level=warning msg="Issuer credentials changed; reloading" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.522819506Z" level=info msg="Shutting down gRPC server" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:34.522825413Z" level=info msg="Healthz server is shutting down" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.52470564Z" level=info msg="Adding validator 'kubernetes' with Sentry ID: spiffe://cluster.local/ns/dapr-system/dapr-sentry" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.524733453Z" level=info msg="Using kubernetes secret store for trust bundle storage" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:34.528559948Z" level=info msg="Root and issuer certs found: using credentials from store" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:34.528606799Z" level=info msg="CA certificate key pair ready" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.528618752Z" level=info msg="Running in Kubernetes environment as user 65532" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:34.530085693Z" level=info msg="OIDC HTTP server is disabled" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.530114048Z" level=info msg="Using validator 'kubernetes'" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.530200345Z" level=info msg="Healthz server is listening on [::]:8080" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.5302648Z" level=info msg="Fetching initial identity" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:34.530367117Z" level=info msg="metrics server started on 0.0.0.0:9090/" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:34.530575762Z" level=info msg="Security is initialized successfully" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:34.530606652Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-11-24 07:36:34 +0000 UTC, renewal at: 2026-11-23 19:29:04 +0000 UTC" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:34.530686411Z" level=info msg="Running gRPC server on port 50001" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:36.530856165Z" level=warning msg="Issuer credentials changed; reloading" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:36.531000184Z" level=info msg="Shutting down gRPC server" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:36.531087358Z" level=info msg="Healthz server is shutting down" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.086086255Z" level=info msg="Adding validator 'kubernetes' with Sentry ID: spiffe://cluster.local/ns/dapr-system/dapr-sentry" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.086124239Z" level=info msg="Using kubernetes secret store for trust bundle storage" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:55.090126878Z" level=info msg="Root and issuer certs found: using credentials from store" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:55.09017945Z" level=info msg="CA certificate key pair ready" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.090193216Z" level=info msg="Running in Kubernetes environment as user 65532" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:55.091724678Z" level=info msg="OIDC HTTP server is disabled" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.091758593Z" level=info msg="Using validator 'kubernetes'" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.091898504Z" level=info msg="Healthz server is listening on [::]:8080" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.091916685Z" level=info msg="Fetching initial identity" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:55.091904831Z" level=info msg="metrics server started on 0.0.0.0:9090/" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:55.092184513Z" level=info msg="Security is initialized successfully" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:55.092207418Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-11-24 07:36:55 +0000 UTC, renewal at: 2026-11-23 19:29:25 +0000 UTC" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:55.092276421Z" level=info msg="Running gRPC server on port 50001" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:57.092467292Z" level=warning msg="Issuer credentials changed; reloading" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.09259555Z" level=info msg="Shutting down gRPC server" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2
+time="2026-11-23T07:36:57.092706375Z" level=info msg="Healthz server is shutting down" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.094807134Z" level=info msg="Adding validator 'kubernetes' with Sentry ID: spiffe://cluster.local/ns/dapr-system/dapr-sentry" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.094834898Z" level=info msg="Using kubernetes secret store for trust bundle storage" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:57.099226936Z" level=info msg="Root and issuer certs found: using credentials from store" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.ca type=log ver=1.19.2
+time="2026-11-23T07:36:57.099257275Z" level=info msg="CA certificate key pair ready" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.099272003Z" level=info msg="Running in Kubernetes environment as user 65532" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:57.100898169Z" level=info msg="OIDC HTTP server is disabled" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.100926443Z" level=info msg="Using validator 'kubernetes'" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.10101753Z" level=info msg="Healthz server is listening on [::]:8080" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.101073573Z" level=info msg="Fetching initial identity" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:57.101091919Z" level=info msg="metrics server started on 0.0.0.0:9090/" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry type=log ver=1.19.2
+time="2026-11-23T07:36:57.101333457Z" level=info msg="Security is initialized successfully" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:57.101359888Z" level=info msg="Starting workload identity expiry watcher; cert expires on: 2026-11-24 07:36:57 +0000 UTC, renewal at: 2026-11-23 19:29:27 +0000 UTC" instance=dapr-sentry-847786549f-kjnrm scope=dapr.runtime.security type=log ver=1.19.2
+time="2026-11-23T07:36:57.101417961Z" level=info msg="Running gRPC server on port 50001" instance=dapr-sentry-847786549f-kjnrm scope=dapr.sentry.server type=log ver=1.19.2

@@ -257,19 +257,26 @@ class Qualification:
     def helm_run(self, *args, **kwargs):
         return self.run([self.helm, '--kubeconfig', self.kubeconfig, '--kube-context', self.context, *args], **kwargs)
 
-    def download(self, key, name):
-        pin = self.tools[key]; path = self.temp / name
+    def fetch(self, url, path):
         # curl bounds the complete transfer, including trickled response bodies.
         self.run(['curl', '--fail', '--location', '--silent', '--show-error',
-                  '--max-time', str(self.DOWNLOAD_TIMEOUT_SECONDS), '--output', path, pin['url']],
+                  '--max-time', str(self.DOWNLOAD_TIMEOUT_SECONDS), '--output', path, url],
                  timeout=self.DOWNLOAD_TIMEOUT_SECONDS + 5)
+
+    def download(self, key, name, *, pin=None):
+        pin = self.tools[key] if pin is None else pin
+        path = self.temp / name
+        self.fetch(pin['url'], path)
         if sha(path) != pin['sha256']:
             raise RuntimeError('download checksum mismatch: ' + key)
         self.record.setdefault('downloads', {})[key] = {'url': pin['url'], 'sha256': sha(path)}
         return path
 
-    def preflight(self):
-        for tool in ('docker', 'kind', 'kubectl', 'dotnet', 'aspire', 'curl'):
+    def preflight_tools(self, *, native=False, extra=()):
+        required = ('docker', 'kind', 'kubectl', 'git', 'curl', *extra)
+        if native:
+            required += ('dotnet', 'aspire')
+        for tool in required:
             if not shutil.which(tool): raise RuntimeError('required tool is missing: ' + tool)
         archive = self.download('helm', 'helm.tar.gz')
         with tarfile.open(archive, 'r:gz') as distribution:
@@ -279,21 +286,26 @@ class Qualification:
         versions = {'helm': self.run([self.helm, 'version', '--short']).stdout.strip(),
                     'kind': self.run(['kind', 'version']).stdout.strip(),
                     'kubectl': json.loads(self.run(['kubectl', 'version', '--client', '-o', 'json']).stdout)['clientVersion']['gitVersion'],
-                    'aspire': self.run(['aspire', '--version']).stdout.strip(),
-                    'dotnet': self.run(['dotnet', '--version']).stdout.strip(),
                     'docker': self.run(['docker', 'info', '--format', '{{.ServerVersion}}']).stdout.strip(),
-                    'curl': self.run(['curl', '--version']).stdout.splitlines()[0]}
+                    'curl': self.run(['curl', '--version']).stdout.splitlines()[0],
+                    **{tool: self.run([tool, '--version']).stdout.strip() for tool in extra}}
+        if native:
+            versions.update({tool: self.run([tool, '--version']).stdout.strip()
+                             for tool in ('aspire', 'dotnet')})
         if not versions['helm'].startswith('v' + self.tools['helm']['version'] + '+'):
             raise RuntimeError('Helm differs from the verified toolchain pin')
         if 'v' + self.tools['kind'] + ' ' not in versions['kind']:
             raise RuntimeError('kind differs from pin')
-        if not versions['aspire'].startswith(self.tools['aspire'] + '+'):
+        if native and not versions['aspire'].startswith(self.tools['aspire'] + '+'):
             raise RuntimeError('Aspire differs from pin')
+        self.record['tools'] = {k: {'version': v, 'binarySha256': sha(self.helm if k == 'helm' else shutil.which(k))}
+                                for k, v in versions.items()}
+
+    def preflight(self):
+        self.preflight_tools(native=True)
         catalog = (ROOT / 'references/Hexalith.Builds/Props/Directory.Packages.props').read_text()
         if f'<HexalithDaprRuntimeVersion>{self.tools["dapr"]["version"]}</HexalithDaprRuntimeVersion>' not in catalog:
             raise RuntimeError('Dapr patch is not the Builds catalog pin')
-        self.record['tools'] = {k: {'version': v, 'binarySha256': sha(self.helm if k == 'helm' else shutil.which(k))}
-                                for k, v in versions.items()}
         self.record['source'] = {'revision': self.run(['git', 'rev-parse', 'HEAD']).stdout.strip(),
                                  'statusPorcelain': self.run(['git', 'status', '--porcelain']).stdout,
                                  'submoduleStatus': self.run(['git', 'submodule', 'status']).stdout,
@@ -465,6 +477,15 @@ class Qualification:
         self.record['cluster'] = {'name': self.cluster, 'context': self.context, 'uid': uid, 'endpoint': endpoint, 'ambientKubeconfigUsed': False}
         gateway = self.download('gateway', 'gateway.yaml')
         self.kube('apply', '--server-side', '--field-manager=h45-environment', '-f', gateway)
+        self.install_dapr()
+        self.record['daprControlPlane'] = json.loads(self.kube('get', 'pods', '-n', 'dapr-system', '-o', 'json').stdout)
+        self.check_dapr_control_plane(self.record['daprControlPlane']['items'])
+        self.record['checks']['ownedClusterAndPinnedDapr'] = True
+
+    def check_dapr_control_plane(self, pods):
+        """Check any extra control-plane requirements for the selected qualifier."""
+
+    def install_dapr(self):
         dapr = self.download('dapr', 'dapr.tgz')
         self.helm_run('install', 'dapr', dapr, '--namespace', 'dapr-system', '--create-namespace', '--wait', '--timeout', '180s',
                       '--set', 'global.ha.enabled=false', '--set', 'global.scheduler.enabled=false',
@@ -473,8 +494,6 @@ class Qualification:
                       '--set', 'dapr_sidecar_injector.sidecarRunAsUser=1654',
                       '--set', 'dapr_sidecar_injector.sidecarReadOnlyRootFilesystem=true',
                       '--set', 'dapr_sidecar_injector.sidecarDropALLCapabilities=true', timeout=240)
-        self.record['daprControlPlane'] = json.loads(self.kube('get', 'pods', '-n', 'dapr-system', '-o', 'json').stdout)
-        self.record['checks']['ownedClusterAndPinnedDapr'] = True
 
     def environment(self):
         fixtures = [
@@ -584,6 +603,10 @@ class Qualification:
         if observed != self.component_baseline:
             raise AssertionError('environment Component changed during ' + phase)
         self.record['checks']['componentOwnership'][phase] = True
+        return observed
+
+    def check_admitted_sidecar(self, pod):
+        return secure_containers(pod)
 
     def application_helm(self, *args, **kwargs):
         previous = self.env.get('HELM_DRIVER')
@@ -627,7 +650,7 @@ class Qualification:
             template = copy.deepcopy(d['spec']['template'])
             pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {**template['metadata'], 'name': 'dry-' + d['metadata']['name'], 'namespace': 'reference'}, 'spec': template['spec']}
             response = json.loads(self.pod_kube('create', '--dry-run=server', '-f', '-', '-o', 'json', data=json.dumps(pod)).stdout)
-            admitted.append({'workload': d['metadata']['name'], 'containers': secure_containers(response)})
+            admitted.append({'workload': d['metadata']['name'], 'containers': self.check_admitted_sidecar(response)})
             (self.evidence / ('admitted-' + d['metadata']['name'] + '.json')).write_text(json.dumps(response, indent=2))
         self.record['checks']['podAdmission'] = admitted
         print('PASSED all Pod templates admitted with compliant injected containers', flush=True)
@@ -666,6 +689,7 @@ class Qualification:
             raise AssertionError('unforced Helm SSA conflict refusal was not demonstrated')
         unchanged = json.loads(self.kube('get', 'deployment', name, '-n', 'reference', '-o', 'json').stdout)
         if unchanged['spec']['replicas'] != 2: raise AssertionError('conflicting Helm upgrade changed rival-owned field')
+        self.check_components('conflictRefusal')
         self.record['checks']['unforcedConflictRefusal'] = True
         print('PASSED unforced Helm SSA conflict refusal verified', flush=True)
         self.application_helm('upgrade', 'reference', self.archive, '-n', 'reference', '-f', self.values,
@@ -716,10 +740,13 @@ class Qualification:
                 cleanup['temporaryDirectoryRemoved'] = not self.temp.exists()
             cleanup['complete'] = cleanup.get('clusterRemovalVerified', False) and cleanup['temporaryDirectoryRemoved']
 
+    def steps(self):
+        return (self.preflight, self.native_probe, self.static_checks, self.create, self.environment, self.admission_and_ssa)
+
     def execute(self):
         failure = None
         try:
-            for step in (self.preflight, self.native_probe, self.static_checks, self.create, self.environment, self.admission_and_ssa):
+            for step in self.steps():
                 print('RUNNING ' + step.__name__, flush=True)
                 step()
                 print('PASSED ' + step.__name__, flush=True)

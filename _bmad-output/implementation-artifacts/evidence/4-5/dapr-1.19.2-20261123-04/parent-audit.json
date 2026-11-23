@@ -1,0 +1,101 @@
+{
+  "qualificationSha256": "8db32b542de2b2bb9750330b1ec99f197e25a9d2412fb98a268b6d6e82122e2a",
+  "candidateLockSha256": "6d79ca0360277ef02d2c82944544da1f937ea134cf3fd8a434c7825478b18a0a",
+  "daprValuesSha256": "5d296a71c2ac6925990aa681e4abbf8fbb9c563f6ead0e4f05a5d42e22ddb5cf",
+  "applicationArchiveSha256": "1fe72977b75502447e24ce1ccd6a32744d9190c9d8fbd72ddd54ff13d42b07c3",
+  "recordedSourceFilesVerified": 119,
+  "commandLogsVerified": 253,
+  "pythonTestsPassed": 187,
+  "renderModes": {
+    "normal": {
+      "sha256": "08cc2f07d1add0254a1670d22cc6971659d6c4fc72c585fac060d775743d8668",
+      "objects": {
+        "Service": 8,
+        "Deployment": 8,
+        "Configuration": 8,
+        "HTTPRoute": 3,
+        "Subscription": 3
+      }
+    },
+    "recovery": {
+      "sha256": "53130f748f79eb04c3cb069c2a9dd2d6e682b69ff307326f81abe6fe8c94bb86",
+      "objects": {
+        "Service": 8,
+        "Deployment": 8,
+        "Configuration": 8,
+        "Subscription": 3
+      }
+    },
+    "remove-workloads": {
+      "sha256": "209fe8011ecbc4d322d50251639009ed3a68b0d0ca729d8f06280e89e3249ee1",
+      "objects": {
+        "Configuration": 8,
+        "Subscription": 3
+      }
+    }
+  },
+  "stableEnvironmentComponents": [
+    "access-telemetry-config",
+    "access-telemetry-secrets",
+    "access-telemetry-store",
+    "configstore",
+    "llm",
+    "pubsub",
+    "secretstore",
+    "statestore"
+  ],
+  "componentPhasesVerified": [
+    "beforeInstall",
+    "install",
+    "upgrade",
+    "recovery",
+    "conflictRefusal",
+    "removeWorkloads",
+    "uninstall"
+  ],
+  "applicationDaprInventory": {
+    "expected": {
+      "Configuration": [
+        "platform-eventstore",
+        "platform-memories",
+        "platform-memories-access-telemetry",
+        "platform-memories-access-telemetry-clock",
+        "platform-memories-domain-service",
+        "platform-parties",
+        "platform-tenants",
+        "platform-tenants-api"
+      ],
+      "Subscription": [
+        "platform-a73a7456fe7f1831b58872a103dfd2070f58f6ef226822790daed3e7aaa1e887",
+        "platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab",
+        "platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034"
+      ]
+    },
+    "removeWorkloads": {
+      "Configuration": [
+        "platform-eventstore",
+        "platform-memories",
+        "platform-memories-access-telemetry",
+        "platform-memories-access-telemetry-clock",
+        "platform-memories-domain-service",
+        "platform-parties",
+        "platform-tenants",
+        "platform-tenants-api"
+      ],
+      "Subscription": [
+        "platform-a73a7456fe7f1831b58872a103dfd2070f58f6ef226822790daed3e7aaa1e887",
+        "platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab",
+        "platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034"
+      ]
+    },
+    "uninstall": {
+      "Configuration": [],
+      "Subscription": []
+    }
+  },
+  "admittedPodsVerified": 8,
+  "readyControlPlanePodsVerified": 7,
+  "historicalEvidencePreserved": true,
+  "ownedClusterAbsent": "h45-78f877888c2d",
+  "wrapperScratchRemoved": true
+}

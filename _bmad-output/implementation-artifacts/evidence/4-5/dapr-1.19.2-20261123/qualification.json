@@ -1,0 +1,1226 @@
+{
+  "schema": "hexalith.helm-qualification.v1",
+  "started": "2026-11-23T07:26:01.433505+00:00",
+  "status": "failed",
+  "commands": [
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/helm.tar.gz",
+        "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "000-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/linux-amd64/helm",
+        "version",
+        "--short"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 16,
+      "processGroupTerminated": true,
+      "log": "001-helm.log",
+      "logSha256": "020b1d6747838c6846e2f7d07e280141da653dd8ca9fdf428393d0b28d5a7a18",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kind",
+        "version"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 34,
+      "processGroupTerminated": true,
+      "log": "002-kind.log",
+      "logSha256": "4f20456ed346280834cc128a7048efa0f53a361cdbbba88c18b1f9124b018ba3",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "kubectl",
+        "version",
+        "--client",
+        "-o",
+        "json"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 339,
+      "processGroupTerminated": true,
+      "log": "003-kubectl.log",
+      "logSha256": "554d17a2af6df290e7fbad7a8c6643bc6b78f4b25691b2c4aef7d94b03773329",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 7,
+      "processGroupTerminated": true,
+      "log": "004-docker.log",
+      "logSha256": "c007c7e1712540ee77c9ce8e454890d905ff0193ec24907cb08ffd9d00b25d98",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--version"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 579,
+      "processGroupTerminated": true,
+      "log": "005-curl.log",
+      "logSha256": "4870e27617372477dc169f5899702e7181c831502810d4c9310ae350ed43a077",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "--version"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 26,
+      "processGroupTerminated": true,
+      "log": "006-skopeo.log",
+      "logSha256": "ac0bef3eb3bb1f34894acb9ffbd2df67e79e6913fa8c79af2258ddbcb01935c4",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 41,
+      "processGroupTerminated": true,
+      "log": "007-git.log",
+      "logSha256": "cfe38b6b578f034c86a0bf94e213dc899003c9525e08576330716b548e35e060",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 639,
+      "processGroupTerminated": true,
+      "log": "008-git.log",
+      "logSha256": "bc0cd8b633ac40a05e1321641eeb3100f5adc2b4ec7831add373ddbbcd666781",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "status"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1699,
+      "processGroupTerminated": true,
+      "log": "009-git.log",
+      "logSha256": "3d5318a765430dde9adb5047a8f443f23620e96f96ae81e39b215b11a9df73a8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/home/administrator/projects/hexalith/platform/references/Hexalith.Builds",
+        "show",
+        "2d9ef8b454ff897daca0149f3549844f584b634a:Props/Directory.Packages.props"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 47412,
+      "processGroupTerminated": true,
+      "log": "010-git.log",
+      "logSha256": "c545ca23630d17e85935c5be3a3a0df4843f9727092c2e87e3b0c524d2441eff",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "759bb89753de7e70cb0b0db61c7142e96ec5bac0:eng/helm-qualification/chart/reference-graph.json"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 42872,
+      "processGroupTerminated": true,
+      "log": "011-git.log",
+      "logSha256": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/dapr.tgz",
+        "https://dapr.github.io/helm-charts/dapr-1.19.2.tgz"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "012-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/index.yaml",
+        "https://dapr.github.io/helm-charts/index.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "013-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-components.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/components.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "014-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-configuration.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/configuration.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "015-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-httpendpoints.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/httpendpoints.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "016-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-mcpservers.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/mcpservers.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "017-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-resiliency.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/resiliency.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "018-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-subscription.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/subscription.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "019-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/canonical-workflowaccesspolicy.yaml",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/workflowaccesspolicy.yaml"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "020-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/starting-dapr.tgz",
+        "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "021-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--tags",
+        "https://github.com/dapr/dapr",
+        "refs/tags/v1.19.2",
+        "refs/tags/v1.19.2^{}"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 59,
+      "processGroupTerminated": true,
+      "log": "022-git.log",
+      "logSha256": "891a53fceb20138054c7885ac624a52611acf53e0320ecc64d002ed90937c517",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--tags",
+        "https://github.com/dapr/components-contrib",
+        "refs/tags/v1.19.2",
+        "refs/tags/v1.19.2^{}"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 59,
+      "processGroupTerminated": true,
+      "log": "023-git.log",
+      "logSha256": "a1540eccc17aebd74caeb818ab170206e84a8af370189d0e3a971d5ef01b6bb9",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/go.mod",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/go.mod"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "024-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "60",
+        "--output",
+        "/tmp/hexalith-job.NefowA3J/h45-3e7ytrq3/go.sum",
+        "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/go.sum"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 65,
+      "capturedBytes": 0,
+      "processGroupTerminated": true,
+      "log": "025-curl.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/operator:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "026-skopeo.log",
+      "logSha256": "3f4ea473731716942d53270a9c4351b32e73a0a717b0328831bf114f7929b17f",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "027-skopeo.log",
+      "logSha256": "68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/sentry:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "028-skopeo.log",
+      "logSha256": "3d93c1bf742b52909926d73417fe4651028ab8d9293cda78e1f671f6e018dbd7",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "029-skopeo.log",
+      "logSha256": "b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/injector:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "030-skopeo.log",
+      "logSha256": "ebdd4e6ff248b7e936553653df2448a4fd8011d5e61916324fb0ac657c6395d5",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "031-skopeo.log",
+      "logSha256": "ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/placement:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "032-skopeo.log",
+      "logSha256": "3c687e9526394bf708a8f8eb5dbb71376110bafb552250172eb5c018947017e8",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "033-skopeo.log",
+      "logSha256": "6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/scheduler:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "034-skopeo.log",
+      "logSha256": "e6f7319295425161dd23678a6014c9eb74326fee826baa5a21c431525cbb4bf0",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "035-skopeo.log",
+      "logSha256": "b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/daprd:1.19.2"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 1771,
+      "processGroupTerminated": true,
+      "log": "036-skopeo.log",
+      "logSha256": "7839fbb66d4be24ec52e347bec2dca66a91bef3079d8c8d57676f6d3ef92654f",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "skopeo",
+        "inspect",
+        "--raw",
+        "docker://ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 3040,
+      "processGroupTerminated": true,
+      "log": "037-skopeo.log",
+      "logSha256": "7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--entrypoint",
+        "/daprd",
+        "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b",
+        "--version"
+      ],
+      "returncode": 0,
+      "outcome": "completed",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 150,
+      "capturedBytes": 7,
+      "processGroupTerminated": true,
+      "log": "038-docker.log",
+      "logSha256": "075243543eb1f1689a5584cb729220652dd1bee8974900f1cc45c7321d79f82f",
+      "stdinSha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--name",
+        "h45-0f2da2c4573e-daprd-readback",
+        "--network",
+        "none",
+        "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+      ],
+      "returncode": 1,
+      "outcome": "exit-code",
+      "timedOut": false,
+      "outputLimitExceeded": false,
+      "timeoutSeconds": 120,
+      "capturedBytes": 49,
+      "processGroupTerminated": true,
+      "log": "039-docker.log",
+      "logSha256": "80991ad135a2bf05c3f98006b9877464d67d96160c70e43329a9af610ce6a2a0",
+      "stdinSha256": null
+    }
+  ],
+  "checks": {
+    "releasedBuildsAlignment": {
+      "releaseRecordSha256": "1d589e0fa1ddee2546acdedc16292026e09370a97ac1a18f98bcd770b4529b5e",
+      "catalogSha256": "c545ca23630d17e85935c5be3a3a0df4843f9727092c2e87e3b0c524d2441eff",
+      "runtime": "1.19.2",
+      "cli": "1.19.1",
+      "sdkPackages": {
+        "Dapr.Client": "1.19.1",
+        "Dapr.AspNetCore": "1.19.1",
+        "Dapr.Actors.AspNetCore": "1.19.1",
+        "Dapr.Actors.Generators": "1.19.1",
+        "Dapr.Actors": "1.19.1",
+        "Dapr.AI": "1.19.1",
+        "Dapr.AI.Microsoft.Extensions": "1.19.1",
+        "Dapr.Workflow": "1.19.1"
+      }
+    },
+    "preflight": true,
+    "reviewedReferenceGraphBytes": true,
+    "canonicalDaprCrds": {
+      "names": [
+        "components.dapr.io",
+        "configurations.dapr.io",
+        "httpendpoints.dapr.io",
+        "mcpservers.dapr.io",
+        "resiliencies.dapr.io",
+        "subscriptions.dapr.io",
+        "workflowaccesspolicies.dapr.io"
+      ],
+      "changedFromStartingRuntime": [
+        "configuration.yaml",
+        "workflowaccesspolicy.yaml"
+      ],
+      "applyBeforeHelm": true
+    },
+    "officialDaprImageDigests": true
+  },
+  "cleanup": {
+    "complete": true,
+    "ownedCluster": "h45-0f2da2c4573e",
+    "onlyInvocationOwnedResourcesDeleted": false,
+    "temporaryKubeconfigRemoved": true,
+    "clusterRemovalVerified": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "exclusions": [
+    "OCI publication and attestation",
+    "off-site restoration",
+    "staging deployment",
+    "application functional readiness with retained images",
+    "future environment policy qualification"
+  ],
+  "candidate": {
+    "file": "dapr-1.19.2.json",
+    "sha256": "6d79ca0360277ef02d2c82944544da1f937ea134cf3fd8a434c7825478b18a0a",
+    "inputs": {
+      "schema": "hexalith.helm-qualification.dapr-candidate.v1",
+      "helm": {
+        "version": "4.2.0",
+        "url": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+        "sha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096"
+      },
+      "kind": "0.31.0",
+      "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
+      "gateway": {
+        "version": "1.5.1",
+        "url": "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml",
+        "sha256": "751002b3b91a87f7ae3bd2517c79a47a8d7ed6702901808a1cf9bd97d284f9b8"
+      },
+      "dapr": {
+        "version": "1.19.2",
+        "url": "https://dapr.github.io/helm-charts/dapr-1.19.2.tgz",
+        "sha256": "3c0e68d61dccf6dc30bf153cb7bd47b50dbe5f8cb889ec2d72b2ec38fa725efa",
+        "indexUrl": "https://dapr.github.io/helm-charts/index.yaml",
+        "source": {
+          "repository": "https://github.com/dapr/dapr",
+          "revision": "66efc169ba72dca18ab73394c98381d68cda88f0",
+          "rawRoot": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0"
+        },
+        "goModSha256": "c3f32083d48f34304ec813a2715617b7408b5fe48fb6d740c53e3708b9455c65",
+        "goSumSha256": "5a220e8c83e7d6d4be3e6f9cca56e403ea0225116ceefc56e2699159fdc77073",
+        "componentsContrib": {
+          "repository": "https://github.com/dapr/components-contrib",
+          "version": "1.19.2",
+          "revision": "ab395ab88023febfb824de46d474c6d299e74fb1",
+          "goChecksum": "h1:kYC84yK7I7ZiB/ibjBhHuAClsoJAHedqdxTqpKr4s5A="
+        },
+        "crds": {
+          "components.yaml": "47acb92af4b4c403832c0d7acc32cab2d72c58be630dc7fe0cdbed702c3b1434",
+          "configuration.yaml": "13fc91f9ef09639efea76ea3bb8384563442c3609af8ba4ff8b96d713bf226c8",
+          "httpendpoints.yaml": "29210af44ef18d444659142547769884aa22e27483395deef5b27fc2f6c19d5e",
+          "mcpservers.yaml": "5bb37d8e927a108bfbd97db51bd5929fc50d537f8d771feb2b9bf5375d592c93",
+          "resiliency.yaml": "62ca4e10fd61793f44265a3864f2863cf55508a681ac689508262257deb51356",
+          "subscription.yaml": "1864c443890e83f7d2df0336ed5d5bda265398681bd4502c36a59c25e620667c",
+          "workflowaccesspolicy.yaml": "4b11a6556c5d57583e360dc9ad552b3b4871230b0aa5914255a8d8031991d769"
+        },
+        "startingRuntime": {
+          "version": "1.18.7",
+          "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
+          "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
+        },
+        "crdsChangedFromStartingRuntime": [
+          "configuration.yaml",
+          "workflowaccesspolicy.yaml"
+        ],
+        "images": {
+          "operator": {
+            "releaseTag": "ghcr.io/dapr/operator:1.19.2",
+            "indexDigest": "sha256:3f4ea473731716942d53270a9c4351b32e73a0a717b0328831bf114f7929b17f",
+            "linuxAmd64": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+          },
+          "sentry": {
+            "releaseTag": "ghcr.io/dapr/sentry:1.19.2",
+            "indexDigest": "sha256:3d93c1bf742b52909926d73417fe4651028ab8d9293cda78e1f671f6e018dbd7",
+            "linuxAmd64": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+          },
+          "injector": {
+            "releaseTag": "ghcr.io/dapr/injector:1.19.2",
+            "indexDigest": "sha256:ebdd4e6ff248b7e936553653df2448a4fd8011d5e61916324fb0ac657c6395d5",
+            "linuxAmd64": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+          },
+          "placement": {
+            "releaseTag": "ghcr.io/dapr/placement:1.19.2",
+            "indexDigest": "sha256:3c687e9526394bf708a8f8eb5dbb71376110bafb552250172eb5c018947017e8",
+            "linuxAmd64": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+          },
+          "scheduler": {
+            "releaseTag": "ghcr.io/dapr/scheduler:1.19.2",
+            "indexDigest": "sha256:e6f7319295425161dd23678a6014c9eb74326fee826baa5a21c431525cbb4bf0",
+            "linuxAmd64": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+          },
+          "daprd": {
+            "releaseTag": "ghcr.io/dapr/daprd:1.19.2",
+            "indexDigest": "sha256:7839fbb66d4be24ec52e347bec2dca66a91bef3079d8c8d57676f6d3ef92654f",
+            "linuxAmd64": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+          }
+        },
+        "values": {
+          "global": {
+            "tag": "1.19.2",
+            "daprControlPlaneArch": "amd64",
+            "ha": {
+              "enabled": false
+            },
+            "mtls": {
+              "enabled": true,
+              "controlPlaneTrustDomain": "cluster.local"
+            },
+            "scheduler": {
+              "enabled": true,
+              "placement": {
+                "enabled": false
+              }
+            }
+          },
+          "dapr_operator": {
+            "image": {
+              "name": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+            }
+          },
+          "dapr_placement": {
+            "image": {
+              "name": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+            },
+            "volumeclaims": {
+              "enabled": false
+            }
+          },
+          "dapr_scheduler": {
+            "image": {
+              "name": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+            },
+            "cluster": {
+              "inMemoryStorage": true
+            }
+          },
+          "dapr_sentry": {
+            "image": {
+              "name": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+            }
+          },
+          "dapr_sidecar_injector": {
+            "injectorImage": {
+              "name": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+            },
+            "image": {
+              "name": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+            },
+            "sidecarRunAsNonRoot": true,
+            "sidecarRunAsUser": 1654,
+            "sidecarReadOnlyRootFilesystem": true,
+            "sidecarDropALLCapabilities": true
+          }
+        }
+      },
+      "builds": {
+        "version": "6.6.2",
+        "releaseTag": "v6.6.2",
+        "revision": "2d9ef8b454ff897daca0149f3549844f584b634a",
+        "catalogSha256": "c545ca23630d17e85935c5be3a3a0df4843f9727092c2e87e3b0c524d2441eff",
+        "daprCli": "1.19.1",
+        "daprSdk": "1.19.1"
+      },
+      "referenceGraph": {
+        "reviewedPlatformRevision": "759bb89753de7e70cb0b0db61c7142e96ec5bac0",
+        "sha256": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55"
+      }
+    }
+  },
+  "downloads": {
+    "helm": {
+      "url": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+      "sha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096"
+    },
+    "dapr": {
+      "url": "https://dapr.github.io/helm-charts/dapr-1.19.2.tgz",
+      "sha256": "3c0e68d61dccf6dc30bf153cb7bd47b50dbe5f8cb889ec2d72b2ec38fa725efa"
+    },
+    "dapr-crd-components.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/components.yaml",
+      "sha256": "47acb92af4b4c403832c0d7acc32cab2d72c58be630dc7fe0cdbed702c3b1434"
+    },
+    "dapr-crd-configuration.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/configuration.yaml",
+      "sha256": "13fc91f9ef09639efea76ea3bb8384563442c3609af8ba4ff8b96d713bf226c8"
+    },
+    "dapr-crd-httpendpoints.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/httpendpoints.yaml",
+      "sha256": "29210af44ef18d444659142547769884aa22e27483395deef5b27fc2f6c19d5e"
+    },
+    "dapr-crd-mcpservers.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/mcpservers.yaml",
+      "sha256": "5bb37d8e927a108bfbd97db51bd5929fc50d537f8d771feb2b9bf5375d592c93"
+    },
+    "dapr-crd-resiliency.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/resiliency.yaml",
+      "sha256": "62ca4e10fd61793f44265a3864f2863cf55508a681ac689508262257deb51356"
+    },
+    "dapr-crd-subscription.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/subscription.yaml",
+      "sha256": "1864c443890e83f7d2df0336ed5d5bda265398681bd4502c36a59c25e620667c"
+    },
+    "dapr-crd-workflowaccesspolicy.yaml": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/charts/dapr/crds/workflowaccesspolicy.yaml",
+      "sha256": "4b11a6556c5d57583e360dc9ad552b3b4871230b0aa5914255a8d8031991d769"
+    },
+    "starting-dapr": {
+      "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
+      "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
+    },
+    "dapr-go.mod": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/go.mod",
+      "sha256": "c3f32083d48f34304ec813a2715617b7408b5fe48fb6d740c53e3708b9455c65"
+    },
+    "dapr-go.sum": {
+      "url": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0/go.sum",
+      "sha256": "5a220e8c83e7d6d4be3e6f9cca56e403ea0225116ceefc56e2699159fdc77073"
+    }
+  },
+  "tools": {
+    "helm": {
+      "version": "v4.2.0+g0646808",
+      "binarySha256": "bf1e2f933afaaab981b4dce6f0caea951635539336f463780ad479de5408f869"
+    },
+    "kind": {
+      "version": "kind v0.31.0 go1.25.5 linux/amd64",
+      "binarySha256": "eb244cbafcc157dff60cf68693c14c9a75c4e6e6fedaf9cd71c58117cb93e3fa"
+    },
+    "kubectl": {
+      "version": "v1.36.1",
+      "binarySha256": "629d3f410e09bf49b64ae7079f7f0bda1191efed311f7d37fdbab0ad5b0ec2b7"
+    },
+    "docker": {
+      "version": "29.8.2",
+      "binarySha256": "6f7a95d27f98fc8c5f6b220898988bf8f61dd9b040936797917cbdc72c6cabe6"
+    },
+    "curl": {
+      "version": "curl 8.18.0 (x86_64-pc-linux-gnu) libcurl/8.18.0 OpenSSL/3.5.5 zlib/1.3.1 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.2 libssh2/1.11.1 nghttp2/1.68.0 librtmp/2.3 mit-krb5/1.22.1 OpenLDAP/2.6.10",
+      "binarySha256": "b618fe7feb3283395f79f4ca97eebd921295d88285aa7de9eac54beaca4e7bb9"
+    },
+    "skopeo": {
+      "version": "skopeo version 1.21.0-dev",
+      "binarySha256": "b05e0644f0191cf388b7767351bc0b285ebbaa5a5e31b6990ec3ae4944a17d0c"
+    }
+  },
+  "source": {
+    "revision": "646ce2a8104b7ef512568b21340d203143d5a0d8",
+    "statusPorcelain": " M _bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-graph-parity/graph-parity.log\n M eng/helm-qualification/dapr-1.19.2.json\n M eng/helm-qualification/qualify.py\n?? _bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-20261123/\n?? _bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-graph-parity/current-reference-graph.json\n?? eng/helm-qualification/dapr_candidate.py\n",
+    "submoduleStatus": " 2e591bddc6c951ee8a2018c2bac05755f2f5af00 references/Hexalith.AI.Tools (heads/main)\n e72605a6c4bc73af40c41e744b56c1e7a2a14391 references/Hexalith.Agents (v2.0.2-41-ge72605a)\n 2d9ef8b454ff897daca0149f3549844f584b634a references/Hexalith.Builds (v6.5.1-20-g2d9ef8b4)\n 034dd5f8a687087ebcc62aa57d0598f566b321fb references/Hexalith.ChatBot (v1.83.0-99-g034dd5f)\n 7dc3a2ef50b06ed0b3e6cad93736a8d07741b830 references/Hexalith.CiCd (heads/main)\n 5f646d4e49279cca0d31ab577e91719c3ed7e434 references/Hexalith.Commons (v3.0.1-9-g5f646d4)\n f517ee6f1f94c6e0c0202798d601cf1a3e208967 references/Hexalith.Conversations (v2.1.0-23-gf517ee6f)\n d810b7a9a4db5454783a5eb776d60b708264ea45 references/Hexalith.EventStore (v5.4.0-25-gd810b7a9a)\n 1c8da626f05b25b36dbc5813d68bc44da09a27f4 references/Hexalith.Folders (v2.0.1-16-g1c8da626)\n 6d90c6154d2ca6155eeae17a3f280dc22ff9560b references/Hexalith.FrontComposer (v6.0.1-21-g6d90c615)\n a8f2b5fa35227ee22ee925ce88640db745c9af8e references/Hexalith.McpCli (mcpcli-paired-publication-started-v3.0.0-84-ga8f2b5fa)\n 2b82cb36cba33b41cff8fb83f15924e24ca64002 references/Hexalith.Memories (v4.1.0-32-g2b82cb36)\n cc691319b8ee622198f7d8d93a87f85a86b9fd8a references/Hexalith.Parties (v4.0.0-42-gcc691319)\n 99c2344f08d3e3560a891f79ab63f8722fa14e60 references/Hexalith.PolymorphicSerializations (v2.0.0-16-g99c2344)\n 6e9fc7225cad314b3065fb8b42872715ec9fb192 references/Hexalith.Projects (v2.0.0-17-g6e9fc722)\n 465f0b36afeeb880c4b66144547a127e5bc57208 references/Hexalith.Tenants (v8.0.2-32-g465f0b36)\n 151fd37308eb08f942040c283209e7886ad954a6 references/Hexalith.Timesheets (v2.1.1-10-g151fd37)\n ed05c0855e1699f3b3b1348cb44dd3aa8840bfe7 references/Hexalith.Works (v1.0.2-282-ged05c08)\n",
+    "files": {
+      "_bmad-output/implementation-artifacts/evidence/3-3/verification/continuation-20261122/builds-662-published.json": "1d589e0fa1ddee2546acdedc16292026e09370a97ac1a18f98bcd770b4529b5e",
+      "eng/builds-tuple.json": "bab9b1fb0b67e3031b8238240b1dbeeecd889de2257ea94cbf4f44b53256e0b9",
+      "eng/helm-qualification/calibration_s3_backup.py": "64e25811e7c49b7823fd050ca13381680d7b71065e7ad71cd57aebdc0ebb48a3",
+      "eng/helm-qualification/calibration_workload.py": "c619612020f57f8be7c0453217ab1ba046fd52e7cd803d1cc0240cdadaf5e7cc",
+      "eng/helm-qualification/campaign_capacity.py": "f80e2a4862842bbe452e68e73e495920e624cf37f2f1276b36408ce22492036f",
+      "eng/helm-qualification/campaign_environment.py": "0e70b589d6179af9f5eae353ce06edf3e00e887cb973971b62fe31ab7bc1e39a",
+      "eng/helm-qualification/campaign_lifecycle.py": "c38f33afd0bfc32c251a94fb0d52a2669004fcc2c0e5d28176b3821ef1da32b0",
+      "eng/helm-qualification/chart/Chart.yaml": "b5c7d2eb27d2ec237620088a13bd4c45a67a1ba424f0b9e0b01429aca9a8da7a",
+      "eng/helm-qualification/chart/reference-graph.json": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55",
+      "eng/helm-qualification/chart/templates/_helpers.tpl": "b8e551932ed25a5e0c69d77f949cc743a266068dfa6fdccc8165e24ee3187dea",
+      "eng/helm-qualification/chart/templates/application.yaml": "b6da37d3dd124dcba2a8f701262a1ea60e75783408e78df3b7db0c7258f142bb",
+      "eng/helm-qualification/chart/templates/dapr.yaml": "dca8a2c2c27224af448fc4b408263602de05b2b23ee2aa23d1dc631eac67bfa8",
+      "eng/helm-qualification/chart/values.yaml": "1d7873e046862d488f886e53a04a35a9c44291c1ac77514e3d18c9773b2c1e8f",
+      "eng/helm-qualification/dapr-1.19.2.json": "6d79ca0360277ef02d2c82944544da1f937ea134cf3fd8a434c7825478b18a0a",
+      "eng/helm-qualification/dapr_candidate.py": "6d47b57c047112c8fed946e63a3affe6f21f47b2e642b066d4e8a6966cf4a416",
+      "eng/helm-qualification/environment_components.py": "e4ec8a2c0fd38ad55441c324acfa01ba0858c3de047c626058f0d14f158df1ab",
+      "eng/helm-qualification/independent_calibration.py": "e86d9ec3aa2a40e6726e7b7f778ad670bb333eb20373fb579f6566d5c2df8d40",
+      "eng/helm-qualification/isolated_docker.py": "4e3cc1d62ca26dfc3ee8e58a76c3197055b46fae6ce14fed1411f29f874c9785",
+      "eng/helm-qualification/qualify.py": "e296732e41a1c8dc589c041d9ba4591ba7c45b3bfd26d75e1036df38de2e3ff1",
+      "eng/helm-qualification/test_calibration_s3_backup.py": "4b374bf84a9fc3f49f702987333f4b12d40b57ff2ec09f8d971d33224fff72d2",
+      "eng/helm-qualification/test_campaign_capacity.py": "91a002be81936a8f3aea9e705bf19532cf55a81497b540343f96e60309d2cf18",
+      "eng/helm-qualification/test_campaign_lifecycle.py": "5e1263d8ecfd7e3151f82120c099a8325053786caf5961de25be4ab8634c5795",
+      "eng/helm-qualification/test_chart.py": "ad21680a2b82ac9ba047e7e39bd2103d6dd0121f2b85c2573fe6167bacde4fbe",
+      "eng/helm-qualification/test_independent_calibration.py": "6f7b3276d103cc03ddda1b815b1bed3a10504099fc98cd467fa3485c15b68112",
+      "eng/helm-qualification/test_isolated_docker.py": "b15df9cbc53f731575c54ee3943814809d76ed9b5b82e8caa22c0b97de051cd8",
+      "eng/helm-qualification/test_qualify.py": "f1c27e3c4ba13cfcb55cdf0ced80c8d89680af8ffa407e115b6c335e934e92e5",
+      "eng/helm-qualification/toolchain.json": "54fcd4e67d3c900750882b2f329ec594547bd0dcdcf1263f3cb692fa99758fc8",
+      "eng/story-1-17-main-reference-mapping.json": "0246bc7b41b28bde97199133b790477b8c9cdb4018eafa6cde888b6f5c26feb4",
+      "references/Hexalith.Builds/Props/Directory.Packages.props": "7c2315bfcae933a5822156c798a5bf47593d16efdb0e190954502c79d49fcd39",
+      "src/Hexalith.Platform.Composition/AcceptedDependencyRecords.cs": "5ff92bd47d6e18a04bcbd13f6407756a329b2efd6742f558d000e211d352e32d",
+      "src/Hexalith.Platform.Composition/AcceptedLaunchArtifactLease.cs": "bf81c81653536a4cf896543ca1ed09107106fee7d5d3693b13ab17fd5a04c412",
+      "src/Hexalith.Platform.Composition/AcceptedLaunchLeaseOwner.cs": "3666fff71ae86022ca791218880f6abb295640ac7ed9a8db45de27c017d01e39",
+      "src/Hexalith.Platform.Composition/AcceptedLaunchLifetime.cs": "08bbbfd556e4874ab6fa90a1fbf57238385e1fb62f8f4792cab35a5d2d76ee95",
+      "src/Hexalith.Platform.Composition/AcceptedListenerBindings.cs": "3774d514f2c27e5d26106c4c393d28c68873fd837e4d1c1af6ebe67f3e50ffbf",
+      "src/Hexalith.Platform.Composition/AcceptedResourceListener.cs": "625d33e42afe07f62b9b479b086b61a8ac8fa450a9c5895f6280361d2b6947bc",
+      "src/Hexalith.Platform.Composition/AgentsDeploymentProfile.cs": "1b7e83575454d661a6d1cee1f7d21dce2ad5061301a68b932819498b67941f25",
+      "src/Hexalith.Platform.Composition/AgentsDeploymentProfileModel.cs": "358c955a44a872aa3ab3aef0efe9db7bb4bb3ffe4245efc0066a3182094c6573",
+      "src/Hexalith.Platform.Composition/AgentsHostComposition.cs": "ddfbb66c7378bc2029f71bcbadcea23803f89e3625ecf052e202af6f8f8ce975",
+      "src/Hexalith.Platform.Composition/AgentsIngressDenialContext.cs": "ace389a666b5eb920c78387ac3aa6785f7124f7c32d21e37eba57f00ae96a546",
+      "src/Hexalith.Platform.Composition/BoundedDevelopmentFile.cs": "52af9c0c0b8a3a4cb70c24d4c225ae46a1ff9f79768a4f81fb2a9e2dfd2d4ebe",
+      "src/Hexalith.Platform.Composition/CoordinatedProtectionAcceptance.cs": "048184a0d3e2cd970f4314fb893e1a1e047feb9509434fcca2ba8ae279642e00",
+      "src/Hexalith.Platform.Composition/PlatformAppModel.cs": "a0ec07564d62a2c206a19c2a13808210da6cc02931f17ddf0fd489a5b7ba216a",
+      "src/Hexalith.Platform.Composition/PlatformApplicationGraph.cs": "42378f4ac70f4145bf414c4007ba7a0f3a69b4dfa7edb02de8206e7134427374",
+      "src/Hexalith.Platform.Composition/PlatformCatalogContractBinding.cs": "c605af4805429b0f6293abfd7c4335e9e52128af3b3d4c25809a9845c1dc3a8c",
+      "src/Hexalith.Platform.Composition/PlatformCommittedCatalogProof.cs": "0323ad3f8ccfc8896b7d9c9e1767a61b4be69b83255e41a21c5430e032efd5cb",
+      "src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs": "ad1133775c1b987bb465eb502d37f02aa56b5c999241c65c53a4266fefbc8544",
+      "src/Hexalith.Platform.Composition/PlatformCompositionWorkspace.cs": "2b8c2d912c50952e5a9c5afddadc4e1473a1b8471f436d17f559ff450187fc44",
+      "src/Hexalith.Platform.Composition/PlatformCurrentOwnerObservation.cs": "f457eedc3143db54a3a28c7136bb89cb300004caa80db5a881c706529a8c470d",
+      "src/Hexalith.Platform.Composition/PlatformCurrentOwnerProof.cs": "4429941246c372983c2db5b40f884371ffaf566b3f3e0927c059e4c031c5f5c2",
+      "src/Hexalith.Platform.Composition/PlatformCurrentOwnerSourceInventory.cs": "1f6bd27d0e1cf5f3db7778b53c8645ef480de742ff3de97318b398b52e419466",
+      "src/Hexalith.Platform.Composition/PlatformCurrentOwnerSourceState.cs": "e2757d9a530ef286c29d6c3a1b7556f81b06950b44056df073db054372f4fa6f",
+      "src/Hexalith.Platform.Composition/PlatformDaprBindings.cs": "ae44d276327c56845048c7a287ee8d894116573f79d7d37c5a0f39e93dde1f6b",
+      "src/Hexalith.Platform.Composition/PlatformDaprDiagnosticFile.cs": "a7332df57b1ab08d9044f45a9413f5db07faee3e129e71e1dc5c921749d4e8e5",
+      "src/Hexalith.Platform.Composition/PlatformDaprDiagnosticRedactor.cs": "78c1325a0ed40e7ad9bdefccb9cee4da9d6b9d19abf785d7eb0b947109b66a58",
+      "src/Hexalith.Platform.Composition/PlatformDaprDiagnosticResource.cs": "d32ef6e6ad150b5c79dc92083d5fd4ee059d7d9f37757fa93428cbf69b87f417",
+      "src/Hexalith.Platform.Composition/PlatformDaprDiagnostics.cs": "4bc6dffa4f46734fd501343565123a4e72593cad26b3b660736b836a52490b34",
+      "src/Hexalith.Platform.Composition/PlatformDaprEndpointSubscriber.cs": "e788959115e1d269b35df9b78794a1d718975f746f6ce99a83746ff5e8528f52",
+      "src/Hexalith.Platform.Composition/PlatformDeclarationSet.cs": "12b1fd4ed8da8ca6ffd26db1e7fd0b9bcb9d3ead2b39dacb6546bde15a6aa80f",
+      "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBinding.cs": "ef5f90b120b9a5af90c93bf23bc8f4cdbd7a81c034ddca0863654ce5d94e5666",
+      "src/Hexalith.Platform.Composition/PlatformEventStoreExtensionBindings.cs": "65ec9bc27ba3aad48c58b268400bd8e79f64d8ac9ff5c98eec183184d175203d",
+      "src/Hexalith.Platform.Composition/PlatformEventStoreHostBinding.cs": "51c06a65f4ad137210470447281659593d3cfade0e9cafda7badbe24d0ecc1cd",
+      "src/Hexalith.Platform.Composition/PlatformFixtureHostPreparation.cs": "9418382abe3eec3174d9685024d7c20eeb157770863032509aa354aceef33474",
+      "src/Hexalith.Platform.Composition/PlatformFixturePackageQualification.cs": "d9aa0b699abe2b4ee0e7d246df5838b0369773599ecd0f5b2d697037399caaef",
+      "src/Hexalith.Platform.Composition/PlatformFixtureProtection.cs": "519866476b130855c96ad44f4352692cb67b8d738e973a2fe86859e8870297be",
+      "src/Hexalith.Platform.Composition/PlatformFixtureToolRelease.cs": "e3891d801e2663f87c437210a5119ef055392ff38ca2688e771f7bc34be295c8",
+      "src/Hexalith.Platform.Composition/PlatformGatewayConfiguration.cs": "b6b59de12ebec3120ad762d357e25ca9d7f25bdb31dbc94a4fee3c84bfc947fc",
+      "src/Hexalith.Platform.Composition/PlatformGatewayStartup.cs": "24e2596a126878a2afee70dcdff83b3c4ea4f52d027294377cff918b34eb380d",
+      "src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs": "31a4954b66fd64462edf43c4ae4d75fd7b30612ce9ba217383f82bf520123411",
+      "src/Hexalith.Platform.Composition/PlatformHostedReferenceMapping.cs": "63dcaad2446cbbddc21ff4115e4075e609632d4cd366efd8fe57758c52956557",
+      "src/Hexalith.Platform.Composition/PlatformLocalProfile.cs": "4c092e672b3c38fb0936ba1b330cbe9cf236486d2a23cf1da20f54de5db2eab1",
+      "src/Hexalith.Platform.Composition/PlatformLoopbackRegistryProbe.cs": "6ce566a244e1e573870465a4a54c65cf6fd812adbfe90cb0f9cf8e85ba695c58",
+      "src/Hexalith.Platform.Composition/PlatformMappedArtifact.cs": "b14c693049de9fd0505cf2ed815bd9879f2e30a83245a117665fc5579fd07d5f",
+      "src/Hexalith.Platform.Composition/PlatformMcpCliCatalogVersion.cs": "db601682e0b2e65cecf066102f5fbcde48cb9a0149468cc8249a39ffccf4aa38",
+      "src/Hexalith.Platform.Composition/PlatformNativeGatewayContract.cs": "200f226d1bfc7cbe4ee1f5b8555182ed4bc44b5aa016748884a314247e359ca6",
+      "src/Hexalith.Platform.Composition/PlatformNativeHostDiagnostics.cs": "68a17206f960421ef87926f83a0ebd9a29127eec592c159a9c5a120170bfd3ae",
+      "src/Hexalith.Platform.Composition/PlatformNativeInvocationAccess.cs": "230ca876f8e7174f28a88a7cf8caa190ba799453a1cf47415c68cb2d098c4d46",
+      "src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs": "efa6380b1173d0e06f08c24a7e784486341a1a15d9c001852ed01745eae3c8b0",
+      "src/Hexalith.Platform.Composition/PlatformOwnerClientBinding.cs": "84f01c62520146d945652c74f29128e2604eb2c11aba1cdf4a3d7533418c70c0",
+      "src/Hexalith.Platform.Composition/PlatformOwnerServices.cs": "1136ef3a0abd7737df9c42e375291be2ad20616e97437116c5d4e472a7a609e3",
+      "src/Hexalith.Platform.Composition/PlatformPackageCatalogQualification.cs": "3869d6819e3365e5341b3df264cf389bab5c5c6e8843e0bc9810df6486f5f70b",
+      "src/Hexalith.Platform.Composition/PlatformPackageCatalogReader.cs": "56ff4c3870c15257e6ab043454407820df12e8a08babebaa6c6843705fa1c107",
+      "src/Hexalith.Platform.Composition/PlatformPartiesPackageCatalogQualification.cs": "3faa08c4571284018b7926449663ea183748a00168eaed7283a2ecf6dd9f9287",
+      "src/Hexalith.Platform.Composition/PlatformPartiesRunProof.cs": "91f52c72c3374a70857793af21a19cfba8b2ecd805ca136f97b1899cc9807064",
+      "src/Hexalith.Platform.Composition/PlatformPartiesValidationContext.cs": "01aad1458eade685b819a80035b816d6b1cab0fd8714578c87fa0a7bb8ed3477",
+      "src/Hexalith.Platform.Composition/PlatformPostgresqlHealthCheck.cs": "694dad5a9ba81a1aa5c7d2938a64057933ff87d43252f9657e8a33518a9d9751",
+      "src/Hexalith.Platform.Composition/PlatformQualificationOwnerProof.cs": "c42df24e965b24362b177d1322ad20c04fbb894b1535532258970ab616ea0486",
+      "src/Hexalith.Platform.Composition/PlatformRedisHealthCheck.cs": "2548f5dd02b64c639f0f08bd6ca43ef29ffe80688c26f10097820978ddc086a9",
+      "src/Hexalith.Platform.Composition/PlatformReleasedImages.cs": "d2d9e3d2c4e51abec9e595c8edf9f229a3622103e63cc0fde5d02198491aae11",
+      "src/Hexalith.Platform.Composition/PlatformResourceOwnerAnnotation.cs": "0e6371a16cc7e72cce3f400284fe12c85c27aa861bbdbeb462614f4b2c4891f9",
+      "src/Hexalith.Platform.Composition/PlatformRetentionProfile.cs": "5bb847f9db271b8c2065300070392725cad5e878844740b9ccb4fd554650dbfb",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs": "12adf36b36e61a5ff7becff72b6aa926a12474b4993bc10585414752c3380527",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs": "5aac255109d2eacbecab9d93cf5fe4a60047743768cbd498c01b756f08ba8736",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalogComponentRenderer.cs": "d3f49c5a895429b2d1b9421cb5db076d36ecb2a6143efc8a40b1041e83b93f29",
+      "src/Hexalith.Platform.Composition/PlatformRoutingCatalogMetadata.cs": "d045a49c7009b6fb2a01ccfd055737567068b447f0c64808a94b37674c972e3f",
+      "src/Hexalith.Platform.Composition/PlatformRunOwnedWorkloadEnrollment.cs": "61d0fcccfb791a6cab6970a17d102973c9a0758d07e946e1c45dadaf81044ae5",
+      "src/Hexalith.Platform.Composition/PlatformServerAnnotation.cs": "e6e694457827249572c3b44006235ccbcf761c047ebb3d558b2e54c9bcbc33c2",
+      "src/Hexalith.Platform.Composition/PlatformServerBinding.cs": "49e552478f1cb19a6f947f690c286387ca9bf1980dd44833ca3b174865a772b8",
+      "src/Hexalith.Platform.Composition/PlatformServerBindings.cs": "5135ce79d27cdc91693e91fd296cb4456b49186ad6b852a7dadc0fad4b8f790b",
+      "src/Hexalith.Platform.Composition/PlatformSourceStateWorker.cs": "fb3a5014fd3a2fb285c62091e9b997836ff99609f2d2bebdc45a938918edc112",
+      "src/Hexalith.Platform.Composition/PlatformTenantBootstrapAccess.cs": "2981949e158bd3782a78b89db8ae4a630a53e48a31878e98f181243f1e9d426a",
+      "src/Hexalith.Platform.Composition/PlatformTimesheetsBinding.cs": "9aeb4ba3adade96b728c4ec74c5708ea86d2b5f525b8e0436b9351519ef889a2",
+      "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollment.cs": "088e2c90707ebc34468b74d14f34a4922848d3cf8438f1609657d0ffa2fbcf39",
+      "src/Hexalith.Platform.Composition/PlatformWorkloadEnrollmentInventory.cs": "da4e12c45723e4ec10102a1c224708f1dd16a7934bbaed5190b99b3c2648ad36",
+      "src/Hexalith.Platform.Composition/PythonCanonicalJson.cs": "ee2cde753d50bae2942ac64f2bfc42e089e51f08d9c8429eb60f95d2d38612e9",
+      "src/Hexalith.Platform.Composition/SdkReadinessHealthCheck.cs": "ec57f02a8453306aff5f31978f9374694daa39fba2c82f86141e1ba557fd140f",
+      "src/Hexalith.Platform.Composition/WorksDevelopmentCatalogProfile.cs": "aa685b047f0b349a08157e6256faea2f1ba42fb2f3edc90433c4aca75b495b99",
+      "src/Hexalith.Platform.Composition/WorksPreviewManagedRuntime.cs": "3c15f3a8678493145a5154094ee1a80630a3c9d8c5fe8591d8c10b89a6c2c355",
+      "src/Hexalith.Platform.Composition/WorksPreviewModel.cs": "3f133dfddad35c50767be89224a690d13bed5541c98605f50a6df31c0571787b",
+      "src/Hexalith.Platform.Composition/WorksProductionProfile.cs": "1dca97f316ec39e56f755403907bbc85acae50b044b43ed7809a2cf5c114c9e7",
+      "src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs": "a5d58ce809dfa10ce614bb8d1de74a4a822e6843fcdd8ab86be36af9f1921481",
+      "src/Hexalith.Platform.Composition/WorksRoutingCatalogLifetime.cs": "418d3056665f5ac04caa9e8f56129df95ae73f749b3dcad445473e31d750aa5f"
+    }
+  },
+  "inputs": {
+    "graphSha256": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55",
+    "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661"
+  },
+  "exportDecision": {
+    "selected": "maintained-chart",
+    "trigger": "AD-1",
+    "scope": "Retained historical native publishing decision",
+    "referenceGraph": {
+      "reviewedPlatformRevision": "759bb89753de7e70cb0b0db61c7142e96ec5bac0",
+      "sha256": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55"
+    }
+  },
+  "failure": "RuntimeError: command failed (1): docker \u2014 Error response from daemon: no command specified\n",
+  "finished": "2026-11-23T07:26:12.684607+00:00"
+}

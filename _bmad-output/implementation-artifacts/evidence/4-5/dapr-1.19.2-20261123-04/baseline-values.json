@@ -1,0 +1,655 @@
+{
+  "mode": "normal",
+  "imagePullSecret": "fixture-registry",
+  "endpoints": {
+    "data": "rediss://fixture-data.environment.svc.cluster.local:6380",
+    "identity": "https://identity.fixture.invalid/realm",
+    "sentry": "https://dapr-sentry.dapr-system.svc.cluster.local:443"
+  },
+  "environment": {
+    "trustDomain": "fixture.invalid",
+    "controlPlaneTrustDomain": "cluster.local",
+    "sentryEndpoint": "sentry",
+    "componentConfigMap": "fixture-components",
+    "components": {
+      "access-telemetry-config": {
+        "name": "access-telemetry-config",
+        "endpoint": "data",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "configuration.redis",
+        "endpointMetadataKey": "redisHost",
+        "credentialMetadataKey": "redisPassword",
+        "endpointFormat": "authority",
+        "metadata": {
+          "enableTLS": "true"
+        }
+      },
+      "access-telemetry-secrets": {
+        "name": "access-telemetry-secrets",
+        "endpoint": "identity",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "secretstores.hashicorp.vault",
+        "endpointMetadataKey": "vaultAddr",
+        "credentialMetadataKey": "vaultToken",
+        "endpointFormat": "url",
+        "metadata": {}
+      },
+      "access-telemetry-store": {
+        "name": "access-telemetry-store",
+        "endpoint": "data",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "state.redis",
+        "endpointMetadataKey": "redisHost",
+        "credentialMetadataKey": "redisPassword",
+        "endpointFormat": "authority",
+        "metadata": {
+          "enableTLS": "true"
+        }
+      },
+      "configstore": {
+        "name": "configstore",
+        "endpoint": "data",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "configuration.redis",
+        "endpointMetadataKey": "redisHost",
+        "credentialMetadataKey": "redisPassword",
+        "endpointFormat": "authority",
+        "metadata": {
+          "enableTLS": "true"
+        }
+      },
+      "llm": {
+        "name": "llm",
+        "endpoint": "identity",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "conversation.openai",
+        "endpointMetadataKey": "endpoint",
+        "credentialMetadataKey": "key",
+        "endpointFormat": "url",
+        "metadata": {}
+      },
+      "pubsub": {
+        "name": "pubsub",
+        "endpoint": "data",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "pubsub.redis",
+        "endpointMetadataKey": "redisHost",
+        "credentialMetadataKey": "redisPassword",
+        "endpointFormat": "authority",
+        "metadata": {
+          "enableTLS": "true"
+        }
+      },
+      "secretstore": {
+        "name": "secretstore",
+        "endpoint": "identity",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "secretstores.hashicorp.vault",
+        "endpointMetadataKey": "vaultAddr",
+        "credentialMetadataKey": "vaultToken",
+        "endpointFormat": "url",
+        "metadata": {}
+      },
+      "statestore": {
+        "name": "statestore",
+        "endpoint": "data",
+        "credential": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "type": "state.redis",
+        "endpointMetadataKey": "redisHost",
+        "credentialMetadataKey": "redisPassword",
+        "endpointFormat": "authority",
+        "metadata": {
+          "enableTLS": "true"
+        }
+      }
+    }
+  },
+  "gateway": {
+    "name": "fixture-gateway",
+    "namespace": "environment",
+    "sectionName": "https"
+  },
+  "hostnames": {
+    "eventstore/gateway": "eventstore.fixture.invalid",
+    "tenants/api": "tenants-api.fixture.invalid",
+    "memories/server": "memories.fixture.invalid"
+  },
+  "images": {
+    "eventstore/gateway": "qualification.invalid/eventstore@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "tenants/domain": "qualification.invalid/tenants@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "tenants/api": "qualification.invalid/tenants-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "memories/server": "qualification.invalid/memories@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "memories/clock": "qualification.invalid/memories-access-telemetry-clock@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "memories/telemetry": "qualification.invalid/memories-access-telemetry@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "parties/domain": "qualification.invalid/parties@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "bindings": {
+    "eventstore/gateway": {
+      "configuration": {
+        "EventStore:DaprConfigPath": "/etc/hexalith/environment/daprconfigpath.yaml",
+        "EventStore:StateStoreComponentPath": "/etc/hexalith/environment/statestorecomponentpath.yaml",
+        "EventStore:PubSubComponentPath": "/etc/hexalith/environment/pubsubcomponentpath.yaml",
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:ValidAudiences": "fixture",
+        "Authentication:JwtBearer:AllowedAlgorithms": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:AllowInsecureSymmetricKey": "fixture",
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "EventStore:AppChannelToken": {
+          "name": "fixture-eventstore-app",
+          "key": "token"
+        },
+        "Authentication:DaprInternal": "fixture",
+        "Authentication:DaprInternal:Audience": "fixture",
+        "Authentication:DaprInternal:AllowedCallers": "fixture",
+        "Authentication:DaprInternal:MaximumLifetimeSeconds": "fixture",
+        "EventStore:Projections": "fixture",
+        "EventStore:Projections:WorkersEnabled": "fixture",
+        "EventStore:Projections:CheckpointStateStoreName": "fixture",
+        "EventStore:Projections:ReadModelStateStoreName": "fixture",
+        "EventStore:Projections:DefaultRefreshIntervalMs": "fixture",
+        "EventStore:Projections:Domains": "fixture",
+        "EventStore:Projections:RebuildIndexCleanupCadenceSeconds": "fixture",
+        "EventStore:Projections:RebuildPageSize": "fixture",
+        "EventStore:Projections:RebuildMaxPrefixEventCount": "fixture",
+        "EventStore:Projections:RebuildMaxPrefixBytes": "fixture",
+        "EventStore:ProjectionDispatch": "fixture",
+        "EventStore:ProjectionDispatch:MaxRetryAttempts": "fixture",
+        "EventStore:ProjectionDispatch:RetryScanBatchSize": "fixture",
+        "EventStore:ProjectionDispatch:RetryBaseDelay": "fixture",
+        "EventStore:ProjectionDispatch:RetryMaxDelay": "fixture",
+        "EventStore:ProjectionDispatch:RetryWorkerInterval": "fixture",
+        "EventStore:ProjectionDispatch:RetryLeaseDuration": "fixture",
+        "EventStore:ProjectionDeliveryIdempotency": "fixture",
+        "EventStore:ProjectionDeliveryIdempotency:CompletedReceiptLimit": "fixture",
+        "EventStore:ProjectionDeliveryIdempotency:ReservationLease": "fixture",
+        "EventStore:ProjectionDeliveryIdempotency:MaxStateTransitionAttempts": "fixture",
+        "Authentication:WorkloadIssuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:WorkloadIssuer:Workload": "fixture",
+        "Authentication:WorkloadIssuer:LifetimeSeconds": "fixture",
+        "Authentication:WorkloadIssuer:AudienceScopePrefix": "fixture",
+        "Authentication:WorkloadIssuer:OperationScopePrefix": "fixture",
+        "Authentication:WorkloadIssuer:ClientId": "fixture",
+        "Authentication:WorkloadIssuer:ClientSecret": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:WorkloadIssuer:TokenEndpoint": "fixture",
+        "EventStore:DomainServices:ConfigStoreName": "fixture"
+      },
+      "appToken": {
+        "name": "fixture-eventstore-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-eventstore-api",
+        "key": "token"
+      }
+    },
+    "tenants/domain": {
+      "configuration": {
+        "Tenants:DaprConfigPath": "/etc/hexalith/environment/daprconfigpath.yaml",
+        "Oidc:Authority": {
+          "endpoint": "identity"
+        },
+        "Jwt:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Tenants:BootstrapGlobalAdminEnabled": "fixture",
+        "Tenants:BootstrapGlobalAdminUserId": "fixture",
+        "EventStore:Authentication:Authority": {
+          "endpoint": "identity"
+        },
+        "EventStore:Authentication:ClientId": "fixture",
+        "EventStore:Authentication:Username": "fixture",
+        "EventStore:Authentication:Issuer": {
+          "endpoint": "identity"
+        },
+        "EventStore:Authentication:Audience": "fixture",
+        "EventStore:Authentication:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:ValidAudiences": "fixture",
+        "Authentication:JwtBearer:AllowedAlgorithms": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:AllowInsecureSymmetricKey": "fixture",
+        "Authentication:Workload:Audience": "fixture",
+        "Authentication:Workload:AllowedCallers": "fixture",
+        "Authentication:Workload:MaximumLifetimeSeconds": "fixture",
+        "EventStore:DataProtection:PersistToStateStore": "fixture",
+        "EventStore:Authentication:Password": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "EventStore:Authentication:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Tenants:AppChannelToken": {
+          "name": "fixture-tenants-app",
+          "key": "token"
+        },
+        "Tenants:ApiDaprToken": {
+          "name": "fixture-tenants-api",
+          "key": "token"
+        }
+      },
+      "appToken": {
+        "name": "fixture-tenants-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-tenants-api",
+        "key": "token"
+      }
+    },
+    "tenants/api": {
+      "configuration": {
+        "Tenants:DaprConfigPath": "/etc/hexalith/environment/daprconfigpath.yaml",
+        "Oidc:Authority": {
+          "endpoint": "identity"
+        },
+        "Jwt:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Tenants:BootstrapGlobalAdminEnabled": "fixture",
+        "Tenants:BootstrapGlobalAdminUserId": "fixture",
+        "EventStore:Authentication:Authority": {
+          "endpoint": "identity"
+        },
+        "EventStore:Authentication:ClientId": "fixture",
+        "EventStore:Authentication:Username": "fixture",
+        "EventStore:Authentication:Issuer": {
+          "endpoint": "identity"
+        },
+        "EventStore:Authentication:Audience": "fixture",
+        "EventStore:Authentication:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:ValidAudiences": "fixture",
+        "Authentication:JwtBearer:AllowedAlgorithms": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:AllowInsecureSymmetricKey": "fixture",
+        "Authentication:Workload:Audience": "fixture",
+        "Authentication:Workload:AllowedCallers": "fixture",
+        "Authentication:Workload:MaximumLifetimeSeconds": "fixture",
+        "EventStore:DataProtection:PersistToStateStore": "fixture",
+        "EventStore:Authentication:Password": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "EventStore:Authentication:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Tenants:AppChannelToken": {
+          "name": "fixture-tenants-api-app",
+          "key": "token"
+        },
+        "Tenants:ApiDaprToken": {
+          "name": "fixture-tenants-api-api",
+          "key": "token"
+        }
+      },
+      "appToken": {
+        "name": "fixture-tenants-api-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-tenants-api-api",
+        "key": "token"
+      }
+    },
+    "memories/server": {
+      "configuration": {
+        "Memories:LlmComponentPath": "/etc/hexalith/environment/llmcomponentpath.yaml",
+        "ConnectionStrings:redis": {
+          "endpoint": "data"
+        },
+        "ConnectionStrings:falkordb": {
+          "endpoint": "data"
+        },
+        "AccessTelemetryLifecycle:StateStoreComponentPath": "/etc/hexalith/environment/statestorecomponentpath.yaml",
+        "AccessTelemetryLifecycle:ConfigurationStoreComponentPath": "/etc/hexalith/environment/configurationstorecomponentpath.yaml",
+        "Clock:SecretStoreName": "fixture",
+        "Clock:SigningKeySecretName": "fixture",
+        "Clock:Sources": "fixture",
+        "Clock:AllowDevelopmentSources": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyReference": "fixture",
+        "NaturalLanguage:RetryWorkerEnabled": "fixture",
+        "Embedding:CredentialNamespace": "fixture",
+        "OrphanSemanticIndex:Enabled": "fixture",
+        "IsStubBackfill:Enabled": "fixture",
+        "AccessTelemetryLifecycle:DeploymentId": "fixture",
+        "AccessTelemetryLifecycle:ConfigurationEpoch": "fixture",
+        "AccessTelemetryLifecycle:ComponentProfileHash": "fixture",
+        "AccessTelemetryLifecycle:AttestationVerificationKey": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyGeneration": "fixture",
+        "AccessTelemetryLifecycle:CapacityEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationReporterImageDigest": "fixture",
+        "AccessTelemetryLifecycle:RetentionSource": "fixture",
+        "retentionSeconds": "fixture",
+        "AccessTelemetryLifecycle:Enabled": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ExactVersionPinned": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ValidUntilUtc": "fixture",
+        "WorkflowReplaySafety:Enabled": "fixture",
+        "AccessTelemetryLifecycle:ClockSignerKeyEpoch": "fixture",
+        "Clock:SignerKeyEpoch": "fixture",
+        "TenantEventRouting:AutoProvisionRoutedTenants": "fixture",
+        "Clock:SourceAuthenticationTokens": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Conversation:ProviderApiKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:TenantClaimName": "fixture",
+        "Authentication:JwtBearer:ValidAlgorithms": "fixture",
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Memories:AppChannelToken": {
+          "name": "fixture-memories-app",
+          "key": "token"
+        },
+        "Memories:DaprApiToken": {
+          "name": "fixture-memories-api",
+          "key": "token"
+        },
+        "EmbeddingProviders:Google:ApiBaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:BaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:OidcTokenEndpoint": {
+          "endpoint": "identity"
+        },
+        "EmbeddingProviders:Ollama:OidcClientId": "fixture",
+        "EmbeddingProviders:Ollama:OidcScope": "fixture"
+      },
+      "appToken": {
+        "name": "fixture-memories-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-memories-api",
+        "key": "token"
+      }
+    },
+    "memories/clock": {
+      "configuration": {
+        "Memories:LlmComponentPath": "/etc/hexalith/environment/llmcomponentpath.yaml",
+        "ConnectionStrings:redis": {
+          "endpoint": "data"
+        },
+        "ConnectionStrings:falkordb": {
+          "endpoint": "data"
+        },
+        "AccessTelemetryLifecycle:StateStoreComponentPath": "/etc/hexalith/environment/statestorecomponentpath.yaml",
+        "AccessTelemetryLifecycle:ConfigurationStoreComponentPath": "/etc/hexalith/environment/configurationstorecomponentpath.yaml",
+        "Clock:SecretStoreName": "fixture",
+        "Clock:SigningKeySecretName": "fixture",
+        "Clock:Sources": "fixture",
+        "Clock:AllowDevelopmentSources": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyReference": "fixture",
+        "NaturalLanguage:RetryWorkerEnabled": "fixture",
+        "Embedding:CredentialNamespace": "fixture",
+        "OrphanSemanticIndex:Enabled": "fixture",
+        "IsStubBackfill:Enabled": "fixture",
+        "AccessTelemetryLifecycle:DeploymentId": "fixture",
+        "AccessTelemetryLifecycle:ConfigurationEpoch": "fixture",
+        "AccessTelemetryLifecycle:ComponentProfileHash": "fixture",
+        "AccessTelemetryLifecycle:AttestationVerificationKey": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyGeneration": "fixture",
+        "AccessTelemetryLifecycle:CapacityEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationReporterImageDigest": "fixture",
+        "AccessTelemetryLifecycle:RetentionSource": "fixture",
+        "retentionSeconds": "fixture",
+        "AccessTelemetryLifecycle:Enabled": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ExactVersionPinned": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ValidUntilUtc": "fixture",
+        "WorkflowReplaySafety:Enabled": "fixture",
+        "AccessTelemetryLifecycle:ClockSignerKeyEpoch": "fixture",
+        "Clock:SignerKeyEpoch": "fixture",
+        "TenantEventRouting:AutoProvisionRoutedTenants": "fixture",
+        "Clock:SourceAuthenticationTokens": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Conversation:ProviderApiKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:TenantClaimName": "fixture",
+        "Authentication:JwtBearer:ValidAlgorithms": "fixture",
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Memories:AppChannelToken": {
+          "name": "fixture-memories-access-telemetry-clock-app",
+          "key": "token"
+        },
+        "Memories:DaprApiToken": {
+          "name": "fixture-memories-access-telemetry-clock-api",
+          "key": "token"
+        },
+        "EmbeddingProviders:Google:ApiBaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:BaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:OidcTokenEndpoint": {
+          "endpoint": "identity"
+        },
+        "EmbeddingProviders:Ollama:OidcClientId": "fixture",
+        "EmbeddingProviders:Ollama:OidcScope": "fixture"
+      },
+      "appToken": {
+        "name": "fixture-memories-access-telemetry-clock-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-memories-access-telemetry-clock-api",
+        "key": "token"
+      }
+    },
+    "memories/telemetry": {
+      "configuration": {
+        "Memories:LlmComponentPath": "/etc/hexalith/environment/llmcomponentpath.yaml",
+        "ConnectionStrings:redis": {
+          "endpoint": "data"
+        },
+        "ConnectionStrings:falkordb": {
+          "endpoint": "data"
+        },
+        "AccessTelemetryLifecycle:StateStoreComponentPath": "/etc/hexalith/environment/statestorecomponentpath.yaml",
+        "AccessTelemetryLifecycle:ConfigurationStoreComponentPath": "/etc/hexalith/environment/configurationstorecomponentpath.yaml",
+        "Clock:SecretStoreName": "fixture",
+        "Clock:SigningKeySecretName": "fixture",
+        "Clock:Sources": "fixture",
+        "Clock:AllowDevelopmentSources": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyReference": "fixture",
+        "NaturalLanguage:RetryWorkerEnabled": "fixture",
+        "Embedding:CredentialNamespace": "fixture",
+        "OrphanSemanticIndex:Enabled": "fixture",
+        "IsStubBackfill:Enabled": "fixture",
+        "AccessTelemetryLifecycle:DeploymentId": "fixture",
+        "AccessTelemetryLifecycle:ConfigurationEpoch": "fixture",
+        "AccessTelemetryLifecycle:ComponentProfileHash": "fixture",
+        "AccessTelemetryLifecycle:AttestationVerificationKey": "fixture",
+        "AccessTelemetryLifecycle:MarkerKeyGeneration": "fixture",
+        "AccessTelemetryLifecycle:CapacityEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationEvidenceId": "fixture",
+        "AccessTelemetryLifecycle:PhysicalReclamationReporterImageDigest": "fixture",
+        "AccessTelemetryLifecycle:RetentionSource": "fixture",
+        "retentionSeconds": "fixture",
+        "AccessTelemetryLifecycle:Enabled": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ExactVersionPinned": "fixture",
+        "AccessTelemetryLifecycle:CapabilityEvidence:ValidUntilUtc": "fixture",
+        "WorkflowReplaySafety:Enabled": "fixture",
+        "AccessTelemetryLifecycle:ClockSignerKeyEpoch": "fixture",
+        "Clock:SignerKeyEpoch": "fixture",
+        "TenantEventRouting:AutoProvisionRoutedTenants": "fixture",
+        "Clock:SourceAuthenticationTokens": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Conversation:ProviderApiKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:TenantClaimName": "fixture",
+        "Authentication:JwtBearer:ValidAlgorithms": "fixture",
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Memories:AppChannelToken": {
+          "name": "fixture-memories-access-telemetry-app",
+          "key": "token"
+        },
+        "Memories:DaprApiToken": {
+          "name": "fixture-memories-access-telemetry-api",
+          "key": "token"
+        },
+        "EmbeddingProviders:Google:ApiBaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:BaseUrl": "fixture",
+        "EmbeddingProviders:Ollama:OidcTokenEndpoint": {
+          "endpoint": "identity"
+        },
+        "EmbeddingProviders:Ollama:OidcClientId": "fixture",
+        "EmbeddingProviders:Ollama:OidcScope": "fixture"
+      },
+      "appToken": {
+        "name": "fixture-memories-access-telemetry-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-memories-access-telemetry-api",
+        "key": "token"
+      }
+    },
+    "parties/domain": {
+      "configuration": {
+        "EventStore:DomainService:AppId": "fixture",
+        "Authentication:JwtBearer:Authority": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Issuer": {
+          "endpoint": "identity"
+        },
+        "Authentication:JwtBearer:Audience": "fixture",
+        "Authentication:JwtBearer:ValidAudiences": "fixture",
+        "Authentication:JwtBearer:AllowedAlgorithms": "fixture",
+        "Authentication:JwtBearer:RequireHttpsMetadata": "fixture",
+        "Authentication:JwtBearer:AllowInsecureSymmetricKey": "fixture",
+        "Authentication:JwtBearer:SigningKey": {
+          "name": "fixture-credential",
+          "key": "token"
+        },
+        "Authentication:Workload:Audience": "fixture",
+        "Authentication:Workload:AllowedCallers": "fixture",
+        "Authentication:Workload:MaximumLifetimeSeconds": "fixture",
+        "EventStore:AppChannelToken": {
+          "name": "fixture-parties-app",
+          "key": "token"
+        },
+        "EventStore:DataProtection:PersistToStateStore": "fixture",
+        "Tenants:Enabled": "fixture",
+        "Tenants:ServiceName": "fixture",
+        "Tenants:CommandApiAppId": "fixture",
+        "Tenants:TopicName": "fixture",
+        "Parties:MemoriesSearch:Enabled": "fixture"
+      },
+      "appToken": {
+        "name": "fixture-parties-app",
+        "key": "token"
+      },
+      "apiToken": {
+        "name": "fixture-parties-api",
+        "key": "token"
+      }
+    }
+  }
+}

@@ -1,0 +1,399 @@
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-eventstore
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: memories
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/bound/workload
+      trustDomain: fixture.invalid
+    - appId: tenants
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/bound/workload
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/streams/read/workload
+      trustDomain: fixture.invalid
+    - appId: tenants-api
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/queries
+      trustDomain: fixture.invalid
+    - appId: timesheets
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - GET
+        name: /api/v1/commands/status/workload
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/workload
+      - action: allow
+        httpVerb:
+        - GET
+        name: /api/v1/commands/status/*
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/commands/*
+      - action: allow
+        httpVerb:
+        - POST
+        name: /api/v1/queries
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-tenants
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: eventstore
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /admin/operational-index-metadata
+      - action: allow
+        httpVerb:
+        - POST
+        name: /replay-state
+      - action: allow
+        httpVerb:
+        - POST
+        name: /process
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project
+      - action: allow
+        httpVerb:
+        - POST
+        name: /query
+      trustDomain: fixture.invalid
+    - appId: parties
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - GET
+        name: /ready
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-tenants-api
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies: []
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-memories
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies: []
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-memories-access-telemetry-clock
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: memories
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/time/attest
+      trustDomain: fixture.invalid
+    - appId: memories-access-telemetry
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/time/attest
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-memories-access-telemetry
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: access-telemetry-adapter
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/access-telemetry/physical-reclamation-evidence
+      trustDomain: fixture.invalid
+    - appId: memories
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/access-telemetry/heartbeat
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/access-telemetry/validate
+      - action: allow
+        httpVerb:
+        - POST
+        name: /v1/access-telemetry/write
+      trustDomain: fixture.invalid
+    - appId: memories-access-telemetry-inspector
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - GET
+        name: /v1/access-telemetry/inspect
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-memories-domain-service
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: eventstore
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /admin/operational-index-metadata
+      - action: allow
+        httpVerb:
+        - POST
+        name: /process
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: platform-parties
+spec:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:443"
+  features:
+    - name: HotReload
+      enabled: false
+  accessControl:
+    defaultAction: deny
+    policies:
+    - appId: eventstore
+      defaultAction: deny
+      namespace: reference
+      operations:
+      - action: allow
+        httpVerb:
+        - POST
+        name: /admin/operational-index-metadata
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/commit/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/shared/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/verify/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/abort/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/stage/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/v2/reconcile
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/rebuild/v1
+      - action: allow
+        httpVerb:
+        - POST
+        name: /replay-state
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/v2/*
+      - action: allow
+        httpVerb:
+        - POST
+        name: /process
+      - action: allow
+        httpVerb:
+        - POST
+        name: /project/*
+      - action: allow
+        httpVerb:
+        - POST
+        name: /query
+      trustDomain: fixture.invalid
+    trustDomain: fixture.invalid
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034
+spec:
+  pubsubname: pubsub
+  topic: "*.*.projection-changed"
+  routes:
+    default: "/projections/changed"
+scopes: ["eventstore"]
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab
+spec:
+  pubsubname: pubsub
+  topic: "memories-events"
+  routes:
+    default: "/events/ingest"
+scopes: ["memories"]
+---
+# Source: hexalith-reference/templates/dapr.yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: platform-a73a7456fe7f1831b58872a103dfd2070f58f6ef226822790daed3e7aaa1e887
+spec:
+  pubsubname: pubsub
+  topic: "system.tenants.events"
+  routes:
+    default: "/tenants/events"
+scopes: ["parties"]
+
+
