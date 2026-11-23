@@ -37,10 +37,12 @@ every other step. These include `deploy`, which the pinned
 passes for `aspire deploy`, `destroy` and the Kubernetes `helm-*` steps. The
 [SDK builder](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Hosting/DistributedApplicationBuilder.cs)
 maps `--step` to `Pipeline:Step`, which the guard checks.
-The chart's `reference-graph.json` serializes the approved hosted graph from
-that composition. The hosted C# tests and native probe check parity against
-the owner-approved direct-revision tuple. A declaration change enters the
-hosted chart through a reviewed source mapping and a fresh graph export.
+The chart's `reference-graph.json` serializes the owner-approved hosted graph
+from that composition. The 1.19.2 candidate lock binds its bytes to the commit
+that adopted them. The historical native probe and hosted C# parity tests stay
+bound to the Story 1.17 tuple and its graph. A declaration change enters the
+hosted chart through an owner approval, a fresh graph projection and a new
+qualification.
 
 The application package owns Deployments, Services, HTTPRoutes, Dapr Configurations
 and Subscriptions. In normal, recovery and remove-workloads modes, the application
@@ -148,11 +150,12 @@ chart to the official index, checks the seven archive CRDs against the frozen
 upstream source, and verifies the runtime source revision and
 `components-contrib` checksum embedded in the pinned `daprd` binary. CLI and
 .NET SDK versions are recorded from the released Builds catalog at 1.19.1.
-The approved hosted graph is the byte-identical graph from the Story 1.17
-reviewed merge. A later source projection has the same eight workloads, capability
-bindings and subscriptions and adds one EventStore ACL caller for three
-Conversations operations. Qualifying that projection requires an updated
-hosted source approval. [Graph comparison](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-graph-parity/comparison.json) · [Builds catalog](../../references/Hexalith.Builds/Props/Directory.Packages.props) · [Approved Dapr adoption](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-23.md)
+The approved hosted graph is the current owner projection. The Platform owner
+approved it on 23 November at EventStore `d810b7a9`, Tenants `465f0b36`,
+Memories `2b82cb36` and Parties `cc691319`. Compared with the Story 1.17
+graph, it keeps the eight workloads, capability bindings and subscriptions and
+adds the `conversations-api` EventStore ACL caller for three Conversations
+operations. [Graph comparison](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-graph-parity/comparison.json) · [Builds catalog](../../references/Hexalith.Builds/Props/Directory.Packages.props) · [Approved Dapr adoption](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-23.md)
 
 The documented starting runtime is 1.18.7. Its chart differs in
 `configuration.yaml` and `workflowaccesspolicy.yaml`. Install the canonical
@@ -216,10 +219,10 @@ A 1.19.2 run retains the qualification record, exact source and package
 identities, input and application archives, canonical CRDs, Dapr values,
 source and archive renders for all three modes, admitted Pods, and Component
 ownership snapshots. The command logs retain the observed results, including
-the intentional SSA conflict. The 23 November review follow-up admitted all eight
-workloads under restricted policy and retained byte-identical snapshots of
+the intentional SSA conflict. The 23 November approved-graph run admitted all
+eight workloads under restricted policy and retained byte-identical snapshots of
 all eight environment Components across seven lifecycle checkpoints.
-[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-review6-final-20261123T083609Z/qualification.json)
+[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-approved-graph-20261123T101709Z/qualification.json)
 
 Story 4.9 consumes these exact Dapr identities
 for the hosted inventory. Story 4.12 verifies the published OCI digest and

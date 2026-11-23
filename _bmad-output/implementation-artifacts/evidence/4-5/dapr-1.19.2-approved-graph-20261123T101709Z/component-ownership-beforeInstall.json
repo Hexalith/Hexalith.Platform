@@ -1,0 +1,281 @@
+{
+  "access-telemetry-config": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "memories",
+      "memories-access-telemetry"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "fixture-data.environment.svc.cluster.local:6380"
+        },
+        {
+          "name": "redisPassword",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        },
+        {
+          "name": "enableTLS",
+          "value": "true"
+        }
+      ],
+      "type": "configuration.redis",
+      "version": "v1"
+    },
+    "uid": "cbfe7b76-1b9b-4694-94cd-eb691caf28ae"
+  },
+  "access-telemetry-secrets": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "memories",
+      "memories-access-telemetry",
+      "memories-access-telemetry-clock"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "vaultAddr",
+          "value": "https://identity.fixture.invalid/realm"
+        },
+        {
+          "name": "vaultToken",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        }
+      ],
+      "type": "secretstores.hashicorp.vault",
+      "version": "v1"
+    },
+    "uid": "973cdd2f-097a-40ad-b293-f2d64a2eaca3"
+  },
+  "access-telemetry-store": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "memories-access-telemetry"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "fixture-data.environment.svc.cluster.local:6380"
+        },
+        {
+          "name": "redisPassword",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        },
+        {
+          "name": "enableTLS",
+          "value": "true"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    },
+    "uid": "da7d8ee7-dd6b-43bd-a256-e4b6e6d5de65"
+  },
+  "configstore": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "eventstore"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "fixture-data.environment.svc.cluster.local:6380"
+        },
+        {
+          "name": "redisPassword",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        },
+        {
+          "name": "enableTLS",
+          "value": "true"
+        }
+      ],
+      "type": "configuration.redis",
+      "version": "v1"
+    },
+    "uid": "972e7172-cc19-43eb-932e-8251c2ada996"
+  },
+  "llm": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "memories"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "endpoint",
+          "value": "https://identity.fixture.invalid/realm"
+        },
+        {
+          "name": "key",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        }
+      ],
+      "type": "conversation.openai",
+      "version": "v1"
+    },
+    "uid": "52d53107-05ff-4377-becd-e8f0215028a5"
+  },
+  "pubsub": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "eventstore",
+      "memories",
+      "parties",
+      "tenants"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "fixture-data.environment.svc.cluster.local:6380"
+        },
+        {
+          "name": "redisPassword",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        },
+        {
+          "name": "enableTLS",
+          "value": "true"
+        }
+      ],
+      "type": "pubsub.redis",
+      "version": "v1"
+    },
+    "uid": "ff50862d-c300-4c78-aa47-86e632b9972d"
+  },
+  "secretstore": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "memories"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "vaultAddr",
+          "value": "https://identity.fixture.invalid/realm"
+        },
+        {
+          "name": "vaultToken",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        }
+      ],
+      "type": "secretstores.hashicorp.vault",
+      "version": "v1"
+    },
+    "uid": "890d4a51-db53-4839-ab1e-6a3b4aa7e26f"
+  },
+  "statestore": {
+    "environmentApplyFields": {
+      "f:scopes": {},
+      "f:spec": {
+        "f:metadata": {},
+        "f:type": {},
+        "f:version": {}
+      }
+    },
+    "scopes": [
+      "eventstore",
+      "memories",
+      "memories-domain-service",
+      "parties",
+      "tenants",
+      "tenants-api"
+    ],
+    "spec": {
+      "metadata": [
+        {
+          "name": "redisHost",
+          "value": "fixture-data.environment.svc.cluster.local:6380"
+        },
+        {
+          "name": "redisPassword",
+          "secretKeyRef": {
+            "key": "token",
+            "name": "fixture-credential"
+          }
+        },
+        {
+          "name": "enableTLS",
+          "value": "true"
+        }
+      ],
+      "type": "state.redis",
+      "version": "v1"
+    },
+    "uid": "46a51513-cc78-4a00-afbe-d62df1f4c9dd"
+  }
+}

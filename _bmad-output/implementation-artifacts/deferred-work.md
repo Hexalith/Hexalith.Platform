@@ -2261,13 +2261,19 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: Approve and requalify the current hosted source projection, which adds an EventStore ACL caller (medium).
+  status: resolved
+  resolution: The owner approved the projection on 2026-11-23. Platform `7cafc71b` adopts graph `4a1441cd…`, and the isolated 1.19.2 run at `69e1ad2e` passed (record `a8a65dec…`).
   evidence: The 1.19.2 qualification uses the frozen Story 1.17 graph (`dapr_candidate.py:114-119`). `evidence/4-5/dapr-1.19.2-graph-parity/comparison.json` shows that current owner sources add `conversations-api` as an EventStore ACL caller for three Conversations operations. A hosted deployment from the frozen graph would deny them. This needs a fresh hosted source approval and a 1.19.2 requalification. It was disclosed in the README and the 4.9 notes but had no ledger entry.
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: Make the broader local composition regression run past the EventStore routing-catalog NU1010 errors (medium).
   evidence: `PlatformAppModelTests.GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts` fails on the same five EventStore NU1010 errors (missing central package versions) before and after the 4.5 change (`evidence/4-5/review6-native-and-composition-20261123T081644Z/local-composition-regressions-02.log`). Until it runs, it cannot guard local composition behavior. Resolving it likely settles the Story 3.2 W2 entry (generated `PackageVersion Update` versus central items).
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: Name one current qualification record in the Story 4.9 handoff (low).
+  status: resolved
+  resolution: The 4.9 handoff now names record `a8a65dec…` as the single current result and marks earlier 1.19.2 records superseded.
   evidence: `spec-4-9-…md:80` calls attempt 04 (`8db32b54…`, archive `1fe72977…`) the final record, and `:83` names the review-6 run (`a7b981c7…`, archive `885610ad…`). Blank lines also split the bullet list. Mark attempt 04 as superseded for the application archive.
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
   summary: List the shared control-plane upgrade and persistent Scheduler storage among the open gates in the Story 4.9 handoff (low).
+  status: resolved
+  resolution: The 4.9 handoff now lists both among its open gates.
   evidence: The 4.5 README leaves both to their environment gates, and the fixture used in-memory Scheduler storage with standalone placement. The 4.9 open-gate list at `spec-4-9-…md:81` names neither.

@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T10:20:20Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "kube-system"
+        },
+        "name": "kube-system",
+        "resourceVersion": "10",
+        "uid": "9ca6a163-176f-4c05-bf7c-f3783dc8adba"
+    },
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
+}

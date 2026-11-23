@@ -1,0 +1,80 @@
+{
+  "activities": {
+    "description": "Requires is an ordered list of history events that must all be present in\nthe caller's propagated workflow history for this rule to apply. The\nentries must be satisfied in the order they are listed: each successive\nentry matches an event at or after the event matched by the previous one.",
+    "items": {
+      "description": "RequiredEvent is a single entry in a rule's Requires list. It matches when\nthe caller's propagated history contains an event of the given EventType,\nproduced by AppID, with the given Name.",
+      "properties": {
+        "appID": {
+          "description": "AppID is the app ID that must have produced the matched event. An event\nonly matches when it came from this app's propagated history.",
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "eventType": {
+          "description": "EventType is the history event that must be present.",
+          "enum": [
+            "activity.started",
+            "activity.completed",
+            "workflow.started",
+            "workflow.completed",
+            "event.raised"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "description": "Name is the activity name (activity.started|activity.completed), the\nchild-workflow name (workflow.started|workflow.completed), or the\nexternal event name (event.raised).",
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "appID",
+        "eventType",
+        "name"
+      ],
+      "type": "object"
+    },
+    "maxItems": 20,
+    "type": "array"
+  },
+  "workflows": {
+    "description": "Requires is an ordered list of history events that must all be present in\nthe caller's propagated workflow history for this rule to apply. The\nentries must be satisfied in the order they are listed: each successive\nentry matches an event at or after the event matched by the previous one.\nOnly valid when the rule's only operation is `schedule`.",
+    "items": {
+      "description": "RequiredEvent is a single entry in a rule's Requires list. It matches when\nthe caller's propagated history contains an event of the given EventType,\nproduced by AppID, with the given Name.",
+      "properties": {
+        "appID": {
+          "description": "AppID is the app ID that must have produced the matched event. An event\nonly matches when it came from this app's propagated history.",
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "eventType": {
+          "description": "EventType is the history event that must be present.",
+          "enum": [
+            "activity.started",
+            "activity.completed",
+            "workflow.started",
+            "workflow.completed",
+            "event.raised"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "description": "Name is the activity name (activity.started|activity.completed), the\nchild-workflow name (workflow.started|workflow.completed), or the\nexternal event name (event.raised).",
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "appID",
+        "eventType",
+        "name"
+      ],
+      "type": "object"
+    },
+    "maxItems": 20,
+    "type": "array"
+  }
+}

@@ -1,0 +1,29 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "token": "aW52b2NhdGlvbi1vd25lZC1maXh0dXJlLW1lbW9yaWVzLWFwaQ=="
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T10:21:07Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:stringData": {
+                        "f:token": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T10:21:07Z"
+            }
+        ],
+        "name": "fixture-memories-api",
+        "namespace": "reference",
+        "resourceVersion": "829",
+        "uid": "9232f157-e335-4755-b878-fe04fc00bfa0"
+    },
+    "type": "Opaque"
+}
