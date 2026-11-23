@@ -2320,3 +2320,25 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Bind tuple CI to the published Builds Tooling release containing the v2 release-record API.
   evidence: The immutable v6.6.2 release resolves to Builds revision `2d9ef8b454ff897daca0149f3549844f584b634a`. The existing tuple preflight compares that revision to the recorded `4adecfe2af4758aa66039a1221de20774ca56e87` gitlink and refuses a mismatch. The reviewed AttemptStore tests passed against published 6.7.0 at `763fc0e937413cb44e533391e573c43640263b40`. The 6.7.0 catalog differs from the pinned source catalog, so the Platform tuple requires its own adoption.
+
+## Deferred from: code review of spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md (2026-11-23)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Production reservation and closure check the production ETag before the staging write rather than atomically at commit.
+  evidence: `AttemptStore.CommitAsync` (`src/Hexalith.Platform.AttemptStore/AttemptStore.cs:161-168`) rereads the production head ETag after archiving and before the staging `If-Match` PUT. A production change in that interval is not detected. The signed epoch binding makes the lost race fail closed: the reservation stays bound to the superseded attempt.
+  reason: Same item as "Prove production lifecycle serialization through the staging decision CAS" above. Object storage has no multi-object conditional write, so the production lifecycle stories own the serialization proof.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Tuple CI cannot compile the AttemptStore projects on the pinned Builds 6.6.2.
+  evidence: The v2 record API (`ReleaseRecordVersion`, `StagingEvidenceBinding`) is absent at 6.6.2 revision `2d9ef8b4`. The slnx now contains the store, so the whole `run_tuple_ci.py --suite current42` build fails on 6.6.2, not only the 23 selected cases. Re-pinning the gitlink to 6.6.2 therefore no longer restores the 380 Composition cases. The AttemptStore group is also the first profile group outside Composition.Tests, so the first hosted run will be the first execution of the runner's non-Composition test path (`eng/run_tuple_ci.py:414-416`).
+  reason: Extends "Bind tuple CI to the published Builds Tooling release containing the v2 release-record API" above. Adopting Builds 6.7.0 resolves both.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Record the expiry and renewal owner of the staging writer and reader application keys.
+  evidence: `evidence/story-4-7/scaleway-staging-store.md` names both applications but no key expiry. Epic 4 requires a renewal owner for every expiring credential. Unverified; it would be medium if the keys expire without an owner.
+  reason: Settle it by reading each key's `expires_at` from the Scaleway IAM API (no secret values). Name a renewal owner if one is set.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Provision the production-decision principal for v2 decision actions and prove its denials.
+  evidence: `ApplyDecisionAsync` (`src/Hexalith.Platform.AttemptStore/AttemptStore.Decisions.cs:55`) reads the production head and records and writes the staging head through one `IAttemptObjectStore`. The provisioned staging writer is denied the production prefix and the reader cannot write, so `reserve-admission`, `complete` and `release-reservation` cannot run against the hosted bucket.
+  reason: Administrator decision 2026-11-23 (code review D2): document the single-bucket topology in the attempt-store contract now; Story 6.9 provisions this principal with the production instance. V2 cannot activate before then.

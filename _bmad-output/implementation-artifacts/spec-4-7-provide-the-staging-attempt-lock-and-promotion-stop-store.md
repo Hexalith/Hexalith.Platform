@@ -2,7 +2,7 @@
 title: '4.7 Provide the staging attempt, lock and promotion-stop store'
 type: 'feature'
 created: '2026-11-23'
-status: 'done'
+status: 'in-progress'
 baseline_commit: '689efa824ec621509aded4ddaf35ed8bcfdad645'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -73,6 +73,49 @@ Builds paths are under `references/Hexalith.Builds/src/libraries/Hexalith.Builds
 
 **Acceptance Criteria:**
 - Given the hosted store, when probed live, then it is outside the cluster and executor hosts, two concurrent acquisitions commit exactly one, and unconditional writes, deletes and the staging writer's access to another environment's prefix are denied.
+
+### Review Findings
+
+Code review 2026-11-23 of `689efa82..fbf42799` (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor). Result: 2 decision-needed (resolved by the Administrator 2026-11-23), 14 patch left as action items, 4 defer, 15 rejected.
+
+- [x] [Review][Decision] A lost head silently resets the epoch, stops and decisions. The adapter reads `404 NoSuchKey` as confirmed absence. A delete marker added by the owner or created by a lifecycle expiry returns the same response, and `CommitAsync` then bootstraps an empty revision-zero head with `If-None-Match: *`. The result is epoch 0, no active stop and no decisions, so fencing epochs can be reissued. Object lock does not prevent delete markers. Options: require an explicit one-time head initialization and refuse a missing head in every transition; or detect a delete marker in the adapter. Either option comes with a contract rule that no lifecycle rule or deletion may touch `environments/*/head.json`. [src/Hexalith.Platform.AttemptStore/AttemptStore.cs:123-140, src/Hexalith.Platform.AttemptStore/S3AttemptObjectStore.cs:70] — resolved 2026-11-23: explicit initialization (patch below).
+- [ ] [Review][Patch] Add explicit head initialization. `InitializeAsync(environment)` creates an empty head create-only, once at provisioning. `CommitAsync` stops bootstrapping and refuses `head-missing` when no head exists. Initialize the canonical staging head with the writer key, and have the live and in-memory tests initialize their fixture prefixes. The contract forbids any lifecycle rule or deletion on `environments/*/head.json`. [src/Hexalith.Platform.AttemptStore/AttemptStore.cs:123-140, docs/contracts/attempt-store-v1.md]
+- [x] [Review][Decision] No identity or topology can perform the production decision actions. `ApplyDecisionAsync` reads `environments/production/head.json` and the production records, then writes the staging head, all through one `IAttemptObjectStore`. The provisioned staging writer is denied the production prefix and the reader cannot write. So `reserve-admission`, `complete` and `release-reservation` cannot run against the hosted bucket. The contract names neither the principal nor where the production head lives. Options: document a single-bucket topology now and defer the production-decision principal to 6.9; give the store separate staging and production object stores; or provision a production-decision principal now. [src/Hexalith.Platform.AttemptStore/AttemptStore.Decisions.cs:55, docs/contracts/attempt-store-v1.md:29] — resolved 2026-11-23: document the topology now and defer provisioning to 6.9 (patch and defer below).
+- [ ] [Review][Patch] Document that both heads live in one bucket under `environments/{env}/`. Decision actions need a principal that reads the production prefix and conditionally replaces the staging head, and the staging writer has neither right. [docs/contracts/attempt-store-v1.md:29]
+- [x] [Review][Defer] Provision the production-decision principal and prove its denials [src/Hexalith.Platform.AttemptStore/AttemptStore.Decisions.cs:55] — deferred to 6.9: the production instance is outside 4.7's scope, and v2 cannot activate before it.
+- [ ] [Review][Patch] Classify every S3 PUT error other than a known refusal as uncertain. Only status 0, 408 and 5xx from `AmazonServiceException` are uncertain today, along with `HttpRequestException`, `OperationCanceledException`, `TimeoutException` and `IOException`. A non-service `AmazonClientException`, or a 2xx response that fails to unmarshal, propagates as a definite failure even though the PUT may have committed. [src/Hexalith.Platform.AttemptStore/S3AttemptObjectStore.cs:116-130]
+- [ ] [Review][Patch] Make the production-prefix read-denial probe conclusive. The writer GETs a production key that never exists. With list rights only on the staging prefix, S3 returns 403 for a missing key whether or not reads are allowed. Probe an owner-created production canary object, and record the result in the evidence. The PUT denial already holds. [tests/Hexalith.Platform.AttemptStore.Tests/HostedAttemptStoreTests.cs:56, _bmad-output/implementation-artifacts/evidence/story-4-7/scaleway-staging-store.md]
+- [ ] [Review][Patch] Add deterministic adapter tests for the confirmed conflicts. A 412 on a stale `If-Match` and on `If-None-Match: *` over an existing key, and a 409 `ConditionalRequestConflict`, must each return `false`. Only the credential-gated hosted test checks this now. [tests/Hexalith.Platform.AttemptStore.Tests/S3AttemptObjectStoreTests.cs:14]
+- [ ] [Review][Patch] Exercise a second stop clearance. Test a new clearance ID that disposes only of the causes raised since the last clearance, a predecessor equal to `LastClear`, and a refused foreign predecessor. The existing test stops at `record-id-conflict`. [tests/Hexalith.Platform.AttemptStore.Tests/AttemptStoreTests.cs:312]
+- [ ] [Review][Patch] Cover a decision introduced through a staging v2 takeover. A fresh binding should read as pending. A fresh binding while the release still has a pending decision should be refused with `decision-binding-conflict`. [tests/Hexalith.Platform.AttemptStore.Tests/PromotionDecisionTests.cs:206]
+- [ ] [Review][Patch] Assert the `contention` bound. Every replace should lose to an unrelated commit, and the call should report `contention` after 16 conditional attempts. [tests/Hexalith.Platform.AttemptStore.Tests/AttemptStoreTests.cs:221]
+- [ ] [Review][Patch] Apply the active-replay epoch check on the lost-acknowledgment path. It returns the receipt after an epoch advance, while an explicit replay of the same submission refuses `stale-epoch`. [src/Hexalith.Platform.AttemptStore/AttemptStore.cs:189]
+- [ ] [Review][Patch] Re-route the 4.6 deferral that names Story 4.7 as the owner of takeover closure. Per the Never rule, 4.7 kept it open and fail-closed. [_bmad-output/implementation-artifacts/deferred-work.md:2306]
+- [ ] [Review][Patch] Fix the contract's statement that the validator "leaves reservations pending". `AttemptStoreDecision.State` uses `pending` to mean unreserved, so this should say the reservation stays outstanding. [docs/contracts/attempt-store-v1.md:29]
+- [ ] [Review][Patch] Complete the failure-code table. Add `record-too-large`, `invalid-record` and the default `invalid-transition`, and state that `AttemptStoreWriteUncertainException` and provider exceptions such as `AmazonS3Exception` and `IOException` propagate. [docs/contracts/attempt-store-v1.md:35-45]
+- [ ] [Review][Patch] Restore CRLF line endings on the three added `Directory.Packages.props` lines. [Directory.Packages.props:11-13]
+- [ ] [Review][Patch] Add the missing `reason:` field to the three new Story 4.7 deferral entries. [_bmad-output/implementation-artifacts/deferred-work.md:2312-2322]
+- [x] [Review][Defer] The production reservation or closure is checked only by reading the production ETag before the staging write, not atomically at commit [src/Hexalith.Platform.AttemptStore/AttemptStore.cs:161-168] — deferred: already in the ledger ("Prove production lifecycle serialization through the staging decision CAS"). A race leaves the reservation bound to the superseded attempt, which fails closed.
+- [x] [Review][Defer] Tuple CI cannot compile the store on the pinned Builds 6.6.2 [eng/tuple-ci-sdk42-current-suites.json:342, eng/run_tuple_ci.py:21] — deferred: already in the ledger as the 6.7.0 adoption. Adding the project to the slnx also makes the whole tuple build fail on 6.6.2, and the first hosted run will be the first execution of the runner's non-Composition test path.
+- [x] [Review][Defer] No expiry or renewal owner is recorded for the staging writer and reader application keys [_bmad-output/implementation-artifacts/evidence/story-4-7/scaleway-staging-store.md] — deferred: unverified (medium if true). Settle it by reading each key's `expires_at` from the Scaleway IAM API and naming a renewal owner if one is set.
+
+#### Rejected
+
+- Spec `status: done` against sprint `review` (four layers): the fix edits the spec under review. The closing status sync of this review reconciles it.
+- Store not probed as outside the cluster: false. Scaleway Object Storage is a managed endpoint off the cluster and executor hosts, and the bucket policy admits only the named applications and the owner.
+- Permanent wedge after a production takeover, and no release for an Administrator reservation: false as a store defect. The fail-closed outcome is required by the Never rule, and the Builds v2 contract defines no Administrator release action.
+- Enforce the successor binding in `TakeoverAsync`: low. A mismatched successor already cannot close the decision (fails closed), and the fix adds a guard.
+- Cancelled token turns the strong read into uncertainty: false. A cancelled call is correctly reported as unresolved.
+- An uncertain archive create before the head write reports uncertainty: low. A retry resolves it, and the fix adds a branch.
+- No CAS backoff: low. Transitions are rare, and 16 rereads bound the work.
+- 32 MiB head limit without warning: low. Already rejected (Blind 8). It takes tens of thousands of transitions.
+- Version-delete probe hit a COMPLIANCE-locked version: false. The writer's IAM has no ObjectsDelete set, and the delete-marker 403 proves the policy denial.
+- Evidence lacks lifecycle, open-gaps and acceptance-state sections: low, process-only.
+- Head schema undocumented, and spec Design Notes example out of date: the example is in the spec under review. No consumer parses the head outside the library.
+- `AWSSDK.S3` pinned outside the Builds catalog, and the CI-mode Tooling dependency list: low and speculative. The CI-mode build passed against published 6.7.0.
+- No Python test run recorded: false. The five changed `eng/test_*` modules pass (81 tests, 2026-11-23).
+- Record version passed separately from the bytes: false. Builds requires explicit version selection, and a mismatch fails verification closed.
+- A 409 on a concurrent archive create yields `record-content-conflict` instead of `lock-held`: low. Exactly one acquisition still commits, it needs provider 409 timing, and the fix adds a branch.
 
 ## Implementation Notes
 
