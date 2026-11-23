@@ -29,11 +29,14 @@ regressions use an explicit historical test fixture and grant no current admissi
 `PlatformDaprBindings` supplies capability names, consumers, environment keys,
 receiver ACL operations and subscriptions to both paths. Hosted selection never
 calls `PlatformLocalProfile`, creates local providers, or generates credentials.
-The probe refuses `aspire deploy` before writing its graph or adding resources.
-The pinned [13.6.4 CLI](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Cli/Commands/DeployCommand.cs)
-passes `--operation publish --step deploy`; the
+The probe runs only as `--operation publish` with an unset or `publish` pipeline
+step, and it sets an unset step to `publish` so the rest of the pipeline never runs.
+Before writing its graph or adding resources, it refuses run mode, `inspect` and
+every other step. These include `deploy`, which the pinned
+[13.6.4 CLI](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Cli/Commands/DeployCommand.cs)
+passes for `aspire deploy`, `destroy` and the Kubernetes `helm-*` steps. The
 [SDK builder](https://github.com/microsoft/aspire/blob/v13.6.4/src/Aspire.Hosting/DistributedApplicationBuilder.cs)
-maps that step to `Pipeline:Step`, which the guard checks.
+maps `--step` to `Pipeline:Step`, which the guard checks.
 The chart's `reference-graph.json` serializes the approved hosted graph from
 that composition. The hosted C# tests and native probe check parity against
 the owner-approved direct-revision tuple. A declaration change enters the
@@ -130,7 +133,8 @@ framework selected by `.config/dotnet-tools.json` in the sibling Builds checkout
 or, when the sibling catalog is absent, the nested Builds checkout. The evidence
 records the selected CLI files and reported version separately from the manifest
 pin. Choose a fresh evidence path outside the disposable workspace for every
-attempt.
+attempt. `run-with-temp` is a local wrapper that gives the job a private
+`TMPDIR` and removes it afterwards. Any equivalent wrapper works.
 
 ```bash
 run-with-temp env PYTHONDONTWRITEBYTECODE=1 python3 -B eng/helm-qualification/dapr_candidate.py \
@@ -250,7 +254,7 @@ Platform__Hosted__SourceRoots__EventStore="$HEXALITH_PLATFORM_HOSTED_EVENTSTORE_
 Platform__Hosted__SourceRoots__Tenants="$HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT" \
 Platform__Hosted__SourceRoots__Memories="$HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT" \
 Platform__Hosted__SourceRoots__Parties="$HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT" \
-python3 eng/helm-qualification/qualify.py --evidence "$QUALIFICATION_EVIDENCE"
+python3 eng/helm-qualification/qualify.py --evidence "${QUALIFICATION_EVIDENCE:?set a fresh evidence directory outside the workspace}"
 ```
 
 Each run clears command logs verified against the previous record. If that

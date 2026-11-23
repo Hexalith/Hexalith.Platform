@@ -14,7 +14,7 @@ import tarfile
 import xml.etree.ElementTree as ET
 
 from qualify import CHART, HERE, ROOT, Qualification, documents, sha
-from test_chart import campaign_graph_fixture, fixture_values, graph
+from test_chart import campaign_graph_fixture, fixture_values
 
 
 LOCK = HERE / 'dapr-1.19.2.json'

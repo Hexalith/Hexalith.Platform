@@ -76,20 +76,16 @@ class Qualification:
 
     def _prior_command_logs(self):
         record_path = self.evidence / 'qualification.json'
-        if record_path.is_symlink():
-            return set()
         try:
-            record = json.loads(record_path.read_text())
-        except FileNotFoundError:
-            # An interrupted legacy run may have written logs without a final record.
+            record = None if record_path.is_symlink() else json.loads(record_path.read_text())
+        except (OSError, ValueError):
+            record = None
+        if (not isinstance(record, dict) or record.get('schema') != 'hexalith.helm-qualification.v1'
+                or not isinstance(record.get('finished'), str) or not isinstance(record.get('commands'), list)):
+            # An absent, interrupted or foreign record cannot name its logs; clear only the qualifier's tool-log shape.
             tool_log = r'[0-9]{3,}-(aspire|curl|docker|dotnet|git|helm|kind|kubectl|python(?:3(?:[.][0-9]+)?)?|skopeo)[.]log'
             return {path.name for path in self.evidence.iterdir()
                     if re.fullmatch(tool_log, path.name) and not path.is_symlink() and path.is_file()}
-        except (OSError, ValueError):
-            return set()
-        if (not isinstance(record, dict) or record.get('schema') != 'hexalith.helm-qualification.v1'
-                or not isinstance(record.get('finished'), str) or not isinstance(record.get('commands'), list)):
-            return set()
         logs = set()
         for index, command in enumerate(record['commands']):
             args = command.get('argv') if isinstance(command, dict) else None

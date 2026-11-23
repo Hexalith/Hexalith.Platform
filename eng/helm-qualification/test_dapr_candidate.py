@@ -64,6 +64,55 @@ class DaprCandidateTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, 'unexpected daprd image'):
             candidate.check_admitted_sidecar(pod)
 
+    def test_admission_lifecycle_applies_the_pinned_sidecar_check(self):
+        candidate = self.candidate()
+        candidate.tools = json.loads(dapr_candidate.LOCK.read_text())
+        candidate.archive, candidate.values = candidate.temp / 'reference.tgz', candidate.temp / 'values.json'
+        candidate.record['inputs'] = {}
+        secure = {'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL']}, 'runAsNonRoot': True,
+                  'runAsUser': 1654, 'readOnlyRootFilesystem': True, 'seccompProfile': {'type': 'RuntimeDefault'}}
+        deployment = {'kind': 'Deployment', 'metadata': {'name': 'parties'},
+                      'spec': {'template': {'metadata': {'labels': {'app': 'parties'}},
+                                            'spec': {'containers': [{'name': 'app', 'image': 'app', 'securityContext': secure}]}}}}
+        admitted = {'spec': {'containers': [{'name': 'app', 'image': 'app', 'securityContext': secure},
+                                            {'name': 'daprd', 'image': 'ghcr.io/dapr/daprd@sha256:' + 'a' * 64,
+                                             'securityContext': secure}]}}
+        with patch.object(candidate, 'application_helm', return_value=SimpleNamespace(stdout=json.dumps(deployment))), \
+                patch.object(candidate, 'check_components'), \
+                patch.object(candidate, 'pod_kube', return_value=SimpleNamespace(stdout=json.dumps(admitted))), \
+                self.assertRaisesRegex(AssertionError, 'unexpected daprd image'):
+            candidate.admission_and_ssa()
+        self.assertNotIn('podAdmission', candidate.record['checks'])
+
+    def test_cluster_creation_applies_the_control_plane_readback(self):
+        candidate = self.candidate()
+        candidate.tools = json.loads(dapr_candidate.LOCK.read_text())
+        image = 'ghcr.io/dapr/scheduler@sha256:' + 'a' * 64
+        candidate.image_config_digests = {image: 'sha256:' + 'b' * 64}
+        candidate.record['checks']['daprLiveImagePins'] = {'replicasByImage': {image: 3}}
+        pods = [{'metadata': {'name': f'dapr-scheduler-server-{i}'},
+                 'spec': {'containers': [{'name': 'scheduler', 'image': image}]},
+                 'status': {'containerStatuses': [{'name': 'scheduler', 'ready': True, 'image': image, 'imageID': image}]}}
+                for i in range(2)]
+        config = {'clusters': [{'cluster': {'server': 'https://127.0.0.1:6443'}}], 'contexts': [{'name': candidate.context}]}
+
+        def run(args, **kwargs):
+            return SimpleNamespace(stdout=json.dumps(config) if 'config' in args else '', returncode=0)
+
+        def kube(*args, **kwargs):
+            if args[:2] == ('get', 'namespace'):
+                return SimpleNamespace(stdout='{"metadata": {"uid": "owned"}}')
+            return SimpleNamespace(stdout=json.dumps({'items': pods}) if args[:2] == ('get', 'pods') else '')
+
+        try:
+            with patch.object(candidate, 'run', side_effect=run), patch.object(candidate, 'kube', side_effect=kube), \
+                    patch.object(candidate, 'download', return_value=candidate.temp / 'gateway.yaml'), \
+                    patch.object(candidate, 'install_dapr'), self.assertRaisesRegex(AssertionError, 'replica count'):
+                candidate.create()
+        finally:
+            candidate.created = False  # Nothing was created; cleanup must not contact kind.
+        self.assertNotIn('ownedClusterAndPinnedDapr', candidate.record['checks'])
+
     def test_application_dapr_inventory_retained_after_removal_and_absent_after_uninstall(self):
         candidate = self.candidate()
         objects = [{'kind': 'Configuration', 'metadata': {'name': 'reference-config'}},

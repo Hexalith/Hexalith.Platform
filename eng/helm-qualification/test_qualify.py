@@ -139,8 +139,15 @@ class QualifierFailureTests(unittest.TestCase):
                     self.assertIn(operation, run.call_args.args)
 
     def test_new_run_removes_prior_qualifier_outputs_and_keeps_other_evidence(self):
+        for record in (None, 'prior evidence', '{"schema": "foreign"}'):
+            with self.subTest(record=record):
+                self.assert_new_run_removes_prior_qualifier_outputs(record)
+
+    def assert_new_run_removes_prior_qualifier_outputs(self, record):
         with tempfile.TemporaryDirectory(prefix='h45-log-reuse-') as directory:
             evidence = Path(directory)
+            if record is not None:
+                (evidence / 'qualification.json').write_text(record)
             stale_names = ['006-curl.log', '1000-dotnet.log', 'admitted-memories.json',
                            'normal.yaml', 'environment-components.json', 'fixture-values.json', 'native-rendered.yaml',
                            'resolved-native-project.assets.json', 'resolved-composition-project.assets.json',
@@ -155,7 +162,7 @@ class QualifierFailureTests(unittest.TestCase):
             retained_directory = evidence / 'other-output'; retained_directory.mkdir()
             q = qualify.Qualification(evidence)
             try:
-                for name in stale_names + ['native-output']:
+                for name in stale_names + ['native-output', 'qualification.json']:
                     self.assertFalse((evidence / name).exists(), name)
                 for name in retained_names + ['other-output']:
                     self.assertTrue((evidence / name).exists(), name)
