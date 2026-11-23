@@ -413,8 +413,8 @@ packages and never enrolls a gateway extension.
 
 The ordinary package runner admits `Hexalith.Platform.TestExtension` 2.2.5 for
 the exact Platform declaration and `eventstore-extension-package` profile with
-the signed Builds 6.6.0 parent proof. That finite cohort uses EventStore 5.4.0,
-Tenants 8.0.2 and Memories 4.1.0. One Platform-composed gateway loads
+the signed Builds 6.6.2 parent proof. That finite cohort uses EventStore 5.4.0,
+Tenants 8.0.4 and Memories 4.1.0. One Platform-composed gateway loads
 `platform-test@1` and uses a disposable read-only protection observer for the
 readiness request. Other modules can declare extensions and prepare catalog-pinned
 bindings. An ordinary signed runtime run also requires an admitted owner and

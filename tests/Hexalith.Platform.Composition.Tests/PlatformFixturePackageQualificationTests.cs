@@ -173,7 +173,7 @@ public sealed class PlatformFixturePackageQualificationTests
     [Fact]
     public void FixtureReaderRefusesADifferentRouteFacetWithTheSameInventoryCounts()
     {
-        const string routeFacet = "8ae9fac964c0cae30747fa4950706b00061f09f6081a13b54278bb4579c0d4fd";
+        const string routeFacet = "44c6a777693baf59cdc2b575beaebd0a3ba74c610c78e5a2a4a13280fe9f5c03";
         const string idempotencyFacet = "676c1d71d38a8335e4bfad713152a995a8333ae44c3086759c822d6072878f83";
         // The reader admission consumes the verified envelope's counts and digests, not individual route or policy fields.
         RouteCatalogEnvelope catalog = new(3, 1, "Development", false, [], new RouteCatalogEntry[30], new IdempotencyCatalogEntry[19], routeFacet, idempotencyFacet);
