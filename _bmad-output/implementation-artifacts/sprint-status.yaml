@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-23-2026 17:42
+last_updated: 11-23-2026 18:54
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -167,7 +167,7 @@ development_status:
   # 4.5: 2026-11-23 done. The owner-approved current graph passed the Dapr 1.19.2 qualification (record a8a65dec) after code review 7; only the local NU1010 regression follow-up remains deferred.
   4-5-qualify-the-aspire-to-helm-export-with-the-reference-composi: done
   4-6-encode-release-attempt-qualification-and-administrator-recor: done
-  4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: backlog
+  4-7-provide-the-staging-attempt-lock-and-promotion-stop-store: review
   4-8-maintain-the-module-intake-manifest: backlog
   4-9-ratify-the-hosted-runtime-and-identity-event-contracts: backlog
   4-10-define-the-recovery-hook-contract: done

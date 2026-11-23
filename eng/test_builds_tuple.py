@@ -212,7 +212,7 @@ class PreflightTests(unittest.TestCase):
         return reads
 
     def test_preflight_binds_the_gitlink_catalog_and_selected_sibling_msbuild_root(self):
-        owner, sibling = self.owner("workspace", "tuple-ci-sdk42-current-suites.json", 380)
+        owner, sibling = self.owner("workspace", "tuple-ci-sdk42-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current42"])
         for name, checkout in (("matching", SOURCE), ("stale", "4" * 40)):
             with self.subTest(source=name), contextlib.ExitStack() as stack:
                 evidence = self.root / ("preflight-" + name)
@@ -261,7 +261,7 @@ class PreflightTests(unittest.TestCase):
                     self.assertIn("-p:HexalithBuildsRoot=" + str(sibling), graphs[0])
 
     def test_stale_lock_refuses_before_the_gitlink_or_catalog_is_read(self):
-        owner, _ = self.owner("stale-lock", "tuple-ci-sdk42-current-suites.json", 380)
+        owner, _ = self.owner("stale-lock", "tuple-ci-sdk42-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current42"])
         with contextlib.ExitStack() as stack:
             evidence = self.root / "stale-lock-evidence"
 

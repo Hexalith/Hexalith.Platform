@@ -289,8 +289,11 @@ class CurrentCatalogViewTests(unittest.TestCase):
 
     def test_exact_consumer_inventory_does_not_implicitly_admit_new_platform_projects(self):
         names = {path.stem for directory in ("src", "tests") for path in (ROOT / directory).rglob("*.csproj")}
+        # The attempt store uses the generic catalog and has no EventStore SDK dependency.
+        generic_projects = {"Hexalith.Platform.AttemptStore", "Hexalith.Platform.AttemptStore.Tests"}
         self.assertEqual(len(PLATFORM_CONSUMERS), 33)
-        self.assertEqual(names, set(PLATFORM_CONSUMERS))
+        self.assertTrue(generic_projects.isdisjoint(PLATFORM_CONSUMERS))
+        self.assertEqual(names, set(PLATFORM_CONSUMERS) | generic_projects)
 
     def test_changed_or_unbound_catalog_body_refuses_before_msbuild(self):
         raw = catalog_body()

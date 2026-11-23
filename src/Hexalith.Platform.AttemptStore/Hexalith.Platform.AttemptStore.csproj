@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
+    <InternalsVisibleTo Include="Hexalith.Platform.AttemptStore.Tests" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' == ''">
+    <ProjectReference Include="$(HexalithBuildsResolvedRoot)/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj">
+      <GlobalPropertiesToRemove Condition="'$(HexalithSourceMappingMode)' != 'source' and '$(HexalithSourceMappingHash)' == '' and '$(HEXALITH_SOURCE_MAPPING_HASH)' == '' and '$(HEXALITH_SOURCE_MAPPING_PATH)' == ''">HexalithEventStoreVersion</GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(BuildsToolingAssemblyPath)' != ''">
+    <Reference Include="Hexalith.Builds.Tooling" HintPath="$(BuildsToolingAssemblyPath)" />
+    <PackageReference Include="JsonSchema.Net" />
+  </ItemGroup>
+</Project>

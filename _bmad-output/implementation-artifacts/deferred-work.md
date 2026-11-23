@@ -2306,3 +2306,17 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Let Story 4.7 close a v2 admission reservation after a takeover or a later epoch, and bind a v2 takeover successor to its decision.
   evidence: `ValidatePromotionDecision` closure requires the admitted attempt's record ID and writer, an `executor` key, and a terminal epoch equal to the current epoch. A fenced takeover successor, a recovery-executor DR successor, or a lock re-acquisition after the terminal write therefore leaves the decision reserved with no valid closing action. `ValidateAttempt` requires only the v2 schema of a v2 successor, not its `stagingEvidence`. Policy v2 item 4 expects takeover or terminal reconciliation to resolve the reservation. The Builds README states the current constraint at `ReleaseRecords.md:103`.
   reason: Story 4.7 designs takeover closure together with its cross-attempt takeover reconciliation. V2 cannot activate before 4.7, and closure fails closed until then.
+
+## Deferred from Story 4.7 review
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Prove production lifecycle serialization through the staging decision CAS.
+  evidence: A production revision can race after the final production ETag read because only the staging head participates in the CAS. The production evaluator and its authorized writers must preserve the relevant production authority through commit or reconciliation. The production lifecycle stories own that integration.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Evaluate detection of unauthorized changes by a principal with direct head write access.
+  evidence: The library verifies record signatures independently. The bucket is responsible for the integrity of the mutable head under scoped access, and the library writes verified transitions. A principal bypassing the library can submit a conditional write with edited indexes. Authenticating head history or mediating direct writer access requires a separate protocol.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Bind tuple CI to the published Builds Tooling release containing the v2 release-record API.
+  evidence: The immutable v6.6.2 release resolves to Builds revision `2d9ef8b454ff897daca0149f3549844f584b634a`. The existing tuple preflight compares that revision to the recorded `4adecfe2af4758aa66039a1221de20774ca56e87` gitlink and refuses a mismatch. The reviewed AttemptStore tests passed against published 6.7.0 at `763fc0e937413cb44e533391e573c43640263b40`. The 6.7.0 catalog differs from the pinned source catalog, so the Platform tuple requires its own adoption.

@@ -337,6 +337,18 @@
       "requiredCount": 2,
       "purpose": "platform-owned-direct-owner-mapping-with-fixture-owned-local-histories",
       "collector": "current"
+    },
+    {
+      "project": "tests/Hexalith.Platform.AttemptStore.Tests/Hexalith.Platform.AttemptStore.Tests.csproj",
+      "filter": "-class",
+      "selectors": [
+        "Hexalith.Platform.AttemptStore.Tests.AttemptStoreTests",
+        "Hexalith.Platform.AttemptStore.Tests.PromotionDecisionTests",
+        "Hexalith.Platform.AttemptStore.Tests.S3AttemptObjectStoreTests"
+      ],
+      "requiredCount": 23,
+      "purpose": "attempt-store-signed-transitions-and-conditional-writes",
+      "collector": "current"
     }
   ]
 }

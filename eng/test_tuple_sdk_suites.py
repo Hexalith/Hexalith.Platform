@@ -83,7 +83,15 @@ class SdkSuiteTests(unittest.TestCase):
     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 380)
+        self.assertEqual(validate_profile(profile), 403)
+        store_groups = [group for group in profile["groups"] if "Hexalith.Platform.AttemptStore.Tests" in group["project"]]
+        self.assertEqual(len(store_groups), 1)
+        self.assertEqual(store_groups[0]["requiredCount"], 23)
+        self.assertEqual(store_groups[0]["selectors"], [
+            "Hexalith.Platform.AttemptStore.Tests.AttemptStoreTests",
+            "Hexalith.Platform.AttemptStore.Tests.PromotionDecisionTests",
+            "Hexalith.Platform.AttemptStore.Tests.S3AttemptObjectStoreTests",
+        ])
         binding_test = "Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeRefusesChangedOwnerProvenanceBeforeAddingResources"
         binding_groups = [group for group in profile["groups"] if binding_test in group["selectors"]]
         self.assertEqual(len(binding_groups), 1)

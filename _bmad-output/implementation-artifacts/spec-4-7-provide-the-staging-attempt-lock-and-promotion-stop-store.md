@@ -2,7 +2,8 @@
 title: '4.7 Provide the staging attempt, lock and promotion-stop store'
 type: 'feature'
 created: '2026-11-23'
-status: 'ready-for-dev'
+status: 'done'
+baseline_commit: '689efa824ec621509aded4ddaf35ed8bcfdad645'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-7-provide-the-staging-attempt-lock-and-promotion-stop-store'
@@ -64,14 +65,47 @@ Builds paths are under `references/Hexalith.Builds/src/libraries/Hexalith.Builds
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `src/Hexalith.Platform.AttemptStore/` -- new library in the slnx: head model, object-store port (read with ETag, create-only, replace-if-match), S3 backend, and acquire, revise, takeover, latest-working move, stop-set, Administrator-clear and v2 decision transitions.
-- [ ] `Directory.Packages.props`, `Directory.Build.targets` -- pin the S3 client; require the published Tooling assembly for the new project in CI.
-- [ ] `tests/Hexalith.Platform.AttemptStore.Tests/` -- in-memory backend covering every matrix row with real ephemeral keys, a parallel-writer race on one head, and a credential-gated live suite on the hosted verification prefix.
-- [ ] Hosting -- provision the project, bucket, staging-writer and reader applications and bucket policy; probe denials; and keep a short sanitized summary in `_bmad-output/implementation-artifacts/evidence/story-4-7/`.
-- [ ] `docs/contracts/attempt-store-v1.md` -- layout, transitions, failure codes, IAM model and consumer obligations.
+- [x] `src/Hexalith.Platform.AttemptStore/` -- new library in the slnx: head model, object-store port (read with ETag, create-only, replace-if-match), S3 backend, and acquire, revise, takeover, latest-working move, stop-set, Administrator-clear and v2 decision transitions.
+- [x] `Directory.Packages.props`, `Directory.Build.targets` -- pin the S3 client; require the published Tooling assembly for the new project in CI.
+- [x] `tests/Hexalith.Platform.AttemptStore.Tests/` -- in-memory backend covering every matrix row with real ephemeral keys, a parallel-writer race on one head, and a credential-gated live suite on the hosted verification prefix.
+- [x] Hosting -- provision the project, bucket, staging-writer and reader applications and bucket policy; probe denials; and keep a short sanitized summary in `_bmad-output/implementation-artifacts/evidence/story-4-7/`.
+- [x] `docs/contracts/attempt-store-v1.md` -- layout, transitions, failure codes, IAM model and consumer obligations.
 
 **Acceptance Criteria:**
 - Given the hosted store, when probed live, then it is outside the cluster and executor hosts, two concurrent acquisitions commit exactly one, and unconditional writes, deletes and the staging writer's access to another environment's prefix are denied.
+
+## Implementation Notes
+
+The reviewed Release build completed with zero warnings and errors. The credentialed suite passed all 24 cases, including the signed acquisition race and entitlement probes against the Scaleway verification prefix. The test run covered concurrent acquisition, stale epoch and linked takeover, replay and unproven writes, staging-only stop and clear, and the production reservation versus staging supersession race. [Hosted evidence](evidence/story-4-7/scaleway-staging-store.md)
+
+The CI-mode assembly-reference build and all 23 deterministic cases passed against both a local publish of the pinned Builds Tooling source at `4adecfe2af4758aa66039a1221de20774ca56e87` and the published 6.7.0 assembly. The 6.7.0 package passed NuGet signature and SHA-512 verification, its repository metadata matched release revision `763fc0e937413cb44e533391e573c43640263b40`, and the Tooling assembly SHA-256 was `79ff793b6ec2796bc0098ea39457d1a01583b40f7b1eb11815cb127f6bc8f775`. The tuple profile selects those 23 cases. Platform's full tuple gate still requires adoption of the 6.7.0 release and its catalog. [Builds 6.7.0](https://github.com/Hexalith/Hexalith.Builds/releases/tag/v6.7.0)
+
+## Review Triage Log
+
+| Finding | Verdict | Evidence and disposition |
+| --- | --- | --- |
+| Blind 1. Production changes after the final ETag read | medium | A production mutation in the last network interval can invalidate the snapshot. The contract requires the production lifecycle caller to serialize production work through the decision CAS. Defer production integration proof to the production lifecycle work. |
+| Blind 2. A raw head writer can omit signed authority | medium | Conditional storage grants can change unsigned indexes. Library clients verify signed references and assume operational writes go through the store. The raw-writer integrity model requires a separate design for authenticated history or principal isolation. Defer that design. |
+| Blind 3. A terminal decision blocks fresh intake | medium | The release lookup includes terminal entries. Verify the actual terminal action before allowing a later decision ID and keep exactly one pending decision per release. Patch. |
+| Blind 4. Clearance without a predecessor | false | Builds requires lineage for admission and management actions. Stop clearance binds its exact current stop and revision and checks any predecessor it names. Clearing one stop supplies no authority for a newer stop. |
+| Blind 5. Replay omits the retained release envelope | medium | The acquire and takeover receipts can return success after submission of a re-signed release. Verify the archived release bytes during reconciliation. Patch. |
+| Blind 6. An orphaned envelope can refuse a re-signed version | low | The provider permits one exact envelope per signing-content digest. A caller retaining its exact input bytes can retry, and another content digest has an independent archive address. Reject archive migration for this case and document the envelope custody requirement. |
+| Blind 7. Archive read failure loses write uncertainty | medium | The ambiguity handler wraps the head read only. Preserve uncertainty when the archive needed to prove the receipt is unavailable. Patch. |
+| Blind 8. Long-lived head reaches its size limit | low | Appending enough receipts can reach 32 MiB. Reaching the bound requires sustained use over many transitions, and a rollover protocol would add a new persistence contract. Reject for this build. |
+| Blind 9. Pinned published Tooling predates v2 | medium | The tuple publication gate already refuses the recorded gitlink against 6.6.2. The reviewed store passes against newly published 6.7.0. Defer adoption of its changed catalog and tuple pin. |
+| Blind 10. Tuple CI omits the in-memory suite | medium | The solution compiles the project but the tuple runner executes only explicit profile selections. Add the deterministic classes and verify the measured inventory. Patch. |
+| Blind 11. Live verification uses fixture paths | low | The provider puts the canonical and fixture paths in the same conditional allow statements. Record both resource lists from the policy read-back. Patch. |
+| Edge 1. Production changes at the staging write | medium | The final production read and staging CAS are distinct provider operations. Defer the same production lifecycle serialization proof as Blind 1. |
+| Edge 2. Delayed PUT can commit after a refusal | medium | A reread with the original ETag cannot rule out the delayed write. Preserve uncertainty if there is no receipt and the prior precondition still holds. Patch. |
+| Edge 3. The final retry can miss its own receipt | low | The last conflicting call refreshes the head and exits before its receipt lookup. Reconcile the refreshed head before reporting contention. Patch. |
+| Edge 4. Retained release is omitted from replay | medium | The receipt check compares primary and companion archives only. Patch with Blind 5. |
+| Edge 5. A malformed decision entry can throw a null-reference error | low | Deserialization admits null dictionary entries and the new decision scans them. Reject that state when decoding. Patch. |
+| Edge 6. A malformed head can omit an active holder | medium | A nonterminal attempt slot can remain without the matching holder field. Reject orphaned nonterminal slots when decoding. Patch. |
+| Verification 1. Tuple CI does not execute this assembly | medium | The existing test profiles select only Composition tests. Patch with Blind 10. |
+| Verification 2. Acquire and takeover with a current stop | medium | Existing fixtures set stops outside fresh acquisition and takeover. Exercise missing, stale and exact references before checking effects. Patch. |
+| Verification 3. Exact active replay after an epoch advance | medium | The stale revision case uses new bytes and does not exercise the receipt lookup. Add an exact replay at the wrong epoch. Patch. |
+| Verification 4. Pointer lineage on replacement | medium | Existing cases only initialize the pointer. Verify replacement refuses a new pointer identity and accepts the current identity at the later epoch. Patch. |
+| Verification 5. S3 ambiguous response classification | medium | Backend uncertainty tests skip S3 exception classification. Exercise the adapter with a deterministic post-write server error. Patch. |
 
 ## Design Notes
 
