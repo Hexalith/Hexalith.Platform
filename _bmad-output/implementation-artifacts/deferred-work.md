@@ -2277,3 +2277,25 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   status: resolved
   resolution: The 4.9 handoff now lists both among its open gates.
   evidence: The 4.5 README leaves both to their environment gates, and the fixture used in-memory Scheduler storage with standalone placement. The 4.9 open-gate list at `spec-4-9-…md:81` names neither.
+
+## Deferred from the resumed Story 4.6 review
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Align signed release change classifications with the intake producer in Story 4.8.
+  evidence: The release enum uses `compatible` and `unchanged` while module-manifest v2 and intake use `additive` and `none`. The producer and reader need a shared vocabulary and a decision on the earlier wire values.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Bind staging qualification issuance to a passing attempt in the issuer eligibility rules.
+  evidence: The shared issuer validator accepts `in-progress` and `working` for either environment. The architecture requires passing staging evidence and permits issuance before production rollout.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Validate ordinary attempt entry and phase timing when the lifecycle rules are integrated.
+  evidence: The existing entry codec allows an ordinary lifetime different from the pre-mutation bound. The phase transition checks deadline plus grace only when the lifetime changes. A first rollout deadline can also precede the recorded first mutation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Support a first covered disaster-recovery entry after its outage-derived notification deadline.
+  evidence: The common attempt codec requires maximum lifetime to follow entry. The spine's covered DR deadline is outage plus four hours and can already have elapsed at entry. Recovery must still be recorded and notify.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Define the signed expiry of a temporary G1 synthetic admission grant.
+  evidence: The closed Administrator payload has no expiry field. The production entry-gate contract requires a signed expiry no later than G2, with revocation and a subsequent denial check.
