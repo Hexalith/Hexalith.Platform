@@ -2299,3 +2299,10 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
   summary: Define the signed expiry of a temporary G1 synthetic admission grant.
   evidence: The closed Administrator payload has no expiry field. The production entry-gate contract requires a signed expiry no later than G2, with revocation and a subsequent denial check.
+
+## Deferred from: code review of spec-4-6-encode-release-attempt-qualification-and-administrator-records.md (2026-11-23)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
+  summary: Let Story 4.7 close a v2 admission reservation after a takeover or a later epoch, and bind a v2 takeover successor to its decision.
+  evidence: `ValidatePromotionDecision` closure requires the admitted attempt's record ID and writer, an `executor` key, and a terminal epoch equal to the current epoch. A fenced takeover successor, a recovery-executor DR successor, or a lock re-acquisition after the terminal write therefore leaves the decision reserved with no valid closing action. `ValidateAttempt` requires only the v2 schema of a v2 successor, not its `stagingEvidence`. Policy v2 item 4 expects takeover or terminal reconciliation to resolve the reservation. The Builds README states the current constraint at `ReleaseRecords.md:103`.
+  reason: Story 4.7 designs takeover closure together with its cross-attempt takeover reconciliation. V2 cannot activate before 4.7, and closure fails closed until then.
