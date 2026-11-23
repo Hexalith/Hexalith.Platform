@@ -370,7 +370,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         currentBytes.ShouldBeGreaterThan(RecoverableAnchoredState.MaximumPendingBytes - 262144);
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
         f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
-        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+        (await CreateCapacityTestSpool(f).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
         f.Read()!.Revision.ShouldBe(head.Revision); f.Archives.Count.ShouldBe(16); f.PendingBytes.ShouldBeNull();
     }
 
@@ -408,7 +408,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         head = Head();
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
         f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
-        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        (await CreateCapacityTestSpool(f).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
         f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
         f.PendingBytes.ShouldBeNull();
     }
@@ -700,7 +700,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, projectedRevision - 1, records.ToArray());
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
         byte[] before = f.Persisted.ToArray();
-        (await f.Spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await CreateCapacityTestSpool(f).ObserveAsync(nextIntent, TestContext.Current.CancellationToken)).ShouldBeNull();
         f.Persisted.ShouldBe(before); f.PendingBytes.ShouldBeNull(); f.Archives.Count.ShouldBe(0);
     }
 
@@ -729,6 +729,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
     public async Task ByteCapacityRolloverArchivesVariableCountWithoutDroppingOriginals()
     {
         var f = new SecuritySpoolFixture();
+        var spool = CreateCapacityTestSpool(f);
         SecurityObservationRecord Seed(int sequence)
         {
             var intent = SecuritySpoolFixture.Intent("seed-" + sequence + new string('x', 1000)) with
@@ -753,11 +754,11 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         CandidateBytes().ShouldBeGreaterThan(RecoverableAnchoredState.MaximumPendingBytes);
         var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L, records.ToArray());
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
-        (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
-        var observed = await f.Spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken);
+        (await spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+        var observed = await spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken);
         observed.ShouldNotBeNull(); observed.Sequence.ShouldBe(records.Count + 1L);
         f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ArchivedObservedCount.ShouldBe(records.Count);
-        (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+        (await spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
     }
 
     private static SecurityObservationRecord[] InstallReservedAcknowledgedHead(SecuritySpoolFixture fixture, bool savePage)
