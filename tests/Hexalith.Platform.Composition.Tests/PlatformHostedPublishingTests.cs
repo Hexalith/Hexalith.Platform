@@ -5,9 +5,12 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Pipelines;
 using CommunityToolkit.Aspire.Hosting.Dapr;
 using Hexalith.Builds.Tooling.Manifest;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Shouldly;
 
 [Collection("Platform file entry")]
@@ -108,20 +111,25 @@ public sealed class PlatformHostedPublishingTests
             workload.GetProperty("publicRoutes").EnumerateArray().Select(r => r.GetString()!).ShouldBe(expected[workload.GetProperty("identity").GetString()!]);
     }
 
-    [Fact]
-    public void HostedEntryRefusesThePinnedCliDeployOperationBeforeWritingOrAddingResources()
+    [Theory]
+    [InlineData("deploy")]
+    [InlineData("destroy")]
+    [InlineData("helm-deploy-qualification")]
+    [InlineData("helm-uninstall-qualification")]
+    [InlineData("publish-manifest")]
+    public void HostedEntryRefusesOtherPipelineStepsBeforeWritingOrAddingResources(string step)
     {
         IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
-            Args = ["--operation", "publish", "--step", "deploy"],
+            Args = ["--operation", "publish", "--step", step],
             AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, ProjectDirectory = Root, DisableDashboard = true,
         });
         builder.Configuration["Platform:Hosted:Enabled"] = "true";
         builder.ExecutionContext.IsPublishMode.ShouldBeTrue();
-        builder.Configuration["Pipeline:Step"].ShouldBe("deploy");
-        string path = Path.Combine(Path.GetTempPath(), "refused-hosted-deploy-" + Guid.NewGuid().ToString("N") + ".json");
+        builder.Configuration["Pipeline:Step"].ShouldBe(step);
+        string path = Path.Combine(Path.GetTempPath(), "refused-hosted-step-" + Guid.NewGuid().ToString("N") + ".json");
         builder.Configuration["Platform:Hosted:GraphPath"] = path;
-        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("deploy is forbidden");
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("Only the publish pipeline step is allowed");
         builder.Resources.ShouldBeEmpty();
         File.Exists(path).ShouldBeFalse();
     }
@@ -138,11 +146,25 @@ public sealed class PlatformHostedPublishingTests
         builder.Resources.ShouldBeEmpty();
     }
 
-    private static IDistributedApplicationBuilder PublishBuilder()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("publish")]
+    public void HostedEntryRefusesInspectionBeforeWritingOrAddingResources(string? step)
+    {
+        IDistributedApplicationBuilder builder = PublishBuilder(step, operation: "inspect");
+        string path = Path.Combine(Path.GetTempPath(), "refused-hosted-inspection-" + Guid.NewGuid().ToString("N") + ".json");
+        builder.Configuration["Platform:Hosted:GraphPath"] = path;
+        Should.Throw<InvalidOperationException>(() => PlatformAppModel.ComposeEntry(builder)).Message.ShouldContain("publish-only");
+        builder.Resources.ShouldBeEmpty();
+        File.Exists(path).ShouldBeFalse();
+    }
+
+    private static IDistributedApplicationBuilder PublishBuilder(string? step = null, string operation = "publish")
     {
         IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
-            Args = ["--publisher", "manifest"], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name,
+            Args = step is null ? ["--operation", operation] : ["--operation", operation, "--step", step],
+            AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name,
             ProjectDirectory = Root, DisableDashboard = true,
         });
         builder.Configuration["Platform:Hosted:Enabled"] = "true";
@@ -152,20 +174,27 @@ public sealed class PlatformHostedPublishingTests
         }
 
         builder.ExecutionContext.IsPublishMode.ShouldBeTrue();
+        builder.Configuration["Pipeline:Step"].ShouldBe(step);
         return builder;
     }
 
-    [Fact]
-    public void HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("publish")]
+    public async Task HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironmentAsync(string? step)
     {
         string directory = Path.Combine(Path.GetTempPath(), "hosted-probe-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
         try
         {
             string path = Path.Combine(directory, "graph.json");
-            IDistributedApplicationBuilder builder = PublishBuilder();
+            IDistributedApplicationBuilder builder = PublishBuilder(step);
             builder.Configuration["Platform:Hosted:GraphPath"] = path;
             PlatformAppModel.ComposeEntry(builder);
+            await using DistributedApplication application = builder.Build();
+#pragma warning disable ASPIREPIPELINES001 // Verify the effective options consumed by the pinned Aspire pipeline.
+            application.Services.GetRequiredService<IOptions<PipelineOptions>>().Value.Step.ShouldBe("publish");
+#pragma warning restore ASPIREPIPELINES001
             PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(ReferenceOptions());
             JsonElement.DeepEquals(JsonDocument.Parse(File.ReadAllText(path)).RootElement, PlatformHostedPublishing.Describe(graph)).ShouldBeTrue();
             builder.Resources.Count.ShouldBe(17); // One environment, eight workloads and their native Dapr sidecar resources.

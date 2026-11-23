@@ -1,0 +1,77 @@
+Running tests from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources (58ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRequiresVerifiedMappingAndGraphPathBeforeAddingResources() in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:204
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Timesheets") (3ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:283
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Agents") (2ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:283
+    at InvokeStub_PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(selection: "Works") (1ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(String selection) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:283
+    at InvokeStub_PlatformHostedPublishingTests.HostedPublishRefusesLocalSelectionsBeforeWritingGraphOrAddingResources(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment(step: null) (2ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:174
+    at InvokeStub_PlatformHostedPublishingTests.HostedPublishWritesTheCanonicalGraphAndAddsOnlyNativeWorkloadsAndEnvironment(Object, Span`1)
+    at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+failed Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources (721ms)
+  from /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Shouldly.ShouldAssertException : builder.Configuration["Pipeline:Step"]
+      should be
+  null
+      but was
+  "publish-manifest"
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.PublishBuilder(String step) in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:160
+    at Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests.HostedPublishRejectsDirtyApprovedRevisionSources() in /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs:251
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+/tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64) failed with 6 error(s) (12s 904ms)
+Exit code: 2
+
+Test run summary: Failed!
+  total: 20
+  failed: 6
+  succeeded: 14
+  skipped: 0
+  duration: 13s 047ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

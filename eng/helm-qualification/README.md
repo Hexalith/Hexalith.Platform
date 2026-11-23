@@ -87,9 +87,10 @@ object/array string (flattened into .NET configuration keys),
 `{endpoint: "parameter-name"}`, or `{configMapKeyRef: {name, key}}`.
 ConnectionStrings inputs also accept `{secretKeyRef: {name, key}}` for an
 authenticated connection string held in an existing Secret. ConnectionStrings
-and endpoint leaves (including authority and issuer fields) cannot use ConfigMap
-references; they require validated endpoint parameters or, for ConnectionStrings,
-existing Secret references. The environment writer owns validation of Secret
+and endpoint leaves cannot use ConfigMap references. This includes authority and
+issuer fields and keys ending in `Endpoint`, `Url`, `Uri` or `Address`. These
+inputs accept validated endpoint parameters. ConnectionStrings inputs also
+accept existing Secret references. The environment writer owns validation of Secret
 connection-string contents, including native TLS and non-local endpoints.
 Nested endpoint and ConfigMap reference leaves resolve recursively, including
 Clock Sources arrays. Literal HTTPS leaves use the same endpoint validation.
@@ -211,10 +212,10 @@ A 1.19.2 run retains the qualification record, exact source and package
 identities, input and application archives, canonical CRDs, Dapr values,
 source and archive renders for all three modes, admitted Pods, and Component
 ownership snapshots. The command logs retain the observed results, including
-the intentional SSA conflict. The 23 November passing run admitted all eight
+the intentional SSA conflict. The 23 November review follow-up admitted all eight
 workloads under restricted policy and retained byte-identical snapshots of
 all eight environment Components across seven lifecycle checkpoints.
-[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-20261123-04/qualification.json)
+[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-review6-20261123T081644Z/qualification.json)
 
 Story 4.9 consumes these exact Dapr identities
 for the hosted inventory. Story 4.12 verifies the published OCI digest and
@@ -226,22 +227,34 @@ broker guarantees retain their own qualification gates.
 
 `toolchain.json` pins the Dapr 1.18.7 probe and supplies the existing
 calibration and campaign tools. `qualify.py` continues to expose those paths.
-Use the recorded source and dependency revisions to reproduce the dated native
-probe. Its original evidence directory records those inputs.
+Use the approved Platform and owner revisions and the pinned `aspire publish`
+command from the retained replay. Check out each owner in an absolute source
+directory outside the nested Platform `references/` tree.
+[Pinned native replay](../../_bmad-output/implementation-artifacts/evidence/4-5/review6-native-and-composition-20261123T081644Z/review-fixes-hosted-console.log)
 
 Run these commands from the historical Platform checkout in a disposable
 workspace. Save the historical qualifier's evidence outside that workspace.
 
 ```bash
+export HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/absolute/path/to/Hexalith.EventStore
+export HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/absolute/path/to/Hexalith.Tenants
+export HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/absolute/path/to/Hexalith.Memories
+export HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/absolute/path/to/Hexalith.Parties
+
 DirectoryPackagesPropsPath="$PWD/eng/helm-qualification/source-packages.props" \
   dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj \
   -p:UseHexalithProjectReferences=true -p:UseNuGetDeps=false -p:RunAnalyzers=false
 HELM_BIN=/absolute/path/to/verified/helm python3 -m unittest discover \
   -s eng/helm-qualification -p 'test_*.py' -v
+Platform__Hosted__SourceRoots__EventStore="$HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT" \
+Platform__Hosted__SourceRoots__Tenants="$HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT" \
+Platform__Hosted__SourceRoots__Memories="$HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT" \
+Platform__Hosted__SourceRoots__Parties="$HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT" \
 python3 eng/helm-qualification/qualify.py --evidence "$QUALIFICATION_EVIDENCE"
 ```
 
-Each run clears prior numbered command logs before its first command. Source
+Each run clears command logs verified against the previous record. If that
+record is absent, it clears numbered scratch logs for the qualifier's tools. Source
 evidence records the root revision, porcelain status and submodule revisions, so
 the record identifies an uncommitted qualification tree. Commands run in private
 process groups that are terminated together on timeout; MSBuild node reuse is disabled.

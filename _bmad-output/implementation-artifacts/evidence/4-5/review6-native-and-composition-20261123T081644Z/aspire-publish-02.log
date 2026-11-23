@@ -1,0 +1,65 @@
+
+Telemetry
+---------
+
+The Aspire CLI collects usage data. It is collected by Microsoft and is used to help us improve your experience. You can opt out of telemetry by setting the 
+ASPIRE_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your preferred shell.
+
+Read more about Aspire CLI telemetry: https://aka.ms/aspire/cli-telemetry
+
+🛠️ Executing step publish
+🛠️ Building AppHost... apphost.cs
+09:21:10 (validate-compute-environments) → Starting validate-compute-environments...
+09:21:10 (validate-compute-environments) ✓ validate-compute-environments completed successfully
+09:21:10 (prepare-deployment-targets-qualification) → Starting prepare-deployment-targets-qualification...
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for eventstore
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for tenants-api
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry-clock
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-access-telemetry
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for memories-domain-service
+09:21:10 (prepare-deployment-targets-qualification) i [INF] Creating Kubernetes resource for parties
+09:21:10 (prepare-deployment-targets-qualification) ✓ prepare-deployment-targets-qualification completed successfully
+09:21:10 (validate-kubernetes) → Starting validate-kubernetes...
+09:21:10 (validate-kubernetes) ✓ validate-kubernetes completed successfully
+09:21:10 (before-start) → Starting before-start...
+09:21:10 (before-start) ✓ before-start completed successfully
+09:21:10 (pipeline-execution) → Starting pipeline-execution...
+09:21:10 (validate-build-only-container-references) → Starting validate-build-only-container-references...
+09:21:10 (process-parameters) → Starting process-parameters...
+09:21:10 (validate-build-only-container-references) ✓ validate-build-only-container-references completed successfully
+09:21:10 (process-parameters) ✓ process-parameters completed successfully
+09:21:10 (publish-prereq) → Starting publish-prereq...
+09:21:10 (publish-prereq) ✓ publish-prereq completed successfully
+09:21:10 (publish-qualification) → Starting publish-qualification...
+09:21:10 (publish-qualification) i [INF] Generating Kubernetes output
+09:21:10 (publish-qualification) i [INF] Successfully generated Kubernetes output in '/tmp/hexalith-job.J9JERqDx/native-output'
+09:21:10 (publish-qualification) ✓ publish-qualification completed successfully
+09:21:10 (publish) → Starting publish...
+09:21:10 (publish) ✓ publish completed successfully
+09:21:10 (pipeline-execution) ✓ Completed successfully
+------------------------------------------------------------
+✓ 10/10 steps succeeded • Total time: 39.48ms
+
+Steps Summary:
+                Step timeline:                              0ms                    19.18ms
+                                                            │───────┬──────┬─────┬───────│
+      1.23ms  ✓ validate-compute-environments               │╶─╴                         │
+      6.83ms  ✓   prepare-deployment-targets-qualification  │  ╶──────────╴              │
+      0.64ms  ✓     before-start                            │               ╴            │
+      0.56ms  ✓   validate-kubernetes                       │             ╴              │
+      7.52ms  ✓ pipeline-execution                          │                ╶──────────╴│
+      1.19ms  ✓ validate-build-only-container-references    │                 ╶─╴        │
+      1.15ms  ✓ process-parameters                          │                  ╶─╴       │
+      0.61ms  ✓   publish-prereq                            │                     ╴      │
+      1.69ms  ✓     publish-qualification                   │                      ╶──╴  │
+      0.55ms  ✓       publish                               │                          ╴ │
+
+✓ Pipeline succeeded
+------------------------------------------------------------
+
+
+A new version of Aspire is available: 17.0.0
+To update, run: aspire update
+For more information, see: https://aka.ms/aspire/update

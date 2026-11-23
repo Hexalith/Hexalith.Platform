@@ -1,0 +1,2857 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "operator",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:14Z",
+                "generateName": "dapr-operator-878d999c8-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-operator",
+                    "app.kubernetes.io/component": "operator",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "pod-template-hash": "878d999c8"
+                },
+                "name": "dapr-operator-878d999c8-pj748",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "dapr-operator-878d999c8",
+                        "uid": "d26c0dad-34bb-4f5b-83dc-b6ba18fa7b93"
+                    }
+                ],
+                "resourceVersion": "1056",
+                "uid": "e393efc9-d840-4cf8-95a5-d0f934d69aea"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--watch-interval",
+                            "0",
+                            "--max-pod-restarts-per-minute",
+                            "20",
+                            "--log-level",
+                            "info",
+                            "--trust-anchors-file",
+                            "/var/run/secrets/dapr.io/tls/ca.crt",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090"
+                        ],
+                        "command": [
+                            "/operator"
+                        ],
+                        "env": [
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-operator",
+                        "ports": [
+                            {
+                                "containerPort": 6500,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-operator-tmp"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6bg99",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "dapr-operator",
+                "serviceAccountName": "dapr-operator",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "emptyDir": {
+                            "medium": "Memory",
+                            "sizeLimit": "64Mi"
+                        },
+                        "name": "dapr-operator-tmp"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-6bg99",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:18Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:21:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:21:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://a29fb2f3651c38fced3ed4aebb8881580b06f744c1b4b87dc73b31da811cbacc",
+                        "image": "sha256:1b91d5acf228b8e89e0091d43260b1c1b60e63550cedd12e6aa4e93dd03234f0",
+                        "imageID": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a",
+                        "lastState": {},
+                        "name": "dapr-operator",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:18Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-operator-tmp"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6bg99",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.5",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.5"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:14Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "placement",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:15Z",
+                "generateName": "dapr-placement-server-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-placement-server",
+                    "app.kubernetes.io/component": "placement",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "apps.kubernetes.io/pod-index": "0",
+                    "controller-revision-hash": "dapr-placement-server-69d495c8d6",
+                    "statefulset.kubernetes.io/pod-name": "dapr-placement-server-0"
+                },
+                "name": "dapr-placement-server-0",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "StatefulSet",
+                        "name": "dapr-placement-server",
+                        "uid": "1ab4e219-74e8-424e-a4e4-b9a80cd857b1"
+                    }
+                ],
+                "resourceVersion": "935",
+                "uid": "bc5ad306-0bbc-41bc-9531-84f42c694e5f"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--log-level",
+                            "info",
+                            "--replicationFactor=100",
+                            "--max-api-level=10",
+                            "--min-api-level=0",
+                            "--keepalive-time=2s",
+                            "--keepalive-timeout=3s",
+                            "--disseminate-timeout=8s",
+                            "--disseminate-coalesce-window=0s",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--tls-enabled",
+                            "--trust-domain=cluster.local",
+                            "--trust-anchors-file=/var/run/secrets/dapr.io/tls/ca.crt",
+                            "--sentry-address=dapr-sentry.dapr-system.svc.cluster.local:443",
+                            "--mode=kubernetes"
+                        ],
+                        "command": [
+                            "/placement"
+                        ],
+                        "env": [
+                            {
+                                "name": "PLACEMENT_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-placement-server",
+                        "ports": [
+                            {
+                                "containerPort": 50005,
+                                "name": "api",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 8201,
+                                "name": "raft-node",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-42hss",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "dapr-placement-server-0",
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 65532
+                },
+                "serviceAccount": "dapr-placement",
+                "serviceAccountName": "dapr-placement",
+                "subdomain": "dapr-placement-server",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-42hss",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:28Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://0c880dc4a12ec5f4974716ac465f62ecebd9882d7c5d736fcfb4ae56367ec721",
+                        "image": "sha256:bb7afd221a7e00ae7141f88ad49cbad258c34465196f57fed5120bdcb85d1a6b",
+                        "imageID": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766",
+                        "lastState": {},
+                        "name": "dapr-placement-server",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:28Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-42hss",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.9",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.9"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:15Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "scheduler",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:15Z",
+                "generateName": "dapr-scheduler-server-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-scheduler-server",
+                    "app.kubernetes.io/component": "scheduler",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "apps.kubernetes.io/pod-index": "0",
+                    "controller-revision-hash": "dapr-scheduler-server-6cb49db58c",
+                    "statefulset.kubernetes.io/pod-name": "dapr-scheduler-server-0"
+                },
+                "name": "dapr-scheduler-server-0",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "StatefulSet",
+                        "name": "dapr-scheduler-server",
+                        "uid": "09656df1-6ad1-4bb5-af28-20dfb679bfa0"
+                    }
+                ],
+                "resourceVersion": "1109",
+                "uid": "e3656fb5-4a4c-4eda-88f0-a0818a256d2c"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "podAntiAffinity": {
+                        "preferredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                                "podAffinityTerm": {
+                                    "labelSelector": {
+                                        "matchExpressions": [
+                                            {
+                                                "key": "app",
+                                                "operator": "In",
+                                                "values": [
+                                                    "dapr-scheduler-server"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "topologyKey": "topology.kubernetes.io/zone"
+                                },
+                                "weight": 100
+                            }
+                        ]
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--listen-address=0.0.0.0",
+                            "--id",
+                            "$(SCHEDULER_ID)",
+                            "--etcd-initial-cluster",
+                            "dapr-scheduler-server-0=https://dapr-scheduler-server-0.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-1=https://dapr-scheduler-server-1.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-2=https://dapr-scheduler-server-2.dapr-scheduler-server.dapr-system.svc.cluster.local:2380",
+                            "--etcd-embed=true",
+                            "--log-level",
+                            "info",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--etcd-client-port",
+                            "2379",
+                            "--etcd-data-dir=/var/run/data/dapr-scheduler/dapr-system/$(SCHEDULER_ID)",
+                            "--etcd-space-quota=9.2E",
+                            "--etcd-compaction-mode=revision",
+                            "--etcd-compaction-retention=10000",
+                            "--etcd-snapshot-count=100000",
+                            "--etcd-max-snapshots=10",
+                            "--etcd-max-wals=10",
+                            "--etcd-backend-batch-limit=10000",
+                            "--etcd-backend-batch-interval=100ms",
+                            "--etcd-max-txn-ops=10000",
+                            "--etcd-experimental-bootstrap-defrag-threshold-megabytes=100",
+                            "--etcd-initial-election-tick-advance=false",
+                            "--etcd-metrics=basic",
+                            "--tls-enabled",
+                            "--trust-domain=cluster.local",
+                            "--trust-anchors-file=/var/run/secrets/dapr.io/tls/ca.crt",
+                            "--sentry-address=dapr-sentry.dapr-system.svc.cluster.local:443",
+                            "--mode=kubernetes",
+                            "--workers=2048"
+                        ],
+                        "command": [
+                            "/scheduler"
+                        ],
+                        "env": [
+                            {
+                                "name": "SCHEDULER_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-scheduler-server",
+                        "ports": [
+                            {
+                                "containerPort": 50006,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2379,
+                                "name": "etcd-client",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2380,
+                                "name": "etcd-peer",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-46zrx",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "dapr-scheduler-server-0",
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 65532
+                },
+                "serviceAccount": "dapr-scheduler",
+                "serviceAccountName": "dapr-scheduler",
+                "subdomain": "dapr-scheduler-server",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "emptyDir": {
+                            "medium": "Memory"
+                        },
+                        "name": "dapr-scheduler-data-dir"
+                    },
+                    {
+                        "emptyDir": {},
+                        "name": "dapr-scheduler-writeable-identity"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-46zrx",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:25Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:22:10Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:22:10Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://a893ee87959764dd3347a88d767c1a951a53bfd71bb23b07fb89cf4ae0ee0819",
+                        "image": "sha256:fb10c5e886ff0a5891a6f57b1aa2fad22c511bfab16bd6b3889baf87e20ea1d2",
+                        "imageID": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "lastState": {},
+                        "name": "dapr-scheduler-server",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:25Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-46zrx",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.8",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.8"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:15Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "scheduler",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:15Z",
+                "generateName": "dapr-scheduler-server-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-scheduler-server",
+                    "app.kubernetes.io/component": "scheduler",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "apps.kubernetes.io/pod-index": "1",
+                    "controller-revision-hash": "dapr-scheduler-server-6cb49db58c",
+                    "statefulset.kubernetes.io/pod-name": "dapr-scheduler-server-1"
+                },
+                "name": "dapr-scheduler-server-1",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "StatefulSet",
+                        "name": "dapr-scheduler-server",
+                        "uid": "09656df1-6ad1-4bb5-af28-20dfb679bfa0"
+                    }
+                ],
+                "resourceVersion": "929",
+                "uid": "1bb98c04-4209-4eb9-82a4-ed72ecb9ea7b"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "podAntiAffinity": {
+                        "preferredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                                "podAffinityTerm": {
+                                    "labelSelector": {
+                                        "matchExpressions": [
+                                            {
+                                                "key": "app",
+                                                "operator": "In",
+                                                "values": [
+                                                    "dapr-scheduler-server"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "topologyKey": "topology.kubernetes.io/zone"
+                                },
+                                "weight": 100
+                            }
+                        ]
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--listen-address=0.0.0.0",
+                            "--id",
+                            "$(SCHEDULER_ID)",
+                            "--etcd-initial-cluster",
+                            "dapr-scheduler-server-0=https://dapr-scheduler-server-0.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-1=https://dapr-scheduler-server-1.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-2=https://dapr-scheduler-server-2.dapr-scheduler-server.dapr-system.svc.cluster.local:2380",
+                            "--etcd-embed=true",
+                            "--log-level",
+                            "info",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--etcd-client-port",
+                            "2379",
+                            "--etcd-data-dir=/var/run/data/dapr-scheduler/dapr-system/$(SCHEDULER_ID)",
+                            "--etcd-space-quota=9.2E",
+                            "--etcd-compaction-mode=revision",
+                            "--etcd-compaction-retention=10000",
+                            "--etcd-snapshot-count=100000",
+                            "--etcd-max-snapshots=10",
+                            "--etcd-max-wals=10",
+                            "--etcd-backend-batch-limit=10000",
+                            "--etcd-backend-batch-interval=100ms",
+                            "--etcd-max-txn-ops=10000",
+                            "--etcd-experimental-bootstrap-defrag-threshold-megabytes=100",
+                            "--etcd-initial-election-tick-advance=false",
+                            "--etcd-metrics=basic",
+                            "--tls-enabled",
+                            "--trust-domain=cluster.local",
+                            "--trust-anchors-file=/var/run/secrets/dapr.io/tls/ca.crt",
+                            "--sentry-address=dapr-sentry.dapr-system.svc.cluster.local:443",
+                            "--mode=kubernetes",
+                            "--workers=2048"
+                        ],
+                        "command": [
+                            "/scheduler"
+                        ],
+                        "env": [
+                            {
+                                "name": "SCHEDULER_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-scheduler-server",
+                        "ports": [
+                            {
+                                "containerPort": 50006,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2379,
+                                "name": "etcd-client",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2380,
+                                "name": "etcd-peer",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-27z7h",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "dapr-scheduler-server-1",
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 65532
+                },
+                "serviceAccount": "dapr-scheduler",
+                "serviceAccountName": "dapr-scheduler",
+                "subdomain": "dapr-scheduler-server",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "emptyDir": {
+                            "medium": "Memory"
+                        },
+                        "name": "dapr-scheduler-data-dir"
+                    },
+                    {
+                        "emptyDir": {},
+                        "name": "dapr-scheduler-writeable-identity"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-27z7h",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:28Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:16Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://29fa0530e4614be4c35c83a1487400668ab6017313d556fdac40721d9be466c0",
+                        "image": "sha256:fb10c5e886ff0a5891a6f57b1aa2fad22c511bfab16bd6b3889baf87e20ea1d2",
+                        "imageID": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "lastState": {},
+                        "name": "dapr-scheduler-server",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:28Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-27z7h",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.11",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.11"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:16Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "scheduler",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:15Z",
+                "generateName": "dapr-scheduler-server-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-scheduler-server",
+                    "app.kubernetes.io/component": "scheduler",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "apps.kubernetes.io/pod-index": "2",
+                    "controller-revision-hash": "dapr-scheduler-server-6cb49db58c",
+                    "statefulset.kubernetes.io/pod-name": "dapr-scheduler-server-2"
+                },
+                "name": "dapr-scheduler-server-2",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "StatefulSet",
+                        "name": "dapr-scheduler-server",
+                        "uid": "09656df1-6ad1-4bb5-af28-20dfb679bfa0"
+                    }
+                ],
+                "resourceVersion": "943",
+                "uid": "71acbd02-95fc-4ca9-a807-45f53a68b75c"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "podAntiAffinity": {
+                        "preferredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                                "podAffinityTerm": {
+                                    "labelSelector": {
+                                        "matchExpressions": [
+                                            {
+                                                "key": "app",
+                                                "operator": "In",
+                                                "values": [
+                                                    "dapr-scheduler-server"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "topologyKey": "topology.kubernetes.io/zone"
+                                },
+                                "weight": 100
+                            }
+                        ]
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--listen-address=0.0.0.0",
+                            "--id",
+                            "$(SCHEDULER_ID)",
+                            "--etcd-initial-cluster",
+                            "dapr-scheduler-server-0=https://dapr-scheduler-server-0.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-1=https://dapr-scheduler-server-1.dapr-scheduler-server.dapr-system.svc.cluster.local:2380,dapr-scheduler-server-2=https://dapr-scheduler-server-2.dapr-scheduler-server.dapr-system.svc.cluster.local:2380",
+                            "--etcd-embed=true",
+                            "--log-level",
+                            "info",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--etcd-client-port",
+                            "2379",
+                            "--etcd-data-dir=/var/run/data/dapr-scheduler/dapr-system/$(SCHEDULER_ID)",
+                            "--etcd-space-quota=9.2E",
+                            "--etcd-compaction-mode=revision",
+                            "--etcd-compaction-retention=10000",
+                            "--etcd-snapshot-count=100000",
+                            "--etcd-max-snapshots=10",
+                            "--etcd-max-wals=10",
+                            "--etcd-backend-batch-limit=10000",
+                            "--etcd-backend-batch-interval=100ms",
+                            "--etcd-max-txn-ops=10000",
+                            "--etcd-experimental-bootstrap-defrag-threshold-megabytes=100",
+                            "--etcd-initial-election-tick-advance=false",
+                            "--etcd-metrics=basic",
+                            "--tls-enabled",
+                            "--trust-domain=cluster.local",
+                            "--trust-anchors-file=/var/run/secrets/dapr.io/tls/ca.crt",
+                            "--sentry-address=dapr-sentry.dapr-system.svc.cluster.local:443",
+                            "--mode=kubernetes",
+                            "--workers=2048"
+                        ],
+                        "command": [
+                            "/scheduler"
+                        ],
+                        "env": [
+                            {
+                                "name": "SCHEDULER_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-scheduler-server",
+                        "ports": [
+                            {
+                                "containerPort": 50006,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2379,
+                                "name": "etcd-client",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 2380,
+                                "name": "etcd-peer",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-hp6dt",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "dapr-scheduler-server-2",
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 65532
+                },
+                "serviceAccount": "dapr-scheduler",
+                "serviceAccountName": "dapr-scheduler",
+                "subdomain": "dapr-scheduler-server",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "emptyDir": {
+                            "medium": "Memory"
+                        },
+                        "name": "dapr-scheduler-data-dir"
+                    },
+                    {
+                        "emptyDir": {},
+                        "name": "dapr-scheduler-writeable-identity"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-hp6dt",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:29Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:46Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:46Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:15Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://e631fb052e6ebb14ce02a0b069d5d781f2fd7ab04b575efe49e82789035da6c6",
+                        "image": "sha256:fb10c5e886ff0a5891a6f57b1aa2fad22c511bfab16bd6b3889baf87e20ea1d2",
+                        "imageID": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663",
+                        "lastState": {},
+                        "name": "dapr-scheduler-server",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:29Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/data/dapr-scheduler/",
+                                "name": "dapr-scheduler-data-dir"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "dapr-scheduler-writeable-identity"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-hp6dt",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.10",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.10"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:15Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "sentry",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:14Z",
+                "generateName": "dapr-sentry-847786549f-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-sentry",
+                    "app.kubernetes.io/component": "sentry",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "pod-template-hash": "847786549f"
+                },
+                "name": "dapr-sentry-847786549f-9b8br",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "dapr-sentry-847786549f",
+                        "uid": "fc570898-3cb6-4c2e-bcc5-bfd4b298e2b9"
+                    }
+                ],
+                "resourceVersion": "1034",
+                "uid": "0cb3d359-3319-407c-8621-74b94b2f42c3"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--mode",
+                            "kubernetes",
+                            "--log-level",
+                            "info",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--trust-domain",
+                            "cluster.local"
+                        ],
+                        "command": [
+                            "/sentry"
+                        ],
+                        "env": [
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-sentry",
+                        "ports": [
+                            {
+                                "containerPort": 50001,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/credentials",
+                                "name": "credentials",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-9pvwh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "dapr-sentry",
+                "serviceAccountName": "dapr-sentry",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "credentials",
+                        "secret": {
+                            "defaultMode": 288,
+                            "secretName": "dapr-trust-bundle"
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-9pvwh",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:20Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:21:33Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:21:33Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://ecf15fe48a8d1e7d06bea43203bd4a3b488a0cf5a82abea326e7b64df769d732",
+                        "image": "sha256:c9cdac6de8d3c42c402031d00f43f46ea4cfdc4a733e5c7b25d85dcdb6058cfb",
+                        "imageID": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62",
+                        "lastState": {},
+                        "name": "dapr-sentry",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:20Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/credentials",
+                                "name": "credentials",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-9pvwh",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.6",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.6"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:14Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "dapr.io/control-plane": "injector",
+                    "prometheus.io/path": "/",
+                    "prometheus.io/port": "9090",
+                    "prometheus.io/scrape": "true"
+                },
+                "creationTimestamp": "2026-11-23T08:20:14Z",
+                "generateName": "dapr-sidecar-injector-7ff46c9ff6-",
+                "generation": 1,
+                "labels": {
+                    "app": "dapr-sidecar-injector",
+                    "app.kubernetes.io/component": "sidecar-injector",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "dapr",
+                    "app.kubernetes.io/part-of": "dapr",
+                    "app.kubernetes.io/version": "1.19.2",
+                    "pod-template-hash": "7ff46c9ff6"
+                },
+                "name": "dapr-sidecar-injector-7ff46c9ff6-d526r",
+                "namespace": "dapr-system",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "dapr-sidecar-injector-7ff46c9ff6",
+                        "uid": "3c6e3df4-c26b-4dd8-9677-e0601e70d5de"
+                    }
+                ],
+                "resourceVersion": "752",
+                "uid": "95123fcc-9e11-4f19-885b-e0f54f065e1a"
+            },
+            "spec": {
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "kubernetes.io/os",
+                                            "operator": "In",
+                                            "values": [
+                                                "linux"
+                                            ]
+                                        },
+                                        {
+                                            "key": "kubernetes.io/arch",
+                                            "operator": "In",
+                                            "values": [
+                                                "amd64"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "containers": [
+                    {
+                        "args": [
+                            "--log-level",
+                            "info",
+                            "--enable-metrics",
+                            "--metrics-port",
+                            "9090",
+                            "--healthz-port",
+                            "8080",
+                            "--scheduler-enabled=true"
+                        ],
+                        "command": [
+                            "/injector"
+                        ],
+                        "env": [
+                            {
+                                "name": "DAPR_TRUST_ANCHORS_FILE",
+                                "value": "/var/run/secrets/dapr.io/tls/ca.crt"
+                            },
+                            {
+                                "name": "DAPR_CONTROL_PLANE_TRUST_DOMAIN",
+                                "value": "cluster.local"
+                            },
+                            {
+                                "name": "DAPR_SENTRY_ADDRESS",
+                                "value": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                            },
+                            {
+                                "name": "KUBE_CLUSTER_DOMAIN",
+                                "value": "cluster.local"
+                            },
+                            {
+                                "name": "SIDECAR_IMAGE",
+                                "value": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+                            },
+                            {
+                                "name": "SIDECAR_IMAGE_PULL_POLICY",
+                                "value": "IfNotPresent"
+                            },
+                            {
+                                "name": "SIDECAR_RUN_AS_NON_ROOT",
+                                "value": "true"
+                            },
+                            {
+                                "name": "SIDECAR_RUN_AS_USER",
+                                "value": "1654"
+                            },
+                            {
+                                "name": "ENABLE_K8S_DOWNWARD_APIS",
+                                "value": "false"
+                            },
+                            {
+                                "name": "SIDECAR_DROP_ALL_CAPABILITIES",
+                                "value": "true"
+                            },
+                            {
+                                "name": "SIDECAR_READ_ONLY_ROOT_FILESYSTEM",
+                                "value": "true"
+                            },
+                            {
+                                "name": "NATIVE_SIDECAR_ENABLED",
+                                "value": "false"
+                            },
+                            {
+                                "name": "NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "IGNORE_ENTRYPOINT_TOLERATIONS",
+                                "value": "[{\\\"effect\\\":\\\"NoSchedule\\\",\\\"key\\\":\\\"alibabacloud.com/eci\\\"},{\\\"effect\\\":\\\"NoSchedule\\\",\\\"key\\\":\\\"azure.com/aci\\\"},{\\\"effect\\\":\\\"NoSchedule\\\",\\\"key\\\":\\\"aws\\\"},{\\\"effect\\\":\\\"NoSchedule\\\",\\\"key\\\":\\\"huawei.com/cci\\\"}]"
+                            },
+                            {
+                                "name": "ACTORS_ENABLED",
+                                "value": "true"
+                            },
+                            {
+                                "name": "ACTORS_SERVICE_NAME",
+                                "value": "placement"
+                            },
+                            {
+                                "name": "ACTORS_SERVICE_ADDRESS",
+                                "value": "dapr-placement-server:50005"
+                            }
+                        ],
+                        "image": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 180,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "dapr-sidecar-injector",
+                        "ports": [
+                            {
+                                "containerPort": 4000,
+                                "name": "https",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 9090,
+                                "name": "metrics",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 1,
+                            "periodSeconds": 1,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {},
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "runAsNonRoot": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-dkldl",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "h45-6b69db393df7-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "dapr-injector",
+                "serviceAccountName": "dapr-injector",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "dapr-trust-bundle"
+                        },
+                        "name": "dapr-trust-bundle"
+                    },
+                    {
+                        "name": "dapr-identity-token",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "audience": "spiffe://cluster.local/ns/dapr-system/dapr-sentry",
+                                        "expirationSeconds": 600,
+                                        "path": "token"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-dkldl",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:23Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:24Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:24Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-23T08:20:14Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "containerd://8deaa1da5e0fab1bd2c96b2a2776b139fa291d50397fab8111947e4a1cb108fa",
+                        "image": "sha256:09743365cf6e53a871e1147227804c0a34dd0e733cedd466fca37288a4baa6df",
+                        "imageID": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25",
+                        "lastState": {},
+                        "name": "dapr-sidecar-injector",
+                        "ready": true,
+                        "resources": {},
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-11-23T08:20:23Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 65532,
+                                "supplementalGroups": [
+                                    65532
+                                ],
+                                "uid": 65532
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/tls",
+                                "name": "dapr-trust-bundle",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/dapr.io/sentrytoken",
+                                "name": "dapr-identity-token",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-dkldl",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.21.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.21.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.7",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.7"
+                    }
+                ],
+                "qosClass": "BestEffort",
+                "startTime": "2026-11-23T08:20:14Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

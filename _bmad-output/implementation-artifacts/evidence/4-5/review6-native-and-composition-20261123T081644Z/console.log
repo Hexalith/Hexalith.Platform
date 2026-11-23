@@ -1,0 +1,112 @@
++ platform_source=/home/administrator/projects/hexalith/platform
++ evidence=/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/evidence/4-5/review6-native-and-composition-20261123T081644Z
++ workspace=/tmp/hexalith-job.RB9gser4/platform
++ approved_revision=759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform /tmp/hexalith-job.RB9gser4/platform
++ git -C /tmp/hexalith-job.RB9gser4/platform sparse-checkout set --no-cone '/*' '!/_bmad-output/' '!/references/'
++ git -C /tmp/hexalith-job.RB9gser4/platform checkout --quiet --detach 759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=EventStore
++ revision=a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ owner_path=/tmp/hexalith-job.RB9gser4/Hexalith.EventStore
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.EventStore /tmp/hexalith-job.RB9gser4/Hexalith.EventStore
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.RB9gser4/Hexalith.EventStore checkout --quiet --detach a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625
++ export HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.EventStore
++ HEXALITH_PLATFORM_HOSTED_EVENTSTORE_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.EventStore
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Tenants
++ revision=b7824e4bba174b3a459364af24c99dedaf8f0738
++ owner_path=/tmp/hexalith-job.RB9gser4/Hexalith.Tenants
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Tenants /tmp/hexalith-job.RB9gser4/Hexalith.Tenants
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.RB9gser4/Hexalith.Tenants checkout --quiet --detach b7824e4bba174b3a459364af24c99dedaf8f0738
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Tenants
++ HEXALITH_PLATFORM_HOSTED_TENANTS_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Tenants
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Memories
++ revision=8aee7a1323160cb39d7b1415256dbfdcb032939a
++ owner_path=/tmp/hexalith-job.RB9gser4/Hexalith.Memories
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Memories /tmp/hexalith-job.RB9gser4/Hexalith.Memories
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.RB9gser4/Hexalith.Memories checkout --quiet --detach 8aee7a1323160cb39d7b1415256dbfdcb032939a
++ export HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Memories
++ HEXALITH_PLATFORM_HOSTED_MEMORIES_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Memories
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Parties
++ revision=1d3576084ced39ec5104dac409becdbdd1c8635f
++ owner_path=/tmp/hexalith-job.RB9gser4/Hexalith.Parties
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Parties /tmp/hexalith-job.RB9gser4/Hexalith.Parties
+warning: unable to find all commit-graph files
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.RB9gser4/Hexalith.Parties checkout --quiet --detach 1d3576084ced39ec5104dac409becdbdd1c8635f
+warning: unable to find all commit-graph files
++ export HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Parties
++ HEXALITH_PLATFORM_HOSTED_PARTIES_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Parties
++ for pair in EventStore:a3dbec2f8b6150a3ee33dcbfc2b6bf2fec274625 Tenants:b7824e4bba174b3a459364af24c99dedaf8f0738 Memories:8aee7a1323160cb39d7b1415256dbfdcb032939a Parties:1d3576084ced39ec5104dac409becdbdd1c8635f Builds:13f503caecba9f449d84a8e005258626a64edd06
++ owner=Builds
++ revision=13f503caecba9f449d84a8e005258626a64edd06
++ owner_path=/tmp/hexalith-job.RB9gser4/Hexalith.Builds
++ git clone --quiet --shared --no-checkout /home/administrator/projects/hexalith/platform/references/Hexalith.Builds /tmp/hexalith-job.RB9gser4/Hexalith.Builds
++ printf '%s\n' 'module/hexalith.module-manifest.v2.json text eol=lf'
++ git -C /tmp/hexalith-job.RB9gser4/Hexalith.Builds checkout --quiet --detach 13f503caecba9f449d84a8e005258626a64edd06
++ export HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Builds
++ HEXALITH_PLATFORM_HOSTED_BUILDS_ROOT=/tmp/hexalith-job.RB9gser4/Hexalith.Builds
++ for file in src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
++ cp /home/administrator/projects/hexalith/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs /tmp/hexalith-job.RB9gser4/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs
++ sha256sum /tmp/hexalith-job.RB9gser4/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs
+fc2359b6dcaa1c4b24359244761aae613b6a926186192cec943c2cf24f89c42c  /tmp/hexalith-job.RB9gser4/platform/src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs
++ for file in src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
++ cp /home/administrator/projects/hexalith/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
++ sha256sum /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
+1704e73a21fa515117aab56f6f49f3bd11aa8683be49fd4931ae31d3797dbb0f  /tmp/hexalith-job.RB9gser4/platform/tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
++ mkdir /tmp/hexalith-job.RB9gser4/aspire-cli /tmp/hexalith-job.RB9gser4/xdg-data
++ export ASPIRE_HOME=/tmp/hexalith-job.RB9gser4/aspire-home XDG_DATA_HOME=/tmp/hexalith-job.RB9gser4/xdg-data KUBECONFIG=/tmp/hexalith-job.RB9gser4/never-use-ambient-kubeconfig
++ ASPIRE_HOME=/tmp/hexalith-job.RB9gser4/aspire-home
++ XDG_DATA_HOME=/tmp/hexalith-job.RB9gser4/xdg-data
++ KUBECONFIG=/tmp/hexalith-job.RB9gser4/never-use-ambient-kubeconfig
++ export MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ MSBUILDDISABLENODEREUSE=1
++ DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER=1
++ curl -fsSL --max-time 90 -o /tmp/hexalith-job.RB9gser4/aspire.tar.gz https://github.com/microsoft/aspire/releases/download/v13.6.4/aspire-cli-linux-x64-13.6.4.tar.gz
++ printf '4d875fa954dc4385b2ef08c03fd9c3546819fda9b669d43bd96fa3354487cfb3  %s\n' /tmp/hexalith-job.RB9gser4/aspire.tar.gz
++ sha256sum -c -
+/tmp/hexalith-job.RB9gser4/aspire.tar.gz: OK
++ tar -xzf /tmp/hexalith-job.RB9gser4/aspire.tar.gz -C /tmp/hexalith-job.RB9gser4/aspire-cli
++ aspire_cli=/tmp/hexalith-job.RB9gser4/aspire-cli/aspire
++ /tmp/hexalith-job.RB9gser4/aspire-cli/aspire --version
+13.6.4+c89352703f78ae46de90fbf751ed8b52b77b89bf
++ curl -fsSL --max-time 90 -o /tmp/hexalith-job.RB9gser4/helm.tar.gz https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz
++ printf '97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096  %s\n' /tmp/hexalith-job.RB9gser4/helm.tar.gz
++ sha256sum -c -
+/tmp/hexalith-job.RB9gser4/helm.tar.gz: OK
++ tar -xzf /tmp/hexalith-job.RB9gser4/helm.tar.gz -C /tmp/hexalith-job.RB9gser4 linux-amd64/helm
++ /tmp/hexalith-job.RB9gser4/linux-amd64/helm version --short
+v4.2.0+g0646808
++ cd /tmp/hexalith-job.RB9gser4/platform
++ git rev-parse HEAD
+759bb89753de7e70cb0b0db61c7142e96ec5bac0
++ git status --short
+ M src/Hexalith.Platform.Composition/PlatformHostedPublishing.cs
+ M tests/Hexalith.Platform.Composition.Tests/PlatformHostedPublishingTests.cs
++ dotnet --version
+10.0.404
++ test_project=tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj
++ build_args=(-p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false)
++ test_exit=0
++ timeout 180s dotnet build tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false -p:WarningsNotAsErrors=NU1903
++ [[ 0 -eq 0 ]]
++ timeout 150s dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-build -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false -- --filter-class Hexalith.Platform.Composition.Tests.PlatformHostedPublishingTests
++ test_exit=2
++ timeout 150s dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-build -p:UseHexalithProjectReferences=false -p:UseNuGetDeps=true -p:RunAnalyzers=false -- --filter-class 'Hexalith.Platform.Composition.Tests.PlatformAppModelTests|Hexalith.Platform.Composition.Tests.PlatformDaprBindingsTests|Hexalith.Platform.Composition.Tests.PlatformOrdinaryDeclarationCompatibilityTests'
++ test_exit=8
++ probe_exit=0
++ timeout 240s env UseHexalithProjectReferences=false UseNuGetDeps=true RunAnalyzers=false WarningsNotAsErrors=NU1903 Platform__Hosted__Enabled=true Platform__Hosted__GraphPath=/tmp/hexalith-job.RB9gser4/graph.json Platform__Hosted__SourceRoots__EventStore=/tmp/hexalith-job.RB9gser4/Hexalith.EventStore Platform__Hosted__SourceRoots__Tenants=/tmp/hexalith-job.RB9gser4/Hexalith.Tenants Platform__Hosted__SourceRoots__Memories=/tmp/hexalith-job.RB9gser4/Hexalith.Memories Platform__Hosted__SourceRoots__Parties=/tmp/hexalith-job.RB9gser4/Hexalith.Parties /tmp/hexalith-job.RB9gser4/aspire-cli/aspire publish --apphost /tmp/hexalith-job.RB9gser4/platform/apphost.cs --output-path /tmp/hexalith-job.RB9gser4/native-output --non-interactive --include-exception-details
++ probe_exit=6
++ [[ 6 -eq 0 ]]
++ printf 'dotnet status %s\naspire publish status %s\n' 8 6
+dotnet status 8
+aspire publish status 6
++ [[ 8 -eq 0 ]]

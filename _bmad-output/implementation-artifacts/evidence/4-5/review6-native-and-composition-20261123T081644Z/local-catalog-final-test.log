@@ -1,0 +1,20 @@
+Running tests from /tmp/hexalith-job.ncDrPD8q/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+failed Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts (1s 451ms)
+  from /tmp/hexalith-job.ncDrPD8q/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64)
+  Xunit.MicrosoftTestingPlatform.XunitException: System.IO.InvalidDataException : Mapped routing catalog owner build failed; see /tmp/hexalith-job.ncDrPD8q/hexalith-platform/25a40b06e533478b9eb82593a44767c2/catalog-reader/build.log.
+    at Hexalith.Platform.Composition.PlatformRoutingCatalog.Generate(PlatformCompositionOptions options, IReadOnlyList`1 servers, String workspace) in /tmp/hexalith-job.ncDrPD8q/platform/src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs:59
+    at Hexalith.Platform.Composition.PlatformRoutingCatalogBootstrap.Create(PlatformCompositionOptions options, IReadOnlyList`1 servers, PlatformDaprBindings dapr, String rendered) in /tmp/hexalith-job.ncDrPD8q/platform/src/Hexalith.Platform.Composition/PlatformRoutingCatalogBootstrap.cs:154
+    at Hexalith.Platform.Composition.PlatformAppModel.Compose(IDistributedApplicationBuilder builder, PlatformCompositionOptions options) in /tmp/hexalith-job.ncDrPD8q/platform/src/Hexalith.Platform.Composition/PlatformAppModel.cs:167
+    at Hexalith.Platform.Composition.Tests.PlatformAppModelTests.GraphHasSevenDeclaredServersAndNoOptionalOrLegacyHosts() in /tmp/hexalith-job.ncDrPD8q/platform/tests/Hexalith.Platform.Composition.Tests/PlatformAppModelTests.cs:139
+    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+/tmp/hexalith-job.ncDrPD8q/platform/tests/Hexalith.Platform.Composition.Tests/bin/Release/net10.0/Hexalith.Platform.Composition.Tests.dll (net10.0|x64) failed with 1 error(s) (1s 950ms)
+Exit code: 2
+
+Test run summary: Failed!
+  total: 1
+  failed: 1
+  succeeded: 0
+  skipped: 0
+  duration: 2s 099ms
+Test run completed with non-success exit code: 2 (see: https://aka.ms/testingplatform/exitcodes)

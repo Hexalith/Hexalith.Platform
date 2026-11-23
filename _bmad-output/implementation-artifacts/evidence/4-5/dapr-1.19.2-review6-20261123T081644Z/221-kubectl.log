@@ -1,0 +1,28 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "fixture": "environment-owned"
+    },
+    "kind": "ConfigMap",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T08:22:13Z",
+        "managedFields": [
+            {
+                "apiVersion": "v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:data": {
+                        "f:fixture": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T08:22:13Z"
+            }
+        ],
+        "name": "fixture-components",
+        "namespace": "reference",
+        "resourceVersion": "1128",
+        "uid": "22b44ed3-43e7-4aa6-962b-d94e852f5783"
+    }
+}

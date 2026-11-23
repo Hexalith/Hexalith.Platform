@@ -74,12 +74,40 @@ class Qualification:
             os.close(self._evidence_lock)
             self._evidence_lock = None
 
+    def _prior_command_logs(self):
+        record_path = self.evidence / 'qualification.json'
+        if record_path.is_symlink():
+            return set()
+        try:
+            record = json.loads(record_path.read_text())
+        except FileNotFoundError:
+            # An interrupted legacy run may have written logs without a final record.
+            tool_log = r'[0-9]{3,}-(aspire|curl|docker|dotnet|git|helm|kind|kubectl|python(?:3(?:[.][0-9]+)?)?|skopeo)[.]log'
+            return {path.name for path in self.evidence.iterdir()
+                    if re.fullmatch(tool_log, path.name) and not path.is_symlink() and path.is_file()}
+        except (OSError, ValueError):
+            return set()
+        if (not isinstance(record, dict) or record.get('schema') != 'hexalith.helm-qualification.v1'
+                or not isinstance(record.get('finished'), str) or not isinstance(record.get('commands'), list)):
+            return set()
+        logs = set()
+        for index, command in enumerate(record['commands']):
+            args = command.get('argv') if isinstance(command, dict) else None
+            if not isinstance(args, list) or not args or not isinstance(args[0], str):
+                continue
+            log = self.evidence / f'{index:03d}-{Path(args[0]).name}.log'
+            if (command.get('log') == log.name and not log.is_symlink() and log.is_file()
+                    and command.get('logSha256') == sha(log)):
+                logs.add(log.name)
+        return logs
+
     def _initialize(self):
         # The directory lock is held before discarding the previous invocation.
         names = ('qualification.json', 'normal.yaml', 'fixture-values.json',
                  'native-output', 'native-rendered.yaml', 'environment-components.json')
+        command_logs = self._prior_command_logs()
         for path in self.evidence.iterdir():
-            if (path.name in names or re.fullmatch(r'[0-9]+-.*[.]log', path.name)
+            if (path.name in names or path.name in command_logs
                     or re.fullmatch(r'admitted-.*[.]json', path.name)
                     or re.fullmatch(r'resolved-.*-project[.]assets[.]json', path.name)
                     or re.fullmatch(r'hexalith-reference-.*[.]tgz', path.name)):
@@ -326,7 +354,7 @@ class Qualification:
                 project = pending.pop().resolve()
                 if project in seen or not project.is_file():
                     continue
-                seen.add(project); inputs.add(project)
+                seen.add(project)
                 prefix = ['dotnet', 'msbuild', project]
                 evaluated = json.loads(self.run(prefix + ['-getItem:Compile,EmbeddedResource,AdditionalFiles,Content,None,ProjectReference',
                                                           '-getProperty:ProjectAssetsFile'], timeout=30).stdout)
@@ -336,22 +364,20 @@ class Qualification:
                     for item in items:
                         path = Path(item.get('FullPath') or project.parent / item['Identity']).resolve()
                         if kind == 'ProjectReference': pending.append(path)
-                        elif not (path.is_relative_to(project.parent) and
-                                  any(part in ('bin', 'obj') for part in path.relative_to(project.parent).parts)):
+                        else:
                             inputs.add(path)
                 # MSBuildAllProjects omits modern SDK imports; preprocessing lists resolved imports.
                 expanded = self.temp / ('imports-' + hashlib.sha256(str(project).encode()).hexdigest()[:16] + '.xml')
                 self.run(prefix + ['-preprocess:' + str(expanded)], timeout=30)
                 for line in expanded.read_text(encoding='utf-8-sig').splitlines():
                     path = Path(line.strip())
-                    if (path.is_absolute() and path.suffix in ('.props', '.targets', '.proj', '.csproj') and path.is_file()
-                            and not (path.is_relative_to(project.parent) and
-                                     any(part in ('bin', 'obj') for part in path.relative_to(project.parent).parts))):
+                    if path.is_absolute() and path.suffix in ('.props', '.targets', '.proj', '.csproj') and path.is_file():
                         inputs.add(path)
         finally:
             self.env = environment
-        # Generated build outputs are derived from the recorded project/import inputs.
-        return inputs
+        # A project can include another project's generated outputs as items.
+        output_roots = {project.parent / name for project in seen for name in ('bin', 'obj')}
+        return seen | {path for path in inputs if output_roots.isdisjoint(path.parents)}
 
     def source_inventory(self):
         paths = list(CHART.rglob('*')) + list((ROOT / 'src/Hexalith.Platform.Composition').glob('*.cs'))

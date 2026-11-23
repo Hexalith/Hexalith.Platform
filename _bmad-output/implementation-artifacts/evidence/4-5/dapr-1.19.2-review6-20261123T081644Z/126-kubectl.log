@@ -1,0 +1,51 @@
+{
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T08:22:21Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "dapr.io/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:scopes": {},
+                    "f:spec": {
+                        "f:metadata": {},
+                        "f:type": {},
+                        "f:version": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T08:22:21Z"
+            }
+        ],
+        "name": "access-telemetry-secrets",
+        "namespace": "reference",
+        "resourceVersion": "1169",
+        "uid": "db7c7b90-451f-465f-a348-23ddef41f567"
+    },
+    "scopes": [
+        "memories",
+        "memories-access-telemetry",
+        "memories-access-telemetry-clock"
+    ],
+    "spec": {
+        "metadata": [
+            {
+                "name": "vaultAddr",
+                "value": "https://identity.fixture.invalid/realm"
+            },
+            {
+                "name": "vaultToken",
+                "secretKeyRef": {
+                    "key": "token",
+                    "name": "fixture-credential"
+                }
+            }
+        ],
+        "type": "secretstores.hashicorp.vault",
+        "version": "v1"
+    }
+}

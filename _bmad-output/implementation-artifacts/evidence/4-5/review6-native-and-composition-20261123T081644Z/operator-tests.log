@@ -1,0 +1,1426 @@
+/tmp/hexalith-job.XF5SsRAi/helm.tar.gz: OK
+test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) ... 
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='empty') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='cluster') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='namespace') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='label') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='duplicate') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='owner') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='finalizer') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='public-service') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='storage-bound') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='no-storage') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='no-component-files') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='replicas') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-network') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-pid') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-mount') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='data-image') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='data-resources') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='privileged') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='literal-env') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-name') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-keys') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-key') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-missing') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-relative') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-public') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-password') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-SigningKey') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-PrivateKey') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-token') ... FAIL
+  test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-credential') ... FAIL
+test_external_tool_failures_and_seed_runtime_guards (test_guard_matrix.GuardMatrixTests.test_external_tool_failures_and_seed_runtime_guards) ... ok
+test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) ... 
+  test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='graph') ... FAIL
+  test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='missing-workload') ... FAIL
+  test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='duplicate-workload') ... FAIL
+test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) ... 
+  test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='wrong-helm') ... FAIL
+  test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='wrong-image-digest') ... FAIL
+  test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='unresolved-secret') ... FAIL
+  test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='source-changed') ... FAIL
+  test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='inventory-conflict') ... FAIL
+test_malformed_owner_seed_requests_refuse_without_network_or_journal (test_guard_matrix.GuardMatrixTests.test_malformed_owner_seed_requests_refuse_without_network_or_journal) ... ok
+test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) ... 
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='missing') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='relative') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='directory') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='symlink') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='public') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='inside-root') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='missing') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='relative') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='directory') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='symlink') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='public') ... FAIL
+  test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='inside-root') ... FAIL
+test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) ... FAIL
+test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) ... 
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='target-fields') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='context') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='api') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='namespace') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='release') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-low') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-high') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-boolean') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='expired') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='too-far') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='no-timezone') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='tenant') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='subject') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='role') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='permissions') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='domains') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='prerequisites') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='missing-binding') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='placeholder-binding') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='images') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='bindings') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='tag-image') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='fake-image') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='mode') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='replicas') ... FAIL
+  test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='capacity') ... FAIL
+test_representative_cli_refusals_preserve_exact_channels_and_do_no_work (test_guard_matrix.GuardMatrixTests.test_representative_cli_refusals_preserve_exact_channels_and_do_no_work) ... 
+  test_representative_cli_refusals_preserve_exact_channels_and_do_no_work (test_guard_matrix.GuardMatrixTests.test_representative_cli_refusals_preserve_exact_channels_and_do_no_work) (case='configmap-credential') ... FAIL
+test_review_hash_scope_expiry_and_plan_changes_refuse_before_network (test_guard_matrix.GuardMatrixTests.test_review_hash_scope_expiry_and_plan_changes_refuse_before_network) ... ok
+test_seed_private_input_modes_symlinks_and_paths (test_guard_matrix.GuardMatrixTests.test_seed_private_input_modes_symlinks_and_paths) ... ok
+test_valid_control_reaches_review_without_real_external_calls (test_guard_matrix.GuardMatrixTests.test_valid_control_reaches_review_without_real_external_calls) ... ERROR
+test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) ... 
+  test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... ERROR
+  test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... ERROR
+test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) ... 
+  test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... ERROR
+  test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... ERROR
+test_environment_rejects_external_and_cluster_resources (test_prepare.PreparationTests.test_environment_rejects_external_and_cluster_resources) ... ok
+test_missing_and_conflicting_source_bindings_refused (test_prepare.PreparationTests.test_missing_and_conflicting_source_bindings_refused) ... ok
+test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) ... 
+  test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props') ... ERROR
+  test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets') ... ERROR
+test_mutating_subprocesses_refused_before_execution (test_prepare.PreparationTests.test_mutating_subprocesses_refused_before_execution) ... ok
+test_seed_external_write_refused_before_network (test_prepare.PreparationTests.test_seed_external_write_refused_before_network) ... ok
+test_task_chart_keeps_generic_templates_and_complete_closure (test_prepare.PreparationTests.test_task_chart_keeps_generic_templates_and_complete_closure) ... FAIL
+test_uncertain_seed_journal_refuses_reexecution_before_network (test_prepare.PreparationTests.test_uncertain_seed_journal_refuses_reexecution_before_network) ... ok
+test_unfilled_template_refuses_before_any_external_tool_or_output (test_prepare.PreparationTests.test_unfilled_template_refuses_before_any_external_tool_or_output) ... ok
+test_complete_synthetic_packet_renders_eight_workloads_and_no_public_route (test_render.RenderTests.test_complete_synthetic_packet_renders_eight_workloads_and_no_public_route) ... ERROR
+test_changed_private_plan_is_refused_before_any_network (test_seed.SeedTests.test_changed_private_plan_is_refused_before_any_network) ... ok
+test_pending_observations_stop_at_deadline (test_seed.SeedTests.test_pending_observations_stop_at_deadline) ... ok
+test_real_wire_shapes_validate_and_delayed_observation_never_repeats_writes (test_seed.SeedTests.test_real_wire_shapes_validate_and_delayed_observation_never_repeats_writes) ... ok
+test_terminal_failure_stops_without_next_write (test_seed.SeedTests.test_terminal_failure_stops_without_next_write) ... ok
+test_wrapper_document_shape_and_unversioned_memories_routes_are_refused (test_seed.SeedTests.test_wrapper_document_shape_and_unversioned_memories_routes_are_refused) ... ok
+
+======================================================================
+ERROR: test_valid_control_reaches_review_without_real_external_calls (test_guard_matrix.GuardMatrixTests.test_valid_control_reaches_review_without_real_external_calls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 35, in test_valid_control_reaches_review_without_real_external_calls
+    result = self.run_prepare(c)
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 29, in run_prepare
+    return prepare.prepare(control.profile_path, control.graph, control.output, 'helm', 'skopeo', root=control.root)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 166, in prepare
+    graph = validate_profile(profile, root, canonical_graph)
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_added_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_added_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_deleted_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_deleted_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='eng/SourceRestore.props')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_modified_imported_source_restore_and_targets_refuse (test_prepare.PreparationTests.test_modified_imported_source_restore_and_targets_refuse) (input='Directory.Build.targets')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 76, in imported_build_input_change_refuses
+    prepare.validate_profile(control.profile, control.root, control.graph)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+ERROR: test_complete_synthetic_packet_renders_eight_workloads_and_no_public_route (test_render.RenderTests.test_complete_synthetic_packet_renders_eight_workloads_and_no_public_route)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_render.py", line 58, in test_complete_synthetic_packet_renders_eight_workloads_and_no_public_route
+    packet = prepare.prepare(path, prepare.HERE / 'chart/reference-graph.json', output, helm, 'skopeo')
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 166, in prepare
+    graph = validate_profile(profile, root, canonical_graph)
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 79, in validate_profile
+    require(sha(original) == sha(root / 'eng/mcpcli-operator-setup/chart' / original.relative_to(root / 'eng/helm-qualification/chart')),
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            'task-chart-template-drift')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/prepare.py", line 32, in require
+    raise ValueError(code)
+ValueError: task-chart-template-drift
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'task-environment-manifests-required' != 'task-chart-template-drift'
+- task-environment-manifests-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='cluster')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'external-or-cluster-resource-refused' != 'task-chart-template-drift'
+- external-or-cluster-resource-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='namespace')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'external-or-cluster-resource-refused' != 'task-chart-template-drift'
+- external-or-cluster-resource-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='label')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'duplicate-or-unowned-environment-resource' != 'task-chart-template-drift'
+- duplicate-or-unowned-environment-resource
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='duplicate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'duplicate-or-unowned-environment-resource' != 'task-chart-template-drift'
+- duplicate-or-unowned-environment-resource
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='owner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'external-resource-owner-refused' != 'task-chart-template-drift'
+- external-resource-owner-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='finalizer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'external-resource-owner-refused' != 'task-chart-template-drift'
+- external-resource-owner-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='public-service')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'public-service-refused' != 'task-chart-template-drift'
+- public-service-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='storage-bound')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'bounded-storage-required' != 'task-chart-template-drift'
+- bounded-storage-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='no-storage')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'task-owned-persistent-storage-required' != 'task-chart-template-drift'
+- task-owned-persistent-storage-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='no-component-files')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'component-file-configmap-required' != 'task-chart-template-drift'
+- component-file-configmap-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='replicas')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unsafe-data-workload' != 'task-chart-template-drift'
+- unsafe-data-workload
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unsafe-data-workload' != 'task-chart-template-drift'
+- unsafe-data-workload
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-pid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unsafe-data-workload' != 'task-chart-template-drift'
+- unsafe-data-workload
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='host-mount')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'host-mount-refused' != 'task-chart-template-drift'
+- host-mount-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='data-image')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'data-image-digest-required' != 'task-chart-template-drift'
+- data-image-digest-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='data-resources')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'bounded-data-resources-required' != 'task-chart-template-drift'
+- bounded-data-resources-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='privileged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'privileged-workload-refused' != 'task-chart-template-drift'
+- privileged-workload-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='literal-env')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'literal-environment-credential-refused' != 'task-chart-template-drift'
+- literal-environment-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-reference-invalid' != 'task-chart-template-drift'
+- private-secret-reference-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-keys')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-reference-invalid' != 'task-chart-template-drift'
+- private-secret-reference-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-file-unavailable-or-public' != 'task-chart-template-drift'
+- private-secret-file-unavailable-or-public
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-file-unavailable-or-public' != 'task-chart-template-drift'
+- private-secret-file-unavailable-or-public
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-relative')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-file-unavailable-or-public' != 'task-chart-template-drift'
+- private-secret-file-unavailable-or-public
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='secret-public')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-secret-file-unavailable-or-public' != 'task-chart-template-drift'
+- private-secret-file-unavailable-or-public
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-password')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'configmap-credential-refused' != 'task-chart-template-drift'
+- configmap-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-SigningKey')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'configmap-credential-refused' != 'task-chart-template-drift'
+- configmap-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-PrivateKey')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'configmap-credential-refused' != 'task-chart-template-drift'
+- configmap-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-token')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'configmap-credential-refused' != 'task-chart-template-drift'
+- configmap-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_environment_and_secret_boundaries_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_environment_and_secret_boundaries_refuse_before_tools_or_output) (case='configmap-credential')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 158, in test_environment_and_secret_boundaries_refuse_before_tools_or_output
+    mutate(c);self.assert_refusal(code,lambda:self.run_prepare(c))
+              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'configmap-credential-refused' != 'task-chart-template-drift'
+- configmap-credential-refused
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='graph')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 101, in test_graph_parity_and_closure_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'canonical-chart-graph-mismatch' != 'task-chart-template-drift'
+- canonical-chart-graph-mismatch
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='missing-workload')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 101, in test_graph_parity_and_closure_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'complete-eight-workload-closure-required' != 'task-chart-template-drift'
+- complete-eight-workload-closure-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_graph_parity_and_closure_refusals (test_guard_matrix.GuardMatrixTests.test_graph_parity_and_closure_refusals) (case='duplicate-workload')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 101, in test_graph_parity_and_closure_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'complete-eight-workload-closure-required' != 'task-chart-template-drift'
+- complete-eight-workload-closure-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='wrong-helm')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 181, in test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls
+    self.assert_refusal(expected,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pinned-helm-4.2.0-required' != 'task-chart-template-drift'
+- pinned-helm-4.2.0-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='wrong-image-digest')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 181, in test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls
+    self.assert_refusal(expected,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'registry-manifest-digest-mismatch' != 'task-chart-template-drift'
+- registry-manifest-digest-mismatch
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='unresolved-secret')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 181, in test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls
+    self.assert_refusal(expected,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unresolved-private-secret-reference:task-channel' != 'task-chart-template-drift'
+- unresolved-private-secret-reference:task-channel
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='source-changed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 181, in test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls
+    self.assert_refusal(expected,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'source-changed-during-preparation' != 'task-chart-template-drift'
+- source-changed-during-preparation
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls (test_guard_matrix.GuardMatrixTests.test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls) (case='inventory-conflict')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 181, in test_late_preparation_refusals_emit_no_success_receipt_and_no_external_calls
+    self.assert_refusal(expected,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'resource-identity-conflict' != 'task-chart-template-drift'
+- resource-identity-conflict
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:registryAuthFile' != 'task-chart-template-drift'
+- private-file-unavailable:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='relative')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:registryAuthFile' != 'task-chart-template-drift'
+- private-file-unavailable:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='directory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:registryAuthFile' != 'task-chart-template-drift'
+- private-file-unavailable:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='symlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:registryAuthFile' != 'task-chart-template-drift'
+- private-file-unavailable:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='public')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-location-or-mode-invalid:registryAuthFile' != 'task-chart-template-drift'
+- private-file-location-or-mode-invalid:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='registryAuthFile', kind='inside-root')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-location-or-mode-invalid:registryAuthFile' != 'task-chart-template-drift'
+- private-file-location-or-mode-invalid:registryAuthFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:privateSeedFile' != 'task-chart-template-drift'
+- private-file-unavailable:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='relative')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:privateSeedFile' != 'task-chart-template-drift'
+- private-file-unavailable:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='directory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:privateSeedFile' != 'task-chart-template-drift'
+- private-file-unavailable:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='symlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-unavailable:privateSeedFile' != 'task-chart-template-drift'
+- private-file-unavailable:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='public')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-location-or-mode-invalid:privateSeedFile' != 'task-chart-template-drift'
+- private-file-location-or-mode-invalid:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output) (field='privateSeedFile', kind='inside-root')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 119, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-file-location-or-mode-invalid:privateSeedFile' != 'task-chart-template-drift'
+- private-file-location-or-mode-invalid:privateSeedFile
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_private_file_constraints_refuse_before_tools_or_output (test_guard_matrix.GuardMatrixTests.test_private_file_constraints_refuse_before_tools_or_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 123, in test_private_file_constraints_refuse_before_tools_or_output
+    self.assert_refusal('private-authorities-must-be-separated',lambda:self.run_prepare(c));runner.assert_not_called()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-authorities-must-be-separated' != 'task-chart-template-drift'
+- private-authorities-must-be-separated
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='target-fields')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'target-fields-invalid' != 'task-chart-template-drift'
+- target-fields-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='context')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unapproved-target' != 'task-chart-template-drift'
+- unapproved-target
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='api')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unapproved-target' != 'task-chart-template-drift'
+- unapproved-target
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='namespace')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'task-identity-required' != 'task-chart-template-drift'
+- task-identity-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='release')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'task-identity-required' != 'task-chart-template-drift'
+- task-identity-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-low')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-port-invalid' != 'task-chart-template-drift'
+- private-port-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-high')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-port-invalid' != 'task-chart-template-drift'
+- private-port-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='port-boolean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'private-port-invalid' != 'task-chart-template-drift'
+- private-port-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='expired')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'expiry-must-be-within-24-hours' != 'task-chart-template-drift'
+- expiry-must-be-within-24-hours
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='too-far')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'expiry-must-be-within-24-hours' != 'task-chart-template-drift'
+- expiry-must-be-within-24-hours
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='no-timezone')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'expiry-must-be-within-24-hours' != 'task-chart-template-drift'
+- expiry-must-be-within-24-hours
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='tenant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'task-tenant-required' != 'task-chart-template-drift'
+- task-tenant-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='subject')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'scoped-writer-role-required' != 'task-chart-template-drift'
+- scoped-writer-role-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='role')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'scoped-writer-role-required' != 'task-chart-template-drift'
+- scoped-writer-role-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='permissions')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'operator-scope-invalid' != 'task-chart-template-drift'
+- operator-scope-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='domains')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'operator-scope-invalid' != 'task-chart-template-drift'
+- operator-scope-invalid
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='prerequisites')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'prerequisites-required' != 'task-chart-template-drift'
+- prerequisites-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='missing-binding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'prerequisite-bindings-required' != 'task-chart-template-drift'
+- prerequisite-bindings-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='placeholder-binding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'prerequisite-bindings-required' != 'task-chart-template-drift'
+- prerequisite-bindings-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='images')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'complete-image-and-input-bindings-required' != 'task-chart-template-drift'
+- complete-image-and-input-bindings-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='bindings')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'complete-image-and-input-bindings-required' != 'task-chart-template-drift'
+- complete-image-and-input-bindings-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='tag-image')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'real-immutable-image-required' != 'task-chart-template-drift'
+- real-immutable-image-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='fake-image')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'real-immutable-image-required' != 'task-chart-template-drift'
+- real-immutable-image-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'single-replica-normal-mode-required' != 'task-chart-template-drift'
+- single-replica-normal-mode-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='replicas')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'single-replica-normal-mode-required' != 'task-chart-template-drift'
+- single-replica-normal-mode-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_profile_field_source_target_expiry_and_scope_refusals (test_guard_matrix.GuardMatrixTests.test_profile_field_source_target_expiry_and_scope_refusals) (case='capacity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 81, in test_profile_field_source_target_expiry_and_scope_refusals
+    self.assert_refusal(code,lambda:self.run_prepare(c))
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 25, in assert_refusal
+    self.assertEqual(code, str(caught.exception))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'single-replica-normal-mode-required' != 'task-chart-template-drift'
+- single-replica-normal-mode-required
++ task-chart-template-drift
+
+
+======================================================================
+FAIL: test_representative_cli_refusals_preserve_exact_channels_and_do_no_work (test_guard_matrix.GuardMatrixTests.test_representative_cli_refusals_preserve_exact_channels_and_do_no_work) (case='configmap-credential')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_guard_matrix.py", line 304, in test_representative_cli_refusals_preserve_exact_channels_and_do_no_work
+    self.assertEqual(1,result);self.assertEqual('',stdout.getvalue());self.assertEqual(expected,stderr.getvalue())
+                                                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Preparation refused: configmap-credential-refused\n' != 'Preparation refused: task-chart-template-drift\n'
+- Preparation refused: configmap-credential-refused
++ Preparation refused: task-chart-template-drift
+
+
+======================================================================
+FAIL: test_task_chart_keeps_generic_templates_and_complete_closure (test_prepare.PreparationTests.test_task_chart_keeps_generic_templates_and_complete_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/administrator/projects/hexalith/platform/eng/mcpcli-operator-setup/test_prepare.py", line 24, in test_task_chart_keeps_generic_templates_and_complete_closure
+    self.assertEqual(original.read_bytes(), (prepare.HERE / 'chart' / original.relative_to(chart)).read_bytes())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'mod[151 chars]alues and endpoint parameters.\n# Existing Con[551 chars]{}\n' != b'mod[151 chars]alues, endpoint parameters, or existing Config[398 chars]{}\n'
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.825s
+
+FAILED (failures=79, errors=8)

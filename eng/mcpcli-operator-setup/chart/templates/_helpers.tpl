@@ -221,7 +221,7 @@ dapr.io/sidecar-memory-limit: "128Mi"
 {{- include "reference.secretRef" $value.secretKeyRef | trunc 0 -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "valueFrom" (dict "secretKeyRef" $value.secretKeyRef)) "environment" .environment "seen" .seen) -}}
 {{- else -}}
-{{- if or (hasPrefix "connectionstrings__" (lower $key)) (hasSuffix "endpoint" (lower $key)) (regexMatch "__(authority|issuer)$" (lower $key)) -}}{{ fail "ConnectionStrings and endpoint leaves cannot use configMapKeyRef; use endpoint parameters or ConnectionStrings secretKeyRef" }}{{- end -}}
+{{- if or (hasPrefix "connectionstrings__" (lower $key)) (regexMatch "(endpoint|url|uri|address|__authority|__issuer)$" (lower $key)) -}}{{ fail "ConnectionStrings and endpoint leaves cannot use configMapKeyRef; use endpoint parameters or ConnectionStrings secretKeyRef" }}{{- end -}}
 {{- include "reference.secretRef" $value.configMapKeyRef | trunc 0 -}}
 {{- include "reference.put" (dict "key" $key "entry" (dict "valueFrom" (dict "configMapKeyRef" $value.configMapKeyRef)) "environment" .environment "seen" .seen) -}}
 {{- end -}}

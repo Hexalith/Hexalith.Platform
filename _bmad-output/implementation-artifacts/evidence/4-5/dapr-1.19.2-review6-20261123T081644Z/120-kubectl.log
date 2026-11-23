@@ -1,0 +1,56 @@
+{
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T08:22:21Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "dapr.io/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:scopes": {},
+                    "f:spec": {
+                        "f:metadata": {},
+                        "f:type": {},
+                        "f:version": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T08:22:21Z"
+            }
+        ],
+        "name": "pubsub",
+        "namespace": "reference",
+        "resourceVersion": "1173",
+        "uid": "54692640-d9f0-47d1-86d9-436f1a14a813"
+    },
+    "scopes": [
+        "eventstore",
+        "memories",
+        "parties",
+        "tenants"
+    ],
+    "spec": {
+        "metadata": [
+            {
+                "name": "redisHost",
+                "value": "fixture-data.environment.svc.cluster.local:6380"
+            },
+            {
+                "name": "redisPassword",
+                "secretKeyRef": {
+                    "key": "token",
+                    "name": "fixture-credential"
+                }
+            },
+            {
+                "name": "enableTLS",
+                "value": "true"
+            }
+        ],
+        "type": "pubsub.redis",
+        "version": "v1"
+    }
+}

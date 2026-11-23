@@ -2238,3 +2238,21 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 ## Deferred from: code review of spec-3-3-generate-the-run-scoped-routing-catalog.md (2026-11-23)
 
 - **Hosted catalog activation on the adopted tuple (medium).** The only hosted ordinary `platform-package` receipt (Parties run 45020272316) binds Builds 6.5.1 and Tenants 8.0.2, root `161e404d…`, which predates the UI-only audit policy. The adopted Builds 6.6.2 / Tenants 8.0.4 root `5b974248…` has only local serving-host readbacks; its hosted Platform tuple suites record no descriptor. Owner reason: the composition mechanism is unchanged between the tuples. Confirm it on the next Parties CI that adopts a Platform release carrying the adopted tuple: the descriptor names the run's catalog instance, every participant serves the committed root, and cleanup is empty.
+
+## Deferred from the Story 4.5 follow-up review (2026-11-23)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Add consumer-specific URL validation to hosted chart configuration.
+  evidence: The existing generic chart accepts a relative Clock endpoint and allows a Redis endpoint parameter for OIDC or Google HTTP inputs. The approved reference fixtures use validated endpoints with the appropriate protocols.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Exclude custom MSBuild build and intermediate output roots from historical source inventory.
+  evidence: A synthetic sibling project uses `BaseOutputPath=generated/` and its built DLL enters the old source collector. The approved project closure uses conventional project-root output directories.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Evaluate historical project references with their effective MSBuild properties.
+  evidence: A synthetic reference with `AdditionalProperties` compiles an alternate source while the standalone source collector records the default file.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Record active MSBuild imports regardless of file extension.
+  evidence: A synthetic project preprocesses an active `custom.xml` import. The historical collector's extension filter omits it.
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-5-qualify-the-aspire-to-helm-export-with-the-reference-composition.md`
+  summary: Inventory the historical native probe's separately configured hosted owner checkouts.
+  evidence: The historical collector records nested owner manifests. The hosted mapping checks the four actual separate clones against the approved revisions and manifest hashes during graph generation.

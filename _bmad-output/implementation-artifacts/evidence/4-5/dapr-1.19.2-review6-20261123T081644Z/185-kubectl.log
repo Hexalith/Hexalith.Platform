@@ -1,0 +1,816 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-eventstore",
+                "namespace": "reference",
+                "resourceVersion": "1253",
+                "uid": "39c54033-373e-4019-95ef-deed8051266d"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "memories",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/commands/bound/workload"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "tenants",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/commands/bound/workload"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/streams/read/workload"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "tenants-api",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/commands"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/queries"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "timesheets",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "GET"
+                                    ],
+                                    "name": "/api/v1/commands/status/workload"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/commands/workload"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "GET"
+                                    ],
+                                    "name": "/api/v1/commands/status/*"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/commands/*"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/api/v1/queries"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-memories",
+                "namespace": "reference",
+                "resourceVersion": "1255",
+                "uid": "b8ffeec9-d609-460a-b9b7-85d7f7832840"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-memories-access-telemetry",
+                "namespace": "reference",
+                "resourceVersion": "1238",
+                "uid": "c2e6dd7f-50a2-4477-bb7d-0eb57968b433"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "access-telemetry-adapter",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/access-telemetry/physical-reclamation-evidence"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "memories",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/access-telemetry/heartbeat"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/access-telemetry/validate"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/access-telemetry/write"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "memories-access-telemetry-inspector",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "GET"
+                                    ],
+                                    "name": "/v1/access-telemetry/inspect"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-memories-access-telemetry-clock",
+                "namespace": "reference",
+                "resourceVersion": "1251",
+                "uid": "6b524f1b-bf64-4153-b7ff-4ab87cffc02e"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "memories",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/time/attest"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "memories-access-telemetry",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/v1/time/attest"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-memories-domain-service",
+                "namespace": "reference",
+                "resourceVersion": "1254",
+                "uid": "3b3c2532-6cf9-4836-8a55-ba3eb69b84bc"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "eventstore",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/admin/operational-index-metadata"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/process"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-parties",
+                "namespace": "reference",
+                "resourceVersion": "1250",
+                "uid": "36a31910-5505-4b0f-9324-70a5fe00c525"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "eventstore",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/admin/operational-index-metadata"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/commit/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/shared/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/verify/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/abort/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/stage/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/v2/reconcile"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/rebuild/v1"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/replay-state"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/v2/*"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/process"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project/*"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/query"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-tenants",
+                "namespace": "reference",
+                "resourceVersion": "1252",
+                "uid": "4a02d282-f7d2-4f85-b794-901eb7b48bea"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [
+                        {
+                            "appId": "eventstore",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/admin/operational-index-metadata"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/replay-state"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/process"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/project"
+                                },
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "POST"
+                                    ],
+                                    "name": "/query"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        },
+                        {
+                            "appId": "parties",
+                            "defaultAction": "deny",
+                            "namespace": "reference",
+                            "operations": [
+                                {
+                                    "action": "allow",
+                                    "httpVerb": [
+                                        "GET"
+                                    ],
+                                    "name": "/ready"
+                                }
+                            ],
+                            "trustDomain": "fixture.invalid"
+                        }
+                    ],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v1alpha1",
+            "kind": "Configuration",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-tenants-api",
+                "namespace": "reference",
+                "resourceVersion": "1249",
+                "uid": "fe365b79-3fbf-41bb-b16d-f637ecc02d15"
+            },
+            "spec": {
+                "accessControl": {
+                    "defaultAction": "deny",
+                    "policies": [],
+                    "trustDomain": "fixture.invalid"
+                },
+                "features": [
+                    {
+                        "enabled": false,
+                        "name": "HotReload"
+                    }
+                ],
+                "metric": {
+                    "enabled": true
+                },
+                "metrics": {
+                    "enabled": true
+                },
+                "mtls": {
+                    "controlPlaneTrustDomain": "cluster.local",
+                    "enabled": true,
+                    "sentryAddress": "dapr-sentry.dapr-system.svc.cluster.local:443"
+                }
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v2alpha1",
+            "kind": "Subscription",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-a73a7456fe7f1831b58872a103dfd2070f58f6ef226822790daed3e7aaa1e887",
+                "namespace": "reference",
+                "resourceVersion": "1282",
+                "uid": "82c457da-1ce8-4513-b8df-eaa5d3a7052b"
+            },
+            "scopes": [
+                "parties"
+            ],
+            "spec": {
+                "pubsubname": "pubsub",
+                "routes": {
+                    "default": "/tenants/events"
+                },
+                "topic": "system.tenants.events"
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v2alpha1",
+            "kind": "Subscription",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-b6dd8c70281f96d91605fb892f441408c9499d13cb25e8accb6a711f7835dcab",
+                "namespace": "reference",
+                "resourceVersion": "1281",
+                "uid": "e28646fe-0bf9-4a6c-a446-2bc7f248dcd1"
+            },
+            "scopes": [
+                "memories"
+            ],
+            "spec": {
+                "pubsubname": "pubsub",
+                "routes": {
+                    "default": "/events/ingest"
+                },
+                "topic": "memories-events"
+            }
+        },
+        {
+            "apiVersion": "dapr.io/v2alpha1",
+            "kind": "Subscription",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "reference",
+                    "meta.helm.sh/release-namespace": "reference"
+                },
+                "creationTimestamp": "2026-11-23T08:22:24Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "platform-c24f9c057351e50015e27f13316a43556b31dea08b975d5b21052d9defe74034",
+                "namespace": "reference",
+                "resourceVersion": "1280",
+                "uid": "91c3e304-a51b-49e1-9819-a233b95f423b"
+            },
+            "scopes": [
+                "eventstore"
+            ],
+            "spec": {
+                "pubsubname": "pubsub",
+                "routes": {
+                    "default": "/projections/changed"
+                },
+                "topic": "*.*.projection-changed"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

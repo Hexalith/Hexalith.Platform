@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T08:22:13Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "environment"
+        },
+        "name": "environment",
+        "resourceVersion": "1123",
+        "uid": "48b1abeb-0c41-456b-9057-6141d8586191"
+    },
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "phase": "Active"
+    }
+}

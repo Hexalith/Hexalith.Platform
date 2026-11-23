@@ -72,10 +72,13 @@ public static class PlatformHostedPublishing
     public static void ComposeNativeProbe(IDistributedApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        if (builder.ExecutionContext.IsRunMode) throw new InvalidOperationException("Hosted qualification is publish-only; select an explicit publish operation.");
-        // Aspire 13.6.4 maps `aspire deploy` to publish mode with --step deploy.
-        if (string.Equals(builder.Configuration["Pipeline:Step"], "deploy", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("Hosted qualification is publish-only; deploy is forbidden.");
+        // Aspire also uses publish mode for inspection and other pipeline commands.
+        if (builder.ExecutionContext.IsRunMode || string.Equals(builder.Configuration["AppHost:Operation"], "inspect", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Hosted qualification is publish-only. Select an explicit publish operation.");
+        if (builder.Configuration["Pipeline:Step"] is string step && step != "publish")
+            throw new InvalidOperationException("Hosted qualification is publish-only. Only the publish pipeline step is allowed.");
+        // An omitted step would otherwise execute the entire pipeline.
+        builder.Configuration["Pipeline:Step"] = "publish";
         if (builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled") || builder.Configuration.GetValue<bool>("Platform:Works:Enabled") || builder.Configuration.GetValue<bool>("Platform:Agents:Enabled"))
             throw new InvalidDataException("Hosted reference publishing cannot combine local composition selections.");
         Dictionary<string, string> sourceRoots = new(StringComparer.Ordinal);

@@ -512,7 +512,11 @@ class ChartTests(unittest.TestCase):
             for key, value in [('ConnectionStrings:redis', {'configMapKeyRef': reference}),
                                ('Authentication:JwtBearer:Authority', {'configMapKeyRef': reference}),
                                ('Authentication:JwtBearer:Issuer', {'configMapKeyRef': reference}),
-                               ('Clock:Sources', [{'Endpoint': {'configMapKeyRef': reference}}])]:
+                               ('EmbeddingProviders:Ollama:BaseUrl', {'configMapKeyRef': reference}),
+                               ('EmbeddingProviders:Google:ApiBaseUrl', {'configMapKeyRef': reference}),
+                               ('Clock:Sources', [{'Endpoint': {'configMapKeyRef': reference}}]),
+                               ('Clock:Sources', [{'ServiceUri': {'configMapKeyRef': reference}}]),
+                               ('Clock:Sources', [{'ServiceAddress': {'configMapKeyRef': reference}}])]:
                 invalid = fixture_values()
                 invalid['bindings']['memories/clock']['configuration'][key] = encode(value)
                 with self.subTest(key=key, encoded=encode is json.dumps):

@@ -141,11 +141,13 @@ class QualifierFailureTests(unittest.TestCase):
     def test_new_run_removes_prior_qualifier_outputs_and_keeps_other_evidence(self):
         with tempfile.TemporaryDirectory(prefix='h45-log-reuse-') as directory:
             evidence = Path(directory)
-            stale_names = ['006-curl.log', '1000-dotnet.log', 'qualification.json', 'admitted-memories.json',
+            stale_names = ['006-curl.log', '1000-dotnet.log', 'admitted-memories.json',
                            'normal.yaml', 'environment-components.json', 'fixture-values.json', 'native-rendered.yaml',
                            'resolved-native-project.assets.json', 'resolved-composition-project.assets.json',
                            'hexalith-reference-0.1.0.tgz', 'hexalith-reference-0.2.0.tgz']
-            retained_names = ['parent-full-suite.log', 'verification.json', 'isolated-verification.json',
+            retained_names = ['parent-full-suite.log', '2026-10-31-review.log', '12-review.log',
+                              '123-review.log', '2026-review.log',
+                              'verification.json', 'isolated-verification.json',
                               'parent-full-suite.json', 'admitted-review.md', 'other-chart-0.1.0.tgz']
             for name in stale_names + retained_names:
                 (evidence / name).write_text('prior evidence')
@@ -161,6 +163,34 @@ class QualifierFailureTests(unittest.TestCase):
             finally:
                 q.cleanup()
                 q.close()
+
+    def test_new_run_removes_only_command_logs_verified_by_the_prior_record(self):
+        with tempfile.TemporaryDirectory(prefix='h45-prior-record-') as directory:
+            root = Path(directory)
+            evidence = root / 'evidence'
+            executable = root / 'hyphenated-python'
+            executable.symlink_to(sys.executable)
+            q = qualify.Qualification(evidence)
+            with patch.object(q, 'steps', return_value=()), patch.object(q, 'verify_source'):
+                try:
+                    q.run([executable, '-c', 'print("previous command")'])
+                    q.run([executable, '-c', 'print("previous command")'])
+                finally:
+                    q.execute()
+            verified_log = evidence / '000-hyphenated-python.log'
+            self.assertEqual(verified_log.read_text(), 'previous command\n')
+            retained = ['001-hyphenated-python.log', '123-curl.log', '123-review.log', '2026-review.log']
+            for name in retained:
+                (evidence / name).write_text('retained evidence')
+            restarted = qualify.Qualification(evidence)
+            try:
+                self.assertFalse(verified_log.exists())
+                self.assertFalse((evidence / 'qualification.json').exists())
+                for name in retained:
+                    self.assertEqual((evidence / name).read_text(), 'retained evidence')
+            finally:
+                restarted.cleanup()
+                restarted.close()
 
     def test_second_cli_writer_cannot_remove_or_overwrite_active_evidence(self):
         with self.qualification() as q:
@@ -376,25 +406,34 @@ class QualifierFailureTests(unittest.TestCase):
             with self.subTest(ancestor=ancestor), self.qualification() as q, tempfile.TemporaryDirectory(prefix='h45-build-ancestor-') as directory:
                 root = Path(directory) / ancestor / 'checkout'
                 project = root / 'src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj'
+                sibling = root / 'src/Analyzers/Analyzers.csproj'
                 source = project.parent / 'Workload.cs'
+                analyzer = sibling.parent / 'Analyzer.cs'
                 linked = Path(directory) / ancestor / 'linked/Shared.cs'
+                linked_rules = sibling.parent / 'resources/bin/Rules.cs'
                 imported = Path(directory) / ancestor / 'sdk/Sdk.props'
-                generated = [project.parent / name / 'Generated.cs' for name in ('bin', 'obj')]
-                generated_import = project.parent / 'obj/Generated.props'
+                generated = [project.parent / 'obj/Generated.cs', sibling.parent / 'bin/Debug/Analyzers.dll']
+                generated_import = sibling.parent / 'obj/Generated.props'
                 tooling = root / 'references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Workspace/Resolver.cs'
-                for path in (project, source, linked, imported, tooling, generated_import, *generated):
+                for path in (project, sibling, source, analyzer, linked, linked_rules, imported, tooling, generated_import, *generated):
                     path.parent.mkdir(parents=True, exist_ok=True); path.write_text('source')
                 def run(args, **kwargs):
+                    evaluated_project = Path(args[2])
                     if args[-1].startswith('-preprocess:'):
                         Path(args[-1].split(':', 1)[1]).write_text(str(imported) + '\n' + str(generated_import))
                         return subprocess.CompletedProcess(args, 0, '', '')
+                    items = {'Compile': [{'FullPath': str(analyzer)}]}
+                    if evaluated_project == project:
+                        items = {'Compile': [{'FullPath': str(p)} for p in (source, linked, linked_rules, generated[0])],
+                                 'None': [{'FullPath': str(generated[1])}],
+                                 'ProjectReference': [{'FullPath': str(sibling)}]}
                     return subprocess.CompletedProcess(args, 0, json.dumps({
-                        'Items': {'Compile': [{'FullPath': str(p)} for p in (source, linked, *generated)]},
-                        'Properties': {'ProjectAssetsFile': str(project.parent / 'obj/project.assets.json')}}), '')
+                        'Items': items,
+                        'Properties': {'ProjectAssetsFile': str(evaluated_project.parent / 'obj/project.assets.json')}}), '')
                 with patch.multiple(qualify, ROOT=root, HERE=root / 'eng/helm-qualification', CHART=root / 'eng/helm-qualification/chart'), patch.object(q, 'run', side_effect=run):
-                    self.assertEqual(q.native_build_inputs(), {project, source, linked, imported})
+                    self.assertEqual(q.native_build_inputs(), {project, sibling, source, analyzer, linked, linked_rules, imported})
                     inventory = q.source_inventory()
-                    for path in (project, source, linked, imported, tooling):
+                    for path in (project, sibling, source, analyzer, linked, linked_rules, imported, tooling):
                         key = str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
                         self.assertIn(key, inventory)
                     for path in [*generated, generated_import]:

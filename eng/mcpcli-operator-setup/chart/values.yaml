@@ -2,7 +2,9 @@ mode: normal
 replicas: 1
 images: {}
 # Each declaration input is bound per workload by its full configuration key.
-# Configuration accepts non-secret values, endpoint parameters, or existing ConfigMap keys.
+# Configuration accepts non-secret values and endpoint parameters.
+# Existing ConfigMap keys are allowed for configuration outside ConnectionStrings and endpoint leaves.
+# ConnectionStrings inputs also accept existing secretKeyRef references.
 # Credentials accept existing Secret references only.
 bindings: {}
 endpoints: {}

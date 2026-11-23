@@ -1,0 +1,30 @@
+
+Telemetry
+---------
+
+The Aspire CLI collects usage data. It is collected by Microsoft and is used to help us improve your experience. You can opt out of telemetry by setting the 
+ASPIRE_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your preferred shell.
+
+Read more about Aspire CLI telemetry: https://aka.ms/aspire/cli-telemetry
+
+🛠️ Executing step publish
+🛠️ Building AppHost... apphost.cs
+❌ An unexpected error occurred: The app host build failed.
+  Determining projects to restore...
+/tmp/hexalith-job.RB9gser4/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has
+a known high severity vulnerability, https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+  Restored /tmp/hexalith-job.RB9gser4/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Hexalith.Builds.Tooling.csproj (in 277 ms).
+  Restored /tmp/hexalith-job.RB9gser4/platform/src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj (in 292 ms).
+/tmp/hexalith-job.RB9gser4/platform/apphost.cs.csproj : error NU1904: Warning As Error: Package 'Aspire.Dashboard.Sdk.linux-x64' 13.6.4 has a known critical 
+severity vulnerability, https://github.com/advisories/GHSA-4g86-54fm-h9h8
+/tmp/hexalith-job.RB9gser4/platform/apphost.cs.csproj : warning NU1903: Package 'Aspire.Hosting' 13.6.4 has a known high severity vulnerability, 
+https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+/tmp/hexalith-job.RB9gser4/platform/apphost.cs.csproj : warning NU1903: Package 'Aspire.Hosting.AppHost' 13.6.4 has a known high severity vulnerability, 
+https://github.com/advisories/GHSA-f7vh-h5g3-7jrh
+  Failed to restore /tmp/hexalith-job.RB9gser4/platform/apphost.cs.csproj (in 727 ms).
+  4 of 7 projects are up-to-date for restore.
+📄 See logs at /tmp/hexalith-job.RB9gser4/aspire-home/logs/cli_20261123T081849_16c93fd2.log
+
+A new version of Aspire is available: 17.0.0
+To update, run: aspire update
+For more information, see: https://aka.ms/aspire/update
