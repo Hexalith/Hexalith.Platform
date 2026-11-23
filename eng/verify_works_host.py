@@ -22,10 +22,11 @@ import works_toolchain
 import works_managed_runtime
 from current_catalog_view import evaluate_views
 from bound_builds import materialize as materialize_bound_builds, verify_bound_checkout
+from builds_tool_lock import content_hash, published_package_hash
 from works_verifier_command import run_owned
 
-from verify_works_producer import (builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
-                                   runtime_source_snapshot, source_files)
+from verify_works_producer import (BUILD_FILES, builds_input_snapshot, producer_source_files, qualify_runtime_source,
+                                   require_unchanged_runtime_source, runtime_source_snapshot)
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 VERIFIER_HELPERS = (
@@ -34,12 +35,12 @@ VERIFIER_HELPERS = (
     "retained-works-host/manifest.json", "retained-works-host/works-source.tar.gz",
     "works_host_snapshot.py", "test_works_host_snapshot.py", "verify-agents-host.sh", "verify-platform-pins.py",
     "test_verify_platform_pins.py", "test_local_dapr_security_cleanup.py", "test-local-dapr-security.py",
-    "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
+    "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py", "ext-host-1/ComponentInputs.targets",
     "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py",
     "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
     "works_managed_runtime.py", "test_works_managed_runtime.py",
     "current_catalog_view.py",
-    "bound_builds.py", "test_bound_builds.py", "builds_tuple.py", "builds-tuple.json",
+    "bound_builds.py", "test_bound_builds.py", "builds_tuple.py", "builds-tuple.json", "builds_tool_lock.py",
 )
 
 ROWS = {
@@ -129,7 +130,7 @@ def require_archive_assembly(artifact, assembly):
 
 
 def published_producers(assets_path, consumer_directory, version):
-    """Bind every selected public SDK package and its consumer DLL to the restored NuGet archive."""
+    """Bind consumer DLLs to exact archive bytes authenticated by the public NuGet catalog."""
     packages = json.loads(Path(assets_path).read_text())
     producer_evidence = {}
     for key, library in packages["libraries"].items():
@@ -143,14 +144,20 @@ def published_producers(assets_path, consumer_directory, version):
         metadata = json.loads((folder / ".nupkg.metadata").read_text())
         if metadata.get("source") != "https://api.nuget.org/v3/index.json":
             raise ValueError("Published producer lacks public NuGet provenance: " + package)
-        with zipfile.ZipFile(artifact) as archive:
+        raw = artifact.read_bytes()
+        public_hash = published_package_hash(restored, package)
+        if content_hash(raw) != public_hash:
+            raise ValueError("Restored archive differs from the nuget.org packageHash: " + key)
+        snapshot = io.BytesIO(raw)
+        with zipfile.ZipFile(snapshot) as archive:
             nuspec_name = next(name for name in archive.namelist() if name.endswith(".nuspec"))
             repository = ET.fromstring(archive.read(nuspec_name)).find(".//{*}repository")
         if repository is None or not repository.get("commit"):
             raise ValueError("Published producer lacks a repository commit: " + package)
-        producer_evidence[package] = {"version": restored, "sha256": sha256(artifact), "source": metadata["source"],
-            "nugetSha512": library.get("sha512"), "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
-        producer_evidence[package].update(require_archive_assembly(artifact, consumer_directory / (package + ".dll")))
+        producer_evidence[package] = {"version": restored, "sha256": hashlib.sha256(raw).hexdigest(), "source": metadata["source"],
+            "publicPackageSha512": public_hash, "nugetSha512": library.get("sha512"),
+            "repositoryCommit": repository.get("commit"), "repositoryUrl": repository.get("url")}
+        producer_evidence[package].update(require_archive_assembly(snapshot, consumer_directory / (package + ".dll")))
     return producer_evidence
 
 
@@ -1010,10 +1017,12 @@ def source_snapshot(root, allow_archive=False, producer=False):
     A producer snapshot binds every src/** file except build outputs, because props, targets, JSON and
     resources are build inputs too. The Works consumer inventory records its C# and project sources."""
     root = Path(root)
-    files = source_files(root) if producer else [path for path in (root / "src").rglob("*")
-             if path.is_file() and path.suffix in (".cs", ".csproj")
-             and not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
-    files += [root / name for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props") if (root / name).is_file()]
+    if producer:
+        files = producer_source_files(root)
+    else:
+        files = [path for path in (root / "src").rglob("*") if path.is_file() and path.suffix in (".cs", ".csproj")
+                 and not {"bin", "obj"}.intersection(path.relative_to(root).parts)]
+        files += [root / name for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props") if (root / name).is_file()]
     inventory = {path.relative_to(root).as_posix(): sha256(path) for path in sorted(files)}
     commit = None
     try:
@@ -1037,8 +1046,7 @@ def require_published_runtime_source(snapshot, published_producers):
     if len(commits) != 1:
         raise ValueError("Published SDK archives do not identify one compatible producer commit")
     commit = commits.pop()
-    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src",
-                                       "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props"])
+    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src", *BUILD_FILES])
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         members = source.getmembers()
         if any(not (entry.isfile() or entry.isdir()) for entry in members):
@@ -1136,7 +1144,7 @@ def require_qualified_runtime(binding, qualified):
     return binding
 
 
-def canonical_source_snapshot(root):
+def canonical_source_snapshot(root, *, execution_root=None):
     """Bind full canonical revisions and all ordinary build, source, fixture and verifier inputs."""
     output = subprocess.check_output(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
     names = [name for name in output.decode().strip("\0").split("\0") if name]
@@ -1144,7 +1152,8 @@ def canonical_source_snapshot(root):
     inventory = {name: sha256(root / name) for name in sorted(set(names))
                  if (len(Path(name).parts) == 1 or Path(name).parts[0] in directories) and (root / name).is_file()}
     return {"root": str(root), "commit": subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
-            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest()}
+            "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest(),
+            "dependencyInputs": works_host_snapshot.dependency_inputs(execution_root or root)}
 
 
 def linked_fixture_snapshot(works, composition_root):
@@ -1241,6 +1250,27 @@ def require_unchanged_proof_runtime(binding):
             raise ValueError("Frozen proof runtime input changed: " + name)
 
 
+def runtime_artifacts(directories):
+    """Inventory each prebuilt runtime output, including files in nested resource directories."""
+    files = {}
+    for root in directories:
+        root = Path(root)
+        if root.is_symlink() or not root.is_dir():
+            raise ValueError("Expected an ordinary runtime output directory: " + str(root))
+        pending = [root]
+        while pending:
+            for path in pending.pop().iterdir():
+                if path.is_symlink():
+                    raise ValueError("Runtime artifact cannot be a symbolic link: " + str(path))
+                if path.is_dir():
+                    pending.append(path)
+                elif path.is_file():
+                    files[str(path)] = sha256(path)
+                else:
+                    raise ValueError("Expected an ordinary runtime artifact: " + str(path))
+    return dict(sorted(files.items()))
+
+
 def consumer_artifacts(root):
     """Bind the executed consumer, copied resources, runner configuration and compiled test dependencies."""
     root = Path(root)
@@ -1279,9 +1309,8 @@ def require_unchanged_inputs(summary, works, platform, snapshot_manifest, epheme
         raise ValueError("The qualified Works consumer source graph changed during execution")
     if platform_consumer_sources(platform) != summary["platformConsumerSources"]:
         raise ValueError("The qualified Platform consumer source membership or bytes changed during execution")
-    for binary, digest in summary["runtimeArtifacts"].items():
-        if sha256(binary) != digest:
-            raise ValueError("A qualified runtime artifact changed during execution: " + binary)
+    if runtime_artifacts(summary["runtimeDirectories"]) != summary["runtimeArtifacts"]:
+        raise ValueError("A qualified runtime artifact membership or bytes changed during execution")
     if consumer_artifacts(summary["consumer"]["root"]) != summary["consumer"]["artifacts"]:
         raise ValueError("A qualified Works consumer artifact membership or bytes changed during execution")
     for binary, digest in summary["platformAdapterAssemblies"].items():
@@ -1305,6 +1334,8 @@ def require_unchanged_inputs(summary, works, platform, snapshot_manifest, epheme
             observed = works_host_snapshot.verify(snapshot_manifest, platform)
             if observed["manifestSha256"] != summary["platformSourceSnapshot"]["manifestSha256"]:
                 raise ValueError("The Platform snapshot manifest changed during execution")
+            if works_host_snapshot.dependency_inputs(platform) != baseline["dependencyInputs"]:
+                raise ValueError("Platform build dependency selection or inputs changed during execution")
             summary["platformSourceSnapshotFinal"] = observed
             continue
         current = canonical_source_snapshot(Path(baseline["root"]))
@@ -1400,7 +1431,8 @@ def run_verification(args):
         summary["canonicalSources"] = {"Works": canonical_source_snapshot(works)}
         if snapshot_manifest:
             summary["platformSourceSnapshot"] = works_host_snapshot.verify(snapshot_manifest, platform)
-            summary["canonicalSources"]["Platform"] = canonical_source_snapshot(Path(summary["platformSourceSnapshot"]["originRoot"]))
+            summary["canonicalSources"]["Platform"] = canonical_source_snapshot(
+                Path(summary["platformSourceSnapshot"]["originRoot"]), execution_root=platform)
         else:
             summary["canonicalSources"]["Platform"] = canonical_source_snapshot(platform)
         summary["linkedFixtureSources"] = linked_fixture_snapshot(works, platform)
@@ -1547,8 +1579,8 @@ def run_verification(args):
         retained_assembly = runtime_output / "bin/Hexalith.Works.AppHost/release/Hexalith.Works.AppHost.dll"
         summary["retainedHostSource"]["assembly"] = str(retained_assembly)
         summary["retainedHostSource"]["assemblySha256"] = sha256(retained_assembly)
-        summary["runtimeArtifacts"] = {str(path): sha256(path) for directory in runtime_directories
-            for path in sorted(directory.rglob("*")) if path.is_file()}
+        summary["runtimeDirectories"] = [str(directory) for directory in runtime_directories]
+        summary["runtimeArtifacts"] = runtime_artifacts(runtime_directories)
         summary["qualifiedWorksRuntime"] = create_qualified_runtime_manifest(works,
             runtime_output / "bin/Hexalith.Works/release", summary["worksConsumerSource"], artifacts / "qualified-works-runtime.json")
         save()

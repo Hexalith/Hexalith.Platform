@@ -12,14 +12,19 @@ API = GIT_API + "trees/"
 COMMITS_API = GIT_API + "commits/"
 TAG_REFS_API = GIT_API + "ref/tags/"
 TAGS_API = GIT_API + "tags/"
-BUILD_FILES = ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props")
+BUILD_FILES = ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "global.json")
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 
 
-def source_files(root):
-    """Every regular file under src except build outputs: props, targets, JSON and resources are build inputs too."""
+def producer_source_files(root):
+    """Bind runtime sources, central build inputs and the SDK selector used by project-directory launches."""
     root = Path(root)
-    paths = []
+    if not (root / "src").is_dir():
+        raise ValueError("Selected SDK root lacks its runtime source")
+    paths = [root / name for name in BUILD_FILES]
+    for path in paths:
+        if path.is_symlink() or not path.is_file():
+            raise ValueError("Selected SDK root requires a regular " + path.name)
     for path in (root / "src").rglob("*"):
         if {"bin", "obj"}.intersection(path.relative_to(root).parts):
             continue
@@ -60,10 +65,7 @@ def builds_input_snapshot(root):
 def runtime_source_snapshot(root):
     """Record actual runtime bytes; an archive directory has no invented checkout commit."""
     root = Path(root).resolve()
-    if not (root / "src").is_dir() or any(not (root / name).is_file() for name in BUILD_FILES):
-        raise ValueError("Selected SDK root lacks its runtime source or central build files")
-    paths = source_files(root)
-    paths += [root / name for name in BUILD_FILES]
+    paths = producer_source_files(root)
     inventory = {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}
     return {"root": str(root), "commit": None, "provenance": "explicit-source-root; requires-public-producer-qualification",
             "sourceFiles": inventory, "inventorySha256": hashlib.sha256(json.dumps(inventory, sort_keys=True).encode()).hexdigest(),

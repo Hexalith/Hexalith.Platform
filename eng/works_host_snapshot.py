@@ -4,6 +4,7 @@ import configparser
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -11,6 +12,23 @@ import tarfile
 
 DIRECTORIES = {"src", "tests", "eng", "DaprComponents", "config", "schemas", ".config"}
 OUTPUTS = {"bin", "obj", "__pycache__", "artifacts", ".netcoredbg_hist"}
+# The verifier binds the selected EventStore producer and the Works and Platform
+# consumers separately. These additional source dependencies supply their build graph.
+SOURCE_DEPENDENCIES = {
+    "Hexalith.Builds": "Props/Directory.Packages.props",
+    "Hexalith.Commons": "src/libraries/Hexalith.Commons.UniqueIds",
+    "Hexalith.McpCli": "src/Hexalith.McpCli.Abstractions",
+    "Hexalith.Memories": "src/Hexalith.Memories.Contracts/Hexalith.Memories.Contracts.csproj",
+    "Hexalith.Parties": "src/Hexalith.Parties.Client",
+    "Hexalith.PolymorphicSerializations": "src/libraries/Hexalith.PolymorphicSerializations",
+    "Hexalith.Tenants": "src/Hexalith.Tenants.Contracts",
+}
+# Inputs referenced from outside src in these modules' MSBuild files.
+DEPENDENCY_BUILD_RESOURCES = {
+    "Hexalith.Builds": ("Github/lib", "schemas", "Tools/write-platform-version-catalog.ps1", "icon.png"),
+    "Hexalith.Parties": ("scripts/PartiesRuntimeBuildOutput.targets",),
+    "Hexalith.Tenants": ("tools/CatalogArtifactVerifier",),
+}
 VERIFIER_DOCUMENTS = {"docs/ext-host-1-agents-composition.md",
     "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md"}
 # The Composition graph embeds this plan even though adjacent qualification tools are unrelated.
@@ -71,21 +89,79 @@ def export_files(root):
     return result
 
 
-def declared_links(root):
+def declared_paths(root):
     config = configparser.ConfigParser()
     config.read(root / ".gitmodules")
     names = [config[section]["path"] for section in config.sections() if section.startswith('submodule "')]
     if any(len(Path(name).parts) != 2 or Path(name).parts[0] != "references" or ".." in Path(name).parts for name in names):
         raise ValueError("Snapshot dependencies must be root-declared references")
-    return {name: str((root / name).resolve()) for name in sorted(names) if (root / name).is_dir()}
+    return sorted(names)
 
 
-def dependency_inputs(root):
-    """The selected catalog is read through a root dependency link, outside ordinary source inventory."""
-    name = "references/Hexalith.Builds/Props/Directory.Packages.props"
-    if "references/Hexalith.Builds" not in declared_links(root):
-        return {}
-    return {name: digest((root / name).read_bytes())}
+def declared_links(root):
+    return {name: str((root / name).resolve()) for name in declared_paths(root) if (root / name).is_dir()}
+
+
+def dependency_source_files(root, module):
+    """Read working bytes including new source and imports, pruning generated output before descent."""
+    entries = [p for p in root.iterdir() if p.suffix.lower() in (".props", ".targets", ".globalconfig")
+               or p.name.lower() in (".editorconfig", "global.json", "nuget.config", "stylecop.json")]
+    entries.extend([root / "src", root / "Props"])
+    for name in DEPENDENCY_BUILD_RESOURCES.get(module, ()):
+        path = root / name
+        if path.parent.resolve() != path.parent:
+            raise ValueError("Dependency build input cannot traverse a symbolic link: " + str(path))
+        entries.append(path)
+    files = {}
+    while entries:
+        path = entries.pop()
+        if path.is_symlink():
+            raise ValueError("Dependency build input cannot be a symbolic link: " + str(path))
+        if path.is_dir():
+            entries.extend(child for child in path.iterdir() if child.name not in OUTPUTS)
+        elif path.is_file():
+            with path.open("rb") as stream:
+                files[path.relative_to(root).as_posix()] = hashlib.file_digest(stream, "sha256").hexdigest()
+    return dict(sorted(files.items()))
+
+
+def build_dependency(root, module, direct):
+    """Resolve configured roots and the Works direct-first / Platform sibling-first checkout layouts."""
+    configured = os.environ.get(module.replace(".", "") + "Root", "").strip()
+    if configured:
+        return (root / configured).resolve()
+    marker = SOURCE_DEPENDENCIES[module]
+    works = (root / "Hexalith.Works.slnx").is_file()
+    if not works and module == "Hexalith.Tenants":
+        marker += "/Hexalith.Tenants.Contracts.csproj"
+    sibling = root.parent / module
+    if (sibling / marker).exists() and not (works and (direct / marker).exists()):
+        return sibling.resolve()
+    return direct
+
+
+def dependency_inputs(root, *, frozen_links=False):
+    """Bind declared dependencies plus any distinct source selected by the run's MSBuild environment."""
+    root = Path(root).resolve()
+    sources = {}
+    for name in declared_paths(root):
+        module = Path(name).name
+        if module not in SOURCE_DEPENDENCIES:
+            continue
+        direct = (root / name).resolve()
+        selected = direct if frozen_links else build_dependency(root, module, direct)
+        candidates = {name: direct} if direct.is_dir() else {}
+        if selected != direct:
+            candidates["build/" + module] = selected
+        for key, checkout in candidates.items():
+            files = dependency_source_files(checkout, module)
+            if module == "Hexalith.Builds" and checkout == selected and "Props/Directory.Packages.props" not in files:
+                raise ValueError("Missing selected dependency catalog: " + str(checkout))
+            # A filesystem export cannot inherit Git HEAD from an enclosing checkout.
+            commit = revision(checkout) if (checkout / ".git").exists() else None
+            if files or commit:
+                sources[key] = {"root": str(checkout), "commit": commit, "sourceFiles": files}
+    return sources
 
 
 def create(origin, root, manifest, upstream_origin=None):
@@ -114,7 +190,7 @@ def create(origin, root, manifest, upstream_origin=None):
               "baseSourceFiles": baseline,
               "workingOverlays": {name: {"baseSha256": baseline.get(name), "exportSha256": files.get(name)}
                   for name in sorted(files.keys() | baseline.keys()) if files.get(name) != baseline.get(name)},
-              "dependencyLinks": links, "dependencyInputs": dependency_inputs(origin)}
+              "dependencyLinks": links, "dependencyInputs": dependency_inputs(origin, frozen_links=True)}
     if upstream_origin is not None:
         upstream = Path(upstream_origin).resolve()
         if origin_files(upstream) != files or revision(upstream) != commit:
@@ -161,11 +237,12 @@ def verify(manifest, root):
                                 "currentRelevantSourceFiles": relevant(upstream_files)}
     if declared_links(origin) != record["dependencyLinks"]:
         raise ValueError("Snapshot origin dependency declarations or targets changed")
-    if dependency_inputs(origin) != record["dependencyInputs"] or dependency_inputs(root) != record["dependencyInputs"]:
-        raise ValueError("Snapshot selected dependency catalog inputs changed")
     actual = {path.relative_to(root).as_posix(): str(path.resolve()) for path in (root / "references").iterdir()} if (root / "references").exists() else {}
     if actual != record["dependencyLinks"] or any(not (root / name).is_symlink() for name in actual):
         raise ValueError("Snapshot dependency links changed")
+    # Both verified link maps select the same directories. Read their bytes once.
+    if dependency_inputs(root, frozen_links=True) != record["dependencyInputs"]:
+        raise ValueError("Snapshot dependency catalog, source inputs or revision changed")
     return {"manifest": str(manifest), "manifestSha256": digest(manifest.read_bytes()),
             "originCommit": record["originCommit"], "observedOriginCommit": revision(origin),
             "root": str(root), "originRoot": str(origin), "inventorySha256": record["inventorySha256"],

@@ -399,10 +399,11 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 output.mkdir(parents=True)
                 for suffix in ('', '.dll', '.deps.json', '.runtimeconfig.json'):
                     (output / ('Hexalith.Works.IntegrationTests' + suffix)).write_text('qualified output')
-            if name == 'runtime-release-prebuild-0':
-                output = artifacts / 'runtime/bin/Hexalith.Works/release'
+            if name.startswith('runtime-release-prebuild-'):
+                project = next(Path(arg) for arg in arguments if str(arg).endswith('.csproj'))
+                output = artifacts / 'runtime/bin' / project.stem / 'release'
                 output.mkdir(parents=True)
-                (output / 'Hexalith.Works.dll').write_bytes(b'actual post-reference Works body')
+                (output / (project.stem + '.dll')).write_bytes(b'actual post-reference Works body')
             if name == 'works-consumer-supporting':
                 consumer = json.loads((artifacts / 'ledger.json').read_text())['consumer']
                 self.assertEqual(Path(consumer['root']), Path(arguments[0]).parent)
@@ -845,14 +846,48 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 require_published_runtime_source(snapshot, producers)
 
+    def test_consumer_prebuild_and_prebuilt_child_select_sdk_from_their_working_directory(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            consumer, producer = root / 'works', root / 'producer'
+            project = producer / 'src/Probe/Probe.csproj'
+            consumer.mkdir()
+            project.parent.mkdir(parents=True)
+            pin = (Path(__file__).resolve().parents[1] / 'global.json').read_text()
+            (consumer / 'global.json').write_text(pin)
+            selector = producer / 'global.json'
+            selector.write_text(pin)
+            (root / 'NuGet.Config').write_text('<configuration><packageSources><clear/></packageSources></configuration>')
+            project.write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net11.0</TargetFramework>'
+                               '<OutputType>Exe</OutputType></PropertyGroup></Project>')
+            (project.parent / 'Program.cs').write_text('System.Console.WriteLine("child launched");')
+            env = os.environ | {'DOTNET_CLI_HOME': str(root / 'cli'), 'DOTNET_NOLOGO': 'true'}
+
+            def dotnet(cwd, *args, check=True):
+                return subprocess.run(['dotnet', *args], cwd=cwd, env=env, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT, text=True, timeout=90, check=check)
+
+            build = ('build', str(project), '-c', 'Release')
+            launch = ('run', '--project', str(project), '-c', 'Release', '--no-restore', '--no-build')
+            dotnet(consumer, *build)
+            self.assertIn('child launched', dotnet(project.parent, *launch).stdout)
+            selector.write_text('{"sdk":{"version":"99.0.100","rollForward":"disable"}}')
+            dotnet(consumer, *build, '--no-restore', '-t:Rebuild')
+            refused = dotnet(project.parent, *launch, check=False)
+            self.assertNotEqual(0, refused.returncode)
+            self.assertIn(str(selector), refused.stdout)
+            self.assertIn('99.0.100', refused.stdout)
+
     def test_every_published_src_build_input_is_compared(self):
-        files = {'src/Producer.cs': b'source', 'src/Directory.Build.props': b'<Project />', 'src/appsettings.json': b'{}'}
+        files = {'src/Producer.cs': b'source', 'src/Directory.Build.props': b'<Project />',
+                 'src/appsettings.json': b'{}', 'global.json': b'{"sdk": {"version": "11.0.100"}}'}
         snapshot = {'root': '/fixture/sdk', 'commit': None, 'inventorySha256': 'bound-inventory',
                     'sourceFiles': {name: hashlib.sha256(content).hexdigest() for name, content in files.items()}}
         producers = {'Published.SDK': {'repositoryCommit': 'public-producer'}}
-        with patch('verify_works_host.subprocess.check_output', return_value=self.archive(files)):
+        with patch('verify_works_host.subprocess.check_output', return_value=self.archive(files)) as archive:
             self.assertTrue(require_published_runtime_source(snapshot, producers)['matchesPublishedProducer'])
-            for name in ['src/Directory.Build.props', 'src/appsettings.json']:
+            self.assertIn('global.json', archive.call_args.args[0])
+            for name in ['src/Directory.Build.props', 'src/appsettings.json', 'global.json']:
                 changed = copy.deepcopy(snapshot)
                 changed['sourceFiles'][name] = 'unpublished-input'
                 with self.subTest(name=name), self.assertRaisesRegex(ValueError, name):
@@ -1745,7 +1780,8 @@ class WorksEvidenceGateTests(unittest.TestCase):
         fixture.write_text('// original fixture')
         require_unchanged_fixture_sources(works, baseline)
 
-    def test_published_producer_loop_binds_the_consumer_dll_to_its_archive(self):
+    @patch('verify_works_host.published_package_hash')
+    def test_published_producer_loop_binds_the_consumer_dll_to_the_public_archive(self, public_hash):
         root = self.directory()
         cache = root / 'packages'
         consumer = root / 'consumer'
@@ -1760,10 +1796,11 @@ class WorksEvidenceGateTests(unittest.TestCase):
         contents = b'official-package-assembly'
         commit = 'b' * 40
         repository = 'https://github.com/Hexalith/Hexalith.EventStore'
+        nuspec = f'<package><metadata><repository url="{repository}" commit="{commit}" /></metadata></package>'
         with zipfile.ZipFile(artifact, 'w') as archive:
-            archive.writestr(package + '.nuspec',
-                             '<package><metadata><repository url="' + repository + '" commit="' + commit + '" /></metadata></package>')
+            archive.writestr(package + '.nuspec', nuspec)
             archive.writestr(entry, contents)
+        public_hash.return_value = verify_works_host.content_hash(artifact.read_bytes())
         (folder / '.nupkg.metadata').write_text(json.dumps({'source': 'https://api.nuget.org/v3/index.json'}))
         assets = root / 'project.assets.json'
         assets.write_text(json.dumps({'libraries': {
@@ -1774,10 +1811,27 @@ class WorksEvidenceGateTests(unittest.TestCase):
         assembly.write_bytes(contents)
         self.assertEqual(published_producers(assets, consumer, restored), {package: {
             'version': restored, 'sha256': sha256(artifact), 'source': 'https://api.nuget.org/v3/index.json',
+            'publicPackageSha512': public_hash.return_value,
             'nugetSha512': 'restore-sha512', 'repositoryCommit': commit, 'repositoryUrl': repository,
             'consumerAssemblySha256': sha256(assembly), 'archiveAssemblyEntry': entry}})
+        public_hash.assert_called_once_with(restored, package)
         assembly.write_bytes(b'altered-extracted-consumer-dll')
         with self.assertRaisesRegex(ValueError, 'Consumer assembly differs from its selected public archive'):
+            published_producers(assets, consumer, restored)
+        # Keep the archive, deployed DLL, and restore metadata mutually consistent.
+        with zipfile.ZipFile(artifact, 'w') as archive:
+            archive.writestr(package + '.nuspec', nuspec)
+            archive.writestr(entry, assembly.read_bytes())
+        altered_hash = verify_works_host.content_hash(artifact.read_bytes())
+        assets_document = json.loads(assets.read_bytes())
+        assets_document['libraries'][package + '/' + restored]['sha512'] = altered_hash
+        assets.write_text(json.dumps(assets_document))
+        (folder / '.nupkg.metadata').write_text(json.dumps({
+            'source': 'https://api.nuget.org/v3/index.json', 'contentHash': altered_hash}))
+        with self.assertRaisesRegex(ValueError, 'differs from the nuget.org packageHash'):
+            published_producers(assets, consumer, restored)
+        public_hash.side_effect = OSError('catalog unavailable')
+        with self.assertRaisesRegex(OSError, 'catalog unavailable'):
             published_producers(assets, consumer, restored)
 
     def test_extracted_package_assembly_must_match_the_selected_archive(self):

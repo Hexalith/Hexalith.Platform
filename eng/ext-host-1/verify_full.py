@@ -6,6 +6,8 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
+import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -77,11 +79,15 @@ def suite_mode(configuration):
             "dependencyMode": "public-packages" if configuration == "Release" else "source-projects"}
 
 
+def component_build_properties(configuration):
+    return ["-p:UseHexalithProjectReferences=" + ("false" if configuration == "Release" else "true"),
+            "-p:UseNuGetDeps=" + ("true" if configuration == "Release" else "false")]
+
+
 def suite_command(project, test_filter, results, configuration="Debug"):
     suite_mode(configuration)
     return ["dotnet", "test", str(project), "--configuration", configuration,
-            "-p:UseHexalithProjectReferences=" + ("false" if configuration == "Release" else "true"),
-            "-p:UseNuGetDeps=" + ("true" if configuration == "Release" else "false"),
+            *component_build_properties(configuration),
             "--filter", test_filter, "--results-directory", str(results),
             "--report-xunit-trx", "--report-xunit-trx-filename", "results.trx"]
 
@@ -277,9 +283,10 @@ def publish(evidence, gaps, suites, names, qualified, coverage):
 
 def suite_projects(root):
     custody_project = root / "tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj"
-    guard_project = root / "references/Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
-    if not guard_project.exists():
-        guard_project = root.parent / "eventstore/tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj"
+    guard = Path("tests/Hexalith.EventStore.Server.Tests/Hexalith.EventStore.Server.Tests.csproj")
+    candidates = (root / "references/Hexalith.EventStore" / guard, root.parent / "eventstore" / guard,
+                  root.parent / "Hexalith.EventStore" / guard)
+    guard_project = next((project for project in candidates if project.is_file()), candidates[1])
     return custody_project, guard_project
 
 
@@ -319,10 +326,95 @@ def git_head(root):
     return head
 
 
-def attempt_key(head, profile, configuration="Debug"):
-    selected = {"head": head, "plan": prepare.plan(), "profile": profile}
-    if configuration != "Debug":
-        selected["buildMode"] = suite_mode(configuration)
+def imported_files(archive_path):
+    with zipfile.ZipFile(archive_path) as archive:
+        result = {}
+        for member in archive.infolist():
+            with archive.open(member) as stream:
+                result[member.filename] = hashlib.file_digest(stream, "sha256").hexdigest()
+        return result
+
+
+def component_inputs(root, configuration, build_artifacts=None):
+    """Fingerprint the evaluated projects, source files and imports for the two real suite commands."""
+    targets = Path(__file__).with_name("ComponentInputs.targets").resolve()
+    files = {Path(__file__).resolve(), Path(prepare.__file__).resolve(), targets}
+    sdk_config = next((parent / "global.json" for parent in (root, *root.parents)
+                       if (parent / "global.json").is_file()), None)
+    if sdk_config is not None:
+        files.add(sdk_config)
+    identity = {}
+    owners = set()
+    projects = suite_projects(root)
+    if build_artifacts is not None:
+        # Evaluated references can name another project's built analyzer or fixture DLL.
+        # Materialize them once before freezing the first attempt. Replay only inspects inputs.
+        for project in projects:
+            directory = build_artifacts / project.stem
+            directory.mkdir(parents=True, exist_ok=True)
+            command = ["dotnet", "build", str(project), "-p:Configuration=" + configuration,
+                       *component_build_properties(configuration)]
+            (directory / "build-command.json").write_bytes(canonical(command))
+            log = directory / "build.log"
+            with log.open("w") as stream:
+                try:
+                    subprocess.run(command, cwd=root, stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=3600)
+                except (OSError, subprocess.SubprocessError) as error:
+                    raise ValueError(f"{project.name} preparation failed ({error}); see {log}") from error
+    for project in projects:
+        graph = []
+        with tempfile.TemporaryDirectory(prefix="ext-host-inputs-") as temp:
+            output = Path(temp)
+            common = ["dotnet", "msbuild", str(project), "-nologo", "-graphBuild",
+                      "-property:Configuration=" + configuration, *component_build_properties(configuration)]
+            # Observe the unmodified graph as well. An import selected by the caller or by an
+            # individual project must survive installation of the collection target.
+            original = common + ["-target:GetTargetPath", "-getProperty:CustomAfterMicrosoftCommonTargets,MSBuildToolsPath",
+                                 "-binaryLogger:LogFile=" + str(output / "original.binlog") + ";ProjectImports=ZipFile"]
+            properties = json.loads(subprocess.check_output(original, cwd=root, timeout=600))["Properties"]
+            command = common + ["-target:CollectExtHostInputs",
+                       "-property:CustomAfterMicrosoftCommonTargets=" + str(targets),
+                       "-property:ProvideCommandLineArgs=true", "-property:SkipCompilerExecution=true",
+                       "-property:NonExistentFile=__ext_host_probe__/force-command-line",
+                       "-property:ExtHostInputsDirectory=" + str(output),
+                       "-binaryLogger:LogFile=" + str(output / "graph.binlog") + ";ProjectImports=ZipFile"]
+            probe_env = os.environ.copy()
+            # Microsoft.Common.CurrentVersion.targets resolves relative imports beside itself.
+            prior = properties["CustomAfterMicrosoftCommonTargets"]
+            probe_env["_ExtHostPriorCommonTargets"] = str(Path(properties["MSBuildToolsPath"]) / prior) if prior else ""
+            subprocess.run(command, cwd=root, env=probe_env, stdout=subprocess.DEVNULL, check=True, timeout=600)
+            inventories = list(output.glob("*.inputs"))
+            if not inventories:
+                raise ValueError("No project inputs were captured")
+            for inventory in inventories:
+                paths = [Path(line) for line in inventory.read_text(encoding="utf-8-sig").splitlines()]
+                if not paths or not all(path.is_absolute() for path in paths):
+                    raise ValueError("Invalid project input inventory")
+                project_file = paths[0]
+                compiler = hashlib.sha256(inventory.with_suffix(".args").read_bytes()).hexdigest()
+                graph.append([str(project_file), compiler, sorted(str(path) for path in paths)])
+                owner = next((p for p in project_file.parents if (p / ".git").is_file() or (p / ".git/HEAD").is_file()), None)
+                if owner is not None:
+                    owners.add(owner)
+                files.update(paths)
+            # The binary logger archives every resolved project import, including shared build props.
+            original_imports = imported_files(output / "original.ProjectImports.zip")
+            imports = imported_files(output / "graph.ProjectImports.zip")
+            if any(imports.get(name) != digest for name, digest in original_imports.items()):
+                raise ValueError(f"Input inspection differs from the original {project.name} build imports")
+            identity["imports:" + str(project)] = imports
+        identity["suite:" + str(project)] = hashlib.sha256(canonical(sorted(graph))).hexdigest()
+    for owner in owners:
+        identity["revision:" + str(owner)] = git_head(owner)
+    for path in files:
+        with path.open("rb") as stream:
+            identity["file:" + str(path)] = hashlib.file_digest(stream, "sha256").hexdigest()
+    return hashlib.sha256(canonical(identity)).hexdigest()
+
+
+def attempt_key(head, profile, configuration, inputs):
+    selected = {"head": head, "plan": prepare.plan(), "profile": profile,
+                "buildMode": suite_mode(configuration), "componentInputsSha256": inputs}
     return hashlib.sha256(canonical(selected)).hexdigest()
 
 
@@ -340,9 +432,10 @@ def read_attempt(artifacts):
     return document
 
 
-def write_attempt(artifacts, key, head, profile, code, qualified, configuration="Debug"):
+def write_attempt(artifacts, key, head, profile, code, qualified, configuration, inputs):
     document = {
         "attemptKey": key,
+        "componentInputsSha256": inputs,
         "componentQualification": qualified,
         "dependencyAvailable": False,
         "effects": 0,
@@ -409,13 +502,23 @@ def verify(root, artifacts, profile, configuration="Debug"):
                 print("ERROR: " + REFUSAL, file=sys.stderr)
                 return 1
             return refuse_profile(evidence, profile, configuration)
+        stored = read_attempt(artifacts)
         try:
             head = git_head(root)
         except (OSError, subprocess.SubprocessError, ValueError):
             print("ERROR: EXT-HOST-1 component target is not a commit.", file=sys.stderr)
             return 1
-        key = attempt_key(head, loaded, configuration)
-        stored = read_attempt(artifacts)
+        try:
+            inputs = component_inputs(root, configuration, artifacts if stored is None else None)
+        except (OSError, subprocess.SubprocessError, ValueError, zipfile.BadZipFile) as error:
+            if stored is None:
+                publish(evidence, binding_gaps(profile), suites_not_started(configuration), [], False,
+                        ["componentInputsUnavailable"])
+                incomplete_key = attempt_key(head, loaded, configuration, None)
+                write_attempt(artifacts, incomplete_key, head, loaded, 1, False, configuration, None)
+            print(f"ERROR: EXT-HOST-1 component inputs could not be verified: {error}", file=sys.stderr)
+            return 1
+        key = attempt_key(head, loaded, configuration, inputs)
         if stored is not None:
             if stored.get("attemptKey") == key:
                 if stored.get("evidenceDigest") != evidence_digest(evidence):
@@ -431,12 +534,18 @@ def verify(root, artifacts, profile, configuration="Debug"):
         custody_code, guard_code, names, suites = run_suites(root, artifacts, configuration)
         gaps = binding_gaps(profile)
         coverage = coverage_gaps(names, custody_code, guard_code, True)
+        try:
+            unchanged = inputs == component_inputs(root, configuration) and head == git_head(root)
+        except (OSError, subprocess.SubprocessError, ValueError, zipfile.BadZipFile):
+            unchanged = False
+        if not unchanged:
+            coverage.append("componentInputsChanged")
         qualified = not gaps and not coverage and custody_code == 0 and guard_code == 0
         publish(evidence, gaps, suites, names, qualified, coverage)
         # Component tests are evidence, not a Full owner qualification. Only the
         # installed OQ-5.4-1 route above can return success for --mode Full.
         code = 1
-        write_attempt(artifacts, key, head, loaded, code, qualified, configuration)
+        write_attempt(artifacts, key, head, loaded, code, qualified, configuration, inputs)
         if qualified:
             print("ERROR: " + REFUSAL, file=sys.stderr)
             return code

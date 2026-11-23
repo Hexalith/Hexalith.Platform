@@ -87,7 +87,7 @@ class ProducerQualificationTests(unittest.TestCase):
         result = self.qualify()
         self.assertTrue(result["matchesPublishedProducer"])
         self.assertIsNone(result["checkoutCommit"])
-        self.assertEqual(5, result["runtimeFileCount"])
+        self.assertEqual(6, result["runtimeFileCount"])
         self.assertEqual(2, len(result["officialTrees"]))
         self.assertEqual(result["buildsInputs"], builds_input_snapshot(self.root))
         self.assertFalse(any(name.startswith("references/") for name in runtime_source_snapshot(self.root)["sourceFiles"]))
@@ -189,6 +189,18 @@ class ProducerQualificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Runtime SDK differs"):
             self.qualify()
 
+    def test_project_launch_sdk_pin_is_bound_to_snapshot_and_public_tree(self):
+        snapshot = runtime_source_snapshot(self.root)
+        selector = self.root / "global.json"
+        selector.write_text('{"sdk":{"version":"99.0.100","rollForward":"disable"}}')
+        with self.assertRaisesRegex(ValueError, "SDK source changed during"):
+            require_unchanged_runtime_source(snapshot)
+        with self.assertRaisesRegex(ValueError, r"differs from published producer .*global\.json"):
+            self.qualify()
+        selector.unlink()
+        with self.assertRaisesRegex(ValueError, r"requires a regular global\.json"):
+            runtime_source_snapshot(self.root)
+
     def test_foreign_repository_and_mixed_producers_are_rejected(self):
         self.producers["Hexalith.EventStore.Client"]["repositoryUrl"] = "https://github.com/foreign/sdk"
         with self.assertRaisesRegex(ValueError, "expected official repository"):
@@ -269,10 +281,10 @@ class ProducerQualificationTests(unittest.TestCase):
         tree = self.documents[API + SOURCE_TREE + "?recursive=1"]["tree"]
         tree += [{"path": "Example", "type": "tree", "mode": "040000", "sha": "d" * 40},
                  self.entry("Example/Directory.Build.props", props), self.entry("Example/appsettings.json", settings)]
-        self.assertEqual(7, self.qualify()["runtimeFileCount"])
+        self.assertEqual(8, self.qualify()["runtimeFileCount"])
         (self.root / "src/Example/obj").mkdir()
         (self.root / "src/Example/obj/generated.json").write_bytes(b"{}\n")
-        self.assertEqual(7, self.qualify()["runtimeFileCount"])
+        self.assertEqual(8, self.qualify()["runtimeFileCount"])
         for path in [props, settings]:
             original = path.read_bytes()
             path.write_bytes(b"substituted\n")

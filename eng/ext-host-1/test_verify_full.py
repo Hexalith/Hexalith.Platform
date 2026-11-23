@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import stat
 import subprocess
 import sys
@@ -27,6 +28,96 @@ def write_trx(results, name):
 
 
 class VerifyFullTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("dotnet"), "The source graph control requires MSBuild")
+    def test_component_key_tracks_evaluated_suite_sources_and_imports(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "platform"
+            guard = root.parent / "Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests"
+            custody = root / "tests/Hexalith.Platform.Custody.Tests"
+            library = root / "src/Library"
+            for folder in (guard, custody, library):
+                folder.mkdir(parents=True)
+            props = root / "shared.props"
+            props.write_text("<Project />")
+            binary = root / "reference.dll"
+            binary.write_bytes(b"original reference")
+            published = root / "published-fixture.nupkg"
+            published.write_bytes(b"original fixture")
+            custom_source = root / "external.cs"
+            custom_source.write_text("class External {}")
+            custom_target = root / "caller.targets"
+            custom_target.write_text('<Project><ItemGroup><Compile Include="' + str(custom_source)
+                                     + '" /></ItemGroup></Project>')
+            hook = patch.dict(os.environ, {"CustomAfterMicrosoftCommonTargets": str(custom_target)})
+            hook.start()
+            self.addCleanup(hook.stop)
+            # A plain MSBuild fixture keeps this test independent of package restore.
+            for folder in (guard, custody, library):
+                reference = ('<ProjectReference Include="../../src/Library/Library.csproj" />'
+                             if folder == custody else "")
+                (folder / (folder.name + ".csproj")).write_text(
+                    '<Project><Import Project="' + str(props) + '" /><ItemGroup>'
+                    '<Compile Include="*.cs" /><EmbeddedResource Include="*.json" />' +
+                    '<Reference Include="Fixture"><HintPath>' + str(binary) + '</HintPath></Reference>' +
+                    '<PublishedTenantQuerySelectorFixture Include="' + str(published) + '" />' +
+                    reference + '</ItemGroup><Target Name="GetTargetPath" />'
+                    '<Import Project="$(CustomAfterMicrosoftCommonTargets)" /></Project>')
+            for folder in (guard, custody, library):
+                (folder / "Cell.cs").write_text("class Original {}")
+            baseline = verify.component_inputs(root, "Debug")
+            (root / "notes.txt").write_text("unrelated")
+            self.assertEqual(baseline, verify.component_inputs(root, "Debug"))
+            for path in (custody / "Cell.cs", guard / "Cell.cs", library / "Cell.cs", custody / "new.json", binary,
+                         published, custom_source, props):
+                with self.subTest(path=path):
+                    original = path.read_bytes() if path.exists() else None
+                    path.write_bytes(b"<Project><!-- changed --></Project>" if path == props else b"changed")
+                    self.assertNotEqual(baseline, verify.component_inputs(root, "Debug"))
+                    if original is None:
+                        path.unlink()
+                    else:
+                        path.write_bytes(original)
+            binary.unlink()
+            with self.assertRaises(FileNotFoundError):
+                verify.component_inputs(root, "Debug")
+
+    @unittest.skipUnless(shutil.which("dotnet"), "The compiler settings control requires the .NET SDK")
+    def test_replay_fingerprint_binds_compiler_options_and_effective_global_json(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            root = base / "platform"
+            guard = base / "Hexalith.EventStore/tests/Hexalith.EventStore.Server.Tests"
+            custody = root / "tests/Hexalith.Platform.Custody.Tests"
+            major = subprocess.check_output(["dotnet", "--version"], text=True).split(".", 1)[0]
+            for directory in (guard, custody):
+                directory.mkdir(parents=True)
+                (directory / (directory.name + ".csproj")).write_text(
+                    '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net' + major +
+                    '.0</TargetFramework></PropertyGroup></Project>')
+                (directory / "Cell.cs").write_text("public class Cell {}")
+            config = base / "global.json"
+            config.write_text(json.dumps({"test": {"runner": "VSTest"}}))
+            baseline = verify.component_inputs(root, "Debug", base / "build-logs")
+            self.assertEqual(baseline, verify.component_inputs(root, "Debug"))
+            with patch.dict(os.environ, {"DefineConstants": "NEW_TEST_SYMBOL"}):
+                self.assertNotEqual(baseline, verify.component_inputs(root, "Debug"))
+            config.write_text(json.dumps({"test": {"runner": "Microsoft.Testing.Platform"}}))
+            self.assertNotEqual(baseline, verify.component_inputs(root, "Debug"))
+
+    def test_failed_build_preserves_project_command_and_diagnostics(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            logs = root / "artifacts"
+            def fail(command, **kwargs):
+                kwargs["stdout"].write("Example compiler diagnostic CS0001")
+                raise subprocess.CalledProcessError(1, command)
+            with patch.object(verify.subprocess, "run", side_effect=fail), self.assertRaisesRegex(
+                    ValueError, "Hexalith.Platform.Custody.Tests.csproj preparation failed"):
+                verify.component_inputs(root, "Debug", logs)
+            log_directory = logs / "Hexalith.Platform.Custody.Tests"
+            self.assertIn("CS0001", (log_directory / "build.log").read_text())
+            self.assertEqual(["dotnet", "build"], json.loads((log_directory / "build-command.json").read_text())[:2])
+
     def test_joint_route_requires_exact_supplied_raw_profile_before_any_cohort_contact(self):
         import hashlib
         platform=Path(__file__).resolve().parents[2]
@@ -229,6 +320,9 @@ class QualificationMatrixTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.platform = Path(temporary.name)
+        inputs = patch.object(verify, "component_inputs", return_value="a" * 64)
+        self.inputs = inputs.start()
+        self.addCleanup(inputs.stop)
         subprocess.run(["git", "init", "-q", self.platform], check=True)
         subprocess.run(["git", "-C", self.platform, "-c", "user.name=Component fixture",
                         "-c", "user.email=component@example.invalid", "commit", "--allow-empty", "-qm", "test: component fixture"],
@@ -237,8 +331,7 @@ class QualificationMatrixTests(unittest.TestCase):
     def test_component_attempt_identity_cannot_reuse_debug_evidence_for_release(self):
         profile = complete_profile()
         head = "a" * 40
-        self.assertEqual(verify.attempt_key(head, profile), verify.attempt_key(head, profile, "Debug"))
-        self.assertNotEqual(verify.attempt_key(head, profile, "Debug"), verify.attempt_key(head, profile, "Release"))
+        self.assertNotEqual(verify.attempt_key(head, profile, "Debug", "a" * 64), verify.attempt_key(head, profile, "Release", "a" * 64))
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             selected = write_profile(root, profile)
@@ -257,7 +350,48 @@ class QualificationMatrixTests(unittest.TestCase):
             attempt = json.loads((release_artifacts / verify.ATTEMPT_NAME).read_text())
             self.assertEqual(attempt["configuration"], "Release")
             self.assertEqual(attempt["dependencyMode"], "public-packages")
-            self.assertEqual(attempt["attemptKey"], verify.attempt_key(head, profile, "Release"))
+            self.assertEqual(attempt["attemptKey"], verify.attempt_key(head, profile, "Release", "a" * 64))
+
+    def test_source_drift_cannot_reuse_or_replace_the_first_component_attempt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            profile = write_profile(temp, complete_profile())
+            artifacts = Path(temp) / "attempt"
+            with patch.object(verify, "run_suite", side_effect=passed_suite) as suites:
+                self.assertEqual(1, verify.verify(self.platform, artifacts, profile))
+                first = {p: p.read_bytes() for p in artifacts.rglob("*") if p.is_file()}
+                self.inputs.return_value = "b" * 64
+                with patch.object(verify.sys, "stderr", new_callable=StringIO) as errors:
+                    self.assertEqual(1, verify.verify(self.platform, artifacts, profile))
+                self.assertIn("keeps the first complete attempt", errors.getvalue())
+                self.assertEqual(suites.call_count, 2)
+                self.assertEqual(first, {p: p.read_bytes() for p in artifacts.rglob("*") if p.is_file()})
+
+    def test_unavailable_input_preserves_an_unqualified_first_attempt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            profile = write_profile(temp, complete_profile())
+            artifacts = Path(temp) / "attempt"
+            self.inputs.side_effect = PermissionError("unreadable suite input")
+            with patch.object(verify, "run_suite") as suites:
+                self.assertEqual(1, verify.verify(self.platform, artifacts, profile))
+                first = (artifacts / verify.ATTEMPT_NAME).read_bytes()
+                self.assertFalse(json.loads(first)["componentQualification"])
+                self.inputs.side_effect = None
+                self.assertEqual(1, verify.verify(self.platform, artifacts, profile))
+                self.assertEqual(first, (artifacts / verify.ATTEMPT_NAME).read_bytes())
+                suites.assert_not_called()
+
+    def test_source_drift_during_suites_records_unqualified_first_attempt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            profile = write_profile(temp, complete_profile())
+            artifacts = Path(temp) / "attempt"
+            self.inputs.side_effect = ["a" * 64, "b" * 64]
+            with patch.object(verify, "run_suite", side_effect=passed_suite):
+                self.assertEqual(1, verify.verify(self.platform, artifacts, profile))
+            evidence = json.loads((artifacts / "evidence" / "blocked.json").read_text())
+            self.assertFalse(evidence["componentQualification"])
+            self.assertIn("componentInputsChanged", evidence["coverageGaps"])
+            attempt = json.loads((artifacts / verify.ATTEMPT_NAME).read_text())
+            self.assertFalse(attempt["componentQualification"])
 
     def test_profile_absent_refuses_when_every_required_cell_passed(self):
         with tempfile.TemporaryDirectory() as temp:

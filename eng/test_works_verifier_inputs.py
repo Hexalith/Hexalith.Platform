@@ -85,6 +85,10 @@ class FinalInputClosureTests(unittest.TestCase):
         self.write(self.output_runner, self.runner.read_text())
         self.write(self.output_testing, "qualified test helpers")
         self.binaries = {name: self.root / "binaries" / (name + ".dll") for name in ("runtime", "adapter")}
+        self.runtime_roots = [self.root / "runtime" / name for name in ("works", "eventstore", "retained-host")]
+        self.binaries["runtime"] = self.runtime_roots[0] / "runtime.dll"
+        for directory in self.runtime_roots:
+            self.write(directory / "resources/runtime.json", "runtime settings")
         self.binaries["consumer"] = self.consumer / "Hexalith.Works.IntegrationTests.dll"
         for name, path in self.binaries.items():
             self.write(path, name)
@@ -101,7 +105,8 @@ class FinalInputClosureTests(unittest.TestCase):
             "sourceProducers": {"runtimeSdk": runtime_source_snapshot(self.sdk)},
             "worksConsumerSource": gate.source_snapshot(self.works),
             "platformConsumerSources": gate.platform_consumer_sources(self.platform),
-            "runtimeArtifacts": {str(self.binaries["runtime"]): gate.sha256(self.binaries["runtime"])},
+            "runtimeDirectories": [str(path) for path in self.runtime_roots],
+            "runtimeArtifacts": gate.runtime_artifacts(self.runtime_roots),
             "consumer": {"root": str(self.consumer), "artifacts": gate.consumer_artifacts(self.consumer)},
             "platformAdapterAssemblies": {str(self.binaries["adapter"]): gate.sha256(self.binaries["adapter"])},
             "verifierSha256": gate.sha256(self.verifier),
@@ -209,11 +214,13 @@ class FinalInputClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "qualified SDK source graph changed"):
             self.check()
         self.revisions.pop(str(self.sdk))
-        with (
-            self.changed(self.catalog / "Props/Hexalith.Build.props"),
-            self.assertRaisesRegex(ValueError, "qualified SDK source graph changed"),
-        ):
-            self.check()
+        for path in (self.catalog / "Props/Hexalith.Build.props", self.sdk / "global.json"):
+            with (
+                self.subTest(path=path),
+                self.changed(path),
+                self.assertRaisesRegex(ValueError, "qualified SDK source graph changed"),
+            ):
+                self.check()
 
     def test_works_source_bytes_membership_and_revision_are_rechecked(self):
         for kind in ("changed", "added", "removed"):
@@ -254,6 +261,26 @@ class FinalInputClosureTests(unittest.TestCase):
                 self.assertRaisesRegex(ValueError, category + ".*changed during"),
             ):
                 self.check()
+
+    def test_final_runtime_membership_is_rechecked_for_every_output(self):
+        for directory in self.runtime_roots:
+            for kind, filename in (("added", "resources/new.json"), ("removed", "resources/runtime.json")):
+                with (self.subTest(directory=directory, kind=kind), self.changed(directory / filename, kind),
+                      self.assertRaisesRegex(ValueError, "runtime artifact membership or bytes changed")):
+                    self.check()
+        self.check()
+
+    def test_runtime_inventory_refuses_missing_outputs_and_symbolic_links(self):
+        with self.assertRaisesRegex(ValueError, "runtime output directory"):
+            gate.runtime_artifacts([self.root / "missing"])
+        link = self.runtime_roots[0] / "linked"
+        for target in (self.fixture, self.runtime_roots[1]):
+            link.symlink_to(target)
+            try:
+                with self.assertRaisesRegex(ValueError, "symbolic link"):
+                    self.check()
+            finally:
+                link.unlink()
 
     def test_copied_resources_runner_and_test_helper_binary_are_rechecked_without_source_changes(self):
         source_inventory = gate.fixture_sources(self.works)
@@ -370,6 +397,22 @@ class FinalInputClosureTests(unittest.TestCase):
             self.assertRaisesRegex(ValueError, "Snapshot current canonical inputs changed"),
         ):
             self.check(manifest)
+
+    def test_snapshot_final_check_refuses_a_changed_build_root_outside_the_export_links(self):
+        manifest = self.root / "snapshot.json"
+        self.write(manifest, "{}")
+        binding = {"manifestSha256": gate.sha256(manifest)}
+        self.summary["platformSourceSnapshot"] = binding
+        self.write(self.platform / ".gitmodules", '[submodule "Builds"]\n path = references/Hexalith.Builds\n')
+        builds = self.root / "alternate-builds"
+        catalog = builds / "Props/Directory.Packages.props"
+        self.write(catalog, "selected")
+        with (patch.dict("os.environ", {"HexalithBuildsRoot": str(builds)}),
+              patch.object(gate.works_host_snapshot, "verify", return_value=binding)):
+            self.summary["canonicalSources"]["Platform"] = gate.canonical_source_snapshot(self.platform)
+            self.check(manifest)
+            with (self.changed(catalog), self.assertRaisesRegex(ValueError, "Platform build dependency selection")):
+                self.check(manifest)
 
     def test_host_port_ranges_are_rechecked(self):
         self.ephemeral_probe.return_value = (32769, 60999)

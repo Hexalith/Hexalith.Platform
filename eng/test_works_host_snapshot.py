@@ -1,5 +1,6 @@
 """Exports bind full origin revisions, overlays, ordinary inputs and dependency targets."""
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -11,6 +12,9 @@ import works_host_snapshot as snapshot
 
 class WorksHostSnapshotTests(unittest.TestCase):
     def setUp(self):
+        roots = patch.dict(os.environ, {module.replace(".", "") + "Root": "" for module in snapshot.SOURCE_DEPENDENCIES})
+        roots.start()
+        self.addCleanup(roots.stop)
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
@@ -29,6 +33,14 @@ class WorksHostSnapshotTests(unittest.TestCase):
         catalog.write_text("selected producer catalog")
         self.call("add", "src", ".gitmodules")
         self.call("commit", "-qm", "baseline")
+        self.builds = catalog.parents[1]
+        self.tool = self.builds / "src/libraries/Hexalith.Builds.Tooling/Tool.cs"
+        self.tool.parent.mkdir(parents=True)
+        self.tool.write_text("tracked tooling")
+        for args in (("init", "-q"), ("config", "user.email", "fixture@example.test"),
+                     ("config", "user.name", "Fixture"), ("add", "."), ("commit", "-qm", "initial tooling")):
+            snapshot.git(self.builds, *args)
+        self.tool.write_text("compiled working overlay")
         self.commit = snapshot.revision(self.origin)
         (self.origin / "src/runtime.cs").write_text("working overlay")
         (self.origin / "src/new.cs").write_text("new input")
@@ -170,6 +182,113 @@ class WorksHostSnapshotTests(unittest.TestCase):
     def test_selected_root_dependency_catalog_bytes_remain_bound(self):
         (self.origin / "references/Hexalith.Builds/Props/Directory.Packages.props").write_text("different producer")
         with self.assertRaisesRegex(ValueError, "dependency catalog"): self.verify()
+
+    def test_direct_and_exported_snapshots_bind_dependency_revision_and_working_source(self):
+        from verify_works_host import canonical_source_snapshot
+
+        direct = canonical_source_snapshot(self.origin)
+        selected = direct["dependencyInputs"]["references/Hexalith.Builds"]
+        self.assertEqual(selected["commit"], snapshot.revision(self.builds))
+        self.assertEqual(selected["sourceFiles"][self.tool.relative_to(self.builds).as_posix()],
+                         snapshot.digest(b"compiled working overlay"))
+        self.assertEqual(direct["dependencyInputs"], self.verify()["dependencyInputs"])
+        changes = ((self.tool, "changed"), (self.tool, None),
+                   (self.builds / "Props/Hexalith.Build.props", "new import"),
+                   (self.builds / "schemas/hexalith.ci.v1.json", "new embedded resource"))
+        for path, value in changes:
+            with self.subTest(path=path, value=value):
+                previous = path.read_bytes() if path.exists() else None
+                if value is None:
+                    path.unlink()
+                else:
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(value)
+                with self.assertRaisesRegex(ValueError, "dependency catalog, source inputs or revision"):
+                    self.verify()
+                self.assertNotEqual(canonical_source_snapshot(self.origin), direct)
+                if previous is None:
+                    path.unlink()
+                else:
+                    path.write_bytes(previous)
+        generated = self.tool.parent / "obj/Generated.cs"
+        generated.parent.mkdir()
+        generated.write_text("post-compile output")
+        self.assertEqual(canonical_source_snapshot(self.origin), direct)
+        self.verify()
+        snapshot.git(self.builds, "commit", "--allow-empty", "-qm", "new revision with identical inputs")
+        self.assertNotEqual(canonical_source_snapshot(self.origin), direct)
+        with self.assertRaisesRegex(ValueError, "source inputs or revision"):
+            self.verify()
+
+    def test_dependency_build_input_link_is_refused(self):
+        link = self.tool.parent / "Linked.cs"
+        link.symlink_to(self.tool)
+        with self.assertRaisesRegex(ValueError, "Dependency build input cannot be a symbolic link"):
+            self.verify()
+
+    def test_direct_platform_selects_the_sibling_catalog_and_works_prefers_its_populated_reference(self):
+        from works_toolchain import builds_catalog
+
+        sibling = self.root / "Hexalith.Builds"
+        catalog = sibling / "Props/Directory.Packages.props"
+        catalog.parent.mkdir(parents=True)
+        catalog.write_text("sibling catalog")
+        self.assertEqual(builds_catalog(self.origin), catalog)
+        selected = snapshot.dependency_inputs(self.origin)
+        self.assertEqual(selected["build/Hexalith.Builds"]["root"], str(sibling))
+        self.assertEqual(selected["references/Hexalith.Builds"]["commit"], snapshot.revision(self.builds))
+        self.verify()  # The export still authenticates its original dependency link.
+
+        (self.origin / "Hexalith.Works.slnx").touch()
+        self.assertNotIn("build/Hexalith.Builds", snapshot.dependency_inputs(self.origin))
+        self.builds.rename(self.root / "saved-builds")
+        self.builds.mkdir()
+        (self.origin / "Hexalith.Works.slnx").unlink()
+        self.assertEqual(set(snapshot.dependency_inputs(self.origin)), {"build/Hexalith.Builds"})
+        with self.assertRaisesRegex(ValueError, "Missing selected dependency catalog"):
+            self.verify()
+
+    def test_configured_relative_source_is_bound_from_execution_root_including_overlay_drift(self):
+        from verify_works_host import canonical_source_snapshot
+        from works_toolchain import builds_catalog
+
+        # Keep the override outside the snapshot's copied source and separate from its Git origin.
+        execution = self.root / "isolated/platform"
+        execution.parent.mkdir()
+        manifest = self.root / "isolated.json"
+        snapshot.create(self.origin, execution, manifest)
+        alternate = execution.parent / "alternate-builds"
+        catalog = alternate / "Props/Directory.Packages.props"
+        catalog.parent.mkdir(parents=True)
+        catalog.write_text("configured catalog")
+        with patch.dict(os.environ, {"HexalithBuildsRoot": "../alternate-builds"}):
+            self.assertEqual(builds_catalog(execution).resolve(), catalog)
+            before = canonical_source_snapshot(self.origin, execution_root=execution)
+            selection = before["dependencyInputs"]["build/Hexalith.Builds"]
+            self.assertEqual(selection["root"], str(alternate))
+            self.assertEqual(set(selection["sourceFiles"]), {"Props/Directory.Packages.props"})
+            catalog.write_text("configured overlay changed")
+            self.assertNotEqual(canonical_source_snapshot(self.origin, execution_root=execution), before)
+            snapshot.verify(manifest, execution)
+        self.assertNotIn("build/Hexalith.Builds", canonical_source_snapshot(
+            self.origin, execution_root=execution)["dependencyInputs"])
+
+    def test_declared_exported_dependency_tracks_source_without_attributing_an_ancestor_commit(self):
+        declaration = "references/Hexalith.Tenants"
+        with (self.origin / ".gitmodules").open("a") as file:
+            file.write(f'[submodule "{declaration}"]\n path = {declaration}\n')
+        tenant = self.origin / declaration
+        tenant.mkdir()
+        self.assertNotIn(declaration, snapshot.dependency_inputs(self.origin))
+        source = tenant / "src/Hexalith.Tenants.Contracts/Query.cs"
+        source.parent.mkdir(parents=True)
+        source.write_text("exported contract")
+        inputs = snapshot.dependency_inputs(self.origin)[declaration]
+        self.assertIsNone(inputs["commit"])
+        self.assertEqual(inputs["sourceFiles"], {"src/Hexalith.Tenants.Contracts/Query.cs":
+                         snapshot.digest(b"exported contract")})
+        source.unlink()
+        self.assertNotIn(declaration, snapshot.dependency_inputs(self.origin))
 
     def test_dependency_substitution_or_extra_links_refuse(self):
         dependency = self.export / "references/Dependency"

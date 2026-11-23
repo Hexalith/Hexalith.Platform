@@ -19,7 +19,7 @@ Component qualification pins a complete deployment profile:
 ./eng/verify-agents-host.sh --mode Full --profile /path/to/agents-deployment-profile.json
 ```
 
-The default artifacts directory keeps one complete attempt. A later commit or profile needs a fresh `--artifacts-path`.
+The default artifacts directory keeps the first complete attempt. Use a fresh `--artifacts-path` after changing the deployment profile, build configuration, suite sources or dependencies. A replay checks the recorded inputs before reusing the evidence.
 
 The component route retains the required custody and guard results, but exits 1 even when every cell passes. Its evidence names component qualification and `dependencyAvailable:false`. Only the installed `OQ-5.4-1` joint route can return success for Full. The joint route remains gated on a Committed `EXT-PROTECTION-1` record, exact accepted profile, plan, trust anchors and installed inputs; a successful joint result still requires register acceptance before either record becomes Available.
 

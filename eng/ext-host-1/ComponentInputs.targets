@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <_ExtHostPriorCommonTargets Condition="'$(_ExtHostPriorCommonTargets)' == ''">$(MSBuildExtensionsPath)/v$(MSBuildToolsVersion)/Custom.After.Microsoft.Common.targets</_ExtHostPriorCommonTargets>
+  </PropertyGroup>
+  <Import Project="$(_ExtHostPriorCommonTargets)" Condition="Exists('$(_ExtHostPriorCommonTargets)')" />
+  <ItemGroup>
+    <ProjectReferenceTargets Include="CollectExtHostInputs" Targets="CollectExtHostInputs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <_ExtHostResolvePackages Condition="'$(UsingMicrosoftNETSdk)' == 'true'">ResolvePackageAssets;CoreCompile</_ExtHostResolvePackages>
+  </PropertyGroup>
+  <Target Name="CollectExtHostInputs" DependsOnTargets="$(_ExtHostResolvePackages)">
+    <PropertyGroup>
+      <_ExtHostInventory>$(ExtHostInputsDirectory)/$([System.Guid]::NewGuid())</_ExtHostInventory>
+    </PropertyGroup>
+    <Error Condition="'$(UsingMicrosoftNETSdk)' == 'true' and '@(CscCommandLineArgs)' == ''" Text="C# compiler arguments are unavailable." />
+    <WriteLinesToFile File="$(_ExtHostInventory).args" Lines="@(CscCommandLineArgs)" Overwrite="true" />
+    <ItemGroup>
+      <_ExtHostInput Include="$(MSBuildProjectFullPath);$(ProjectAssetsFile);@(Compile);@(EmbeddedResource);@(Content);@(AdditionalFiles);@(None);@(Analyzer);@(EditorConfigFiles);@(PublishedTenantQuerySelectorFixture)" />
+      <_ExtHostInput Include="$(TargetPath)" Condition="'$(UsingMicrosoftNETSdk)' == 'true'" />
+      <_ExtHostInput Include="@(ResolvedCompileFileDefinitions);@(RuntimeCopyLocalItems);@(RuntimeTargetsCopyLocalItems);@(ResourceCopyLocalItems);@(NativeCopyLocalItems);@(ResolvedAnalyzers);@(Reference->'%(HintPath)')" />
+    </ItemGroup>
+    <!-- Keep evaluations of the same project under different inherited properties separate. -->
+    <WriteLinesToFile File="$(_ExtHostInventory).inputs"
+                      Lines="@(_ExtHostInput->'%(FullPath)')" Overwrite="true" />
+  </Target>
+</Project>
