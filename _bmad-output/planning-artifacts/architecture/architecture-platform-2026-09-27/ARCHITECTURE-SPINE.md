@@ -396,6 +396,8 @@ The Platform MVP envelope — one-hour RPO, four-hour disaster RTO, 30-minute ba
 
 Resolve the checkout’s toolchain from its manifests. At the November 19 reviewed revision the SDK is 11.0.100 (`latestPatch`), AppHost and its required Aspire CLI are 17.0.0, and the prepared workspace `hexalith-module` pin is 6.3.2. The manifest selects the local tool. Platform acceptance requires Story 2.10 lifecycle evidence with the Story 2.14 adoption prerequisites. [SDK](../../../../global.json) · [AppHost](../../../../apphost.cs) · [Prepared tool](../../../../.config/dotnet-tools.json) · [CLI requirements](../../../../README.md#requirements)
 
+The released Builds catalog supplies the exact local and CI Dapr runtime, CLI and .NET SDK versions. The hosted profile inventory binds the exact Dapr chart, CRDs, control-plane and sidecar images, embedded component revision and qualified configuration. Select the latest stable runtime at candidate intake and freeze the selected identities through qualification and release. [Builds binding](../../../../eng/builds-tuple.json) · [Approved Dapr adoption](../../sprint-change-proposal-2026-11-23.md)
+
 The table records the September 27 seed at Platform `b9410d3` and Builds catalog `0610f78`. For the separate Story 4.5 probe, Aspire was 13.6.4, its Kubernetes hosting package was 13.6.4-preview.1.26523.11 and the Dapr integration was 13.6.2-beta.959. [Story 4.5 probe evidence](../../../../eng/helm-qualification/README.md)
 
 | Name | September 27 version | September 27 evidence or constraint |

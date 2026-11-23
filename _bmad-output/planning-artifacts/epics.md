@@ -1573,6 +1573,7 @@ So that local and CI integration evidence can be accepted.
 **Given** each scenario
 **When** recorded
 **Then** the record holds the source revision, environment, result, actual startup duration, any timeout override and diagnostics
+**And** it binds the released Builds catalog and SDK package lock and records the actual Dapr CLI and `daprd` identities observed. For partial startup, record which tools were observed and where startup stopped.
 **And** no other environment's resources were touched
 
 **Given** the lifecycle implementation
@@ -2219,6 +2220,11 @@ So that hosted deployment has one definition, or we trigger the maintained-chart
 
 The historical export selected the maintained chart. The original probe versions and results remain dated evidence. For current versions use the [SDK](../../global.json), [AppHost](../../apphost.cs), [tool manifest](../../.config/dotnet-tools.json) and [CLI requirements](../../README.md#requirements). Stories 2.10 and 2.14 govern tool acceptance.
 
+**Given** the Dapr 1.19.2 hosted candidate
+**When** the maintained chart is qualified
+**Then** the versioned qualifier inputs identify the verified chart, canonical CRDs, injector, control-plane and sidecar images, and the embedded component version proposed for the Story 4.9 inventory
+**And** all three render modes and the isolated install, upgrade, recovery, removal and ownership checks below run on those exact inputs. [Approved Dapr adoption](sprint-change-proposal-2026-11-23.md)
+
 **Given** the same reference graph and environment profile
 **When** the maintained chart renders normal, recovery and remove-workloads and the environment renderer derives the baseline/candidate union
 **Then** each application render contains zero Dapr Components and the reference environment output contains all eight with the expected names, scopes and provider bindings
@@ -2340,6 +2346,7 @@ So that staging and production share one qualified runtime definition with bound
 **Given** the EventStore-ratified profile template
 **When** the profile inventory is created
 **Then** it pins the environment-layer and shared-infrastructure providers and topology, including the Dapr control plane with sidecar drop-all-capabilities, and separately pins the deploy toolchain (including the exact Helm version)
+**And** the Dapr entry records the exact version and digest of the chart, the CRD bytes, the injector, control-plane and sidecar images, the embedded component revision and the configuration submitted for qualification. Bind the Story 4.5 result to these same identities.
 **And** the profile digest covers the template plus those pins, and nothing else
 
 **Given** the hosted catalog
@@ -2557,6 +2564,10 @@ So that no staging caller can reach apps outside its declared permissions.
 **When** configured
 **Then** sidecars drop all capabilities
 
+**Given** the Dapr inventory from Story 4.9
+**When** the staging envelope is qualified
+**Then** the evidence binds that inventory and the observed runtime identities to mTLS caller identity, deny-by-default invocation, component scope, the scoped WorkflowAccessPolicy, readiness, restricted sidecar privileges and both restart cases below
+
 **Given** one policy-only update and one HTTPEndpoint-only update
 **When** each is applied within an attempt
 **Then** every consuming sidecar restarts before readiness or qualification passes
@@ -2582,6 +2593,12 @@ So that event delivery survives failures, with retention, dead-lettering and bac
 **Given** a declared topic
 **When** composed in a hosted environment
 **Then** Platform renders its Subscription with the bound component and dead-letter policy
+
+**Given** Dapr 1.19.2 is proposed as a successor broker candidate
+**When** it enters qualification intake
+**Then** EventStore Story 3.21 owns its versioned runtime lock, the source provenance of claimed broker fixes, and the independent verifier. Platform owns the candidate configuration and authorization request.
+**And** intake checks the outstanding failure predicates against the official component sources before an attempt is allocated. An authorized attempt uses both brokers and all 24 vectors. A missing prerequisite or failed result leaves the corresponding guarantee open.
+**And** broker selection requires the staging proof above and EventStore AD-26 acceptance. [Approved Dapr adoption](sprint-change-proposal-2026-11-23.md)
 
 **Owner-accepted bounded local/CI work (2026-11-11):** The owner selected the
 recommended manual hosted workflow for the first Platform configuration candidate.
@@ -3041,6 +3058,7 @@ So that production only ever receives releases proven end to end.
 **When** E2E runs
 **Then** every required check of every declared flow of every included module runs against the deployed real services
 **And** the results record the serving release, the production working baseline they were computed against, and the suite, profile and configuration digests
+**And** the existing profile binding records the observed Dapr runtime and profile constituent identities and verifies them against the candidate inventory
 
 **Given** any required check that failed, was skipped, is incomplete or has no completed passing result
 **When** the evidence is recorded
@@ -3090,6 +3108,10 @@ So that automatic rollback is only ever used when it is safe.
 **When** recorded
 **Then** the compatibility evidence names the recorded production baseline and its prepared rollback set
 **And** a failed rehearsal is recorded as breaking evidence, not as a staging failure
+
+**Given** the candidate changes the Dapr runtime
+**When** compatibility is rehearsed on the exact recorded baseline and candidate
+**Then** the rollback set demonstrates that the baseline reads candidate-written state and events. Failed readback follows the existing incompatible-release admission and recovery rules.
 
 **Given** staging retirements of catalog entries, keys or secrets
 **When** applied

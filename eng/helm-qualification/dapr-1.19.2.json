@@ -1,0 +1,151 @@
+{
+  "schema": "hexalith.helm-qualification.dapr-candidate.v1",
+  "helm": {
+    "version": "4.2.0",
+    "url": "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz",
+    "sha256": "97dbeb971be4ac4b27e3839976d9564c0fb35c6f3b1da89dd1e292d236af4096"
+  },
+  "kind": "0.31.0",
+  "nodeImage": "kindest/node:v1.35.0@sha256:4613778f3cfcd10e615029370f5786704559103cf27bef934597ba562b269661",
+  "gateway": {
+    "version": "1.5.1",
+    "url": "https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml",
+    "sha256": "751002b3b91a87f7ae3bd2517c79a47a8d7ed6702901808a1cf9bd97d284f9b8"
+  },
+  "dapr": {
+    "version": "1.19.2",
+    "url": "https://dapr.github.io/helm-charts/dapr-1.19.2.tgz",
+    "sha256": "3c0e68d61dccf6dc30bf153cb7bd47b50dbe5f8cb889ec2d72b2ec38fa725efa",
+    "indexUrl": "https://dapr.github.io/helm-charts/index.yaml",
+    "source": {
+      "repository": "https://github.com/dapr/dapr",
+      "revision": "66efc169ba72dca18ab73394c98381d68cda88f0",
+      "rawRoot": "https://raw.githubusercontent.com/dapr/dapr/66efc169ba72dca18ab73394c98381d68cda88f0"
+    },
+    "goModSha256": "c3f32083d48f34304ec813a2715617b7408b5fe48fb6d740c53e3708b9455c65",
+    "componentsContrib": {
+      "repository": "https://github.com/dapr/components-contrib",
+      "version": "1.19.2",
+      "revision": "ab395ab88023febfb824de46d474c6d299e74fb1"
+    },
+    "crds": {
+      "components.yaml": "47acb92af4b4c403832c0d7acc32cab2d72c58be630dc7fe0cdbed702c3b1434",
+      "configuration.yaml": "13fc91f9ef09639efea76ea3bb8384563442c3609af8ba4ff8b96d713bf226c8",
+      "httpendpoints.yaml": "29210af44ef18d444659142547769884aa22e27483395deef5b27fc2f6c19d5e",
+      "mcpservers.yaml": "5bb37d8e927a108bfbd97db51bd5929fc50d537f8d771feb2b9bf5375d592c93",
+      "resiliency.yaml": "62ca4e10fd61793f44265a3864f2863cf55508a681ac689508262257deb51356",
+      "subscription.yaml": "1864c443890e83f7d2df0336ed5d5bda265398681bd4502c36a59c25e620667c",
+      "workflowaccesspolicy.yaml": "4b11a6556c5d57583e360dc9ad552b3b4871230b0aa5914255a8d8031991d769"
+    },
+    "startingRuntime": {
+      "version": "1.18.7",
+      "url": "https://dapr.github.io/helm-charts/dapr-1.18.7.tgz",
+      "sha256": "bd540acd198dc8efa4314208325d8e7eaf89f54accdbd1fad62b484fcf9cabf2"
+    },
+    "crdsChangedFromStartingRuntime": [
+      "configuration.yaml",
+      "workflowaccesspolicy.yaml"
+    ],
+    "images": {
+      "operator": {
+        "releaseTag": "ghcr.io/dapr/operator:1.19.2",
+        "indexDigest": "sha256:3f4ea473731716942d53270a9c4351b32e73a0a717b0328831bf114f7929b17f",
+        "linuxAmd64": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+      },
+      "sentry": {
+        "releaseTag": "ghcr.io/dapr/sentry:1.19.2",
+        "indexDigest": "sha256:3d93c1bf742b52909926d73417fe4651028ab8d9293cda78e1f671f6e018dbd7",
+        "linuxAmd64": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+      },
+      "injector": {
+        "releaseTag": "ghcr.io/dapr/injector:1.19.2",
+        "indexDigest": "sha256:ebdd4e6ff248b7e936553653df2448a4fd8011d5e61916324fb0ac657c6395d5",
+        "linuxAmd64": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+      },
+      "placement": {
+        "releaseTag": "ghcr.io/dapr/placement:1.19.2",
+        "indexDigest": "sha256:3c687e9526394bf708a8f8eb5dbb71376110bafb552250172eb5c018947017e8",
+        "linuxAmd64": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+      },
+      "scheduler": {
+        "releaseTag": "ghcr.io/dapr/scheduler:1.19.2",
+        "indexDigest": "sha256:e6f7319295425161dd23678a6014c9eb74326fee826baa5a21c431525cbb4bf0",
+        "linuxAmd64": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+      },
+      "daprd": {
+        "releaseTag": "ghcr.io/dapr/daprd:1.19.2",
+        "indexDigest": "sha256:7839fbb66d4be24ec52e347bec2dca66a91bef3079d8c8d57676f6d3ef92654f",
+        "linuxAmd64": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+      }
+    },
+    "values": {
+      "global": {
+        "tag": "1.19.2",
+        "daprControlPlaneArch": "amd64",
+        "ha": {
+          "enabled": false
+        },
+        "mtls": {
+          "enabled": true,
+          "controlPlaneTrustDomain": "cluster.local"
+        },
+        "scheduler": {
+          "enabled": true,
+          "placement": {
+            "enabled": false
+          }
+        }
+      },
+      "dapr_operator": {
+        "image": {
+          "name": "ghcr.io/dapr/operator@sha256:68246e116b1578779ca2b14439b777574853396a681a2d2bcc5486af099ea81a"
+        }
+      },
+      "dapr_placement": {
+        "image": {
+          "name": "ghcr.io/dapr/placement@sha256:6a549b5e6e1d05b8b624c8cd978a005176ba578ac694ba86b68beaec36a59766"
+        },
+        "volumeclaims": {
+          "enabled": false
+        }
+      },
+      "dapr_scheduler": {
+        "image": {
+          "name": "ghcr.io/dapr/scheduler@sha256:b1e03ea5c86c70dec5127773f5e404fa61584ef2e1cd654cfa27f5197a494663"
+        },
+        "cluster": {
+          "inMemoryStorage": true
+        }
+      },
+      "dapr_sentry": {
+        "image": {
+          "name": "ghcr.io/dapr/sentry@sha256:b518793fab70f8fce10cc36a87aacd383afe2b886aaf7c324d8b8e6434e9bf62"
+        }
+      },
+      "dapr_sidecar_injector": {
+        "injectorImage": {
+          "name": "ghcr.io/dapr/injector@sha256:ef16117d74cea0c2bdab37a4f540e32485eddf6661422b88cbcea478277c3e25"
+        },
+        "image": {
+          "name": "ghcr.io/dapr/daprd@sha256:7be54fc884cc1f8704916cadfc6a4a014ae8e82bfd19f700a87294565b8a532b"
+        },
+        "sidecarRunAsNonRoot": true,
+        "sidecarRunAsUser": 1654,
+        "sidecarReadOnlyRootFilesystem": true,
+        "sidecarDropALLCapabilities": true
+      }
+    }
+  },
+  "builds": {
+    "version": "6.6.2",
+    "releaseTag": "v6.6.2",
+    "revision": "2d9ef8b454ff897daca0149f3549844f584b634a",
+    "catalogSha256": "c545ca23630d17e85935c5be3a3a0df4843f9727092c2e87e3b0c524d2441eff",
+    "daprCli": "1.19.1",
+    "daprSdk": "1.19.1"
+  },
+  "referenceGraph": {
+    "reviewedPlatformRevision": "759bb89753de7e70cb0b0db61c7142e96ec5bac0",
+    "sha256": "820d410e1a892f13b64325d08d18358226c4f9e046328964acbbf1a8b2de6e55"
+  }
+}

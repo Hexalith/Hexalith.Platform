@@ -40,9 +40,10 @@ cases and nine extension cases, totaling 572 executions with 569 unique
 identities and three repeated regressions. Its public Parties3.1/Tenants7.0.5/
 Memories3.0.25 and private SDK4.1/4.2 observations retain their original subjects;
 they are not current orchestration requirements or acceptance for today's image
-tuples. Historical Works behavior evidence remains bound to Dapr1.18.7. The
-current Works toolchain records independently verified official Dapr1.19.1
-executable identities; its complete parity suite remains the behavioral gate.
+tuples. Historical Works behavior evidence remains bound to Dapr 1.18.7. The
+Works verifier loads the exact runtime and CLI from Builds and checks the runtime
+hash against the matching Platform record. The complete parity suite remains the
+behavioral gate. [Works toolchain and parity](works-host-parity.md)
 
 The read-only verifier runs the reviewed default-branch workflow SHA, so an old
 callback cannot hide behind the absence of newer helper files. Exact workflow ref,

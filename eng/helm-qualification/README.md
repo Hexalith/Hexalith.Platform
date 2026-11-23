@@ -135,10 +135,12 @@ python3 eng/helm-qualification/qualify.py
 ```
 
 `toolchain.json` pins Helm 4.2.0, kind, the digest-qualified Kubernetes node image,
-Gateway CRDs and Dapr 1.18.7 for the historical probe. The current Builds catalog
-selects Dapr 1.19.1. The live qualifier checks its pinned patch against Builds
-and refuses that mismatch. An aligned toolchain and fresh ownership evidence
-are required before hosted use. Downloaded CRDs and the Dapr chart
+Gateway CRDs and Dapr 1.18.7 for the historical probe. The live qualifier requires
+its runtime pin to match the released Builds catalog. The November 23 course
+correction selects Dapr 1.19.2 for fresh hosted qualification using a versioned,
+aligned toolchain and new ownership evidence. [Builds catalog](../../references/Hexalith.Builds/Props/Directory.Packages.props) · [Approved Dapr adoption](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-23.md)
+
+Downloaded CRDs and the Dapr chart
 must match the recorded SHA256 values. The qualifier downloads Helm from its pinned
 distribution URL, verifies the archive SHA256, extracts its binary into its private
 directory and supplies that binary to the chart tests. Every transfer requires curl
