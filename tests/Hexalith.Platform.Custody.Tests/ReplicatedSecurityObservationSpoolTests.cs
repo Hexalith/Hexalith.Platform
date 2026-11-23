@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using Hexalith.EventStore.Contracts.Security;
+using Microsoft.Extensions.Time.Testing;
 using NSubstitute;
 using Shouldly;
 
@@ -109,6 +110,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         const int retainedBytes = 33554381;
         const int paddingLength = 2040;
         var f = new SecuritySpoolFixture();
+        var spool = CreateCapacityTestSpool(f);
         SecurityObservationRecord Seed(int sequence)
         {
             var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("near-bound-" + sequence), f.Clock.Now,
@@ -134,7 +136,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         original.Length.ShouldBe(retainedBytes);
         f.Persisted = original; f.Anchor = head.Revision; f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
         if (pageSaved) { f.FaultSnapshotSave = 2; } else { f.FailNextArchiveSave = true; }
-        (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("after-near-bound"), TestContext.Current.CancellationToken)).ShouldBeNull();
+        (await spool.ObserveAsync(SecuritySpoolFixture.Intent("after-near-bound"), TestContext.Current.CancellationToken)).ShouldBeNull();
         var reserved = f.Read()!;
         reserved.ReservedArchiveDigest.ShouldNotBeNull(); reserved.UsesReservationLayout.ShouldBeFalse();
         f.Persisted!.Length.ShouldBeLessThanOrEqualTo(RecoverableAnchoredState.MaximumPendingBytes);
@@ -145,11 +147,11 @@ public sealed class ReplicatedSecurityObservationSpoolTests
             int position = json.IndexOf("\\u0000", StringComparison.Ordinal);
             f.Persisted = Encoding.UTF8.GetBytes(json.Remove(position, 6).Insert(position, "\\u0001"));
             byte[] changed = f.Persisted.ToArray();
-            (await new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+            (await CreateCapacityTestSpool(f).IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
             f.Persisted.ShouldBe(changed); f.Archives.ShouldBeEmpty();
             return;
         }
-        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        var restarted = CreateCapacityTestSpool(f);
         (await restarted.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
         var successor = f.Read()!;
         successor.Records.ShouldBeEmpty(); successor.UsesReservationLayout.ShouldBeTrue();
@@ -608,6 +610,7 @@ public sealed class ReplicatedSecurityObservationSpoolTests
     public async Task NearByteLimitAdmissionReservesFutureReceiptBeforeAcknowledgment()
     {
         var f = new SecuritySpoolFixture();
+        var spool = CreateCapacityTestSpool(f);
         SecurityObservationRecord Seed(int sequence)
         {
             var intent = SecuritySpoolFixture.Intent("seed-" + sequence + new string('o', 1600)) with
@@ -643,14 +646,14 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         var head = new SecuritySpoolSnapshot(f.Target.InstallationEpoch, records.Count * 2L, records.ToArray());
         f.Persisted = JsonSerializer.SerializeToUtf8Bytes(head); f.Anchor = head.Revision;
         f.AnchorDigest = ReplicatedSecurityObservationSpool.StateDigest(head);
-        var observed = await f.Spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken);
+        var observed = await spool.ObserveAsync(nextIntent, TestContext.Current.CancellationToken);
         observed.ShouldNotBeNull(); observed.Sequence.ShouldBe(records.Count + 1L);
         f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.Records.Single().ShouldBe(observed);
         f.Recorded[nextIntent.ObservationId] = SecuritySpoolFixture.Receipt(observed) with { EventId = maximalReceipt.EventId };
-        (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
+        (await spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(1);
         f.Read()!.Records.Single().Receipt.ShouldBe(f.Recorded[nextIntent.ObservationId]);
         f.PendingBytes.ShouldBeNull();
-        (await f.Spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
+        (await spool.LookupAsync(records[0].Intent, TestContext.Current.CancellationToken)).ShouldBe(records[0]);
     }
 
     /// <summary>Admission reserves the future maximal receipt of every older pending original, not only the newly proposed observation.</summary>
@@ -1079,4 +1082,8 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         recovered.ShouldNotBeNull(); (recovered with { Receipt = null }).ShouldBe(original); recovered.Receipt.ShouldBe(SecuritySpoolFixture.Receipt(original));
         f.PhysicalAppends.ShouldBe(1); f.RecoveryRequests.ShouldBe(1); (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
     }
+
+    // These cases verify the byte limit. Elapsed time advances only when the test advances it.
+    private static ReplicatedSecurityObservationSpool CreateCapacityTestSpool(SecuritySpoolFixture fixture)
+        => new(fixture.Client, new FakeTimeProvider(fixture.Clock.Now), fixture.Authority, fixture.Recorder);
 }
