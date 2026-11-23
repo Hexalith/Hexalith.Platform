@@ -140,6 +140,7 @@ public sealed class PromotionDecisionTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<ReleaseRecord> otherRelease = fixture.Release("release-b");
         StagingEvidenceBinding originalBinding = RecordFixture.Binding("original");
@@ -181,6 +182,34 @@ public sealed class PromotionDecisionTests
     }
 
     [Fact]
+    public async Task PendingDecisionIdCannotBeReusedForAnotherRelease()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        StagingEvidenceBinding binding = RecordFixture.Binding("decision");
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> initial = fixture.Attempt("initial", Staging, 1, release, binding: binding);
+        await store.AcquireAsync(initial.Bytes, release.Bytes, initial.Version, Token);
+        SignedBytes<AttemptRecord> terminal = fixture.Revise(initial, initial.Record.Payload with { Outcome = "non-working" });
+        await store.ReviseAsync(terminal.Bytes, terminal.Version, Token);
+        AttemptStoreDecision? pending = await store.ReadDecisionAsync(binding.DecisionId, Token);
+        Assert.Equal("pending", pending?.State);
+        Assert.Equal(release.Reference, pending?.Release);
+        int writes = backend.Writes;
+
+        SignedBytes<ReleaseRecord> otherRelease = fixture.Release("different-release");
+        SignedBytes<AttemptRecord> conflicting = fixture.Attempt("conflicting", Staging, 2, otherRelease, binding: binding);
+        await AttemptStoreTests.RejectAsync("decision-binding-conflict", () => store.AcquireAsync(
+            conflicting.Bytes, otherRelease.Bytes, conflicting.Version, Token));
+
+        Assert.Equal(pending, await store.ReadDecisionAsync(binding.DecisionId, Token));
+        Assert.Null(await store.ReadAttemptAsync(Staging, "conflicting", Token));
+        Assert.Equal(writes, backend.Writes);
+    }
+
+    [Fact]
     public async Task SupersedingResetRequiresIndependentPrerequisiteProof()
     {
         using RecordFixture fixture = new();
@@ -200,6 +229,77 @@ public sealed class PromotionDecisionTests
         }, Token);
 
         await AttemptStoreTests.RejectAsync("decision-terminal", () => store.ApplyDecisionAsync(scenario.Reservation.Bytes, cancellationToken: Token));
+    }
+
+    [Fact]
+    public async Task SupersedingResetRefusesWhenProofIsWithdrawnAfterContention()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        DecisionScenario scenario = await PrepareAsync(fixture, store, initiatingKind: "in-place-restore");
+        AttemptStoreDecision? pending = await store.ReadDecisionAsync(scenario.Binding.DecisionId, Token);
+        Assert.Equal("pending", pending?.State);
+        SignedBytes<PromotionStopRecord> concurrentStop = fixture.Stop(Staging);
+        int versions = backend.History(AttemptStoreTests.StagingHead).Count;
+        int proofChecks = 0;
+        backend.BeforeReplace = async (key, token) =>
+        {
+            Assert.Equal(AttemptStoreTests.StagingHead, key);
+            backend.BeforeReplace = null;
+            await store.SetStopAsync(concurrentStop.Bytes, token);
+        };
+
+        await AttemptStoreTests.RejectAsync("unverified-prerequisite-reset", () => store.ApplyDecisionAsync(
+            scenario.Supersession.Bytes, (_, _, _, _, _) => Task.FromResult(++proofChecks == 1), Token));
+
+        Assert.Equal(2, proofChecks);
+        AttemptStoreState? state = await store.ReadAsync(Staging, Token);
+        Assert.Equal(concurrentStop.Reference, state?.Stop?.Reference);
+        Assert.Equal(scenario.StagingInitiator.Reference, state?.Holder?.Reference);
+        Assert.Equal(pending, await store.ReadDecisionAsync(scenario.Binding.DecisionId, Token));
+        Assert.Equal(versions + 1, backend.History(AttemptStoreTests.StagingHead).Count);
+    }
+
+    [Fact]
+    public async Task StagingTakeoverCanIntroduceFreshDecisionButCannotReplacePendingBinding()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        StagingEvidenceBinding originalBinding = RecordFixture.Binding("original");
+        SignedBytes<AttemptRecord> initial = fixture.Attempt("initial", Staging, 1, release, binding: originalBinding);
+        await store.AcquireAsync(initial.Bytes, release.Bytes, initial.Version, Token);
+
+        StagingEvidenceBinding conflictingBinding = RecordFixture.Binding("conflicting");
+        SignedBytes<AttemptRecord> conflicting = fixture.Attempt("conflicting", Staging, 2, release,
+            "staging-successor", initial.Reference, conflictingBinding);
+        SignedBytes<AttemptRecord> conflictingFinal = Final(conflicting);
+        int writes = backend.Writes;
+        await AttemptStoreTests.RejectAsync("decision-binding-conflict", () => store.TakeoverAsync(
+            conflicting.Bytes, conflictingFinal.Bytes, release.Bytes, conflicting.Version, conflictingFinal.Version, Token));
+        Assert.Equal(writes, backend.Writes);
+        Assert.Null(await store.ReadDecisionAsync(conflictingBinding.DecisionId, Token));
+
+        SignedBytes<ReleaseRecord> otherRelease = fixture.Release("release-b");
+        StagingEvidenceBinding freshBinding = RecordFixture.Binding("fresh");
+        SignedBytes<AttemptRecord> successor = fixture.Attempt("successor", Staging, 2, otherRelease,
+            "staging-successor", initial.Reference, freshBinding);
+        SignedBytes<AttemptRecord> final = Final(successor);
+        await store.TakeoverAsync(successor.Bytes, final.Bytes, otherRelease.Bytes, successor.Version, final.Version, Token);
+        AttemptStoreDecision? decision = await store.ReadDecisionAsync(freshBinding.DecisionId, Token);
+        Assert.NotNull(decision);
+        Assert.Equal("pending", decision.State);
+        Assert.Equal(freshBinding, decision.Binding);
+        Assert.Equal(otherRelease.Reference, decision.Release);
+        Assert.Equal("pending", (await store.ReadDecisionAsync(originalBinding.DecisionId, Token))?.State);
+        Assert.Equal(final.Reference, (await store.ReadAttemptAsync(Staging, "initial", Token))?.Reference);
+        Assert.Equal(successor.Reference, (await store.ReadAsync(Staging, Token))?.Holder?.Reference);
+
+        SignedBytes<AttemptRecord> Final(SignedBytes<AttemptRecord> next) => fixture.Revise(initial,
+            initial.Record.Payload with { LockEpoch = 2, Outcome = "superseded", SupersededBy = next.Reference }, "staging-successor");
     }
 
     [Fact]
@@ -262,6 +362,8 @@ public sealed class PromotionDecisionTests
     private static async Task<DecisionScenario> PrepareAsync(
         RecordFixture fixture, AttemptStore store, string initiatingKind = "release")
     {
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        Assert.True(await store.InitializeAsync(Production, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<ReleaseRecord> other = fixture.Release("release-b");
         StagingEvidenceBinding binding = RecordFixture.Binding("decision-a");

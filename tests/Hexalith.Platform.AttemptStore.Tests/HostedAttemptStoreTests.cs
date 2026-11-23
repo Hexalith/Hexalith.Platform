@@ -11,6 +11,9 @@ namespace Hexalith.Platform.AttemptStore.Tests;
 
 public sealed class HostedAttemptStoreTests
 {
+    private const string ProductionCanary = "environments/production/verification/read-denial-canary.json";
+    private const string ProductionCanaryBody = "{\"purpose\":\"attempt-store-read-denial-canary\"}";
+
     [Fact]
     public async Task HostedWriterSerializesAcquisitionAndProviderEnforcesScope()
     {
@@ -28,6 +31,7 @@ public sealed class HostedAttemptStoreTests
         WaitForTwoWriters barrier = new(AttemptStoreTests.StagingHead);
         AttemptStore stagingWriter = new(new ScopedObjects(writer, prefix, barrier), fixture.Trust);
         AttemptStore stagingReader = new(new ScopedObjects(reader, prefix), fixture.Trust);
+        Assert.True(await stagingWriter.InitializeAsync(AttemptStore.Staging, token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> a = fixture.Attempt("attempt-a", AttemptStore.Staging, 1, release);
         SignedBytes<AttemptRecord> b = fixture.Attempt("attempt-b", AttemptStore.Staging, 1, release);
@@ -53,8 +57,10 @@ public sealed class HostedAttemptStoreTests
         await DeniedAsync(live, live.Writer, client => PutRawAsync(client, live.Bucket, prefix + "records/attempt/probe/unconditional.json", token));
         await DeniedAsync(live, live.Writer, client => PutRawAsync(
             client, live.Bucket, $"environments/production/verification/{runId}/head.json", token, create: true));
-        await DeniedAsync(live, live.Writer, client => client.GetObjectAsync(live.Bucket,
-            $"environments/production/verification/{runId}/head.json", token));
+        AttemptObject? canary = await reader.ReadAsync(ProductionCanary, 1024, token);
+        Assert.NotNull(canary);
+        Assert.Equal(ProductionCanaryBody, System.Text.Encoding.UTF8.GetString(canary.Bytes));
+        await DeniedAsync(live, live.Writer, client => client.GetObjectAsync(live.Bucket, ProductionCanary, token));
         await DeniedAsync(live, live.Writer, client => client.DeleteObjectAsync(live.Bucket, head, token));
         await DeniedAsync(live, live.Writer, client => client.DeleteObjectAsync(new DeleteObjectRequest
         {
@@ -70,6 +76,19 @@ public sealed class HostedAttemptStoreTests
         using GetObjectResponse signed = await ReadRawAsync(live, record, token);
         await DeniedAsync(live, live.Writer, client => PutRawAsync(client, live.Bucket, record, token, match: signed.ETag));
         Assert.Equal(state.Revision, (await stagingReader.ReadAsync(AttemptStore.Staging, token))?.Revision);
+
+        using AmazonS3Client historyReader = live.Client(live.Reader);
+        ListVersionsResponse history = await historyReader.ListVersionsAsync(new ListVersionsRequest
+        {
+            BucketName = live.Bucket,
+            Prefix = head,
+        }, token);
+        Assert.False(history.IsTruncated == true);
+        S3ObjectVersion[] headVersions = history.Versions.Where(version => version.Key == head).ToArray();
+        Assert.Equal(2, headVersions.Length);
+        Assert.All(headVersions, version => Assert.False(version.IsDeleteMarker == true));
+        S3ObjectVersion latest = Assert.Single(headVersions, version => version.IsLatest == true);
+        Assert.Equal(current.VersionId, latest.VersionId);
         Console.WriteLine($"Hosted attempt store verification passed on {prefix}");
     }
 

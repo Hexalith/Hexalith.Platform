@@ -18,7 +18,7 @@ from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_f
 from builds_tool_lock import load_lock, locked_entry, require_locked
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 403, "base42": 67, "extensions": 27}
+REQUIRED_TOTALS = {"current42": 419, "base42": 67, "extensions": 27}
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
     if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
@@ -83,7 +83,13 @@ COMPOSITION_TEST_DEPENDENCIES = (
 )
 
 
-def snapshot_composition_test_outputs(assembly):
+ATTEMPT_STORE_TEST_DEPENDENCIES = (
+    "Hexalith.Platform.AttemptStore.dll",
+    "Hexalith.Builds.Tooling.dll",
+)
+
+
+def _snapshot_test_outputs(assembly, dependencies):
     """Observe actual test/output files and host context without granting cohort admission."""
     assembly = Path(assembly).resolve(strict=True)
 
@@ -95,31 +101,48 @@ def snapshot_composition_test_outputs(assembly):
         "os": platform.system(),
         "architecture": platform.machine(),
         "testAssembly": identity(assembly),
-        "dependencies": {name: identity(assembly.parent / name) for name in COMPOSITION_TEST_DEPENDENCIES},
+        "dependencies": {name: identity(assembly.parent / name) for name in dependencies},
     }
 
 
-def verify_composition_test_outputs_unchanged(record):
+def snapshot_composition_test_outputs(assembly):
+    return _snapshot_test_outputs(assembly, COMPOSITION_TEST_DEPENDENCIES)
+
+
+def snapshot_attempt_store_test_outputs(assembly):
+    return _snapshot_test_outputs(assembly, ATTEMPT_STORE_TEST_DEPENDENCIES)
+
+
+def _verify_test_outputs_unchanged(record, snapshot, label):
     """Retain the final observation and refuse changed/missing outputs or host context."""
     record["afterCapturedUtc"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     record["after"] = None
     record["unchanged"] = False
     record.pop("afterError", None)
     try:
-        record["after"] = snapshot_composition_test_outputs(record["before"]["testAssembly"]["path"])
+        record["after"] = snapshot(record["before"]["testAssembly"]["path"])
     except Exception as error:
         record["afterError"] = str(error)
         raise
     record["unchanged"] = record["before"] == record["after"]
     if not record["unchanged"]:
-        raise ValueError("Composition test outputs or platform context changed during required tests.")
+        raise ValueError(label + " test outputs or platform context changed during required tests.")
 
 
-BUILDS_ARTIFACT_MEMBERS = (("Hexalith.Builds.Tooling.dll", "Hexalith.Builds.Tooling.dll"),
+def verify_composition_test_outputs_unchanged(record):
+    _verify_test_outputs_unchanged(record, snapshot_composition_test_outputs, "Composition")
+
+
+def verify_attempt_store_test_outputs_unchanged(record):
+    _verify_test_outputs_unchanged(record, snapshot_attempt_store_test_outputs, "AttemptStore")
+
+
+ATTEMPT_STORE_ARTIFACT_MEMBERS = (("Hexalith.Builds.Tooling.dll", "Hexalith.Builds.Tooling.dll"),)
+BUILDS_ARTIFACT_MEMBERS = (*ATTEMPT_STORE_ARTIFACT_MEMBERS,
     ("Hexalith.Builds.Module.EventStoreHost.dll", "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"))
 
 
-def builds_artifact_identities(receipt, lock, builds_source, collectors, identities=None):
+def builds_artifact_identities(receipt, lock, builds_source, collectors, identities=None, *, members=BUILDS_ARTIFACT_MEMBERS):
     """AR-12: expected = per-file SHA-256 of the lock-verified archive; loaded = the built outputs.
 
     Records both identities for each collector, then refuses any difference.
@@ -129,7 +152,7 @@ def builds_artifact_identities(receipt, lock, builds_source, collectors, identit
         raise ValueError("The artifact receipt differs from the locked tool and recorded Builds gitlink.")
     for name, collector in collectors.items():
         selected_tool = Path(collector["toolRoot"])
-        for filename, member in BUILDS_ARTIFACT_MEMBERS:
+        for filename, member in members:
             output = Path(collector["assembly"]).parent / filename
             loaded = hashlib.sha256(output.read_bytes()).hexdigest()
             if loaded != hashlib.sha256((selected_tool / member).read_bytes()).hexdigest():
@@ -375,6 +398,7 @@ def _run_tuple_ci(metadata_token):
         run("build", ["dotnet", "build", "Hexalith.Platform.slnx", "--no-restore", "-c", "Release", "-m:1", *properties])
         result["requiredProfile"] = profile
         composition_project = ROOT / "tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj"
+        attempt_store_project = ROOT / "tests/Hexalith.Platform.AttemptStore.Tests/Hexalith.Platform.AttemptStore.Tests.csproj"
         if composition_project not in projects:
             raise ValueError("Composition test outputs are absent from the owner solution.")
         def measure_collector(name, root, project, selected_properties, selected_tool, selected_binding, expected_framework, source):
@@ -386,8 +410,9 @@ def _run_tuple_ci(metadata_token):
             assembly = Path(measured["TargetPath"]).resolve(strict=True)
             asset_path = Path(measured["ProjectAssetsFile"]).resolve(strict=True)
             require_collector_framework(json.loads(asset_path.read_bytes()), framework)
-            verify_test_sdk(assembly, result["eventStoreSdk"],
-                collecting_cohort["HexalithMemoriesVersion"] if name == "current" and collecting_cohort is not None else None)
+            if project == composition_project:
+                verify_test_sdk(assembly, result["eventStoreSdk"],
+                    collecting_cohort["HexalithMemoriesVersion"] if name == "current" and collecting_cohort is not None else None)
             return {"source": source, "root": str(root), "project": str(project), "assembly": str(assembly),
                 "properties": selected_properties, "targetFramework": framework, "toolRoot": str(selected_tool),
                 "toolVersion": selected_binding["version"],
@@ -398,10 +423,28 @@ def _run_tuple_ci(metadata_token):
         collectors = {"current": measure_collector("current", ROOT, composition_project, properties, tool, binding,
             runtime_context["targetFramework"] if runtime_context else None, revision)}
         result["collectors"] = collectors
-        snapshots = {}
-        for name, collector in collectors.items():
-            snapshots[name] = result["compositionTestOutputs"] = {"beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        snapshots = []
+        for collector in collectors.values():
+            record = result["compositionTestOutputs"] = {"beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "before": snapshot_composition_test_outputs(collector["assembly"])}
+            snapshots.append((verify_composition_test_outputs_unchanged, record))
+        attempt_store_collector = None
+        if any(ROOT / group["project"] == attempt_store_project for group in profile["groups"]):
+            if attempt_store_project not in projects:
+                raise ValueError("AttemptStore test outputs are absent from the owner solution.")
+            attempt_store_collector = result["attemptStoreCollector"] = measure_collector(
+                "attempt-store", ROOT, attempt_store_project, properties, tool, binding, runtime_context["targetFramework"], revision)
+            record = result["attemptStoreTestOutputs"] = {
+                "beforeCapturedUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                "before": snapshot_attempt_store_test_outputs(attempt_store_collector["assembly"]),
+            }
+            snapshots.append((verify_attempt_store_test_outputs_unchanged, record))
+            identities = builds_artifact_identities(json.loads(receipt_path.read_bytes()), lock, builds_source,
+                {"attemptStore": attempt_store_collector}, result.setdefault("buildsArtifactIdentities", {}),
+                members=ATTEMPT_STORE_ARTIFACT_MEMBERS)
+            for filename, artifact in identities["attemptStore"].items():
+                if record["before"]["dependencies"][filename]["sha256"] != artifact["expectedSha256"]:
+                    raise ValueError("AttemptStore output snapshot differs from its lock-verified archive member: " + filename)
         checkpoint()
         test_failure = False
         try:
@@ -412,10 +455,10 @@ def _run_tuple_ci(metadata_token):
                 role = collector_for(group, args.suite)
                 collector = collectors[role]
                 if project != composition_project:
-                    assembly = run("test-path-" + str(number), ["dotnet", "msbuild", str(project), "-nologo", *properties,
-                        "-getProperty:TargetPath"]).strip()
-                else:
-                    assembly = collector["assembly"]
+                    if project != attempt_store_project or attempt_store_collector is None:
+                        raise ValueError("Required test project has no output identity configuration: " + project.stem)
+                    collector = attempt_store_collector
+                assembly = collector["assembly"]
                 xml = evidence / ("required-" + str(number) + ".xml")
                 selectors = [argument for name in group["selectors"] for argument in [group["filter"], name]]
                 environment = dict(os.environ, DOTNET_ROLL_FORWARD="LatestPatch")
@@ -435,9 +478,9 @@ def _run_tuple_ci(metadata_token):
             raise
         finally:
             verification_failure = None
-            for record in snapshots.values():
+            for verify, record in snapshots:
                 try:
-                    verify_composition_test_outputs_unchanged(record)
+                    verify(record)
                 except Exception as error:
                     if verification_failure is None: verification_failure = error
             checkpoint()

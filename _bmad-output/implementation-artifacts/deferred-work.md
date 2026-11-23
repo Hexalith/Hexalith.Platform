@@ -2303,23 +2303,26 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 ## Deferred from: code review of spec-4-6-encode-release-attempt-qualification-and-administrator-records.md (2026-11-23)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
-  summary: Let Story 4.7 close a v2 admission reservation after a takeover or a later epoch, and bind a v2 takeover successor to its decision.
+  summary: Define v2 admission closure after takeover or epoch advance in the Builds record contract and production lifecycle.
   evidence: `ValidatePromotionDecision` closure requires the admitted attempt's record ID and writer, an `executor` key, and a terminal epoch equal to the current epoch. A fenced takeover successor, a recovery-executor DR successor, or a lock re-acquisition after the terminal write therefore leaves the decision reserved with no valid closing action. `ValidateAttempt` requires only the v2 schema of a v2 successor, not its `stagingEvidence`. Policy v2 item 4 expects takeover or terminal reconciliation to resolve the reservation. The Builds README states the current constraint at `ReleaseRecords.md:103`.
-  reason: Story 4.7 designs takeover closure together with its cross-attempt takeover reconciliation. V2 cannot activate before 4.7, and closure fails closed until then.
+  reason: Story 4.7 keeps closure fail-closed. Follow-up belongs to the Builds record contract and the production store, admission and rollout integration in Stories 6.9, 6.14 and 6.16. Resolve and qualify this path before v2 activation.
 
 ## Deferred from Story 4.7 review
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Prove production lifecycle serialization through the staging decision CAS.
   evidence: A production revision can race after the final production ETag read because only the staging head participates in the CAS. The production evaluator and its authorized writers must preserve the relevant production authority through commit or reconciliation. The production lifecycle stories own that integration.
+  reason: The production lifecycle must coordinate its own writes through the staging decision commit. Story 6.9 provisions the production store and its decision principal.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Evaluate detection of unauthorized changes by a principal with direct head write access.
   evidence: The library verifies record signatures independently. The bucket is responsible for the integrity of the mutable head under scoped access, and the library writes verified transitions. A principal bypassing the library can submit a conditional write with edited indexes. Authenticating head history or mediating direct writer access requires a separate protocol.
+  reason: Authenticating head history or mediating raw writes requires a separate design and a migration plan for existing heads.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Bind tuple CI to the published Builds Tooling release containing the v2 release-record API.
   evidence: The immutable v6.6.2 release resolves to Builds revision `2d9ef8b454ff897daca0149f3549844f584b634a`. The existing tuple preflight compares that revision to the recorded `4adecfe2af4758aa66039a1221de20774ca56e87` gitlink and refuses a mismatch. The reviewed AttemptStore tests passed against published 6.7.0 at `763fc0e937413cb44e533391e573c43640263b40`. The 6.7.0 catalog differs from the pinned source catalog, so the Platform tuple requires its own adoption.
+  reason: Adopting Builds 6.7.0 requires a separate Platform tuple update and catalog qualification.
 
 ## Deferred from: code review of spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md (2026-11-23)
 
@@ -2330,7 +2333,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Tuple CI cannot compile the AttemptStore projects on the pinned Builds 6.6.2.
-  evidence: The v2 record API (`ReleaseRecordVersion`, `StagingEvidenceBinding`) is absent at 6.6.2 revision `2d9ef8b4`. The slnx now contains the store, so the whole `run_tuple_ci.py --suite current42` build fails on 6.6.2, not only the 23 selected cases. Re-pinning the gitlink to 6.6.2 therefore no longer restores the 380 Composition cases. The AttemptStore group is also the first profile group outside Composition.Tests, so the first hosted run will be the first execution of the runner's non-Composition test path (`eng/run_tuple_ci.py:414-416`).
+  evidence: The v2 record API (`ReleaseRecordVersion`, `StagingEvidenceBinding`) is absent at 6.6.2 revision `2d9ef8b4`. The slnx now contains the store, so the whole `run_tuple_ci.py --suite current42` build fails on 6.6.2. Re-pinning the gitlink to 6.6.2 therefore no longer restores the 380 Composition cases. The AttemptStore group is the first profile group outside Composition.Tests, so the first hosted tuple run will exercise the runner's non-Composition test path (`eng/run_tuple_ci.py:414-416`).
   reason: Extends "Bind tuple CI to the published Builds Tooling release containing the v2 release-record API" above. Adopting Builds 6.7.0 resolves both.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
@@ -2342,3 +2345,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Provision the production-decision principal for v2 decision actions and prove its denials.
   evidence: `ApplyDecisionAsync` (`src/Hexalith.Platform.AttemptStore/AttemptStore.Decisions.cs:55`) reads the production head and records and writes the staging head through one `IAttemptObjectStore`. The provisioned staging writer is denied the production prefix and the reader cannot write, so `reserve-admission`, `complete` and `release-reservation` cannot run against the hosted bucket.
   reason: Administrator decision 2026-11-23 (code review D2): document the single-bucket topology in the attempt-store contract now; Story 6.9 provisions this principal with the production instance. V2 cannot activate before then.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Qualify recovery of stop signing context by stop producers and Administrator consumers.
+  evidence: The store retains the latest signed stop and its predecessor chain. The public state exposes the active stop and sequence number. After clearance or a restart, producers need the exact signed predecessor for the next set, and the Administrator needs every outstanding cause for the next clearance.
+  reason: Monitor and lifecycle callers own receipt custody and restart behavior. Decide how they recover verified signing context when they integrate with the store.

@@ -118,15 +118,17 @@ public sealed class S3AttemptObjectStore : IAttemptObjectStore, IDisposable
         {
             return false;
         }
-        catch (AmazonServiceException exception) when (exception.StatusCode == 0 ||
-            exception.StatusCode == HttpStatusCode.RequestTimeout || (int)exception.StatusCode >= 500)
-        {
-            throw new AttemptStoreWriteUncertainException(exception);
-        }
-        catch (Exception exception) when (exception is HttpRequestException or OperationCanceledException or TimeoutException ||
-            (exception is IOException && exception is not AttemptStoreWriteUncertainException))
+        catch (Exception exception) when (exception is not AttemptStoreWriteUncertainException && !IsKnownRefusal(exception))
         {
             throw new AttemptStoreWriteUncertainException(exception);
         }
     }
+
+    private static bool IsKnownRefusal(Exception exception) =>
+        exception is AmazonS3Exception
+        {
+            StatusCode: HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or
+                HttpStatusCode.NotFound or HttpStatusCode.MethodNotAllowed or HttpStatusCode.LengthRequired or
+                HttpStatusCode.RequestEntityTooLarge or HttpStatusCode.UnsupportedMediaType,
+        };
 }

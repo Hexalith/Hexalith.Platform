@@ -92,8 +92,13 @@ internal sealed class RecordFixture : IDisposable
     internal SignedBytes<AdministratorRecord> Clear(
         string id, SignedBytes<PromotionStopRecord> stop, SignedBytes<AttemptRecord> attempt,
         params (string Key, string Value)[] dispositions) =>
+        Clear(id, stop, attempt, predecessor: null, dispositions);
+
+    internal SignedBytes<AdministratorRecord> Clear(
+        string id, SignedBytes<PromotionStopRecord> stop, SignedBytes<AttemptRecord> attempt,
+        RecordReference? predecessor, params (string Key, string Value)[] dispositions) =>
         Sign(new AdministratorRecord("clear-promotion-stop", stop.Record.Environment!, attempt.Reference, stop.Reference,
-            stop.Record.Payload.Revision, null, "operator-reviewed", Map(dispositions), null),
+            stop.Record.Payload.Revision, predecessor, "operator-reviewed", Map(dispositions), null),
             "admin", stop.Record.Environment, id, stop.Record.Environment!);
 
     internal SignedBytes<PromotionDecisionRecord> Decision(

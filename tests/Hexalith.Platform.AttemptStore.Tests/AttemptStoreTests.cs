@@ -14,6 +14,32 @@ public sealed class AttemptStoreTests
     private static CancellationToken Token => TestContext.Current.CancellationToken;
 
     [Fact]
+    public async Task MissingHeadRefusesTransitionsUntilExplicitCreate()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
+        SignedBytes<PromotionStopRecord> stop = fixture.Stop(Staging);
+
+        Assert.Null(await store.ReadAsync(Staging, Token));
+        await RejectAsync("head-missing", () => store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: Token));
+        await RejectAsync("head-missing", () => store.SetStopAsync(stop.Bytes, Token));
+        Assert.Equal(0, backend.Writes);
+
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        AttemptStoreState? initial = await store.ReadAsync(Staging, Token);
+        Assert.NotNull(initial);
+        Assert.Equal((0L, 0L), (initial.Revision, initial.Epoch));
+        await store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: Token);
+        int writes = backend.Writes;
+        Assert.False(await store.InitializeAsync(Staging, Token));
+        Assert.Equal(attempt.Reference, (await store.ReadAsync(Staging, Token))?.Holder?.Reference);
+        Assert.Equal(writes, backend.Writes);
+    }
+
+    [Fact]
     public async Task ParallelAcquisitionCommitsExactlyOneAndLinksHeadVersions()
     {
         using RecordFixture fixture = new();
@@ -21,6 +47,7 @@ public sealed class AttemptStoreTests
         InMemoryAttemptObjectStore backend = new() { BeforeReplace = writers.WaitAsync };
         AttemptStore first = new(backend, fixture.Trust);
         AttemptStore second = new(backend, fixture.Trust);
+        Assert.True(await first.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> a = fixture.Attempt("a", Staging, 1, release);
         SignedBytes<AttemptRecord> b = fixture.Attempt("b", Staging, 1, release);
@@ -49,6 +76,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> first = fixture.Attempt("first", Staging, 1, release);
         AttemptStoreCommit acquisition = await store.AcquireAsync(first.Bytes, release.Bytes, cancellationToken: Token);
@@ -88,6 +116,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<PromotionStopRecord> firstStop = fixture.Stop(Staging);
         await store.SetStopAsync(firstStop.Bytes, Token);
@@ -117,11 +146,57 @@ public sealed class AttemptStoreTests
     }
 
     [Fact]
+    public async Task InProgressRevisionPreservesHolderAndEpoch()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> initial = fixture.Attempt("initial", Staging, 1, release);
+        await store.AcquireAsync(initial.Bytes, release.Bytes, cancellationToken: Token);
+        SignedBytes<AttemptRecord> revised = fixture.Revise(initial,
+            initial.Record.Payload with { FirstMutationUtc = RecordFixture.Timestamp.AddSeconds(1) });
+
+        AttemptStoreCommit receipt = await store.ReviseAsync(revised.Bytes, cancellationToken: Token);
+
+        Assert.Equal((2L, 1L), (receipt.Revision, receipt.Epoch));
+        AttemptStoreState? state = await store.ReadAsync(Staging, Token);
+        Assert.NotNull(state);
+        Assert.Equal((2L, 1L), (state.Revision, state.Epoch));
+        Assert.Equal(revised.Reference, state.Holder?.Reference);
+        Assert.Equal("in-progress", state.Holder?.Record.Payload.Outcome);
+    }
+
+    [Fact]
+    public async Task AuthoritativeReadRefusesResignedBytesAtTheSameArchiveReference()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> initial = fixture.Attempt("initial", Staging, 1, release);
+        await store.AcquireAsync(initial.Bytes, release.Bytes, cancellationToken: Token);
+        SignedBytes<AttemptRecord> resigned = fixture.Revise(initial, initial.Record.Payload, seconds: 0);
+        Assert.Equal(initial.Reference, resigned.Reference);
+        Assert.False(initial.Bytes.SequenceEqual(resigned.Bytes));
+        string archiveKey = StoredRecord.Key(Staging, "attempt", initial.Reference);
+        AttemptObject original = Assert.Single(backend.History(archiveKey));
+        Assert.True(await backend.ReplaceAsync(archiveKey, original.ETag, resigned.Bytes, Token));
+
+        RecordValidationException error = await Assert.ThrowsAsync<RecordValidationException>(() =>
+            store.ReadAttemptAsync(Staging, initial.Reference.RecordId, Token));
+        Assert.Equal("record-content-conflict", error.Code);
+    }
+
+    [Fact]
     public async Task TerminalRevisionIsImmutableAndReplayUsesExactEnvelope()
     {
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> first = fixture.Attempt("initial", Staging, 1, release);
         await store.AcquireAsync(first.Bytes, release.Bytes, cancellationToken: Token);
@@ -146,6 +221,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
         SignedBytes<PromotionStopRecord> stop = fixture.Stop(Staging);
@@ -169,11 +245,38 @@ public sealed class AttemptStoreTests
     }
 
     [Fact]
+    public async Task LostAcknowledgementOfActiveAttemptRefusesAfterEpochAdvances()
+    {
+        using RecordFixture fixture = new();
+        InMemoryAttemptObjectStore backend = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
+        SignedBytes<AttemptRecord> successor = fixture.Attempt("successor", Staging, 2, release, "staging-successor", attempt.Reference);
+        SignedBytes<AttemptRecord> final = fixture.Revise(attempt,
+            attempt.Record.Payload with { LockEpoch = 2, Outcome = "superseded", SupersededBy = successor.Reference }, "staging-successor");
+        backend.AfterReplace = async (_, token) =>
+        {
+            backend.AfterReplace = null;
+            await store.TakeoverAsync(successor.Bytes, final.Bytes, release.Bytes, cancellationToken: token);
+            throw new AttemptStoreWriteUncertainException(new TimeoutException());
+        };
+
+        await RejectAsync("stale-epoch", () => store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: Token));
+        await RejectAsync("stale-epoch", () => store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: Token));
+        Assert.Equal(final.Reference, (await store.ReadAttemptAsync(Staging, "initial", Token))?.Reference);
+        Assert.Equal(successor.Reference, (await store.ReadAsync(Staging, Token))?.Holder?.Reference);
+        Assert.Equal(3, backend.History(StagingHead).Count);
+    }
+
+    [Fact]
     public async Task UncertainPutWithUnchangedETagReturnsUncertaintyWithoutRetry()
     {
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
         int replaceCalls = 0;
@@ -201,6 +304,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
         string releaseKey = StoredRecord.Key(Staging, "release", release.Reference);
@@ -217,13 +321,16 @@ public sealed class AttemptStoreTests
         Assert.Equal(writes, backend.Writes);
     }
 
-    [Fact]
-    public async Task LastRereadFindsAnExactCommitBeforeReportingContention()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task LastRereadFindsAnExactCommitOrReportsContention(bool commitExactActionOnLastAttempt)
     {
         const int conditionalAttempts = 16;
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release);
         await store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: Token);
@@ -233,15 +340,26 @@ public sealed class AttemptStoreTests
         int replaceCalls = 0;
         backend.BeforeReplace = CommitFirstAsync;
 
-        Assert.Equal(conditionalAttempts + 1, (await store.ReviseAsync(working.Bytes, cancellationToken: Token)).Revision);
-        Assert.NotNull(concurrent);
+        if (commitExactActionOnLastAttempt)
+        {
+            AttemptStoreCommit receipt = await store.ReviseAsync(working.Bytes, cancellationToken: Token);
+            Assert.NotNull(concurrent);
+            Assert.Equal(concurrent, receipt);
+            Assert.Equal(conditionalAttempts + 1, receipt.Revision);
+        }
+        else
+        {
+            await RejectAsync("contention", () => store.ReviseAsync(working.Bytes, cancellationToken: Token));
+            Assert.Equal(attempt.Reference, (await store.ReadAsync(Staging, Token))?.Holder?.Reference);
+        }
+
         Assert.Equal(conditionalAttempts, replaceCalls);
-        Assert.Equal(concurrent, await store.ReviseAsync(working.Bytes, cancellationToken: Token));
+        Assert.Equal(conditionalAttempts + 2, backend.History(StagingHead).Count);
 
         async Task CommitFirstAsync(string _, CancellationToken token)
         {
             backend.BeforeReplace = null;
-            if (++replaceCalls == conditionalAttempts)
+            if (++replaceCalls == conditionalAttempts && commitExactActionOnLastAttempt)
             {
                 concurrent = await store.ReviseAsync(working.Bytes, cancellationToken: token);
             }
@@ -261,6 +379,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> a = fixture.Attempt("a", Staging, 1, release);
         SignedBytes<AttemptRecord> b = fixture.Attempt("b", Staging, 1, release);
@@ -285,6 +404,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", Staging, 1, release, binding: RecordFixture.Binding("decision"));
         await store.AcquireAsync(attempt.Bytes, release.Bytes, attempt.Version, Token);
@@ -314,6 +434,7 @@ public sealed class AttemptStoreTests
         using RecordFixture fixture = new();
         InMemoryAttemptObjectStore backend = new();
         AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(Staging, Token));
         SignedBytes<ReleaseRecord> release = fixture.Release();
         SignedBytes<AttemptRecord> staging = fixture.Attempt("staging-initial", Staging, 1, release);
         await store.AcquireAsync(staging.Bytes, release.Bytes, cancellationToken: Token);
@@ -326,6 +447,7 @@ public sealed class AttemptStoreTests
         SignedBytes<AttemptRecord> nonPointer = fixture.Revise(another, another.Record.Payload with { Outcome = "working" });
         await store.ReviseAsync(nonPointer.Bytes, cancellationToken: Token);
 
+        Assert.True(await store.InitializeAsync(Production, Token));
         SignedBytes<PromotionStopRecord> production = fixture.Stop(Production);
         await store.SetStopAsync(production.Bytes, Token);
         SignedBytes<PromotionStopRecord> first = fixture.Stop(Staging);
@@ -347,14 +469,24 @@ public sealed class AttemptStoreTests
         Assert.Null((await store.ReadAsync(Staging, Token))?.Stop);
         Assert.Equal(2, (await store.ReadAsync(Staging, Token))?.StopRevision);
         Assert.Equal(production.Reference, (await store.ReadAsync(Production, Token))?.Stop?.Reference);
-        SignedBytes<PromotionStopRecord> third = fixture.Stop(Staging, 3, second.Reference);
+        SignedBytes<PromotionStopRecord> third = fixture.Stop(Staging, 3, second.Reference, "integrity");
         await store.SetStopAsync(third.Bytes, Token);
         writes = backend.Writes;
         Assert.Equal(receipt, await store.ClearStopAsync(clear.Bytes, Token));
         Assert.Equal(third.Reference, (await store.ReadAsync(Staging, Token))?.Stop?.Reference);
         Assert.Equal(writes, backend.Writes);
-        SignedBytes<AdministratorRecord> conflicting = fixture.Clear("clear", third, working, ("health", "resolved"));
+        SignedBytes<AdministratorRecord> conflicting = fixture.Clear("clear", third, working, ("integrity", "resolved"));
         await RejectAsync("record-id-conflict", () => store.ClearStopAsync(conflicting.Bytes, Token));
+        SignedBytes<AdministratorRecord> foreign = fixture.Clear("clear-next", third, working, partial.Reference, ("integrity", "resolved"));
+        await RejectAsync("invalid-transition", () => store.ClearStopAsync(foreign.Bytes, Token));
+        Assert.Equal(writes, backend.Writes);
+        SignedBytes<AdministratorRecord> nextClear = fixture.Clear("clear-next", third, working, clear.Reference, ("integrity", "resolved"));
+        await store.ClearStopAsync(nextClear.Bytes, Token);
+        AttemptStoreState? cleared = await store.ReadAsync(Staging, Token);
+        Assert.NotNull(cleared);
+        Assert.Null(cleared.Stop);
+        Assert.Equal(3, cleared.StopRevision);
+        Assert.Equal(production.Reference, (await store.ReadAsync(Production, Token))?.Stop?.Reference);
 
         SignedBytes<LatestWorkingPointerRecord> wrongLineage = fixture.Pointer(nonPointer, "new-pointer-id");
         await RejectAsync("invalid-transition", () => store.MoveLatestWorkingAsync(wrongLineage.Bytes, Token));

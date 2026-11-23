@@ -75,6 +75,8 @@ internal sealed record AttemptStoreHead(
 
 internal sealed record StoredRecord(RecordReference Reference, ReleaseRecordVersion Version, string EnvelopeDigest)
 {
+    private const int MaximumS3KeyBytes = 1024;
+
     internal static string Digest(ReadOnlySpan<byte> bytes) =>
         "sha256:" + Convert.ToHexStringLower(SHA256.HashData(bytes));
 
@@ -89,7 +91,12 @@ internal sealed record StoredRecord(RecordReference Reference, ReleaseRecordVers
             throw new RecordValidationException("invalid-record-reference");
         }
 
-        return $"environments/{environment}/records/{kind}/{PathSegment(reference.RecordId)}/{reference.Digest}.json";
+        string prefix = $"environments/{environment}/records/{kind}/";
+        string suffix = $"/{reference.Digest}.json";
+        string key = prefix + PathSegment(reference.RecordId) + suffix;
+        return Encoding.UTF8.GetByteCount(key) <= MaximumS3KeyBytes
+            ? key
+            : prefix + HashedSegment(reference.RecordId) + suffix;
     }
 
     private static string PathSegment(string identity)
@@ -98,7 +105,7 @@ internal sealed record StoredRecord(RecordReference Reference, ReleaseRecordVers
         // Escape dot segments and reserve "~" for long identities to stay under S3's key byte limit.
         if (segment.Length > 640)
         {
-            return "~" + Digest(Encoding.UTF8.GetBytes(identity))[7..];
+            return HashedSegment(identity);
         }
 
         return segment switch
@@ -108,6 +115,8 @@ internal sealed record StoredRecord(RecordReference Reference, ReleaseRecordVers
             _ => segment.Replace("~", "%7E", StringComparison.Ordinal),
         };
     }
+
+    private static string HashedSegment(string identity) => "~" + Digest(Encoding.UTF8.GetBytes(identity))[7..];
 }
 
 internal sealed record StoredAttempt(StoredRecord Record, bool Terminal);

@@ -19,6 +19,10 @@ public sealed partial class AttemptStore
         _trust = trust ?? throw new ArgumentNullException(nameof(trust));
     }
 
+    /// <summary>Creates the empty head during provisioning. Returns false if a head already exists.</summary>
+    public Task<bool> InitializeAsync(string environment, CancellationToken cancellationToken = default) =>
+        _objects.CreateAsync(HeadKey(environment), AttemptStoreHead.Empty(environment).Encode(), cancellationToken);
+
     /// <summary>Reads current verified state. A missing head returns null.</summary>
     public async Task<AttemptStoreState?> ReadAsync(string environment, CancellationToken cancellationToken = default)
     {
@@ -94,6 +98,10 @@ public sealed partial class AttemptStore
         return new(AttemptStoreHead.Decode(value.Bytes, environment), value.ETag, StoredRecord.Digest(value.Bytes));
     }
 
+    private async Task<CurrentHead> ReadRequiredHeadAsync(string environment, CancellationToken cancellationToken) =>
+        await ReadHeadAsync(environment, cancellationToken).ConfigureAwait(false) ??
+        throw new RecordValidationException("head-missing");
+
     private async Task<AttemptStoreCommit> CommitAsync(
         string environment,
         string operation,
@@ -106,42 +114,19 @@ public sealed partial class AttemptStore
     {
         string key = HeadKey(environment);
         string commitKey = StoredRecord.Key(environment, primary.Kind, primary.Record.Reference);
-        CurrentHead? current = await ReadHeadAsync(environment, cancellationToken).ConfigureAwait(false);
+        CurrentHead current = await ReadRequiredHeadAsync(environment, cancellationToken).ConfigureAwait(false);
         for (int retry = 0; ; retry++)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            AttemptStoreHead head = current?.Head ?? AttemptStoreHead.Empty(environment);
+            AttemptStoreHead head = current.Head;
             if (head.Commits.TryGetValue(commitKey, out CommittedTransition? committed))
             {
-                Require(activeReplayEpoch is null || activeReplayEpoch == head.Epoch, "stale-epoch");
-                return await ReconcileAsync(head, operation, committed, primary, companion, retainedRelease, cancellationToken).ConfigureAwait(false);
+                return await ReconcileAsync(head, operation, committed, primary, companion, retainedRelease, activeReplayEpoch, cancellationToken).ConfigureAwait(false);
             }
 
             Require(retry < MaximumCommitAttempts, "contention");
             ProposedHead prepared = await prepare(head, cancellationToken).ConfigureAwait(false);
             Require(head.Revision < long.MaxValue, "revision-exhausted");
-            if (current is null)
-            {
-                // Create the empty head once. Every operational transition uses an observed head ETag.
-                try
-                {
-                    await _objects.CreateAsync(key, head.Encode(), cancellationToken).ConfigureAwait(false);
-                }
-                catch (AttemptStoreWriteUncertainException exception)
-                {
-                    current = await ReadAfterUncertainWriteAsync(environment, exception, cancellationToken).ConfigureAwait(false);
-                    if (current is null)
-                    {
-                        throw;
-                    }
-
-                    continue;
-                }
-
-                current = await ReadHeadAsync(environment, cancellationToken).ConfigureAwait(false);
-                continue;
-            }
-
             CommittedTransition receipt = new(operation, head.Revision + 1, prepared.Head.Epoch, primary.Record, companion?.Record);
             AttemptStoreHead next = prepared.Head with
             {
@@ -165,8 +150,7 @@ public sealed partial class AttemptStore
             if (prepared.ProductionETag is { } productionETag &&
                 (await ReadHeadAsync(Production, cancellationToken).ConfigureAwait(false))?.ETag != productionETag)
             {
-                current = await ReadHeadAsync(environment, cancellationToken).ConfigureAwait(false);
-                Require(current is not null, "head-missing");
+                current = await ReadRequiredHeadAsync(environment, cancellationToken).ConfigureAwait(false);
                 continue;
             }
 
@@ -180,22 +164,22 @@ public sealed partial class AttemptStore
             }
             catch (AttemptStoreWriteUncertainException exception)
             {
-                current = await ReadAfterUncertainWriteAsync(environment, exception, cancellationToken).ConfigureAwait(false);
-                if (current is null || current.ETag == expectedETag)
+                CurrentHead? refreshed = await ReadAfterUncertainWriteAsync(environment, exception, cancellationToken).ConfigureAwait(false);
+                if (refreshed is null || refreshed.ETag == expectedETag)
                 {
                     throw;
                 }
 
+                current = refreshed;
                 if (current.Head.Commits.TryGetValue(commitKey, out committed))
                 {
-                    return await ReconcileAsync(current.Head, operation, committed, primary, companion, retainedRelease, cancellationToken).ConfigureAwait(false);
+                    return await ReconcileAsync(current.Head, operation, committed, primary, companion, retainedRelease, activeReplayEpoch, cancellationToken).ConfigureAwait(false);
                 }
 
                 continue;
             }
 
-            current = await ReadHeadAsync(environment, cancellationToken).ConfigureAwait(false);
-            Require(current is not null, "head-missing");
+            current = await ReadRequiredHeadAsync(environment, cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -214,8 +198,9 @@ public sealed partial class AttemptStore
 
     private async Task<AttemptStoreCommit> ReconcileAsync(
         AttemptStoreHead head, string operation, CommittedTransition committed, Envelope primary, Envelope? companion,
-        Envelope? retainedRelease, CancellationToken cancellationToken)
+        Envelope? retainedRelease, long? activeReplayEpoch, CancellationToken cancellationToken)
     {
+        Require(activeReplayEpoch is null || activeReplayEpoch == head.Epoch, "stale-epoch");
         Require(committed is not null && committed.Revision > 0 && committed.Revision <= head.Revision &&
             committed.Epoch >= 0 && committed.Epoch <= head.Epoch, "invalid-head");
         Require(committed.Operation == operation && committed.Primary == primary.Record && committed.Companion == companion?.Record,

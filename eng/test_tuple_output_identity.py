@@ -6,7 +6,14 @@ import tempfile
 import unittest
 from unittest import mock
 
-from run_tuple_ci import snapshot_composition_test_outputs, verify_composition_test_outputs_unchanged
+from run_tuple_ci import (
+    ATTEMPT_STORE_ARTIFACT_MEMBERS,
+    builds_artifact_identities,
+    snapshot_attempt_store_test_outputs,
+    snapshot_composition_test_outputs,
+    verify_attempt_store_test_outputs_unchanged,
+    verify_composition_test_outputs_unchanged,
+)
 
 
 class CompositionTestOutputIdentityTests(unittest.TestCase):
@@ -94,6 +101,50 @@ class CompositionTestOutputIdentityTests(unittest.TestCase):
                 self.assertFalse(record["unchanged"])
                 self.assertEqual(record["before"]["dependencies"], record["after"]["dependencies"])
                 self.assertEqual(record["before"]["testAssembly"], record["after"]["testAssembly"])
+
+
+class AttemptStoreTestOutputIdentityTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="tuple-attempt-store-output-")
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        self.assembly = root / "Hexalith.Platform.AttemptStore.Tests.dll"
+        self.library = root / "Hexalith.Platform.AttemptStore.dll"
+        self.tooling_copy = root / "Hexalith.Builds.Tooling.dll"
+        self.published = root / "published"
+        self.published.mkdir()
+        for output in (self.assembly, self.library, self.tooling_copy, self.published / self.tooling_copy.name):
+            output.write_bytes(("synthetic-file:" + output.name).encode())
+
+    def test_only_tooling_is_required_from_the_archive_and_a_mismatched_copy_refuses(self):
+        lock = {"testLock": "synthetic archive"}
+        source = "b" * 40
+        prefix = "tools/net11.0/any/"
+        member = prefix + self.tooling_copy.name
+        expected = hashlib.sha256((self.published / self.tooling_copy.name).read_bytes()).hexdigest()
+        receipt = {"toolLock": lock, "buildsRevision": source, "toolPrefix": prefix, "files": {member: expected}}
+        collectors = {"attemptStore": {"toolRoot": str(self.published), "assembly": str(self.assembly)}}
+
+        identities = builds_artifact_identities(receipt, lock, source, collectors, members=ATTEMPT_STORE_ARTIFACT_MEMBERS)
+        self.assertEqual(set(identities["attemptStore"]), {self.tooling_copy.name})
+        self.assertEqual(identities["attemptStore"][self.tooling_copy.name]["expectedSha256"], expected)
+
+        self.tooling_copy.write_bytes(b"different Tooling copy")
+        with self.assertRaisesRegex(ValueError, "authenticated published artifact: Hexalith.Builds.Tooling.dll"):
+            builds_artifact_identities(receipt, lock, source, collectors, members=ATTEMPT_STORE_ARTIFACT_MEMBERS)
+
+    def test_changes_to_attempt_store_outputs_refuse(self):
+        for path in (self.assembly, self.library, self.tooling_copy):
+            with self.subTest(file=path.name):
+                record = {"before": snapshot_attempt_store_test_outputs(self.assembly)}
+                original = path.read_bytes()
+                try:
+                    path.write_bytes(original + b":changed")
+                    with self.assertRaisesRegex(ValueError, "AttemptStore test outputs.*changed during required tests"):
+                        verify_attempt_store_test_outputs_unchanged(record)
+                    self.assertFalse(record["unchanged"])
+                finally:
+                    path.write_bytes(original)
 
 
 if __name__ == "__main__":
