@@ -131,6 +131,10 @@ public static class DaprSelfHostedMtls
         ArgumentNullException.ThrowIfNull(application);
         ExecutableResource sidecar = model.Resources.OfType<ExecutableResource>()
             .Single(resource => resource.Name == application.Name + "-dapr-cli");
+        var parents = sidecar.Annotations.OfType<ResourceRelationshipAnnotation>()
+            .Where(relation => relation.Type == "Parent").ToArray();
+        if (sidecar is IDotnetProgramResource || parents is not [var parent] || !ReferenceEquals(parent.Resource, application))
+            throw new InvalidDataException("The generated Dapr executable must belong to the selected application.");
         if (sentryAddress is not null)
         {
             string runtimeHome = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations
