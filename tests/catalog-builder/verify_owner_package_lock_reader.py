@@ -117,6 +117,9 @@ def qualify(args):
                     # Tenants 8.0.2 adds RefreshTenantAccess and its idempotency policy to both catalogs.
                     assert counts == ({"routes": 24, "operations": 24, "declarations": 24, "idempotency": 13} if private
                                       else {"routes": 71, "operations": 71, "declarations": 71, "idempotency": 47}), counts
+                    # The approved Tenants policy rides on the locked package, not on counts that 8.0.2 and 8.0.4 share.
+                    audit = [o["eligibility"] for o in catalog["operations"] if o["routeId"] == "tenants-get-global-administrator-audit"]
+                    assert audit == ["UI-only"], audit
                     assert receipt["ownerPackageLock"]["sha256"] == consumer.digest(lock_path)
                     records = {record["assembly"]: record for record in receipt["ownerPackages"]}
                     locked = {entry["id"]: entry for entry in json.loads(lock_path.read_bytes())["packages"]}

@@ -2234,3 +2234,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-3-generate-the-run-scoped-routing-catalog.md`
   summary: Require the complete compiled Tenants catalog test inventory in the owner workflows.
   evidence: The existing source and published-SDK jobs require at least one and two cases. Those floors permit a discovery regression to omit part of the six-case inventory verified in this story.
+
+## Deferred from: code review of spec-3-3-generate-the-run-scoped-routing-catalog.md (2026-11-23)
+
+- **Hosted catalog activation on the adopted tuple (medium).** The only hosted ordinary `platform-package` receipt (Parties run 45020272316) binds Builds 6.5.1 and Tenants 8.0.2, root `161e404d…`, which predates the UI-only audit policy. The adopted Builds 6.6.2 / Tenants 8.0.4 root `5b974248…` has only local serving-host readbacks; its hosted Platform tuple suites record no descriptor. Owner reason: the composition mechanism is unchanged between the tuples. Confirm it on the next Parties CI that adopts a Platform release carrying the adopted tuple: the descriptor names the run's catalog instance, every participant serves the committed root, and cleanup is empty.
