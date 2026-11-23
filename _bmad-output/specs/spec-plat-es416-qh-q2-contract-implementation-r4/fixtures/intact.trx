@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TestRun id="00000000-0000-0000-1000-000000000002" name="Synthetic intact.trx" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2000-01-01T00:00:12Z" queuing="2000-01-01T00:00:12Z" start="2000-01-01T00:00:12Z" finish="2000-01-01T00:00:49Z" />
+  <TestDefinitions>
+    <UnitTest id="00000000-0000-0000-0002-000000000001" name="Synthetic.QualificationTests.Lawful(01-lawful)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000101" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="Lawful" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000002" name="Synthetic.QualificationTests.Revision(02-revision)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000102" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="Revision" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000003" name="Synthetic.QualificationTests.CreateOnce(03-create-once)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000103" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="CreateOnce" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000004" name="Synthetic.QualificationTests.AnotherCase(04-error)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000104" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="AnotherCase" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000005" name="Synthetic.QualificationTests.AnotherCase(05-aborted)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000105" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="AnotherCase" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000006" name="Synthetic.QualificationTests.Preparation(06-not-executed)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000106" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="Preparation" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000007" name="Synthetic.QualificationTests.Readback(07-inconclusive)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000107" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="Readback" />
+    </UnitTest>
+    <UnitTest id="00000000-0000-0000-0002-000000000008" name="Synthetic.QualificationTests.Isolation(08-missing)" storage="Synthetic.Tests.dll">
+      <Execution id="00000000-0000-0000-0002-000000000108" />
+      <TestMethod codeBase="Synthetic.Tests.dll" className="Synthetic.QualificationTests" name="Isolation" />
+    </UnitTest>
+  </TestDefinitions>
+  <Results>
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000001" executionId="00000000-0000-0000-0002-000000000101" testName="Synthetic.QualificationTests.Lawful(01-lawful)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000002" executionId="00000000-0000-0000-0002-000000000102" testName="Synthetic.QualificationTests.Revision(02-revision)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000003" executionId="00000000-0000-0000-0002-000000000103" testName="Synthetic.QualificationTests.CreateOnce(03-create-once)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000004" executionId="00000000-0000-0000-0002-000000000104" testName="Synthetic.QualificationTests.AnotherCase(04-error)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000005" executionId="00000000-0000-0000-0002-000000000105" testName="Synthetic.QualificationTests.AnotherCase(05-aborted)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000006" executionId="00000000-0000-0000-0002-000000000106" testName="Synthetic.QualificationTests.Preparation(06-not-executed)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000007" executionId="00000000-0000-0000-0002-000000000107" testName="Synthetic.QualificationTests.Readback(07-inconclusive)" outcome="Passed" />
+    <UnitTestResult testId="00000000-0000-0000-0002-000000000008" executionId="00000000-0000-0000-0002-000000000108" testName="Synthetic.QualificationTests.Isolation(08-missing)" outcome="Passed" />
+  </Results>
+  <ResultSummary outcome="Passed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" notExecuted="0" inconclusive="0" />
+  </ResultSummary>
+</TestRun>

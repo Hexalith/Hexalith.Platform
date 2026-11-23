@@ -1,0 +1,518 @@
+{
+  "caseContext": {
+    "synthetic": true,
+    "qualificationCredit": "none",
+    "externalReceiptPath": "/synthetic/runner/temp/hexalith-ci-owner.json",
+    "runWorkspace": "/synthetic/nonexistent/00000000000000000000000000000416",
+    "receipt": {
+      "schema": "hexalith.module.ci-owner-receipt.v1",
+      "runId": "00000000000000000000000000000416",
+      "attemptId": "00000000000000000000000000000417",
+      "environmentId": "00000000000000000000000000000418",
+      "executionContext": {
+        "kind": "ci",
+        "repository": "synthetic/example",
+        "workflowRunId": "1",
+        "workflowAttempt": 1,
+        "jobId": "synthetic-job",
+        "runnerKind": "github-hosted",
+        "operatingSystem": "Linux",
+        "disposable": true
+      },
+      "stateDirectory": "/synthetic/runner/data/hexalith-builds/g4-runs"
+    },
+    "durableOwner": {
+      "runId": "00000000000000000000000000000416",
+      "attemptId": "00000000000000000000000000000417",
+      "environmentId": "00000000000000000000000000000418",
+      "executionContext": {
+        "kind": "ci",
+        "repository": "synthetic/example",
+        "workflowRunId": "1",
+        "workflowAttempt": 1,
+        "jobId": "synthetic-job",
+        "runnerKind": "github-hosted",
+        "operatingSystem": "Linux",
+        "disposable": true
+      }
+    },
+    "hold": {
+      "originalAttachmentRequestId": "synthetic-hold",
+      "environmentId": "00000000000000000000000000000418",
+      "ownerRunId": "00000000000000000000000000000416",
+      "attachedRunId": "00000000000000000000000000000419",
+      "requestedHoldSeconds": 120,
+      "acceptedAt": "2000-01-01T00:00:11Z",
+      "effectiveHoldSeconds": 120,
+      "expiresAt": "2000-01-01T00:02:11Z",
+      "end": {
+        "state": "active"
+      }
+    },
+    "preservedPeerRunId": "00000000000000000000000000000420"
+  },
+  "cases": [
+    {
+      "id": "LC-01",
+      "title": "Cooperative helper timeout and first terminal",
+      "jobStatus": "failure",
+      "steps": [
+        "helper deadline expires",
+        "helper sends SIGINT to gated muxer and tool only",
+        "tool commits cancellation",
+        "tool withdraws hold",
+        "tool stops owned composed processes",
+        "helper runs exact down"
+      ],
+      "execution": {
+        "schema": "hexalith.module.ci-integration-execution.v1",
+        "executionContext": {
+          "kind": "ci",
+          "repository": "synthetic/example",
+          "workflowRunId": "1",
+          "workflowAttempt": 1,
+          "jobId": "synthetic-job",
+          "runnerKind": "github-hosted",
+          "operatingSystem": "Linux",
+          "disposable": true
+        },
+        "processExitCode": 130,
+        "launched": true,
+        "cancelled": false,
+        "timedOut": true,
+        "signals": [],
+        "outputParsed": false,
+        "result": null,
+        "stderr": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "excerpt": "",
+          "truncated": false,
+          "redacted": true
+        }
+      },
+      "helperExit": 124,
+      "firstTerminalVariants": [
+        {
+          "priorTerminal": null,
+          "ownerTerminal": {
+            "outcome": "cancelled",
+            "cause": "run-cancelled",
+            "recordedAt": "2000-01-01T00:00:52Z",
+            "diagnosticIds": []
+          },
+          "holdReason": "ci-job-cancelled",
+          "helperDeadlineAt": "2000-01-01T00:00:52Z"
+        },
+        {
+          "priorTerminal": {
+            "outcome": "failed",
+            "recordedAt": "2000-01-01T00:00:51Z",
+            "cause": "test-failure",
+            "diagnosticIds": []
+          },
+          "ownerTerminal": {
+            "outcome": "failed",
+            "recordedAt": "2000-01-01T00:00:51Z",
+            "cause": "test-failure",
+            "diagnosticIds": []
+          },
+          "holdReason": "ci-job-completed",
+          "priorHoldEnd": {
+            "state": "ended",
+            "endedAt": "2000-01-01T00:01:00Z",
+            "reason": "ci-job-completed"
+          },
+          "holdAlreadyEnded": true,
+          "helperDeadlineAt": "2000-01-01T00:01:05Z"
+        }
+      ],
+      "nativeAlternative": {
+        "report": "mixed.trx",
+        "testId": "02-revision",
+        "nativeOutcome": "Timeout",
+        "publicTestOutcome": "failed"
+      },
+      "localAlternative": {
+        "jobStatus": "",
+        "ownerTerminal": {
+          "outcome": "failed",
+          "cause": "execution-timeout",
+          "recordedAt": "2000-01-01T00:00:52Z",
+          "diagnosticIds": []
+        },
+        "survivingResources": "failure-retained",
+        "access": "closed"
+      }
+    },
+    {
+      "id": "LC-02",
+      "title": "Actual status and distinct owner or attached outcome",
+      "jobStatuses": [
+        "success",
+        "failure",
+        "cancelled",
+        ""
+      ],
+      "ownerTerminals": [
+        null,
+        "cancelled",
+        "withdrawn",
+        "passed",
+        "failed"
+      ],
+      "expectedHoldReasonsByJobStatus": {
+        "success": [
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-completed",
+          "ci-job-completed"
+        ],
+        "failure": [
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-completed",
+          "ci-job-completed"
+        ],
+        "cancelled": [
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled"
+        ],
+        "": [
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-cancelled",
+          "ci-job-completed",
+          "ci-job-completed"
+        ]
+      },
+      "lateAttachmentRefusals": {
+        "cancelled": [
+          "HXR035",
+          "owner-cancelled"
+        ],
+        "withdrawn": [
+          "HXR035",
+          "owner-withdrawn"
+        ]
+      },
+      "observedAttachedOutcome": {
+        "outcome": "withdrawn",
+        "cause": "ci-job-cancelled",
+        "recordedAt": "2000-01-01T00:00:53Z",
+        "diagnosticIds": []
+      },
+      "missingTerminalInfersOwnerCancellation": false
+    },
+    {
+      "id": "LC-03",
+      "title": "Tool escalation and interrupted startup",
+      "signalTargets": [
+        "gated-muxer",
+        "tool"
+      ],
+      "cancellationTerminateAfterSeconds": 6,
+      "cancellationKillAfterSeconds": 8.5,
+      "secondRunnerSignalEscalates": true,
+      "timeoutKillAfterSeconds": 120,
+      "forcedPath": [
+        "recorded withdrawal absent",
+        "tool stopped before writing withdrawal",
+        "runner process-tree kill can interrupt the same sequence",
+        "AppHost may stop after stdin loss",
+        "independent finalizer withdraws remaining holds before stopping survivors"
+      ],
+      "missingReportCompletion": {
+        "state": "not-yet-populated"
+      },
+      "missingWithdrawalProvesOrdering": false,
+      "partialStartupResult": "partial-startup-result.json"
+    },
+    {
+      "id": "LC-04",
+      "title": "Receipt re-read and exact-owner dispatch",
+      "normalOrHelperTimeoutDownBy": "helper",
+      "runnerCancellationOrFailureRetryDownBy": "always-finalizer",
+      "processOrder": [
+        "stop surviving tool processes",
+        "read receipt",
+        "if absent, stop other recorded-session processes",
+        "if previously absent, re-read receipt"
+      ],
+      "variants": [
+        {
+          "initialReceipt": "present",
+          "lastReceipt": "present",
+          "durableOwnerMatches": true,
+          "downInvocations": 1,
+          "result": "exact-down"
+        },
+        {
+          "initialReceipt": "absent",
+          "lastReceipt": "late",
+          "durableOwnerMatches": true,
+          "downInvocations": 1,
+          "result": "exact-down"
+        },
+        {
+          "initialReceipt": "absent",
+          "lastReceipt": "absent",
+          "durableOwnerMatches": null,
+          "downInvocations": 0,
+          "result": "not-allocated"
+        },
+        {
+          "initialReceipt": "present",
+          "lastReceipt": "present",
+          "durableOwnerMatches": false,
+          "downInvocations": 0,
+          "result": "refused"
+        },
+        {
+          "initialReceipt": "present",
+          "lastReceipt": "present",
+          "durableOwnerMatches": true,
+          "actualJobMatches": false,
+          "downInvocations": 0,
+          "result": "refused"
+        },
+        {
+          "initialReceipt": "absent",
+          "lastReceipt": "unknown",
+          "durableOwnerMatches": null,
+          "downInvocations": 0,
+          "result": "allocation-unverified",
+          "reason": "integration-process-survived"
+        }
+      ],
+      "exactArgv": [
+        "dotnet",
+        "tool",
+        "run",
+        "hexalith-module",
+        "--",
+        "down",
+        "--run-id=00000000000000000000000000000416",
+        "--output=json"
+      ],
+      "actualFinalizerJobStatus": "cancelled",
+      "downEnvironment": {
+        "HEXALITH_CI_JOB_STATUS": "cancelled"
+      }
+    },
+    {
+      "id": "LC-05",
+      "title": "Unverified discovery and exact retry",
+      "priorTerminal": {
+        "outcome": "failed",
+        "recordedAt": "2000-01-01T00:00:51Z",
+        "cause": "test-failure",
+        "diagnosticIds": []
+      },
+      "cases": [
+        {
+          "condition": "missing-tool",
+          "cleanupRecord": {
+            "schema": "hexalith.module.ci-integration-cleanup.v1",
+            "runId": "00000000000000000000000000000416",
+            "executionContext": {
+              "kind": "ci",
+              "repository": "synthetic/example",
+              "workflowRunId": "1",
+              "workflowAttempt": 1,
+              "jobId": "synthetic-job",
+              "runnerKind": "github-hosted",
+              "operatingSystem": "Linux",
+              "disposable": true
+            },
+            "status": "tool-unavailable",
+            "reason": "FileNotFoundError",
+            "jobStatus": "failure",
+            "verified": false
+          },
+          "publicCleanup": {
+            "state": "not-yet-populated"
+          }
+        },
+        {
+          "condition": "unknown-discovery",
+          "downRemaining": {
+            "containerIds": [],
+            "processIds": [],
+            "workspaceIds": [],
+            "claimIds": [],
+            "discoveryFailures": [
+              "synthetic-discovery"
+            ],
+            "unverified": true
+          },
+          "verified": false,
+          "publicCleanup": {
+            "state": "populated",
+            "disposition": "incomplete",
+            "attemptId": "synthetic-cleanup-1",
+            "observedAt": "2000-01-01T00:01:02Z",
+            "ownedResourceIds": [
+              "synthetic-writer-a",
+              "synthetic-writer-b",
+              "synthetic-controls"
+            ],
+            "leftoverResourceIds": [],
+            "failures": [],
+            "diagnosticIds": [
+              "synthetic-discovery"
+            ]
+          }
+        },
+        {
+          "condition": "owned-leftovers",
+          "downRemaining": {
+            "containerIds": [],
+            "processIds": [
+              "synthetic-writer-a"
+            ],
+            "workspaceIds": [],
+            "claimIds": [],
+            "discoveryFailures": [],
+            "unverified": false
+          },
+          "verified": false,
+          "publicCleanup": {
+            "state": "populated",
+            "disposition": "incomplete",
+            "attemptId": "synthetic-cleanup-1",
+            "observedAt": "2000-01-01T00:01:02Z",
+            "ownedResourceIds": [
+              "synthetic-writer-a",
+              "synthetic-writer-b",
+              "synthetic-controls"
+            ],
+            "leftoverResourceIds": [
+              "synthetic-writer-a"
+            ],
+            "failures": [
+              "synthetic-writer-a"
+            ],
+            "diagnosticIds": [
+              "synthetic-discovery"
+            ]
+          }
+        },
+        {
+          "condition": "exact-retry-empty",
+          "downRemaining": {
+            "containerIds": [],
+            "processIds": [],
+            "workspaceIds": [],
+            "claimIds": [],
+            "discoveryFailures": [],
+            "unverified": false
+          },
+          "verified": true,
+          "publicCleanup": {
+            "state": "populated",
+            "disposition": "complete",
+            "attemptId": "synthetic-cleanup-2",
+            "observedAt": "2000-01-01T00:01:11Z",
+            "ownedResourceIds": [],
+            "leftoverResourceIds": [],
+            "failures": [],
+            "diagnosticIds": []
+          }
+        },
+        {
+          "condition": "unexecutable-tool",
+          "cleanupRecord": {
+            "schema": "hexalith.module.ci-integration-cleanup.v1",
+            "runId": "00000000000000000000000000000416",
+            "executionContext": {
+              "kind": "ci",
+              "repository": "synthetic/example",
+              "workflowRunId": "1",
+              "workflowAttempt": 1,
+              "jobId": "synthetic-job",
+              "runnerKind": "github-hosted",
+              "operatingSystem": "Linux",
+              "disposable": true
+            },
+            "status": "tool-unavailable",
+            "reason": "PermissionError",
+            "jobStatus": "failure",
+            "verified": false
+          },
+          "publicCleanup": {
+            "state": "not-yet-populated"
+          }
+        },
+        {
+          "condition": "unverifiable-tool",
+          "cleanupRecord": {
+            "schema": "hexalith.module.ci-integration-cleanup.v1",
+            "runId": "00000000000000000000000000000416",
+            "executionContext": {
+              "kind": "ci",
+              "repository": "synthetic/example",
+              "workflowRunId": "1",
+              "workflowAttempt": 1,
+              "jobId": "synthetic-job",
+              "runnerKind": "github-hosted",
+              "operatingSystem": "Linux",
+              "disposable": true
+            },
+            "status": "tool-unavailable",
+            "reason": "ValueError",
+            "jobStatus": "failure",
+            "verified": false
+          },
+          "publicCleanup": {
+            "state": "not-yet-populated"
+          }
+        }
+      ],
+      "preservedTerminal": {
+        "outcome": "failed",
+        "recordedAt": "2000-01-01T00:00:51Z",
+        "cause": "test-failure",
+        "diagnosticIds": []
+      },
+      "peerUntouched": true,
+      "laneCreditBeforeVerifiedCleanup": "none",
+      "retained": [
+        "classified-redacted-result",
+        "classified-redacted-attachments",
+        "declared-redacted-diagnostics"
+      ],
+      "excluded": [
+        "private-tokens",
+        "private-credential-file",
+        "raw-logs"
+      ]
+    },
+    {
+      "id": "LC-06",
+      "title": "Access closure and bounded owner reset",
+      "cancellationAt": "2000-01-01T00:00:52Z",
+      "credentialExpiresAt": "2000-01-01T00:00:55Z",
+      "originalControlExpiresAt": "2000-01-01T00:01:00Z",
+      "originalResetDeadline": "2000-01-01T00:01:20Z",
+      "firstCancellationClosesAccess": true,
+      "firstCancellationCancelsPendingRequests": true,
+      "moduleRequestAt": "2000-01-01T00:00:53Z",
+      "ownerResetRequestAt": "2000-01-01T00:00:56Z",
+      "ownerResetFailureAt": "2000-01-01T00:00:57Z",
+      "boundedRetryAt": "2000-01-01T00:00:58Z",
+      "verifiedResetAt": "2000-01-01T00:00:59Z",
+      "expiredRetryAt": "2000-01-01T00:01:20Z",
+      "moduleRequestAllowed": false,
+      "expiredRetryAllowed": false,
+      "reopenAccess": false,
+      "admitNewFault": false,
+      "preserveFailureRetainedLocalData": true
+    }
+  ]
+}

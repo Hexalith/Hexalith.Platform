@@ -1,0 +1,257 @@
+{
+  "mixed.trx": {
+    "runId": "00000000000000000000000000000416",
+    "attemptId": "00000000000000000000000000000417",
+    "scope": {
+      "runId": "00000000000000000000000000000416",
+      "ownerRunId": "00000000000000000000000000000416",
+      "attemptId": "00000000000000000000000000000417",
+      "environmentId": "00000000000000000000000000000418",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+      "suiteId": "synthetic-qualification",
+      "suiteContentIdentity": "sha256:856d530525e79670994e1b73de2ebb81943a744d3cc6af2cb414aae381c43507",
+      "configurationContentIdentity": "sha256:0888e3e1c673954b1ebc7e5fd050b1b716cedbb58f5dd0f3170395ccb74be9c5",
+      "requiredTestSetContentIdentity": "sha256:38a32b83e74eda55c4ece360ffd6ca051c8c3f3609e20809f8decc23e12786f9"
+    },
+    "reportRef": {
+      "referenceId": "mixed.trx",
+      "contentIdentity": "sha256:ffdb8f96e5986b65997bf5db8b2e62566b8fff57c421240f685fb35464eef7d9"
+    },
+    "retainedReportRef": {
+      "referenceId": "mixed.trx",
+      "contentIdentity": "sha256:ffdb8f96e5986b65997bf5db8b2e62566b8fff57c421240f685fb35464eef7d9"
+    },
+    "sourceRevision": "1111111111111111111111111111111111111111",
+    "consumerArtifact": {
+      "referenceId": "synthetic-tests",
+      "contentIdentity": "sha256:e9670585c9bde5089ecc93ca937c1460291fb26f00c96b52f98fd924588f870f"
+    },
+    "argv": [
+      "synthetic-fixture-runner",
+      "--suite",
+      "synthetic-qualification"
+    ],
+    "processExitCode": 0,
+    "executionIds": {
+      "01-lawful": "00000000-0000-0000-0001-000000000101",
+      "02-revision": "00000000-0000-0000-0001-000000000102",
+      "03-create-once": "00000000-0000-0000-0001-000000000103",
+      "04-error": "00000000-0000-0000-0001-000000000104",
+      "05-aborted": "00000000-0000-0000-0001-000000000105",
+      "06-not-executed": "00000000-0000-0000-0001-000000000106",
+      "07-inconclusive": "00000000-0000-0000-0001-000000000107"
+    },
+    "ownerTerminal": {
+      "outcome": "failed",
+      "recordedAt": "2000-01-01T00:00:51Z",
+      "cause": "test-failure",
+      "diagnosticIds": []
+    },
+    "terminalRef": {
+      "referenceId": "synthetic-mixed-terminal",
+      "contentIdentity": "sha256:ee74f0d71e35ac3579eddfc664136075460c5f4a0c878f0781a6db7fa6c2f6d5"
+    },
+    "expectedCompletionCounts": {
+      "required": 8,
+      "executed": 5,
+      "completed": 4,
+      "passed": 1,
+      "failed": 3,
+      "skipped": 1
+    }
+  },
+  "intact.trx": {
+    "runId": "000000000000000000000000000003ea",
+    "attemptId": "000000000000000000000000000007d2",
+    "scope": {
+      "runId": "000000000000000000000000000003ea",
+      "ownerRunId": "000000000000000000000000000003ea",
+      "attemptId": "000000000000000000000000000007d2",
+      "environmentId": "00000000000000000000000000000bba",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+      "suiteId": "synthetic-qualification",
+      "suiteContentIdentity": "sha256:856d530525e79670994e1b73de2ebb81943a744d3cc6af2cb414aae381c43507",
+      "configurationContentIdentity": "sha256:0888e3e1c673954b1ebc7e5fd050b1b716cedbb58f5dd0f3170395ccb74be9c5",
+      "requiredTestSetContentIdentity": "sha256:38a32b83e74eda55c4ece360ffd6ca051c8c3f3609e20809f8decc23e12786f9"
+    },
+    "reportRef": {
+      "referenceId": "intact.trx",
+      "contentIdentity": "sha256:5d17f86a518685a99356e6b688710a3e921e5484a8eadb0bd08900640ba2135d"
+    },
+    "retainedReportRef": {
+      "referenceId": "intact.trx",
+      "contentIdentity": "sha256:5d17f86a518685a99356e6b688710a3e921e5484a8eadb0bd08900640ba2135d"
+    },
+    "sourceRevision": "1111111111111111111111111111111111111111",
+    "consumerArtifact": {
+      "referenceId": "synthetic-tests",
+      "contentIdentity": "sha256:e9670585c9bde5089ecc93ca937c1460291fb26f00c96b52f98fd924588f870f"
+    },
+    "argv": [
+      "synthetic-fixture-runner",
+      "--suite",
+      "synthetic-qualification"
+    ],
+    "processExitCode": 0,
+    "executionIds": {
+      "01-lawful": "00000000-0000-0000-0002-000000000101",
+      "02-revision": "00000000-0000-0000-0002-000000000102",
+      "03-create-once": "00000000-0000-0000-0002-000000000103",
+      "04-error": "00000000-0000-0000-0002-000000000104",
+      "05-aborted": "00000000-0000-0000-0002-000000000105",
+      "06-not-executed": "00000000-0000-0000-0002-000000000106",
+      "07-inconclusive": "00000000-0000-0000-0002-000000000107",
+      "08-missing": "00000000-0000-0000-0002-000000000108"
+    },
+    "ownerTerminal": {
+      "outcome": "passed",
+      "recordedAt": "2000-01-01T00:00:51Z",
+      "cause": "tests-completed",
+      "diagnosticIds": []
+    },
+    "terminalRef": {
+      "referenceId": "synthetic-intact-terminal",
+      "contentIdentity": "sha256:bc8cd3b821651344f0f4b2dada4445dd6f757d5a456486879148f5d8638b1a24"
+    },
+    "expectedCompletionCounts": {
+      "required": 8,
+      "executed": 8,
+      "completed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "revision-removed.trx": {
+    "runId": "000000000000000000000000000003eb",
+    "attemptId": "000000000000000000000000000007d3",
+    "scope": {
+      "runId": "000000000000000000000000000003eb",
+      "ownerRunId": "000000000000000000000000000003eb",
+      "attemptId": "000000000000000000000000000007d3",
+      "environmentId": "00000000000000000000000000000bbb",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+      "suiteId": "synthetic-qualification",
+      "suiteContentIdentity": "sha256:856d530525e79670994e1b73de2ebb81943a744d3cc6af2cb414aae381c43507",
+      "configurationContentIdentity": "sha256:0888e3e1c673954b1ebc7e5fd050b1b716cedbb58f5dd0f3170395ccb74be9c5",
+      "requiredTestSetContentIdentity": "sha256:38a32b83e74eda55c4ece360ffd6ca051c8c3f3609e20809f8decc23e12786f9"
+    },
+    "reportRef": {
+      "referenceId": "revision-removed.trx",
+      "contentIdentity": "sha256:3f458f5c38317b7c5fea94ecded75c9d66f6431076dea68b4f03945668112d0d"
+    },
+    "retainedReportRef": {
+      "referenceId": "revision-removed.trx",
+      "contentIdentity": "sha256:3f458f5c38317b7c5fea94ecded75c9d66f6431076dea68b4f03945668112d0d"
+    },
+    "sourceRevision": "1111111111111111111111111111111111111111",
+    "consumerArtifact": {
+      "referenceId": "synthetic-tests",
+      "contentIdentity": "sha256:e9670585c9bde5089ecc93ca937c1460291fb26f00c96b52f98fd924588f870f"
+    },
+    "argv": [
+      "synthetic-fixture-runner",
+      "--suite",
+      "synthetic-qualification"
+    ],
+    "processExitCode": 1,
+    "executionIds": {
+      "01-lawful": "00000000-0000-0000-0003-000000000101",
+      "02-revision": "00000000-0000-0000-0003-000000000102",
+      "03-create-once": "00000000-0000-0000-0003-000000000103",
+      "04-error": "00000000-0000-0000-0003-000000000104",
+      "05-aborted": "00000000-0000-0000-0003-000000000105",
+      "06-not-executed": "00000000-0000-0000-0003-000000000106",
+      "07-inconclusive": "00000000-0000-0000-0003-000000000107",
+      "08-missing": "00000000-0000-0000-0003-000000000108"
+    },
+    "ownerTerminal": {
+      "outcome": "failed",
+      "recordedAt": "2000-01-01T00:00:51Z",
+      "cause": "test-failure",
+      "diagnosticIds": []
+    },
+    "terminalRef": {
+      "referenceId": "synthetic-revision-removed-terminal",
+      "contentIdentity": "sha256:ee74f0d71e35ac3579eddfc664136075460c5f4a0c878f0781a6db7fa6c2f6d5"
+    },
+    "expectedCompletionCounts": {
+      "required": 8,
+      "executed": 8,
+      "completed": 8,
+      "passed": 7,
+      "failed": 1,
+      "skipped": 0
+    }
+  },
+  "create-once-removed.trx": {
+    "runId": "000000000000000000000000000003ec",
+    "attemptId": "000000000000000000000000000007d4",
+    "scope": {
+      "runId": "000000000000000000000000000003ec",
+      "ownerRunId": "000000000000000000000000000003ec",
+      "attemptId": "000000000000000000000000000007d4",
+      "environmentId": "00000000000000000000000000000bbc",
+      "syntheticTenantId": "synthetic-tenant",
+      "dataIsolationId": "synthetic-isolation",
+      "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+      "suiteId": "synthetic-qualification",
+      "suiteContentIdentity": "sha256:856d530525e79670994e1b73de2ebb81943a744d3cc6af2cb414aae381c43507",
+      "configurationContentIdentity": "sha256:0888e3e1c673954b1ebc7e5fd050b1b716cedbb58f5dd0f3170395ccb74be9c5",
+      "requiredTestSetContentIdentity": "sha256:38a32b83e74eda55c4ece360ffd6ca051c8c3f3609e20809f8decc23e12786f9"
+    },
+    "reportRef": {
+      "referenceId": "create-once-removed.trx",
+      "contentIdentity": "sha256:95d69a70a613c15f17f2b8c8770ccc355177f8bc2358faeba10a61e6526c6668"
+    },
+    "retainedReportRef": {
+      "referenceId": "create-once-removed.trx",
+      "contentIdentity": "sha256:95d69a70a613c15f17f2b8c8770ccc355177f8bc2358faeba10a61e6526c6668"
+    },
+    "sourceRevision": "1111111111111111111111111111111111111111",
+    "consumerArtifact": {
+      "referenceId": "synthetic-tests",
+      "contentIdentity": "sha256:e9670585c9bde5089ecc93ca937c1460291fb26f00c96b52f98fd924588f870f"
+    },
+    "argv": [
+      "synthetic-fixture-runner",
+      "--suite",
+      "synthetic-qualification"
+    ],
+    "processExitCode": 1,
+    "executionIds": {
+      "01-lawful": "00000000-0000-0000-0004-000000000101",
+      "02-revision": "00000000-0000-0000-0004-000000000102",
+      "03-create-once": "00000000-0000-0000-0004-000000000103",
+      "04-error": "00000000-0000-0000-0004-000000000104",
+      "05-aborted": "00000000-0000-0000-0004-000000000105",
+      "06-not-executed": "00000000-0000-0000-0004-000000000106",
+      "07-inconclusive": "00000000-0000-0000-0004-000000000107",
+      "08-missing": "00000000-0000-0000-0004-000000000108"
+    },
+    "ownerTerminal": {
+      "outcome": "failed",
+      "recordedAt": "2000-01-01T00:00:51Z",
+      "cause": "test-failure",
+      "diagnosticIds": []
+    },
+    "terminalRef": {
+      "referenceId": "synthetic-create-once-removed-terminal",
+      "contentIdentity": "sha256:ee74f0d71e35ac3579eddfc664136075460c5f4a0c878f0781a6db7fa6c2f6d5"
+    },
+    "expectedCompletionCounts": {
+      "required": 8,
+      "executed": 8,
+      "completed": 8,
+      "passed": 7,
+      "failed": 1,
+      "skipped": 0
+    }
+  }
+}

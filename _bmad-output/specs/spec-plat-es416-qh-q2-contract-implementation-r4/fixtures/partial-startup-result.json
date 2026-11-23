@@ -1,0 +1,154 @@
+{
+  "schema": "hexalith.test-result.v2",
+  "policyId": "hexalith.platform.candidate-and-attachment-policy.v1",
+  "bindings": {
+    "run": {
+      "runId": "00000000000000000000000000000416",
+      "attemptId": "00000000000000000000000000000417",
+      "attemptSequence": 1,
+      "ownerRunId": "00000000000000000000000000000416",
+      "environmentId": "00000000000000000000000000000418",
+      "role": "owner"
+    },
+    "tool": {
+      "state": "populated",
+      "name": "synthetic-tool",
+      "version": "0.0.0-synthetic",
+      "contentIdentity": "sha256:05e02b1a3813048004f1d971b26836f94d3b25b59c67952d40d535bbc709c574",
+      "buildsAdoption": {
+        "state": "not-yet-populated"
+      },
+      "platformAcceptance": {
+        "state": "not-yet-populated"
+      },
+      "integrationQualification": {
+        "state": "not-yet-populated"
+      }
+    },
+    "candidate": {
+      "state": "not-yet-populated"
+    },
+    "decision": {
+      "state": "not-yet-populated"
+    },
+    "reuseLineage": {
+      "state": "not-yet-populated"
+    },
+    "environment": {
+      "composition": {
+        "id": "synthetic-composition",
+        "contentIdentity": "sha256:929a21cfe565e9e9ca1ba171e5e64f3d7efc985bc9248a3466570f2c15f33436"
+      },
+      "mode": "package",
+      "executionContext": {
+        "kind": "ci",
+        "repository": "synthetic/example",
+        "workflowRunId": "1",
+        "workflowAttempt": 1,
+        "jobId": "synthetic-job",
+        "runnerKind": "github-hosted",
+        "operatingSystem": "Linux",
+        "disposable": true
+      },
+      "catalog": {
+        "commit": "1111111111111111111111111111111111111111",
+        "instanceId": "synthetic-catalog"
+      },
+      "isolation": {
+        "state": "populated",
+        "syntheticTenantId": "synthetic-tenant",
+        "dataIsolationId": "synthetic-isolation",
+        "resourceScopeId": "synthetic-owned-resources",
+        "catalogScopeId": "synthetic-catalog-scope"
+      },
+      "resources": {
+        "state": "not-yet-populated"
+      },
+      "readiness": {
+        "state": "not-yet-populated"
+      },
+      "startupTasks": {
+        "state": "not-yet-populated"
+      }
+    },
+    "artifacts": {
+      "expected": {
+        "state": "populated",
+        "items": [
+          {
+            "artifactId": "synthetic-tests",
+            "moduleId": "synthetic-eventstore",
+            "kind": "test",
+            "version": "0.0.0-synthetic",
+            "repository": "https://example.invalid/synthetic",
+            "committedRevision": "1111111111111111111111111111111111111111",
+            "configuration": "Release",
+            "contentIdentity": "sha256:e9670585c9bde5089ecc93ca937c1460291fb26f00c96b52f98fd924588f870f"
+          }
+        ]
+      },
+      "loaded": {
+        "state": "not-yet-populated"
+      }
+    },
+    "suite": {
+      "declared": {
+        "state": "populated",
+        "suiteId": "synthetic-qualification",
+        "suiteContentIdentity": "sha256:856d530525e79670994e1b73de2ebb81943a744d3cc6af2cb414aae381c43507",
+        "configurationContentIdentity": "sha256:0888e3e1c673954b1ebc7e5fd050b1b716cedbb58f5dd0f3170395ccb74be9c5",
+        "requiredTestSetContentIdentity": "sha256:38a32b83e74eda55c4ece360ffd6ca051c8c3f3609e20809f8decc23e12786f9",
+        "requiredTestIds": [
+          "01-lawful",
+          "02-revision",
+          "03-create-once",
+          "04-error",
+          "05-aborted",
+          "06-not-executed",
+          "07-inconclusive",
+          "08-missing"
+        ]
+      },
+      "completion": {
+        "state": "not-yet-populated"
+      }
+    },
+    "attachments": {
+      "state": "not-yet-populated"
+    },
+    "deadlines": {
+      "startup": {
+        "state": "populated",
+        "origin": "environment-requested",
+        "originAt": "2000-01-01T00:00:00Z",
+        "effectiveSeconds": 30,
+        "expiresAt": "2000-01-01T00:00:30Z",
+        "override": {
+          "state": "not-overridden"
+        }
+      },
+      "execution": {
+        "state": "not-yet-populated"
+      }
+    },
+    "qualification": {
+      "state": "not-yet-populated"
+    }
+  },
+  "diagnostics": [],
+  "terminal": {
+    "outcome": "cancelled",
+    "recordedAt": "2000-01-01T00:00:05Z",
+    "cause": "run-cancelled",
+    "diagnosticIds": []
+  },
+  "termination": {
+    "state": "not-yet-populated"
+  },
+  "retention": {
+    "state": "not-yet-populated"
+  },
+  "cleanup": {
+    "state": "not-yet-populated"
+  }
+}

@@ -1,0 +1,100 @@
+[
+  {
+    "falsificationId": "synthetic-original-read-revision",
+    "removedRule": "original-read-revision",
+    "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+    "adversaryId": "synthetic-adversary",
+    "authorizationRef": {
+      "state": "populated",
+      "referenceId": "synthetic-inert-authorization-original-read-revision",
+      "contentIdentity": "sha256:bb4afff486372e48f38ba88e1ed343072d58c657a4526f76fb6a745cea93423b"
+    },
+    "intactRunRef": {
+      "state": "populated",
+      "referenceId": "synthetic-intact-terminal",
+      "contentIdentity": "sha256:bc8cd3b821651344f0f4b2dada4445dd6f757d5a456486879148f5d8638b1a24"
+    },
+    "alteredRunRef": {
+      "state": "populated",
+      "referenceId": "synthetic-revision-removed-terminal",
+      "contentIdentity": "sha256:ee74f0d71e35ac3579eddfc664136075460c5f4a0c878f0781a6db7fa6c2f6d5"
+    },
+    "lawfulControlRef": {
+      "state": "populated",
+      "runId": "000000000000000000000000000003eb",
+      "attemptId": "000000000000000000000000000007d3",
+      "reportRef": {
+        "referenceId": "revision-removed.trx",
+        "contentIdentity": "sha256:3f458f5c38317b7c5fea94ecded75c9d66f6431076dea68b4f03945668112d0d"
+      },
+      "testId": "01-lawful",
+      "executionId": "00000000-0000-0000-0003-000000000101"
+    },
+    "expectedFailedTestRef": {
+      "state": "populated",
+      "runId": "000000000000000000000000000003eb",
+      "attemptId": "000000000000000000000000000007d3",
+      "reportRef": {
+        "referenceId": "revision-removed.trx",
+        "contentIdentity": "sha256:3f458f5c38317b7c5fea94ecded75c9d66f6431076dea68b4f03945668112d0d"
+      },
+      "testId": "02-revision",
+      "executionId": "00000000-0000-0000-0003-000000000102"
+    },
+    "comparisonObservation": {
+      "state": "populated",
+      "observedAt": "2000-01-01T00:01:05Z",
+      "effect": "intended-failure-observed",
+      "diagnosticIds": []
+    }
+  },
+  {
+    "falsificationId": "synthetic-create-once-identity",
+    "removedRule": "create-once-identity",
+    "profileContentIdentity": "sha256:18667ea4556a7ae2e7e57e8b5e3f7f8f7dd89ceacb102135ea8c8258ebf6c384",
+    "adversaryId": "synthetic-adversary",
+    "authorizationRef": {
+      "state": "populated",
+      "referenceId": "synthetic-inert-authorization-create-once-identity",
+      "contentIdentity": "sha256:9b83badf7acb4de5b44971567ec2000586baef8dc10a5e5ccd45cb2e60d0d1ad"
+    },
+    "intactRunRef": {
+      "state": "populated",
+      "referenceId": "synthetic-intact-terminal",
+      "contentIdentity": "sha256:bc8cd3b821651344f0f4b2dada4445dd6f757d5a456486879148f5d8638b1a24"
+    },
+    "alteredRunRef": {
+      "state": "populated",
+      "referenceId": "synthetic-create-once-removed-terminal",
+      "contentIdentity": "sha256:ee74f0d71e35ac3579eddfc664136075460c5f4a0c878f0781a6db7fa6c2f6d5"
+    },
+    "lawfulControlRef": {
+      "state": "populated",
+      "runId": "000000000000000000000000000003ec",
+      "attemptId": "000000000000000000000000000007d4",
+      "reportRef": {
+        "referenceId": "create-once-removed.trx",
+        "contentIdentity": "sha256:95d69a70a613c15f17f2b8c8770ccc355177f8bc2358faeba10a61e6526c6668"
+      },
+      "testId": "01-lawful",
+      "executionId": "00000000-0000-0000-0004-000000000101"
+    },
+    "expectedFailedTestRef": {
+      "state": "populated",
+      "runId": "000000000000000000000000000003ec",
+      "attemptId": "000000000000000000000000000007d4",
+      "reportRef": {
+        "referenceId": "create-once-removed.trx",
+        "contentIdentity": "sha256:95d69a70a613c15f17f2b8c8770ccc355177f8bc2358faeba10a61e6526c6668"
+      },
+      "testId": "03-create-once",
+      "executionId": "00000000-0000-0000-0004-000000000103"
+    },
+    "comparisonObservation": {
+      "state": "populated",
+      "observedAt": "2000-01-01T00:01:05Z",
+      "effect": "intended-failure-observed",
+      "diagnosticIds": []
+    }
+  }
+]
