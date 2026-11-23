@@ -52,8 +52,8 @@ public static class DaprSelfHostedMtls
         ArgumentException.ThrowIfNullOrWhiteSpace(applicationNamespace);
         if (!builder.ExecutionContext.IsRunMode)
             throw new InvalidOperationException("Self-hosted Dapr identity infrastructure is local-run only.");
-        ProjectResource[] applications = builder.Resources.OfType<ProjectResource>()
-            .Where(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Any()).ToArray();
+        IResourceWithWaitSupport[] applications = builder.Resources.OfType<IResourceWithWaitSupport>()
+            .Where(resource => resource is IDotnetProgramResource && resource.Annotations.OfType<DaprSidecarAnnotation>().Any()).ToArray();
         if (applications.Length == 0)
             throw new InvalidOperationException("Declare the application sidecars before configuring their shared identity infrastructure.");
         string runDirectory = Path.Combine(Path.GetTempPath(), "hexalith-dapr", Guid.NewGuid().ToString("N"));
@@ -71,7 +71,7 @@ public static class DaprSelfHostedMtls
                 ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             for (int index = 0; index < applications.Length; index++)
             {
-                ProjectResource application = applications[index];
+                IResourceWithWaitSupport application = applications[index];
                 IDaprSidecarResource sidecar = application.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
                 DaprSidecarOptionsAnnotation annotation = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
                 CompositionDaprSidecarPorts allocated = ports.ModuleDapr[index];

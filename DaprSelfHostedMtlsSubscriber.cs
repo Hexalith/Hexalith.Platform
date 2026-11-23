@@ -11,7 +11,7 @@ using Aspire.Hosting.Lifecycle;
 /// <param name="sentryAddress">The allocated Sentry listener.</param>
 /// <param name="applicationNamespace">The actual isolated application namespace.</param>
 internal sealed class DaprSelfHostedMtlsSubscriber(
-    IReadOnlyList<ProjectResource> applications,
+    IReadOnlyList<IResource> applications,
     string certificateDirectory,
     string sentryAddress,
     string applicationNamespace) : IDistributedApplicationEventingSubscriber
@@ -21,7 +21,7 @@ internal sealed class DaprSelfHostedMtlsSubscriber(
     {
         _ = eventing.Subscribe<BeforeStartEvent>((startup, token) =>
         {
-            foreach (ProjectResource application in applications)
+            foreach (IResource application in applications)
                 _ = DaprSelfHostedMtls.BindGeneratedSidecar(startup.Model, application, certificateDirectory, sentryAddress, applicationNamespace);
             return Task.CompletedTask;
         });
