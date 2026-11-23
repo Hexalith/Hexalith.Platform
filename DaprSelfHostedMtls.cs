@@ -263,7 +263,7 @@ public static class DaprSelfHostedMtls
             .WithEntrypoint("./placement")
             .WithArgs(
                 "--tls-enabled",
-                "--sentry-address=dapr-sentry:50001",
+                $"--sentry-address={sentry.Resource.Name}:50001",
                 "--trust-domain=localhost",
                 $"--trust-anchors-file={ContainerCredentialsDirectory}/ca.crt",
                 "--healthz-listen-address=0.0.0.0",
@@ -285,7 +285,7 @@ public static class DaprSelfHostedMtls
             .WithEntrypoint("./scheduler")
             .WithArgs(
                 "--tls-enabled",
-                "--sentry-address=dapr-sentry:50001",
+                $"--sentry-address={sentry.Resource.Name}:50001",
                 "--trust-domain=localhost",
                 $"--trust-anchors-file={ContainerCredentialsDirectory}/ca.crt",
                 $"--etcd-data-dir={SchedulerDataDirectory}",
@@ -315,6 +315,13 @@ public static class DaprSelfHostedMtls
         {
             placement = placement.WithContainerRuntimeArgs("--user", containerUser);
             scheduler = scheduler.WithContainerRuntimeArgs("--user", containerUser);
+        }
+
+        // The gRPC clients reach Sentry through the session's private container network.
+        string localPeers = $"localhost,127.0.0.1,::1,{sentry.Resource.Name}";
+        foreach (var peer in new[] { placement, scheduler })
+        {
+            peer.WithEnvironment("NO_PROXY", localPeers).WithEnvironment("no_proxy", localPeers);
         }
 
         return (placement, scheduler);

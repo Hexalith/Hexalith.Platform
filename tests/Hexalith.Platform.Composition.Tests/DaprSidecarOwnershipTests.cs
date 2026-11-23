@@ -9,6 +9,37 @@ using Xunit;
 /// <summary>Ensures isolated transport is applied only to the selected application's generated executable.</summary>
 public sealed class DaprSidecarOwnershipTests
 {
+    /// <summary>Both control-plane clients obtain their identity from the selected private Sentry service.</summary>
+    [Fact]
+    public async Task ControlPlaneRoutesIdentityRequestsToSelectedSentry()
+    {
+        var builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { DisableDashboard = true });
+        var sentry = builder.AddContainer("selected-sentry", "fixture");
+        var workspace = Directory.CreateTempSubdirectory();
+        try
+        {
+            var (placement, scheduler) = DaprSelfHostedMtls.AddControlPlane(builder, sentry,
+                workspace.FullName, Path.Combine(workspace.FullName, "scheduler"), 32103, 32104);
+            foreach (var peer in new[] { placement.Resource, scheduler.Resource })
+            {
+                Dictionary<string, object> environment = [];
+                foreach (var callback in peer.Annotations.OfType<EnvironmentCallbackAnnotation>())
+                    await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, peer, environment, TestContext.Current.CancellationToken));
+                environment["NO_PROXY"].ShouldBe("localhost,127.0.0.1,::1,selected-sentry");
+                environment["no_proxy"].ShouldBe(environment["NO_PROXY"]);
+
+                List<object> arguments = [];
+                foreach (var callback in peer.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                    await callback.Callback(new CommandLineArgsCallbackContext(arguments, peer, TestContext.Current.CancellationToken));
+                arguments.ShouldContain("--sentry-address=selected-sentry:50001");
+            }
+        }
+        finally
+        {
+            workspace.Delete(recursive: true);
+        }
+    }
+
     /// <summary>Name collisions, missing parents and conflicting parents cannot receive the selected owner's transport.</summary>
     [Theory]
     [InlineData("project")]
