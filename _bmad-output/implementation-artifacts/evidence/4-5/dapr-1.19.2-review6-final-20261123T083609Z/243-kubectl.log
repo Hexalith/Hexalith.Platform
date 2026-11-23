@@ -1,0 +1,53 @@
+{
+    "apiVersion": "dapr.io/v1alpha1",
+    "kind": "Component",
+    "metadata": {
+        "creationTimestamp": "2026-11-23T08:41:19Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "dapr.io/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:scopes": {},
+                    "f:spec": {
+                        "f:metadata": {},
+                        "f:type": {},
+                        "f:version": {}
+                    }
+                },
+                "manager": "h45-environment",
+                "operation": "Apply",
+                "time": "2026-11-23T08:41:19Z"
+            }
+        ],
+        "name": "access-telemetry-store",
+        "namespace": "reference",
+        "resourceVersion": "1088",
+        "uid": "71fd9ad3-0870-4511-a190-3afd3bf36b51"
+    },
+    "scopes": [
+        "memories-access-telemetry"
+    ],
+    "spec": {
+        "metadata": [
+            {
+                "name": "redisHost",
+                "value": "fixture-data.environment.svc.cluster.local:6380"
+            },
+            {
+                "name": "redisPassword",
+                "secretKeyRef": {
+                    "key": "token",
+                    "name": "fixture-credential"
+                }
+            },
+            {
+                "name": "enableTLS",
+                "value": "true"
+            }
+        ],
+        "type": "state.redis",
+        "version": "v1"
+    }
+}

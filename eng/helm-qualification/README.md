@@ -215,7 +215,7 @@ ownership snapshots. The command logs retain the observed results, including
 the intentional SSA conflict. The 23 November review follow-up admitted all eight
 workloads under restricted policy and retained byte-identical snapshots of
 all eight environment Components across seven lifecycle checkpoints.
-[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-review6-20261123T081644Z/qualification.json)
+[Passed qualification](../../_bmad-output/implementation-artifacts/evidence/4-5/dapr-1.19.2-review6-final-20261123T083609Z/qualification.json)
 
 Story 4.9 consumes these exact Dapr identities
 for the hosted inventory. Story 4.12 verifies the published OCI digest and

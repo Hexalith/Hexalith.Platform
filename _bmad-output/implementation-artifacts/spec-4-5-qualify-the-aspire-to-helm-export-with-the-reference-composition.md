@@ -4,7 +4,7 @@ type: 'feature'
 epic: 4
 story: 5
 created: '2026-10-22'
-status: 'in-review'
+status: 'done'
 baseline_commit: 'e39d59b9e7f93c5880eff423e24b8a0f274560ed'
 route: 'dispatch'
 review_loop_iteration: 1
@@ -228,6 +228,12 @@ Scope: the post-review-5 patch delta `069e550a..8af2e4d2`, limited to the Code M
 - The Dapr 1.19.2 qualification and handoff are complete. The review follow-up below covers the five remaining review-6 items.
 
 ### Review-6 follow-up verification (2026-11-23)
+
+- The independent review tightened effective publish selection, log cleanup ownership and project output filtering. An omitted step resolves to `publish` in Aspire's actual pipeline options, and inspect exits before writing a graph. All 23 hosted tests passed. The pinned native publish reproduced the approved graph. Real MSBuild retained a linked source under a sibling's `resources/bin` directory and excluded the sibling's build output. [Hosted tests](evidence/4-5/review6-native-and-composition-20261123T081644Z/review-fixes-hosted-tests.log) · [Pinned publish](evidence/4-5/review6-native-and-composition-20261123T081644Z/review-fixes-aspire-publish.log) · [MSBuild check](evidence/4-5/review6-native-and-composition-20261123T081644Z/review-fixes-msbuild.log)
+- The final Dapr 1.19.2 rerun passed all 188 Python checks with zero skips and all isolated admission and Helm SSA checks. The archive and all three render modes matched the first follow-up run. All eight workloads passed restricted admission, and every environment Component retained its UID, binding, scope and ownership at seven checkpoints. The audit matched all 253 command logs and 119 source hashes and verified removal of the owned kind cluster, nodes and scratch workspace. All 27 operator tests passed. [Final qualification](evidence/4-5/dapr-1.19.2-review6-final-20261123T083609Z/qualification.json) · [Parent audit](evidence/4-5/dapr-1.19.2-review6-final-20261123T083609Z/parent-audit.json) · [Operator tests](evidence/4-5/review6-native-and-composition-20261123T081644Z/review-fixes-operator-tests.log)
+- The broader historical local routing-catalog control reproduced the same five EventStore NU1010 errors before and after the hosted changes. [Baseline owner build](evidence/4-5/review6-native-and-composition-20261123T081644Z/local-catalog-baseline-owner-build.log) · [Patched owner build](evidence/4-5/review6-native-and-composition-20261123T081644Z/local-catalog-final-owner-build.log)
+
+#### First follow-up run
 
 - The hosted probe accepts an unset pipeline step or `publish`. The 21 focused C# tests passed with zero skips, including explicit refusal of deploy, destroy, named Helm steps and `publish-manifest`. Pinned Aspire 13.6.4 published the byte-identical approved graph. Its native output still omitted the Dapr annotations on all eight workloads, reproducing AD-1. The historical run kept NU1903 and NU1904 visible as warnings. [Hosted tests](evidence/4-5/review6-native-and-composition-20261123T081644Z/PlatformHostedPublishingTests.log) · [Native probe](evidence/4-5/review6-native-and-composition-20261123T081644Z/native-probe-verification.json) · [Publish log](evidence/4-5/review6-native-and-composition-20261123T081644Z/aspire-publish-02.log)
 - Eight local composition cases passed for declaration closure, server-scoped tokens and Dapr ACLs. The broader historical graph fixture stopped in the mapped EventStore routing-catalog build on missing central package versions (NU1010). Real MSBuild evaluation also confirmed that a newly created sibling analyzer DLL could not change the inventory, while a linked source under an ancestor named `obj` remained tracked. All 27 operator consumer tests passed against the synchronized chart. [Composition tests](evidence/4-5/review6-native-and-composition-20261123T081644Z/local-composition-regressions-02.log) · [Routing-catalog build](evidence/4-5/review6-native-and-composition-20261123T081644Z/local-routing-catalog-efdd390825874317be15c63b1524b365.log) · [MSBuild inventory](evidence/4-5/review6-native-and-composition-20261123T081644Z/msbuild-sibling-output.log) · [Operator tests](evidence/4-5/review6-native-and-composition-20261123T081644Z/operator-tests-02.log)

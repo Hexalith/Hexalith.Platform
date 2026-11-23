@@ -1,0 +1,22 @@
+{
+    "apiVersion": "v1",
+    "kind": "ServiceAccount",
+    "metadata": {
+        "annotations": {
+            "meta.helm.sh/release-name": "dapr",
+            "meta.helm.sh/release-namespace": "dapr-system"
+        },
+        "creationTimestamp": "2026-11-23T08:39:46Z",
+        "labels": {
+            "app.kubernetes.io/component": "rbac",
+            "app.kubernetes.io/managed-by": "Helm",
+            "app.kubernetes.io/name": "dapr",
+            "app.kubernetes.io/part-of": "dapr",
+            "app.kubernetes.io/version": "1.19.2"
+        },
+        "name": "dapr-scheduler",
+        "namespace": "dapr-system",
+        "resourceVersion": "527",
+        "uid": "914b5e0d-0e08-49ef-a204-2c5ff9b74d20"
+    }
+}
