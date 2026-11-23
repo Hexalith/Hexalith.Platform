@@ -102,6 +102,29 @@ public sealed class S3AttemptObjectStoreTests
         Assert.Equal(update, (await backend.ReadAsync(key, 1024, token))?.Bytes);
     }
 
+    [Theory]
+    [InlineData(HttpStatusCode.Forbidden, "AccessDenied")]
+    [InlineData(HttpStatusCode.BadRequest, "InvalidRequest")]
+    public async Task KnownRefusalOfAHeadPutPropagatesWithoutUncertainty(HttpStatusCode status, string code)
+    {
+        CancellationToken token = TestContext.Current.CancellationToken;
+        using S3Handler transport = new(headRefusal: (status, code));
+        using S3AttemptObjectStore backend = Backend(transport);
+        using RecordFixture fixture = new();
+        AttemptStore store = new(backend, fixture.Trust);
+        Assert.True(await store.InitializeAsync(AttemptStore.Staging, token));
+        SignedBytes<ReleaseRecord> release = fixture.Release();
+        SignedBytes<AttemptRecord> attempt = fixture.Attempt("initial", AttemptStore.Staging, 1, release);
+
+        AmazonS3Exception error = await Assert.ThrowsAnyAsync<AmazonS3Exception>(() =>
+            store.AcquireAsync(attempt.Bytes, release.Bytes, cancellationToken: token));
+
+        Assert.Equal(status, error.StatusCode);
+        Assert.Equal(code, error.ErrorCode);
+        Assert.Equal(1, transport.HeadReplacements);
+        Assert.Equal(1, transport.HeadVersions);
+    }
+
     private static S3AttemptObjectStore Backend(HttpMessageHandler transport) => new(
         new Uri("https://attempt-store.invalid"), "fr-par", "test-bucket", new BasicAWSCredentials("test", "test"),
         new FakeHttpClientFactory(transport));
@@ -117,7 +140,8 @@ public sealed class S3AttemptObjectStoreTests
 
     private sealed class S3Handler(
         HttpStatusCode conflictStatus = HttpStatusCode.PreconditionFailed, string conflictCode = "PreconditionFailed",
-        string? committedFailure = null, string missingGetCode = "NoSuchKey") : HttpMessageHandler
+        string? committedFailure = null, string missingGetCode = "NoSuchKey",
+        (HttpStatusCode Status, string Code)? headRefusal = null) : HttpMessageHandler
     {
         private readonly InMemoryAttemptObjectStore _objects = new();
 
@@ -162,6 +186,11 @@ public sealed class S3AttemptObjectStoreTests
             {
                 Assert.Equal(AttemptStoreTests.StagingHead, key);
                 HeadReplacements++;
+                if (headRefusal is { } refusal)
+                {
+                    return Error(refusal.Status, refusal.Code);
+                }
+
                 AttemptObject? previous = await _objects.ReadAsync(key, AttemptStoreHead.MaximumBytes, cancellationToken);
                 if (previous is null || !ETag(previous.Bytes).Equals(expected))
                 {

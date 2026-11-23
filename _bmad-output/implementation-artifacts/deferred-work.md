@@ -1112,7 +1112,7 @@
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
   summary: Define which attempt kinds may issue qualification and production-promoted records, and enforce it in `RecordTransitionValidator.ValidateIssuer`.
-  evidence: `ValidateIssuer` (Builds `RecordTransitionValidator.cs:253`) accepts any `AttemptKind`, so a `rotation` or `in-place-restore` attempt can issue either record. The spine's Production profile rule legitimately lets release, environment-layer and shared-infrastructure attempts issue qualification (and renew production-promoted in production), so the allowed-kind matrix needs lifecycle design. Deferred to Story 4.7 or the lifecycle work by the Administrator decision of 2026-10-23 (review decision D2).
+  evidence: `ValidateIssuer` (Builds `RecordTransitionValidator.cs:253`) accepts any `AttemptKind`, so a `rotation` or `in-place-restore` attempt can issue either record. The spine's Production profile rule legitimately lets release, environment-layer and shared-infrastructure attempts issue qualification (and renew production-promoted in production), so the allowed-kind matrix needs lifecycle design. Deferred to Story 4.7 or the lifecycle work by the Administrator decision of 2026-10-23 (review decision D2). Story 4.7 kept the matrix open and fail-closed under its Never rule, so the lifecycle work owns it.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-3-make-local-composition-resources-run-scoped.md`
   summary: Attest the selected native runtime version for direct file AppHost runs.
@@ -2333,7 +2333,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
   summary: Tuple CI cannot compile the AttemptStore projects on the pinned Builds 6.6.2.
-  evidence: The v2 record API (`ReleaseRecordVersion`, `StagingEvidenceBinding`) is absent at 6.6.2 revision `2d9ef8b4`. The slnx now contains the store, so the whole `run_tuple_ci.py --suite current42` build fails on 6.6.2. Re-pinning the gitlink to 6.6.2 therefore no longer restores the 380 Composition cases. The AttemptStore group is the first profile group outside Composition.Tests, so the first hosted tuple run will exercise the runner's non-Composition test path (`eng/run_tuple_ci.py:414-416`).
+  evidence: The v2 record API (`ReleaseRecordVersion`, `StagingEvidenceBinding`) is absent at 6.6.2 revision `2d9ef8b4`. The slnx now contains the store, so the whole `run_tuple_ci.py --suite current42` build fails on 6.6.2. Re-pinning the gitlink to 6.6.2 therefore no longer restores the 380 Composition cases. The AttemptStore group is the first profile group outside Composition.Tests, so the first hosted tuple run will exercise the runner's non-Composition test path (`eng/run_tuple_ci.py:457-461`).
   reason: Extends "Bind tuple CI to the published Builds Tooling release containing the v2 release-record API" above. Adopting Builds 6.7.0 resolves both.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
@@ -2350,3 +2350,10 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Qualify recovery of stop signing context by stop producers and Administrator consumers.
   evidence: The store retains the latest signed stop and its predecessor chain. The public state exposes the active stop and sequence number. After clearance or a restart, producers need the exact signed predecessor for the next set, and the Administrator needs every outstanding cause for the next clearance.
   reason: Monitor and lifecycle callers own receipt custody and restart behavior. Decide how they recover verified signing context when they integrate with the store.
+
+## Deferred from: code review of spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md (2026-11-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-7-provide-the-staging-attempt-lock-and-promotion-stop-store.md`
+  summary: Verify the tuple runner's AttemptStore collector, output-snapshot and Tooling-identity wiring on its first non-audit run.
+  evidence: `eng/run_tuple_ci.py:431-461` measures the AttemptStore collector, snapshots its outputs and compares its `Hexalith.Builds.Tooling.dll` copy with the lock-verified archive member, and refuses unconfigured non-Composition projects. Python tests reach `run_tuple_ci.main()` only with `--audit-only`, which returns before this code, so deleting the identity block or the snapshot append leaves every test green.
+  reason: The non-audit path first runs in the hosted tuple workflow, which the Builds 6.7.0 adoption deferral blocks. On that run, check `buildsArtifactIdentities.attemptStore` and `attemptStoreTestOutputs.unchanged: true` in `tuple-ci-result.json`.

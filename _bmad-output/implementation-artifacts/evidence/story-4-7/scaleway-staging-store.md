@@ -13,9 +13,9 @@ Scaleway Object Storage hosts the staging store in `fr-par`, outside the cluster
 | Bucket | `hexalith-staging-attempt-store` at `https://s3.fr-par.scw.cloud`, versioning `Enabled`, default object lock `COMPLIANCE` for 30 days, encryption `AES256` |
 | Staging writer | Application `e12a245d-56d3-4588-9b87-c9418ee9cf93`, IAM policy `942f07da-d52d-4615-9af6-24a315ffec93`. Grants project-scoped `ObjectStorageBucketsRead`, `ObjectStorageObjectsRead` and `ObjectStorageObjectsWrite`. |
 | Staging reader | Application `73572ce2-5911-4e67-b2be-0b2673b296d1`, IAM policy `4bc9a96e-ca90-4ffa-9327-794f8eea3fe3`. Grants project-scoped `ObjectStorageReadOnly`. |
-| Bucket policy | `hexalith-staging-attempt-store-story-4-7`, current SHA-256 of canonical JSON from provider read-back `1292c94dc11c47e8f48397fc39616a8e4c31ef125e9f7f3763a932fc9e3003b6` |
+| Bucket policy | `hexalith-staging-attempt-store-story-4-7`, current SHA-256 of canonical JSON from provider read-back `1292c94dc11c47e8f48397fc39616a8e4c31ef125e9f7f3763a932fc9e3003b6`. The original policy, before `VerificationCanaryRead` was added, had SHA-256 `7a2f5085cb0c5e3c7806a55002b6187002ee47e9a3b8638d25f385d651885cf8`. |
 
-The bucket policy allows the writer to read staging objects, list with a staging prefix, create the head and records with `If-None-Match: *`, and replace the head with `If-Match`. The reader can also read versions, retention and bucket configuration. The organization owner manages bucket configuration and can read objects for audit. Application credentials are in `~/.config/hexalith-attempt-store/{staging-writer,reader}.env`, each mode `0600`.
+The bucket policy allows the writer to read staging objects, list with a staging prefix, create the head and records with `If-None-Match: *`, and replace the head with `If-Match`. The reader can also read versions, retention and bucket configuration, and the single production read-denial canary. The organization owner manages bucket configuration and can read objects for audit. Application credentials are in `~/.config/hexalith-attempt-store/{staging-writer,reader}.env`, each mode `0600`.
 
 The policy read-back includes the operational and fixture paths in the same allow statements. Resource paths below are relative to the bucket.
 
@@ -23,6 +23,7 @@ The policy read-back includes the operational and fixture paths in the same allo
 | --- | --- | --- |
 | `StagingCreateOnly` | `environments/staging/head.json`, `environments/staging/records/*`, `environments/staging/verification/*/head.json`, `environments/staging/verification/*/records/*` | `If-None-Match: *` |
 | `StagingCompareAndSetHead` | `environments/staging/head.json`, `environments/staging/verification/*/head.json` | `If-Match` |
+| `VerificationCanaryRead` | `environments/production/verification/read-denial-canary.json` (reader `GetObject` only) | None |
 
 Both applications initially received `404 NoSuchKey` on a read of the uninitialized canonical staging head. At 22:42 UTC on 2026-11-23, the staging writer called `InitializeAsync("staging")` to create `environments/staging/head.json`. The reader verified an empty head at revision 0 and epoch 0. The provider listed one head version, `1795473767610891`, with zero delete markers and `COMPLIANCE` protection until `2026-12-23T22:42:47.610Z`. Bucket configuration returned `NoSuchLifecycleConfiguration`.
 

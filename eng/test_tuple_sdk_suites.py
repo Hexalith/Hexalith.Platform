@@ -83,10 +83,10 @@ class SdkSuiteTests(unittest.TestCase):
     def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
         self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
         profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 419)
+        self.assertEqual(validate_profile(profile), 421)
         store_groups = [group for group in profile["groups"] if "Hexalith.Platform.AttemptStore.Tests" in group["project"]]
         self.assertEqual(len(store_groups), 1)
-        self.assertEqual(store_groups[0]["requiredCount"], 39)
+        self.assertEqual(store_groups[0]["requiredCount"], 41)
         self.assertEqual(store_groups[0]["selectors"], [
             "Hexalith.Platform.AttemptStore.Tests.AttemptStoreTests",
             "Hexalith.Platform.AttemptStore.Tests.PromotionDecisionTests",
