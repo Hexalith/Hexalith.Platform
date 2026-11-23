@@ -129,8 +129,10 @@ internal static partial class PlatformFixtureToolRelease
             : null;
         var response = redirected ?? initial;
         if (!response.IsSuccessStatusCode) throw PlatformFixturePackageQualification.Refusal("tools-download");
-        await using Stream source = await response.Content.ReadAsStreamAsync(bound.Token).ConfigureAwait(false);
-        await using FileStream target = new(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+        Stream source = await response.Content.ReadAsStreamAsync(bound.Token).ConfigureAwait(false);
+        await using var sourceScope = source.ConfigureAwait(false);
+        FileStream target = new(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+        await using var targetScope = target.ConfigureAwait(false);
         byte[] buffer = new byte[64 * 1024];
         int read;
         while ((read = await source.ReadAsync(buffer, bound.Token).ConfigureAwait(false)) > 0)
