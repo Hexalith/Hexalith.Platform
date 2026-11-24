@@ -134,6 +134,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Restrict or verify direct PlatformActorRegistry mutation calls in the separate identity workstream (G137).
   evidence: The public DI facade signs any namespace-valid mutation and ignores its sourceId argument; its current production caller is the checked enrollment service, but a second in-process caller could bypass those checks.
+  status: done 2026-11-24
+  resolution: Registry mutation is internal, requires an allowed identity writer, and signs only as the configured registry service. Tests exercise configured attribution and refusal before signing or resolving the actor.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Refuse inactive actors returned through still-active login aliases in the separate identity workstream (G138).
   evidence: The registry transition permits an inactive actor with an active alias, and ResolveLoginAsync returns that actor without inspecting Active.

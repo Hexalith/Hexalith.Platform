@@ -28,6 +28,36 @@ public sealed class PlatformIdentityAdmissionTests
         await fixture.Proxy.Received(1).MutateAsync(Arg.Is<ActorRegistryMutation>(value => value == mutation), Arg.Any<string>());
     }
 
+    [Theory]
+    [InlineData("untrusted-writer", "registry-service")]
+    [InlineData("registry-service", "registry-service")]
+    [InlineData("identity-writer", null)]
+    [InlineData("identity-writer", " ")]
+    public async Task RegistryMutation_RefusesInvalidCallerOrMissingServiceIdentity(string source, string? registrySource)
+    {
+        var fixture = Fixture(registrySource);
+        var mutation = new ActorRegistryMutation(IdentityActorRegistryActor.RegistryNamespace, "enroll", new string('a', 64), Operator, 0, true, true, Operator);
+
+        await Should.ThrowAsync<InvalidOperationException>(() => fixture.Registry.MutateAsync(
+            mutation, source, Operator, TestContext.Current.CancellationToken));
+
+        fixture.Signer.DidNotReceiveWithAnyArgs().Sign(default!);
+        fixture.Factory.DidNotReceiveWithAnyArgs().CreateActorProxy<IIdentityActorRegistryActor>(default!, default!);
+    }
+
+    [Fact]
+    public async Task RegistryMutation_SignsAsConfiguredRegistryService()
+    {
+        var fixture = Fixture();
+        var mutation = new ActorRegistryMutation(IdentityActorRegistryActor.RegistryNamespace, "enroll", new string('a', 64), Operator, 0, true, true, Operator);
+
+        (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken, "approved")).ShouldNotBeNull();
+
+        fixture.Signer.Received(1).Sign(Arg.Is<IdentityAdmissionEvidence>(evidence =>
+            evidence.Scope.Operation == "RegistryMutation" && evidence.SourceId == "registry-service" && evidence.OperatorActorId == Operator));
+        await fixture.Proxy.Received(1).MutateAsync(mutation, "registry-proof");
+    }
+
     [Fact]
     public async Task SameVerifiedLoginAcrossTenantClaims_UsesOneGlobalActorAndNeverEnrolls()
     {
@@ -85,9 +115,10 @@ public sealed class PlatformIdentityAdmissionTests
         await fixture.Proxy.Received(1).ReadAsync(Arg.Any<string>(), true, Arg.Any<string>(), Arg.Any<string>());
     }
 
-    private static (PlatformIdentityEnrollmentService Service, IIdentityActorRegistryActor Proxy, IActorProxyFactory Factory) Fixture()
+    private static (PlatformIdentityEnrollmentService Service, IIdentityActorRegistryActor Proxy, IActorProxyFactory Factory,
+        PlatformActorRegistry Registry, IIdentityAdmissionSigner Signer) Fixture(string? registrySource = "registry-service")
     {
-        var configured = Options.Create(new PlatformIdentityOptions { IdentityWriterSources = ["identity-writer"], TrustedIssuers = ["issuer"], RegistryServiceSourceId = "registry-service",
+        var configured = Options.Create(new PlatformIdentityOptions { IdentityWriterSources = ["identity-writer"], TrustedIssuers = ["issuer"], RegistryServiceSourceId = registrySource,
             AliasKeyBase64 = AliasKey, AuthorityRevision = 1, BootstrapProvenanceSources = ["bootstrap-authority"] });
         IIdentityAdmissionProof operatorVerifier = Substitute.For<IIdentityAdmissionProof>();
         IIdentityAdmissionProof bootstrap = Substitute.For<IIdentityAdmissionProof>();
@@ -100,7 +131,7 @@ public sealed class PlatformIdentityAdmissionTests
         proxy.MutateAsync(Arg.Any<ActorRegistryMutation>(), Arg.Any<string>()).Returns(call => new ActorRegistryEntry(call.Arg<ActorRegistryMutation>().ActorId, 1, true, Operator));
         factory.CreateActorProxy<IIdentityActorRegistryActor>(Arg.Any<ActorId>(), Arg.Any<string>()).Returns(proxy);
         var registry = new PlatformActorRegistry(factory, signer, configured, TimeProvider.System);
-        return (new(registry, new(operatorVerifier, configured), new(bootstrap, configured), configured), proxy, factory);
+        return (new(registry, new(operatorVerifier, configured), new(bootstrap, configured), configured), proxy, factory, registry, signer);
     }
     private static ClaimsPrincipal Workload() => new(new ClaimsIdentity([new Claim("dapr_caller_app_id", "identity-writer")], DaprInternalAuthenticationOptions.SchemeName));
     private static ClaimsPrincipal Login(string tenant, string subject = "private-subject") => new(new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", subject), new Claim("tenant_id", tenant)], "verified-login"));
