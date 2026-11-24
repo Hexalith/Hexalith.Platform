@@ -139,12 +139,17 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Refuse inactive actors returned through still-active login aliases in the separate identity workstream (G138).
   evidence: The registry transition permits an inactive actor with an active alias, and ResolveLoginAsync returns that actor without inspecting Active.
+  status: superseded (2026-11-24)
+  resolution: Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f already refuses inactive actors reached through login aliases and covers this case with a focused test.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Connect and verify the registered identity enrollment and login services through production callers (G139).
   evidence: The services are registered in DI but the current host has no production call to ApplyAsync or ResolveLoginAsync, leaving the intended bootstrap and login path unavailable.
+  triage: skipped 2026-11-24 (blocked). Production enrollment and login require an approved caller, route and human/workload identity handoff. The current EventStore Dapr scheme supplies eventstore:workload instead of the legacy claim and rejects combined credentials outside its bound command.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Test bootstrap proof binding against a changed registry mutation in the separate identity workstream (G140).
   evidence: The production verifier hashes the mutation, but the existing enrollment test accepts any mocked scope; changing the digest calculation would evade the current test.
+  status: done 2026-11-24
+  resolution: The enrollment test uses RSA signing and the production verifier to accept the exact approved mutation and reject replay against a changed alias or provenance.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Bind issuer and subject to one authenticated login identity in the separate identity workstream (G143).
   evidence: ResolveLoginAsync uses ClaimsPrincipal.FindFirst for each claim, which can combine the authenticated identity's issuer with a second identity's subject in a composite principal.

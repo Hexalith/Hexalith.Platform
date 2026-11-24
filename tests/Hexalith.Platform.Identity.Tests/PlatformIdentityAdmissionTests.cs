@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text.Json;
 using Dapr.Actors;
 using Dapr.Actors.Client;
 using Hexalith.EventStore.Authentication;
@@ -20,12 +22,18 @@ public sealed class PlatformIdentityAdmissionTests
     [Fact]
     public async Task FirstEnrollment_RequiresIndependentExactBootstrapApprovalAndVerifiedProvenance()
     {
-        var fixture = Fixture();
         var mutation = new ActorRegistryMutation(IdentityActorRegistryActor.RegistryNamespace, "enroll", new string('a', 64), Operator, 0, true, true, Operator);
+        (IIdentityAdmissionProof verifier, string approval) = BootstrapApproval(mutation);
+        var fixture = Fixture(bootstrapVerifier: verifier);
+        ActorRegistryMutation changedAlias = mutation with { AliasDigest = new string('b', 64) };
+
         (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken)).ShouldBeNull();
-        (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken, "approved")).ShouldNotBeNull();
-        (await fixture.Service.ApplyAsync(Workload(), mutation with { ProvenanceId = "other" }, "absent", TestContext.Current.CancellationToken, "approved")).ShouldBeNull();
-        await fixture.Proxy.Received(1).MutateAsync(Arg.Is<ActorRegistryMutation>(value => value == mutation), Arg.Any<string>());
+        (await fixture.Service.ApplyAsync(Workload(), changedAlias, "absent", TestContext.Current.CancellationToken, approval)).ShouldBeNull();
+        (await fixture.Service.ApplyAsync(Workload(), mutation with { ProvenanceId = "other" }, "absent", TestContext.Current.CancellationToken, approval)).ShouldBeNull();
+        await fixture.Proxy.DidNotReceiveWithAnyArgs().MutateAsync(default!, default!);
+
+        (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken, approval)).ShouldNotBeNull();
+        await fixture.Proxy.Received(1).MutateAsync(mutation, "registry-proof");
     }
 
     [Theory]
@@ -48,10 +56,11 @@ public sealed class PlatformIdentityAdmissionTests
     [Fact]
     public async Task RegistryMutation_SignsAsConfiguredRegistryService()
     {
-        var fixture = Fixture();
         var mutation = new ActorRegistryMutation(IdentityActorRegistryActor.RegistryNamespace, "enroll", new string('a', 64), Operator, 0, true, true, Operator);
+        (IIdentityAdmissionProof verifier, string approval) = BootstrapApproval(mutation);
+        var fixture = Fixture(bootstrapVerifier: verifier);
 
-        (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken, "approved")).ShouldNotBeNull();
+        (await fixture.Service.ApplyAsync(Workload(), mutation, "absent", TestContext.Current.CancellationToken, approval)).ShouldNotBeNull();
 
         fixture.Signer.Received(1).Sign(Arg.Is<IdentityAdmissionEvidence>(evidence =>
             evidence.Scope.Operation == "RegistryMutation" && evidence.SourceId == "registry-service" && evidence.OperatorActorId == Operator));
@@ -115,15 +124,29 @@ public sealed class PlatformIdentityAdmissionTests
         await fixture.Proxy.Received(1).ReadAsync(Arg.Any<string>(), true, Arg.Any<string>(), Arg.Any<string>());
     }
 
+    private static (IIdentityAdmissionProof Verifier, string Approval) BootstrapApproval(ActorRegistryMutation mutation)
+    {
+        using RSA key = RSA.Create(2048);
+        var signing = Substitute.For<IOptionsMonitor<IdentityAdmissionSigningOptions>>();
+        signing.CurrentValue.Returns(new IdentityAdmissionSigningOptions { PrivateKeyPem = key.ExportRSAPrivateKeyPem() });
+        var verification = Substitute.For<IOptionsMonitor<IdentityAdmissionOptions>>();
+        verification.CurrentValue.Returns(new IdentityAdmissionOptions { VerificationKeyPem = key.ExportSubjectPublicKeyInfoPem(), AuthorityRevision = 1 });
+
+        var scope = new IdentityAdmissionScope("identity-authority", "identity-bootstrap", mutation.RegistryNamespace,
+            "RegistryBootstrap", mutation.OperationId, mutation.OperationId, IdentityAdmissionProof.Digest(JsonSerializer.SerializeToUtf8Bytes(mutation)));
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
+        string approval = new IdentityAdmissionSigner(signing).Sign(new(scope, "bootstrap-authority", Operator, Operator, 0, true, now, now.AddMinutes(1), 1));
+        return (new IdentityAdmissionProof(verification, TimeProvider.System), approval);
+    }
+
     private static (PlatformIdentityEnrollmentService Service, IIdentityActorRegistryActor Proxy, IActorProxyFactory Factory,
-        PlatformActorRegistry Registry, IIdentityAdmissionSigner Signer) Fixture(string? registrySource = "registry-service")
+        PlatformActorRegistry Registry, IIdentityAdmissionSigner Signer) Fixture(
+            string? registrySource = "registry-service", IIdentityAdmissionProof? bootstrapVerifier = null)
     {
         var configured = Options.Create(new PlatformIdentityOptions { IdentityWriterSources = ["identity-writer"], TrustedIssuers = ["issuer"], RegistryServiceSourceId = registrySource,
             AliasKeyBase64 = AliasKey, AuthorityRevision = 1, BootstrapProvenanceSources = ["bootstrap-authority"] });
         IIdentityAdmissionProof operatorVerifier = Substitute.For<IIdentityAdmissionProof>();
-        IIdentityAdmissionProof bootstrap = Substitute.For<IIdentityAdmissionProof>();
-        bootstrap.Verify("approved", Arg.Any<IdentityAdmissionScope>()).Returns(call => new IdentityAdmissionEvidence(call.Arg<IdentityAdmissionScope>(), "bootstrap-authority", Operator, Operator, 0, true,
-            DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddMinutes(1), 1));
+        bootstrapVerifier ??= Substitute.For<IIdentityAdmissionProof>();
         IIdentityAdmissionSigner signer = Substitute.For<IIdentityAdmissionSigner>();
         signer.Sign(Arg.Any<IdentityAdmissionEvidence>()).Returns("registry-proof");
         IActorProxyFactory factory = Substitute.For<IActorProxyFactory>();
@@ -131,7 +154,7 @@ public sealed class PlatformIdentityAdmissionTests
         proxy.MutateAsync(Arg.Any<ActorRegistryMutation>(), Arg.Any<string>()).Returns(call => new ActorRegistryEntry(call.Arg<ActorRegistryMutation>().ActorId, 1, true, Operator));
         factory.CreateActorProxy<IIdentityActorRegistryActor>(Arg.Any<ActorId>(), Arg.Any<string>()).Returns(proxy);
         var registry = new PlatformActorRegistry(factory, signer, configured, TimeProvider.System);
-        return (new(registry, new(operatorVerifier, configured), new(bootstrap, configured), configured), proxy, factory, registry, signer);
+        return (new(registry, new(operatorVerifier, configured), new(bootstrapVerifier, configured), configured), proxy, factory, registry, signer);
     }
     private static ClaimsPrincipal Workload() => new(new ClaimsIdentity([new Claim("dapr_caller_app_id", "identity-writer")], DaprInternalAuthenticationOptions.SchemeName));
     private static ClaimsPrincipal Login(string tenant, string subject = "private-subject") => new(new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", subject), new Claim("tenant_id", tenant)], "verified-login"));
