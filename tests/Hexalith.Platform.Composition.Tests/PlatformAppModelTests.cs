@@ -450,12 +450,23 @@ public sealed partial class PlatformAppModelTests : IDisposable
     public void DuplicateOrInvalidDeclarationIsAtomicAndReportsSourceFieldAndReason()
     {
         IDistributedApplicationBuilder builder = Builder();
-        string duplicate = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json");
-        InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options() with { DeclarationPaths = [duplicate] }));
-        failure.Message.ShouldContain("eventstore.json");
-        failure.Message.ShouldContain("moduleId");
-        failure.Message.ShouldContain("duplicated");
-        builder.Resources.ShouldBeEmpty();
+        string owner = PlatformTestRepository.ReferenceRoot(Root, "Hexalith.EventStore");
+        string declaration = Path.Combine(owner, "module", "hexalith.module-manifest.v2.json");
+        JsonNode duplicateDeclaration = JsonNode.Parse(File.ReadAllText(declaration))!;
+        // The duplicate is a standalone graph fixture. The owner's runnable test projects remain in its checkout.
+        duplicateDeclaration["modules"]![0]!.AsObject().Remove("tests");
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-duplicate-declaration-");
+        try
+        {
+            string duplicate = Path.Combine(workspace.FullName, "eventstore.json");
+            File.WriteAllText(duplicate, duplicateDeclaration.ToJsonString());
+            InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options() with { DeclarationPaths = [duplicate] }));
+            failure.Message.ShouldContain("eventstore.json");
+            failure.Message.ShouldContain("moduleId");
+            failure.Message.ShouldContain("duplicated");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally { workspace.Delete(recursive: true); }
     }
 
     [Fact]
