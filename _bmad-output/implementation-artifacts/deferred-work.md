@@ -361,10 +361,16 @@ resolution: Composition compares matching CPU and memoryMiB request/limit pairs 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Define resource quantity conversion types and bounds
   evidence: BH10/EH05 is unverified: resource numbers remain JsonElement here, with no double conversion. A downstream conversion/provisioning test and chosen quantity types would establish required bounds.
+  triage: skipped 2026-11-24 (blocked). Current local composition preserves exact JSON quantities and hosted qualification uses independent capacity inputs. No declaration-driven provisioning consumer defines a conversion target or its bounds.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Reject invalid dependency graphs when constructing compositions
-  evidence: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
+### DW-15: Reject invalid dependency graphs when constructing compositions
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
+status: done 2026-11-24
+resolution: The pinned Builds graph validator rejects self-dependencies, multi-module cycles, and unresolved dependencies. The Platform composition entry point now exercises each refusal before resource registration.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
