@@ -4,10 +4,9 @@ using System.Text.Json;
 using System.Security.Cryptography;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
-using CommunityToolkit.Aspire.Hosting.Dapr;
+using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
-using Hexalith.EventStore.Server.DomainServices;
 using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,15 +18,7 @@ using YamlDotNet.RepresentationModel;
 [Collection("Timesheets host binding")]
 public sealed class TimesheetsHostBindingTests
 {
-    private static string Root
-    {
-        get
-        {
-            DirectoryInfo? directory = new(AppContext.BaseDirectory);
-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs"))) directory = directory.Parent;
-            return directory!.FullName;
-        }
-    }
+    private static string Root => PlatformTestRepository.Root;
 
     private static string Candidate => Path.Combine(Root, "eng", "timesheets-deployment", "hexalith.module-manifest.v2.json");
 
@@ -64,9 +55,8 @@ public sealed class TimesheetsHostBindingTests
         return environment;
     }
 
-    private static IConfigurationRoot Configuration(Dictionary<string, object> environment) => new ConfigurationBuilder()
-        .AddInMemoryCollection(environment.Where(pair => pair.Value is string)
-            .Select(pair => new KeyValuePair<string, string?>(pair.Key.Replace("__", ":", StringComparison.Ordinal), (string)pair.Value))).Build();
+    private static IConfigurationRoot Configuration(IReadOnlyDictionary<string, string> environment) => new ConfigurationBuilder()
+        .AddInMemoryCollection(environment.Select(pair => new KeyValuePair<string, string?>(pair.Key.Replace("__", ":", StringComparison.Ordinal), pair.Value))).Build();
 
     private static CompositionRunPlan Plan(string workspace) => CompositionRunPlanFactory.Create(
         CompositionRunPlanFactory.NewRunId(), workspace, workspace, CompositionPortAllocator.Allocate(1), [], [],
@@ -81,7 +71,7 @@ public sealed class TimesheetsHostBindingTests
         try
         {
             PlatformAppModel.Compose(builder, Options(false) with { DeclarationPaths = [Candidate] });
-            builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(6);
+            builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(7);
             builder.Resources.ShouldNotContain(resource => resource.Name.StartsWith("timesheets", StringComparison.Ordinal));
         }
         finally { CleanWorkspace(builder); }
@@ -101,7 +91,8 @@ public sealed class TimesheetsHostBindingTests
     public void OptInSelectsActualMappedHostAndDomainMinimumEvenForTechnicalSelection()
     {
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(Options() with { ActiveModule = "eventstore", DeclarationPaths = [Candidate] });
-        servers.Count.ShouldBe(7);
+        servers.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ShouldBe(
+            ["eventstore", "memories", "memories-access-telemetry", "memories-access-telemetry-clock", "memories-domain-service", "tenants", "tenants-api", "timesheets"]);
         PlatformServerBinding host = servers.Single(server => server.ResourceId == "timesheets");
         host.ProjectPath.ShouldBe(Path.Combine(Root, "references", "Hexalith.Timesheets", PlatformTimesheetsBinding.Project));
         Path.GetFullPath(host.Module.Source).ShouldBe(Candidate);
@@ -162,7 +153,7 @@ public sealed class TimesheetsHostBindingTests
             PlatformRoot = Path.GetRelativePath(Directory.GetCurrentDirectory(), Root), DeclarationPaths = [Candidate],
         };
         IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
-        servers.Count.ShouldBe(7);
+        servers.Count.ShouldBe(8);
         servers.Count(server => server.ResourceId == "timesheets").ShouldBe(1);
     }
 
@@ -258,7 +249,7 @@ public sealed class TimesheetsHostBindingTests
     }
 
     [Fact]
-    public async Task BuildsSourceRunUsesTheSameOptInAndRunnerSigningMaterialAsync()
+    public async Task BuildsSourceRunBindsRunnerSigningMaterialAndRefusesUnenrolledCandidateAsync()
     {
         string workspace = Path.Combine(Path.GetTempPath(), "timesheets-builds-source-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -268,13 +259,19 @@ public sealed class TimesheetsHostBindingTests
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = Builder();
             const string signing = "builds-runner-signing-material-256-bit";
-            PlatformAppModel.ComposeRun(builder, plan, signing, seedProject: null);
-            builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(7);
-            IResource host = builder.Resources.Single(resource => resource.Name == "timesheets");
-            Dictionary<string, object> environment = await EnvironmentAsync(builder, host);
-            environment["Authentication__JwtBearer__SigningKey"].ShouldBe(signing);
-            environment["EventStore__Authentication__SigningKey"].ShouldBe(signing);
-            environment[CompositionEnvironment.RunId].ShouldBe(plan.RunId);
+            InvalidDataException failure = Should.Throw<InvalidDataException>(() =>
+                PlatformAppModel.ComposeRun(builder, plan, signing, seedProject: null, options =>
+                {
+                    options.TimesheetsEnabled.ShouldBeTrue();
+                    options.RunPlan.ShouldBeSameAs(plan);
+                    PlatformServerBinding host = PlatformAppModel.Prepare(options).Single(server => server.ResourceId == "timesheets");
+                    host.Environment["Authentication__JwtBearer__SigningKey"].ShouldBe(signing);
+                    host.Environment["EventStore__Authentication__SigningKey"].ShouldBe(signing);
+                    return options;
+                }));
+            failure.Message.ShouldContain("Selected caller 'timesheets'");
+            failure.Message.ShouldContain("lacks catalog enrollment");
+            builder.Resources.ShouldBeEmpty();
         }
         finally { Directory.Delete(workspace, true); }
     }
@@ -345,9 +342,9 @@ public sealed class TimesheetsHostBindingTests
     }
 
     [Theory]
-    [InlineData(false, 6)]
-    [InlineData(true, 7)]
-    public void FileEntryHonorsExplicitOptInAndSelectedMapping(bool enabled, int count)
+    [InlineData(false)]
+    [InlineData(true)]
+    public void FileEntryHonorsExplicitOptInAndCatalogEnrollment(bool enabled)
     {
         string mappingPath = Path.Combine(Path.GetTempPath(), "timesheets-host-mapping-" + Guid.NewGuid().ToString("N") + ".json");
         SourceMapping mapping = Options().Mapping;
@@ -358,117 +355,103 @@ public sealed class TimesheetsHostBindingTests
             builder.Configuration["Platform:SourceMapping:Path"] = mappingPath;
             builder.Configuration["Platform:SourceMapping:Hash"] = mapping.ContentHash;
             builder.Configuration["Platform:Timesheets:Enabled"] = enabled.ToString();
-            PlatformAppModel.ComposeEntry(builder);
-            builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(count);
+            if (enabled)
+            {
+                InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.ComposeEntry(builder));
+                failure.Message.ShouldContain("Selected caller 'timesheets'");
+                failure.Message.ShouldContain("lacks catalog enrollment");
+                builder.Resources.ShouldBeEmpty();
+            }
+            else
+            {
+                PlatformAppModel.ComposeEntry(builder);
+                builder.Resources.Count(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ShouldBe(7);
+                builder.Resources.ShouldNotContain(resource => resource.Name.StartsWith("timesheets", StringComparison.Ordinal));
+            }
         }
         finally { CleanWorkspace(builder); File.Delete(mappingPath); }
     }
 
     [Fact]
-    public async Task ListenerGuardDaprRouteComponentAndSourceBuildUseTheInternalBindingAsync()
+    public void CandidateKeepsInternalRoutesAndReadModelTemplateScoped()
     {
-        IDistributedApplicationBuilder builder = Builder();
-        try
-        {
-            PlatformAppModel.Compose(builder, Options());
-            ProjectResource host = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "timesheets");
-            host.GetProjectMetadata().ProjectPath.ShouldBe(Path.Combine(Root, "references", "Hexalith.Timesheets", PlatformTimesheetsBinding.Project));
-            host.Annotations.OfType<HealthCheckAnnotation>().Single().Key.ShouldContain("/ready");
-            EndpointAnnotation[] endpoints = host.Annotations.OfType<EndpointAnnotation>().ToArray();
-            endpoints.Select(endpoint => endpoint.Name).Order().ShouldBe(["internal", "public"]);
-            EndpointAnnotation internalEndpoint = endpoints.Single(endpoint => endpoint.Name == "internal");
-            internalEndpoint.IsExternal.ShouldBeFalse();
-            internalEndpoint.ExcludeReferenceEndpoint.ShouldBeTrue();
-            internalEndpoint.IsProxied.ShouldBeFalse();
-            Dictionary<string, object> environment = await EnvironmentAsync(builder, host);
-            environment["Timesheets__InternalSurface__Port"].ShouldBeOfType<EndpointReferenceExpression>().ValueExpression.ShouldContain("timesheets.bindings.internal.targetPort");
-            environment["Timesheets__InternalSurface__AllowOnAnyPort"].ShouldBe("false");
-            environment["Timesheets__LiveDaprFixture__Enabled"].ShouldBe("false");
+        IReadOnlyList<PlatformModuleDeclaration> declarations = PlatformDeclarationSet.Load(Options());
+        PlatformModuleDeclaration candidate = declarations.Single(module => PlatformDeclarationSet.Id(module.Declaration) == "timesheets");
+        JsonElement[] internalSurfaces = candidate.Declaration.GetProperty("surfaces").GetProperty("interfaces").EnumerateArray()
+            .Where(surface => surface.GetProperty("exposure").GetString() == "internal-only").ToArray();
+        internalSurfaces.Select(surface => surface.GetProperty("routePrefix").GetString()).Order(StringComparer.Ordinal)
+            .ShouldBe(["/admin", "/process", "/project", "/query", "/replay-state"]);
+        foreach (JsonElement surface in internalSurfaces)
+            surface.GetProperty("callers").EnumerateArray().Select(caller => caller.GetString()).ShouldBe(["eventstore"]);
+        PlatformDaprBindings.Resolve(declarations).DeclaredInvocations("timesheets")
+            .ShouldAllBe(grant => grant.CallerAppId == "eventstore");
 
-            IDaprSidecarResource sidecar = host.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
-            DaprSidecarOptions sidecarOptions = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
-            sidecarOptions.AppEndpoint.ShouldBe("internal");
-            sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().Select(reference => reference.Component.Name).ShouldBe(["timesheets-readmodels"]);
-            foreach (IResource server in builder.Resources.Where(resource => resource.Name != "timesheets" && resource.Annotations.OfType<PlatformServerAnnotation>().Any()))
-                server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprComponentReferenceAnnotation>().ShouldNotContain(reference => reference.Component.Name == "timesheets-readmodels");
-
-            IResource component = builder.Resources.Single(resource => resource.Name == "timesheets-readmodels");
-            DaprComponentOptions componentOptions = component.ShouldBeOfType<DaprComponentResource>().Options!;
-            YamlStream yaml = new();
-            yaml.Load(new StringReader(File.ReadAllText(componentOptions.LocalPath!)));
-            YamlMappingNode root = (YamlMappingNode)yaml.Documents[0].RootNode;
-            ((YamlMappingNode)root.Children[new YamlScalarNode("metadata")]).Children[new YamlScalarNode("name")].ToString().ShouldBe("timesheets-readmodels");
-            ((YamlSequenceNode)root.Children[new YamlScalarNode("scopes")]).Children.Select(scope => scope.ToString()).ShouldBe(["timesheets"]);
-            YamlMappingNode spec = (YamlMappingNode)root.Children[new YamlScalarNode("spec")];
-            spec.Children[new YamlScalarNode("type")].ToString().ShouldBe("state.redis");
-            Dictionary<string, string> metadata = ((YamlSequenceNode)spec.Children[new YamlScalarNode("metadata")]).Children.Cast<YamlMappingNode>()
-                .ToDictionary(node => node.Children[new YamlScalarNode("name")].ToString(), node => node.Children[new YamlScalarNode("value")].ToString());
-            metadata["redisDB"].ShouldBe("14");
-            metadata["keyPrefix"].ShouldBe("none");
-            metadata.ShouldNotContainKey("actorStateStore");
-            EndpointAnnotation redis = builder.Resources.Single(resource => resource.Name == "redis").Annotations.OfType<EndpointAnnotation>().Single();
-            metadata["redisHost"].ShouldBe("127.0.0.1:" + redis.Port);
-
-            List<object> arguments = [];
-            foreach (CommandLineArgsCallbackAnnotation callback in host.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
-                await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
-            arguments.OfType<string>().ShouldContain("-p:HexalithEventStoreRoot=" + Path.Combine(Root, "references", "Hexalith.EventStore"));
-        }
-        finally { CleanWorkspace(builder); }
+        YamlStream yaml = new();
+        using StreamReader reader = File.OpenText(Path.Combine(Root, "DaprComponents", "reference", "timesheets-readmodels.yaml"));
+        yaml.Load(reader);
+        YamlMappingNode root = (YamlMappingNode)yaml.Documents[0].RootNode;
+        ((YamlMappingNode)root.Children[new YamlScalarNode("metadata")]).Children[new YamlScalarNode("name")].ToString().ShouldBe("timesheets-readmodels");
+        ((YamlSequenceNode)root.Children[new YamlScalarNode("scopes")]).Children.Select(scope => scope.ToString()).ShouldBe(["timesheets"]);
+        YamlMappingNode spec = (YamlMappingNode)root.Children[new YamlScalarNode("spec")];
+        spec.Children[new YamlScalarNode("type")].ToString().ShouldBe("state.redis");
+        Dictionary<string, string> metadata = ((YamlSequenceNode)spec.Children[new YamlScalarNode("metadata")]).Children.Cast<YamlMappingNode>()
+            .ToDictionary(node => node.Children[new YamlScalarNode("name")].ToString(), node => node.Children[new YamlScalarNode("value")].ToString());
+        metadata["redisDB"].ShouldBe("14");
+        metadata["keyPrefix"].ShouldBe("none");
+        metadata["redisHost"].ShouldBe("localhost:6379");
+        metadata.ShouldNotContainKey("actorStateStore");
     }
 
     [Fact]
-    public async Task SharedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync()
+    public async Task PreparedLocalAuthenticationKeepsGatewayCallersAndFixtureDenialAsync()
     {
-        IDistributedApplicationBuilder builder = Builder();
-        try
+        const string signingKey = "runner-supplied-shared-signing-material";
+        PlatformCompositionOptions options = Options() with
         {
-            PlatformAppModel.Compose(builder, Options() with { Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:SigningKey"] = "runner-supplied-shared-signing-material" } });
-            IResource host = builder.Resources.Single(resource => resource.Name == "timesheets");
-            IResource gateway = builder.Resources.Single(resource => resource.Name == "eventstore");
-            Dictionary<string, object> hostEnvironment = await EnvironmentAsync(builder, host);
-            Dictionary<string, object> gatewayEnvironment = await EnvironmentAsync(builder, gateway);
-            foreach (string key in new[] { "Issuer", "Audience", "SigningKey" })
-            {
-                hostEnvironment["Authentication__JwtBearer__" + key].ShouldBe(gatewayEnvironment["Authentication__JwtBearer__" + key]);
-                hostEnvironment["EventStore__Authentication__" + key].ShouldBe(gatewayEnvironment["Authentication__JwtBearer__" + key]);
-            }
-            hostEnvironment["Authentication__JwtBearer__SigningKey"].ShouldBe("runner-supplied-shared-signing-material");
-            hostEnvironment["Authentication__JwtBearer__AllowedAlgorithms__0"].ShouldBe("HS256");
-            hostEnvironment["Authentication__WorkloadIssuer__Workload"].ShouldBe("timesheets");
-            hostEnvironment["Authentication__Workload__AllowedCallers__0"].ShouldBe("eventstore");
-            gatewayEnvironment["Authentication__DaprInternal__AllowedCallers__0"].ShouldBe("tenants");
-            gatewayEnvironment["Authentication__DaprInternal__AllowedCallers__1"].ShouldBe("memories");
-            gatewayEnvironment["Authentication__DaprInternal__AllowedCallers__2"].ShouldBe("timesheets");
-            IConfigurationRoot hostConfiguration = Configuration(hostEnvironment);
-            IConfigurationRoot gatewayConfiguration = Configuration(gatewayEnvironment);
-            WorkloadAuthenticationOptions receiver = gatewayConfiguration.GetSection("Authentication:DaprInternal").Get<WorkloadAuthenticationOptions>()!;
-            receiver.GetConfigurationFailure().ShouldBeNull();
-            receiver.Audience.ShouldBe("eventstore");
-            receiver.AllowedCallers.ShouldBe(["tenants", "memories", "timesheets"]);
-            WorkloadAuthenticationOptions hostReceiver = hostConfiguration.GetSection("Authentication:Workload").Get<WorkloadAuthenticationOptions>()!;
-            hostReceiver.GetConfigurationFailure().ShouldBeNull();
-            hostReceiver.Audience.ShouldBe("timesheets");
-            foreach (IConfigurationRoot configuration in new[] { hostConfiguration, gatewayConfiguration })
-                JwtBearerAuthenticationContract.Validate(configuration.GetSection("Authentication:JwtBearer").Get<JwtBearerAuthenticationOptions>()!, builder.Environment, "Authentication:JwtBearer").Succeeded.ShouldBeTrue();
-            string contentRoot = gatewayEnvironment["ASPNETCORE_CONTENTROOT"].ShouldBeOfType<string>();
-            IConfigurationRoot generatedGateway = new ConfigurationBuilder()
-                .AddJsonFile(Path.Combine(contentRoot, "appsettings.json"), optional: true)
-                .AddJsonFile(Path.Combine(contentRoot, "appsettings.Development.json"), optional: true)
-                .AddConfiguration(gatewayConfiguration).Build();
-            DomainServiceRegistration registration = generatedGateway.GetSection("EventStore:DomainServices").Get<DomainServiceOptions>()!.Registrations["*|timesheets|v1"];
-            registration.ShouldBe(new DomainServiceRegistration("timesheets", "process", "*", "timesheets", "v1"));
-            hostEnvironment["APP_API_TOKEN"].ShouldNotBe(gatewayEnvironment["APP_API_TOKEN"]);
-            hostEnvironment["Timesheets__LiveDaprFixture__Enabled"].ShouldBe("false");
+            Configuration = new Dictionary<string, string> { ["eventstore/gateway/Authentication:JwtBearer:SigningKey"] = signingKey },
+        };
+        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
+        PlatformServerBinding host = servers.Single(server => server.ResourceId == "timesheets");
+        IReadOnlyDictionary<string, string> hostEnvironment = host.Environment;
+        IReadOnlyDictionary<string, string> gatewayEnvironment = servers.Single(server => server.ResourceId == "eventstore").Environment;
 
-            PlatformServerBinding binding = host.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
-            IDistributedApplicationBuilder cliBuilder = Builder();
-            var owner = cliBuilder.AddExecutable("timesheets", "dotnet", Root);
-            cliBuilder.AddExecutable("timesheets-dapr-cli", "dapr", Root).WithParentRelationship(owner).WithEndpoint(port: 20101, targetPort: 20202, name: "http");
-            PlatformDaprEndpointSubscriber.Apply(new DistributedApplicationModel(cliBuilder.Resources), [binding]);
-            Dictionary<string, object> cliEnvironment = await EnvironmentAsync(cliBuilder, cliBuilder.Resources.Single(resource => resource.Name == "timesheets-dapr-cli"));
-            cliEnvironment["APP_API_TOKEN"].ShouldBe(hostEnvironment["APP_API_TOKEN"]);
+        foreach (string key in new[] { "Issuer", "Audience", "SigningKey" })
+        {
+            hostEnvironment["Authentication__JwtBearer__" + key].ShouldBe(gatewayEnvironment["Authentication__JwtBearer__" + key]);
+            hostEnvironment["EventStore__Authentication__" + key].ShouldBe(gatewayEnvironment["Authentication__JwtBearer__" + key]);
         }
-        finally { CleanWorkspace(builder); }
+        hostEnvironment["Authentication__JwtBearer__SigningKey"].ShouldBe(signingKey);
+        hostEnvironment["Authentication__JwtBearer__AllowedAlgorithms__0"].ShouldBe("HS256");
+        hostEnvironment["Authentication__WorkloadIssuer__Workload"].ShouldBe("timesheets");
+        hostEnvironment["Timesheets__InternalSurface__AllowOnAnyPort"].ShouldBe("false");
+        hostEnvironment["Timesheets__LiveDaprFixture__Enabled"].ShouldBe("false");
+        hostEnvironment["APP_API_TOKEN"].ShouldNotBe(gatewayEnvironment["APP_API_TOKEN"]);
+
+        IConfigurationRoot hostConfiguration = Configuration(hostEnvironment);
+        IConfigurationRoot gatewayConfiguration = Configuration(gatewayEnvironment);
+        WorkloadAuthenticationOptions receiver = gatewayConfiguration.GetSection("Authentication:DaprInternal").Get<WorkloadAuthenticationOptions>()!;
+        receiver.GetConfigurationFailure().ShouldBeNull();
+        receiver.Audience.ShouldBe("eventstore");
+        IReadOnlyDictionary<string, string> referenceGateway = PlatformAppModel.Prepare(options with { TimesheetsEnabled = false })
+            .Single(server => server.ResourceId == "eventstore").Environment;
+        string[] referenceCallers = Configuration(referenceGateway).GetSection("Authentication:DaprInternal:AllowedCallers").Get<string[]>()!;
+        referenceCallers.ShouldContain("tenants");
+        referenceCallers.ShouldContain("memories");
+        receiver.AllowedCallers.Order(StringComparer.Ordinal).ShouldBe(referenceCallers.Append("timesheets").Order(StringComparer.Ordinal));
+
+        WorkloadAuthenticationOptions hostReceiver = hostConfiguration.GetSection("Authentication:Workload").Get<WorkloadAuthenticationOptions>()!;
+        hostReceiver.GetConfigurationFailure().ShouldBeNull();
+        hostReceiver.Audience.ShouldBe("timesheets");
+        hostReceiver.AllowedCallers.ShouldBe(["eventstore"]);
+
+        IDistributedApplicationBuilder builder = Builder();
+        foreach (IConfigurationRoot configuration in new[] { hostConfiguration, gatewayConfiguration })
+            JwtBearerAuthenticationContract.Validate(configuration.GetSection("Authentication:JwtBearer").Get<JwtBearerAuthenticationOptions>()!, builder.Environment, "Authentication:JwtBearer").Succeeded.ShouldBeTrue();
+        var owner = builder.AddExecutable("timesheets", "dotnet", Root);
+        var sidecar = builder.AddExecutable("timesheets-dapr-cli", "dapr", Root).WithParentRelationship(owner)
+            .WithEndpoint(port: 20101, targetPort: 20202, name: "http");
+        PlatformDaprEndpointSubscriber.Apply(new DistributedApplicationModel(builder.Resources), [host]);
+        Dictionary<string, object> cliEnvironment = await EnvironmentAsync(builder, sidecar.Resource);
+        cliEnvironment["APP_API_TOKEN"].ShouldBe(hostEnvironment["APP_API_TOKEN"]);
     }
 }

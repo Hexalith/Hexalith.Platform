@@ -199,7 +199,7 @@ class HostedChartTests(unittest.TestCase):
         self.render(values, succeeds=False)
 
     def test_private_acl_stays_in_parity_with_installed_sdk_routes(self):
-        sdk = HERE.parents[2] / "Hexalith.EventStore/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs"
+        sdk = HERE.parents[1] / "references/Hexalith.EventStore/src/Hexalith.EventStore.DomainService/EventStoreDomainServiceExtensions.cs"
         source = sdk.read_text(encoding="utf-8")
         expected = set(re.findall(r'"(/(?:project|process|query|replay-state|admin)[^" ]*)"', source))
         self.assertIn("/project/rebuild/shared/v1", expected)

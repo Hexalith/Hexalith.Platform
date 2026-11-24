@@ -21,7 +21,10 @@ local preparation receipt, and missing Release/provider acceptance gates.
 The candidate declares one Timesheets host, the EventStore/Tenants/Memories
 domain minimum, public and internal surface boundaries, expected workload
 claim needs, and a proposed recovery inventory. It is inert by default.
-Platform has an explicit Development/source host opt-in described below. Empty
+Platform has an explicit Development/source candidate selection described below.
+Both AppHost entry points refuse startup before adding resources until the
+selected caller is enrolled in the route catalog. The accepted Platform Story
+3.3 review assigns declaration-driven enrollment to Platform Story 3.6. Empty
 `runtime.dapr`, extensions, topics, secrets, egress and providers express an
 incomplete candidate: their qualified owner contracts are missing. The
 classification identifies the required operational providers. A real OIDC
@@ -29,18 +32,12 @@ authority is not an inventory, maintenance, reference-validation or state-store
 tenancy binding, so this candidate invents none of those keys. Critical flows
 and recovery classes require module-owner qualification before enrollment.
 
-For the file AppHost's local source run, set `Platform:Timesheets:Enabled=true` through the
-standard .NET configuration environment key:
-
-```bash
-DOTNET_ENVIRONMENT=Development Platform__Timesheets__Enabled=true \
-  aspire start --apphost apphost.cs --non-interactive
-```
-
-The existing Platform model consumes this directory's unchanged candidate and
-the command-selected source mapping. An enabled run includes the mapped
-`Hexalith.Timesheets/src/Hexalith.Timesheets/Hexalith.Timesheets.csproj` plus the
-six EventStore/Tenants/Memories reference servers. Optional persisted mapping
+The file AppHost reads `Platform:Timesheets:Enabled` from standard .NET
+configuration. With the flag enabled in Development, the model validates this
+directory's retained candidate, the mapped
+`Hexalith.Timesheets/src/Hexalith.Timesheets/Hexalith.Timesheets.csproj` and the
+EventStore, Tenants and Memories reference graph before checking enrollment.
+Optional persisted mapping
 inputs remain `Platform__SourceMapping__Path` and
 `Platform__SourceMapping__Hash`; missing Timesheets mappings or projects refuse
 preparation without a nested or sibling fallback, including symbolic-link escape.
@@ -55,12 +52,11 @@ select this retained candidate as its sole `PlatformDeclarationPaths` entry,
 identify `PlatformActiveModule=timesheets` and include a
 `PlatformDeclarationHash` matching the candidate's exact SHA-256 bytes. The model
 checks the path, source mode and hash before adding resources. Missing or changed
-candidate selections refuse; an ambient `Platform:Timesheets:Enabled` flag cannot
-expand a different signed plan. Ordinary reference plans keep their selected
-closure. This path does not depend on passing an environment flag through the
-Builds launcher's sanitized child environment.
+candidate selections refuse. Ordinary reference plans keep their selected
+closure. The selected Timesheets plan then reaches the same enrollment check as
+the file AppHost.
 
-The local host declares separate `public` and `internal` HTTP listeners with
+The retained local binding defines separate `public` and `internal` HTTP listeners with
 Aspire-assigned ports. Its internal endpoint is excluded from external and
 default reference advertisement. Dapr selects `internal`, and
 `Timesheets:InternalSurface:Port` follows that listener's actual target port;
@@ -76,9 +72,8 @@ disabled. Access/reference/migration guards and unavailable inventory providers
 remain unchanged in owner source.
 
 The [local qualification record](local-host-binding-qualification.md) records
-executed checks and their limits. This opt-in supplies no deployment, migration,
-certification or acceptance authority. The retained `plan.json` remains the
-historical blocked preparation artifact.
+checks executed before the route-catalog gate and their limits. The retained
+`plan.json` remains the historical blocked preparation artifact.
 
 Prepare a new local file from a clean, committed Timesheets checkout:
 
