@@ -360,6 +360,17 @@ public sealed class CustodyPrerequisiteTests
         (await provider.GetRequiredService<TrustedEnvelopeAuthenticator>().IssueAsync(Identity(), TimeSpan.FromMinutes(1), TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyStatus.StaleProfile);
         (await provider.GetRequiredService<IPlatformHmacKeyProvider>().ResolveAsync(new("tenant-a", PlatformHmacPurpose.ContentDigest), cancellationToken: TestContext.Current.CancellationToken)).Status.ShouldBe(CustodyStatus.Unavailable);
     }
+    /// <summary>Verifies the tag boundary refuses a revoked snapshot directly.</summary>
+    [Fact]
+    public void RevokedSnapshotCannotComputeTag()
+    {
+        using var snapshot = new PlatformHmacKeySnapshot(new("tenant-a", PlatformHmacPurpose.ContentDigest),
+            new("v1", PlatformHmacKeyState.Revoked, _clock.Now.AddDays(-1), _clock.Now.AddDays(1), _clock.Now),
+            new byte[32]);
+
+        Should.Throw<InvalidOperationException>(() => snapshot.ComputeTag("canonical"u8));
+    }
+
     /// <summary>Verifies snapshot copies material and disposal is safe to repeat.</summary>
     [Fact]
     public void SnapshotCopiesMaterialAndDisposalIsSafeToRepeat()

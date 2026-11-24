@@ -42,6 +42,11 @@ public sealed class PlatformHmacKeySnapshot : IDisposable
     internal byte[] ComputeTag(ReadOnlySpan<byte> canonicalBytes)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+        if (Metadata.State == PlatformHmacKeyState.Revoked)
+        {
+            throw new InvalidOperationException("A revoked custody key cannot compute a tag.");
+        }
+
         return HMACSHA256.HashData(_key, canonicalBytes);
     }
 

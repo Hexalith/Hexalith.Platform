@@ -172,30 +172,41 @@
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify the authenticated known-content evidence behind each anonymous registry denial target (4.2 Blind 3; carried Corrected Edge 1).
   evidence: Unverified, medium if true. The signed knownExistingContent and evidenceSha256 fields can refer to protected collector operations beyond the representative consumer pull. Inspect those authenticated probe records to determine whether an anonymous target is nonexistent or was never successfully fetched.
+  triage: skipped 2026-11-24 (blocked). The signed public result does not supply the protected per-target collector operations needed to prove prior authenticated fetches.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Qualify repository-specific preservation requirements when one retained digest appears in multiple repositories (4.2 Blind 5).
   evidence: Unverified, medium if true. The local closure indexes content digests. Inspect the approved retained repository/location source, Zot retention policy and repository-specific fetch evidence to determine whether a required location could disappear while digest preservation passes.
+  triage: skipped 2026-11-24 (blocked). The approved retained-location inventory, Zot retention policy and repository-specific authorized fetch records are required.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify that the exact approved GC rehearsal evidence covers the intended generation, configuration and retained closure (4.2 Blind 6).
   evidence: Unverified, medium if true. Approval binds the protected rehearsal evidence hash, but those bytes were unavailable during local review. Inspect the approved record for actual source/configuration/closure identity before adding new automatic fields.
+  triage: skipped 2026-11-24 (blocked). The protected approved rehearsal record is needed to verify its actual generation, configuration and closure.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Resolve whether an additional numeric checkpoint-age or dispatch-evidence policy is needed for exposure mutations (4.2 Blind 9).
   evidence: Unverified, medium if true. The checker validates signed sequence and expiry, and the procedure separately requires a dispatch reread. An approved maximum-age policy and actual dispatch records are needed to establish a stale-operation violation.
+  triage: skipped 2026-11-24 (blocked). An approved maximum-age policy and actual protected dispatch records are required.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Integrate and test the existing Custody projects in their own workstream (4.2 Blind 10).
   evidence: Both projects introduced by the separate custody commit 711a70fd94794ef1aea1b91f5524136b0d660468 are absent from the solution and the test project has no tests; neither has a caller in the exposure helper.
+  status: superseded (2026-11-24)
+  resolution: The Release solution already includes the Custody library and its populated tests.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Qualify registry reader read scopes against the approved credential policy (4.2 Corrected Blind 2).
   evidence: Unverified, medium if true. The stated reader checks require push/delete denial and do not define an out-of-scope read field. Inspect the approved read-scope policy and protected negative probes to determine whether broader reads violate that policy.
+  triage: skipped 2026-11-24 (blocked). The approved reader policy and protected negative read probes are required.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify the actor and repository scope of protected least-privilege negative operations (4.2 Corrected Blind 3).
   evidence: Unverified, medium if true. Permission proofs are nested under their consumer/generation and bind protected evidence hashes; extra principal fields are not defined in that schema. Inspect the actual negative-operation audit records to establish any actor or scope mismatch.
+  triage: skipped 2026-11-24 (blocked). The referenced negative-operation audit records are needed to verify principal and repository.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Establish the independently approved signature-verifier and trust-root provenance for production qualification (4.2 Corrected Blind 7).
   evidence: Unverified, medium if true. Substituting /bin/true demonstrates dependence on the externally supplied retained verifier and trust root. Settle an actual unapproved substitution by checking independently approved toolchain identity and provenance; a helper-supplied hash alone cannot establish that trust.
+  triage: skipped 2026-11-24 (blocked). The approved verifier and trust-root provenance must come from the qualification authority.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Enforce revoked-key lifecycle behavior in the separate Custody component (4.2 Corrected Blind 10 and Corrected Edge 4).
   evidence: The pre-existing component admits Revoked metadata and its internal ComputeTag has no state guard. It has no exposure-helper consumer; its provider/caller needs explicit lifecycle enforcement and tests in that workstream.
+  status: done 2026-11-24
+  resolution: A revoked snapshot now refuses tag computation directly. The direct test exercises that boundary independently of the provider check.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Enforce key validity intervals at tag use in the separate Custody component (4.2 Corrected Blind 11).
   evidence: The pre-existing internal ComputeTag checks disposal but does not check the declared NotBefore/VerifyUntil interval. Its eventual provider/caller needs use-time lifetime enforcement and qualification; there is no caller in the exposure helper.
