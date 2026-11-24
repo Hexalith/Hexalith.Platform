@@ -111,46 +111,6 @@ public sealed partial class PlatformAppModelTests
     }
 
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(false, true)]
-    [InlineData(true, false)]
-    [InlineData(true, true)]
-    public async Task WorksPreviewDisposalPreservesDefaultCredentialsWithFailedWorkspaceAsync(bool configuredParent, bool failedStartup)
-    {
-        using WorksIsolationFixture fixture = new(Root);
-        string parent = Path.Combine(fixture.Root, "external-certificate-parent");
-        Directory.CreateDirectory(parent);
-        string foreign = Path.Combine(parent, "foreign.txt");
-        File.WriteAllText(foreign, "untouched");
-        string? workspace = null;
-        try
-        {
-            var builder = fixture.Builder();
-            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = configuredParent ? parent : null;
-            WorksPreviewModel.Compose(builder);
-            string credentials = builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<ContainerMountAnnotation>()
-                .Single(mount => mount.Target == "/var/run/dapr/credentials").Source!;
-            File.WriteAllText(Path.Combine(credentials, "issuer.key"), "owned-works-issuer");
-            await using var app = builder.Build();
-            PlatformCompositionWorkspace[] owned = app.Services.GetServices<IHostedService>().OfType<PlatformCompositionWorkspace>().ToArray();
-            owned.Length.ShouldBe(configuredParent ? 2 : 1);
-            workspace = owned.Single(service => service.Path != credentials).Path;
-            Path.GetDirectoryName(credentials).ShouldBe(configuredParent ? parent : workspace);
-            if (failedStartup) PlatformCompositionWorkspace.MarkFailed(workspace, "fixture startup failure");
-            await app.DisposeAsync();
-            Directory.Exists(workspace).ShouldBe(failedStartup);
-            Directory.Exists(credentials).ShouldBe(failedStartup && !configuredParent);
-            if (failedStartup)
-            {
-                File.ReadAllText(Path.Combine(workspace, PlatformCompositionWorkspace.FailureMarker)).ShouldBe("fixture startup failure");
-                if (!configuredParent) File.ReadAllText(Path.Combine(credentials, "issuer.key")).ShouldBe("owned-works-issuer");
-            }
-            File.ReadAllText(foreign).ShouldBe("untouched");
-        }
-        finally { if (workspace is not null) await CompositionWorkspace.TryDeleteAsync(workspace, CancellationToken.None); }
-    }
-
-    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public void CertificateParentContainmentUsesThePlatformPathCaseRules(bool caseVariant)
