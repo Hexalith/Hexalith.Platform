@@ -41,7 +41,7 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
                 || input.AuthorityReference != grant!.AuthorityReference || input.BindingRevision != grant.BindingRevision || input.Scope != expected
                 || !ValidTime(input, profile, now) || input.DeliveryNonce is not { Length: 64 } || input.DeliveryNonce.Any(c => !char.IsAsciiHexDigit(c))
                 || input.Tag is not { Length: 64 } || input.Tag.Any(c => !char.IsAsciiHexDigit(c)))) { return null; }
-            var scope = new PlatformHmacScope(expected.TenantId, PlatformHmacPurpose.TrustedEnvelope);
+            var scope = new PlatformHmacScope(expected.TenantId, PlatformHmacPurpose.PrivateOwnerOperation);
             using var first = await ResolveAsync(scope, input?.SigningKeyVersion, start, token).ConfigureAwait(false);
             if (first is null) { return null; }
             DateTimeOffset keyDecisionAt = clock.GetUtcNow();

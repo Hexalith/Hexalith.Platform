@@ -36,7 +36,7 @@ public sealed class PlatformHmacService(IPlatformHmacKeyProvider keys, IPlatform
         ArgumentNullException.ThrowIfNull(scope);
         ArgumentNullException.ThrowIfNull(components);
         cancellationToken.ThrowIfCancellationRequested();
-        if (!scope.IsValid || scope.Purpose == PlatformHmacPurpose.TrustedEnvelope || recordedVersion is not null && string.IsNullOrWhiteSpace(recordedVersion))
+        if (!scope.IsValid || scope.Purpose is not (PlatformHmacPurpose.ContentDigest or PlatformHmacPurpose.SecurityObservation) || recordedVersion is not null && string.IsNullOrWhiteSpace(recordedVersion))
         {
             return new(CustodyStatus.Invalid);
         }

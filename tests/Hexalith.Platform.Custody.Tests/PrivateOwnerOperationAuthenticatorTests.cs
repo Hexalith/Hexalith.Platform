@@ -23,8 +23,39 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
         var credential = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!;
         credential.ShouldNotBeNull(); (await authorizer.AuthorizeAsync(Caller(), Scope(), credential, TestContext.Current.CancellationToken)).ShouldBeTrue();
         var second = (await authorizer.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken))!; second.DeliveryNonce.ShouldNotBe(credential.DeliveryNonce);
+        keys.Snapshots.ShouldAllBe(key => key.IsDisposed && key.Scope.Purpose == PlatformHmacPurpose.PrivateOwnerOperation);
+    }
+
+    [Fact]
+    public async Task PrivateCredentialCannotUseEnvelopeKeysOrTheGenericDigest()
+    {
+        var clock = new CustodyFixtureClock();
+        var profiles = new CustodyFixtureProfileProvider(clock);
+        var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        var scope = Scope();
+        var expectedKey = new PlatformHmacScope(scope.TenantId, PlatformHmacPurpose.PrivateOwnerOperation);
+        var envelopeKey = expectedKey with { Purpose = PlatformHmacPurpose.TrustedEnvelope };
+        CancellationToken token = TestContext.Current.CancellationToken;
+        grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", scope, Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authenticator = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        var credential = (await authenticator.IssueAsync(Caller(), scope, token)).ShouldNotBeNull();
+        var requests = new List<PlatformHmacScope>();
+        keys.Hook = (_, requested, version, _) =>
+        {
+            requests.Add(requested);
+            return ValueTask.FromResult(keys.Create(envelopeKey, version));
+        };
+
+        (await authenticator.IssueAsync(Caller(), scope, token)).ShouldBeNull();
+        (await authenticator.AuthorizeAsync(Caller(), scope, credential, token)).ShouldBeFalse();
+        requests.ShouldBe([expectedKey, expectedKey]);
+        (await new PlatformHmacService(keys, profiles, clock).DigestAsync(expectedKey, ["private"], cancellationToken: token))
+            .Status.ShouldBe(CustodyStatus.Invalid);
+        requests.Count.ShouldBe(2);
         keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
     }
+
     /// <summary>Wrong service/subject/audience, public unauthenticated caller, human classification, or operation substitution cannot release owner evidence.</summary>
     [Theory]
     [InlineData("subject")][InlineData("client")][InlineData("audience")][InlineData("unauthenticated")][InlineData("duplicate-sub")][InlineData("mixed-identities")]
@@ -80,7 +111,7 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
         var read = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants).IssueAsync(Caller(), Scope(), cancellation.Token);
         await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); cancellation.Cancel();
         var exception = await Should.ThrowAsync<OperationCanceledException>(() => read.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken)); exception.CancellationToken.ShouldBe(cancellation.Token);
-        var late = keys.Create(new("system", PlatformHmacPurpose.TrustedEnvelope), null); pending.SetResult(late);
+        var late = keys.Create(new("system", PlatformHmacPurpose.PrivateOwnerOperation), null); pending.SetResult(late);
         using var watchdog = new CancellationTokenSource(TimeSpan.FromSeconds(5)); while (!late.Key!.IsDisposed) { await Task.Delay(10, watchdog.Token); }
         late.Key.IsDisposed.ShouldBeTrue();
     }

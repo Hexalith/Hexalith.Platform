@@ -10,4 +10,6 @@ public enum PlatformHmacPurpose
     ContentDigest,
     /// <summary>Digests untrusted observations only in the reserved system scope.</summary>
     SecurityObservation,
+    /// <summary>Authenticates exact private owner-operation credentials.</summary>
+    PrivateOwnerOperation,
 }

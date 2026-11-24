@@ -454,9 +454,14 @@ reason: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true
 status: done 2026-11-24
 resolution: The actor regression supplies trust marked both current and revoked and verifies denial before persistence or provider invocation.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Separate the private-owner credential MAC purpose from TrustedEnvelope.
-  evidence: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.TrustedEnvelope. Separate authenticator work.
+### DW-24: Separate the private-owner credential MAC purpose from TrustedEnvelope.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.TrustedEnvelope. Separate authenticator work.
+status: done 2026-11-24
+resolution: Private-owner operations resolve their own HMAC purpose for issuance and verification, without an envelope fallback. The generic digest service permits only content and observation purposes.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
