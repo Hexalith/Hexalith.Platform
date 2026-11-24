@@ -219,3 +219,7 @@ tests/Hexalith.Platform.Identity.Tests/P1ReceiptHttpAdapterTests.cs whitespace=b
 
 # Preserve the exact Story 4.15 planning evidence used by the offline assessor.
 evidence/staging-secrets/4-15-planning-inputs/** -text -whitespace
+
+# Preserve the authenticated EventStore declaration for the historical public fixture.
+tests/Hexalith.Platform.Composition.Tests/Fixtures/public-702-eventstore.json -text
+tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

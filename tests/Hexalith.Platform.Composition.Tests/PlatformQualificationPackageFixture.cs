@@ -51,6 +51,11 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
             if (Convert.ToHexStringLower(SHA256.HashData(bytes)) != expected)
                 throw new InvalidDataException("The historical public provenance fixture differs from its authenticated Git body.");
             File.WriteAllBytes(provenancePath, bytes);
+            using Stream eventStore = typeof(PlatformQualificationPackageFixture).Assembly.GetManifestResourceStream(
+                "Hexalith.Platform.Composition.Tests.Fixtures.public-702-eventstore.json")
+                ?? throw new InvalidDataException("The retained EventStore declaration is missing.");
+            using FileStream snapshot = File.Create(Path.Combine(declarations, "eventstore.json"));
+            eventStore.CopyTo(snapshot);
         }
         string components = Path.Combine(PlatformTestRepository.Root, "DaprComponents", "reference");
         foreach (string file in Directory.GetFiles(components, "*", SearchOption.AllDirectories))
