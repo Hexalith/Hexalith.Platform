@@ -2,9 +2,12 @@ namespace Hexalith.Platform.Works.Tests;
 
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Eventing;
+using Aspire.Hosting.Lifecycle;
 using System.Security.Cryptography;
 using System.Text.Json;
 using CommunityToolkit.Aspire.Hosting.Dapr;
+using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.EventStore.Aspire;
 using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.Platform.Composition;
@@ -328,6 +331,99 @@ public sealed class WorksPreviewModelTests : IDisposable
         finally
         {
             if (workspace is not null && Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true);
+        }
+    }
+
+    /// <summary>Checks the actual Works file entry and its managed Dapr runtime wiring.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task WorksPreviewComposesItsPreservedGraphWithoutDeclarationServers(bool defaultRuntime)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "works-graph-test-" + Guid.NewGuid().ToString("N"));
+        string platform = WorksProductionProfileTests.Root;
+        string? previousDaprHome = Environment.GetEnvironmentVariable("HEXALITH_DAPR_HOME");
+        string selectedDaprHome = defaultRuntime
+            ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            : Path.Combine(directory, "selected-runtime");
+        Directory.CreateDirectory(directory);
+        try
+        {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", defaultRuntime ? null : selectedDaprHome);
+            IDistributedApplicationBuilder builder = Builder("Development");
+            builder.Configuration["Dapr:Mtls:CertificateDirectory"] = Path.Combine(directory, "certificates");
+            builder.Configuration["Platform:Works:Enabled"] = "true";
+            builder.Configuration["Platform:Timesheets:Enabled"] = "false";
+            PlatformAppModel.ComposeEntry(builder);
+            builder.Resources.OfType<ProjectResource>().Select(resource => resource.Name).Order().ShouldBe(new[] { "eventstore", "eventstore-admin", "eventstore-operations", "works" }.Order());
+            builder.Resources.ShouldNotContain(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any() || resource.Name.StartsWith("tenants", StringComparison.Ordinal) || resource.Name.StartsWith("memories", StringComparison.Ordinal));
+            builder.Resources.OfType<ProjectResource>().ShouldAllBe(resource => resource.Annotations.OfType<DaprSidecarAnnotation>().Count() == 1);
+            ProjectResource works = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "works");
+            DaprSidecarOptions worksOptions = works.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+            worksOptions.ResourcesPaths!.ShouldContain(Path.Combine(platform, "DaprComponents", "works"));
+            string subscription = File.ReadAllText(Path.Combine(platform, "DaprComponents", "works", "subscription.work.events.yaml"));
+            subscription.ShouldContain("deadLetterTopic: deadletter.work.events");
+            subscription.ShouldContain("default: /work/events");
+            subscription.ShouldContain("  - works");
+            builder.Resources.ShouldContain(resource => resource.Name == "dapr-sentry");
+            builder.Resources.ShouldContain(resource => resource.Name == "dapr-placement-mtls");
+            builder.Resources.ShouldContain(resource => resource.Name == "dapr-scheduler-mtls");
+            int placementPort = builder.Resources.Single(resource => resource.Name == "dapr-placement-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+            int schedulerPort = builder.Resources.Single(resource => resource.Name == "dapr-scheduler-mtls").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port!.Value;
+            foreach (var project in builder.Resources.OfType<ProjectResource>())
+            {
+                var selected = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
+                selected.RuntimePath.ShouldBe(selectedDaprHome, project.Name);
+                selected.PlacementHostAddress.ShouldBe("localhost:" + placementPort, project.Name);
+                selected.SchedulerHostAddress.ShouldBe("localhost:" + schedulerPort, project.Name);
+            }
+            string home = Path.Combine(directory, "qualified-runtime");
+            Directory.CreateDirectory(Path.Combine(home, ".dapr", "bin"));
+            File.WriteAllText(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"), "model-only runtime");
+            int currentSentry = CompositionPortAllocator.Allocate(1).PlacementHealth;
+            foreach (var project in builder.Resources.OfType<ProjectResource>())
+            {
+                var sidecar = project.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
+                var old = sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single();
+                sidecar.Annotations[sidecar.Annotations.IndexOf(old)] = new DaprSidecarOptionsAnnotation(old.Options with { RuntimePath = home });
+                foreach (var endpoint in project.Annotations.OfType<EndpointAnnotation>())
+                    endpoint.AllocatedEndpoint = new AllocatedEndpoint(endpoint, "127.0.0.1", 32000);
+            }
+            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(directory, "test-dcp-not-started");
+            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(directory, "test-dashboard-not-started");
+            builder.AddDapr(options => options.EnableTelemetry = false);
+            await using var application = builder.Build();
+            var model = application.Services.GetRequiredService<DistributedApplicationModel>();
+            var eventing = application.Services.GetRequiredService<IDistributedApplicationEventing>();
+            foreach (var subscriber in application.Services.GetServices<IDistributedApplicationEventingSubscriber>())
+                await subscriber.SubscribeAsync(eventing, builder.ExecutionContext, TestContext.Current.CancellationToken);
+            await eventing.PublishAsync(new BeforeStartEvent(application.Services, model), TestContext.Current.CancellationToken);
+            builder.Resources.Single(resource => resource.Name == "dapr-sentry").Annotations.OfType<EndpointAnnotation>().Single(endpoint => endpoint.Name == "grpc").Port = currentSentry;
+            List<string[]> nativeSentryArguments = [];
+            foreach (var sidecar in model.Resources.OfType<ExecutableResource>().Where(resource => resource.Name.EndsWith("-dapr-cli", StringComparison.Ordinal)))
+            {
+                List<object> arguments = [];
+                foreach (var callback in sidecar.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+                    await callback.Callback(new CommandLineArgsCallbackContext(arguments, TestContext.Current.CancellationToken));
+                string endpoint = arguments[arguments.IndexOf("--sentry-address") + 1].ShouldBeOfType<string>();
+                endpoint.ShouldBe("127.0.0.1:" + currentSentry);
+                arguments.ShouldContain("--enable-mtls");
+                nativeSentryArguments.Add(["--enable-mtls", "--sentry-address", endpoint]);
+                sidecar.Command.ShouldBe(Path.Combine(home, ".dapr", "bin", OperatingSystem.IsWindows() ? "daprd.exe" : "daprd"));
+            }
+            nativeSentryArguments.Count.ShouldBe(4);
+            // Exercise the adapter contract with the actual Works-generated endpoints.
+            CompositionProcessResult adapter = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("python3",
+                ["-c", "import json,sys,isolated_daprd; arguments=json.loads(sys.argv[1]); assert all(isolated_daprd.translated(value,sys.argv[2]) == value for value in arguments)",
+                    JsonSerializer.Serialize(nativeSentryArguments), "127.0.0.1:" + currentSentry], Path.Combine(platform, "eng"), null), TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
+            adapter.TimedOut.ShouldBeFalse();
+            adapter.ExitCode.ShouldBe(0, adapter.Output + adapter.ErrorOutput);
+
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("HEXALITH_DAPR_HOME", previousDaprHome);
+            Directory.Delete(directory, true);
         }
     }
 
