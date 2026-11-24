@@ -12,8 +12,10 @@ using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Dapr;
+using Hexalith.EventStore.Extensions;
 using Hexalith.EventStore.Indexes;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -34,12 +36,39 @@ public sealed class GatewaySeedSubscriptionTests
     [InlineData(true)]
     public Task BuildsPackageSeedHonorsConfiguredAndDeclarativeSubscriptionsAsync(bool declarative) => AssertSeedAsync<buildsseed::Program>(declarative);
 
-    private static async Task AssertSeedAsync<TEntryPoint>(bool declarative) where TEntryPoint : class
+    [Fact]
+    public async Task PlatformSeedEnforcesRequestBodyBoundaryWithKestrelAsync()
     {
         using var installation = new GatewaySeedProtectionInstallation();
-        WebApplicationFactory<TEntryPoint> factory = new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
+        WebApplicationFactory<platformseed::Program> factory = CreateFactory<platformseed::Program>(installation, true, "Production");
+        await using var factoryLifetime = factory.ConfigureAwait(true);
+        factory.UseKestrel(0);
+        using HttpClient client = factory.CreateClient();
+        client.DefaultRequestHeaders.Add("dapr-api-token", "seed-channel-token");
+        CancellationToken token = TestContext.Current.CancellationToken;
+        const int limit = 1_048_576;
+        using var acceptedByTransport = new StringContent("{}", Encoding.UTF8, "application/json");
+        using var exactlyAtLimit = new StringContent("{" + new string(' ', limit - 2) + "}", Encoding.UTF8, "application/json");
+        using var overLimit = new StringContent("{" + new string(' ', limit - 1) + "}", Encoding.UTF8, "application/json");
+        using HttpResponseMessage small = await client.PostAsync("/projections/changed", acceptedByTransport, token);
+        using HttpResponseMessage boundary = await client.PostAsync("/projections/changed", exactlyAtLimit, token);
+        using HttpResponseMessage over = await client.PostAsync("/projections/changed", overLimit, token);
+        small.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        boundary.StatusCode.ShouldBe(small.StatusCode);
+        over.StatusCode.ShouldBe(HttpStatusCode.RequestEntityTooLarge);
+
+        var actors = factory.Services.GetRequiredService<EndpointDataSource>().Endpoints
+            .Where(endpoint => endpoint.Metadata.GetMetadata<EventStoreActorCallbackEndpointMetadata>() is not null)
+            .ToArray();
+        actors.ShouldNotBeEmpty();
+        actors.ShouldAllBe(endpoint => endpoint.Metadata.GetMetadata<IRequestSizeLimitMetadata>()!.MaxRequestBodySize == 30_000_000);
+    }
+
+    private static WebApplicationFactory<TEntryPoint> CreateFactory<TEntryPoint>(
+        GatewaySeedProtectionInstallation installation, bool declarative, string environment) where TEntryPoint : class =>
+        new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
         {
-            builder.UseEnvironment("Development");
+            builder.UseEnvironment(environment);
             builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(installation.Configuration).AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["APP_API_TOKEN"] = "seed-channel-token",
@@ -64,6 +93,11 @@ public sealed class GatewaySeedSubscriptionTests
                 services.Remove(hosted);
             });
         });
+
+    private static async Task AssertSeedAsync<TEntryPoint>(bool declarative) where TEntryPoint : class
+    {
+        using var installation = new GatewaySeedProtectionInstallation();
+        WebApplicationFactory<TEntryPoint> factory = CreateFactory<TEntryPoint>(installation, declarative, "Development");
         await using var factoryLifetime = factory.ConfigureAwait(true);
         using HttpClient client = factory.CreateClient();
         using var anonymous = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(false);

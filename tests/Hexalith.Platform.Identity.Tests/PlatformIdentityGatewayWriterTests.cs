@@ -56,6 +56,7 @@ public sealed class PlatformIdentityGatewayWriterTests
     [InlineData("valid")]
     [InlineData("unlisted-workload")]
     [InlineData("stale-target")]
+    [InlineData("inactive-target")]
     [InlineData("missing-provenance")]
     [InlineData("unlisted-provenance-issuer")]
     [InlineData("stale-operator")]
@@ -65,12 +66,12 @@ public sealed class PlatformIdentityGatewayWriterTests
         using RSA gatewayKey = RSA.Create(2048);
         IIdentityActorRegistryActor registry = Substitute.For<IIdentityActorRegistryActor>();
         registry.ReadAsync(Actor, false, Arg.Any<string>(), Arg.Any<string>())
-            .Returns(new ActorRegistryEntry(Actor, 7, true, "target-provenance"));
+            .Returns(new ActorRegistryEntry(Actor, 7, scenario != "inactive-target", "target-provenance"));
         registry.ReadAsync(Operator, false, Arg.Any<string>(), Arg.Any<string>())
             .Returns(new ActorRegistryEntry(Operator, scenario == "stale-operator" ? 4 : 5,
                 scenario != "inactive-operator", "operator-provenance"));
         string revision = scenario == "stale-target" ? "6" : "7";
-        byte[] payload = Payload(revision);
+        byte[] payload = Payload(revision, includeProof: scenario != "missing-provenance");
         IdentityAdmissionScope scope = Scope(payload);
         IdentityAdmissionScope expectedOperatorScope = scope with
         {

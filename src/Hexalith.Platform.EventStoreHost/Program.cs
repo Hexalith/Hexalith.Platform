@@ -10,6 +10,7 @@ using Hexalith.EventStore.ServiceDefaults;
 using Hexalith.EventStore.ServiceDefaults.Authentication;
 using Hexalith.EventStore.SignalRHub;
 using Dapr;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -94,7 +95,10 @@ app.MapControllers().Add(endpoint =>
 app.MapErrorReferences();
 app.MapApiVersionFallback();
 if (!declarativeSubscriptions) app.MapSubscribeHandler().RequireEventStoreChannel();
-app.MapActorsHandlers().WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance).RequireEventStoreChannel();
+// Dapr transports an accepted command inside a larger actor envelope.
+app.MapActorsHandlers()
+    .WithMetadata(EventStoreActorCallbackEndpointMetadata.Instance, new RequestSizeLimitAttribute(30_000_000))
+    .RequireEventStoreChannel();
 app.MapApplicationRuntimeProofEndpoints();
 
 // SignalR hub for real-time projection change notifications (conditional)
