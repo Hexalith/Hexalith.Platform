@@ -2686,3 +2686,10 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Platform, Hexalith.Works
   summary: Qualify the legacy cross-repository Works parity verifier against a Works fixture that obtains realm-issued tokens.
   evidence: Platform's `eng/verify_works_host.py` runs the external Works recovery fixture against the current file AppHost. The fixture still self-signs HS256 tokens. Story 3.4's Platform-owned live test exercises the real preview with realm credentials. The cross-repository verifier depends on the deferred Works test adoption.
+
+## Deferred from: code review of spec-3-4-generate-the-local-realm-from-the-realm-contract.md (2026-11-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.Platform
+  summary: Keep the Works preview's default synthetic tenant across retained recompositions, so data written under it stays readable.
+  evidence: Without `Platform:Works:SyntheticTenantId`, `WorksPreviewModel.Compose` allocates `works-preview-<guid>` (`src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105-106`), and only the disposable workspace import and the Keycloak environment record it. The bound Works grant admits only that tenant, so a later composition over the retained development-catalog profile cannot read its streams. Story 3.4 review left a patch to log the allocated tenant. The maintainer deferred persistence, or requiring the setting, to Story 3.5, which owns the local synthetic tenant.

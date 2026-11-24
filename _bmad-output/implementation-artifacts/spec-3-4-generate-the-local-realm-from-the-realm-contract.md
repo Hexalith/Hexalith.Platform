@@ -2,7 +2,7 @@
 title: '3.4 Generate the local realm from the realm contract'
 type: 'feature'
 created: '2026-11-24'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 story_key: '3-4-generate-the-local-realm-from-the-realm-contract'
 baseline_commit: '3a87b90739a248a62b526beb928813899bb9c262'
@@ -73,6 +73,43 @@ Public clients never get `offline_access`. Run values (realm URL, synthetic tena
 - [x] `PlatformLocalRealmTests.cs`, `PlatformLocalRealmLiveTests.cs`, `WorksPreviewModelTests.cs` -- Cover every matrix row, the actual preview import mounts, the trusted-effect grant, and a permitted cross-client downscope. Run the gated live preview via its normal entry and exercise the real EventStore gateway with the Works SDK transport.
 
 Given a generated local realm, when the selected Works preview hosts start, then they use its authority and the Works recovery stream transport authenticates with the exact tenant/domain scope. Given an inherited legacy key or token endpoint, when the preview composes, then the effective settings select only the generated realm.
+
+### Review Findings
+
+Code review 2026-11-24 of ea655311 (baseline 3a87b907, code-only diff, 25 files). Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed. No high findings. The maintainer resolved the tenant decision as log now and defer persistence to Story 3.5, and left all patches as action items.
+
+- [ ] [Review][Patch] Log the allocated default synthetic tenant at compose with a reuse hint (`--Platform:Works:SyntheticTenantId=<id>`); resolved from the tenant decision (medium) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
+- [x] [Review][Defer] The default synthetic tenant is not persisted across retained recompositions, so data written under it is orphaned [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105] — deferred: Story 3.5 owns how the local synthetic tenant is provided and persisted
+- [ ] [Review][Patch] build-policy.sh needs the maintainer-only `run-with-temp` (~/.local/bin), so nobody else can rebuild the committed provider JARs; inline `mktemp -d` plus a trap and TMPDIR (medium) [infrastructure/keycloak-local-realm/build-policy.sh:5]
+- [ ] [Review][Patch] Model test does not assert the per-host `JwtBearer`/`WorkloadJwtBearer` `Audience` (works vs eventstore) or that inherited `ValidAudiences` are overwritten; inverting the audience ternary passes every non-live test (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:114]
+- [ ] [Review][Patch] Model test does not assert `Authentication__WorkloadIssuer__Workload` per issuing host; a wrong value silently disables Works bound assertions (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:194]
+- [ ] [Review][Patch] Bound `works-bound-gateway` grant operations, audience and workload/clientId are unasserted outside the live test; passing `Operations` (with trusted-effect) instead of `boundOperations` passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:188]
+- [ ] [Review][Patch] The `works` client invariant (no exchange, eventstore audience, exactly three bound ops + unbound trusted-effect) has no negative test; loosening PlatformRealmContract.cs:293-298 passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:104]
+- [ ] [Review][Patch] No test covers refusal of a non-canonical or reserved `syntheticTenantId` (e.g. `Retained-Tenant`, `system`) (low) [src/Hexalith.Platform.Composition/PlatformLocalRealm.cs:100]
+- [ ] [Review][Patch] An empty `Platform:Works:SyntheticTenantId` passes `??`, so the preview refuses instead of allocating; use the file's `is { Length: > 0 }` convention (low) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
+- [ ] [Review][Patch] The contract accepts `offline_access` on confidential clients, but the renderer defines no such client scope, so Keycloak silently drops it; refuse any optional scope in v1 after the public-client check (low) [src/Hexalith.Platform.Composition/PlatformRealmContract.cs:250]
+- [ ] [Review][Patch] The contract doc says standard exchange is enabled "per confidential service client"; only the `eventstore` gateway client has it (low) [docs/contracts/realm-contract-v1.md:54]
+
+**Rejected**
+- low — Grant and signer deadline fixed at compose, so a Keycloak-only restart keeps the old window: matches the documented "start a new preview after the grant deadline"; a per-start callback adds complexity.
+- low — Agent rules keyed to `mcpcli` and Works rules keyed to `works` (blind-hunter, edge-case-hunter): no second agent client exists in v1; class-wide guards would protect hypothetical clients.
+- low — Requester-audience executor has no JUnit tests: a 20-line deny-only executor, exercised by the gated live test; Keycloak mocks would be new test infrastructure.
+- low — Keycloak pinned by tag, not digest: the spec pins `26.6.4`, matching story 2.12's `run_owned.py`; a same-version rebuild does not change the internals the providers compile against.
+- low — Stored realm events have no reader (no bootstrap admin, empty listeners): the spec requires only local storage; making them readable is a design choice (admin bootstrap or log listener), and export is Story 6.11.
+- low — Schema failures report no location: every matrix refusal names its client before schema evaluation; detailed schema diagnostics add code for rare contract edits.
+- false — Routine tests never use the real EventStore manifest: `eng/current_tuple_source.py` refuses a `Declarations/eventstore.json` that differs from the release blob, and a divergent checkout refuses loudly at compose by naming the client.
+- false — Literal claim strings instead of EventStore constants: EventStore keeps its tenant/domain/permission constants `internal` and itself uses literals for the grant-id and grant-revision claims (`WorkloadBindingAuthority.cs:53-54`).
+- low — Live tests skip refresh reuse, exchange refusal for works/admin and non-loopback redirect: the rendered settings are pinned at `PlatformLocalRealmTests.cs:43-44,79,83-89`; live checks would re-test Keycloak.
+- low — Mixed-case tenant refusal does not say "lowercase": the documented source of the value is the original canonical tenant ID.
+- low — HS256 probes reach only the gateway user route: config assertions pin `SigningKey=""`, no symmetric keys and RS256 on every host and section; more live probes add gated complexity.
+- low — No test of "no file and no Keycloak start" after a violation: `AddResource` needs the `PreparedRealm` that validation returns, so at most an empty workspace directory could come first.
+- low — Trusted-effect and bound command operations proven only against standalone Keycloak: the ACs name only the stream read, and the grant-contents patch above covers the operations.
+- false — Manifest missing `modules` or `identity` throws raw (two findings): the module manifest v2 schema requires these, and the failure on a schema-invalid owner manifest is loud.
+- false — Principal without `roles`, or a differently shaped identity need: v2 `identityNeed` requires name, audience, roles and applicationPrincipal, and all needs share one shape.
+- low — Child-only `AllowedAlgorithms`/`ValidAudiences` indices survive: already triaged and rejected in the previous review; the selected child configs carry no populated arrays.
+- false — Probe faults on `HttpRequestException` or timeout with no diagnostic: `EventStoreGatewayClient.SendTranslatingAsync` turns both into an `EventStoreGatewayException` 503, which the probe catches.
+- low — Live test waits the full 2 minutes if the Works host exits: a diagnostic of a gated test; an extra state-polling branch is not worth it.
+- low — Windows workspace deletion fails while `apphost.dll` is loaded: the gated live test runs on Linux.
 
 ## Implementation Notes
 
