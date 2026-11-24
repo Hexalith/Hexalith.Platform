@@ -102,6 +102,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Restore a buildable default package-reference dependency lane for the pre-existing Platform identity project (G106).
   evidence: Blind B86 and an independent root `dotnet build Hexalith.Platform.slnx --no-restore` both fail with 26 missing identity/security type errors. Directory.Build.props defaults UseHexalithProjectReferences=false, while the published Gateway 3.110.0 dependency lacks the consumed APIs. The project and dependency setup predate this resumed qualification run; fix in the separate identity workstream.
+  status: superseded (2026-11-24)
+  resolution: The current Release package-reference build compiles the Identity project, tests and EventStore host against the current EventStore packages. The separate Builds 6.6.2 AttemptStore issue has its own entry.
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Make the pre-existing global-login alias test assert real registry lookup aliases (G107).
   evidence: Verification-gap V38 found SameVerifiedLoginAcrossTenantClaims_UsesOneGlobalActorAndNeverEnrolls returns one registry entry for Arg.Any<string>() and compares those predetermined actor IDs. Tenant-dependent alias derivation therefore evades its assertions; use an alias-bound registry response and verify different-login denial in the identity workstream. This test predates the resumed qualification run.
