@@ -68,7 +68,12 @@ internal static class PlatformKeyResolution
         {
             return CustodyStatus.ScopeMismatch;
         }
-        PlatformHmacKeyMetadata meta = key.Metadata;
+        return CheckLifecycle(key.Metadata, now, issue, overlap);
+    }
+
+    internal static CustodyStatus CheckLifecycle(PlatformHmacKeyMetadata meta, DateTimeOffset now,
+        bool issue, TimeSpan? overlap)
+    {
         if (meta.State == PlatformHmacKeyState.Revoked)
         {
             return CustodyStatus.RevokedKey;
@@ -81,13 +86,11 @@ internal static class PlatformKeyResolution
         {
             return CustodyStatus.OutsideKeyWindow;
         }
-        if (meta.State == PlatformHmacKeyState.Retained && overlap is
-        { }
-        window
+        if (meta.State == PlatformHmacKeyState.Retained && overlap is { } window
             && now - meta.RetiredAt!.Value >= window)
-            {
-                return CustodyStatus.OutsideKeyWindow;
-            }
+        {
+            return CustodyStatus.OutsideKeyWindow;
+        }
         return CustodyStatus.Succeeded;
     }
 }

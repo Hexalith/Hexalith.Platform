@@ -368,7 +368,57 @@ public sealed class CustodyPrerequisiteTests
             new("v1", PlatformHmacKeyState.Revoked, _clock.Now.AddDays(-1), _clock.Now.AddDays(1), _clock.Now),
             new byte[32]);
 
-        Should.Throw<InvalidOperationException>(() => snapshot.ComputeTag("canonical"u8));
+        Should.Throw<InvalidOperationException>(() => snapshot.ComputeTag("canonical"u8, _clock.Now, issue: false));
+    }
+
+    /// <summary>Verifies that direct tagging uses inclusive start and exclusive expiry.</summary>
+    [Theory]
+    [InlineData(-1, false)]
+    [InlineData(0, true)]
+    [InlineData(59, true)]
+    [InlineData(60, false)]
+    public void ActiveSnapshotTagUseRespectsValidityWindow(int offset, bool allowed)
+    {
+        DateTimeOffset start = _clock.Now;
+        using var snapshot = new PlatformHmacKeySnapshot(new("tenant-a", PlatformHmacPurpose.ContentDigest),
+            new("v1", PlatformHmacKeyState.Active, start, start.AddTicks(60), null), new byte[32]);
+        DateTimeOffset evaluatedAt = start.AddTicks(offset);
+
+        if (allowed)
+        {
+            snapshot.ComputeTag("canonical"u8, evaluatedAt, issue: true).Length.ShouldBe(32);
+        }
+        else
+        {
+            Should.Throw<InvalidOperationException>(() => snapshot.ComputeTag("canonical"u8, evaluatedAt, issue: true));
+        }
+    }
+
+    /// <summary>Verifies retained key use checks rotation, operation and verification overlap.</summary>
+    [Theory]
+    [InlineData(-1, false, 20, false)]
+    [InlineData(0, true, 20, false)]
+    [InlineData(0, false, 20, true)]
+    [InlineData(19, false, 20, true)]
+    [InlineData(20, false, 20, false)]
+    [InlineData(20, false, null, true)]
+    [InlineData(60, false, null, false)]
+    public void RetainedSnapshotTagUseRespectsRotationAndOverlap(int offset, bool issue, int? overlapTicks, bool allowed)
+    {
+        DateTimeOffset retiredAt = _clock.Now;
+        using var snapshot = new PlatformHmacKeySnapshot(new("tenant-a", PlatformHmacPurpose.ContentDigest),
+            new("v1", PlatformHmacKeyState.Retained, retiredAt.AddTicks(-10), retiredAt.AddTicks(60), retiredAt), new byte[32]);
+        DateTimeOffset evaluatedAt = retiredAt.AddTicks(offset);
+        TimeSpan? overlap = overlapTicks is { } ticks ? TimeSpan.FromTicks(ticks) : null;
+
+        if (allowed)
+        {
+            snapshot.ComputeTag("canonical"u8, evaluatedAt, issue, overlap).Length.ShouldBe(32);
+        }
+        else
+        {
+            Should.Throw<InvalidOperationException>(() => snapshot.ComputeTag("canonical"u8, evaluatedAt, issue, overlap));
+        }
     }
 
     /// <summary>Verifies snapshot copies material and disposal is safe to repeat.</summary>

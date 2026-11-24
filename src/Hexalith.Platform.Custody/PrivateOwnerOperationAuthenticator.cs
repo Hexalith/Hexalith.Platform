@@ -43,14 +43,19 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
                 || input.Tag is not { Length: 64 } || input.Tag.Any(c => !char.IsAsciiHexDigit(c)))) { return null; }
             var scope = new PlatformHmacScope(expected.TenantId, PlatformHmacPurpose.TrustedEnvelope);
             using var first = await ResolveAsync(scope, input?.SigningKeyVersion, start, token).ConfigureAwait(false);
-            if (first is null || PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, first), scope, input?.SigningKeyVersion, clock.GetUtcNow(), issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
+            if (first is null) { return null; }
+            DateTimeOffset keyDecisionAt = clock.GetUtcNow();
+            if (PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, first), scope, input?.SigningKeyVersion, keyDecisionAt, issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
             var credential = input ?? new(profile.Version, profile.Issuer, profile.Audience, issuer, subject, client, audience,
                 grant!.AuthorityReference, grant.BindingRevision, expected, now, now.Add(profile.MaximumLifetime), Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32)), first.Metadata.Version, string.Empty);
-            canonical = Bytes(credential); tag = first.ComputeTag(canonical);
+            canonical = Bytes(credential);
+            tag = first.ComputeTag(canonical, keyDecisionAt, issue, profile.RotationOverlap);
             if (!issue) { supplied = Convert.FromHexString(input!.Tag); if (!CryptographicOperations.FixedTimeEquals(tag, supplied)) { return null; } }
             using var confirmed = await ResolveAsync(scope, credential.SigningKeyVersion, start, token).ConfigureAwait(false);
-            if (confirmed is null || PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, confirmed), scope, credential.SigningKeyVersion, clock.GetUtcNow(), issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
-            byte[] currentTag = confirmed.ComputeTag(canonical);
+            if (confirmed is null) { return null; }
+            keyDecisionAt = clock.GetUtcNow();
+            if (PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, confirmed), scope, credential.SigningKeyVersion, keyDecisionAt, issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
+            byte[] currentTag = confirmed.ComputeTag(canonical, keyDecisionAt, issue, profile.RotationOverlap);
             try { if (!CryptographicOperations.FixedTimeEquals(tag, currentTag)) { return null; } } finally { CryptographicOperations.ZeroMemory(currentTag); }
             var currentGrant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
             if (currentGrant != grant || !ValidGrant(currentGrant, issuer, subject, client, audience, expected, clock.GetUtcNow())

@@ -139,7 +139,7 @@ public sealed class TrustedEnvelopeAuthenticator(IPlatformHmacKeyProvider keys, 
         byte[] tag = [];
         try
         {
-            tag = key!.ComputeTag(canonical);
+            tag = key!.ComputeTag(canonical, keyDecisionAt, issue, profile.RotationOverlap);
             if (!issue)
             {
                 byte[] supplied;
@@ -171,7 +171,7 @@ public sealed class TrustedEnvelopeAuthenticator(IPlatformHmacKeyProvider keys, 
             {
                 return new(status, EvaluatedAt:keyDecisionAt);
             }
-            byte[] confirmation = current!.ComputeTag(canonical);
+            byte[] confirmation = current!.ComputeTag(canonical, keyDecisionAt, issue, profile.RotationOverlap);
             try
             {
                 if (!CryptographicOperations.FixedTimeEquals(tag, confirmation))

@@ -62,22 +62,25 @@ public sealed class PlatformHmacService(IPlatformHmacKeyProvider keys, IPlatform
         {
             PlatformHmacKeyResolution first = await PlatformKeyResolution.ReadAsync(keys, scope, recordedVersion, cancellationToken).ConfigureAwait(false);
             using PlatformHmacKeySnapshot? key = first.Key;
-            CustodyStatus status = PlatformKeyResolution.Check(first, scope, recordedVersion, clock.GetUtcNow(), recordedVersion is null);
+            bool issue = recordedVersion is null;
+            DateTimeOffset keyDecisionAt = clock.GetUtcNow();
+            CustodyStatus status = PlatformKeyResolution.Check(first, scope, recordedVersion, keyDecisionAt, issue);
             if (status != CustodyStatus.Succeeded)
             {
                 return new(status);
             }
-            byte[] digest = key!.ComputeTag(bytes);
+            byte[] digest = key!.ComputeTag(bytes, keyDecisionAt, issue);
             try
             {
-                PlatformHmacKeyResolution fresh = await PlatformKeyResolution.ReadAsync(keys, scope, recordedVersion is null ? null : key.Metadata.Version, cancellationToken).ConfigureAwait(false);
+                PlatformHmacKeyResolution fresh = await PlatformKeyResolution.ReadAsync(keys, scope, issue ? null : key.Metadata.Version, cancellationToken).ConfigureAwait(false);
                 using PlatformHmacKeySnapshot? current = fresh.Key;
-                status = PlatformKeyResolution.Check(fresh, scope, key.Metadata.Version, clock.GetUtcNow(), recordedVersion is null);
+                keyDecisionAt = clock.GetUtcNow();
+                status = PlatformKeyResolution.Check(fresh, scope, key.Metadata.Version, keyDecisionAt, issue);
                 if (status != CustodyStatus.Succeeded)
                 {
                     return new(status);
                 }
-                byte[] confirmation = current!.ComputeTag(bytes);
+                byte[] confirmation = current!.ComputeTag(bytes, keyDecisionAt, issue);
                 try
                 {
                     if (!CryptographicOperations.FixedTimeEquals(digest, confirmation))
@@ -89,7 +92,7 @@ public sealed class PlatformHmacService(IPlatformHmacKeyProvider keys, IPlatform
                     {
                         return new(CustodyStatus.StaleProfile);
                     }
-                    status = PlatformKeyResolution.Check(fresh, scope, key.Metadata.Version, clock.GetUtcNow(), recordedVersion is null);
+                    status = PlatformKeyResolution.Check(fresh, scope, key.Metadata.Version, clock.GetUtcNow(), issue);
                     if (status != CustodyStatus.Succeeded)
                     {
                         return new(status);

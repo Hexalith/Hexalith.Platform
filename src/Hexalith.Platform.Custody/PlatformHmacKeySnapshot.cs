@@ -38,13 +38,14 @@ public sealed class PlatformHmacKeySnapshot : IDisposable
     /// <summary>Gets whether this owned capability has been cleared.</summary>
     public bool IsDisposed => _disposed;
 
-    /// <summary>Computes a tag without exporting the key.</summary>
-    internal byte[] ComputeTag(ReadOnlySpan<byte> canonicalBytes)
+    /// <summary>Computes a tag for the specified operation and lifecycle decision instant.</summary>
+    internal byte[] ComputeTag(ReadOnlySpan<byte> canonicalBytes, DateTimeOffset evaluatedAt,
+        bool issue, TimeSpan? overlap = null)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        if (Metadata.State == PlatformHmacKeyState.Revoked)
+        if (PlatformKeyResolution.CheckLifecycle(Metadata, evaluatedAt, issue, overlap) != CustodyStatus.Succeeded)
         {
-            throw new InvalidOperationException("A revoked custody key cannot compute a tag.");
+            throw new InvalidOperationException("The custody key is not valid for tag computation.");
         }
 
         return HMACSHA256.HashData(_key, canonicalBytes);
