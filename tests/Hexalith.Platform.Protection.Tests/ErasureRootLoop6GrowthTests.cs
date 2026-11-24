@@ -6,6 +6,7 @@ using Hexalith.EventStore.Contracts.Security;
 using Hexalith.EventStore.Server.Security;
 using Hexalith.EventStore.Server.Tests.Security;
 using Hexalith.Platform.Custody;
+using Hexalith.Platform.Custody.Tests;
 using NSubstitute;
 using Shouldly;
 
@@ -22,9 +23,13 @@ public sealed class ErasureRootLoop6GrowthTests
         var legacyErased = new SortedDictionary<string, ErasureRootErasure>(StringComparer.Ordinal); var legacyOutcomes = new SortedDictionary<string, CustodyKeyLifecycleOutcome>(StringComparer.Ordinal);
         var originals = new List<(CustodyKeyRegistration Root, CustodyKeyLifecycleRequest Pin, CustodyKeyLifecycleOutcome Outcome, DeletionBatchConsumptionRequest Manifest, DeletionManifestProviderResult Result)>();
         var guard = new GovernanceGuardFixture();
+        // The owner fixture issues one minute of synthetic evidence. This test measures growth across operations.
+        var guardClock = new CustodyFixtureClock { Now = guard.Backend.Now };
+        var guardTransaction = new DaprGuardedStateTransaction(guard.Backend.Client, guardClock, guard.Backend.Authority);
+        var guardOwner = new GovernanceScopeGuardOwner(guardTransaction, guardClock, guard.Authority);
         var source = new ErasureRootNativeOccurrenceSource(fixture.Custody, fixture.Permissions, native, fixture.Digests);
-        var handler = new ErasureRootAuthorityOperationHandler(fixture.Custody, source, guard.Owner, Substitute.For<IDeletionCapabilityRevocationAuthenticator>(), new string('A', 64), TimeProvider.System);
-        using var receiver = new ReceivingAuthorityFixture("erc-owner", handlers: [handler]);
+        var handler = new ErasureRootAuthorityOperationHandler(fixture.Custody, source, guardOwner, Substitute.For<IDeletionCapabilityRevocationAuthenticator>(), new string('A', 64), guardClock);
+        using var receiver = new ReceivingAuthorityFixture("erc-owner", handlers: [handler], clock: guardClock);
         receiver.State = receiver.State with { Callers = [receiver.State.Callers[0] with { ScopeReference = "tenant-a|erc", Methods = [.. handler.Methods] }] };
         var guardClient = new DaprErasureRootGovernanceGuard(receiver.Authority); var guards = new List<(GovernanceGuardTransition Transition, GovernanceProtocolReceipt Receipt)>();
         for (int index = 0; index < count; index++)
@@ -48,7 +53,9 @@ public sealed class ErasureRootLoop6GrowthTests
             {
                 var hold = new GovernanceHoldCommand("growth-hold-" + index, guard.Scope, "policy-a", "");
                 var register = guard.Command(GovernanceGuardOperation.RegisterHold, hold: hold);
-                var receipt = (await guardClient.ExecuteAsync(register, [], token))!; receipt.Status.ShouldBe("Committed"); guards.Add((register, receipt));
+                var receipt = await guardClient.ExecuteAsync(register, [], token);
+                receipt.ShouldNotBeNull($"The growth fixture must retain a guard receipt at iteration {index}.");
+                receipt.Status.ShouldBe("Committed"); guards.Add((register, receipt));
                 var release = guard.Command(GovernanceGuardOperation.ReleaseHold, hold: hold with { ReleaseReceiptId = "independent-release-" + index });
                 (await guardClient.ExecuteAsync(release, [], token))!.Status.ShouldBe("Committed");
             }
