@@ -2,7 +2,7 @@
 title: 'Next ten Platform deferred items'
 type: 'bugfix'
 created: '2026-11-24'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 baseline_commit: '32fafb5823c141f5ba1ec9d0880d76a9454600ca'
 review_loop_iteration: 0
@@ -26,8 +26,8 @@ Take the next ten actionable entries from the Platform deferred-work ledger in i
 ## Tasks & Acceptance
 
 - [x] Use the done status on exactly ten newly completed entries and retain their evidence and separate commits.
-- [ ] Given the committed batch, when the solution, applicable repository suites and diff checks run, then the new requirements and behavior are verified.
-- [ ] Given successful verification, when main is pushed, then the remote contains the full batch.
+- [x] Given the committed batch, when the solution, applicable repository suites and diff checks run, then the new requirements and behavior are verified.
+- [x] Given successful verification, when main is pushed, then the remote contains the full batch.
 
 ## Implementation Notes
 
@@ -40,9 +40,16 @@ Take the next ten actionable entries from the Platform deferred-work ledger in i
 
 ## Verification
 
-- The complete Release solution built against the published 6.7.0 tool. The current tuple and signed package locks verified. The repository's Python, Node and Go suites and the standalone catalog checks passed after correcting their tool and fixture inputs.
+- The final code built the complete Release solution against the published 6.7.0 tool with zero errors and 11 existing Aspire deprecation warnings. The current tuple and signed package locks verified. The repository's Python, Node and Go suites and the standalone catalog checks passed after correcting their tool and fixture inputs.
 - The five gateway host tests, 165 Identity tests, 28 package-catalog regressions, 185 Works tests, and the corrected Custody rollover case passed. Works used the sibling checkout selected for EventStore 5.5.1.
-- The full-suite gate remains open. The current-owner Composition cases exceeded preparation deadlines. The Secrets Runtime and Protection runs also reported failures in time-bounded archive and receiving operations. The shared verification host had more than 100 runnable tasks for 14 CPUs during these failures.
+- The 848-case Secrets Runtime run reported three failures under load. All three passed in the nine-case rerun. The four current-owner Composition failures also passed on a serial rerun. The shared verification host had more than 100 runnable tasks for 14 CPUs during the failures.
+- The 570-case Protection run with the pinned EventStore verifier and synchronized receiving controls reported one failure. The 1,536-iteration growth case passed with a clock tied to the fixture's signed authority evidence. Configured live-only probes were skipped by the test runner.
+- All 23 hosted-publishing tests passed with the current test binaries and the approved `759bb897` checkout. The four exported owner declarations were read directly from their approved Git blobs to preserve the bytes recorded by the mapping.
+- The duplicate-declaration control passed after isolating it from the owner test-project paths. Both retention build-isolation cases and both signed and unsigned deployment-isolation cases passed on serial reruns. The GitHub tuple preflight passed on run 45380811067.
+- The four Works workspace and certificate ownership cases passed against the selected development owner and its private test profile. The exact gateway allowlist and the three declared Conversations operations passed together.
+- The source manifest fixtures now materialize real declared test entries and use the supported Builds range. The Parties source tests use the standard workspace resolver, and the package test exercises the authenticated lock and its declared servers, subscriptions and mount scopes.
+- Platform Story 3.3 already requires both AppHost entry paths to refuse an unenrolled Timesheets caller before adding resources. Tests now exercise this refusal and verify the retained candidate's mapping, runner authentication, scoped state template and internal routes at preparation. The runbook records this prerequisite for local startup. All 63 Timesheets deployment checks passed using pinned Helm 4.2.0 and the EventStore SDK checkout selected by Platform.
+- The .NET solution ran all 12 test projects. The audit records 3,774 first-run passes and 52 cases resolved by targeted reruns, with 21 intentional skips and one explicit opt-in test. The final Timesheets class run passed all 35 cases.
 
 ## Review Triage Log
 
