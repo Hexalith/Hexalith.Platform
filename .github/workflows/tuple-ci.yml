@@ -47,6 +47,14 @@ jobs:
           read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])
           PYCODE
           printf 'current-source=%s\n' "$PLATFORM_CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
+      - name: Run offline cluster-management unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/cluster-management-venv"
+          python="$RUNNER_TEMP/cluster-management-venv/bin/python"
+          "$python" -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
+          "$python" -B -m unittest discover -s eng/cluster-management -p 'test_*.py'
       - name: Check the append-only module intake manifest
         env:
           MODULE_INTAKE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}

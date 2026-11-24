@@ -166,6 +166,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Run the `eng/cluster-management` unit tests automatically in CI (G167).
   evidence: Blind B126 and verification-gap V54. The repository has no `.github/workflows`, so the 166 tests run only when someone runs the README command (`eng/cluster-management/README.md:62`) by hand. This is pre-existing repository-level infrastructure, outside Story 4.26.
+  status: done 2026-11-24
+  resolution: The tuple preflight runs offline cluster-management discovery with pinned PyYAML. Its source-resolution job must pass before the tuple runs or the verdict succeeds.
 
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify the authenticated known-content evidence behind each anonymous registry denial target (4.2 Blind 3; carried Corrected Edge 1).
