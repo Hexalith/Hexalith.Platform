@@ -107,7 +107,7 @@ The open policy decisions, human decisions, spike, embedded ratifications and st
 
 | September 28 reference | September 29 reference |
 | --- | --- |
-| 3.1, candidate policy | 2.1, Decide the candidate and attachment policy. The new 3.1 applies that policy to the runner contract. |
+| 3.1, candidate policy, and 2.1, attachment hold limit | 2.1, Decide the candidate and attachment policy. The new 3.1 applies that policy to the runner contract. |
 | 5.9, staging reset | 5.10, Reset staging for unadopted incompatible candidates |
 | 5.10, staging evidence evaluation | 5.11, Evaluate staging evidence for promotion |
 | 6.19, in-place recovery | 6.19, Redeploy the working baseline in place as Administrator or the deputy |

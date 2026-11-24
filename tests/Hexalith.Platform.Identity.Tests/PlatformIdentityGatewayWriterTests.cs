@@ -58,6 +58,7 @@ public sealed class PlatformIdentityGatewayWriterTests
     [InlineData("stale-target")]
     [InlineData("inactive-target")]
     [InlineData("missing-provenance")]
+    [InlineData("invalid-provenance")]
     [InlineData("unlisted-provenance-issuer")]
     [InlineData("stale-operator")]
     [InlineData("inactive-operator")]
@@ -81,7 +82,7 @@ public sealed class PlatformIdentityGatewayWriterTests
         };
         DateTimeOffset now = DateTimeOffset.UtcNow;
         IIdentityAdmissionProof operatorProof = Substitute.For<IIdentityAdmissionProof>();
-        if (scenario != "missing-provenance")
+        if (scenario is not ("missing-provenance" or "invalid-provenance"))
         {
             operatorProof.Verify("test-operator-proof", expectedOperatorScope).Returns(new IdentityAdmissionEvidence(
                 expectedOperatorScope, scenario == "unlisted-provenance-issuer" ? "another-issuer" : "operator-authority",
