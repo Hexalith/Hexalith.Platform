@@ -225,7 +225,7 @@ public sealed partial class PlatformAppModelTests
         var files = PlatformDaprBindings.Resolve(PlatformDeclarationSet.Load(Options())).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/tmp/local-secrets.json", null);
         using JsonDocument policy = JsonDocument.Parse(files["accesscontrol.eventstore.yaml"]);
         var grants = policy.RootElement.GetProperty("spec").GetProperty("accessControl").GetProperty("policies").EnumerateArray().ToArray();
-        grants.Select(grant => grant.GetProperty("appId").GetString()).ShouldBe(["memories", "tenants", "tenants-api", "timesheets"]);
+        grants.Select(grant => grant.GetProperty("appId").GetString()).ShouldBe(["conversations-api", "memories", "tenants", "tenants-api", "timesheets"]);
         foreach (string caller in new[] { "memories", "tenants" })
         {
             var bound = grants.Single(grant => grant.GetProperty("appId").GetString() == caller).GetProperty("operations").EnumerateArray().ToArray();
