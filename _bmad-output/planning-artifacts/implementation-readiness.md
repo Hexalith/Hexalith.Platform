@@ -2,7 +2,7 @@
 date: 2026-09-29
 gate: CONCERNS
 decision: Proceed; sprint-status.yaml regenerated against the edited epics.md (144 stories). Fix the open findings below before the affected work starts.
-supersedes: 2026-09-28 gate (C-01–C-19)
+supersedes: 2026-09-28 gate (C-01–C-19), commit 19eeee8facaa0d98f4c83057d4124d796c9c28c4
 inputs:
   - _bmad-output/planning-artifacts/epics.md (at 9360ee3)
   - _bmad-output/planning-artifacts/sprint-change-proposal-2026-09-28.md
@@ -101,9 +101,23 @@ Line numbers refer to the current `epics.md`. Fix the findings with a direct edi
 - **C-09:** Story 5.11 publishes stable `Hexalith.McpCli` versions after staging validation (tag gap in N-06).
 - **C-15:** backup proofs (4.0) are split from the upgrade (4.1), with a mutation gate, and scheduled first.
 
-## Carried forward unchanged
+## Findings carried forward and updated story references
 
-The open policy decisions, human decisions, spike, embedded ratifications and the stories blocked by the External Prerequisites Register are as recorded in the 2026-09-28 report. Two renumberings apply: the candidate policy is now Story 2.1, and the named-recovery qualification is now 8.16 (see N-05).
+The open policy decisions, human decisions, spike, embedded ratifications and stories blocked by the External Prerequisites Register appear in the [superseded September 28 report](https://github.com/Hexalith/Hexalith.Platform/blob/19eeee8facaa0d98f4c83057d4124d796c9c28c4/_bmad-output/planning-artifacts/implementation-readiness.md). Use the September 29 IDs and titles below when following its references.
+
+| September 28 reference | September 29 reference |
+| --- | --- |
+| Candidate policy | 2.1, Decide the candidate and attachment policy |
+| 5.9, staging reset | 5.10, Reset staging for unadopted incompatible candidates |
+| 5.10, staging evidence evaluation | 5.11, Evaluate staging evidence for promotion |
+| 6.19, in-place recovery | 6.19, Redeploy the working baseline in place as Administrator or the deputy |
+| 6.20, approved incompatible release | 6.20, Enforce the G1 recovery boundary |
+| 6.22, shared-infrastructure changes | 6.22, Guard shared-infrastructure changes with one controlled procedure |
+| 8.16, isolated DR drill | 8.17, Run the isolated DR drill and prove RPO and RTO |
+| 8.17, production telemetry retention | 8.18, Retain production telemetry off-site for incident analysis |
+| 8.18, G2 user entry | 8.19, Open production to users (G2) |
+
+The new 5.9 covers the staging rehearsal for a retained-data approved attempt. The new 8.16 covers in-place data restore and named retained-data recovery qualification (see N-05).
 
 ## November 22, 2026 readiness gate
 
