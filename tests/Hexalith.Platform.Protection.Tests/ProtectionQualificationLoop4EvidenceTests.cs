@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -132,10 +133,14 @@ public sealed class ProtectionQualificationLoop4EvidenceTests
     }
     private static async Task VerifyPythonAsync(object packet)
     {
-        string root = Path.GetDirectoryName(typeof(ProtectionQualificationLoop4EvidenceTests).Assembly.Location)!;
+        Assembly assembly = typeof(ProtectionQualificationLoop4EvidenceTests).Assembly;
+        string eventStoreRoot = assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+            .Single(attribute => attribute.Key == "PlatformTestRoot:Hexalith.EventStore").Value!;
+        string root = Path.GetDirectoryName(assembly.Location)!;
         while (!File.Exists(Path.Combine(root, "eng/ext-protection-1/verify_loop4_vector.py"))) { root = Directory.GetParent(root)!.FullName; }
         var start = new ProcessStartInfo("python3") { RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true };
-        start.ArgumentList.Add(Path.Combine(root, "eng/ext-protection-1/verify_loop4_vector.py")); start.ArgumentList.Add(Path.GetFullPath(Path.Combine(root, "../eventstore")));
+        start.ArgumentList.Add(Path.Combine(root, "eng/ext-protection-1/verify_loop4_vector.py"));
+        start.ArgumentList.Add(eventStoreRoot);
         using var process = Process.Start(start)!; await process.StandardInput.WriteAsync(JsonSerializer.Serialize(packet)); process.StandardInput.Close();
         string output = await process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken), error = await process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         await process.WaitForExitAsync(TestContext.Current.CancellationToken); process.ExitCode.ShouldBe(0, output + error);

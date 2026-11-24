@@ -230,17 +230,24 @@ public sealed class Fr34DynamicOccurrenceTests
         var capture=fixture.CaptureHandler();using var cancel=CancellationTokenSource.CreateLinkedTokenSource(token);
         bool read=method=="fr34-read-persisted";var authority=read?fixture.ObserverAuthority:fixture.EngineAuthority;
         var pending=authority.Authority.InvokeAsync<JsonElement>(method,new { reference },cancel.Token);
-        await capture.Ready.Task.WaitAsync(TimeSpan.FromSeconds(3),token);int releases=fixture.Releases;
-        if(mutation=="revoke") authority.RevokeWorkload("recording-owner");
-        else if(mutation=="recipe") authority.State=authority.State with { Fr34RecipeSha256=new string('f',64) };
-        else if(mutation=="target") authority.State=authority.State with { Fr34Target=fixture.Target with { CustodyTargetId="changed" } };
-        else if(mutation=="policy") authority.State=authority.State with { Fr34AuthorizationRevision="changed-policy" };
-        else if(mutation=="expiry") authority.State=authority.State with { Callers=authority.State.Callers.Select(value=>value with { ValidUntil=DateTimeOffset.UtcNow.AddSeconds(-1) }).ToArray() };
-        else if(mutation=="journal") authority.State=authority.State with { Revision=authority.State.Revision+5,Originals=new(authority.State.Originals) { ["unrelated:journal"]=new(JsonSerializer.SerializeToElement(new { unrelated=true }),null) } };
-        else if(mutation=="cancel") cancel.Cancel();
-        else if(mutation=="transport-failure") authority.FailResponseTransport=true;
-        else if(mutation=="signing-failure") authority.BreakSigner();
-        capture.Release.TrySetResult();
+        TimeSpan phaseTimeout = TimeSpan.FromSeconds(30);
+        int releases;
+        try
+        {
+            Task phase = await Task.WhenAny(capture.Ready.Task, pending).WaitAsync(phaseTimeout, token);
+            phase.ShouldBeSameAs(capture.Ready.Task, "The receiver must reach the post-handler guard before applying the mutation.");
+            releases = fixture.Releases;
+            if(mutation=="revoke") authority.RevokeWorkload("recording-owner");
+            else if(mutation=="recipe") authority.State=authority.State with { Fr34RecipeSha256=new string('f',64) };
+            else if(mutation=="target") authority.State=authority.State with { Fr34Target=fixture.Target with { CustodyTargetId="changed" } };
+            else if(mutation=="policy") authority.State=authority.State with { Fr34AuthorizationRevision="changed-policy" };
+            else if(mutation=="expiry") authority.State=authority.State with { Callers=authority.State.Callers.Select(value=>value with { ValidUntil=DateTimeOffset.UtcNow.AddSeconds(-1) }).ToArray() };
+            else if(mutation=="journal") authority.State=authority.State with { Revision=authority.State.Revision+5,Originals=new(authority.State.Originals) { ["unrelated:journal"]=new(JsonSerializer.SerializeToElement(new { unrelated=true }),null) } };
+            else if(mutation=="cancel") cancel.Cancel();
+            else if(mutation=="transport-failure") authority.FailResponseTransport=true;
+            else if(mutation=="signing-failure") authority.BreakSigner();
+        }
+        finally { capture.Release.TrySetResult(); }
         if(mutation=="cancel") await Should.ThrowAsync<OperationCanceledException>(()=>pending);
         else
         {
@@ -253,7 +260,7 @@ public sealed class Fr34DynamicOccurrenceTests
             }
             else result.ValueKind.ShouldBe(JsonValueKind.Undefined);
         }
-        await capture.Cleared.Task.WaitAsync(TimeSpan.FromSeconds(3),token);
+        await capture.Cleared.Task.WaitAsync(phaseTimeout, token);
         if(method is "fr34-unseal" or "fr34-replay") { capture.ServerBytes.ShouldNotBeNull();capture.ServerBytes.ShouldAllBe(value=>value==0); }
         fixture.Releases.ShouldBe(releases);
         if(method is "fr34-unseal" or "fr34-replay")

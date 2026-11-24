@@ -30,10 +30,15 @@ public sealed class QualificationGuardJoinTests
         using var receiving=new ReceivingAuthorityFixture("executor",handlers:[new Handler(workflow)]);
         receiving.State=receiving.State with { Callers=receiving.State.Callers.Select(value=>value with { Methods=["fixture-guard"] }).ToArray() };
         var pending=receiving.Authority.InvokeAsync<JsonElement>("fixture-guard",request,token);
-        await entered.Task.WaitAsync(TimeSpan.FromSeconds(3),token);await Task.Delay(100,token);pending.IsCompleted.ShouldBeFalse();
-        var step1=await originals.LookupRequestAsync("executor",new string('c',64)+":1",token);var step2=await originals.LookupRequestAsync("executor",new string('c',64)+":2",token);
-        step1.ShouldNotBeNull();step2.ShouldNotBeNull();step1["step"]!["Kind"]!.GetValue<string>().ShouldBe("Register");step2["step"]!["Kind"]!.GetValue<string>().ShouldBe("Block");
-        release.TrySetResult(new("tenant","batch",DeletionConsumptionStatus.ConsumptionBlocked,1,0,"block",null,null,null,[]));
+        try
+        {
+            Task phase = await Task.WhenAny(entered.Task, pending).WaitAsync(TimeSpan.FromSeconds(30), token);
+            phase.ShouldBeSameAs(entered.Task, "The receiving workflow must start the trigger after the effect faults.");
+            var step1=await originals.LookupRequestAsync("executor",new string('c',64)+":1",token);var step2=await originals.LookupRequestAsync("executor",new string('c',64)+":2",token);
+            step1.ShouldNotBeNull();step2.ShouldNotBeNull();step1["step"]!["Kind"]!.GetValue<string>().ShouldBe("Register");step2["step"]!["Kind"]!.GetValue<string>().ShouldBe("Block");
+            pending.IsCompleted.ShouldBeFalse();
+        }
+        finally { release.TrySetResult(new("tenant","batch",DeletionConsumptionStatus.ConsumptionBlocked,1,0,"block",null,null,null,[])); }
         (await pending).ValueKind.ShouldBe(JsonValueKind.Undefined);
         (await originals.LookupResultAsync("executor",new string('c',64)+":2",token)).ShouldNotBeNull();
         await protection.Received(1).RegisterAsync(batch,Arg.Any<CancellationToken>());await consumption.Received(1).BlockAsync(trigger.Block!);
