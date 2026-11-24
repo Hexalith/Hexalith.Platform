@@ -37,9 +37,14 @@ public sealed class InventorySourceTransportTests
             var connect = (Func<SocketsHttpConnectionContext, CancellationToken, ValueTask<Stream>>)Delegate.CreateDelegate(
                 typeof(Func<SocketsHttpConnectionContext, CancellationToken, ValueTask<Stream>>),
                 typeof(InventorySources).GetMethod("ConnectActiveProviderAsync", BindingFlags.NonPublic | BindingFlags.Static)!);
-            SocketsHttpConnectionContext Context(string host) => (SocketsHttpConnectionContext)Activator.CreateInstance(typeof(SocketsHttpConnectionContext), BindingFlags.Instance | BindingFlags.NonPublic, null, [new DnsEndPoint(host, 8200), new HttpRequestMessage()], null)!;
-            await Should.ThrowAsync<HttpRequestException>(() => connect(Context("other.example"), CancellationToken.None).AsTask());
-            await Should.ThrowAsync<IOException>(() => connect(Context("hexalith-keys.openbao.svc.cluster.local"), CancellationToken.None).AsTask());
+            using var handler = new SocketsHttpHandler { UseProxy = false, ConnectCallback = connect };
+            using var http = new HttpClient(handler);
+            CancellationToken token = TestContext.Current.CancellationToken;
+            await Should.ThrowAsync<HttpRequestException>(() => http.GetAsync("https://other.example:8200", token));
+            host.ShouldBeNull();
+            HttpRequestException failure = await Should.ThrowAsync<HttpRequestException>(() =>
+                http.GetAsync("https://hexalith-keys.openbao.svc.cluster.local:8200", token));
+            failure.InnerException.ShouldBeOfType<IOException>().Message.ShouldBe("offline-socket");
             host.ShouldBe("hexalith-keys-active.openbao.svc");
             port.ShouldBe(8200);
         }

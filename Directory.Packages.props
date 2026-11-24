@@ -8,7 +8,7 @@
   <Import Project="$(MSBuildThisFileDirectory)eng/HistoricalPackageSecurity.props" />
   <!-- Keep the EventStore source graph's package compatibility adjustments. -->
   <Import Project="$(HexalithEventStoreRoot)/Directory.Packages.props" Condition="'$(UseHexalithProjectReferences)' == 'true'" />
-  <ItemGroup>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Hexalith.Platform.AttemptStore'">
     <PackageVersion Include="AWSSDK.S3" Version="4.0.104.12" />
   </ItemGroup>
 </Project>
