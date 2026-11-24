@@ -211,3 +211,7 @@ eng/fixtures/builds-before-unified-catalog.props -text
 # Recognize the existing CRLF in the composition options and routing reader.
 src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/PlatformRoutingCatalog.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Check whitespace while preserving existing CRLF on Identity sources.
+src/Hexalith.Platform.Identity/PlatformIdentityGatewayAdmission.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Identity.Tests/PlatformIdentityAdmissionTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

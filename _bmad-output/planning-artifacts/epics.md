@@ -435,7 +435,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-28 (AD-7): *Executors and triggers:*
   - Staging and production each have a dedicated self-hosted executor on a separate host; the production executor sits outside the application cluster. An off-site recovery executor handles replacement-capacity recovery. No executor shares a host with a CI runner or another executor.
   - Credentials are per-job, revocable and epoch-bound, issued through OIDC claim checks or held by the executor, never as repository secrets. A recovery-kind job additionally receives a recovery-hook credential bound to its attempt and epoch, read access to that environment instance's recovery-point prefix, and only the custodian-released decryption material needed for that job; all three are destroyed or revoked at job end.
-  - Recovery-hook, recovery-point read and decryption access use short authority-enforced leases with a finite renewal interval and an expiry no later than the attempt deadline. Renewal requires a live job and the current epoch. The credential and custody authorities fence and revoke the leases independently of executor cleanup when the job terminates, loses its heartbeat or loses its epoch. Plaintext decryption material stays in isolated volatile job memory and is never persisted.
+  - Recovery-hook, recovery-point read and decryption access use short authority-enforced leases with a finite renewal interval and an expiry no later than the attempt deadline. Renewal requires a live job and the current epoch. The credential and custody authorities fence and revoke the leases independently of executor cleanup when the job terminates, loses its heartbeat or loses its epoch. The custody authority mediates decryption under the lease. A job never retains an unrestricted copy of the key.
   - Module-supplied code runs in a sandbox without job credentials.
   - Jobs come from a private operations repository whose only writers are the named writers. Executors enforce allowlists and verify signed Administrator records.
   - Administrator or the deputy can start in-place recovery on the production executor and replacement-capacity recovery on the recovery executor.
@@ -2890,11 +2890,11 @@ Acceptance criteria:
 
 As Administrator, I want KubeSphere removed through a rehearsed native procedure while applications and recovery inputs are preserved, so that its licensing and compatibility no longer block the supported Kubernetes hop.
 
-**Repo:** Administrator operations. **Covers:** AR-59, AR-63, FR-9, NFR-3. **Dependencies:** 4.26 retirement qualification and current validated 4.0 proofs; precedes 4.1 mutation. No dependency on Rancher availability.
+**Repo:** Administrator operations. **Covers:** AR-59, AR-63, FR-9, NFR-3. **Dependencies:** accepted 4.26 retirement qualification, accepted 4.2 public-console closure, current validated 4.0 proofs and a fresh fenced isolated restore from a production external-etcd point under the 4.1 contract; precedes 4.1 mutation. No dependency on Rancher availability.
 
 Acceptance criteria:
 
-1. Before mutation, obtain approval bound to the exact removal procedure, resource allowlist, workload interruption scope, incident/recovery owner, window and stop conditions. Independently verify fresh encrypted immutable off-node native workload proofs, external-etcd recovery and node/configuration recovery inputs under the approved attempt policy. Preserve sources and qualifying prior evidence.
+1. Before mutation, obtain approval bound to the exact removal procedure, resource allowlist, workload interruption scope, incident/recovery owner, window and stop conditions. Verify accepted 4.2 public-console closure. Independently verify fresh encrypted immutable off-node native workload proofs, a fresh production external-etcd point and its fenced isolated restore, and node/configuration recovery inputs under the approved attempt policy. Preserve sources and qualifying prior evidence.
 2. Capture pre-change native API, authenticated workload health, controllers/replicas, namespace/resource ownership, admissions, storage and PVC UID/binding census. Verify independent private Administrator access again. Drift from the qualified deletion/dependency inventory stops execution.
 3. Archive KubeSphere configuration and required metadata under restricted encrypted custody. Rehome any required extension/controller or resource ownership before removing its reconciler. Preserve public application/OIDC service contracts.
 4. Apply only the rehearsed, UID-bound uninstall steps to KubeSphere-owned resources. Do not delete application/data namespaces, PVCs/PVs, shared storage/CNI/ingress/identity components or unrelated CRDs. Any finalizer intervention or changed deletion propagation requires the specific approved resource decision; no blanket forced deletion is permitted.
@@ -4369,9 +4369,9 @@ So that the failed site can never write again and the restore starts from a trus
 **Given** the selected recovery executor host from Story 8.1, accepted store reachability under Story 6.9, completed recovery contracts, off-site artifacts, usable Story 8.7 recovery points and the custody release path
 **When** the executor is commissioned
 **Then** a pinned off-site copy of the workflows and environment definitions runs with neither operations-repository write access nor GitHub
-**And** its standing credentials cover only the prepared capacity, its record-signing identity, write access to the attempt, lock and stop store, and read-only access to recovery points and the off-site registry replica
+**And** its standing credentials cover only the prepared capacity, its record-signing identity, write access to the attempt, lock and stop store, and read-only access to the off-site registry replica. Recovery-point reads require the per-job lease
 **And** the commissioned identity rechecks the store path and demonstrates the required record and epoch operations on isolated verification records
-**And** killing the recovery executor during a fixture job proves recovery-hook, recovery-point read and decryption access expire within the declared lease bound without relying on job cleanup.
+**And** a fixture proves that executor death, heartbeat loss or loss of the current epoch prevents renewal and that the three recovery operations are denied within their declared lease bounds before successor mutation.
 
 **Given** step 2
 **When** it runs
