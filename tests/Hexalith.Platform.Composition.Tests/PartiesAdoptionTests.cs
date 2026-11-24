@@ -36,6 +36,14 @@ public sealed class PartiesAdoptionTests
         };
     }
 
+    private static async Task<PlatformCompositionOptions> ResolveSourceOptionsAsync()
+    {
+        PlatformCompositionOptions options = Options();
+        SourceMapping mapping = await WorkspaceRootResolver.ResolveAsync(options.DeclarationPaths.Single(), WorkspaceMode.Source,
+            TestContext.Current.CancellationToken);
+        return options with { Mapping = mapping };
+    }
+
     [Fact]
     public void ActualPartiesDeclarationValidatesAndSelectsEightMappedServers()
     {
@@ -67,7 +75,7 @@ public sealed class PartiesAdoptionTests
     public async Task CompositionWiresSingularPartyGatewayAndDeclarativeTenantSubscription()
     {
         IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
-        PlatformAppModel.Compose(builder, Options());
+        PlatformAppModel.Compose(builder, await ResolveSourceOptionsAsync());
         ProjectResource[] servers = builder.Resources.OfType<ProjectResource>().Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
         servers.Length.ShouldBe(8);
         servers.Select(server => server.Name).ShouldNotContain("parties-ui");
@@ -164,10 +172,9 @@ public sealed class PartiesAdoptionTests
         Directory.CreateDirectory(workspace);
         try
         {
-            PlatformCompositionOptions options = Options();
-            SourceMapping mapping = options.Mapping with { Entries = [.. options.Mapping.Entries, new SourceMappingEntry("Hexalith.Platform", "source", Root)] };
+            PlatformCompositionOptions options = await ResolveSourceOptionsAsync();
             CompositionRunPlan plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace,
-                CompositionPortAllocator.Allocate(1), [], [], mapping, options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location);
+                CompositionPortAllocator.Allocate(1), [], [], options.Mapping, options.DeclarationPaths, "parties", typeof(PlatformAppModel).Assembly.Location);
             await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
             IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions { Args = [], AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true });
             string signingKey = CompositionSigningKey.Create();

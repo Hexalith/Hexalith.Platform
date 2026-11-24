@@ -44,25 +44,30 @@ public sealed partial class PlatformAppModelTests
     [Fact]
     public async Task FullPackageFixtureKeepsGatewaySeedAndContainerSubscriptionBindingsAsync()
     {
-        PlatformCompositionOptions options = PackageGraphOptions() with
-        {
-            ImageProbeRunner = (_, _, _) => Task.FromResult(new CompositionProcessResult(true, 0, "{}", false)),
-        };
-        IDistributedApplicationBuilder builder = Builder();
+        using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile);
+        PlatformCompositionOptions options = fixture.CaptureCurrent();
+        var images = PlatformAppModel.Prepare(options).Select(server => server.Image).OfType<string>().Distinct(StringComparer.Ordinal)
+            .ToDictionary(tag => tag, tag => PlatformPartiesPackageFixture.ImageEvidence(tag, index: true), StringComparer.Ordinal);
+        var manifests = images.Values.ToDictionary(image => image.Reference, image => image.Manifest, StringComparer.Ordinal);
+        await CompositionDaprComponentRenderer.WriteAsync(fixture.Plan, TestContext.Current.CancellationToken);
+        IDistributedApplicationBuilder builder = PlatformPartiesPackageFixture.Builder();
         try
         {
-            PlatformAppModel.Compose(builder, options);
+            PlatformAppModel.Compose(builder, options with
+            {
+                ImageProbeRunner = (start, _, _) => Task.FromResult(new CompositionProcessResult(true, 0,
+                    start.ArgumentList[0] == "buildx" ? images[start.ArgumentList[3]].Tag : manifests[start.ArgumentList[3]], false)),
+            });
             IResource[] servers = builder.Resources.Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
-            servers.Length.ShouldBe(7);
-            ProjectResource gateway = servers.OfType<ProjectResource>().Single();
-            gateway.Name.ShouldBe("eventstore");
+            servers.Length.ShouldBe(8);
+            ProjectResource gateway = servers.OfType<ProjectResource>().Single(resource => resource.Name == "eventstore");
             gateway.GetProjectMetadata().ProjectPath.ShouldBe(options.EventStoreSeedProject);
             servers.OfType<ContainerResource>().Count().ShouldBe(6);
             foreach (IResource server in servers)
             {
                 var sidecar = server.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar.Annotations.OfType<DaprSidecarOptionsAnnotation>().Single().Options;
                 string subscriptions = sidecar.ResourcesPaths.Single();
-                Directory.GetFiles(subscriptions, "*.yaml").Length.ShouldBe(2);
+                Directory.GetFiles(subscriptions, "*.yaml").Length.ShouldBe(3);
                 using JsonDocument acl = JsonDocument.Parse(File.ReadAllText(sidecar.Config!));
                 acl.RootElement.GetProperty("spec").GetProperty("mtls").GetProperty("enabled").GetBoolean().ShouldBeTrue();
                 Dictionary<string, object> environment = [];
@@ -397,7 +402,8 @@ public sealed partial class PlatformAppModelTests
     [InlineData("/api/v1/COMMANDS")]
     public void ReceiverMergesDuplicateAndCaseVariedPathsWithoutLosingVerbs(string path)
     {
-        string source = Path.Combine(Path.GetTempPath(), "platform-acl-verbs-" + Guid.NewGuid().ToString("N") + ".json");
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-acl-verbs-");
+        string source = Path.Combine(workspace.FullName, "module.json");
         try
         {
             var document = JsonNode.Parse(File.ReadAllText(Path.Combine(Root, "references", "Hexalith.EventStore", "module", "hexalith.module-manifest.v2.json")))!;
@@ -405,6 +411,7 @@ public sealed partial class PlatformAppModelTests
             rules.Add(JsonSerializer.SerializeToNode(new { caller = "tenants-api", path, verbs = new[] { "GET" } }));
             rules.Add(JsonSerializer.SerializeToNode(new { caller = "tenants-api", path, verbs = new[] { "POST", "GET" } }));
             File.WriteAllText(source, document.ToJsonString());
+            PlatformOwnerFixture.MaterializeDeclaredFiles(workspace.FullName, document);
             var validated = PlatformManifestValidator.Validate([source], TestContext.Current.CancellationToken);
             validated.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, validated.Diagnostics.Select(diagnostic => diagnostic.Message)));
             var files = PlatformDaprBindings.Resolve(validated.Declarations!).Render(Path.Combine(Root, "DaprComponents", "reference"), 16379, 16380, "/unused", null);
@@ -416,7 +423,7 @@ public sealed partial class PlatformAppModelTests
             command.GetProperty("httpVerb").EnumerateArray().Select(verb => verb.GetString()).ShouldBe(["GET", "POST"]);
             command.GetProperty("action").GetString().ShouldBe("allow");
         }
-        finally { File.Delete(source); }
+        finally { workspace.Delete(recursive: true); }
     }
 
     [Fact]

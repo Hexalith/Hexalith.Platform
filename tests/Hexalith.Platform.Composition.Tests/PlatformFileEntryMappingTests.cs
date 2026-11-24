@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Diagnostics;
 using Aspire.Hosting;
 using Hexalith.Builds.Tooling.Runtime;
@@ -48,8 +49,7 @@ public sealed class PlatformFileEntryMappingTests : IDisposable
         mapping.Root.ShouldBe(workspace);
         mapping.ActiveModule.ShouldBe("Hexalith.Platform");
         mapping.Entries.Single(entry => entry.Identity == "Hexalith.EventStore").Path.ShouldBe(Path.Combine(workspace, "references", "Hexalith.EventStore"));
-        // This fixture has no release tag, catalog pin or accepted tool range. Source resolution
-        // retains those findings; the fixture never claims package admission.
+        // The current tool range permits source validation despite the fixture's missing release tag and catalog pin.
         mapping.IdentityFindings.ShouldNotBeEmpty();
         Directory.Exists(Path.Combine(platform, "references")).ShouldBeFalse();
         IDistributedApplicationBuilder builder = Builder(platform);
@@ -137,11 +137,13 @@ public sealed class PlatformFileEntryMappingTests : IDisposable
             string source = Path.Combine(_directory, owner);
             Directory.CreateDirectory(source);
             await GitAsync(source, "init", "-b", "main").ConfigureAwait(true);
-            if (owner == "platform") File.WriteAllText(Path.Combine(source, "hexalith-platform.json"), "{}");
+            if (owner == "platform") File.Copy(Path.Combine(platformRoot, "hexalith-platform.json"), Path.Combine(source, "hexalith-platform.json"));
             else
             {
                 Directory.CreateDirectory(Path.Combine(source, "module"));
-                File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", owner + ".json"), Path.Combine(source, "module", "hexalith.module-manifest.v2.json"));
+                string manifest = Path.Combine(source, "module", "hexalith.module-manifest.v2.json");
+                File.Copy(Path.Combine(platformRoot, "src", "Hexalith.Platform.Composition", "Declarations", owner + ".json"), manifest);
+                PlatformOwnerFixture.MaterializeDeclaredFiles(source, JsonNode.Parse(File.ReadAllText(manifest))!);
             }
             await GitAsync(source, "add", ".").ConfigureAwait(true);
             await GitAsync(source, "commit", "-m", "test: create disposable owner fixture").ConfigureAwait(true);
