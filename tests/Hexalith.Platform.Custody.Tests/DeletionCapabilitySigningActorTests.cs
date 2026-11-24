@@ -175,6 +175,39 @@ public sealed class DeletionCapabilitySigningActorTests
         freshBackend.CommittedState.ShouldBeEmpty(); await provider.DidNotReceive().SignAsync(fresh, Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
 
+    [Fact]
+    public async Task HealthyRotationDuringSuccessfulSigningRetainsOnlyTheAdmittedOriginal()
+    {
+        var payload = Payload();
+        string id = DeletionBatchCapabilityCodec.SigningRequestId(payload);
+        var backend = new InMemoryStateManager();
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var signed = Signed(payload, key);
+        var trust = Trust(payload, key);
+        const string family = "DeletionBatchCapabilitySigningKey";
+        var current = await trust.ResolveAsync(payload.TenantId, family, payload.CapabilityKeyVersion, TestContext.Current.CancellationToken);
+        var retained = current! with { IsCurrentNonRevoked = false, TrustProfileRevision = 2 };
+        var provider = Substitute.For<IDeletionCapabilitySigningProvider>();
+        provider.SignAsync(payload, id, Arg.Any<CancellationToken>()).Returns(_ =>
+        {
+            trust.ResolveAsync(payload.TenantId, family, payload.CapabilityKeyVersion, Arg.Any<CancellationToken>()).Returns(retained);
+            return signed;
+        });
+
+        var authority = Authority();
+        (await Actor(payload, backend, authority, provider, trust).SignAsync(payload)).ShouldBe(signed.Outcome);
+        backend.CommittedState.Single().Value.ShouldBe(signed.Outcome);
+        (await Actor(payload, backend, authority, provider, trust).LookupAsync(payload)).ShouldBe(signed.Outcome);
+
+        var fresh = payload with { SigningAttemptOrdinal = 2, IntendedIssuedGuardRevision = 8 };
+        var freshBackend = new InMemoryStateManager();
+        (await Actor(fresh, freshBackend, Authority(), provider, trust).SignAsync(fresh)).State
+            .ShouldBe(DeletionCapabilitySigningState.Unavailable);
+        freshBackend.CommittedState.ShouldBeEmpty();
+        await provider.Received(1).SignAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
+        await provider.DidNotReceive().LookupAsync(Arg.Any<DeletionBatchCapabilityV1>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
+    }
+
     /// <summary>Missing or denied independent recorded authorization never invokes signing; healthy key configuration alone grants nothing.</summary>
     [Theory]
     [InlineData(false)]

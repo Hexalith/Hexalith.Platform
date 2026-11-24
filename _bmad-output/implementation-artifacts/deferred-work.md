@@ -427,9 +427,14 @@ reason: BH01. The R5 verification text still describes uncommitted patches on 50
 status: done 2026-11-24
 resolution: The R5 verification note now records the verified base, the initial patch and Platform adoption, and the later equivalent Builds mainline patch with the separate owner pointer changes.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Pin whether a fresh deletion-capability signature is stored after healthy rotation.
-  evidence: BH03, EH06, VG02. RetainAsync resolves trust with requireCurrent false for SignAsync. No test rotates a successful sign to non-current and non-revoked. The signing actor was already dirty before this story.
+### DW-21: Pin whether a fresh deletion-capability signature is stored after healthy rotation.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH03, EH06, VG02. RetainAsync resolves trust with requireCurrent false for SignAsync. No test rotates a successful sign to non-current and non-revoked. The signing actor was already dirty before this story.
+status: done 2026-11-24
+resolution: A signature from an already admitted provider call is retained and recovered under the independently retained nonrevoked verifier after healthy rotation. A fresh request under that key is refused. The actor test exercises both outcomes.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Re-check trust and the original issuance receipt when a stored Signed deletion outcome is read again.
