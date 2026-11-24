@@ -83,6 +83,62 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
+    [Theory]
+    [InlineData("cpu", "0.25", "0.2", true)]
+    [InlineData("cpu", "1.234567890123456789012345678901234567891", "1.234567890123456789012345678901234567890", true)]
+    [InlineData("cpu", "1.234567890123456789012345678901234567890", "1.234567890123456789012345678901234567891", false)]
+    [InlineData("cpu", "1.234567890123456789012345678901234567890E-1", "0.1234567890123456789012345678901234567890", false)]
+    [InlineData("cpu", "1.25e+2", "125.00", false)]
+    [InlineData("cpu", "1e-6", null, false)]
+    [InlineData("cpu", null, "1e-6", false)]
+    [InlineData("memoryMiB", "1024", "512", true)]
+    [InlineData("memoryMiB", "9007199254740993", "9007199254740992", true)]
+    [InlineData("memoryMiB", "1000", "1e3", false)]
+    public void CompositionComparesResourceRequestsWithMatchingLimitsExactly(string quantity, string? request, string? limit, bool exceedsLimit)
+    {
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-declaration-resource-limits-");
+        try
+        {
+            string path = Fixture(workspace.FullName, "validation-test", tasks: false);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            JsonNode resource = document["modules"]![0]!["runtime"]!["resources"]![0]!;
+            foreach (var (field, value) in new[] { ("requests", request), ("limits", limit) })
+            {
+                JsonObject quantities = resource[field]!.AsObject();
+                if (value is null)
+                {
+                    quantities.Remove(quantity);
+                }
+                else
+                {
+                    quantities[quantity] = JsonNode.Parse(value);
+                }
+            }
+            File.WriteAllText(path, document.ToJsonString());
+
+            PlatformCompositionOptions options = Options(active: "validation-test") with
+            {
+                DomainModule = false,
+                DeclarationPaths = [path],
+            };
+            if (exceedsLimit)
+            {
+                IDistributedApplicationBuilder builder = Builder();
+                InvalidDataException failure = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
+                failure.Message.ShouldEndWith($"{Path.GetFileName(path)}: validation-test/api: runtime.resources.requests.{quantity}: request exceeds the declared limit.");
+                builder.Resources.ShouldBeEmpty();
+            }
+            else
+            {
+                PlatformApplicationGraph.Resolve(options).Workloads.Single().Identity.ShouldBe("validation-test/api");
+            }
+        }
+        finally
+        {
+            workspace.Delete(recursive: true);
+        }
+    }
+
     private static void AddNamedHooks(JsonNode module)
     {
         JsonObject hook = new() { ["name"] = "verify", ["task"] = "verify", ["resource"] = "data" };

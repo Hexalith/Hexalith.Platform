@@ -276,10 +276,13 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Decide authoritative-restore hook requirements
   evidence: BH05 is unverified: current declarations allow omitted restoreHook; the future recovery contract must decide whether native/operator hooks satisfy restoration before requiring a module-local reference.
+  triage: skipped 2026-11-24 (blocked). The recovery authority must decide whether native or operator recovery satisfies the contract before a module-local restore hook can be required.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Validate resource requests against limits during composition
   evidence: BH09/EH06 confirms schema-valid requests can exceed limits; the later allocation stage must reject these inputs before provisioning.
+  status: done 2026-11-24
+  resolution: Composition compares matching CPU and memoryMiB request/limit pairs as exact JSON numbers and refuses excess requests before adding resources.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Define resource quantity conversion types and bounds
