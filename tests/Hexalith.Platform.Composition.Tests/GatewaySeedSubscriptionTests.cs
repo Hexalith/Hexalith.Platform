@@ -68,6 +68,7 @@ public sealed class GatewaySeedSubscriptionTests
         GatewaySeedProtectionInstallation installation, bool declarative, string environment) where TEntryPoint : class =>
         new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
         {
+            bool production = environment == "Production";
             builder.UseEnvironment(environment);
             builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(installation.Configuration).AddInMemoryCollection(new Dictionary<string, string?>
             {
@@ -75,11 +76,14 @@ public sealed class GatewaySeedSubscriptionTests
                 ["Dapr:DeclarativeSubscriptions"] = declarative.ToString(),
                 ["EventStore:ProjectionChanges:PubSubName"] = "configured-seed-events",
                 ["EventStore:OpenApi:Enabled"] = "true",
-                ["Authentication:JwtBearer:Issuer"] = "hexalith-test",
+                ["Authentication:JwtBearer:Issuer"] = production ? "https://seed-identity.invalid" : "hexalith-test",
                 ["Authentication:JwtBearer:Audience"] = "hexalith-eventstore",
-                ["Authentication:JwtBearer:SigningKey"] = "test-only-seed-subscription-signing-key-at-least-32-bytes",
-                ["Authentication:JwtBearer:AllowedAlgorithms:0"] = "HS256",
-                ["Authentication:JwtBearer:RequireHttpsMetadata"] = "false",
+                ["Authentication:JwtBearer:Authority"] = production ? "https://seed-identity.invalid" : null,
+                ["Authentication:JwtBearer:SigningKey"] = production ? null : "test-only-seed-subscription-signing-key-at-least-32-bytes",
+                ["Authentication:JwtBearer:AllowedAlgorithms:0"] = production ? "RS256" : "HS256",
+                ["Authentication:JwtBearer:RequireHttpsMetadata"] = production ? "true" : "false",
+                ["Authentication:WorkloadIssuer:ClientId"] = production ? "seed-test" : null,
+                ["Authentication:WorkloadIssuer:ClientSecret"] = production ? "not-a-real-client-secret" : null,
             }));
             builder.ConfigureServices(services =>
             {

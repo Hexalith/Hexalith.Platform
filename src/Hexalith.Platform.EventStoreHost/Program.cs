@@ -50,6 +50,18 @@ WebApplication app = builder.Build();
 // Middleware order per architecture: CorrelationIdMiddleware FIRST (before everything)
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseExceptionHandler();
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next(context).ConfigureAwait(false);
+    }
+    catch (BadHttpRequestException exception) when (
+        exception.StatusCode == StatusCodes.Status413PayloadTooLarge && !context.Response.HasStarted)
+    {
+        context.Response.StatusCode = exception.StatusCode;
+    }
+});
 app.MapDefaultEndpoints();
 app.UseRouting();
 app.UseAuthentication();
