@@ -115,6 +115,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Bring the regenerated `epic-4-context.md` dependency order up to date with the approved 4.2 console closure and fresh production recovery before 4.27, and restore the dropped "native TLS where the provider supports it" requirement (G123).
   evidence: Story code review, chunk 1 (blind, edge-case and acceptance layers). `epic-4-context.md:66` orders "4.26 → 4.27 → 4.1 → 4.28 → 4.14" and says 4.2 "proceeds independently". The 2026-10-03 decisions and `eng/cluster-management/README.md:12` make accepted 4.2 closure and fresh recovery prerequisites of 4.27. `epics.md:2297` still states the native-TLS requirement, which G45/G55 do not list. Deferred because the fix edits agent context.
+  status: done 2026-11-24
+  resolution: Epic 4 context now requires accepted public-console closure and a fresh fenced production restore before 4.27, plus native data-service TLS wherever supported.
 
 ## Deferred from: code review of spec-4-26-qualify-rancher-and-the-management-migration.md (2026-10-05)
 
