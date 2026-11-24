@@ -335,7 +335,8 @@
               "tenants-api",
               "timesheets",
               "tenants",
-              "memories"
+              "memories",
+              "conversations-api"
             ],
             "operations": [
               {
@@ -433,6 +434,27 @@
                 "path": "/api/v1/commands/bound/workload",
                 "verbs": [
                   "POST"
+                ]
+              },
+              {
+                "caller": "conversations-api",
+                "path": "/api/v1/commands/submit",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "conversations-api",
+                "path": "/api/v1/queries/submit",
+                "verbs": [
+                  "POST"
+                ]
+              },
+              {
+                "caller": "conversations-api",
+                "path": "/api/v1/commands/status",
+                "verbs": [
+                  "GET"
                 ]
               }
             ]
