@@ -2593,3 +2593,20 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.EventStore, Hexalith.Platform
   summary: Generate the hosted routing catalog for a named non-Development profile.
   evidence: Platform's catalog builder passes the literal `"Development"` profile (`src/Hexalith.Platform.CatalogBuilder/Program.cs:158`) and binds idempotency only through `DevelopmentIdempotencyBindings` (`:110`, `:112`). That EventStore binder hard-codes `development-v1` key references, `secretstore` and `eventstore-idempotency-ring` (`references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs:6`, `:30-31`). Story 4.9's `deploy/dapr/eventstore-routing-catalog.json` needs an EventStore binder for hosted key references and a Platform profile and output parameter. It then needs the 4.15 key-ring names and the 4.16 namespace and trust domain.
+
+## Deferred from: planning of spec-3-4-generate-the-local-realm-from-the-realm-contract.md (2026-11-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.Platform, Hexalith.Builds
+  summary: Validate local-realm tokens in the default file-entry composition and the Builds runner and CI path instead of the per-run HS256 key.
+  evidence: The maintainer limited Story 3.4 to the generator and the Works preview. `local-profile.json` still selects HS256 with issuer `hexalith-g4-runner`. `PlatformAppModel.ComposeRun` (`src/Hexalith.Platform.Composition/PlatformAppModel.cs:86-100`) binds the runner key into ten servers and the qualification proofs. Builds `CompositionTokenFactory` mints HS256 tokens. Planned with Story 3.6.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.Works
+  summary: Obtain Works parity-test tokens from the generated local realm instead of the removed preview HS256 key.
+  evidence: `WorksAppHostSmokeHarness.cs` passes `--Works:Authentication:DevSigningKey` and, like `WorksPlatformProofRequests.cs`, `WorksHostTestAuthentication.cs` and `WorksSdkProtectedHttpTests.cs`, self-mints HS256 ui, agent and service tokens. Works CI keeps its own Platform pin until it adopts the realm's per-surface clients (Story 3.5).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.EventStore
+  summary: Publish the realm-contract claim names and semantics that Platform's realm contract v1 cites.
+  evidence: The claims exist only as EventStore 5.4.0 code constants (`RouteCatalogSurfacePolicy.ClaimType`, `AdminTenantAuthorizationFilter`, `EventStoreClaimsTransformation`, `EventStoreWorkloadAuthenticationDefaults`). The External Prerequisites Register requires EventStore to own them before the staging realm (Story 4.19).
