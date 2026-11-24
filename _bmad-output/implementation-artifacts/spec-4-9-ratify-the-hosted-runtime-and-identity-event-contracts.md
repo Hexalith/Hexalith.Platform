@@ -100,6 +100,14 @@ Schema/validator construction may precede issue-step qualification. Acceptance s
 
 - 2026-11-17: The user approved and continued the focused bridge-isolation prerequisite; it is done at local EventStore commit `0c2c09ed4279473570d3243d5c01e48301c8e46e`. Verified private SDK-only snapshots preserve all 38 profile sources and both digest domains. Three-layer review, 15 snapshot/25 publication/43 lifecycle tests, 52 genuine bridge controls and preservation/lint checks pass; two separate SDK/diagnostic follow-ups are deferred. This engineering result accepts no inventory, establishes no full toolchain/qualification/ratification proof and creates no production profile. This parent remains draft/backlog with all actual-input and publication tasks outstanding. The owner commit is unpushed and the superproject gitlink is not committed.
 
+- 2026-11-24 `/bmad-build 4.9` re-investigation at Platform `21e3718a7d4a6436d9293f10e9c74b2cc6baa5eb` (EventStore gitlink and checkout `d810b7a9a4db5454783a5eb776d60b708264ea45`). No acceptance task can be built yet:
+  - **Inventory:** every `ProductionProfileV2` section is required (`references/Hexalith.EventStore/src/Hexalith.EventStore.Contracts/Deployment/ProductionProfileV2.cs:19`). The owner model has no candidate or partial state, so a Platform partial inventory would be the parallel schema that `docs/contracts/hosted-profile-binding-v2.md` forbids. The Story 4.5 record and lock supply only the Dapr chart, CRD, image, embedded-component and configuration identities, plus Helm 4.2.0. Still missing: broker (4.17), OpenBao (4.15), Rancher and the management/workload pairing (4.26/4.28), Gateway (4.18) and staging topology (4.14).
+  - **Hosted catalog:** the Story 3.3 generator and EventStore's idempotency binder are Development-only. No hosted predecessor exists, so a first hosted generation would carry no retention entries.
+  - **Secret contract:** module declarations carry only a logical name and a configuration key. The symmetric JWT keys, the missing `DAPR_API_TOKEN` declarations and the absent per-secret consumer and rotation facts are owner gaps.
+  - **Renewal owners:** none are named per credential. `docs/contracts/shared-infrastructure-currency-policy-v1.md:196` leaves component currency owners to this story.
+  - **Capture lag:** no exporter, sink or checkpoint exists. A conforming measurement needs the 4.19 staging realm, while 4.19 consumes the bound (readiness N-03). The number remains an Administrator decision.
+  - The user chose to record the blockers and stop. The four owner gaps are in `deferred-work.md` under "Deferred from: planning of spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md (2026-11-24)". This parent stays draft, the story stays backlog, and no task is newly checked.
+
 ## Spec Change Log
 
 ## Review Triage Log

@@ -2390,3 +2390,25 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
   summary: Bind the owner release commit and published module artifact inventory in owner release evidence.
   evidence: The Platform intake resolver hashes an approved commit's declaration, published NuGet bytes and OCI indexes at the supplied coordinates. Canonical manifest review currently establishes that those coordinates belong to the same owner release.
+
+## Deferred from: planning of spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md (2026-11-24)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md`
+  owner: Hexalith.EventStore, Hexalith.Parties, Hexalith.Tenants, Hexalith.Memories, Hexalith.Conversations
+  summary: Stop requiring declared symmetric JWT signing keys in hosted environments, which AD-24 limits to Development or break-glass use.
+  evidence: AD-24 (`references/Hexalith.EventStore/_bmad-output/planning-artifacts/architecture.md:335`) says the symmetric JWT signing key is never a production secret, and staging runs the same template. The v2 declarations still list signing keys: EventStore `gateway-jwt-signing-key` (`references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json:492`), Parties `domain-jwt-signing-key` (`references/Hexalith.Parties/module/hexalith.module-manifest.v2.json:364`), Tenants `api-signing-key`, `api-eventstore-signing-key` and `domain-jwt-signing-key` (`references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:448`, `:456`, `:460`), Memories `server-jwt-signing-key` (`references/Hexalith.Memories/module/hexalith.module-manifest.v2.json:715`) and Conversations `domain-jwt-signing-key` (`references/Hexalith.Conversations/module/hexalith.module-manifest.v2.json:545`). The Story 4.9 secret contract cannot list them for staging or production without breaking AD-24. It cannot omit them while hosts still read them.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md`
+  owner: Hexalith.EventStore, Hexalith.Parties, Hexalith.Projects
+  summary: Declare each hosted app's `DAPR_API_TOKEN` secret.
+  evidence: AD-24 (`references/Hexalith.EventStore/_bmad-output/planning-artifacts/architecture.md:335`) requires the contract to inventory every app's `DAPR_API_TOKEN` and `APP_API_TOKEN`. Memories, Tenants and Conversations declare one (`references/Hexalith.Memories/module/hexalith.module-manifest.v2.json:724`, `references/Hexalith.Tenants/module/hexalith.module-manifest.v2.json:469`, `references/Hexalith.Conversations/module/hexalith.module-manifest.v2.json:558`). EventStore (`references/Hexalith.EventStore/module/hexalith.module-manifest.v2.json:486`), Parties (`references/Hexalith.Parties/module/hexalith.module-manifest.v2.json:362`) and Projects (`references/Hexalith.Projects/module/hexalith.module-manifest.v2.json:137`) declare none.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md`
+  owner: Hexalith.Platform (declaration semantics), Hexalith.Builds (schema)
+  summary: Extend declared secrets with the per-secret facts that the AD-24 contract inventories.
+  evidence: The Builds `secret` definition (`references/Hexalith.Builds/schemas/hexalith.module-manifest.v2.json:693`) carries only a name and a configuration key. `dynamicSecretNamespace` (`:709`) adds only the owner. AD-24 (`references/Hexalith.EventStore/_bmad-output/planning-artifacts/architecture.md:335`) inventories the consumer app and dependent component, map keys, retrieval lifecycle, cache bound and rotation unit. Platform can assign policy paths, generations and scopes, but it cannot infer which server reads a secret or how the secret rotates. Related: `deferred-work.md:1072`, where module-scoped configuration inputs reach every server.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md`
+  owner: Hexalith.EventStore, Hexalith.Platform
+  summary: Generate the hosted routing catalog for a named non-Development profile.
+  evidence: Platform's catalog builder passes the literal `"Development"` profile (`src/Hexalith.Platform.CatalogBuilder/Program.cs:158`) and binds idempotency only through `DevelopmentIdempotencyBindings` (`:110`, `:112`). That EventStore binder hard-codes `development-v1` key references, `secretstore` and `eventstore-idempotency-ring` (`references/Hexalith.EventStore/src/Hexalith.EventStore.Client/Routing/DevelopmentIdempotencyBindings.cs:6`, `:30-31`). Story 4.9's `deploy/dapr/eventstore-routing-catalog.json` needs an EventStore binder for hosted key references and a Platform profile and output parameter. It then needs the 4.15 key-ring names and the 4.16 namespace and trust domain.
