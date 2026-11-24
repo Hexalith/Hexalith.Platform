@@ -445,9 +445,14 @@ reason: BH04. ResolveAsync returns a Signed outcome without consulting trust or 
 status: done 2026-11-24
 resolution: The anchored outcome retains the opaque provider receipt and revalidates the exact signature against independent trust on every Signed reread. Revoked history requires the verified original receipt. Legacy outcomes retain their existing digests and fail closed after revocation if they lack that receipt.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Treat a still-current emergency revocation as a denial of fresh deletion-capability issuance.
-  evidence: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true while IsCurrentNonRevoked stays true. Deleting the new revocation clause leaves the current signing tests green. Pre-existing signing work.
+### DW-23: Treat a still-current emergency revocation as a denial of fresh deletion-capability issuance.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true while IsCurrentNonRevoked stays true. Deleting the new revocation clause leaves the current signing tests green. Pre-existing signing work.
+status: done 2026-11-24
+resolution: The actor regression supplies trust marked both current and revoked and verifies denial before persistence or provider invocation.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Separate the private-owner credential MAC purpose from TrustedEnvelope.

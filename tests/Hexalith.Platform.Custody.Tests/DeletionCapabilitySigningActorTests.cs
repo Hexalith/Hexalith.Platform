@@ -285,6 +285,7 @@ public sealed class DeletionCapabilitySigningActorTests
     /// <summary>Independently revoked/wrong version/anchor cannot be substituted by an internally consistent signer artifact.</summary>
     [Theory]
     [InlineData("revoked")]
+    [InlineData("still-current-revoked")]
     [InlineData("version")]
     [InlineData("tenant")]
     [InlineData("family")]
@@ -297,7 +298,8 @@ public sealed class DeletionCapabilitySigningActorTests
         var expected = new DeletionCapabilityPublishedTrust(payload.TenantId, "DeletionBatchCapabilitySigningKey", payload.CapabilityKeyVersion,
             payload.Issuer, payload.Audience, "anchor-1", "anchor-v1", key.ExportSubjectPublicKeyInfo(), 1, true);
         expected = vector switch {
-            "revoked" => expected with { IsCurrentNonRevoked = false, IsRevoked = true }, "version" => expected with { CapabilityKeyVersion = "v2" },
+            "revoked" => expected with { IsCurrentNonRevoked = false, IsRevoked = true },
+            "still-current-revoked" => expected with { IsRevoked = true }, "version" => expected with { CapabilityKeyVersion = "v2" },
             "tenant" => expected with { TenantId = "tenant-b" }, "family" => expected with { KeyFamily = "ManifestSigningKey" },
             "anchor" => expected with { PublicAnchorId = "independent-anchor" }, _ => expected with { SubjectPublicKeyInfo = other.ExportSubjectPublicKeyInfo() }
         };
