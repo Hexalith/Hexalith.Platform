@@ -126,6 +126,9 @@ public sealed class WorksPreviewModelTests : IDisposable
             builder.Configuration[$"Authentication:{section}:SigningKey"] = "stale-development-key";
             builder.Configuration[$"Authentication:{section}:AllowInsecureSymmetricKey"] = "true";
             builder.Configuration[$"Authentication:{section}:AllowedAlgorithms:1"] = "HS256";
+            builder.Configuration[$"Authentication:{section}:Audience"] = "inherited-audience";
+            builder.Configuration[$"Authentication:{section}:ValidAudiences:0"] = "inherited-audience";
+            builder.Configuration[$"Authentication:{section}:ValidAudiences:1"] = "inherited-audience";
         }
 
         PlatformAppModel.ComposeEntry(builder);
@@ -179,6 +182,11 @@ public sealed class WorksPreviewModelTests : IDisposable
                 environment[prefix + "AllowedAlgorithms__1"].ShouldBe("RS256", project.Name);
                 environment[prefix + "SigningKey"].ShouldBe(string.Empty, project.Name);
                 environment[prefix + "AllowInsecureSymmetricKey"].ShouldBe("false", project.Name);
+                // Users (McpCli) present the EventStore audience everywhere; workload assertions name their receiver.
+                string audience = section == "JwtBearer" ? "hexalith-eventstore" : works ? "works" : "eventstore";
+                environment[prefix + "Audience"].ShouldBe(audience, project.Name);
+                environment[prefix + "ValidAudiences__0"].ShouldBe(audience, project.Name);
+                environment[prefix + "ValidAudiences__1"].ShouldBe(audience, project.Name);
             }
             project.Annotations.OfType<WaitAnnotation>().ShouldContain(wait => ReferenceEquals(wait.Resource, keycloak));
             environment["Authentication__WorkloadIssuer__EnableResourceBindingRequests"].ShouldBe(works ? "true" : "false", project.Name);
@@ -186,17 +194,48 @@ public sealed class WorksPreviewModelTests : IDisposable
             environment["Authentication__WorkloadIssuer__TokenEndpoint"].ShouldBe(authority + "/protocol/openid-connect/token", project.Name);
             if (project.Name == "eventstore-operations")
             {
+                environment["Authentication__WorkloadIssuer__Workload"].ShouldBe(string.Empty);
+                environment["Authentication__WorkloadIssuer__ClientId"].ShouldBe(string.Empty);
                 environment["Authentication__WorkloadIssuer__ClientSecret"].ShouldBe(string.Empty);
                 continue;
             }
 
             string client = works ? "works" : project.Name;
-            environment["Authentication__WorkloadIssuer__ClientId"].ShouldBe(client);
+            environment["Authentication__WorkloadIssuer__Workload"].ShouldBe(client, project.Name);
+            environment["Authentication__WorkloadIssuer__ClientId"].ShouldBe(client, project.Name);
             ParameterResource secret = environment["Authentication__WorkloadIssuer__ClientSecret"].ShouldBeOfType<ParameterResource>();
             secret.Secret.ShouldBeTrue();
             string variable = "HEXALITH_LOCAL_REALM_SECRET_" + client.ToUpperInvariant().Replace('-', '_');
             keycloakEnvironment[variable].ShouldBeSameAs(secret);
         }
+    }
+
+    /// <summary>An empty tenant setting allocates a run tenant and logs the setting that reuses it.</summary>
+    [Fact]
+    public void EmptySyntheticTenantAllocatesAndLogsTheReuseSetting()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development");
+        builder.Configuration["Platform:Works:SyntheticTenantId"] = string.Empty;
+        TextWriter original = Console.Out;
+        using var captured = new StringWriter();
+        Console.SetOut(TextWriter.Synchronized(captured));
+        try
+        {
+            WorksPreviewModel.Compose(builder);
+        }
+        finally
+        {
+            Console.SetOut(original);
+        }
+
+        ContainerResource keycloak = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "platform-local-realm");
+        string import = keycloak.Annotations.OfType<ContainerMountAnnotation>()
+            .Single(mount => mount.Target == "/opt/keycloak/data/import/hexalith-local-realm.json").Source!;
+        using var realm = JsonDocument.Parse(File.ReadAllText(import));
+        string tenant = realm.RootElement.GetProperty("attributes").GetProperty("syntheticTenantId").GetString().ShouldNotBeNull();
+        tenant.ShouldStartWith("works-preview-");
+        captured.ToString().ShouldContain("WORKS_PREVIEW_SYNTHETIC_TENANT allocated=" + tenant
+            + " reuse=--Platform:Works:SyntheticTenantId=" + tenant);
     }
 
     /// <summary>Only the gateway sidecar loads the configuration store, whose keys can override tenant rate limits at runtime.</summary>

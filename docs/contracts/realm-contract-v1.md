@@ -29,6 +29,10 @@ and `eventstore:grant-revision` workload claims. [Surface policy](https://github
 | `service` | Confidential. Each selected application principal has its own service account and explicit audiences, roles and operation scopes. |
 
 Every client has one class, one surface mapper and full scope disabled.
+V1 accepts no contract-declared optional scope. The generator derives each
+service client's audience and operation scopes, and Keycloak would silently
+drop a declared one, so the generator refuses any declared scope, including
+`offline_access` on a confidential client.
 McpCli has no offline scope, password grant, device grant, implicit flow
 or service account.
 
@@ -51,8 +55,9 @@ resource-bound operations, and has token exchange disabled.
 
 The contract requires the requester in the subject token's audience, and
 allows only target audiences granted by role-scoped client scopes.
-Standard exchange is enabled per confidential service client and the
-downscope policy restricts selection to scopes already in the subject token.
+The v1 declaration enables standard exchange only for the `eventstore` gateway
+client, and the downscope policy restricts selection to scopes already in the
+subject token.
 A separately mounted Platform client-policy executor enforces the requester
 audience even when the requester originally obtained the subject token.
 Refresh-token exchange is disabled. [Keycloak token exchange](https://www.keycloak.org/securing-apps/token-exchange).
@@ -68,8 +73,10 @@ Pass the run's realm URL, synthetic tenant identifier and confidential
 client secrets to the generator. Builds exposes the identifier as
 `CompositionRunPlan.TenantNamespace` and records it in the environment
 descriptor as `isolation.syntheticTenantId`. The standalone Works preview
-uses `Platform:Works:SyntheticTenantId` when supplied and otherwise allocates
-a new identifier for the run.
+uses a non-empty `Platform:Works:SyntheticTenantId`. Otherwise it allocates
+a new identifier for the run and writes it, with the setting that reuses it,
+to the AppHost's standard output. `aspire run` keeps that line in its log
+under `~/.aspire/logs`.
 
 The JSON uses stable ordering and a secret environment placeholder per client.
 Aspire binds the same per-run secret to Keycloak and the calling workload.

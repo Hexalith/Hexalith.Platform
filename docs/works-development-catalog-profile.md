@@ -64,6 +64,9 @@ When starting the preview against retained data, pass
 `--Platform:Works:SyntheticTenantId=<original-tenant-id>` with the same synthetic
 tenant used for that data. Omitting the setting allocates a new tenant for the
 run, so the new Works workload grant cannot read the retained tenant's streams.
+The AppHost writes each allocated tenant to its standard output as
+`WORKS_PREVIEW_SYNTHETIC_TENANT allocated=<id> reuse=--Platform:Works:SyntheticTenantId=<id>`.
+`aspire run` keeps that line in its log under `~/.aspire/logs`.
 Changed backend identity, missing custody or retained durable leases refuse rather
 than silently opening another cell. An exact child restart uses verified resume.
 Backend replacement and key rotation require separately qualified owner transitions.

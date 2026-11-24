@@ -102,10 +102,16 @@ public static class WorksPreviewModel
         var developmentProfile = WorksDevelopmentCatalogProfile.Load(builder.Configuration, platformRoot, worksRoot, eventStoreRoot);
         WorksPreviewManagedRuntime.Require();
         CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
-        string syntheticTenantId = builder.Configuration["Platform:Works:SyntheticTenantId"]
-            ?? "works-preview-" + Guid.NewGuid().ToString("N");
+        string? configuredTenant = builder.Configuration["Platform:Works:SyntheticTenantId"] is { Length: > 0 } tenant ? tenant : null;
+        string syntheticTenantId = configuredTenant ?? "works-preview-" + Guid.NewGuid().ToString("N");
         var preparedRealm = PlatformLocalRealm.PrepareWorksPreview(
             Path.Combine(eventStoreRoot, "module", "hexalith.module-manifest.v2.json"), controlPorts.UiHttp, syntheticTenantId);
+        if (configuredTenant is null)
+        {
+            // Nothing persists this tenant yet (Story 3.5). A retained profile reads its streams only under the same tenant.
+            Console.WriteLine("WORKS_PREVIEW_SYNTHETIC_TENANT allocated=" + syntheticTenantId
+                + " reuse=--Platform:Works:SyntheticTenantId=" + syntheticTenantId);
+        }
         stateStorePath = developmentProfile.StateStoreComponentPath;
         CompositionWorkspace.CreatePrivateDirectory(workspace);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));

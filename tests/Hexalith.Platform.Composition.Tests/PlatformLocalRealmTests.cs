@@ -113,6 +113,60 @@ public sealed class PlatformLocalRealmTests
     }
 
     [Theory]
+    [InlineData("eventstore", "[\"offline_access\"]")]
+    [InlineData("works", "[\"offline_access\"]")]
+    [InlineData("mcpcli", "[\"profile\"]")]
+    public void RejectsOptionalScopesThatV1DoesNotDefine(string client, string scopes)
+    {
+        JsonNode contract = ReadContract();
+        contract["clients"]!.AsArray().Single(node => node!["id"]!.GetValue<string>() == client)!["scopes"] = JsonNode.Parse(scopes);
+        InvalidDataException error = Should.Throw<InvalidDataException>(() => PlatformRealmContract.Parse(contract.ToJsonString()));
+        error.Message.ShouldContain("'" + client + "'");
+        error.Message.ShouldContain("optional scope");
+    }
+
+    [Theory]
+    [InlineData("tokenExchange", "true")]
+    [InlineData("audiences", "[\"eventstore\",\"works\"]")]
+    [InlineData("boundOperations", "[\"eventstore:command-status\",\"eventstore:command-submit\"]")]
+    [InlineData("boundOperations", "[\"eventstore:command-status\",\"eventstore:command-submit\",\"eventstore:stream-read\",\"eventstore:trusted-effect\"]")]
+    [InlineData("boundOperations", null)]
+    [InlineData("operations", "[\"eventstore:command-status\",\"eventstore:command-submit\",\"eventstore:stream-read\"]")]
+    [InlineData("operations", "[\"eventstore:command-status\",\"eventstore:command-submit\",\"eventstore:stream-read\",\"eventstore:trusted-effect\",\"domain-service:process\"]")]
+    public void RejectsWorksClientBeyondItsBoundGatewayGrant(string property, string? replacement)
+    {
+        JsonNode contract = ReadContract();
+        JsonObject works = contract["clients"]!.AsArray().Single(node => node!["id"]!.GetValue<string>() == "works")!.AsObject();
+        if (replacement is null)
+        {
+            works.Remove(property).ShouldBeTrue();
+        }
+        else
+        {
+            works[property] = JsonNode.Parse(replacement);
+        }
+
+        InvalidDataException error = Should.Throw<InvalidDataException>(() => PlatformRealmContract.Parse(contract.ToJsonString()));
+        error.Message.ShouldContain("'works'");
+        error.Message.ShouldContain("only the three bound gateway operations and unbound trusted-effect, with token exchange disabled");
+    }
+
+    [Theory]
+    [InlineData("Retained-Tenant")]
+    [InlineData("system")]
+    [InlineData("SYSTEM")]
+    [InlineData("-leading-hyphen")]
+    [InlineData("tenant_underscore")]
+    [InlineData("")]
+    public void RejectsNonCanonicalOrReservedSyntheticTenant(string tenant)
+    {
+        Should.Throw<ArgumentException>(() => PlatformLocalRealm.Render(PlatformRealmContract.Load(), PreviewDeclarations(),
+            RealmUrl, tenant, ClientSecrets())).ParamName.ShouldBe("syntheticTenantId");
+        Should.Throw<ArgumentException>(() => PlatformLocalRealm.PrepareWorksPreview(PreviewDeclarations()[0].Source, RealmUrl.Port, tenant))
+            .ParamName.ShouldBe("syntheticTenantId");
+    }
+
+    [Theory]
     [InlineData("account")]
     [InlineData("account-console")]
     [InlineData("admin-cli")]
@@ -199,7 +253,30 @@ public sealed class PlatformLocalRealmTests
         {
             grant.GetProperty("notBefore").GetInt64().ShouldBe(now.AddMinutes(-1).ToUnixTimeSeconds());
             grant.GetProperty("expiresAt").GetInt64().ShouldBe(now.AddDays(1).ToUnixTimeSeconds());
+            grant.GetProperty("clientId").GetString().ShouldBe("works");
+            grant.GetProperty("workload").GetString().ShouldBe("works");
+            grant.GetProperty("audience").GetString().ShouldBe("eventstore");
+            grant.GetProperty("revision").GetInt32().ShouldBe(1);
+            grant.GetProperty("allowQueryAuthorityDigest").GetBoolean().ShouldBeFalse();
+            grant.GetProperty("revoked").GetBoolean().ShouldBeFalse();
         }
+
+        // The tenant-bound grant carries exactly the three gateway operations; trusted-effect stays unbound and separate.
+        JsonElement bound = grants.RootElement[0];
+        bound.GetProperty("operations").EnumerateArray().Select(operation => operation.GetString())
+            .ShouldBe(["eventstore:command-status", "eventstore:command-submit", "eventstore:stream-read"]);
+        bound.GetProperty("allowUnbound").GetBoolean().ShouldBeFalse();
+        bound.GetProperty("bindings").EnumerateObject().Select(binding => binding.Name)
+            .ShouldBe(["eventstore:bound-tenant", "eventstore:bound-domain"]);
+        bound.GetProperty("bindings").GetProperty("eventstore:bound-tenant").EnumerateArray().Select(value => value.GetString())
+            .ShouldBe([SyntheticTenant]);
+        bound.GetProperty("bindings").GetProperty("eventstore:bound-domain").EnumerateArray().Select(value => value.GetString())
+            .ShouldBe(["work"]);
+        JsonElement trustedEffect = grants.RootElement[1];
+        trustedEffect.GetProperty("operations").EnumerateArray().Select(operation => operation.GetString())
+            .ShouldBe(["eventstore:trusted-effect"]);
+        trustedEffect.GetProperty("allowUnbound").GetBoolean().ShouldBeTrue();
+        trustedEffect.GetProperty("bindings").EnumerateObject().ShouldBeEmpty();
         long.Parse(environment["HEXALITH_LOCAL_REALM_BINDING_SIGNER_END"], CultureInfo.InvariantCulture)
             .ShouldBe(now.AddDays(1).ToUnixTimeSeconds());
     }

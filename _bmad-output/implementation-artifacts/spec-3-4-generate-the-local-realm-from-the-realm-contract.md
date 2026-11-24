@@ -2,7 +2,7 @@
 title: '3.4 Generate the local realm from the realm contract'
 type: 'feature'
 created: '2026-11-24'
-status: 'in-progress'
+status: 'done'
 route: 'dispatch'
 story_key: '3-4-generate-the-local-realm-from-the-realm-contract'
 baseline_commit: '3a87b90739a248a62b526beb928813899bb9c262'
@@ -78,17 +78,17 @@ Given a generated local realm, when the selected Works preview hosts start, then
 
 Code review 2026-11-24 of ea655311 (baseline 3a87b907, code-only diff, 25 files). Layers: Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor; none failed. No high findings. The maintainer resolved the tenant decision as log now and defer persistence to Story 3.5, and left all patches as action items.
 
-- [ ] [Review][Patch] Log the allocated default synthetic tenant at compose with a reuse hint (`--Platform:Works:SyntheticTenantId=<id>`); resolved from the tenant decision (medium) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
+- [x] [Review][Patch] Log the allocated default synthetic tenant at compose with a reuse hint (`--Platform:Works:SyntheticTenantId=<id>`); resolved from the tenant decision (medium) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
 - [x] [Review][Defer] The default synthetic tenant is not persisted across retained recompositions, so data written under it is orphaned [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105] — deferred: Story 3.5 owns how the local synthetic tenant is provided and persisted
-- [ ] [Review][Patch] build-policy.sh needs the maintainer-only `run-with-temp` (~/.local/bin), so nobody else can rebuild the committed provider JARs; inline `mktemp -d` plus a trap and TMPDIR (medium) [infrastructure/keycloak-local-realm/build-policy.sh:5]
-- [ ] [Review][Patch] Model test does not assert the per-host `JwtBearer`/`WorkloadJwtBearer` `Audience` (works vs eventstore) or that inherited `ValidAudiences` are overwritten; inverting the audience ternary passes every non-live test (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:114]
-- [ ] [Review][Patch] Model test does not assert `Authentication__WorkloadIssuer__Workload` per issuing host; a wrong value silently disables Works bound assertions (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:194]
-- [ ] [Review][Patch] Bound `works-bound-gateway` grant operations, audience and workload/clientId are unasserted outside the live test; passing `Operations` (with trusted-effect) instead of `boundOperations` passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:188]
-- [ ] [Review][Patch] The `works` client invariant (no exchange, eventstore audience, exactly three bound ops + unbound trusted-effect) has no negative test; loosening PlatformRealmContract.cs:293-298 passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:104]
-- [ ] [Review][Patch] No test covers refusal of a non-canonical or reserved `syntheticTenantId` (e.g. `Retained-Tenant`, `system`) (low) [src/Hexalith.Platform.Composition/PlatformLocalRealm.cs:100]
-- [ ] [Review][Patch] An empty `Platform:Works:SyntheticTenantId` passes `??`, so the preview refuses instead of allocating; use the file's `is { Length: > 0 }` convention (low) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
-- [ ] [Review][Patch] The contract accepts `offline_access` on confidential clients, but the renderer defines no such client scope, so Keycloak silently drops it; refuse any optional scope in v1 after the public-client check (low) [src/Hexalith.Platform.Composition/PlatformRealmContract.cs:250]
-- [ ] [Review][Patch] The contract doc says standard exchange is enabled "per confidential service client"; only the `eventstore` gateway client has it (low) [docs/contracts/realm-contract-v1.md:54]
+- [x] [Review][Patch] build-policy.sh needs the maintainer-only `run-with-temp` (~/.local/bin), so nobody else can rebuild the committed provider JARs; inline `mktemp -d` plus a trap and TMPDIR (medium) [infrastructure/keycloak-local-realm/build-policy.sh:5]
+- [x] [Review][Patch] Model test does not assert the per-host `JwtBearer`/`WorkloadJwtBearer` `Audience` (works vs eventstore) or that inherited `ValidAudiences` are overwritten; inverting the audience ternary passes every non-live test (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:114]
+- [x] [Review][Patch] Model test does not assert `Authentication__WorkloadIssuer__Workload` per issuing host; a wrong value silently disables Works bound assertions (medium) [tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs:194]
+- [x] [Review][Patch] Bound `works-bound-gateway` grant operations, audience and workload/clientId are unasserted outside the live test; passing `Operations` (with trusted-effect) instead of `boundOperations` passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:188]
+- [x] [Review][Patch] The `works` client invariant (no exchange, eventstore audience, exactly three bound ops + unbound trusted-effect) has no negative test; loosening PlatformRealmContract.cs:293-298 passes (medium) [tests/Hexalith.Platform.Composition.Tests/PlatformLocalRealmTests.cs:104]
+- [x] [Review][Patch] No test covers refusal of a non-canonical or reserved `syntheticTenantId` (e.g. `Retained-Tenant`, `system`) (low) [src/Hexalith.Platform.Composition/PlatformLocalRealm.cs:100]
+- [x] [Review][Patch] An empty `Platform:Works:SyntheticTenantId` passes `??`, so the preview refuses instead of allocating; use the file's `is { Length: > 0 }` convention (low) [src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105]
+- [x] [Review][Patch] The contract accepts `offline_access` on confidential clients, but the renderer defines no such client scope, so Keycloak silently drops it; refuse any optional scope in v1 after the public-client check (low) [src/Hexalith.Platform.Composition/PlatformRealmContract.cs:250]
+- [x] [Review][Patch] The contract doc says standard exchange is enabled "per confidential service client"; only the `eventstore` gateway client has it (low) [docs/contracts/realm-contract-v1.md:54]
 
 **Rejected**
 - low — Grant and signer deadline fixed at compose, so a Keycloak-only restart keeps the old window: matches the documented "start a new preview after the grant deadline"; a per-start callback adds complexity.
@@ -126,6 +126,10 @@ Code review 2026-11-24 of ea655311 (baseline 3a87b907, code-only diff, 25 files)
 
 - After review, all 25 generator cases, 22 Works model cases, both gated live cases, and 19 snapshot tests passed. The independent final wrappers exited successfully. The source preview used aligned EventStore sources and version 5.5.1 with Commons 3.0.2. The live Docker endpoint and OIDC issuer shared the same fixed loopback port. The full Composition test project built with the selected EventStore 4.2.0 tuple. The selected 5.1.0 build excluded one unrelated older fixture from scratch MSBuild inputs. Both embedded providers rebuilt byte-identically.
 - Final evidence is in [the live preview result](../../TestResults/realm-final-preview-final.log), [the Works model result](../../TestResults/realm-final-model-final.log), and [the standalone Keycloak result](../../TestResults/realm-review-keycloak.log). The cross-repository parity verifier awaits the deferred Works owner fixture adoption.
+
+- The review patch pass (2026-11-24) applied all 10 patch items. A preview without a non-empty `Platform:Works:SyntheticTenantId` allocates its tenant and writes `WORKS_PREVIEW_SYNTHETIC_TENANT allocated=<id> reuse=--Platform:Works:SyntheticTenantId=<id>`. V1 refuses every declared optional scope after the public-client `offline_access` check. `build-policy.sh` uses its own `mktemp -d` directory, removed by an `EXIT` trap.
+- Package-mode builds with the Commons 3.0.2 override passed. The generator class passed 41 of 41 cases and the gated standalone Keycloak test passed. The Works model class passed 23 of 23. Its first run failed once in `ExplicitSdkSourceRootSelectsEverySdkEntryProject` (selected child build exit 1), and that test and the full class then passed. Both provider JARs rebuilt byte-identically with the new script. In a detached scratch worktree, seven mutations each failed their new test: bound grant operations, the `works` rule, the scope rule, the audience ternary, the issuer `Workload` value, the `ValidAudiences` override and the empty-tenant convention. The gated source-mode Works preview live test passed in 145 s on its second attempt. On the first attempt, every Dapr sidecar was refused on the test Redis host port and exited, while that container kept running until cleanup. A later probe of the same publish connected at once, so the failure looks environmental. Logs are in `TestResults/realm-patch-*.log`.
+- The delta review of the patch pass found no high or medium findings. Its four low patches reword the optional-scope and exchange docs, assert the inherited `ValidAudiences` override at index 1, and say that `aspire run` keeps the tenant line under `~/.aspire/logs`. After them the generator class passed 41 of 41, the Works model class 23 of 23, and the source scan found no legacy key or issuer. Only a code comment changed in production code, so the gated live runs above still apply. Logs are in `TestResults/realm-delta-*.log`.
 
 ## Spec Change Log
 
@@ -187,6 +191,26 @@ Code review 2026-11-24 of ea655311 (baseline 3a87b907, code-only diff, 25 files)
 | Verification gap: schema-only refusal | medium | patch | Existing negatives still pass when schema evaluation is removed. Test the invalid refresh value to prove the contract schema is applied. |
 | Verification gap: grant deadline | medium | patch | Fixed-clock authorization settings are mechanically testable and the existing tests do not distinguish changing the deadline from 24 to 48 hours. |
 
+| Delta review (patch pass, 2026-11-24) finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| Blind hunter: schema still accepts declared scopes | false | reject | The schema never encoded the semantic client rules (public `offline_access`, McpCli, Works). Parse refuses naming the client, and a schema `maxItems` would pre-empt the client-named refusal the matrix requires. |
+| Blind hunter: "V1 defines no optional client scopes" is untrue | low | patch | Rendered service clients carry generated audience and operation `optionalClientScopes` (`PlatformLocalRealm.cs:198-202,251`). The doc and comment now say v1 accepts no contract-declared scope. |
+| Blind hunter: dead declared-scope path in the renderer | false | reject | Concatenating the validated-empty declared scopes renders nothing extra. The public-client check deliberately keeps the matrix rule's own message. |
+| Blind hunter: gateway-only exchange is not enforced | low | patch | `ValidateClient` accepts `tokenExchange` on `eventstore-admin`. The doc now states this as a fact of the v1 declaration. Class-wide guards for hypothetical clients were already rejected. |
+| Blind hunter: invalid configured tenant gives a vague error | low | reject | Operators paste the exact printed hint and the refusal is loud. Naming the setting needs a new wrapper branch. |
+| Blind hunter: canonicalizer limits untested | false | reject | Platform delegates to EventStore's `TenantCanonicalizer`, which its owner tests in `TenantCanonicalizerTests`. Platform's own `canonical != input` branch is covered by `Retained-Tenant` and `SYSTEM`. |
+| Blind hunter: no test that a configured tenant prints nothing | low | reject | The guard is a single `configuredTenant is null` check. A console-capture test in another fixture adds code for an unlikely regression. |
+| Blind hunter: `ValidAudiences` override tested only at index 0 | low | patch | A hard-coded `ValidAudiences__0` passed. The model test now also sets and asserts index 1. |
+| Blind hunter: JVM ignores `TMPDIR`; prerequisites unchecked | maybe-false | reject | No JVM temp file was shown to persist outside `$work`, and the reviewer's run left none; it would be low at most. A missing `mvn`, Java or `python3` fails loudly under `set -e`. |
+| Blind hunter: one-argument `build-policy.sh` overwrites a committed JAR | low | reject | The defaults are unchanged from before the rewrite. The reproducible build rewrites an identical JAR, and a guard adds branches. |
+| Edge case: one output path falls back to the committed JAR | low | reject | Same as the previous row. |
+| Edge case: non-gateway client can enable exchange | low | patch | Grouped with the gateway-only exchange row; doc reworded, no guard. |
+| Edge case: `aspire run` may not show the tenant line | low | patch | The Aspire 17 CLI records AppHost stdout as `[INFO] [AppHost]` lines under `~/.aspire/logs` and filters its console by log level. Both docs now say where the line is kept. |
+| Edge case: optional-scope wording misleads readers | low | patch | Grouped with the "V1 defines no optional client scopes" row. |
+| Edge case: whitespace-only tenant is refused, not allocated | false | reject | A whitespace value refuses loudly at compose with `ArgumentException(syntheticTenantId)`. The review item mandated `is { Length: > 0 }`. |
+| Edge case: SIGTERM is not forwarded to Maven children | low | reject | Interactive Ctrl-C reaches the whole foreground group, and bash runs the `EXIT` trap once Maven ends. Signal forwarding adds complexity to a rare manual script. |
+| Verification gap: no automation runs `build-policy.sh` | low | reject | A rarely run maintainer script. The implementer and the reviewer both rebuilt byte-identical JARs, and a Java CI lane was already rejected for source-to-JAR divergence. |
+
 ## Design Notes
 
 These are planner decisions:
@@ -200,3 +224,5 @@ These are planner decisions:
 ## Verification
 
 Build the Composition and Works test projects with the selected Platform EventStore and Builds source roots. Use the verification-only Commons 3.0.2 override if the current dependency graph requires it. Run the realm and Works model classes, including gated `HEXALITH_PLATFORM_LIVE_SMOKE=1` assertions against Keycloak and the actual preview. Check both sparse export selections, rebuild the embedded providers byte-identically, and scan `src` for the old key and issuer.
+
+Host notes: put `$HOME/.dotnet/tools` (pwsh) on `PATH` and pass `-nodeReuse:false` to every `dotnet build`. `dotnet test` on the slnx runs zero tests; run each built test DLL with `dotnet exec <project>/bin/<Configuration>/<tfm>/<assembly>.dll` (xUnit v3 `-class`/`-method` filters) and check the DLL timestamp first. Never leave temporary mutations in tracked files; other sessions commit the working tree.

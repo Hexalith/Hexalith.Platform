@@ -252,9 +252,11 @@ internal sealed class PlatformRealmContract
             throw ClientError(client.Id, "public clients may not receive offline_access");
         }
 
-        if (client.Scopes.Any(scope => scope != "offline_access"))
+        // V1 accepts no contract-declared optional scope: the generator derives the service audience and
+        // operation scopes, and Keycloak would silently drop a declared one.
+        if (client.Scopes.Length != 0)
         {
-            throw ClientError(client.Id, "references an unknown optional scope");
+            throw ClientError(client.Id, "declares an optional scope, which realm contract v1 does not define");
         }
 
         if (client.Surface == "agent" && client.Audiences.Any(audience => audience == "realm-management"
