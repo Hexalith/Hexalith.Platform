@@ -78,6 +78,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Configure the EventStore host's advertised request body limit through Kestrel options during host construction.
   evidence: G87; Program.cs resolves raw KestrelServerOptions with GetService in its ApplicationStarted callback, with no raw service registration, so the nullable assignment skips the one-megabyte limit. This file belongs to separate earlier platform commits.
+  status: done 2026-11-24
+  resolution: Program configures Kestrel before host construction completes. The production-host readiness test asserts the effective one-megabyte option.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Reject out-of-range or fractional actorRevision values in the real platform identity admission provider.

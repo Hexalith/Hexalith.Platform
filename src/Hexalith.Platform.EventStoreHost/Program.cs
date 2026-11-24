@@ -12,9 +12,8 @@ using Hexalith.EventStore.SignalRHub;
 using Dapr;
 using Microsoft.Extensions.Options;
 
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 1_048_576);
 
 builder.AddServiceDefaults();
 builder.Services.AddDaprClient(options => ErasureRootDaprTransport.Configure(options));
@@ -107,12 +106,6 @@ if (signalROptions?.Enabled == true) {
     _ = app.MapHub<ProjectionChangedHub>(ProjectionChangedHub.HubPath);
     _ = app.MapSignalRRuntimeProofEndpoints();
 }
-
-// Configure global request body size limit (1MB)
-app.Lifetime.ApplicationStarted.Register(() => {
-    KestrelServerOptions? kestrelOptions = app.Services.GetService<Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions>();
-    _ = kestrelOptions?.Limits.MaxRequestBodySize = 1_048_576;
-});
 
 app.Run();
 

@@ -12,6 +12,7 @@ using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -611,6 +612,7 @@ public sealed class EventStoreExtensionCompositionTests
         await using var factoryLifetime = factory.ConfigureAwait(true);
         using HttpClient client = factory.CreateClient();
 
+        factory.Services.GetRequiredService<IOptions<KestrelServerOptions>>().Value.Limits.MaxRequestBodySize.ShouldBe(1_048_576L);
         EventStoreLoadedExtension loaded = factory.Services.GetRequiredService<EventStoreExtensionCatalog>().Extensions.ShouldHaveSingleItem();
         loaded.ShouldBe(new EventStoreLoadedExtension(Package, "platform-test", 1, 1));
         factory.Services.GetServices<IIdempotencyIntentAdapter>().ShouldContain(adapter => adapter.AdapterId == PlatformTestExtensionAdapters.AdapterId);
