@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 
@@ -33,6 +34,55 @@ public sealed class ReplicatedSecurityObservationSpoolWorkerTests
         try { await tick.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); }
         finally { await restarted.StopAsync(TestContext.Current.CancellationToken); }
         fixture.PhysicalAppends.ShouldBe(1); (await fixture.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task WorkerRetriesAfterMalformedHeadIsRepaired()
+    {
+        var fixture = new SecuritySpoolFixture();
+        await fixture.Spool.ObserveAsync(SecuritySpoolFixture.Intent(), TestContext.Current.CancellationToken);
+        byte[] valid = fixture.Persisted!;
+        fixture.Persisted = "{"u8.ToArray();
+        var rejected = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var logger = new IntegrityErrorLogger(rejected);
+        using var worker = new ReplicatedSecurityObservationSpoolWorker(fixture.Spool, TimeProvider.System, TimeSpan.FromMilliseconds(10), 1, logger);
+        CancellationToken token = TestContext.Current.CancellationToken;
+
+        await worker.StartAsync(token);
+        try
+        {
+            await rejected.Task.WaitAsync(TimeSpan.FromSeconds(5), token);
+            fixture.PhysicalAppends.ShouldBe(0);
+            fixture.Persisted.ShouldBe("{"u8.ToArray());
+
+            fixture.Persisted = valid;
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(token);
+            timeout.CancelAfter(TimeSpan.FromSeconds(5));
+            while (fixture.Read()!.Records.Single().Receipt is null)
+            {
+                await Task.Delay(10, timeout.Token);
+            }
+
+            fixture.PhysicalAppends.ShouldBe(1);
+        }
+        finally
+        {
+            await worker.StopAsync(token);
+        }
+    }
+
+    private sealed class IntegrityErrorLogger(TaskCompletionSource rejected) : ILogger<ReplicatedSecurityObservationSpoolWorker>
+    {
+        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+        public bool IsEnabled(LogLevel logLevel) => true;
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+        {
+            if (logLevel == LogLevel.Error)
+            {
+                rejected.TrySetResult();
+            }
+        }
     }
 
     /// <summary>Ordinary custody composition exposes neither hosted drain worker nor raw spool capabilities.</summary>

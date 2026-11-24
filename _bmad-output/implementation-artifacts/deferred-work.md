@@ -463,21 +463,39 @@ reason: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.Truste
 status: done 2026-11-24
 resolution: Private-owner operations resolve their own HMAC purpose for issuance and verification, without an envelope fallback. The generic digest service permits only content and observation purposes.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
-  evidence: BH07. TryWriteAsync records the next revision before TrySaveStateAsync and ignores a false or thrown save. Spool work.
+### DW-25: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH07. TryWriteAsync records the next revision before TrySaveStateAsync and ignores a false or thrown save. Spool work.
+status: done 2026-11-24
+disposition: superseded
+resolution: The recoverable transition journal stages and verifies exact pending bytes before advancing the anchor. Component-save fault and restart tests cover both lost acknowledgements and unpersisted state.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Keep an empty or missing security spool from reporting ready.
   evidence: BH08, EH01. A null component read becomes revision 0 with no records, and Records.All is true for that empty list when the authority attests the digest. Spool work.
+  triage: skipped 2026-11-24 (blocked). The current ingress checks spool readiness before accepting its first command or recording its first denial. An independently authorized commissioning observation or separate initial readiness contract is required to avoid blocking a fresh installation.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Define what happens when the security spool reaches its 10000-record bound.
-  evidence: BH09. ObserveAsync drops the new observation at the bound, and a fully receipted spool can remain ready. Spool work.
+### DW-26: Define what happens when the security spool reaches its 10000-record bound.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Stop security-spool drain from reporting success for a bad count or malformed state.
-  evidence: BH10. ArgumentOutOfRangeException and malformed-state exceptions are caught and returned as a normal count. Spool work.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH09. ObserveAsync drops the new observation at the bound, and a fully receipted spool can remain ready. Spool work.
+status: done 2026-11-24
+disposition: superseded
+resolution: Acknowledged heads now roll into a bounded authenticated archive chain. Receipt-space reservations and the archive ceiling refuse further admission when storage is exhausted, with explicit rollover and final-page tests.
+
+### DW-27: Stop security-spool drain from reporting success for a bad count or malformed state.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH10. ArgumentOutOfRangeException and malformed-state exceptions are caught and returned as a normal count. Spool work.
+status: done 2026-11-24
+resolution: Drain rejects invalid counts before touching the store and surfaces malformed persisted data as an error. The hosted worker logs the integrity failure and retries on its existing schedule.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Give security-spool digests a stable domain so serializer changes do not move restore anchors.

@@ -171,10 +171,21 @@ jobs:
           dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-build -- \
             --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionRefusesDuplicateDeclarationNamesBeforeAddingResources \
             --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionAllowsNamesReusedAcrossModulesCollectionsAndInterfaces \
-            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionComparesResourceRequestsWithMatchingLimitsExactly
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionComparesResourceRequestsWithMatchingLimitsExactly \
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDependencyGraphRefusesBeforeResourceCreation \
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionRefusesStructurallyValidCommandReadinessBeforeResourceCreation \
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.HostedGraphRequiresPerEnvironmentProviderTenancy
           dotnet test --project tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj --configuration Release --no-build -- \
             --filter-class Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests \
-            --filter-class Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests
+            --filter-class Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests \
+            --filter-class Hexalith.Platform.Custody.Tests.DeletionCapabilitySigningActorTests
+          dotnet test --project tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj --configuration Release --no-build -- \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.InvalidDrainCountRefusesBeforeAnyRead \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.MalformedPendingTransitionFailsDrainWithoutMutation \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.ForeignInstallationHeadFailsDrainWithoutMutation \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.MalformedReservationLayoutsRefuseWithoutMutation \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolTests.StructurallyReadableDivergentReservedArchiveFailsDrain \
+            --filter-method Hexalith.Platform.Custody.Tests.ReplicatedSecurityObservationSpoolWorkerTests.WorkerRetriesAfterMalformedHeadIsRepaired
       - name: Retain bootstrap and preflight outcomes
         if: always()
         env:

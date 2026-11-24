@@ -68,7 +68,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
                 budget.Check();
                 if (!FitsWithReceiptReserve(next, budget)) { return null; }
             }
-            var (retainedStage, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (retainedStage, _) = await ReadStoredAsync<AnchoredStateTransition>(target, PendingKey(target), budget).ConfigureAwait(false);
             if (retainedStage is not null)
             {
                 // An admitted original retry retains its first-seen facts. Another intent cannot replace this slot or advance its anchor.
@@ -129,12 +129,18 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return new(false); }
     }
     /// <summary>Recovers only exact durable source evidence; unknown lookup/append/ack retains pending records and cannot pass readiness.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The requested count is outside the supported batch bounds.</exception>
+    /// <exception cref="MalformedSecuritySpoolException">The persisted source cannot be decoded or is structurally malformed.</exception>
     public async Task<int> DrainAsync(int maximumCount, CancellationToken cancellationToken = default)
     {
+        if (maximumCount is < 1 or > RecordBound)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maximumCount));
+        }
+
         var budget = new PrivateOwnerOperationDeadline(clock, cancellationToken); int acknowledged = 0;
         try
         {
-            if (maximumCount is < 1 or > RecordBound) { throw new ArgumentOutOfRangeException(nameof(maximumCount)); }
             var target = await CurrentAsync("Drain", null, budget).ConfigureAwait(false); if (target is null || recorder is null) { return 0; }
             var (state, stateEtag) = await ReadAsync(target, budget, true).ConfigureAwait(false); if (state is null) { return 0; }
             if (state.ReservedArchiveDigest is not null && !await CompleteReservedArchiveAsync(target, state, stateEtag, budget).ConfigureAwait(false)) { return 0; }
@@ -187,6 +193,11 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
                 }
             }
             return acknowledged;
+        }
+        catch (MalformedSecuritySpoolException)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            throw;
         }
         catch (Exception) { cancellationToken.ThrowIfCancellationRequested(); return acknowledged; }
     }
@@ -266,7 +277,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
                 if (!await CompleteReservedArchiveAsync(target, state, etag, budget).ConfigureAwait(false)) { return false; }
                 (state, _) = await ReadAsync(target, budget).ConfigureAwait(false);
             }
-            var (pending, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (pending, _) = await ReadStoredAsync<AnchoredStateTransition>(target, PendingKey(target), budget).ConfigureAwait(false);
             return state is not null && pending is null && (state.Records.Count < RecordBound || state.PageIndex < ArchivePageBound)
                 && state.Records.All(record => record.Receipt is not null)
                 && await ArchivesCompleteAsync(target, state, budget).ConfigureAwait(false)
@@ -345,14 +356,18 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         if (current is null || currentEtag != etag || current.ReservedArchiveDigest != digest || StateDigest(current) != StateDigest(reserved)) { return false; }
         var page = new SecuritySpoolArchivePage(carrier.PageIndex, carrier, carrier.ArchiveHeadDigest);
         string key = ArchiveKey(target, carrier.PageIndex, digest);
-        var (existing, archiveEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        var (existing, archiveEtag) = await ReadStoredAsync<SecuritySpoolArchivePage>(target, key, budget).ConfigureAwait(false);
         if (existing is null)
         {
             _ = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, key, page, archiveEtag,
                 new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
         }
-        var (confirmed, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName, key, ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
-        if (confirmed is null || Digest(confirmed) != digest) { return false; }
+        var (confirmed, _) = await ReadStoredAsync<SecuritySpoolArchivePage>(target, key, budget).ConfigureAwait(false);
+        if (confirmed is null) { return false; }
+        if (Digest(confirmed) != digest)
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool archive does not match its reservation.");
+        }
         // The reservation still has to own the head after the page write. A peer that finalized it keeps the one page.
         var (still, stillEtag) = await ReadAsync(target, budget).ConfigureAwait(false);
         if (still is null || stillEtag != etag || still.ReservedArchiveDigest != digest || StateDigest(still) != StateDigest(reserved)) { return false; }
@@ -377,8 +392,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         for (long index = head.PageIndex; index > 0;)
         {
             index--; budget.Check();
-            var (page, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
-                ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (page, _) = await ReadStoredAsync<SecuritySpoolArchivePage>(target, ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), budget).ConfigureAwait(false);
             if (!ValidArchive(page, head, index, expected, expectedObserved, budget)) { throw new InvalidOperationException("Spool archive chain is missing or divergent."); }
             var found = page!.Snapshot.Records.SingleOrDefault(predicate);
             if (found is not null)
@@ -399,8 +413,7 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         for (long index = head.PageIndex; index > 0;)
         {
             index--; budget.Check();
-            var (page, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
-                ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (page, _) = await ReadStoredAsync<SecuritySpoolArchivePage>(target, ArchiveKey(target, index, expected ?? throw new InvalidOperationException("Missing archive head digest.")), budget).ConfigureAwait(false);
             if (!ValidArchive(page, head, index, expected, expectedObserved, budget)) { return false; }
             expected = page!.PreviousDigest;
             expectedObserved = page.Snapshot.ArchivedObservedCount;
@@ -422,34 +435,93 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         if (head.Records.Count == 0) { return true; }
         var page = new SecuritySpoolArchivePage(head.PageIndex, head, head.ArchiveHeadDigest);
         string digest = Digest(page);
-        var (existing, _) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolArchivePage>(target.ComponentName,
-            ArchiveKey(target, head.PageIndex, digest), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        var (existing, _) = await ReadStoredAsync<SecuritySpoolArchivePage>(target, ArchiveKey(target, head.PageIndex, digest), budget).ConfigureAwait(false);
         return existing is null || Digest(existing) == digest;
     }
+    private async Task<(T Value, string Etag)> ReadStoredAsync<T>(ReplicatedSecuritySpoolTarget target, string key, PrivateOwnerOperationDeadline budget)
+    {
+        try
+        {
+            return await budget.ReadAsync(() => client.GetStateAndETagAsync<T>(target.ComponentName, key, ConsistencyMode.Strong,
+                cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        }
+        catch (JsonException)
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool data is not valid JSON.");
+        }
+    }
+
     private async Task<(SecuritySpoolSnapshot? State, string Etag)> ReadAsync(ReplicatedSecuritySpoolTarget target, PrivateOwnerOperationDeadline budget, bool recoverAdmittedOriginal = false)
     {
-        var (read, etag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+        var (read, etag) = await ReadStoredAsync<SecuritySpoolSnapshot>(target, Key(target), budget).ConfigureAwait(false);
         var state = read is null ? new(target.InstallationEpoch, 0, Array.Empty<SecurityObservationRecord>()) : Capture(read, budget);
-        if (state.InstallationEpoch != target.InstallationEpoch || authority is null) { return (null, etag); }
-        var (pending, pendingEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
-        var reconciled = await RecoverableAnchoredState.ReconcileAsync(PendingScope(target), state, pending, value => Capture(value, budget),
-            value => budget.ReadAsync(() => authority.ValidateStateAsync(target, value.Revision, StateDigest(value), CancellationToken.None)), new DeadlineAnchoredStateAuthority(authority, budget), async value =>
-            {
-                // CAS keeps both the retained stage and the main predecessor owned by the admitted original operation.
-                if (StateDigest(state) != StateDigest(value))
-                { _ = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, Key(target), value, etag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false); }
-                var (durable, durableEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
-                if (durable is null || StateDigest(Capture(durable, budget)) != StateDigest(value)) { throw new InvalidOperationException("Prospective spool target is not durable."); }
-                etag = durableEtag;
-                // Conditional tombstone cannot remove a stage installed by another caller.
-                _ = await budget.ReadAsync(() => client.TrySaveStateAsync<AnchoredStateTransition?>(target.ComponentName, PendingKey(target), null, pendingEtag,
-                    new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
-                // Read the main bytes again after the final persistence await.
-                var (final, finalEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName, Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
-                etag = finalEtag; return final ?? throw new InvalidOperationException("Spool target is missing.");
-            }, recoverAdmittedOriginal).ConfigureAwait(false);
+        if (state.InstallationEpoch != target.InstallationEpoch)
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool head belongs to another installation.");
+        }
+
+        if (authority is null) { return (null, etag); }
+        var (pending, pendingEtag) = await ReadStoredAsync<AnchoredStateTransition>(target, PendingKey(target), budget).ConfigureAwait(false);
+        string scope = PendingScope(target);
+        if (pending is not null)
+        {
+            ValidateStoredTransition(pending, scope, budget);
+        }
+
+        SecuritySpoolSnapshot reconciled;
+        try
+        {
+            reconciled = await RecoverableAnchoredState.ReconcileAsync(scope, state, pending, value => Capture(value, budget),
+                value => budget.ReadAsync(() => authority.ValidateStateAsync(target, value.Revision, StateDigest(value), CancellationToken.None)), new DeadlineAnchoredStateAuthority(authority, budget), async value =>
+                {
+                    // CAS keeps both the retained stage and the main predecessor owned by the admitted original operation.
+                    if (StateDigest(state) != StateDigest(value))
+                    { _ = await budget.ReadAsync(() => client.TrySaveStateAsync(target.ComponentName, Key(target), value, etag, new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false); }
+                    var (durable, durableEtag) = await ReadStoredAsync<SecuritySpoolSnapshot>(target, Key(target), budget).ConfigureAwait(false);
+                    if (durable is null || StateDigest(Capture(durable, budget)) != StateDigest(value)) { throw new InvalidOperationException("Prospective spool target is not durable."); }
+                    etag = durableEtag;
+                    // Conditional tombstone cannot remove a stage installed by another caller.
+                    _ = await budget.ReadAsync(() => client.TrySaveStateAsync<AnchoredStateTransition?>(target.ComponentName, PendingKey(target), null, pendingEtag,
+                        new StateOptions { Concurrency = ConcurrencyMode.FirstWrite }, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+                    // Read the main bytes again after the final persistence await.
+                    var (final, finalEtag) = await ReadStoredAsync<SecuritySpoolSnapshot>(target, Key(target), budget).ConfigureAwait(false);
+                    etag = finalEtag; return final ?? throw new InvalidOperationException("Spool target is missing.");
+                }, recoverAdmittedOriginal).ConfigureAwait(false);
+        }
+        catch (JsonException)
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool transition cannot be decoded.");
+        }
         budget.Check(); return ValidTarget(target) ? (reconciled, etag) : (null, etag);
     }
+    private static void ValidateStoredTransition(AnchoredStateTransition pending, string scope, PrivateOwnerOperationDeadline budget)
+    {
+        if (pending.ScopeId != scope || pending.ExpectedRevision is < 0 or long.MaxValue
+            || pending.TargetRevision != pending.ExpectedRevision + 1
+            || pending.TargetBytes is not { Length: > 0 and <= RecoverableAnchoredState.MaximumPendingBytes }
+            || !IsTransitionDigest(pending.PredecessorDigest)
+            || pending.TargetDigest != Convert.ToHexString(SHA256.HashData(pending.TargetBytes)))
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool transition is malformed.");
+        }
+
+        try
+        {
+            var target = JsonSerializer.Deserialize<SecuritySpoolSnapshot>(pending.TargetBytes);
+            if (target is null || StateDigest(Capture(target, budget)) != pending.TargetDigest)
+            {
+                throw new MalformedSecuritySpoolException("Persisted private spool transition target is malformed.");
+            }
+        }
+        catch (JsonException)
+        {
+            throw new MalformedSecuritySpoolException("Persisted private spool transition cannot be decoded.");
+        }
+
+        static bool IsTransitionDigest(string? digest) => digest is { Length: 64 }
+            && digest.All(character => character is >= '0' and <= '9' or >= 'A' and <= 'F');
+    }
+
     private async Task TryWriteAsync(ReplicatedSecuritySpoolTarget target, SecuritySpoolSnapshot previous, SecuritySpoolSnapshot next, string etag, PrivateOwnerOperationDeadline budget)
     {
         next = Capture(next, budget); if (authority is null || !ValidTarget(target)) { return; }
@@ -457,12 +529,11 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
         string pendingEtag = string.Empty;
         _ = await RecoverableAnchoredState.CommitAsync(transition, new DeadlineAnchoredStateAuthority(authority, budget), async () =>
         {
-            var (pending, freshEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<AnchoredStateTransition>(target.ComponentName, PendingKey(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (pending, freshEtag) = await ReadStoredAsync<AnchoredStateTransition>(target, PendingKey(target), budget).ConfigureAwait(false);
             pendingEtag = freshEtag; return pending;
         }, async value =>
         {
-            var (latest, latestEtag) = await budget.ReadAsync(() => client.GetStateAndETagAsync<SecuritySpoolSnapshot>(target.ComponentName,
-                Key(target), ConsistencyMode.Strong, cancellationToken: CancellationToken.None)).ConfigureAwait(false);
+            var (latest, latestEtag) = await ReadStoredAsync<SecuritySpoolSnapshot>(target, Key(target), budget).ConfigureAwait(false);
             var predecessor = latest is null ? new SecuritySpoolSnapshot(target.InstallationEpoch, 0, Array.Empty<SecurityObservationRecord>()) : Capture(latest, budget);
             if (latestEtag != etag || StateDigest(predecessor) != StateDigest(previous))
             { throw new InvalidOperationException("Spool predecessor advanced before pending stage."); }
@@ -474,15 +545,27 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
     }
     private static SecuritySpoolSnapshot Capture(SecuritySpoolSnapshot source, PrivateOwnerOperationDeadline budget)
     {
-        if (source.Revision < 0 || source.Records is null || source.Records.Count > RecordBound) { throw new InvalidOperationException("Malformed private spool state."); }
+        try
+        {
+            return CaptureCore(source, budget);
+        }
+        catch (Exception error) when (error is ArgumentException or OverflowException)
+        {
+            throw new MalformedSecuritySpoolException("Malformed private spool state.");
+        }
+    }
+
+    private static SecuritySpoolSnapshot CaptureCore(SecuritySpoolSnapshot source, PrivateOwnerOperationDeadline budget)
+    {
+        if (source is null || source.Revision < 0 || source.Records is null || source.Records.Count > RecordBound) { throw new MalformedSecuritySpoolException("Malformed private spool state."); }
         Text(source.InstallationEpoch); var owned = new List<SecurityObservationRecord>(); var ids = new HashSet<string>(StringComparer.Ordinal); var receiptKeys = new HashSet<string>(StringComparer.Ordinal);
         foreach (var record in source.Records)
         {
-            budget.Check(); if (owned.Count >= RecordBound || record is null) { throw new InvalidOperationException("Malformed private spool state."); }
+            budget.Check(); if (owned.Count >= RecordBound || record is null) { throw new MalformedSecuritySpoolException("Malformed private spool state."); }
             ValidateIntent(record.Intent);
             if (!ids.Add(record.Intent.ObservationId) || record.Intent.RetainedServerReceiptKey is { } key && !receiptKeys.Add(key) || record.Sequence != checked(source.ArchivedObservedCount + owned.Count + 1L) || record.ObservedAt.Offset != TimeSpan.Zero
                 || record.UtcDay != record.ObservedAt.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) || record.Receipt is not null && !Exact(record, record.Receipt))
-            { throw new InvalidOperationException("Malformed private spool record."); } owned.Add(record);
+            { throw new MalformedSecuritySpoolException("Malformed private spool record."); } owned.Add(record);
         }
         if (source.PageIndex is < 0 or > ArchivePageBound || source.ArchivedObservedCount < source.PageIndex
             || source.ArchivedObservedCount > checked(source.PageIndex * RecordBound)
@@ -499,12 +582,12 @@ public sealed class ReplicatedSecurityObservationSpool(DaprClient client, TimePr
             || source.Revision != checked(source.ArchivedObservedCount + owned.Count + source.ArchivedAcknowledgedCount
                 + owned.Count(r => r.Receipt is not null) + source.DrainRevision + source.PageIndex
                 + source.ArchiveReservationCount + (source.ReservedArchiveDigest is null ? 0 : 1)))
-        { throw new InvalidOperationException("Malformed private spool revision."); }
+        { throw new MalformedSecuritySpoolException("Malformed private spool revision."); }
         if (source.ReservedArchiveDigest is not null)
         {
             var carrier = source with { Revision = checked(source.Revision - 1), ReservedArchiveDigest = null, Records = owned.ToArray() };
             if (!string.Equals(ArchiveDigest(carrier), source.ReservedArchiveDigest, StringComparison.Ordinal))
-            { throw new InvalidOperationException("Spool archive reservation does not match the anchored head."); }
+            { throw new MalformedSecuritySpoolException("Spool archive reservation does not match the anchored head."); }
         }
         return source with { Records = Array.AsReadOnly(owned.ToArray()) };
     }

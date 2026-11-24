@@ -1,6 +1,7 @@
 using Dapr.Client;
 using Hexalith.EventStore.Contracts.Security;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Hexalith.Platform.Custody;
 
@@ -35,7 +36,8 @@ public static class PlatformPrivateCapabilityComposition
     public static IServiceCollection AddPrivateSecurityObservationDrainWorker(this IServiceCollection services, ReplicatedSecurityObservationSpool spool, TimeSpan interval, int maximumCount)
     {
         ArgumentNullException.ThrowIfNull(services); ArgumentNullException.ThrowIfNull(spool);
-        services.AddHostedService(provider => new ReplicatedSecurityObservationSpoolWorker(spool, provider.GetRequiredService<TimeProvider>(), interval, maximumCount));
+        services.AddHostedService(provider => new ReplicatedSecurityObservationSpoolWorker(spool, provider.GetRequiredService<TimeProvider>(), interval, maximumCount,
+            provider.GetService<ILogger<ReplicatedSecurityObservationSpoolWorker>>()));
         return services;
     }
     /// <summary>Adds only the authenticated custody subscriber; the compromise registrar is not registered or injected into signing/dispatch paths.</summary>
