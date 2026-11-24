@@ -561,7 +561,9 @@ public sealed class ReplicatedSecurityObservationSpoolTests
     [Fact]
     public async Task RepeatedRolloverRaceRetainsOnePagePerSuccessfulArchive()
     {
-        var f = new SecuritySpoolFixture(); string prior = SeedArchivePages(f, 15);
+        var f = new SecuritySpoolFixture();
+        var spool = CreateCapacityTestSpool(f);
+        string prior = SeedArchivePages(f, 15);
         var originals = Enumerable.Range(1, 10000).Select(sequence =>
         {
             var pending = new SecurityObservationRecord(SecuritySpoolFixture.Intent("race-seed-" + sequence), f.Clock.Now,
@@ -585,19 +587,20 @@ public sealed class ReplicatedSecurityObservationSpoolTests
             return (JsonSerializer.Deserialize<SecuritySpoolArchivePage>(bytes)!, "1");
         });
         var firstIntent = SecuritySpoolFixture.Intent("repeat-race-a");
-        var first = f.Spool.ObserveAsync(firstIntent, TestContext.Current.CancellationToken);
-        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        var first = spool.ObserveAsync(firstIntent, TestContext.Current.CancellationToken);
         SecurityObservationRecord? second; SecurityObservationRecord? third;
         try
         {
-            second = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-b"), TestContext.Current.CancellationToken);
-            third = await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-c"), TestContext.Current.CancellationToken);
+            Task gate = await Task.WhenAny(entered.Task, first).WaitAsync(TimeSpan.FromSeconds(30), TestContext.Current.CancellationToken);
+            gate.ShouldBeSameAs(entered.Task, "The first observation must persist the final archive page before either contender proceeds.");
+            second = await spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-b"), TestContext.Current.CancellationToken);
+            third = await spool.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-c"), TestContext.Current.CancellationToken);
         }
         finally { release.TrySetResult(); }
         second.ShouldNotBeNull(); third.ShouldNotBeNull();
         (await first).ShouldBeNull();
         f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16); f.Read()!.ReservedArchiveDigest.ShouldBeNull();
-        var restarted = new ReplicatedSecurityObservationSpool(f.Client, f.Clock, f.Authority, f.Recorder);
+        var restarted = CreateCapacityTestSpool(f);
         (await restarted.ObserveAsync(firstIntent, TestContext.Current.CancellationToken)).ShouldNotBeNull();
         (await restarted.ObserveAsync(SecuritySpoolFixture.Intent("repeat-race-d"), TestContext.Current.CancellationToken)).ShouldNotBeNull();
         f.Archives.Count.ShouldBe(16); f.Read()!.PageIndex.ShouldBe(16);
