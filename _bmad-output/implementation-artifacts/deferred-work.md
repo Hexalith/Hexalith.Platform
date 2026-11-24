@@ -16,6 +16,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Assign every unlisted Kubernetes object kind to exactly one release tier.
   evidence: Concurrent AR-32 text requires a unique tier but does not classify RBAC, ServiceAccounts, CRDs, PDBs or admission objects, allowing ownership and rollback behavior to diverge.
+  status: done 2026-11-24
+  resolution: AR-32 and the architecture spine now assign RBAC, ServiceAccounts, CRDs, PDBs, admission resources and unlisted objects to one writer and tier.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Add router-level coverage for the canonical Tenants workspace URLs.
   evidence: Existing tests verify aliases or render `TenantsWorkspace` directly; neither `/tenants/tenants` nor `/tenants/workspace-users` is routed through the production assembly, so the generic landing-page catch-all can win unnoticed.
