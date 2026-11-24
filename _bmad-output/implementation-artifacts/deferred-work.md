@@ -1,9 +1,13 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Restore the completed `stepsCompleted` markers in the Epic plan.
   evidence: Both review lenses found that concurrent `/pushall` commit `63af0c72` changed the completed marker list to `[]`, which can make planning automation treat the artifact as unvalidated.
+  status: superseded (2026-11-24)
+  resolution: The canonical epics.md frontmatter already contains all four completed planning steps.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Reconcile the accepted Kubernetes 1.34 staging risk with the requirement to upgrade before staging exists.
   evidence: Pre-existing `epics.md` AR-64 permits staging on 1.34 after 2026-10-27 while Story 4.1 requires a supported minor before staging; one sequence must become authoritative.
+  status: superseded (2026-11-24)
+  resolution: The October 1 decision withdrew the waiver. AR-64, the PRD addendum, architecture and Platform sequencing all make the supported upgrade a prerequisite for staging.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Make recovery-job credential cleanup fail safe on abnormal executor termination.
   evidence: Concurrent AR-28 text promises destruction or revocation at job end but does not define a short lease or out-of-band finalizer for a crashed or killed job.
