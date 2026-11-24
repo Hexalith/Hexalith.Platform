@@ -16,6 +16,7 @@ namespace Hexalith.Platform.Identity.Tests;
 public sealed class PlatformIdentityAdmissionTests
 {
     private const string Operator = "01HX0000000000000000000001";
+    private static readonly string AliasKey = Convert.ToBase64String(new byte[32]);
     [Fact]
     public async Task FirstEnrollment_RequiresIndependentExactBootstrapApprovalAndVerifiedProvenance()
     {
@@ -32,11 +33,18 @@ public sealed class PlatformIdentityAdmissionTests
     {
         var fixture = Fixture();
         ActorRegistryEntry entry = new(Operator, 1, true, Operator);
-        fixture.Proxy.ReadAsync(Arg.Any<string>(), true, Arg.Any<string>(), Arg.Any<string>()).Returns(entry);
+        string alias = PlatformLoginAliasDigest.Create("issuer", "private-subject", AliasKey);
+        string otherAlias = PlatformLoginAliasDigest.Create("issuer", "other-subject", AliasKey);
+        fixture.Proxy.ReadAsync(alias, true, Arg.Any<string>(), Arg.Any<string>()).Returns(entry);
         ActorRegistryEntry? first = await fixture.Service.ResolveLoginAsync(Login("tenant-a"), "identity-writer", TestContext.Current.CancellationToken);
         ActorRegistryEntry? second = await fixture.Service.ResolveLoginAsync(Login("tenant-b"), "identity-writer", TestContext.Current.CancellationToken);
-        first!.ActorId.ShouldBe(second!.ActorId);
-        fixture.Factory.Received(2).CreateActorProxy<IIdentityActorRegistryActor>(Arg.Is<ActorId>(value => value.GetId() == IdentityActorRegistryActor.RegistryNamespace), IdentityActorRegistryActor.ActorTypeName);
+        ActorRegistryEntry? other = await fixture.Service.ResolveLoginAsync(Login("tenant-a", "other-subject"), "identity-writer", TestContext.Current.CancellationToken);
+        first.ShouldBe(entry);
+        second.ShouldBe(entry);
+        other.ShouldBeNull();
+        await fixture.Proxy.Received(2).ReadAsync(alias, true, Arg.Any<string>(), Arg.Any<string>());
+        await fixture.Proxy.Received(1).ReadAsync(otherAlias, true, Arg.Any<string>(), Arg.Any<string>());
+        fixture.Factory.Received(3).CreateActorProxy<IIdentityActorRegistryActor>(Arg.Is<ActorId>(value => value.GetId() == IdentityActorRegistryActor.RegistryNamespace), IdentityActorRegistryActor.ActorTypeName);
         await fixture.Proxy.DidNotReceiveWithAnyArgs().MutateAsync(default!, default!);
     }
 
@@ -80,7 +88,7 @@ public sealed class PlatformIdentityAdmissionTests
     private static (PlatformIdentityEnrollmentService Service, IIdentityActorRegistryActor Proxy, IActorProxyFactory Factory) Fixture()
     {
         var configured = Options.Create(new PlatformIdentityOptions { IdentityWriterSources = ["identity-writer"], TrustedIssuers = ["issuer"], RegistryServiceSourceId = "registry-service",
-            AliasKeyBase64 = Convert.ToBase64String(new byte[32]), AuthorityRevision = 1, BootstrapProvenanceSources = ["bootstrap-authority"] });
+            AliasKeyBase64 = AliasKey, AuthorityRevision = 1, BootstrapProvenanceSources = ["bootstrap-authority"] });
         IIdentityAdmissionProof operatorVerifier = Substitute.For<IIdentityAdmissionProof>();
         IIdentityAdmissionProof bootstrap = Substitute.For<IIdentityAdmissionProof>();
         bootstrap.Verify("approved", Arg.Any<IdentityAdmissionScope>()).Returns(call => new IdentityAdmissionEvidence(call.Arg<IdentityAdmissionScope>(), "bootstrap-authority", Operator, Operator, 0, true,
@@ -95,5 +103,5 @@ public sealed class PlatformIdentityAdmissionTests
         return (new(registry, new(operatorVerifier, configured), new(bootstrap, configured), configured), proxy, factory);
     }
     private static ClaimsPrincipal Workload() => new(new ClaimsIdentity([new Claim("dapr_caller_app_id", "identity-writer")], DaprInternalAuthenticationOptions.SchemeName));
-    private static ClaimsPrincipal Login(string tenant) => new(new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", "private-subject"), new Claim("tenant_id", tenant)], "verified-login"));
+    private static ClaimsPrincipal Login(string tenant, string subject = "private-subject") => new(new ClaimsIdentity([new Claim("iss", "issuer"), new Claim("sub", subject), new Claim("tenant_id", tenant)], "verified-login"));
 }

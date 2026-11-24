@@ -107,6 +107,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Make the pre-existing global-login alias test assert real registry lookup aliases (G107).
   evidence: Verification-gap V38 found SameVerifiedLoginAcrossTenantClaims_UsesOneGlobalActorAndNeverEnrolls returns one registry entry for Arg.Any<string>() and compares those predetermined actor IDs. Tenant-dependent alias derivation therefore evades its assertions; use an alias-bound registry response and verify different-login denial in the identity workstream. This test predates the resumed qualification run.
+  status: done 2026-11-24
+  resolution: The registry double answers only the expected digest. The test verifies both tenant claims use that alias, a different login is denied, and no mutation occurs.
 
 ## Deferred from: code review of spec-4-26-qualify-rancher-and-the-management-migration.md (2026-10-04)
 
