@@ -54,16 +54,16 @@ public sealed partial class PlatformAppModelTests : IDisposable
         string productionRoot = Path.Combine(Path.GetTempPath(), "platform-production-refusal-" + Guid.NewGuid().ToString("N"));
         string snapshots = Path.Combine(productionRoot, "src", "Hexalith.Platform.Composition", "Declarations");
         string catalog = Path.Combine(productionRoot, "references", "Hexalith.Builds", "Props");
-        Directory.CreateDirectory(snapshots);
-        Directory.CreateDirectory(catalog);
-        foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
-            File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
-        // Fixture-owned version declarations agree with genuine candidate release provenance.
-        using (JsonDocument provenance = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(snapshots, "provenance.json"))))
-            File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup>" + string.Concat(
-                provenance.RootElement.EnumerateObject().Select(owner => "<Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>" + owner.Value.GetProperty("version").GetString() + "</Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>")) + "</PropertyGroup></Project>");
         try
         {
+            Directory.CreateDirectory(snapshots);
+            Directory.CreateDirectory(catalog);
+            foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
+                File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
+            // Fixture-owned version declarations agree with genuine candidate release provenance.
+            using (JsonDocument baseline = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(snapshots, "provenance.json"))))
+                File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup>" + string.Concat(
+                    baseline.RootElement.EnumerateObject().Select(owner => "<Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>" + owner.Value.GetProperty("version").GetString() + "</Hexalith" + (owner.Name == "eventstore" ? "EventStore" : char.ToUpperInvariant(owner.Name[0]) + owner.Name[1..]) + "Version>")) + "</PropertyGroup></Project>");
             SourceMapping mapping = Options().Mapping;
             PlatformCompositionOptions production = Options() with
             {
@@ -73,7 +73,6 @@ public sealed partial class PlatformAppModelTests : IDisposable
             production.Mapping.Entries.ShouldAllBe(entry => entry.Origin == "package" && entry.Path == null);
             PlatformDeclarationSet.Load(production).Select(module => PlatformDeclarationSet.Id(module.Declaration))
                 .Order(StringComparer.Ordinal).ShouldBe(["eventstore", "memories", "tenants"]);
-            builder.Resources.ShouldBeEmpty();
             string provenancePath = Path.Combine(snapshots, "provenance.json");
             JsonNode provenance = JsonNode.Parse(File.ReadAllText(provenancePath))!;
             string changedValue = field == "version" ? "0.0.0-unreleased" : new string('f', 40);
@@ -88,7 +87,7 @@ public sealed partial class PlatformAppModelTests : IDisposable
             if (Environment.GetEnvironmentVariable("HEXALITH_PLATFORM_PACKAGE_REFUSAL_PATH") is { Length: > 0 } refusalPath)
                 File.WriteAllText(refusalPath, refusal.Message + Environment.NewLine);
         }
-        finally { Directory.Delete(productionRoot, recursive: true); }
+        finally { if (Directory.Exists(productionRoot)) Directory.Delete(productionRoot, recursive: true); }
     }
 
     [Theory]

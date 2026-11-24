@@ -16,6 +16,7 @@ using Shouldly;
 /// <summary>Exercises native owner source/refusal checks and controlled readiness transport without live runtime qualification.</summary>
 public sealed class PlatformNativeTestPreparationTests
 {
+    private const string ClosureRefusal = "The retained catalog closure differs from the owning composition.";
     private const string ScopeRefusal = "The native consumer scope differs from this owning run.";
 
     private static readonly Lazy<(byte[] Bytes, string Root)> TenantsCatalog = new(() =>
@@ -207,7 +208,8 @@ public sealed class PlatformNativeTestPreparationTests
     [InlineData("outside-root")]
     public async Task RequiredInputsRefuseLinkedParentsAndOutsideRootsAsync(string mutation)
     {
-        if (OperatingSystem.IsWindows() && mutation == "parent-link") return;
+        Assert.SkipWhen(OperatingSystem.IsWindows() && mutation == "parent-link",
+            "Creating a directory symbolic link requires Windows developer mode or elevated privileges.");
         using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
         workspace.WriteSource(workspace.Scope);
         workspace.WriteStaleCredentials();
@@ -233,6 +235,65 @@ public sealed class PlatformNativeTestPreparationTests
             if (new DirectoryInfo(workspace.Catalog).LinkTarget is not null) Directory.Delete(workspace.Catalog);
             Directory.Delete(outside, recursive: true);
         }
+    }
+
+    /// <summary>Invalid retained catalog evidence must refuse before native preparation publishes progress or credentials.</summary>
+    [Theory]
+    [InlineData("closure-app", ClosureRefusal)]
+    [InlineData("closure-count", ClosureRefusal)]
+    [InlineData("closure-duplicate", ClosureRefusal)]
+    [InlineData("closure-resource", ClosureRefusal)]
+    [InlineData("file-link", "A native catalog input is linked inside the owned workspace.")]
+    [InlineData("empty", "A native catalog input is linked, empty or exceeds its bounded contract.")]
+    [InlineData("oversized", "A native catalog input is linked, empty or exceeds its bounded contract.")]
+    public async Task RefusesChangedClosureAndInvalidInputFilesAsync(string mutation, string message)
+    {
+        Assert.SkipWhen(OperatingSystem.IsWindows() && mutation == "file-link",
+            "Creating a file symbolic link requires Windows developer mode or elevated privileges.");
+        using var workspace = new PreparationWorkspace(DateTimeOffset.UtcNow.AddMinutes(10));
+        workspace.WriteSource(workspace.Scope);
+        workspace.WriteStaleCredentials();
+        string scopePath = Path.Combine(workspace.Catalog, "native-scope.json");
+        switch (mutation)
+        {
+            case "closure-app":
+            case "closure-count":
+            case "closure-duplicate":
+            case "closure-resource":
+                var gateway = new { ResourceId = "eventstore", AppId = "eventstore" };
+                var hosts = new[] { gateway, new { ResourceId = "fixture-tenants", AppId = "tenants" } };
+                hosts = mutation switch
+                {
+                    "closure-app" => [gateway, new { hosts[1].ResourceId, AppId = "foreign-app" }],
+                    "closure-count" => [gateway],
+                    "closure-duplicate" => [gateway, gateway],
+                    _ => [gateway, new { ResourceId = "foreign-resource", hosts[1].AppId }],
+                };
+                File.WriteAllBytes(Path.Combine(workspace.Catalog, "selected-closure.json"), JsonSerializer.SerializeToUtf8Bytes(new { hosts }));
+                break;
+            case "file-link":
+                string target = Path.Combine(workspace.Catalog, "linked-scope.json");
+                File.Move(scopePath, target);
+                File.CreateSymbolicLink(scopePath, target);
+                break;
+            case "empty":
+                File.WriteAllBytes(scopePath, []);
+                break;
+            case "oversized":
+                using (FileStream file = File.OpenWrite(scopePath)) file.SetLength(8_388_609);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(mutation));
+        }
+        PlatformNativeTestPreparation preparation = workspace.Preparation();
+        using ServiceProvider services = new ServiceCollection().BuildServiceProvider();
+        using CancellationTokenSource bound = Bound();
+
+        Exception failure = await CaptureAsync(preparation.PrepareAsync(services, bound.Token));
+
+        failure.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe(message);
+        File.Exists(Path.Combine(workspace.Catalog, "preparation-progress.json")).ShouldBeFalse();
+        workspace.ShouldBeUnprepared(preparation);
     }
 
     /// <summary>Writes the private endpoint channel exactly as the independent Builds consumer reads it.</summary>
@@ -311,9 +372,9 @@ public sealed class PlatformNativeTestPreparationTests
                 }
                 if (requests == 2)
                 {
-                    // Allow only timer precision; the old100ms loop and immediate retry cannot satisfy the server wait.
+                    // Allow only timer precision. A 100 ms loop or immediate retry cannot satisfy the server wait.
                     DateTimeOffset.UtcNow.ShouldBeGreaterThanOrEqualTo(notBefore.AddMilliseconds(-30));
-                    predicates.ShouldBe(0, "A429 body must never reach the readiness predicate.");
+                    predicates.ShouldBe(0, "A 429 body must never reach the readiness predicate.");
                 }
                 string json = requests switch
                 {
@@ -425,7 +486,7 @@ public sealed class PlatformNativeTestPreparationTests
             Task polling = nullPreparation.PollAsync("memories-active-observing", client, "tenant", _ => false, nullCancellation.Token);
             await nullObserved.Task.WaitAsync(bound.Token);
             while (!File.Exists(nullProgress)) await Task.Delay(1, bound.Token);
-            polling.IsCompleted.ShouldBeFalse("The clock's default600 budget must cap a valid huge delay without a range fault.");
+            polling.IsCompleted.ShouldBeFalse("The clock's default 600-second budget must cap a valid huge delay without a range fault.");
             await nullCancellation.CancelAsync();
             Exception failure = await CaptureAsync(polling.WaitAsync(TimeSpan.FromSeconds(2), bound.Token));
             failure.ShouldBeAssignableTo<OperationCanceledException>();

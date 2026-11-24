@@ -4,6 +4,8 @@ namespace Hexalith.Platform.Composition.Tests;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text.Json;
+using Aspire.Hosting;
+using Aspire.Hosting.ApplicationModel;
 using Hexalith.Platform.CatalogArtifacts;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
@@ -59,8 +61,8 @@ public sealed class PlatformCurrentPackageArtifactTests
         Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
         var declarations = PlatformDeclarationSet.Load(options);
         var servers = PlatformAppModel.Prepare(options);
-        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(
-            PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true));
+        var bound = PlatformPartiesPackageCatalogQualification.Bind(options, declarations, servers, developmentRun: true);
+        PlatformPartiesPackageFixture.AssertCatalogSelectedDependencies(bound);
         int probes = 0;
         var builder = PlatformPartiesPackageFixture.Builder();
         Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options with
@@ -73,20 +75,65 @@ public sealed class PlatformCurrentPackageArtifactTests
         }));
         probes.ShouldBe(1, "Admitted current owner images reach the first probe; a failed probe still refuses before rendering.");
         fixture.AssertNoEffects(builder);
-        // Reader generation authenticates the measured current private bodies without composing images or resources.
-        string verification = Path.Combine(fixture.Workspace, "current-reader-verification");
-        PlatformRoutingCatalog catalog = PlatformRoutingCatalog.Generate(options, servers, verification);
-        using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "current-reader-receipt.json")));
+        string catalog = await AssertComposedWorkloadsAsync(options, proof, bound).ConfigureAwait(true);
+        string reader = Path.Combine(fixture.Workspace, "platform-components", "catalog-reader");
+        using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog, "current-reader-receipt.json")));
         proof.VerifyReader(receipt.RootElement);
-        using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(verification, "catalog-reader", "request.json")));
+        using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(reader, "request.json")));
         request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(proof.OwnerPackages.Path);
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
-            Hash(Path.Combine(verification, "catalog-reader", "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
-        using JsonDocument canonical = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
+            Hash(Path.Combine(reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
+        using JsonDocument canonical = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog, "catalog.json")));
         foreach (string name in new[] { "routes", "operations", "declarations" }) canonical.RootElement.GetProperty(name).GetArrayLength().ShouldBe(71);
         canonical.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(47);
         proof.Matches(options).ShouldBeTrue();
-        fixture.AssertNoEffects(builder);
+    }
+
+    private static async Task<string> AssertComposedWorkloadsAsync(PlatformCompositionOptions options, PlatformCurrentOwnerProof proof,
+        IReadOnlyList<PlatformServerBinding> servers)
+    {
+        CompositionRunPlan plan = options.RunPlan!;
+        var images = servers.Select(server => server.Image).OfType<string>().Distinct(StringComparer.Ordinal).ToDictionary(tag => tag,
+            tag => PlatformPartiesPackageFixture.ImageEvidence(tag, index: true), StringComparer.Ordinal);
+        var manifests = images.Values.ToDictionary(image => image.Reference, image => image.Manifest, StringComparer.Ordinal);
+        CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+        await CompositionDaprComponentRenderer.WriteAsync(plan, cancellationToken).ConfigureAwait(true);
+        var builder = PlatformPartiesPackageFixture.Builder();
+        PlatformAppModel.Compose(builder, options with
+        {
+            ImageProbeRunner = (start, _, _) => Task.FromResult(new CompositionProcessResult(true, 0,
+                start.ArgumentList[0] == "buildx" ? images[start.ArgumentList[3]].Tag : manifests[start.ArgumentList[3]], false)),
+        });
+
+        var parties = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "parties");
+        List<object> arguments = [];
+        foreach (var callback in parties.Annotations.OfType<CommandLineArgsCallbackAnnotation>())
+            await callback.Callback(new CommandLineArgsCallbackContext(arguments, cancellationToken)).ConfigureAwait(true);
+        string[] args = arguments.Select(argument => argument.ToString()!).ToArray();
+        args.Count(arg => arg == "--no-build").ShouldBe(1);
+        args.Count(arg => arg == "--no-restore").ShouldBe(1);
+        args.Count(arg => arg == "--artifacts-path").ShouldBe(1);
+        args.SkipWhile(arg => arg != "--artifacts-path").Skip(1).First().ShouldBe(proof.Artifacts);
+
+        var containers = builder.Resources.OfType<ContainerResource>()
+            .Where(resource => resource.Annotations.OfType<PlatformServerAnnotation>().Any()).ToArray();
+        containers.Length.ShouldBe(servers.Count(server => server.Image is not null));
+        foreach (var container in containers)
+        {
+            var binding = container.Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+            binding.ImageDigest.ShouldNotBeNullOrEmpty();
+            container.Annotations.OfType<ContainerImageAnnotation>().Single().SHA256.ShouldBe(binding.ImageDigest);
+        }
+
+        string catalog = Path.Combine(plan.Workspace, "platform-components", plan.EnvironmentId + "-catalog");
+        using JsonDocument closure = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog, "selected-closure.json")));
+        JsonElement memories = closure.RootElement.GetProperty("hosts").EnumerateArray()
+            .Single(host => host.GetProperty("ResourceId").GetString() == "memories");
+        var memory = containers.Single(container => container.Name == "memories").Annotations.OfType<PlatformServerAnnotation>().Single().Binding;
+        memories.GetProperty("artifact").GetString().ShouldBe(images[memory.Image!].Reference);
+        memories.GetProperty("artifactSha256").GetString().ShouldBe(memory.ImageDigest);
+        memories.GetProperty("projectFileSha256").ValueKind.ShouldBe(JsonValueKind.Null);
+        return catalog;
     }
 
 #if NET11_0_OR_GREATER

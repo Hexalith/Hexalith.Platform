@@ -79,8 +79,19 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             "--output", output, "-m:1", "-nodeReuse:false", "--disable-build-servers", "-p:GeneratePackageOnBuild=false", "-p:CentralPackageVersionsFileImported=true", "-p:PlatformCatalogBindings=" + props, "--nologo", .. packageArguments], options.PlatformRoot,
             options.Mapping.Mode == WorkspaceMode.Source ? SourceMappingMaterializer.Environment(options.Mapping, mappingWorkspace) : null);
         var compiled = CompositionProcess.RunAsync(start, ReaderTimeout(TimeSpan.FromMinutes(5), packageReaderDeadline ?? options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow), CancellationToken.None).GetAwaiter().GetResult();
-        File.WriteAllText(Path.Combine(build, "build.log"), compiled.Output + compiled.ErrorOutput);
-        if (compiled.ExitCode != 0 || compiled.TimedOut) throw new InvalidDataException($"Mapped routing catalog owner build failed; see {Path.Combine(build, "build.log")}.");
+        string buildLog = Path.Combine(build, "build.log");
+        File.WriteAllText(buildLog, compiled.Output + compiled.ErrorOutput);
+        if (!compiled.Started || compiled.TimedOut || compiled.ExitCode != 0)
+        {
+            string reader = options.Mapping.Mode == WorkspaceMode.Package ? "Private package routing catalog reader" : "Mapped routing catalog owner";
+            string failure = compiled switch
+            {
+                { TimedOut: true } => "timed out.",
+                { Started: false } => "could not start.",
+                _ => $"failed. See {buildLog}.",
+            };
+            throw new InvalidDataException($"{reader} build {failure}");
+        }
         // Read the restored package folders before any pending output exists, so a refusal leaves nothing behind.
         string[]? packageFolders = ownerPackages is null ? null : ReaderPackageFolders(build);
         string pending = Path.Combine(workspace, "catalog-pending-" + Guid.NewGuid().ToString("N"));

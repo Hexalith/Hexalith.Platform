@@ -32,16 +32,22 @@ public sealed class PlatformFixturePackageQualificationTests
         File.WriteAllText(seed, "<Project />");
         string project = PlatformEventStoreExtensionBindings.HostProjectPath(workspace.Options);
         PlatformServerBinding gateway = new(null!, "gateway", "eventstore", "eventstore", project, null, "/ready", new Dictionary<string, string>(), []);
-        JsonElement composed = JsonSerializer.SerializeToElement(PlatformRoutingCatalogBootstrap.DescribeHost(
-            gateway with { EventStoreHost = new(seed, []) }, workspace.Options));
-        composed.GetProperty("artifactKind").GetString().ShouldBe("composed-project");
-        composed.GetProperty("artifact").GetString().ShouldBe(project);
-        composed.GetProperty("artifactSha256").GetString().ShouldBe(Digest(project));
-        composed.GetProperty("seedArtifact").GetString().ShouldBe(seed);
-        composed.GetProperty("seedArtifactSha256").GetString().ShouldBe(Digest(seed));
+        foreach (WorkspaceMode mode in new[] { WorkspaceMode.Package, WorkspaceMode.Source })
+        {
+            var options = workspace.Options with { Mapping = workspace.Options.Mapping with { Mode = mode } };
+            JsonElement composed = JsonSerializer.SerializeToElement(PlatformRoutingCatalogBootstrap.DescribeHost(
+                gateway with { EventStoreHost = new(seed, []) }, options));
+            composed.GetProperty("artifactKind").GetString().ShouldBe("composed-project");
+            composed.GetProperty("artifact").GetString().ShouldBe(project);
+            composed.GetProperty("artifactSha256").ValueKind.ShouldBe(JsonValueKind.Null);
+            composed.GetProperty("projectFileSha256").GetString().ShouldBe(Digest(project));
+            composed.GetProperty("seedArtifact").GetString().ShouldBe(seed);
+            composed.GetProperty("seedArtifactSha256").GetString().ShouldBe(Digest(seed));
+        }
         JsonElement unchanged = JsonSerializer.SerializeToElement(PlatformRoutingCatalogBootstrap.DescribeHost(gateway with { ProjectPath = seed }, workspace.Options));
         unchanged.GetProperty("artifactKind").GetString().ShouldBe("published-seed");
-        unchanged.GetProperty("artifactSha256").GetString().ShouldBe(Digest(seed));
+        unchanged.GetProperty("artifactSha256").ValueKind.ShouldBe(JsonValueKind.Null);
+        unchanged.GetProperty("projectFileSha256").GetString().ShouldBe(Digest(seed));
         unchanged.TryGetProperty("seedArtifact", out _).ShouldBeFalse();
     }
 

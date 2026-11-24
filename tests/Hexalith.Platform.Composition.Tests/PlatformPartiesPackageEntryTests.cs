@@ -95,6 +95,7 @@ public sealed class PlatformPartiesPackageEntryTests
     [InlineData("invalid-digest")]
     [InlineData("unavailable-manifest")]
     [InlineData("wrong-repository")]
+    [InlineData("malformed-manifest")]
     [InlineData("substituted-manifest")]
     public void InvalidRegistryEvidenceNamesTheDependency(string fault)
     {
@@ -106,6 +107,7 @@ public sealed class PlatformPartiesPackageEntryTests
             string output = tag ? evidence.Tag : evidence.Manifest;
             bool unavailable = fault == (tag ? "unavailable-tag" : "unavailable-manifest");
             if (tag && fault == "invalid-digest") output = "{\"digest\":\"sha256:not-hex\"}";
+            if (!tag && fault == "malformed-manifest") output = "{";
             if (!tag && fault == "wrong-repository") output = output.Replace("registry.hexalith.com", "foreign.example", StringComparison.Ordinal);
             if (!tag && fault == "substituted-manifest")
             {
@@ -115,7 +117,8 @@ public sealed class PlatformPartiesPackageEntryTests
             }
             return Task.FromResult(new CompositionProcessResult(true, unavailable ? 1 : 0, output, false));
         });
-        Should.Throw<InvalidDataException>(() => PlatformReleasedImages.Resolve(options, server)).Message.ShouldContain(server.Image!);
+        string attempted = fault is "unavailable-tag" or "invalid-digest" ? server.Image! : evidence.Reference;
+        Should.Throw<InvalidDataException>(() => PlatformReleasedImages.Resolve(options, server)).Message.ShouldContain(attempted);
     }
 
     /// <summary>The prepared run records the loaded container of each resolved dependency, or names the substituted one.</summary>

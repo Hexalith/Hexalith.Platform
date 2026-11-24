@@ -133,7 +133,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
     internal static object DescribeHost(PlatformServerBinding server, PlatformCompositionOptions options)
     {
         bool package = options.Mapping.Mode == WorkspaceMode.Package;
-        string? seed = package ? server.EventStoreHost?.ServerProject : null;
+        string? seed = server.EventStoreHost?.ServerProject;
         var identity = new
         {
             server.ResourceId, server.AppId, artifact = server.ImmutableImage ?? server.Image ?? server.ProjectPath,
@@ -141,11 +141,12 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 : server.EventStoreHost is not null ? "composed-project"
                 : server.ResourceId == "parties" && options.CurrentOwnerProof is not null ? "mapped-release-project"
                 : package ? "published-seed" : "mapped-project",
-            artifactSha256 = ProjectHash(server.ProjectPath),
+            artifactSha256 = server.ImageDigest,
+            projectFileSha256 = ProjectHash(server.ProjectPath),
         };
         return seed is null ? identity : new
         {
-            identity.ResourceId, identity.AppId, identity.artifact, identity.artifactKind, identity.artifactSha256,
+            identity.ResourceId, identity.AppId, identity.artifact, identity.artifactKind, identity.artifactSha256, identity.projectFileSha256,
             seedArtifact = seed,
             seedArtifactSha256 = ProjectHash(seed),
         };

@@ -1884,30 +1884,48 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P8 — Record the real artifact identity in selected-closure.json (image digest for released images; rename or replace the .csproj hash) (low).
   evidence: PlatformRoutingCatalogBootstrap.cs:125-126 hashes the .csproj and writes null for images, although ImageDigest is already bound. No consumer checks the field. Origin 74abb092.
+  status: resolved
+  resolution: 2026-11-24. Selected closure records the released OCI manifest SHA-256 and a separate project-file hash.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P9 — Report the probed digest reference rather than the tag when a digest-pinned image probe fails (low).
   evidence: PlatformAppModel.cs:154-166 prints server.Image while probing the @sha256 reference. Origin 4c7641b2.
+  status: resolved
+  resolution: 2026-11-24. Registry resolution names the attempted tag or immutable manifest reference. Refusal controls exercise both phases and malformed manifest JSON.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P10 — Distinguish package-reader build failures from "Mapped routing catalog owner build failed" (low).
   evidence: Package mode reaches the same throw (PlatformRoutingCatalog.cs:49-54,73-78). Origin 01948735.
+  status: resolved
+  resolution: 2026-11-24. A failed private package reader build names its mode. Startup failure and timeout are reported directly, and ordinary failures retain the build log path.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P11 — Test the current-owner parties --no-build/--no-restore/--artifacts-path arguments (low).
   evidence: PlatformAppModel.cs:293,296-297 have no test. The other new branches are covered. Origin a04df42f.
+  status: resolved
+  resolution: 2026-11-24. The current-owner composition control asserts both launch flags and the exact measured artifacts path.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P13 — Move the PackageModeRefusesChangedOwnerProvenance temp-tree setup inside try and drop the vacuous pre-Compose assertion (low).
   evidence: PlatformAppModelTests.cs:54-62 create the tree before try. The assertion at :73 runs before Compose. Origins 74abb092 and 87896d57.
+  status: resolved
+  resolution: 2026-11-24. The changed-provenance test cleans up a partially created fixture and checks resources after refusal.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P15 — Use Assert.Skip instead of return for the Windows parent-link case (low).
   evidence: PlatformNativeTestPreparationTests.cs:210 reports a pass on Windows. Latent: there is no Windows CI. Origin 74abb092.
+  status: resolved
+  resolution: 2026-11-24. The Windows parent-link case reports an explicit xUnit skip.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: BH3-P16 — Fix missing-space comment typos in the native preparation code ("old100ms", "A429", "default600") (low).
   evidence: Cosmetic only. Not Story 2.8 code.
+  status: resolved
+  resolution: 2026-11-24. Corrected the timing and response wording in the native preparation tests.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: VG3-1/VG3-2/BH3-P6 — Add negative tests for the retained selected-closure refusal and for file-level link, empty and oversized native inputs (medium).
   evidence: Deleting the closure check at PlatformNativeTestPreparation.cs:96-101, or the file-link checks at :440/:462, keeps every suite green. Only the parent-link and outside-root cases are tested. Origin 74abb092.
+  status: resolved
+  resolution: 2026-11-24. Native preparation refuses changed closure counts, identifiers or duplicate hosts, and linked, empty or oversized files, before retaining progress or credentials.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: VG3-3 — Assert ContainerImageAnnotation.SHA256 equals ImageDigest for digest-bound module containers (medium).
   evidence: Deleting PlatformAppModel.cs:325 keeps every test green, because the probes still use the digest reference. Origin 4c7641b2.
+  status: resolved
+  resolution: 2026-11-24. The current-owner composition control checks the actual Aspire image annotation against the selected manifest digest on each module container.
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-8-run-ci-integration-on-disposable-runners-with-guaranteed-cleanup.md`
   summary: VG3-5 — Cover the canonical-scope gateway call sites (namespace tenant, readback-bound headers) with a loopback gateway stub (medium).
   evidence: Every PrepareAsync test stops before the first application-model call. Reverting SubmitAsync's tenant to DefaultTenantId breaks no test. The fix needs a DistributedApplicationModel endpoint stub.
@@ -2225,6 +2243,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-2-compose-the-eventstore-host-with-enrolled-extension-packages.md`
   summary: Record the source-mode composed host's server project in `selected-closure.json` (AA9+ECH5; joins the Story 3.9 identity entry above).
   evidence: `PlatformRoutingCatalogBootstrap.DescribeHost` (`:136`) records `seedArtifact` only in package mode. A source-mode `composed-project` omits the mapped EventStore server project that supplies its settings. Source mode never recorded it.
+  status: resolved
+  resolution: 2026-11-24. The selected closure serializer records the underlying server project and its hash in both source and package compositions.
 
 ## Deferred from the signed adoption review for story 3.3 (2026-11-22)
 

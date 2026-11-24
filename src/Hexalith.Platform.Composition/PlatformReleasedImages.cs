@@ -14,34 +14,35 @@ internal sealed class PlatformReleasedImages(
     internal static PlatformServerBinding Resolve(PlatformCompositionOptions options, PlatformServerBinding server)
     {
         string image = server.Image!;
+        string reference = image;
         try
         {
             // Buildx selects the tag from the registry without consulting Docker's local manifest list store.
             using var response = JsonDocument.Parse(Probe(["buildx", "imagetools", "inspect", image, "--format", "{{json .Manifest}}"]));
             JsonElement release = response.RootElement;
-            if (!IsDigest(release.GetProperty("digest").GetString())) throw Unavailable(server);
+            if (!IsDigest(release.GetProperty("digest").GetString())) throw Unavailable(server, reference);
             var selected = release.TryGetProperty("manifests", out var manifests)
                 ? manifests.EnumerateArray().Single(candidate => candidate.TryGetProperty("platform", out var platform) && IsLinuxX64(platform))
                 : release;
             string? digest = selected.GetProperty("digest").GetString();
-            if (!IsDigest(digest)) throw Unavailable(server);
+            if (!IsDigest(digest)) throw Unavailable(server, reference);
 
-            string reference = image[..image.LastIndexOf(':')] + "@" + digest;
+            reference = image[..image.LastIndexOf(':')] + "@" + digest;
             using var immutable = JsonDocument.Parse(Probe(["manifest", "inspect", "--verbose", reference]));
             JsonElement manifest = immutable.RootElement;
             JsonElement descriptor = manifest.GetProperty("Descriptor");
             if (manifest.GetProperty("Ref").GetString() != reference || descriptor.GetProperty("digest").GetString() != digest
-                || !IsLinuxX64(descriptor.GetProperty("platform"))) throw Unavailable(server);
+                || !IsLinuxX64(descriptor.GetProperty("platform"))) throw Unavailable(server, reference);
             byte[] raw = manifest.GetProperty("Raw").GetBytesFromBase64();
-            if (digest != "sha256:" + Convert.ToHexStringLower(SHA256.HashData(raw))) throw Unavailable(server);
+            if (digest != "sha256:" + Convert.ToHexStringLower(SHA256.HashData(raw))) throw Unavailable(server, reference);
             using var body = JsonDocument.Parse(raw);
             string? config = body.RootElement.GetProperty("config").GetProperty("digest").GetString();
-            if (body.RootElement.GetProperty("schemaVersion").GetInt32() != 2 || !IsDigest(config)) throw Unavailable(server);
+            if (body.RootElement.GetProperty("schemaVersion").GetInt32() != 2 || !IsDigest(config)) throw Unavailable(server, reference);
             return server with { ImageDigest = digest!["sha256:".Length..], ImageConfigDigest = config };
         }
         catch (Exception exception) when (exception is JsonException or InvalidOperationException or KeyNotFoundException or FormatException)
         {
-            throw Unavailable(server, exception);
+            throw Unavailable(server, reference, exception);
         }
 
         string Probe(string[] arguments)
@@ -50,7 +51,7 @@ internal sealed class PlatformReleasedImages(
             var result = options.ImageProbeRunner(start,
                 PlatformRoutingCatalog.ReaderTimeout(TimeSpan.FromSeconds(20), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow),
                 CancellationToken.None).GetAwaiter().GetResult();
-            if (!result.Started || result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw Unavailable(server);
+            if (!result.Started || result.ExitCode != 0 || result.TimedOut || result.OutputTruncated) throw Unavailable(server, reference);
             return result.Output;
         }
     }
@@ -116,8 +117,8 @@ internal sealed class PlatformReleasedImages(
     private static bool IsDigest(string? value) => value is { Length: 71 } && value.StartsWith("sha256:", StringComparison.Ordinal)
         && value.Skip("sha256:".Length).All(character => character is >= '0' and <= '9' or >= 'a' and <= 'f');
 
-    private static InvalidDataException Unavailable(PlatformServerBinding server, Exception? inner = null)
-        => new($"{server.Module.Source}: {server.ResourceId}: image '{server.Image}' is unavailable or has no valid released Linux/amd64 digest.", inner);
+    private static InvalidDataException Unavailable(PlatformServerBinding server, string reference, Exception? inner = null)
+        => new($"{server.Module.Source}: {server.ResourceId}: image '{reference}' is unavailable or has no valid released Linux/amd64 digest.", inner);
 
     private static InvalidDataException LoadedMismatch(PlatformServerBinding server)
         => new($"{server.ResourceId}: image '{server.Image}' loaded a different artifact than selected reference '{server.ImmutableImage}'.");
