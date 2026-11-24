@@ -1,7 +1,10 @@
 """Local HTTP/control fixtures; these confer no published host or native acceptance."""
+import contextlib
 import datetime
 import hashlib
 import http.server
+import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -9,8 +12,9 @@ import shutil
 import subprocess
 import tempfile
 import threading
-import time
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 SOURCE = Path(__file__).with_name("qualify-host.py")
@@ -55,7 +59,6 @@ class HostEntryTests(unittest.TestCase):
             "data": {"platform-test": 1}, "description": "platform-test@1 (Hexalith.Platform.TestExtension)"}}}
         self.status = 503
         self.redirect = False
-        self.chunk_delays = False
         self.requests = []
         fixture = self
 
@@ -73,14 +76,7 @@ class HostEntryTests(unittest.TestCase):
                 self.send_header("Content-Type", "application/json")
                 self.send_header("Content-Length", str(len(payload)))
                 self.end_headers()
-                if fixture.chunk_delays:
-                    time.sleep(0.15)
-                    self.wfile.write(payload[:len(payload) // 2])
-                    self.wfile.flush()
-                    time.sleep(0.15)
-                    self.wfile.write(payload[len(payload) // 2:])
-                else:
-                    self.wfile.write(payload)
+                self.wfile.write(payload)
 
             def log_message(self, *args):
                 pass
@@ -208,10 +204,24 @@ class HostEntryTests(unittest.TestCase):
         self.assertEqual(["/ready"], [path for path, _ in self.requests])
 
     def test_expiry_during_http_cannot_emit_a_passing_report(self):
-        self.chunk_delays = True
-        self.environment["HEXALITH_G4_EXECUTION_DEADLINE_UTC"] = (
-            datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=0.25)).isoformat()
-        self.assertNotEqual(0, self.run_entry().returncode)
+        start = datetime.datetime.now(datetime.timezone.utc)
+        deadline = start + datetime.timedelta(seconds=10)
+        self.environment["HEXALITH_G4_EXECUTION_DEADLINE_UTC"] = deadline.isoformat()
+        spec = importlib.util.spec_from_file_location("qualification_observer_fixture", self.script)
+        observer = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(observer)
+        requests = self.requests
+
+        class ProbeClock(datetime.datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return (deadline if requests else start).astimezone(tz)
+
+        observer.datetime = SimpleNamespace(datetime=ProbeClock, timezone=datetime.timezone)
+        with patch.dict(os.environ, self.environment, clear=True), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(1, observer.main())
+
+        self.assertEqual(["/ready"], [path for path, _ in requests])
         self.assertEqual("Failed", self.result())
 
     def test_existing_report_is_never_overwritten(self):
