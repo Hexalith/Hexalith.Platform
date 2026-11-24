@@ -90,6 +90,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Add executing admission tests for the real registered platform identity gateway provider.
   evidence: G89; verification-layer symbol/import searches found no test invoking PlatformIdentityGatewayAdmission.AdmitAsync. Enrollment/login and mocked controller denial tests cannot detect source allowlist, actor revision or operator provenance regressions in that separate identity workstream.
+  status: done 2026-11-24
+  resolution: The Identity suite resolves the production gateway from a scoped service provider and verifies allowed and denied write cases, including exact signed evidence.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Assign an owner for artifact signature and image SBOM/scanning verification of the Rancher/K3s management deployment.

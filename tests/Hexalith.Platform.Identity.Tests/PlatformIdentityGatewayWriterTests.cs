@@ -1,5 +1,7 @@
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 using Dapr.Actors;
 using Dapr.Actors.Client;
@@ -24,6 +26,7 @@ namespace Hexalith.Platform.Identity.Tests;
 public sealed class PlatformIdentityGatewayWriterTests
 {
     private const string Actor = "01HX0000000000000000000001";
+    private const string Operator = "01HX0000000000000000000002";
     private const string Writer = "identity-writer";
     private const string Operation = "Hexalith.Parties.Contracts.Commands.EstablishHumanActorBinding";
 
@@ -49,13 +52,83 @@ public sealed class PlatformIdentityGatewayWriterTests
         operatorProof.DidNotReceiveWithAnyArgs().Verify(default, default!);
     }
 
-    private static ServiceProvider Provider(IIdentityActorRegistryActor registry, IIdentityAdmissionProof operatorProof)
+    [Theory]
+    [InlineData("valid")]
+    [InlineData("unlisted-workload")]
+    [InlineData("stale-target")]
+    [InlineData("missing-provenance")]
+    [InlineData("unlisted-provenance-issuer")]
+    [InlineData("stale-operator")]
+    [InlineData("inactive-operator")]
+    public async Task RegisteredWriterRequiresCurrentActorAndIndependentOperatorProvenance(string scenario)
+    {
+        using RSA gatewayKey = RSA.Create(2048);
+        IIdentityActorRegistryActor registry = Substitute.For<IIdentityActorRegistryActor>();
+        registry.ReadAsync(Actor, false, Arg.Any<string>(), Arg.Any<string>())
+            .Returns(new ActorRegistryEntry(Actor, 7, true, "target-provenance"));
+        registry.ReadAsync(Operator, false, Arg.Any<string>(), Arg.Any<string>())
+            .Returns(new ActorRegistryEntry(Operator, scenario == "stale-operator" ? 4 : 5,
+                scenario != "inactive-operator", "operator-provenance"));
+        string revision = scenario == "stale-target" ? "6" : "7";
+        byte[] payload = Payload(revision);
+        IdentityAdmissionScope scope = Scope(payload);
+        IdentityAdmissionScope expectedOperatorScope = scope with
+        {
+            Domain = "identity-operator",
+            MessageId = scope.LogicalId,
+            PayloadDigest = IdentityAdmissionProof.Digest(Payload(revision, includeProof: false)),
+        };
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        IIdentityAdmissionProof operatorProof = Substitute.For<IIdentityAdmissionProof>();
+        if (scenario != "missing-provenance")
+        {
+            operatorProof.Verify("test-operator-proof", expectedOperatorScope).Returns(new IdentityAdmissionEvidence(
+                expectedOperatorScope, scenario == "unlisted-provenance-issuer" ? "another-issuer" : "operator-authority",
+                Operator, Operator, 5, true, now, now.AddMinutes(1), 1));
+        }
+
+        using ServiceProvider provider = Provider(registry, operatorProof, gatewayKey);
+        using IServiceScope request = provider.CreateScope();
+        var admission = request.ServiceProvider.GetRequiredService<IIdentityGatewayAdmission>();
+        admission.ShouldBeOfType<PlatformIdentityGatewayAdmission>();
+        var principal = Principal(scenario == "unlisted-workload" ? "another-workload" : Writer);
+        string? admitted = await admission.AdmitAsync(principal, scope, payload, TestContext.Current.CancellationToken);
+
+        if (scenario == "valid")
+        {
+            IdentityAdmissionEvidence evidence = request.ServiceProvider.GetRequiredService<IIdentityAdmissionProof>()
+                .Verify(admitted.ShouldNotBeNull(), scope).ShouldNotBeNull();
+            evidence.TargetActorId.ShouldBe(Actor);
+            evidence.OperatorActorId.ShouldBe(Operator);
+            evidence.SourceId.ShouldBe(Writer);
+            evidence.ActorRevision.ShouldBe(7);
+            evidence.ActorActive.ShouldBeTrue();
+        }
+        else
+        {
+            admitted.ShouldBeNull();
+        }
+
+        if (scenario == "unlisted-workload")
+        {
+            await registry.DidNotReceiveWithAnyArgs().ReadAsync(default!, default, default!, default!);
+        }
+    }
+
+    private static ServiceProvider Provider(
+        IIdentityActorRegistryActor registry,
+        IIdentityAdmissionProof operatorProof,
+        RSA? gatewayKey = null)
     {
         IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["PlatformIdentity:AuthorityRevision"] = "1",
             ["PlatformIdentity:IdentityWriterSources:0"] = Writer,
             ["PlatformIdentity:RegistryServiceSourceId"] = "registry-service",
+            ["PlatformIdentity:OperatorProvenanceSources:0"] = "operator-authority",
+            ["PlatformIdentity:GatewaySigning:PrivateKeyPem"] = gatewayKey?.ExportRSAPrivateKeyPem(),
+            ["IdentityAdmission:VerificationKeyPem"] = gatewayKey?.ExportSubjectPublicKeyInfoPem(),
+            ["IdentityAdmission:AuthorityRevision"] = "1",
         }).Build();
         IIdentityAdmissionSigner registrySigner = Substitute.For<IIdentityAdmissionSigner>();
         registrySigner.Sign(Arg.Any<IdentityAdmissionEvidence>()).Returns("registry-proof");
@@ -79,8 +152,22 @@ public sealed class PlatformIdentityGatewayWriterTests
         new Claim("eventstore:permission", "command:submit"),
     ], DaprInternalAuthenticationOptions.SchemeName));
 
-    private static byte[] Payload(string revision) => Encoding.UTF8.GetBytes(
-        $$"""{"tenantId":"tenant-a","partyId":"party-a","actorId":"{{Actor}}","actorRevision":{{revision}},"operatorProof":"test-operator-proof"}""");
+    private static byte[] Payload(string revision, bool includeProof = true)
+    {
+        var body = new JsonObject
+        {
+            ["tenantId"] = "tenant-a",
+            ["partyId"] = "party-a",
+            ["actorId"] = Actor,
+            ["actorRevision"] = JsonNode.Parse(revision),
+        };
+        if (includeProof)
+        {
+            body["operatorProof"] = "test-operator-proof";
+        }
+
+        return JsonSerializer.SerializeToUtf8Bytes(body);
+    }
 
     private static IdentityAdmissionScope Scope(byte[] payload) => new(
         "tenant-a", "party", "party-a", Operation, "command-id", "intent-id", IdentityAdmissionProof.Digest(payload));
