@@ -492,6 +492,10 @@ tool-owned run resources. Record returned run identity and mapping. Package mode
 uses released images and catalog packages; it also requires a clean, tagged direct
 Platform checkout matching its committed identity.
 
+Hosted graph export requires `integration.providers[].tenancy.mode` to be
+`per-environment` under AD-8. Provision a separate tenant and credentials for
+each environment and use the declared configuration key to bind them.
+
 ## 7. Perform and record human SM-2 verification
 
 Use the copied checklist. Bind module, direct Platform and tool identities to the

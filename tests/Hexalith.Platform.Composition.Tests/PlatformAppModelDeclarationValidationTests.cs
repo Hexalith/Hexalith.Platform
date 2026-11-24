@@ -175,6 +175,47 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
+    [Theory]
+    [InlineData("per-environment")]
+    [InlineData("shared")]
+    public void HostedGraphRequiresPerEnvironmentProviderTenancy(string mode)
+    {
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-provider-tenancy-");
+        try
+        {
+            string path = Fixture(workspace.FullName, "validation-test", tasks: false);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            document["modules"]![0]!["integration"]!["providers"] = new JsonArray(new JsonObject
+            {
+                ["name"] = "partner-api",
+                ["capability"] = "partner service",
+                ["tenancy"] = new JsonObject
+                {
+                    ["mode"] = mode,
+                    ["configurationKey"] = "Partner:Api",
+                },
+            });
+            File.WriteAllText(path, document.ToJsonString());
+
+            PlatformCompositionOptions options = Options(active: "validation-test") with { DomainModule = false, DeclarationPaths = [path] };
+            PlatformApplicationGraph graph = PlatformApplicationGraph.Resolve(options);
+            if (mode == "shared")
+            {
+                Should.Throw<InvalidDataException>(() => PlatformHostedPublishing.Describe(graph)).Message
+                    .ShouldEndWith("validation-test: integration.providers[partner-api].tenancy.mode: hosted providers require per-environment tenancy (AD-8).");
+            }
+            else
+            {
+                PlatformHostedPublishing.Describe(graph).GetProperty("workloads").EnumerateArray().Single()
+                    .GetProperty("identity").GetString().ShouldBe("validation-test/api");
+            }
+        }
+        finally
+        {
+            workspace.Delete(recursive: true);
+        }
+    }
+
     private static void AddNamedHooks(JsonNode module)
     {
         JsonObject hook = new() { ["name"] = "verify", ["task"] = "verify", ["resource"] = "data" };
