@@ -84,6 +84,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Reject out-of-range or fractional actorRevision values in the real platform identity admission provider.
   evidence: G88; PlatformIdentityGatewayAdmission.AdmitAsync uses JsonElement.GetInt64 after resolving an active actor, but FormatException is absent from its rejection catch filter, allowing malformed numeric revisions to escape as server errors. The identity provider is separate earlier platform work.
+  status: done 2026-11-24
+  resolution: The registered gateway refuses non-integer and overflowing revisions without reaching provenance or signing. Three numeric cases execute against the production provider.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Add executing admission tests for the real registered platform identity gateway provider.

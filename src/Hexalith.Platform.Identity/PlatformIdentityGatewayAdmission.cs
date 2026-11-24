@@ -74,7 +74,8 @@ public sealed class PlatformIdentityGatewayAdmission(IOptions<PlatformIdentityOp
             ActorRegistryEntry? actorEvidence = actorId is null ? null
                 : await registry.ReadAsync(actorId, byAlias: false, source, cancellationToken).ConfigureAwait(false);
             if (!provision && !query && (actorEvidence is not { Active: true }
-                || root.GetProperty("actorRevision").GetInt64() != actorEvidence.Revision))
+                || !root.GetProperty("actorRevision").TryGetInt64(out long actorRevision)
+                || actorRevision != actorEvidence.Revision))
             {
                 return null;
             }
