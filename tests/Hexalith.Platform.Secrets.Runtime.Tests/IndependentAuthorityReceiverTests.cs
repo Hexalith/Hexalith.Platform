@@ -40,7 +40,8 @@ public sealed class IndependentAuthorityReceiverTests
         if(method.StartsWith("qualification",StringComparison.Ordinal)) fixture.State=fixture.State with { Callers=fixture.State.Callers.Select(value=>value with { Role="observer",Methods=[method,"qualification-begin-original","qualification-retain-result","qualification-lookup-original"] }).ToArray() };
         try
         {
-            var pending=fixture.Client().InvokeAsync<JsonElement>(method,new { role="observer" },budget.Token);
+            // The in-memory transport may enter the synchronous archive probe before returning its task.
+            var pending=Task.Run(()=>fixture.Client().InvokeAsync<JsonElement>(method,new { role="observer" },budget.Token));
             await entered.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken);budget.Cancel();
             await Should.ThrowAsync<OperationCanceledException>(()=>pending.WaitAsync(TimeSpan.FromSeconds(1),TestContext.Current.CancellationToken));
             finished.Task.IsCompleted.ShouldBeFalse();fixture.Saves.ShouldBe(0);release.Set();await finished.Task.WaitAsync(TimeSpan.FromSeconds(2),TestContext.Current.CancellationToken);

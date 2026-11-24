@@ -26,7 +26,7 @@ public sealed class JointPhaseSourceStartupTests
         async Task<int> Serve(JointPhaseSourceInstallation capturedSource,IndependentAuthorityReceiverInstallation captured,CancellationToken startup,CancellationToken running)
         {
             capturedSource.ReceivingInstallationPath.ShouldBe(receivingPath);captured.ShouldBe(receiving);File.Delete(sourcePath);File.Delete(receivingPath);
-            if(stall) { await Task.Delay(2000,startup);return -1; }
+            if(stall) { await Task.Delay(Timeout.InfiniteTimeSpan,startup);return -1; }
             var builder=WebApplication.CreateSlimBuilder();builder.Logging.ClearProviders();builder.WebHost.UseUrls("http://127.0.0.1:0");await using var app=builder.Build();
             using var started=app.Lifetime.ApplicationStarted.Register(()=>entered.TrySetResult());
             await IndependentAuthorityHttpApplication.RunServiceAsync(app,startup,running);return 0;
