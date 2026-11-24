@@ -11,18 +11,7 @@ using Shouldly;
 /// <summary>Verifies the offline Timesheets candidate with the shipped Builds validator.</summary>
 public sealed class TimesheetsEnrollmentTests
 {
-    private static string Root
-    {
-        get
-        {
-            DirectoryInfo? directory = new(AppContext.BaseDirectory);
-            while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "apphost.cs")))
-            {
-                directory = directory.Parent;
-            }
-            return directory!.FullName;
-        }
-    }
+    private static string Root => PlatformTestRepository.Root;
 
     private static string CandidatePath => Path.Combine(Root, "eng", "timesheets-deployment", "hexalith.module-manifest.v2.json");
 
@@ -30,8 +19,9 @@ public sealed class TimesheetsEnrollmentTests
     [Fact]
     public void CandidateValidatesAtomicallyWithTheDomainMinimum()
     {
-        string[] owners = ["eventstore", "tenants", "memories"];
-        string[] paths = [CandidatePath, .. owners.Select(owner => Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations", owner + ".json"))];
+        string[] owners = ["Hexalith.EventStore", "Hexalith.Tenants", "Hexalith.Memories"];
+        string[] paths = [CandidatePath, .. owners.Select(owner => Path.Combine(
+            PlatformTestRepository.ReferenceRoot(Root, owner), "module", "hexalith.module-manifest.v2.json"))];
         PlatformManifestValidationResult result = PlatformManifestValidator.Validate(paths, TestContext.Current.CancellationToken);
         result.IsValid.ShouldBeTrue(string.Join(Environment.NewLine, result.Diagnostics.Select(d => $"{d.Field}: {d.Message}")));
         result.Declarations!.Select(d => PlatformDeclarationSet.Id(d.Declaration)).Order().ShouldBe(["eventstore", "memories", "tenants", "timesheets"]);
