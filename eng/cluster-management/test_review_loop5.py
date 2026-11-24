@@ -204,6 +204,37 @@ class FinalizerCheckpointTests(unittest.TestCase):
                     self.assertFalse(any('intervention' in v for v in requests))
                 self.assertIn('system-workspace-finalizers', fixture.completed_retirement_phases)
 
+    def test_retirement_phase_refuses_unreviewed_finalizer_or_user_identity_before_requests(self):
+        workspace = existing.NativeRequestTests().obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER])
+        projected_workspace = project_resource(workspace)
+        unreviewed_workspace = {**projected_workspace, 'finalizers': [SYSTEM_WORKSPACE_FINALIZER, 'other/keep']}
+        user = {'apiVersion': 'iam.kubesphere.io/v1beta1', 'kind': 'User',
+                'metadata': {'name': 'admin', 'uid': 'user', 'resourceVersion': '1'}}
+        projected_user = project_resource(user)
+        for name, mode, reviewed, observed, error in (
+            ('system-workspace-finalizers', 'named-finalizer', workspace, unreviewed_workspace,
+             'unreviewed-finalizer-before-named-intervention'),
+            ('users', 'delete', {**user, 'metadata': {**user['metadata'], 'name': ''}}, projected_user,
+             'cluster-grant-not-exact-reviewed-user'),
+            ('users', 'delete', {**user, 'metadata': {**user['metadata'], 'uid': 'different'}}, projected_user,
+             'cluster-grant-not-exact-reviewed-user'),
+        ):
+            uid = observed['uid']
+            fixture, records = self.fixture()
+            fixture.reviewed_raw_by_uid[uid] = reviewed
+            phase = {'phase': name, 'mode': mode, 'expected': [uid], 'roots': [uid],
+                     'managerAbsentRequired': mode == 'named-finalizer'}
+            with self.subTest(error=error, identity=reviewed['metadata']), \
+                 patch.object(fixture, 'settled_inventory', return_value=([observed], True)), \
+                 patch.object(fixture, 'native_read') as read, patch.object(fixture, 'native_retire') as retire, \
+                 patch.object(fixture, 'remove_named_finalizer') as remove, \
+                 self.assertRaisesRegex(ValueError, f'^{error}$'):
+                fixture.retire_phase(phase, {uid}, {uid: observed}, {})
+            read.assert_not_called()
+            retire.assert_not_called()
+            remove.assert_not_called()
+            self.assertFalse(records)
+
     def test_retirement_seeds_private_baseline_and_scope_before_actual_phase_and_exports_it(self):
         fixture, records = self.fixture()
         fixture.args.ks_chart_sha256, fixture.args.source_digest, fixture.args.script_digest = 'c' * 64, 's' * 64, 'p' * 64
@@ -353,6 +384,20 @@ class DriverSmokeTests(unittest.TestCase):
             self.assertIn(version['metadata']['ownerReferences'][0]['uid'], applications)
             self.assertEqual(version['metadata']['finalizers'], ['application.kubesphere.io/cleanup'])
             self.assertTrue(version['spec']['pullUrl'].startswith('http://127.0.0.1:9/'))
+        for observed_count in (26, 28):
+            observed = list(applications.values())[:observed_count]
+            if observed_count > len(observed):
+                extra = copy.deepcopy(observed[0])
+                extra['metadata']['name'] = 's426-catalog-app-28'
+                observed.append(extra)
+            with self.subTest(observed_count=observed_count), patch.object(Fixture, 'populate_retirement_decisions'), \
+                 patch.object(fixture, 'create') as create, \
+                 patch.object(fixture, 'get', side_effect=[repo, {'items': observed}]), \
+                 self.assertRaisesRegex(ValueError, '^synthetic-catalog-application-creation-count-mismatch$'):
+                fixture.populate_retirement_decisions()
+            self.assertEqual(create.call_count, 3)
+        attempt.record.assert_called_once()
+
         source['resources'].pop()
         with patch.object(fixture, 'create') as create, self.assertRaisesRegex(ValueError, 'source-catalog-counts-changed'):
             fixture.populate_retirement_decisions()

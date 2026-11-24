@@ -157,6 +157,15 @@ class RehearsalTests(unittest.TestCase):
                  self.assertRaisesRegex(ValueError, 'allowlist-missing-duplicate-or-wildcard'):
                 validate_allowlist(inventory, actions)
 
+    def test_allowlist_refuses_unreviewed_action_and_propagation(self):
+        cm = resource('ConfigMap', 'manager', 'cm-1')
+        for updates, error in (
+            ({'action': 'replace'}, 'unsupported-retirement-action'),
+            ({'propagation': 'Background'}, 'unreviewed-propagation'),
+        ):
+            with self.subTest(updates=updates), self.assertRaisesRegex(ValueError, f'^{error}$'):
+                validate_allowlist([cm], [{**action(cm), **updates}])
+
     def test_unknown_cascade_blocks_and_child_first_allows_explicit_scope(self):
         owner, child = resource('ConfigMap', 'owner', 'owner-1'), resource('ConfigMap', 'child', 'child-1', 'owner-1')
         with self.assertRaisesRegex(ValueError, 'owner-outside'):validate_allowlist([child], [action(child)])
@@ -254,6 +263,34 @@ def kubesphere_baseline():
 
 
 class DependencyRetirementTests(unittest.TestCase):
+    def test_dependency_plan_refuses_invalid_scope_and_unassigned_members(self):
+        parent = ks('v1', 'ConfigMap', 'parent', 'parent', 'kubesphere-system')
+        child = ks('v1', 'ConfigMap', 'child', 'child', 'kubesphere-system', owner='parent')
+        cyclic_parent = {**parent, 'owners': [{'uid': 'child'}]}
+        plans = [ks('kubesphere.io/v1alpha1', 'InstallPlan', name, name) for name in ('first', 'second')]
+        for inventory, scope, error in (
+            ([parent], {'missing'}, 'scope-outside-censused-inventory'),
+            (plans, {'first', 'second'}, 'ambiguous-installed-extension-plan'),
+            ([parent, child], {'parent'}, 'phase-outside-retirement-allowlist'),
+            ([cyclic_parent, child], {'parent', 'child'}, 'unphased-retirement-member'),
+        ):
+            with self.subTest(error=error), self.assertRaisesRegex(ValueError, f'^{error}$'):
+                dependency_plan(inventory, scope)
+
+    def test_dependency_plan_refuses_a_phase_result_that_reuses_an_assigned_member(self):
+        api = 'iam.kubesphere.io/v1beta1'
+        inventory = [ks(api, 'GlobalRoleBinding', 'admin', 'binding'), ks(api, 'User', 'admin', 'user')]
+        expand = rehearse_module.with_counterparts
+
+        def overlapping_phase(remaining, members):
+            expanded = expand(remaining, members)
+            return expanded | {'binding'} if 'user' in members else expanded
+
+        # Inject an invalid phase expansion since the normal helper sees only remaining members.
+        with patch('rehearse.with_counterparts', side_effect=overlapping_phase), \
+             self.assertRaisesRegex(ValueError, '^retirement-member-in-multiple-phases$'):
+            dependency_plan(inventory, {'binding', 'user'})
+
     def test_dependency_plan_is_child_first_exact_and_partitions_scope(self):
         baseline = kubesphere_baseline()
         scope = retirement_scope(baseline)
@@ -932,6 +969,20 @@ class NativeRequestTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'deletion-state-drift'):
                 fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
         kube.assert_called_once()
+
+    def test_named_finalizer_refuses_after_three_native_conflicts(self):
+        fixture, _ = self.fixture()
+        reviewed = self.obj(finalizers=[SYSTEM_WORKSPACE_FINALIZER])
+        fixture.reviewed_raw_by_uid['u-1'] = reviewed
+        observations = [self.obj(version=str(version), finalizers=[SYSTEM_WORKSPACE_FINALIZER], deleting=True)
+                        for version in (6, 7, 8)]
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): stale version')
+        with patch.object(fixture, 'native_read', side_effect=observations), \
+             patch.object(fixture, 'kube', return_value=conflict) as kube, \
+             self.assertRaisesRegex(ValueError, '^named-finalizer-conflict-retries-exhausted$'):
+            fixture.remove_named_finalizer('/apis/x', 'u-1', SYSTEM_WORKSPACE_FINALIZER)
+        self.assertEqual([call.kwargs['obj']['metadata']['resourceVersion'] for call in kube.call_args_list],
+                         ['6', '7', '8'])
 
     def test_phase_records_delta_before_stopping_and_refuses_post_controller_runtime(self):
         baseline = kubesphere_baseline()
@@ -1967,6 +2018,25 @@ class FixtureBoundaryTests(unittest.TestCase):
                 self.assertEqual(receipt['nativeConflictConfirmed'], drift)
                 self.assertEqual(receipt['uidAndContentUnchanged'], not drift)
                 self.assertFalse(any(call.args[0] == 'native-race-cleanup' for call in calls.call_args_list))
+
+    def test_native_negative_refuses_precondition_that_is_not_stale(self):
+        old, current, _ = self.race_objects()
+        conflict = SimpleNamespace(returncode=1, stdout=b'', stderr=b'Error from server (Conflict): stale precondition')
+        for field, observations, expected_labels in (
+            ('uid', [current, current], []),
+            ('resourceVersion', [old, current, current, current], ['native-negative-stale-uid']),
+        ):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as temp:
+                fixture, records = self.fixture(temp)
+                with patch.object(fixture, 'get', side_effect=observations), patch.object(fixture, 'create'), \
+                     patch.object(fixture, 'kube', return_value=conflict) as kube, \
+                     self.assertRaisesRegex(ValueError, '^native-negative-precondition-not-stale$'):
+                    fixture.check_native_delete_preconditions()
+                labels = [call.args[0] for call in kube.call_args_list]
+                self.assertEqual([label for label in labels if label.startswith('native-negative-')], expected_labels)
+                self.assertNotIn('native-race-cleanup', labels)
+                self.assertEqual(list(records), [label.replace('native-negative-', 'native-precondition-') + '.json'
+                                                 for label in expected_labels])
 
 
 if __name__ == '__main__':
