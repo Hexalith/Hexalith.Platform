@@ -1,0 +1,319 @@
+{
+  "schema": "hexalith.platform.module-intake.v1",
+  "modules": {
+    "eventstore": {
+      "repository": "Hexalith/Hexalith.EventStore",
+      "releases": [
+        {
+          "version": "5.4.0",
+          "commit": "2ec21f631a2e292fba8c5537fe665ab275ed1081",
+          "packages": [
+            {
+              "id": "Hexalith.EventStore.Admin.Abstractions",
+              "sha256": "9a64f674f6149bb129ec48b33035ac9a3d9e9a987304d71ef146e2fd83a3d2de"
+            },
+            {
+              "id": "Hexalith.EventStore.Admin.Cli",
+              "sha256": "7b74f2ef97a57ab07fa7816296796b062043c745eaa965ba0fee4aa2a0e7ac05"
+            },
+            {
+              "id": "Hexalith.EventStore.Admin.Server",
+              "sha256": "63ca1bc00f017df75871b36e627fe0248e977c388ece4afc26717a3c9620db91"
+            },
+            {
+              "id": "Hexalith.EventStore.Aspire",
+              "sha256": "93297a13f9d4cd5d151b59c1c2b472cf83ce325f72c767f1377f0176eac031be"
+            },
+            {
+              "id": "Hexalith.EventStore.Client",
+              "sha256": "a27d51db7d801c9300034b0861f3203a0f70354b16e45b78ad4e7a82a857be13"
+            },
+            {
+              "id": "Hexalith.EventStore.Contracts",
+              "sha256": "eea33fc87bfaa9ca5be7a25a4e56d17757ad0a4496da63483df78b127a8a51b8"
+            },
+            {
+              "id": "Hexalith.EventStore.DomainService",
+              "sha256": "3715f8a6d38a806f4c9eb0d1b2b98dbcb2d5d49d6c100d418592c9033ba8936d"
+            },
+            {
+              "id": "Hexalith.EventStore.Gateway",
+              "sha256": "8ce0d6148a2a7ccdd6cff4f199ac512b85b8472460460cb7f2ce7b803dc5e3a1"
+            },
+            {
+              "id": "Hexalith.EventStore.RestApi.Generators",
+              "sha256": "5c544787c61b597643b7ea1b33ba4a9a67e67c8dab31e782436c10ca7071d15b"
+            },
+            {
+              "id": "Hexalith.EventStore.Server",
+              "sha256": "1ebcf9f6a7cc60f69aaf93039b1aec1273e79e541ba0fdc1904bf3d5afb622fb"
+            },
+            {
+              "id": "Hexalith.EventStore.ServiceDefaults",
+              "sha256": "a276701bb3a4c3099d569da8c0d69267b60b7f76eecd7ea60b78c6bf23d1f441"
+            },
+            {
+              "id": "Hexalith.EventStore.SignalR",
+              "sha256": "ed1d1e08fb676fc5ee5e7900ebb0808daa92adb0dea8b47b4546654b70424bf1"
+            },
+            {
+              "id": "Hexalith.EventStore.Testing",
+              "sha256": "20de35c63b3cd794e3808b79c39059febd94067218e54fe1ae6d0071b034feca"
+            },
+            {
+              "id": "Hexalith.EventStore.Testing.Integration",
+              "sha256": "03d446f3885e4cf6d7b6d05b05f0fc6a319c6c7cc6f83d6f13fd97fdb925001e"
+            }
+          ],
+          "images": [
+            {
+              "name": "registry.hexalith.com/eventstore",
+              "digest": "sha256:fdc87f306d9d09c3e2244fa237b6921eacc1e426a58071f7ecc182cfe5ed3971"
+            }
+          ],
+          "attestation": null,
+          "evidence": [
+            "https://github.com/Hexalith/Hexalith.EventStore/releases/tag/v5.4.0"
+          ],
+          "classification": {
+            "changeClass": "additive",
+            "declarationSha256": "21eda6da824d5ae6135ff342dd8a5aae950b02420319b953a836dddeb00ce495"
+          }
+        }
+      ]
+    },
+    "tenants": {
+      "repository": "Hexalith/Hexalith.Tenants",
+      "releases": [
+        {
+          "version": "8.0.4",
+          "commit": "465f0b36afeeb880c4b66144547a127e5bc57208",
+          "packages": [
+            {
+              "id": "Hexalith.Tenants.Aspire",
+              "sha256": "decf10ad6214a935fea1b108670841549a1aa2c9db16c0d0773e845e6c26ed78"
+            },
+            {
+              "id": "Hexalith.Tenants.Client",
+              "sha256": "18910cf9308b295171645fff8fea88ffc4331f42281351e0f65c07dd9c46dcf8"
+            },
+            {
+              "id": "Hexalith.Tenants.Contracts",
+              "sha256": "ea1fe4a96ccf472a7a6ca3e3daa0a9e0b6b38d9697a3e16025824ca46161f2a7"
+            },
+            {
+              "id": "Hexalith.Tenants.Server",
+              "sha256": "f6e2dc04f9cc4e629f7987302cf92220cb4273f3fc89aec97f41c29acbdaa84f"
+            },
+            {
+              "id": "Hexalith.Tenants.Testing",
+              "sha256": "243d6873c3904914054b4530eba2b47d415dc0e73629c2814e9960acf71ea76e"
+            }
+          ],
+          "images": [
+            {
+              "name": "registry.hexalith.com/tenants",
+              "digest": "sha256:756aa0f73bb5fd0edb27d85b9029b2cc7ca192e602390181d078fafa8e89fcbc"
+            },
+            {
+              "name": "registry.hexalith.com/tenants-api",
+              "digest": "sha256:4b44babaaf24c6b7a322aedc0ece0871ba7cbe16cfb233bb621483382f1a27a2"
+            }
+          ],
+          "attestation": null,
+          "evidence": [
+            "https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v8.0.4"
+          ],
+          "classification": {
+            "changeClass": "additive",
+            "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
+          }
+        }
+      ]
+    },
+    "memories": {
+      "repository": "Hexalith/Hexalith.Memories",
+      "releases": [
+        {
+          "version": "4.1.0",
+          "commit": "0856785c7c764a0dc305af058227d6485b65c697",
+          "packages": [
+            {
+              "id": "Hexalith.Memories.Aspire",
+              "sha256": "76c9f60af949dc574cacdf315260044c4a20684389cea035c1302270c83f1c16"
+            },
+            {
+              "id": "Hexalith.Memories.Cli",
+              "sha256": "a4bb160d8d0d0e739c0d326716d9f6a7300d7dd3c7d10e5fca093e4979de2662"
+            },
+            {
+              "id": "Hexalith.Memories.Client.Rest",
+              "sha256": "9c8dd66de2d63791b0650cb08c5534b53f4379785e992b0bc07d2ecd2bbe8ea1"
+            },
+            {
+              "id": "Hexalith.Memories.Contracts",
+              "sha256": "1209bbffc59c91c0abdbb8c74088e5515faa912aad372ee65400bb2bca14a179"
+            },
+            {
+              "id": "Hexalith.Memories.EventStore",
+              "sha256": "e3f3d25b442ac4184902491e00ae423f62c5660d09de4dc2bbdc5613a6688e5a"
+            },
+            {
+              "id": "Hexalith.Memories.EventStoreExtensions",
+              "sha256": "77019fb405c3a772f2b0730f6e80bec066a990d5122c8df9da3ba4e98186a4a2"
+            },
+            {
+              "id": "Hexalith.Memories.Mcp",
+              "sha256": "60ca843069608caceabfbac07cc1fcb1a62e279791a198a9624278e916182730"
+            },
+            {
+              "id": "Hexalith.Memories.Redis",
+              "sha256": "74d9da2cc3ad4c754166f06e74da7a265fa645329d242603be899ff785ea0ad5"
+            },
+            {
+              "id": "Hexalith.Memories.ServiceDefaults",
+              "sha256": "fcc27a47b4ea5fced92881e0bbba854c07548aa440a97e76181ac2909837fbc0"
+            },
+            {
+              "id": "Hexalith.Memories.Telemetry",
+              "sha256": "ba28a0bc524219a374bb77b08c8dadb549c2c37c60ac83b4c3dd072df9183438"
+            }
+          ],
+          "images": [
+            {
+              "name": "registry.hexalith.com/memories",
+              "digest": "sha256:a29715c574ab5081c7ea8c72dd48b73886c3716c618e51ae7313930abb9abf4c"
+            },
+            {
+              "name": "registry.hexalith.com/memories-access-telemetry",
+              "digest": "sha256:1cc2e3ae8b88f6f4946768b4c3dc465685132189af8e87c0cda75afaf717d6a7"
+            },
+            {
+              "name": "registry.hexalith.com/memories-access-telemetry-clock",
+              "digest": "sha256:156474b5ca1b6130a5e667f3472e31413acc4c9d65321c3e01b5e4467662c2e7"
+            },
+            {
+              "name": "registry.hexalith.com/memories-domain-service",
+              "digest": "sha256:09f921146beff5881620245a77215695431eb850f57fec963c970218ba376660"
+            },
+            {
+              "name": "registry.hexalith.com/memories-mcp",
+              "digest": "sha256:227445eea04738445e4e5f3e9e1576595e4c2b49e80b3be828da231d4d38c75a"
+            }
+          ],
+          "attestation": null,
+          "evidence": [
+            "https://github.com/Hexalith/Hexalith.Memories/releases/tag/v4.1.0"
+          ],
+          "classification": {
+            "changeClass": "additive",
+            "declarationSha256": "56f6dc8134d3f7cea06910e923a4736a450e00241e8e4a565ac9226897881840"
+          }
+        }
+      ]
+    },
+    "parties": {
+      "repository": "Hexalith/Hexalith.Parties",
+      "releases": [
+        {
+          "version": "4.0.1",
+          "commit": "f2b77d32cec947d8389ea20f675cc902dfee357a",
+          "packages": [
+            {
+              "id": "Hexalith.Parties.AdminPortal",
+              "sha256": "7b1f97b259376507818ff3c9e1f6dcdd0c6561295e14ad5ebecb1b6961ef7e9e"
+            },
+            {
+              "id": "Hexalith.Parties.Aspire",
+              "sha256": "5eaa663f2d06dab00dfa97e6e7680c1a6e0e80e18372dce0f607541e70cb19b5"
+            },
+            {
+              "id": "Hexalith.Parties.Authentication",
+              "sha256": "59df63757d7650873fa5d24a4759ff83c02c36e408ecbd7ab2cf9081b9bbd6fc"
+            },
+            {
+              "id": "Hexalith.Parties.Client",
+              "sha256": "20cb3708058e4835dbaba2550aab576cc3110e6af19c66bc03f98375b77503d5"
+            },
+            {
+              "id": "Hexalith.Parties.ConsumerPortal",
+              "sha256": "a318b70452001c3009bb77a750cb022441ba576980baf78043c560af60553ca4"
+            },
+            {
+              "id": "Hexalith.Parties.Contracts",
+              "sha256": "f6706a2acda7e282e42eeb8e8549b15b0c9b7ae6f249f680ea617e4044940488"
+            },
+            {
+              "id": "Hexalith.Parties.EventStoreExtensions",
+              "sha256": "38ee1ff815646c3f721da09e53fe342e316baf4b96af953ae09f73552a0ce486"
+            },
+            {
+              "id": "Hexalith.Parties.Picker",
+              "sha256": "75eda15545c225da9decd565b514f084fc71f0e9e7d442fd266511a06eb24947"
+            },
+            {
+              "id": "Hexalith.Parties.Projections",
+              "sha256": "699acc0409de214c072298792dac77b8ec10c50a587b36048e7215a788807816"
+            },
+            {
+              "id": "Hexalith.Parties.Security",
+              "sha256": "c1aeaa8a6464a7c13ff2452cef2276630ca06351c428cddd86e4c6d82009e8e8"
+            },
+            {
+              "id": "Hexalith.Parties.Testing",
+              "sha256": "0ba9dba6a0d6f0c0c03c82dc70c963f8264c292b4e8204184d94c1d20f407220"
+            }
+          ],
+          "images": [
+            {
+              "name": "registry.hexalith.com/parties",
+              "digest": "sha256:cf03e81e068d7c9c65c0368562718fd63b94394953e2a45533bb201acff8f52d"
+            },
+            {
+              "name": "registry.hexalith.com/parties-mcp",
+              "digest": "sha256:03f20233ebb19a5de02397a3feb5ca1264d097084f74433628d8462ffabe6a5e"
+            },
+            {
+              "name": "registry.hexalith.com/parties-ui",
+              "digest": "sha256:4209ead2a9b9c45c6214b0f524222f75d27133576fa138afaafe121c4bd45dfa"
+            }
+          ],
+          "attestation": null,
+          "evidence": [
+            "https://github.com/Hexalith/Hexalith.Parties/releases/tag/v4.0.1"
+          ],
+          "classification": {
+            "changeClass": "additive",
+            "declarationSha256": "a02a5e6c2213841ef1f0a573f3b69c5077c39bc9fcdb754b262c74f4bfb9d625"
+          }
+        }
+      ]
+    }
+  },
+  "classification": {
+    "workingBaseline": "none",
+    "chain": [
+      {
+        "module": "eventstore",
+        "version": "5.4.0",
+        "changeClass": "additive"
+      },
+      {
+        "module": "memories",
+        "version": "4.1.0",
+        "changeClass": "additive"
+      },
+      {
+        "module": "parties",
+        "version": "4.0.1",
+        "changeClass": "additive"
+      },
+      {
+        "module": "tenants",
+        "version": "8.0.4",
+        "changeClass": "additive"
+      }
+    ],
+    "effective": "additive"
+  }
+}

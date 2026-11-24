@@ -2282,6 +2282,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
   summary: Align signed release change classifications with the intake producer in Story 4.8.
+  status: resolved
+  resolution: Story 4.8 maps `none` to `unchanged`, `additive` to `compatible` and `breaking` to `breaking` at the release-record handoff in `docs/contracts/module-intake-v1.md`.
   evidence: The release enum uses `compatible` and `unchanged` while module-manifest v2 and intake use `additive` and `none`. The producer and reader need a shared vocabulary and a decision on the earlier wire values.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-6-encode-release-attempt-qualification-and-administrator-records.md`
@@ -2357,3 +2359,34 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Verify the tuple runner's AttemptStore collector, output-snapshot and Tooling-identity wiring on its first non-audit run.
   evidence: `eng/run_tuple_ci.py:431-461` measures the AttemptStore collector, snapshots its outputs and compares its `Hexalith.Builds.Tooling.dll` copy with the lock-verified archive member, and refuses unconfigured non-Composition projects. Python tests reach `run_tuple_ci.main()` only with `--audit-only`, which returns before this code, so deleting the identity block or the snapshot append leaves every test green.
   reason: The non-audit path first runs in the hosted tuple workflow, which the Builds 6.7.0 adoption deferral blocks. On that run, check `buildsArtifactIdentities.attemptStore` and `attemptStoreTestOutputs.unchanged: true` in `tuple-ci-result.json`.
+
+## Deferred from Story 4.8
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  owner: Hexalith.Builds
+  summary: Attest released module OCI image indexes from the pinned reusable Builds workflow on GitHub-hosted runners.
+  evidence: The four seeded releases have no recorded attestation identity and the Platform intake refuses their images. Emit GitHub build provenance for the released index digest and preserve the caller and pinned signer identity.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  owner: Hexalith.EventStore
+  summary: Adopt Builds image attestation in the EventStore release workflow.
+  evidence: After Builds supplies the reusable workflow, publish an attested release and record the protected caller ref, pinned Builds workflow commit, and release evidence for Platform intake. Prove admission of each released index digest.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  owner: Hexalith.Memories
+  summary: Adopt Builds image attestation in the Memories release workflow.
+  evidence: After Builds supplies the reusable workflow, publish an attested release and record the protected caller ref, pinned Builds workflow commit, and release evidence for Platform intake. Prove admission of each released index digest.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  owner: Hexalith.Parties
+  summary: Adopt Builds image attestation in the Parties release workflow.
+  evidence: After Builds supplies the reusable workflow, publish an attested release and record the protected caller ref, pinned Builds workflow commit, and release evidence for Platform intake. Prove admission of each released index digest.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  owner: Hexalith.Tenants
+  summary: Adopt Builds image attestation in the Tenants release workflow.
+  evidence: After Builds supplies the reusable workflow, publish an attested release and record the protected caller ref, pinned Builds workflow commit, and release evidence for Platform intake. Prove admission of each released index digest.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-4-8-maintain-the-module-intake-manifest.md`
+  summary: Bind the owner release commit and published module artifact inventory in owner release evidence.
+  evidence: The Platform intake resolver hashes an approved commit's declaration, published NuGet bytes and OCI indexes at the supplied coordinates. Canonical manifest review currently establishes that those coordinates belong to the same owner release.

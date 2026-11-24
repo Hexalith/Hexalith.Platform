@@ -47,6 +47,24 @@ jobs:
           read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])
           PYCODE
           printf 'current-source=%s\n' "$PLATFORM_CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
+      - name: Check the append-only module intake manifest
+        env:
+          MODULE_INTAKE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B eng/test_module_intake.py
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            # Read the first parent from the commit header even at checkout depth 1.
+            MODULE_INTAKE_BASE="$(git cat-file commit "$PLATFORM_CANDIDATE_SHA" | awk '/^$/ { body = 1 } !body && /^parent / && !printed { print $2; printed = 1 }')"
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == push && "$MODULE_INTAKE_BASE" == 0000000000000000000000000000000000000000 ]]; then
+            python3 -B eng/module_intake.py --check
+            exit 0
+          fi
+          [[ "$MODULE_INTAKE_BASE" =~ ^[0-9a-f]{40}$ && "$MODULE_INTAKE_BASE" != "$PLATFORM_CANDIDATE_SHA" ]]
+          git fetch --depth=1 --no-tags --no-write-fetch-head --no-recurse-submodules --refmap= origin "$MODULE_INTAKE_BASE"
+          python3 -B eng/module_intake.py --check --against "$MODULE_INTAKE_BASE"
       - name: Require the pinned Builds release tag to name the recorded gitlink
         env:
           GH_TOKEN: ${{ github.token }}

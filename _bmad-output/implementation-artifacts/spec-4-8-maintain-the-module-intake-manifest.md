@@ -2,7 +2,8 @@
 title: '4.8 Maintain the module intake manifest'
 type: 'feature'
 created: '2026-11-24'
-status: 'ready-for-dev'
+status: 'in-progress'
+baseline_commit: 'c6a573f95589a9c07d1838e2692e493696c470db'
 route: 'dispatch'
 review_loop_iteration: 0
 story_key: '4-8-maintain-the-module-intake-manifest'
@@ -57,22 +58,52 @@ context:
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] `eng/module_intake.py` -- validate, `add` (resolve digests, read the declaration class), `classify --baseline`, `admit` (via `gh attestation verify oci://…`), `--check`.
-- [ ] `eng/module-intake.json` -- schema `hexalith.platform.module-intake.v1`, seeded with the four current releases and their declared classes.
-- [ ] `eng/test_module_intake.py` -- every matrix row with a stubbed `gh`, plus schema and ordering refusals.
-- [ ] `docs/contracts/module-intake-v1.md` -- fields, identity rule, classification rule, refusal codes, the 4.12 handoff and the vocabulary decision.
-- [ ] `.github/workflows/tuple-ci.yml` -- run the tests and `--check`.
-- [ ] `_bmad-output/implementation-artifacts/evidence/story-4-8/` -- a short summary of the live admission runs.
-- [ ] `_bmad-output/implementation-artifacts/deferred-work.md` -- resolve the 4.6 vocabulary deferral with the mapping. Add owner entries: Builds image attestation, then adoption by EventStore, Memories, Parties and Tenants.
+- [x] `eng/module_intake.py` -- validate, `add` (resolve digests, read the declaration class), `classify --baseline`, `admit` (via `gh attestation verify oci://…`), `--check`.
+- [x] `eng/module-intake.json` -- schema `hexalith.platform.module-intake.v1`, seeded with the four current releases and their declared classes.
+- [x] `eng/test_module_intake.py` -- every matrix row with a stubbed `gh`, plus schema and ordering refusals.
+- [x] `docs/contracts/module-intake-v1.md` -- fields, identity rule, classification rule, refusal codes, the 4.12 handoff and the vocabulary decision.
+- [x] `.github/workflows/tuple-ci.yml` -- run the tests and `--check`.
+- [x] `_bmad-output/implementation-artifacts/evidence/story-4-8/` -- a short summary of the live admission runs.
+- [x] `_bmad-output/implementation-artifacts/deferred-work.md` -- resolve the 4.6 vocabulary deferral with the mapping. Add owner entries: Builds image attestation, then adoption by EventStore, Memories, Parties and Tenants.
 
 **Acceptance Criteria:**
 - Given the seeded manifest, when `admit` runs live, then each unattested module image is refused `attestation-missing`, and a real attestation passes only with its exact identity.
 
 ## Implementation Notes
 
+- The last release per module selects the candidate. A named working baseline stores its exact module versions in `baselineVersions`. Modules first introduced after that baseline contribute their full chains.
+- Tuple CI checks append-only history during source resolution. Pull requests use the target base SHA, pushes use the previous SHA, and manual runs use the candidate's first parent.
+- Live verification admitted the public SHA-pinned reusable-workflow fixture, refused four altered expectations, and returned `attestation-missing` for all 11 seeded module indexes. The [live evidence](evidence/story-4-8/admission.md) records the results. The story remains in progress pending the first successful Hexalith module admission.
+
 ## Spec Change Log
 
 ## Review Triage Log
+
+| Layer and finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| Blind review, dispatch history comparison | high | patch | Dispatch checked the selected candidate against its own HEAD. Compare with its first parent. |
+| Blind review, Builds prerequisite | medium | patch | The documented Builds tag mismatch blocks the tuple job before the intake step. Intake uses the Platform checkout alone and can run in source resolution before the Builds check. |
+| Blind review, baseline version binding | high | patch | The same baseline ID with different versions could remove breaking entries after reclassification. Apply the current-baseline binding during history checks. |
+| Blind review, release input binding during add | medium | defer | Selection of the owner release commit, published package IDs and image tag is a reviewed input. The tool resolves identities at those coordinates. Automation for authenticating their joint owner publication belongs to owner release evidence and the publication workflow. |
+| Blind review, declaration authenticity during check | false | reject | The reported acceptance is for an append-only schema and chain check. The frozen scope assigns owner declaration retrieval to `add` and image provenance verification to `admit`. An appended entry passing schema validation gains no admission or publication authority. |
+| Blind review, live issuer, repository and subject diagnostics | medium | patch | GitHub CLI can report verified issuer and repository policy failures before producing JSON. Map its explicit policy diagnostics and retain unverified when a subject failure prevents cryptographic verification. |
+| Blind review, attestation endpoint access | medium | patch | Public metadata alone could not confirm what the authenticated attestation lookup did. Confirm absence with the public attestation endpoint too. |
+| Blind review, default bundle search limit | low | reject | GitHub CLI fetches up to 30 by default. An older exact match could be omitted after 30 same-digest attestations. Raising a finite cap shifts the limit and a separate paginated verification path adds complexity for uncommon repeated attestations. |
+| Blind review, protected ref and workflow authority | false | reject | The frozen identity rule compares against the approved canonical manifest. The system verifies the certificate, while Platform review establishes which protected ref and pinned workflow the manifest authorizes. The contract now makes that responsibility explicit. |
+| Blind review, intake handoff keys and snapshot | medium | patch | The release-record schema leaves digest-map keys to the producer and supplies an evidence digest map. Specify stable keys and the retained intake snapshot digest in the contract. |
+| Edge-case review, reused baseline ID | high | patch | The stored chain could drop a breaking entry after rebinding the same ID. The history check needs the same guard as `classify`. |
+| Edge-case review, dispatch history comparison | high | patch | The fallback passed the checked-out candidate as both sides of the comparison. Use its first parent for dispatch. |
+| Edge-case review, canonical symlink | medium | patch | Resolving the manifest before testing the default path can turn a symlinked canonical file into a standalone path. Determine the canonical argument before resolving symlinks. |
+| Edge-case review, default bundle search limit | low | reject | The lookup cap can omit an older match after repeated attestations for one digest. Full pagination would need a separate verification path and any finite cap has the same boundary. |
+| Edge-case review, issuer and repository prefilter | medium | patch | GitHub CLI emits explicit certificate policy diagnostics for these failures without a JSON result. Preserve the corresponding mismatch field. |
+| Edge-case review, malformed later record | medium | patch | An early receipt could bypass malformed trailing records. Validate the full result list before returning a receipt. |
+| Edge-case review, protected tag containing an at sign | low | reject | The accepted owner refs use simple branch and version-tag syntax. Supporting the rest of Git's ref grammar would require more validation than widening the regex. |
+| Verification-gap review, explicit history revision | medium | patch | A mutation ignoring `--against` passed the original suite. Exercise the CLI against an earlier commit when HEAD already contains the edit. |
+| Verification-gap review, exact release and image selection | high | patch | Two mutations that selected the first release or image both passed. Test selection among distinct releases and images. |
+| Verification-gap review, candidate-only module classification | high | patch | Dropping modules absent from a named baseline passed. Exercise a breaking release from a new module. |
+| Verification-gap review, package version and image tag | medium | patch | Using the image tag for the NuGet request passed. Check distinct coordinates in the artifact test. |
+| Verification-gap review, OCI index constraint | medium | patch | Accepting single-platform manifests passed. Test index media-type refusal and an unchanged manifest. |
+| Verification-gap review, candidate-only CI test regression | high | patch | The existing source-release suite rejects general Git fetch commands. Allow only the guarded exact-SHA comparison fetch and preserve the shallow candidate-only checkouts. |
 
 ## Design Notes
 
@@ -88,6 +119,7 @@ context:
 ## Verification
 
 **Commands:**
-- `python3 -B eng/test_module_intake.py` -- expected: all pass.
-- `python3 -B eng/module_intake.py --check` -- expected: exit 0.
-- `git diff --check` -- expected: clean.
+- `run-with-temp python3 -B eng/test_module_intake.py` -- 25 passed.
+- `python3 -B eng/module_intake.py --check` and `validate` -- both passed.
+- `run-with-temp npm run test:source-release` -- 85 passed.
+- `actionlint .github/workflows/tuple-ci.yml` and `git diff --check` -- both passed.
