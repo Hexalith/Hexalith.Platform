@@ -215,24 +215,32 @@
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Give GitHub release workflows a dedicated least-privilege Zot writer that cannot delete retained content (4.2 live review, writer least privilege).
   evidence: The builds domain-release, eventstore and memories release workflows push with HEXALITH_ZOT_USERNAME/API_KEY, which is the Administrator's jpiquot key. Zot accessControl gives that key read/create/update/delete on `**`, so a workflow could delete retained manifests. The approved live decision left writers unchanged. Fixing it needs a new writer principal plus GitHub secret updates in three repositories.
+  triage: skipped 2026-11-24 (blocked). A dedicated writer must be approved and provisioned in Zot, then installed through GitHub secret rotation in all three repositories.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Bring the registry `kubectl apply -k` source and the Keycloak deployment source up to date with the live 4.2 configuration (4.2 live follow-up).
   evidence: The live Zot config (anonymousPolicy [], htpasswd mount, retain-all retention; SHA-256 90805228…) and KC_HOSTNAME_ADMIN=http://localhost:38080 were applied directly to the cluster. The kustomize source the registry was applied from is not in the local repositories. Re-applying an old source would bring back anonymous read and drop the htpasswd mount or the admin hostname.
+  triage: skipped 2026-11-24 (blocked). The authoritative Zot deployment source is outside the local repositories. Its owner must supply the exact retained source and current live configuration for reconciliation.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Get an independent internet-vantage measurement before 4.27 sets console-closure `externalPathIndependent` (4.2 live review, hairpin vantage).
   evidence: Medium, unverified. The 4.2 external probes ran from the LAN through the public-IP hairpin. Closure is route removal, public DNS has only the A record 82.67.127.189 with no AAAA, and no Ingress has source-range rules, so source address should not change routing. An off-network run of eng/admin-exposure/live/external_probe.py would settle it.
+  triage: skipped 2026-11-24 (blocked). An authorized observer outside the production LAN must measure and record the external path.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Revision-1 ReplicaSets in hexalith-memories reference `:0.0.0` placeholder images that are not in the registry (pre-existing).
   evidence: memories-access-telemetry-5fddff77bc and memories-access-telemetry-clock-765968cfb6 (replicas 0, created 2026-07-19) point at registry.hexalith.com/...:0.0.0, which has no tag in the authenticated closure. A rollback to revision 1 could not pull them. This predates 4.2.
+  triage: skipped 2026-11-24 (blocked). Disposition requires approved rollback-image evidence or authorization for live removal of the old ReplicaSets.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Confirm the next nightly Zot GC completes for eventstore, and compare referrer-inclusive closures (4.2 live follow-up).
   evidence: The 2026-10-07 02:00 UTC GC failed for eventstore on the broken quarantine-proof index, which has since been deleted. The retain-all retention policy has therefore not yet run on eventstore. After the next run, compare with `registry_closure.py --compare` against the referrer-inclusive baseline in the 4.2 live attempt custody.
+  status: superseded (2026-11-24)
+  resolution: The October 8 EventStore GC confirmation in Story 4.2 already records a successful run, unchanged retained closures and verified authenticated transfers.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Remove the public DNS record for kube.hexalith.com, and move the hexalith-recovery Keycloak client secret into long-term secret custody (4.2 live follow-up).
   evidence: The kubesphere-console Ingress is deleted, but public DNS still resolves kube.hexalith.com to 82.67.127.189. The recovery client secret currently exists only in owner-only ~/hexalith-admin-exposure-evidence/credentials on the workstation.
+  triage: skipped 2026-11-24 (blocked). The authoritative DNS change and recovery-client secret custody migration require separate authorized operations.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Review the second Keycloak master-realm user `qdassivignon@itaneo.com` and the unused `keycloak-admin-api` service client against the sole-Administrator policy (found during 4.2 live closure).
   evidence: A read-only master-realm listing on 2026-10-07 showed users jpiquot and qdassivignon@itaneo.com, plus the service-account client keycloak-admin-api, whose credentials sit in Secret keycloak/keycloak-admin-api with no workload consumer. The approved policy names one Administrator.
+  triage: skipped 2026-11-24 (blocked). The Administrator must review the live principals and approve their disposition under the sole-Administrator policy.
 
 
 ## Deferred from: code review of 4-2-close-public-admin-exposure-and-anonymous-registry-reads.md (2026-10-07), split 1: local preparation
@@ -240,23 +248,30 @@
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Carry LP-F1: verify authenticated known-content evidence behind anonymous registry targets.
   evidence: Unverified, medium if true. Blind B2 and Edge E2 repeat the existing 4.2 known-content entry: signed synthetic targets outside representative consumer pulls are accepted, but protected collector operations can supply the authenticated measurement. Inspect each target's referenced authenticated records before declaring the actual content absent or untested.
+  triage: skipped 2026-11-24 (blocked). This repeats the earlier 4.2 known-content entry and still requires its protected per-target collector records.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Carry LP-F2: verify the exact approved GC rehearsal generation, configuration and closure.
   evidence: Unverified, medium if true. Blind B5 repeats the existing 4.2 rehearsal entry. Additional fields are outside the local schema; approval binds the protected rehearsal bytes. Inspect their actual identities before adding new automatic fields.
+  triage: skipped 2026-11-24 (blocked). This repeats the earlier 4.2 rehearsal entry and still requires the protected generation, configuration and closure record.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify SHA-256 computation of transferred retained manifest/blob bytes in protected collector and audit records (LP-F3).
   evidence: Unverified, medium if true. Blind B6: the local helper compares requested/returned digests and binds audit hashes but does not inspect transferred bytes. Check whether the referenced measured records contain actual byte hashing and matching for each retained object; a new supplied assertion alone cannot independently establish it.
+  triage: skipped 2026-11-24 (blocked). The October 8 confirmation supplies aggregate authenticated byte verification. The referenced protected per-object collector and audit records are required for this review.
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify affected controller/configuration dependencies in actual exposure mutation snapshots (LP-F4).
   evidence: Unverified, medium if true. Blind B7: an Ingress/Service-only synthetic baseline passes. Inspect signed operational snapshots and effective-config collector scope to determine whether an affected mutable controller dependency is omitted from UID/resourceVersion/config drift checks; completeness is separately required by the procedure.
+  triage: skipped 2026-11-24 (blocked). The signed operational snapshots and effective-configuration collector scope are required to assess drift coverage.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Resolve composition-stage symbolic references
   evidence: Review BH02/BH04/BH06/BH08/EH04 confirms structural validation retains unresolved references; frozen intent reserves stage-specific rules. Composition, recovery-hook and critical-flow stories must define admissible target scopes.
+  triage: skipped 2026-11-24 (blocked). The recovery and critical-flow execution contracts must define admissible cross-references before composition can enforce those scopes.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Enforce stage-specific uniqueness for task, hook, interface and operation names
   evidence: BH03 demonstrates duplicate task names; execution/catalog stages must apply collection-specific identity rules, which the frozen intent reserves for later stories.
+  status: done 2026-11-24
+  resolution: Composition rejects duplicate task, recovery hook, fence hook and interface names per module and duplicate operation names per interface, using ordinal comparison.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Decide authoritative-restore hook requirements

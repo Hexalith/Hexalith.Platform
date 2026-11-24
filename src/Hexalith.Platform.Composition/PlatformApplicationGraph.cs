@@ -13,20 +13,55 @@ public sealed record PlatformApplicationGraph(IReadOnlyList<PlatformWorkload> Wo
     {
         List<PlatformWorkload> workloads = [];
         foreach (PlatformModuleDeclaration module in declarations)
-        foreach (JsonElement server in module.Declaration.GetProperty("identity").GetProperty("servers").EnumerateArray().Where(s => s.GetProperty("enabled").GetBoolean()))
         {
-            string serverId = server.GetProperty("id").GetString()!;
-            string identity = PlatformDeclarationSet.Id(module.Declaration) + "/" + serverId;
-            JsonElement[] probes = module.Declaration.GetProperty("lifecycle").GetProperty("readiness").EnumerateArray().Where(r => r.GetProperty("server").GetString() == serverId).ToArray();
-            if (probes.Length != 1)
-                throw new InvalidDataException($"{module.Source}: {identity}: lifecycle.readiness: this Platform model requires exactly one readiness check per enabled server.");
-            if (probes[0].GetProperty("kind").GetString() != "http")
-                throw new InvalidDataException($"{module.Source}: {identity}: lifecycle.readiness: this Platform model requires a declared HTTP readiness check.");
-            workloads.Add(new(module, identity, serverId, server.GetProperty("resourceId").GetString()!, server.GetProperty("appId").GetString()!, probes[0].GetProperty("endpoint").GetString()!,
-                module.Declaration.GetProperty("lifecycle").GetProperty("tasks").EnumerateArray().Select(t => t.Clone()).ToArray()));
+            string moduleId = PlatformDeclarationSet.Id(module.Declaration);
+            JsonElement lifecycle = module.Declaration.GetProperty("lifecycle");
+            ValidateNames(module, moduleId, lifecycle);
+
+            foreach (JsonElement server in module.Declaration.GetProperty("identity").GetProperty("servers").EnumerateArray().Where(s => s.GetProperty("enabled").GetBoolean()))
+            {
+                string serverId = server.GetProperty("id").GetString()!;
+                string identity = moduleId + "/" + serverId;
+                JsonElement[] probes = lifecycle.GetProperty("readiness").EnumerateArray().Where(r => r.GetProperty("server").GetString() == serverId).ToArray();
+                if (probes.Length != 1)
+                    throw new InvalidDataException($"{module.Source}: {identity}: lifecycle.readiness: this Platform model requires exactly one readiness check per enabled server.");
+                if (probes[0].GetProperty("kind").GetString() != "http")
+                    throw new InvalidDataException($"{module.Source}: {identity}: lifecycle.readiness: this Platform model requires a declared HTTP readiness check.");
+                workloads.Add(new(module, identity, serverId, server.GetProperty("resourceId").GetString()!, server.GetProperty("appId").GetString()!, probes[0].GetProperty("endpoint").GetString()!,
+                    lifecycle.GetProperty("tasks").EnumerateArray().Select(t => t.Clone()).ToArray()));
+            }
         }
         if (workloads.Count(w => w.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
         return new(workloads, dapr ?? PlatformDaprBindings.Resolve(declarations));
+    }
+
+    private static void ValidateNames(PlatformModuleDeclaration module, string moduleId, JsonElement lifecycle)
+    {
+        foreach (string collection in new[] { "tasks", "recoveryHooks", "fenceHooks" })
+        {
+            RequireUniqueNames(lifecycle.GetProperty(collection), $"lifecycle.{collection}", module.Source, moduleId);
+        }
+
+        JsonElement interfaces = module.Declaration.GetProperty("surfaces").GetProperty("interfaces");
+        RequireUniqueNames(interfaces, "surfaces.interfaces", module.Source, moduleId);
+        foreach (JsonElement surface in interfaces.EnumerateArray())
+        {
+            string? name = surface.GetProperty("name").GetString();
+            RequireUniqueNames(surface.GetProperty("operations"), $"surfaces.interfaces[{name}].operations", module.Source, moduleId);
+        }
+    }
+
+    private static void RequireUniqueNames(JsonElement collection, string field, string source, string moduleId)
+    {
+        HashSet<string> names = new(StringComparer.Ordinal);
+        foreach (JsonElement entry in collection.EnumerateArray())
+        {
+            string name = entry.GetProperty("name").GetString()!;
+            if (!names.Add(name))
+            {
+                throw new InvalidDataException($"{source}: {moduleId}: {field}: duplicate name '{name}'.");
+            }
+        }
     }
 }
 
