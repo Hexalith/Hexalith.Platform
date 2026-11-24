@@ -150,6 +150,78 @@ public sealed class PrivateOwnerOperationAuthenticatorTests
         keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
     }
 
+    /// <summary>A key that expires during the final authority reads cannot release a credential.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task KeyExpiringDuringFinalAuthorityReadCannotReleaseCredential(bool expireDuringGrant)
+    {
+        var (clock, advance) = PrivateOwnerDeadlineTestClock.Create();
+        var fixture = new CustodyFixtureClock { Now = clock.GetUtcNow() };
+        TimeSpan lifetime = TimeSpan.FromSeconds(1);
+        var metadata = new PlatformHmacKeyMetadata("key-v1", PlatformHmacKeyState.Active,
+            fixture.Now.AddMinutes(-1), fixture.Now.Add(lifetime), null);
+        var keys = new CustodyFixtureKeyProvider(fixture);
+        keys.Hook = (_, scope, _, _) =>
+        {
+            var snapshot = new PlatformHmacKeySnapshot(scope, metadata, new byte[32]);
+            keys.Snapshots.Add(snapshot);
+            return ValueTask.FromResult(new PlatformHmacKeyResolution(CustodyStatus.Succeeded, snapshot));
+        };
+
+        var profile = new CustodyFixtureProfileProvider(fixture).Profile;
+        var profiles = Substitute.For<IPlatformSigningProfileProvider>();
+        var grant = Grant(fixture);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        int profileReads = 0, grantReads = 0;
+        profiles.GetCurrent().Returns(_ =>
+        {
+            if (Interlocked.Increment(ref profileReads) == 2 && !expireDuringGrant) { advance(lifetime); }
+            return profile;
+        });
+        grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(_ =>
+        {
+            if (Interlocked.Increment(ref grantReads) == 2 && expireDuringGrant) { advance(lifetime); }
+            return grant;
+        });
+
+        var authenticator = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        (await authenticator.IssueAsync(Caller(), Scope(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        keys.Calls.ShouldBe(2);
+        profileReads.ShouldBe(2);
+        grantReads.ShouldBe(2);
+        clock.GetUtcNow().ShouldBe(metadata.VerifyUntil);
+        keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+
+    /// <summary>Private authorization accepts the exact retained signing version within rotation overlap.</summary>
+    [Fact]
+    public async Task CredentialIssuedBeforeRotationAuthorizesOnlyWithinOverlap()
+    {
+        var clock = new CustodyFixtureClock();
+        var profiles = new CustodyFixtureProfileProvider(clock);
+        var keys = new CustodyFixtureKeyProvider(clock);
+        var grants = Substitute.For<IPrivateOwnerOperationGrantSource>();
+        grants.ResolveCurrentAsync("machine-issuer", "dedicated-machine", "private-verifier", Scope(), Arg.Any<CancellationToken>()).Returns(Grant(clock));
+        var authenticator = new PrivateOwnerOperationAuthenticator(keys, profiles, clock, grants);
+        CancellationToken token = TestContext.Current.CancellationToken;
+
+        PrivateOwnerOperationCredential credential = (await authenticator.IssueAsync(Caller(), Scope(), token)).ShouldNotBeNull();
+        keys.RetiredAt = clock.Now;
+        keys.CurrentVersion = "key-v2";
+        clock.Now += TimeSpan.FromSeconds(1);
+
+        (await authenticator.AuthorizeAsync(Caller(), Scope(), credential, token)).ShouldBeTrue();
+        keys.Snapshots.Count.ShouldBe(4);
+        keys.Snapshots.Skip(2).ShouldAllBe(key => key.Metadata.Version == credential.SigningKeyVersion
+            && key.Metadata.State == PlatformHmacKeyState.Retained);
+
+        clock.Now = keys.RetiredAt.Value + profiles.Profile!.RotationOverlap;
+        credential.ExclusiveExpiry.ShouldBeGreaterThan(clock.Now);
+        (await authenticator.AuthorizeAsync(Caller(), Scope(), credential, token)).ShouldBeFalse();
+        keys.Snapshots.ShouldAllBe(key => key.IsDisposed);
+    }
+
     /// <summary>Every caller identity carrier rejects strict malformed UTF-8 or more than 2048 encoded bytes before grant or key invocation.</summary>
     [Theory]
     [InlineData("tenant", false)][InlineData("tenant", true)]

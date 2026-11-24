@@ -54,12 +54,16 @@ public sealed class PrivateOwnerOperationAuthenticator(IPlatformHmacKeyProvider 
             using var confirmed = await ResolveAsync(scope, credential.SigningKeyVersion, start, token).ConfigureAwait(false);
             if (confirmed is null) { return null; }
             keyDecisionAt = clock.GetUtcNow();
-            if (PlatformKeyResolution.Check(new(CustodyStatus.Succeeded, confirmed), scope, credential.SigningKeyVersion, keyDecisionAt, issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
+            var confirmation = new PlatformHmacKeyResolution(CustodyStatus.Succeeded, confirmed);
+            if (PlatformKeyResolution.Check(confirmation, scope, credential.SigningKeyVersion, keyDecisionAt, issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
             byte[] currentTag = confirmed.ComputeTag(canonical, keyDecisionAt, issue, profile.RotationOverlap);
             try { if (!CryptographicOperations.FixedTimeEquals(tag, currentTag)) { return null; } } finally { CryptographicOperations.ZeroMemory(currentTag); }
             var currentGrant = await AwaitAsync(() => grants.ResolveCurrentAsync(issuer, subject, client, expected, CancellationToken.None), start, token).ConfigureAwait(false);
-            if (currentGrant != grant || !ValidGrant(currentGrant, issuer, subject, client, audience, expected, clock.GetUtcNow())
-                || await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false) != profile || !profile.IsValid(clock.GetUtcNow()) || !ValidTime(credential, profile, clock.GetUtcNow())) { return null; }
+            if (currentGrant != grant || !ValidGrant(currentGrant, issuer, subject, client, audience, expected, clock.GetUtcNow())) { return null; }
+            var currentProfile = await AwaitAsync(() => Task.FromResult(profiles.GetCurrent()), start, token).ConfigureAwait(false);
+            DateTimeOffset decidedAt = clock.GetUtcNow();
+            if (currentProfile != profile || !profile.IsValid(decidedAt) || !ValidTime(credential, profile, decidedAt)
+                || PlatformKeyResolution.Check(confirmation, scope, credential.SigningKeyVersion, decidedAt, issue, profile.RotationOverlap) != CustodyStatus.Succeeded) { return null; }
             token.ThrowIfCancellationRequested();
             if (clock.GetElapsedTime(start) >= TimeSpan.FromSeconds(30)) { return null; }
             return credential with { Tag = Convert.ToHexStringLower(tag) };

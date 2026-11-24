@@ -7,12 +7,12 @@ using Shouldly;
 public sealed partial class PlatformAppModelTests
 {
     [Theory]
-    [InlineData("lifecycle.tasks", "verify")]
-    [InlineData("lifecycle.recoveryHooks", "verify")]
-    [InlineData("lifecycle.fenceHooks", "verify")]
-    [InlineData("surfaces.interfaces", "validation-test-api")]
-    [InlineData("surfaces.interfaces[validation-test-api].operations", "read")]
-    public void CompositionRefusesDuplicateDeclarationNamesBeforeAddingResources(string field, string name)
+    [InlineData("lifecycle.tasks", "verify", "scope", "operator-only")]
+    [InlineData("lifecycle.recoveryHooks", "verify", "task", "recover")]
+    [InlineData("lifecycle.fenceHooks", "verify", "task", "recover")]
+    [InlineData("surfaces.interfaces", "validation-test-api", "routePrefix", "/other-path")]
+    [InlineData("surfaces.interfaces[validation-test-api].operations", "read", "authorizationPolicy", "other.read")]
+    public void CompositionRefusesDuplicateDeclarationNamesBeforeAddingResources(string field, string name, string changedField, string changedValue)
     {
         DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-declaration-names-");
         try
@@ -21,13 +21,20 @@ public sealed partial class PlatformAppModelTests
             JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
             JsonNode module = document["modules"]![0]!;
             AddNamedHooks(module);
+            JsonArray tasks = module["lifecycle"]!["tasks"]!.AsArray();
+            JsonNode recoveryTask = tasks[0]!.DeepClone();
+            recoveryTask["name"] = "recover";
+            recoveryTask["scope"] = "recovery";
+            tasks.Add(recoveryTask);
             JsonArray collection = field switch
             {
                 "surfaces.interfaces" => module["surfaces"]!["interfaces"]!.AsArray(),
                 "surfaces.interfaces[validation-test-api].operations" => module["surfaces"]!["interfaces"]![0]!["operations"]!.AsArray(),
                 _ => module["lifecycle"]![field["lifecycle.".Length..]]!.AsArray(),
             };
-            collection.Add(collection[0]!.DeepClone());
+            JsonNode duplicate = collection[0]!.DeepClone();
+            duplicate[changedField] = changedValue;
+            collection.Add(duplicate);
             File.WriteAllText(path, document.ToJsonString());
 
             IDistributedApplicationBuilder builder = Builder();
