@@ -435,6 +435,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
 - AR-28 (AD-7): *Executors and triggers:*
   - Staging and production each have a dedicated self-hosted executor on a separate host; the production executor sits outside the application cluster. An off-site recovery executor handles replacement-capacity recovery. No executor shares a host with a CI runner or another executor.
   - Credentials are per-job, revocable and epoch-bound, issued through OIDC claim checks or held by the executor, never as repository secrets. A recovery-kind job additionally receives a recovery-hook credential bound to its attempt and epoch, read access to that environment instance's recovery-point prefix, and only the custodian-released decryption material needed for that job; all three are destroyed or revoked at job end.
+  - Recovery-hook, recovery-point read and decryption access use short authority-enforced leases with a finite renewal interval and an expiry no later than the attempt deadline. Renewal requires a live job and the current epoch. The credential and custody authorities fence and revoke the leases independently of executor cleanup when the job terminates, loses its heartbeat or loses its epoch. Plaintext decryption material stays in isolated volatile job memory and is never persisted.
   - Module-supplied code runs in a sandbox without job credentials.
   - Jobs come from a private operations repository whose only writers are the named writers. Executors enforce allowlists and verify signed Administrator records.
   - Administrator or the deputy can start in-place recovery on the production executor and replacement-capacity recovery on the recovery executor.
@@ -3421,6 +3422,10 @@ So that production changes run only from allowlisted workflows, or from Administ
 **When** they use the allowlisted recovery entry point
 **Then** it runs under their own MFA identity, without write access to the operations repository
 
+**Given** an in-place recovery job with active recovery-hook, recovery-point read and decryption leases
+**When** the executor is killed without running job cleanup
+**Then** lease renewal stops, and the rejected hook, read and decrypt operations are recorded within the declared lease bound before a successor is allowed to mutate
+
 **Given** an Administrator record
 **When** a job depends on it
 **Then** the executor verifies its signature before acting
@@ -4364,6 +4369,7 @@ So that the failed site can never write again and the restore starts from a trus
 **Then** a pinned off-site copy of the workflows and environment definitions runs with neither operations-repository write access nor GitHub
 **And** its standing credentials cover only the prepared capacity, its record-signing identity, write access to the attempt, lock and stop store, and read-only access to recovery points and the off-site registry replica
 **And** the commissioned identity rechecks the store path and demonstrates the required record and epoch operations on isolated verification records
+**And** killing the recovery executor during a fixture job proves recovery-hook, recovery-point read and decryption access expire within the declared lease bound without relying on job cleanup.
 
 **Given** step 2
 **When** it runs

@@ -11,6 +11,8 @@
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Make recovery-job credential cleanup fail safe on abnormal executor termination.
   evidence: Concurrent AR-28 text promises destruction or revocation at job end but does not define a short lease or out-of-band finalizer for a crashed or killed job.
+  status: done 2026-11-24
+  resolution: AD-7 and AR-28 require independently enforced leases and fencing. Stories 6.8 and 8.9 require executor-kill controls at commissioning.
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-0-4-3-start-urgent-kubernetes-upgrade-track.md`
   summary: Assign every unlisted Kubernetes object kind to exactly one release tier.
   evidence: Concurrent AR-32 text requires a unique tier but does not classify RBAC, ServiceAccounts, CRDs, PDBs or admission objects, allowing ownership and rollback behavior to diverge.
