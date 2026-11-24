@@ -12,6 +12,10 @@ namespace Hexalith.Platform.Custody;
 public sealed record DeletionCapabilitySigningOutcome(string SigningRequestId, DeletionBatchCapabilityV1 Payload,
     DeletionCapabilitySigningState State, string? DetachedJws = null, string? PublicAnchorId = null, string? PublicAnchorVersion = null)
 {
+    /// <summary>Opaque provider receipt retained with the anchored signature for historical verification.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? OriginalIssuanceReceiptId { get; init; }
+
     /// <summary>Original immutable independently authenticated guard no-issue proof; absent for every other state.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DeletionCapabilityNoIssueProof? NoIssueProof { get; init; }

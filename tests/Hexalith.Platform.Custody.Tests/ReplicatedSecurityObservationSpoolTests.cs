@@ -160,6 +160,60 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         JsonSerializer.SerializeToUtf8Bytes(archived.Snapshot).ShouldBe(original);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(10001)]
+    public async Task InvalidDrainCountRefusesBeforeAnyRead(int count)
+    {
+        var fixture = new SecuritySpoolFixture();
+        fixture.Authority.ClearReceivedCalls();
+        fixture.Client.ClearReceivedCalls();
+
+        var error = await Should.ThrowAsync<ArgumentOutOfRangeException>(() => fixture.Spool.DrainAsync(count, TestContext.Current.CancellationToken));
+        error.ParamName.ShouldBe("maximumCount");
+        fixture.Authority.ReceivedCalls().ShouldBeEmpty();
+        fixture.Client.ReceivedCalls().ShouldBeEmpty();
+    }
+
+    [Theory]
+    [InlineData("foreign-scope")]
+    [InlineData("invalid-revision")]
+    [InlineData("changed-digest")]
+    public async Task MalformedPendingTransitionFailsDrainWithoutMutation(string defect)
+    {
+        var fixture = new SecuritySpoolFixture();
+        var before = new SecuritySpoolSnapshot(fixture.Target.InstallationEpoch, 0, []);
+        var target = before with { Revision = 1, Records = [new(SecuritySpoolFixture.Intent(), fixture.Clock.Now,
+            fixture.Clock.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), 1, null)] };
+        var pending = RecoverableAnchoredState.Prepare(
+            fixture.Target.ComponentName + "|system/security-observations/" + fixture.Target.InstallationEpoch, 0, 1, before, target);
+        pending = defect switch
+        {
+            "foreign-scope" => pending with { ScopeId = "foreign" },
+            "invalid-revision" => pending with { ExpectedRevision = long.MaxValue, TargetRevision = long.MinValue },
+            _ => pending with { TargetDigest = new string('0', 64) },
+        };
+        byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(pending);
+        fixture.PendingBytes = bytes;
+
+        await Should.ThrowAsync<MalformedSecuritySpoolException>(() => fixture.Spool.DrainAsync(1, TestContext.Current.CancellationToken));
+        fixture.PendingBytes.ShouldBe(bytes);
+        fixture.Persisted.ShouldBeNull();
+        fixture.Recorder.ReceivedCalls().ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task ForeignInstallationHeadFailsDrainWithoutMutation()
+    {
+        var fixture = new SecuritySpoolFixture();
+        byte[] persisted = JsonSerializer.SerializeToUtf8Bytes(new SecuritySpoolSnapshot("foreign-installation", 0, []));
+        fixture.Persisted = persisted;
+
+        await Should.ThrowAsync<MalformedSecuritySpoolException>(() => fixture.Spool.DrainAsync(1, TestContext.Current.CancellationToken));
+        fixture.Persisted.ShouldBe(persisted);
+        fixture.Recorder.ReceivedCalls().ShouldBeEmpty();
+    }
+
     /// <summary>Current default encoding remains current; malformed reservation layouts cannot mutate primary or pending bytes.</summary>
     [Theory]
     [InlineData("partial-digest")]
@@ -182,6 +236,8 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         var f = new SecuritySpoolFixture { Persisted = Encoding.UTF8.GetBytes(malformed) };
         (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
         (await f.Spool.ObserveAsync(SecuritySpoolFixture.Intent(), TestContext.Current.CancellationToken)).ShouldBeNull();
+        await Should.ThrowAsync<MalformedSecuritySpoolException>(() => f.Spool.DrainAsync(1, TestContext.Current.CancellationToken));
+        f.Recorder.ReceivedCalls().ShouldBeEmpty();
         Encoding.UTF8.GetString(f.Persisted).ShouldBe(malformed); f.PendingBytes.ShouldBeNull();
     }
 
@@ -493,6 +549,23 @@ public sealed class ReplicatedSecurityObservationSpoolTests
         if (operation == "drain") { (await f.Spool.DrainAsync(1, TestContext.Current.CancellationToken)).ShouldBe(0); }
         else { (await f.Spool.IsReadyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue(); }
         f.Archives.Count.ShouldBe(1); f.Read()!.PageIndex.ShouldBe(1); f.Read()!.ReservedArchiveDigest.ShouldBeNull(); f.Read()!.Records.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task StructurallyReadableDivergentReservedArchiveFailsDrain()
+    {
+        var fixture = new SecuritySpoolFixture();
+        InstallReservedAcknowledgedHead(fixture, savePage: true);
+        string key = fixture.Archives.Keys.Single();
+        var page = JsonSerializer.Deserialize<SecuritySpoolArchivePage>(fixture.Archives[key])!;
+        byte[] divergent = JsonSerializer.SerializeToUtf8Bytes(page with { PageIndex = 1 });
+        fixture.Archives[key] = divergent;
+        byte[] reserved = fixture.Persisted!;
+
+        await Should.ThrowAsync<MalformedSecuritySpoolException>(() => fixture.Spool.DrainAsync(1, TestContext.Current.CancellationToken));
+        fixture.Persisted.ShouldBe(reserved);
+        fixture.Archives[key].ShouldBe(divergent);
+        fixture.Recorder.ReceivedCalls().ShouldBeEmpty();
     }
 
     /// <summary>A persisted reservation digest that does not match its carrier fails closed before lookup can return that head.</summary>

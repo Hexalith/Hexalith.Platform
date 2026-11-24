@@ -177,24 +177,38 @@ public sealed partial class PlatformAppModelTests
         builder.Resources.ShouldBeEmpty();
     }
 
-    [Fact]
-    public void DependencyCycleRefusesBeforeResourceCreation()
+    [Theory]
+    [InlineData("parties", false, "cycle")]
+    [InlineData("dependency", true, "cycle")]
+    [InlineData("missing", false, "missing")]
+    public void InvalidDependencyGraphRefusesBeforeResourceCreation(string target, bool includeCycle, string diagnostic)
     {
-        string directory = Path.Combine(Path.GetTempPath(), "platform-cycle-" + Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(directory);
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-dependency-graph-");
         try
         {
-            string path = Fixture(directory, "parties", tasks: false);
-            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
-            document["modules"]![0]!["identity"]!["dependencies"] = new JsonArray("parties");
-            File.WriteAllText(path, document.ToJsonString());
+            string root = DeclareDependency("parties", target);
+            string[] paths = includeCycle ? [root, DeclareDependency("dependency", "parties")] : [root];
             IDistributedApplicationBuilder builder = Builder();
-            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, Options(active: "parties") with { DeclarationPaths = [path] }));
+            PlatformCompositionOptions options = Options(active: "parties") with { DeclarationPaths = paths };
+            InvalidDataException refusal = Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options));
             refusal.Message.ShouldContain("identity.dependencies");
-            refusal.Message.ShouldContain("cycle");
+            refusal.Message.ShouldContain(diagnostic);
+            refusal.Message.ShouldContain(target);
             builder.Resources.ShouldBeEmpty();
         }
-        finally { Directory.Delete(directory, true); }
+        finally
+        {
+            workspace.Delete(recursive: true);
+        }
+
+        string DeclareDependency(string module, string dependency)
+        {
+            string path = Fixture(workspace.FullName, module, tasks: false);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            document["modules"]![0]!["identity"]!["dependencies"] = new JsonArray(dependency);
+            File.WriteAllText(path, document.ToJsonString());
+            return path;
+        }
     }
 
     [Fact]

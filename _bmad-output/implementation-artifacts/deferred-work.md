@@ -361,70 +361,141 @@ resolution: Composition compares matching CPU and memoryMiB request/limit pairs 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Define resource quantity conversion types and bounds
   evidence: BH10/EH05 is unverified: resource numbers remain JsonElement here, with no double conversion. A downstream conversion/provisioning test and chosen quantity types would establish required bounds.
+  triage: skipped 2026-11-24 (blocked). Current local composition preserves exact JSON quantities and hosted qualification uses independent capacity inputs. No declaration-driven provisioning consumer defines a conversion target or its bounds.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Reject invalid dependency graphs when constructing compositions
-  evidence: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
+### DW-15: Reject invalid dependency graphs when constructing compositions
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
-  evidence: R3-BH01 and R3-EH04; owner commit 6f07763bd955d22ace0123798add528dc933bf51 migrated pins and synthetic fixtures, but the package control assertion and publication default still require EventStore 3.110.0. Historical retained acceptance does not qualify the migrated tuple.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: BH11 shows self-dependencies are retained structurally; the later composition graph must reject self-links/cycles before launch.
+status: done 2026-11-24
+resolution: The pinned Builds graph validator rejects self-dependencies, multi-module cycles, and unresolved dependencies. The Platform composition entry point now exercises each refusal before resource registration.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Define command-readiness execution and interpreter rules at the runtime execution stage.
-  evidence: R3-BH08, medium unverified; local validation admits an existing readable file, but no v2 execution consumer yet establishes admissible script, DLL, interpreter or platform execution semantics. Verify against the later command launcher without launching during enrollment.
+### DW-16: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
-  evidence: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH01 and R3-EH04; owner commit 6f07763bd955d22ace0123798add528dc933bf51 migrated pins and synthetic fixtures, but the package control assertion and publication default still require EventStore 3.110.0. Historical retained acceptance does not qualify the migrated tuple.
+status: done 2026-11-24
+disposition: superseded
+resolution: Builds 57a3167dcf6a4855c195fc1029856b5251e16ac3 aligned the legacy qualification consumers. The current Platform selects a later owner tuple, so a promotion qualification for those historical pins is no longer pending.
+
+### DW-17: Define command-readiness execution and interpreter rules at the runtime execution stage.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH08, medium unverified; local validation admits an existing readable file, but no v2 execution consumer yet establishes admissible script, DLL, interpreter or platform execution semantics. Verify against the later command launcher without launching during enrollment.
+status: done 2026-11-24
+resolution: The enrollment guide defines HTTP-only Platform readiness for local and hosted composition. An otherwise valid command probe is refused before resources are created or an interpreter could be selected.
+
+### DW-18: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.
+status: done 2026-11-24
+resolution: The exact-review envelope permits a byte-bounded top-level body. Envelope metadata and individual strings inside the authenticated body still enforce the existing string budget and exact retained byte binding.
 
 ## Deferred from: code review of spec-1-1-validate-module-declarations.md (2026-10-08)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Bound startup override budgets and integer forms for typed consumers.
   evidence: R4-W1, medium. `lifecycle.startup.override.timeoutSeconds` of `1e308` or `1e-300` satisfies the frozen "positive finite" rule, but TimeSpan conversion overflows or truncates. `replicas`, `memoryMiB` and `sizeMiB` written as `1.0`/`1e3` pass JSON Schema `integer` but fail `GetInt32()`. Story 1.8 must define the representable or policy budget cap. Composition (Story 1.6) must normalize or reject non-canonical integers. Extends the resource quantity-conversion entry.
+  triage: skipped 2026-11-24 (blocked). Builds 6.7.0 bounds runtime overrides to 0.001–3600 seconds. The declaration replica, memory and volume fields still have no typed provisioning consumer with a conversion contract.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Decide whether provider tenancy may be `shared`.
-  evidence: R4-W2, unverified; medium if true. The v2 `tenancy.mode` enum admits `shared`, while the spine defines the field as "external providers needing per-environment tenancy" and AD-8 separates hosted state by environment. To settle it, the owner states whether any declared external provider may be shared across environments.
+### DW-19: Decide whether provider tenancy may be `shared`.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R4-W2, unverified; medium if true. The v2 `tenancy.mode` enum admits `shared`, while the spine defines the field as "external providers needing per-environment tenancy" and AD-8 separates hosted state by environment. To settle it, the owner states whether any declared external provider may be shared across environments.
+status: done 2026-11-24
+resolution: Hosted graph export enforces adopted AD-8 and refuses cross-environment shared provider tenancy. Verified local declaration parsing and hosted acceptance and refusal paths.
 
 ## Deferred from: code review of spec-plat-actor-history-1-t1-immutable-custody-contracts.md (2026-10-08)
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Reconcile the Builds R5 note with the moved Builds gitlink and the other submodule pointer updates in the dirty tree.
-  evidence: BH01. The R5 verification text still describes uncommitted patches on 50b0257 while the gitlink is 0097b5a. This is other in-progress submodule work, not the actor-history contracts.
+### DW-20: Reconcile the Builds R5 note with the moved Builds gitlink and the other submodule pointer updates in the dirty tree.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Pin whether a fresh deletion-capability signature is stored after healthy rotation.
-  evidence: BH03, EH06, VG02. RetainAsync resolves trust with requireCurrent false for SignAsync. No test rotates a successful sign to non-current and non-revoked. The signing actor was already dirty before this story.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH01. The R5 verification text still describes uncommitted patches on 50b0257 while the gitlink is 0097b5a. This is other in-progress submodule work, not the actor-history contracts.
+status: done 2026-11-24
+resolution: The R5 verification note now records the verified base, the initial patch and Platform adoption, and the later equivalent Builds mainline patch with the separate owner pointer changes.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Re-check trust and the original issuance receipt when a stored Signed deletion outcome is read again.
-  evidence: BH04. ResolveAsync returns a Signed outcome without consulting trust or OriginalIssuanceReceiptId, and that receipt id is not stored on the outcome. Pre-existing signing work.
+### DW-21: Pin whether a fresh deletion-capability signature is stored after healthy rotation.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Treat a still-current emergency revocation as a denial of fresh deletion-capability issuance.
-  evidence: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true while IsCurrentNonRevoked stays true. Deleting the new revocation clause leaves the current signing tests green. Pre-existing signing work.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH03, EH06, VG02. RetainAsync resolves trust with requireCurrent false for SignAsync. No test rotates a successful sign to non-current and non-revoked. The signing actor was already dirty before this story.
+status: done 2026-11-24
+resolution: A signature from an already admitted provider call is retained and recovered under the independently retained nonrevoked verifier after healthy rotation. A fresh request under that key is refused. The actor test exercises both outcomes.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Separate the private-owner credential MAC purpose from TrustedEnvelope.
-  evidence: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.TrustedEnvelope. Separate authenticator work.
+### DW-22: Re-check trust and the original issuance receipt when a stored Signed deletion outcome is read again.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
-  evidence: BH07. TryWriteAsync records the next revision before TrySaveStateAsync and ignores a false or thrown save. Spool work.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH04. ResolveAsync returns a Signed outcome without consulting trust or OriginalIssuanceReceiptId, and that receipt id is not stored on the outcome. Pre-existing signing work.
+status: done 2026-11-24
+resolution: The anchored outcome retains the opaque provider receipt and revalidates the exact signature against independent trust on every Signed reread. Revoked history requires the verified original receipt. Legacy outcomes retain their existing digests and fail closed after revocation if they lack that receipt.
+
+### DW-23: Treat a still-current emergency revocation as a denial of fresh deletion-capability issuance.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH05, VG01. IsRevoked defaults to false, and no test sets IsRevoked true while IsCurrentNonRevoked stays true. Deleting the new revocation clause leaves the current signing tests green. Pre-existing signing work.
+status: done 2026-11-24
+resolution: The actor regression supplies trust marked both current and revoked and verifies denial before persistence or provider invocation.
+
+### DW-24: Separate the private-owner credential MAC purpose from TrustedEnvelope.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH06. PrivateOwnerOperationAuthenticator tags PlatformHmacPurpose.TrustedEnvelope. Separate authenticator work.
+status: done 2026-11-24
+resolution: Private-owner operations resolve their own HMAC purpose for issuance and verification, without an envelope fallback. The generic digest service permits only content and observation purposes.
+
+### DW-25: Reconcile a security-spool anti-rollback anchor when the durable save is lost.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH07. TryWriteAsync records the next revision before TrySaveStateAsync and ignores a false or thrown save. Spool work.
+status: done 2026-11-24
+disposition: superseded
+resolution: The recoverable transition journal stages and verifies exact pending bytes before advancing the anchor. Component-save fault and restart tests cover both lost acknowledgements and unpersisted state.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Keep an empty or missing security spool from reporting ready.
   evidence: BH08, EH01. A null component read becomes revision 0 with no records, and Records.All is true for that empty list when the authority attests the digest. Spool work.
+  triage: skipped 2026-11-24 (blocked). The current ingress checks spool readiness before accepting its first command or recording its first denial. An independently authorized commissioning observation or separate initial readiness contract is required to avoid blocking a fresh installation.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Define what happens when the security spool reaches its 10000-record bound.
-  evidence: BH09. ObserveAsync drops the new observation at the bound, and a fully receipted spool can remain ready. Spool work.
+### DW-26: Define what happens when the security spool reaches its 10000-record bound.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
-  summary: Stop security-spool drain from reporting success for a bad count or malformed state.
-  evidence: BH10. ArgumentOutOfRangeException and malformed-state exceptions are caught and returned as a normal count. Spool work.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH09. ObserveAsync drops the new observation at the bound, and a fully receipted spool can remain ready. Spool work.
+status: done 2026-11-24
+disposition: superseded
+resolution: Acknowledged heads now roll into a bounded authenticated archive chain. Receipt-space reservations and the archive ceiling refuse further admission when storage is exhausted, with explicit rollover and final-page tests.
+
+### DW-27: Stop security-spool drain from reporting success for a bad count or malformed state.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
+location: n/a
+reason: BH10. ArgumentOutOfRangeException and malformed-state exceptions are caught and returned as a normal count. Spool work.
+status: done 2026-11-24
+resolution: Drain rejects invalid counts before touching the store and surfaces malformed persisted data as an error. The hosted worker logs the integrity failure and retries on its existing schedule.
 
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-plat-actor-history-1-t1-immutable-custody-contracts.md`
   summary: Give security-spool digests a stable domain so serializer changes do not move restore anchors.

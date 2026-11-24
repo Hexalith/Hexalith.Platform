@@ -12,7 +12,7 @@ namespace Hexalith.Platform.Custody;
 /// <param name="authority">Independent recorded guard authorization.</param>
 /// <param name="provider">Qualified per-tenant deletion-only key backend with exact retained outcome.</param>
 /// <param name="trustProvider">Independently published current/retained tenant/family/version trust authority.</param>
-/// <param name="originalReceiptAuthority">Independent original historic provider receipt verifier, mandatory for unresolved results after revocation.</param>
+/// <param name="originalReceiptAuthority">Independent original historic provider receipt verifier, mandatory to release signed results after revocation.</param>
 /// <param name="noIssueAuthority">Independent exact terminal guard no-issue authority; omitted means obsolescence unavailable.</param>
 /// <param name="timeProvider">Current exclusive proof clock.</param>
 public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapabilitySigningAuthority? authority = null,
@@ -83,7 +83,7 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
             var result = await SignAsyncCoreAsync(payload, budget).ConfigureAwait(false);
             if (result.State == DeletionCapabilitySigningState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "SignDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
-            budget.Check(); return result;
+            budget.Check(); return await ConfirmReleaseAsync(result, budget).ConfigureAwait(false);
 
         }
         catch (TimeoutException) { return uncertainty ?? new(id, payload, DeletionCapabilitySigningState.Unavailable); }
@@ -124,7 +124,7 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
             var result = await LookupAsyncCoreAsync(payload, budget).ConfigureAwait(false);
             if (result.State == DeletionCapabilitySigningState.Unknown) { uncertainty = result; }
             if (!(authority is not null && await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "LookupDeletionCapability")).ConfigureAwait(false))) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
-            budget.Check(); return result;
+            budget.Check(); return await ConfirmReleaseAsync(result, budget).ConfigureAwait(false);
 
         }
         catch (TimeoutException) { return uncertainty ?? new(id, payload, DeletionCapabilitySigningState.Unavailable); }
@@ -149,7 +149,11 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         if (existing.State is DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.Denied
             or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued) { return existing; }
         if (provider is null || trustProvider is null) { return new(id, payload, DeletionCapabilitySigningState.Unavailable); }
-        try { return await RetainAsync(payload, id, await budget.ReadAsync(async () => CaptureProviderResult(await provider.LookupAsync(payload, id).ConfigureAwait(false))).ConfigureAwait(false), budget, recoveringOriginal: true).ConfigureAwait(false); }
+        try
+        {
+            var original = await budget.ReadAsync(async () => CaptureProviderResult(await provider.LookupAsync(payload, id).ConfigureAwait(false))).ConfigureAwait(false);
+            return await RetainAsync(payload, id, original, budget, recoveringOriginal: true).ConfigureAwait(false);
+        }
         catch (TimeoutException) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
         catch (Exception) { budget.Check(); return new(id, payload, DeletionCapabilitySigningState.Unknown); }
     }
@@ -167,25 +171,101 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
         if (trust is null || outcome.PublicAnchorId != trust.PublicAnchorId || outcome.PublicAnchorVersion != trust.PublicAnchorVersion
             || !CryptographicOperations.FixedTimeEquals(supplied, trust.SubjectPublicKeyInfo))
         { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
-        if (result.OriginalIssuanceReceiptId is { } receipt)
+        if (!ValidReceipt(result.OriginalIssuanceReceiptId)
+            || !VerifySignature(outcome, trust))
         {
-            try { if (string.IsNullOrWhiteSpace(receipt) || receipt.Length > 2048 || new UTF8Encoding(false, true).GetByteCount(receipt) > 2048)
-                { return new(id, payload, DeletionCapabilitySigningState.Unknown); } }
-            catch (EncoderFallbackException) { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
+            return new(id, payload, DeletionCapabilitySigningState.Unknown);
         }
-        if (trust.IsRevoked && (originalReceiptAuthority is null || string.IsNullOrWhiteSpace(result.OriginalIssuanceReceiptId)
-            || !await budget.ReadAsync(() => originalReceiptAuthority.VerifyOriginalIssuanceAsync(payload, id, result, trust)).ConfigureAwait(false)))
-        { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
-        budget.Check();
-        byte[] ownedAnchor = trust.SubjectPublicKeyInfo; using var key = ECDsa.Create();
-        key.ImportSubjectPublicKeyInfo(ownedAnchor, out int consumed);
-        var profile = new DeletionCapabilityTrustProfile(payload.Issuer, payload.Audience, payload.TenantId, payload.CapabilityKeyVersion,
-            trust.PublicAnchorId, trust.PublicAnchorVersion);
-        if (consumed != ownedAnchor.Length || !DeletionBatchCapabilityCodec.Verify(payload, profile, outcome.DetachedJws, key))
-        { return new(id, payload, DeletionCapabilitySigningState.Unknown); }
+
+        outcome = outcome with { OriginalIssuanceReceiptId = result.OriginalIssuanceReceiptId };
+        if (!await VerifyHistoricalReceiptAsync(budget, outcome, trust).ConfigureAwait(false))
+        {
+            return new(id, payload, DeletionCapabilitySigningState.Unknown);
+        }
+
         budget.Check();
         return await SaveAsync(budget, outcome).ConfigureAwait(false);
     }
+
+    private async Task<DeletionCapabilitySigningOutcome> ConfirmReleaseAsync(
+        DeletionCapabilitySigningOutcome outcome, PrivateOwnerOperationDeadline budget)
+    {
+        if (outcome.State != DeletionCapabilitySigningState.Signed)
+        {
+            return PublicOutcome(outcome);
+        }
+
+        try
+        {
+            var trust = await ResolveTrustAsync(budget, outcome.Payload, requireCurrent: false, allowRevokedHistory: true).ConfigureAwait(false);
+            if (trust is not null && VerifySignature(outcome, trust)
+                && await VerifyHistoricalReceiptAsync(budget, outcome, trust).ConfigureAwait(false))
+            {
+                budget.Check();
+                return PublicOutcome(outcome);
+            }
+        }
+        catch (TimeoutException) { }
+        catch (Exception) { budget.Check(); }
+
+        return new(outcome.SigningRequestId, outcome.Payload, DeletionCapabilitySigningState.Unknown);
+    }
+
+    private static bool VerifySignature(DeletionCapabilitySigningOutcome outcome, DeletionCapabilityPublishedTrust trust)
+    {
+        if (outcome.PublicAnchorId != trust.PublicAnchorId || outcome.PublicAnchorVersion != trust.PublicAnchorVersion)
+        {
+            return false;
+        }
+
+        using var key = ECDsa.Create();
+        key.ImportSubjectPublicKeyInfo(trust.SubjectPublicKeyInfo, out int consumed);
+        var payload = outcome.Payload;
+        var profile = new DeletionCapabilityTrustProfile(payload.Issuer, payload.Audience, payload.TenantId,
+            payload.CapabilityKeyVersion, trust.PublicAnchorId, trust.PublicAnchorVersion);
+        return consumed == trust.SubjectPublicKeyInfo.Length
+            && DeletionBatchCapabilityCodec.Verify(payload, profile, outcome.DetachedJws!, key);
+    }
+
+    private async Task<bool> VerifyHistoricalReceiptAsync(PrivateOwnerOperationDeadline budget,
+        DeletionCapabilitySigningOutcome outcome, DeletionCapabilityPublishedTrust trust)
+    {
+        if (!trust.IsRevoked)
+        {
+            return true;
+        }
+
+        if (originalReceiptAuthority is null || outcome.OriginalIssuanceReceiptId is not { } receipt)
+        {
+            return false;
+        }
+
+        var result = new DeletionCapabilitySigningResult(PublicOutcome(outcome), trust.SubjectPublicKeyInfo.ToArray(), receipt);
+        return await budget.ReadAsync(() => originalReceiptAuthority.VerifyOriginalIssuanceAsync(
+            outcome.Payload, outcome.SigningRequestId, result, trust)).ConfigureAwait(false);
+    }
+
+    private static bool ValidReceipt(string? receipt)
+    {
+        if (receipt is null)
+        {
+            return true;
+        }
+
+        try
+        {
+            return !string.IsNullOrWhiteSpace(receipt) && receipt.Length <= 2048
+                && new UTF8Encoding(false, true).GetByteCount(receipt) <= 2048;
+        }
+        catch (EncoderFallbackException)
+        {
+            return false;
+        }
+    }
+
+    private static DeletionCapabilitySigningOutcome PublicOutcome(DeletionCapabilitySigningOutcome outcome)
+        => outcome.OriginalIssuanceReceiptId is null ? outcome : outcome with { OriginalIssuanceReceiptId = null };
+
     // The abandoned provider worker owns only detached public result bytes, never actor state or journal work.
     private static DeletionCapabilitySigningResult CaptureProviderResult(DeletionCapabilitySigningResult result)
     {
@@ -231,7 +311,10 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
                 && (value.DetachedJws is not null || value.PublicAnchorId is not null || value.PublicAnchorVersion is not null)
             || value.State == DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued
                 && (value.NoIssueProof is null || !DeletionCapabilitySigningSuccessor.Valid(value, value.NoIssueProof, value.NoIssueProof.ObservedAt))
-            || value.State != DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued && value.NoIssueProof is not null)
+            || value.State != DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued && value.NoIssueProof is not null
+            || value.OriginalIssuanceReceiptId is not null
+                && (value.State is not (DeletionCapabilitySigningState.Signed or DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
+                    || !ValidReceipt(value.OriginalIssuanceReceiptId)))
         { throw new InvalidOperationException("Malformed persisted deletion signing outcome."); }
         return value;
     }
@@ -282,10 +365,14 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
             var existing = await ReadAsync(budget, payload, id, true).ConfigureAwait(false);
             if (existing is null) { return unavailable; }
             if (existing.State == DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued)
-            { return await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued")).ConfigureAwait(false) ? existing : unavailable; }
-            // Unknown signer state is resolved only by original lookup; no signing retry occurs.
-            existing = await ResolveAsync(payload, id, existing, budget).ConfigureAwait(false);
-            if (existing.State != DeletionCapabilitySigningState.Signed) { return unavailable; }
+            { return await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued")).ConfigureAwait(false) ? PublicOutcome(existing) : unavailable; }
+            // A stored signature is only read here to retire the exact original under the guard's no-issue proof.
+            // An unknown signature can only come from the original provider lookup.
+            if (existing.State != DeletionCapabilitySigningState.Signed)
+            {
+                existing = await ResolveAsync(payload, id, existing, budget).ConfigureAwait(false);
+                if (existing.State != DeletionCapabilitySigningState.Signed) { return unavailable; }
+            }
             string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(existing.DetachedJws!)));
             var proof = await budget.ReadAsync(() => noIssueAuthority.ReadAsync(payload, id, digest)).ConfigureAwait(false);
             if (proof is null || !DeletionCapabilitySigningSuccessor.Valid(existing, proof, _clock.GetUtcNow())) { return unavailable; }
@@ -294,7 +381,7 @@ public sealed class DeletionCapabilitySigningActor(ActorHost host, IDeletionCapa
                 || !DeletionCapabilitySigningSuccessor.Valid(existing, confirmed, _clock.GetUtcNow())
                 || !await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued")).ConfigureAwait(false)) { return unavailable; }
             var obsolete = await SaveAsync(budget, existing with { State = DeletionCapabilitySigningState.SignedAttestationObsoleteUnissued, NoIssueProof = proof }).ConfigureAwait(false);
-            return await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued")).ConfigureAwait(false) && proof.ValidUntil > _clock.GetUtcNow() ? obsolete : unavailable;
+            return await budget.ReadAsync(() => authority.AuthorizeOperationAsync(payload, id, "ObsoleteUnissued")).ConfigureAwait(false) && proof.ValidUntil > _clock.GetUtcNow() ? PublicOutcome(obsolete) : unavailable;
 
         }
         catch (TimeoutException) { return unavailable; }

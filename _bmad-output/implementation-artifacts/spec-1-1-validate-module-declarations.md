@@ -394,7 +394,7 @@ The Windows other-volume path exception is documented and was not exercised on t
 
 ### R5 patch verification (2026-10-08)
 
-Review patches remain uncommitted in Builds on top of `50b0257001fe91f14bf16c7ea877d3e92bdfdf08`.
+The R5 review patches were verified on Builds `50b0257001fe91f14bf16c7ea877d3e92bdfdf08` and then committed as `0097b5a548f55b72d7cc919e3f2b0baca753806a`. Platform `77c6fee79624ddc3f597833563845a3820d4dc71` adopted that Builds gitlink by itself. The equivalent Builds mainline patch is `58d9b546b4741a246121ab40fc3945703db2e19b`. Platform `d103ab8cdd3e523ca42ded8135cf7fdb0eeb792b` adopted that revision together with separate ChatBot, Conversations, Folders and Tenants pointer changes.
 
 - Required Debug build exited 0 with zero warnings and errors.
 - Full module suite: 395 passed, zero failed, skipped, or not run.

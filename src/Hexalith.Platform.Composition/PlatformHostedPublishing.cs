@@ -13,6 +13,19 @@ public static class PlatformHostedPublishing
     public static JsonElement Describe(PlatformApplicationGraph graph)
     {
         ArgumentNullException.ThrowIfNull(graph);
+        foreach (var module in graph.Workloads.Select(workload => workload.Module).Distinct())
+        {
+            foreach (JsonElement provider in module.Declaration.GetProperty("integration").GetProperty("providers").EnumerateArray())
+            {
+                if (provider.GetProperty("tenancy").GetProperty("mode").GetString() != "per-environment")
+                {
+                    string moduleId = PlatformDeclarationSet.Id(module.Declaration);
+                    string? providerName = provider.GetProperty("name").GetString();
+                    throw new InvalidDataException($"{module.Source}: {moduleId}: integration.providers[{providerName}].tenancy.mode: hosted providers require per-environment tenancy (AD-8).");
+                }
+            }
+        }
+
         return JsonSerializer.SerializeToElement(new
         {
             schema = "hexalith.platform.application-graph.v1",

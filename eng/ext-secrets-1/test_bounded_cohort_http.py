@@ -67,9 +67,11 @@ class BoundedHttpTests(unittest.TestCase):
                         try:
                             with patch.object(threading,'_start_joinable_thread',delayed),patch.object(threading.Thread,'start',interrupted):server.process_request(request,address)
                             self.assertIsNone(created[0].ident);self.assertFalse(server.slots.acquire(blocking=False));self.assertEqual(0,app.calls)
+                            _, timer = server.deadlines[request]
                             gate.set();self.assertTrue(created[0]._started.event.wait(1));created[0].join(2);self.assertFalse(created[0].is_alive())
-                            for _,timer in list(server.deadlines.values()):
-                                if timer.ident is not None:timer.join(1)
+                            # The worker can remove the deadline before the cancelled timer releases its slot claim.
+                            timer.join(1)
+                            self.assertFalse(timer.is_alive())
                             self.assertEqual({},server.deadlines);self.assertTrue(server.slots.acquire(blocking=False));server.slots.release()
                             self.assertEqual(1 if selected=='worker' else 0,app.calls)
                         finally:gate.set()
