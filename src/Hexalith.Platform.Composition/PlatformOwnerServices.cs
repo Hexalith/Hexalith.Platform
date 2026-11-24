@@ -122,20 +122,20 @@ public static class PlatformOwnerServices
             .WithEnvironment(prefix + "__OwnerAuthentication__Operation", binding.Operation);
     }
 
-    private static JsonObject Scope(string name, JsonObject mapper) => new()
+    internal static JsonObject Scope(string name, JsonObject mapper) => new()
     {
         ["name"] = name, ["protocol"] = "openid-connect",
         ["attributes"] = new JsonObject { ["include.in.token.scope"] = "true" },
         ["protocolMappers"] = new JsonArray(mapper),
     };
 
-    private static JsonObject Claim(string name, string value) => Mapper(name, "oidc-hardcoded-claim-mapper", new()
+    internal static JsonObject Claim(string name, string value) => Mapper(name, "oidc-hardcoded-claim-mapper", new()
     {
         ["claim.name"] = name, ["claim.value"] = value, ["jsonType.label"] = "String",
         ["access.token.claim"] = "true", ["id.token.claim"] = "false", ["userinfo.token.claim"] = "false",
     });
 
-    private static JsonObject Mapper(string name, string type, JsonObject configuration) => new()
+    internal static JsonObject Mapper(string name, string type, JsonObject configuration) => new()
     {
         ["name"] = name, ["protocol"] = "openid-connect", ["protocolMapper"] = type,
         ["consentRequired"] = false, ["config"] = configuration,

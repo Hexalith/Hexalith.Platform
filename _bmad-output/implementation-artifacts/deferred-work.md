@@ -2610,3 +2610,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.EventStore
   summary: Publish the realm-contract claim names and semantics that Platform's realm contract v1 cites.
   evidence: The claims exist only as EventStore 5.4.0 code constants (`RouteCatalogSurfacePolicy.ClaimType`, `AdminTenantAuthorizationFilter`, `EventStoreClaimsTransformation`, `EventStoreWorkloadAuthenticationDefaults`). The External Prerequisites Register requires EventStore to own them before the staging realm (Story 4.19).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.Platform, Hexalith.Works
+  summary: Qualify the legacy cross-repository Works parity verifier against a Works fixture that obtains realm-issued tokens.
+  evidence: Platform's `eng/verify_works_host.py` runs the external Works recovery fixture against the current file AppHost. The fixture still self-signs HS256 tokens. Story 3.4's Platform-owned live test exercises the real preview with realm credentials. The cross-repository verifier depends on the deferred Works test adoption.

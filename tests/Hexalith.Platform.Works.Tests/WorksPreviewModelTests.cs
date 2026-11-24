@@ -109,6 +109,96 @@ public sealed class WorksPreviewModelTests : IDisposable
             registrations.Single(registration => registration.Name == name).Factory(services).ShouldBeOfType<SdkReadinessHealthCheck>(name);
     }
 
+    /// <summary>Every preview host validates the local realm and each issuer shares its credential only with Keycloak.</summary>
+    [Fact]
+    public async Task WorksPreviewUsesOnlyTheLocalRealmForJwtAuthentication()
+    {
+        IDistributedApplicationBuilder builder = Builder("Development", replicas: 2);
+        builder.Configuration["Platform:Works:Enabled"] = "true";
+        builder.Configuration["Platform:Works:SyntheticTenantId"] = "selected-preview-tenant";
+        builder.Configuration["Authentication:WorkloadIssuer:TokenEndpoint"] = "http://127.0.0.1:1/inherited";
+        builder.Configuration["Authentication:WorkloadIssuer:EnableResourceBindingRequests"] = "true";
+        builder.Configuration["EventStore:Authentication:Authority"] = "https://inherited.invalid/";
+        string[] sections = ["JwtBearer", "WorkloadJwtBearer"];
+        foreach (string section in sections)
+        {
+            builder.Configuration[$"Authentication:{section}:Issuer"] = "https://inherited.invalid/";
+            builder.Configuration[$"Authentication:{section}:SigningKey"] = "stale-development-key";
+            builder.Configuration[$"Authentication:{section}:AllowInsecureSymmetricKey"] = "true";
+            builder.Configuration[$"Authentication:{section}:AllowedAlgorithms:1"] = "HS256";
+        }
+
+        PlatformAppModel.ComposeEntry(builder);
+        ContainerResource keycloak = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "platform-local-realm");
+        ContainerImageAnnotation image = keycloak.Annotations.OfType<ContainerImageAnnotation>().Single();
+        image.Registry.ShouldBe("quay.io");
+        image.Image.ShouldBe("keycloak/keycloak");
+        image.Tag.ShouldBe("26.6.4");
+        Dictionary<string, object> keycloakEnvironment = new(StringComparer.Ordinal);
+        foreach (EnvironmentCallbackAnnotation callback in keycloak.Annotations.OfType<EnvironmentCallbackAnnotation>())
+        {
+            await callback.Callback(new EnvironmentCallbackContext(builder.ExecutionContext, keycloak, keycloakEnvironment,
+                TestContext.Current.CancellationToken)).ConfigureAwait(true);
+        }
+        string authority = keycloakEnvironment["KC_HOSTNAME"].ShouldBeOfType<string>() + "/realms/hexalith-local";
+        EndpointAnnotation endpoint = keycloak.Annotations.OfType<EndpointAnnotation>().Single();
+        endpoint.IsProxied.ShouldBeFalse();
+        endpoint.IsExternal.ShouldBeFalse();
+        endpoint.TargetHost.ShouldBe("127.0.0.1");
+        endpoint.Port.ShouldBe(new Uri(authority).Port);
+        endpoint.TargetPort.ShouldBe(8080);
+        var mounts = keycloak.Annotations.OfType<ContainerMountAnnotation>().ToDictionary(mount => mount.Target, StringComparer.Ordinal);
+        mounts.Keys.Order(StringComparer.Ordinal).ShouldBe([
+            "/opt/keycloak/data/import/hexalith-local-realm.json",
+            "/opt/keycloak/providers/platform-requester-audience.jar",
+            "/opt/keycloak/providers/platform-workload-binding.jar",
+        ]);
+        mounts.Values.ShouldAllBe(mount => mount.Type == ContainerMountType.BindMount && mount.IsReadOnly && File.Exists(mount.Source));
+        using var import = JsonDocument.Parse(File.ReadAllText(mounts["/opt/keycloak/data/import/hexalith-local-realm.json"].Source!));
+        import.RootElement.GetProperty("attributes").GetProperty("syntheticTenantId").GetString().ShouldBe("selected-preview-tenant");
+        string encodedGrants = keycloakEnvironment["HEXALITH_LOCAL_REALM_BINDINGS_WORKS"].ShouldBeOfType<string>();
+        using var grants = JsonDocument.Parse(JsonSerializer.Deserialize<string>('"' + encodedGrants + '"').ShouldNotBeNull());
+        JsonElement bound = grants.RootElement.EnumerateArray().Single(grant => !grant.GetProperty("allowUnbound").GetBoolean());
+        bound.GetProperty("bindings").GetProperty("eventstore:bound-tenant")[0].GetString().ShouldBe("selected-preview-tenant");
+        bound.GetProperty("bindings").GetProperty("eventstore:bound-domain")[0].GetString().ShouldBe("work");
+        JsonElement unbound = grants.RootElement.EnumerateArray().Single(grant => grant.GetProperty("allowUnbound").GetBoolean());
+        unbound.GetProperty("operations").EnumerateArray().Select(operation => operation.GetString()).ShouldBe(["eventstore:trusted-effect"]);
+        unbound.GetProperty("bindings").EnumerateObject().ShouldBeEmpty();
+
+        foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>())
+        {
+            bool works = project.Name is "works" or "works-ha";
+            Dictionary<string, object> environment = new(StringComparer.Ordinal);
+            await CaptureModelEnvironmentAsync(builder, project, environment);
+            foreach (string section in sections)
+            {
+                string prefix = $"Authentication__{section}__";
+                environment[prefix + "Authority"].ShouldBe(authority, project.Name);
+                environment[prefix + "Issuer"].ShouldBe(authority, project.Name);
+                environment[prefix + "AllowedAlgorithms__0"].ShouldBe("RS256", project.Name);
+                environment[prefix + "AllowedAlgorithms__1"].ShouldBe("RS256", project.Name);
+                environment[prefix + "SigningKey"].ShouldBe(string.Empty, project.Name);
+                environment[prefix + "AllowInsecureSymmetricKey"].ShouldBe("false", project.Name);
+            }
+            project.Annotations.OfType<WaitAnnotation>().ShouldContain(wait => ReferenceEquals(wait.Resource, keycloak));
+            environment["Authentication__WorkloadIssuer__EnableResourceBindingRequests"].ShouldBe(works ? "true" : "false", project.Name);
+            if (works) environment["EventStore__Authentication__Authority"].ShouldBe(string.Empty, project.Name);
+            environment["Authentication__WorkloadIssuer__TokenEndpoint"].ShouldBe(authority + "/protocol/openid-connect/token", project.Name);
+            if (project.Name == "eventstore-operations")
+            {
+                environment["Authentication__WorkloadIssuer__ClientSecret"].ShouldBe(string.Empty);
+                continue;
+            }
+
+            string client = works ? "works" : project.Name;
+            environment["Authentication__WorkloadIssuer__ClientId"].ShouldBe(client);
+            ParameterResource secret = environment["Authentication__WorkloadIssuer__ClientSecret"].ShouldBeOfType<ParameterResource>();
+            secret.Secret.ShouldBeTrue();
+            string variable = "HEXALITH_LOCAL_REALM_SECRET_" + client.ToUpperInvariant().Replace('-', '_');
+            keycloakEnvironment[variable].ShouldBeSameAs(secret);
+        }
+    }
+
     /// <summary>Only the gateway sidecar loads the configuration store, whose keys can override tenant rate limits at runtime.</summary>
     [Fact]
     public void OnlyTheGatewaySidecarReferencesTheConfigurationStore()
@@ -253,6 +343,10 @@ public sealed class WorksPreviewModelTests : IDisposable
                 File.WriteAllText(Path.Combine(directory, name + ".csproj"), "<Project Sdk=\"Microsoft.NET.Sdk.Web\" />");
             }
             IDistributedApplicationBuilder builder = Builder("Development");
+            string module = Path.Combine(root, "module");
+            Directory.CreateDirectory(module);
+            File.Copy(Path.Combine(WorksProductionProfileTests.Root, "src", "Hexalith.Platform.Composition", "Declarations", "eventstore.json"),
+                Path.Combine(module, "hexalith.module-manifest.v2.json"));
             builder.Configuration["Platform:Works:EventStoreSourceRoot"] = root;
             WorksPreviewModel.Compose(builder);
             foreach (ProjectResource project in builder.Resources.OfType<ProjectResource>().Where(project => project.Name != "works"))
@@ -427,18 +521,18 @@ public sealed class WorksPreviewModelTests : IDisposable
         }
     }
 
-    private IDistributedApplicationBuilder Builder(string environment)
+    private IDistributedApplicationBuilder Builder(string environment, int replicas = 1)
     {
         IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
         {
             Args = ["--environment=" + environment], ProjectDirectory = WorksProductionProfileTests.Root,
             AssemblyName = typeof(PlatformAppModel).Assembly.GetName().Name, DisableDashboard = true, AllowUnsecuredTransport = true,
         });
-        if (environment == "Development") builder.Configuration["Platform:Works:DevelopmentCatalogProfile"] = CreateTestProfile();
+        if (environment == "Development") builder.Configuration["Platform:Works:DevelopmentCatalogProfile"] = CreateTestProfile(replicas);
         return builder;
     }
 
-    private string CreateTestProfile()
+    private string CreateTestProfile(int replicas)
     {
         _profileRoot = Path.Combine(Path.GetTempPath(), "hexalith-works-model-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(_profileRoot);
@@ -456,7 +550,7 @@ public sealed class WorksPreviewModelTests : IDisposable
             new DevelopmentRouteCatalogCompositionOptions(Path.Combine(_profileRoot, "catalog-custody"),
                 "routing-model-test", "works-model-test", "test-v1",
                 new Dictionary<string, string> { ["test-v1"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)) }, "test-v1"),
-            PubSubComponentPath: Component("pubsub"), ConfigStoreComponentPath: Component("configstore"));
+            Replicas: replicas, PubSubComponentPath: Component("pubsub"), ConfigStoreComponentPath: Component("configstore"));
         string selected = Path.Combine(_profileRoot, "profile.json");
         File.WriteAllText(selected, JsonSerializer.Serialize(profile));
         if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(selected, UnixFileMode.UserRead | UnixFileMode.UserWrite);

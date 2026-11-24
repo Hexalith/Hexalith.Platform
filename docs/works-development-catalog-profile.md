@@ -60,6 +60,10 @@ activation/readiness/commit/resume receipts and the actual digest generation bef
 removing its disposable composition directory. A recomposition uses the same
 authority cell and ring, builds a real successor from the retained canonical
 predecessor, and requires every physical host ready with no uncertain old work.
+When starting the preview against retained data, pass
+`--Platform:Works:SyntheticTenantId=<original-tenant-id>` with the same synthetic
+tenant used for that data. Omitting the setting allocates a new tenant for the
+run, so the new Works workload grant cannot read the retained tenant's streams.
 Changed backend identity, missing custody or retained durable leases refuse rather
 than silently opening another cell. An exact child restart uses verified resume.
 Backend replacement and key rotation require separately qualified owner transitions.

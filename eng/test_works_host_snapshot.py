@@ -10,6 +10,14 @@ from unittest.mock import patch
 import works_host_snapshot as snapshot
 
 
+EMBEDDED_COMPOSITION_INPUTS = (
+    "eng/ext-secrets-1/public-joint-plan.json",
+    "docs/contracts/schemas/hexalith.realm-contract.v1.json",
+    "infrastructure/keycloak-local-realm/platform-requester-audience.jar",
+    "infrastructure/keycloak-local-realm/platform-workload-binding.jar",
+)
+
+
 class WorksHostSnapshotTests(unittest.TestCase):
     def setUp(self):
         roots = patch.dict(os.environ, {module.replace(".", "") + "Root": "" for module in snapshot.SOURCE_DEPENDENCIES})
@@ -45,7 +53,7 @@ class WorksHostSnapshotTests(unittest.TestCase):
         (self.origin / "src/runtime.cs").write_text("working overlay")
         (self.origin / "src/new.cs").write_text("new input")
         for name in [*snapshot.UNRELATED_CANONICAL_INPUTS, "config/works-production-profile.schema.json", "eng/used-fixture.json",
-                     "eng/executed.py", "src/Used.csproj", "eng/ext-secrets-1/public-joint-plan.json"]:
+                     "eng/executed.py", "src/Used.csproj", *EMBEDDED_COMPOSITION_INPUTS]:
             path = self.origin / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("bound input")
@@ -64,16 +72,15 @@ class WorksHostSnapshotTests(unittest.TestCase):
         self.assertEqual(observed["originCommit"], self.commit)
         self.assertEqual(set(self.record["workingOverlays"]), {"src/runtime.cs", "src/new.cs", *snapshot.UNRELATED_CANONICAL_INPUTS,
             "config/works-production-profile.schema.json", "eng/used-fixture.json", "eng/executed.py", "src/Used.csproj",
-            "eng/ext-secrets-1/public-joint-plan.json"})
+            *EMBEDDED_COMPOSITION_INPUTS})
         self.assertTrue((self.export / "references/Dependency").is_symlink())
         (self.export / "src/obj").mkdir()
         (self.export / "src/obj/generated.cs").write_text("generated")
         self.verify()
 
     def test_metadata_only_commit_is_recorded_without_changing_execution_inputs(self):
-        (self.origin / "docs").mkdir()
         (self.origin / "docs/note.md").write_text("unrelated documentation")
-        self.call("add", "docs")
+        self.call("add", "docs/note.md")
         self.call("commit", "-qm", "documentation")
         observed = self.verify()
         self.assertNotEqual(observed["observedOriginCommit"], self.commit)
@@ -98,15 +105,17 @@ class WorksHostSnapshotTests(unittest.TestCase):
         (self.origin / "src/new.cs").write_text("changed ordinary fixture")
         with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
 
-    def test_embedded_composition_plan_cannot_drift_with_unexecuted_secret_tools(self):
-        path = self.origin / "eng/ext-secrets-1/public-joint-plan.json"
-        original = path.read_bytes()
-        for change in ("changed", "removed"):
-            with self.subTest(change=change):
-                if change == "changed": path.write_text("different compiled plan")
-                else: path.unlink()
-                with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
-                path.write_bytes(original)
+    def test_embedded_composition_inputs_cannot_drift(self):
+        for root in (self.origin, self.export):
+            for name in EMBEDDED_COMPOSITION_INPUTS:
+                path = root / name
+                original = path.read_bytes()
+                for change in ("changed", "removed"):
+                    with self.subTest(root=root.name, name=name, change=change):
+                        if change == "changed": path.write_bytes(b"different embedded input")
+                        else: path.unlink()
+                        with self.assertRaisesRegex(ValueError, "canonical ordinary"): self.verify()
+                        path.write_bytes(original)
         self.verify()
 
     def test_isolated_origin_also_binds_the_original_owner_working_overlay(self):

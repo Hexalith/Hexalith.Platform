@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hexalith.com/schemas/hexalith.realm-contract.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "realm", "claims", "classes", "clients", "exchange", "admissionGroups", "events", "refresh", "syntheticTenantSlot"],
+  "properties": {
+    "schema": { "const": "hexalith.realm-contract.v1" },
+    "realm": { "const": "hexalith-local" },
+    "claims": { "$ref": "#/$defs/tokens" },
+    "classes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ui", "agent", "service"],
+      "properties": {
+        "ui": { "const": "confidential" },
+        "agent": { "const": "public" },
+        "service": { "const": "confidential" }
+      }
+    },
+    "clients": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/client" }
+    },
+    "exchange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standard", "requireRequesterAudience", "downscopePolicy", "allowRefreshTokens"],
+      "properties": {
+        "standard": { "const": true },
+        "requireRequesterAudience": { "const": true },
+        "downscopePolicy": { "const": "downscope-assertion-grant-enforcer" },
+        "allowRefreshTokens": { "const": false }
+      }
+    },
+    "admissionGroups": {
+      "const": ["hexalith-admission", "hexalith-synthetic-admission"]
+    },
+    "events": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["user", "admin", "adminDetails"],
+      "properties": {
+        "user": { "const": true },
+        "admin": { "const": true },
+        "adminDetails": { "const": true }
+      }
+    },
+    "refresh": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revokeOnUse", "maxReuse", "idleSeconds", "maxSeconds"],
+      "properties": {
+        "revokeOnUse": { "const": true },
+        "maxReuse": { "const": 0 },
+        "idleSeconds": { "const": 1800 },
+        "maxSeconds": { "const": 36000 }
+      }
+    },
+    "syntheticTenantSlot": { "const": "syntheticTenantId" }
+  },
+  "$defs": {
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[-:._/][a-z0-9]+)*(?![\\s\\S])$", "maxLength": 128 },
+    "tokens": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "classes", "fullScopeAllowed", "scopes", "claims", "audiences", "roles", "operations", "standardFlow", "tokenExchange"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*(?![\\s\\S])$", "maxLength": 64 },
+        "classes": { "type": "array", "items": { "$ref": "#/$defs/token" }, "minItems": 1, "maxItems": 1 },
+        "principal": { "$ref": "#/$defs/token" },
+        "principalAudience": { "$ref": "#/$defs/token" },
+        "fullScopeAllowed": { "const": false },
+        "scopes": { "$ref": "#/$defs/tokens" },
+        "claims": { "$ref": "#/$defs/tokens" },
+        "audiences": { "$ref": "#/$defs/tokens", "minItems": 1 },
+        "roles": { "$ref": "#/$defs/tokens" },
+        "operations": { "$ref": "#/$defs/tokens" },
+        "boundOperations": { "$ref": "#/$defs/tokens", "minItems": 1 },
+        "standardFlow": { "type": "boolean" },
+        "tokenExchange": { "type": "boolean" },
+        "pkce": { "const": "S256" },
+        "redirectUri": { "const": "http://127.0.0.1/*" }
+      }
+    }
+  }
+}

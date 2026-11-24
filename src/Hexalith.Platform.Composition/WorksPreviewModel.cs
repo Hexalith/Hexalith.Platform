@@ -101,6 +101,11 @@ public static class WorksPreviewModel
         _ = DaprSelfHostedMtls.ResolveCertificateParent(builder, platformRoot, workspace, checkouts);
         var developmentProfile = WorksDevelopmentCatalogProfile.Load(builder.Configuration, platformRoot, worksRoot, eventStoreRoot);
         WorksPreviewManagedRuntime.Require();
+        CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
+        string syntheticTenantId = builder.Configuration["Platform:Works:SyntheticTenantId"]
+            ?? "works-preview-" + Guid.NewGuid().ToString("N");
+        var preparedRealm = PlatformLocalRealm.PrepareWorksPreview(
+            Path.Combine(eventStoreRoot, "module", "hexalith.module-manifest.v2.json"), controlPorts.UiHttp, syntheticTenantId);
         stateStorePath = developmentProfile.StateStoreComponentPath;
         CompositionWorkspace.CreatePrivateDirectory(workspace);
         builder.Services.AddSingleton<IHostedService>(_ => new PlatformCompositionWorkspace(workspace));
@@ -118,7 +123,7 @@ public static class WorksPreviewModel
         stateStorePath = CopyOwnerComponent(stateStorePath, "statestore");
         pubSubPath = CopyOwnerComponent(developmentProfile.PubSubComponentPath!, "pubsub");
         configStorePath = CopyOwnerComponent(developmentProfile.ConfigStoreComponentPath!, "configstore");
-        CompositionRunPorts controlPorts = CompositionPortAllocator.Allocate(1);
+        var realm = preparedRealm.AddResource(builder, workspace);
         var (sentry, certificateDirectory) = DaprSelfHostedMtls.AddSentry(builder, sentryPath, platformRoot, workspace, controlPorts.PlacementHealth, checkoutRoots: checkouts);
         // Default credentials belong to the workspace and survive with its failed-start diagnostics.
         if (builder.Configuration["Dapr:Mtls:CertificateDirectory"] is not null)
@@ -190,11 +195,11 @@ public static class WorksPreviewModel
             .WithEnvironment("Dapr__DeclarativeSubscriptions", "true")
             .WithEnvironment("Works__Projection__UseSdkDelivery", "true")
             .WithEnvironment("Works__Recovery__UseSdkRuntime", "true")
+            .WithEnvironment("EventStore__Authentication__Authority", string.Empty)
             .WithEnvironment("Works__Query__GatewayWorkloadId", "eventstore")
             .WithEnvironment("Authentication__Workload__Audience", "works")
             .WithEnvironment("Authentication__Workload__AllowedCallers__0", "eventstore")
             .WithEnvironment("Authentication__Workload__AllowedCallers__1", "eventstore-admin")
-            .WithEnvironment("Authentication__WorkloadIssuer__Workload", "works")
             .WithEnvironment("WORKS_PLATFORM_RUNTIME", "1")
             .WithEnvironment("ASPNETCORE_HOSTINGSTARTUPASSEMBLIES", typeof(WorksRecoveryHostingStartup).Assembly.GetName().Name!)
             .AddEventStoreDomainModule(
@@ -242,7 +247,6 @@ public static class WorksPreviewModel
             host.Resource.Annotations.Remove(wait);
         }
 
-        eventStore.WithEnvironment("Authentication__WorkloadIssuer__Workload", "eventstore");
         SdkReadinessHealthCheck.Attach(builder, eventStore);
         foreach (var host in worksHosts) SdkReadinessHealthCheck.Attach(builder, host);
         builder.CreateResourceBuilder(SidecarOf(eventStore.Resource)!).WithReference(configStore);
@@ -311,22 +315,22 @@ public static class WorksPreviewModel
 
         builder.Services.AddSingleton<IDistributedApplicationEventingSubscriber>(new PlatformDaprEndpointSubscriber([], certificateDirectory, "127.0.0.1:" + controlPorts.PlacementHealth, workspace));
 
-        string devSigningKey = builder.Configuration["Works:Authentication:DevSigningKey"] is { Length: > 0 } configuredKey
-            ? configuredKey
-            : "DevOnlySigningKey-AtLeast32Chars!";
         foreach (IResourceBuilder<ProjectResource> jwtValidator in new[] { eventStore, admin, operations }.Concat(worksHosts))
         {
-            _ = jwtValidator
+            string workloadAudience = worksHosts.Contains(jwtValidator) ? "works" : "eventstore";
+            _ = realm.ConfigureValidator(jwtValidator, builder.Configuration, HexalithEventStoreSecurityOptions.DefaultAudience, workloadAudience)
                 .WithEnvironment("DOTNET_ENVIRONMENT", builder.Environment.EnvironmentName)
                 // These source projects retain net10 targets; only this Development graph uses the qualified shared exporter.
-                .WithEnvironment("DOTNET_ROLL_FORWARD", "LatestMajor")
-                .WithEnvironment("Authentication__JwtBearer__Authority", string.Empty)
-                .WithEnvironment("Authentication__JwtBearer__Issuer", "hexalith-dev")
-                .WithEnvironment("Authentication__JwtBearer__Audience", HexalithEventStoreSecurityOptions.DefaultAudience)
-                .WithEnvironment("Authentication__JwtBearer__ValidAudiences__0", HexalithEventStoreSecurityOptions.DefaultAudience)
-                .WithEnvironment("Authentication__JwtBearer__SigningKey", devSigningKey)
-                .WithEnvironment("Authentication__JwtBearer__RequireHttpsMetadata", "false");
+                .WithEnvironment("DOTNET_ROLL_FORWARD", "LatestMajor");
         }
+
+        realm.ConfigureWorkloadIssuer(eventStore, "eventstore");
+        realm.ConfigureWorkloadIssuer(admin, "eventstore-admin");
+        foreach (var host in worksHosts) realm.ConfigureWorkloadIssuer(host, "works", allowBindings: true);
+        operations.WithEnvironment("Authentication__WorkloadIssuer__EnableResourceBindingRequests", "false")
+            .WithEnvironment("Authentication__WorkloadIssuer__Workload", string.Empty)
+            .WithEnvironment("Authentication__WorkloadIssuer__ClientId", string.Empty)
+            .WithEnvironment("Authentication__WorkloadIssuer__ClientSecret", string.Empty);
 
         admin.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__Role", "admin-receiver");
         operations.WithEnvironment("EventStore__RouteCatalog__DevelopmentBootstrap__Role", "operations-receiver");

@@ -1,0 +1,104 @@
+{
+  "schema": "hexalith.realm-contract.v1",
+  "realm": "hexalith-local",
+  "claims": [
+    "eventstore:surface",
+    "eventstore:tenant",
+    "eventstore:domain",
+    "eventstore:permission",
+    "azp",
+    "eventstore:workload",
+    "eventstore:operation",
+    "eventstore:channel",
+    "eventstore:bound-tenant",
+    "eventstore:bound-domain",
+    "eventstore:grant-id",
+    "eventstore:grant-revision"
+  ],
+  "classes": {
+    "ui": "confidential",
+    "agent": "public",
+    "service": "confidential"
+  },
+  "clients": [
+    {
+      "id": "mcpcli",
+      "classes": ["agent"],
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": ["eventstore:surface"],
+      "audiences": ["hexalith-eventstore"],
+      "roles": [],
+      "operations": [],
+      "standardFlow": true,
+      "tokenExchange": false,
+      "pkce": "S256",
+      "redirectUri": "http://127.0.0.1/*"
+    },
+    {
+      "id": "eventstore",
+      "classes": ["service"],
+      "principal": "eventstore/gateway-workload",
+      "principalAudience": "domain-services",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": ["eventstore:surface", "eventstore:operation"],
+      "audiences": ["eventstore", "works"],
+      "roles": ["invoker"],
+      "operations": [
+        "domain-service:metadata",
+        "domain-service:process",
+        "domain-service:project",
+        "domain-service:query",
+        "domain-service:replay-state",
+        "projection:notify"
+      ],
+      "standardFlow": false,
+      "tokenExchange": true
+    },
+    {
+      "id": "eventstore-admin",
+      "classes": ["service"],
+      "principal": "works-preview/admin-workload",
+      "principalAudience": "works",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": ["eventstore:surface", "eventstore:operation"],
+      "audiences": ["works"],
+      "roles": ["invoker"],
+      "operations": ["domain-service:metadata", "domain-service:project", "domain-service:replay-state"],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "works",
+      "classes": ["service"],
+      "principal": "works-preview/works-workload",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": ["eventstore:surface", "eventstore:operation", "eventstore:bound-tenant", "eventstore:bound-domain", "eventstore:grant-id", "eventstore:grant-revision"],
+      "audiences": ["eventstore"],
+      "roles": ["invoker"],
+      "operations": [
+        "eventstore:command-status",
+        "eventstore:command-submit",
+        "eventstore:stream-read",
+        "eventstore:trusted-effect"
+      ],
+      "boundOperations": ["eventstore:command-status", "eventstore:command-submit", "eventstore:stream-read"],
+      "standardFlow": false,
+      "tokenExchange": false
+    }
+  ],
+  "exchange": {
+    "standard": true,
+    "requireRequesterAudience": true,
+    "downscopePolicy": "downscope-assertion-grant-enforcer",
+    "allowRefreshTokens": false
+  },
+  "admissionGroups": ["hexalith-admission", "hexalith-synthetic-admission"],
+  "events": { "user": true, "admin": true, "adminDetails": true },
+  "refresh": { "revokeOnUse": true, "maxReuse": 0, "idleSeconds": 1800, "maxSeconds": 36000 },
+  "syntheticTenantSlot": "syntheticTenantId"
+}

@@ -32,7 +32,12 @@ DEPENDENCY_BUILD_RESOURCES = {
 VERIFIER_DOCUMENTS = {"docs/ext-host-1-agents-composition.md",
     "_bmad-output/planning-artifacts/architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md"}
 # The Composition graph embeds this plan even though adjacent qualification tools are unrelated.
-COMPILED_CANONICAL_INPUTS = {"eng/ext-secrets-1/public-joint-plan.json"}
+REALM_BUILD_INPUTS = {
+    "docs/contracts/schemas/hexalith.realm-contract.v1.json",
+    "infrastructure/keycloak-local-realm/platform-requester-audience.jar",
+    "infrastructure/keycloak-local-realm/platform-workload-binding.jar",
+}
+COMPILED_CANONICAL_INPUTS = {"eng/ext-secrets-1/public-joint-plan.json"} | REALM_BUILD_INPUTS
 # Except for the compiled inputs above, none is imported, invoked, read or compiled by
 # verify_works_host, either Agents lane, the Platform graphs, or the Works proof fixture graph.
 # Keep the complete immutable export binding, and report their current canonical drift.
@@ -52,7 +57,8 @@ def digest(value):
 
 def selected(name):
     parts = Path(name).parts
-    return bool(parts) and (len(parts) == 1 or parts[0] in DIRECTORIES or name in VERIFIER_DOCUMENTS) and not OUTPUTS.intersection(parts)
+    return bool(parts) and (len(parts) == 1 or parts[0] in DIRECTORIES or name in VERIFIER_DOCUMENTS
+                            or name in REALM_BUILD_INPUTS) and not OUTPUTS.intersection(parts)
 
 
 def git(root, *arguments):

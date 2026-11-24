@@ -1,0 +1,21 @@
+{
+  "identity": { "moduleId": "works-preview" },
+  "integration": {
+    "identityNeeds": [
+      {
+        "name": "admin-workload",
+        "audience": "works",
+        "roles": ["invoker"],
+        "claims": ["eventstore:operation"],
+        "applicationPrincipal": true
+      },
+      {
+        "name": "works-workload",
+        "audience": "eventstore",
+        "roles": ["invoker"],
+        "claims": ["eventstore:operation"],
+        "applicationPrincipal": true
+      }
+    ]
+  }
+}

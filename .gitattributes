@@ -210,6 +210,7 @@ _bmad-output/implementation-artifacts/evidence/2-13/post-review/*.patch -text -w
 _bmad-output/implementation-artifacts/evidence/2-13/review-20261116/package/*.patch -text -whitespace
 
 # Recognize the existing CRLF Works preview sources in whitespace checks.
+src/Hexalith.Platform.Composition/PlatformOwnerServices.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -143,7 +143,11 @@ def run_with_sidecar(command):
 
 
 try:
-    unpack(ROOT, source, copy, "src", "tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs", "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "eng", "global.json", "DaprSelfHostedMtls.cs", "DaprSelfHostedMtlsSubscriber.cs")
+    unpack(ROOT, source, copy, "src", "tests/Hexalith.Platform.Composition.Tests/GatewaySeedProtectionInstallation.cs",
+           "Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "eng", "global.json",
+           "DaprSelfHostedMtls.cs", "DaprSelfHostedMtlsSubscriber.cs", "docs/contracts/schemas/hexalith.realm-contract.v1.json",
+           "infrastructure/keycloak-local-realm/platform-requester-audience.jar",
+           "infrastructure/keycloak-local-realm/platform-workload-binding.jar")
     builds = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", source + ":references/Hexalith.Builds"], text=True, timeout=30).strip()
     eventstore = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", source + ":references/Hexalith.EventStore"], text=True, timeout=30).strip()
     unpack(ROOT / "references/Hexalith.Builds", builds, copy / "references/Hexalith.Builds", "Props")
