@@ -96,6 +96,8 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Assign an owner for artifact signature and image SBOM/scanning verification of the Rancher/K3s management deployment.
   evidence: G103, from the 2026-10-04 code review of the fix commit `0e602ad..dc9a6ab`. `eng/cluster-management/RANCHER.md:35` defers "artifact signatures and comprehensive image SBOM/scanning" to "later deployment hardening", but neither the 4.28 story nor this ledger owns them. The spec follow-through still requires signature evidence. Medium: a 4.28 installation could proceed without authenticity checks.
+  status: done 2026-11-24
+  resolution: The Administrator owns the exact-artifact authenticity and image SBOM and scan gate in the Rancher runbook and Story 4.28 acceptance criteria.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Restore a buildable default package-reference dependency lane for the pre-existing Platform identity project (G106).

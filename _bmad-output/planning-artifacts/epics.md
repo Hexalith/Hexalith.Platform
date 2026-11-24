@@ -2920,6 +2920,7 @@ Acceptance criteria:
 7. Create encrypted immutable off-node management backups and separately retain required encryption configuration/keys, TLS material, definitions and management-cluster recovery inputs. Restore into an isolated non-production-connected target and verify the manager's configuration and authorized state. State clearly that this backup does not recover downstream business data or external etcd. Native workload backup coverage continues.
 8. Demonstrate direct native administration and a representative authorized maintenance/recovery operation while Rancher is unreachable. Rehearse stale manager/agent fencing and deny a revoked management credential after isolated restore before reconnection. Preserve the deputy's prohibition on approving releases or granting admission.
 9. Deliver pinned deployment/upgrade/backup/restore runbooks and actual profile inventory with currency, renewal, monitoring and recovery owners. Initial evidence is required before staging/G1; later integrated FR-9 retention, monitoring and RPO/RTO evidence follows Epic 8.
+10. Before installing or registering Rancher, the Administrator owns and records publisher-signature verification for the exact K3s and Helm artifacts and a digest-bound SBOM and vulnerability scan for each deployed image, including agents and add-ons. Missing or failed evidence blocks execution until resolved or covered by an explicit Administrator decision for the exact digest.
 
 
 ## Epic 5: Gate every release on exact-release staging evidence
