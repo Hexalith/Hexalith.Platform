@@ -1257,15 +1257,16 @@ public sealed class P1ReceiptHttpAdapterTests
                     fixture.ReceiptTrust.ServerAnchor, null, fixture.ReceiptTrust.ClientCertificate,
                     fixture.ReceiptTrust.ClientIssuer, fixture.ReceiptTrust.ClientSpiffeId, null,
                     fixture.ReceiptTrust.ServerAnchor);
-                trust.ContextCreated = gate.Wait;
+                var workerWaiting = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+                trust.ContextCreated = () =>
+                {
+                    workerWaiting.SetResult();
+                    gate.Wait();
+                };
                 attempts.Add(new P1ReceiptHttpAdapter(fixture.Enrollment, trust, fixture.StatusTrust, clock)
                     .RetrieveAsync(fixture.Expected, fixture.Subject, fixture.Now,
                         cancellationToken: TestContext.Current.CancellationToken));
-            }
-
-            for (int i = 0; i < 200 && P1ReceiptHttpTrust.AvailableValidationSlots != 0; i++)
-            {
-                await Task.Delay(25, TestContext.Current.CancellationToken);
+                await workerWaiting.Task.WaitAsync(TimeSpan.FromSeconds(20), TestContext.Current.CancellationToken);
             }
 
             P1ReceiptHttpTrust.AvailableValidationSlots.ShouldBe(0);
