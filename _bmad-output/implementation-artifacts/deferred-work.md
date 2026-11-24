@@ -120,54 +120,96 @@
 
 ## Deferred from: code review of spec-4-26-qualify-rancher-and-the-management-migration.md (2026-10-05)
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Make the 4.28 obligations added by the Story 4.26 corrections numbered 4.28 acceptance criteria: removing the retained `jpiquot` path, the Rancher local-admin decision with its Keycloak-unavailable test, and the named certificate's CN/O subject constraint (G135).
-  evidence: Blind B105 and acceptance A16 in the review of `fad560f..6130bbe`. These items appear only in the 4.28 "Implementation handoff" prose and `eng/cluster-management/RANCHER.md`. The 4.28 acceptance-criteria list (`4-28-deploy-rancher-and-register-the-existing-cluster.md:26-33`) is unchanged, so 4.28 could be accepted without them. Deferred because the fix edits another story's epics-derived acceptance criteria.
-  status: done 2026-11-24
-  resolution: Story 4.28 and its canonical epics entry require the certificate subject and grant revocation proof, approved removal of the retained jpiquot path, and the local-admin decision and Keycloak outage tests as numbered criteria.
-- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Align 4.28 AC4 ("narrowly scoped deputy recovery access") and AC8's deputy prohibition with the 2026-10-03 Administrator decision "no deputy until one is named" (G136).
-  evidence: Blind B105. The frozen 2026-10-03 decision in the 4.26 spec keeps the Administrator as sole holder of native cluster-admin and Rancher admin, with no deputy. AC4 and AC8 in `4-28-deploy-rancher-and-register-the-existing-cluster.md:29,33` still assume a deputy exists. This is pre-existing and was not introduced by the reviewed diff. The fix edits another story's acceptance criteria.
-  status: done 2026-11-24
-  resolution: Story 4.28 AC4 and AC8 require sole Administrator authority and evidence that deputy authority is absent. Any future deputy requires separate scoped approval and remains prohibited from approving releases or granting admission.
 
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Restrict or verify direct PlatformActorRegistry mutation calls in the separate identity workstream (G137).
-  evidence: The public DI facade signs any namespace-valid mutation and ignores its sourceId argument; its current production caller is the checked enrollment service, but a second in-process caller could bypass those checks.
-  status: done 2026-11-24
-  resolution: Registry mutation is internal, requires an allowed identity writer, and signs only as the configured registry service. Tests exercise configured attribution and refusal before signing or resolving the actor.
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Refuse inactive actors returned through still-active login aliases in the separate identity workstream (G138).
-  evidence: The registry transition permits an inactive actor with an active alias, and ResolveLoginAsync returns that actor without inspecting Active.
-  status: superseded (2026-11-24)
-  resolution: Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f already refuses inactive actors reached through login aliases and covers this case with a focused test.
+### DW-1: Make the 4.28 obligations added by the Story 4.26 corrections numbered 4.28 acceptance criteria: removing the retained `jpiquot` path, the Rancher local-admin decision with its Keycloak-unavailable test, and the named certificate's CN/O subject constraint (G135).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: Blind B105 and acceptance A16 in the review of `fad560f..6130bbe`. These items appear only in the 4.28 "Implementation handoff" prose and `eng/cluster-management/RANCHER.md`. The 4.28 acceptance-criteria list (`4-28-deploy-rancher-and-register-the-existing-cluster.md:26-33`) is unchanged, so 4.28 could be accepted without them. Deferred because the fix edits another story's epics-derived acceptance criteria.
+status: done 2026-11-24
+resolution: Story 4.28 and its canonical epics entry require the certificate subject and grant revocation proof, approved removal of the retained jpiquot path, and the local-admin decision and Keycloak outage tests as numbered criteria.
+
+
+### DW-2: Align 4.28 AC4 ("narrowly scoped deputy recovery access") and AC8's deputy prohibition with the 2026-10-03 Administrator decision "no deputy until one is named" (G136).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: Blind B105. The frozen 2026-10-03 decision in the 4.26 spec keeps the Administrator as sole holder of native cluster-admin and Rancher admin, with no deputy. AC4 and AC8 in `4-28-deploy-rancher-and-register-the-existing-cluster.md:29,33` still assume a deputy exists. This is pre-existing and was not introduced by the reviewed diff. The fix edits another story's acceptance criteria.
+status: done 2026-11-24
+resolution: Story 4.28 AC4 and AC8 require sole Administrator authority and evidence that deputy authority is absent. Any future deputy requires separate scoped approval and remains prohibited from approving releases or granting admission.
+
+
+
+### DW-3: Restrict or verify direct PlatformActorRegistry mutation calls in the separate identity workstream (G137).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: The public DI facade signs any namespace-valid mutation and ignores its sourceId argument; its current production caller is the checked enrollment service, but a second in-process caller could bypass those checks.
+status: done 2026-11-24
+resolution: Registry mutation is internal, requires an allowed identity writer, and signs only as the configured registry service. Tests exercise configured attribution and refusal before signing or resolving the actor.
+
+
+### DW-4: Refuse inactive actors returned through still-active login aliases in the separate identity workstream (G138).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: The registry transition permits an inactive actor with an active alias, and ResolveLoginAsync returns that actor without inspecting Active.
+status: done 2026-11-24
+disposition: superseded
+resolution: Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f already refuses inactive actors reached through login aliases and covers this case with a focused test.
+
 - source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
   summary: Connect and verify the registered identity enrollment and login services through production callers (G139).
   evidence: The services are registered in DI but the current host has no production call to ApplyAsync or ResolveLoginAsync, leaving the intended bootstrap and login path unavailable.
   triage: skipped 2026-11-24 (blocked). Production enrollment and login require an approved caller, route and human/workload identity handoff. The current EventStore Dapr scheme supplies eventstore:workload instead of the legacy claim and rejects combined credentials outside its bound command.
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Test bootstrap proof binding against a changed registry mutation in the separate identity workstream (G140).
-  evidence: The production verifier hashes the mutation, but the existing enrollment test accepts any mocked scope; changing the digest calculation would evade the current test.
-  status: done 2026-11-24
-  resolution: The enrollment test uses RSA signing and the production verifier to accept the exact approved mutation and reject replay against a changed alias or provenance.
-- source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Bind issuer and subject to one authenticated login identity in the separate identity workstream (G143).
-  evidence: ResolveLoginAsync uses ClaimsPrincipal.FindFirst for each claim, which can combine the authenticated identity's issuer with a second identity's subject in a composite principal.
-  status: superseded (2026-11-24)
-  resolution: Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f already binds the issuer and subject to one authenticated identity and tests split and ambiguous claims.
+
+### DW-5: Test bootstrap proof binding against a changed registry mutation in the separate identity workstream (G140).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: The production verifier hashes the mutation, but the existing enrollment test accepts any mocked scope; changing the digest calculation would evade the current test.
+status: done 2026-11-24
+resolution: The enrollment test uses RSA signing and the production verifier to accept the exact approved mutation and reject replay against a changed alias or provenance.
+
+
+### DW-6: Bind issuer and subject to one authenticated login identity in the separate identity workstream (G143).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `/home/administrator/projects/hexalith/platform/_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: ResolveLoginAsync uses ClaimsPrincipal.FindFirst for each claim, which can combine the authenticated identity's issuer with a second identity's subject in a composite principal.
+status: done 2026-11-24
+disposition: superseded
+resolution: Commit 2ac8e73c09fe631c5620723b54784d2e28e8941f already binds the issuer and subject to one authenticated identity and tests split and ambiguous claims.
+
 
 ## Deferred from: code review of spec-4-26-qualify-rancher-and-the-management-migration.md, chunk 2: tests (2026-10-05)
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Add table-driven refusal tests for the cluster-management guards that no test reaches (G166).
-  evidence: Verification-gap V52 in the chunk 2 test review. Coverage shows that the `raise` lines at `eng/cluster-management/rehearse.py:106`, `108`, `298`, `310`, `319`, `321`, `344`, `1081`, `1223-1224`, `1233`, `1766` and `rehearse_catalog.py:49` never run, and no test names their error codes. Every one of them fails closed, so this is deferred rather than patched. The catalog refusals that a passing record depends on are covered by patch G159.
-  status: done 2026-11-24
-  resolution: Offline fixtures exercise all twelve historical refusals in allowlist validation, dependency planning, named-finalizer retries, pre-intervention checks, native preconditions and catalog setup.
-- source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
-  summary: Run the `eng/cluster-management` unit tests automatically in CI (G167).
-  evidence: Blind B126 and verification-gap V54. The repository has no `.github/workflows`, so the 166 tests run only when someone runs the README command (`eng/cluster-management/README.md:62`) by hand. This is pre-existing repository-level infrastructure, outside Story 4.26.
-  status: done 2026-11-24
-  resolution: The tuple preflight runs offline cluster-management discovery with pinned PyYAML. Its source-resolution job must pass before the tuple runs or the verdict succeeds.
+
+### DW-7: Add table-driven refusal tests for the cluster-management guards that no test reaches (G166).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: Verification-gap V52 in the chunk 2 test review. Coverage shows that the `raise` lines at `eng/cluster-management/rehearse.py:106`, `108`, `298`, `310`, `319`, `321`, `344`, `1081`, `1223-1224`, `1233`, `1766` and `rehearse_catalog.py:49` never run, and no test names their error codes. Every one of them fails closed, so this is deferred rather than patched. The catalog refusals that a passing record depends on are covered by patch G159.
+status: done 2026-11-24
+resolution: Offline fixtures exercise all twelve historical refusals in allowlist validation, dependency planning, named-finalizer retries, pre-intervention checks, native preconditions and catalog setup.
+
+
+### DW-8: Run the `eng/cluster-management` unit tests automatically in CI (G167).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-4-26-qualify-rancher-and-the-management-migration.md`
+location: n/a
+reason: Blind B126 and verification-gap V54. The repository has no `.github/workflows`, so the 166 tests run only when someone runs the README command (`eng/cluster-management/README.md:62`) by hand. This is pre-existing repository-level infrastructure, outside Story 4.26.
+status: done 2026-11-24
+resolution: The tuple preflight runs offline cluster-management discovery with pinned PyYAML. Its source-resolution job must pass before the tuple runs or the verdict succeeds.
+
 
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Verify the authenticated known-content evidence behind each anonymous registry denial target (4.2 Blind 3; carried Corrected Edge 1).
@@ -185,11 +227,17 @@
   summary: Resolve whether an additional numeric checkpoint-age or dispatch-evidence policy is needed for exposure mutations (4.2 Blind 9).
   evidence: Unverified, medium if true. The checker validates signed sequence and expiry, and the procedure separately requires a dispatch reread. An approved maximum-age policy and actual dispatch records are needed to establish a stale-operation violation.
   triage: skipped 2026-11-24 (blocked). An approved maximum-age policy and actual protected dispatch records are required.
-- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
-  summary: Integrate and test the existing Custody projects in their own workstream (4.2 Blind 10).
-  evidence: Both projects introduced by the separate custody commit 711a70fd94794ef1aea1b91f5524136b0d660468 are absent from the solution and the test project has no tests; neither has a caller in the exposure helper.
-  status: superseded (2026-11-24)
-  resolution: The Release solution already includes the Custody library and its populated tests.
+
+### DW-9: Integrate and test the existing Custody projects in their own workstream (4.2 Blind 10).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+location: n/a
+reason: Both projects introduced by the separate custody commit 711a70fd94794ef1aea1b91f5524136b0d660468 are absent from the solution and the test project has no tests; neither has a caller in the exposure helper.
+status: done 2026-11-24
+disposition: superseded
+resolution: The Release solution already includes the Custody library and its populated tests.
+
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Qualify registry reader read scopes against the approved credential policy (4.2 Corrected Blind 2).
   evidence: Unverified, medium if true. The stated reader checks require push/delete denial and do not define an out-of-scope read field. Inspect the approved read-scope policy and protected negative probes to determine whether broader reads violate that policy.
@@ -202,16 +250,26 @@
   summary: Establish the independently approved signature-verifier and trust-root provenance for production qualification (4.2 Corrected Blind 7).
   evidence: Unverified, medium if true. Substituting /bin/true demonstrates dependence on the externally supplied retained verifier and trust root. Settle an actual unapproved substitution by checking independently approved toolchain identity and provenance; a helper-supplied hash alone cannot establish that trust.
   triage: skipped 2026-11-24 (blocked). The approved verifier and trust-root provenance must come from the qualification authority.
-- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
-  summary: Enforce revoked-key lifecycle behavior in the separate Custody component (4.2 Corrected Blind 10 and Corrected Edge 4).
-  evidence: The pre-existing component admits Revoked metadata and its internal ComputeTag has no state guard. It has no exposure-helper consumer; its provider/caller needs explicit lifecycle enforcement and tests in that workstream.
-  status: done 2026-11-24
-  resolution: A revoked snapshot now refuses tag computation directly. The direct test exercises that boundary independently of the provider check.
-- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
-  summary: Enforce key validity intervals at tag use in the separate Custody component (4.2 Corrected Blind 11).
-  evidence: The pre-existing internal ComputeTag checks disposal but does not check the declared NotBefore/VerifyUntil interval. Its eventual provider/caller needs use-time lifetime enforcement and qualification; there is no caller in the exposure helper.
-  status: done 2026-11-24
-  resolution: All three custody authenticators pass the same evaluation instant, operation and applicable overlap into resolution and tag use. Direct snapshot tests cover the inclusive start, exclusive expiry and retained-key issue and verification rules.
+
+### DW-10: Enforce revoked-key lifecycle behavior in the separate Custody component (4.2 Corrected Blind 10 and Corrected Edge 4).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+location: n/a
+reason: The pre-existing component admits Revoked metadata and its internal ComputeTag has no state guard. It has no exposure-helper consumer; its provider/caller needs explicit lifecycle enforcement and tests in that workstream.
+status: done 2026-11-24
+resolution: A revoked snapshot now refuses tag computation directly. The direct test exercises that boundary independently of the provider check.
+
+
+### DW-11: Enforce key validity intervals at tag use in the separate Custody component (4.2 Corrected Blind 11).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+location: n/a
+reason: The pre-existing internal ComputeTag checks disposal but does not check the declared NotBefore/VerifyUntil interval. Its eventual provider/caller needs use-time lifetime enforcement and qualification; there is no caller in the exposure helper.
+status: done 2026-11-24
+resolution: All three custody authenticators pass the same evaluation instant, operation and applicable overlap into resolution and tag use. Direct snapshot tests cover the inclusive start, exclusive expiry and retained-key issue and verification rules.
+
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Give GitHub release workflows a dedicated least-privilege Zot writer that cannot delete retained content (4.2 live review, writer least privilege).
   evidence: The builds domain-release, eventstore and memories release workflows push with HEXALITH_ZOT_USERNAME/API_KEY, which is the Administrator's jpiquot key. Zot accessControl gives that key read/create/update/delete on `**`, so a workflow could delete retained manifests. The approved live decision left writers unchanged. Fixing it needs a new writer principal plus GitHub secret updates in three repositories.
@@ -228,11 +286,17 @@
   summary: Revision-1 ReplicaSets in hexalith-memories reference `:0.0.0` placeholder images that are not in the registry (pre-existing).
   evidence: memories-access-telemetry-5fddff77bc and memories-access-telemetry-clock-765968cfb6 (replicas 0, created 2026-07-19) point at registry.hexalith.com/...:0.0.0, which has no tag in the authenticated closure. A rollback to revision 1 could not pull them. This predates 4.2.
   triage: skipped 2026-11-24 (blocked). Disposition requires approved rollback-image evidence or authorization for live removal of the old ReplicaSets.
-- source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
-  summary: Confirm the next nightly Zot GC completes for eventstore, and compare referrer-inclusive closures (4.2 live follow-up).
-  evidence: The 2026-10-07 02:00 UTC GC failed for eventstore on the broken quarantine-proof index, which has since been deleted. The retain-all retention policy has therefore not yet run on eventstore. After the next run, compare with `registry_closure.py --compare` against the referrer-inclusive baseline in the 4.2 live attempt custody.
-  status: superseded (2026-11-24)
-  resolution: The October 8 EventStore GC confirmation in Story 4.2 already records a successful run, unchanged retained closures and verified authenticated transfers.
+
+### DW-12: Confirm the next nightly Zot GC completes for eventstore, and compare referrer-inclusive closures (4.2 live follow-up).
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
+location: n/a
+reason: The 2026-10-07 02:00 UTC GC failed for eventstore on the broken quarantine-proof index, which has since been deleted. The retain-all retention policy has therefore not yet run on eventstore. After the next run, compare with `registry_closure.py --compare` against the referrer-inclusive baseline in the 4.2 live attempt custody.
+status: done 2026-11-24
+disposition: superseded
+resolution: The October 8 EventStore GC confirmation in Story 4.2 already records a successful run, unchanged retained closures and verified authenticated transfers.
+
 - source_spec: `_bmad-output/implementation-artifacts/4-2-close-public-admin-exposure-and-anonymous-registry-reads.md`
   summary: Remove the public DNS record for kube.hexalith.com, and move the hexalith-recovery Keycloak client secret into long-term secret custody (4.2 live follow-up).
   evidence: The kubesphere-console Ingress is deleted, but public DNS still resolves kube.hexalith.com to 82.67.127.189. The recovery client secret currently exists only in owner-only ~/hexalith-admin-exposure-evidence/credentials on the workstation.
@@ -267,22 +331,32 @@
   evidence: Review BH02/BH04/BH06/BH08/EH04 confirms structural validation retains unresolved references; frozen intent reserves stage-specific rules. Composition, recovery-hook and critical-flow stories must define admissible target scopes.
   triage: skipped 2026-11-24 (blocked). The recovery and critical-flow execution contracts must define admissible cross-references before composition can enforce those scopes.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Enforce stage-specific uniqueness for task, hook, interface and operation names
-  evidence: BH03 demonstrates duplicate task names; execution/catalog stages must apply collection-specific identity rules, which the frozen intent reserves for later stories.
-  status: done 2026-11-24
-  resolution: Composition rejects duplicate task, recovery hook, fence hook and interface names per module and duplicate operation names per interface, using ordinal comparison.
+
+### DW-13: Enforce stage-specific uniqueness for task, hook, interface and operation names
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: BH03 demonstrates duplicate task names; execution/catalog stages must apply collection-specific identity rules, which the frozen intent reserves for later stories.
+status: done 2026-11-24
+resolution: Composition rejects duplicate task, recovery hook, fence hook and interface names per module and duplicate operation names per interface, using ordinal comparison.
+
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Decide authoritative-restore hook requirements
   evidence: BH05 is unverified: current declarations allow omitted restoreHook; the future recovery contract must decide whether native/operator hooks satisfy restoration before requiring a module-local reference.
   triage: skipped 2026-11-24 (blocked). The recovery authority must decide whether native or operator recovery satisfies the contract before a module-local restore hook can be required.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Validate resource requests against limits during composition
-  evidence: BH09/EH06 confirms schema-valid requests can exceed limits; the later allocation stage must reject these inputs before provisioning.
-  status: done 2026-11-24
-  resolution: Composition compares matching CPU and memoryMiB request/limit pairs as exact JSON numbers and refuses excess requests before adding resources.
+
+### DW-14: Validate resource requests against limits during composition
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: BH09/EH06 confirms schema-valid requests can exceed limits; the later allocation stage must reject these inputs before provisioning.
+status: done 2026-11-24
+resolution: Composition compares matching CPU and memoryMiB request/limit pairs as exact JSON numbers and refuses excess requests before adding resources.
+
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Define resource quantity conversion types and bounds
