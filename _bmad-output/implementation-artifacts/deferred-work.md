@@ -391,9 +391,14 @@ reason: R3-BH08, medium unverified; local validation admits an existing readable
 status: done 2026-11-24
 resolution: The enrollment guide defines HTTP-only Platform readiness for local and hosted composition. An otherwise valid command probe is refused before resources are created or an interpreter could be selected.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
-  evidence: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.
+### DW-18: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH09; authenticate_review passes the entire GitHub envelope through strict_json, whose 4096-character per-string limit rejects the body string even when the independently retained JSON body is otherwise admissible. This is unrelated custody work preserved by Story 1.1.
+status: done 2026-11-24
+resolution: The exact-review envelope permits a byte-bounded top-level body. Envelope metadata and individual strings inside the authenticated body still enforce the existing string budget and exact retained byte binding.
 
 ## Deferred from: code review of spec-1-1-validate-module-declarations.md (2026-10-08)
 

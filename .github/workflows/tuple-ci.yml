@@ -56,6 +56,8 @@ jobs:
           python="$RUNNER_TEMP/cluster-management-venv/bin/python"
           "$python" -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
           "$python" -B -m unittest discover -s eng/cluster-management -p 'test_*.py'
+      - name: Run GitHub review decision transport controls
+        run: python3 -B -m unittest discover -s eng -p test_github_decisions.py
       - name: Check the append-only module intake manifest
         env:
           MODULE_INTAKE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}

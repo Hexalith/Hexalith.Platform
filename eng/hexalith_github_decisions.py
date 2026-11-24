@@ -32,6 +32,8 @@ _COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 _PRINCIPAL = re.compile(r"github:user:([1-9][0-9]{0,18})\Z")
 _UTC = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\Z")
 _ENVELOPE_REQUIRED = frozenset({"id", "user", "state", "body", "commit_id", "submitted_at", "pull_request_url"})
+_JSON_BYTE_LIMIT = 1_048_576
+_JSON_STRING_LIMIT = 4096
 _ENVELOPE_FIELDS = _ENVELOPE_REQUIRED | {"node_id", "html_url", "author_association", "_links"}
 
 
@@ -62,7 +64,11 @@ def require_principal(value: object) -> None:
 
 def strict_json(raw: bytes) -> object:
     """Bounded immutable generic JSON, with duplicate and number refusals."""
-    if type(raw) is not bytes or len(raw) > 1_048_576:
+    return _strict_json(raw)
+
+
+def _strict_json(raw: bytes, *, review_envelope: bool = False) -> object:
+    if type(raw) is not bytes or len(raw) > _JSON_BYTE_LIMIT:
         _refuse("decision-byte-budget-or-type-invalid")
     if raw.startswith(b"\xef\xbb\xbf"):
         _refuse("utf8-bom-forbidden")
@@ -108,21 +114,26 @@ def strict_json(raw: bytes) -> object:
     def number(_):
         _refuse("non-integer-json-number")
 
-    def freeze(value):
+    def freeze(value, *, envelope=False, review_body=False):
         if type(value) is str:
-            if len(value) > 4096:
+            if not review_body and len(value) > _JSON_STRING_LIMIT:
                 _refuse("string-budget-exceeded")
             if any(0xD800 <= ord(character) <= 0xDFFF for character in value):
                 _refuse("unpaired-unicode-surrogate")
+            if review_body and len(value.encode("utf-8")) > _JSON_BYTE_LIMIT:
+                _refuse("decision-byte-budget-or-type-invalid")
         elif type(value) is dict:
-            return MappingProxyType({freeze(key): freeze(child) for key, child in value.items()})
+            return MappingProxyType({
+                freeze(key): freeze(child, review_body=envelope and key == "body")
+                for key, child in value.items()
+            })
         elif type(value) is list:
             return tuple(freeze(child) for child in value)
         return value
 
     try:
         return freeze(json.loads(text, object_pairs_hook=pairs, parse_int=integer,
-                                 parse_float=number, parse_constant=number))
+                                 parse_float=number, parse_constant=number), envelope=review_envelope)
     except (json.JSONDecodeError, RecursionError):
         _refuse("invalid-json")
 
@@ -147,7 +158,7 @@ class ExactReviewBinding:
         if type(self.body_sha256) is not str or _DIGEST.fullmatch(self.body_sha256) is None:
             _refuse("decision-digest-invalid")
         if (type(self.retained_body) is not bytes or type(self.body_byte_length) is not int
-                or not 0 < self.body_byte_length <= 1_048_576
+                or not 0 < self.body_byte_length <= _JSON_BYTE_LIMIT
                 or self.body_byte_length != len(self.retained_body)
                 or hashlib.sha256(self.retained_body).hexdigest() != self.body_sha256):
             _refuse("decision-retained-body-mismatch")
@@ -183,7 +194,7 @@ def authenticate_review(*, client: GitHubReviewClient, token: str, binding: Exac
         if not _finite_number(started) or started < 0:
             _refuse("decision-elapsed-invalid")
         raw = client.fetch_review(binding.locator, token=token, limits=limits)
-        data = strict_json(raw)
+        data = _strict_json(raw, review_envelope=True)
         if (not isinstance(data, Mapping) or not _ENVELOPE_REQUIRED <= set(data)
                 or not set(data) <= _ENVELOPE_FIELDS):
             _refuse("decision-envelope-field-set")
