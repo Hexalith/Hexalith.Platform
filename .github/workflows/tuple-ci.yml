@@ -156,7 +156,7 @@ jobs:
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-current --suite current42
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci --suite base42
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-extensions --suite extensions
-          dotnet test --project tests/Hexalith.Platform.Identity.Tests/Hexalith.Platform.Identity.Tests.csproj --configuration Release --no-build -- --filter-class '*PlatformIdentity*Tests'
+          dotnet test --project tests/Hexalith.Platform.Identity.Tests/Hexalith.Platform.Identity.Tests.csproj --configuration Release --no-build -- --filter-class 'Hexalith.Platform.Identity.Tests.PlatformIdentity*'
       - name: Retain bootstrap and preflight outcomes
         if: always()
         env:
