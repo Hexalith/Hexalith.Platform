@@ -372,13 +372,24 @@ reason: BH11 shows self-dependencies are retained structurally; the later compos
 status: done 2026-11-24
 resolution: The pinned Builds graph validator rejects self-dependencies, multi-module cycles, and unresolved dependencies. The Platform composition entry point now exercises each refusal before resource registration.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
-  evidence: R3-BH01 and R3-EH04; owner commit 6f07763bd955d22ace0123798add528dc933bf51 migrated pins and synthetic fixtures, but the package control assertion and publication default still require EventStore 3.110.0. Historical retained acceptance does not qualify the migrated tuple.
+### DW-16: Complete v1 package qualification consumers and requalify the separately migrated EventStore 3.117.1 / FrontComposer 4.6.0 tuple before promotion.
 
-- source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
-  summary: Define command-readiness execution and interpreter rules at the runtime execution stage.
-  evidence: R3-BH08, medium unverified; local validation admits an existing readable file, but no v2 execution consumer yet establishes admissible script, DLL, interpreter or platform execution semantics. Verify against the later command launcher without launching during enrollment.
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH01 and R3-EH04; owner commit 6f07763bd955d22ace0123798add528dc933bf51 migrated pins and synthetic fixtures, but the package control assertion and publication default still require EventStore 3.110.0. Historical retained acceptance does not qualify the migrated tuple.
+status: done 2026-11-24
+disposition: superseded
+resolution: Builds 57a3167dcf6a4855c195fc1029856b5251e16ac3 aligned the legacy qualification consumers. The current Platform selects a later owner tuple, so a promotion qualification for those historical pins is no longer pending.
+
+### DW-17: Define command-readiness execution and interpreter rules at the runtime execution stage.
+
+origin: Attended deferred-work follow-up, 2026-11-24
+source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
+location: n/a
+reason: R3-BH08, medium unverified; local validation admits an existing readable file, but no v2 execution consumer yet establishes admissible script, DLL, interpreter or platform execution semantics. Verify against the later command launcher without launching during enrollment.
+status: done 2026-11-24
+resolution: The enrollment guide defines HTTP-only Platform readiness for local and hosted composition. An otherwise valid command probe is refused before resources are created or an interpreter could be selected.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-1-validate-module-declarations.md`
   summary: Separate complete review-body and individual JSON-string budgets in the custody GitHub review transport.

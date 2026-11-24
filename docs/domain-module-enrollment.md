@@ -479,8 +479,14 @@ dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manif
 dotnet tool run hexalith-module -- down --manifest module/hexalith.module-manifest.v2.json
 ```
 
-`run` and `debug` wait for declared readiness and required tasks; default deadline
-is ten minutes unless a justified finite declared override applies. Failures must
+Platform composition requires exactly one HTTP readiness check per enabled
+server for local runs and hosted graph export. The module schema can describe
+command and gRPC checks for other consumers. Platform refuses both before
+resource creation, so it never selects an interpreter or launches a readiness
+executable. Declare required startup tasks separately under `lifecycle.tasks`.
+
+`run` and `debug` wait for declared readiness and required tasks. The default
+deadline is ten minutes unless a justified finite declared override applies. Failures must
 identify the unready dependency and preserve diagnostics. `down` stops only the
 tool-owned run resources. Record returned run identity and mapping. Package mode
 uses released images and catalog packages; it also requires a clean, tagged direct

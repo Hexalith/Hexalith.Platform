@@ -146,6 +146,35 @@ public sealed partial class PlatformAppModelTests
         }
     }
 
+    [Fact]
+    public void CompositionRefusesStructurallyValidCommandReadinessBeforeResourceCreation()
+    {
+        DirectoryInfo workspace = Directory.CreateTempSubdirectory("platform-command-readiness-");
+        try
+        {
+            string path = Fixture(workspace.FullName, "validation-test", tasks: true);
+            JsonNode document = JsonNode.Parse(File.ReadAllText(path))!;
+            document["modules"]![0]!["lifecycle"]!["readiness"]![0] = new JsonObject
+            {
+                ["server"] = "api",
+                ["kind"] = "command",
+                ["executable"] = "verify.sh",
+                ["arguments"] = new JsonArray("readiness argument"),
+            };
+            File.WriteAllText(path, document.ToJsonString());
+
+            IDistributedApplicationBuilder builder = Builder();
+            PlatformCompositionOptions options = Options(active: "validation-test") with { DeclarationPaths = [path] };
+            Should.Throw<InvalidDataException>(() => PlatformAppModel.Compose(builder, options)).Message
+                .ShouldEndWith("validation-test/api: lifecycle.readiness: this Platform model requires a declared HTTP readiness check.");
+            builder.Resources.ShouldBeEmpty();
+        }
+        finally
+        {
+            workspace.Delete(recursive: true);
+        }
+    }
+
     private static void AddNamedHooks(JsonNode module)
     {
         JsonObject hook = new() { ["name"] = "verify", ["task"] = "verify", ["resource"] = "data" };
