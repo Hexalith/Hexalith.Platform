@@ -1,5 +1,6 @@
 # Declaration snapshots and provenance are SHA-256 bound; preserve owner blob bytes.
 src/Hexalith.Platform.Composition/Declarations/*.json -text
+src/Hexalith.Platform.Composition/Declarations/module/tasks/*.py -text
 eng/timesheets-deployment/history/*.json -text
 
 # Preserve exact qualification evidence bytes across checkouts.

@@ -533,7 +533,15 @@
             "endpoint": "/ready"
           }
         ],
-        "tasks": [],
+        "tasks": [
+          {
+            "name": "create-synthetic-tenant",
+            "scope": "once-per-environment-creation",
+            "authorityClass": "operator",
+            "executable": "module/tasks/create-synthetic-tenant.py",
+            "arguments": []
+          }
+        ],
         "recoveryHooks": [],
         "fenceHooks": [],
         "replay": {

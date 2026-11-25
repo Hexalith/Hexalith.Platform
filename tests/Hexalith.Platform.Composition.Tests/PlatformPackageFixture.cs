@@ -47,6 +47,8 @@ internal sealed class PlatformPackageFixture : IDisposable
             };
         }
         File.WriteAllText(Path.Combine(declarations, "provenance.json"), provenance.ToJsonString());
+        PlatformOwnerFixture.CopySyntheticTenantExecutable(
+            PlatformTestRepository.ReferenceRoot(platformRoot, "Hexalith.Tenants"), Root, declarations);
         // The graph uses synthetic release/image identities, while its catalog is built from
         // explicitly mapped actual owner source. This fixture confers no package acceptance.
         SourceMappingEntry[] entries = Directory.GetDirectories(Path.Combine(platformRoot, "references"), "Hexalith.*")
