@@ -10,7 +10,7 @@ and how to adopt a release are described in
 [adopting a Builds release](../eng/tuple-source-preparation.md#adopting-a-builds-release).
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
-candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+candidate. Source release requires `resolve-sources`, `host-evidence`, `tuple` and `tuple-verdict`,
 plus the unchanged catalog gates. Both source resolution and current execution
 must succeed. A failed, cancelled, skipped or missing prerequisite makes the
 combined verdict fail. Prepare the current source binding only when owner
@@ -248,7 +248,7 @@ adds no runtime or service enrollment authority.
 
 Source release at that historical source required **five tuple jobs**
 (resolution, current, two historical lanes and verdict) and **six SDK catalog
-jobs**. Current candidate-only source release requires the three jobs described above. The SDK4.2 catalog row also verifies the signed
+jobs**. Current candidate-only source release requires the four tuple jobs described above. The SDK4.2 catalog row also verifies the signed
 public Parties reader with changed-body and owner-closure refusals. Public-query,
 native, cleanup and candidate acceptance retain their separate required evidence;
 package measurement and source publication grant no such credit.

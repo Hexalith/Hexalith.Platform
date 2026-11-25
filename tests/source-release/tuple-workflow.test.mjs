@@ -13,13 +13,14 @@ const sourceSteps = workflow.jobs['resolve-sources'].steps;
 const intakeIndex = sourceSteps.findIndex(step => step.name === 'Check the append-only module intake manifest');
 const intake = sourceSteps[intakeIndex];
 
-test('all triggers execute candidate-only resolution, current execution and verdict', () => {
+test('all triggers execute candidate-only resolution, host evidence, current execution and verdict', () => {
   assert.deepEqual(workflow.on.push.branches, ['main']);
   assert.deepEqual(workflow.on.pull_request.branches, ['main']);
   assert.deepEqual(Object.keys(workflow.on.workflow_dispatch.inputs), ['candidate-sha']);
   assert.equal(workflow.on.workflow_dispatch.inputs['candidate-sha'].required, true);
-  assert.deepEqual(Object.keys(workflow.jobs), ['resolve-sources', 'tuple', 'tuple-verdict']);
+  assert.deepEqual(Object.keys(workflow.jobs), ['resolve-sources', 'host-evidence', 'tuple', 'tuple-verdict']);
   assert.deepEqual(workflow.jobs.tuple.needs, ['resolve-sources']);
+  assert.deepEqual(workflow.jobs['host-evidence'].needs, ['resolve-sources']);
   const resolution = workflow.jobs['resolve-sources'];
   assert.deepEqual(resolution.outputs, { 'current-source': '${{ steps.sources.outputs.current-source }}' });
   assert.ok(resolution.steps.some(step => step.run?.includes("read_selection(Path.cwd(), os.environ['PLATFORM_CANDIDATE_SHA'])")));
@@ -30,10 +31,12 @@ test('all triggers execute candidate-only resolution, current execution and verd
 });
 
 test('every Platform checkout is shallow and selects only the candidate', () => {
-  const checkouts = Object.values(workflow.jobs).flatMap(job => job.steps).filter(step => step.uses?.startsWith('actions/checkout@'));
-  assert.equal(checkouts.length, 2);
-  for (const checkout of checkouts) {
-    assert.equal(checkout.with.ref, '${{ inputs.candidate-sha || github.sha }}');
+  const checkouts = Object.entries(workflow.jobs).flatMap(([name, job]) => job.steps
+    .filter(step => step.uses?.startsWith('actions/checkout@')).map(step => [name, step]));
+  assert.deepEqual(checkouts.map(([name]) => name), ['resolve-sources', 'host-evidence', 'tuple']);
+  for (const [name, checkout] of checkouts) {
+    const ref = name === 'host-evidence' ? '${{ needs.resolve-sources.outputs.current-source }}' : '${{ inputs.candidate-sha || github.sha }}';
+    assert.equal(checkout.with.ref, ref);
     assert.equal(checkout.with['fetch-depth'], 1);
     assert.equal(checkout.with.submodules, false);
     assert.equal(checkout.with['persist-credentials'], false);
@@ -95,12 +98,13 @@ test('intake runs before the Builds gate and dispatch uses the first parent from
   }
 });
 
-test('overall verdict requires both actual prerequisites even when they fail or skip', () => {
+test('overall verdict requires all actual prerequisites even when they fail or skip', () => {
   const verdict = workflow.jobs['tuple-verdict'];
-  assert.deepEqual(verdict.needs, ['resolve-sources', 'tuple']);
+  assert.deepEqual(verdict.needs, ['resolve-sources', 'host-evidence', 'tuple']);
   assert.equal(verdict.if, 'always()');
   assert.deepEqual(verdict.steps[0].env, {
     SOURCE_RESULT: '${{ needs.resolve-sources.result }}',
+    HOST_EVIDENCE_RESULT: '${{ needs.host-evidence.result }}',
     CURRENT_RESULT: '${{ needs.tuple.result }}',
   });
 });
@@ -108,9 +112,11 @@ test('overall verdict requires both actual prerequisites even when they fail or 
 test('executable aggregate refuses every failed cancelled skipped or absent result', () => {
   const script = workflow.jobs['tuple-verdict'].steps[0].run;
   const statuses = ['success', 'failure', 'cancelled', 'skipped', ''];
-  for (const source of statuses) for (const current of statuses) {
-    const result = spawnSync('bash', ['-c', script], { env: { SOURCE_RESULT: source, CURRENT_RESULT: current } });
-    assert.equal(result.status === 0, source === 'success' && current === 'success');
+  for (const source of statuses) for (const hostEvidence of statuses) for (const current of statuses) {
+    const result = spawnSync('bash', ['-c', script], {
+      env: { SOURCE_RESULT: source, HOST_EVIDENCE_RESULT: hostEvidence, CURRENT_RESULT: current },
+    });
+    assert.equal(result.status === 0, [source, hostEvidence, current].every(status => status === 'success'));
   }
   assert.notEqual(spawnSync('bash', ['-c', script], { env: {} }).status, 0);
 });

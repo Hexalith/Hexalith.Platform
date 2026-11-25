@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 
 export const repository = 'Hexalith/Hexalith.Platform';
 export const workflows = [
-  { file: 'tuple-ci.yml', name: 'Platform tuple CI preflight', jobs: ['resolve-sources', 'tuple', 'tuple-verdict'] },
+  { file: 'tuple-ci.yml', name: 'Platform tuple CI preflight', jobs: ['resolve-sources', 'host-evidence', 'tuple', 'tuple-verdict'] },
   { file: 'catalog-builder.yml', name: 'Catalog builder consumer binding', jobs: ['consumer-binding'] },
 ];
 export class GateError extends Error {}

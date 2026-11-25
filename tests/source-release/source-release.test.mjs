@@ -14,7 +14,7 @@ import { recheck, verifyRelease, generateNotes } from '../../eng/source-release/
 import { runRelease, recordCliFailure } from '../../eng/source-release/run.mjs';
 
 const source = 'a'.repeat(40), foreign = 'b'.repeat(40);
-const jobNames = [['resolve-sources', 'tuple', 'tuple-verdict'], ['consumer-binding']];
+const jobNames = [['resolve-sources', 'host-evidence', 'tuple', 'tuple-verdict'], ['consumer-binding']];
 const clone = value => structuredClone(value);
 function fixture(trigger = 0) {
   const runs = workflows.map((w, n) => ({ id: 101 + n, workflow_id: 11 + n, run_number: 21 + n, run_attempt: 1,
@@ -47,7 +47,7 @@ test('either final callback requires both latest successful main lanes and exact
   for (const trigger of [0, 1]) {
     const { inputs } = fixture(trigger); const result = await qualify(inputs);
     assert.equal(result.eligible, true); assert.equal(result.source, source);
-    assert.deepEqual(result.qualifyingRuns.map(run => run.jobs.map(job => job.name)), jobNames);
+    assert.deepEqual(result.qualifyingRuns.map(run => run.jobs.map(job => job.name)), jobNames.map(names => names.toSorted()));
     assert.deepEqual([result.nativeAcceptance, result.candidateAcceptance, result.storyAcceptance], [false, false, false]);
     assert.ok(Buffer.byteLength(JSON.stringify(result)) < 16384);
   }
@@ -95,8 +95,8 @@ test('required job failure/cancellation/skip, missing/unknown and duplicate name
   const b = fixture(); b.state.jobs[1][0].name = 'unknown'; await assert.rejects(qualify(b.inputs), /wrong-required-jobs/);
   const c = fixture(); c.state.jobs[0][0].name = c.state.jobs[0][1].name; await assert.rejects(qualify(c.inputs), /wrong-required-jobs/);
 });
-test('source release requires candidate resolution, current execution and aggregate verdict', async () => {
-  assert.deepEqual(workflows[0].jobs, ['resolve-sources', 'tuple', 'tuple-verdict']);
+test('source release requires candidate resolution, host evidence, tuple execution and aggregate verdict', async () => {
+  assert.deepEqual(workflows[0].jobs, jobNames[0]);
   for (let index = 0; index < workflows[0].jobs.length; index++) {
     for (const conclusion of ['failure', 'cancelled', 'skipped']) {
       const f = fixture(); f.state.jobs[0][index].conclusion = conclusion;
@@ -219,6 +219,8 @@ test('workflow separates read-only verification from serialized contents-write p
   assert.equal(workflow.jobs.publish.if, "needs.verify.outputs.eligible == 'true'");
   const serialized = JSON.stringify(workflow); assert.ok(!serialized.includes('NUGET') && !serialized.includes('REGISTRY') && !serialized.includes('secrets.') && !serialized.includes('GITHUB_SHA'));
   const ci = yaml.load(readFileSync('.github/workflows/tuple-ci.yml', 'utf8'));
+  assert.deepEqual(Object.keys(ci.jobs), workflows[0].jobs);
+  assert.deepEqual(ci.jobs['tuple-verdict'].needs, ['resolve-sources', 'host-evidence', 'tuple']);
   assert.ok(ci.jobs.tuple.steps.some(s => s.run?.includes('npm run test:source-release')));
 });
 test('real entry point refuses local execution without a positive CI identity or any network/write probe', () => {

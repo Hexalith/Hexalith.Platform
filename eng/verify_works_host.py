@@ -21,7 +21,6 @@ import works_host_snapshot
 import works_toolchain
 import works_managed_runtime
 from current_catalog_view import evaluate_views
-from bound_builds import materialize as materialize_bound_builds, verify_bound_checkout
 from builds_tool_lock import content_hash, published_package_hash
 from works_verifier_command import run_owned
 
@@ -30,17 +29,10 @@ from verify_works_producer import (BUILD_FILES, REALM_MANIFEST, builds_input_sna
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
 VERIFIER_HELPERS = (
-    "verify_works_producer.py", "works_toolchain.py", "test_works_toolchain.py", "test_verify_works_host.py", "test_verify_works_producer.py",
-    "isolated_daprd.py", "test_isolated_daprd.py", "retained_works_host.py", "test_retained_works_host.py",
+    "verify_works_producer.py", "works_toolchain.py", "isolated_daprd.py", "retained_works_host.py",
     "retained-works-host/manifest.json", "retained-works-host/works-source.tar.gz",
-    "works_host_snapshot.py", "test_works_host_snapshot.py", "verify-agents-host.sh", "verify-platform-pins.py",
-    "test_verify_platform_pins.py", "test_local_dapr_security_cleanup.py", "test-local-dapr-security.py",
-    "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py", "ext-host-1/ComponentInputs.targets",
-    "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py",
-    "works_verifier_command.py", "test_works_verifier_command.py", "test_works_verifier_inputs.py",
-    "works_managed_runtime.py", "test_works_managed_runtime.py",
-    "current_catalog_view.py",
-    "bound_builds.py", "test_bound_builds.py", "builds_tuple.py", "builds-tuple.json", "builds_tool_lock.py",
+    "works_host_snapshot.py", "works_verifier_command.py", "works_managed_runtime.py",
+    "current_catalog_view.py", "builds_tuple.py", "builds_tool_lock.py",
 )
 
 ROWS = {
@@ -68,10 +60,13 @@ def verification_profile(name):
     """CI checks public-package Release consumers; full local qualification also checks source Debug."""
     if name not in ("full", "ci"):
         raise ValueError("Unknown Works verification profile: " + str(name))
-    return {"name": name, "consumerConfigurations": ["Debug", "Release"] if name == "full" else ["Release"],
-            "agentsConfiguration": "Debug" if name == "full" else "Release",
-            "sourceConformance": "required" if name == "full" else "not-requested; full-local-profile-only",
-            "liveProofs": "all-R1-R11-and-complete-fleet-rollback"}
+    profile = {"name": name, "consumerConfigurations": ["Debug", "Release"] if name == "full" else ["Release"],
+               "sourceConformance": "required" if name == "full" else "not-requested; full-local-profile-only",
+               "liveProofs": "all-R1-R11-and-complete-fleet-rollback"}
+    if name == "ci":
+        # The deployed Works coordinator still requires this legacy profile field.
+        profile["agentsConfiguration"] = "Release"
+    return profile
 
 
 def consumer_build_command(project, configuration, version, output=None, extra=()):
@@ -1288,9 +1283,6 @@ def consumer_artifacts(root):
 
 def require_unchanged_inputs(summary, works, platform, snapshot_manifest, ephemeral_range, reserved_ranges):
     """Recheck every qualified input and artifact before accepting live evidence."""
-    if "agentsProducerContext" in summary and verify_bound_checkout(
-            platform, Path(summary["agentsProducerContext"]["buildsRoot"])) != summary["agentsProducerContext"]:
-        raise ValueError("The authenticated Agents producer context changed during execution")
     if "proofRuntimeManifest" in summary:
         require_unchanged_proof_runtime(summary["proofRuntimeManifest"])
     if "qualifiedWorksRuntime" in summary:
@@ -1376,7 +1368,7 @@ def run_verification(args):
         print(summary["failure"], flush=True)
         return 1
 
-    def run(name, command, cwd=platform, environment=None, expected_refusal=None):
+    def run(name, command, cwd=platform, environment=None):
         log = artifacts / (name + ".log")
         entry = {"name": name, "command": [str(value) for value in command], "cwd": str(cwd), "log": log.name,
                  "startedAtUtc": datetime.now(timezone.utc).isoformat()}
@@ -1388,10 +1380,7 @@ def run_verification(args):
             with log.open("w") as output:
                 result = run_owned(entry["command"], cwd=cwd, env=environment, stdout=output, timeout=1800)
             entry["exitCode"] = result.returncode
-            if expected_refusal:
-                if result.returncode != 1 or expected_refusal not in log.read_text():
-                    raise ValueError(name + ": required closed refusal was not preserved")
-            elif result.returncode:
+            if result.returncode:
                 raise ValueError(name + " failed; see " + str(log))
             if environment and (evidence := environment.get("WORKS_SDK_PROOF_EVIDENCE_PATH")):
                 prefix = validate_persisted_prefix(evidence)
@@ -1440,18 +1429,6 @@ def run_verification(args):
         summary["verifierHelpers"] = {name: sha256(Path(__file__).parent / name) for name in VERIFIER_HELPERS}
         summary["managedRuntimeInventory"] = works_managed_runtime.inventory()
         save()
-        run("evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_works_host", "test_works_toolchain", "test_verify_works_producer", "test_isolated_daprd", "test_retained_works_host", "test_works_host_snapshot", "test_works_verifier_command", "test_works_verifier_inputs", "test_works_managed_runtime", "test_bound_builds"], platform / "eng")
-        run("component-evidence-gate-tests", ["python3", "-m", "unittest", "test_verify_full", "test_prepare_acceptance"], platform / "eng/ext-host-1")
-        summary["agentsProducerContext"] = materialize_bound_builds(platform, artifacts / "agents-bound-builds")
-        summary["catalogContexts"] = {"works": summary["selectedSdk"], "agents": summary["agentsProducerContext"]}
-        agents_configuration = ["--configuration", profile["agentsConfiguration"],
-                                "--builds-root", summary["agentsProducerContext"]["buildsRoot"]]
-        agents_environment = os.environ.copy() | {"HexalithBuildsRoot": summary["agentsProducerContext"]["buildsRoot"]}
-        run("agents-full-refusal", ["bash", "eng/verify-agents-host.sh", *agents_configuration, "--artifacts-path", str(artifacts / "agents-full")],
-            environment=agents_environment, expected_refusal="DependencyNotAvailable: EXT-HOST-1")
-        summary["checks"]["agentsFull"] = "expected-unavailable; not a Works prerequisite"
-        run("agents-local-scaffold", ["bash", "eng/verify-agents-host.sh", "--mode", "LocalScaffold", *agents_configuration, "--artifacts-path", str(artifacts / "agents-local")],
-            environment=agents_environment)
         # These tests locate their checkout through artifact ancestors. Keep their private
         # outputs under Platform while avoiding shared default bin/obj deployment directories.
         (platform / "artifacts").mkdir(exist_ok=True)

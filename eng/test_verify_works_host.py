@@ -153,10 +153,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'exactly one restored assets graph'):
                 verify_works_host.file_host_sdk_identity(output, VERSION)
 
-    def test_agents_nested_compile_helpers_are_explicitly_hash_bound(self):
+    def test_works_execution_helpers_are_explicitly_hash_bound(self):
         helpers = set(verify_works_host.VERIFIER_HELPERS)
-        self.assertTrue({"verify-agents-host.sh", "ext-host-1/verify_full.py", "ext-host-1/prepare_acceptance.py",
-                         "ext-host-1/test_verify_full.py", "ext-host-1/test_prepare_acceptance.py"}.issubset(helpers))
+        self.assertEqual(helpers, {
+            "verify_works_producer.py", "works_toolchain.py", "isolated_daprd.py", "retained_works_host.py",
+            "retained-works-host/manifest.json", "retained-works-host/works-source.tar.gz",
+            "works_host_snapshot.py", "works_verifier_command.py", "works_managed_runtime.py",
+            "current_catalog_view.py", "builds_tuple.py", "builds_tool_lock.py",
+        })
         self.assertEqual(len(helpers), len(verify_works_host.VERIFIER_HELPERS))
         for name in helpers:
             self.assertTrue((Path(__file__).parent / name).is_file(), name)
@@ -165,7 +169,7 @@ class WorksEvidenceGateTests(unittest.TestCase):
         full = verify_works_host.verification_profile('full')
         ci = verify_works_host.verification_profile('ci')
         self.assertEqual(full['consumerConfigurations'], ['Debug', 'Release'])
-        self.assertEqual(full['agentsConfiguration'], 'Debug')
+        self.assertNotIn('agentsConfiguration', full)
         self.assertEqual(ci['consumerConfigurations'], ['Release'])
         self.assertEqual(ci['agentsConfiguration'], 'Release')
         self.assertEqual(ci['sourceConformance'], 'not-requested; full-local-profile-only')
@@ -318,9 +322,6 @@ class WorksEvidenceGateTests(unittest.TestCase):
         def command(arguments, **kwargs):
             name = Path(kwargs['stdout'].name).stem
             if name == 'platform-file-host-release': raise RuntimeError('stopped after profile checks')
-            if name == 'agents-full-refusal':
-                kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
-                return subprocess.CompletedProcess(arguments, 1)
             return subprocess.CompletedProcess(arguments, 0)
         with patch('verify_works_host.selected_sdk_version', return_value=VERSION), \
                 patch('verify_works_host.require_consumer_pins', return_value={}), \
@@ -340,14 +341,14 @@ class WorksEvidenceGateTests(unittest.TestCase):
         self.assertEqual(ledger['profile']['name'], 'ci')
         self.assertIn('Release', ledger['checks'])
         self.assertNotIn('Debug', ledger['checks'])
+        self.assertNotIn('agentsFull', ledger['checks'])
+        self.assertNotIn('agentsProducerContext', ledger)
+        self.assertNotIn('catalogContexts', ledger)
         self.assertEqual(set(ledger['sourceProducers']), {'worksRuntimeSdk'})
         self.assertIn('stopped after profile checks', ledger['failure'])
+        self.assertEqual([entry['name'] for entry in ledger['commands']],
+                         ['platform-tests-build-release', 'platform-tests-release', 'platform-file-host-release'])
         for entry in ledger['commands']:
-            if entry['name'].startswith('agents-'):
-                self.assertIn('--configuration', entry['command'])
-                self.assertIn('Release', entry['command'])
-                self.assertEqual(entry['command'][entry['command'].index('--builds-root') + 1],
-                                 ledger['agentsProducerContext']['buildsRoot'])
             if entry['command'][0] == 'dotnet':
                 self.assertIn('-p:UseHexalithProjectReferences=false', entry['command'])
                 self.assertIn('-p:UseNuGetDeps=true', entry['command'])
@@ -415,9 +416,6 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 result = command_effect(name, arguments, kwargs)
                 if result is not None:
                     return result
-            if name == 'agents-full-refusal':
-                kwargs['stdout'].write('DependencyNotAvailable: EXT-HOST-1')
-                return subprocess.CompletedProcess(arguments, 1)
             return subprocess.CompletedProcess(arguments, 0)
 
         prepare = verify_works_host.isolated_daprd.prepare
@@ -449,9 +447,6 @@ class WorksEvidenceGateTests(unittest.TestCase):
                 patch('verify_works_host.run_owned', side_effect=command):
             if monotonic_clock is not None:
                 final_checks.enter_context(patch('verify_works_host.time.monotonic', side_effect=lambda: monotonic_clock[0]))
-            final_checks.enter_context(patch('verify_works_host.materialize_bound_builds', return_value={
-                'buildsRoot': str(artifacts / 'agents-bound-builds'), 'catalogSha256': DIGEST,
-                'sourceRevision': 'b' * 40, 'producerBinding': str(platform / 'eng/builds-tuple.json')}))
             final_checks.enter_context(patch('verify_works_host.file_host_sdk_identity', return_value=producers))
             final_checks.enter_context(patch('verify_works_host.runtime_source_snapshot',
                                              side_effect=lambda root: snapshot | {'root': str(root)}))
