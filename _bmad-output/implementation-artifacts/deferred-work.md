@@ -2705,6 +2705,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Builds
   summary: Story 3.5 Builds slice — run `once-per-environment-creation` tasks when a run-owned environment is created, write the task invocation file (`HEXALITH_TASK_INVOCATION_PATH`: syntheticTenantId, gatewayUrl, commandTenant, headers) with an operator authority, report the task in `startupTasks`, and flag synthetic runner tokens with `eventstore:synthetic`.
   evidence: Split from Story 3.5 on 2026-11-25 (maintainer chose "Tenants slice first"). `CompositionStartupTasks.Select` (Builds `CompositionStartupTasks.cs:79`) runs only `per-start-verify` and passes tasks only `HEXALITH_G4_RUN_ID`; `CompositionTokenFactory.cs:15-70` mints no synthetic claim.
+  relay: EventStore 5.6.0 admits the internal `create-synthetic-tenant` route only from a service-surface workload (`RouteCatalogEligibilityBehavior.cs:46`). An operator token sent straight to `POST /api/v1/commands` gets 403, and the task exits 3. The invocation's `gatewayUrl` must point at a runner relay that does three things. It forwards the exact command and the bound operator principal to `POST /api/v1/commands/bound/workload`, with a workload assertion, a signed command proof and the operator's `tenants:create` JWT. It polls the regular status endpoint with `X-Hexalith-Scope: platform:tenants` and a separately scoped `tenants:read` operator JWT. It serves both of those calls behind the task's single `headers` set. The contract is Tenants `docs/synthetic-tenant-task.md`, and Platform's bootstrap transport (`PlatformNativeTestPreparation.cs:149`) shows both transports.
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
   owner: Hexalith.EventStore
@@ -2780,3 +2781,20 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
   summary: Run the existing malformed-manifest Works preview controls in required tuple CI.
   evidence: `PreviewRefusesInvalidOwnerManifest` exercises the Story 3.4 schema validation boundary. The required composition selectors omit it and the separate provenance tests compare file identity.
+
+## Deferred from: code review of spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.Tenants
+  summary: Let `CreateTenant` create an ID whose stream holds only rejection events (medium, pre-existing).
+  evidence: `TenantAggregate.Handle(CreateTenant)` tests `state is not null` (`TenantAggregate.cs:36`), and `TenantState` applies every rejection kind. After any rejected command on a never-created stream, an admin `CreateTenant` returns `TenantAlreadyExistsRejection`. Examples are a non-admin `CreateTenant` or `CreateSyntheticTenant`, or an `UpdateTenant` on a missing tenant. `CreateSyntheticTenant` already tests `TenantId.Length > 0` and has a test that follows a rejected attempt.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.Builds
+  summary: Validate a package declaration's task executable against its declaration snapshot root, not the consumer repository root (medium).
+  evidence: `ManifestPathValidator.FindRepositoryRoot` (`ManifestPathValidator.cs:23`) walks from `Declarations/tenants.json` up to the Platform `.git` root. `CompositionDeclarationClosure` resolves the executable under `Declarations/`. Platform therefore commits a root symlink, `module/tasks/create-synthetic-tenant.py`, and the test fixtures write a `Hexalith.Builds.slnx` marker. Each further owner task needs another root alias, and two owners that declare the same relative task path cannot both be satisfied.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.Tenants
+  summary: Report a malformed gateway `rejectionType` in the synthetic tenant task (low). Include it in the task-hardening release above.
+  evidence: `report_rejection` returns 1 for a truthy non-string `rejectionType` without printing anything (`create-synthetic-tenant.py:84-86`). The fix changes the released task bytes, so it waits for the owner release that hardens status polling.

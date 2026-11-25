@@ -101,6 +101,45 @@ All Tenants paths are relative to `references/Hexalith.Tenants`. Work in a workt
 **Acceptance Criteria:**
 - Given the release is pinned in Platform, when `eng/test_current_tuple_source.py` and the Platform composition declaration tests run, then they pass with the task carried in the Tenants workload and its executable resolved.
 
+### Review Findings
+
+Code review on 2026-11-25 of Tenants PR #80 (`d58f24d8..583ea9e9`), Tenants `5a0441f0` and Platform `a4984b9d`. Blind Hunter, Edge Case Hunter, Verification Gap and Acceptance Auditor reviewed it. Tenants paths are relative to `references/Hexalith.Tenants`.
+
+The patches were applied on 2026-11-25. The Tenants changes are local commit `e47047da` on `fix/synthetic-tenant-review-3-5`, based on `origin/main` `d34f353a`, in the worktree `/home/administrator/projects/hexalith/tenants-review-3-5`. It is in [Tenants PR #81](https://github.com/Hexalith/Hexalith.Tenants/pull/81), and it changes no released task or manifest bytes. Platform stays on v8.1.0. The task suite passed 11 of 11. Narrowing `{409, 422}` to `{409}` fails the new exit-2 case. A strict Release build in pinned NuGet mode reported zero warnings, and the Server suite passed 1,937 of 1,937. The Builds-slice hand-off in `deferred-work.md` now records the relay.
+
+- [x] [Review][Patch] Run the task's fake-gateway suite in Tenants CI [references/Hexalith.Tenants/.github/workflows/ci.yml:96]. Only `scripts/run-product-unit-checks.sh` registers `tests/scripts/test_create_synthetic_tenant.py`, and only the `after-unit-tests` hook calls that script. Tenants CI delegates to the Builds `domain-ci.yml`, which never calls the hook. No CI job runs the eight cases.
+- [x] [Review][Patch] Cover the task's refusal branches [references/Hexalith.Tenants/tests/scripts/test_create_synthetic_tenant.py:117]. No case sends a gateway 422 or a `Rejected` status carrying `SyntheticTenantIdInvalidRejection`, which should exit 2. No case sends a submission 401, refused `gatewayUrl` values, a missing `HEXALITH_TASK_INVOCATION_PATH`, an oversized body or a retryable terminal status. Narrowing `{409, 422}` to `{409}` still passes every test.
+- [x] [Review][Patch] Record the operator relay in the Builds-slice hand-off [_bmad-output/implementation-artifacts/deferred-work.md:2706]. The entry only says to write the invocation file "with an operator authority". EventStore 5.6.0 admits the internal command only from a service-surface workload. The runner must relay it through `POST /api/v1/commands/bound/workload` with a signed command proof, and poll status with a separately scoped `tenants:read` JWT, as `docs/synthetic-tenant-task.md` states.
+- [x] [Review][Patch] Assert that the synthetic marker survives index serialization [references/Hexalith.Tenants/src/Hexalith.Tenants.Server/Projections/TenantIndexEntry.cs:14]. The list-exclusion tests seed in-memory index objects. No test stores a synthetic `TenantCreated` projection, so an `IsSynthetic` that stops serializing would pass every test.
+- [x] [Review][Patch] Document `CreateSyntheticTenant` in the event contract reference [references/Hexalith.Tenants/docs/event-contract-reference.md:300]. Only the inventory rows were added. Every other command also has a `####` section, plus table-of-contents, quick-reference and idempotency entries.
+- [x] [Review][Patch] Restate the historical-archive refusal for 24-route archives [references/Hexalith.Tenants/docs/development-route-catalog.md:132]. The sentence about older 23-route archives was deleted, not updated. The document no longer says that 8.0.x 24-route archives do not qualify against the 25-route inventory.
+- [x] [Review][Patch] Keep the task executable LF on every checkout [references/Hexalith.Tenants/.gitattributes:2]. `*.py` falls under `* text=auto`. A Windows `core.autocrlf` checkout gets a CRLF shebang and fails Platform's byte-parity check in `PackageModeResolvesReleasedSyntheticTenantExecutable`.
+- [x] [Review][Defer] `CreateTenant` refuses an ID whose stream holds only rejections [references/Hexalith.Tenants/src/Hexalith.Tenants.Server/Aggregates/TenantAggregate.cs:36]. Deferred because it is pre-existing. `CreateTenant` tests `state is not null`, so after any rejected command on a never-created stream, an admin `CreateTenant` returns `TenantAlreadyExistsRejection`. A non-admin `CreateSyntheticTenant` attempt is one such command. The new handler tests `TenantId.Length > 0`.
+- [x] [Review][Defer] Builds validates task executables against the Platform repository root [references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Manifest/ManifestPathValidator.cs:23]. Deferred to the Builds owner. Composition resolves the executable under `Declarations/`, but validation walks up to the Platform `.git` root. That forced the root symlink `module/tasks/create-synthetic-tenant.py`. Each further owner task needs its own root alias, and two owners that declare the same relative task path cannot both be satisfied.
+- [x] [Review][Defer] A non-string `rejectionType` exits 1 with no diagnostic [references/Hexalith.Tenants/module/tasks/create-synthetic-tenant.py:84]. Deferred because the fix changes the released task bytes. It belongs with the owner's task-hardening release.
+- [x] [Review][Defer] A status 401 or 403 exits 1 instead of 3 [references/Hexalith.Tenants/module/tasks/create-synthetic-tenant.py:146]. Already recorded: "Harden Tenants task status polling and invocation URL validation".
+- [x] [Review][Defer] Empty `?` or `#` delimiters pass URL validation [references/Hexalith.Tenants/module/tasks/create-synthetic-tenant.py:55]. Already recorded in the same entry.
+- [x] [Review][Defer] No test replays a persisted `SyntheticTenantIdInvalidRejection` [references/Hexalith.Tenants/src/Hexalith.Tenants.Server/Aggregates/TenantState.cs:106]. Already recorded: "Exercise audit and singleton-index replay for the new pre-creation synthetic rejection".
+- [x] [Review][Defer] The intake has no entry for the adopted EventStore 5.6.0 cohort [eng/module-intake.json]. Already recorded: "Reconcile EventStore and Memories intake selections".
+
+**Rejected**
+
+- false: the direct-gateway documentation misleads (Blind). The document points `gatewayUrl` at the Builds relay for a schema-3 gateway.
+- false: one `headers` object cannot carry two credentials (Blind). The contract assigns the separately scoped status credential to the relay.
+- false: status polls lack `X-Hexalith-Scope` (Edge). The relay adds the scope header when it polls EventStore.
+- false: a global admin who is also a member cannot list the synthetic tenant (Blind, Edge and Acceptance, three findings). The frozen matrix requires synthetic tenants to be absent from a global admin's `ListTenants`. Member views, the non-admin branch and `get-user-tenants`, are unchanged.
+- false: the marker does not reach `TenantSummary` or the client projections (Blind). No consumer in this slice or the deferred slices reads it there. Tokens will carry `eventstore:synthetic`.
+- false: a rerun on a disabled synthetic tenant is a NoOp (Blind and Edge, two findings). The frozen matrix specifies a NoOp for an ID that is already synthetic.
+- false: the executable copy has no hash binding (Blind). `PackageModeResolvesReleasedSyntheticTenantExecutable` compares bytes and mode with the gitlinked owner checkout, and that checkout is on the v8.1.0 tag.
+- false: the fixtures hide a missing executable, copy from mixed sources and couple to a count (Blind and Edge, two findings). Builds validation fails and names a missing task path, parity is asserted, and a change in closure size fails visibly.
+- false: the required suite profiles omit the new selectors (Acceptance). Both selectors run in required tuple CI (`.github/workflows/tuple-ci.yml:177-179`). The JSON profiles are fixed-total SDK 4.2 and extension lanes.
+- low: the internal route is labelled `agent-eligible` (Acceptance). Internal ingress already bars agents, as it does for `BootstrapGlobalAdmin`. Relabelling changes catalog digests and needs a release.
+- low: the spec says `done` while sprint status says `review` (Acceptance). This review sets both.
+- low: a submission 409, 429 or 503 without a rejection type aborts (Edge). This is unlikely for one environment-creation command, and a retry loop adds branches. Polling 429 is already deferred.
+- low: runner headers may include `Content-Length`, `Host` or case-duplicate names (Edge). The Builds runner writes these headers, and a guard adds complexity.
+- low: SIGALRM can fire at the 120-second boundary (Edge). The window is microseconds, and a fix needs restructured alarm handling.
+- low: a downgraded replica drops `IsSynthetic` (Edge). Mixed-version local and CI runs are unlikely, and schema versioning is a large change.
+
 ## Design Notes
 
 The authority is admin-only, because creation is population-creating and marked operator-only in hosted environments. The future synthetic clients never hold it. The invocation file keeps the runner's catalog-binding headers and the bearer token out of argv and out of the Tenants code. The Builds slice writes that file.
