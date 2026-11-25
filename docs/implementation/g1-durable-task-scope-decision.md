@@ -13,3 +13,7 @@ The candidate uses EventStore DomainService source with .NET 11.0.100, Dapr 1.19
 Run the provider checks from Platform with `run-with-temp python3 eng/durable-task-qualification/probe_state_store.py`. Concurrent first writes returned one HTTP 204 and one HTTP 409. A successful conditional update advanced the fence, the stale writer was rejected, and both replacement Dapr sidecars read the same advanced value after Redis restarted. Pass `--native path/to/Hexalith.EventStore.DomainService.Tests.dll` to run the EventStore admission cases against those sidecars on the fixture network. The runner rejects skipped native cases.
 
 This run supplies evidence for the admission transaction and the provider's conditional writes. The worker lease clock and scheduler topology still need execution qualification, including a durable discovery path for admitted tasks. A runtime rollback exercise must fence candidate writes, retain the store and verify task IDs, checkpoints and owner receipts before reopening work. If the retained runtime cannot interpret those records, exercise forward recovery under the fence.
+
+## Original-actor binding (2026-11-25)
+
+The Platform Owner accepted the committed admission lookup that EventStore and Folders selected for delegated steps. Platform qualification exercises that lookup and introduces no task-bound bearer credential.
