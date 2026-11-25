@@ -2798,3 +2798,15 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Tenants
   summary: Report a malformed gateway `rejectionType` in the synthetic tenant task (low). Include it in the task-hardening release above.
   evidence: `report_rejection` returns 1 for a truthy non-string `rejectionType` without printing anything (`create-synthetic-tenant.py:84-86`). The fix changes the released task bytes, so it waits for the owner release that hardens status polling.
+
+## Deferred from: code review of spec-3-6-run-all-seven-mvp-modules-together-locally.md (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Keep the Folders workers' `tenants.events` and `folders.events` subscriptions and their dotted dead-letter topics when Platform composes Folders (medium).
+  evidence: The Folders v2 manifest declares only the domain `tenants.events` subscription and the `memories-events` publisher. Builds 6.7.0's v2 topic inventory cannot name `deadletter.tenants.events` or `deadletter.folders.events`, so the workers keep code-owned subscriptions on the isolated `worker-inbound-events` role (`Folders:Workers:PubSubName`). The Platform slice must bind that role and confirm these deliveries reach the workers.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Record which production gateway image loads Folders' idempotency adapters and its `EventStore:Extensions` entry (folders, major 1) (medium).
+  evidence: Folders stopped building its `eventstore` image. Its production fragment (`deploy/dapr/production/sidecar-config-bindings.yaml`) configures the `hexalith-eventstore` deployment but never names its image (`service-images.yaml` binds only server, workers and ui). A production gateway without `Hexalith.Folders.EventStoreExtensions` and that extension entry registers no Folders adapters. Settle it with the production composition of the Platform host.
