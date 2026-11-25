@@ -5,6 +5,7 @@ using System.Text.Json.Nodes;
 using System.Xml.Linq;
 using Hexalith.Builds.Tooling.Runtime;
 using Hexalith.Builds.Tooling.Workspace;
+using Shouldly;
 
 /// <summary>Uses genuine published declaration bytes with synthetic owned entry files; confers no package runtime acceptance.</summary>
 internal sealed class PlatformQualificationPackageFixture : IDisposable
@@ -37,7 +38,9 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
         if (currentTest)
         {
             // Genuine candidate package provenance; local entry files below confer no publication authority.
-            File.Copy(Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations", "provenance.json"), provenancePath);
+            string sourceDeclarations = Path.Combine(PlatformTestRepository.Root, "src", "Hexalith.Platform.Composition", "Declarations");
+            File.Copy(Path.Combine(sourceDeclarations, "provenance.json"), provenancePath);
+            PlatformOwnerFixture.CopySyntheticTenantExecutable(sourceDeclarations, Root, declarations);
         }
         else
         {
@@ -56,6 +59,11 @@ internal sealed class PlatformQualificationPackageFixture : IDisposable
                 ?? throw new InvalidDataException("The retained EventStore declaration is missing.");
             using FileStream snapshot = File.Create(Path.Combine(declarations, "eventstore.json"));
             eventStore.CopyTo(snapshot);
+            string historicalTenants = Path.Combine(PlatformTestRepository.ReferenceRoot(PlatformTestRepository.Root, "Hexalith.Builds"),
+                "test", "fixtures", "module", "platform", "tenants-7.0.2.json");
+            string tenantsHash = CompositionDeclarationOptions.DefaultReleaseSnapshotHashes["tenants/7.0.2"];
+            Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(historicalTenants))).ShouldBe(tenantsHash);
+            File.Copy(historicalTenants, Path.Combine(declarations, "tenants.json"), overwrite: true);
         }
         string components = Path.Combine(PlatformTestRepository.Root, "DaprComponents", "reference");
         foreach (string file in Directory.GetFiles(components, "*", SearchOption.AllDirectories))

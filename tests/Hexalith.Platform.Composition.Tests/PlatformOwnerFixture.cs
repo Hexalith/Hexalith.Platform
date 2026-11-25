@@ -7,6 +7,8 @@ using Shouldly;
 /// <summary>Owns synthetic declaration files and their physical prerequisites; never represents live owner acceptance.</summary>
 internal sealed class PlatformOwnerFixture : IDisposable
 {
+    internal const string SyntheticTenantExecutable = "module/tasks/create-synthetic-tenant.py";
+
     private PlatformOwnerFixture(string root, string manifest)
     {
         Root = root;
@@ -82,6 +84,21 @@ internal sealed class PlatformOwnerFixture : IDisposable
             else if (node is JsonArray children) foreach (JsonNode? child in children) Visit(child);
         }
         Visit(document);
+    }
+
+    /// <summary>Copies the released Tenants executable into both package declaration validation roots.</summary>
+    internal static void CopySyntheticTenantExecutable(string sourceRoot, string fixtureRoot, string declarationsRoot)
+    {
+        string source = Path.Combine(sourceRoot, SyntheticTenantExecutable);
+        if (!File.Exists(source))
+            return;
+
+        foreach (string root in new[] { fixtureRoot, declarationsRoot })
+        {
+            string destination = Path.Combine(root, SyntheticTenantExecutable);
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+            File.Copy(source, destination, overwrite: true);
+        }
     }
 
     /// <inheritdoc />

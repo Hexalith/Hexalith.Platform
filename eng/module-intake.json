@@ -128,6 +128,50 @@
             "changeClass": "additive",
             "declarationSha256": "1588f3428ec29296c452fdd35bf95146142315aad3ad8ceb934e7a791f1fb522"
           }
+        },
+        {
+          "version": "8.1.0",
+          "commit": "e4e28904dfb41ed19dd2885cc36b881aef167af2",
+          "packages": [
+            {
+              "id": "Hexalith.Tenants.Aspire",
+              "sha256": "339b4bbac9ff126029e503e31ebd196c1d26587af399b577b6cdb9d7e2884b0f"
+            },
+            {
+              "id": "Hexalith.Tenants.Client",
+              "sha256": "7901d14afc743539df64888012190dea1da23779745d609cad4374fc39417ec4"
+            },
+            {
+              "id": "Hexalith.Tenants.Contracts",
+              "sha256": "f9515a4b7683168c4a88a1faad45693866c75e7df7ede2c0801c29f20910004e"
+            },
+            {
+              "id": "Hexalith.Tenants.Server",
+              "sha256": "eac95e1c571cb5edc9ddaede95948d09df9b41111aa02ecb2f04540aac699f8f"
+            },
+            {
+              "id": "Hexalith.Tenants.Testing",
+              "sha256": "408bb327440d097388c6206ade949b2ffed4fe25daf8569cbb3c50e6c5f61bce"
+            }
+          ],
+          "images": [
+            {
+              "name": "registry.hexalith.com/tenants",
+              "digest": "sha256:21a9139a90c46a72d35b5ffec50352b3b996c34ba1234c711044a382ad347256"
+            },
+            {
+              "name": "registry.hexalith.com/tenants-api",
+              "digest": "sha256:6e478501260200a5c71409e976d0ed43b22c24045d0f7031625746f4cf3394ec"
+            }
+          ],
+          "attestation": null,
+          "evidence": [
+            "https://github.com/Hexalith/Hexalith.Tenants/releases/tag/v8.1.0"
+          ],
+          "classification": {
+            "changeClass": "additive",
+            "declarationSha256": "16eb566f21800e1be434afaac6dd48fd70ce6052b43f8a0b276bb6ea69d66746"
+          }
         }
       ]
     },
@@ -311,6 +355,11 @@
       {
         "module": "tenants",
         "version": "8.0.4",
+        "changeClass": "additive"
+      },
+      {
+        "module": "tenants",
+        "version": "8.1.0",
         "changeClass": "additive"
       }
     ],

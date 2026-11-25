@@ -1,0 +1,1 @@
+../../src/Hexalith.Platform.Composition/Declarations/module/tasks/create-synthetic-tenant.py

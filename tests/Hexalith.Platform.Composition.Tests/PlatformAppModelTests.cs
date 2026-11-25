@@ -60,6 +60,9 @@ public sealed partial class PlatformAppModelTests : IDisposable
             Directory.CreateDirectory(catalog);
             foreach (string source in Directory.GetFiles(Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), "*.json"))
                 File.Copy(source, Path.Combine(snapshots, Path.GetFileName(source)));
+            File.WriteAllText(Path.Combine(productionRoot, "Hexalith.Builds.slnx"), "<Solution />");
+            PlatformOwnerFixture.CopySyntheticTenantExecutable(
+                Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations"), productionRoot, snapshots);
             // Fixture-owned version declarations agree with genuine candidate release provenance.
             using (JsonDocument baseline = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(snapshots, "provenance.json"))))
                 File.WriteAllText(Path.Combine(catalog, "Directory.Packages.props"), "<Project><PropertyGroup>" + string.Concat(
@@ -97,11 +100,18 @@ public sealed partial class PlatformAppModelTests : IDisposable
     [InlineData("tenants", 7)]
     public void SelectsOnlyTheDeclaredDependencyClosure(string? active, int expected)
     {
-        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(Options(active: active));
+        PlatformCompositionOptions options = Options(active: active);
+        IReadOnlyList<PlatformServerBinding> servers = PlatformAppModel.Prepare(options);
         servers.Count.ShouldBe(expected);
         servers.Count(s => s.ResourceId == "eventstore").ShouldBe(1);
-        servers.ShouldAllBe(s => s.ReadinessEndpoint == "/ready" && s.Tasks.Count == 0);
+        servers.ShouldAllBe(s => s.ReadinessEndpoint == "/ready");
         servers.ShouldAllBe(s => s.ProjectPath != null && s.Image == null);
+        PlatformServerBinding[] tenantServers = servers.Where(server => server.ResourceId is "tenants" or "tenants-api").ToArray();
+        tenantServers.Length.ShouldBe(expected == 7 ? 2 : 0);
+        foreach (PlatformServerBinding server in tenantServers)
+            SyntheticTenantExecutable(options.Mapping, server).ShouldBe(Path.Combine(
+                PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Tenants"), PlatformOwnerFixture.SyntheticTenantExecutable));
+        servers.Except(tenantServers).ShouldAllBe(server => server.Tasks.Count == 0);
     }
 
     [Fact]
@@ -115,6 +125,56 @@ public sealed partial class PlatformAppModelTests : IDisposable
         servers.Single(s => s.ResourceId == "memories").Image.ShouldBe("registry.hexalith.com/memories:2.27.1");
         servers.Where(s => s.ResourceId != "eventstore").ShouldAllBe(s => s.ProjectPath == null);
         options.Mapping.Entries.ShouldAllBe(e => e.Path == null);
+        Directory.Exists(PlatformTestRepository.ReferenceRoot(options.PlatformRoot, "Hexalith.Tenants")).ShouldBeFalse();
+        string releasedExecutable = Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations",
+            PlatformOwnerFixture.SyntheticTenantExecutable);
+        foreach (string workload in new[] { "tenants", "tenants-api" })
+            SyntheticTenantExecutable(options.Mapping, servers.Single(server => server.ResourceId == workload)).ShouldBe(releasedExecutable);
+    }
+
+    [Fact]
+    public void PackageModeResolvesReleasedSyntheticTenantExecutable()
+    {
+        PlatformCompositionOptions options = Options(active: "tenants");
+        options = options with
+        {
+            Mapping = options.Mapping with
+            {
+                Mode = WorkspaceMode.Package,
+                Entries = options.Mapping.Entries.Select(entry => entry with { Origin = "package", Path = null }).ToArray(),
+            },
+        };
+        string declarations = Path.Combine(Root, "src", "Hexalith.Platform.Composition", "Declarations");
+        string releasedExecutable = Path.Combine(declarations, PlatformOwnerFixture.SyntheticTenantExecutable);
+        string owner = PlatformTestRepository.ReferenceRoot(Root, "Hexalith.Tenants");
+        File.ReadAllBytes(Path.Combine(declarations, "tenants.json")).ShouldBe(
+            File.ReadAllBytes(Path.Combine(owner, "module", "hexalith.module-manifest.v2.json")));
+        File.ReadAllBytes(releasedExecutable).ShouldBe(File.ReadAllBytes(Path.Combine(owner, PlatformOwnerFixture.SyntheticTenantExecutable)));
+        if (!OperatingSystem.IsWindows())
+        {
+            File.GetUnixFileMode(releasedExecutable).HasFlag(UnixFileMode.UserExecute).ShouldBeTrue();
+            File.ReadAllBytes(Path.Combine(Root, PlatformOwnerFixture.SyntheticTenantExecutable)).ShouldBe(File.ReadAllBytes(releasedExecutable));
+        }
+
+        PlatformServerBinding[] tenantServers = PlatformAppModel.Prepare(options)
+            .Where(server => server.ResourceId is "tenants" or "tenants-api").OrderBy(server => server.ResourceId, StringComparer.Ordinal).ToArray();
+        tenantServers.Select(server => server.ResourceId).ShouldBe(["tenants", "tenants-api"]);
+        foreach (PlatformServerBinding server in tenantServers)
+            SyntheticTenantExecutable(options.Mapping, server).ShouldBe(releasedExecutable);
+    }
+
+    private static string SyntheticTenantExecutable(SourceMapping mapping, PlatformServerBinding server)
+    {
+        JsonElement task = server.Tasks.ShouldHaveSingleItem();
+        task.GetProperty("name").GetString().ShouldBe("create-synthetic-tenant");
+        task.GetProperty("scope").GetString().ShouldBe("once-per-environment-creation");
+        task.GetProperty("authorityClass").GetString().ShouldBe("operator");
+        task.GetProperty("executable").GetString().ShouldBe(PlatformOwnerFixture.SyntheticTenantExecutable);
+        task.GetProperty("arguments").GetArrayLength().ShouldBe(0);
+        string owner = CompositionDeclarationClosure.TaskRepositoryRoot(mapping, server.Module);
+        string executable = Path.Combine(owner, PlatformOwnerFixture.SyntheticTenantExecutable);
+        File.Exists(executable).ShouldBeTrue();
+        return executable;
     }
 
     /// <summary>Unauthenticated package graphs refuse before image probes, containers or sidecars.</summary>

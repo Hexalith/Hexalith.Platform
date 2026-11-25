@@ -2738,3 +2738,45 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: Repair the further constraint losses from the fa293aa9 regeneration of `epic-9-context.md` (medium).
   evidence: The story's own commit rewrote the context. Besides BH1-BH4 above, it dropped `--rollback-on-failure` from the forbidden-rollback list and the "Story 9.5 currently lists only 'the deputy cannot approve'" gap note. The currency bullet (line 24) omits the weekly trigger and says "Story 9.1 decides…" rather than linking `docs/contracts/shared-infrastructure-currency-policy-v1.md`. The fix edits an agent-context file, so the review routes it to deferred work.
+
+## Deferred from the Story 3.5 Tenants adoption review (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Bind Tenants task completion to the submitted command correlation ID.
+  evidence: The released task accepts any nonempty response correlation. The EventStore request contract defaults correlation to the sent message ID and can return a distinct execution ID for status polling. Cover a mismatched acknowledgement and matching but unrelated status.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Exercise credential confinement in the Tenants task across proxies and redirects.
+  evidence: The opener inherits proxy settings. Removing `NoRedirects` still passes all eight released task cases because the 307 POST fixture is refused by urllib by default. Use a redirect status the default client follows and check that the recipient receives no request.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Harden Tenants task status polling and invocation URL validation in the owner release.
+  evidence: A polling 429 immediately exits 1 after submission. A polling 401 or 403 exits 1 although the owner contract documents exit 3 for authorization refusal. Empty query or fragment delimiters survive URL validation and alter the appended command path.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Exercise audit and singleton-index replay for the new pre-creation synthetic rejection.
+  evidence: Tenants recognizes `SyntheticTenantIdInvalidRejection` during pre-creation replay and audit certification. The release tests exercise other initial rejection kinds and legacy histories that begin with tenant creation.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Verify the released operator executable before the Builds runner launches it.
+  evidence: Platform composition checks existence and required tuple CI compares the release bytes and mode. The later Builds slice owns execution and must preserve that identity at launch.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Reconcile EventStore and Memories intake selections with the deployment candidate.
+  evidence: `eng/module-intake.json` continues to select EventStore 5.4.0 and Memories 4.1.0. The composition catalog binds 5.6.0 and 4.1.1. The pre-existing intake and package selection difference needs deployment qualification.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Require positive G-1 native test execution and document its exact image prerequisites.
+  evidence: The probe accepts `-failSkips` with zero tests selected and emits no native execution counts. Its documented invocation uses `docker create --pull never` with locally cached digest-pinned images.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Preserve G-1 fixture cleanup and the original failure on cancellation.
+  evidence: Default SIGTERM bypasses the Python `finally` block. A cleanup exception raised in that block replaces a qualification failure when both occur.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Restore the explicit per-call server authorization requirement in the Epic 3 context.
+  evidence: The earlier generated `epic-3-context.md` rewrite removed the sentence requiring the server to verify identity, surface and permissions for each call.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  summary: Run the existing malformed-manifest Works preview controls in required tuple CI.
+  evidence: `PreviewRefusesInvalidOwnerManifest` exercises the Story 3.4 schema validation boundary. The required composition selectors omit it and the separate provenance tests compare file identity.

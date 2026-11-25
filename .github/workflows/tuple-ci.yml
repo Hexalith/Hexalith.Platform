@@ -174,7 +174,9 @@ jobs:
             --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionComparesResourceRequestsWithMatchingLimitsExactly \
             --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.InvalidDependencyGraphRefusesBeforeResourceCreation \
             --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.CompositionRefusesStructurallyValidCommandReadinessBeforeResourceCreation \
-            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.HostedGraphRequiresPerEnvironmentProviderTenancy
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.HostedGraphRequiresPerEnvironmentProviderTenancy \
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.PackageModeResolvesReleasedSyntheticTenantExecutable \
+            --filter-method Hexalith.Platform.Composition.Tests.PlatformAppModelTests.SelectsOnlyTheDeclaredDependencyClosure
           dotnet test --project tests/Hexalith.Platform.Custody.Tests/Hexalith.Platform.Custody.Tests.csproj --configuration Release --no-build -- \
             --filter-class Hexalith.Platform.Custody.Tests.CustodyPrerequisiteTests \
             --filter-class Hexalith.Platform.Custody.Tests.PrivateOwnerOperationAuthenticatorTests \
