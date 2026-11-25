@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import verify_works_host as gate
-from verify_works_producer import BUILD_FILES, runtime_source_snapshot
+from verify_works_producer import BUILD_FILES, REALM_MANIFEST, runtime_source_snapshot
 
 
 class FinalInputClosureTests(unittest.TestCase):
@@ -28,6 +28,7 @@ class FinalInputClosureTests(unittest.TestCase):
             self.write(owner / "src/Domain/Domain.csproj", "<Project />")
             for name in BUILD_FILES:
                 self.write(owner / name, "<Project />")
+        self.write(self.sdk / REALM_MANIFEST, '{"schema":"hexalith.module-manifest.v2"}')
         self.catalog = self.sdk / "references/Hexalith.Builds"
         self.write(self.catalog / "Props/Directory.Packages.props", "<Project />")
         self.write(self.catalog / "Props/Hexalith.Build.props", "<Project />")
@@ -214,7 +215,7 @@ class FinalInputClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "qualified SDK source graph changed"):
             self.check()
         self.revisions.pop(str(self.sdk))
-        for path in (self.catalog / "Props/Hexalith.Build.props", self.sdk / "global.json"):
+        for path in (self.catalog / "Props/Hexalith.Build.props", self.sdk / "global.json", self.sdk / REALM_MANIFEST):
             with (
                 self.subTest(path=path),
                 self.changed(path),
