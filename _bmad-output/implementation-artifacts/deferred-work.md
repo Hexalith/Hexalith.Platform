@@ -2359,8 +2359,8 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 ## Deferred from: Story 9.1 review (2026-11-16)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
-  summary: Restore the mandatory new-idempotent-command rehearsal in the generated Epic 9 agent context (medium).
-  evidence: `epic-9-context.md` qualifies this with “where applicable,” while architecture spine's staging gate requires at least one idempotent command new in the candidate. Review routes agent-context edits to deferred work; governing architecture remains unchanged.
+  summary: State both staging evidence policy v2 idempotent-command rehearsal cases in the generated Epic 9 agent context (medium).
+  evidence: `epic-9-context.md` says “where applicable.” The architecture spine's Staging preparation row requires a newly introduced idempotent command if the catalog comparison finds one. If the comparison proves there are none, the module suite names a representative existing idempotent command to exercise on the affected write path. Review routes the context correction to deferred work. [Staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md#compatible-path-rollback-witness)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: Restore deputy ingress restrictions in the generated Epic 9 agent context (medium).
