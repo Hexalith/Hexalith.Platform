@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Run G-1 provider and native admission checks on one private Docker network."""
+"""Run G-1 provider and native Durable Task checks on one private Docker network."""
 
+from argparse import ArgumentParser
 from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
@@ -18,6 +19,7 @@ REDIS = "redis@sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf
 PYTHON = "python@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2"
 DOTNET = "mcr.microsoft.com/dotnet/sdk@sha256:65f3c7c6a25a239ab3e6719f2896147e7b68242ff2d8818dd70498bde6ef8bea"
 NATIVE_CHECKS = "Hexalith.EventStore.DomainService.Tests.DurableTasks.DurableTaskAdmissionLiveTests"
+EXECUTION_CHECKS = "Hexalith.EventStore.DomainService.Tests.DurableTasks.DurableTaskExecutionLiveTests"
 STATE_PATH = "/v1.0/state/g1-task-state"
 ROW_PATH = f"{STATE_PATH}/feasibility?consistency=strong"
 
@@ -98,7 +100,12 @@ def check_restart(expected: dict) -> None:
             raise RuntimeError(f"{replica} did not recover the persisted value after Redis restarted")
 
 
-def run_fixture(component_dir: Path, native_assembly: Path | None) -> dict:
+def run_fixture(
+    component_dir: Path,
+    native_assembly: Path | None,
+    verify_execution: bool,
+    evidence_directory: Path | None,
+) -> dict:
     network = docker("network", "create", "--internal", f"g1-state-{uuid4().hex}")
     containers = []
 
@@ -122,6 +129,20 @@ def run_fixture(component_dir: Path, native_assembly: Path | None) -> dict:
                           PYTHON, "python", "/probe.py", *arguments, attached=True)
         return output
 
+    def native(filter_name: str, selector: str, phase: str) -> None:
+        assert native_assembly is not None
+        result = "/g1-native.xml"
+        container, output = start(
+            "--volume", f"{native_assembly.parent}:/tests:ro",
+            "--env", "HEXALITH_G1_PRIMARY_GRPC=http://replica-a:50001",
+            "--env", "HEXALITH_G1_REPLICA_GRPC=http://replica-b:50001",
+            DOTNET, "dotnet", f"/tests/{native_assembly.name}",
+            filter_name, selector, "-failSkips", "-result-xml", result, attached=True,
+        )
+        if evidence_directory is not None:
+            docker("cp", f"{container}:{result}", str(evidence_directory / f"{phase}.xml"))
+        print(output)
+
     try:
         redis, _ = start(
             "--network-alias", "redis", REDIS,
@@ -129,6 +150,8 @@ def run_fixture(component_dir: Path, native_assembly: Path | None) -> dict:
         )
         original = [replica("replica-a"), replica("replica-b")]
         committed = json.loads(observe("--check-concurrency"))
+        if verify_execution:
+            native("-method", f"{EXECUTION_CHECKS}.CommitWithLostOwnerReply", "execution-before-restart")
         for sidecar in original:
             docker("rm", "--force", "--volumes", sidecar)
             containers.remove(sidecar)
@@ -136,15 +159,10 @@ def run_fixture(component_dir: Path, native_assembly: Path | None) -> dict:
         replica("replica-a")
         replica("replica-b")
         observe("--check-restart", json.dumps(committed))
+        if verify_execution:
+            native("-method", f"{EXECUTION_CHECKS}.RecoverCommittedReceiptAfterRestart", "execution-after-restart")
         if native_assembly is not None:
-            _, output = start(
-                "--volume", f"{native_assembly.parent}:/tests:ro",
-                "--env", "HEXALITH_G1_PRIMARY_GRPC=http://replica-a:50001",
-                "--env", "HEXALITH_G1_REPLICA_GRPC=http://replica-b:50001",
-                DOTNET, "dotnet", f"/tests/{native_assembly.name}",
-                "-class", NATIVE_CHECKS, "-failSkips", attached=True,
-            )
-            print(output)
+            native("-class", NATIVE_CHECKS, "admission")
         return {"dapr": DAPR, "redis": REDIS, "firstWriteStatuses": committed["firstWriteStatuses"],
                 "staleWriteRejected": True, "persistedFenceAfterRestart": committed["expectedRow"]["fence"]}
     finally:
@@ -170,9 +188,17 @@ def main() -> None:
     if len(arguments) == 2 and arguments[0] == "--check-restart":
         check_restart(json.loads(arguments[1]))
         return
-    if arguments and (len(arguments) != 2 or arguments[0] != "--native"):
-        sys.exit("Usage: probe_state_store.py [--native EventStore-test-assembly.dll]")
-    assembly = Path(arguments[1]).resolve(strict=True) if arguments else None
+    parser = ArgumentParser(description=__doc__)
+    tests = parser.add_mutually_exclusive_group()
+    tests.add_argument("--native", type=Path, help="Run the EventStore native admission suite from this test assembly.")
+    tests.add_argument("--native-execution", type=Path, help="Run native admission and both execution restart phases.")
+    parser.add_argument("--evidence-directory", type=Path, help="Directory for the passing native xUnit receipts.")
+    options = parser.parse_args(arguments)
+    assembly = options.native or options.native_execution
+    if options.evidence_directory is not None:
+        if assembly is None:
+            parser.error("--evidence-directory requires --native or --native-execution")
+        options.evidence_directory.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as directory:
         components = Path(directory)
         components.chmod(0o755)
@@ -190,7 +216,12 @@ spec:
     - name: keyPrefix
       value: appid
 """, encoding="utf-8")
-        print(json.dumps(run_fixture(components, assembly), sort_keys=True))
+        print(json.dumps(run_fixture(
+            components,
+            assembly.resolve(strict=True) if assembly is not None else None,
+            options.native_execution is not None,
+            options.evidence_directory,
+        ), sort_keys=True))
 
 
 if __name__ == "__main__":
