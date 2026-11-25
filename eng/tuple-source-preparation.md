@@ -29,8 +29,8 @@ initialized direct owners and release identities, then runs current42, base42
 and extensions on the same candidate and current NET11 collector. Explicit
 The `--suite` argument selects the test inventory. All suites use the release selected by the authenticated Builds catalog. Exact positive group
 counts, real runtime and output identities, package-only restore and zero skips
-remain enforced. The aggregate verdict requires both source resolution and
-current execution to succeed. The source publisher requires those three jobs.
+remain enforced. The aggregate verdict requires source resolution, host evidence
+and current tuple execution to succeed. The source publisher requires all four jobs.
 
 For local graph verification, use a new evidence directory:
 

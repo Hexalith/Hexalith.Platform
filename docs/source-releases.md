@@ -2,11 +2,11 @@
 
 `source-release.yml` responds to completed main-push runs of **Platform tuple CI
 preflight** and **Catalog builder consumer binding**. Its read-only job requires
-both latest exact-source runs, latest attempts, all three tuple jobs
-(`resolve-sources`, `tuple`, `tuple-verdict`) and `consumer-binding` to pass.
+both latest exact-source runs, latest attempts, all four tuple jobs
+(`resolve-sources`, `host-evidence`, `tuple`, `tuple-verdict`) and `consumer-binding` to pass.
 Missing, unexpected, or duplicate jobs refuse qualification.
 Resolution and current execution use only the candidate's shallow Platform
-checkout. The verdict requires both prerequisites to succeed; failure,
+checkout. The verdict requires all three prerequisites to succeed. Failure,
 cancellation, skip or an absent result refuses release qualification.
 
 The continuing candidate inventories measure **487 current42, 93 base42 and

@@ -10,7 +10,7 @@ and how to adopt a release are described in
 [adopting a Builds release](../eng/tuple-source-preparation.md#adopting-a-builds-release).
 
 PRs, main pushes and explicit candidate dispatches resolve and execute only that
-candidate. Source release requires `resolve-sources`, `tuple` and `tuple-verdict`,
+candidate. Source release requires `resolve-sources`, `host-evidence`, `tuple` and `tuple-verdict`,
 plus the unchanged catalog gates. Both source resolution and current execution
 must succeed. A failed, cancelled, skipped or missing prerequisite makes the
 combined verdict fail. Prepare the current source binding only when owner

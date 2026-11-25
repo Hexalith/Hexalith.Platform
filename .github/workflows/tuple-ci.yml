@@ -84,6 +84,121 @@ jobs:
           set -euo pipefail
           python3 -B eng/builds_publication.py --revision "$PLATFORM_CANDIDATE_SHA"
 
+  host-evidence:
+    needs: [resolve-sources]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PLATFORM_CANDIDATE_SHA: ${{ needs.resolve-sources.outputs.current-source }}
+      AGENTS_CONFIGURATION: Release
+    steps:
+      - name: Set run-owned evidence paths
+        run: |
+          evidence="$RUNNER_TEMP/platform-host-evidence"
+          mkdir "$evidence"
+          printf '{"candidate":"%s","configuration":"%s"}\n' "$PLATFORM_CANDIDATE_SHA" "$AGENTS_CONFIGURATION" > "$evidence/bootstrap.json"
+          printf 'HOST_EVIDENCE=%s\nAGENTS_BUILDS_ROOT=%s\n' "$evidence" "$RUNNER_TEMP/platform-agents-builds" >> "$GITHUB_ENV"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.resolve-sources.outputs.current-source }}
+          fetch-depth: 1
+          submodules: false
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
+        with:
+          global-json-file: global.json
+      - name: Initialize the pinned Builds and EventStore sources
+        id: dependencies
+        run: |
+          test "$(git rev-parse HEAD)" = "$PLATFORM_CANDIDATE_SHA"
+          git -c submodule.recurse=false submodule update --init -- references/Hexalith.Builds references/Hexalith.EventStore
+      - name: evidence-gate-tests
+        working-directory: eng
+        run: |
+          python3 -m unittest test_verify_works_host test_works_toolchain test_verify_works_producer \
+            test_isolated_daprd test_retained_works_host test_works_host_snapshot test_works_verifier_command \
+            test_works_verifier_inputs test_works_managed_runtime test_bound_builds 2>&1 | tee "$HOST_EVIDENCE/evidence-gate-tests.log"
+      - name: component-evidence-gate-tests
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        working-directory: eng/ext-host-1
+        run: python3 -m unittest test_verify_full test_prepare_acceptance 2>&1 | tee "$HOST_EVIDENCE/component-evidence-gate-tests.log"
+      - name: Materialize the authenticated Agents Builds context
+        id: agents-context
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: |
+          PYTHONPATH=eng python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from bound_builds import materialize
+
+          root = Path.cwd()
+          producer = materialize(root, os.environ['AGENTS_BUILDS_ROOT'], root / 'references/Hexalith.Builds')
+          context = {'configuration': os.environ['AGENTS_CONFIGURATION'], 'producer': producer}
+          (Path(os.environ['HOST_EVIDENCE']) / 'agents-context.json').write_text(json.dumps(context, indent=2) + '\n')
+          PY
+      - name: Bind the verified published Builds tool for Agents
+        id: agents-tooling
+        if: ${{ !cancelled() && steps.agents-context.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tool="$(python3 -B eng/prepare_builds_artifacts.py --require-recorded --output "$HOST_EVIDENCE/agents-builds")"
+          printf 'HexalithBuildsPublishedToolRoot=%s\n' "$tool" >> "$GITHUB_ENV"
+      - name: agents-full-refusal
+        if: ${{ !cancelled() && steps.agents-tooling.outcome == 'success' }}
+        timeout-minutes: 30
+        run: |
+          log="$HOST_EVIDENCE/agents-full-refusal.log"
+          status=0
+          bash eng/verify-agents-host.sh --configuration "$AGENTS_CONFIGURATION" --builds-root "$AGENTS_BUILDS_ROOT" \
+            --artifacts-path "$HOST_EVIDENCE/agents-full" > "$log" 2>&1 || status=$?
+          cat "$log"
+          if [[ "$status" != 1 ]] || ! grep -Fq 'DependencyNotAvailable: EXT-HOST-1' "$log"; then
+            echo "Expected the Agents Full EXT-HOST-1 refusal with exit code 1, got exit code $status."
+            exit 1
+          fi
+      - name: agents-local-scaffold
+        if: ${{ !cancelled() && steps.agents-tooling.outcome == 'success' }}
+        timeout-minutes: 30
+        run: |
+          bash eng/verify-agents-host.sh --mode LocalScaffold --configuration "$AGENTS_CONFIGURATION" \
+            --builds-root "$AGENTS_BUILDS_ROOT" --artifacts-path "$HOST_EVIDENCE/agents-local" \
+            2>&1 | tee "$HOST_EVIDENCE/agents-local-scaffold.log"
+      - name: Recheck the authenticated Agents Builds context
+        if: ${{ !cancelled() && steps.agents-context.outcome == 'success' }}
+        run: |
+          PYTHONPATH=eng python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from bound_builds import verify_bound_checkout
+
+          context = json.loads((Path(os.environ['HOST_EVIDENCE']) / 'agents-context.json').read_text())
+          if verify_bound_checkout(Path.cwd(), os.environ['AGENTS_BUILDS_ROOT']) != context['producer']:
+              raise SystemExit('The authenticated Agents producer context changed during execution')
+          PY
+      - name: Retain successful and failed Platform host evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: platform-host-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/platform-host-evidence/*.json
+            ${{ runner.temp }}/platform-host-evidence/*.log
+            ${{ runner.temp }}/platform-host-evidence/agents-builds/artifact-identity.json
+            ${{ runner.temp }}/platform-host-evidence/agents-builds/signature.*
+            ${{ runner.temp }}/platform-host-evidence/agents-full/**/*.json
+            ${{ runner.temp }}/platform-host-evidence/agents-full/**/*.log
+            ${{ runner.temp }}/platform-host-evidence/agents-full/**/*.xml
+            ${{ runner.temp }}/platform-host-evidence/agents-full/**/*.jsonl
+            ${{ runner.temp }}/platform-host-evidence/agents-full/**/*.md
+          if-no-files-found: error
+
   tuple:
     needs: [resolve-sources]
     runs-on: ubuntu-latest
@@ -123,7 +238,6 @@ jobs:
           python3 -B eng/test_tuple_sdk_suites.py
           python3 -B eng/test_builds_publication.py
           python3 -B eng/test_builds_tool_lock.py
-          python3 -B eng/test_bound_builds.py
       - name: Verify exact candidate and initialize only owner-declared direct dependencies
         id: dependencies
         shell: bash
@@ -221,15 +335,17 @@ jobs:
 
   tuple-verdict:
     if: always()
-    needs: [resolve-sources, tuple]
+    needs: [resolve-sources, host-evidence, tuple]
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
       - name: Require source resolution and current execution
         env:
           SOURCE_RESULT: ${{ needs.resolve-sources.result }}
+          HOST_EVIDENCE_RESULT: ${{ needs.host-evidence.result }}
           CURRENT_RESULT: ${{ needs.tuple.result }}
         run: |
           set -euo pipefail
           test "$SOURCE_RESULT" = success
+          test "$HOST_EVIDENCE_RESULT" = success
           test "$CURRENT_RESULT" = success
