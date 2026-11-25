@@ -2715,3 +2715,20 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Platform
   summary: Story 3.5 Platform slice — feed the run's `isolation.syntheticTenantId` into the realm instance, add synthetic actor (per surface class) and workload clients carrying `eventstore:synthetic` with one synthetic-tenant grant and no admin or cross-tenant grant, replace `PlatformNativeTestPreparation`'s per-run admin `CreateTenant` with the Tenants task, persist the identifier for retained local profiles (closes the Works preview item above), and supply the identifier to module workloads for exclusion.
   evidence: Split from Story 3.5 on 2026-11-25. Depends on the Tenants, Builds and EventStore slices. Today only the Works preview feeds `syntheticTenantSlot` (`WorksPreviewModel.cs:105-114`), and `PlatformNativeTestPreparation.cs:132-168` creates the tenant per run with a global-admin token.
+
+## Deferred from: planning of spec-3-6-run-all-seven-mvp-modules-together-locally.md (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Projects
+  summary: Story 3.6 Projects slice: adopt Platform (direct `references/Hexalith.Platform`, fallback removal), resolve the `conversations` dependency so the seven-module closure resolves, and release a version Platform can pin.
+  evidence: Split from Story 3.6 on 2026-11-25; the maintainer chose "Folders first". The Projects manifest (`references/Hexalith.Projects/module/hexalith.module-manifest.v2.json:16-23`) depends on eventstore, tenants, parties, conversations, folders and memories. Builds `CompositionDeclarationClosure` refuses an owner whose declaration is unavailable, and Conversations is not one of the seven MVP modules. `Hexalith.Projects.Server.csproj` references Hexalith.Conversations, so the maintainer must decide whether to drop the dependency, make it optional or include Conversations.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Builds
+  summary: Story 3.6 Builds slice: select the complete environment (every adopted MVP owner, not only eventstore, tenants and memories) from one command, build the run-scoped McpCli in that environment, and release a version Platform pins.
+  evidence: Split from Story 3.6 on 2026-11-25. `CompositionDeclarationClosure.cs:134,286-293` hard-codes the base owners. `PlatformManifestCommand.cs:121-125` builds McpCli only when the active module is `mcpcli` in Source mode. Deadline resolution (`CompositionStartupDeadlineResolver.cs:24-49`), readiness, recorded duration (`CompositionEngine.cs:1907`, `readiness.json`) and unready-resource naming (Story 1.8) already exist. The `HXI010` ready message prints the deadline but not the duration.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Story 3.6 Platform slice: enroll Parties, Folders, Projects and McpCli from their declarations, load Folders' extension package into the composed `eventstore` host, validate local-realm tokens in the default composition and runner, and prove all seven modules ready within the effective deadline with the duration recorded.
+  evidence: Split from Story 3.6 on 2026-11-25. Depends on the Folders, Projects and Builds slices. Hard-coded lists: `PlatformServerBindings.cs:11-34`, `local-profile.json` (no folders, projects or mcpcli keys), `PlatformAppModel.cs:87,421-442`, `PlatformCatalogContractBinding.cs:12-19`, `PlatformRoutingCatalogBootstrap.cs:79-89,123-124,167`, `OwnerPackageLock.cs:43` and `eng/module-intake.json`. Package-mode snapshots exist only for eventstore, tenants and memories. Parties' adapters load only through the Development bootstrap, not through `runtime.eventStoreExtensions`. The local-realm adoption is the Story 3.4 deferral above. Whether it stays here or moves to Story 3.7 is open.
