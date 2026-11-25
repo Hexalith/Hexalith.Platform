@@ -2693,3 +2693,25 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Platform
   summary: Keep the Works preview's default synthetic tenant across retained recompositions, so data written under it stays readable.
   evidence: Without `Platform:Works:SyntheticTenantId`, `WorksPreviewModel.Compose` allocates `works-preview-<guid>` (`src/Hexalith.Platform.Composition/WorksPreviewModel.cs:105-106`), and only the disposable workspace import and the Keycloak environment record it. The bound Works grant admits only that tenant, so a later composition over the retained development-catalog profile cannot read its streams. Story 3.4 review left a patch to log the allocated tenant. The maintainer deferred persistence, or requiring the setting, to Story 3.5, which owns the local synthetic tenant.
+
+## Deferred from: code review of spec-3-4-generate-the-local-realm-from-the-realm-contract.md (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-4-generate-the-local-realm-from-the-realm-contract.md`
+  owner: Hexalith.Platform
+  summary: Carry distinct local and staging realm names in the shared contract’s instance inputs.
+  evidence: The v1 schema fixes the realm name to `hexalith-local` (`docs/contracts/schemas/hexalith.realm-contract.v1.json:9`), which Story 3.4 approved for the local instance. Story 4.19 owns the staging instance on shared Keycloak. Preserve the local name and resolve how the shared contract accepts the staging name before generating the hosted realm.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.Builds
+  summary: Story 3.5 Builds slice — run `once-per-environment-creation` tasks when a run-owned environment is created, write the task invocation file (`HEXALITH_TASK_INVOCATION_PATH`: syntheticTenantId, gatewayUrl, commandTenant, headers) with an operator authority, report the task in `startupTasks`, and flag synthetic runner tokens with `eventstore:synthetic`.
+  evidence: Split from Story 3.5 on 2026-11-25 (maintainer chose "Tenants slice first"). `CompositionStartupTasks.Select` (Builds `CompositionStartupTasks.cs:79`) runs only `per-start-verify` and passes tasks only `HEXALITH_G4_RUN_ID`; `CompositionTokenFactory.cs:15-70` mints no synthetic claim.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.EventStore
+  summary: Story 3.5 EventStore slice — publish the `eventstore:synthetic` claim constant (value "true"), documented as never granting admission, so realm and runner tokens can flag synthetic actor and workload clients.
+  evidence: Split from Story 3.5 on 2026-11-25; the maintainer chose the EventStore-owned claim. EventStore v5.4.0-25 defines no synthetic claim, marker or attestation, and Platform's realm contract requires its claim set to equal EventStore's (`PlatformRealmContract.cs:20-31,161-164`).
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-5-provide-the-synthetic-tenant-in-local-and-ci-environments.md`
+  owner: Hexalith.Platform
+  summary: Story 3.5 Platform slice — feed the run's `isolation.syntheticTenantId` into the realm instance, add synthetic actor (per surface class) and workload clients carrying `eventstore:synthetic` with one synthetic-tenant grant and no admin or cross-tenant grant, replace `PlatformNativeTestPreparation`'s per-run admin `CreateTenant` with the Tenants task, persist the identifier for retained local profiles (closes the Works preview item above), and supply the identifier to module workloads for exclusion.
+  evidence: Split from Story 3.5 on 2026-11-25. Depends on the Tenants, Builds and EventStore slices. Today only the Works preview feeds `syntheticTenantSlot` (`WorksPreviewModel.cs:105-114`), and `PlatformNativeTestPreparation.cs:132-168` creates the tenant per run with a global-admin token.

@@ -13,18 +13,19 @@ COMMITS_API = GIT_API + "commits/"
 TAG_REFS_API = GIT_API + "ref/tags/"
 TAGS_API = GIT_API + "tags/"
 BUILD_FILES = ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "global.json")
+REALM_MANIFEST = "module/hexalith.module-manifest.v2.json"
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 
 
 def producer_source_files(root):
-    """Bind runtime sources, central build inputs and the SDK selector used by project-directory launches."""
+    """Bind runtime sources, central build inputs and the declaration used by the preview realm."""
     root = Path(root)
     if not (root / "src").is_dir():
         raise ValueError("Selected SDK root lacks its runtime source")
-    paths = [root / name for name in BUILD_FILES]
+    paths = [root / name for name in (*BUILD_FILES, REALM_MANIFEST)]
     for path in paths:
-        if path.is_symlink() or not path.is_file():
-            raise ValueError("Selected SDK root requires a regular " + path.name)
+        if (path.parent != root and path.parent.is_symlink()) or path.is_symlink() or not path.is_file():
+            raise ValueError("Selected SDK root requires a regular " + path.relative_to(root).as_posix())
     for path in (root / "src").rglob("*"):
         if {"bin", "obj"}.intersection(path.relative_to(root).parts):
             continue
@@ -181,6 +182,16 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
         expected["src/" + name] = entry["sha"]
     if len(expected) <= len(BUILD_FILES):
         raise ValueError("Official producer has no runtime source files")
+    manifest_directory, manifest_name = REALM_MANIFEST.split("/")
+    manifest_tree = root_entries.get(manifest_directory, {})
+    if manifest_tree.get("type") != "tree" or manifest_tree.get("mode") != "040000":
+        raise ValueError("Official producer lacks its module manifest directory")
+    manifest_sha = manifest_tree["sha"]
+    manifest_entries, manifest_receipt = _tree(API + manifest_sha, fetch, manifest_sha)
+    manifest = manifest_entries.get(manifest_name, {})
+    if manifest.get("type") != "blob" or manifest.get("mode") not in ("100644", "100755"):
+        raise ValueError("Official producer lacks a regular " + REALM_MANIFEST)
+    expected[REALM_MANIFEST] = manifest["sha"]
     current = require_unchanged_runtime_source(snapshot)
     actual = {}
     for name in current["sourceFiles"]:
@@ -194,5 +205,5 @@ def qualify_runtime_source(snapshot, published_producers, fetch=None, tag=None):
     return {"repositoryCommit": commit, "repositoryUrl": REPOSITORY_URL, "checkoutCommit": None,
             "sourceInventorySha256": current["inventorySha256"], "matchesPublishedProducer": True,
             "qualification": "official-commit-tree-and-exact-git-blob-identities", "runtimeFileCount": len(actual),
-            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt], "namedTag": named_tag,
+            "officialCommit": commit_receipt, "officialTrees": [root_receipt, source_receipt, manifest_receipt], "namedTag": named_tag,
             "buildsInputs": current["buildsInputs"]}

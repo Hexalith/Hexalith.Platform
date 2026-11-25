@@ -37,8 +37,9 @@ McpCli has no offline scope, password grant, device grant, implicit flow
 or service account.
 
 The generator selects service clients from declared `applicationPrincipal`
-identity needs and checks their audience, roles and claims. Works preview
-selects the EventStore owner's gateway principal and the two Platform preview
+identity needs and checks their audience, roles and claims. The Works preview
+validates the selected EventStore manifest against the Builds v2 declaration schema,
+then selects the EventStore owner's gateway principal and the two Platform preview
 principals for Works and EventStore Admin. The gateway's `domain-services`
 alias authorizes `eventstore` and `works` when selected. Each other service
 uses its declared principal audience directly.

@@ -1,5 +1,6 @@
 namespace Hexalith.Platform.Composition;
 
+using System.Reflection;
 using System.Text.Json;
 using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.EventStore.ServiceDefaults.Authentication;
@@ -8,13 +9,9 @@ using Json.Schema;
 /// <summary>The validated, value-free contract for the Platform local realm.</summary>
 internal sealed class PlatformRealmContract
 {
-    private static readonly JsonSchema Schema = JsonSchema.FromText(ReadEmbedded("PlatformRealmContractSchema"), new BuildOptions
-    {
-        SchemaRegistry = new SchemaRegistry
-        {
-            Fetch = (_, _) => throw new InvalidOperationException("Realm contract validation cannot fetch remote schemas."),
-        },
-    });
+    private static readonly JsonSchema Schema = ReadSchema("PlatformRealmContractSchema");
+    private static readonly Lazy<JsonSchema> ModuleManifestSchema = new(() => ReadSchema(
+        "Hexalith.Builds.Tooling.Manifest.hexalith.module-manifest.v2.json", typeof(PlatformManifestValidator).Assembly));
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private static readonly HashSet<string> EventStoreClaims = new(StringComparer.Ordinal)
@@ -59,6 +56,41 @@ internal sealed class PlatformRealmContract
 
     /// <summary>Loads the versioned Platform declaration embedded with the realm schema.</summary>
     internal static PlatformRealmContract Load() => Parse(ReadEmbedded("PlatformRealmContractDeclaration"));
+
+    internal static JsonElement ReadEventStoreDeclaration(string path)
+    {
+        using JsonDocument document = ReadOwnerManifest(path);
+        // Validate the Builds schema without requiring the owner's test projects in a runtime SDK export.
+        var validation = ModuleManifestSchema.Value.Evaluate(document.RootElement, new EvaluationOptions { OutputFormat = OutputFormat.List });
+        if (!validation.IsValid)
+        {
+            string details = string.Join(Environment.NewLine, (validation.Details ?? []).Prepend(validation)
+                .Where(result => result.Errors is { Count: > 0 })
+                .Select(result => $"'{result.InstanceLocation}': {string.Join(" ", result.Errors!.Values)}"));
+            throw new InvalidDataException($"EventStore manifest '{path}' violates the v2 schema.{Environment.NewLine}{details}");
+        }
+
+        JsonElement[] modules = [.. document.RootElement.GetProperty("modules").EnumerateArray()
+            .Where(module => module.GetProperty("identity").GetProperty("moduleId").GetString() == "eventstore")];
+        if (modules.Length != 1)
+        {
+            throw new InvalidDataException($"EventStore manifest '{path}' must declare exactly one 'eventstore' module in '/modules'.");
+        }
+
+        return modules[0].Clone();
+    }
+
+    private static JsonDocument ReadOwnerManifest(string path)
+    {
+        try
+        {
+            return JsonDocument.Parse(File.ReadAllText(path), new JsonDocumentOptions { AllowDuplicateProperties = false });
+        }
+        catch (JsonException exception)
+        {
+            throw new InvalidDataException($"EventStore manifest '{path}' has invalid JSON at '{exception.Path ?? "$"}'.", exception);
+        }
+    }
 
     /// <summary>Validates a realm contract against v1 and the EventStore claim and grant invariants.</summary>
     internal static PlatformRealmContract Parse(string json)
@@ -314,9 +346,17 @@ internal sealed class PlatformRealmContract
     private static InvalidDataException ClientError(string client, string rule) =>
         new($"Realm client '{client}' {rule}.");
 
-    private static string ReadEmbedded(string name)
+    private static JsonSchema ReadSchema(string name, Assembly? assembly = null) => JsonSchema.FromText(ReadEmbedded(name, assembly), new BuildOptions
     {
-        using Stream stream = typeof(PlatformRealmContract).Assembly.GetManifestResourceStream(name)
+        SchemaRegistry = new SchemaRegistry
+        {
+            Fetch = (_, _) => throw new InvalidOperationException("Realm contract validation cannot fetch remote schemas."),
+        },
+    });
+
+    private static string ReadEmbedded(string name, Assembly? assembly = null)
+    {
+        using Stream stream = (assembly ?? typeof(PlatformRealmContract).Assembly).GetManifestResourceStream(name)
             ?? throw new InvalidOperationException($"Missing embedded realm resource '{name}'.");
         using StreamReader reader = new(stream);
         return reader.ReadToEnd();

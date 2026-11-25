@@ -9,13 +9,14 @@ import urllib.request
 from unittest.mock import patch
 
 import verify_works_producer
-from verify_works_producer import (API, COMMITS_API, BUILD_FILES, REPOSITORY_URL, TAG_REFS_API, TAGS_API,
+from verify_works_producer import (API, COMMITS_API, BUILD_FILES, REALM_MANIFEST, REPOSITORY_URL, TAG_REFS_API, TAGS_API,
                                    builds_input_snapshot, qualify_runtime_source, require_unchanged_runtime_source,
                                    runtime_source_snapshot)
 
 COMMIT = "a" * 40
 SOURCE_TREE = "b" * 40
 ROOT_TREE = "c" * 40
+MODULE_TREE = "d" * 40
 TAG = "v3.125.1"
 TAG_OBJECT = "e" * 40
 
@@ -55,6 +56,9 @@ class ProducerQualificationTests(unittest.TestCase):
         (self.root / "src/Example").mkdir(parents=True)
         for name in [*BUILD_FILES, "src/Example/Example.cs", "src/Example/Example.csproj"]:
             (self.root / name).write_bytes((name + "\n").encode())
+        manifest = self.root / REALM_MANIFEST
+        manifest.parent.mkdir()
+        manifest.write_text('{"schema":"hexalith.module-manifest.v2"}')
         self.builds = self.root / "references/Hexalith.Builds"
         (self.builds / "Props").mkdir(parents=True)
         (self.builds / "Props/Directory.Packages.props").write_bytes(b"<Project />\n")
@@ -64,10 +68,12 @@ class ProducerQualificationTests(unittest.TestCase):
             COMMITS_API + COMMIT: {"sha": COMMIT, "tree": {"sha": ROOT_TREE}},
             API + ROOT_TREE: {"sha": ROOT_TREE, "truncated": False, "tree": [
                 {"path": "src", "type": "tree", "mode": "040000", "sha": SOURCE_TREE},
+                {"path": "module", "type": "tree", "mode": "040000", "sha": MODULE_TREE},
                 *[entry(name, self.root / name) for name in BUILD_FILES]]},
             API + SOURCE_TREE + "?recursive=1": {"sha": SOURCE_TREE, "truncated": False, "tree": [
                 entry("Example/Example.cs", self.root / "src/Example/Example.cs"),
-                entry("Example/Example.csproj", self.root / "src/Example/Example.csproj")]}}
+                entry("Example/Example.csproj", self.root / "src/Example/Example.csproj")]},
+            API + MODULE_TREE: {"sha": MODULE_TREE, "truncated": False, "tree": [entry(manifest.name, manifest)]}}
         self.documents[TAG_REFS_API + TAG] = {"ref": "refs/tags/" + TAG, "object": {"type": "commit", "sha": COMMIT}}
         self.producers = {"Hexalith.EventStore.Client": {"repositoryCommit": COMMIT, "repositoryUrl": REPOSITORY_URL}}
 
@@ -87,8 +93,8 @@ class ProducerQualificationTests(unittest.TestCase):
         result = self.qualify()
         self.assertTrue(result["matchesPublishedProducer"])
         self.assertIsNone(result["checkoutCommit"])
-        self.assertEqual(6, result["runtimeFileCount"])
-        self.assertEqual(2, len(result["officialTrees"]))
+        self.assertEqual(7, result["runtimeFileCount"])
+        self.assertEqual(3, len(result["officialTrees"]))
         self.assertEqual(result["buildsInputs"], builds_input_snapshot(self.root))
         self.assertFalse(any(name.startswith("references/") for name in runtime_source_snapshot(self.root)["sourceFiles"]))
 
@@ -189,6 +195,23 @@ class ProducerQualificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Runtime SDK differs"):
             self.qualify()
 
+    def test_realm_manifest_is_bound_to_snapshot_and_public_tree(self):
+        snapshot = runtime_source_snapshot(self.root)
+        manifest = self.root / REALM_MANIFEST
+        manifest.write_bytes(manifest.read_bytes() + b"\n")
+        with self.assertRaisesRegex(ValueError, "SDK source changed during"):
+            require_unchanged_runtime_source(snapshot)
+        with self.assertRaisesRegex(ValueError, REALM_MANIFEST):
+            self.qualify()
+        manifest.unlink()
+        with self.assertRaisesRegex(ValueError, "requires a regular " + REALM_MANIFEST):
+            runtime_source_snapshot(self.root)
+
+    def test_official_realm_manifest_must_be_a_regular_blob(self):
+        self.documents[API + MODULE_TREE]["tree"][0]["mode"] = "120000"
+        with self.assertRaisesRegex(ValueError, "Official producer lacks a regular " + REALM_MANIFEST):
+            self.qualify()
+
     def test_project_launch_sdk_pin_is_bound_to_snapshot_and_public_tree(self):
         snapshot = runtime_source_snapshot(self.root)
         selector = self.root / "global.json"
@@ -281,10 +304,10 @@ class ProducerQualificationTests(unittest.TestCase):
         tree = self.documents[API + SOURCE_TREE + "?recursive=1"]["tree"]
         tree += [{"path": "Example", "type": "tree", "mode": "040000", "sha": "d" * 40},
                  self.entry("Example/Directory.Build.props", props), self.entry("Example/appsettings.json", settings)]
-        self.assertEqual(8, self.qualify()["runtimeFileCount"])
+        self.assertEqual(9, self.qualify()["runtimeFileCount"])
         (self.root / "src/Example/obj").mkdir()
         (self.root / "src/Example/obj/generated.json").write_bytes(b"{}\n")
-        self.assertEqual(8, self.qualify()["runtimeFileCount"])
+        self.assertEqual(9, self.qualify()["runtimeFileCount"])
         for path in [props, settings]:
             original = path.read_bytes()
             path.write_bytes(b"substituted\n")

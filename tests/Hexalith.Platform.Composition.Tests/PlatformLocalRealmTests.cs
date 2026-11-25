@@ -214,12 +214,48 @@ public sealed class PlatformLocalRealmTests
             new Dictionary<string, string> { ["eventstore"] = ClientSecrets()["eventstore"] });
         JsonArray clients = JsonNode.Parse(rendered)!["clients"]!.AsArray();
         clients.Select(client => client!["clientId"]!.GetValue<string>()).ShouldBe(["eventstore", "mcpcli"]);
+    }
 
+    [Theory]
+    [InlineData("audience", "\"different-audience\"")]
+    [InlineData("roles", "[\"different-role\"]")]
+    [InlineData("claims", "[\"eventstore:domain\"]")]
+    public void RejectsIncompatibleSelectedPrincipal(string property, string value)
+    {
+        PlatformModuleDeclaration[] declarations = PreviewDeclarations();
         var changed = JsonNode.Parse(declarations[0].Declaration.GetRawText())!;
-        changed["integration"]!["identityNeeds"]![0]!["audience"] = "different-audience";
+        changed["integration"]!["identityNeeds"]![0]![property] = JsonNode.Parse(value);
         var incompatible = new PlatformModuleDeclaration(declarations[0].Source, JsonSerializer.SerializeToElement(changed));
         Should.Throw<InvalidDataException>(() => PlatformLocalRealm.Render(PlatformRealmContract.Load(), [incompatible], RealmUrl, SyntheticTenant,
-            new Dictionary<string, string> { ["eventstore"] = ClientSecrets()["eventstore"] })).Message.ShouldContain("eventstore");
+            new Dictionary<string, string> { ["eventstore"] = ClientSecrets()["eventstore"] }))
+            .Message.ShouldContain("eventstore/gateway-workload");
+    }
+
+    [Theory]
+    [InlineData(true, "schema")]
+    [InlineData(false, "/modules/0/integration/identityNeeds/0/roles")]
+    public void PreviewRefusesInvalidOwnerManifest(bool omitSchema, string field)
+    {
+        JsonObject manifest = JsonNode.Parse(File.ReadAllText(PreviewDeclarations()[0].Source))!.AsObject();
+        if (omitSchema)
+            manifest.Remove("schema");
+        else
+            manifest["modules"]![0]!["integration"]!["identityNeeds"]![0]!["roles"] = "invoker";
+
+        DirectoryInfo directory = Directory.CreateTempSubdirectory("platform-realm-owner-");
+        try
+        {
+            string path = Path.Combine(directory.FullName, "hexalith.module-manifest.v2.json");
+            File.WriteAllText(path, manifest.ToJsonString());
+            var failure = Should.Throw<InvalidDataException>(() => PlatformLocalRealm.PrepareWorksPreview(path, RealmUrl.Port, SyntheticTenant));
+            failure.Message.ShouldContain(path);
+            failure.Message.ShouldContain("violates the v2 schema");
+            failure.Message.ShouldContain(field);
+        }
+        finally
+        {
+            directory.Delete(recursive: true);
+        }
     }
 
     [Fact]

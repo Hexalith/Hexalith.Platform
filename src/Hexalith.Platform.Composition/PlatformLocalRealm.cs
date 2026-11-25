@@ -66,9 +66,7 @@ internal static class PlatformLocalRealm
     internal static PreparedRealm PrepareWorksPreview(string eventStoreDeclarationPath, int port, string syntheticTenantId)
     {
         PlatformRealmContract contract = PlatformRealmContract.Load();
-        using JsonDocument document = JsonDocument.Parse(File.ReadAllText(eventStoreDeclarationPath));
-        JsonElement eventStore = document.RootElement.GetProperty("modules").EnumerateArray()
-            .Single(declaration => declaration.GetProperty("identity").GetProperty("moduleId").GetString() == "eventstore");
+        JsonElement eventStore = PlatformRealmContract.ReadEventStoreDeclaration(eventStoreDeclarationPath);
         IReadOnlyList<Client> clients = contract.SelectClients([eventStore, PlatformRealmContract.ReadWorksPreviewPrincipals()]);
         foreach (string issuer in new[] { "eventstore", "eventstore-admin", "works" })
         {

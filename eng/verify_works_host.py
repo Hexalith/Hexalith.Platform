@@ -25,7 +25,7 @@ from bound_builds import materialize as materialize_bound_builds, verify_bound_c
 from builds_tool_lock import content_hash, published_package_hash
 from works_verifier_command import run_owned
 
-from verify_works_producer import (BUILD_FILES, builds_input_snapshot, producer_source_files, qualify_runtime_source,
+from verify_works_producer import (BUILD_FILES, REALM_MANIFEST, builds_input_snapshot, producer_source_files, qualify_runtime_source,
                                    require_unchanged_runtime_source, runtime_source_snapshot)
 
 CATALOG = "references/Hexalith.Builds/Props/Directory.Packages.props"
@@ -1014,8 +1014,8 @@ def bind_persisted_outcomes(path, rows, starts):
 def source_snapshot(root, allow_archive=False, producer=False):
     """Record source provenance independently of public NuGet archive identity.
 
-    A producer snapshot binds every src/** file except build outputs, because props, targets, JSON and
-    resources are build inputs too. The Works consumer inventory records its C# and project sources."""
+    A producer snapshot binds central build files, the realm manifest and every src/** file outside
+    build output directories. The Works consumer inventory records its C# and project sources."""
     root = Path(root)
     if producer:
         files = producer_source_files(root)
@@ -1046,7 +1046,7 @@ def require_published_runtime_source(snapshot, published_producers):
     if len(commits) != 1:
         raise ValueError("Published SDK archives do not identify one compatible producer commit")
     commit = commits.pop()
-    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src", *BUILD_FILES])
+    archive = subprocess.check_output(["git", "-C", snapshot["root"], "archive", commit, "src", *BUILD_FILES, REALM_MANIFEST])
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         members = source.getmembers()
         if any(not (entry.isfile() or entry.isdir()) for entry in members):

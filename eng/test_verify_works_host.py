@@ -878,16 +878,19 @@ class WorksEvidenceGateTests(unittest.TestCase):
             self.assertIn(str(selector), refused.stdout)
             self.assertIn('99.0.100', refused.stdout)
 
-    def test_every_published_src_build_input_is_compared(self):
+    def test_every_published_runtime_input_is_compared(self):
+        manifest = verify_works_host.REALM_MANIFEST
         files = {'src/Producer.cs': b'source', 'src/Directory.Build.props': b'<Project />',
-                 'src/appsettings.json': b'{}', 'global.json': b'{"sdk": {"version": "11.0.100"}}'}
+                 'src/appsettings.json': b'{}', 'global.json': b'{"sdk": {"version": "11.0.100"}}',
+                 manifest: b'{"schema":"hexalith.module-manifest.v2"}'}
         snapshot = {'root': '/fixture/sdk', 'commit': None, 'inventorySha256': 'bound-inventory',
                     'sourceFiles': {name: hashlib.sha256(content).hexdigest() for name, content in files.items()}}
         producers = {'Published.SDK': {'repositoryCommit': 'public-producer'}}
         with patch('verify_works_host.subprocess.check_output', return_value=self.archive(files)) as archive:
             self.assertTrue(require_published_runtime_source(snapshot, producers)['matchesPublishedProducer'])
             self.assertIn('global.json', archive.call_args.args[0])
-            for name in ['src/Directory.Build.props', 'src/appsettings.json', 'global.json']:
+            self.assertIn(manifest, archive.call_args.args[0])
+            for name in ['src/Directory.Build.props', 'src/appsettings.json', 'global.json', manifest]:
                 changed = copy.deepcopy(snapshot)
                 changed['sourceFiles'][name] = 'unpublished-input'
                 with self.subTest(name=name), self.assertRaisesRegex(ValueError, name):

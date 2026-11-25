@@ -313,6 +313,11 @@ public sealed partial class PlatformLocalRealmLiveTests
         workload.GetClaim("azp").Value.ShouldBe("eventstore");
         workload.GetClaim(RouteCatalogSurfacePolicy.ClaimType).Value.ShouldBe("service");
 
+        string gatewayProcess = await ServiceToken("eventstore",
+            CredentialScope(workAudience, "eventstore-operation.domain-service.process"));
+        JwtWorkloadAssertionIssuer.GetTokenScopeFailure(gatewayProcess, "works", EventStoreWorkloadOperations.DomainServiceProcess)
+            .ShouldBeNull();
+
         JsonNode noRequester = await RequireOAuthRefusalAsync(browser, "token",
             Exchange("eventstore", agent, "works", workAudience), "invalid_request", cancellation);
         noRequester["error_description"]!.GetValue<string>().ShouldContain("Requester is not an audience");
@@ -389,7 +394,7 @@ public sealed partial class PlatformLocalRealmLiveTests
             Environment.SetEnvironmentVariable("UseNuGetDeps", sourceMode ? "false" : "true");
             Environment.SetEnvironmentVariable("HexalithEventStoreVersion", sdkVersion);
             CompositionProcessResult build = await CompositionProcess.RunAsync(CompositionProcess.CreateStartInfo("dotnet",
-                ["build", "./apphost.cs", "--artifacts-path", appHost, "-p:AspireUseCliBundle=true",
+                ["build", "./apphost.cs", "--configuration", "Debug", "--artifacts-path", appHost, "-p:AspireUseCliBundle=true",
                     "-p:HexalithEventStoreRoot=" + eventStore, "-p:HexalithBuildsRoot=" + builds], platform, null),
                 TimeSpan.FromMinutes(8), cancellation);
             build.ExitCode.ShouldBe(0, build.Output + build.ErrorOutput);

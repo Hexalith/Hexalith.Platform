@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-25-2026 00:05
+last_updated: 11-25-2026 07:53
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -146,8 +146,9 @@ development_status:
   # 2026-11-23: delta review 44dd1e52..634ed9f0 (+Tenants 1161d9f3..54985ab1, Builds 0de06365..2d9ef8b4) -> 1 patch applied, 1 deferred (hosted activation on the adopted tuple), 19 rejected; story done.
   3-3-generate-the-run-scoped-routing-catalog: done
   # 2026-11-25: delta review of the 10-patch pass -> 4 low patches applied, 13 rejected, none deferred; spec done.
-  3-4-generate-the-local-realm-from-the-realm-contract: review
-  3-5-provide-the-synthetic-tenant-in-local-and-ci-environments: backlog
+  # 2026-11-25: full review applied 5 patches, deferred staging realm naming to 4.19 and rejected 9 findings.
+  3-4-generate-the-local-realm-from-the-realm-contract: done
+  3-5-provide-the-synthetic-tenant-in-local-and-ci-environments: in-progress
   3-6-run-all-seven-mvp-modules-together-locally: backlog
   3-7-discover-enabled-operations-through-connected-mcpcli: backlog
   3-8-execute-and-refuse-operations-through-local-mcpcli-cli-and-m: backlog
