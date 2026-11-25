@@ -2732,3 +2732,9 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Platform
   summary: Story 3.6 Platform slice: enroll Parties, Folders, Projects and McpCli from their declarations, load Folders' extension package into the composed `eventstore` host, validate local-realm tokens in the default composition and runner, and prove all seven modules ready within the effective deadline with the duration recorded.
   evidence: Split from Story 3.6 on 2026-11-25. Depends on the Folders, Projects and Builds slices. Hard-coded lists: `PlatformServerBindings.cs:11-34`, `local-profile.json` (no folders, projects or mcpcli keys), `PlatformAppModel.cs:87,421-442`, `PlatformCatalogContractBinding.cs:12-19`, `PlatformRoutingCatalogBootstrap.cs:79-89,123-124,167`, `OwnerPackageLock.cs:43` and `eng/module-intake.json`. Package-mode snapshots exist only for eventstore, tenants and memories. Parties' adapters load only through the Development bootstrap, not through `runtime.eventStoreExtensions`. The local-realm adoption is the Story 3.4 deferral above. Whether it stays here or moves to Story 3.7 is open.
+
+## Deferred from: code review of spec-9-1-decide-the-shared-infrastructure-currency-policy.md (2026-11-25)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Repair the further constraint losses from the fa293aa9 regeneration of `epic-9-context.md` (medium).
+  evidence: The story's own commit rewrote the context. Besides BH1-BH4 above, it dropped `--rollback-on-failure` from the forbidden-rollback list and the "Story 9.5 currently lists only 'the deputy cannot approve'" gap note. The currency bullet (line 24) omits the weekly trigger and says "Story 9.1 decides…" rather than linking `docs/contracts/shared-infrastructure-currency-policy-v1.md`. The fix edits an agent-context file, so the review routes it to deferred work.
