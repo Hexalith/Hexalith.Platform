@@ -21,8 +21,7 @@ public static class PlatformLocalProfile
     {
         string id = PlatformDeclarationSet.Id(module.Declaration);
         string directory = options.ComponentsDirectory ?? Path.Combine(options.PlatformRoot, "DaprComponents", "reference");
-        string profile = Path.Combine(options.PlatformRoot, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json");
-        Dictionary<string, string> defaults = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(profile))!;
+        Dictionary<string, string> defaults = ReadDefaults(options.PlatformRoot);
         Dictionary<string, string> environment = new(StringComparer.Ordinal);
         string? clockSources = null;
         string? clockTokens = null;
@@ -34,6 +33,8 @@ public static class PlatformLocalProfile
             string key = input.GetProperty("key").GetString()!;
             string scoped = id + "/" + server + "/" + key;
             if (!options.Configuration.TryGetValue(scoped, out string? value) && !defaults.TryGetValue(scoped, out value)) throw new InvalidDataException($"{module.Source}: {scoped}: runtime.extensions.configurationInputs: binding is unavailable.");
+            if (options.UseGeneratedRealm && key is "Authentication:JwtBearer:SigningKey" or "EventStore:Authentication:SigningKey" or "Jwt:SigningKey")
+                continue;
             string source = input.GetProperty("source").GetString()!;
             if (source == "secret" && string.IsNullOrEmpty(value))
             {
@@ -96,6 +97,64 @@ public static class PlatformLocalProfile
         }
         if (id == "memories" && options.RetentionProfile is { } retention) retention.Configure(environment, server);
         return environment;
+    }
+
+    internal static void BindFolders(string platformRoot, List<PlatformServerBinding> servers)
+    {
+        var folders = servers.Where(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "folders").ToArray();
+        if (folders.Length == 0) return;
+
+        var gateway = BindEnvironment("eventstore");
+        var memories = BindEnvironment("memories");
+        Dictionary<string, string> defaults = ReadDefaults(platformRoot);
+        string receipt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
+        gateway["Authentication__HumanAuthorityReceipt__SigningKey"] = receipt;
+        BindSetting(gateway, "eventstore/gateway", "EventStore:Publisher:TopicOverrides:folders");
+        BindSetting(memories, "memories/server", "EventStoreIntegration:Routing:SourceToTenantMap:hexalith-folders");
+        BindSetting(memories, "memories/server", "EventStoreIntegration:Routing:AutoProvisionRoutedTenants");
+
+        foreach (var server in folders)
+        {
+            var environment = BindEnvironment(server.ResourceId);
+            string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
+            environment["EventStore__AppChannelToken"] = token;
+            environment["APP_API_TOKEN"] = token;
+            if (server.ServerId == "domain")
+                environment["Authentication__HumanAuthorityReceipt__SigningKey"] = receipt;
+
+            // The gateway trusts a different proof key for each transport and each Folders workload.
+            BindProof("BoundStreamRead");
+            BindProof("NativeSourceScan");
+            gateway["Authentication__BoundStreamRead__MetadataOnlyCallers__" + server.AppId] = "true";
+
+            void BindProof(string section)
+            {
+                using RSA proof = RSA.Create(2048);
+                string prefix = "Authentication__" + section + "__";
+                environment[prefix + "PrivateKey"] = Convert.ToBase64String(proof.ExportPkcs8PrivateKey());
+                gateway[prefix + "PublicKeys__" + server.AppId] = Convert.ToBase64String(proof.ExportSubjectPublicKeyInfo());
+                gateway[prefix + "AllowedDomains__" + server.AppId] = "folders";
+            }
+        }
+
+        void BindSetting(Dictionary<string, string> environment, string identity, string key) =>
+            environment[key.Replace(":", "__", StringComparison.Ordinal)] = defaults[identity + "/" + key];
+
+        Dictionary<string, string> BindEnvironment(string resourceId)
+        {
+            int index = servers.FindIndex(server => server.ResourceId == resourceId);
+            if (index < 0) throw new InvalidDataException($"folders: required resource '{resourceId}' is unavailable.");
+            var server = servers[index];
+            var environment = server.Environment.ToDictionary(StringComparer.Ordinal);
+            servers[index] = server with { Environment = environment };
+            return environment;
+        }
+    }
+
+    private static Dictionary<string, string> ReadDefaults(string root)
+    {
+        string profile = Path.Combine(root, "src", "Hexalith.Platform.Composition", "Declarations", "local-profile.json");
+        return JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(profile))!;
     }
 
     private static void MapClockTokens(string source, string module, string server, string? sources, string? tokens, Dictionary<string, string> environment)

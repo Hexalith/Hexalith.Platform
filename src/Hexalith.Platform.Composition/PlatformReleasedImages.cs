@@ -10,6 +10,25 @@ internal sealed class PlatformReleasedImages(
 {
     internal const string ResourceLabel = "hexalith.platform.resource";
 
+    internal static string RequireIntakeDigest(PlatformCompositionOptions options, string module, string identity, string repository, string version)
+    {
+        string path = Path.Combine(options.PlatformRoot, "eng", "module-intake.json");
+        if (!File.Exists(path)) throw Refusal();
+        using var document = JsonDocument.Parse(File.ReadAllBytes(path), new JsonDocumentOptions { AllowDuplicateProperties = false });
+        if (!document.RootElement.GetProperty("modules").TryGetProperty(module, out var owner)) throw Refusal();
+        var releases = owner.GetProperty("releases").EnumerateArray()
+            .Where(release => release.GetProperty("version").GetString() == version).ToArray();
+        if (releases.Length != 1 || !options.ReleaseCommits.TryGetValue(module + "/" + version, out string? commit)
+            || !string.Equals(releases[0].GetProperty("commit").GetString(), commit, StringComparison.OrdinalIgnoreCase)) throw Refusal();
+        var digests = releases[0].GetProperty("images").EnumerateArray()
+            .Where(image => image.GetProperty("name").GetString() == repository)
+            .Select(image => image.GetProperty("digest").GetString()).ToArray();
+        if (digests is not [string digest] || !IsDigest(digest)) throw Refusal();
+        return digest;
+
+        InvalidDataException Refusal() => new($"{identity}: released image '{repository}:{version}' has no unique digest in '{path}'.");
+    }
+
     /// <summary>Measures the selected repository tag before composing its immutable container reference.</summary>
     internal static PlatformServerBinding Resolve(PlatformCompositionOptions options, PlatformServerBinding server)
     {
@@ -20,7 +39,9 @@ internal sealed class PlatformReleasedImages(
             // Buildx selects the tag from the registry without consulting Docker's local manifest list store.
             using var response = JsonDocument.Parse(Probe(["buildx", "imagetools", "inspect", image, "--format", "{{json .Manifest}}"]));
             JsonElement release = response.RootElement;
-            if (!IsDigest(release.GetProperty("digest").GetString())) throw Unavailable(server, reference);
+            string? indexDigest = release.GetProperty("digest").GetString();
+            if (!IsDigest(indexDigest) || server.ReleasedImageIndexDigest is { } expected && indexDigest != expected)
+                throw Unavailable(server, reference);
             var selected = release.TryGetProperty("manifests", out var manifests)
                 ? manifests.EnumerateArray().Single(candidate => candidate.TryGetProperty("platform", out var platform) && IsLinuxX64(platform))
                 : release;

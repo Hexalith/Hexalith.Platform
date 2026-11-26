@@ -6,6 +6,7 @@ using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Builds.Tooling.Workspace;
+using Hexalith.Platform.CatalogArtifacts;
 
 /// <summary>Binds independently observing hosts to the already generated catalog and existing EventStore activation authority.</summary>
 internal sealed class PlatformRoutingCatalogBootstrap
@@ -21,10 +22,18 @@ internal sealed class PlatformRoutingCatalogBootstrap
     /// <summary>Gets the immutable receiver cohort resolved by the owning composition.</summary>
     internal IReadOnlyDictionary<string, string> ExpectedHosts { get; }
 
+    internal IReadOnlyDictionary<string, string[]> GatewayQueryDomains { get; }
+
     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
         PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
     {
         Directory = catalog.Directory;
+        GatewayQueryDomains = (from route in catalog.Envelope.Routes
+            where route.AppId is "projects" or "conversation"
+            join declaration in catalog.Envelope.Declarations on route.RouteId equals declaration.RouteId
+            where declaration.Kind == "query"
+            group declaration.Domain by route.AppId).ToFrozenDictionary(group => group.Key,
+                group => group.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(), StringComparer.Ordinal);
         ExpectedHosts = participants.ToFrozenDictionary(server => server.ResourceId, server => server.AppId, StringComparer.Ordinal);
         string[] hosts = participants.Select(server => server.ResourceId).Order(StringComparer.Ordinal).ToArray();
         foreach (var server in participants)
@@ -64,6 +73,28 @@ internal sealed class PlatformRoutingCatalogBootstrap
             conversationsApi["ASPNETCORE_HOSTINGSTARTUPASSEMBLIES"] = "Hexalith.EventStore.ServiceDefaults";
             gateway["Authentication__QueryAuthority__RequiredQueries__conversations__0"] = "conversation-detail";
             gateway["Authentication__QueryAuthority__RequiredQueries__conversations__1"] = "conversation-list";
+        }
+        if (_environment.TryGetValue("projects", out var projects))
+        {
+            projects["Projects__DevelopmentRouteCatalog__Enabled"] = "true";
+            using RSA proof = RSA.Create(2048);
+            projects["Authentication__BoundStreamRead__PrivateKey"] = Convert.ToBase64String(proof.ExportPkcs8PrivateKey());
+            gateway["Authentication__BoundStreamRead__PublicKeys__projects"] = Convert.ToBase64String(proof.ExportSubjectPublicKeyInfo());
+            if (_environment.ContainsKey("conversations"))
+            {
+                const string detail = "conversation-detail";
+                const string advisory = "Hexalith.Conversations.Queries.GetConversationAdvisoryMetadata.v1";
+                foreach (string query in new[] { detail, advisory })
+                    if (!catalog.Envelope.Declarations.Any(declaration => declaration.Kind == "query"
+                        && declaration.Domain == "conversations" && declaration.MessageType == query))
+                        throw new InvalidDataException($"conversations: catalog is missing the Projects owner query '{query}'.");
+                gateway["Authentication__BoundOwnerQuery__AllowedQueries__projects"] = detail + "," + advisory;
+            }
+            string[] queries = catalog.Envelope.Declarations.Where(declaration => declaration.Domain == "projects"
+                && declaration.Kind == "query" && declaration.Execution?.RequiresDelegatedContext != true)
+                .Select(declaration => declaration.MessageType!).Order(StringComparer.Ordinal).ToArray();
+            for (int index = 0; index < queries.Length; index++)
+                gateway["Authentication__QueryAuthority__RequiredQueries__projects__" + index] = queries[index];
         }
         gateway["Authentication__DaprInternal__Audience"] = participants.Single(server => server.ResourceId == "eventstore").AppId;
         if (_environment.TryGetValue("memories", out var memories)) memories["EventStore__CommandGateway__Audience"] = gateway["Authentication__DaprInternal__Audience"];
@@ -164,7 +195,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
         // A gateway-only infrastructure graph has no enrolled business operations.
         if (!servers.Any(server => server.ResourceId == "eventstore") || !servers.Any(server => server.ServerId == "domain")) return [];
         var participants = servers.Where(server => server.ResourceId == "eventstore" || server.ServerId == "domain"
-            || server.ResourceId is "tenants-api" or "memories" or "conversations-api").ToArray();
+            || server.ResourceId is "tenants-api" or "memories" or "conversations-api" or "folders-workers").ToArray();
         var selectedApps = servers.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
         var enrolledApps = participants.Select(server => server.AppId).ToHashSet(StringComparer.Ordinal);
         foreach (var receiver in participants)
@@ -176,11 +207,11 @@ internal sealed class PlatformRoutingCatalogBootstrap
     }
 
     internal static PlatformRoutingCatalogBootstrap? Create(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers,
-        PlatformDaprBindings dapr, string rendered)
+        PlatformDaprBindings dapr, string rendered, OwnerPackageLock? completePackageLock = null)
     {
         var participants = ResolveParticipants(options, servers, dapr);
         if (participants.Count == 0) return null;
-        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered);
+        var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered, completePackageLock);
         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
         return new(options, participants, catalog, rendered, dapr, servers);
     }

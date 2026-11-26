@@ -21,6 +21,13 @@ builder.Services.AddDaprClient(options => ErasureRootDaprTransport.Configure(opt
 builder.Services.AddHealthChecks()
     .AddEventStoreDaprHealthChecks()
     .AddEventStoreAppChannelTokenHealthCheck();
+#if HEXALITH_PLATFORM_EXTENSION_SDK
+if (builder.Configuration.GetSection("EventStore:Extensions:Packages").GetChildren()
+    .Any(extension => extension["ExtensionId"] == "folders"))
+{
+    builder.Services.AddExceptionHandler<FoldersSafeDenialHandler>();
+}
+#endif
 builder.Services.AddEventStore();
 // Declared extensions register before AddEventStoreServer, which can start the catalog bootstrap.
 #if HEXALITH_PLATFORM_EXTENSION_SDK

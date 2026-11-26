@@ -2,6 +2,7 @@
   "eventstore/gateway/EventStore:DaprConfigPath": "",
   "eventstore/gateway/EventStore:StateStoreComponentPath": "",
   "eventstore/gateway/EventStore:PubSubComponentPath": "",
+  "eventstore/gateway/EventStore:Publisher:TopicOverrides:folders": "folders.events",
   "eventstore/gateway/Authentication:JwtBearer:Authority": "",
   "eventstore/gateway/Authentication:JwtBearer:Issuer": "hexalith-g4-runner",
   "eventstore/gateway/Authentication:JwtBearer:Audience": "hexalith-eventstore",
@@ -343,5 +344,7 @@
   "conversations/api/Authentication:JwtBearer:RequireHttpsMetadata": "false",
   "conversations/api/Authentication:JwtBearer:AllowInsecureSymmetricKey": "true",
   "conversations/api/Authentication:JwtBearer:SigningKey": "",
-  "conversations/api/DAPR_API_TOKEN": ""
+  "conversations/api/DAPR_API_TOKEN": "",
+  "memories/server/EventStoreIntegration:Routing:SourceToTenantMap:hexalith-folders": "folders-index",
+  "memories/server/EventStoreIntegration:Routing:AutoProvisionRoutedTenants": "true"
 }

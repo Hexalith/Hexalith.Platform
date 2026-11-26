@@ -25,6 +25,7 @@ public sealed class PlatformDaprBindings
     {
         ArgumentNullException.ThrowIfNull(declarations);
         PlatformDaprBindings result = new() { _retentionProfile = retentionProfile };
+        Dictionary<string, string> appIdsByWorkload = new(StringComparer.Ordinal);
         foreach (PlatformModuleDeclaration module in declarations)
         {
             string owner = PlatformDeclarationSet.Id(module.Declaration);
@@ -32,7 +33,9 @@ public sealed class PlatformDaprBindings
                 .Where(server => server.GetProperty("enabled").GetBoolean()).ToDictionary(server => server.GetProperty("id").GetString()!, server => server.GetProperty("appId").GetString()!, StringComparer.Ordinal);
             foreach (var server in servers)
             {
-                result._environment.Add(owner + "/" + server.Key, new(StringComparer.OrdinalIgnoreCase));
+                string workload = owner + "/" + server.Key;
+                result._environment.Add(workload, new(StringComparer.OrdinalIgnoreCase));
+                appIdsByWorkload.Add(workload, server.Value);
                 result._rules.Add(server.Value, []);
             }
             foreach (JsonElement capability in module.Declaration.GetProperty("runtime").GetProperty("dapr").EnumerateArray())
@@ -43,6 +46,7 @@ public sealed class PlatformDaprBindings
                 string template = (kind, role) switch
                 {
                     ("state", "state") => "statestore.yaml", ("pubsub", "events") => "pubsub.yaml",
+                    ("pubsub", "worker-inbound-events") when owner == "folders" => "pubsub.workers.yaml",
                     ("configuration", "rate-limit-configuration") => "configstore.yaml",
                     ("state", "telemetry-state") => "telemetry-state.yaml",
                     ("configuration", "telemetry-configuration") => "telemetry-config.yaml",
@@ -85,6 +89,19 @@ public sealed class PlatformDaprBindings
                 result._subscriptions.Add((identity, component, PhysicalTopic(topic), subscription.GetProperty("route").GetString()!, appId, target));
             }
         }
+        if (appIdsByWorkload.GetValueOrDefault("eventstore/gateway") == "eventstore")
+        {
+            var gateway = result._rules["eventstore"];
+            foreach ((string workload, string caller) in new[] { ("folders/domain", "folders"), ("folders/workers", "folders-workers") })
+            {
+                if (appIdsByWorkload.GetValueOrDefault(workload) != caller) continue;
+                gateway.Add((caller, "/api/v1/streams/read/workload", ["POST"]));
+                gateway.Add((caller, "/api/v1/streams/scan/workload", ["POST"]));
+                gateway.Add((caller, "/api/v1/commands/workload", ["POST"]));
+            }
+            if (appIdsByWorkload.GetValueOrDefault("projects/domain") == "projects")
+                gateway.Add(("projects", "/api/v1/queries/owner-authority/workload", ["POST"]));
+        }
         return result;
     }
 
@@ -92,6 +109,7 @@ public sealed class PlatformDaprBindings
     public static string Name(string kind, string role) => (kind, role) switch
     {
         ("state", "state") => "statestore", ("pubsub", "events") => "pubsub",
+        ("pubsub", "worker-inbound-events") => "folders-workers-pubsub",
         ("configuration", "rate-limit-configuration") => "configstore",
         ("state", "telemetry-state") => "access-telemetry-store",
         ("secret", "telemetry-secrets") => "access-telemetry-secrets",
@@ -143,7 +161,8 @@ public sealed class PlatformDaprBindings
                 files.Add(binding.Template, _retentionProfile.RenderComponent(binding.Consumers));
                 continue;
             }
-            string source = Path.Combine(directory, binding.Template);
+            bool workerInbound = name == Name("pubsub", "worker-inbound-events");
+            string source = Path.Combine(directory, workerInbound ? "pubsub.yaml" : binding.Template);
             if (!File.Exists(source)) throw new FileNotFoundException($"{source}: runtime.dapr: Platform shared local Dapr component template is unavailable.", source);
             YamlMappingNode component;
             try
@@ -170,6 +189,27 @@ public sealed class PlatformDaprBindings
                     }
                     if (!boundSecretsFile) throw new InvalidDataException("spec.metadata must contain a secretsFile entry");
                 }
+                if (workerInbound)
+                {
+                    // The sender and workers use the same Redis broker, with independent topic permissions.
+                    AddMetadata("concurrency", "1");
+                    AddMetadata("protectedTopics", "tenants.events,folders.events,deadletter.folders.events,deadletter.tenants.events");
+                    AddMetadata("publishingScopes", "folders-workers=deadletter.folders.events,deadletter.tenants.events");
+                    AddMetadata("subscriptionScopes", "folders-workers=tenants.events,folders.events");
+                }
+                else if (name == Name("pubsub", "events") && binding.Consumers.Contains("folders-workers")
+                    && Consumes(Name("pubsub", "worker-inbound-events"), "folders-workers"))
+                {
+                    AddMetadata("publishingScopes", "folders-workers=memories-events");
+                    AddMetadata("subscriptionScopes", "folders-workers=");
+                }
+
+                void AddMetadata(string key, string value)
+                {
+                    var entries = (YamlSequenceNode)spec.Children[new YamlScalarNode("metadata")];
+                    entries.Add(new YamlMappingNode { { "name", key }, { "value", value } });
+                }
+
                 metadata.Children[new YamlScalarNode("name")] = new YamlScalarNode(name);
                 component.Children[new YamlScalarNode("scopes")] = new YamlSequenceNode(binding.Consumers.Order(StringComparer.Ordinal).Select(app => new YamlScalarNode(app)));
             }

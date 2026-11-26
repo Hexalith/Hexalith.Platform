@@ -16,6 +16,10 @@ internal sealed record PlatformCatalogContractBinding(string Assembly, string Ad
             var selected = options.Mapping.Entries.SingleOrDefault(entry => entry.Identity == repository)
                 ?? throw new InvalidDataException($"{module}: mapped Contracts owner is missing.");
             (string contract, string adapter) = Packages(module);
+            if (module is "folders" or "projects"
+                && (!server.Module.Declaration.GetProperty("runtime").TryGetProperty("eventStoreExtensions", out var extensions)
+                    || extensions.EnumerateArray().Count(extension => extension.GetProperty("packageId").GetString() == adapter) != 1))
+                throw new InvalidDataException($"{server.Module.Source}: {module}: the catalog requires declared EventStore extension '{adapter}'.");
             string? version = null;
             bool fromSource = options.Mapping.Mode == WorkspaceMode.Source && selected.Origin == "source";
             string Reference(string assembly)
