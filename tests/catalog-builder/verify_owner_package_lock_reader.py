@@ -114,8 +114,8 @@ def qualify(args):
                     receipt = json.loads((destination / "receipt.json").read_text())
                     counts = {key: len(catalog[key]) for key in ["routes", "operations", "declarations", "idempotency"]}
                     private = len(owners) == 1
-                    # Memories 4.1.2 adds one command and its idempotency policy to the full owner catalog.
-                    assert counts == ({"routes": 24, "operations": 24, "declarations": 24, "idempotency": 13} if private
+                    # Tenants 8.1.0 adds one command and its idempotency policy to the private and full catalogs.
+                    assert counts == ({"routes": 25, "operations": 25, "declarations": 25, "idempotency": 14} if private
                                       else {"routes": 72, "operations": 72, "declarations": 72, "idempotency": 48}), counts
                     # The approved Tenants policy rides on the locked package, not on counts that 8.0.2 and 8.0.4 share.
                     audit = [o["eligibility"] for o in catalog["operations"] if o["routeId"] == "tenants-get-global-administrator-audit"]
