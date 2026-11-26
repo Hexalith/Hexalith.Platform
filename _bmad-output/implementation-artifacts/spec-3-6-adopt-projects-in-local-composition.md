@@ -2,7 +2,7 @@
 title: '3.6 slice 2: Adopt Projects in the local MVP composition'
 type: 'feature'
 created: '2026-11-26'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 baseline_commit: '926ca9797ede0f704d1c7d9e233d5270d4e57f85'
 story_key: '3-6-run-all-seven-mvp-modules-together-locally'
@@ -65,10 +65,34 @@ Projects paths use the standalone repository root at the pinned revision.
 - The final Release solution build and six isolated package consumers passed. Contracts, Server and Integration passed 208, 1,653 and 217 tests respectively, with one existing opt-in Dapr restart test skipped. The package and workflow suites passed all 77 Python tests. The packed EventStore 5.6.0 probe loaded 12 distinct adapters and reported healthy. It refused API major 2. The 25 declarations, schemas and digests matched the baseline catalog byte for byte, SHA-256 `3b965f3684fa380a581e373bfa584425151166809a67bfeed1b9b2f4ae9aa6e9`. A clean extension-only restore omitted provider SDKs and Projects Server. The embedded manifest matched its source bytes. [Release and package-load log](../../../projects-story-3-6-evidence/release-final-targets.log)
 - Builds 6.8.4 accepted the candidate manifest. The source closure retained Projects `/ready` and refused the missing Conversations declaration. All three MSBuild consumers accepted direct or explicitly mapped Platform input and rejected a missing input with a sibling checkout present. The final mapped Debug build and all seven ordinary development-host model tests passed. The initial unmapped Aspire startup stopped before launching because Conversations requires the selected mapping. [Debug and manifest checks](../../../projects-story-3-6-evidence/debug-final-targets.log) [Missing-input checks](../../../projects-story-3-6-evidence/platform-input-refusal.log)
 - Landing and first package publication still require maintainer authorization and exact-source hosted CI. Live seven-module readiness and the authorized Conversations calls remain with the Platform slice.
+- The reviewed Projects candidate is local commit `3a33beec21e82e3f68ef7219c4abfc83bca3525e` on `feat/projects-platform-composition`. Review corrected package loading from the embedded manifest, release commit provenance and first-upload order, G-6 manifest selection, and Platform and catalog artifact selection. The rerun passed the same 2,078 Release tests with one opt-in skip, all seven mapped Debug model tests, all 60 release-tool tests and the workflow gate. The packed probe loaded the 12 declared adapters and the 25-route catalog remained byte-identical. Builds 6.8.4 resolved the declared closure with Conversations, and the shared target added no finding to the pinned baseline's adoption audit. The complete Story 3.6 remains in progress while owner releases, Builds and Platform wiring, and live acceptance are pending. [Reviewed patch](../../../projects-story-3-6-evidence/projects-reviewed.patch) [Release rerun](../../../projects-story-3-6-evidence/reviewed-release.log) [Debug rerun](../../../projects-story-3-6-evidence/reviewed-debug.log) [Closure rerun](../../../projects-story-3-6-evidence/reviewed-closure.log) [Tooling rerun](../../../projects-story-3-6-evidence/reviewed-tools.log)
+
+- The maintainer approved pushing `feat/projects-platform-composition` and opening a PR. Projects [PR #6](https://github.com/Hexalith/Hexalith.Projects/pull/6) targets `main` at `4d740a889787bb095b16303ed749ec7f165e5683` with head `3a33beec21e82e3f68ef7219c4abfc83bca3525e`. The [exact-source CI run](https://github.com/Hexalith/Hexalith.Projects/actions/runs/45795624033) started on that head.
+- Projects PR #6 merged into `main` at `4419c5598f9433e31e1d8ae727cc9238e6f67056` on 2026-11-26. The Projects release remains pending. [Merged PR](https://github.com/Hexalith/Hexalith.Projects/pull/6)
 
 ## Spec Change Log
 
 ## Review Triage Log
+
+| Finding | Verdict | Route | Evidence |
+| --- | --- | --- | --- |
+| Blind 1. First publication scope | High | Patch | The runbook's six new-version scopes cannot create the new package ID. NuGet distinguishes the two publishing actions. |
+| Blind 2. Existing packages upload first | High | Patch | `release.config.cjs` expands the package glob before invoking NuGet. If creation of the extension is refused, a previously uploaded immutable version blocks a clean retry. |
+| Blind 3. Published manifest verification uses current file bytes | Medium | Patch | `verify_publication` authenticates a source SHA but `_read_package` reads the current worktree manifest. The expected bytes must come from that SHA when verifying downloads. |
+| Blind 4. The shipped extension is only compile-probed by the release gate | Medium | Patch | `run_consumer` invokes `dotnet build` on a `typeof` probe. Attribute, registration and readiness regressions can pass that gate. |
+| Blind 5. Loader config is independent of the manifest | Medium | Patch | Both the unit test and the initial packed check hard-code the identity. A manifest-based package probe covers the production binding. |
+| Blind 6. The baseline comparison is outside CI | Low | Reject | The retained byte comparison proves parity for this relocation. A permanent snapshot would additionally gate deliberate future route revisions, and no current mismatch was found. |
+| Blind 7. New target assigns a tool-owned property | Medium | Patch | Builds 6.8.4 `InspectBuild` rejects `Hexalith*Root` assignments in a build file. The new target can use a private property for its direct-checkout default. |
+| Blind 8. Manifest changes do not select push G-6 | Medium | Patch | `run_g6_ci_gate.selection` checks configured files and prefixes. The active policy includes `src/` and omits `module/hexalith.module-manifest.v2.json`. |
+| Blind 9. Ordinary AppHost can mix two owner outputs | Medium | Patch | `ProjectsLocalDevelopmentCatalog.Load` tests artifact existence separately for each DLL. A partial output can select a different directory for each. |
+| Blind 10. Routine builds miss sibling fallback regressions | Medium | Patch | The negative check passed in scratch. A repeatable MSBuild check will protect the new shared selector. |
+| Blind 11. Release messages still report five | Low | Patch | The availability script, package gate and CI action text still name the prior count. |
+| Edge 1. First-publication failure can leave a partial release | High | Patch | The exact-ID new-package scope and fail-fast upload order address the two confirmed causes. |
+| Edge 2. Owner collision test skips on missing sibling DLL | Medium | Patch | Its skip condition checks all three paths. An existing executable with a missing newly split catalog artifact should fail the assertion. |
+| Gap 1. Manifest-driven packed registration | Medium | Patch | A mutation removed the enrollment property and all six archive validations still passed. Execute the packed module with the embedded manifest as its loader input. |
+| Gap 2. Legacy handler literal can drift | Medium | Patch | The runtime catalog compares a digest derived from the same declaration. Compare the declared name with the installed CLR type in the existing receiver parity test. |
+| Gap 3. Routine tests miss missing selected Platform input | Medium | Patch | The successful-build checks can pass with a sibling fallback. Repeat the demonstrated refusal through the shared target's consumers. |
+| Gap 4. No stripped-manifest fixture | Low | Patch | The mutated validator accepted the stripped archive and existing package tests stayed green. Add an otherwise complete archive with the manifest removed. |
 
 ## Design Notes
 
