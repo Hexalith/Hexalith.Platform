@@ -2,10 +2,14 @@
 
 Policy identifier: `hexalith.platform.shared-infrastructure-currency-policy.v1`.
 Version 1 records the decisions confirmed on 2026-11-15 and the Administrator's
-2026-11-25 decision on fixed-release timing. The Platform revision closing final
-Story 9.1 review fixes the canonical v1 text. The AD-26 snapshot is historical
-review evidence. MUST and MUST NOT express requirements for downstream
-implementation and qualification.
+2026-11-25 decision on fixed-release timing. On 2026-11-26 Administrator confirmed
+that the production trigger covers release promotions, that fixes published only
+on unsupported lines are recorded without a release-based deadline, and that
+monthly-drill results add no production-attempt block. The Platform revision
+closing final Story 9.1 review fixes the canonical v1 text. The
+[AD-26 review-only index](ad26-preparation/approved-review-index.json) identifies
+the historical 2026-11-16 snapshot. MUST and MUST NOT express requirements for
+downstream implementation and qualification.
 [Story 9.1 specification](../../_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md)
 
 Platform owns this policy with Administrator. The accountable policy owner is
@@ -61,6 +65,20 @@ The check MUST run and record a result:
 - On a **weekly schedule** against the active production deployment and the
   shared infrastructure that serves it, independently of attempts and drills.
 
+A production release attempt deploys a release to production through automatic
+or Administrator-approved promotion. The `production-attempt` trigger applies
+only to admission for those promotions. The Administrator's 2026-11-26 decision
+defines this trigger for the earlier production currency requirements in the PRD,
+architecture and sequencing, including the Story 9.2 implementation and the
+Story 9.8 G3 handoff.
+
+Separately admitted rollbacks, configuration-only changes, rotation rollouts,
+catalog activations, realm-contract and operator-artifact changes, baseline
+re-deploys and other approved manual changes are outside the trigger, as are
+infrastructure-kind and recovery-kind attempts. A release promotion that includes
+catalog activation still requires its admission check. The weekly check still
+covers the infrastructure in decision 1.
+
 Each invocation MUST evaluate the deployment and upstream data for that check.
 A passing weekly or drill result MUST NOT substitute for a production release
 attempt's own check. Every failure, including an incomplete check or unavailable
@@ -69,12 +87,14 @@ input, MUST have a recorded result.
 At production release admission, `checkedAt` MUST be that admission's UTC
 evaluation time. Bind the result to the attempt ID, release mode and current
 lock epoch. Admission MUST verify all three against the current admission.
-A replacement job with a new epoch needs its own check, even if the attempt ID
-stays the same. The evaluator MUST use the current inventory, deployed
-identities, upstream data and qualified pairing, and evaluate support and
-security deadlines at that time. An earlier evaluation or queued request
-reserves no eligibility. Changed inputs or a deadline reached before admission
-MUST NOT be accepted on the strength of an earlier result.
+The evaluator MUST use the current inventory, deployed identities, upstream data
+and qualified pairing, and evaluate support and security deadlines at that time.
+An earlier evaluation or queued request reserves no eligibility. Changed inputs
+or a deadline reached before admission MUST NOT be accepted on the strength of
+an earlier result. A replacement job under a new epoch that resumes the same
+attempt solely for its remaining single recovery follows the architecture's
+attempt-ownership and recovery rules. That resumption is outside release
+admission and requires no currency check.
 
 The weekly check MUST notify Administrator when it fails or when any checked
 component has a known upstream end-of-life instant after `checkedAt` and at most
@@ -100,8 +120,11 @@ known future instants.
 
 Use UTC instants for the evaluation time, upstream end-of-life boundaries and
 upstream fixed-release times. Convert a published instant to UTC. For a
-date-only value, use `00:00:00 UTC` at the start of that date. Apply the same
-end-of-life instant to the support check and the weekly notification window.
+date-only value, use `00:00:00 UTC` at the start of that date. For a month or
+quarter published without a date, resolve the period from the authoritative
+upstream source and use `00:00:00 UTC` on its first day. An unresolved period
+boundary MUST fail closed. Apply the same end-of-life instant to the support
+check and the weekly notification window.
 
 For each published advisory applicable to the deployed component, the fix MUST
 be deployed within **30 days (2,592,000 seconds)** of `fixReleasedAt`. Use the
@@ -118,13 +141,18 @@ evidence that the deployed release contains the fix.
 An unfixed component is within the lag window only while
 `checkedAt < fixReleasedAt + 2592000 seconds`. At exactly the deadline or later,
 it MUST fail and name the advisory and fixed release.
-An advisory with no published fixed release has no release-based deadline yet;
-the result MUST record that state rather than invent a fixed release or date.
-If fixes are published but no eligible deadline can be established, the check
-MUST fail closed and record the advisory and reason.
-Unknown applicability, fix status or release timing MUST fail closed. All
-applicable advisory deadlines must pass; one recently fixed advisory cannot
-hide another overdue fix.
+An advisory with no published fixed release has no release-based deadline yet.
+Record the advisory and that no fix has been published. If the deployed line has
+no fix and authoritative sources confirm that all published fixes are on lines
+unsupported at check time, the advisory also has no release-based deadline.
+Record the advisory, those fixed releases and the reason for having no deadline.
+For each release line whose unsupported status establishes this outcome, the
+evaluator MUST retain the authoritative support source, the evidence of that
+status and its UTC observation time from the current check.
+Otherwise, if fixes are published and no required deadline can be established,
+the check MUST fail closed and record the advisory and reason. Unknown advisory
+applicability or fix status MUST also fail closed. Every applicable advisory
+deadline must pass.
 
 **Non-security updates have no lag limit while the deployed version remains
 supported**, within the supported matrix and qualified pairing. This currency
@@ -134,12 +162,13 @@ or grant an exception to its scan and promotion rules.
 
 ### 4. Effect on automatic and Administrator-approved attempts
 
-A failed check MUST **block automatic promotion with no waiver**, name every
-failing component and its reasons, and set **no promotion stop**. An approval
-cannot convert a failed result to a pass or authorize the automatic path.
+A failed release admission check MUST **block automatic promotion with no
+waiver**, name every failing component and its reasons, and set **no promotion
+stop**. An approval cannot convert a failed result to a pass or authorize the
+automatic path.
 
-An Administrator-approved attempt MUST still run and record the check. If the
-result fails, the attempt may start only when its Administrator record
+An Administrator-approved release attempt MUST still run and record the check.
+If the result fails, the attempt may start only when its Administrator record
 **explicitly names every failing component**. Names MUST identify the checked
 inventory component instances, including their environment or cluster scope
 where needed to distinguish them. A generic acknowledgment such as "all
@@ -205,20 +234,21 @@ nor proof of support, security currency or qualification at a later check.
 
 Every invocation MUST retain a result, including failures before all observations
 can complete. Production release admission requires a completed, retained result
-bound to that attempt and current lock epoch. If the result is missing, could
-not be retained or has the wrong binding, automatic promotion is blocked and an
-Administrator-approved attempt is refused. Record that failure and its reason
-whenever recording is available. Story 9.2 owns the result schema and evaluator.
+bound to that attempt ID, release mode and current lock epoch. If the result is
+missing, could not be retained or has the wrong binding, automatic promotion is
+blocked and an Administrator-approved release attempt is refused. Record that
+failure and its reason whenever recording is available. Story 9.2 owns the result
+schema and evaluator.
 
 | Record scope | Required content |
 | --- | --- |
 | Check identity and context | Unique check ID, policy identifier and exact policy revision or content digest, exact evaluator revision or artifact digest, trigger (`production-attempt`, `monthly-drill` or `weekly-schedule`), UTC evaluation time (`checkedAt`), start and completion times, and target environment/cluster identities. Record the bound production attempt ID, release mode and lock epoch, or the bound drill or scheduled run identity. |
 | Checked inventory | Exact profile inventory revision and content digest, active profile digest, exact composing inventory revision and content digest, its independently enumerated source path and SHA-256, and the complete set of covered component instance IDs. Identify unavailable inputs explicitly. |
 | Each component | Component instance ID and currency owner. For each deployed identity, record the node or replica identifier where applicable, exact identity and resolved version, applicable inventory pin and resolved version, observation time and evidence, and identity-match result. Identify missing observations. |
-| Upstream observations | Per-component authoritative support, matrix, advisory and fixed-release source references and retained observations. For every observed version and pin, record UTC observation time, release line and support status, the end-of-life instant or confirmed support with no announced date, advisory applicability, and applicable fixed releases, upstream release times and calculated deadlines. Record no published fix or the reason a published fix yields no eligible deadline when applicable. |
+| Upstream observations | Per-component authoritative support, matrix, advisory and fixed-release source references and retained observations. For every observed version and pin, record UTC observation time, release line and support status, the end-of-life instant or confirmed support with no announced date, advisory applicability, and applicable fixed releases, upstream release times and calculated deadlines. Record no published fix or the reason a published fix yields no eligible deadline when applicable, including decision 3's dated support evidence for each unsupported fixed line that establishes that outcome. |
 | Component decision | Support, matrix and security-lag outcomes, pass/fail, and every failure or unknown reason; overdue fixes name the advisory and fixed release; impending end of life includes the boundary and notification reason |
 | Pairing | Actual management/workload identities and versions, upstream matrix source and observation time, exact qualified-pairing record, comparison result and reasons; attribute failure to the involved component IDs |
-| Overall decision | Pass/fail, every failing component and reason, missing inputs, and the resulting automatic block or approved-attempt acceptance/refusal for a production attempt. Weekly and monthly-drill results add no attempt block. No result sets a promotion stop. |
+| Overall decision | Pass/fail, every failing component and reason, missing inputs, and the resulting automatic block or approved-attempt acceptance/refusal for production release admission. Weekly and monthly-drill results add no attempt block. No result sets a promotion stop. |
 | Approval and notification | Applicable Administrator record and named-component comparison, including unnamed failures. For weekly runs, record notification requirement, reason, private issue reference when created and delivery outcome. |
 
 A summary pass without the underlying complete component and pairing results
@@ -249,7 +279,7 @@ to changes in verification, recovery or rollback-set policy.
 | Story 4.9 | Create and ratify the actual profile inventory, with exact component pins and identities, per-component authoritative support/advisory sources and named currency owners, plus the qualified management/workload pairing. Supply the separate v2 composing inventory and its content-bound independent source. |
 | Story 9.2 | Implement every trigger, complete comparison, fail-closed outcome, result field, weekly notification and approval-naming rule; bind adoption to this exact policy text and evaluator identity and qualify the acceptance/refusal cases below |
 | Story 9.6 | Rehearse current, drifted, unsupported, overdue-security, unknown-data and unqualified-pairing paths. Prove automatic refusal without a waiver, approved acceptance only with all failing components named, refusal requiring new approval for any unnamed failure, retained results and that the check creates no stop and preserves any existing promotion-stop record and revision exactly. |
-| Story 9.8 | Require qualified currency enforcement and the required Story 9.6 evidence before recording G3 and enabling automatic promotion. After G3, require a passing recorded check for each automatic attempt |
+| Story 9.8 | Require qualified currency enforcement and the required Story 9.6 evidence before recording G3 and enabling automatic promotion. After G3, require a passing recorded check for each automatic production release attempt |
 
 Stories 6.22 and 8.17 retain their existing guarded-change and drill obligations.
 An urgent in-place security patch under Story 6.22 still requires its
@@ -266,18 +296,23 @@ production precondition remains required. No row sets a promotion stop.
 | Input or state at this check | Recorded currency result | Automatic promotion | Administrator-approved attempt |
 | --- | --- | --- | --- |
 | Every component equals its pin, is supported and within all security deadlines; matrix and qualified pairing match | Pass | Currency requirement met | Currency requirement met |
+| A production release promotion includes catalog activation, and a component has reached its security deadline without deploying the fix | Fail. Run and record the admission check. Name the overdue component, advisory and fixed release | Block without waiver | May start only if the record names every failing component |
 | A deployed identity differs from its pin, even if newer and supported | Fail; name the component and drift | Block; no waiver | May start only if the record names every failing component |
 | One node or replica has drifted from the applicable pin while all others match | Fail. Name the component and identify the node or replica and its drift | Block without waiver | May start only if the record names every failing component |
 | Version cannot be resolved, including a digest-only component matching its pin, or required upstream data is unavailable | Fail; name each affected component and unknown input; no cached fallback | Block; no waiver | May start only if the complete failing set is known and the record names every failing component |
 | Check cannot determine the complete component/failure set because independent coverage, inventory or observations are incomplete | Fail. Record the missing coverage | Block without waiver | Refuse because the complete naming rule cannot be established |
 | A component reaches its upstream end-of-life boundary, leaves the supported matrix, or management/workload pairing is unqualified | Fail; name affected components and support/matrix/pairing reason | Block immediately; no support grace | May start only if the record names every failing component |
+| An upstream source publishes end of life as November 2026 or as calendar Q4 2026, and the check is at the applicable period start | Fail. Record `2026-11-01T00:00:00Z` for November or `2026-10-01T00:00:00Z` for calendar Q4 as the reached boundary | Block immediately; no support grace | May start only if the record names every failing component |
+| An upstream source publishes end of life by quarter, and the quarter's start cannot be resolved from authoritative upstream data | Fail. Name the component and record the unresolved boundary | Block without waiver | May start only if the record names every failing component |
 | Applicable fix is not deployed; check is one second before its upstream release time plus 2,592,000 seconds; all other checks pass | Pass; retain advisory, fixed release and deadline | Currency requirement met | Currency requirement met |
 | Same unfixed component at exactly that deadline or later | Fail; name component, advisory and fixed release | Block; no waiver | May start only if the record names every failing component |
-| The earliest supported line carrying a fix is B, first fixed on day 0. At day 19, the deployed line A has no fix and all other checks pass | Pass. Record B's fixed release and its day-30 deadline | Currency requirement met | Currency requirement met |
+| B is the oldest supported line carrying a fix in upstream release-line order, first fixed on day 0. At day 19, the deployed line A has no fix and all other checks pass | Pass. Record B's fixed release and its day-30 deadline | Currency requirement met | Currency requirement met |
 | Line A gets its first fix on day 20. At day 30, the deployment remains unfixed and all other checks pass | Pass. Record A's fixed release and its day-50 deadline | Currency requirement met | Currency requirement met |
 | Line A is still unfixed at day 50 | Fail. Name the component, advisory and A's first fixed release | Block without waiver | May start only if the record names every failing component |
 | Deployed line A has no fix. Older supported line B first carries the fix on day 10. Newer supported line C first carries it on day 0. At day 35, all other checks pass | Pass. Choose line B in upstream release-line order and record its first fixed release and day-40 deadline | Currency requirement met | Currency requirement met |
-| Deployed line A is supported but has no fix. All published fixes are on other lines that are unsupported at check time | Fail. Record the advisory and that no eligible deadline can be established | Block without waiver | May start only if the record names every failing component |
+| Deployed line A is supported but has no fix. Authoritative sources confirm all published fixes are on other lines unsupported at check time, and all other checks pass | Pass. Record the advisory, the published fixed releases, dated support evidence for each fixed line and that there is no release-based deadline | Currency requirement met | Currency requirement met |
+| The only published fix is on line B. An earlier check failed because B was supported and the fallback deadline had passed. At a later check B has left support, deployed line A remains supported and has no fix, and all other checks pass | Pass on the later check. Record the advisory, B's fixed release, dated support evidence and no release-based deadline. Preserve the earlier overdue failure and its evidence | Currency requirement met | Currency requirement met |
+| A fix is published and a required deadline cannot be established because applicable upstream support, release-line order or release timing cannot be verified | Fail. Record the advisory and the unknown input that prevents establishing the deadline | Block without waiver | May start only if the record names every failing component |
 | Applicable published advisory has no published fixed release, with support and all other comparisons known and passing | Pass. Record that the advisory has no published fix and no release-based deadline | Currency requirement met | Currency requirement met |
 | Only a non-security update is outstanding, and pin, support, matrix and qualified pairing checks pass | Pass; no non-security lag limit | Currency requirement met | Currency requirement met |
 | Failed result and the Administrator record names every failing component | Fail remains recorded; retain approval and naming comparison | Block; approval supplies no automatic waiver | May start subject to every other precondition |
@@ -288,7 +323,11 @@ production precondition remains required. No row sets a promotion stop.
 | Weekly check passes and authoritative sources confirm current support for every component without announcing any end-of-life date | Pass. Record known support with no announced end-of-life date and no notification due | Weekly run adds no block. Own attempt check required | Weekly run adds no block. Own attempt check required |
 | Weekly check fails | Fail; retain reasons and notify Administrator | Weekly run adds no block; own attempt check controls promotion | Weekly run adds no block; own attempt check and naming rule control admission |
 | Monthly-drill check fails | Fail. Retain the failing components and reasons with the drill evidence | Drill run adds no block. Own attempt check controls promotion | Drill run adds no block. Own attempt check and naming rule control admission |
+| A standalone change or recovery outside decision 2's release-promotion scope | No production-attempt check | Outside release admission | Outside release admission |
+| A replacement job advances the epoch and resumes the same attempt solely for its remaining single recovery | No new production-attempt check | Recovery follows the existing recovery rules | Recovery follows the existing recovery rules |
+| Production release admission only has a passing result for the same attempt ID and current lock epoch under a different release mode | Fail. Record the mode mismatch when recording is available | Block until a new result passes under the current binding | Refuse until there is a recorded result under the current binding and any applicable naming rule is met |
 | Production release admission only has a passing result for the same attempt ID under an earlier lock epoch | Fail. Record the epoch mismatch when recording is available | Block until a new result passes under the current binding | Refuse until there is a recorded result under the current binding and any applicable naming rule is met |
+| An earlier passing result matches the attempt ID, release mode and current lock epoch, but a component reaches end of life or an unfixed security deadline before admission | Fail. Reject the earlier pass as stale, run and record the current check, and name the component and reached boundary | Block without waiver | Refuse admission on the earlier pass. After recording the current failure, may start only if the record names every failing component |
 | This production release attempt has no completed, retained check result, even if an earlier check passed | Fail. Record the missing result as the reason when recording is available | Block. This attempt requires its own passing recorded result | Refuse until this attempt's check is run and recorded and any applicable naming rule is met |
 
 These cases are downstream qualification obligations. Documentation verification

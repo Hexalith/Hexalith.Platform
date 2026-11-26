@@ -398,13 +398,15 @@ the policy does not establish current workflow enforcement.
 
 ## Shared-infrastructure currency policy
 
-The policy checks currency at every production release admission, at every
-monthly drill and weekly against active production and its shared infrastructure.
-It allows zero support lag and gives 30 days to deploy security fixes. A failed
-release admission check blocks automatic promotion with no waiver. An
-Administrator-approved attempt can proceed after a recorded failure only if its
-approval names every failing component. Stories 4.9, 9.2, 9.6 and 9.8 own the
-inventory, enforcement, rehearsal and G3 evidence.
+The policy requires a currency check at admission for each production release
+promotion, at every monthly drill and weekly against active production and its
+shared infrastructure. It allows zero support lag and gives 30 days to deploy
+applicable security fixes. Under the policy, a failed admission check blocks
+automatic promotion with no waiver. An Administrator-approved release attempt
+can proceed after a recorded failure only if its approval names every failing
+component. Stories 4.9, 9.2, 9.6 and 9.8 own the inventory, enforcement, rehearsal
+and G3 evidence. Runtime enforcement and current compliance require separate
+evidence.
 [Shared-infrastructure currency policy v1](docs/contracts/shared-infrastructure-currency-policy-v1.md)
 
 ## Exact tuple CI preflight

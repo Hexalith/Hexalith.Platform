@@ -2360,7 +2360,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: State both staging evidence policy v2 idempotent-command rehearsal cases in the generated Epic 9 agent context (medium).
-  evidence: `epic-9-context.md` says “where applicable.” The architecture spine's Staging preparation row requires a newly introduced idempotent command if the catalog comparison finds one. If the comparison proves there are none, the module suite names a representative existing idempotent command to exercise on the affected write path. Review routes the context correction to deferred work. [Staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md#compatible-path-rollback-witness)
+  evidence: `epic-9-context.md` says “where applicable.” The architecture spine's Staging preparation row requires a newly introduced idempotent command if the catalog comparison finds one. If the comparison proves there are none, the module suite names a representative existing idempotent command to exercise on the affected write path. An unknown catalog delta, missing suitable witness or failed readback refuses automatic compatibility. Review routes the context correction to deferred work. [Staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md#compatible-path-rollback-witness)
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: Restore deputy ingress restrictions in the generated Epic 9 agent context (medium).
@@ -2738,7 +2738,7 @@ These entries retain or refine existing follow-ups; they do not claim a working 
 
 - source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
   summary: Repair the further constraint losses from the fa293aa9 regeneration of `epic-9-context.md` (medium).
-  evidence: The story's own commit rewrote the context. Besides BH1-BH4 above, it dropped `--rollback-on-failure` from the forbidden-rollback list and the "Story 9.5 currently lists only 'the deputy cannot approve'" gap note. The currency bullet (line 24) omits the weekly trigger and says "Story 9.1 decides…" rather than linking `docs/contracts/shared-infrastructure-currency-policy-v1.md`. The fix edits an agent-context file, so the review routes it to deferred work.
+  evidence: The story's own commit rewrote the context. The earlier entries under [Story 9.1 review (2026-11-16)](#deferred-from-story-91-review-2026-11-16) cover the staging rehearsal, deputy ingress, recovery timing and rollback-set findings. The regeneration also dropped `--rollback-on-failure` from the forbidden-rollback list and the "Story 9.5 currently lists only 'the deputy cannot approve'" gap note. The currency bullet (line 24) omits the weekly trigger and says "Story 9.1 decides…" rather than linking `docs/contracts/shared-infrastructure-currency-policy-v1.md`. The fix edits an agent-context file, so the review routes it to deferred work.
 
 ## Deferred from the Story 3.5 Tenants adoption review (2026-11-25)
 
