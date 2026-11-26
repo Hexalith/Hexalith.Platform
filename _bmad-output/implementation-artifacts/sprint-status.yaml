@@ -180,6 +180,7 @@ development_status:
   4-15-provide-staging-secrets-through-a-per-environment-openbao-an: backlog
   4-16-apply-the-staging-dapr-trust-domain-and-runtime-policy: backlog
   4-17-select-and-qualify-the-durable-production-broker: in-progress
+  # 2026-11-26 owner decision: The successor must pass all 12 Kafka vectors. RabbitMQ is deferred as DW-28. Kafka pressure, rotation, profile admission and dispatch approval are pending. Candidate-02 remains technical FAIL (20/24).
   # 2026-11-26 recheck: EventStore's committed Builds 6.8.5 tool, catalog and prepared profile verified. RabbitMQ release delivery, both Kafka witnesses and capture admission remain open. See docs/implementation/story-4-17-next-candidate-intake.md#1192-hosted-admission-recheck--2026-11-26.
   # 2026-11-26 initial intake: Dapr 1.19.2 preparation accepted. The original blockers and retained 20/24 Candidate-02 outcome are recorded in docs/implementation/story-4-17-next-candidate-intake.md#dapr-1192-candidate-intake--2026-11-26. Selection, production, target custody and G5 remain pending.
   # 2026-11-23: Dapr 1.19.2 successor intake requires EventStore 3.21 admission and verified broker fix provenance before a separately authorized 24-vector attempt.

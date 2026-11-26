@@ -1,13 +1,15 @@
 # Story 4.17 — offline broker remediation intake (2026-11-13)
 
-**Dapr 1.19.2 preparation accepted. EventStore's published Builds 6.8.5 package and
-prepared profile are verified. Hosted admission still requires supported RabbitMQ
-delivery, both Kafka witnesses and a capture-enabled EventStore profile.**
+**The owner approved Kafka-only scope for the next qualification.** Hosted
+admission waits on Kafka pressure and rotation evidence and a capture-enabled
+EventStore profile. RabbitMQ is deferred under DW-28 and excluded from the
+successor until separately qualified.
 Platform 4.17 and EventStore 3.21 remain **in-progress**. The latest retained result is
 candidate-02's technical **FAIL, 20/24**. All five historical guarantees remain
 **REJECTED/open**. Broker selection is **null** and production eligibility **FAIL**.
 
-[Current admission check and toolchain verification](#1192-hosted-admission-recheck--2026-11-26) ·
+[Current Kafka-only intake](#kafka-only-successor--2026-11-26) ·
+[Comparison-profile admission check and toolchain verification](#1192-hosted-admission-recheck--2026-11-26) ·
 [Original 1.19.2 intake decision and prepared attempt](#dapr-1192-candidate-intake--2026-11-26)
 
 **Previous handoff (2026-11-14):** packet preservation and both public RabbitMQ submissions are
@@ -962,6 +964,9 @@ BASH
 
 ## 1.19.2 hosted admission recheck — 2026-11-26
 
+This recheck describes the two-broker comparison profile. The later
+[Kafka-only decision](#kafka-only-successor--2026-11-26) governs the successor.
+
 EventStore committed its Builds 6.8.5 adoption at
 `3575d76428187dd979cfa9d9d1e145c99709c156`. The published package and local Dapr
 executables match the approved comparison tuple. These results apply to that
@@ -1014,7 +1019,8 @@ authentication can return the AMQP client's generic `ErrCredentials` instead,
 so release delivery still leaves that exact denial to prove.
 [Dapr release](https://github.com/dapr/dapr/releases/tag/v1.19.2) ·
 [RabbitMQ publish failures](https://github.com/dapr/components-contrib/pull/4767) ·
-[RabbitMQ mandatory returns](https://github.com/dapr/components-contrib/pull/4768)
+[RabbitMQ mandatory returns](https://github.com/dapr/components-contrib/pull/4768) ·
+[Deferred work DW-28](../../_bmad-output/implementation-artifacts/deferred-work.md#dw-28-qualify-the-rabbitmq-fixes-in-a-supported-dapr-release)
 
 Kafka pressure still needs an attributable Produce error 89. For Kafka rotation,
 prove earlier invocations and detached retries on the same live old publisher
@@ -1031,3 +1037,25 @@ with the configuration from the original dispatch reproduced integrity, technica
 and authority exits `0/1/1`, byte-identical stdout and empty stderr. All five
 historical guarantees remain open, broker selection is null and production
 eligibility is FAIL. [Independently verified Candidate-02 result](story-4-17-broker-candidate-02-hosted-attempt-1.md)
+
+## Kafka-only successor — 2026-11-26
+
+The owner approved Kafka as the sole broker in scope for the next qualification.
+The candidate must pass all 12 Kafka scenarios from the existing inventory.
+The runtime and component provenance, broker-derived errors, time bounds,
+exact-ID persisted readback, independent verification and cleanup controls apply
+to the Kafka successor. RabbitMQ remains open under DW-28 and needs separate
+qualification before it can enter a hosted candidate. Candidate-02's 24-vector
+record retains its 20/24 technical FAIL. [Approved change](../../_bmad-output/planning-artifacts/sprint-change-proposal-2026-11-26-kafka-only.md) ·
+[RabbitMQ deferred work](../../_bmad-output/implementation-artifacts/deferred-work.md#dw-28-qualify-the-rabbitmq-fixes-in-a-supported-dapr-release)
+
+| Remaining requirement | What qualifies |
+| --- | --- |
+| Kafka backpressure | A supported fault that makes the real Dapr Produce request receive attributable error 89 on `qualification.backpressure`, with zero acknowledged loss and the existing bounded cancellation and recovery controls. The retained byte-rate quota throttles Produce and did not yield this rejection. |
+| Kafka credential rotation | Completion of earlier work, including detached retries, on the same live old publisher or an accepted per-request discriminator. Join the stale publish and persisted readback to the actual Produce request, authenticated principal and effective deny ACL. Keep the positive new-generation control. |
+| Capture profile and dispatch | EventStore must version an exact Kafka-only profile whose installer, producer and verifier agree on broker `kafka` and all 12 Kafka vectors. Reject absent vectors and extra brokers. The existing two-broker comparison profile requires both brokers and refuses live capture. Bind the exact supported inputs and qualify the new profile offline before requesting one hosted attempt. |
+| Broker selection and production | A Kafka technical pass, matching staging and recovery evidence and the authenticated AD-26 decisions on the exact subject. The owner approved qualification scope, and selection remains null and production eligibility FAIL. |
+
+The existing AD-26 preparation package is a hash-bound record of the earlier
+24-vector plan. The eventual ratification package must bind the new Kafka-only
+evidence and the existing AD-26 subject and authority requirements. [Retained AD-26 review index](../contracts/ad26-preparation/review-index.json)
