@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-26-2026 08:56
+last_updated: 11-26-2026 09:19
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -149,7 +149,7 @@ development_status:
   # 2026-11-25: full review applied 5 patches, deferred staging realm naming to 4.19 and rejected 9 findings.
   3-4-generate-the-local-realm-from-the-realm-contract: done
   3-5-provide-the-synthetic-tenant-in-local-and-ci-environments: done
-  3-6-run-all-seven-mvp-modules-together-locally: in-progress
+  3-6-run-all-seven-mvp-modules-together-locally: review
   3-7-discover-enabled-operations-through-connected-mcpcli: backlog
   3-8-execute-and-refuse-operations-through-local-mcpcli-cli-and-m: backlog
   3-9-prove-candidate-artifact-identity-in-ci-evidence: backlog

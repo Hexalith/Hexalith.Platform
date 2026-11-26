@@ -2810,3 +2810,13 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Platform
   summary: Record which production gateway image loads Folders' idempotency adapters and its `EventStore:Extensions` entry (folders, major 1) (medium).
   evidence: Folders stopped building its `eventstore` image. Its production fragment (`deploy/dapr/production/sidecar-config-bindings.yaml`) configures the `hexalith-eventstore` deployment but never names its image (`service-images.yaml` binds only server, workers and ui). A production gateway without `Hexalith.Folders.EventStoreExtensions` and that extension entry registers no Folders adapters. Settle it with the production composition of the Platform host.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Keep `builds-execution-sha` in step with the pinned `prepare-domain-release` action when Dependabot bumps it (medium).
+  evidence: A 2026-11-20 Dependabot bump moved `.github/workflows/release.yml`'s action ref to Builds v6.1.0 but left `builds-execution-sha`, `HEXALITH_BUILDS_EXECUTION_SHA`, `scripts/validate-publication-preflight.sh` and `scripts/tests/test_ci_cd_tooling.py` at v4.48.2. The action refuses the mismatch, so release run 45723655711 failed before NuGet login. Fix `20f5cf01` realigned the four pins by hand. The next bump repeats the failure unless CI checks that the pins match or the bump updates them together.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Stop `OperationalStatusPersistenceTests.IndependentWritersForTheSameDeliveryConvergeWithoutDoubleAdvance` from failing when both concurrent writers lose the race (low, pre-existing).
+  evidence: In CI run 45774604639 (first attempt), both writers returned `Indeterminate` with `operational_store_unavailable`, so `outcomes.ShouldContain(result => result.IsSuccess)` failed (`OperationalStatusPersistenceTests.cs:59`). The commit under test changed no .NET code, and the rerun passed. The failure blocks the exact-source CI that `release.yml` requires.
