@@ -2,7 +2,7 @@
 title: '9.1 Decide the shared-infrastructure currency policy'
 type: 'feature'
 created: '2026-11-15'
-status: 'done'
+status: 'in-progress'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'a69e4b4b9ad374807829338856bb149fd55a198e'
@@ -104,6 +104,46 @@ Code review 2026-11-25 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - low — roles held by different people: sole owner; unlikely.
 - low — policy text has no commit anchor: a file cannot contain its own digest; the spec records it, and the closing commit is determinable.
 - low — `review_loop_iteration` unchanged: spec bookkeeping; the fix edits the spec under review.
+
+### Review Findings (delta review, 2026-11-26)
+
+Code review 2026-11-26 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over `6046e6f1^..868b11cc`, the unreviewed 2026-11-25 patch delta, scoped to the policy, README, this spec and deferred-work. Verification Gap found no gaps.
+
+- [ ] [Review][Patch] Define which production attempts trigger the check [docs/contracts/shared-infrastructure-currency-policy-v1.md:56-58] — resolved from decision 2026-11-26: Administrator chose "release promotions". Define a production release attempt as one that deploys a release in automatic or Administrator-approved mode. Rollbacks, configuration-only changes, rotation rollouts, catalog activations, other approved manual changes, infrastructure-kind and recovery-kind attempts are outside this trigger; the weekly check still covers that infrastructure. Record the decision in the header. Finding: The patch review changed "every production attempt" (frozen Always, AC1, spine G3 row) to "every production release attempt" and never defined it. Spine release-kind attempts also cover rollbacks, configuration-only changes, rotation rollouts, catalog activations, realm-contract and operator-artifact changes and baseline re-deploys, and Administrator-approved manual workload or routing changes are approved-mode attempts. The record trigger is still `production-attempt`. Story 9.2 cannot tell which attempts are gated without a further policy choice (AC2). Medium (blind-hunter+acceptance-auditor+edge-case-hunter).
+- [ ] [Review][Patch] Fixes published only on unsupported lines fail closed [docs/contracts/shared-infrastructure-currency-policy-v1.md:123-124,280] — resolved from decision 2026-11-26: Administrator chose "no deadline, record". An advisory whose published fixes are all on lines unsupported at check time has no release-based deadline; record the advisory, those fixed releases and the reason, and make row 280 a pass with that record. Other cases where no deadline can be established (unknown timing, order or applicability) still fail closed. Record the decision in the header. Finding: Frozen Decision 3 starts a deadline only from a fix on the deployed line or the earliest supported line carrying it. When every published fix is on a line unsupported at check time, neither clause applies, as with row 281's no-fix pass. The patch fails it closed although nothing is unknown, and no compliant state exists until upstream fixes a supported line, so automatic promotion stays blocked indefinitely. Medium (acceptance-auditor).
+- [ ] [Review][Patch] Monthly-drill failures add no block without an Administrator decision [docs/contracts/shared-infrastructure-currency-policy-v1.md:86-87,221,290] — resolved from decision 2026-11-26: Administrator kept "no block". No rule change; list the 2026-11-26 decision in the header. Finding: The frozen Always rule says a failed check blocks automatic promotion; Decision 2 exempts only the weekly check. The 2026-11-25 patch chose "no block" for drill results. Each attempt's own current check still blocks stale infrastructure, so the gap is process-only. Low (acceptance-auditor).
+- [ ] [Review][Patch] README drops the no-enforcement disclaimer and reads as enforced [README.md:401-408] — Spec Never: "Do not claim enforcement or current compliance." The present-tense "The policy checks…" replaced the sentence saying publication establishes neither. Medium (blind-hunter+acceptance-auditor+edge-case-hunter).
+- [ ] [Review][Patch] The replacement-job epoch rule can gate recovery [docs/contracts/shared-infrastructure-currency-policy-v1.md:72-73] — Spine Attempt ownership lets a replacement job resume the same attempt only to perform its remaining single recovery. "A replacement job with a new epoch needs its own check" either describes a state admission never reaches or makes Story 9.2 gate a partly mutated production's recovery on a fresh check that fails closed on unavailable upstream data. Say the resumed recovery is not admission and is not gated; keep row 291's stale-epoch refusal. Medium (blind-hunter+edge-case-hunter).
+- [ ] [Review][Patch] The result-record paragraph omits the release-mode binding [docs/contracts/shared-infrastructure-currency-policy-v1.md:207-208] — Lines 70-71 bind attempt ID, release mode and epoch; the record paragraph binds only attempt and epoch (blind-hunter+edge-case-hunter+acceptance-auditor).
+- [ ] [Review][Patch] Row 276 says "earliest" while the rule says "oldest … in upstream release-line order" [docs/contracts/shared-infrastructure-currency-policy-v1.md:276] — "Oldest" is the literal reading of the frozen "earliest supported line"; only the example wording diverges (edge-case-hunter+blind-hunter+acceptance-auditor).
+- [ ] [Review][Patch] Month- or quarter-precision boundaries are undefined [docs/contracts/shared-infrastructure-currency-policy-v1.md:101-104] — Node OS sources often publish end of life by month only; extend the date-only start-of-period rule (edge-case-hunter).
+- [ ] [Review][Patch] The new deferred entry cites "BH1-BH4 above", labels the ledger does not carry [_bmad-output/implementation-artifacts/deferred-work.md:2741] (blind-hunter).
+- [ ] [Review][Patch] The BH1 deferred entry omits staging v2's refusal case [_bmad-output/implementation-artifacts/deferred-work.md:2362-2363] — Spine Staging preparation: an unknown delta, missing suitable witness or failed readback refuses automatic compatibility. A context restored from the entry would drop it (edge-case-hunter).
+- [ ] [Review][Patch] The header names an unlinked "AD-26 snapshot" [docs/contracts/shared-infrastructure-currency-policy-v1.md:6] — The only retained identity of the 2026-11-16 text (`eebd46aa…`) is the review-only AD-26 index at `2752ef60`; link it so readers can tell it from canonical v1 (blind-hunter).
+
+**Rejected (delta review):**
+- false — fallback deadline moves both ways: the Administrator's 2026-11-25 "deployed line governs" decision moves the deadline to the deployed line's first fix (the day-30 to day-50 example); check-time eligibility follows the frozen "earliest supported line"; line 115 retains the selected fixed release.
+- false — "any evidence" makes fix evidence optional: unknown fix status fails closed (line 125), so a fixed judgment needs evidence; "any" covers the unfixed case, where none exists.
+- false — weekly notification content unconstrained: the spine Diagnostics row limits every notification's content; the policy uses that channel and does not override it.
+- false — weekly target undefined without active production (blind-hunter, edge-case-hunter; 2 findings): decision 1 checks only shared and environment-layer infrastructure, which exists whether or not an application serves; empty production means no working baseline.
+- false — component instances versus IDs: step 1 mirrors hosted-profile binding v2 (`expectedComponentIds` plus a source enumerating every actual instance); step 2 observes each instance from that independent set.
+- false — Story 6.22 patch drift: drift fails by frozen design, unchanged from the 2026-11-16 text; re-pinning through Story 4.9 is the path back.
+- false — Story 9.7 sentence is a no-op and currency v2 has no gate (blind-hunter, edge-case-hunter; 2 findings): the 2026-11-25 review limited the sentence on purpose; lines 239-241 and the 9.2 row require a new version and explicit adoption bound to the exact text with qualified cases.
+- false — Story 9.8 gets an ongoing duty: Story 9.8 AC2 and AC3 own automatic promotion conditioned on a passing currency check.
+- false — final status not recorded: this review sets it.
+- false — README sentence and link formatting: neighbouring policy sections use the same trailing-link lines (README 389-393), and the sentence parses.
+- false — new ledger entry lacks `owner:`: neither the sweep workflow nor the 2026-11-16 Story 9.1 entries use the field.
+- false — BH1 entry rewritten in place: the 2026-11-25 review's patch directed that update.
+- false — historical triage row still states the old rule: the patch review kept it on purpose; the ledger carries the current rule.
+- false — recording becomes conditional: the qualifier applies only when the record store fails, and admission is then blocked or refused, so nothing proceeds unrecorded.
+- false — extra profile IDs: "same set" is equality, and step 5 passes only when every required comparison passes.
+- spec edit — second patch round unrecorded in Implementation Notes (blind-hunter, acceptance-auditor; 2 findings): all 14 patch-review patches are present at `868b11cc`; recording them edits the spec under review.
+- spec edit — 2026-11-25 verification retains no script: the auditor re-verified the frozen-block hash, policy SHA-256 `864af1c6…`, the 25 cases and the links.
+- spec edit — the approval-reuse rejection cites the wrong spine row: reuse stays within Decision 4, since any newly failing component refuses the attempt.
+- low — result from another policy version or evaluator: the evaluator runs inside the production workflow and Story 9.2 adoption binds the exact text and evaluator (line 250); the fix adds verification requirements.
+- low — unordered or tied release lines: line 123 already fails closed when no eligible deadline can be established; the fix adds Story 4.9 requirements.
+- low — NotReady, cordoned or Pending instances: Story 9.2 implementation detail; the fix adds branch rules.
+- low — weekly run during an in-flight attempt: the weekly result blocks nothing; the fix adds lock coordination.
 
 ## Implementation Notes
 
