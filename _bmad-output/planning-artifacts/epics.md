@@ -445,7 +445,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - The EventStore-ratified template is paired with a profile inventory (environment and shared facets plus the deploy toolchain) under a profile digest.
   - Qualification records are issued per attempt, and the production-promoted record is renewed on an environment-layer or shared change.
   - The Dapr skew rule applies.
-  - Security currency is checked at each production attempt and monthly drill, and every expiring credential has a named renewal owner.
+  - Security currency is checked at production release admission, at every monthly drill and weekly, and every expiring credential has a named renewal owner.
 - AR-32 (Release tiers):
   - Tiers are the application package, the environment layer (per environment, forward-only) and shared infrastructure (both locks, rehearsed from G1), plus what sits outside every release. Every object belongs to exactly one tier.
   - Namespaces, environment-identity RBAC, StorageClasses and PriorityClasses are shared infrastructure. Data services, broker, OpenBao, tenant-key store, volumes, Gateway and Certificates, Dapr Components/HTTPEndpoints/MCPServers, NetworkPolicies, quotas, limits and bootstrap Secrets are environment-layer objects. Workloads, services, HTTPRoutes, Dapr Configurations, WorkflowAccessPolicies, Subscriptions and Resiliency belong to the application package.
@@ -4720,27 +4720,32 @@ So that "security-current" has a precise, enforceable meaning before automatic p
 **Given** the profile inventory
 **When** this story completes
 **Then** a decision record fixes the checked components, the check cadence, the allowed lag behind supported, security-current versions, and whether a failed check also affects Administrator-approved attempts
-**And** the check still runs at every production attempt and every monthly drill
+**And** the check still runs at admission of every production release attempt, at every monthly drill and on a weekly schedule
 
 ### Story 9.2: Run the shared-infrastructure currency check
 
 As Administrator,
-I want deployed shared components compared with the inventory at every production attempt and every drill,
+I want deployed shared components compared with the inventory at every production release admission, every monthly drill and on a weekly schedule,
 So that automatic promotion never runs on stale or unpatched infrastructure.
 
 **Repo:** Hexalith.Platform · **Covers:** FR-10, AR-31, AR-61
 
 **Acceptance Criteria:**
 
-**Given** a production attempt or a monthly drill
+**Given** admission of a production release attempt, a monthly drill or the weekly schedule
 **When** the check runs
-**Then** it compares each deployed shared component, including Rancher, required agents, management-cluster distribution and backup operator, with the supported, security-current inventory under Story 9.1
+**Then** it compares each deployed shared component, including Rancher, required agents, the management-cluster distribution and the backup operator, and each environment-layer provider with the supported, security-current inventory under Story 9.1
 **And** it checks the qualified management/workload version pairing and records exact deployed identities and the result.
 
-**Given** a failed check
-**When** an automatic promotion is evaluated
+**Given** a failed check at release admission
+**When** automatic promotion is evaluated
 **Then** the automatic path is blocked, naming the components that are out of date
-**And** approved attempts follow the policy from Story 9.1
+**And** an approved attempt proceeds only if its Administrator record names every failing component
+
+**Given** a failed monthly-drill or weekly check
+**When** the result is recorded
+**Then** it adds no attempt block and sets no promotion stop
+**And** a weekly failure, or a known end of life within 30 days, notifies Administrator
 
 ### Story 9.3: Verify EventStore's G3 confirmations
 

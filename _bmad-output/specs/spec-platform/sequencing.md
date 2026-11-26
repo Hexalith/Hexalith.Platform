@@ -76,7 +76,7 @@ A candidate-specific named restore belongs to admission of the applicable retain
 
 - The SM-5 rehearsals pass.
 - EventStore confirms the AD-15 retention entries, the catalog activation order, and production-promoted record invalidation and renewal (spine Owned work, First production attempt).
-- The shared-infrastructure currency policy fixes the checked inventory, allowed lag and effect on approved attempts with checks at every production attempt, every monthly drill and on a weekly schedule.
+- The shared-infrastructure currency policy fixes the checked inventory, allowed lag and effect on approved attempts with checks at admission of every production release attempt, every monthly drill and on a weekly schedule.
 
 **Suspension:** a change to verification, recovery or rollback-set policy suspends automatic promotion until the affected SM-5 rehearsals repeat.
 
