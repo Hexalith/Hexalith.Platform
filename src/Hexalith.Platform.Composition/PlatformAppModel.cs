@@ -67,7 +67,7 @@ public static class PlatformAppModel
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, UseGeneratedRealm = !timesheets && (active is null or PlatformDeclarationSet.CompleteModule), EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, UseGeneratedRealm = !timesheets && active == PlatformDeclarationSet.CompleteModule, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
     }
 
     /// <summary>Composes the key-bearing Builds runner handoff, keeping its package-mode gateway seed.</summary>
@@ -209,6 +209,8 @@ public static class PlatformAppModel
         var packageLock = options.CompleteRunner && options.Mapping.Mode == WorkspaceMode.Package
             ? PlatformPackageCatalogQualification.RequireCompletePackages(options, declarations, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode)
             : null;
+        if (packageLock is not null && options.UseGeneratedRealm && servers.FirstOrDefault(server => server.Image is not null) is { } containerOwner)
+            throw new InvalidDataException($"{containerOwner.Module.Source}: {containerOwner.AppId}: the generated local realm is on host loopback. Complete package startup requires issuer access from the owner container.");
         if (packageLock is null && options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties" || fixturePackageTest))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);

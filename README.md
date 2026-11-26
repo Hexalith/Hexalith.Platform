@@ -517,7 +517,8 @@ output. Read `HXI010` and `readiness.json` for the effective startup deadline,
 elapsed time, and readiness result. Complete execution requires a Builds
 release that supports this selector and compatible owner inputs. Add
 `--mode package` to `run` after the authenticated owner packages, declarations
-and executable images are available at the catalog pins.
+and executable images are available at the catalog pins and owner containers
+can reach the generated realm issuer.
 
 ## Run and debug a technical module
 

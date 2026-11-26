@@ -39,6 +39,15 @@ public static class PlatformServerBindings
         ["memories/clock"] = "registry.hexalith.com/memories-access-telemetry-clock",
         ["memories/telemetry"] = "registry.hexalith.com/memories-access-telemetry",
     };
+
+    private static readonly IReadOnlyDictionary<string, string> _completeOwnerImages = new Dictionary<string, string>
+    {
+        ["conversations/api"] = "registry.hexalith.com/conversations-api",
+        ["conversations/domain"] = "registry.hexalith.com/conversations",
+        ["folders/domain"] = "registry.hexalith.com/hexalith-folders-server",
+        ["folders/workers"] = "registry.hexalith.com/hexalith-folders-workers",
+    };
+
     /// <summary>Gets the repository identity owning a declaration.</summary>
     public static string Repository(string module) => module switch
     {
@@ -76,7 +85,10 @@ public static class PlatformServerBindings
                 string? relative = options.Projects.GetValueOrDefault(identity);
                 if (identity == "timesheets/host" && relative is null) relative = PlatformTimesheetsBinding.Project;
                 if (source?.Origin != "source" || source.Path is null || relative is null)
-                    throw Failure(module, identity, relative ?? "project", $"mapped source project is unavailable for '{Repository(id)}'");
+                {
+                    string expectedProject = relative is null ? string.Empty : $" at '{relative}'";
+                    throw Failure(module, identity, "project", $"mapped source project is unavailable for '{Repository(id)}'{expectedProject}");
+                }
                 project = Path.GetFullPath(Path.Combine(source.Path, relative));
                 bool privateRunnerGateway = identity == "eventstore/gateway" && options.RunPlan?.SelectedTest?.ModuleId == "parties";
                 if (privateRunnerGateway)
@@ -107,8 +119,10 @@ public static class PlatformServerBindings
             }
             else
             {
-                if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository))
-                    throw Failure(module, identity, "image", $"released executable image is unavailable for '{Repository(id)}'");
+                string? repository = options.Images.GetValueOrDefault(identity)
+                    ?? (options.CompleteRunner ? _completeOwnerImages.GetValueOrDefault(identity) : null);
+                if (string.IsNullOrWhiteSpace(repository))
+                    throw Failure(module, identity, "image", $"released image is unavailable for '{Repository(id)}'");
                 string version = Version(options, id, module.Source);
                 image = repository + ":" + version;
                 if (options.CompleteRunner)
