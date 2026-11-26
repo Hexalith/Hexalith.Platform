@@ -21,6 +21,7 @@ public sealed record PlatformServerBinding(
 
     /// <summary>Gets the expected configuration digest from the immutable released manifest.</summary>
     internal string? ImageConfigDigest { get; init; }
+    internal string? ReleasedImageIndexDigest { get; init; }
 
     /// <summary>Gets the immutable image reference supplied to the runtime.</summary>
     internal string? ImmutableImage => ImageDigest is null || Image is not { } image ? null : image[..image.LastIndexOf(':')] + "@sha256:" + ImageDigest;

@@ -57,6 +57,160 @@
       "tokenExchange": true
     },
     {
+      "id": "conversations-tenant-access",
+      "classes": [
+        "service"
+      ],
+      "principal": "conversations/tenant-access-history-reader",
+      "principalAudience": "hexalith-eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:permission"
+      ],
+      "audiences": [
+        "hexalith-eventstore"
+      ],
+      "roles": [],
+      "operations": [],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "folders",
+      "classes": [
+        "service"
+      ],
+      "principal": "platform/folders-source",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:operation"
+      ],
+      "audiences": [
+        "eventstore"
+      ],
+      "roles": [
+        "invoker"
+      ],
+      "operations": [
+        "eventstore:stream-read",
+        "eventstore:stream-scan-native",
+        "eventstore:trusted-effect"
+      ],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "folders-workers",
+      "classes": [
+        "service"
+      ],
+      "principal": "platform/folders-workers-source",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:operation"
+      ],
+      "audiences": [
+        "eventstore"
+      ],
+      "roles": [
+        "invoker"
+      ],
+      "operations": [
+        "eventstore:stream-read",
+        "eventstore:stream-scan-native",
+        "eventstore:trusted-effect"
+      ],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "tenants",
+      "classes": [
+        "service"
+      ],
+      "principal": "platform/tenants-workload",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:operation"
+      ],
+      "audiences": [
+        "eventstore"
+      ],
+      "roles": [
+        "invoker"
+      ],
+      "operations": [
+        "eventstore:stream-read",
+        "eventstore:command-submit",
+        "eventstore:trusted-effect"
+      ],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "memories",
+      "classes": [
+        "service"
+      ],
+      "principal": "platform/memories-workload",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:operation"
+      ],
+      "audiences": [
+        "eventstore"
+      ],
+      "roles": [
+        "invoker"
+      ],
+      "operations": [
+        "eventstore:command-submit",
+        "eventstore:command-status",
+        "eventstore:trusted-effect"
+      ],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
+      "id": "projects",
+      "classes": [
+        "service"
+      ],
+      "principal": "platform/projects-workload",
+      "principalAudience": "eventstore",
+      "fullScopeAllowed": false,
+      "scopes": [],
+      "claims": [
+        "eventstore:surface",
+        "eventstore:operation"
+      ],
+      "audiences": [
+        "eventstore"
+      ],
+      "roles": [
+        "invoker"
+      ],
+      "operations": [
+        "eventstore:owner-authority-query"
+      ],
+      "standardFlow": false,
+      "tokenExchange": false
+    },
+    {
       "id": "eventstore-admin",
       "classes": ["service"],
       "principal": "works-preview/admin-workload",

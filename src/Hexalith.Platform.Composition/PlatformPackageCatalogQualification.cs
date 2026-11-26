@@ -38,6 +38,27 @@ internal static class PlatformPackageCatalogQualification
         return servers;
     }
 
+    /// <summary>Admits the complete runner's verified graph and locks each of its package inputs before launch.</summary>
+    internal static OwnerPackageLock RequireCompletePackages(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations, bool developmentRun)
+    {
+        if (!options.CompleteRunner || !developmentRun || !OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64
+            || options.Mapping.Mode != WorkspaceMode.Package || options.Images != PlatformServerBindings.ReferenceImages
+            || options.RunPlan is not { PlatformActiveModule: PlatformDeclarationSet.CompleteModule, SelectedTest: null, ExecutingTool: not null } plan
+            || !ReferenceEquals(plan.SourceMapping, options.Mapping) || !ReferenceEquals(plan.PlatformDeclarationPaths, options.DeclarationPaths)
+            || options.Mapping.PlatformIdentity is not { IsPlatformRepository: true } || !MatchesComposition(options, declarations.OrderBy(module => PlatformDeclarationSet.Id(module.Declaration), StringComparer.Ordinal).ToArray()))
+            throw new InvalidDataException("The complete Platform package environment requires the authenticated Development runner declaration and mapping.");
+
+        var owners = OwnerPackageLock.Load(OwnerPackageLock.PathFor(options.PlatformRoot));
+        RequireLockedVersions(owners, options, declarations.Select(module => PlatformDeclarationSet.Id(module.Declaration))
+            .Where(module => module is not PlatformDeclarationSet.CompleteModule and not "mcpcli"));
+        string mcpVersion = PlatformMcpCliCatalogVersion.Resolve(options, "complete Platform package environment")
+            ?? throw new InvalidDataException("Hexalith.McpCli.Abstractions: package pin is unavailable for the complete Platform environment.");
+        _ = owners.Require("Hexalith.McpCli.Abstractions", mcpVersion);
+        owners.RequireFamily("Hexalith.McpCli.", mcpVersion);
+        _ = VerifyPackageBytes(options, owners);
+        return owners;
+    }
+
     /// <summary>Validates the authenticated EventStore graph, then admits its catalog-selected owner packages through the lock.</summary>
     internal static OwnerPackageLock ValidateTestInputs(PlatformCompositionOptions options, IReadOnlyList<PlatformModuleDeclaration> declarations,
         IReadOnlyList<PlatformServerBinding> servers, bool developmentRun)

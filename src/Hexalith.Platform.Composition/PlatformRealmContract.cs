@@ -47,8 +47,11 @@ internal sealed class PlatformRealmContract
         EventStoreWorkloadOperations.GatewayCommandStatus, EventStoreWorkloadOperations.GatewayCommandSubmit,
         EventStoreWorkloadOperations.GatewayStreamRead,
         EventStoreWorkloadOperations.TrustedEffect, EventStoreWorkloadOperations.RouteCatalogRead,
-        EventStoreWorkloadOperations.GatewayOwnerAuthorityQuery,
+        EventStoreWorkloadOperations.GatewayOwnerAuthorityQuery, "eventstore:stream-scan-native",
     };
+
+    internal const string ConversationsReader = "conversations-tenant-access";
+    internal const string GatewayUserAudience = "hexalith-eventstore";
 
     private PlatformRealmContract(Declaration declaration) => Model = declaration;
 
@@ -179,7 +182,8 @@ internal sealed class PlatformRealmContract
             .Select(client => client.Id).ToHashSet(StringComparer.Ordinal);
         foreach (Client client in declaration.Clients.Where(client => client.Surface == "service"))
         {
-            if (client.Audiences.FirstOrDefault(audience => !services.Contains(audience)) is { } unknownAudience)
+            if (client.Audiences.FirstOrDefault(audience => !services.Contains(audience)
+                && !(client.Id == ConversationsReader && audience == GatewayUserAudience)) is { } unknownAudience)
             {
                 throw ClientError(client.Id, $"references unknown service audience '{unknownAudience}'");
             }
@@ -201,9 +205,22 @@ internal sealed class PlatformRealmContract
     internal IReadOnlyList<Client> SelectClients(IEnumerable<JsonElement> declarations)
     {
         Dictionary<string, Principal> principals = new(StringComparer.Ordinal);
+        HashSet<string> gatewayReceivers = new(StringComparer.Ordinal);
         foreach (JsonElement declaration in declarations)
         {
-            string moduleId = declaration.GetProperty("identity").GetProperty("moduleId").GetString()!;
+            JsonElement identity = declaration.GetProperty("identity");
+            string moduleId = identity.GetProperty("moduleId").GetString()!;
+            if (identity.TryGetProperty("servers", out var servers)
+                && declaration.TryGetProperty("surfaces", out var surfaces))
+            {
+                var approved = surfaces.GetProperty("interfaces").EnumerateArray()
+                    .Where(surface => surface.TryGetProperty("invocationRules", out var rules)
+                        && rules.EnumerateArray().Any(rule => rule.GetProperty("caller").GetString() == "eventstore"))
+                    .Select(surface => surface.GetProperty("server").GetString()).ToHashSet(StringComparer.Ordinal);
+                foreach (var server in servers.EnumerateArray())
+                    if (server.GetProperty("enabled").GetBoolean() && approved.Contains(server.GetProperty("id").GetString()))
+                        gatewayReceivers.Add(server.GetProperty("appId").GetString()!);
+            }
             if (!declaration.TryGetProperty("integration", out JsonElement integration)
                 || !integration.TryGetProperty("identityNeeds", out JsonElement needs))
             {
@@ -253,6 +270,13 @@ internal sealed class PlatformRealmContract
             throw new InvalidDataException($"Realm application principal '{principals.Keys.Order(StringComparer.Ordinal).First()}' has no client mapping.");
         }
 
+        int gateway = selected.FindIndex(client => client.Id == "eventstore");
+        if (gateway >= 0)
+        {
+            gatewayReceivers.Add("eventstore");
+            if (selected.Any(client => client.Id == "works")) gatewayReceivers.Add("works");
+            selected[gateway] = selected[gateway] with { Audiences = gatewayReceivers.Order(StringComparer.Ordinal).ToArray() };
+        }
         return selected;
     }
 
@@ -305,7 +329,17 @@ internal sealed class PlatformRealmContract
             throw ClientError(client.Id, "must use only the agent PKCE S256 loopback code flow for hexalith-eventstore with no roles");
         }
 
-        if (client.Surface == "service")
+        if (client.Id == ConversationsReader)
+        {
+            if (client.Surface != "service" || client.Principal != "conversations/tenant-access-history-reader"
+                || client.PrincipalAudience != GatewayUserAudience || client.Audiences is not [GatewayUserAudience]
+                || client.Operations.Length != 0 || client.Roles.Length != 0 || client.StandardFlow || client.TokenExchange
+                || !client.Claims.ToHashSet(StringComparer.Ordinal).SetEquals([RouteCatalogSurfacePolicy.ClaimType, "eventstore:permission"]))
+            {
+                throw ClientError(client.Id, "must have only the Conversations tenant-history reader grant");
+            }
+        }
+        else if (client.Surface == "service")
         {
             string[] mappedClaims = client.Id == "works"
                 ? [RouteCatalogSurfacePolicy.ClaimType, EventStoreWorkloadAuthenticationDefaults.OperationClaimType,

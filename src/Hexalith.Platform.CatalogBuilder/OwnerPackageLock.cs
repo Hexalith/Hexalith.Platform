@@ -40,7 +40,11 @@ internal sealed class OwnerPackageLock
     internal const string RelativePath = "eng/owner-packages.lock.json";
 
     private const string _regenerate = "; regenerate it with python3 eng/owner_packages_lock.py.";
-    private static readonly string[] _ownerPrefixes = ["Hexalith.EventStore.", "Hexalith.Tenants.", "Hexalith.Memories.", "Hexalith.Parties.", "Hexalith.McpCli."];
+    private static readonly string[] _ownerPrefixes =
+    [
+        "Hexalith.EventStore.", "Hexalith.Tenants.", "Hexalith.Memories.", "Hexalith.Parties.", "Hexalith.McpCli.",
+        "Hexalith.Conversations.", "Hexalith.Folders.", "Hexalith.Projects.",
+    ];
     private readonly Dictionary<string, OwnerPackageLockEntry> _entries;
 
     private OwnerPackageLock(string path, string sha256, Dictionary<string, OwnerPackageLockEntry> entries)

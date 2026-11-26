@@ -19,7 +19,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
         return remaining < maximum ? remaining : maximum;
     }
 
-    internal static PlatformRoutingCatalog Generate(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers, string workspace)
+    internal static PlatformRoutingCatalog Generate(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> servers, string workspace, OwnerPackageLock? completePackageLock = null)
     {
         string environment = options.RunPlan?.EnvironmentId ?? options.EnvironmentId ?? Path.GetFileName(workspace);
         string instance = environment + "-catalog";
@@ -27,8 +27,10 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
             || options.RunPlan is not null && options.EnvironmentId is not null && options.EnvironmentId != options.RunPlan.EnvironmentId)
             throw new InvalidDataException("The routing catalog requires this run's exact environment identity and a derived instance identifier of at most 128 characters.");
         _ = ReaderTimeout(TimeSpan.FromMinutes(5), options.RunPlan?.StartupDeadlineUtc, DateTimeOffset.UtcNow);
-        OwnerPackageLock? ownerPackages = null;
-        if (options.Mapping.Mode == WorkspaceMode.Package)
+        OwnerPackageLock? ownerPackages = completePackageLock;
+        if (completePackageLock is not null && (!options.CompleteRunner || options.Mapping.Mode != WorkspaceMode.Package))
+            throw new InvalidDataException("A complete owner package lock requires the complete package runner.");
+        if (options.Mapping.Mode == WorkspaceMode.Package && completePackageLock is null)
         {
             bool authorized = options.ActiveModule switch
             {
@@ -131,6 +133,7 @@ internal sealed record PlatformRoutingCatalog(string InstanceId, string Director
                 System.IO.Directory.Delete(pending, true);
             }
             else System.IO.Directory.Move(pending, target);
+            if (completePackageLock is not null) File.WriteAllBytes(Path.Combine(target, "complete-package-reader-receipt.json"), verifiedReceipt);
             if (options.CurrentOwnerProof is not null) File.WriteAllBytes(Path.Combine(target, "current-reader-receipt.json"), verifiedReceipt);
             if (options.FixturePackageProof is not null) File.WriteAllBytes(Path.Combine(target, "fixture-reader-receipt.json"), verifiedReceipt);
             return new(instance, target, Path.Combine(target, "catalog.json"), root, catalog,

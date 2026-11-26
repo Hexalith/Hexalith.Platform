@@ -51,6 +51,8 @@ public sealed record PlatformCompositionOptions
     /// <summary>Gets a runner-owned run plan, when launched through Builds.</summary>
     public Hexalith.Builds.Tooling.Runtime.CompositionRunPlan? RunPlan { get; init; }
     internal PlatformFixturePackageQualification? FixturePackageProof { get; init; }
+    internal bool UseGeneratedRealm { get; init; }
+    internal bool CompleteRunner { get; init; }
     /// <summary>Gets the selected local PostgreSQL retention profile; null preserves the default Redis composition.</summary>
     public PlatformRetentionProfile? RetentionProfile { get; init; }
     /// <summary>Gets the image-preflight process boundary, replaceable only by the composition tests.</summary>

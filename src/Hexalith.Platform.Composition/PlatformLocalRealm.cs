@@ -76,14 +76,31 @@ internal static class PlatformLocalRealm
             }
         }
 
-        Dictionary<string, string> secrets = clients.Where(client => client.Surface != "agent")
+        return PrepareLocal(contract, clients, port, syntheticTenantId);
+    }
+
+    internal static PreparedRealm PrepareDevelopment(IReadOnlyList<PlatformModuleDeclaration> declarations, int port, string syntheticTenantId,
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
+    {
+        var contract = PlatformRealmContract.Load();
+        var clients = contract.SelectClients(PlatformRealmContract.SelectDeclarations(declarations));
+        if (gatewayQueryDomains is { Count: > 0 })
+            clients = clients.Select(client => client.Id == "eventstore" ? client with { BoundOperations = [EventStoreWorkloadOperations.DomainServiceQuery] } : client).ToArray();
+        return PrepareLocal(contract, clients, port, syntheticTenantId, gatewayQueryDomains);
+    }
+
+    private static PreparedRealm PrepareLocal(PlatformRealmContract contract, IReadOnlyList<Client> clients, int port, string syntheticTenantId,
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
+    {
+        var secrets = clients.Where(client => contract.Model.Classes[client.Surface] == "confidential")
             .ToDictionary(client => client.Id, _ => Convert.ToHexString(RandomNumberGenerator.GetBytes(32)), StringComparer.Ordinal);
         var realmUrl = new UriBuilder(Uri.UriSchemeHttp, "127.0.0.1", port, "/realms/" + contract.Model.Realm).Uri;
-        return Prepare(contract, clients, realmUrl, syntheticTenantId, secrets);
+        return Prepare(contract, clients, realmUrl, syntheticTenantId, secrets, gatewayQueryDomains);
     }
 
     private static PreparedRealm Prepare(PlatformRealmContract contract, IReadOnlyList<Client> clients,
-        Uri realmUrl, string syntheticTenantId, IReadOnlyDictionary<string, string> clientSecrets)
+        Uri realmUrl, string syntheticTenantId, IReadOnlyDictionary<string, string> clientSecrets,
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
     {
         ArgumentNullException.ThrowIfNull(realmUrl);
         ArgumentNullException.ThrowIfNull(clientSecrets);
@@ -122,17 +139,19 @@ internal static class PlatformLocalRealm
 
         string import = RenderImport(realm, clients, realmUrl, syntheticTenantId);
         return new PreparedRealm(realmUrl, realm.Realm, import, secrets,
-            clients.SingleOrDefault(client => client.BoundOperations is not null), syntheticTenantId);
+            clients.SingleOrDefault(client => client.BoundOperations is not null), syntheticTenantId, gatewayQueryDomains);
     }
 
     private static string RenderImport(RealmContract realm, IReadOnlyList<Client> clients, Uri realmUrl, string tenant)
     {
         HashSet<string> selectedServices = clients.Where(client => client.Surface == "service")
             .Select(client => client.Id).ToHashSet(StringComparer.Ordinal);
-        var serviceAudiences = clients.Where(client => client.Surface == "service")
-            .ToDictionary(client => client.Id, client => client.Audiences.Where(selectedServices.Contains).Order(StringComparer.Ordinal).ToArray(), StringComparer.Ordinal);
+        var workloadClients = clients.Where(client => client.Surface == "service" && client.Id != PlatformRealmContract.ConversationsReader).ToArray();
+        var serviceAudiences = workloadClients
+            .ToDictionary(client => client.Id, client => client.Audiences
+                .Where(audience => client.Id == "eventstore" || selectedServices.Contains(audience)).Order(StringComparer.Ordinal).ToArray(), StringComparer.Ordinal);
         SortedDictionary<string, SortedSet<string>> audienceRoles = new(StringComparer.Ordinal);
-        foreach (Client client in clients.Where(client => client.Surface == "service"))
+        foreach (Client client in workloadClients)
         {
             string[] selectedAudiences = serviceAudiences[client.Id];
             if (selectedAudiences.Length == 0)
@@ -161,7 +180,8 @@ internal static class PlatformLocalRealm
         foreach ((string audience, SortedSet<string> roles) in audienceRoles)
         {
             string scope = AudienceScope(audience);
-            scopes.Add(PlatformOwnerServices.Scope(scope, AudienceMapper(audience, clientAudience: true)));
+            scopes.Add(PlatformOwnerServices.Scope(scope, AudienceMapper(audience, clientAudience: selectedServices.Contains(audience))));
+            if (!selectedServices.Contains(audience)) continue;
             roleDefinitions.Add(audience, new JsonArray(roles.Select(role => (JsonNode)new JsonObject { ["name"] = role }).ToArray()));
             roleScopes.Add(audience, new JsonArray(new JsonObject { ["clientScope"] = scope, ["roles"] = Strings(roles) }));
         }
@@ -194,14 +214,19 @@ internal static class PlatformLocalRealm
 
             JsonArray mappers = new(PlatformOwnerServices.Claim(RouteCatalogSurfacePolicy.ClaimType, client.Surface));
             IEnumerable<string> optionalScopes = client.Scopes;
-            if (service)
+            if (client.Id == PlatformRealmContract.ConversationsReader)
+            {
+                mappers.Add(AudienceMapper(PlatformRealmContract.GatewayUserAudience, clientAudience: false));
+                mappers.Add(PlatformOwnerServices.Claim("eventstore:permission", "tenants:read"));
+            }
+            else if (service)
             {
                 string[] audiences = serviceAudiences[client.Id];
                 optionalScopes = optionalScopes.Concat(audiences.Select(AudienceScope)).Concat(client.Operations.Select(OperationScope));
                 JsonObject assignedRoles = new();
                 foreach (string audience in audiences)
                 {
-                    assignedRoles.Add(audience, Strings(client.Roles));
+                    if (selectedServices.Contains(audience)) assignedRoles.Add(audience, Strings(client.Roles));
                 }
 
                 users.Add(new JsonObject
@@ -359,7 +384,7 @@ internal static class PlatformLocalRealm
     }
 
     internal sealed class PreparedRealm(Uri url, string name, string import, IReadOnlyDictionary<string, string> secrets,
-        Client? boundClient, string syntheticTenantId)
+        Client? boundClient, string syntheticTenantId, IReadOnlyDictionary<string, string[]>? gatewayQueryDomains)
     {
         internal string Import => import;
 
@@ -372,15 +397,29 @@ internal static class PlatformLocalRealm
 
             long notBefore = now.AddMinutes(-1).ToUnixTimeSeconds();
             long expiresAt = now.AddDays(1).ToUnixTimeSeconds();
-            var bindings = new JsonObject
+            JsonObject Bindings(string[] domains) => new()
             {
                 [EventStoreWorkloadAuthenticationDefaults.TenantBindingClaimType] = new JsonArray(syntheticTenantId),
-                [EventStoreWorkloadAuthenticationDefaults.DomainBindingClaimType] = new JsonArray("work"),
+                [EventStoreWorkloadAuthenticationDefaults.DomainBindingClaimType] = Strings(domains),
             };
 
-            JsonArray grants = new(
-                Grant("works-bound-gateway", boundOperations, bindings, allowUnbound: false),
-                Grant("works-trusted-effect", [EventStoreWorkloadOperations.TrustedEffect], new JsonObject(), allowUnbound: true));
+            JsonArray grants = new();
+            if (boundClient.Id == "works")
+            {
+                string gateway = boundClient.Audiences.Single();
+                grants.Add(Grant("works-bound-gateway", gateway, boundOperations, Bindings(["work"]), allowUnbound: false));
+                grants.Add(Grant("works-trusted-effect", gateway, [EventStoreWorkloadOperations.TrustedEffect], new JsonObject(), allowUnbound: true));
+            }
+            else
+            {
+                foreach (string audience in boundClient.Audiences)
+                {
+                    grants.Add(Grant("eventstore-unbound-" + audience, audience, boundClient.Operations, new JsonObject(), allowUnbound: true));
+                    if (gatewayQueryDomains?.TryGetValue(audience, out string[]? domains) == true)
+                        grants.Add(Grant("eventstore-bound-query-" + audience, audience, boundOperations,
+                            Bindings(domains), allowUnbound: false, allowQueryAuthorityDigest: true));
+                }
+            }
             return new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 [_bindingSignerEnd] = expiresAt.ToString(System.Globalization.CultureInfo.InvariantCulture),
@@ -388,17 +427,18 @@ internal static class PlatformLocalRealm
                 [BindingGrantsEnvironmentName(boundClient.Id)] = JsonEncodedText.Encode(grants.ToJsonString()).ToString(),
             };
 
-            JsonObject Grant(string id, string[] operations, JsonObject permittedBindings, bool allowUnbound) => new()
+            JsonObject Grant(string id, string audience, string[] operations, JsonObject permittedBindings, bool allowUnbound,
+                bool allowQueryAuthorityDigest = false) => new()
             {
                 ["grantId"] = id,
                 ["revision"] = 1,
                 ["clientId"] = boundClient.Id,
                 ["workload"] = boundClient.Id,
-                ["audience"] = boundClient.Audiences.Single(),
+                ["audience"] = audience,
                 ["operations"] = Strings(operations),
                 ["bindings"] = permittedBindings,
                 ["allowUnbound"] = allowUnbound,
-                ["allowQueryAuthorityDigest"] = false,
+                ["allowQueryAuthorityDigest"] = allowQueryAuthorityDigest,
                 ["notBefore"] = notBefore,
                 ["expiresAt"] = expiresAt,
                 ["revoked"] = false,
@@ -442,15 +482,53 @@ internal static class PlatformLocalRealm
                 credentials.Add(client, parameter);
             }
 
-            return new RealmResource(keycloak, url.AbsoluteUri, credentials);
+            return new RealmResource(keycloak, url.AbsoluteUri, credentials, boundClient?.Id);
         }
     }
 
     internal sealed record RealmResource(IResourceBuilder<ContainerResource> Keycloak, string Authority,
-        IReadOnlyDictionary<string, IResourceBuilder<ParameterResource>> Credentials)
+        IReadOnlyDictionary<string, IResourceBuilder<ParameterResource>> Credentials, string? BoundClient)
     {
-        internal IResourceBuilder<ProjectResource> ConfigureValidator(IResourceBuilder<ProjectResource> resource, IConfiguration configuration,
+        internal void ConfigureDevelopment<T>(IResourceBuilder<T> resource, PlatformServerBinding server, IConfiguration configuration)
+            where T : IResourceWithEnvironment, IResourceWithWaitSupport
+        {
+            ConfigureValidator(resource, configuration, PlatformRealmContract.GatewayUserAudience, server.AppId);
+            resource.WithEnvironment("Authentication__JwtBearer__ValidAlgorithms__0", "RS256")
+                .WithEnvironment("Authentication__Workload__Audience", server.AppId)
+                .WithEnvironment("Authentication__Workload__AllowedCallers__0", "eventstore");
+
+            if (Credentials.ContainsKey(server.AppId)) ConfigureWorkloadIssuer(resource, server.AppId, allowBindings: BoundClient == server.AppId);
+            if (server.ResourceId == "eventstore")
+            {
+                string[] callers = ["tenants", "memories", .. Credentials.Keys.Where(name => name is "folders" or "folders-workers" or "projects")];
+                for (int index = 0; index < callers.Length; index++)
+                    resource.WithEnvironment("Authentication__DaprInternal__AllowedCallers__" + index, callers[index]);
+                resource.WithEnvironment("Authentication__DaprInternal__Audience", server.AppId);
+            }
+
+            if (server.ResourceId == "conversations")
+            {
+                const string reader = PlatformRealmContract.ConversationsReader;
+                resource.WithEnvironment("EventStore__Authentication__Authority", Authority)
+                    .WithEnvironment("EventStore__Authentication__TokenEndpoint", Authority + "/protocol/openid-connect/token")
+                    .WithEnvironment("EventStore__Authentication__GrantType", "client_credentials")
+                    .WithEnvironment("EventStore__Authentication__ClientId", reader)
+                    .WithEnvironment("EventStore__Authentication__ClientSecret", Credentials[reader]);
+            }
+
+            if (server.ResourceId is "tenants" or "tenants-api")
+            {
+                resource.WithEnvironment("Oidc__Authority", Authority)
+                    .WithEnvironment("Jwt__SigningKey", string.Empty)
+                    .WithEnvironment("EventStore__Authentication__SigningKey", string.Empty)
+                    .WithEnvironment("EventStore__Authentication__Issuer", Authority)
+                    .WithEnvironment("EventStore__Authentication__Authority", Authority);
+            }
+        }
+
+        internal IResourceBuilder<T> ConfigureValidator<T>(IResourceBuilder<T> resource, IConfiguration configuration,
             string userAudience, string workloadAudience)
+            where T : IResourceWithEnvironment, IResourceWithWaitSupport
         {
             ConfigureSection(EventStoreWorkloadAuthenticationDefaults.JwtContractSection, userAudience);
             ConfigureSection(EventStoreWorkloadAuthenticationDefaults.DedicatedJwtContractSection, workloadAudience);
@@ -466,7 +544,8 @@ internal static class PlatformLocalRealm
                     .WithEnvironment(prefix + "SigningKey", string.Empty)
                     .WithEnvironment(prefix + "AllowInsecureSymmetricKey", "false")
                     .WithEnvironment(prefix + "RequireHttpsMetadata", "false")
-                    .WithEnvironment(prefix + "AllowedAlgorithms__0", "RS256");
+                    .WithEnvironment(prefix + "AllowedAlgorithms__0", "RS256")
+                    .WithEnvironment(prefix + "ValidAudiences__0", audience);
                 foreach (IConfigurationSection entry in configuration.GetSection(section + ":AllowedAlgorithms").GetChildren())
                 {
                     resource.WithEnvironment(prefix + "AllowedAlgorithms__" + entry.Key, "RS256");
@@ -479,7 +558,8 @@ internal static class PlatformLocalRealm
             }
         }
 
-        internal void ConfigureWorkloadIssuer(IResourceBuilder<ProjectResource> resource, string client, bool allowBindings = false) =>
+        internal void ConfigureWorkloadIssuer<T>(IResourceBuilder<T> resource, string client, bool allowBindings = false)
+            where T : IResourceWithEnvironment =>
             resource
                 .WithEnvironment("Authentication__WorkloadIssuer__Workload", client)
                 .WithEnvironment("Authentication__WorkloadIssuer__ClientId", client)

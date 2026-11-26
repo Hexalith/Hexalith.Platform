@@ -14,6 +14,9 @@ public static class PlatformServerBindings
         ["conversations/api"] = "src/Hexalith.Conversations.Api/Hexalith.Conversations.Api.csproj",
         ["conversations/domain"] = "src/Hexalith.Conversations.Server/Hexalith.Conversations.Server.csproj",
         ["eventstore/gateway"] = "src/Hexalith.EventStore/Hexalith.EventStore.csproj",
+        ["folders/domain"] = "src/Hexalith.Folders.Server/Hexalith.Folders.Server.csproj",
+        ["folders/workers"] = "src/Hexalith.Folders.Workers/Hexalith.Folders.Workers.csproj",
+        ["projects/domain"] = "src/Hexalith.Projects.Server/Hexalith.Projects.Server.csproj",
         ["tenants/domain"] = "src/Hexalith.Tenants/Hexalith.Tenants.csproj",
         ["tenants/api"] = "src/Hexalith.Tenants.Api/Hexalith.Tenants.Api.csproj",
         ["memories/server"] = "src/Hexalith.Memories.Server/Hexalith.Memories.Server.csproj",
@@ -25,6 +28,10 @@ public static class PlatformServerBindings
     public static IReadOnlyDictionary<string, string> ReferenceImages { get; } = new Dictionary<string, string>
     {
         ["parties/domain"] = "registry.hexalith.com/parties",
+        ["conversations/api"] = "registry.hexalith.com/conversations-api",
+        ["conversations/domain"] = "registry.hexalith.com/conversations",
+        ["folders/domain"] = "registry.hexalith.com/hexalith-folders-server",
+        ["folders/workers"] = "registry.hexalith.com/hexalith-folders-workers",
         ["tenants/domain"] = "registry.hexalith.com/tenants",
         ["tenants/api"] = "registry.hexalith.com/tenants-api",
         ["memories/server"] = "registry.hexalith.com/memories",
@@ -62,13 +69,14 @@ public static class PlatformServerBindings
             string identity = workload.Identity;
             string? project = null;
             string? image = null;
+            string? releasedDigest = null;
             SourceMappingEntry? source = options.Mapping.Entries.SingleOrDefault(e => e.Identity.Equals(Repository(id), StringComparison.OrdinalIgnoreCase));
             if (options.Mapping.Mode == WorkspaceMode.Source)
             {
                 string? relative = options.Projects.GetValueOrDefault(identity);
                 if (identity == "timesheets/host" && relative is null) relative = PlatformTimesheetsBinding.Project;
                 if (source?.Origin != "source" || source.Path is null || relative is null)
-                    throw Failure(module, identity, "project", "mapped source project is unavailable");
+                    throw Failure(module, identity, relative ?? "project", $"mapped source project is unavailable for '{Repository(id)}'");
                 project = Path.GetFullPath(Path.Combine(source.Path, relative));
                 bool privateRunnerGateway = identity == "eventstore/gateway" && options.RunPlan?.SelectedTest?.ModuleId == "parties";
                 if (privateRunnerGateway)
@@ -99,8 +107,12 @@ public static class PlatformServerBindings
             }
             else
             {
-                if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository)) throw Failure(module, identity, "image", "released image is unavailable");
-                image = repository + ":" + Version(options, id, module.Source);
+                if (!options.Images.TryGetValue(identity, out string? repository) || string.IsNullOrWhiteSpace(repository))
+                    throw Failure(module, identity, "image", $"released executable image is unavailable for '{Repository(id)}'");
+                string version = Version(options, id, module.Source);
+                image = repository + ":" + version;
+                if (options.CompleteRunner)
+                    releasedDigest = PlatformReleasedImages.RequireIntakeDigest(options, id, identity, repository, version);
             }
             PlatformEventStoreHostBinding? host = null;
             if (identity == "eventstore/gateway" && extensions.Count > 0)
@@ -113,7 +125,8 @@ public static class PlatformServerBindings
             }
             Dictionary<string, string> environment = PlatformLocalProfile.Bind(options, module, serverId, secretValues);
             foreach (var pair in dapr.Environment(id, serverId)) environment[pair.Key] = pair.Value;
-            environment["Dapr__DeclarativeSubscriptions"] = "true";
+            // The Folders worker advertises its two inbound routes and dead letters in /dapr/subscribe.
+            if (identity != "folders/workers") environment["Dapr__DeclarativeSubscriptions"] = "true";
             if (host is not null) PlatformEventStoreExtensionBindings.Bind(environment, options, host.Extensions, secretValues);
             IReadOnlyList<JsonElement> tasks = workload.Tasks;
             foreach (JsonElement task in tasks)
@@ -122,11 +135,12 @@ public static class PlatformServerBindings
                 string ownerRoot = Hexalith.Builds.Tooling.Runtime.CompositionDeclarationClosure.TaskRepositoryRoot(options.Mapping, module);
                 if (!File.Exists(Path.Combine(ownerRoot, executable))) throw Failure(module, identity, "lifecycle.tasks.executable", $"task '{task.GetProperty("name").GetString()}' executable '{executable}' is unavailable");
             }
-            result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks) { EventStoreHost = host });
+            result.Add(new PlatformServerBinding(module, serverId, workload.ResourceId, workload.AppId, project, image, workload.ReadinessEndpoint, environment, tasks) { EventStoreHost = host, ReleasedImageIndexDigest = releasedDigest });
         }
         if (result.Count(s => s.ResourceId == "eventstore") > 1) throw new InvalidDataException("eventstore: identity.servers: exactly one gateway is permitted.");
         if (extensions.Count > 0 && !result.Any(s => s.EventStoreHost is not null))
             throw new InvalidDataException($"{extensions[0].Source}: {extensions[0].Module}: runtime.eventStoreExtensions: eventstore-extension-gateway-unavailable: the selected composition has no eventstore gateway to host the declared extensions.");
+        PlatformLocalProfile.BindFolders(options.PlatformRoot, result);
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);
         return result;
     }

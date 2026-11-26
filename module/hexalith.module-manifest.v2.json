@@ -1,0 +1,56 @@
+{
+  "schema": "hexalith.module-manifest.v2",
+  "modules": [
+    {
+      "identity": {
+        "moduleId": "platform",
+        "servers": [],
+        "dependencies": [
+          "eventstore",
+          "tenants",
+          "parties",
+          "folders",
+          "projects",
+          "mcpcli",
+          "memories"
+        ]
+      },
+      "runtime": {
+        "dapr": [],
+        "extensions": [],
+        "resources": []
+      },
+      "surfaces": { "interfaces": [] },
+      "integration": {
+        "topics": [],
+        "secrets": [],
+        "dynamicSecretNamespaces": [],
+        "identityNeeds": [
+          { "name": "folders-source", "audience": "eventstore", "roles": ["invoker"], "claims": ["eventstore:operation"], "applicationPrincipal": true },
+          { "name": "folders-workers-source", "audience": "eventstore", "roles": ["invoker"], "claims": ["eventstore:operation"], "applicationPrincipal": true },
+          { "name": "tenants-workload", "audience": "eventstore", "roles": ["invoker"], "claims": ["eventstore:operation"], "applicationPrincipal": true },
+          { "name": "memories-workload", "audience": "eventstore", "roles": ["invoker"], "claims": ["eventstore:operation"], "applicationPrincipal": true },
+          { "name": "projects-workload", "audience": "eventstore", "roles": ["invoker"], "claims": ["eventstore:operation"], "applicationPrincipal": true }
+        ],
+        "egress": [],
+        "providers": [],
+        "workers": []
+      },
+      "lifecycle": {
+        "readiness": [],
+        "tasks": [],
+        "recoveryHooks": [],
+        "fenceHooks": [],
+        "replay": { "reopenBeforeReplay": false },
+        "startup": {},
+        "criticalFlows": [],
+        "smokeSurfaces": [],
+        "classification": {
+          "changeClass": "additive",
+          "reason": "Selects the complete local Platform environment."
+        },
+        "recoveryInventory": []
+      }
+    }
+  ]
+}

@@ -26,7 +26,13 @@ from builds_tuple import ROOT, recorded_gitlink, resolve_builds_root, verify_cat
 
 LOCK = ROOT / "eng/owner-packages.lock.json"
 # Owner packages carry these id prefixes; Composition admits each loaded one through the lock.
-OWNER_PREFIXES = ("Hexalith.EventStore.", "Hexalith.Tenants.", "Hexalith.Memories.", "Hexalith.Parties.", "Hexalith.McpCli.")
+OWNER_PREFIXES = ("Hexalith.EventStore.", "Hexalith.Tenants.", "Hexalith.Memories.", "Hexalith.Parties.", "Hexalith.McpCli.",
+                  "Hexalith.Conversations.", "Hexalith.Folders.", "Hexalith.Projects.")
+COMPLETE_CATALOG_REFERENCES = (
+    "Hexalith.Conversations.Contracts", "Hexalith.Conversations.EventStoreExtensions",
+    "Hexalith.Folders.Contracts", "Hexalith.Folders.EventStoreExtensions",
+    "Hexalith.Projects.Contracts", "Hexalith.Projects.EventStoreExtensions",
+)
 # Each package-mode surface restores under its own project name, so the catalog applies that surface's view.
 # These are the owner references across each surface's in-repository project closure in package mode (eng/test_owner_packages_lock.py
 # checks them against the project files); restore resolves the transitive closure.
@@ -240,6 +246,14 @@ def pinned_catalog(root=ROOT):
 def generate(root=ROOT, *, restore=restore_surfaces, get=_get, verify=verify_signature):
     body, identity = pinned_catalog(root)
     selected = surfaces(root)
+    catalog_packages = {item.get("Include") for item in ET.fromstring(body).iter("PackageVersion")}
+    if "Hexalith.Projects.EventStoreExtensions" in catalog_packages:
+        missing = sorted(set(COMPLETE_CATALOG_REFERENCES) - catalog_packages)
+        if missing:
+            raise ValueError("The complete Platform owner catalog lacks package pins for: " + ", ".join(missing))
+        selected["Hexalith.Platform.CatalogBuilder"] += COMPLETE_CATALOG_REFERENCES
+        selected["Hexalith.Platform.EventStoreHost"] += (
+            "Hexalith.Folders.EventStoreExtensions", "Hexalith.Projects.EventStoreExtensions")
     with tempfile.TemporaryDirectory(prefix="platform-owner-surfaces-") as temporary:
         documents, packages = restore(body, Path(temporary), selected)
         lock = lock_packages(owner_closure(documents), packages, get=get, verify=verify)

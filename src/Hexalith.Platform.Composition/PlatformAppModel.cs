@@ -60,12 +60,14 @@ public static class PlatformAppModel
         string? active = builder.Configuration["Platform:ActiveModule"];
         if (active is not null && string.IsNullOrWhiteSpace(active)) throw new InvalidDataException("Platform:ActiveModule: module identity is empty.");
         string? declaration = builder.Configuration["Platform:DeclarationPath"];
+        if (active == PlatformDeclarationSet.CompleteModule && declaration is null)
+            declaration = Path.Combine(builder.AppHostDirectory, PlatformDeclarationSet.CompleteManifest);
         string? mappingPath = builder.Configuration["Platform:SourceMapping:Path"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_PATH");
         string? hash = builder.Configuration["Platform:SourceMapping:Hash"] ?? Environment.GetEnvironmentVariable("HEXALITH_SOURCE_MAPPING_HASH");
         SourceMapping mapping = mappingPath is null
             ? WorkspaceRootResolver.ResolveAsync(declaration ?? Path.Combine(builder.AppHostDirectory, "hexalith-platform.json"), WorkspaceMode.Source, CancellationToken.None).GetAwaiter().GetResult()
             : SourceMapping.LoadVerified(mappingPath, hash ?? string.Empty);
-        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
+        Compose(builder, new PlatformCompositionOptions { PlatformRoot = builder.AppHostDirectory, Mapping = mapping, ActiveModule = active, DeclarationPaths = declaration is null ? [] : [declaration], TimesheetsEnabled = timesheets, UseGeneratedRealm = !timesheets && (active is null or PlatformDeclarationSet.CompleteModule), EventStoreSeedProject = builder.Configuration["Platform:EventStoreSeedProject"], EnvironmentId = builder.Configuration["Platform:EnvironmentId"], UsePrebuiltProjects = builder.Configuration.GetValue<bool>("Platform:UsePrebuiltProjects") });
     }
 
     /// <summary>Composes the key-bearing Builds runner handoff, keeping its package-mode gateway seed.</summary>
@@ -83,20 +85,24 @@ public static class PlatformAppModel
         SourceMapping mapping = plan.SourceMapping ?? throw new InvalidDataException("Platform v2 composition requires the command-resolved source mapping.");
         string root = mapping.PlatformIdentity?.PlatformPath ?? mapping.Entries.Single(e => e.Identity == "Hexalith.Platform").Path!;
         bool timesheets = PlatformTimesheetsBinding.SelectRun(plan, root, builder.Configuration.GetValue<bool>("Platform:Timesheets:Enabled"));
+        bool complete = plan.PlatformActiveModule == PlatformDeclarationSet.CompleteModule;
         Dictionary<string, string> configuration = new(StringComparer.Ordinal);
-        foreach (string server in new[] { "conversations/domain", "conversations/api", "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
+        if (!complete)
         {
-            configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
-            configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
-            configuration[server + "/Authentication:JwtBearer:Audience"] = CompositionEnvironment.TokenAudience;
-            configuration[server + "/Authentication:JwtBearer:ValidAudiences"] = JsonSerializer.Serialize(new[] { CompositionEnvironment.TokenAudience });
-        }
-        foreach (string server in new[] { "tenants/domain", "tenants/api" })
-        {
-            configuration[server + "/EventStore:Authentication:SigningKey"] = signingKey;
-            configuration[server + "/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
-            configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
-            configuration[server + "/Jwt:SigningKey"] = signingKey;
+            foreach (string server in new[] { "conversations/domain", "conversations/api", "parties/domain", "eventstore/gateway", "tenants/domain", "tenants/api", "memories/server", "memories/domain", "memories/clock", "memories/telemetry" })
+            {
+                configuration[server + "/Authentication:JwtBearer:SigningKey"] = signingKey;
+                configuration[server + "/Authentication:JwtBearer:Issuer"] = CompositionEnvironment.TokenIssuer;
+                configuration[server + "/Authentication:JwtBearer:Audience"] = CompositionEnvironment.TokenAudience;
+                configuration[server + "/Authentication:JwtBearer:ValidAudiences"] = JsonSerializer.Serialize(new[] { CompositionEnvironment.TokenAudience });
+            }
+            foreach (string server in new[] { "tenants/domain", "tenants/api" })
+            {
+                configuration[server + "/EventStore:Authentication:SigningKey"] = signingKey;
+                configuration[server + "/EventStore:Authentication:Issuer"] = CompositionEnvironment.TokenIssuer;
+                configuration[server + "/EventStore:Authentication:Audience"] = CompositionEnvironment.TokenAudience;
+                configuration[server + "/Jwt:SigningKey"] = signingKey;
+            }
         }
         if (plan.PlatformActiveModule == PlatformFixturePackageQualification.Module && mapping.Mode == WorkspaceMode.Package)
             configuration[PlatformFixturePackageQualification.MarkerKey] = PlatformFixturePackageQualification.Marker;
@@ -107,6 +113,7 @@ public static class PlatformAppModel
             QualificationOwners = plan.QualificationOwners ?? [], QualificationOwnerProof = ownerProof,
             ActiveModule = plan.PlatformActiveModule, EventStoreSeedProject = seedProject, Configuration = configuration, RunPlan = plan,
             TimesheetsEnabled = timesheets, RetentionProfile = PlatformRetentionProfile.Select(plan, root),
+            CompleteRunner = complete, UseGeneratedRealm = complete,
         };
         if (mapping.Mode == WorkspaceMode.Package && plan.PlatformActiveModule == "parties")
         {
@@ -129,6 +136,12 @@ public static class PlatformAppModel
     /// <summary>Retains the exact verified ordinary Parties runner snapshot, including dynamically evaluated reader versions.</summary>
     internal static void MaterializeSourceMapping(PlatformCompositionOptions options, string workspace)
     {
+        if (options.CompleteRunner && options.Mapping.Mode == WorkspaceMode.Package)
+        {
+            if (workspace != options.RunPlan!.Workspace) throw new InvalidDataException("The complete package snapshot does not belong to the selected run.");
+            _ = SourceMapping.LoadVerified(Path.Combine(workspace, "source-mapping", "mapping.json"), options.Mapping.ContentHash);
+            return;
+        }
         if (options.Mapping.Mode == WorkspaceMode.Package && options.RunPlan?.PlatformActiveModule == "parties")
         {
             if (workspace != options.RunPlan.Workspace || (options.PartiesRunProof?.Matches(options) != true && options.CurrentOwnerProof?.Matches(options) != true))
@@ -166,6 +179,7 @@ public static class PlatformAppModel
         if (options.RetentionProfile is { } retentionObserver) builder.Services.AddSingleton<ICompositionTestObservationProvider>(retentionObserver);
         HashSet<IResource> existingResources = [.. builder.Resources];
         var declarations = PlatformDeclarationSet.Load(options);
+        if (options.CompleteRunner) PlatformDeclarationSet.ValidateCompleteRunner(options, declarations);
         if (declarations.Any(module => PlatformDeclarationSet.Id(module.Declaration) == "conversations"))
         {
             // Only the domain consumes operator-provisioned Party bindings and history-reader credentials.
@@ -192,12 +206,15 @@ public static class PlatformAppModel
         IReadOnlyList<PlatformServerBinding> catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         bool eventStorePackageTest = options.ActiveModule == "eventstore" && options.RunPlan?.SelectedTest is { Mode: "package" };
         bool fixturePackageTest = PlatformFixturePackageQualification.Selects(options);
-        if (options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties" || fixturePackageTest))
+        var packageLock = options.CompleteRunner && options.Mapping.Mode == WorkspaceMode.Package
+            ? PlatformPackageCatalogQualification.RequireCompletePackages(options, declarations, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode)
+            : null;
+        if (packageLock is null && options.Mapping.Mode == WorkspaceMode.Package && (catalogParticipants.Count > 0 || eventStorePackageTest || options.ActiveModule == "parties" || fixturePackageTest))
         {
             servers = PlatformPackageCatalogQualification.Bind(options, declarations, servers, builder.Environment.IsDevelopment() && builder.ExecutionContext.IsRunMode);
             catalogParticipants = PlatformRoutingCatalogBootstrap.ResolveParticipants(options, servers, dapr);
         }
-        bool runBoundImages = options.PartiesRunProof is not null || options.QualificationOwnerProof is not null || fixturePackageTest;
+        bool runBoundImages = options.CompleteRunner || options.PartiesRunProof is not null || options.QualificationOwnerProof is not null || fixturePackageTest;
         servers = servers.Select(server => server.Image is null ? server : PreflightImage(server)).ToArray();
 
         PlatformServerBinding PreflightImage(PlatformServerBinding server)
@@ -248,7 +265,7 @@ public static class PlatformAppModel
             if (options.RetentionProfile is { } retentionDiscovery) discovery = retentionDiscovery.ConfigureDiscovery(discovery);
             string mappingWorkspace = options.RunPlan?.Workspace ?? rendered;
             MaterializeSourceMapping(options, mappingWorkspace);
-            catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered);
+            catalog = PlatformRoutingCatalogBootstrap.Create(options, servers, dapr, rendered, packageLock);
             if (runBoundImages && servers.Any(server => server.ImageDigest is not null))
                 builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformReleasedImages(options, servers, catalog?.Directory ?? rendered));
             if (options.FixturePackageProof is { } fixtureProof)
@@ -261,6 +278,21 @@ public static class PlatformAppModel
                     servers.Single(server => server.ResourceId == "eventstore").Environment["Authentication__JwtBearer__SigningKey"], catalog.TenantBootstrapAccess,
                     servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts, options));
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
+            PlatformLocalRealm.RealmResource? realm = null;
+            if (options.UseGeneratedRealm && hasGateway)
+            {
+                string tenant = options.RunPlan?.TenantNamespace ?? "platform-local-" + Guid.NewGuid().ToString("N");
+                var prepared = PlatformLocalRealm.PrepareDevelopment(declarations, localPorts.EventStoreHttp, tenant, catalog?.GatewayQueryDomains);
+                realm = prepared.AddResource(builder, rendered);
+                if (options.RunPlan is { } realmRun)
+                    realm.Keycloak.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={realmRun.RunId}");
+                File.WriteAllBytes(Path.Combine(rendered, "realm-instance.json"), JsonSerializer.SerializeToUtf8Bytes(new
+                {
+                    runId = options.RunPlan?.RunId,
+                    issuer = realm.Authority,
+                    syntheticTenantId = tenant,
+                }));
+            }
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
             File.WriteAllText(secrets, JsonSerializer.Serialize(new Dictionary<string, object>
@@ -370,8 +402,8 @@ public static class PlatformAppModel
                         project.WithArgs("--artifacts-path", RetentionArtifactsPath(options, server));
                     else if (options.CurrentOwnerProof is { } measured && server.ResourceId == "parties")
                         project.WithArgs("--artifacts-path", measured.Artifacts);
-                    else if (options.RunPlan?.SelectedTest is not null)
-                        project.WithArgs("--artifacts-path", Path.Combine(options.RunPlan.Workspace, "project-builds", server.ResourceId));
+                    else if (options.RunPlan is { } buildRun && (buildRun.SelectedTest is not null || options.CompleteRunner))
+                        project.WithArgs("--artifacts-path", Path.Combine(buildRun.Workspace, "project-builds", server.ResourceId));
                     if (server.ResourceId == "timesheets")
                     {
                         project.WithHttpEndpoint(name: "public")
@@ -384,6 +416,7 @@ public static class PlatformAppModel
                     else project.WithHttpEndpoint(port: server.ResourceId == "eventstore" ? options.RunPlan?.Ports.EventStoreHttp : null, name: "http").WithHttpHealthCheck(server.ReadinessEndpoint);
                     ConfigureEnvironment(project, server, options, clockKey);
                     catalog?.Configure(project, server);
+                    realm?.ConfigureDevelopment(project, server, builder.Configuration);
                     if (server.ResourceId == "eventstore") project.WithEnvironment("ASPNETCORE_CONTENTROOT", gatewayContentRoot!);
                     if (PlatformDeclarationSet.Id(server.Module.Declaration) == "memories" && vectors is not null && graph is not null)
                         project.WithEnvironment("ConnectionStrings__redis", ReferenceExpression.Create($"{vectors.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{vectors.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WithEnvironment("ConnectionStrings__falkordb", ReferenceExpression.Create($"{graph.GetEndpoint("tcp").Property(EndpointProperty.Host)}:{graph.GetEndpoint("tcp").Property(EndpointProperty.Port)}")).WaitFor(vectors).WaitFor(graph);
@@ -400,6 +433,7 @@ public static class PlatformAppModel
                     if (server.ImageDigest is not null) container.WithImageSHA256(server.ImageDigest);
                     ConfigureEnvironment(container, server, options, clockKey);
                     catalog?.Configure(container, server);
+                    realm?.ConfigureDevelopment(container, server, builder.Configuration);
                     if (catalog?.Participates(server) == true)
                     {
                         string authorityComponent = Path.Combine(rendered, "routing-catalog.yaml");

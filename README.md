@@ -499,6 +499,26 @@ and human SM-2 evidence. The exact published tool selected by the checkout provi
 SM-2 for the module owner to demonstrate. See
 [Story 1.13 evidence](_bmad-output/implementation-artifacts/evidence/1-13/README.md).
 
+## Run the complete local Platform
+
+From the Platform root, use the serverless Platform declaration to select
+EventStore, Tenants, Parties, Folders, Projects, McpCli and Memories. Projects
+also selects Conversations. Platform composes one EventStore gateway and
+Builds builds the run-scoped McpCli for CLI and MCP stdio use.
+
+```bash
+dotnet tool run hexalith-module -- run --manifest module/hexalith.module-manifest.v2.json
+dotnet tool run hexalith-module -- debug --manifest module/hexalith.module-manifest.v2.json
+dotnet tool run hexalith-module -- down --run-id <run-id>
+```
+
+Use the run ID reported by Builds to tear down that environment and its McpCli
+output. Read `HXI010` and `readiness.json` for the effective startup deadline,
+elapsed time, and readiness result. Complete execution requires a Builds
+release that supports this selector and compatible owner inputs. Add
+`--mode package` to `run` after the authenticated owner packages, declarations
+and executable images are available at the catalog pins.
+
 ## Run and debug a technical module
 
 EventStore, Memories and McpCli run and debug from this workspace, never from
