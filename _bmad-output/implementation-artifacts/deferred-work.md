@@ -2886,3 +2886,10 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   note: 2026-11-26. The Story 9.2 draft half is done: the 9.2 replan put the trigger decision into its frozen intent and acceptance criteria. The PRD, spine, epics and sequencing wording is still open for a correct-course.
   status: resolved
   resolution: 2026-11-26 correct-course ([sprint change proposal](../planning-artifacts/sprint-change-proposal-2026-11-26.md)) rewrote the PRD row, the spine Production profile and G3 rows, epics AR-31 and Stories 9.1/9.2, and sequencing to use policy v1 decision 2's release-admission trigger and its drill/weekly no-block rule.
+
+## Deferred from: code review of spec-3-6-select-complete-environment-in-builds.md (2026-11-26)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-select-complete-environment-in-builds.md`
+  summary: Discover complete-environment startup overrides early on cold source checkouts.
+  evidence: The existing startup probe reads available owner manifests before submodule initialization. A cold initialization can use the fallback budget before the runner can authenticate an owner's larger override. Verify a read-only way to establish the override under the original startup clock.
+
