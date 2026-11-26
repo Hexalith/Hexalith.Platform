@@ -2820,3 +2820,60 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Folders
   summary: Stop `OperationalStatusPersistenceTests.IndependentWritersForTheSameDeliveryConvergeWithoutDoubleAdvance` from failing when both concurrent writers lose the race (low, pre-existing).
   evidence: In CI run 45774604639 (first attempt), both writers returned `Indeterminate` with `operational_store_unavailable`, so `outcomes.ShouldContain(result => result.IsSuccess)` failed (`OperationalStatusPersistenceTests.cs:59`). The commit under test changed no .NET code, and the rerun passed. The failure blocks the exact-source CI that `release.yml` requires.
+
+## Deferred from: code review of spec-3-6-run-all-seven-mvp-modules-together-locally.md (2026-11-26)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Bind the shared human-authority receipt key when enrolling Folders.
+  evidence: Folders AppHost supplies the shared setting to EventStore and Folders. The Folders domain's verifier rejects a missing or nonmatching key. Exercise an authenticated mutation through the composed gateway. Keep the setting on the hosts.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Configure app-channel and workload credentials for the Folders domain and workers.
+  evidence: The manifest's secret inventory does not populate the current runtime profile. Carry the owner AppHost's channel credentials and workload bindings into composition and verify the application and sidecar use matching bindings.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Enroll Folders domain and worker native source read and scan proofs.
+  evidence: Folders AppHost configures separate proof keys and gateway allowlists for both hosts. Verify both calls through the composed gateway.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Preserve the gateway's Folders event topic override.
+  evidence: Folders workers subscribe to `folders.events`. EventStore publishes to tenant-qualified topics unless the Folders override is set. Verify delivery to the workers in the seven-module run.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Extend the existing Story 3.6 worker subscription follow-up to cover role resolution and broker scopes.
+  evidence: `PlatformDaprBindings.Resolve` rejects `worker-inbound-events` at its component switch. The Folders worker component must use the publisher's broker and preserve the subscription and dead-letter publishing scopes in `deploy/dapr/production/pubsub.workers.yaml`.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Keep the Folders event source mapped to the Memories search index.
+  evidence: Folders AppHost maps `hexalith-folders` to `folders-index` and enables startup provisioning. A publish binding alone leaves the Memories router without this mapping.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Platform
+  summary: Preserve Folders command safe-denial responses through the composed gateway with EventStore.
+  evidence: Folders' development gateway handles `DomainServiceSafeDenialException` before EventStore's generic 500 handler. The composed host needs equivalent handling and an end-to-end test for status and metadata-only responses.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Complete live AppHost admission parity against a valid control.
+  evidence: The candidate reached its deadline with `projection_unavailable` and the pre-integration run returned 202 where the test expected 404. Verify admission under the same working topology and inputs on both revisions.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Retain the existing Builds release execution SHA follow-up.
+  evidence: The committed release pins agree. The preflight test supplies its own SHA and does not compare it to the caller workflow. The preceding release-pin entry owns the correction.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Verify the registered NuGet policy after first publication.
+  evidence: The release notes record widening to `Hexalith.Folders*`. The current registered scope is unverified. The policy owner can confirm whether the six exact package IDs and new-version scope have been restored.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-3-6-run-all-seven-mvp-modules-together-locally.md`
+  owner: Hexalith.Folders
+  summary: Resolve the standalone Builds checker requirement for the Folders slice.
+  evidence: `check.py` exited because `.github/hexalith-ci.json` was missing, and the file is still absent at the release commit. Verify the gate on an adopted checkout or record an explicitly accepted equivalent.
