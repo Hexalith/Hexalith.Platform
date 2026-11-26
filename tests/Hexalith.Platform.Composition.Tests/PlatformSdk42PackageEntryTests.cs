@@ -60,7 +60,7 @@ public sealed class PlatformSdk42PackageEntryTests
         proof.Matches(options).ShouldBeTrue();
         foreach (string name in new[] { "Hexalith.Parties.Contracts", "Hexalith.Parties.EventStoreExtensions" })
             Hash(Path.Combine(fixture.Reader, "output", name + ".dll")).ShouldBe(proof.Bodies[name]);
-        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 71, 47, catalog);
+        AssertReader(fixture.Reader, proof.OwnerPackages, PlatformCurrentOwnerProof.RunBuiltBodies, 72, 48, catalog);
     }
 
     private static void AssertReader(string reader, OwnerPackageLock owners, IReadOnlySet<string> runBound, int routes, int policies, PlatformRoutingCatalog catalog)

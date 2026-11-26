@@ -227,15 +227,15 @@ internal static class PlatformReaderMutationControls
     private static void AssertFullReader(PlatformPartiesPackageFixture fixture, PlatformRoutingCatalog catalog)
     {
         using JsonDocument generated = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
-        generated.RootElement.GetProperty("routes").GetArrayLength().ShouldBe(71);
-        generated.RootElement.GetProperty("operations").GetArrayLength().ShouldBe(71);
-        generated.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(47);
+        generated.RootElement.GetProperty("routes").GetArrayLength().ShouldBe(72);
+        generated.RootElement.GetProperty("operations").GetArrayLength().ShouldBe(72);
+        generated.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(48);
         var declarations = generated.RootElement.GetProperty("declarations").EnumerateArray().ToArray();
-        declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "command").ShouldBe(47);
+        declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "command").ShouldBe(48);
         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "query").ShouldBe(20);
         declarations.Count(declaration => declaration.GetProperty("kind").GetString() == "projection").ShouldBe(4);
         TestContext.Current.TestOutputHelper!.WriteLine("full-reader catalog sha256=" + Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(catalog.CatalogPath)))
-            + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=71 policies=47");
+            + " root=" + catalog.RootDigest + " mapping=" + fixture.Options.Mapping.ContentHash + " public-bodies=12 routes=72 policies=48");
         using JsonDocument request = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(fixture.Reader, "request.json")));
         request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(fixture.Options.CurrentOwnerProof!.OwnerPackages.Path);
         request.RootElement.GetProperty("sourceMappingHash").GetString().ShouldBe(fixture.Options.Mapping.ContentHash);
