@@ -2658,6 +2658,13 @@ records the findings, owning work and closure controls. It accepts no successor 
 dispatch, private runtime or contract change. Platform 4.17 and EventStore 3.21 remain
 in-progress; the selection, staging and hosted Subscription criteria above are unchanged.
 
+On 2026-11-26 Platform accepted preparation of the EventStore 3.21 Dapr 1.19.2
+intake. The hosted 24-vector attempt awaits EventStore execution-profile admission,
+supported RabbitMQ fixes and Kafka witnesses, and Builds adoption. The
+[intake decision](../../docs/implementation/story-4-17-next-candidate-intake.md#dapr-1192-candidate-intake--2026-11-26)
+binds the available inputs and records the owners and remaining evidence for a
+separate execution decision. Candidate-02 remains technical FAIL at 20/24.
+
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 
 As a team member,
