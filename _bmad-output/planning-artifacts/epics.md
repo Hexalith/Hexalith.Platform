@@ -2596,11 +2596,11 @@ So that event delivery survives failures, with retention, dead-lettering and bac
 **When** composed in a hosted environment
 **Then** Platform renders its Subscription with the bound component and dead-letter policy
 
-**Given** Dapr 1.19.2 is proposed as a successor broker candidate
+**Given** a Kafka-only successor is proposed on the supported Dapr tuple
 **When** it enters qualification intake
 **Then** EventStore Story 3.21 owns its versioned runtime lock, the source provenance of claimed broker fixes, and the independent verifier. Platform owns the candidate configuration and authorization request.
-**And** intake checks the outstanding failure predicates against the official component sources before an attempt is allocated. An authorized attempt uses both brokers and all 24 vectors. A missing prerequisite or failed result leaves the corresponding guarantee open.
-**And** broker selection requires the staging proof above and EventStore AD-26 acceptance. [Approved Dapr adoption](sprint-change-proposal-2026-11-23.md)
+**And** intake checks the outstanding Kafka pressure and rotation predicates against the supported inputs before an attempt is allocated. An authorized successor must run and pass all 12 Kafka vectors through the independent verifier. RabbitMQ is deferred until separately qualified.
+**And** broker selection requires the staging proof above and EventStore AD-26 acceptance. [Approved Dapr adoption](sprint-change-proposal-2026-11-23.md) · [Approved Kafka-only scope](sprint-change-proposal-2026-11-26-kafka-only.md)
 
 **Owner-accepted bounded local/CI work (2026-11-11):** The owner selected the
 recommended manual hosted workflow for the first Platform configuration candidate.
@@ -2659,11 +2659,10 @@ dispatch, private runtime or contract change. Platform 4.17 and EventStore 3.21 
 in-progress; the selection, staging and hosted Subscription criteria above are unchanged.
 
 On 2026-11-26 Platform accepted preparation of the EventStore 3.21 Dapr 1.19.2
-intake. The hosted 24-vector attempt awaits EventStore execution-profile admission,
-supported RabbitMQ fixes and Kafka witnesses, and Builds adoption. The
-[intake decision](../../docs/implementation/story-4-17-next-candidate-intake.md#dapr-1192-candidate-intake--2026-11-26)
-binds the available inputs and records the owners and remaining evidence for a
-separate execution decision. Candidate-02 remains technical FAIL at 20/24.
+comparison profile. The owner subsequently narrowed the next hosted attempt to
+Kafka. The [successor intake](../../docs/implementation/story-4-17-next-candidate-intake.md#kafka-only-successor--2026-11-26)
+records the remaining Kafka witnesses and the new execution profile needed before
+requesting dispatch approval. Candidate-02 remains technical FAIL at 20/24.
 
 ### Story 4.18: Serve staging through its own Gateway, hostnames and certificates
 

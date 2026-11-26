@@ -2893,3 +2893,10 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   summary: Discover complete-environment startup overrides early on cold source checkouts.
   evidence: The existing startup probe reads available owner manifests before submodule initialization. A cold initialization can use the fallback budget before the runner can authenticate an owner's larger override. Verify a read-only way to establish the override under the original startup clock.
 
+### DW-28: Qualify the RabbitMQ fixes in a supported Dapr release
+
+origin: Story 4.17 hosted admission recheck and user deferral, 2026-11-26
+location: docs/implementation/story-4-17-next-candidate-intake.md#1192-hosted-admission-recheck--2026-11-26
+severity: high
+reason: The owner excluded RabbitMQ from the Kafka-only successor. Before RabbitMQ can enter a separately qualified candidate, EventStore 3.21 must verify an official supported Dapr release embedding both fixes and demonstrate attributable pressure rejection with zero acknowledged loss, the deleted-user `ACCESS_REFUSED` response from Dapr, and a correlated rejection for an unbound publish. [Publish failures and reconnect](https://github.com/dapr/components-contrib/pull/4767) · [Mandatory returns](https://github.com/dapr/components-contrib/pull/4768)
+status: open
