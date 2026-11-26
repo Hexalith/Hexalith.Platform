@@ -145,6 +145,43 @@ Code review 2026-11-26 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - low — NotReady, cordoned or Pending instances: Story 9.2 implementation detail; the fix adds branch rules.
 - low — weekly run during an in-flight attempt: the weekly result blocks nothing; the fix adds lock coordination.
 
+### Review Findings (final delta review, 2026-11-26)
+
+Code review 2026-11-26 (Blind Hunter, Edge Case Hunter, Verification Gap, Acceptance Auditor) over `f37c42d0..d16f5fb6`, the 2026-11-26 patch pass, scoped to the policy, README, this spec, sprint-status and deferred-work. Verification Gap found no gaps. Line references are at `d16f5fb6`.
+
+- [x] [Review][Patch] Rows 326 and 327 record "No production-attempt check", which is neither pass nor fail [docs/contracts/shared-infrastructure-currency-policy-v1.md:326-327] — AC2 requires every table row to determine pass or fail and the automatic/approved outcome. The 2026-11-25 review replaced "Missing check" for the same reason. Mark both result cells as not applicable, saying no production-attempt check runs or is recorded, and keep the scope outcome columns. Low (acceptance-auditor).
+- [x] [Review][Patch] The calendar-period end-of-life rule covers only months and quarters [docs/contracts/shared-infrastructure-currency-policy-v1.md:123-126] — No rule covers a year-only or half-year value ("2027", "H1 2027"), so Story 9.2 would have to choose between start of period and unresolved (AC2). Extend the start-of-period rule to any calendar period published without a date (month, quarter, half-year or year). An unresolvable period still fails closed. Not adopted: a pass row one second before the period start, which line 113 already decides, and distance-dependent handling of unresolvable periods (rejected below). Low (blind-hunter+acceptance-auditor+edge-case-hunter).
+- [x] [Review][Patch] The rewritten advisory sentence dropped the no-masking clause [docs/contracts/shared-infrastructure-currency-policy-v1.md:154-155] — The patch replaced "All applicable advisory deadlines must pass; one recently fixed advisory cannot hide another overdue fix" with "Every applicable advisory deadline must pass." The new sentence uses lowercase "must", outside the MUST convention, and can be read as the deadline having elapsed. Restore: each applicable advisory MUST meet its own deadline, and a fix for one advisory cannot hide another overdue fix. Low (blind-hunter+edge-case-hunter).
+- [x] [Review][Defer] Planning sources and the Story 9.2 draft still use the trigger and drill wording from before the decision [docs/contracts/shared-infrastructure-currency-policy-v1.md:68-73] — deferred: the fix edits planning artifacts and another story's spec, which this story's Never rule forbids. Policy lines 70-73 say the 2026-11-26 decision defines the trigger for the PRD, architecture and sequencing. These sources are unchanged:
+  - PRD: `prd.md:428` ("Check at each production attempt … Failure blocks automatic promotion")
+  - Spine G3 row: `ARCHITECTURE-SPINE.md:564` ("Check each production attempt, monthly drill and weekly schedule. A failure blocks automatic promotion.")
+  - Epics: `epics.md:448,4723,4728,4735`
+  - Sequencing: `sequencing.md:79`
+  - 9.2 draft spec: lines 17, 19 and 88 ("Preserve the original Story 9.2 production-attempt and monthly-drill acceptance criteria")
+
+  No ledger entry routed their alignment. A 9.2 implementer starting from these sources may gate rollbacks or recovery, or block on drill failures. Medium (blind-hunter+acceptance-auditor).
+
+**Rejected (final delta review):**
+- false — spec `done` vs sprint-status `review` (blind-hunter): this is the bmad-build convention, rejected in both earlier reviews, and this review sets the final status. `review_loop_iteration` is spec bookkeeping, so changing it is a spec edit.
+- false — exclusion list omits environment-layer and profile changes and goes beyond the decision (blind-hunter): lines 69-70 apply the trigger only to release-promotion admission, so every other lock-holding change kind is already outside it. The extra listed kinds are not promotions; the "release promotions" decision excludes them, and the delta finding itself listed them.
+- false — a promotion that bundles an excluded change kind loses its check (edge-case-hunter): "Separately admitted" (line 75) qualifies every listed kind, and lines 68-70 apply the trigger to the admission of every release promotion.
+- low — attempt-kind classification and unknown kinds (blind-hunter): the spine Timing and interruption row records each attempt's kind at lock acquisition. A fail-closed default and an exemption record would add branches.
+- false — scope of the Story 6.22 urgent patch is unclear (blind-hunter): the spine Shared infrastructure row makes the urgent in-place security patch a shared-infrastructure change, which line 78 excludes as infrastructure-kind. Lines 286-288 keep the check for each release attempt.
+- spec edit — no notification for advisories without a deadline (blind-hunter): frozen Decision 2 fixes the notification triggers, and the 2026-11-26 decision chose "record" for the unsupported-only state.
+- false — row 314 reverses an overdue failure, beyond the decision (blind-hunter): the decision covers lines "unsupported at check time", and line 135 re-evaluates eligibility at every check. Row 314 is the literal outcome of that rule, and it preserves the earlier failure.
+- low — a boundary crossed between `checkedAt` and the first mutation (blind-hunter, edge-case-hunter; 2 findings): the gap is the admission-to-mutation interval under the lock. Re-evaluating at mutation adds machinery, and the 2026-11-25 BH6 patch already fixed the consumption point.
+- false — an earlier matching pass can be reused when no boundary is crossed (edge-case-hunter): line 87 makes `checkedAt` this admission's evaluation time, and lines 92-94 refuse earlier results. Row 330 adds a case but permits nothing new.
+- false — canonical v1 revision unrecorded, so d16f5fb6 could be pinned as v1 (blind-hunter, edge-case-hunter; 2 findings): lines 9 and 267-269 fix v1 at the revision that closes this final review, which this review produces. A file cannot carry its own commit (rejected on 2026-11-25).
+- spec edit — two "final" policy hashes and an unnamed "previous revision" (blind-hunter; 2 findings): each sits in its own dated verification block.
+- spec edit — "six routed patches" against eight Patch rows (blind-hunter, acceptance-auditor, edge-case-hunter, verification-gap; 4 findings): all eight build-review patches are in the policy. The three trigger-scope rows share lines 68-79, which leaves six distinct changes.
+- spec edit — Implementation Notes omit the build-review round (blind-hunter).
+- spec edit — the 2026-11-26 decisions are missing from the Spec Change Log (acceptance-auditor): they are recorded in the delta-review findings and in the policy header (lines 5-8).
+- false — the README caveat is weaker than the finding it closes (blind-hunter): the README names Story 9.2 as the owner of enforcement and says runtime enforcement and current compliance require separate evidence. It claims neither.
+- false — the AD-26 link is mutable and ambiguous (blind-hunter): the linked index calls itself a "Review-only source and file identity index" and records revision `2752ef60`, blob and SHA-256 `eebd46aa…` for the policy. It has not changed since it was created in `96383a27`.
+- low — the Story 9.6 row does not require proving that recovery resumption is ungated (blind-hunter): the fix adds a rehearsal requirement, and Story 9.2 qualifies row 327.
+- low — timestamps without a zone (edge-case-hunter): upstream sources publish zoned instants or dates, and lines 217-220 already fail unverifiable evidence closed. An explicit rule would add a branch.
+- low — a fixed line that enters support more than 30 days after its fix fails immediately (edge-case-hunter): frozen Decision 3 measures from the upstream release, so the outcome is determinate. Changing the start would edit that decision.
+
 ## Implementation Notes
 
 - 2026-11-16: Resumed the approved spec after the user chose prerequisite-first sequencing for Story 9.2. Published the policy and linked it beside README's staging policies. No inventory, checker, infrastructure, pins, workflows or planning sources changed.
@@ -158,6 +195,8 @@ Code review 2026-11-26 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - 2026-11-25: Applied the ten direct review patches, including the Administrator's fixed-release timing decision. Updated the BH1 deferred entry to reflect both staging evidence policy v2 command-witness cases. Generated Epic 9 context corrections remain deferred.
 
 - 2026-11-26: Applied all eleven delta-review patches. Recorded the Administrator's release-promotion scope, unsupported-only fix handling and monthly-drill disposition. Clarified recovery resumption, release-mode binding and UTC normalization. Restored the README's enforcement caveat, linked the historical AD-26 index and corrected the two deferred-work references. The prior 2026-11-25 patch-review delta is retained at `868b11cc8151c3521c152f29370fdb3cb5a760d3`.
+
+- 2026-11-26 final delta review: applied the three low patches. Rows 326 and 327 now record "Not applicable". The start-of-period rule now covers any calendar period, and rows 305 and 306 add the year example and the generalized unresolved case. The advisory sentence restores the MUST wording and the no-masking clause. The Story 9.2 trigger and drill wording in the planning sources is deferred to `deferred-work.md`.
 
 ## Spec Change Log
 
@@ -239,3 +278,10 @@ Code review 2026-11-26 (Blind Hunter, Edge Case Hunter, Verification Gap, Accept
 - The policy content SHA-256 before the build review was `deb446f6cef311562fbd962088cc3eff888ebfae2804e365d6531da814061de4`.
 - The three build reviewers examined the current Story 9.1 delta from `f37c42d04d4347c1bf50208511c82997485d25b9`. The original baseline also spans unrelated changes. All six routed patches passed a final disposable documentation audit of 34 cases, 12 links and anchors, the UTC boundaries, the historical AD-26 identity and the unchanged frozen intent. Scoped `git diff --check` passed.
 - The final policy content SHA-256 is `dc8016f977b8a8a732d20a43d90aedbc786b5d5a04171087c8528c678c21f1a9`. Verification covers the policy text and references. Story 9.2 owns runtime implementation and verification.
+- Final delta review of `f37c42d0..d16f5fb6`: after the three patches, a disposable audit found the following:
+  - All 34 acceptance and refusal rows have a result cell that starts with Pass, Fail or Not applicable.
+  - All 11 local links and anchors resolve: the policy, the README section and the new ledger entry.
+  - The policy has no lowercase "must".
+  - The frozen intent block matches `d16f5fb6` byte for byte (SHA-256 `87f576e58e63b83ed84e1f342217998b19d120372bc692080e0683e54ab92cbc`).
+  - Scoped `git diff --check` passed.
+  - The policy content SHA-256 at the close of the final Story 9.1 review is `c75a8b0b85ee1aa73615e5906dc0d3aa8a5601743fefd9de4b6eb1d3b817a4a9`.

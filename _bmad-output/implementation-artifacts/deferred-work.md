@@ -2877,3 +2877,9 @@ These entries retain or refine existing follow-ups; they do not claim a working 
   owner: Hexalith.Folders
   summary: Resolve the standalone Builds checker requirement for the Folders slice.
   evidence: `check.py` exited because `.github/hexalith-ci.json` was missing, and the file is still absent at the release commit. Verify the gate on an adopted checkout or record an explicitly accepted equivalent.
+
+## Deferred from: code review of spec-9-1-decide-the-shared-infrastructure-currency-policy.md (2026-11-26)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-9-1-decide-the-shared-infrastructure-currency-policy.md`
+  summary: Align the planning sources and the Story 9.2 draft with the 2026-11-26 currency-trigger and monthly-drill decisions (medium).
+  evidence: Policy v1 lines 68-73 record the Administrator's decision that the `production-attempt` trigger covers only release promotions. Lines 106-109 say weekly and monthly-drill results add no production-attempt block. The PRD (`prds/prd-platform-2026-09-27/prd.md:428`), the spine G3 row (`ARCHITECTURE-SPINE.md:564`), `epics.md:448,4723,4728,4735`, `sequencing.md:79` and the Story 9.2 draft spec (lines 17, 19, 88) still say "each/every production attempt" and "A failure blocks automatic promotion" with no drill exemption. Story 9.1's Never rule forbids editing planning artifacts, so route the wording through a correct-course change or the Story 9.2 replan. Until then, policy v1 decision 2 governs. [Shared-infrastructure currency policy v1](../../docs/contracts/shared-infrastructure-currency-policy-v1.md#2-cadence-and-triggers)

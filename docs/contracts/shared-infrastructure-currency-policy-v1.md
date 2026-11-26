@@ -120,11 +120,11 @@ known future instants.
 
 Use UTC instants for the evaluation time, upstream end-of-life boundaries and
 upstream fixed-release times. Convert a published instant to UTC. For a
-date-only value, use `00:00:00 UTC` at the start of that date. For a month or
-quarter published without a date, resolve the period from the authoritative
-upstream source and use `00:00:00 UTC` on its first day. An unresolved period
-boundary MUST fail closed. Apply the same end-of-life instant to the support
-check and the weekly notification window.
+date-only value, use `00:00:00 UTC` at the start of that date. For a calendar
+period published without a date, such as a month, quarter, half-year or year,
+resolve the period from the authoritative upstream source and use `00:00:00 UTC`
+on its first day. An unresolved period boundary MUST fail closed. Apply the same
+end-of-life instant to the support check and the weekly notification window.
 
 For each published advisory applicable to the deployed component, the fix MUST
 be deployed within **30 days (2,592,000 seconds)** of `fixReleasedAt`. Use the
@@ -151,8 +151,9 @@ evaluator MUST retain the authoritative support source, the evidence of that
 status and its UTC observation time from the current check.
 Otherwise, if fixes are published and no required deadline can be established,
 the check MUST fail closed and record the advisory and reason. Unknown advisory
-applicability or fix status MUST also fail closed. Every applicable advisory
-deadline must pass.
+applicability or fix status MUST also fail closed. Each applicable advisory
+MUST meet its own deadline; a fix for one advisory cannot hide another overdue
+fix.
 
 **Non-security updates have no lag limit while the deployed version remains
 supported**, within the supported matrix and qualified pairing. This currency
@@ -302,8 +303,8 @@ production precondition remains required. No row sets a promotion stop.
 | Version cannot be resolved, including a digest-only component matching its pin, or required upstream data is unavailable | Fail; name each affected component and unknown input; no cached fallback | Block; no waiver | May start only if the complete failing set is known and the record names every failing component |
 | Check cannot determine the complete component/failure set because independent coverage, inventory or observations are incomplete | Fail. Record the missing coverage | Block without waiver | Refuse because the complete naming rule cannot be established |
 | A component reaches its upstream end-of-life boundary, leaves the supported matrix, or management/workload pairing is unqualified | Fail; name affected components and support/matrix/pairing reason | Block immediately; no support grace | May start only if the record names every failing component |
-| An upstream source publishes end of life as November 2026 or as calendar Q4 2026, and the check is at the applicable period start | Fail. Record `2026-11-01T00:00:00Z` for November or `2026-10-01T00:00:00Z` for calendar Q4 as the reached boundary | Block immediately; no support grace | May start only if the record names every failing component |
-| An upstream source publishes end of life by quarter, and the quarter's start cannot be resolved from authoritative upstream data | Fail. Name the component and record the unresolved boundary | Block without waiver | May start only if the record names every failing component |
+| An upstream source publishes end of life as November 2026, as calendar Q4 2026 or as the year 2027, and the check is at the applicable period start | Fail. Record `2026-11-01T00:00:00Z` for November, `2026-10-01T00:00:00Z` for calendar Q4 or `2027-01-01T00:00:00Z` for 2027 as the reached boundary | Block immediately; no support grace | May start only if the record names every failing component |
+| An upstream source publishes end of life by quarter or another calendar period, and the period's start cannot be resolved from authoritative upstream data | Fail. Name the component and record the unresolved boundary | Block without waiver | May start only if the record names every failing component |
 | Applicable fix is not deployed; check is one second before its upstream release time plus 2,592,000 seconds; all other checks pass | Pass; retain advisory, fixed release and deadline | Currency requirement met | Currency requirement met |
 | Same unfixed component at exactly that deadline or later | Fail; name component, advisory and fixed release | Block; no waiver | May start only if the record names every failing component |
 | B is the oldest supported line carrying a fix in upstream release-line order, first fixed on day 0. At day 19, the deployed line A has no fix and all other checks pass | Pass. Record B's fixed release and its day-30 deadline | Currency requirement met | Currency requirement met |
@@ -323,8 +324,8 @@ production precondition remains required. No row sets a promotion stop.
 | Weekly check passes and authoritative sources confirm current support for every component without announcing any end-of-life date | Pass. Record known support with no announced end-of-life date and no notification due | Weekly run adds no block. Own attempt check required | Weekly run adds no block. Own attempt check required |
 | Weekly check fails | Fail; retain reasons and notify Administrator | Weekly run adds no block; own attempt check controls promotion | Weekly run adds no block; own attempt check and naming rule control admission |
 | Monthly-drill check fails | Fail. Retain the failing components and reasons with the drill evidence | Drill run adds no block. Own attempt check controls promotion | Drill run adds no block. Own attempt check and naming rule control admission |
-| A standalone change or recovery outside decision 2's release-promotion scope | No production-attempt check | Outside release admission | Outside release admission |
-| A replacement job advances the epoch and resumes the same attempt solely for its remaining single recovery | No new production-attempt check | Recovery follows the existing recovery rules | Recovery follows the existing recovery rules |
+| A standalone change or recovery outside decision 2's release-promotion scope | Not applicable. No production-attempt check runs or is recorded | Outside release admission | Outside release admission |
+| A replacement job advances the epoch and resumes the same attempt solely for its remaining single recovery | Not applicable. No new production-attempt check runs or is recorded | Recovery follows the existing recovery rules | Recovery follows the existing recovery rules |
 | Production release admission only has a passing result for the same attempt ID and current lock epoch under a different release mode | Fail. Record the mode mismatch when recording is available | Block until a new result passes under the current binding | Refuse until there is a recorded result under the current binding and any applicable naming rule is met |
 | Production release admission only has a passing result for the same attempt ID under an earlier lock epoch | Fail. Record the epoch mismatch when recording is available | Block until a new result passes under the current binding | Refuse until there is a recorded result under the current binding and any applicable naming rule is met |
 | An earlier passing result matches the attempt ID, release mode and current lock epoch, but a component reaches end of life or an unfixed security deadline before admission | Fail. Reject the earlier pass as stale, run and record the current check, and name the component and reached boundary | Block without waiver | Refuse admission on the earlier pass. After recording the current failure, may start only if the record names every failing component |
