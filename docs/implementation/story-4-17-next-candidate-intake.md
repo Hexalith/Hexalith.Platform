@@ -1,12 +1,14 @@
 # Story 4.17 — offline broker remediation intake (2026-11-13)
 
-**Dapr 1.19.2 preparation accepted. Hosted attempt blocked on EventStore profile
-admission, supported broker remedies and Builds adoption.**
+**Dapr 1.19.2 preparation accepted. EventStore's published Builds 6.8.5 package and
+prepared profile are verified. Hosted admission still requires supported RabbitMQ
+delivery, both Kafka witnesses and a capture-enabled EventStore profile.**
 Platform 4.17 and EventStore 3.21 remain **in-progress**. The latest retained result is
 candidate-02's technical **FAIL, 20/24**. All five historical guarantees remain
 **REJECTED/open**. Broker selection is **null** and production eligibility **FAIL**.
 
-[Current 1.19.2 intake decision and prepared attempt](#dapr-1192-candidate-intake--2026-11-26)
+[Current admission check and toolchain verification](#1192-hosted-admission-recheck--2026-11-26) ·
+[Original 1.19.2 intake decision and prepared attempt](#dapr-1192-candidate-intake--2026-11-26)
 
 **Previous handoff (2026-11-14):** packet preservation and both public RabbitMQ submissions are
 complete; [EventStore dependency tracking is reconciled and published](#eventstore-reconciliation-publication--2026-11-14).
@@ -744,6 +746,10 @@ the December 13 review remain unchanged.
 
 ## Dapr 1.19.2 candidate intake — 2026-11-26
 
+This section records the initial intake at EventStore `82c9d21d`. The later
+[admission recheck](#1192-hosted-admission-recheck--2026-11-26) records the prepared
+profile, committed EventStore Builds pin and released package verification.
+
 Accept EventStore 3.21's D5 handoff for Platform preparation under the
 November 23 approval. Hold execution admission. The 1.19.2 lock identifies the
 official release, but EventStore's installer and capture entry point refuse that
@@ -953,3 +959,75 @@ print("PASS: exact intake inputs, component render and offline refusal before si
 PY
 BASH
 ```
+
+## 1.19.2 hosted admission recheck — 2026-11-26
+
+EventStore committed its Builds 6.8.5 adoption at
+`3575d76428187dd979cfa9d9d1e145c99709c156`. The published package and local Dapr
+executables match the approved comparison tuple. These results apply to that
+EventStore revision. For an executable successor, pin its exact EventStore
+gitlink, reconcile Platform's separately pinned Builds version with the EventStore
+catalog, and repeat the restore, SDK package ID/version/content-hash and executable
+checks against the final execution inputs. Measure the loaded toolchain and
+image identities on the allocated worker.
+[EventStore Builds adoption](https://github.com/Hexalith/Hexalith.EventStore/commit/3575d76428187dd979cfa9d9d1e145c99709c156) ·
+[EventStore toolchain and SDK inventory](https://github.com/Hexalith/Hexalith.EventStore/blob/3575d76428187dd979cfa9d9d1e145c99709c156/_bmad-output/implementation-artifacts/spec-3-21-production-dapr-runtime-pin-and-durable-broker-qualification.md#builds-adoption-and-toolchain-readback--2026-11-26)
+
+| Check | Verified result |
+| --- | --- |
+| EventStore tool manifest and Builds gitlink | Manifest SHA-256 `1e1cc3759efa85ca78ed30b2dea2da9def15445c87e5967869ded2a53a7b091b`. Both the gitlink and the restored tool's `--version` identify Builds `6.8.5+deccbc3bcf4ed687ecf4d556ebe356fe57148777`. |
+| Published Builds tool | Restored `Hexalith.Builds.Module.Cli` 6.8.5 from NuGet.org with the committed EventStore manifest and an empty package directory. The nupkg SHA-256 `a1cd19f0e1390011d20712a2731fbd1620db58bf203bf6d978188af2b04f06da` and restored `Hexalith.Builds.Tooling.dll` SHA-256 `421e3755833f5da5aa9cc2140d976f53f532e12c4b54977b53d57e0f93e01a77` match the release publication record. The SHA-256 of `hexalith-package-publication.v1.json` is `58bad3064d7bebbd71080ef93a30def9e8cf2a84123ea15de689383068f219e8`, matching the release API asset digest. [NuGet package](https://www.nuget.org/packages/Hexalith.Builds.Module.Cli/6.8.5) · [Publication record](https://github.com/Hexalith/Hexalith.Builds/releases/download/v6.8.5/hexalith-package-publication.v1.json) · [Release asset metadata](https://api.github.com/repos/Hexalith/Hexalith.Builds/releases/assets/795014434) |
+| Embedded catalog | The catalog read from the restored assembly has SHA-256 `14b5c73d1a666966ceb1931255c9b8f5cf6c38995b0a9dee59490c8cb133fb39`, matching the source-generated catalog in EventStore's record. It selects runtime `1.19.2`, CLI `1.19.1` and .NET SDK `1.19.1`. |
+| EventStore SDK resolution | A clean Release solution restore from NuGet.org at `3575d764` with the pinned Builds props produced 66 new `project.assets.json` files. All six resolved Dapr SDK packages, including `Dapr.Common` and `Dapr.Protos`, matched the retained package IDs, `1.19.1` versions, archive SHA-256 values and NuGet content hashes. [SDK hash inventory](https://github.com/Hexalith/Hexalith.EventStore/blob/3575d76428187dd979cfa9d9d1e145c99709c156/_bmad-output/implementation-artifacts/spec-3-21-production-dapr-runtime-pin-and-durable-broker-qualification.md#684-comparison-and-baseline-readback) |
+| Prepared EventStore profile | Profile SHA-256 `e44e0cc3e67ad6a769d64bd19d325728eb8cf2e695d8f8a503111c0c41579d00`. The installer and producer passed `--validate-only`. The producer reported 64 locked inputs, all 24 vectors, the [original comparison configuration and rendered component hashes](#prepared-input-bindings), and `captureAdmission: blocked`. The live entry point exited `1` with `Dapr 1.19.2 capture admission is blocked` before creating a packet. [Exact EventStore profile](https://github.com/Hexalith/Hexalith.EventStore/blob/3575d76428187dd979cfa9d9d1e145c99709c156/deploy/dapr/qualification/runtime-lock-1.19.2-platform-config-v1.json) |
+| Linux amd64 Dapr tools | The profile's installer verified both official archive and executable hashes in disposable storage. The binaries reported CLI `1.19.1` (`b651f5fcfe0b261ca6b26058dde31927efc8e17b12267d6743bdbeddca09bafd`) and runtime `1.19.2` (`96d2a0aeaafc8993ed41151e184e2b1c67dc03fc21c9ba561c92e34cb5696596`). The runtime build metadata identifies Dapr `66efc169ba72dca18ab73394c98381d68cda88f0` and components-contrib `v1.19.2` with checksum `h1:kYC84yK7I7ZiB/ibjBhHuAClsoJAHedqdxTqpKr4s5A=`. |
+
+Reproduce the prepared-profile check from Platform with the adjacent EventStore
+checkout available.
+
+```bash
+run-with-temp bash -s <<'BASH'
+set -euo pipefail
+config="$PWD/docs/implementation/story-4-17-broker-candidate-02.json"
+git -C ../eventstore archive 3575d76428187dd979cfa9d9d1e145c99709c156 -- \
+  tools deploy/dapr/qualification tests/Hexalith.EventStore.IntegrationTests | tar -xf - -C "$TMPDIR"
+cd "$TMPDIR"
+profile=deploy/dapr/qualification/runtime-lock-1.19.2-platform-config-v1.json
+packet="$TMPDIR/packet"
+python3 -B tools/install-dapr-qualification-tools.py --profile "$profile" --validate-only
+python3 -B tools/qualify-dapr-brokers.py --profile "$profile" --platform-config "$config" --validate-only
+status=0
+python3 -B tools/qualify-dapr-brokers.py --profile "$profile" --platform-config "$config" \
+  --output "$packet" > "$TMPDIR/capture.log" 2>&1 || status=$?
+test "$status" = 1
+grep -F 'Dapr 1.19.2 capture admission is blocked' "$TMPDIR/capture.log"
+test ! -e "$packet"
+BASH
+```
+
+**Hosted admission remains blocked.** Dapr's current stable runtime is 1.19.2.
+The RabbitMQ publish-failure and mandatory-return PRs are open and unmerged, so
+pressure, rotation and missing bindings still need supported release delivery.
+The deleted-user rotation path must also produce Dapr `ErrorInfo` with
+`Exception (403)…ACCESS_REFUSED`. The publish-failure PR documents that reconnect
+authentication can return the AMQP client's generic `ErrCredentials` instead,
+so release delivery still leaves that exact denial to prove.
+[Dapr release](https://github.com/dapr/dapr/releases/tag/v1.19.2) ·
+[RabbitMQ publish failures](https://github.com/dapr/components-contrib/pull/4767) ·
+[RabbitMQ mandatory returns](https://github.com/dapr/components-contrib/pull/4768)
+
+Kafka pressure still needs an attributable Produce error 89. For Kafka rotation,
+prove earlier invocations and detached retries on the same live old publisher
+have finished, or demonstrate a supported per-request discriminator. Join the
+stale input to the authenticated principal, effective deny ACL and actual Produce
+requests. Once those broker dependencies are resolved, EventStore can admit a
+capture-enabled profile and Platform can seek approval for one frozen full-matrix
+attempt. [Kafka source investigation](https://github.com/Hexalith/Hexalith.EventStore/blob/3575d76428187dd979cfa9d9d1e145c99709c156/docs/implementation/story-3-21-kafka-bounded-investigation.md) ·
+[EventStore rotation handoff](https://github.com/Hexalith/Hexalith.EventStore/blob/3575d76428187dd979cfa9d9d1e145c99709c156/_bmad-output/implementation-artifacts/spec-3-21-production-dapr-runtime-pin-and-durable-broker-qualification.md#evidence-required-to-resume)
+
+Candidate-02 remains the latest retained hosted result at **20/24, technical FAIL**.
+The artifact digest matched on readback. Replay at the original EventStore revision
+with the configuration from the original dispatch reproduced integrity, technical
+and authority exits `0/1/1`, byte-identical stdout and empty stderr. All five
+historical guarantees remain open, broker selection is null and production
+eligibility is FAIL. [Independently verified Candidate-02 result](story-4-17-broker-candidate-02-hosted-attempt-1.md)
