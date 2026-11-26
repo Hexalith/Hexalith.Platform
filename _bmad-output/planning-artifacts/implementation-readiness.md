@@ -160,3 +160,17 @@ The owner approved the edits and acceptance cases in the [production readiness s
 | IR-2026-11-22-6 | FR-8, AR-35, the architecture and spec, and Stories 6.14 and 6.18 require both approved retained-data branches to cut and verify a complete point under the production lock before workload mutation. Story 6.23 covers the first empty installation without retained data. A failed first installation that leaves data stays stopped if the retained-data gates cannot be met. |
 
 The [sprint tracker](../implementation-artifacts/sprint-status.yaml) matches 12 epics and 151 story IDs. The generator preview derived different slugs for Stories 2.11 and 2.12 and treated the Story 4.28 input as a reason to advance its status. The reconciled preview matched all statuses by numeric ID and all 19 action items. The tracker refresh updated `last_updated` in place to preserve the existing keys, statuses, action items and evidence comments.
+
+## November 26, 2026 readiness gate
+
+**Verdict: CONCERNS, then PASS after a direct fix.** Reviewed Platform revision `eb9bcc1e` against the November 22 PASS baseline (`58593673`). The planning changes since then are the [Dapr 1.19.2 adoption](sprint-change-proposal-2026-11-23.md) criteria in Stories 2.10, 4.5, 4.9, 4.16, 4.17, 5.6 and 5.8, and the November 24 deferred-work reconciliations: AR-28 recovery leases, AR-32 tier classification, the Story 4.27 dependencies and the Story 4.28 criteria 4, 8 and 10–13.
+
+- The Dapr evidence chain follows the sequencing spec: 4.5 chart checks feed the 4.9 inventory, 4.16 and 4.17 qualify that inventory, 4.22 deploys it, and 5.6 and 5.8 consume it. Story 4.5 is done, and its record `a8a65dec` covers the new 1.19.2 criterion.
+- The AR-32 link to the architecture tier assignment resolves.
+- Story 4.27's new dependency uses the restore contract defined in Story 4.1, not the 4.1 mutation it precedes.
+
+| ID | Severity | Finding | Resolution |
+| --- | --- | --- | --- |
+| IR-2026-11-26-1 | Low | AR-28 and AD-7 now place recovery-hook, recovery-point read and decryption access under authority-enforced leases. Stories 6.8 and 8.9 test executor-death denial with active leases. No criterion issued those credentials: Story 6.8 and staging Story 4.20 listed only the deploy, environment-layer and smoke identities, although Story 4.23 runs a staging recovery-kind restore. This was the issuance part of C-19. | The owner approved a direct edit on 26 November 2026. [Story 4.20](epics.md#story-420-run-the-staging-executor-and-the-module-code-sandbox) and [Story 6.8](epics.md#story-68-run-the-production-executor-outside-the-application-cluster) now issue the recovery-kind credentials under the AR-28 leases, as the [AD-7 credentials rule](architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md#ad-7--isolated-private-network-executors-adopted-amended) specifies. |
+
+The [sprint tracker](../implementation-artifacts/sprint-status.yaml) matches 12 epics and 151 story IDs. The generator preview again derived different slugs for Stories 2.11 and 2.12. It also floored Story 4.28 at `ready-for-dev` because a story file exists, but that file records `backlog` and its 4.27 and 4.1 dependencies are still in progress. The owner chose to keep the existing keys and statuses, so the refresh updated `last_updated` in place.

@@ -2735,6 +2735,7 @@ So that no repository event or module code can reach deployment authority.
 **Given** a job
 **When** it requests credentials
 **Then** it gets, through GitHub OIDC claim checks, per-job credentials only for staging: the application deploy identity, the environment-layer identity and synthetic smoke clients
+**And** a recovery-kind attempt it owns, such as the Story 4.23 restore, also gets a recovery-hook credential bound to that attempt and epoch, read access to staging's recovery-point prefix and the custodian-released decryption material, each under the AR-28 leases and revoked at job end
 **And** every credential that can mutate a lock-covered authority is revocable at its issuer and issued only to the job holding the current epoch
 **And** no deployment credential is a repository secret
 
@@ -3421,6 +3422,7 @@ So that production changes run only from allowlisted workflows, or from Administ
 **Given** a production job
 **When** it obtains credentials
 **Then** they are per-job and production-only (the application deploy identity, the environment-layer identity, synthetic smoke clients), revocable at their issuer, and issued only to the holder of the current epoch
+**And** a recovery-kind attempt it owns also gets a recovery-hook credential bound to that attempt and epoch, read access to production's recovery-point prefix and the custodian-released decryption material, each under the AR-28 leases, with the lease bounds and heartbeat interval recorded at commissioning, and revoked at job end
 **And** a per-job cluster-scoped identity is issued only to named shared-infrastructure workflows
 
 **Given** an in-place recovery started by Administrator or the deputy
