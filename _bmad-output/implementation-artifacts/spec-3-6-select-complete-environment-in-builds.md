@@ -2,7 +2,7 @@
 title: '3.6 slice 3: Select the complete environment in Builds'
 type: 'feature'
 created: '2026-11-26'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 baseline_commit: 'deccbc3bcf4ed687ecf4d556ebe356fe57148777'
 story_key: '3-6-run-all-seven-mvp-modules-together-locally'
@@ -60,6 +60,9 @@ Paths below are relative to the standalone Builds repository. Runtime types live
 - Implement in the [isolated Builds worktree](../../../builds-story-3-6) at the recorded baseline. Keep the worktree changes local and use available release evidence. The sprint tracker represents the whole Story 3.6 and stays in progress during this slice.
 - The Release build reported zero warnings and errors. All 102 focused cases passed, including CLI source run and debug, package run, asset inspection and `down`. The full project reported 3,334 cases with two failures and four skips. The two failures passed on isolated retry after restoring the scratch Git metadata. [Focused tests](../../../builds-story-3-6-matrix-tests.log) [Full test run](../../../builds-story-3-6-tests.log) [Retry](../../../builds-story-3-6-retry-tests.log)
 - The release verifier authenticated Folders 2.1.0, Conversations 2.2.0 and McpCli 3.0.0. The Projects extension package endpoint returned HTTP 404, so package-mode verification used a fixture for it. The McpCli fixture verified a real mapped Contracts build. Live adoption still needs the owner's Contracts enrollment change, a released Projects extension and the Platform runtime wiring. [Release verification](../../../builds-story-3-6-release-verification.log) [Implementation diff](../../../builds-story-3-6-implementation.diff)
+- Review fixes preserve matching individual package snapshots and pass the verified complete declaration set into the AppHost model call. A package run initializes the recorded McpCli gitlink and builds an extracted copy of that commit. The focused rerun passed 78 .NET cases and four Python cases, including cold initialization, ignored-file isolation, refusal of unpinned transitive Contracts, and comparison of the readiness diagnostic with the recorded duration. [Focused review tests](../../../builds-story-3-6-review-tests.log) [AppHost check](../../../builds-story-3-6-review-apphost-check.log)
+- The final fresh-clone Release build passed with zero warnings or errors, and all four Python checks passed. The full .NET project ran 3,339 cases, with 3,334 passes, four skips and one failure in the Linux native-process discovery fixture. Both parameters of that fixture passed on isolated retry. [Full verification](../../../builds-story-3-6-final-verification.log) [Isolated retry](../../../builds-story-3-6-final-retry.log)
+- The local Builds commit is `43206d060c33b3ee87050f57141162d84ae3d4bf`. The isolated worktree is clean. Story 3.6 remains in progress pending the published catalog pins, Platform adoption and live readiness. [Commit validation](../../../builds-story-3-6-commitlint.log)
 
 ## Spec Change Log
 
