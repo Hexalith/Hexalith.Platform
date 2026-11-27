@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-27-2026 11:33
+last_updated: 11-27-2026 12:13
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -101,6 +101,10 @@ development_status:
   #   The current Parties revision fixes attached-suite selection. A new approved Parties revision is needed for the latest-only run.
   #   Docker and runner inventory failures now fail qualification checks. All 18 resource-free tests passed. No live scenario ran.
   # 2026-11-23: Approved Dapr adoption binds observed CLI and runtime identities to each candidate's Builds catalog and SDK lock.
+  # 2026-11-27: Owner renegotiated inputs to Parties ca637a01 + signed Builds CLI 6.5.1 (catalog 055d7df5). Driver now resolves
+  #   suites from the manifest (21/21 unit tests pass), isolated Dapr 1.19.2 home provisioned, and package prep + admission passed.
+  #   Live startup blocked by HXR021: Builds 6.5.1 pins parties 3.1.1 (.NET 10), which hits RouteCatalogUnavailableException
+  #   (catalog-disagreement) against Platform v2.2.5 / CLI 6.5.1 (.NET 11). Needs Platform/Parties adoption of Builds 6.8.5+/4.0.1.
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: in-progress
   # 2026-11-10 user decision: takes over attached-test-execution-and-expiry-enforcement plus 2.10's missing producers.
   # 2026-11-10: parts 1-2 done (supervised attached suites and lifecycle observations); part 3 (Parties qualification caller) remains open in deferred-work.md.

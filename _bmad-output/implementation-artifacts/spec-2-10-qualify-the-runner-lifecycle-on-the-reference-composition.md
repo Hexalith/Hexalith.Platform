@@ -15,17 +15,17 @@ context: []
 
 ## Intent
 
-**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) calls for a local run of the nine lifecycle scenarios on Parties and one compact summary per scenario. The owner directed the campaign to use only the latest released Builds CLI on 2026-11-21. The current Parties checkout pins Builds CLI 6.4.4.
+**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) calls for a local run of the nine lifecycle scenarios on Parties and one compact summary per scenario. On 2026-11-27, the owner renegotiated the 2026-11-21 latest-only rule to run against the current Platform gitlink Parties `ca637a01` with its signed pinned Builds CLI `6.5.1` (because newer CLIs `6.8.5`+ trip HXP020 against Platform v2.2.5's owner lock).
 
-**Approach:** Add a small stdlib Python driver. It runs the released `hexalith-module` against Parties' existing `lifecycle-package` and `attached-lifecycle-package` fixtures through their `control.json`. Run all nine scenarios once and commit a compact summary. The CI part and the tool acceptance and pins stay open for Story 2.14 and CiCd story 21.
+**Approach:** Maintain the stdlib Python driver (`eng/lifecycle-qualification/scenarios.py`), reading the `lifecycle-package` and `attached-lifecycle-package` suite entry paths from `module/hexalith.module-manifest.v2.json`. It runs the signed pinned `hexalith-module` (`6.5.1`) against Parties' existing `lifecycle-package` and `attached-lifecycle-package` fixtures through their `control.json`. Run all nine scenarios once and commit a compact summary. The CI part and the tool acceptance and pins stay open for Story 2.14 and CiCd story 21.
 
 ## Boundaries & Constraints
 
 **Always:**
 - **Inputs:**
-  - Use Parties `d8d599e611c6a2999780907369ba70febfd266c2`, the Platform gitlink at `d54baff2503f7f9a35146408c6cd04271cf8c124`, in a scratch git worktree.
-  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its committed catalog gitlink `dc225a6969473c21c3dad6bda8f1a18ad0aaae0d`, from local objects with no fetch. Record the catalog revision separately from the CLI release.
-  - Restore Builds CLI 6.4.4 from the worktree's `.config/dotnet-tools.json`. Use only the latest released CLI. NuGet and registry pulls are allowed.
+  - Use Parties `ca637a01829c57d9163fb686a56bc82b094a10d9`, the Platform gitlink at `ada65676d9c2ebf45c69c169f6707b5697157941`, in a scratch git worktree.
+  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its committed catalog gitlink `055d7df5b49669d5b705ce163b0b2e187ecb9a50` (`v6.5.1`), from local objects with no fetch. Record the catalog revision separately from the CLI release.
+  - Restore Builds CLI `6.5.1` from the worktree's `.config/dotnet-tools.json`. Use the signed pinned CLI matching the catalog. NuGet, registry, and verified Dapr toolchain pulls (provisioning an isolated `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2` home against `Props/dapr-toolchain-sha256.json` without modifying shell profiles) are allowed.
 - **Package mode:** use package mode, as both profiles declare.
 - **Environment:** leave `CI` and `GITHUB_ACTIONS` unset and fabricate no GitHub metadata.
 - **Isolation:**
@@ -43,6 +43,11 @@ context: []
 **Decisions (2026-11-18):**
 - Replace the 4.47.0 controller. Delete `local.py`, `test_local.py`, `prepare.py` and `test_prepare.py`, so the new driver is the only one; the history stays in git.
 - Keep the full spec despite its size.
+
+**Decisions (2026-11-27):**
+- Relax the 2026-11-21 latest-only CLI rule to run live on current Parties `ca637a01829c57d9163fb686a56bc82b094a10d9` with its signed pinned Builds CLI `6.5.1` and nested Builds catalog `055d7df5b49669d5b705ce163b0b2e187ecb9a50`.
+- Read suite project paths from `module/hexalith.module-manifest.v2.json` in `eng/lifecycle-qualification/scenarios.py` instead of hardcoding `SUITES`.
+- Provision an isolated Dapr `cli-1.19.1-runtime-1.19.2` home verified against `Props/dapr-toolchain-sha256.json` if absent, leaving shell profiles unchanged.
 
 ## I/O & Edge-Case Matrix
 
@@ -94,7 +99,8 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 - [x] `eng/lifecycle-qualification/test_scenarios.py`: unit-test the pure summary extraction and the row verdicts against sample `test-result.json` documents.
 - [x] `eng/lifecycle-qualification/{local,test_local,prepare,test_prepare}.py`: delete them.
 - [x] `eng/lifecycle-qualification/README.md`: rewrite it to cover the prerequisites and the run command.
-- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-4-4-20261121/`: run all nine rows live with the latest released CLI and write `summary.json` and `README.md`. Package preparation is blocked by the attached-suite compilation described below.
+- [x] `eng/lifecycle-qualification/scenarios.py` and `eng/lifecycle-qualification/test_scenarios.py`: resolve `lifecycle-package` and `attached-lifecycle-package` suite project paths from `module/hexalith.module-manifest.v2.json` (handling Parties `ca637a01`'s renamed `Hexalith.Parties.Platform.AttachedLifecycleQualification.Tests.csproj`) and cover manifest-driven suite resolution in unit tests.
+- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-5-1-20261127/`: run all nine rows live on Parties `ca637a01` with signed pinned Builds CLI `6.5.1` (using isolated Dapr home `cli-1.19.1-runtime-1.19.2`) and write `summary.json` and `README.md`. Blocked in startup by `HXR021` (`parties` `3.1.1` `.NET 10` image route-catalog schema disagreement); see Implementation Notes.
 
 **Acceptance Criteria:**
 - **Given** the summary, **when** inspected, **then** each row holds:
@@ -113,6 +119,17 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 The original Story 2.8 runs supply both hosted cancellation cases. Each new candidate merge or release decision requires a fresh qualifying run under the [candidate evidence and attachment policy v1](../../docs/contracts/candidate-and-attachment-policy-v1.md).
 
 ## Implementation Notes
+
+**2026-11-27: manifest-driven suite resolution and package prep passed on Parties `ca637a01` / CLI `6.5.1`; live startup blocked by `parties` `3.1.1` route-catalog disagreement (`HXR021`).**
+
+- **Driver & tests:** `eng/lifecycle-qualification/scenarios.py` now resolves `lifecycle-package` and `attached-lifecycle-package` project paths from `module/hexalith.module-manifest.v2.json` (`manifest_suites`), replacing hardcoded `SUITES`. `eng/lifecycle-qualification/test_scenarios.py` adds 3 unit tests covering renamed/legacy manifests, invalid/unsafe entries, and `Driver.prepare()` invocation (`21/21` passing).
+- **Local Dapr prerequisite:** Provisioned `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2` (`dapr` 1.19.1, `daprd`/`placement`/`scheduler` 1.19.2) with all four archive SHA-256 digests verified against `055d7df5:Props/dapr-toolchain-sha256.json`; shell profiles unchanged.
+- **Package preparation & admission:** Restored CLI reported `6.5.1+055d7df5b49669d5b705ce163b0b2e187ecb9a50` (`toolContentIdentity: sha256:f64afd15624a32942c1b4757245b598dfc44992334e946d6abc66a3255ad9f10`). `prepare-build --mode package` (`mappingHash: 91ea4254...`) and Release builds of both `Hexalith.Parties.Platform.LifecycleTests.csproj` and `Hexalith.Parties.Platform.AttachedLifecycleQualification.Tests.csproj` passed. Owner admission succeeded without `HXP020`.
+- **Product defect in startup (`HXR021`):** Row 1 (`success`, run `5f22692a00b8d328c4fc17cd6aa462ca`) exited with code 3 (`HXR021`, `startup-timeout`, `effectiveSeconds: 600`, `actualDurationSeconds: 600.37`, `not-overridden`) and stopped the remaining 8 rows as `not-run`. A focused diagnostic probe (`2dcc644c63fc55fd90692e913d71f7dd`) captured the `parties` container logs and reproduced the exact root cause:
+  - Builds `055d7df5` (`v6.5.1`) pins `HexalithPartiesVersion = 3.1.1`, selecting `registry.hexalith.com/parties@sha256:205e374548d3cac33457551f9c6f7b5f213db804ca58ae185332522833fe83c8` (built on `.NET 10.0.403`).
+  - Platform `v2.2.5` (`0aacf132`) / CLI `6.5.1` (`.NET 11.0.100`) proposes a `.NET 11` route catalog generation. Four seconds after container start, `DevelopmentRouteCatalogBootstrapWorker` throws `Hexalith.EventStore.ServiceDefaults.Routing.RouteCatalogUnavailableException: The installed owner operation schemas or eligibility differ from the proposed generation.` and stops the `parties` host (`BackgroundServiceExceptionBehavior=StopHost`, exit 0); readiness also reports `route-catalog` `Reason=catalog-disagreement`. Twenty-one seconds later the sibling containers are terminated (`exit=137`) and startup times out at 600 s.
+  - Builds `v6.8.5` and `v6.9.0` advance `HexalithPartiesVersion` to `4.0.1` (alongside EventStore `5.6.0`, Memories `4.1.2`, Tenants `8.1.0`), which requires an updated Platform release + owner lock adopted by Parties before a passing live rerun.
+- **Cleanup & host-isolation note:** Both runs (`5f22692a...` and `2dcc644c...`) cleaned up completely with zero issued containers and zero listed runs; the scratch worktree and temporary work directories were removed, and no `0/9` evidence directory was committed. Concurrent unrelated suites (`Hexalith.Memories.IntegrationTests`, `Hexalith.Tenants.IntegrationTests`) were mutating non-owned Docker containers on this host during `5f22692a` (`foreign.unchanged: false`); the future live rerun also requires Docker quiescence.
 
 **The latest-release requirement blocked the campaign on 2026-11-22.**
 
@@ -144,6 +161,7 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 ## Spec Change Log
 
 - 2026-11-21: The owner directed the campaign to use only the latest released CLI. The inputs and evidence path now identify the 6.4.4 campaign. The earlier 6.3.0 defects remain historical observations.
+- 2026-11-27: Owner renegotiated `<frozen-after-approval>` to run live on current Parties `ca637a01829c57d9163fb686a56bc82b094a10d9` with its signed pinned Builds CLI `6.5.1` and catalog `055d7df5b49669d5b705ce163b0b2e187ecb9a50` (relaxing latest-only because `6.8.5`+ trips HXP020 against Platform v2.2.5's owner lock). Added manifest-driven suite discovery in `scenarios.py`, isolated Dapr `cli-1.19.1-runtime-1.19.2` home provisioning, and evidence output path `evidence/2-10/local-6-5-1-20261127/`.
 
 ## Review Triage Log
 

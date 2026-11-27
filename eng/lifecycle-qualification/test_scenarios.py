@@ -86,6 +86,66 @@ def passing_rows():
     }
 
 
+class ManifestSuitesTests(unittest.TestCase):
+    def manifest(self, tests):
+        return {'schema': 'hexalith.module-manifest.v2', 'modules': [{'tests': tests}]}
+
+    def test_resolves_renamed_and_legacy_attached_suite_paths_in_profile_order(self):
+        renamed = self.manifest([
+            {'name': 'attached-lifecycle-package',
+             'entry': 'tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleQualification.Tests.csproj'},
+            {'name': 'platform-package', 'entry': 'tests/Other/Other.csproj'},
+            {'name': 'lifecycle-package',
+             'entry': 'tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj'},
+        ])
+        self.assertEqual(
+            scenarios.manifest_suites(renamed),
+            ('tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj',
+             'tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleQualification.Tests.csproj'),
+        )
+        legacy = self.manifest([
+            {'name': 'lifecycle-package', 'entry': 'tests/Owner/Owner.csproj'},
+            {'name': 'attached-lifecycle-package', 'entry': 'tests/Attached/Attached.csproj'},
+        ])
+        self.assertEqual(scenarios.manifest_suites(legacy), ('tests/Owner/Owner.csproj', 'tests/Attached/Attached.csproj'))
+
+    def test_rejects_missing_blank_duplicate_or_unsafe_suite_entries(self):
+        cases = (
+            (None, 'missing or invalid'),
+            (self.manifest([{'name': 'lifecycle-package', 'entry': 'tests/Owner.csproj'}]), 'missing test profiles: attached-lifecycle-package'),
+            (self.manifest([{'name': 'lifecycle-package', 'entry': ''},
+                            {'name': 'attached-lifecycle-package', 'entry': 'tests/Attached.csproj'}]), 'has no entry path'),
+            (self.manifest([{'name': 'lifecycle-package', 'entry': '/etc/passwd'},
+                            {'name': 'attached-lifecycle-package', 'entry': 'tests/Attached.csproj'}]), 'invalid relative entry path'),
+            (self.manifest([{'name': 'lifecycle-package', 'entry': '../escape.csproj'},
+                            {'name': 'attached-lifecycle-package', 'entry': 'tests/Attached.csproj'}]), 'invalid relative entry path'),
+            (self.manifest([{'name': 'lifecycle-package', 'entry': 'tests/A.csproj'},
+                            {'name': 'lifecycle-package', 'entry': 'tests/B.csproj'},
+                            {'name': 'attached-lifecycle-package', 'entry': 'tests/C.csproj'}]), 'duplicate test profile'),
+        )
+        for doc, pattern in cases:
+            with self.subTest(pattern=pattern), self.assertRaisesRegex(ValueError, pattern):
+                scenarios.manifest_suites(doc)
+
+    def test_prepare_builds_suites_declared_in_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            checkout, work = root / 'parties', root / 'work'
+            work.mkdir()
+            manifest_path = checkout / scenarios.MANIFEST
+            manifest_path.parent.mkdir(parents=True)
+            manifest_path.write_text(json.dumps(self.manifest([
+                {'name': 'lifecycle-package', 'entry': 'tests/Owner/Owner.csproj'},
+                {'name': 'attached-lifecycle-package', 'entry': 'tests/Attached/AttachedQualification.Tests.csproj'},
+            ])))
+            driver = scenarios.Driver(checkout, work)
+            with (patch.object(driver, 'tool', return_value=(0, {'buildPreparation': {'environment': {'X': '1'}, 'mappingHash': 'h'}})),
+                  patch.object(scenarios.subprocess, 'run', return_value=SimpleNamespace(returncode=0)) as run_cmd):
+                self.assertEqual(driver.prepare(), 'h')
+            built = [call.args[0][2] for call in run_cmd.call_args_list]
+            self.assertEqual(built, ['tests/Owner/Owner.csproj', 'tests/Attached/AttachedQualification.Tests.csproj'])
+
+
 class ExtractTests(unittest.TestCase):
     def test_projects_only_bounded_public_fields(self):
         value = scenarios.extract(document('failed', 'startup-timeout', retention='failure-retained', leftovers=['resource:redis']))

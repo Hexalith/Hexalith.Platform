@@ -22,8 +22,7 @@ from pathlib import Path
 
 MANIFEST = 'module/hexalith.module-manifest.v2.json'
 OWNER, ATTACHED = 'lifecycle-package', 'attached-lifecycle-package'
-SUITES = ('tests/Hexalith.Parties.Platform.LifecycleTests/Hexalith.Parties.Platform.LifecycleTests.csproj',
-          'tests/Hexalith.Parties.Platform.AttachedLifecycleTests/Hexalith.Parties.Platform.AttachedLifecycleTests.csproj')
+PROFILES = (OWNER, ATTACHED)
 SCENARIOS = ('success', 'failure', 'startup-timeout', 'cancellation', 'collision', 'owner-finish-hold',
              'owner-cancel-attached', 'attached-failure-expiry', 'failure-then-cancellation')
 CI_RUNS = tuple('https://github.com/Hexalith/Hexalith.Parties/actions/runs/' + run
@@ -50,6 +49,35 @@ class InventoryFailure(Failure):
 
 def now():
     return datetime.now(timezone.utc).isoformat()
+
+
+def manifest_suites(doc, profiles=PROFILES):
+    """Resolve the declared suite entry paths for the requested test profiles from a v2 manifest."""
+    if not isinstance(doc, dict):
+        raise ValueError('Manifest JSON is missing or invalid.')
+    entries = {}
+    for module in doc.get('modules') or []:
+        if not isinstance(module, dict):
+            continue
+        for test in module.get('tests') or []:
+            if not isinstance(test, dict):
+                continue
+            name = test.get('name')
+            if name not in profiles:
+                continue
+            entry = test.get('entry')
+            if not isinstance(entry, str) or not entry.strip():
+                raise ValueError(f'Manifest test profile {name} has no entry path.')
+            candidate = Path(entry)
+            if candidate.is_absolute() or '..' in candidate.parts:
+                raise ValueError(f'Manifest test profile {name} has an invalid relative entry path.')
+            if name in entries:
+                raise ValueError(f'Manifest declares duplicate test profile {name}.')
+            entries[name] = entry
+    missing = [name for name in profiles if name not in entries]
+    if missing:
+        raise ValueError('Manifest is missing test profiles: ' + ', '.join(missing) + '.')
+    return tuple(entries[name] for name in profiles)
 
 
 def read_json(path):
@@ -261,13 +289,17 @@ class Driver:
 
     def prepare(self):
         """Prepare package-mode imports and build both suites before any service starts."""
+        try:
+            suites = manifest_suites(read_json(self.checkout / MANIFEST))
+        except ValueError as error:
+            raise SystemExit(str(error)) from None
         code, output = self.tool('prepare-build', '--manifest', MANIFEST, '--mode', 'package',
                                  '--workspace', str(self.work / 'prepared'), timeout=900)
         if code != 0:
             raise SystemExit('prepare-build refused: ' + ', '.join(rule_ids(output)))
         preparation = output['buildPreparation']
         environment = {**self.env, **preparation['environment']}
-        for suite in SUITES:
+        for suite in suites:
             log = self.work / ('build-' + Path(suite).stem + '.log')
             with log.open('w') as stream:
                 result = subprocess.run(['dotnet', 'build', suite, '-c', 'Release', '-nodeReuse:false',
