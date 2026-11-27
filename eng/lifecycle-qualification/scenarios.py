@@ -38,7 +38,7 @@ class Failure(Exception):
 
 
 class Refused(Failure):
-    """An owner exited before execution: a product refusal or missing prerequisite stops the campaign."""
+    """A nonzero suite exit before readiness stops the campaign."""
 
 
 class InventoryFailure(Failure):
@@ -436,13 +436,16 @@ class Driver:
         try:
             return self.poll(check, seconds, run['proc'], run['label'] + what)
         except Failure:
-            if run['label'] != 'owner' or run.get('executing'):
+            if run.get('executing'):
                 raise
-            try:  # An owner that stops before execution and exits nonzero is a product refusal.
-                code = run['proc'].wait(150)
-            except subprocess.TimeoutExpired:
-                raise Failure(run['label'] + what + ': failed while still running') from None
-            if code == 0:
+            if run['label'] == 'owner':
+                try:
+                    code = run['proc'].wait(150)
+                except subprocess.TimeoutExpired:
+                    raise Failure(run['label'] + what + ': failed while still running') from None
+            else:
+                code = run['proc'].poll()
+            if not code:
                 raise
             rules = rule_ids(last_json(run['stdout'].read_text())) or ['no rule id']
             raise Refused(run['label'] + ' refused before execution: ' + ', '.join(rules)) from None

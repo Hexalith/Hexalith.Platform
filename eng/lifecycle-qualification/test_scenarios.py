@@ -301,6 +301,76 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual([row['scenario'] for row in summary['rows']], list(scenarios.SCENARIOS))
         self.assertEqual([row['verdict'] for row in summary['rows']], ['failed'] + ['not-run'] * 8)
 
+    def test_attached_exit_before_readiness_records_diagnostics_and_stops_campaign(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            controls = root / 'controls'
+            owner_ready = controls / OWNER / 'execution-ready.json'
+            owner_ready.parent.mkdir(parents=True)
+            owner_ready.touch()
+            output = root / 'attached.json'
+            output.write_text(json.dumps({'diagnostics': [{'ruleId': 'HXT006'}]}) + '\n')
+            driver = scenarios.Driver(root / 'parties', root / 'work')
+            owner = {'label': 'owner', 'runId': OWNER, 'proc': SimpleNamespace(poll=lambda: None)}
+            attached = {'label': 'attached', 'runId': ATTACHED, 'stdout': output,
+                        'proc': SimpleNamespace(poll=lambda: 4, wait=lambda _: 4)}
+            snapshot = {'containers': [], 'list': []}
+
+            def admit_attached(*_):
+                driver.current['attached'] = attached
+                return attached
+
+            def observe_result(run_id):
+                release.assert_called_once()
+                self.assertEqual(run_id, ATTACHED)
+                return scenarios.extract(document('failed', run_id=ATTACHED, role='attached'))
+
+            with (patch.object(scenarios, 'Driver', return_value=driver),
+                  patch.object(scenarios, 'CONTROLS', controls),
+                  patch.object(scenarios.signal, 'signal'),
+                  patch.object(driver, 'preflight', return_value=(
+                      {'revision': 'a' * 40, 'buildsRevision': 'b' * 40}, {'version': '6.3.0'})),
+                  patch.object(driver, 'owner', return_value=owner),
+                  patch.object(driver, 'attached', side_effect=admit_attached) as admit,
+                  patch.object(driver, 'foreign', return_value=snapshot),
+                  patch.object(driver, 'release') as release,
+                  patch.object(driver, 'residue', return_value={'listedIssuedRuns': [], 'issuedContainers': 0}),
+                  patch.object(driver, 'result', side_effect=observe_result),
+                  redirect_stdout(io.StringIO())):
+                evidence = root / 'evidence'
+                result = scenarios.main(['--checkout', str(driver.checkout), '--evidence', str(evidence),
+                                         '--scenario', 'owner-cancel-attached', '--scenario', 'attached-failure-expiry',
+                                         '--skip-prepare'])
+                summary = json.loads((evidence / 'summary.json').read_text())
+
+        self.assertEqual(result, 1)
+        admit.assert_called_once()
+        self.assertEqual(release.call_count, 2)
+        self.assertEqual([row['verdict'] for row in summary['rows']], ['failed', 'not-run'])
+        row = summary['rows'][0]
+        self.assertEqual(row['failedChecks'], ['driver:attached refused before execution: HXT006'])
+        self.assertEqual(row['runs'][0]['exitCode'], 4)
+        self.assertEqual(row['runs'][0]['ruleIds'], ['HXT006'])
+        self.assertEqual(row['runs'][0]['diagnosticIds'], ['lifecycle'])
+        self.assertTrue(row['foreign']['unchanged'])
+
+    def test_attached_readiness_timeout_and_failure_after_readiness_are_not_refusals(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            driver = scenarios.Driver(root / 'parties', root / 'work')
+            run = {'label': 'attached', 'runId': ATTACHED, 'proc': SimpleNamespace(poll=lambda: None)}
+            with patch.object(scenarios, 'CONTROLS', root):
+                with self.assertRaisesRegex(scenarios.Failure, 'attached execution: timed out') as error:
+                    driver.ready(run, seconds=0)
+                self.assertIs(type(error.exception), scenarios.Failure)
+
+                ready = root / ATTACHED / 'execution-ready.json'
+                ready.parent.mkdir()
+                ready.touch()
+                run['proc'] = SimpleNamespace(poll=lambda: 4)
+                driver.ready(run)
+                self.assertTrue(run['executing'])
+
     def test_unknown_final_inventory_fails_campaign_even_with_passing_rows(self):
         with (tempfile.TemporaryDirectory() as directory,
               patch.object(scenarios, 'Driver') as driver_type,

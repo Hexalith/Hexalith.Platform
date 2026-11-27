@@ -17,6 +17,8 @@ which remains in git history.
 - Linux with Docker running and able to pull the module images from
   `registry.hexalith.com`, the .NET SDK from Parties' `global.json`, Python 3
   and `pwsh` (looked up in `~/.dotnet/tools`).
+- Confirm Docker is quiescent before starting. Run the campaign while other
+  suites that create or remove containers are idle.
 - The toolchain that the pinned Builds selects, which the tool probes before it
   allocates anything:
   - `HEXALITH_DAPR_HOME` names an isolated Dapr home: `tools/dapr` and
@@ -92,9 +94,9 @@ selected row passed and no issued run or container remains.
 A row whose expectations fail is recorded as `failed` with its failed checks
 and rule ids, and the campaign continues. A row that fails is re-run once; if
 the re-run passes, the row is marked `flaky` and keeps the first attempt, and
-the flaky test is recorded as a bug. An owner that exits before execution (a
-product refusal such as HXP020, or a missing prerequisite such as HXR012) stops
-the campaign, and the remaining rows are recorded as `not-run`.
+the flaky test is recorded as a bug. A nonzero owner or attached-suite exit
+before readiness stops the campaign and records the available diagnostics. The
+remaining rows are recorded as `not-run`.
 
 ## Evidence
 

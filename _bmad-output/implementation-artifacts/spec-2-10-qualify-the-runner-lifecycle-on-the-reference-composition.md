@@ -126,6 +126,17 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 
 ## Implementation Notes
 
+**2026-11-27: Builds `main` contains the source fix for `HXT006`.**
+
+- Builds commit `028d886371c830b77bffd9bac379051492187a25` issues attached-suite tokens with the enrolled `g4-native-tests` subject and an attachment-specific `jti`. The JWT expiry is bounded by the attachment hold and the execution deadline. Tenants uses its existing membership check.
+- The Builds access termination report and README now describe the shared subject, attachment-specific token ID, and credential scope. A disposable build of the Builds candidate with those changes passed all 67 `AttachedSuiteExecutionTests` and `CompositionRedactionTests` cases.
+- Builds CLI `6.9.1` predates the fix. The live campaign still requires a published CLI that contains the fix, compatible pins in the reference composition, and a quiescent Docker host.
+
+**2026-11-27: the driver now stops the campaign when an attached suite exits unsuccessfully before readiness.**
+
+- The first failed row keeps the available diagnostics, runs cleanup, and marks the remaining rows `not-run`. Readiness timeouts while the process is still running and controlled failures after readiness retain their existing handling.
+- All 24 driver unit tests passed. The pinned Platform, Builds, and Parties revisions still contain the `HXT006` authorization mismatch described below. Live qualification and Step 4 review remain pending until an approved tuple resolves the mismatch and Docker can stay quiescent throughout the run.
+
 **2026-11-27 (renegotiation 2): rows 1–6 functionally verified on Parties `869bd043` / Platform `v2.9.0` / Builds `6.9.1`; rows 7–9 blocked by attached-subject Tenants authorization defect (`HXT006`).**
 
 - **Verified inputs & package prep:** Confirmed `hexalith.builds.module.cli` `6.9.1` is the latest published version on NuGet. Restored CLI reported `6.9.1+91cb7cba990ffdf82930f9bf8cb68aef41baba76` (`toolContentIdentity: sha256:69782f5e263a37ccf845654b7442eaac9f00fe2ae9b15a432467f7b0ac4e1b4d`) against Parties `869bd04362f914a05a010c039227f668c8ad903f` and nested Builds `91cb7cba990ffdf82930f9bf8cb68aef41baba76` using isolated Dapr home `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2`. `prepare-build --mode package` (`mappingHash: cbc1751a10cbb20021f794f69ffd8e86426e7fae81bf038d08f7dd722ff3747e`) and Release builds of both suites (`Hexalith.EventStore.Testing` `5.6.0`) passed.
