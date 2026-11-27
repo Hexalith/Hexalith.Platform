@@ -25,8 +25,8 @@ public sealed class PlatformEventStorePackageCatalogReaderTests
         request.RootElement.GetProperty("ownerPackageLock").GetString().ShouldBe(owners.Path);
         request.RootElement.GetProperty("owners").GetArrayLength().ShouldBe(1);
         using JsonDocument document = JsonDocument.Parse(File.ReadAllBytes(catalog.CatalogPath));
-        foreach (string key in new[] { "routes", "operations", "declarations" }) document.RootElement.GetProperty(key).GetArrayLength().ShouldBe(24);
-        document.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(13);
+        foreach (string key in new[] { "routes", "operations", "declarations" }) document.RootElement.GetProperty(key).GetArrayLength().ShouldBe(25);
+        document.RootElement.GetProperty("idempotency").GetArrayLength().ShouldBe(14);
         catalog.Envelope.Idempotency.ShouldAllBe(policy => policy.ConsumerAppId == gatewayAppId);
         using JsonDocument receipt = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(catalog.Directory, "receipt.json")));
         // AR-12: the reader records each owner body against its lock-verified archive member; Composition loads the same bodies.

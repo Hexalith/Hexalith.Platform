@@ -25,7 +25,7 @@ public sealed class PlatformSdk42PackageEntryTests
         owners.Path.ShouldBe(OwnerPackageLock.PathFor(fixture.Options.PlatformRoot));
         var servers = PlatformAppModel.Prepare(fixture.Options);
         servers.Single(server => server.ResourceId == "eventstore").ProjectPath.ShouldBe(fixture.Seed);
-        AssertReader(fixture.Reader, owners, new HashSet<string>(), 24, 13, catalog);
+        AssertReader(fixture.Reader, owners, new HashSet<string>(), 25, 14, catalog);
     }
 
     /// <summary>The existing parent proof builds and seals the real source owner and package-only references from the current catalog.</summary>
