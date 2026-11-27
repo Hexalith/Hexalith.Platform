@@ -15,28 +15,29 @@ context: []
 
 ## Intent
 
-**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) calls for a local run of the nine lifecycle scenarios on Parties and one compact summary per scenario. On 2026-11-27, the owner renegotiated the 2026-11-21 latest-only rule to run against the current Platform gitlink Parties `ca637a01` with its signed pinned Builds CLI `6.5.1` (because newer CLIs `6.8.5`+ trip HXP020 against Platform v2.2.5's owner lock).
+**Problem:** The [2026-11-18 rescope](../planning-artifacts/sprint-change-proposal-2026-11-18.md) calls for a local run of the nine lifecycle scenarios on Parties and one compact summary per scenario. On 2026-11-27, after Platform `v2.9.0` (`a670a4c5`) and Parties `869bd043` adopted Builds `v6.9.1`, the owner renegotiated the inputs to restore the latest-released CLI rule and run live on Parties `869bd043` with Builds `v6.9.1` and Builds CLI `6.9.1`.
 
-**Approach:** Maintain the stdlib Python driver (`eng/lifecycle-qualification/scenarios.py`), reading the `lifecycle-package` and `attached-lifecycle-package` suite entry paths from `module/hexalith.module-manifest.v2.json`. It runs the signed pinned `hexalith-module` (`6.5.1`) against Parties' existing `lifecycle-package` and `attached-lifecycle-package` fixtures through their `control.json`. Run all nine scenarios once and commit a compact summary. The CI part and the tool acceptance and pins stay open for Story 2.14 and CiCd story 21.
+**Approach:** Maintain the stdlib Python driver (`eng/lifecycle-qualification/scenarios.py`), reading the `lifecycle-package` and `attached-lifecycle-package` suite entry paths from `module/hexalith.module-manifest.v2.json`. It runs the latest released `hexalith-module` (`6.9.1`) pinned by Parties against Parties' existing `lifecycle-package` and `attached-lifecycle-package` fixtures through their `control.json`. Confirm Docker on this host is quiescent before starting, run all nine scenarios live once with isolated Dapr home `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2`, verify zero residue and `foreign.unchanged=true` across all rows, and commit a compact summary. The CI part and the tool acceptance and pins stay open for Story 2.14 and CiCd story 21.
 
 ## Boundaries & Constraints
 
 **Always:**
 - **Inputs:**
-  - Use Parties `ca637a01829c57d9163fb686a56bc82b094a10d9`, the Platform gitlink at `ada65676d9c2ebf45c69c169f6707b5697157941`, in a scratch git worktree.
-  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its committed catalog gitlink `055d7df5b49669d5b705ce163b0b2e187ecb9a50` (`v6.5.1`), from local objects with no fetch. Record the catalog revision separately from the CLI release.
-  - Restore Builds CLI `6.5.1` from the worktree's `.config/dotnet-tools.json`. Use the signed pinned CLI matching the catalog. NuGet, registry, and verified Dapr toolchain pulls (provisioning an isolated `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2` home against `Props/dapr-toolchain-sha256.json` without modifying shell profiles) are allowed.
+  - Use Parties `869bd04362f914a05a010c039227f668c8ad903f` (pulled into Platform's `references/Hexalith.Parties` submodule from `origin/main`, advancing the gitlink from `e86d212abd7788aa5b820450d88266eda99462e5` at Platform `v2.9.0` `a670a4c51d76f63f3142e38f02542a246e1926fb`) in a scratch git worktree.
+  - Initialize only that worktree's nested `references/Hexalith.Builds`, at its committed catalog gitlink `91cb7cba990ffdf82930f9bf8cb68aef41baba76` (`v6.9.1`), from local objects with no fetch. Record the catalog revision separately from the CLI release.
+  - Restore the latest released Builds CLI (`6.9.1`) from the worktree's `.config/dotnet-tools.json`. Confirm it is the latest published release before running. NuGet, registry, and verified Dapr toolchain pulls (using isolated `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2` home verified against `Props/dapr-toolchain-sha256.json` without modifying shell profiles) are allowed.
 - **Package mode:** use package mode, as both profiles declare.
-- **Environment:** leave `CI` and `GITHUB_ACTIONS` unset and fabricate no GitHub metadata.
+- **Environment:** leave `CI` and `GITHUB_ACTIONS` unset and fabricate no GitHub metadata. Confirm Docker on this host is quiescent (no other test suites mutating containers) before starting.
 - **Isolation:**
   - Snapshot non-owned containers and `list` entries before and after the run.
   - Act only on run ids the driver issued.
   - Every exit path runs `down` for every issued run.
-- **Evidence:** one `summary.json` and a short README table, with no logs, archives, credentials or home paths.
+  - Verify zero residue and `foreign.unchanged=true` across all nine rows.
+- **Evidence:** one `summary.json` and a short README table in `_bmad-output/implementation-artifacts/evidence/2-10/local-6-9-1-20261127/`, with no logs, archives, credentials or home paths.
 - **Flaky failures:** one re-run is allowed for a failure that does not reproduce. Record the flaky test as a bug.
 
 **Never:**
-- Hosted workflows, dispatches, pushes or pin changes.
+- Hosted workflows, dispatches, pushes or accepted-tool pin changes (advancing Platform's `references/Hexalith.Parties` submodule gitlink to `869bd04362f914a05a010c039227f668c8ad903f` for this renegotiated run is explicitly authorized).
 - Edits to Builds, Parties or Platform Composition source. On a product refusal or defect (e.g. HXP020), stop and report it. Never patch allowlists; 2.14 owns them.
 - A startup-timeout override. Pause the owned AppHost instead and keep the default 600 s deadline.
 
@@ -48,6 +49,11 @@ context: []
 - Relax the 2026-11-21 latest-only CLI rule to run live on current Parties `ca637a01829c57d9163fb686a56bc82b094a10d9` with its signed pinned Builds CLI `6.5.1` and nested Builds catalog `055d7df5b49669d5b705ce163b0b2e187ecb9a50`.
 - Read suite project paths from `module/hexalith.module-manifest.v2.json` in `eng/lifecycle-qualification/scenarios.py` instead of hardcoding `SUITES`.
 - Provision an isolated Dapr `cli-1.19.1-runtime-1.19.2` home verified against `Props/dapr-toolchain-sha256.json` if absent, leaving shell profiles unchanged.
+
+**Decisions (2026-11-27, renegotiation 2):**
+- Pull `references/Hexalith.Parties` to `869bd04362f914a05a010c039227f668c8ad903f` (including the updated Platform submodule gitlink in this change) and run with its nested `references/Hexalith.Builds` `91cb7cba990ffdf82930f9bf8cb68aef41baba76` (`v6.9.1`) and Builds CLI `6.9.1`.
+- Restore the latest-released CLI rule (`6.9.1` confirmed latest on NuGet) and write live evidence to `_bmad-output/implementation-artifacts/evidence/2-10/local-6-9-1-20261127/`.
+- Confirm Docker quiescence before starting, execute all 9 scenarios live with isolated Dapr home `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2`, verify zero residue and `foreign.unchanged=true` across all rows, and proceed through Step 4 review.
 
 ## I/O & Edge-Case Matrix
 
@@ -100,7 +106,7 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 - [x] `eng/lifecycle-qualification/{local,test_local,prepare,test_prepare}.py`: delete them.
 - [x] `eng/lifecycle-qualification/README.md`: rewrite it to cover the prerequisites and the run command.
 - [x] `eng/lifecycle-qualification/scenarios.py` and `eng/lifecycle-qualification/test_scenarios.py`: resolve `lifecycle-package` and `attached-lifecycle-package` suite project paths from `module/hexalith.module-manifest.v2.json` (handling Parties `ca637a01`'s renamed `Hexalith.Parties.Platform.AttachedLifecycleQualification.Tests.csproj`) and cover manifest-driven suite resolution in unit tests.
-- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-5-1-20261127/`: run all nine rows live on Parties `ca637a01` with signed pinned Builds CLI `6.5.1` (using isolated Dapr home `cli-1.19.1-runtime-1.19.2`) and write `summary.json` and `README.md`. Blocked in startup by `HXR021` (`parties` `3.1.1` `.NET 10` image route-catalog schema disagreement); see Implementation Notes.
+- [ ] `_bmad-output/implementation-artifacts/evidence/2-10/local-6-9-1-20261127/`: confirm Docker quiescence on this host, run all nine rows live on Parties `869bd04362f914a05a010c039227f668c8ad903f` with latest released Builds CLI `6.9.1` and nested Builds catalog `91cb7cba990ffdf82930f9bf8cb68aef41baba76` (`v6.9.1`) using isolated Dapr home `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2`, verify zero residue and `foreign.unchanged=true` across all rows, clean up the scratch worktree/work dir, and write `summary.json` and `README.md`.
 
 **Acceptance Criteria:**
 - **Given** the summary, **when** inspected, **then** each row holds:
@@ -119,6 +125,27 @@ A row whose expectation fails is recorded as `failed`, with its diagnostic ids. 
 The original Story 2.8 runs supply both hosted cancellation cases. Each new candidate merge or release decision requires a fresh qualifying run under the [candidate evidence and attachment policy v1](../../docs/contracts/candidate-and-attachment-policy-v1.md).
 
 ## Implementation Notes
+
+**2026-11-27 (renegotiation 2): rows 1–6 functionally verified on Parties `869bd043` / Platform `v2.9.0` / Builds `6.9.1`; rows 7–9 blocked by attached-subject Tenants authorization defect (`HXT006`).**
+
+- **Verified inputs & package prep:** Confirmed `hexalith.builds.module.cli` `6.9.1` is the latest published version on NuGet. Restored CLI reported `6.9.1+91cb7cba990ffdf82930f9bf8cb68aef41baba76` (`toolContentIdentity: sha256:69782f5e263a37ccf845654b7442eaac9f00fe2ae9b15a432467f7b0ac4e1b4d`) against Parties `869bd04362f914a05a010c039227f668c8ad903f` and nested Builds `91cb7cba990ffdf82930f9bf8cb68aef41baba76` using isolated Dapr home `~/.hexalith/dapr/cli-1.19.1-runtime-1.19.2`. `prepare-build --mode package` (`mappingHash: cbc1751a10cbb20021f794f69ffd8e86426e7fae81bf038d08f7dd722ff3747e`) and Release builds of both suites (`Hexalith.EventStore.Testing` `5.6.0`) passed.
+- **Driver fix (`startup-timeout`):** Live `startup-timeout` runs (`fd172733...`, `24c1038f...`) exposed a driver bug: `startup_timeout()` read only AppHost-written `diagnostics/<runId>/startup-failure.json`, which a `SIGSTOP`ped AppHost cannot write, missing runner-CLI-written `diagnostics/<runId>/summary.json` (`hexalith.g4-startup-report.v1`, which recorded `ruleId: HXR021` and all 22 unready `resources`). Updated `eng/lifecycle-qualification/scenarios.py` with `startup_failure_facts(failure, report)` to fall back to `summary.json` (projecting bounded resource names) and added unit tests in `eng/lifecycle-qualification/test_scenarios.py` (`22/22` passing).
+- **Live results for rows 1–6 (all functional runner behaviors verified):**
+  - `success` (`e54ea33e...`): passed (`passed` / `tests-completed`, 67.3 s startup, `not-retained -> complete`, 0 leftovers, `foreign.unchanged: true`).
+  - `failure` (`8609d26f...`): passed (exit 4, `failed` / `test-failure`, `failure-retained` with 13 containers -> `down` -> `released -> complete`, 0 leftovers, `foreign.unchanged: true`).
+  - `startup-timeout` (`fd172733...`, `24c1038f...`): all runner checks passed (`HXR021`, `startup-timeout`, effective 600 s, actual 600.1 s / 600.5 s, `not-overridden`, 4 partial containers retained until `down`, `firstOutcomeStable: true`, `released -> complete`, 0 leftovers, `foreign.unchanged: true`); failed only the pre-fix `unready-recorded` check before the `startup_failure_facts` fix.
+  - `cancellation` (`8f40c7b2...`, `e6252d80...`): all functional checks passed on both attempts (exit 130, `cancelled` / `run-cancelled`, 0 containers at exit, `not-retained -> complete`, 0 leftovers); failed only `foreign-unchanged` due to concurrent host Docker activity.
+  - `collision` (`7075c620...`/`8bfae2b1...`, `32c2533b...`/`1add935e...`): all functional checks passed on both attempts (peer refused with `HXR031` naming first run, first unaffected and passed, 0 leftovers); failed only `foreign-unchanged` due to concurrent host Docker activity.
+  - `owner-finish-hold` (`05361fbf...`, `e214c32f...` in follow-up probe): all 8 functional checks passed (`holdAdmitted`, `passedWhileHeld`, `cleanupPending`, `refusal: ["HXR035", "owner-passed"]`, `holdEnded`, exit 0, `passed`, `complete`, 0 leftovers); failed only `foreign-unchanged` due to concurrent host Docker activity (the earlier campaign attempt `847b4084...` timed out at 600 s on `memories-access-telemetry-clock` under host load ~63).
+- **Product defect blocking rows 7–9 (`owner-cancel-attached`, `attached-failure-expiry`, `failure-then-cancellation`):**
+  - All 6 attached-suite runs (`72cfbebb...`, `305ab478...`, `f9baef36...`, `cd1e2926...`, `ae836ceb...`, `239c9a53...`) failed reproducibly in 3.1–6.9 s with exit 4 (`HXT006`, `test-failure`) before publishing `execution-ready.json`.
+  - Root cause:
+    1. `src/Hexalith.Platform.Composition/PlatformNativeTestPreparation.cs:168` enrolls only `"g4-native-tests"` as `TenantRole.TenantReader` on the synthetic tenant (`g4t-<ownerRunId>`).
+    2. Builds `6.9.1` (`references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/Runtime/NativeTestExecutor.cs:480`) mints attached-suite bearer tokens with narrowed non-admin subject `"g4-attached-tests:" + attached.RunId`.
+    3. Tenants `GetTenantQueryHandler` (`references/Hexalith.Tenants/src/Hexalith.Tenants/Queries/Handlers/GetTenantQueryHandler.cs:56`, `TenantQueryHandlerBase.cs:561-567`) authorizes `GET /api/tenants/{tenant}` strictly by tenant membership (`model.Members`) or global-admin membership, refusing `"g4-attached-tests:<attachedRunId>"` with `403 Forbidden`.
+    4. Parties `AttachedLifecycleQualificationTests.ReadServicesAsync` (`references/Hexalith.Parties/tests/Hexalith.Parties.Platform.AttachedLifecycleTests/AttachedLifecycleQualificationTests.cs:25-27,53-59`) calls `GET /api/tenants/{tenant}` and `EnsureSuccessStatusCode()` before publishing `execution-ready.json`.
+  - Per spec constraints, no Builds, Parties, Tenants, or Platform Composition source was modified.
+- **Cleanup & host-isolation note:** Every issued run cleaned up completely (`listedIssuedRuns: []`, `issuedContainers: 0`, zero `hexalith.g4.run` Docker containers remaining). The scratch worktree, temporary work/probe directories, and partial evidence directory were removed; no partial evidence was committed. Although Docker was quiescent at campaign start, concurrent unrelated suites (FrontComposer Playwright, Memories/Tenants Testcontainers, CiCd) started mid-run, mutating host containers (`foreign.unchanged: false`) and driving host load to ~63. A clean 9/9 live run requires resolving the attached-subject / Tenants-authorization product defect and running with host Docker quiescence.
 
 **2026-11-27: manifest-driven suite resolution and package prep passed on Parties `ca637a01` / CLI `6.5.1`; live startup blocked by `parties` `3.1.1` route-catalog disagreement (`HXR021`).**
 
@@ -162,6 +189,7 @@ The original Story 2.8 runs supply both hosted cancellation cases. Each new cand
 
 - 2026-11-21: The owner directed the campaign to use only the latest released CLI. The inputs and evidence path now identify the 6.4.4 campaign. The earlier 6.3.0 defects remain historical observations.
 - 2026-11-27: Owner renegotiated `<frozen-after-approval>` to run live on current Parties `ca637a01829c57d9163fb686a56bc82b094a10d9` with its signed pinned Builds CLI `6.5.1` and catalog `055d7df5b49669d5b705ce163b0b2e187ecb9a50` (relaxing latest-only because `6.8.5`+ trips HXP020 against Platform v2.2.5's owner lock). Added manifest-driven suite discovery in `scenarios.py`, isolated Dapr `cli-1.19.1-runtime-1.19.2` home provisioning, and evidence output path `evidence/2-10/local-6-5-1-20261127/`.
+- 2026-11-27 (renegotiation 2): After Platform `v2.9.0` (`a670a4c5`) and Parties `869bd04362f914a05a010c039227f668c8ad903f` adopted Builds `v6.9.1`, the owner renegotiated `<frozen-after-approval>` to pull `references/Hexalith.Parties` to `869bd04362f914a05a010c039227f668c8ad903f` (including the updated Platform gitlink), restore the latest-released CLI rule (`6.9.1` with nested Builds catalog `91cb7cba990ffdf82930f9bf8cb68aef41baba76`), confirm Docker quiescence, run all nine rows live with isolated Dapr home `cli-1.19.1-runtime-1.19.2`, verify zero residue and `foreign.unchanged=true`, and write evidence to `evidence/2-10/local-6-9-1-20261127/`.
 
 ## Review Triage Log
 

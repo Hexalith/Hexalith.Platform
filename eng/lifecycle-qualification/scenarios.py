@@ -136,6 +136,32 @@ def hold_view(item):
     return {**{key: item.get(key) for key in keys}, 'kind': 'hold-only' if item.get('execution') is None else 'attached-suite'}
 
 
+def _unready_names(items):
+    if not isinstance(items, list):
+        return []
+    names = []
+    for item in items:
+        if isinstance(item, dict) and isinstance(item.get('name'), str) and item.get('state') != 'Healthy':
+            names.append(item['name'])
+        elif isinstance(item, str) and item:
+            names.append(item)
+    return names
+
+
+def startup_failure_facts(failure, report=None):
+    """Extract bounded startup-timeout unready-resource facts from startup-failure.json or summary.json."""
+    if isinstance(failure, dict) and failure.get('ruleId') == 'HXR021':
+        unready = _unready_names(failure.get('unreadyResources'))
+        if unready:
+            return {'startupFailureRecorded': True, 'failingResource': failure.get('resource'), 'unreadyResources': unready}
+    if (isinstance(report, dict) and report.get('schema') == 'hexalith.g4-startup-report.v1'
+            and report.get('ruleId') == 'HXR021'):
+        unready = _unready_names(report.get('resources'))
+        if unready:
+            return {'startupFailureRecorded': True, 'failingResource': unready[0], 'unreadyResources': unready}
+    return {'startupFailureRecorded': False, 'failingResource': None, 'unreadyResources': None}
+
+
 def utc(value):
     return datetime.fromisoformat(str(value).replace('Z', '+00:00'))
 
@@ -598,9 +624,8 @@ class Driver:
         owner = self.owner()
         self.pause(owner)
         self.settle(owner, 1200)  # The runner's own default 600 s deadline decides; no override.
-        failure = read_json(DIAGNOSTICS / owner['runId'] / 'startup-failure.json') or {}
-        facts = {'startupFailureRecorded': failure.get('ruleId') == 'HXR021' and isinstance(failure.get('unreadyResources'), list),
-                 'failingResource': failure.get('resource'), 'unreadyResources': failure.get('unreadyResources')}
+        diagnostics = DIAGNOSTICS / owner['runId']
+        facts = startup_failure_facts(read_json(diagnostics / 'startup-failure.json'), read_json(diagnostics / 'summary.json'))
         self.resume()
         self.close(owner)
         return facts

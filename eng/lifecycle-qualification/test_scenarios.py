@@ -185,6 +185,22 @@ class ExtractTests(unittest.TestCase):
         moved = scenarios.summarize('owner', run(document('failed'), final=document('failed', recorded='2026-11-18T10:05:00Z')))
         self.assertFalse(moved['firstOutcomeStable'])
 
+    def test_startup_failure_facts_accepts_startup_failure_or_runner_summary_report(self):
+        failure = {'ruleId': 'HXR021', 'resource': 'parties',
+                   'unreadyResources': [{'name': 'parties', 'state': 'Unhealthy'}, {'name': 'redis', 'state': 'Healthy'}]}
+        self.assertEqual(scenarios.startup_failure_facts(failure, None),
+                         {'startupFailureRecorded': True, 'failingResource': 'parties', 'unreadyResources': ['parties']})
+        report = {'schema': 'hexalith.g4-startup-report.v1', 'ruleId': 'HXR021',
+                  'resources': [{'name': 'redis', 'state': 'Healthy'}, {'name': 'eventstore', 'state': 'Unhealthy'},
+                                {'name': 'parties', 'state': 'Unhealthy'}]}
+        self.assertEqual(scenarios.startup_failure_facts(None, report),
+                         {'startupFailureRecorded': True, 'failingResource': 'eventstore', 'unreadyResources': ['eventstore', 'parties']})
+        self.assertEqual(scenarios.startup_failure_facts(None, {'schema': 'hexalith.g4-startup-report.v1', 'ruleId': 'HXR021',
+                                                                'resources': [{'name': 'redis', 'state': 'Healthy'}]}),
+                         {'startupFailureRecorded': False, 'failingResource': None, 'unreadyResources': None})
+        self.assertEqual(scenarios.startup_failure_facts(None, None),
+                         {'startupFailureRecorded': False, 'failingResource': None, 'unreadyResources': None})
+
 
 class VerdictTests(unittest.TestCase):
     def test_every_scenario_has_checks_and_its_passing_sample_passes(self):

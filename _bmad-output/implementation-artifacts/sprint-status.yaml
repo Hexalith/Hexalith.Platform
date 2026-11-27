@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-27-2026 12:13
+last_updated: 11-27-2026 18:45
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -105,6 +105,12 @@ development_status:
   #   suites from the manifest (21/21 unit tests pass), isolated Dapr 1.19.2 home provisioned, and package prep + admission passed.
   #   Live startup blocked by HXR021: Builds 6.5.1 pins parties 3.1.1 (.NET 10), which hits RouteCatalogUnavailableException
   #   (catalog-disagreement) against Platform v2.2.5 / CLI 6.5.1 (.NET 11). Needs Platform/Parties adoption of Builds 6.8.5+/4.0.1.
+  # 2026-11-27 (renegotiation 2): Owner pulled Parties to 869bd043 (Builds v6.9.1 / CLI 6.9.1, latest on NuGet). Rows 1-6 passed
+  #   all functional runner lifecycle checks; fixed startup-timeout summary.json fallback in scenarios.py (22/22 unit tests pass).
+  #   Rows 7-9 blocked by product defect (HXT006 / 403): PlatformNativeTestPreparation enrolls only "g4-native-tests" on the
+  #   synthetic tenant, while Builds 6.9.1 mints attached-suite JWTs with subject "g4-attached-tests:<runId>", which Tenants
+  #   GetTenantQueryHandler refuses on GET /api/tenants/{tenant} before execution-ready.json. Zero residue; host also saw
+  #   concurrent unrelated Docker suites mid-run. Needs product fix + quiescent host for clean 9/9 local-6-9-1 evidence.
   2-10-qualify-the-runner-lifecycle-on-the-reference-composition: in-progress
   # 2026-11-10 user decision: takes over attached-test-execution-and-expiry-enforcement plus 2.10's missing producers.
   # 2026-11-10: parts 1-2 done (supervised attached suites and lifecycle observations); part 3 (Parties qualification caller) remains open in deferred-work.md.
