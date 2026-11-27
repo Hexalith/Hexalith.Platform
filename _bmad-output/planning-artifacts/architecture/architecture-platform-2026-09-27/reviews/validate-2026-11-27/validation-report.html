@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hexalith Platform architecture validation · 27 November 2026</title>
+<style>
+:root {
+  color-scheme: light;
+  font-family: system-ui, sans-serif;
+  line-height: 1.65;
+  color: #1e2a36;
+  background: #f2f5f6;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 980px; margin: 0 auto; padding: 2.5rem max(1.1rem, 5vw) 4rem; }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem 1.15rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #cad5d9;
+  font-size: .9rem;
+}
+a { color: #14536e; text-underline-offset: .18em; }
+a:focus-visible { outline: 3px solid #b14a1e; outline-offset: 3px; }
+h1, h2, h3 { line-height: 1.22; color: #102e3c; }
+h1 { font-size: clamp(2rem, 5vw, 3.35rem); margin: 2rem 0 .6rem; letter-spacing: -.035em; }
+h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); margin: 2.4rem 0 .95rem; }
+h3 { font-size: 1.18rem; margin: 0 0 .8rem; }
+h1 + p { color: #4c626a; margin: 0 0 1.5rem; }
+h1 + p + p {
+  background: #fff4eb;
+  border-left: .3rem solid #b94e25;
+  padding: 1rem 1.25rem;
+  border-radius: 0 .35rem .35rem 0;
+}
+article {
+  background: #fff;
+  border: 1px solid #d5dfe2;
+  border-radius: .55rem;
+  margin: .85rem 0;
+  padding: 1.15rem clamp(.9rem, 3vw, 1.65rem);
+  overflow-wrap: anywhere;
+}
+article p:last-child { margin-bottom: 0; }
+p, li { max-width: 80ch; }
+li + li { margin-top: .45rem; }
+code {
+  font: .88em ui-monospace, monospace;
+  overflow-wrap: anywhere;
+  background: #e9f0f2;
+  padding: .11em .24em;
+  border-radius: .2em;
+}
+@media print {
+  :root { background: #fff; }
+  nav { display: none; }
+  main { padding: 0; }
+  article { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<main>
+<nav aria-label="Report sections"><a href="#high-findings">High findings</a> <a href="#other-findings">Other findings</a> <a href="#qualification-status">Qualification status</a> <a href="#validation-evidence">Validation evidence</a></nav>
+<h1 id="hexalith-platform-architecture-validation">Hexalith Platform architecture validation</h1>
+<p>27 November 2026 · Platform initiative spine · Reviewer gate</p>
+<p><strong>Changes required.</strong> The November 27 plan puts the currency evaluator on the first-release path. An adopted handoff still requires the later drill caller, and the admission, profile and attempt-record contracts leave implementation teams with incompatible rules.</p>
+<h2 id="high-findings">High findings</h2>
+<article aria-labelledby="h1-the-adopted-profile-handoff-still-makes-the-first-release-wait-for-its-own-drill"><h3 id="h1-the-adopted-profile-handoff-still-makes-the-first-release-wait-for-its-own-drill">H1 · The adopted profile handoff still makes the first release wait for its own drill</h3>
+<p><strong>Align the handoff before implementing Stories 6.14 and 9.2.</strong> The spine requires the currency evaluator at the first approved production admission. Story 8.17 can use it only after Story 6.23 creates working production. The hosted-profile v2 contract and adoption record still put both admission and drill callers before the live evaluator. A team following that handoff cannot deliver the evaluator in time for the first release.</p>
+<p>Publish a dated, explicit supersession for the delivery order and cross-reference it from the spine and Stories 4.9, 6.14, 8.17 and 9.2. Retain the byte-bound v2 adoption record and its structural format and authority requirements. Qualify admission first, schedule the weekly caller when production is working, and add the drill caller with 8.17. <a href="../../ARCHITECTURE-SPINE.md#L380">Spine L380</a> · <a href="../../../../../../docs/contracts/hosted-profile-binding-v2.md#L106">Adopted profile handoff L106</a> · <a href="../../../../../../docs/contracts/hosted-profile-v2-adoption.json#L48">Adoption record L48</a> · <a href="../../../../epics.md#L4636">Story 8.17 L4636</a></p>
+</article><article aria-labelledby="h2-story-6-14-can-refuse-the-first-approved-production-installation"><h3 id="h2-story-6-14-can-refuse-the-first-approved-production-installation">H2 · Story 6.14 can refuse the first approved production installation</h3>
+<p><strong>Correct the admission acceptance criteria.</strong> The spine makes two narrow allowances for an eligible approved empty or degraded attempt. An approval can cover the exact observed stop revision, and an approved first empty installation has no working baseline to smoke-test. Story 6.14 lists a clear stop and passing working-baseline smokes for every release attempt. Story 6.23 then delegates its first empty admission to 6.14.</p>
+<p>Apply the spine's conditions to both preconditions in Story 6.14 and state when the retained-data requirement applies. Rehearse an approved first installation without a baseline, an otherwise eligible repair at its observed stop revision, and refusal when a newer stop arrives before start. Retain the common admission gates, including the attempt's own currency result. <a href="../../ARCHITECTURE-SPINE.md#L368">Spine L368</a> · <a href="../../../../epics.md#L3614">Story 6.14 L3614</a> · <a href="../../../../epics.md#L3918">Story 6.23 L3918</a></p>
+</article><article aria-labelledby="h3-currency-inputs-and-results-have-no-complete-authority-contract"><h3 id="h3-currency-inputs-and-results-have-no-complete-authority-contract">H3 · Currency inputs and results have no complete authority contract</h3>
+<p><strong>Agree on the read and write authorities across the three callers.</strong> Policy v1 requires current authenticated observations across the management and workload clusters, actual component instances and their nodes or replicas. AD-7 assigns namespace-scoped deployment authority and reserves cluster-scoped change authority for named infrastructure workflows. The production executor, drill and scheduler have no common read-only observation path or defined currency-result writer. For admission, an earlier evaluation and the final evaluation may also share the same attempt ID, mode and epoch.</p>
+<p>Define the scoped read-only observation path and authenticated result writer, verifier and retention authority for each trigger. Define how the signed admission evidence identifies the exact final check and approval disposition used. Rehearse multiple retained evaluations for one attempt and refusal when the authoritative final result is unavailable. <a href="../../ARCHITECTURE-SPINE.md#L139">AD-7 L139</a> · <a href="../../ARCHITECTURE-SPINE.md#L249">Record writers L249</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L189">Policy comparisons L189</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L234">Required result record L234</a> · <a href="../../../../../implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md#L29">Story 9.2 evidence constraints L29</a></p>
+</article><article aria-labelledby="h4-a-currency-refusal-lacks-a-terminal-outcome-that-preserves-deployed-state"><h3 id="h4-a-currency-refusal-lacks-a-terminal-outcome-that-preserves-deployed-state">H4 · A currency refusal lacks a terminal outcome that preserves deployed state</h3>
+<p><strong>Resolve the attempt outcome contract with Builds.</strong> A currency refusal occurs under the lock and preserves the exact promotion stop. The spine and stop monitor treat a non-working terminal outcome as a stop cause, and the production baseline classification also uses that outcome. The current attempt codec provides working, non-working and superseded terminal outcomes. The ordinary attempt-store revision releases the lock on a terminal outcome and excludes supersession. The admission writer and the stop monitor therefore need a common way to recognize a refused pre-mutation attempt.</p>
+<p>Define a distinguishable durable refusal outcome or phase in the shared record contract. Qualify lock release, an unchanged working pointer and stop revision, and a later fresh admission. Keep a genuine failed baseline health check subject to its own stop and degradation rules. <a href="../../ARCHITECTURE-SPINE.md#L343">Spine L343</a> · <a href="../../ARCHITECTURE-SPINE.md#L356">Promotion stop L356</a> · <a href="../../../../../../references/Hexalith.Builds/src/libraries/Hexalith.Builds.Tooling/ReleaseRecords/AttemptRecord.cs#L31">Attempt outcome L31</a> · <a href="../../../../../../src/Hexalith.Platform.AttemptStore/AttemptStore.Attempts.cs#L29">Attempt store L29</a> · <a href="../../../../epics.md#L3496">Story 6.10 L3496</a></p>
+</article><article aria-labelledby="h5-admission-uses-a-profile-digest-without-identifying-its-domain"><h3 id="h5-admission-uses-a-profile-digest-without-identifying-its-domain">H5 · Admission uses a profile digest without identifying its domain</h3>
+<p><strong>Name both digest domains and their consumers.</strong> The spine describes the infrastructure digest when it defines what the profile digest covers. It uses the generic term for staging-to-production equality, active profile evidence and qualification. Hosted-profile v2 also defines a resolved digest over the full environment-specific document. EventStore's promotion authority binds both. Two teams can choose different valid profile hashes for the same check and mishandle environments whose invariant pins agree but whose declared local bindings differ.</p>
+<p>Use the infrastructure digest for comparing invariant staging and production profiles. Require the target's exact resolved digest where the owner contract binds the deployed profile and specify which identities each qualification, attempt and currency record retains. Exercise equal infrastructure with different valid resolved bindings and refusal on wrong target bindings. <a href="../../ARCHITECTURE-SPINE.md#L254">Spine L254</a> · <a href="../../ARCHITECTURE-SPINE.md#L375">Precondition 6 L375</a> · <a href="../../../../../../docs/contracts/hosted-profile-binding-v2.md#L84">Digest domains L84</a> · <a href="../../../../../../references/Hexalith.EventStore/docs/architecture/publication-authority-v1.md#L185">EventStore promotion bindings L185</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L247">Policy inventory evidence L247</a></p>
+</article><article aria-labelledby="h6-the-executable-checklist-omits-the-working-baseline-s-refreshed-qualification"><h3 id="h6-the-executable-checklist-omits-the-working-baseline-s-refreshed-qualification">H6 · The executable checklist omits the working baseline's refreshed qualification</h3>
+<p><strong>Make precondition 6 enforce both parts of the profile rule.</strong> The Production profile row requires an affected working production baseline to have both its renewed qualification and production-promoted records after an infrastructure or environment-layer change. The numbered checklist and Story 6.14 check the candidate's qualifying sets and applied environment. A new release can meet that checklist while one of the working baseline's required records is missing or stale.</p>
+<p>Require both renewed baseline records when the working baseline was affected. Keep the candidate's production records issued at rollout, including at first installation. Rehearse refusal when either baseline record is absent and first installation when no baseline exists. <a href="../../ARCHITECTURE-SPINE.md#L254">Production profile L254</a> · <a href="../../ARCHITECTURE-SPINE.md#L375">Precondition 6 L375</a> · <a href="../../../../epics.md#L3622">Story 6.14 L3622</a></p>
+</article><h2 id="other-findings">Other findings</h2>
+<article aria-labelledby="m1-g3-can-be-audited-without-finding-a-missing-admission-result"><h3 id="m1-g3-can-be-audited-without-finding-a-missing-admission-result">M1 · G3 can be audited without finding a missing admission result</h3>
+<p><strong>Medium · Complete the rehearsal and audit criteria.</strong> Story 9.6 describes a generic failed currency check. Policy v1 also assigns it current, drifted, unsupported, overdue, unknown-data and unqualified-pairing cases, plus both release modes, approval naming and exact stop preservation. Story 9.8 and SM-C1 count compatibility and G3 in the promotion history. Add the required rehearsal cases and reconcile each automatic promotion with its retained passing admission result. <a href="../../ARCHITECTURE-SPINE.md#L572">Spine G3 handoff L572</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L276">Policy obligations L276</a> · <a href="../../../../epics.md#L4893">Story 9.6 L4893</a> · <a href="../../../../epics.md#L4948">Story 9.8 L4948</a> · <a href="../../../../prds/prd-platform-2026-09-27/prd.md#L404">SM-C1 L404</a></p>
+</article><article aria-labelledby="m2-the-drill-does-not-identify-which-deployment-supplies-currency-evidence"><h3 id="m2-the-drill-does-not-identify-which-deployment-supplies-currency-evidence">M2 · The drill does not identify which deployment supplies currency evidence</h3>
+<p><strong>Medium · Decide the target and collection boundary before Story 8.17.</strong> The restored workloads run with egress denied and the drill allows substitutions. The caller must observe exact deployed versions and obtain current upstream evidence. Identify the deployment and inventory the check evaluates, where it accesses upstream, and how substitutes and unavailable observations are recorded. Keep the evaluator outside restored application workloads and preserve the drill's isolation and the check's advisory effect. <a href="../../ARCHITECTURE-SPINE.md#L361">DR evidence L361</a> · <a href="../../ARCHITECTURE-SPINE.md#L568">Drill currency L568</a> · <a href="../../../../epics.md#L4645">Story 8.17 L4645</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L56">Policy triggers L56</a></p>
+</article><article aria-labelledby="m3-lost-window-applicability-needs-evidence-from-the-recovery-history"><h3 id="m3-lost-window-applicability-needs-evidence-from-the-recovery-history">M3 · Lost-window applicability needs evidence from the recovery history</h3>
+<p><strong>Medium · Define the evidence for both AR-44 branches.</strong> The spine and stories now agree that a missing required report blocks stop clearance or approval. They leave the consumer to determine whether qualifying recovery occurred, including an interrupted restore whose report was never completed. Bind the recovery history used for that determination to the relevant attempt and stop context. Rehearse incomplete or unavailable history alongside a proven no-recovery case. <a href="../../ARCHITECTURE-SPINE.md#L356">Spine L356</a> · <a href="../../../../epics.md#L3516">Story 6.10 L3516</a> · <a href="../../../../sprint-change-proposal-2026-11-27.md#L38">AR-44 change L38</a></p>
+</article><article aria-labelledby="m4-profile-acceptance-still-depends-on-an-unmeasured-identity-event-bound"><h3 id="m4-profile-acceptance-still-depends-on-an-unmeasured-identity-event-bound">M4 · Profile acceptance still depends on an unmeasured identity-event bound</h3>
+<p><strong>Medium · Resolve the existing dependency before Story 4.9 acceptance.</strong> The 4.9 readiness record identifies a loop between measuring the event capture lag on the staging export path and qualifying that path in 4.19 against the approved bound. Story 9.2 now depends on 4.9 on the first-release path. Assign a measured, isolated pre-qualification slice to produce the evidence for the bound, then qualify the actual staging path against it. The existing measurement proposal describes the required observations. <a href="../../../../../implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md#L108">Story 4.9 handoff L108</a> · <a href="../../../../epics.md#L2725">Story 4.19 L2725</a> · <a href="../../../../../../docs/implementation/identity-event-capture-lag-measurement-proposal.md#L100">Measurement proposal L100</a></p>
+</article><article aria-labelledby="m5-the-executor-s-helm-pin-needs-a-separate-compatibility-check"><h3 id="m5-the-executor-s-helm-pin-needs-a-separate-compatibility-check">M5 · The executor's Helm pin needs a separate compatibility check</h3>
+<p><strong>Medium · Put support and version skew into the toolchain gate.</strong> The spine carries a Helm 4.2.0 floor and Story 4.5 qualified that exact version on its test setup. The currency policy excludes deployment tools. Helm's published compatibility range for 4.2.x ends at Kubernetes 1.36, so satisfying the floor alone cannot qualify the pin for a newer cluster. Story 4.9 should require the same supported Helm release on each executor and qualify it against the exact Kubernetes target. <a href="../../ARCHITECTURE-SPINE.md#L413">Spine stack L413</a> · <a href="../../../../epics.md#L2348">Story 4.9 L2348</a> · <a href="../../../../../../docs/contracts/shared-infrastructure-currency-policy-v1.md#L50">Policy scope L50</a> · <a href="https://helm.sh/docs/topics/version_skew/">Helm support and skew</a></p>
+</article><h2 id="qualification-status">Qualification status</h2>
+<p>The checkout source-selection function refuses the current tuple at EventStore. The four mapped owner revisions differ from the committed gitlinks. The local Builds <code>v6.9.0</code> tag also peels to a different commit from the Builds gitlink. Reconciliation and qualification belong to Story 2.14. This is an existing implementation blocker separate from the architecture findings. <a href="review-reality.md">Reality review</a> · <a href="../../../../../../eng/current_tuple_source.py">CI source selector</a></p>
+<p>Kubernetes upstream confirms the spine's October 27, 2026 end-of-life date for 1.34. Repository evidence for Dapr 1.19.2 covers the accepted Story 4.5 chart qualification at exact pinned inputs. The policy v1 bytes match the revision and SHA-256 frozen by Story 9.2. The ratified Story 4.9 inventory, live currency callers and production compliance remain delivery evidence. <a href="https://kubernetes.io/releases/1.34/">Kubernetes 1.34 release status</a> · <a href="../../../../../implementation-artifacts/spec-4-9-ratify-the-hosted-runtime-and-identity-event-contracts.md#L80">Story 4.9 qualification handoff L80</a> · <a href="../../../../../implementation-artifacts/spec-9-2-run-the-shared-infrastructure-currency-check.md#L20">Story 9.2 frozen policy identity L20</a></p>
+<h2 id="validation-evidence">Validation evidence</h2>
+<ul>
+<li>BMad mechanical lint returned zero findings. AD-1 through AD-15 and the full PRD FR/NFR map were present. All four Mermaid diagrams parsed and rendered. <a href="lint.json">Lint results</a> · <a href="../../ARCHITECTURE-SPINE.md">Reviewed spine</a></li>
+<li>The three independent reviewers assessed the architecture rubric and source coverage, implementation and upstream currency, and cross-team compatibility. The synthesis prioritizes admission, state transitions and evidence that can change delivery or release outcomes. <a href="review-rubric.md">Rubric</a> · <a href="review-reality.md">Reality</a> · <a href="review-adversarial.md">Adversarial</a></li>
+<li>Review basis was the November 27 working tree at Platform base <code>f87f1593ca07ce617df50afb745a1995fde4b1e0</code>, including pending planning edits. Spine SHA-256 was <code>25bf177226ad19e04a3c15c3522d668f62c9289af682a240f02d701f5bb13a5f</code>. The spine and its decision log were preserved byte-for-byte. Live admission, deployments, drills and the integration suite were outside this document validation.</li>
+</ul>
+<p><a href="validation-report.html">HTML report</a></p>
+
+</main>
+</body>
+</html>

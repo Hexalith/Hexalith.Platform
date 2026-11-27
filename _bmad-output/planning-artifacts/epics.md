@@ -135,13 +135,13 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   - Every deployment failure and recovery result, including success, is reported through GitHub to Administrator and the named deputy, with release, environment, status and access-controlled diagnostics.
 - *Promotion stop:*
   - A durable stop survives process, executor or cluster restart and suspends promotion. Promotion is also suspended during any recovery.
-  - It is set by every non-working production outcome and recovery entry, a failed pre-update health check or over-bound probe failure, a recorded incident showing production is not working, any two-way mismatch between production admission and Administrator's records (checked on a declared cadence), or an Administrator or deputy declaration.
+  - It is set by every non-working production deployment, infrastructure change or recovery outcome and every recovery entry. A failed pre-update health check, over-bound probe failure, recorded incident showing production is no longer working, two-way admission/record mismatch, or Administrator or deputy declaration also sets it. A currency-only refusal closes before admission and preserves the observed stop and revision.
   - Monitoring may set the stop but never clear it, and setting it never starts a search through older releases. A continuing condition is recorded once.
-  - Only an authenticated Administrator record clears the stop. The record names the reason, the observed stop state, a verified current working release and each cause as resolved or accepted, after reviewing lost-window exceptions and confirming admission matches its records. A later stop always prevails.
+  - Only an authenticated Administrator record clears the stop. The record names the reason, the observed stop state, a verified current working release and each cause as resolved or accepted, after the AR-44 lost-window review and confirmation that admission matches its records. A later stop always prevails.
   - An accepted cause is not re-recorded until it resolves and recurs; any other condition persisting after the clear is recorded as a new cause.
 - *Recovery deputy:* the deputy may perform documented recovery, verify restoration, reopen service (restoring only the recorded pre-incident ingress state; user ingress stays closed before G2) and declare a stop. The deputy cannot approve releases, clear the stop or administer production-user access.
 - *Empty or degraded production:*
-  - Empty means no working baseline. Degraded means the last outcome was non-working, or a recorded incident, over-bound probe failure or failed pre-update health check shows production is no longer working. The reduced-recovery state is neither, and no release attempt runs during any recovery.
+  - Empty means no working baseline. Degraded means the last deployment, infrastructure change or recovery outcome was non-working, or a recorded incident, over-bound probe failure or failed pre-update health check shows production is no longer working. The reduced-recovery state is neither, and no release attempt runs during any recovery.
   - Administrator alone approves one identified attempt, naming the reason and observed stop state. The approval lifts only that stop and the healthy-baseline check for that attempt.
   - When application data remain, an approved attempt needs valid compatibility evidence or a qualified named data restore, plus a complete, usable FR-9 recovery point cut after taking the production lock and verified before workload mutation. The empty or degraded exception requires fresh-install proof. A first installation without retained data uses that proof with the common admission checks and the workload-removal failure path.
   - All FR-6 gates and FR-7 verification still apply, and staging proves the candidate works without the baseline.
@@ -290,7 +290,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   Validates FR-9 and NFR-2 before G2, monthly, and after material changes.
 
 **Counter-metrics:**
-- **SM-C1: Bypassed validation.** Must be zero: promotions with failed, skipped, missing, incomplete, stale or mismatched E2E evidence; automatic promotions without valid compatibility evidence or G3; degraded-path approvals when production is neither empty nor degraded; stop clearances without an Administrator record or verified eligible attempt.
+- **SM-C1: Bypassed validation.** Require zero promotions with failed, skipped, missing, incomplete, stale or mismatched E2E evidence. Require zero automatic rollouts without valid current-baseline compatibility, G3 and the exact passing result bound to final admission. Require zero degraded-path approvals for healthy nonempty production and zero stop clearances without an Administrator record or verified eligible attempt.
 - **SM-C2: Unauthorized cross-environment access.** Must be zero successful production operations, data or secret access, or admin changes in the staging-only negative checks, including restored copies.
 - **SM-C3: False recovery success.** Must be zero recoveries reported successful without readiness, smoke and data checks. Recorded recovery time never omits operator or provisioning time.
 - **SM-C4: Destructive or incomplete cleanup.** Must be zero deletions of another environment's resources and zero cleanups of an environment still serving an attached run within its hold. A CI run is never counted as clean while its owned resources remain.
@@ -487,6 +487,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   7. Every included module enrolled for production with valid, non-empty readiness and smoke declarations.
   8. Production healthy now.
   9. Valid retained-data compatibility evidence or approved mode with a qualified named data restore. Both approved retained-data branches require a complete, usable FR-9 point cut under the current production lock and verified before workload mutation. Bind it to the production instance, attempt and lock epoch. At G1, retained-data admission uses the compatibility branch.
+  - At final release admission, Story 6.14 also applies policy v1's currency check in both modes, including the first approved release. The result is current, retained and bound to the attempt, mode and epoch before mutation.
 - AR-39 (Production entry gates): *G1, G2 and G3:*
   - G1: supported Kubernetes minor; production deployed with ingress closed (executor and probe only) and an empty human admission group; GitHub delivery working; probe running.
   - Between G1 and G2: the SM-4 temporary synthetic grant, which expires by G2, is revoked and is followed by a denial check.
@@ -514,7 +515,7 @@ This document provides the complete epic and story breakdown for Hexalith Platfo
   7. Reopen: resume monitoring, cut over DNS and certificates, hand credentials to the production executor and restore the pre-incident ingress state, with the stop kept set.
   Recovery mode keeps user ingress closed and external-effect and destructive-retention workers disabled, with quarantine admitting only recovery actors.
 - AR-43: *Recovery hook contract* (Platform-owned, before the first staging deployment; the first drill proves it): cut identity and per-class positions, quarantine admission, purge, re-provisioning and rotation, fence hooks, rebuild, integrity, external-effect reconciliation, the reopen-before-replay declaration, recovery mode, an internal endpoint with attempt- and epoch-bound credentials, epoch-bound task commits and the result shape.
-- AR-44 (Lost window / After DR): these follow FR-9, NFR-2 and the reduced-recovery posture. Administrator reviews every recorded lost-window report applicable to the observed stop; absence is valid only when no recovery capable of producing a lost window has occurred. Once a named-recovery or DR report exists, it is a mandatory input to clearance or approval. The reduced-recovery operating policy (automatic-promotion resumption, drill cadence while capacity is consumed, staging re-establishment) is fixed before G2.
+- AR-44 (Lost window / After DR): these follow FR-9, NFR-2 and the reduced-recovery posture. Administrator verifies signed target-lineage recovery history and reviews every report applicable to the observed stop. The history includes interrupted attempts. Unknown history or a missing required report refuses clearance or approval. Record the review as not applicable only when history establishes that no recovery capable of producing a lost window occurred. The reduced-recovery operating policy (automatic-promotion resumption, drill cadence while capacity is consumed, staging re-establishment) is fixed before G2.
 
 **Diagnostics and notification**
 - AR-45 (Diagnostics and notification):
@@ -629,7 +630,7 @@ No UX design contract exists. None was found under `ux-designs/`, and there is n
 - FR-7: Epic 6 - Production readiness, verification window and failure triggers; Epic 10 - Folders and Projects smoke suites in production verification
 - FR-8: Epic 6 - One automatic compatible recovery, promotion stop, approved first-install path and baseline re-deploy; Epic 8 - in-place data restore, named retained-data recovery, DR and reduced-recovery state; Epic 9 - SM-5 rehearsal of every rule
 - FR-9: Epic 8 - Backups, recovery points, monitoring, DR sequence and drills; Epic 10 - drill repeated with Folders and Projects state
-- FR-10: Epic 4 - Isolated staging on `hexalith.com`; Epic 6 - production on `tache.ai` and shared-infrastructure change procedure; Epic 9 - currency check blocking automatic promotion; Epic 10 - Folders and Projects hosted in both environments
+- FR-10: Epic 4 - Isolated staging on `hexalith.com`; Epic 6 - production on `tache.ai`, the shared-infrastructure change procedure and the currency check at release admission; Epic 8 - currency evidence in the DR drill; Epic 9 - weekly currency checks and G3 qualification; Epic 10 - Folders and Projects hosted in both environments
 - FR-11: Epic 7 - Explicit Administrator-granted production admission with records and reconciliation
 - FR-12: Epic 3 - Local McpCli CLI/MCP operations; Epic 4 - staging operations; Epic 7 - production operations and refusals; Epic 10 - Folders and Projects operations in hosted environments; Epic 11 - legacy MCP/CLI retirement
 - NFR-1: Epic 5 - baseline-aware compatibility evidence and automatic-eligible rollback-set rehearsal; Epic 6 - data-preserving automatic recovery render; Epic 8 - named retained-data recovery qualification; Epic 9 - automatic-path enforcement
@@ -819,6 +820,7 @@ Administrator deploys a staged release to `tache.ai` through the Administrator-a
 - **G1 access mechanisms:** the production realm, signed admission records and two-way drift detection are built here, because the standing synthetic check identities and the G1 admission-bounds row need them.
 - **Bounded change windows:** infrastructure currency is divided into identity/secrets, shared data services, control-plane/networking, and artifact/backup/administration tooling so each change has a recoverable scope.
 - **First production foundation:** Story 6.7 runs a bounded creation procedure under both locks after the staging foundation, production executor and attempt store are ready, including Story 6.9's authenticated read from the selected Story 8.1 recovery host. Story 6.22 guards ordinary shared changes with a complete recovery point. Ordinary execution and forward-revert qualification wait for Epic 8 recovery points and close in Epic 9.
+- **First release currency check:** Deliver the Story 9.2 evaluator and its release-admission integration in Story 6.14 before Story 6.23. The check uses the ratified Story 4.9 inventory, the production infrastructure already in place from Stories 6.6 and 6.7, and the Story 6.9 lock and epoch.
 
 ### Epic 7: Control production access explicitly
 Only users that Administrator explicitly admits reach production, with exactly their production permissions, through the API, CLI and MCP. Staging users, workloads, automation and pods are refused at every boundary. Admission is signed, chained and reconciled in both directions. The temporary synthetic grant supplies the SM-4 positive evidence, and its revocation is followed by a denial check.
@@ -831,13 +833,13 @@ Administrator or the deputy restores production on prepared capacity within one 
 - **FRs covered:** FR-9, NFR-2 · **Evidence:** SM-6, SM-C3, G2
 - **Early independent story:** pull forward Story 8.1's selection, reservation and hardening of the off-site recovery host and provision its store path before Story 6.9. Story 8.1 also procures prepared replacement capacity. Story 8.9 commissioning waits for usable recovery points, the retained artifacts, record store, recovery-point prefix, recovery workflows and custody release path. Make Stories 8.4–8.7 available before the first approved retained-data repair. The deputy is named in Epic 6. Epic 8 proves the deputy's key custody and rehearsed restore.
 - **Policy decision:** the reduced-recovery operating policy — whether automatic promotion may resume before the return to G2 conditions, drill cadence while replacement capacity is consumed, and how staging is re-established.
-- **Notes:** the drill re-verifies backup cadence and retention, availability and recovery-point monitoring, monitor/dead-man silence detection in both directions, actual GitHub delivery, backup-prefix isolation and prior-epoch recovery-hook denial. It reuses the Epic 6 rehearsal harness and its rehearsal-labelled notifications.
+- **Notes:** the drill re-verifies backup cadence and retention, availability and recovery-point monitoring, monitor/dead-man silence detection in both directions, actual GitHub delivery, backup-prefix isolation and prior-epoch recovery-hook denial. It reuses the Epic 6 rehearsal harness and its rehearsal-labelled notifications. Story 8.17 integrates the Story 9.2 evaluator with the first and monthly drills after Story 6.23 establishes working production.
 - **Prerequisites:** the Memories tombstone mirror, lineage, tenant-key and fence foundations precede their first key-restore consumer. Erasure continuity and the AD-9 adapter-boundary migration are separate G2 qualifications. Module recovery-hook implementations and Administrator-confirmed recovery inventories also precede the drill.
 
 ### Epic 9: Promote releases to production automatically (G3)
 Releases with valid compatibility evidence against the current baseline, and a passing shared-infrastructure currency check, promote automatically. The SM-5 rehearsals prove every failure trigger and every recovery, stop and approval rule, including all deputy prohibitions and both accepted/unaccepted cause recurrence rules. They also qualify successful shared-infrastructure execution and forward revert after Epic 8 supplies complete recovery points. A policy change suspends automatic promotion until the affected rehearsals repeat.
 - **FRs covered:** FR-6 (automatic mode), FR-8, FR-10 (currency check), NFR-1 · **Evidence:** SM-5 (reference composition), SM-C1
-- Story 9.1 published the [shared-infrastructure currency policy v1](../../docs/contracts/shared-infrastructure-currency-policy-v1.md). Story 9.2 implements it, and the SM-5 rehearsals qualify its effect on automatic and approved attempts before G3.
+- Story 9.1 published the [shared-infrastructure currency policy v1](../../docs/contracts/shared-infrastructure-currency-policy-v1.md). Story 9.2 owns the evaluator and all three triggers. Story 6.14 delivers the release-admission work before the first release and Story 8.17 delivers the drill integration. The weekly schedule begins once Story 6.23 establishes working production. SM-5 qualifies release-admission behavior before G3.
 - **Notes:** the SM-5 suite runs on the Epic 6 rehearsal harness; it adds no harness of its own.
 - **Prerequisites:** EventStore's G3 confirmations.
 
@@ -2349,7 +2351,8 @@ So that staging and production share one qualified runtime definition with bound
 **When** the profile inventory is created
 **Then** it pins the environment-layer and shared-infrastructure providers and topology, including the Dapr control plane with sidecar drop-all-capabilities, and separately pins the deploy toolchain (including the exact Helm version)
 **And** the Dapr entry records the exact version and digest of the chart, the CRD bytes, the injector, control-plane and sidecar images, the embedded component revision and the configuration submitted for qualification. Bind the Story 4.5 result to these same identities.
-**And** the profile digest covers the template plus those pins, and nothing else
+**And** the owner v2 codec supplies the invariant infrastructure digest and the exact environment-specific resolved digest. Verify the adopted owner source identities or explicitly accept and qualify a replacement. Record both, the independent composing-inventory coverage and the qualified management/workload pairing
+**And** the exact Helm pin is shared by every executor, supported upstream and qualified against each target Kubernetes version. Link the separate toolchain qualification to Story 4.5's chart evidence. [Helm version support](https://helm.sh/docs/topics/version_skew/)
 
 **Given** the hosted catalog
 **When** created
@@ -2366,6 +2369,7 @@ So that staging and production share one qualified runtime definition with bound
 **Given** hosted admission and identity events
 **When** this story completes
 **Then** a decision record fixes a finite maximum capture lag, its measurement point, its owner and the condition for revisiting it
+**And** it uses the isolated export measurement slice of Story 4.19 before bounded staging acceptance. [Measurement proposal](../../docs/implementation/identity-event-capture-lag-measurement-proposal.md)
 **And** staging event export and later admission reconciliation use that bound rather than choosing their own
 
 **Given** the hosted profile inventory
@@ -2723,6 +2727,11 @@ So that staging identity is separate from production and consistent with local.
 **Given** admin and user events
 **When** they occur
 **Then** they are exported off-cluster within the declared bound
+
+**Given** the capture-lag bound has yet to be selected
+**When** the measurement slice runs
+**Then** a representative isolated synthetic realm, exporter and independent durable sink produce measurement and readback evidence for Story 4.9
+**And** this slice can run before the bound decision. Final staging export acceptance uses Story 4.9's approved finite bound
 
 ### Story 4.20: Run the staging executor and the module-code sandbox
 
@@ -3394,6 +3403,7 @@ So that production is isolated by the same verified controls.
 **When** the approved bootstrap authorizes creation with both environment locks held
 **Then** the shared-infrastructure identity creates the dedicated application and data namespaces, StorageClass and PriorityClass, and Administrator establishes the reviewed production environment-identity grants
 **And** the attempt records prove staging remains working and the environment-layer and application identities cannot perform shared-infrastructure writes
+**And** the successful signed production bootstrap attempt anchors recovery history with the target identity, lineage and verified empty initial history. Preserve the anchor across DR and link successor targets to it
 
 **Given** the accepted production foundation and staging environment-layer definitions
 **When** the production environment-layer identity applies the forward-only environment layer
@@ -3473,6 +3483,16 @@ So that production control survives loss of the cluster or the executor.
 **When** written
 **Then** each is accepted only with its writer's signature, and terminal attempt records are immutable
 
+**Given** an acquired release lock, no production admission reservation by that attempt and established absence of rollout effects
+**When** admission refuses the release
+**Then** a signed pre-admission refusal with its reason and available evidence closes the current attempt and releases its lock through the versioned Builds contract
+**And** the refusal leaves the working pointer and ingress unchanged. A currency-only refusal preserves the exact promotion stop and revision. Independent stop causes retain their own rules
+**And** stale epochs cannot close the lock. Missing timestamps alone cannot establish absence of rollout effects. Preserve historical record semantics and reconcile uncertain outcomes under Story 6.15
+
+**Given** the current production lock
+**When** final release admission commits
+**Then** the conditional transition verifies the attempt, current epoch and exact observed stop revision, and attaches the exact final evidence immutably. Changed stop revisions or expired or changed required evidence refuse that transition. Under adopted staging policy v2 the same transition reserves the pending decision
+
 **Given** the latest-working pointer
 **When** moved
 **Then** only the writer of a working terminal attempt with a higher epoch may move it
@@ -3483,7 +3503,7 @@ As Administrator,
 I want a durable promotion stop that records each cause and that only I can clear,
 So that promotions never resume while production is unsafe.
 
-**Repo:** Hexalith.Platform · **Covers:** FR-8 (promotion stop), FR-9 (availability probe), AR-39, AR-45 (probe)
+**Repo:** Hexalith.Platform · **Covers:** FR-8 (promotion stop), FR-9 (availability probe), AR-39, AR-44, AR-45 (probe)
 
 **Acceptance Criteria:**
 
@@ -3493,7 +3513,7 @@ So that promotions never resume while production is unsafe.
 
 **Given** production
 **When** any of these occurs:
-- a non-working terminal outcome, or any recovery entry;
+- a non-working deployment, infrastructure change or recovery terminal outcome, or any recovery entry;
 - a failed pre-update health check;
 - a probe failure beyond the bound from Story 6.2;
 - a recorded incident establishing production is not working;
@@ -3514,7 +3534,8 @@ So that promotions never resume while production is unsafe.
 **Given** a clear
 **When** requested
 **Then** it is accepted only as a signed Administrator record naming the reason, the observed revision, a verified current working attempt and each cause as resolved or accepted
-**And** the record shows that Administrator reviewed the lost-window exceptions before clearing
+**And** the record confirms that live admission matches the signed records and shows Administrator's review and disposition of every applicable lost-window report
+**And** under AR-44, Administrator verifies signed recovery history for the affected target and lineage, including interrupted attempts. Record the review as not applicable only when that history establishes no recovery capable of producing a lost window. Unknown history, a missing required report or a missing review refuses clearance
 **And** it is applied by compare-and-set only if the revision is unchanged, so a later cause always prevails
 
 **Given** a cause marked accepted
@@ -3602,28 +3623,47 @@ As Administrator,
 I want production attempts to mutate nothing until every precondition holds,
 So that a missing condition stops the attempt safely and tells me why.
 
-**Repo:** Hexalith.Platform · **Covers:** FR-7 (pre-update checks), AR-38, SM-C1
+**Repo:** Hexalith.Platform · **Covers:** FR-7 (pre-update checks), FR-10 (currency check), AR-38, SM-C1
+
+**Delivery dependency:** Deliver the Story 9.2 evaluator and signed result contract with this integration before Story 6.23. Use the ratified Story 4.9 inventory and qualified pairing, the live shared infrastructure and applied production layer from Stories 6.6 and 6.7, and Story 6.9's lock and current epoch. Builds and Platform qualify the versioned refusal, profile-digest and final-evidence bindings before the first release. [Hosted-profile delivery order](sprint-change-proposal-2026-11-27.md#hosted-profile-v2-delivery-order)
 
 **Acceptance Criteria:**
 
 **Given** a production release attempt
 **When** it starts
 **Then** it checks, in order, before any mutation:
-1. the lock and a new epoch are held, and the stop is clear;
+1. the lock and a new epoch are held, and the stop is clear or the exact observed revision is covered by a valid one-attempt Story 6.18 approval. A later stop before start blocks admission;
 2. the release-mode trigger is met;
 3. provenance matches;
 4. the Story 5.11 evaluator confirms both fresh, exact-release staging E2E with the applicable preparation evidence and an independently qualifying complete scan for the pending decision under the adopted vulnerability policy. Apply image-specific expiry and current exception state in both modes.
 5. the EventStore server package and the composed image are release-available;
-6. profile digests are equal, versions fall within the qualified sets, the realm-contract version is present, and the environment layer is applied;
+6. staging and production infrastructure digests are equal. Verify the candidate's exact owner-resolved production profile from its prepared render and current foundation, and the originating resolved profile of any staging qualification. Check the candidate's qualified sets, compatible realm contract and verified applied environment layer. After a change affecting a working production baseline, require both renewed baseline records for that baseline's current profile. Issue the candidate's production qualification and production-promoted records at rollout;
 7. every included module is enrolled for production, with valid, non-empty readiness and smoke declarations;
-8. the working baseline is ready and its smoke suite passes now;
-9. valid retained-data compatibility evidence exists or Administrator-approved mode has a separately qualified named data-restore recovery after G1. Either approved retained-data branch requires a complete, usable FR-9 point cut under the current production lock and verified before workload mutation. Record the point's binding to the production instance, attempt and current lock epoch. Missing, pre-lock, incomplete, unusable or mismatched evidence refuses admission.
+8. the working baseline is ready and its smoke suite passes now, unless Story 6.18 authorizes this specific empty or degraded attempt;
+9. when application data remain, require valid compatibility evidence or in Administrator-approved mode a separately qualified named data restore after G1. Either approved retained-data branch requires a complete, usable FR-9 point cut under the current production lock and verified before workload mutation. Bind it to the production instance, attempt and current epoch. Missing, pre-lock, incomplete, unusable or mismatched evidence refuses admission. On a first approved installation without retained application data, require exact-release fresh-install proof and the common gates.
 
-Under explicitly adopted [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), once all checks pass and before any rollout effect, conditionally reserve the still-pending decision for this release, attempt and epoch. A prior supersession refuses before mutation. A queued request or partial success reserves nothing. Uncertain ownership retains the reservation pending fenced takeover or terminal reconciliation.
+For release promotions, run the [policy v1 currency check](../../docs/contracts/shared-infrastructure-currency-policy-v1.md#2-cadence-and-triggers) at admission before mutation, including the first Administrator-approved release. Verify the result signer, policy, evaluator, profile digests and live bindings. Require a fresh, complete and retained result bound to the attempt ID, release mode and current lock epoch. Automatic admission requires a pass. Approved admission with a failed result requires a complete known failing set and an Administrator record naming every failing component. Signed admission evidence binds the exact final check ID and content digest, disposition and any approval reference. Currency refusal sets no promotion stop.
+
+Under explicitly adopted [staging evidence policy v2](../../docs/contracts/staging-evidence-policy-v2.md), once all applicable checks and mode-specific dispositions are satisfied and before any rollout effect, conditionally reserve the still-pending decision for this release, attempt and epoch, with the signed final admission evidence reference. A prior supersession refuses before mutation. A queued request or partial success reserves nothing. Uncertain ownership retains the reservation pending fenced takeover or terminal reconciliation.
 
 **Given** any precondition fails
 **When** it is detected
-**Then** the attempt stops without mutation and notifies, naming the precondition
+**Then** the attempt refuses rollout and notifies, naming the precondition. If it acquired the lock, Story 6.9 closes it as a signed pre-admission refusal when the no-rollout-effect and decision checks hold
+
+**Given** re-evaluation under the same attempt, mode and epoch
+**When** admission evaluates its final result
+**Then** earlier results remain retained, and a stale, absent, mismatched, unretained or unauthorized final result refuses either mode
+**And** the conditional admission transition checks the latest epoch and the exact observed stop revision and admits with current evidence only. Rehearse a stop advance and an evidence deadline crossing between evaluation and commit
+
+**Given** the exact target profiles and production foundation
+**When** precondition 6 is qualified
+**Then** accept otherwise eligible staging and production profiles with equal infrastructure digests and distinct valid resolved digests, and refuse a wrong resolved profile
+**And** after a change affecting a working baseline, refuse when either refreshed baseline record is missing or stale
+**And** a first installation can pass with its prepared verified target and deployed foundation while candidate production records and deployed application workloads are still absent
+
+**Given** an otherwise eligible first empty installation or degraded repair
+**When** locked admission checks run
+**Then** the first empty path can qualify without a working baseline, and a repair may use only its exact signed observed-stop exception. A newer stop before start refuses it. Both paths require the current attempt's currency disposition
 
 **Given** the health check in precondition 8 fails
 **When** detected
@@ -3673,7 +3713,7 @@ So that a release is declared working only when it actually works.
 
 **Given** a release attempt past its preconditions
 **When** it rolls out
-**Then** it writes the production-promoted record bound to the active profile digest before the Helm upgrade by digest, and records t0 at the first mutation
+**Then** it issues the candidate's production qualification and production-promoted records bound to both candidate production profile identities and the exact target prepared at admission. Write the production-promoted record before the Helm upgrade by digest and record t0 at the first mutation
 
 **Given** the rollout
 **When** required workloads have not reached the intended release and readiness by t0 + 10 minutes
@@ -3749,13 +3789,14 @@ As Administrator,
 I want to approve one identified attempt into empty or degraded production, including the first deployment,
 So that production can be installed or repaired without weakening any other gate.
 
-**Repo:** Hexalith.Platform · **Covers:** FR-8 (approved attempts, first deployment), AR-35
+**Repo:** Hexalith.Platform · **Covers:** FR-8 (approved attempts, first deployment), AR-35, AR-44
 
 **Acceptance Criteria:**
 
-**Given** production that is empty (no working baseline) or degraded (last outcome non-working, or a recorded incident, over-bound probe failure or failed pre-update health check)
+**Given** production that is empty (no working baseline) or degraded (last deployment, infrastructure change or recovery outcome non-working, or a recorded incident, over-bound probe failure or failed pre-update health check)
 **When** Administrator records an approval
-**Then** it names one attempt, its reason, the observed stop revision and a disposition for each cause, after the lost-window and admission-match reviews
+**Then** it names one attempt, its reason, the observed stop revision and a disposition for each cause, after confirming that live admission matches the signed records and reviewing and recording the disposition of every applicable lost-window report
+**And** under AR-44, Administrator verifies signed recovery history for the affected target and lineage, including interrupted attempts. Record the review as not applicable only when that history establishes no recovery capable of producing a lost window, including on a first empty installation. Unknown history, a missing required report or a missing review refuses approval
 **And** it lifts only that stop and precondition 8, for that attempt only
 
 **Given** production that is neither empty nor degraded, including the reduced-recovery state
@@ -3785,7 +3826,7 @@ So that production can be installed or repaired without weakening any other gate
 **Then** it becomes the working baseline and clears the observed stop by compare-and-set
 
 **Given** the approved attempt
-**When** it fails
+**When** its admitted rollout ends non-working
 **Then** user ingress closes, the candidate's workloads are removed while data objects are kept, a new stop is set, and no baseline is redeployed automatically
 **And** a failed first deployment is reported without claiming a rollback
 
@@ -3903,12 +3944,15 @@ So that production exists, is monitored and is verified before anyone is admitte
 
 **Repo:** Hexalith.Platform, Administrator operations · **Covers:** FR-10 (production), FR-7, FR-8, AR-39 (G1)
 
+**Prerequisite:** The Story 6.14 release-admission integration of the Story 9.2 evaluator is available after Story 6.7 applies the production environment layer and before the first release is admitted.
+
 **Acceptance Criteria:**
 
 **Given** a first empty production installation with no retained application data and a release with exact-candidate fresh-install staging proof
 **When** Administrator approves the first empty installation
-**Then** the attempt deploys it into production with ingress admitting only executor and probe sources, the human production-admission group empty, and smoke checks run by the standing synthetic check identities
-**And** a failure removes candidate workloads, keeps any created data, keeps ingress closed and is reported without claiming a rollback
+**Then** Story 6.14 runs and retains the attempt's own policy v1 currency result under the current production lock and admits it only if the policy's approved-mode rule and the other preconditions hold
+**And** the admitted attempt deploys it into production with ingress admitting only executor and probe sources, the human production-admission group empty, and smoke checks run by the standing synthetic check identities
+**And** a non-working rollout removes candidate workloads, keeps any created data, keeps ingress closed and is reported without claiming a rollback
 
 **Given** the verified deployment
 **When** G1 is evaluated
@@ -4492,6 +4536,10 @@ So that users come back to a verified production and every known loss is on reco
 - identity-provider access removals beyond the export frontier;
 - non-Memories deletions, erasures and legal holds
 
+**Given** the replacement-capacity recovery attempt
+**When** the executor starts recovery
+**Then** it retains a signed entry binding target lineage, attempt, epoch, recovery branch and recovery point before effects. Keep the entry through interruption or takeover and link the report to it before reopening
+
 **Given** step 7
 **When** it runs
 **Then** protection and monitoring resume, DNS and certificates cut over, fresh synthetic and deployment credentials are handed to the production executor, its allowlist is re-provisioned, and both are recorded
@@ -4593,6 +4641,7 @@ So that incompatible releases can recover safely without pretending baseline red
 **When** Administrator or the deputy starts an in-place data restore on the production executor
 **Then** it takes a new epoch, keeps the promotion stop set, closes user ingress to executor and probe sources, removes application workloads while keeping data objects, and discards post-cut broker backlog, dead letters, consumer offsets and Scheduler jobs
 **And** it restores keys and data, runs the previous recovery hooks in dependency order, rotates credentials, reconciles admission and verifies readiness, smoke, integrity and access before any ingress state is restored
+**And** for standalone and named data restore, retain a signed recovery entry before effects. Bind target lineage, attempt, epoch, branch and point. Keep it through interruption or takeover and link its report before reopening
 
 **Given** an interrupted or failed in-place data restore
 **When** it is resumed
@@ -4620,7 +4669,9 @@ As Administrator,
 I want an isolated drill that proves production can be recovered within the RPO and RTO targets,
 So that G2 rests on measured recovery, not intent.
 
-**Repo:** Hexalith.Platform, Administrator operations · **Covers:** FR-9, NFR-2, NFR-3 (restored copies), SM-6, SM-C2, SM-C3, AR-40 (DR evidence)
+**Repo:** Hexalith.Platform, Administrator operations · **Covers:** FR-9, FR-10 (currency check), NFR-2, NFR-3 (restored copies), SM-6, SM-C2, SM-C3, AR-40 (DR evidence)
+
+**Currency prerequisite:** Story 6.23 has established working production and Story 6.14 has delivered the Story 9.2 evaluator. Integrate the drill caller in this story.
 
 **Acceptance Criteria:**
 
@@ -4651,6 +4702,13 @@ So that G2 rests on measured recovery, not intent.
 **When** stored
 **Then** it lists the recovered-data age, coverage status, full elapsed time, every substitution, every lost-window category, the grants to re-apply, the reduced-recovery state with the stop set, and denial of an admission revoked just before the failure, including a revocation lost before event export
 **And** the drill repeats monthly and after material storage, backup or recovery-mechanism changes
+
+**Given** the first isolated DR drill or a monthly repeat
+**When** the drill runs
+**Then** the control job observes the actual isolated drill deployment and infrastructure serving it against the applicable ratified inventory. It obtains fresh upstream evidence outside restored workloads with its own AD-7 identity. Record substitutions, unobserved and unavailable inputs under policy v1
+**And** the authorized drill target resolves the retained Story 4.9 inventory and independent coverage with a verified drill-scope mapping and qualified pairing. Missing evidence fails the currency check. Drill evidence carries no deployment publication authority
+**And** the signed result and reasons are retained with the drill evidence, binding the drill run, checked target, inventory, profile digests and substitutions
+**And** the currency result adds no production-attempt block and sets no promotion stop
 
 **Given** loss or unavailability of the management plane during the isolated drill
 **When** workload and management recovery are exercised
@@ -4732,26 +4790,40 @@ So that "security-current" has a precise, enforceable meaning before automatic p
 
 As Administrator,
 I want deployed shared components compared with the inventory at every production release admission, every monthly drill and on a weekly schedule,
-So that automatic promotion never runs on stale or unpatched infrastructure.
+So that every production release applies the currency policy at admission and Platform can track currency between releases.
 
 **Repo:** Hexalith.Platform · **Covers:** FR-10, AR-31, AR-61
+
+**Delivery order:** Deliver the evaluator and result record with Story 6.14 before Story 6.23, using Stories 4.9, 6.6, 6.7 and 6.9 as inputs. Reuse it in Story 8.17 for the first and monthly drills after working production exists. Start weekly checks against active production when Story 6.23 establishes it, using Story 6.4's private GitHub issue channel. [Hosted-profile delivery order](sprint-change-proposal-2026-11-27.md#hosted-profile-v2-delivery-order)
 
 **Acceptance Criteria:**
 
 **Given** admission of a production release attempt, a monthly drill or the weekly schedule
 **When** the check runs
 **Then** it compares each deployed shared component, including Rancher, required agents, the management-cluster distribution and the backup operator, and each environment-layer provider with the supported, security-current inventory under Story 9.1
-**And** it checks the qualified management/workload version pairing and records exact deployed identities and the result.
+**And** it checks the qualified management/workload version pairing and records exact deployed identities and the result
+**And** each trigger uses a separate authorized signing identity and authenticated AD-7 read-only observation identity. Record sources, scope and observation time. Retain signed results binding the checked inventory and both applicable owner v2 digests. With a deployed baseline, bind its exact profile and the separately prepared candidate. Before first installation, record the absent application profile and bind the observed foundation inventory to both digests of the prepared candidate. Unverifiable inputs fail closed
+
+**Given** either release mode, including the first approved installation
+**When** Story 6.14 evaluates release admission
+**Then** the check runs before mutation under the current lock and retains a fresh result bound to the attempt ID, release mode and current lock epoch
+**And** signed admission evidence identifies the exact verified final check ID and digest, disposition and any approval reference. Retain earlier evaluations separately. Refuse a missing, stale, mismatched, unretained or unauthorized final result
 
 **Given** a failed check at release admission
-**When** automatic promotion is evaluated
+**When** either release mode evaluates admission
 **Then** the automatic path is blocked, naming the components that are out of date
-**And** an approved attempt proceeds only if its Administrator record names every failing component
+**And** an approved attempt meets the currency rule only if the complete failing set is known and its Administrator record names every failing component
+**And** a currency-only pre-admission refusal closes the attempt and frees the lock while preserving the working pointer, ingress and exact promotion stop and revision
 
 **Given** a failed monthly-drill or weekly check
 **When** the result is recorded
 **Then** it adds no attempt block and sets no promotion stop
-**And** a weekly failure, or a known end of life within 30 days, notifies Administrator
+**And** a weekly failure notifies Administrator through the private GitHub issue channel
+
+**Given** a passing weekly check and a supported checked component whose known upstream end-of-life instant is after `checkedAt` and at most 2,592,000 seconds away
+**When** the weekly result is recorded
+**Then** the result remains passing and the issues-only credential opens a private GitHub issue assigned to Administrator and mentioning the recovery deputy
+**And** the record keeps the notification reason, delivery outcome and issue reference when created
 
 ### Story 9.3: Verify EventStore's G3 confirmations
 
@@ -4797,7 +4869,7 @@ As Administrator,
 I want every stop trigger and every approval rule rehearsed,
 So that promotion can never resume, or be approved, when it shouldn't.
 
-**Repo:** Hexalith.Platform · **Covers:** SM-5, FR-8, SM-C1
+**Repo:** Hexalith.Platform · **Covers:** SM-5, FR-8, AR-44, SM-C1
 
 **Acceptance Criteria:**
 
@@ -4808,14 +4880,26 @@ So that promotion can never resume, or be approved, when it shouldn't.
 
 **Given** a clear
 **When** rehearsed
-**Then** Administrator's lost-window and admission reviews happen first
+**Then** Administrator confirms live admission matches signed records and reviews every applicable lost-window report before clearance
 **And** a persisting condition that is not marked accepted is re-recorded after the clear
+
+**Given** an otherwise eligible stop clearance or empty/degraded approval, including a first empty installation, and no recovery capable of producing a lost window
+**When** the absence of a lost-window report is rehearsed
+**Then** Administrator records the review as not applicable, confirms admission matches its signed records, and the clearance or approval can proceed
+
+**Given** a recovery capable of producing a lost window
+**When** an applicable report is missing or its review has not been recorded
+**Then** the clearance or approval is refused
+
+**Given** an interrupted recovery, unavailable history or an otherwise eligible first empty installation
+**When** the Administrator's review is evaluated
+**Then** link signed recovery entries and applicable reports to the target lineage, including incomplete attempts. Refuse unknown history or a missing required report. A verified empty history can establish that review is not applicable
 
 **Given** an Administrator-approved attempt into empty or degraded production
 **When** the approval is recorded
 **Then** the observed stop remains set until the attempt is verified working
 **And** verified success clears only the observed stop, with a later stop prevailing
-**And** failure removes the candidate workloads, retains data and sets a new stop
+**And** a non-working admitted rollout removes candidate workloads, retains data and sets a new stop
 **And** the deputy cannot approve the attempt
 
 **Given** a healthy working baseline before G3, an eligible compatible release and passing common preconditions
@@ -4854,6 +4938,8 @@ Repeat affected SM-5 cases before automatic promotion under the adopted policy i
 **Given** a failed shared-infrastructure verification and a failed currency check
 **When** rehearsed
 **Then** the first sets the stop and recovers by forward revert, and the second blocks automatic promotion
+**And** policy v1 rehearsals cover current, drifted, unsupported, overdue security, unknown data and unqualified pairing cases. Verify automatic refusal without waiver, admission with a failed result only under a valid approval naming the complete failing set, and refusal requiring new approval for any unnamed failure. Keep the failed result and exact approval comparison
+**And** a currency-only refusal releases the lock, leaves a healthy baseline working and preserves any existing stop record and revision exactly. A later release needs a fresh check. An approved currency disposition cannot lift a separate stop
 
 **Given** the guarded shared-infrastructure procedure, a complete recovery point and prepared production-profile capacity
 **When** its success and failure paths are qualified
@@ -4893,7 +4979,7 @@ So that releases reach production automatically on proven safety.
 
 **Acceptance Criteria:**
 
-**Given** the SM-5 rehearsals from Stories 9.4–9.6, the EventStore confirmations from Story 9.3 and the currency policy from Story 9.1
+**Given** the SM-5 rehearsals from Stories 9.4–9.6, the EventStore confirmations from Story 9.3 and qualified enforcement of Story 9.1's policy across Story 9.2's admission, drill and weekly triggers
 **When** all are recorded
 **Then** Administrator records G3
 
@@ -4908,7 +4994,7 @@ So that releases reach production automatically on proven safety.
 
 **Given** the promotion history
 **When** audited
-**Then** there are zero automatic promotions without valid compatibility evidence and G3
+**Then** there are zero automatic rollouts without G3, valid current-baseline compatibility evidence and the exact authenticated passing currency result bound at final admission to that attempt, mode and epoch. Verify the final check ID and digest from signed attempt evidence and require the same reference in the reservation when staging policy v2 applies
 
 ## Epic 10: Complete the MVP across every environment
 

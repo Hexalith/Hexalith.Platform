@@ -174,3 +174,17 @@ The [sprint tracker](../implementation-artifacts/sprint-status.yaml) matches 12 
 | IR-2026-11-26-1 | Low | AR-28 and AD-7 now place recovery-hook, recovery-point read and decryption access under authority-enforced leases. Stories 6.8 and 8.9 test executor-death denial with active leases. No criterion issued those credentials: Story 6.8 and staging Story 4.20 listed only the deploy, environment-layer and smoke identities, although Story 4.23 runs a staging recovery-kind restore. This was the issuance part of C-19. | The owner approved a direct edit on 26 November 2026. [Story 4.20](epics.md#story-420-run-the-staging-executor-and-the-module-code-sandbox) and [Story 6.8](epics.md#story-68-run-the-production-executor-outside-the-application-cluster) now issue the recovery-kind credentials under the AR-28 leases, as the [AD-7 credentials rule](architecture/architecture-platform-2026-09-27/ARCHITECTURE-SPINE.md#ad-7--isolated-private-network-executors-adopted-amended) specifies. |
 
 The [sprint tracker](../implementation-artifacts/sprint-status.yaml) matches 12 epics and 151 story IDs. The generator preview again derived different slugs for Stories 2.11 and 2.12. It also floored Story 4.28 at `ready-for-dev` because a story file exists, but that file records `backlog` and its 4.27 and 4.1 dependencies are still in progress. The owner chose to keep the existing keys and statuses, so the refresh updated `last_updated` in place.
+
+## November 27, 2026 readiness follow-up
+
+**Verdict for the three reported planning findings** PASS. The [sprint change proposal](sprint-change-proposal-2026-11-27.md) records the corrections and delivery responsibilities.
+
+| Severity | Verified planning rule |
+| --- | --- |
+| High | Story 6.14 delivers Story 9.2's evaluator and release-admission integration after its inventory, live infrastructure and lock inputs. Story 6.23 uses the current, attempt-bound result before the first production release mutates anything. Working production then enables independent weekly checks and, when its recovery inputs are ready, the 8.17 drill. Full qualification precedes G3. |
+| Medium | Stories 6.10, 6.18 and 9.5 record the lost-window review as not applicable when no recovery capable of producing a report has occurred. Admission must still match its signed records. Missing required reports or reviews block clearance or approval. |
+| Low | Story 9.2 separately requires a private issue on a passing weekly check when a supported component has a known upstream end of life within the next 30 days. The check stays passing and records delivery evidence. |
+
+The [sprint tracker](../implementation-artifacts/sprint-status.yaml) passed validation and matches 12 epics and 151 story IDs. Live admission, scheduling, drill and notification evidence is tracked in the delivery stories.
+
+The [architecture validation](architecture/architecture-platform-2026-09-27/reviews/validate-2026-11-27/validation-report.md) subsequently found a remaining caller-order conflict and gaps in the release evidence contracts. The [November 27 architecture update](sprint-change-proposal-2026-11-27.md#hosted-profile-v2-delivery-order) records the corrected precedence and revised story gates. Release readiness continues to require the actual ratified profile, deployed inputs, versioned Builds evidence and refusal contract, caller qualification and the Story 2.14 source-tuple reconciliation.
