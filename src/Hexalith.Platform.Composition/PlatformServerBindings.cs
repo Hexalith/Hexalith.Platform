@@ -28,8 +28,6 @@ public static class PlatformServerBindings
     public static IReadOnlyDictionary<string, string> ReferenceImages { get; } = new Dictionary<string, string>
     {
         ["parties/domain"] = "registry.hexalith.com/parties",
-        ["conversations/api"] = "registry.hexalith.com/conversations-api",
-        ["conversations/domain"] = "registry.hexalith.com/conversations",
         ["folders/domain"] = "registry.hexalith.com/hexalith-folders-server",
         ["folders/workers"] = "registry.hexalith.com/hexalith-folders-workers",
         ["tenants/domain"] = "registry.hexalith.com/tenants",

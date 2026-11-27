@@ -70,7 +70,7 @@ public sealed class PlatformCurrentOwnerHandoffTests
         Directory.Exists(Path.Combine(fixture.Workspace, "current-owner")).ShouldBeFalse();
         Directory.Exists(Path.Combine(fixture.Workspace, "platform-components")).ShouldBeFalse();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
-        File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "images.txt")).ShouldBeFalse();
+        File.Exists(Path.Combine(fixture.Workspace, "validation-probes", "docker-invocations.txt")).ShouldBeFalse();
         File.Exists(Path.Combine(fixture.Workspace, NativeTestHandoff.EndpointCredentialsFileName)).ShouldBeFalse();
     }
 
@@ -107,7 +107,13 @@ public sealed class PlatformCurrentOwnerHandoffTests
             "The genuine current host and Tooling consumed the authenticated parent plan/key and prepared the measured owner.");
         File.ReadAllLines(Path.Combine(fixture.Workspace, "validation-probes", "images.txt"))
             .ToHashSet(StringComparer.Ordinal).SetEquals(PlatformPartiesPackageFixture.DependencyTags(new()
-            { PlatformRoot = fixture.Plan.SourceMapping!.PlatformIdentity!.PlatformPath, Mapping = fixture.Plan.SourceMapping, RunPlan = fixture.Plan })).ShouldBeTrue();
+            {
+                PlatformRoot = fixture.Plan.SourceMapping!.PlatformIdentity!.PlatformPath,
+                Mapping = fixture.Plan.SourceMapping,
+                ActiveModule = fixture.Plan.PlatformActiveModule,
+                DeclarationPaths = fixture.Plan.PlatformDeclarationPaths,
+                RunPlan = fixture.Plan,
+            })).ShouldBeTrue();
         Directory.Exists(fixture.Plan.ResourceClaimStateDirectory!).ShouldBeFalse();
         foreach (var input in original.Where(input => input.Key != snapshot)) Hash(input.Key).ShouldBe(input.Value);
         fixture.Plan.StartupDeadlineUtc.ShouldBe(declaredStartupDeadline);

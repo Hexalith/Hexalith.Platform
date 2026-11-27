@@ -176,7 +176,8 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         // Provide disposable registry protocol fixtures for the exact catalog-selected tags.
         PlatformCompositionOptions options = new() { PlatformRoot = Plan.SourceMapping!.PlatformIdentity!.PlatformPath, Mapping = Plan.SourceMapping,
             ActiveModule = "parties", DeclarationPaths = Plan.PlatformDeclarationPaths, RunPlan = Plan, EventStoreSeedProject = Seed };
-        string script = "#!/bin/sh\n";
+        string invocations = Path.Combine(probes, "docker-invocations.txt");
+        string script = "#!/bin/sh\nprintf '%s\\n' \"$1\" >> '" + invocations + "'\n";
         foreach (string tag in DependencyTags(options))
         {
             var evidence = ImageEvidence(tag, index: true);
@@ -270,10 +271,16 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         return Options;
     }
 
-    /// <summary>Reads the dependency repository tags selected by the mapped catalog.</summary>
+    /// <summary>Reads the catalog-selected image tags for the enabled workloads in the Parties test plan.</summary>
     internal static IEnumerable<string> DependencyTags(PlatformCompositionOptions options)
-        => PlatformServerBindings.ReferenceImages.Where(pair => !pair.Key.StartsWith("parties/", StringComparison.Ordinal))
-            .Select(pair => pair.Value + ":" + PlatformServerBindings.Version(options, pair.Key.Split('/')[0], "fixture"));
+    {
+        foreach (PlatformWorkload workload in PlatformApplicationGraph.Resolve(options).Workloads)
+        {
+            string owner = PlatformDeclarationSet.Id(workload.Module.Declaration);
+            if (owner != "parties" && options.Images.TryGetValue(workload.Identity, out string? repository))
+                yield return repository + ":" + PlatformServerBindings.Version(options, owner, workload.Module.Source);
+        }
+    }
 
     /// <summary>Exercises image resolution with registry-shaped bodies whose digest is computed from the response.</summary>
     internal static (string Tag, string Manifest, string Reference, string ImageId) ImageEvidence(string image, bool index)
