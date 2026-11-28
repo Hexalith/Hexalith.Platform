@@ -184,12 +184,12 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "eng").mkdir()
-            (root / "eng/tuple-ci-sdk42-current-suites.json").write_text(json.dumps({"groups": [
-                {"requiredCount": run_tuple_ci.REQUIRED_TOTALS["current42"], "filter": "-class",
+            (root / "eng/tuple-ci-current-suites.json").write_text(json.dumps({"groups": [
+                {"requiredCount": run_tuple_ci.REQUIRED_TOTALS["current"], "filter": "-class",
                  "selectors": ["Synthetic.Control"], "collector": "current"}]}))
             (root / "Hexalith.Platform.slnx").write_text("<Solution />")
             catalog = root / "catalog.props"
-            catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>")
+            catalog.write_text("<Project><PropertyGroup><HexalithEventStoreVersion>5.4.0</HexalithEventStoreVersion></PropertyGroup></Project>")
             for fail in (False, True):
                 evidence = root / ("failed" if fail else "passed")
                 commands = []
@@ -214,7 +214,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
 
                 with self.subTest(failure=fail), contextlib.ExitStack() as stack:
                     stack.enter_context(patch.dict(os.environ, {"GH_TOKEN": token, "CONTROL": "preserved"}))
-                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42"]))
+                    stack.enter_context(patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current"]))
                     stack.enter_context(patch.object(run_tuple_ci, "ROOT", root))
                     stack.enter_context(patch.object(run_tuple_ci, "load_binding", return_value=binding))
                     stack.enter_context(patch.object(run_tuple_ci, "load_lock", return_value={"schemaVersion": 1, "packages": [locked]}))

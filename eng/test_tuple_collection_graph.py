@@ -1,4 +1,4 @@
-"""Restore/build the finite SDK4.2 collection graph; never qualify a production or runtime tuple."""
+"""Restore/build the unified catalog collection graph; never qualify a production or runtime tuple."""
 from __future__ import annotations
 
 import argparse
@@ -27,7 +27,7 @@ PACKAGES = (
 
 class CollectionGraphTests(unittest.TestCase):
     def test_real_catalog_unscoped_refusal_and_exact_scoped_locked_graph_build(self):
-        with tempfile.TemporaryDirectory(prefix="platform-sdk42-collection-") as temporary:
+        with tempfile.TemporaryDirectory(prefix="platform-catalog-collection-") as temporary:
             root = Path(temporary)
             project = root / "Hexalith.Platform.Composition.Tests.csproj"
             document = ET.Element("Project", Sdk="Microsoft.NET.Sdk")

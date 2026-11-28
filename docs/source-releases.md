@@ -9,8 +9,8 @@ Resolution and current execution use only the candidate's shallow Platform
 checkout. The verdict requires all three prerequisites to succeed. Failure,
 cancellation, skip or an absent result refuses release qualification.
 
-The continuing candidate inventories measure **487 current42, 93 base42 and
-9 extension cases: 589 executions**, with explicit positive counts and zero
+The continuing candidate inventories measure **430 current, 28 base and
+27 extension cases: 485 executions**, with explicit positive counts and zero
 skips. All execute through the current NET11 collector. No historical Platform
 checkout, replay profile or companion ref is required. Missing or pending
 counterpart workflows defer; foreign/PR inputs, stale callbacks and changed main
@@ -29,8 +29,8 @@ Platform profiles retain genuine old public packages as explicit fixture data an
 verify actual package bodies, private purpose/key/snapshot boundaries,
 signed-host handoff, reader integrity,
 readiness and generated model transport. Current private reader preparation
-uses the candidate binding's SDK4.2.0, Tenants7.0.7, Memories3.0.27 and
-Parties3.1.1 inputs. Reader authenticity and component checks grant no image or
+uses the candidate binding's unified Builds catalog and lock-admitted owner
+inputs. Reader authenticity and component checks grant no image or
 native runtime admission.
 
 Historically, source resolution also selected 412/349-case Platform replay lanes.

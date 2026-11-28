@@ -183,7 +183,7 @@ class PreflightTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
-        self.catalog_body = b"<Project><PropertyGroup><HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
+        self.catalog_body = b"<Project><PropertyGroup><HexalithEventStoreVersion>5.4.0</HexalithEventStoreVersion></PropertyGroup></Project>\n"
 
     def owner(self, name, suite_file, count):
         owner = self.root / name / "references/Hexalith.Platform"
@@ -212,7 +212,7 @@ class PreflightTests(unittest.TestCase):
         return reads
 
     def test_preflight_binds_the_gitlink_catalog_and_selected_sibling_msbuild_root(self):
-        owner, sibling = self.owner("workspace", "tuple-ci-sdk42-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current42"])
+        owner, sibling = self.owner("workspace", "tuple-ci-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current"])
         for name, checkout in (("matching", SOURCE), ("stale", "4" * 40)):
             with self.subTest(source=name), contextlib.ExitStack() as stack:
                 evidence = self.root / ("preflight-" + name)
@@ -236,7 +236,7 @@ class PreflightTests(unittest.TestCase):
 
                 # An ambient root is never the verified producer; the selected sibling is bound instead.
                 stack.enter_context(patch.dict(run_tuple_ci.os.environ, {"HexalithBuildsRoot": str(self.root / "unverified-root")}))
-                reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42"],
+                reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current"],
                                        [checkout.encode(), BLOB.encode(), self.catalog_body], command, lock("6.0.5"))
                 if name == "stale":
                     with self.assertRaisesRegex(ValueError, "Builds checkout differs"):
@@ -261,7 +261,7 @@ class PreflightTests(unittest.TestCase):
                     self.assertIn("-p:HexalithBuildsRoot=" + str(sibling), graphs[0])
 
     def test_stale_lock_refuses_before_the_gitlink_or_catalog_is_read(self):
-        owner, _ = self.owner("stale-lock", "tuple-ci-sdk42-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current42"])
+        owner, _ = self.owner("stale-lock", "tuple-ci-current-suites.json", run_tuple_ci.REQUIRED_TOTALS["current"])
         with contextlib.ExitStack() as stack:
             evidence = self.root / "stale-lock-evidence"
 
@@ -269,7 +269,7 @@ class PreflightTests(unittest.TestCase):
                 kwargs["stdout"].write("3" * 40 if argv[0] == "git" else "synthetic dotnet info")
                 return subprocess.CompletedProcess(argv, 0)
 
-            reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current42"],
+            reads = self.preflight(stack, owner, ["--evidence", str(evidence), "--audit-only", "--suite", "current"],
                                    [], command, lock("6.0.4"))
             with self.assertRaisesRegex(ValueError, "names Hexalith.Builds.Module.Cli 6.0.4, but the Builds pin is 6.0.5"):
                 run_tuple_ci.main()
@@ -359,7 +359,7 @@ class PreflightTests(unittest.TestCase):
             prepare_builds_artifacts.main()
         self.assertFalse(output.exists())
         evidence = self.root / "preflight"
-        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current42"]), \
+        with patch.object(sys, "argv", ["preflight", "--evidence", str(evidence), "--audit-only", "--suite", "current"]), \
                 patch.object(run_tuple_ci.signal, "signal"), patch.object(run_tuple_ci, "load_binding", incomplete), \
                 self.assertRaisesRegex(ValueError, "exact released"):
             run_tuple_ci.main()
@@ -367,6 +367,17 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual(receipt["status"], "failed")
         self.assertIs(receipt["candidateAcceptance"], False)
         self.assertIn("exact released", receipt["blocker"])
+
+    def test_suite_controls_schedule_current_only_controls_and_refuse_unknown_suites(self):
+        self.assertEqual(run_tuple_ci.suite_controls("current"), (
+            ("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"]),
+            ("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "UnifiedGitlinkCatalogTests"]),
+        ))
+        self.assertEqual(run_tuple_ci.suite_controls("base"), ())
+        self.assertEqual(run_tuple_ci.suite_controls("extensions"), ())
+        for invalid in ("current42", "base42", "unknown"):
+            with self.subTest(suite=invalid), self.assertRaises(ValueError):
+                run_tuple_ci.suite_controls(invalid)
 
 
 class ArtifactIdentityTests(unittest.TestCase):

@@ -6,7 +6,7 @@ import re
 import xml.etree.ElementTree as ET
 
 from builds_tuple import load_binding
-from current_catalog_view import require_catalog_body, verify_named_platform_catalog
+from current_catalog_view import require_catalog_body
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
@@ -22,19 +22,20 @@ if catalog is None:
     sibling = arguments.root.parent / "Hexalith.Builds/Props/Directory.Packages.props"
     catalog = sibling if sibling.is_file() else arguments.root / "references/Hexalith.Builds/Props/Directory.Packages.props"
 catalog_body = catalog.read_bytes()
-properties = ET.fromstring(catalog_body)
-values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
 try:
     if arguments.producer_binding is not None:
         load_binding(arguments.producer_binding)
-    if properties.findall(".//HexalithPlatformSdk42CatalogView"):
-        view = verify_named_platform_catalog(catalog_body, arguments.catalog_sha256)
-        composition_view = next(item for item in view["evaluations"] if item["Identity"] == "Hexalith.Platform.Composition")
-        values["HexalithEventStoreVersion"] = composition_view["Sdk"]
-    elif arguments.catalog_sha256 is not None or arguments.producer_binding is not None:
+    if arguments.catalog_sha256 is not None or arguments.producer_binding is not None:
         require_catalog_body(catalog_body, arguments.catalog_sha256)
 except ValueError as failure:
     raise SystemExit(str(failure)) from failure
+properties = ET.fromstring(catalog_body)
+values = {item.tag: item.text for group in properties.findall("PropertyGroup") for item in group if item.text}
+eventstore_entries = properties.findall(".//HexalithEventStoreVersion")
+if len(eventstore_entries) != 1 or not (eventstore_entries[0].text or "").strip() \
+        or re.sub(r"\s+", "", eventstore_entries[0].get("Condition", "")) not in ("", "'$(HexalithEventStoreVersion)'==''"):
+    raise SystemExit("HexalithEventStoreVersion: the file AppHost requires one unconditional catalog default.")
+values["HexalithEventStoreVersion"] = eventstore_entries[0].text.strip()
 selected = {
     "Aspire.AppHost.Sdk": values["HexalithAspireAppHostSdkVersion"],
     "Hexalith.EventStore.Aspire": values["HexalithEventStoreVersion"],

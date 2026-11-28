@@ -15,9 +15,9 @@ internal sealed class PlatformPackageCatalogReaderFixture : IDisposable
 
     /// <summary>Selects genuine catalog/tool inputs and explicitly synthetic active-SDK entry files without starting resources.</summary>
     /// <param name="currentTest">Selects the separate current EventStore test inputs; historical callers keep the authentic public default.</param>
-    internal PlatformPackageCatalogReaderFixture(bool currentTest = false, bool sdk42 = false)
+    internal PlatformPackageCatalogReaderFixture(bool currentTest = false)
     {
-        _owner = sdk42 ? PlatformQualificationPackageFixture.ExtensionSdkTest() : currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
+        _owner = currentTest ? PlatformQualificationPackageFixture.CurrentTest() : PlatformQualificationPackageFixture.HistoricalPublic();
         string platform = PlatformTestRepository.Root;
         string root = platform;
         (Directory.Exists(Path.Combine(root, ".git")) || File.Exists(Path.Combine(root, ".git"))).ShouldBeTrue("The fixture needs a genuine existing Git root; it never creates Git metadata.");

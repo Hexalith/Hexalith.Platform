@@ -278,8 +278,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-current --suite current42
-          python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci --suite base42
+          python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-current --suite current
+          python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-base --suite base
           python3 eng/run_tuple_ci.py --evidence artifacts/tuple-ci-extensions --suite extensions
           dotnet test --project tests/Hexalith.Platform.Identity.Tests/Hexalith.Platform.Identity.Tests.csproj --configuration Release --no-build -- --filter-class 'Hexalith.Platform.Identity.Tests.PlatformIdentity*'
           dotnet test --project tests/Hexalith.Platform.Composition.Tests/Hexalith.Platform.Composition.Tests.csproj --configuration Release --no-build -- \
@@ -329,7 +329,7 @@ jobs:
           path: |
             ${{ runner.temp }}/platform-tuple-bootstrap
             artifacts/tuple-ci-current
-            artifacts/tuple-ci
+            artifacts/tuple-ci-base
             artifacts/tuple-ci-extensions
           if-no-files-found: error
 

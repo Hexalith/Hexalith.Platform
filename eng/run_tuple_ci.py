@@ -18,10 +18,24 @@ from builds_tuple import TOOL_PACKAGE, load_binding, resolve_builds_root, tool_f
 from builds_tool_lock import load_lock, locked_entry, require_locked
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TOTALS = {"current42": 430, "base42": 67, "extensions": 27}
+REQUIRED_TOTALS = {"current": 430, "base": 28, "extensions": 27}
+
+
+def suite_controls(suite):
+    """Return suite-specific pre-restore verification commands."""
+    if suite not in REQUIRED_TOTALS:
+        raise ValueError("Unknown tuple CI suite: " + str(suite))
+    if suite == "current":
+        return (
+            ("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"]),
+            ("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "UnifiedGitlinkCatalogTests"]),
+        )
+    return ()
+
+
 def collector_for(group, suite):
     """Every remaining control executes on the candidate's current collector."""
-    if suite not in ("current42", "base42", "extensions") or group.get("collector") != "current":
+    if suite not in ("current", "base", "extensions") or group.get("collector") != "current":
         raise ValueError("Every candidate profile requires its explicit current collector context.")
     return "current"
 
@@ -53,7 +67,7 @@ def require_collector_source(root, source):
 def tuple_runtime_context(binding, source, suite, profile_sha256):
     """Select the pinned generation's NET11 runtime; old package data grants no execution authority."""
     version = binding["version"]
-    if suite not in ("current42", "base42", "extensions") or tool_framework(version) != "net11.0":
+    if suite not in ("current", "base", "extensions") or tool_framework(version) != "net11.0":
         raise ValueError("Current runtime qualification requires the pinned NET11 Builds generation.")
     return {"purpose": "current-net11-with-catalog-sdk", "targetFramework": "net11.0",
             "toolVersion": version, "buildsSource": source, "profileSha256": profile_sha256,
@@ -230,10 +244,10 @@ def _run_tuple_ci(metadata_token):
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path)
     parser.add_argument("--audit-only", action="store_true")
-    parser.add_argument("--suite", choices=["extensions", "base42", "current42"], required=True)
+    parser.add_argument("--suite", choices=["extensions", "base", "current"], required=True)
     args = parser.parse_args()
-    profile_path = {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json",
-                    "current42": "eng/tuple-ci-sdk42-current-suites.json"}[args.suite]
+    profile_path = {"extensions": "eng/tuple-ci-extension-suites.json", "base": "eng/tuple-ci-base-suites.json",
+                    "current": "eng/tuple-ci-current-suites.json"}[args.suite]
     evidence = args.evidence.resolve()
     if evidence.exists():
         raise ValueError("Choose a new evidence directory.")
@@ -362,9 +376,8 @@ def _run_tuple_ci(metadata_token):
             result["status"] = "graph-verified"
             return
         run("tuple-binding-controls", [sys.executable, "-B", "eng/test_builds_tuple.py"])
-        if args.suite == "current42":
-            run("historical-security-package-controls", [sys.executable, "-B", "eng/test_historical_security_packages.py"])
-            run("gitlink-catalog-view-controls", [sys.executable, "-B", "eng/test_current_catalog_view.py", "UnifiedGitlinkCatalogTests"])
+        for control_name, control_argv in suite_controls(args.suite):
+            run(control_name, control_argv)
         run("composition-output-identity-controls", [sys.executable, "-B", "eng/test_tuple_output_identity.py"])
         run("binding-regressions", [sys.executable, "-B", "eng/test_host_builds_resolution.py"])
         file_catalog = evidence / "authenticated-catalog.props"

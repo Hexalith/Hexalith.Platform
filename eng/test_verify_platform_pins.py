@@ -1,7 +1,6 @@
 import pathlib
 import hashlib
 import json
-import xml.etree.ElementTree as ET
 import subprocess
 import sys
 import tempfile
@@ -68,57 +67,43 @@ class VerifyPlatformPinsTests(unittest.TestCase):
                         self.assertIn('schema 2', result.stderr)
                     else:
                         self.assertIn('Platform file AppHost SDK, mapped EventStore hosting references and Dapr pins match Builds.', result.stdout)
-            result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(root), '--catalog', str(root / 'catalog.props'),
-                '--catalog-sha256', '0' * 64, '--spine', str(root / 'spine.md')], capture_output=True, text=True, timeout=90)
-            self.assertEqual(result.returncode, 1)
-            self.assertIn('authenticated catalog Git body', result.stderr)
+            for extra in (['--catalog-sha256', '0' * 64], ['--producer-binding', str(root / 'producer.json')]):
+                result = subprocess.run([sys.executable, str(SCRIPT), '--root', str(root), '--catalog', str(root / 'catalog.props'),
+                    *extra, '--spine', str(root / 'spine.md')], capture_output=True, text=True, timeout=90)
+                with self.subTest(extra=extra):
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn('authenticated catalog Git body', result.stderr)
 
-    def test_named_composition_view_keeps_sdk42_instead_of_the_sdk5_default(self):
-        from test_current_catalog_view import catalog_body
-        for mapped in (False, True):
-            for selected, expected in (("4.2.0", 0), ("5.0.0", 1)):
-                if mapped and selected != "4.2.0":
-                    continue
-                with self.subTest(mapped=mapped, selected=selected), tempfile.TemporaryDirectory() as directory:
-                    root = pathlib.Path(directory)
-                    catalog = ET.fromstring(catalog_body())
-                    properties = catalog.find("PropertyGroup")
-                    for name, value in (("HexalithAspireAppHostSdkVersion", "13.6.1"), ("HexalithAspireHostingDaprVersion", "9.9.9")):
-                        ET.SubElement(properties, name).text = value
-                    items = catalog.find("ItemGroup")
-                    for name in ("Microsoft.Extensions.Hosting", "Microsoft.Extensions.Http", "System.Text.Json"):
-                        ET.SubElement(items, "PackageVersion", Include=name, Version="11.0.0")
-                    raw = ET.tostring(catalog, encoding="utf-8")
-                    (root / "catalog.props").write_bytes(raw)
-                    (root / "spine.md").write_text(SPINE)
-                    host = APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@" + selected)
-                    host = host.replace("#:package Hexalith.EventStore.ServiceDefaults@3.120.0", "#:package Hexalith.EventStore.ServiceDefaults@" + selected)
-                    if mapped:
-                        host = host.replace("#:package Hexalith.EventStore.Aspire@4.2.0\n", "").replace("#:package Hexalith.EventStore.ServiceDefaults@4.2.0\n", "")
-                        host += "#:project src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj\n"
-                        project = root / "src/Hexalith.Platform.Composition/Hexalith.Platform.Composition.csproj"
-                        project.parent.mkdir(parents=True)
-                        project.write_text("<Project><ItemGroup>" + "".join(
-                            f'<PackageReference Include="{package}"/><ProjectReference Include="$(HexalithEventStoreRoot)/src/{package}/{package}.csproj"/>'
-                            for package in ("Hexalith.EventStore.Aspire", "Hexalith.EventStore.ServiceDefaults")) + "</ItemGroup></Project>")
-                    (root / "apphost.cs").write_text(host)
-                    result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
-                        "--catalog-sha256", hashlib.sha256(raw).hexdigest(), "--spine", str(root / "spine.md")], capture_output=True, text=True)
-                    self.assertEqual(result.returncode, expected, result.stderr)
-                    if expected:
-                        self.assertIn("Builds catalog selects 4.2.0", result.stderr)
-
-    def test_named_file_host_catalog_requires_its_exact_authenticated_blob(self):
-        from test_current_catalog_view import catalog_body
-        for identity in (None, "0" * 64):
-            with self.subTest(identity=identity), tempfile.TemporaryDirectory() as directory:
-                root = pathlib.Path(directory)
-                (root / "catalog.props").write_bytes(catalog_body())
-                # Authentication must refuse before any AppHost or architecture file can be read.
+    def test_tampered_non_xml_catalog_refuses_authentication_before_xml_parse(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "catalog.props").write_bytes(b"not-xml<<<")
+            (root / "producer.json").write_bytes((SCRIPT.parents[1] / "eng/builds-tuple.json").read_bytes())
+            for extra in (["--catalog-sha256", "0" * 64], ["--producer-binding", str(root / "producer.json")]):
                 result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
-                    *([] if identity is None else ["--catalog-sha256", identity])], capture_output=True, text=True)
-                self.assertNotEqual(result.returncode, 0)
-                self.assertIn("authenticated catalog Git body", result.stderr)
+                    *extra], capture_output=True, text=True, timeout=30)
+                with self.subTest(extra=extra):
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn("authenticated catalog Git body", result.stderr)
+                    self.assertNotIn("ParseError", result.stderr)
+
+    def test_eventstore_version_allows_default_condition_and_refuses_conditional_or_duplicate(self):
+        for label, replacement, expected in (
+            ("default-condition", '<HexalithEventStoreVersion Condition="\'$(HexalithEventStoreVersion)\' == \'\'">3.120.0</HexalithEventStoreVersion>', 0),
+            ("conditional-only", '<HexalithEventStoreVersion Condition="\'$(MSBuildProjectName)\' == \'Other\'">3.120.0</HexalithEventStoreVersion>', 1),
+            ("duplicate-conditional", '<HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion>\n    <HexalithEventStoreVersion Condition="\'$(MSBuildProjectName)\' == \'Other\'">4.2.0</HexalithEventStoreVersion>', 1),
+            ("duplicate-unconditional", '<HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion>\n    <HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion>', 1),
+        ):
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                (root / "catalog.props").write_text(CATALOG.replace("<HexalithEventStoreVersion>3.120.0</HexalithEventStoreVersion>", replacement))
+                (root / "apphost.cs").write_text(APPHOST.format(sdk="13.6.1", dapr="9.9.9", eventstore="#:package Hexalith.EventStore.Aspire@3.120.0"))
+                (root / "spine.md").write_text(SPINE)
+                result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(root), "--catalog", str(root / "catalog.props"),
+                    "--spine", str(root / "spine.md")], capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+                if expected:
+                    self.assertIn("HexalithEventStoreVersion", result.stderr)
 
     def test_file_host_uses_canonical_mapped_dependencies(self):
         for override, expected in [("", 0), (' Version="3.119.0"', 1), (' VersionOverride="3.119.0"', 1)]:

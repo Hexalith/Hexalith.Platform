@@ -24,7 +24,7 @@ recorded by the run. The lifecycle owner and attachment keep their own
 declared profiles. See [package catalog qualification](docs/package-catalog-qualification.md)
 for execution and evidence details.
 
-The current tuple requires the exact `current42`, `base42` and `extensions`
+The current tuple requires the exact `current`, `base` and `extensions`
 xUnit execution counts in `REQUIRED_TOTALS` of [`eng/run_tuple_ci.py`](eng/run_tuple_ci.py), each
 with exact group counts and zero skips. The extension lane also starts the
 signed fixture host with a disposable Dapr sidecar.

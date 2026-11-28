@@ -338,7 +338,7 @@ internal sealed class PlatformPartiesPackageFixture : IDisposable
         if (!File.Exists(source)) return;
         try
         {
-            string target = Path.Combine(Path.GetTempPath(), "hexalith-sdk42-reader-diagnostics", Path.GetFileName(Workspace));
+            string target = Path.Combine(Path.GetTempPath(), "hexalith-current-reader-diagnostics", Path.GetFileName(Workspace));
             CompositionWorkspace.CreatePrivateDirectory(target);
             File.Copy(source, Path.Combine(target, "generation.log"), overwrite: false);
             Console.Error.WriteLine("Retained existing reader diagnostics: " + target);

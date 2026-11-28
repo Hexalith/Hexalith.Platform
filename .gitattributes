@@ -102,7 +102,7 @@ tests/Hexalith.Platform.Composition.Tests/Fixtures/parties-active-declaration.js
 tests/Hexalith.Platform.Composition.Tests/Fixtures/public-702-provenance.json -text
 tests/Hexalith.Platform.Composition.Tests/PlatformAppModelCatalogReviewTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
-# Keep the SDK4.2 cohort source and controls under the existing CRLF policy.
+# Keep the current cohort source and controls under the existing CRLF policy.
 src/Hexalith.Platform.CatalogBuilder/Program.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.CatalogBuilder/PublishedCatalogArtifactCohort.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/PlatformAppModel.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
@@ -113,9 +113,7 @@ tests/Hexalith.Platform.Composition.Tests/PlatformEventStorePackageCatalogReader
 tests/Hexalith.Platform.Composition.Tests/PlatformPartiesPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Composition.Tests/PlatformQualificationPackageFixture.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Custody.Tests/ReplicatedSecurityObservationSpoolTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-tests/Hexalith.Platform.Composition.Tests/PlatformSdk42EventStorePackageTestCohortTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PublishedPartiesCohortTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+tests/Hexalith.Platform.Composition.Tests/PlatformCurrentPackageEntryTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
 # Preserve the fixture declaration and producer bodies carried inside its signed package.
 tests/fixtures/Hexalith.Platform.TestExtension/*.json -text
@@ -216,7 +214,6 @@ src/Hexalith.Platform.Composition/WorksPreviewModel.cs whitespace=blank-at-eol,b
 tests/Hexalith.Platform.Works.Tests/WorksPreviewModelTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 src/Hexalith.Platform.Composition/WorksProofRuntimeContext.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 tests/Hexalith.Platform.Works.Tests/WorksProofRuntimeContextTests.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-eng/fixtures/builds-before-unified-catalog.props -text
 
 # Recognize the existing CRLF in the composition options and routing reader.
 src/Hexalith.Platform.Composition/PlatformCompositionOptions.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

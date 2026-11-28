@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 09-28-2026 14:28
-last_updated: 11-27-2026 18:45
+last_updated: 11-28-2026 01:53
 project: platform
 project_key: NOKEY
 tracking_system: file-system
@@ -146,7 +146,9 @@ development_status:
   #   landed 5f684500; hosted tuple CI 44712072381 green (current42 380, base42 67, extensions 9, zero skips); released v2.2.3.
   #   SDK 4.2 view retirement slice next (deferred-work).
   #   Evidence: evidence/2-14-reconcile/summary.md.
-  2-14-pin-builds-and-owner-modules-by-released-version: in-progress
+  # 2026-11-28: closeout slice retired residual SDK 4.2 catalog-view code, duplicate 39-test class and sdk42/current42/base42 names
+  #   (renamed to current/base/extensions: 430/28/27 = 485 executions); superseded stale 2026-11-20 view-slice spec after Builds 6.9.1 / v2.9.0.
+  2-14-pin-builds-and-owner-modules-by-released-version: review
   epic-2-retrospective: optional
 
   epic-3: in-progress

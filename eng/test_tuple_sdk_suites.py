@@ -1,88 +1,80 @@
-"""Prove exact SDK suite selection and package dependency refusals without running services."""
+"""Prove exact unified suite inventories and package dependency refusals without running services."""
 import json
 from pathlib import Path
 import tempfile
 import unittest
 
-# Run the synthetic catalog-view controls with this pre-dependency suite; the gitlink catalog controls run in run_tuple_ci.
-from test_current_catalog_view import CurrentCatalogViewTests  # noqa: F401
-from current_catalog_view import verify_extension_catalog_pin
-from run_tuple_ci import COMPOSITION_TEST_DEPENDENCIES, validate_profile, verify_collecting_cohort, verify_test_sdk
-
-
-def sdk_suite(suite, version):
-    """Select an explicit current SDK4.2 inventory; historical CLI selections are retired."""
-    if suite not in ("extensions", "base42", "current42") or version != "4.2.0":
-        raise ValueError("Current tuple suites require the measured EventStore 4.2.0 SDK.")
-    return {"extensions": "eng/tuple-ci-extension-suites.json", "base42": "eng/tuple-ci-sdk42-base-suites.json", "current42": "eng/tuple-ci-sdk42-current-suites.json"}[suite], ["-p:HexalithEventStoreVersion=4.2.0"]
-
-
-def sdk42_collecting_cohort(suite):
-    """Keep the measured SDK4.2 collector separate from the producer's newer defaults."""
-    if suite not in ("current42", "base42", "extensions"):
-        return None
-    return {"HexalithEventStoreVersion": "4.2.0", "HexalithTenantsVersion": "7.0.7",
-            "HexalithMemoriesVersion": "3.0.27", "HexalithPartiesVersion": "3.1.1", "HexalithMcpCliVersion": "2.0.1"}
+# Run the offline catalog fault controls with this pre-dependency suite; the gitlink catalog controls run in run_tuple_ci.
+from test_current_catalog_view import UnifiedCatalogFaultTests  # noqa: F401
+from run_tuple_ci import (COMPOSITION_TEST_DEPENDENCIES, REQUIRED_TOTALS, validate_profile, verify_collecting_cohort,
+                          verify_test_sdk)
 
 
 class SdkSuiteTests(unittest.TestCase):
-    def test_current_collection_keeps_its_measured_public_family_for_every_pin(self):
-        """The SDK4.2 collector family is an owner fact; it no longer depends on the Builds version."""
-        cohort = {'HexalithEventStoreVersion': '4.2.0', 'HexalithTenantsVersion': '7.0.7',
-                  'HexalithMemoriesVersion': '3.0.27', 'HexalithPartiesVersion': '3.1.1', 'HexalithMcpCliVersion': '2.0.1'}
-        for suite in ('current42', 'base42', 'extensions'):
-            with self.subTest(suite=suite):
-                self.assertEqual(sdk42_collecting_cohort(suite), cohort)
-        for suite in ('current', 'unknown', None):
-            with self.subTest(suite=suite):
-                self.assertIsNone(sdk42_collecting_cohort(suite))
-
-    def test_current42_restored_graph_refuses_missing_project_or_neighbor_family_packages(self):
-        cohort = sdk42_collecting_cohort('current42')
-        packages = {'Hexalith.EventStore.DomainService': '4.2.0', 'Hexalith.Tenants.Contracts': '7.0.7',
-            'Hexalith.Tenants.Server': '7.0.7', 'Hexalith.Memories.Contracts': '3.0.27',
-            'Hexalith.Memories.EventStore': '3.0.27', 'Hexalith.Memories.EventStoreExtensions': '3.0.27',
-            'Hexalith.Parties.Contracts': '3.1.1', 'Hexalith.Parties.EventStoreExtensions': '3.1.1',
-            'Hexalith.McpCli.Abstractions': '2.0.1'}
-        assets = {'libraries': {name + '/' + version: {'type': 'package'} for name, version in packages.items()}}
+    def test_restored_graph_refuses_missing_project_or_neighbor_family_packages(self):
+        cohort = {
+            "HexalithEventStoreVersion": "5.6.0",
+            "HexalithTenantsVersion": "8.1.1",
+            "HexalithMemoriesVersion": "4.1.4",
+            "HexalithPartiesVersion": "4.0.1",
+            "HexalithMcpCliVersion": "3.0.0",
+        }
+        packages = {
+            "Hexalith.EventStore.DomainService": "5.6.0",
+            "Hexalith.Tenants.Contracts": "8.1.1",
+            "Hexalith.Tenants.Server": "8.1.1",
+            "Hexalith.Memories.Contracts": "4.1.4",
+            "Hexalith.Memories.EventStore": "4.1.4",
+            "Hexalith.Memories.EventStoreExtensions": "4.1.4",
+            "Hexalith.Parties.Contracts": "4.0.1",
+            "Hexalith.Parties.EventStoreExtensions": "4.0.1",
+            "Hexalith.McpCli.Abstractions": "3.0.0",
+        }
+        assets = {"libraries": {name + "/" + version: {"type": "package"} for name, version in packages.items()}}
         receipt = verify_collecting_cohort(assets, cohort)
-        self.assertFalse(receipt['runtimeAcceptance'])
-        self.assertFalse(receipt['candidateAcceptance'])
-        for fault in ('missing', 'project', 'memories4', 'neighbor', 'duplicate', 'extra-sdk'):
+        self.assertFalse(receipt["runtimeAcceptance"])
+        self.assertFalse(receipt["candidateAcceptance"])
+        for fault in ("missing", "project", "memories-old", "neighbor", "duplicate", "extra-sdk"):
             changed = json.loads(json.dumps(assets))
-            name = 'Hexalith.Memories.EventStoreExtensions/3.0.27'
-            if fault == 'missing': del changed['libraries'][name]
-            elif fault == 'project': changed['libraries'][name]['type'] = 'project'
-            elif fault == 'extra-sdk': changed['libraries']['Hexalith.EventStore.Contracts/5.1.0'] = {'type': 'package'}
+            name = "Hexalith.Memories.EventStoreExtensions/4.1.4"
+            if fault == "missing":
+                del changed["libraries"][name]
+            elif fault == "project":
+                changed["libraries"][name]["type"] = "project"
+            elif fault == "extra-sdk":
+                changed["libraries"]["Hexalith.EventStore.Contracts/5.1.0"] = {"type": "package"}
             else:
-                changed['libraries']['Hexalith.Memories.EventStoreExtensions/' + ('4.0.0' if fault == 'memories4' else '3.0.28')] = {'type': 'package'}
-                if fault != 'duplicate': del changed['libraries'][name]
-            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, 'exact public cohort|Every restored EventStore'):
+                changed["libraries"]["Hexalith.Memories.EventStoreExtensions/" + ("3.0.27" if fault == "memories-old" else "4.1.5")] = {"type": "package"}
+                if fault != "duplicate":
+                    del changed["libraries"][name]
+            with self.subTest(fault=fault), self.assertRaisesRegex(ValueError, "exact public cohort|Every restored EventStore"):
                 verify_collecting_cohort(changed, cohort)
 
-    def test_historical_profile_and_sdk_selections_are_retired(self):
-        for suite, version in (("current", None), ("current", "4.1.0"), ("current42", None), ("current42", "4.1.0")):
-            with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
-                sdk_suite(suite, version)
+    def test_required_totals_match_unified_suite_names(self):
+        self.assertEqual(REQUIRED_TOTALS, {"current": 430, "base": 28, "extensions": 27})
+        for retired in ("tuple-ci-sdk42-current-suites.json", "tuple-ci-sdk42-base-suites.json"):
+            self.assertFalse((Path(__file__).parent / retired).exists(), retired)
 
     def test_extension_suite_preserves_sdk_controls_and_adds_finite_fixture_controls(self):
-        self.assertEqual(sdk_suite("extensions", "4.2.0"), ("eng/tuple-ci-extension-suites.json", ["-p:HexalithEventStoreVersion=4.2.0"]))
         profile = json.loads((Path(__file__).parent / "tuple-ci-extension-suites.json").read_text())
         self.assertEqual(validate_profile(profile), 27)
         self.assertEqual([group["requiredCount"] for group in profile["groups"]], [15, 12])
 
-    def test_default_sdk42_base_requires_all_controls_and_actual_entry_cases(self):
-        self.assertEqual(sdk_suite("base42", "4.2.0")[0], "eng/tuple-ci-sdk42-base-suites.json")
-        profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-base-suites.json").read_text())
-        self.assertEqual(validate_profile(profile), 67)
-        self.assertEqual([group["requiredCount"] for group in profile["groups"]], [39, 26, 2])
-        for version in [None, "4.1.0", "4.2.1"]:
-            with self.subTest(version=version), self.assertRaises(ValueError):
-                sdk_suite("base42", version)
+    def test_base_suite_requires_lock_controls_and_current_entry_cases_without_duplicates(self):
+        base_profile = json.loads((Path(__file__).parent / "tuple-ci-base-suites.json").read_text())
+        current_profile = json.loads((Path(__file__).parent / "tuple-ci-current-suites.json").read_text())
+        self.assertEqual(validate_profile(base_profile), 28)
+        self.assertEqual([group["requiredCount"] for group in base_profile["groups"]], [26, 2])
+        base_selectors = [selector for group in base_profile["groups"] for selector in group["selectors"]]
+        current_selectors = [selector for group in current_profile["groups"] for selector in group["selectors"]]
+        self.assertEqual(base_selectors, [
+            "Hexalith.Platform.Composition.Tests.PlatformOwnerPackageLockTests",
+            "Hexalith.Platform.Composition.Tests.PlatformCurrentPackageEntryTests",
+        ])
+        self.assertTrue(set(current_selectors).isdisjoint(base_selectors))
 
-    def test_upstream_current_sdk42_inventory_remains_separately_mandatory(self):
-        self.assertEqual(sdk_suite("current42", "4.2.0")[0], "eng/tuple-ci-sdk42-current-suites.json")
-        profile = json.loads((Path(__file__).parent / "tuple-ci-sdk42-current-suites.json").read_text())
+    def test_current_inventory_remains_separately_mandatory(self):
+        profile = json.loads((Path(__file__).parent / "tuple-ci-current-suites.json").read_text())
         self.assertEqual(validate_profile(profile), 430)
         store_groups = [group for group in profile["groups"] if "Hexalith.Platform.AttemptStore.Tests" in group["project"]]
         self.assertEqual(len(store_groups), 1)
@@ -97,42 +89,15 @@ class SdkSuiteTests(unittest.TestCase):
         self.assertEqual(len(binding_groups), 1)
         self.assertEqual(binding_groups[0]["filter"], "-method")
         self.assertEqual(binding_groups[0]["requiredCount"], 7)
-        for version in [None, "4.1.0", "4.2.1"]:
-            with self.subTest(version=version), self.assertRaises(ValueError):
-                sdk_suite("current42", version)
-
-    def test_unknown_or_mixed_suite_selection_never_substitutes(self):
-        for suite, version in [("extensions", None), ("extensions", "4.1.0"), ("extensions", "4.2.1"),
-                               ("current", "4.2.0"), ("arbitrary", "4.2.0")]:
-            with self.subTest(suite=suite, version=version), self.assertRaises(ValueError):
-                sdk_suite(suite, version)
-
-    def test_sdk42_suite_selection_keeps_explicit_sdk_properties(self):
-        for suite in ("current42", "base42", "extensions"):
-            with self.subTest(suite=suite):
-                self.assertEqual(sdk_suite(suite, "4.2.0")[1], ["-p:HexalithEventStoreVersion=4.2.0"])
-
-    def test_extension_suite_requires_the_single_real_catalog_pin(self):
-        with tempfile.TemporaryDirectory() as root:
-            path = Path(root) / "catalog.props"
-            for pins, valid in [("<HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion>", True),
-                                ("<HexalithEventStoreVersion>4.1.0</HexalithEventStoreVersion>", False),
-                                ("<HexalithEventStoreVersion>4.2.0</HexalithEventStoreVersion>" * 2, False), ("", False)]:
-                path.write_text("<Project><PropertyGroup>" + pins + "</PropertyGroup></Project>")
-                if valid:
-                    verify_extension_catalog_pin(path)
-                else:
-                    with self.assertRaises(ValueError):
-                        verify_extension_catalog_pin(path)
 
     def test_actual_test_dependency_identity_rejects_missing_source_or_other_sdk(self):
         with tempfile.TemporaryDirectory() as root:
             assembly = Path(root) / "Tests.dll"
             path = assembly.with_suffix(".deps.json")
-            dependencies = {name.removesuffix(".dll") + "/4.2.0": {"type": "package"}
+            dependencies = {name.removesuffix(".dll") + "/5.6.0": {"type": "package"}
                             for name in COMPOSITION_TEST_DEPENDENCIES if name.startswith("Hexalith.EventStore.")}
             path.write_text(json.dumps({"libraries": dependencies}))
-            verify_test_sdk(assembly, "4.2.0")
+            verify_test_sdk(assembly, "5.6.0")
             for fault in ["missing", "project", "other-sdk"]:
                 changed = json.loads(json.dumps(dependencies))
                 first = next(iter(changed))
@@ -141,30 +106,33 @@ class SdkSuiteTests(unittest.TestCase):
                 elif fault == "project":
                     changed[first]["type"] = "project"
                 else:
-                    changed[first.replace("4.2.0", "4.1.0")] = changed.pop(first)
+                    changed[first.replace("5.6.0", "5.5.0")] = changed.pop(first)
                 path.write_text(json.dumps({"libraries": changed}))
                 with self.subTest(fault=fault), self.assertRaises(ValueError):
-                    verify_test_sdk(assembly, "4.2.0")
+                    verify_test_sdk(assembly, "5.6.0")
 
     def test_current_collector_rejects_missing_source_or_crossed_memories_packages(self):
         with tempfile.TemporaryDirectory() as root:
             assembly = Path(root) / "Tests.dll"
-            dependencies = {name.removesuffix(".dll") + "/4.2.0": {"type": "package"}
+            dependencies = {name.removesuffix(".dll") + "/5.6.0": {"type": "package"}
                 for name in COMPOSITION_TEST_DEPENDENCIES if name.startswith("Hexalith.EventStore.")}
-            memories = {"Hexalith.Memories." + name + "/3.0.27": {"type": "package"}
+            memories = {"Hexalith.Memories." + name + "/4.1.4": {"type": "package"}
                 for name in ("Contracts", "EventStore", "EventStoreExtensions")}
             dependencies.update(memories)
             assembly.with_suffix(".deps.json").write_text(json.dumps({"libraries": dependencies}))
-            verify_test_sdk(assembly, "4.2.0", "3.0.27")
+            verify_test_sdk(assembly, "5.6.0", "4.1.4")
             for name in memories:
-                for fault in ("missing", "project", "4.0.0", "3.0.25"):
+                for fault in ("missing", "project", "4.0.0", "3.0.27"):
                     changed = json.loads(json.dumps(dependencies))
-                    if fault == "missing": del changed[name]
-                    elif fault == "project": changed[name]["type"] = "project"
-                    else: changed[name.replace("3.0.27", fault)] = changed.pop(name)
+                    if fault == "missing":
+                        del changed[name]
+                    elif fault == "project":
+                        changed[name]["type"] = "project"
+                    else:
+                        changed[name.replace("4.1.4", fault)] = changed.pop(name)
                     assembly.with_suffix(".deps.json").write_text(json.dumps({"libraries": changed}))
                     with self.subTest(package=name, fault=fault), self.assertRaisesRegex(ValueError, "collection companion"):
-                        verify_test_sdk(assembly, "4.2.0", "3.0.27")
+                        verify_test_sdk(assembly, "5.6.0", "4.1.4")
 
 
 if __name__ == "__main__":

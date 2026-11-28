@@ -2,7 +2,7 @@
 title: 'Story 2.14 view slice'
 type: 'bugfix'
 created: '2026-11-20'
-status: 'in-progress'
+status: 'superseded'
 baseline_commit: '87c857dfc8567ebf9176cab7ba41d591ec299289'
 route: 'dispatch'
 review_loop_iteration: 0
@@ -70,6 +70,8 @@ The approved Builds release failed at `Check processed release security findings
 - `Github/split-publication/tests/test_split_publication.py:658` at `daed31053919862fa7b65c94706a1d2c66d80701`. [Alert 4](https://github.com/Hexalith/Hexalith.Builds/security/code-scanning/4)
 
 ## Spec Change Log
+
+- 2026-11-27: Marked `superseded` by `spec-2-14-close-out-version-only-pins-and-retire-sdk42-artifacts.md` after Builds 6.9.1, Parties 4.0.1, and Platform `v2.9.0` retired the SDK 4.2 catalog views and moved locks and tuple CI onto the unified catalog.
 
 ## Review Triage Log
 

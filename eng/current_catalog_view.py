@@ -1,8 +1,4 @@
-"""Evaluate the finite named SDK4.2 and generic Platform views of the catalog read from the Builds gitlink.
-
-The named SDK4.2 view keeps its owner-version literals. Generic defaults come from the catalog itself,
-so a Builds release that moves them needs no edit here.
-"""
+"""Evaluate the unified Platform catalog read from the Builds gitlink."""
 from __future__ import annotations
 
 import hashlib
@@ -41,7 +37,6 @@ UNKNOWN_OWNER_CONSUMERS = ("Hexalith.Parties.Unqualified",)
 SDK_PACKAGES = tuple("Hexalith.EventStore." + name for name in (
     "Admin.Abstractions", "Admin.Server", "Aspire", "Client", "Contracts", "DomainService", "Gateway",
     "RestApi.Generators", "Server", "ServiceDefaults", "SignalR", "Testing", "Testing.Integration"))
-OPENAPI_PACKAGES = ("Microsoft.AspNetCore.OpenApi", "Microsoft.OpenApi")
 MEMORIES_PACKAGES = tuple("Hexalith.Memories." + name for name in (
     "Aspire", "Client.Rest", "Contracts", "EventStore", "EventStoreExtensions"))
 TENANTS_PACKAGES = tuple("Hexalith.Tenants." + name for name in (
@@ -55,21 +50,7 @@ def require_catalog_body(raw: bytes, expected_sha256: str) -> None:
         raise ValueError("The current catalog view requires the exact authenticated catalog Git body and SHA256.")
 
 
-def require_finite_selector(document: ET.Element) -> None:
-    selectors = document.findall(".//HexalithPlatformSdk42CatalogView")
-    if len(selectors) != 2 or selectors[0].attrib or selectors[0].text != "false" \
-            or set(selectors[1].attrib) != {"Condition"} or selectors[1].text != "true":
-        raise ValueError("The current Platform catalog view requires its finite false/default and exact named selector.")
-    condition = selectors[1].attrib["Condition"]
-    pattern = r"\$\(MSBuildProjectName\.Equals\('([^']+)'\)\)"
-    names = re.findall(pattern, condition)
-    expression = re.sub(pattern, "NAME", condition).strip()
-    if len(names) != len(PLATFORM_CONSUMERS) or set(names) != set(PLATFORM_CONSUMERS) \
-            or re.fullmatch(r"NAME(?:\s+or\s+NAME)*", expression) is None:
-        raise ValueError("The current Platform catalog view must contain exactly the 33 approved consumer names.")
-
-
-def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names=None) -> list[dict]:
+def evaluate_views(raw: bytes, *, consumer_names=None) -> list[dict]:
     """Use real project identities and a fresh process without inherited catalog or SDK overrides."""
     with tempfile.TemporaryDirectory(prefix="platform-catalog-view-") as temporary:
         root = Path(temporary)
@@ -85,9 +66,8 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
             ET.SubElement(project, "Import", Project=str(root / "catalog.props"))
             target = ET.SubElement(project, "Target", Name="Observe", Returns="@(_Observed)")
             items = ET.SubElement(target, "ItemGroup")
-            condition = " or ".join("'%(PackageVersion.Identity)' == '" + package + "'" for package in OPENAPI_PACKAGES)
-            ET.SubElement(items, "_Pins", Include="@(PackageVersion)", Condition=condition
-                          + " or $([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.EventStore.'))")
+            ET.SubElement(items, "_Pins", Include="@(PackageVersion)",
+                Condition="$([System.String]::Copy('%(PackageVersion.Identity)').StartsWith('Hexalith.EventStore.'))")
             ET.SubElement(items, "_MemoriesPins", Include="@(PackageVersion)", Condition=" or ".join(
                 "'%(PackageVersion.Identity)' == '" + package + "'" for package in MEMORIES_PACKAGES))
             ET.SubElement(items, "_TenantsPins", Include="@(PackageVersion)",
@@ -100,8 +80,6 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
                                ("CatalogTenantsDefault", "$(HexalithTenantsVersion)"),
                                ("CatalogPartiesDefault", "$(HexalithPartiesVersion)"),
                                ("CatalogMcpDefault", "$(HexalithMcpCliVersion)"),
-                               ("PlatformView", "$(HexalithPlatformSdk42CatalogView)"),
-                               ("PartiesView", "$(HexalithPartiesSdk42CatalogView)"),
                                ("MemoriesPins", "@(_MemoriesPins->'%(Identity)=%(Version)', '|')"),
                                ("TenantsPins", "@(_TenantsPins->'%(Identity)=%(Version)', '|')"),
                                ("McpPins", "@(_McpPins->'%(Identity)=%(Version)', '|')"),
@@ -113,8 +91,6 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
         driver = ET.Element("Project")
         target = ET.SubElement(driver, "Target", Name="ObserveAll", Returns="@(_Collected)")
         task = ET.SubElement(target, "MSBuild", Projects=";".join(paths), Targets="Observe", BuildInParallel="false")
-        if sdk_version is not None:
-            task.set("Properties", "HexalithEventStoreVersion=" + sdk_version)
         ET.SubElement(task, "Output", TaskParameter="TargetOutputs", ItemName="_Collected")
         driver_path = root / "Observe.proj"
         ET.ElementTree(driver).write(driver_path, encoding="utf-8", xml_declaration=True)
@@ -129,134 +105,6 @@ def evaluate_views(raw: bytes, sdk_version: str | None = None, *, consumer_names
         if result.returncode:
             raise ValueError("Independent current catalog evaluation failed: " + result.stdout + result.stderr)
         return json.loads(result.stdout)["TargetResults"]["ObserveAll"]["Items"]
-
-
-def verify_observations(observed: list[dict], named_sdk: str, other_sdk: str, *,
-                        generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0")) -> None:
-    """Check every package and both OpenAPI members in one exact independent evaluation context."""
-    names = [item["Identity"] for item in observed]
-    if len(names) != len(PLATFORM_CONSUMERS) + len(UNKNOWN_CONSUMERS) \
-            or len(set(names)) != len(names) or set(names) != set(PLATFORM_CONSUMERS) | set(UNKNOWN_CONSUMERS):
-        raise ValueError("Independent catalog evaluation did not return the exact Platform and negative consumer set.")
-    for item in observed:
-        current = item["Identity"] in PLATFORM_CONSUMERS
-        expected_sdk = named_sdk if current else other_sdk
-        expected = {package: expected_sdk for package in SDK_PACKAGES}
-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0")
-            if current and expected_sdk == "4.2.0" else generic_openapi)))
-        pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
-        if item.get("Sdk") != expected_sdk or item.get("PlatformView") != str(current).lower() \
-                or item.get("PartiesView") != "false" or len(pins) != len(expected) or dict(pins) != expected:
-            raise ValueError("The authenticated catalog selects an unqualified SDK/OpenAPI consumer view: " + item["Identity"])
-
-
-def verify_memories_observations(observed: list[dict], *, generic_memories: str = "4.0.0") -> None:
-    """Keep all five current Memories pins with the exact named SDK4.2 companion."""
-    for item in observed:
-        expected = "3.0.27" if item["Identity"] in PLATFORM_CONSUMERS else generic_memories
-        pins = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
-        if item.get("CatalogMemoriesDefault") != expected or len(pins) != len(MEMORIES_PACKAGES) \
-                or dict(pins) != {package: expected for package in MEMORIES_PACKAGES}:
-            raise ValueError("The authenticated catalog selects an unqualified SDK4.2/Memories consumer view: " + item["Identity"])
-
-
-def verify_tenants_observations(observed: list[dict], *, generic_tenants: str) -> None:
-    """Require the exact property and all five Tenants pins for each actual consumer role."""
-    for item in observed:
-        named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS) and item.get("Sdk") == "4.2.0"
-        expected = "7.0.7" if named else generic_tenants
-        pins = [pin.split("=", 1) for pin in item.get("TenantsPins", "").split("|") if pin]
-        if item.get("CatalogTenantsDefault") != expected or len(pins) != len(TENANTS_PACKAGES) \
-                or dict(pins) != {package: expected for package in TENANTS_PACKAGES}:
-            raise ValueError("The authenticated catalog selects an unqualified Tenants consumer view: " + item["Identity"])
-
-
-def verify_mcp_observations(observed: list[dict], *, generic_mcp: str) -> None:
-    """Keep the finite SDK4.2 MCP package view distinct from generic consumer defaults."""
-    for item in observed:
-        named = item["Identity"] in (*PLATFORM_CONSUMERS, *CURRENT_OWNER_CONSUMERS) and item.get("Sdk") == "4.2.0"
-        expected = "2.0.1" if named else generic_mcp
-        pins = [pin.split("=", 1) for pin in item.get("McpPins", "").split("|") if pin]
-        if item.get("CatalogMcpDefault") != expected or len(pins) != len(MCP_PACKAGES) \
-                or dict(pins) != {package: expected for package in MCP_PACKAGES}:
-            raise ValueError("The authenticated catalog selects an unqualified MCP consumer view: " + item["Identity"])
-
-
-def verify_current_owner_observations(observed: list[dict], *, generic_tenants: str = "7.0.7",
-                                      generic_mcp: str = "2.0.1", generic_sdk: str = "5.1.0",
-                                      generic_openapi: tuple[str, str] = ("11.0.0", "3.11.0"),
-                                      generic_memories: str = "4.0.0", generic_parties: str = "3.1.1") -> None:
-    """Require each actual source-owner context's complete family and an unknown sibling refusal."""
-    names = [item["Identity"] for item in observed]
-    if len(names) != len(CURRENT_OWNER_CONSUMERS) + len(UNKNOWN_OWNER_CONSUMERS) \
-            or len(set(names)) != len(names) or set(names) != set(CURRENT_OWNER_CONSUMERS) | set(UNKNOWN_OWNER_CONSUMERS):
-        raise ValueError("Current-owner catalog evaluation differs from its exact source project contexts.")
-    for item in observed:
-        named = item["Identity"] in CURRENT_OWNER_CONSUMERS
-        sdk = "4.2.0" if named else generic_sdk
-        expected = {package: sdk for package in SDK_PACKAGES}
-        expected.update(dict(zip(OPENAPI_PACKAGES, ("10.0.15", "2.13.0") if named else generic_openapi)))
-        memories = [pin.split("=", 1) for pin in item.get("MemoriesPins", "").split("|") if pin]
-        pins = [pin.split("=", 1) for pin in item.get("Pins", "").split("|") if pin]
-        if (item.get("Sdk") != sdk or item.get("PlatformView") != "false" \
-                or item.get("PartiesView") != str(named).lower() \
-                or item.get("CatalogMemoriesDefault") != ("3.0.27" if named else generic_memories) \
-                or any(item.get(key) != value for key, value in (("CatalogTenantsDefault", "7.0.7" if named else generic_tenants),
-                    ("CatalogPartiesDefault", "3.1.1" if named else generic_parties), ("CatalogMcpDefault", "2.0.1" if named else generic_mcp))) \
-                or len(memories) != len(MEMORIES_PACKAGES)
-                or dict(memories) != {package: "3.0.27" if named else generic_memories for package in MEMORIES_PACKAGES}
-                or len(pins) != len(expected) or dict(pins) != expected):
-            raise ValueError("The authenticated catalog selects an unqualified current-owner package view: " + item["Identity"])
-    verify_tenants_observations(observed, generic_tenants=generic_tenants)
-
-
-def generic_defaults(observed: list[dict]) -> dict:
-    """Read the catalog's own defaults from the unnamed consumers; they must agree and stay off the named view."""
-    unknown = [item for item in observed if item["Identity"] in UNKNOWN_CONSUMERS]
-    keys = ("Sdk", "Pins", "CatalogMemoriesDefault", "MemoriesPins", "CatalogTenantsDefault", "TenantsPins",
-            "CatalogPartiesDefault", "CatalogMcpDefault", "McpPins", "PlatformView", "PartiesView")
-    if len(unknown) != len(UNKNOWN_CONSUMERS) or any(item.get(key) != unknown[0].get(key) for item in unknown for key in keys):
-        raise ValueError("The unnamed catalog consumers disagree on the generic catalog defaults.")
-    first = unknown[0]
-    pins = dict(pin.split("=", 1) for pin in first.get("Pins", "").split("|") if "=" in pin)
-    defaults = {"sdk": first.get("Sdk"), "openapi": tuple(pins.get(package) for package in OPENAPI_PACKAGES),
-                "memories": first.get("CatalogMemoriesDefault"), "tenants": first.get("CatalogTenantsDefault"),
-                "parties": first.get("CatalogPartiesDefault"), "mcp": first.get("CatalogMcpDefault")}
-    if not all(isinstance(value, str) and value for value in (*defaults["openapi"], *(defaults[key] for key in defaults if key != "openapi"))):
-        raise ValueError("The catalog does not declare every generic default.")
-    if defaults["sdk"] == "4.2.0":
-        raise ValueError("The generic catalog default equals the named SDK4.2 view; the negative control is lost.")
-    return defaults
-
-
-def verify_named_platform_catalog(raw: bytes, expected_sha256: str) -> dict:
-    """Verify the named SDK4.2 view and the catalog's generic defaults in every context, without Builds-version keys."""
-    require_catalog_body(raw, expected_sha256)
-    require_finite_selector(ET.fromstring(raw))
-    observed = evaluate_views(raw)
-    names = [item["Identity"] for item in observed]
-    generic = generic_defaults(observed)
-    openapi = generic["openapi"]
-    verify_observations(observed, "4.2.0", generic["sdk"], generic_openapi=openapi)
-    collecting = evaluate_views(raw, "4.2.0")
-    if [item["Identity"] for item in collecting] != names:
-        raise ValueError("The retained collecting view changed its exact consumer set.")
-    verify_observations(collecting, "4.2.0", "4.2.0", generic_openapi=openapi)
-    owner_observed = evaluate_views(raw, consumer_names=(*CURRENT_OWNER_CONSUMERS, *UNKNOWN_OWNER_CONSUMERS))
-    for observations in (observed, collecting):
-        verify_memories_observations(observations, generic_memories=generic["memories"])
-        verify_tenants_observations(observations, generic_tenants=generic["tenants"])
-    verify_current_owner_observations(owner_observed, generic_tenants=generic["tenants"], generic_mcp=generic["mcp"],
-                                      generic_sdk=generic["sdk"], generic_openapi=openapi,
-                                      generic_memories=generic["memories"], generic_parties=generic["parties"])
-    for observations in (observed, collecting, owner_observed):
-        verify_mcp_observations(observations, generic_mcp=generic["mcp"])
-    return {"kind": "finite-current-platform-sdk42-catalog-view", "catalogSha256": expected_sha256,
-            "consumers": list(PLATFORM_CONSUMERS), "genericDefaults": {**generic, "openapi": list(openapi)},
-            "evaluations": observed, "defaultEvaluations": observed,
-            "collectingEvaluations": collecting, "currentOwnerEvaluations": owner_observed,
-            "scope": "Finite named SDK4.2 Platform and owner views; generic SDK" + generic["sdk"] + " defaults read from the catalog are negative controls",
-            "candidateAcceptance": False, "runtimeAcceptance": False}
 
 
 def catalog_cohort(raw):
@@ -292,19 +140,3 @@ def verify_unified_catalog(raw, expected_sha256):
             raise ValueError(f"{item['Identity']} selects a different Parties release from its catalog")
     return {"kind": "unified-package-catalog", "catalogSha256": expected_sha256, "properties": cohort,
             "consumers": list(names), "runtimeAcceptance": False}
-
-
-def verify_extension_catalog_pin(catalog, *, authenticated_body=None, expected_sha256=None):
-    """Retain old raw pins; independently qualify only the finite current named SDK4.2 view."""
-    raw = Path(catalog).read_bytes() if authenticated_body is None else authenticated_body
-    if authenticated_body is not None:
-        require_catalog_body(raw, expected_sha256)
-    document = ET.fromstring(raw)
-    if document.findall(".//HexalithPlatformSdk42CatalogView"):
-        if authenticated_body is None:
-            raise ValueError("A named current catalog view requires its authenticated catalog Git body.")
-        return verify_named_platform_catalog(raw, expected_sha256)
-    pins = document.findall("./PropertyGroup/HexalithEventStoreVersion")
-    if len(pins) != 1 or (pins[0].text or "").strip() != "4.2.0":
-        raise ValueError("The extension SDK suite requires the single measured 4.2.0 owning catalog pin.")
-    return {"kind": "retained-single-sdk42-catalog-pin", "runtimeAcceptance": False}

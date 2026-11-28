@@ -17,7 +17,7 @@ combined verdict fail. Prepare the current source binding only when owner
 gitlinks or package provenance change; documentation-only changes need no
 additional ref. See [candidate preparation](../eng/tuple-source-preparation.md).
 
-The current tuple requires the exact `current42`, `base42` and `extensions`
+The current tuple requires the exact `current`, `base` and `extensions`
 xUnit execution counts in `REQUIRED_TOTALS` of [`eng/run_tuple_ci.py`](../eng/run_tuple_ci.py), each
 with exact group counts and zero skips. The extension lane also runs the
 signed host component startup check.

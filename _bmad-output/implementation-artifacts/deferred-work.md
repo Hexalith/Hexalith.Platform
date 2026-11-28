@@ -2900,3 +2900,9 @@ location: docs/implementation/story-4-17-next-candidate-intake.md#1192-hosted-ad
 severity: high
 reason: The owner excluded RabbitMQ from the Kafka-only successor. Before RabbitMQ can enter a separately qualified candidate, EventStore 3.21 must verify an official supported Dapr release embedding both fixes and demonstrate attributable pressure rejection with zero acknowledged loss, the deleted-user `ACCESS_REFUSED` response from Dapr, and a correlated rejection for an unbound publish. [Publish failures and reconnect](https://github.com/dapr/components-contrib/pull/4767) · [Mandatory returns](https://github.com/dapr/components-contrib/pull/4768)
 status: open
+
+## Deferred from: code review of spec-2-14-close-out-version-only-pins-and-retire-sdk42-artifacts.md (2026-11-28)
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-14-close-out-version-only-pins-and-retire-sdk42-artifacts.md`
+  summary: Reconcile `_bmad-output/implementation-artifacts/epic-2-context.md` (and `epics.md:1724`) so the agent context retains historical 2.8/2.14 closure SHAs and marks the 2026-11-19 source-tuple reconciliation closed rather than pending.
+  evidence: Step 1 recompiled `epic-2-context.md` from newer planning artifacts (`epics.md:1724` still describes audit action 1 in present tense), condensing 192 lines to 55 lines and dropping SHAs `566b9bfc`, `926c1c3f`, `f3f96b2e`, `707cf901`; deferred per Step 4's agent-context rule.

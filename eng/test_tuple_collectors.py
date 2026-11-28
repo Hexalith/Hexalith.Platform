@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class TupleCollectorTests(unittest.TestCase):
     def test_every_positive_inventory_executes_only_on_the_candidate(self):
         for filename, suite, expected in (
-                ('tuple-ci-sdk42-current-suites.json', 'current42', 430),
-                ('tuple-ci-sdk42-base-suites.json', 'base42', 67),
+                ('tuple-ci-current-suites.json', 'current', 430),
+                ('tuple-ci-base-suites.json', 'base', 28),
                 ('tuple-ci-extension-suites.json', 'extensions', 27)):
             profile = json.loads((ROOT / 'eng' / filename).read_bytes())
             self.assertEqual(expected, validate_profile(profile))
@@ -32,10 +32,21 @@ class TupleCollectorTests(unittest.TestCase):
             self.assertFalse((ROOT / 'eng' / retired).exists(), retired)
         self.assertFalse((ROOT / 'eng/tuple-ci-legacy-suites.json').exists())
         self.assertFalse((ROOT / 'eng/tuple-ci-suites.json').exists())
+        self.assertFalse((ROOT / 'eng/tuple-ci-sdk42-current-suites.json').exists())
+        self.assertFalse((ROOT / 'eng/tuple-ci-sdk42-base-suites.json').exists())
+        for retired_path in (
+                'eng/fixtures/builds-before-unified-catalog.props',
+                'tests/Hexalith.Platform.Composition.Tests/PlatformSdk42EventStorePackageTestCohortTests.cs',
+                'tests/Hexalith.Platform.Composition.Tests/PlatformSdk42PackageEntryTests.cs'):
+            self.assertFalse((ROOT / retired_path).exists(), retired_path)
         source = (ROOT / 'eng/run_tuple_ci.py').read_text()
+        workflow = (ROOT / '.github/workflows/tuple-ci.yml').read_text()
         for retired in ('reader-workspace', 'prepare-historical-reader', 'CURRENT_PLATFORM_SHA',
-                        'retained_workspace', 'package_reader_source', '"fetch"', '"checkout"'):
+                        'retained_workspace', 'package_reader_source', '"fetch"', '"checkout"',
+                        'current42', 'base42'):
             self.assertNotIn(retired, source)
+        for retired in ('current42', 'base42'):
+            self.assertNotIn(retired, workflow)
 
     def test_framework_and_actual_runtime_must_both_match_the_collector(self):
         with self.assertRaises(ValueError):

@@ -8,13 +8,13 @@ using Hexalith.Platform.CatalogArtifacts;
 using Shouldly;
 
 /// <summary>Requires the actual selected signed tool, catalog, seed and owner handoff for the current catalog; no services are started.</summary>
-public sealed class PlatformSdk42PackageEntryTests
+public sealed class PlatformCurrentPackageEntryTests
 {
     /// <summary>The real private reader must consume the pinned catalog snapshot and retain its six public bodies.</summary>
     [Fact]
-    public async Task PrivateEventStoreReaderUsesTheActualPinnedSdk42CatalogAndSeedAsync()
+    public async Task PrivateEventStoreReaderUsesTheActualPinnedCatalogAndSeedAsync()
     {
-        using PlatformPackageCatalogReaderFixture fixture = new(currentTest: true, sdk42: true);
+        using PlatformPackageCatalogReaderFixture fixture = new(currentTest: true);
         await fixture.MaterializeAsync().ConfigureAwait(true);
         CatalogVersionSnapshot snapshot = JsonSerializer.Deserialize<CatalogVersionSnapshot>(File.ReadAllBytes(Path.Combine(fixture.Plan.Workspace, "source-mapping", "catalog-versions.json")))!;
         snapshot.Hash.ShouldBe(CatalogVersionSnapshot.ComputeHash(snapshot.MappingHash, snapshot.CatalogCommit, snapshot.CatalogFileHash, snapshot.PinnedFiles, snapshot.Versions, snapshot.ProjectVersions));
@@ -30,7 +30,7 @@ public sealed class PlatformSdk42PackageEntryTests
 
     /// <summary>The existing parent proof builds and seals the real source owner and package-only references from the current catalog.</summary>
     [Fact]
-    public async Task CurrentSourceOwnerAndReaderRetainTheirActualSdk42BodiesAsync()
+    public async Task CurrentSourceOwnerAndReaderRetainTheirActualBodiesAsync()
     {
         using var fixture = await PlatformPartiesPackageFixture.CreateAsync(PlatformCurrentOwnerProof.Profile).ConfigureAwait(true);
         PlatformCompositionOptions options = fixture.CaptureCurrent();
