@@ -23,6 +23,197 @@ from run_owned_component import inventory, lifecycle_controls, nonstandard_calle
 
 
 class RunOwnedTests(unittest.TestCase):
+    def test_projects_enrollment_requires_exact_cohort_and_operations(self):
+        model = owned.projects_inventory("ordinary-selected")
+        self.assertEqual(set(owned.PROJECTS_COHORT), set(owned.validate_inventory(model, owned.PROJECTS_OWNER)))
+        for fault in ("missing", "foreign", "workload", "tenant", "domain", "query-digest", "tenants-query", "bootstrap-source"):
+            with self.subTest(fault=fault):
+                changed = copy.deepcopy(model)
+                gateway, projects, tenants = changed["clients"]
+                project_query, tenant_query = gateway["probes"][-2:]
+                if fault == "missing":
+                    changed["clients"].remove(projects)
+                elif fault == "foreign":
+                    changed["receivers"].append("projects-workers")
+                    changed["clients"].append(dict(projects, resource="projects-workers"))
+                elif fault == "workload":
+                    projects.update(workload="projects-foreign", clientId="projects-foreign")
+                elif fault == "tenant":
+                    changed["tenant"] = "foreign"
+                elif fault == "domain":
+                    project_query["bindings"]["eventstore:bound-domain"] = "folders"
+                elif fault == "query-digest":
+                    del project_query["bindings"][owned.QUERY_DIGEST]
+                elif fault == "tenants-query":
+                    tenant_query["bindings"] = dict(project_query["bindings"])
+                else:
+                    tenants["probes"].pop()
+                with self.assertRaisesRegex(RuntimeError, "refused:"):
+                    owned.validate_inventory(changed, owned.PROJECTS_OWNER)
+
+    def test_projects_and_folders_producers_reject_cross_profile_requests(self):
+        for owner, consumer in ((owned.OWNER, "o.projects_inventory('ordinary-selected')"),
+                (owned.PROJECTS_OWNER, "c.inventory()")):
+            code = """
+import json, os, time
+from pathlib import Path
+import run_owned as o
+import run_owned_component as c
+directory = Path(os.environ[o.PREFIX + "RECEIPT"]).parent
+receipt = o.read_private(directory / "receipt.json")
+request = {key: receipt[key] for key in ("runId", "capability", "childPid", "childIdentity", "deadline")}
+model = MODEL
+o.private_write(directory / "request.json", dict(request, inventory=model,
+    inventorySha256=o.cohort_digest(json.dumps(model, separators=(",", ":")).encode())))
+time.sleep(30)
+""".replace("MODEL", consumer)
+            with self.subTest(owner=owner):
+                completed = self.launch_profile(owner, code)
+                self.assertEqual(1, completed.returncode)
+                self.assertIn("refused: cohort", completed.stderr)
+                outcome = json.loads(completed.stdout.strip().splitlines()[-1])
+                self.assertFalse(outcome["provisioned"])
+                self.assertEqual(0, outcome["observedRemainingContainers"])
+                self.assertEqual(0, outcome["observedRemainingTemporaryPaths"])
+
+    def test_projects_adopts_real_https_with_exact_bound_and_unbound_assertions(self):
+        code = """
+import base64, json, os, ssl, urllib.error, urllib.request
+from adopt_run_owned import ProjectsEnrollment, decode
+import run_owned as o
+lease = ProjectsEnrollment(os.environ)
+verified_token = lease.verify_token
+signature_refusals = []
+def verify_with_signature_control(token, *arguments):
+    if not signature_refusals:
+        header, payload, signature = token.split(".")
+        raw = bytearray(decode(signature))
+        raw[0] ^= 1
+        changed = base64.urlsafe_b64encode(raw).rstrip(b"=").decode()
+        try:
+            verified_token(".".join((header, payload, changed)), *arguments)
+        except RuntimeError as error:
+            assert str(error).endswith("signed-probe-signature")
+            signature_refusals.append(True)
+        else:
+            raise AssertionError("Changed token signature was accepted")
+    verified_token(token, *arguments)
+lease.verify_token = verify_with_signature_control
+try:
+    lease.adopt("ordinary-selected")
+    assert signature_refusals == [True]
+    gateway = o.projects_inventory("ordinary-selected")["clients"][0]
+    project_query, tenants_query = gateway["probes"][-2:]
+    def issue(probe, secret=lease.credentials["eventstore"]):
+        return lease.issue(lease.token_endpoint, "eventstore", secret, probe)
+    assert issue(dict(project_query, bindings=dict(project_query["bindings"], **{o.QUERY_DIGEST: "B" * 64})))
+    assert issue(tenants_query)
+    for probe, secret in ((dict(project_query, bindings={}), lease.credentials["eventstore"]),
+            (dict(project_query, bindings=dict(project_query["bindings"], **{"eventstore:bound-tenant": "other"})), lease.credentials["eventstore"]),
+            (project_query, lease.credentials["projects"])):
+        try:
+            issue(probe, secret)
+        except urllib.error.HTTPError as error:
+            assert error.code in (400, 401)
+        else:
+            raise AssertionError("Expanded scope or substituted credential was accepted")
+    try:
+        urllib.request.urlopen(lease.issuer + "/.well-known/openid-configuration", timeout=5,
+            context=ssl.create_default_context(cafile=ssl.get_default_verify_paths().openssl_cafile))
+    except urllib.error.URLError as error:
+        assert isinstance(error.reason, ssl.SSLCertVerificationError)
+    else:
+        raise AssertionError("HTTPS accepted without private issuer trust")
+    try:
+        lease.adopt("ordinary-selected")
+    except RuntimeError as error:
+        assert str(error).endswith("owner-request-already-adopted")
+    else:
+        raise AssertionError("Repeated adoption succeeded")
+    print(json.dumps(lease.evidence), flush=True)
+finally:
+    lease.release()
+"""
+        completed = self.launch_profile(owned.PROJECTS_OWNER, code)
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        evidence, cleanup = (json.loads(line) for line in completed.stdout.splitlines() if line.strip())
+        self.assertEqual(15, evidence["freshVerifiedProbes"])
+        self.assertEqual(3, evidence["resourceCount"])
+        self.assertTrue(cleanup["provisioned"])
+        self.assertEqual(0, cleanup["observedRemainingContainers"])
+        self.assertEqual(0, cleanup["observedRemainingTemporaryPaths"])
+
+    def test_projects_child_releases_prelaunch_trust_without_publishing_a_cohort(self):
+        code = """
+import os
+from adopt_run_owned import ProjectsEnrollment
+lease = ProjectsEnrollment(os.environ)
+assert lease.trust_file.is_file()
+assert not (lease.directory / "request.json").exists()
+lease.release()
+assert not os.path.lexists(lease.directory)
+"""
+        completed = self.launch_profile(owned.PROJECTS_OWNER, code)
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        cleanup = json.loads(completed.stdout.strip().splitlines()[-1])
+        self.assertFalse(cleanup["provisioned"])
+        self.assertEqual(0, cleanup["observedRemainingContainers"])
+        self.assertEqual(0, cleanup["observedRemainingTemporaryPaths"])
+
+    def test_projects_adopter_rejects_foreign_receipt_child_and_missing_trust(self):
+        attempts = (
+            (owned.OWNER, "ProjectsEnrollment(os.environ)", "foreign-launcher-receipt"),
+            (owned.PROJECTS_OWNER, 'ProjectsEnrollment(dict(os.environ, SSL_CERT_FILE="/foreign.pem"))', "missing-prelaunch-trust"),
+            (owned.PROJECTS_OWNER, """subprocess.run([sys.executable, "-B", "-c",
+                "import os; from adopt_run_owned import ProjectsEnrollment; ProjectsEnrollment(os.environ)"], check=True)""".replace("\n", " "),
+                "owner-child-process-binding"),
+        )
+        for owner, attempt, reason in attempts:
+            with self.subTest(reason=reason):
+                completed = self.launch_profile(owner, "import os, subprocess, sys; from adopt_run_owned import ProjectsEnrollment; " + attempt)
+                self.assertNotEqual(0, completed.returncode)
+                self.assertIn(reason, completed.stderr)
+                self.assertFalse(json.loads(completed.stdout.strip().splitlines()[-1])["provisioned"])
+
+    def test_projects_runner_can_complete_owned_teardown_on_launcher_cancellation(self):
+        code = """
+import os, signal, subprocess, sys, time
+from pathlib import Path
+ready, removed = map(Path, sys.argv[1:])
+def cleanup(*args):
+    subprocess.run([sys.executable, "-B", "-c",
+        "import pathlib,sys,time; time.sleep(0.2); pathlib.Path(sys.argv[1]).touch()", str(removed)], check=True)
+    raise SystemExit(1)
+signal.signal(signal.SIGTERM, cleanup)
+ready.touch()
+while True:
+    time.sleep(0.05)
+"""
+        with tempfile.TemporaryDirectory() as name:
+            ready, removed = Path(name) / "ready", Path(name) / "removed"
+            process = subprocess.Popen([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owned.PROJECTS_OWNER,
+                "--lifetime-seconds", "20", "--", sys.executable, "-B", "-c", code, str(ready), str(removed)],
+                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            try:
+                deadline = time.monotonic() + 10
+                while not ready.exists() and process.poll() is None and time.monotonic() < deadline:
+                    time.sleep(0.05)
+                self.assertTrue(ready.exists())
+                process.terminate()
+                output, error = process.communicate(timeout=15)
+                self.assertEqual(1, process.returncode, error)
+                self.assertTrue(removed.exists())
+                self.assertEqual(0, json.loads(output.strip().splitlines()[-1])["observedRemainingTemporaryPaths"])
+            finally:
+                if process.poll() is None:
+                    process.terminate()
+                    process.communicate(timeout=30)
+
+    @staticmethod
+    def launch_profile(owner, code):
+        return subprocess.run([sys.executable, "-B", str(owned.ROOT / "run_owned.py"), "--owner", owner,
+            "--lifetime-seconds", "90", "--", sys.executable, "-B", "-c", code], text=True, capture_output=True, timeout=110)
+
     def test_native_scan_requires_its_own_exact_source_grant(self):
         model = inventory()
         self.assertEqual(6, len(owned.validate_inventory(model)))
