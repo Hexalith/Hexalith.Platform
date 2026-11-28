@@ -367,7 +367,14 @@ public sealed class PlatformCompleteEnvironmentTests
             JsonNode realm = JsonNode.Parse(await File.ReadAllTextAsync(realmMount, TestContext.Current.CancellationToken))!;
             JsonArray clients = realm["clients"]!.AsArray();
             clients.Select(client => client!["clientId"]!.GetValue<string>()).Order(StringComparer.Ordinal)
-                .ShouldBe(["conversations-tenant-access", "eventstore", "folders", "folders-workers", "mcpcli", "memories", "projects", "tenants"]);
+                .ShouldBe(["conversations-tenant-access", "eventstore", "folders", "folders-workers", "mcpcli", "memories", PlatformRealmOperator.ClientId, "projects", "tenants"]);
+            // The instance-only operator can request the cutover role and the relay's four permissions, one per scope.
+            clients.Single(client => client!["clientId"]!.GetValue<string>() == PlatformRealmOperator.ClientId)!["optionalClientScopes"]!.AsArray()
+                .Select(scope => scope!.GetValue<string>()).ShouldBe(
+                [
+                    "platform-operator.global-administrator", "platform-operator.global-administrators.bootstrap", "platform-operator.global-administrators.read",
+                    "platform-operator.tenants.create", "platform-operator.tenants.read",
+                ]);
             JsonNode projectsClient = clients.Single(client => client!["clientId"]!.GetValue<string>() == "projects")!;
             string[] projectsScopes = projectsClient["optionalClientScopes"]!.AsArray().Select(scope => scope!.GetValue<string>()).ToArray();
             projectsScopes.ShouldContain("eventstore-audience.eventstore");
@@ -456,6 +463,9 @@ public sealed class PlatformCompleteEnvironmentTests
             // Direct Development host with generated realm never schedules symmetric-key gateway startup (verify resolved factory services).
             await using ServiceProvider provider = builder.Services.BuildServiceProvider();
             provider.GetServices<IHostedService>().OfType<PlatformGatewayStartup>().ShouldBeEmpty();
+            // The realm-signed operator token source replaces the runner key for the Builds cutover; without a run plan no task relay exists.
+            provider.GetServices<ICompositionOperatorTokenSource>().ShouldHaveSingleItem().OperatorName.ShouldBe(PlatformRealmOperator.ClientId);
+            provider.GetServices<ICompositionRunPreparation>().ShouldBeEmpty();
         }
         finally
         {
