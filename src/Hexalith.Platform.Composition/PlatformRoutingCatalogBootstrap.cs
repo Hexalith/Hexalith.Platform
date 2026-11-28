@@ -25,10 +25,17 @@ internal sealed class PlatformRoutingCatalogBootstrap
 
     internal IReadOnlyDictionary<string, string[]> GatewayQueryDomains { get; }
 
+    /// <summary>Gets the catalog commands behind the Tenants synthetic-tenant task, or null when the catalog declares none.</summary>
+    internal PlatformOperatorTaskBinding? OperatorTask { get; }
+
     private PlatformRoutingCatalogBootstrap(PlatformCompositionOptions options, IReadOnlyList<PlatformServerBinding> participants,
         PlatformRoutingCatalog catalog, string rendered, PlatformDaprBindings dapr, IReadOnlyList<PlatformServerBinding> servers)
     {
         Directory = catalog.Directory;
+        OperatorTask = PlatformOperatorTaskBinding.Resolve(catalog.Envelope, catalog.Directory, catalog.RootDigest);
+        // Builds schedules the Tenants environment-creation task; its operator relay submits through the bound Tenants channel.
+        bool operatorRelay = (options.RunPlan?.StartupTasks ?? []).Any(task => task.ModuleId == PlatformOperatorTaskBinding.ModuleId
+            && task.Name == PlatformOperatorTaskBinding.TaskName && task.InvocationPath is not null);
         GatewayQueryDomains = (from route in catalog.Envelope.Routes
             where route.AppId is "projects" or "conversation" or "folders" or "tenants" or "parties"
             join declaration in catalog.Envelope.Declarations on route.RouteId equals declaration.RouteId
@@ -112,14 +119,17 @@ internal sealed class PlatformRoutingCatalogBootstrap
                 && (route.AppId == participant.AppId || participant.AppId == "memories" && route.AppId.StartsWith("memories-", StringComparison.Ordinal))))
                 .Select(declaration => declaration.Domain).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal);
             gateway[(participant.AppId == "tenants" ? "Authentication__BoundStreamRead__AllowedDomains__" : "Authentication__BoundCommand__AllowedDomains__") + participant.AppId] = string.Join(',', domains);
-            if (participant.AppId == "tenants" && options.RunPlan?.SelectedTest?.ModuleId == "parties")
+            bool partiesTest = options.RunPlan?.SelectedTest?.ModuleId == "parties";
+            if (participant.AppId == "tenants" && (partiesTest || operatorRelay))
             {
-                string bootstrapDomain = catalog.Envelope.Declarations.Single(declaration => declaration.Execution?.HandlerType
-                    == typeof(Hexalith.Tenants.Contracts.Commands.BootstrapGlobalAdmin).FullName).Domain;
-                gateway["Authentication__BoundCommand__AllowedDomains__" + participant.AppId] = bootstrapDomain;
+                // Native preparation and the operator relay submit the same two internal commands: the bootstrap and the
+                // synthetic tenant. Only their domains are admitted on the bound Tenants channel.
+                IReadOnlyList<string> boundDomains = (OperatorTask ?? throw new InvalidDataException(
+                    $"{participant.Module.Source}: tenants: the bound Tenants channel requires the catalog's internal bootstrap and synthetic-tenant commands.")).BoundDomains;
+                gateway["Authentication__BoundCommand__AllowedDomains__" + participant.AppId] = string.Join(',', boundDomains);
                 _tenantBootstrap = new(participant.ResourceId, participant.AppId,
                     _environment[participant.ResourceId]["Authentication__BoundStreamRead__PrivateKey"],
-                    participant.Environment.GetValueOrDefault("DAPR_API_TOKEN"), participant.Environment["Authentication__JwtBearer__Issuer"]);
+                    participant.Environment.GetValueOrDefault("DAPR_API_TOKEN"), participant.Environment.GetValueOrDefault("Authentication__JwtBearer__Issuer") ?? string.Empty);
             }
         }
         foreach (var group in catalog.Envelope.Declarations.Where(d => d.Kind == "command").GroupBy(d => (d.Domain, d.ContractVersion)))

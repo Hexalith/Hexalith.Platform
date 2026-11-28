@@ -13,9 +13,10 @@ using Hexalith.Tenants.Contracts.Commands;
 internal static class PlatformNativeGatewayContract
 {
     /// <summary>Grants only this run's public tenant and the three actual management operations with their status reads.</summary>
+    /// <remarks>The run tenant is created as the environment's synthetic tenant, so the scheduled Tenants task finds it already provisioned.</remarks>
     internal static CompositionTokenRequest OperatorIdentity(string subject, string tenant, RouteCatalogEnvelope catalog, TimeSpan remaining)
     {
-        RouteContractDeclaration[] commands = [Command<BootstrapGlobalAdmin>(catalog), Command<CreateTenant>(catalog), Command<AddUserToTenant>(catalog)];
+        RouteContractDeclaration[] commands = [Command<BootstrapGlobalAdmin>(catalog), Command<CreateSyntheticTenant>(catalog), Command<AddUserToTenant>(catalog)];
         string[] reads = commands.Select(command => command.Domain).Distinct(StringComparer.Ordinal).Select(domain =>
             catalog.Declarations.First(declaration => declaration.Kind == "query" && declaration.Domain == domain
                 && declaration.PlatformAdmission?.Namespace == "platform:" + domain

@@ -79,28 +79,35 @@ internal static class PlatformLocalRealm
         return PrepareLocal(contract, clients, port, syntheticTenantId);
     }
 
+    /// <summary>Prepares the Development realm instance, adding the instance-only local operator when grants are supplied.</summary>
+    /// <param name="declarations">The selected module declarations.</param>
+    /// <param name="port">The realm's loopback port.</param>
+    /// <param name="syntheticTenantId">The run's synthetic tenant identifier.</param>
+    /// <param name="gatewayQueryDomains">The gateway's bound query domains by audience.</param>
+    /// <param name="operatorGrants">The single grants the local operator may request; null renders no operator.</param>
     internal static PreparedRealm PrepareDevelopment(IReadOnlyList<PlatformModuleDeclaration> declarations, int port, string syntheticTenantId,
-        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null, IReadOnlyList<PlatformOperatorGrant>? operatorGrants = null)
     {
         var contract = PlatformRealmContract.Load();
         var clients = contract.SelectClients(PlatformRealmContract.SelectDeclarations(declarations));
         if (gatewayQueryDomains is { Count: > 0 })
             clients = clients.Select(client => client.Id == "eventstore" ? client with { BoundOperations = [EventStoreWorkloadOperations.DomainServiceQuery] } : client).ToArray();
-        return PrepareLocal(contract, clients, port, syntheticTenantId, gatewayQueryDomains);
+        return PrepareLocal(contract, clients, port, syntheticTenantId, gatewayQueryDomains, operatorGrants);
     }
 
     private static PreparedRealm PrepareLocal(PlatformRealmContract contract, IReadOnlyList<Client> clients, int port, string syntheticTenantId,
-        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null, IReadOnlyList<PlatformOperatorGrant>? operatorGrants = null)
     {
         var secrets = clients.Where(client => contract.Model.Classes[client.Surface] == "confidential")
             .ToDictionary(client => client.Id, _ => Convert.ToHexString(RandomNumberGenerator.GetBytes(32)), StringComparer.Ordinal);
+        if (operatorGrants is not null) secrets.Add(PlatformRealmOperator.ClientId, Convert.ToHexString(RandomNumberGenerator.GetBytes(32)));
         var realmUrl = new UriBuilder(Uri.UriSchemeHttp, "127.0.0.1", port, "/realms/" + contract.Model.Realm).Uri;
-        return Prepare(contract, clients, realmUrl, syntheticTenantId, secrets, gatewayQueryDomains);
+        return Prepare(contract, clients, realmUrl, syntheticTenantId, secrets, gatewayQueryDomains, operatorGrants);
     }
 
     private static PreparedRealm Prepare(PlatformRealmContract contract, IReadOnlyList<Client> clients,
         Uri realmUrl, string syntheticTenantId, IReadOnlyDictionary<string, string> clientSecrets,
-        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null)
+        IReadOnlyDictionary<string, string[]>? gatewayQueryDomains = null, IReadOnlyList<PlatformOperatorGrant>? operatorGrants = null)
     {
         ArgumentNullException.ThrowIfNull(realmUrl);
         ArgumentNullException.ThrowIfNull(clientSecrets);
@@ -118,18 +125,24 @@ internal static class PlatformLocalRealm
         }
 
         Client[] confidential = [.. clients.Where(client => realm.Classes[client.Surface] == "confidential")];
+        if (operatorGrants is not null && (clients.Any(client => client.Id == PlatformRealmOperator.ClientId) || operatorGrants.Count == 0
+            || operatorGrants.Select(grant => grant.Scope).Distinct(StringComparer.Ordinal).Count() != operatorGrants.Count))
+        {
+            throw new ArgumentException($"The instance-only operator '{PlatformRealmOperator.ClientId}' needs distinct grants and no contract client of that name.", nameof(operatorGrants));
+        }
+
         Dictionary<string, string> secrets = new(StringComparer.Ordinal);
         HashSet<string> values = new(StringComparer.Ordinal);
-        foreach (Client client in confidential)
+        foreach (string clientId in confidential.Select(client => client.Id).Concat(operatorGrants is null ? [] : [PlatformRealmOperator.ClientId]))
         {
-            if (!clientSecrets.TryGetValue(client.Id, out string? secret) || secret is not { Length: >= 32 }
+            if (!clientSecrets.TryGetValue(clientId, out string? secret) || secret is not { Length: >= 32 }
                 || secret.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not ('-' or '_' or '.' or '~'))
                 || !values.Add(secret))
             {
-                throw new ArgumentException($"Realm client '{client.Id}' requires a distinct run secret of at least 32 URL-safe characters.", nameof(clientSecrets));
+                throw new ArgumentException($"Realm client '{clientId}' requires a distinct run secret of at least 32 URL-safe characters.", nameof(clientSecrets));
             }
 
-            secrets.Add(client.Id, secret);
+            secrets.Add(clientId, secret);
         }
 
         if (clientSecrets.Count != secrets.Count)
@@ -137,12 +150,13 @@ internal static class PlatformLocalRealm
             throw new ArgumentException("Run secrets must match the selected confidential realm clients.", nameof(clientSecrets));
         }
 
-        string import = RenderImport(realm, clients, realmUrl, syntheticTenantId);
+        string import = RenderImport(realm, clients, realmUrl, syntheticTenantId, operatorGrants);
         return new PreparedRealm(realmUrl, realm.Realm, import, secrets,
             clients.SingleOrDefault(client => client.BoundOperations is not null), syntheticTenantId, gatewayQueryDomains);
     }
 
-    private static string RenderImport(RealmContract realm, IReadOnlyList<Client> clients, Uri realmUrl, string tenant)
+    private static string RenderImport(RealmContract realm, IReadOnlyList<Client> clients, Uri realmUrl, string tenant,
+        IReadOnlyList<PlatformOperatorGrant>? operatorGrants = null)
     {
         HashSet<string> selectedServices = clients.Where(client => client.Surface == "service")
             .Select(client => client.Id).ToHashSet(StringComparer.Ordinal);
@@ -283,6 +297,8 @@ internal static class PlatformLocalRealm
             renderedClients.Add(clientJson);
         }
 
+        if (operatorGrants is not null) RenderOperator(operatorGrants, scopes, renderedClients, users);
+
         JsonArray executors = new(
             new JsonObject { ["executor"] = "platform-require-requester-audience", ["configuration"] = new JsonObject() },
             new JsonObject { ["executor"] = realm.Exchange.DownscopePolicy, ["configuration"] = new JsonObject() });
@@ -349,6 +365,50 @@ internal static class PlatformLocalRealm
         return root.ToJsonString(RealmJson) + "\n";
     }
 
+    /// <summary>Renders the instance-only local operator: a confidential service account with one optional scope per grant.</summary>
+    /// <remarks>Its tokens carry the gateway user audience and only the grants each request names; it has no workload, tenant or surface claim.</remarks>
+    private static void RenderOperator(IReadOnlyList<PlatformOperatorGrant> grants, JsonArray scopes, JsonArray clients, JsonArray users)
+    {
+        foreach (PlatformOperatorGrant grant in grants)
+        {
+            scopes.Add(PlatformOwnerServices.Scope(grant.Scope, PlatformOwnerServices.Claim(grant.ClaimType, grant.ClaimValue)));
+        }
+
+        clients.Add(new JsonObject
+        {
+            ["clientId"] = PlatformRealmOperator.ClientId,
+            ["enabled"] = true,
+            ["protocol"] = "openid-connect",
+            ["publicClient"] = false,
+            ["serviceAccountsEnabled"] = true,
+            ["standardFlowEnabled"] = false,
+            ["directAccessGrantsEnabled"] = false,
+            ["implicitFlowEnabled"] = false,
+            ["fullScopeAllowed"] = false,
+            ["redirectUris"] = new JsonArray(),
+            ["attributes"] = new JsonObject
+            {
+                ["oauth2.device.authorization.grant.enabled"] = "false",
+                ["oidc.ciba.grant.enabled"] = "false",
+                ["standard.token.exchange.enabled"] = "false",
+                ["standard.token.exchange.enableRefreshRequestedTokenType"] = "NO",
+                ["access.token.signed.response.alg"] = "RS256",
+            },
+            ["defaultClientScopes"] = new JsonArray("basic"),
+            ["optionalClientScopes"] = Strings(grants.Select(grant => grant.Scope)),
+            ["protocolMappers"] = new JsonArray(AudienceMapper(PlatformRealmContract.GatewayUserAudience, clientAudience: false)),
+            ["clientAuthenticatorType"] = "client-secret",
+            ["secret"] = Placeholder(SecretEnvironmentName(PlatformRealmOperator.ClientId)),
+        });
+        users.Add(new JsonObject
+        {
+            ["username"] = "service-account-" + PlatformRealmOperator.ClientId,
+            ["enabled"] = true,
+            ["serviceAccountClientId"] = PlatformRealmOperator.ClientId,
+            ["clientRoles"] = new JsonObject(),
+        });
+    }
+
     private static JsonObject AudienceMapper(string audience, bool clientAudience) =>
         PlatformOwnerServices.Mapper("audience-" + audience, "oidc-audience-mapper", new()
         {
@@ -387,6 +447,10 @@ internal static class PlatformLocalRealm
         Client? boundClient, string syntheticTenantId, IReadOnlyDictionary<string, string[]>? gatewayQueryDomains)
     {
         internal string Import => import;
+
+        /// <summary>Returns one run-generated confidential client secret. It stays in the AppHost and is never written outside the realm placeholders.</summary>
+        internal string Secret(string client) => secrets.TryGetValue(client, out string? secret)
+            ? secret : throw new InvalidOperationException($"Realm client '{client}' has no run secret.");
 
         internal IReadOnlyDictionary<string, string> WorkloadBindingEnvironment(DateTimeOffset now)
         {

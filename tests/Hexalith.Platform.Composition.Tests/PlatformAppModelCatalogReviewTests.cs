@@ -154,6 +154,8 @@ public sealed partial class PlatformAppModelTests
                     .Select(declaration => declaration.Domain).Distinct().Order();
                 ((string)gateway[allowedPrefix + appId]).Split(',').Order().ShouldBe(domains);
             }
+            // Native preparation submits only the bootstrap and the run's synthetic tenant through the bound Tenants channel.
+            gateway["Authentication__BoundCommand__AllowedDomains__tenants"].ShouldBe("global-administrators,tenants");
             var scope = JsonSerializer.Deserialize<CompositionNativeTestScope>(File.ReadAllBytes(Path.Combine(catalogDirectory, "native-scope.json")))!;
             scope.RunId.ShouldBe(plan.RunId); scope.ModuleId.ShouldBe("parties");
             scope.RoutingCatalogRoot.ShouldBe((string)gateway[prefix + "RootDigest"]);

@@ -319,11 +319,20 @@ public static class PlatformAppModel
                     servers.Single(server => server.ResourceId == "memories"), catalog.ExpectedHosts, options));
             options.RetentionProfile?.Prepare(rendered, localPorts.Redis);
             PlatformLocalRealm.RealmResource? realm = null;
+            PlatformLocalRealm.PreparedRealm? preparedRealm = null;
+            PlatformRealmOperator? realmOperator = null;
             if (options.UseGeneratedRealm && hasGateway)
             {
                 string tenant = options.RunPlan?.TenantNamespace ?? "platform-local-" + Guid.NewGuid().ToString("N");
-                var prepared = PlatformLocalRealm.PrepareDevelopment(declarations, localPorts.EventStoreHttp, tenant, catalog?.GatewayQueryDomains);
-                realm = prepared.AddResource(builder, rendered);
+                // The instance-only operator gets one optional scope per grant. Only a scheduled Tenants task adds the relay's
+                // permissions; otherwise the operator can only request the cutover's global-administrator role.
+                IReadOnlyList<PlatformOperatorGrant> operatorGrants = [PlatformOperatorGrant.GlobalAdministrator];
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+                if (PlatformOperatorTaskRelay.SelectTask(options.RunPlan) is not null && catalog?.OperatorTask is { } relayBinding)
+                    operatorGrants = relayBinding.Grants;
+#endif
+                preparedRealm = PlatformLocalRealm.PrepareDevelopment(declarations, localPorts.EventStoreHttp, tenant, catalog?.GatewayQueryDomains, operatorGrants);
+                realm = preparedRealm.AddResource(builder, rendered);
                 if (options.RunPlan is { } realmRun)
                     realm.Keycloak.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={realmRun.RunId}");
                 File.WriteAllBytes(Path.Combine(rendered, "realm-instance.json"), JsonSerializer.SerializeToUtf8Bytes(new
@@ -332,7 +341,35 @@ public static class PlatformAppModel
                     issuer = realm.Authority,
                     syntheticTenantId = tenant,
                 }));
+                // The Builds writer-protocol cutover uses a realm-signed operator token and never falls back to the runner key.
+                realmOperator = new PlatformRealmOperator(new Uri(realm.Authority + "/protocol/openid-connect/token"), preparedRealm.Secret(PlatformRealmOperator.ClientId));
+                builder.Services.AddSingleton<ICompositionOperatorTokenSource>(new PlatformRealmOperatorTokenSource(realmOperator));
             }
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+            if (PlatformOperatorTaskRelay.SelectTask(options.RunPlan) is { } operatorTask)
+            {
+                CompositionRunPlan relayPlan = options.RunPlan!;
+                if (catalog?.OperatorTask is not { } operatorBinding)
+                    throw new InvalidDataException($"tenants: operator task '{PlatformOperatorTaskBinding.TaskName}' requires the routing catalog's internal bootstrap and synthetic-tenant commands.");
+                PlatformTenantBootstrapAccess access = catalog.TenantBootstrapAccess;
+                IPlatformOperatorCredentials credentials;
+                if (realmOperator is not null)
+                {
+                    credentials = new PlatformRealmOperatorCredentials(realmOperator, realm!.Authority, access.AppId, preparedRealm!.Secret(access.AppId),
+                        PlatformRealmContract.GatewayUserAudience);
+                }
+                else
+                {
+                    string signingKey = servers.Single(server => server.ResourceId == "eventstore").Environment.GetValueOrDefault("Authentication__JwtBearer__SigningKey") ?? string.Empty;
+                    if (signingKey.Length == 0 || access.Issuer.Length == 0)
+                        throw new InvalidDataException($"tenants: operator task '{PlatformOperatorTaskBinding.TaskName}' without the generated realm requires the run signing key and Tenants issuer.");
+                    credentials = new PlatformRunnerOperatorCredentials(signingKey, "g4-operator-" + relayPlan.RunId, access.Issuer, access.AppId);
+                }
+
+                // The relay writes the task's private invocation and serves it on loopback before readiness.json is written.
+                builder.Services.AddSingleton<ICompositionRunPreparation>(_ => new PlatformOperatorTaskRelay(relayPlan, operatorTask, operatorBinding, access, credentials));
+            }
+#endif
             using ECDsa clockKey = ECDsa.Create(ECCurve.NamedCurves.nistP256);
             string secrets = Path.Combine(rendered, "secrets.json");
             File.WriteAllText(secrets, JsonSerializer.Serialize(new Dictionary<string, object>

@@ -142,7 +142,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         // The complete activation/readbacks above were validated together; do not reread or manufacture an authority here.
         RouteCatalogGenerationReadback gatewayReadback = readbacks["eventstore"];
         string bootstrapScope = PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog).PlatformAdmission!.Namespace;
-        string tenantScope = PlatformNativeGatewayContract.Command<CreateTenant>(catalog).PlatformAdmission!.Namespace;
+        string tenantScope = PlatformNativeGatewayContract.Command<CreateSyntheticTenant>(catalog).PlatformAdmission!.Namespace;
         PlatformNativeGatewayContract.Bind(catalogHttp.DefaultRequestHeaders, gatewayReadback);
 #endif
         await PlatformRoutingCatalogMetadata.ObserveAsync(catalogHttp, catalog, scope.RoutingCatalogRoot, catalogDirectory, cancellationToken).ConfigureAwait(false);
@@ -162,7 +162,14 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         gateway = new EventStoreGatewayClient(tenantGatewayHttp, Options.Create(new EventStoreGatewayClientOptions { BaseAddress = tenantGatewayHttp.BaseAddress! }));
 #endif
         await WriteProgressAsync("tenant-submitting", null, cancellationToken).ConfigureAwait(false);
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+        // The run tenant is the environment's synthetic tenant, so the scheduled Tenants task later confirms it as a no-op.
+        string messageId = await SubmitBoundAsync(services, subject, operatorToken, catalog, gatewayReadback,
+            new CreateSyntheticTenant(plan.TenantNamespace), plan.TenantNamespace, cancellationToken).ConfigureAwait(false);
+        receipts.Add(await WaitForCommittedAsync(gateway, messageId, cancellationToken).ConfigureAwait(false));
+#else
         receipts.Add(await SubmitAsync(gateway, new CreateTenant(plan.TenantNamespace, "Synthetic native test tenant", "Run-owned test state"), plan.TenantNamespace, catalog, cancellationToken).ConfigureAwait(false));
+#endif
         await WriteProgressAsync("tenant-committed", null, cancellationToken).ConfigureAwait(false);
         await WriteProgressAsync("member-submitting", null, cancellationToken).ConfigureAwait(false);
         receipts.Add(await SubmitAsync(gateway, new AddUserToTenant(plan.TenantNamespace, "g4-native-tests", TenantRole.TenantReader), plan.TenantNamespace, catalog, cancellationToken).ConfigureAwait(false));
@@ -221,11 +228,16 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         return await WaitForCommittedAsync(gateway, messageId, token).ConfigureAwait(false);
     }
 
-    private async Task<string> SubmitBootstrapAsync(IServiceProvider services, string operatorSubject, string operatorToken, RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback gatewayReadback, CancellationToken token)
+    private Task<string> SubmitBootstrapAsync(IServiceProvider services, string operatorSubject, string operatorToken, RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback gatewayReadback, CancellationToken token)
+        => SubmitBoundAsync(services, operatorSubject, operatorToken, catalog, gatewayReadback, new BootstrapGlobalAdmin(operatorSubject), TenantIdentity.GlobalAdministratorsAggregateId, token);
+
+    /// <summary>Submits one internal owner command through the run-owned Tenants bound-workload channel for the bound operator.</summary>
+    private async Task<string> SubmitBoundAsync<T>(IServiceProvider services, string operatorSubject, string operatorToken, RouteCatalogEnvelope catalog,
+        RouteCatalogGenerationReadback gatewayReadback, T payload, string aggregateId, CancellationToken token) where T : ICommandContract
     {
-        var declaration = catalog.Declarations.Single(route => route.Execution?.HandlerType == typeof(BootstrapGlobalAdmin).FullName);
+        var declaration = catalog.Declarations.Single(route => route.Execution?.HandlerType == typeof(T).FullName);
         if (catalog.SchemaVersion != 3 || !catalog.Operations!.Any(operation => operation.RouteId == declaration.RouteId && operation.Ingress == "internal"))
-            throw new InvalidOperationException("The actual owner bootstrap service contract is unavailable.");
+            throw new InvalidOperationException("The actual owner " + T.CommandType + " service contract is unavailable.");
         var model = services.GetRequiredService<DistributedApplicationModel>();
         var owner = model.Resources.Single(resource => resource.Name == tenantBootstrap.ResourceId);
         var sidecar = owner.Annotations.OfType<DaprSidecarAnnotation>().Single().Sidecar;
@@ -252,15 +264,15 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
                 [EventStoreWorkloadAuthenticationDefaults.TenantBindingClaimType] = TenantIdentity.DefaultTenantId,
                 [EventStoreWorkloadAuthenticationDefaults.DomainBindingClaimType] = declaration.Domain,
             }), token).ConfigureAwait(false);
-        if (string.IsNullOrEmpty(assertion)) throw new InvalidOperationException("The actual owner bootstrap workload assertion is unavailable.");
+        if (string.IsNullOrEmpty(assertion)) throw new InvalidOperationException("The actual owner " + T.CommandType + " workload assertion is unavailable.");
         string messageId = UniqueIdHelper.GenerateSortableUniqueStringId();
 #if HEXALITH_PLATFORM_CANONICAL_SCOPES
-        string scope = PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog).PlatformAdmission!.Namespace;
+        string scope = PlatformNativeGatewayContract.Command<T>(catalog).PlatformAdmission!.Namespace;
 #else
         string scope = TenantIdentity.DefaultTenantId;
 #endif
-        var command = new SubmitCommandRequest(messageId, scope, declaration.Domain, TenantIdentity.GlobalAdministratorsAggregateId,
-            BootstrapGlobalAdmin.CommandType, JsonSerializer.SerializeToElement(new BootstrapGlobalAdmin(operatorSubject), EventStorePayloadSerialization.Options), CorrelationId: messageId);
+        var command = new SubmitCommandRequest(messageId, scope, declaration.Domain, aggregateId,
+            T.CommandType, JsonSerializer.SerializeToElement(payload, EventStorePayloadSerialization.Options), CorrelationId: messageId);
         var bound = new BoundWorkloadCommandRequest(command, operatorSubject);
         string proof = BoundWorkloadCommandProof.Issue(bound, tenantBootstrap.AppId, tenantBootstrap.PrivateKey, DateTimeOffset.UtcNow);
         using var transport = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false, UseProxy = false })
@@ -276,7 +288,7 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         if (tenantBootstrap.ApiToken is { Length: > 0 } apiToken) request.Headers.TryAddWithoutValidation("dapr-api-token", apiToken);
         using var response = await transport.SendAsync(request, token).ConfigureAwait(false);
         if (response.StatusCode != HttpStatusCode.Accepted)
-            throw new InvalidOperationException("The real bound owner bootstrap command was not accepted: " + (int)response.StatusCode);
+            throw new InvalidOperationException("The real bound owner " + T.CommandType + " command was not accepted: " + (int)response.StatusCode);
         return messageId;
     }
 

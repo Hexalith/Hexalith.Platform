@@ -64,13 +64,43 @@ public sealed class GatewaySeedSubscriptionTests
         actors.ShouldAllBe(endpoint => endpoint.Metadata.GetMetadata<IRequestSizeLimitMetadata>()!.MaxRequestBodySize == 30_000_000);
     }
 
+    [Fact]
+    public async Task PlatformSeedStartsADevelopmentRunCompositionWithoutAProtectionInstallationAsync()
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "gateway-seed-run-catalog-" + Guid.NewGuid().ToString("N"));
+        string catalogPath = Path.Combine(directory, "run-catalog", "catalog.json");
+        Directory.CreateDirectory(Path.GetDirectoryName(catalogPath)!);
+        await File.WriteAllTextAsync(catalogPath, "{}", TestContext.Current.CancellationToken);
+        // The entry point registers protection at CreateBuilder time, before deferred factory configuration runs.
+        using var environment = new EnvironmentScope(new Dictionary<string, string?>
+        {
+            ["ASPNETCORE_ENVIRONMENT"] = "Development",
+            ["EventStore__RouteCatalog__DevelopmentBootstrap__CatalogPath"] = catalogPath,
+            ["EventStore__PayloadProtection__Enabled"] = null,
+        });
+        try
+        {
+            WebApplicationFactory<platformseed::Program> factory = CreateFactory<platformseed::Program>(null, false, "Development");
+            await using var factoryLifetime = factory.ConfigureAwait(true);
+            // Without the Development exemption the host refuses at startup with EXT-PROTECTION-1.
+            using HttpClient client = factory.CreateClient();
+            client.DefaultRequestHeaders.Add("dapr-api-token", "seed-channel-token");
+            using HttpResponseMessage response = await client.GetAsync("/dapr/subscribe", TestContext.Current.CancellationToken).ConfigureAwait(true);
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        }
+        finally
+        {
+            Directory.Delete(directory, recursive: true);
+        }
+    }
+
     private static WebApplicationFactory<TEntryPoint> CreateFactory<TEntryPoint>(
-        GatewaySeedProtectionInstallation installation, bool declarative, string environment) where TEntryPoint : class =>
+        GatewaySeedProtectionInstallation? installation, bool declarative, string environment) where TEntryPoint : class =>
         new WebApplicationFactory<TEntryPoint>().WithWebHostBuilder(builder =>
         {
             bool production = environment == "Production";
             builder.UseEnvironment(environment);
-            builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(installation.Configuration).AddInMemoryCollection(new Dictionary<string, string?>
+            builder.ConfigureAppConfiguration((_, configuration) => configuration.AddInMemoryCollection(installation?.Configuration).AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["APP_API_TOKEN"] = "seed-channel-token",
                 ["Dapr:DeclarativeSubscriptions"] = declarative.ToString(),
