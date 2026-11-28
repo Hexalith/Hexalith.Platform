@@ -324,9 +324,14 @@ public static class PlatformAppModel
             if (options.UseGeneratedRealm && hasGateway)
             {
                 string tenant = options.RunPlan?.TenantNamespace ?? "platform-local-" + Guid.NewGuid().ToString("N");
-                // The instance-only operator gets one optional scope per grant; without the Tenants task it can only run the cutover.
-                preparedRealm = PlatformLocalRealm.PrepareDevelopment(declarations, localPorts.EventStoreHttp, tenant, catalog?.GatewayQueryDomains,
-                    catalog?.OperatorTask?.Grants ?? [PlatformOperatorGrant.GlobalAdministrator]);
+                // The instance-only operator gets one optional scope per grant. Only a scheduled Tenants task adds the relay's
+                // permissions; otherwise the operator can only request the cutover's global-administrator role.
+                IReadOnlyList<PlatformOperatorGrant> operatorGrants = [PlatformOperatorGrant.GlobalAdministrator];
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+                if (PlatformOperatorTaskRelay.SelectTask(options.RunPlan) is not null && catalog?.OperatorTask is { } relayBinding)
+                    operatorGrants = relayBinding.Grants;
+#endif
+                preparedRealm = PlatformLocalRealm.PrepareDevelopment(declarations, localPorts.EventStoreHttp, tenant, catalog?.GatewayQueryDomains, operatorGrants);
                 realm = preparedRealm.AddResource(builder, rendered);
                 if (options.RunPlan is { } realmRun)
                     realm.Keycloak.WithContainerRuntimeArgs("--label", $"{CompositionEnvironment.ContainerRunLabel}={realmRun.RunId}");

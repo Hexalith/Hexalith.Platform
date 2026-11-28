@@ -34,8 +34,8 @@ internal sealed class PlatformRoutingCatalogBootstrap
         Directory = catalog.Directory;
         OperatorTask = PlatformOperatorTaskBinding.Resolve(catalog.Envelope, catalog.Directory, catalog.RootDigest);
         // Builds schedules the Tenants environment-creation task; its operator relay submits through the bound Tenants channel.
-        bool operatorRelay = options.RunPlan?.StartupTasks.Any(task => task.ModuleId == PlatformOperatorTaskBinding.ModuleId
-            && task.Name == PlatformOperatorTaskBinding.TaskName && task.InvocationPath is not null) == true;
+        bool operatorRelay = (options.RunPlan?.StartupTasks ?? []).Any(task => task.ModuleId == PlatformOperatorTaskBinding.ModuleId
+            && task.Name == PlatformOperatorTaskBinding.TaskName && task.InvocationPath is not null);
         GatewayQueryDomains = (from route in catalog.Envelope.Routes
             where route.AppId is "projects" or "conversation" or "folders" or "tenants" or "parties"
             join declaration in catalog.Envelope.Declarations on route.RouteId equals declaration.RouteId

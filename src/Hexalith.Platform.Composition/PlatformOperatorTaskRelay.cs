@@ -63,9 +63,13 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
     private PlatformOperatorUpstream? _upstream;
     private RouteCatalogGenerationReadback? _readback;
     private string? _operatorSubject;
+    private string? _invocationPath;
 
     /// <summary>Gets the loopback relay origin once prepared.</summary>
     internal Uri? Endpoint { get; private set; }
+
+    /// <summary>Gets the upstream credentials the relay uses: realm-issued or runner-key.</summary>
+    internal IPlatformOperatorCredentials Credentials => credentials;
 
     /// <summary>Selects the scheduled Tenants environment-creation task that takes this relay's invocation, if the plan has one.</summary>
     internal static CompositionStartupTask? SelectTask(CompositionRunPlan? plan)
@@ -83,6 +87,7 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
         ArgumentNullException.ThrowIfNull(services);
         if (_listener is not null) throw new InvalidOperationException("The operator relay is already prepared.");
         string path = RequireInvocationPath();
+        _invocationPath = path;
         _services = services;
         string credential = Convert.ToHexStringLower(RandomNumberGenerator.GetBytes(32));
         _expectedAuthorization = Encoding.ASCII.GetBytes("Bearer " + credential);
@@ -106,7 +111,8 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
             // A request that ignores cancellation cannot delay teardown; the run workspace is removed by its owner.
         }
 
-        if (task.InvocationPath is { } path && File.Exists(path)) File.Delete(path);
+        // Only the path this relay validated and wrote is removed; a refused path is never touched.
+        if (_invocationPath is { } path && File.Exists(path)) File.Delete(path);
         _bootstrapGate.Dispose();
         _stop.Dispose();
     }
@@ -243,13 +249,16 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
         if (request.HttpMethod == HttpMethod.Get.Method && path.StartsWith(StatusPrefix, StringComparison.Ordinal))
         {
             string id = Uri.UnescapeDataString(path[StatusPrefix.Length..]);
-            return id.Length is > 0 and <= 128 && id.All(character => char.IsAsciiLetterOrDigit(character) || character == '-') && _submitted.ContainsKey(id)
+            return IsMessageId(id) && _submitted.ContainsKey(id)
                 ? await StatusAsync(id, binding.Create, cancellationToken).ConfigureAwait(false)
                 : PlatformOperatorRelayResponse.Empty((int)HttpStatusCode.NotFound);
         }
 
         return PlatformOperatorRelayResponse.Empty((int)HttpStatusCode.NotFound);
     }
+
+    private static bool IsMessageId(string id) =>
+        id.Length is > 0 and <= 128 && id.All(character => char.IsAsciiLetterOrDigit(character) || character == '-');
 
     private bool Authorized(string[]? values) =>
         _expectedAuthorization is { } expected && values is [{ } value]
@@ -279,6 +288,8 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
 
         // Only the task's own creation of this environment's synthetic tenant is relayed.
         if (command is null) return PlatformOperatorRelayResponse.Empty((int)HttpStatusCode.Forbidden);
+        // A message id the status route cannot address would leave the task polling 404 until its deadline.
+        if (!IsMessageId(command.MessageId)) return PlatformOperatorRelayResponse.Empty((int)HttpStatusCode.BadRequest);
         (string? subject, PlatformOperatorRelayResponse? refusal) = await EnsureOperatorAsync(cancellationToken).ConfigureAwait(false);
         if (refusal is not null) return refusal;
         string token = await credentials.OperatorTokenAsync([PlatformOperatorGrant.GlobalAdministrator, PlatformOperatorGrant.Permission(binding.Create.Permission)], cancellationToken).ConfigureAwait(false);
@@ -299,7 +310,7 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
         JsonElement root = document.RootElement;
         if (root.ValueKind != JsonValueKind.Object
             || !root.EnumerateObject().Select(property => property.Name).Order(StringComparer.Ordinal).SequenceEqual(TaskCommandFields, StringComparer.Ordinal)
-            || Text(root, "messageId") is not { Length: > 0 and <= 128 } messageId
+            || Text(root, "messageId") is not { } messageId
             || Text(root, "tenant") != binding.Create.Scope || Text(root, "domain") != binding.Create.Domain
             || Text(root, "commandType") != binding.Create.CommandType || Text(root, "aggregateId") != plan.TenantNamespace
             || root.GetProperty("payload") is not { ValueKind: JsonValueKind.Object } payload
@@ -393,7 +404,8 @@ internal sealed class PlatformOperatorTaskRelay(CompositionRunPlan plan, Composi
 
     private static async Task<PlatformOperatorRelayResponse> RelayAsync(HttpClient client, HttpRequestMessage message, CancellationToken cancellationToken)
     {
-        using HttpResponseMessage response = await client.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        // Buffering the whole response applies the client's 64 KiB content limit to every upstream body.
+        using HttpResponseMessage response = await client.SendAsync(message, cancellationToken).ConfigureAwait(false);
         byte[] body = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
         return new((int)response.StatusCode, response.Content.Headers.ContentType?.ToString(), body);
     }

@@ -40,7 +40,7 @@ internal sealed record PlatformOperatorTaskBinding(string CatalogDirectory, stri
         RouteContractDeclaration[] matches = [.. envelope.Declarations.Where(declaration => declaration.Kind == "command" && select(declaration))];
         if (matches is not [{ PlatformAdmission: { } admission, MessageType: { Length: > 0 } commandType } declaration]
             || admission.Namespace != "platform:" + declaration.Domain || string.IsNullOrWhiteSpace(admission.RequiredHumanPermission)
-            || envelope.SchemaVersion == 3 && envelope.Operations?.Any(operation => operation.RouteId == declaration.RouteId && operation.Ingress == "internal") != true)
+            || envelope.SchemaVersion != 3 || envelope.Operations?.Any(operation => operation.RouteId == declaration.RouteId && operation.Ingress == "internal") != true)
             return null;
         // EventStore admits an explicit platform status scope only with the namespace's read permission.
         return new(declaration.Domain, commandType, admission.Namespace, admission.RequiredHumanPermission,

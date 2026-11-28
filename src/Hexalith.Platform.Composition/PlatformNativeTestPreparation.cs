@@ -164,9 +164,9 @@ internal sealed class PlatformNativeTestPreparation(CompositionRunPlan plan, str
         await WriteProgressAsync("tenant-submitting", null, cancellationToken).ConfigureAwait(false);
 #if HEXALITH_PLATFORM_CANONICAL_SCOPES
         // The run tenant is the environment's synthetic tenant, so the scheduled Tenants task later confirms it as a no-op.
-        string tenantId = await SubmitBoundAsync(services, subject, operatorToken, catalog, gatewayReadback,
+        string messageId = await SubmitBoundAsync(services, subject, operatorToken, catalog, gatewayReadback,
             new CreateSyntheticTenant(plan.TenantNamespace), plan.TenantNamespace, cancellationToken).ConfigureAwait(false);
-        receipts.Add(await WaitForCommittedAsync(gateway, tenantId, cancellationToken).ConfigureAwait(false));
+        receipts.Add(await WaitForCommittedAsync(gateway, messageId, cancellationToken).ConfigureAwait(false));
 #else
         receipts.Add(await SubmitAsync(gateway, new CreateTenant(plan.TenantNamespace, "Synthetic native test tenant", "Run-owned test state"), plan.TenantNamespace, catalog, cancellationToken).ConfigureAwait(false));
 #endif

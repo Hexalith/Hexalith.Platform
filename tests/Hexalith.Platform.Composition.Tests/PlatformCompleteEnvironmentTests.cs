@@ -368,13 +368,9 @@ public sealed class PlatformCompleteEnvironmentTests
             JsonArray clients = realm["clients"]!.AsArray();
             clients.Select(client => client!["clientId"]!.GetValue<string>()).Order(StringComparer.Ordinal)
                 .ShouldBe(["conversations-tenant-access", "eventstore", "folders", "folders-workers", "mcpcli", "memories", PlatformRealmOperator.ClientId, "projects", "tenants"]);
-            // The instance-only operator can request the cutover role and the relay's four permissions, one per scope.
+            // Without a scheduled Tenants task the instance-only operator can request only the cutover role.
             clients.Single(client => client!["clientId"]!.GetValue<string>() == PlatformRealmOperator.ClientId)!["optionalClientScopes"]!.AsArray()
-                .Select(scope => scope!.GetValue<string>()).ShouldBe(
-                [
-                    "platform-operator.global-administrator", "platform-operator.global-administrators.bootstrap", "platform-operator.global-administrators.read",
-                    "platform-operator.tenants.create", "platform-operator.tenants.read",
-                ]);
+                .Select(scope => scope!.GetValue<string>()).ShouldBe(["platform-operator.global-administrator"]);
             JsonNode projectsClient = clients.Single(client => client!["clientId"]!.GetValue<string>() == "projects")!;
             string[] projectsScopes = projectsClient["optionalClientScopes"]!.AsArray().Select(scope => scope!.GetValue<string>()).ToArray();
             projectsScopes.ShouldContain("eventstore-audience.eventstore");
@@ -727,6 +723,72 @@ public sealed class PlatformCompleteEnvironmentTests
             await annotation.Callback(context).ConfigureAwait(false);
         return values;
     }
+
+#if HEXALITH_PLATFORM_CANONICAL_SCOPES
+    [Fact]
+    public async Task CompleteRunWithTheScheduledTenantsTaskRelaysWithRealmCredentialsAsync()
+    {
+        string root = PlatformTestRepository.Root;
+        string manifest = Path.Combine(root, PlatformDeclarationSet.CompleteManifest);
+        string workspace = Path.Combine(Path.GetTempPath(), "complete-operator-relay-" + Guid.NewGuid().ToString("N"));
+        string? renderedDirectory = null;
+        try
+        {
+            SourceMapping resolved = await WorkspaceRootResolver.ResolveAsync(manifest, WorkspaceMode.Source, TestContext.Current.CancellationToken);
+            SourceMapping mapping = resolved with { IdentityFindings = [] };
+            string tenantsRoot = mapping.Entries.Single(entry => entry.Identity.Equals("Hexalith.Tenants", StringComparison.OrdinalIgnoreCase)).Path!;
+            var plan = CompositionRunPlanFactory.Create(CompositionRunPlanFactory.NewRunId(), workspace, workspace,
+                CompositionPortAllocator.Allocate(1), [], [], mapping, [manifest], PlatformDeclarationSet.CompleteModule);
+            plan = plan with
+            {
+                StartupTasks = [new CompositionStartupTask("tenants", "create-synthetic-tenant",
+                    Path.GetFullPath(Path.Combine(tenantsRoot, "module", "tasks", "create-synthetic-tenant.py")), [])
+                {
+                    Scope = CompositionStartupTasks.EnvironmentCreationScope,
+                    InvocationPath = CompositionStartupTasks.InvocationPathFor(workspace, "tenants", "create-synthetic-tenant"),
+                }],
+            };
+            await CompositionDaprComponentRenderer.WriteAsync(plan, TestContext.Current.CancellationToken);
+            IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(new DistributedApplicationOptions
+            {
+                Args = ["--environment", "Development"],
+                DisableDashboard = true,
+            });
+            builder.Configuration["DcpPublisher:CliPath"] = Path.Combine(root, "test-dcp-not-started");
+            builder.Configuration["DcpPublisher:DashboardPath"] = Path.Combine(root, "test-dashboard-not-started");
+
+            PlatformAppModel.Compose(builder, new PlatformCompositionOptions
+            {
+                PlatformRoot = root, Mapping = mapping, ActiveModule = PlatformDeclarationSet.CompleteModule, DeclarationPaths = [manifest],
+                RunPlan = plan, CompleteRunner = true, UseGeneratedRealm = true,
+            });
+
+            ContainerResource keycloak = builder.Resources.OfType<ContainerResource>().Single(resource => resource.Name == "platform-local-realm");
+            string realmMount = keycloak.Annotations.OfType<ContainerMountAnnotation>()
+                .Single(mount => mount.Target == PlatformLocalRealm.ImportContainerDirectory + "hexalith-local-realm.json").Source!;
+            renderedDirectory = Path.GetDirectoryName(realmMount)!;
+            // The scheduled task adds the relay's four permissions to the cutover role, one per scope.
+            JsonNode realm = JsonNode.Parse(await File.ReadAllTextAsync(realmMount, TestContext.Current.CancellationToken))!;
+            realm["clients"]!.AsArray().Single(client => client!["clientId"]!.GetValue<string>() == PlatformRealmOperator.ClientId)!["optionalClientScopes"]!.AsArray()
+                .Select(scope => scope!.GetValue<string>()).ShouldBe(
+                [
+                    "platform-operator.global-administrator", "platform-operator.global-administrators.bootstrap", "platform-operator.global-administrators.read",
+                    "platform-operator.tenants.create", "platform-operator.tenants.read",
+                ]);
+
+            await using ServiceProvider provider = builder.Services.BuildServiceProvider();
+            provider.GetServices<ICompositionOperatorTokenSource>().ShouldHaveSingleItem().ShouldBeOfType<PlatformRealmOperatorTokenSource>();
+            // The complete run relays the task with realm-issued credentials, never the runner key.
+            provider.GetServices<ICompositionRunPreparation>().OfType<PlatformOperatorTaskRelay>().ShouldHaveSingleItem()
+                .Credentials.ShouldBeOfType<PlatformRealmOperatorCredentials>();
+        }
+        finally
+        {
+            if (renderedDirectory is not null && Directory.Exists(renderedDirectory)) Directory.Delete(renderedDirectory, recursive: true);
+            if (Directory.Exists(workspace)) Directory.Delete(workspace, recursive: true);
+        }
+    }
+#endif
 
     [Fact]
     public void CompleteRunnerRequiresTheDeclaredOperatorTaskExactlyOnce()

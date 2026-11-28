@@ -82,7 +82,7 @@ public sealed class PlatformOperatorTaskRelayTests
                 bootstrapCommand.Command.Tenant.ShouldBe("platform:global-administrators");
                 bootstrap.Headers["x-hexalith-scope"].ShouldBe("platform:global-administrators");
                 bootstrap.Headers["dapr-api-token"].ShouldBe(SidecarToken);
-                bootstrap.Headers.ShouldContainKey(EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName.ToLowerInvariant());
+                AssertWorkloadAssertion(bootstrap);
                 BoundWorkloadCommandProof.Verify(bootstrapCommand, bootstrap.Headers[BoundWorkloadCommandProof.HeaderName.ToLowerInvariant()], "tenants",
                     Convert.ToBase64String(proofKey.ExportSubjectPublicKeyInfo()), DateTimeOffset.UtcNow).ShouldBeTrue();
                 AssertGrants(bootstrap, ["global-administrators:bootstrap"], false, "g4-operator-" + plan.RunId);
@@ -103,6 +103,7 @@ public sealed class PlatformOperatorTaskRelayTests
                 createCommand.Command.CorrelationId.ShouldBeNull();
                 createCommand.Command.Extensions.ShouldBeNull();
                 create.Headers["x-hexalith-scope"].ShouldBe("platform:tenants");
+                AssertWorkloadAssertion(create);
                 AssertGrants(create, ["tenants:create"], true, "g4-operator-" + plan.RunId);
                 AssertGrants(sent[3], ["tenants:read"], false, "g4-operator-" + plan.RunId);
                 sent[3].Headers["x-hexalith-scope"].ShouldBe("platform:tenants");
@@ -142,6 +143,9 @@ public sealed class PlatformOperatorTaskRelayTests
                 (await Status(owner.PostAsync("api/v1/commands", new StringContent(TaskCommandJson("01JBRELAYTESTMESSAGE00002A", plan.TenantNamespace)
                     .Replace(CreateSyntheticTenant.CommandType, "create-tenant", StringComparison.Ordinal), Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken))).ShouldBe(HttpStatusCode.Forbidden);
                 (await Status(owner.PostAsync("api/v1/commands", new StringContent("not json", Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken))).ShouldBe(HttpStatusCode.BadRequest);
+                // A message id the status route could not address is refused before any upstream call.
+                foreach (string invalid in new[] { string.Empty, "01JB RELAY", "01JB/RELAY", "01JB%2FRELAY", new string('A', 129) })
+                    (await Status(owner.PostAsync("api/v1/commands", TaskCommand(invalid, plan.TenantNamespace), TestContext.Current.CancellationToken))).ShouldBe(HttpStatusCode.BadRequest);
                 upstream.Requests.ShouldBeEmpty();
             }
         }
@@ -265,10 +269,13 @@ public sealed class PlatformOperatorTaskRelayTests
                 Scope = CompositionStartupTasks.EnvironmentCreationScope,
                 InvocationPath = Path.Combine(workspace, "invocation.json"),
             };
-            await using var relay = new PlatformOperatorTaskRelay(plan, task, Binding with { CatalogDirectory = workspace }, Access(proofKey),
+            // A file at the refused path is not the relay's: it is neither overwritten nor deleted on dispose.
+            await File.WriteAllTextAsync(task.InvocationPath!, "outside", TestContext.Current.CancellationToken);
+            var relay = new PlatformOperatorTaskRelay(plan, task, Binding with { CatalogDirectory = workspace }, Access(proofKey),
                 Credentials(plan), _ => new PlatformOperatorUpstream(upstream.Endpoint, SidecarToken, upstream.Endpoint, "eventstore"));
             await Should.ThrowAsync<InvalidDataException>(() => relay.PrepareAsync(Services(workspace), TestContext.Current.CancellationToken));
-            File.Exists(task.InvocationPath).ShouldBeFalse();
+            await relay.DisposeAsync();
+            (await File.ReadAllTextAsync(task.InvocationPath!, TestContext.Current.CancellationToken)).ShouldBe("outside");
         }
         finally
         {
@@ -371,12 +378,26 @@ public sealed class PlatformOperatorTaskRelayTests
         actualSubject.ShouldBe(subject);
     }
 
-    private static (string[] Permissions, bool GlobalAdministrator, string Subject) Grants(OperatorRelayUpstreamRequest request)
+    /// <summary>Checks the Tenants workload assertion: gateway audience, command-submit operation and the Tenants workload.</summary>
+    private static void AssertWorkloadAssertion(OperatorRelayUpstreamRequest request)
     {
-        string token = request.Headers["authorization"]["Bearer ".Length..];
+        JsonElement claims = Claims(request.Headers[EventStoreWorkloadAuthenticationDefaults.AssertionHeaderName.ToLowerInvariant()]);
+        JsonElement audience = claims.GetProperty("aud");
+        (audience.ValueKind == JsonValueKind.Array ? [.. audience.EnumerateArray().Select(value => value.GetString()!)] : new[] { audience.GetString()! }).ShouldBe(["eventstore"]);
+        claims.GetProperty("eventstore:operation").GetString().ShouldBe("eventstore:command-submit");
+        claims.GetProperty("azp").GetString().ShouldBe("tenants");
+    }
+
+    private static JsonElement Claims(string token)
+    {
         string payload = token.Split('.')[1].Replace('-', '+').Replace('_', '/');
         using JsonDocument claims = JsonDocument.Parse(Convert.FromBase64String(payload.PadRight(payload.Length + ((4 - (payload.Length % 4)) % 4), '=')));
-        JsonElement root = claims.RootElement;
+        return claims.RootElement.Clone();
+    }
+
+    private static (string[] Permissions, bool GlobalAdministrator, string Subject) Grants(OperatorRelayUpstreamRequest request)
+    {
+        JsonElement root = Claims(request.Headers["authorization"]["Bearer ".Length..]);
         string[] permissions = root.TryGetProperty("eventstore:permission", out JsonElement values)
             ? values.ValueKind == JsonValueKind.Array ? [.. values.EnumerateArray().Select(value => value.GetString()!)] : [values.GetString()!] : [];
         root.TryGetProperty("eventstore:tenant", out _).ShouldBeFalse();

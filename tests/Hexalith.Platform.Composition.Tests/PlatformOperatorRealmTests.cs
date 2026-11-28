@@ -1,6 +1,7 @@
 namespace Hexalith.Platform.Composition.Tests;
 
 using System.Net;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Hexalith.Builds.Tooling.Manifest;
 using Hexalith.EventStore.Contracts.Routing;
@@ -71,7 +72,9 @@ public sealed class PlatformOperatorRealmTests
     public void OperatorGrantsComeFromTheCatalogDeclaredTenantsCommands()
     {
         RouteContractDeclaration[] declarations = [.. TenantCatalogDeclarations.Commands.Select(command => command.Route)];
-        var envelope = new RouteCatalogEnvelope(2, 1, "Development", false, declarations, [], [], "routes", "idempotency");
+        JsonElement schema = JsonSerializer.SerializeToElement(new { });
+        RouteOperationContract[] operations = [.. declarations.Select(route => new RouteOperationContract(route.RouteId, "1", "internal", "eligible", schema, schema, new string('b', 64)))];
+        var envelope = new RouteCatalogEnvelope(3, 1, "Development", false, declarations, [], [], "routes", "idempotency", operations);
 
         PlatformOperatorTaskBinding binding = PlatformOperatorTaskBinding.Resolve(envelope, "/catalog", new string('a', 64)).ShouldNotBeNull();
 
@@ -81,6 +84,10 @@ public sealed class PlatformOperatorRealmTests
         binding.Grants.ShouldBe(Grants);
         binding.BoundDomains.ShouldBe(["global-administrators", "tenants"]);
         PlatformOperatorTaskBinding.Resolve(envelope with { Declarations = [.. declarations.Where(route => route.MessageType != CreateSyntheticTenant.CommandType)] },
+            "/catalog", new string('a', 64)).ShouldBeNull();
+        // Only a schema-3 catalog that declares both commands internal binds the operator.
+        PlatformOperatorTaskBinding.Resolve(envelope with { SchemaVersion = 2 }, "/catalog", new string('a', 64)).ShouldBeNull();
+        PlatformOperatorTaskBinding.Resolve(envelope with { Operations = [.. operations.Select(operation => operation with { Ingress = "public" })] },
             "/catalog", new string('a', 64)).ShouldBeNull();
         Should.Throw<InvalidDataException>(() => PlatformOperatorGrant.Permission("tenants:create tenants:read"));
     }
