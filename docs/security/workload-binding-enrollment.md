@@ -166,7 +166,7 @@ is included. Run-owned enrollment binds exactly one selected canonical tenant. M
 
 ## Disposable run-owned enrollment
 
-For the Folders acceptance fixture's random tenant and final Dapr callers, use
+For the Folders and Projects acceptance fixtures' selected tenant and Dapr callers, use
 `infrastructure/keycloak-workload-binding/run_owned.py`. This is an explicit
 **run-owned enrollment** authority. It supplies no Platform lifecycle qualification
 or Folders 12.2 completion by itself. Persistent/shared/staging/production
@@ -174,8 +174,8 @@ installations still require the realm-owner process described above.
 
 Prerequisites: Linux, Python 3, OpenSSL, Docker access, the exact
 `quay.io/keycloak/keycloak:26.6.4` image and the built provider JAR. Build with
-`mvn -B -ntp package` in the provider directory. Build the Platform Composition
-and Folders AppHost test projects individually in Debug/source mode, including
+`mvn -B -ntp package` in the provider directory. For Folders, build the Platform
+Composition and Folders AppHost test projects individually in Debug/source mode, including
 the selected Tenants host and the existing observer prerequisites for strict
 acceptance. Keep the selected source graph's target frameworks consistent;
 resolve a mixed net10/net11 restore before interpreting any runtime result.
@@ -216,6 +216,24 @@ process; embedding `launch()` in a process with pre-existing children refuses
 before allocation with `dedicated-launcher-process-required`. Do not combine generated
 context with external `ManifestPath` or `ManifestSha256` configuration.
 
+For Projects, launch the Python qualification runner directly from the Projects
+checkout. Install its locked Playwright dependencies in `tests/e2e` first. The
+runner checks Playwright's focus guard even when qualifying only the ordinary
+Debug AppHost.
+
+```bash
+run-with-temp python3 -B references/Hexalith.Platform/infrastructure/keycloak-workload-binding/run_owned.py \
+  --owner disposable-projects-acceptance --lifetime-seconds 1200 -- \
+  python3 -B tools/qualification/run_live_project_fixtures.py --ordinary-only \
+  --evidence '<new-absolute-evidence-directory>'
+```
+
+The Projects consumer verifies the lease for exactly EventStore, Projects, and
+Tenants. It provides fresh loopback Redis and private catalog custody and keeps
+human authentication on the ordinary AppHost realm. If the Aspire dashboard tunnel
+times out, add `env ASPIRE_ENABLE_CONTAINER_TUNNEL=false` after `run-with-temp`
+for that invocation. [Aspire container networking](https://aspire.dev/fundamentals/container-networking/#disable-the-container-tunnel)
+
 Before starting the child, the launcher creates a private 0700 run directory,
 0600 files, a private CA and localhost certificate, and a process-scoped
 `SSL_CERT_FILE` bundle that preserves inherited or system trust. It installs no
@@ -225,7 +243,7 @@ deadline. Missing prelaunch trust refuses with `missing-prelaunch-trust`;
 changing trust after xUnit starts is unsupported. A receipt copied to another
 process/run, a changed tenant/cohort, or a hosted target refuses before activation.
 
-After the fixture selects all physical hosts, replicas, proof Workers and its
+After the Folders fixture selects all physical hosts, replicas, proof Workers and its
 tenant, the shared inventory produces the exact source, bootstrap, callback and
 query permissions. Tenants queries use `TenantCanonicalizer.ReservedStorageTenant`
 (`system`) after SDK normalization. Query digest permission remains dynamic;

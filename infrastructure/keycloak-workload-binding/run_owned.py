@@ -25,11 +25,15 @@ import urllib.request
 
 IMAGE = "quay.io/keycloak/keycloak:26.6.4"
 OWNER = "disposable-folders-acceptance"
+PROJECTS_OWNER = "disposable-projects-acceptance"
 PREFIX = "HEXALITH_RUN_OWNED_WORKLOAD_"
 PROFILE = "https://hexalith.com/security/workload-binding/v1"
 LABEL = "com.hexalith.run-owned-workload"
 ROOT = Path(__file__).resolve().parent
 JAR = ROOT / "target/keycloak-workload-binding-1.0.0-SNAPSHOT.jar"
+QUERY_DIGEST = "eventstore:bound-query-authority-v1"
+PROJECTS_COHORT = ("eventstore", "projects", "tenants")
+DOMAIN_CALLBACK_OPERATIONS = ("process", "project", "metadata", "replay-state")
 
 
 class Cancellation(BaseException):
@@ -126,21 +130,59 @@ def request_inventory_bytes(raw):
         offset += 1
 
 
-def validate_inventory(inventory):
-    if set(inventory) != {"tenant", "receivers", "clients"}:
+def projects_inventory(tenant):
+    """Build the exact ordinary Projects callbacks and independent owner source grants."""
+    unbound_callbacks = [
+        (receiver, "domain-service:" + operation, {})
+        for receiver in ("projects", "tenants") for operation in DOMAIN_CALLBACK_OPERATIONS
+    ]
+    permissions = {
+        "eventstore": [*unbound_callbacks,
+            ("projects", "domain-service:query", {
+                "eventstore:bound-tenant": tenant, "eventstore:bound-domain": "projects", QUERY_DIGEST: "A" * 64,
+            }),
+            ("tenants", "domain-service:query", {})],
+        "projects": [("eventstore", operation, {}) for operation in ("eventstore:stream-read", "eventstore:owner-authority-query")],
+        "tenants": [("eventstore", "eventstore:command-submit", {}),
+            ("eventstore", "eventstore:stream-read", {}),
+            ("eventstore", "eventstore:stream-read", {
+                "eventstore:bound-tenant": "platform:global-administrators",
+                "eventstore:bound-domain": "global-administrators",
+            })],
+    }
+    clients = [
+        dict(resource=resource, clientId=resource, workload=resource, probes=[
+            dict(grantId=f"run-{resource}-{index}", revision=1, audience=audience, operation=operation, bindings=bindings)
+            for index, (audience, operation, bindings) in enumerate(permissions[resource], 1)
+        ])
+        for resource in PROJECTS_COHORT
+    ]
+    return dict(tenant=tenant, receivers=list(PROJECTS_COHORT), clients=clients)
+
+
+def validate_inventory(inventory, owner=OWNER):
+    if not isinstance(inventory, dict) or set(inventory) != {"tenant", "receivers", "clients"}:
         refuse("inventory-fields")
     tenant, receivers, clients = inventory["tenant"], inventory["receivers"], inventory["clients"]
     if not isinstance(tenant, str) or not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?", tenant) or tenant == "system":
         refuse("selected-tenant")
-    if not isinstance(clients, list) or not 4 <= len(clients) <= 32 or not isinstance(receivers, list):
+    if owner not in (OWNER, PROJECTS_OWNER):
+        refuse("cohort-owner")
+    if (not isinstance(clients, list) or not 3 <= len(clients) <= 32 or not isinstance(receivers, list)
+            or any(not isinstance(client, dict) or not isinstance(client.get("resource"), str) for client in clients)
+            or any(not isinstance(receiver, str) for receiver in receivers)):
         refuse("cohort")
     resources = [client.get("resource") for client in clients]
     if len(set(resources)) != len(resources) or sorted(receivers) != sorted(resources) or len(set(receivers)) != len(receivers):
         refuse("cohort")
-    if not {"eventstore", "tenants", "folders", "folders-workers"}.issubset(resources):
-        refuse("cohort")
-    if any(value not in {"eventstore", "tenants", "folders", "folders-replica"} and not re.fullmatch(r"folders-workers(?:-[a-z0-9-]+)?", value) for value in resources):
-        refuse("cohort")
+    if owner == PROJECTS_OWNER:
+        if set(resources) != set(PROJECTS_COHORT):
+            refuse("cohort")
+    else:
+        if not {"eventstore", "tenants", "folders", "folders-workers"}.issubset(resources):
+            refuse("cohort")
+        if any(value not in {"eventstore", "tenants", "folders", "folders-replica"} and not re.fullmatch(r"folders-workers(?:-[a-z0-9-]+)?", value) for value in resources):
+            refuse("cohort")
     identities = {}
     for client in clients:
         if set(client) != {"resource", "clientId", "workload", "probes"}:
@@ -155,39 +197,35 @@ def validate_inventory(inventory):
             refuse("replica-permissions-changed")
         identities[workload] = probes
         for probe in probes:
-            if set(probe) != {"grantId", "revision", "audience", "operation", "bindings"} or type(probe["revision"]) is not int or probe["revision"] != 1:
+            if not isinstance(probe, dict) or set(probe) != {"grantId", "revision", "audience", "operation", "bindings"} or type(probe["revision"]) is not int or probe["revision"] != 1:
                 refuse("probe-fields")
             if not isinstance(probe["grantId"], str) or not re.fullmatch(r"[A-Za-z0-9-]{1,128}", probe["grantId"]):
                 refuse("grant-identity")
     workloads = {c["resource"]: c["workload"] for c in clients}
-    if len({workloads[name] for name in ("eventstore", "tenants", "folders", "folders-workers")}) != 4:
-        refuse("distinct-primary-identities")
-    for name in ("folders-workers-proof-a", "folders-workers-proof-b"):
-        if name in workloads and list(workloads.values()).count(workloads[name]) != 1:
-            refuse("distinct-proof-identities")
-    expected_gateway = [(workloads[receiver], "domain-service:" + operation, {})
-        for receiver in ("folders", "tenants") for operation in ("process", "project", "metadata", "replay-state")]
-    for receiver, domain, storage_tenant in (("folders", "folders", tenant), ("tenants", "tenants", "system"), ("tenants", "global-administrators", "system")):
-        expected_gateway.append((workloads[receiver], "domain-service:query",
-            {"eventstore:bound-tenant": storage_tenant, "eventstore:bound-domain": domain, "eventstore:bound-query-authority-v1": None}))
+    if owner == PROJECTS_OWNER:
+        if any(resource != workload for resource, workload in workloads.items()):
+            refuse("actual-workload-identity")
+        expected_by_resource = {
+            client["resource"]: [
+                (probe["audience"], probe["operation"], {key: None if key == QUERY_DIGEST else value
+                    for key, value in probe["bindings"].items()})
+                for probe in client["probes"]
+            ]
+            for client in projects_inventory(tenant)["clients"]
+        }
+    else:
+        expected_by_resource = folders_permissions(tenant, workloads)
     for client in clients:
-        if client["resource"] == "eventstore":
-            expected = expected_gateway
-        elif client["resource"] == "tenants":
-            expected = [("eventstore", operation, {}) for operation in ("eventstore:command-submit", "eventstore:stream-read")]
-        else:
-            expected = [("eventstore", operation, {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
-                for operation in ("eventstore:stream-read", "eventstore:stream-scan-native")]
-        remaining = list(expected)
+        remaining = list(expected_by_resource[client["resource"]])
         for probe in client["probes"]:
             bindings = probe["bindings"]
             if not isinstance(bindings, dict):
                 refuse("probe-bindings")
             compare = dict(bindings)
-            if "eventstore:bound-query-authority-v1" in compare:
-                if not isinstance(compare["eventstore:bound-query-authority-v1"], str) or not re.fullmatch(r"[0-9A-F]{64}", compare["eventstore:bound-query-authority-v1"]):
+            if QUERY_DIGEST in compare:
+                if not isinstance(compare[QUERY_DIGEST], str) or not re.fullmatch(r"[0-9A-F]{64}", compare[QUERY_DIGEST]):
                     refuse("query-digest")
-                compare["eventstore:bound-query-authority-v1"] = None
+                compare[QUERY_DIGEST] = None
             match = (probe["audience"], probe["operation"], compare)
             if match not in remaining:
                 refuse("exact-permission-inventory")
@@ -197,8 +235,27 @@ def validate_inventory(inventory):
     return identities
 
 
-def build_realm(inventory, directory, not_before, deadline):
-    identities = validate_inventory(inventory)
+def folders_permissions(tenant, workloads):
+    if len({workloads[name] for name in ("eventstore", "tenants", "folders", "folders-workers")}) != 4:
+        refuse("distinct-primary-identities")
+    for name in ("folders-workers-proof-a", "folders-workers-proof-b"):
+        if name in workloads and list(workloads.values()).count(workloads[name]) != 1:
+            refuse("distinct-proof-identities")
+    gateway = [(workloads[receiver], "domain-service:" + operation, {})
+        for receiver in ("folders", "tenants") for operation in DOMAIN_CALLBACK_OPERATIONS]
+    for receiver, domain, storage_tenant in (("folders", "folders", tenant), ("tenants", "tenants", "system"), ("tenants", "global-administrators", "system")):
+        gateway.append((workloads[receiver], "domain-service:query",
+            {"eventstore:bound-tenant": storage_tenant, "eventstore:bound-domain": domain, QUERY_DIGEST: None}))
+    source = [("eventstore", operation, {"eventstore:bound-tenant": tenant, "eventstore:bound-domain": "folders"})
+        for operation in ("eventstore:stream-read", "eventstore:stream-scan-native")]
+    permissions = dict.fromkeys(workloads, source)
+    permissions["eventstore"] = gateway
+    permissions["tenants"] = [("eventstore", operation, {}) for operation in ("eventstore:command-submit", "eventstore:stream-read")]
+    return permissions
+
+
+def build_realm(inventory, directory, not_before, deadline, owner=OWNER):
+    identities = validate_inventory(inventory, owner)
     clients, entries, scopes = [], [], set()
     credentials = {}
     for workload, probes in identities.items():
@@ -211,8 +268,8 @@ def build_realm(inventory, directory, not_before, deadline):
             own_scopes.update(("eventstore-audience." + probe["audience"], "eventstore-operation." + probe["operation"].replace(":", ".")))
             grants.append(dict(grantId=probe["grantId"], revision=probe["revision"], clientId=workload, workload=workload,
                 audience=probe["audience"], operations=[probe["operation"]],
-                bindings={key: [value] for key, value in probe["bindings"].items() if key != "eventstore:bound-query-authority-v1"},
-                allowUnbound=not probe["bindings"], allowQueryAuthorityDigest=probe["operation"] == "domain-service:query",
+                bindings={key: [value] for key, value in probe["bindings"].items() if key != QUERY_DIGEST},
+                allowUnbound=not probe["bindings"], allowQueryAuthorityDigest=QUERY_DIGEST in probe["bindings"],
                 notBefore=not_before, expiresAt=deadline, revoked=False))
         scopes.update(own_scopes)
         clients.append(dict(clientId=workload, enabled=True, publicClient=False, secret=secret, protocol="openid-connect",
@@ -231,8 +288,9 @@ def build_realm(inventory, directory, not_before, deadline):
 
 class Lease:
     def __init__(self, lifetime, owner=OWNER):
-        if owner != OWNER or not isinstance(lifetime, int) or not 1 <= lifetime <= 86400 or sys.platform != "linux":
+        if owner not in (OWNER, PROJECTS_OWNER) or not isinstance(lifetime, int) or not 1 <= lifetime <= 86400 or sys.platform != "linux":
             refuse("explicit-disposable-owner-and-finite-linux-lifetime-required")
+        self.owner = owner
         if not JAR.is_file():
             refuse("build-provider-first")
         self.deadline = int(time.time()) + lifetime
@@ -313,7 +371,7 @@ class Lease:
         self.run("docker", "context", "import", context, str(archive))
 
     def bind(self, child_pid, capability):
-        self.receipt = dict(schema="hexalith.run-owned-workload/v1", owner=OWNER, runId=self.run_id, capability=capability,
+        self.receipt = dict(schema="hexalith.run-owned-workload/v1", owner=self.owner, runId=self.run_id, capability=capability,
             ownerPid=os.getpid(), ownerIdentity=process_identity(os.getpid()), childPid=child_pid, childIdentity=process_identity(child_pid),
             directory=str(self.directory), deadline=self.deadline, trustFile=str(self.directory / "trust.pem"),
             trustSha256=digest(self.directory / "trust.pem"), providerSha256=digest(self.provider))
@@ -340,7 +398,7 @@ class Lease:
             refuse("cohort-binding-changed")
         if digest(self.provider) != self.receipt["providerSha256"]:
             refuse("provider-binding-changed")
-        realm, clients = build_realm(inventory, self.directory, int(time.time()) - 1, self.deadline)
+        realm, clients = build_realm(inventory, self.directory, int(time.time()) - 1, self.deadline, self.owner)
         private_write(self.directory / "realm.json", realm)
         self.journal["creationStarted"] = True
         private_write(self.directory / "journal.json", self.journal)
@@ -577,6 +635,30 @@ def stop_child(child, existing_children):
     refuse("owned-child-tree-cleanup-incomplete")
 
 
+def release_when_requested(lease, capability):
+    path = lease.directory / "release.json"
+    if not path.exists():
+        return False
+    if read_private(path) != {"runId": lease.run_id, "capability": capability}:
+        refuse("foreign-release")
+    lease.cleanup()
+    return True
+
+
+def drain_projects_runner(lease, capability):
+    """Give the runner a bounded turn for its own Redis and Aspire teardown."""
+    if lease.child is None or lease.child.poll() is not None:
+        return
+    try:
+        lease.child.terminate()
+    except ProcessLookupError:
+        return
+    deadline = time.monotonic() + 75
+    while lease.child.poll() is None and time.monotonic() < deadline:
+        release_when_requested(lease, capability)
+        time.sleep(0.05)
+
+
 def launch(lifetime, owner, arguments):
     if not arguments:
         refuse("child-command-required")
@@ -585,6 +667,7 @@ def launch(lifetime, owner, arguments):
     if existing_process_tree():
         refuse("dedicated-launcher-process-required")
     lease = None
+    capability = None
     summary = dict(qualification="run-owned enrollment", provisioned=False)
     previous = {}
     existing_children = set()
@@ -635,11 +718,7 @@ def launch(lifetime, owner, arguments):
                     if str(error) != "Run-owned workload enrollment refused: cohort-adoption-cancelled":
                         raise
                     summary["adoptionCancelled"] = True
-            if (lease.directory / "release.json").exists():
-                release = read_private(lease.directory / "release.json")
-                if release != {"runId": lease.run_id, "capability": capability}:
-                    refuse("foreign-release")
-                lease.cleanup()
+            if release_when_requested(lease, capability):
                 break
             time.sleep(0.05)
         while lease.child.poll() is None:
@@ -650,7 +729,12 @@ def launch(lifetime, owner, arguments):
         terminating = True
         try:
             try:
-                if lease is not None: stop_child(lease.child, existing_children)
+                if lease is not None:
+                    try:
+                        if owner == PROJECTS_OWNER:
+                            drain_projects_runner(lease, capability)
+                    finally:
+                        stop_child(lease.child, existing_children)
             finally:
                 if lease is not None: lease.cleanup()
             if lease is not None:
@@ -678,7 +762,7 @@ def main():
         child_gate(sys.argv[2:])
         return 1
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--owner", required=True, choices=[OWNER])
+    parser.add_argument("--owner", required=True, choices=[OWNER, PROJECTS_OWNER])
     parser.add_argument("--lifetime-seconds", required=True, type=int)
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
