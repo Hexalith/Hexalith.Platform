@@ -277,7 +277,10 @@ public static class PlatformAppModel
         string daprHome = selectedDaprHome ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         bool hasMemories = servers.Any(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "memories");
         bool hasGateway = servers.Any(server => server.ResourceId == "eventstore");
+        if (options.UseGeneratedRealm && !hasGateway)
+            throw new InvalidDataException("eventstore: the generated local realm requires the eventstore gateway.");
         bool hasTimesheets = servers.Any(server => server.ResourceId == "timesheets");
+        PlatformServerBinding? projectsServer = servers.SingleOrDefault(server => server.ResourceId == "projects");
         string rendered = options.RunPlan is null ? Path.Combine(Path.GetTempPath(), "hexalith-platform", Guid.NewGuid().ToString("N")) : Path.Combine(options.RunPlan.Workspace, "platform-components");
         string[] checkouts = options.Mapping.Entries.Select(entry => entry.Path).OfType<string>().ToArray();
         // Refuse a misplaced certificate parent before this attempt claims ports or writes run state.
@@ -346,6 +349,8 @@ public static class PlatformAppModel
             string sentryConfiguration = Path.Combine(rendered, "sentry.yaml");
             File.WriteAllText(sentryConfiguration, "apiVersion: dapr.io/v1alpha1\nkind: Configuration\nmetadata:\n  name: platform-sentry\nspec:\n  mtls:\n    enabled: true\n    workloadCertTTL: 24h\n");
             if (hasTimesheets) File.WriteAllText(Path.Combine(rendered, "timesheets-readmodels.yaml"), File.ReadAllText(Path.Combine(components, "timesheets-readmodels.yaml")).Replace("localhost:6379", "127.0.0.1:" + redisPort, StringComparison.Ordinal));
+            if (projectsServer is not null) File.WriteAllText(Path.Combine(rendered, "projects-conversation-start-setup.yaml"),
+                "apiVersion: dapr.io/v1alpha1\nkind: Component\nmetadata:\n  name: projects-conversation-start-setup\nspec:\n  type: state.redis\n  version: v1\n  metadata:\n    - name: redisHost\n      value: \"127.0.0.1:" + redisPort + "\"\n    - name: redisPassword\n      value: \"\"\n    - name: keyPrefix\n      value: \"name\"\nscopes:\n  - " + projectsServer.AppId + "\n");
 
             string schedulerData = Path.Combine(rendered, "scheduler-data");
             CompositionWorkspace.CreatePrivateDirectory(schedulerData);
@@ -378,6 +383,8 @@ public static class PlatformAppModel
                 name => builder.AddDaprComponent(name, dapr.Type(name), new DaprComponentOptions { LocalPath = Path.Combine(rendered, dapr.FileName(name)) }), StringComparer.Ordinal);
             IResourceBuilder<IDaprComponentResource>? timesheetsReadModels = hasTimesheets
                 ? builder.AddDaprComponent(PlatformTimesheetsBinding.Component, "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "timesheets-readmodels.yaml") }) : null;
+            IResourceBuilder<IDaprComponentResource>? projectsConversationStartSetup = projectsServer is not null
+                ? builder.AddDaprComponent("projects-conversation-start-setup", "state.redis", new DaprComponentOptions { LocalPath = Path.Combine(rendered, "projects-conversation-start-setup.yaml") }) : null;
             IResourceBuilder<ContainerResource>? vectors = null;
             IResourceBuilder<ContainerResource>? graph = null;
             if (hasMemories)
@@ -539,6 +546,7 @@ public static class PlatformAppModel
                                 PlacementHostAddress = placementAddress,
                                 SchedulerHostAddress = schedulerAddress });
                             if (server.ResourceId == "timesheets") sidecar.WithReference(timesheetsReadModels!);
+                            if (server.ResourceId == "projects") sidecar.WithReference(projectsConversationStartSetup!);
                             foreach (var component in daprComponents.Where(component => dapr.Consumes(component.Key, server.AppId))) sidecar.WithReference(component.Value);
                         }).WaitFor(redis);
                         if (telemetryPostgres is not null && PlatformDeclarationSet.Id(server.Module.Declaration) == "memories") resource.WaitFor(telemetryPostgres);
@@ -599,6 +607,7 @@ public static class PlatformAppModel
                     ?? builder.Resources.FirstOrDefault(candidate => candidate.Annotations.OfType<DaprSidecarAnnotation>().Any(annotation => ReferenceEquals(annotation.Sidecar, resource)))?.Annotations.OfType<PlatformServerAnnotation>().SingleOrDefault()?.Binding;
                 string? owner = declaringServer is not null ? PlatformDeclarationSet.Id(declaringServer.Module.Declaration)
                     : name is "memories-vectors" or "memories-graph" or "memories-retention-postgresql" ? declarations.Where(module => PlatformDeclarationSet.Id(module.Declaration) == "memories").Select(module => PlatformDeclarationSet.Id(module.Declaration)).SingleOrDefault()
+                    : name == "projects-conversation-start-setup" ? declarations.Where(module => PlatformDeclarationSet.Id(module.Declaration) == "projects").Select(module => PlatformDeclarationSet.Id(module.Declaration)).SingleOrDefault()
                     : infrastructureOwner;
                 resource.Annotations.Add(new PlatformResourceOwnerAnnotation(owner));
                 if (resource.Annotations.OfType<DaprSidecarAnnotation>().SingleOrDefault()?.Sidecar is { } ownedSidecar
@@ -619,7 +628,7 @@ public static class PlatformAppModel
                 builder.Services.AddSingleton(_ => new PlatformCompositionWorkspace(rendered));
                 builder.Services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService>(services => services.GetRequiredService<PlatformCompositionWorkspace>());
             }
-            if (options.RunPlan is null && projects.TryGetValue("eventstore", out IResourceBuilder<ProjectResource>? localGateway))
+            if (options.RunPlan is null && !options.UseGeneratedRealm && projects.TryGetValue("eventstore", out IResourceBuilder<ProjectResource>? localGateway))
             {
                 PlatformServerBinding binding = servers.Single(server => server.ResourceId == "eventstore");
                 string runId = "platform-" + Path.GetFileName(rendered);

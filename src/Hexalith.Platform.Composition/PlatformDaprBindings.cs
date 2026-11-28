@@ -100,7 +100,16 @@ public sealed class PlatformDaprBindings
                 gateway.Add((caller, "/api/v1/commands/workload", ["POST"]));
             }
             if (appIdsByWorkload.GetValueOrDefault("projects/domain") == "projects")
+            {
+                gateway.Add(("projects", "/api/v1/commands", ["POST"]));
                 gateway.Add(("projects", "/api/v1/queries/owner-authority/workload", ["POST"]));
+                gateway.Add(("projects", "/api/v1/streams/read/workload", ["POST"]));
+            }
+        }
+        if (appIdsByWorkload.GetValueOrDefault("memories/server") == "memories"
+            && appIdsByWorkload.GetValueOrDefault("folders/domain") == "folders")
+        {
+            result._rules["memories"].Add(("folders", "/api/search", ["GET"]));
         }
         return result;
     }

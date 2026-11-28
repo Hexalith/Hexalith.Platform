@@ -6,6 +6,7 @@ using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Hexalith.Builds.Tooling.Workspace;
+using Hexalith.EventStore.Contracts.Routing;
 using Hexalith.Platform.CatalogArtifacts;
 
 /// <summary>Binds independently observing hosts to the already generated catalog and existing EventStore activation authority.</summary>
@@ -29,7 +30,7 @@ internal sealed class PlatformRoutingCatalogBootstrap
     {
         Directory = catalog.Directory;
         GatewayQueryDomains = (from route in catalog.Envelope.Routes
-            where route.AppId is "projects" or "conversation"
+            where route.AppId is "projects" or "conversation" or "folders" or "tenants" or "parties"
             join declaration in catalog.Envelope.Declarations on route.RouteId equals declaration.RouteId
             where declaration.Kind == "query"
             group declaration.Domain by route.AppId).ToFrozenDictionary(group => group.Key,
@@ -80,16 +81,10 @@ internal sealed class PlatformRoutingCatalogBootstrap
             using RSA proof = RSA.Create(2048);
             projects["Authentication__BoundStreamRead__PrivateKey"] = Convert.ToBase64String(proof.ExportPkcs8PrivateKey());
             gateway["Authentication__BoundStreamRead__PublicKeys__projects"] = Convert.ToBase64String(proof.ExportSubjectPublicKeyInfo());
-            if (_environment.ContainsKey("conversations"))
-            {
-                const string detail = "conversation-detail";
-                const string advisory = "Hexalith.Conversations.Queries.GetConversationAdvisoryMetadata.v1";
-                foreach (string query in new[] { detail, advisory })
-                    if (!catalog.Envelope.Declarations.Any(declaration => declaration.Kind == "query"
-                        && declaration.Domain == "conversations" && declaration.MessageType == query))
-                        throw new InvalidDataException($"conversations: catalog is missing the Projects owner query '{query}'.");
-                gateway["Authentication__BoundOwnerQuery__AllowedQueries__projects"] = detail + "," + advisory;
-            }
+            gateway["Authentication__BoundStreamRead__AllowedDomains__projects"] = "projects";
+            string[] allowedOwnerQueries = ResolveProjectsAllowedOwnerQueries(catalog.Envelope, _environment.Keys.ToHashSet(StringComparer.Ordinal));
+            if (allowedOwnerQueries.Length > 0)
+                gateway["Authentication__BoundOwnerQuery__AllowedQueries__projects"] = string.Join(',', allowedOwnerQueries);
             string[] queries = catalog.Envelope.Declarations.Where(declaration => declaration.Domain == "projects"
                 && declaration.Kind == "query" && declaration.Execution?.RequiresDelegatedContext != true)
                 .Select(declaration => declaration.MessageType!).Order(StringComparer.Ordinal).ToArray();
@@ -214,6 +209,38 @@ internal sealed class PlatformRoutingCatalogBootstrap
         var catalog = PlatformRoutingCatalog.Generate(options, servers, rendered, completePackageLock);
         dapr.BindRoutingCatalog(AuthorityName(catalog.InstanceId), participants.Select(server => server.AppId).ToArray());
         return new(options, participants, catalog, rendered, dapr, servers);
+    }
+
+    internal static string[] ResolveProjectsAllowedOwnerQueries(RouteCatalogEnvelope catalog, IReadOnlySet<string> enrolledResources)
+    {
+        ArgumentNullException.ThrowIfNull(catalog);
+        ArgumentNullException.ThrowIfNull(enrolledResources);
+        Dictionary<string, string> routeAppIds = catalog.Routes.ToDictionary(route => route.RouteId, route => route.AppId, StringComparer.Ordinal);
+        List<string> allowed = [];
+        void RequireOwnerQuery(string owner, string domain, string expectedAppId, string query)
+        {
+            bool matched = catalog.Declarations.Any(declaration => declaration.Kind == "query"
+                && declaration.Domain == domain
+                && declaration.MessageType == query
+                && routeAppIds.TryGetValue(declaration.RouteId, out string? appId)
+                && appId == expectedAppId);
+            if (!matched)
+                throw new InvalidDataException($"{owner}: catalog is missing the Projects owner query '{query}' routed to '{expectedAppId}'.");
+            allowed.Add(query);
+        }
+
+        if (enrolledResources.Contains("conversations"))
+        {
+            RequireOwnerQuery("conversations", "conversations", "conversation", "conversation-detail");
+            RequireOwnerQuery("conversations", "conversations", "conversation", "Hexalith.Conversations.Queries.GetConversationAdvisoryMetadata.v1");
+        }
+        if (enrolledResources.Contains("folders"))
+            RequireOwnerQuery("folders", "folders", "folders", "Hexalith.Folders.Queries.AuthorizeFolderRead.v1");
+        if (enrolledResources.Contains("tenants"))
+            RequireOwnerQuery("tenants", "tenants", "tenants", "Hexalith.Tenants.Contracts.Queries.ResolveTenantOwnerAuthority");
+        if (enrolledResources.Contains("parties"))
+            RequireOwnerQuery("parties", "party", "parties", "Hexalith.Parties.Contracts.Queries.ResolveChatBotPartyAuthority");
+        return allowed.ToArray();
     }
 
     internal bool Participates(PlatformServerBinding server) => _environment.ContainsKey(server.ResourceId);

@@ -32,9 +32,13 @@ public static class PlatformLocalProfile
                 (server == "api" ? "Hexalith.Conversations.Api" : "Hexalith.Conversations.Server")) continue;
             string key = input.GetProperty("key").GetString()!;
             string scoped = id + "/" + server + "/" + key;
-            if (!options.Configuration.TryGetValue(scoped, out string? value) && !defaults.TryGetValue(scoped, out value)) throw new InvalidDataException($"{module.Source}: {scoped}: runtime.extensions.configurationInputs: binding is unavailable.");
-            if (options.UseGeneratedRealm && key is "Authentication:JwtBearer:SigningKey" or "EventStore:Authentication:SigningKey" or "Jwt:SigningKey")
+            if (options.UseGeneratedRealm && (key is "Authentication:JwtBearer:SigningKey" or "EventStore:Authentication:SigningKey" or "Jwt:SigningKey"
+                || id == "conversations" && server == "domain" && key is "Authentication:WorkloadJwtBearer:Authority"
+                    or "Authentication:WorkloadJwtBearer:Issuer" or "EventStore:Authentication:Authority"
+                    or "EventStore:Authentication:TokenEndpoint" or "EventStore:Authentication:ClientId"
+                    or "EventStore:Authentication:ClientSecret"))
                 continue;
+            if (!options.Configuration.TryGetValue(scoped, out string? value) && !defaults.TryGetValue(scoped, out value)) throw new InvalidDataException($"{module.Source}: {scoped}: runtime.extensions.configurationInputs: binding is unavailable.");
             string source = input.GetProperty("source").GetString()!;
             if (source == "secret" && string.IsNullOrEmpty(value))
             {
@@ -107,8 +111,7 @@ public static class PlatformLocalProfile
         var gateway = BindEnvironment("eventstore");
         var memories = BindEnvironment("memories");
         Dictionary<string, string> defaults = ReadDefaults(platformRoot);
-        string receipt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
-        gateway["Authentication__HumanAuthorityReceipt__SigningKey"] = receipt;
+        string receipt = SharedHumanAuthorityReceiptKey(gateway);
         BindSetting(gateway, "eventstore/gateway", "EventStore:Publisher:TopicOverrides:folders");
         BindSetting(memories, "memories/server", "EventStoreIntegration:Routing:SourceToTenantMap:hexalith-folders");
         BindSetting(memories, "memories/server", "EventStoreIntegration:Routing:AutoProvisionRoutedTenants");
@@ -140,15 +143,50 @@ public static class PlatformLocalProfile
         void BindSetting(Dictionary<string, string> environment, string identity, string key) =>
             environment[key.Replace(":", "__", StringComparison.Ordinal)] = defaults[identity + "/" + key];
 
-        Dictionary<string, string> BindEnvironment(string resourceId)
+        Dictionary<string, string> BindEnvironment(string resourceId) => BindResourceEnvironment(servers, "folders", resourceId);
+    }
+
+    internal static void BindProjects(List<PlatformServerBinding> servers)
+    {
+        var projects = servers.Where(server => PlatformDeclarationSet.Id(server.Module.Declaration) == "projects").ToArray();
+        if (projects.Length == 0) return;
+
+        var gateway = BindResourceEnvironment(servers, "projects", "eventstore");
+        string receipt = SharedHumanAuthorityReceiptKey(gateway);
+        foreach (var server in projects)
         {
-            int index = servers.FindIndex(server => server.ResourceId == resourceId);
-            if (index < 0) throw new InvalidDataException($"folders: required resource '{resourceId}' is unavailable.");
-            var server = servers[index];
-            var environment = server.Environment.ToDictionary(StringComparer.Ordinal);
-            servers[index] = server with { Environment = environment };
-            return environment;
+            var environment = BindResourceEnvironment(servers, "projects", server.ResourceId);
+            string token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
+            environment["EventStore__AppChannelToken"] = token;
+            environment["APP_API_TOKEN"] = token;
+            if (server.ServerId == "domain")
+            {
+                environment["Authentication__HumanAuthorityReceipt__SigningKey"] = receipt;
+                environment["Authentication__JwtBearer__AllowAnonymousDevelopment"] = "false";
+            }
         }
+    }
+
+    private static string SharedHumanAuthorityReceiptKey(Dictionary<string, string> gateway)
+    {
+        if (!gateway.TryGetValue("Authentication__HumanAuthorityReceipt__SigningKey", out string? receipt)
+            || string.IsNullOrWhiteSpace(receipt))
+        {
+            receipt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(48));
+            gateway["Authentication__HumanAuthorityReceipt__SigningKey"] = receipt;
+        }
+
+        return receipt;
+    }
+
+    private static Dictionary<string, string> BindResourceEnvironment(List<PlatformServerBinding> servers, string owner, string resourceId)
+    {
+        int index = servers.FindIndex(server => server.ResourceId == resourceId);
+        if (index < 0) throw new InvalidDataException($"{owner}: required resource '{resourceId}' is unavailable.");
+        var server = servers[index];
+        var environment = server.Environment.ToDictionary(StringComparer.Ordinal);
+        servers[index] = server with { Environment = environment };
+        return environment;
     }
 
     private static Dictionary<string, string> ReadDefaults(string root)

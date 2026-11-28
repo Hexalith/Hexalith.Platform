@@ -153,6 +153,7 @@ public static class PlatformServerBindings
         if (extensions.Count > 0 && !result.Any(s => s.EventStoreHost is not null))
             throw new InvalidDataException($"{extensions[0].Source}: {extensions[0].Module}: runtime.eventStoreExtensions: eventstore-extension-gateway-unavailable: the selected composition has no eventstore gateway to host the declared extensions.");
         PlatformLocalProfile.BindFolders(options.PlatformRoot, result);
+        PlatformLocalProfile.BindProjects(result);
         if (options.TimesheetsEnabled) PlatformTimesheetsBinding.BindLocalAuthentication(result);
         return result;
     }

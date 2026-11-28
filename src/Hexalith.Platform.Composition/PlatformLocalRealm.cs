@@ -397,9 +397,9 @@ internal static class PlatformLocalRealm
 
             long notBefore = now.AddMinutes(-1).ToUnixTimeSeconds();
             long expiresAt = now.AddDays(1).ToUnixTimeSeconds();
-            JsonObject Bindings(string[] domains) => new()
+            JsonObject Bindings(string[] domains, params string[] tenants) => new()
             {
-                [EventStoreWorkloadAuthenticationDefaults.TenantBindingClaimType] = new JsonArray(syntheticTenantId),
+                [EventStoreWorkloadAuthenticationDefaults.TenantBindingClaimType] = Strings(tenants),
                 [EventStoreWorkloadAuthenticationDefaults.DomainBindingClaimType] = Strings(domains),
             };
 
@@ -407,7 +407,7 @@ internal static class PlatformLocalRealm
             if (boundClient.Id == "works")
             {
                 string gateway = boundClient.Audiences.Single();
-                grants.Add(Grant("works-bound-gateway", gateway, boundOperations, Bindings(["work"]), allowUnbound: false));
+                grants.Add(Grant("works-bound-gateway", gateway, boundOperations, Bindings(["work"], syntheticTenantId), allowUnbound: false));
                 grants.Add(Grant("works-trusted-effect", gateway, [EventStoreWorkloadOperations.TrustedEffect], new JsonObject(), allowUnbound: true));
             }
             else
@@ -416,8 +416,11 @@ internal static class PlatformLocalRealm
                 {
                     grants.Add(Grant("eventstore-unbound-" + audience, audience, boundClient.Operations, new JsonObject(), allowUnbound: true));
                     if (gatewayQueryDomains?.TryGetValue(audience, out string[]? domains) == true)
+                    {
+                        string[] tenants = audience == "tenants" ? [syntheticTenantId, "system"] : [syntheticTenantId];
                         grants.Add(Grant("eventstore-bound-query-" + audience, audience, boundOperations,
-                            Bindings(domains), allowUnbound: false, allowQueryAuthorityDigest: true));
+                            Bindings(domains, tenants), allowUnbound: false, allowQueryAuthorityDigest: true));
+                    }
                 }
             }
             return new Dictionary<string, string>(StringComparer.Ordinal)
@@ -524,6 +527,9 @@ internal static class PlatformLocalRealm
                     .WithEnvironment("EventStore__Authentication__Issuer", Authority)
                     .WithEnvironment("EventStore__Authentication__Authority", Authority);
             }
+
+            if (server.ResourceId == "projects")
+                resource.WithEnvironment("Authentication__JwtBearer__AllowAnonymousDevelopment", "false");
         }
 
         internal IResourceBuilder<T> ConfigureValidator<T>(IResourceBuilder<T> resource, IConfiguration configuration,
