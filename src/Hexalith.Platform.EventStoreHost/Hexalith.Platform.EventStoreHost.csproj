@@ -10,6 +10,9 @@
   <ItemGroup>
     <ProjectReference Include="../Hexalith.Platform.Protection/Hexalith.Platform.Protection.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Hexalith.Platform.Composition.Tests" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(UseHexalithProjectReferences)' == 'true'">
     <DefineConstants>$(DefineConstants);HEXALITH_PLATFORM_SOURCE_CATALOG;HEXALITH_PLATFORM_EXTENSION_SDK</DefineConstants>
   </PropertyGroup>

@@ -122,15 +122,11 @@ internal sealed class PlatformRoutingCatalogBootstrap
             bool partiesTest = options.RunPlan?.SelectedTest?.ModuleId == "parties";
             if (participant.AppId == "tenants" && (partiesTest || operatorRelay))
             {
-                List<string> boundDomains = [];
-                if (partiesTest)
-                    boundDomains.Add(catalog.Envelope.Declarations.Single(declaration => declaration.Execution?.HandlerType
-                        == typeof(Hexalith.Tenants.Contracts.Commands.BootstrapGlobalAdmin).FullName).Domain);
-                if (operatorRelay)
-                    boundDomains.AddRange((OperatorTask ?? throw new InvalidDataException(
-                        $"{participant.Module.Source}: tenants: operator task '{PlatformOperatorTaskBinding.TaskName}' requires the catalog's internal bootstrap and synthetic-tenant commands.")).BoundDomains);
-                // Only the domains of the commands actually relayed through the bound Tenants channel are admitted.
-                gateway["Authentication__BoundCommand__AllowedDomains__" + participant.AppId] = string.Join(',', boundDomains.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
+                // Native preparation and the operator relay submit the same two internal commands: the bootstrap and the
+                // synthetic tenant. Only their domains are admitted on the bound Tenants channel.
+                IReadOnlyList<string> boundDomains = (OperatorTask ?? throw new InvalidDataException(
+                    $"{participant.Module.Source}: tenants: the bound Tenants channel requires the catalog's internal bootstrap and synthetic-tenant commands.")).BoundDomains;
+                gateway["Authentication__BoundCommand__AllowedDomains__" + participant.AppId] = string.Join(',', boundDomains);
                 _tenantBootstrap = new(participant.ResourceId, participant.AppId,
                     _environment[participant.ResourceId]["Authentication__BoundStreamRead__PrivateKey"],
                     participant.Environment.GetValueOrDefault("DAPR_API_TOKEN"), participant.Environment.GetValueOrDefault("Authentication__JwtBearer__Issuer") ?? string.Empty);

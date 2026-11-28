@@ -42,7 +42,7 @@ builder.Services.AddEventStoreServer(builder.Configuration);
 builder.Services.AddEventStoreDomainQueryRouting();
 builder.Services.AddEventStoreSignalR(builder.Configuration);
 builder.Services.AddPlatformIdentity(builder.Configuration);
-builder.Services.AddPlatformErasureRootProtection(builder.Configuration);
+builder.Services.AddPlatformGatewayProtection(builder.Configuration, builder.Environment);
 
 #if HEXALITH_PLATFORM_CATALOG_SDK
 if (!string.IsNullOrEmpty(builder.Configuration["EventStore:RouteCatalog:DevelopmentBootstrap:CatalogPath"]))

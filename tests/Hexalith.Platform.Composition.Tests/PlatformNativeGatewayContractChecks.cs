@@ -63,7 +63,7 @@ internal static class PlatformNativeGatewayContractChecks
         principal.FindAll("sub").ShouldHaveSingleItem().Value.ShouldBe(subject);
         TenantCanonicalizer.TryCanonicalizeGrants(principal.FindAll("eventstore:tenant").Select(claim => claim.Value), out var grants).ShouldBeTrue();
         grants.ShouldBe([tenant]);
-        RouteContractDeclaration[] commands = [PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog), PlatformNativeGatewayContract.Command<CreateTenant>(catalog), PlatformNativeGatewayContract.Command<AddUserToTenant>(catalog)];
+        RouteContractDeclaration[] commands = [PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog), PlatformNativeGatewayContract.Command<CreateSyntheticTenant>(catalog), PlatformNativeGatewayContract.Command<AddUserToTenant>(catalog)];
         foreach (RouteContractDeclaration command in commands)
         {
             string scope = command.PlatformAdmission!.Namespace;
@@ -94,6 +94,7 @@ internal static class PlatformNativeGatewayContractChecks
             await AssertStatusAsync(request.Headers, principal, command.Domain, token);
         }
         await AssertBoundBootstrapAsync(catalog, readback, principal, jwt, subject, token);
+        await AssertBoundSyntheticTenantAsync(catalog, readback, principal, jwt, subject, tenant, token);
         using var invalid = new HttpRequestMessage();
         Should.Throw<InvalidOperationException>(() => PlatformNativeGatewayContract.Bind(invalid.Headers, readback with { Epoch = 0 }));
         Should.Throw<InvalidOperationException>(() => PlatformNativeGatewayContract.Bind(invalid.Headers, readback with { Serving = false }));
@@ -109,14 +110,25 @@ internal static class PlatformNativeGatewayContractChecks
     }
 
 
-    private static async Task AssertBoundBootstrapAsync(RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback readback,
+    private static Task AssertBoundBootstrapAsync(RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback readback,
         ClaimsPrincipal principal, string jwt, string subject, CancellationToken token)
+        => AssertBoundCommandAsync(catalog, readback, principal, jwt, subject, new SubmitCommandRequest("bootstrap-component-1",
+            PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog).PlatformAdmission!.Namespace, BootstrapGlobalAdmin.Domain, "global-administrators",
+            BootstrapGlobalAdmin.CommandType, JsonSerializer.SerializeToElement(new BootstrapGlobalAdmin(subject)), CorrelationId: "bootstrap-component-1"), token);
+
+    /// <summary>The run tenant is created as the synthetic tenant through the same bound channel, carrying the verified administrator flag.</summary>
+    private static Task AssertBoundSyntheticTenantAsync(RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback readback,
+        ClaimsPrincipal principal, string jwt, string subject, string tenant, CancellationToken token)
+        => AssertBoundCommandAsync(catalog, readback, principal, jwt, subject, new SubmitCommandRequest("synthetic-component-1",
+            PlatformNativeGatewayContract.Command<CreateSyntheticTenant>(catalog).PlatformAdmission!.Namespace, CreateSyntheticTenant.Domain, tenant,
+            CreateSyntheticTenant.CommandType, JsonSerializer.SerializeToElement(new CreateSyntheticTenant(tenant)), CorrelationId: "synthetic-component-1"), token);
+
+    private static async Task AssertBoundCommandAsync(RouteCatalogEnvelope catalog, RouteCatalogGenerationReadback readback,
+        ClaimsPrincipal principal, string jwt, string subject, SubmitCommandRequest command, CancellationToken token)
     {
         using RSA key = RSA.Create();
         string publicKey = Convert.ToBase64String(key.ExportSubjectPublicKeyInfo());
-        string scope = PlatformNativeGatewayContract.Command<BootstrapGlobalAdmin>(catalog).PlatformAdmission!.Namespace;
-        var command = new SubmitCommandRequest("bootstrap-component-1", scope, BootstrapGlobalAdmin.Domain, "global-administrators",
-            BootstrapGlobalAdmin.CommandType, JsonSerializer.SerializeToElement(new BootstrapGlobalAdmin(subject)), CorrelationId: "bootstrap-component-1");
+        string scope = command.Tenant;
         var bound = new BoundWorkloadCommandRequest(command, subject);
         using var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/v1/commands/bound/workload");
         PlatformNativeGatewayContract.BindBootstrap(request.Headers, readback, scope, jwt);
@@ -137,7 +149,7 @@ internal static class PlatformNativeGatewayContractChecks
         foreach (var (name, value) in Headers(request.Headers)) context.Request.Headers[name] = value;
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         {
-            ["Authentication:BoundCommand:AllowedDomains:tenants"] = BootstrapGlobalAdmin.Domain,
+            ["Authentication:BoundCommand:AllowedDomains:tenants"] = BootstrapGlobalAdmin.Domain + "," + CreateSyntheticTenant.Domain,
             ["Authentication:BoundStreamRead:PublicKeys:tenants"] = publicKey,
         }).Build();
         var controller = new CommandsController(mediator, new ExtensionMetadataSanitizer(Options.Create(new ExtensionMetadataOptions())),
