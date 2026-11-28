@@ -27,7 +27,7 @@ def declared_dependencies(path):
 
 
 def git_file(works, commit, name):
-    return subprocess.run(["git", "-C", str(works), "show", commit + ":" + name], check=True,
+    return subprocess.run(["git", "-C", str(works), "show", "--end-of-options", commit + ":" + name], check=True,
                           capture_output=True, timeout=30).stdout
 
 

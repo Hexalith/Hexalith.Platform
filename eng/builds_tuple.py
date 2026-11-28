@@ -89,11 +89,11 @@ def verify_catalog(gitlink, builds_root, environment=None):
         raise ValueError("Builds checkout differs from the recorded Builds gitlink " + gitlink + ".")
     blob = git("rev-parse", gitlink + ":" + CATALOG).decode().strip()
     body = git("cat-file", "blob", blob)
-    command = ["git", "diff", "--exit-code", gitlink, "--", CATALOG]
-    comparison = subprocess.run(command, cwd=builds_root, capture_output=True, text=True,
+    comparison = subprocess.run(["git", "diff", "--exit-code", "--end-of-options", gitlink, "--", CATALOG],
+                                cwd=builds_root, capture_output=True, text=True,
                                 **({"env": environment} if environment is not None else {}))
     if comparison.returncode:
-        observation = {"argv": command, "cwd": str(builds_root), "exitCode": comparison.returncode,
+        observation = {"argv": comparison.args, "cwd": str(builds_root), "exitCode": comparison.returncode,
                        "stdout": comparison.stdout, "stderr": comparison.stderr}
         raise ValueError("Builds catalog checkout comparison failed: " + json.dumps(observation, sort_keys=True))
     identity = {"path": CATALOG, "sourceRevision": gitlink, "blob": blob, "sha256": hashlib.sha256(body).hexdigest()}

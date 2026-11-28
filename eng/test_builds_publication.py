@@ -250,15 +250,19 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
             with zipfile.ZipFile(archive, "w") as package:
                 package.writestr("tools/net11.0/any/Hexalith.Builds.Tooling.dll", b"synthetic tooling control")
                 package.writestr("tools/net11.0/any/Hexalith.Builds.Module.Cli.dll", b"synthetic CLI control")
+                package.writestr("Hexalith.Builds.Module.Cli.nuspec",
+                                 '<package><metadata><id>Hexalith.Builds.Module.Cli</id><version>6.0.5</version>'
+                                 f'<repository commit="{SOURCE}" /></metadata></package>')
             locked = {"id": "Hexalith.Builds.Module.Cli", "version": "6.0.5", "contentHash": content_hash(archive.read_bytes())}
 
             def no_token():
                 self.assertNotIn("GH_TOKEN", os.environ)
                 self.assertEqual(os.environ["CONTROL"], "preserved")
 
-            def git_or_tool(argv, **_kwargs):
+            def git_only(argv, **_kwargs):
                 no_token()
-                return SOURCE if argv[0] == "git" else "6.0.5+" + SOURCE
+                self.assertEqual(argv[0], "git")
+                return SOURCE
 
             def signature(argv, **_kwargs):
                 no_token()
@@ -285,7 +289,7 @@ class MetadataTokenEnvironmentTests(unittest.TestCase):
             stack.enter_context(patch.object(prepare_builds_artifacts, "recorded_gitlink", side_effect=lambda *a, **k: (no_token(), SOURCE)[1]))
             stack.enter_context(patch.object(prepare_builds_artifacts, "source_state", side_effect=lambda: (no_token(), {"dirty": False})[1]))
             stack.enter_context(patch.object(prepare_builds_artifacts, "verify_release", side_effect=release))
-            stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output", side_effect=git_or_tool))
+            stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "check_output", side_effect=git_only))
             stack.enter_context(patch.object(prepare_builds_artifacts.subprocess, "run", side_effect=signature))
             transport = stack.enter_context(patch("builds_publication.urllib.request.urlopen", side_effect=metadata))
             stack.enter_context(contextlib.redirect_stdout(io.StringIO()))

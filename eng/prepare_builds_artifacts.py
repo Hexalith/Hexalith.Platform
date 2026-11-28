@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 import zipfile
 
 from builds_tuple import (GITLINK, TOOL_PACKAGE, load_binding, recorded_gitlink, resolve_builds_root, tool_framework,
@@ -55,6 +56,24 @@ def require_unchanged_recorded_context(original, binding=None):
     builds_root = original["boundProducerContext"].get("buildsRoot")
     if recorded_preparation_context(binding, builds_root=builds_root) != original:
         raise ValueError("Recorded Platform source or the bound published producer changed during artifact preparation.")
+
+
+def verify_package_identity(extracted, version, source):
+    """Read the release identity of the lock- and signature-verified NuGet archive."""
+    nuspec = extracted / (TOOL_PACKAGE + ".nuspec")
+    try:
+        metadata = ET.parse(nuspec).getroot().findall("{*}metadata")
+    except (OSError, ET.ParseError) as error:
+        raise ValueError("The locked Builds archive has no readable NuGet manifest.") from error
+    if len(metadata) != 1:
+        raise ValueError("The locked Builds manifest must contain exactly one metadata element.")
+    ids = metadata[0].findall("{*}id")
+    versions = metadata[0].findall("{*}version")
+    repositories = metadata[0].findall("{*}repository")
+    if (len(ids) != 1 or ids[0].text != TOOL_PACKAGE
+            or len(versions) != 1 or versions[0].text != version
+            or len(repositories) != 1 or repositories[0].get("commit") != source):
+        raise ValueError("The locked Builds manifest must identify " + TOOL_PACKAGE + " " + version + "+" + source + ".")
 
 
 def main():
@@ -119,9 +138,9 @@ def _prepare_artifacts(metadata_token):
         if tool_prefix + "Hexalith.Builds.Tooling.dll" not in hashes:
             raise ValueError("The locked Builds archive has no " + tool_prefix + "Hexalith.Builds.Tooling.dll.")
         host = tool / "g4-host/bin/EventStoreHost/Hexalith.Builds.Module.EventStoreHost.dll"
-        executable_version = subprocess.check_output(["dotnet", str(tool / "Hexalith.Builds.Module.Cli.dll"), "--version"], text=True).strip()
-        if executable_version != version + "+" + source:
-            raise ValueError("Published executable reports " + executable_version + "; the pin requires " + version + "+" + source + ".")
+        if tool_prefix + "Hexalith.Builds.Module.Cli.dll" not in hashes:
+            raise ValueError("The locked Builds archive has no " + tool_prefix + "Hexalith.Builds.Module.Cli.dll.")
+        verify_package_identity(extracted, version, source)
         # AR-12 expected identities: per-file SHA-256 of the lock-verified archive.
         receipt = {"platformRevision": revision, "platformSourceState": state, "buildsRevision": source, "version": version,
                    "buildsGitlink": GITLINK, "toolLock": lock, "archiveSha256": hashlib.sha256(archive.read_bytes()).hexdigest(),

@@ -74,9 +74,12 @@ def qualify(root, runtime, environ=None):
     digest = hashlib.sha256(runtime.read_bytes()).hexdigest()
     if digest != pins["linuxAmd64DaprdSha256"]:
         raise ValueError("Installed daprd differs from Platform's qualified Works proof runtime hash")
-    runtime_version = subprocess.check_output([str(runtime), "--version"], text=True).strip()
+    # The catalog-selected qualification record binds these exact runtime bytes.
+    # The CLI's runtime report can refer to a different installation.
+    if not os.access(runtime, os.X_OK):
+        raise PermissionError("The qualified daprd is not executable: " + str(runtime))
     cli = subprocess.check_output(["dapr", "--version"], text=True)
-    if runtime_version != pins["daprRuntime"] or not re.search(
+    if not re.search(
         r"(?m)^CLI version:\s*" + re.escape(pins["daprCli"]) + r"\s*$", cli
     ):
         raise ValueError("Installed Dapr differs from Platform's qualified Works proof toolchain")
